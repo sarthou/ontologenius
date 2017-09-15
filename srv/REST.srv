@@ -1,0 +1,7 @@
+string method
+string URL
+HTTP_headers headers
+string body
+---
+string text
+int16 status

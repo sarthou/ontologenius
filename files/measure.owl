@@ -1,0 +1,378 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/srth/ontologies/toaster/measure#"
+     xml:base="http://www.semanticweb.org/srth/ontologies/toaster/measure"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure">
+        <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property"/>
+        <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#XDayAgo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#XDayAgo">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteDistance -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteDistance">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#distance"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#absolute"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDistance"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteSpeed -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteSpeed">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#speed"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#absolute"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeSpeed"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#active -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#active">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#state"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#inactive"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#areaDensity -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#areaDensity">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#density"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#time"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#absolute"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#centimeter -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#centimeter">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteDistance"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#clockTime -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#clockTime">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#time"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#absolute"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#date -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#date">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#day -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#day">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#density -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#density">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#physicalQuantity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#distance -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#distance">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#physicalQuantity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#far -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#far">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDistance"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#near"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#fast -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#fast">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeSpeed"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#slow"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#foot -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#foot">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteDistance"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#inXDay -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#inXDay">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#inactive -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#inactive">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#state"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#inch -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#inch">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteDistance"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#measure -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#measure">
+        <rdfs:label>measure</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#meter -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#meter">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteDistance"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#near -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#near">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDistance"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#physicalQuantity -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#physicalQuantity">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#measure"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#state"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#time"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#relative"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDistance -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDistance">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#distance"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#relative"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeSpeed -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeSpeed">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#speed"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#relative"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#slow -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#slow">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeSpeed"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#speed -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#speed">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#physicalQuantity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#state -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#state">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#measure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#time -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#time">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#physicalQuantity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#today -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#today">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#tomorrow -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#tomorrow">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#week -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#week">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#year -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#year">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#yesterday -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#yesterday">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#km/h -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#km/h">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteSpeed"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#m/s"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#m/s -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#m/s">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteSpeed"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#XDayAgo"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#inXDay"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#today"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#tomorrow"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#yesterday"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#clockTime"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#centimeter"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#foot"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#inch"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#meter"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#date"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#day"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#week"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#year"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
+

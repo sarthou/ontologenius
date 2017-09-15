@@ -1,0 +1,10 @@
+<launch>
+
+  <arg name="files" default="
+  $(find ontologenius)/files/attribute.owl
+  $(find ontologenius)/files/measure.owl
+  $(find ontologenius)/files/property.owl
+  "/>
+  <node name="ontology_arguer" pkg="ontologenius" type="ontoloGenius" output="screen" args="$(arg files)"> </node>
+  <node name="ontology_requests" pkg="ontologenius" type="REST.py" output="screen"> </node>
+</launch>
