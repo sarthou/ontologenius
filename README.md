@@ -92,7 +92,7 @@ Symbol          | Meaning
 -------------   | -------------
 _               | AND
 \|              | OR
-!               | NOT (not implemented yet)
+!               | NOT
 =               | equality test
 
 > Do not use _ in your class and individual names
@@ -112,8 +112,13 @@ The class combination is also possible on the subject side: ***old_man=entity***
 If we write: ***desk=affair|furniture***, we ask if desk is an affair OR a furniture.  
 It is also possible to use it on the side of the subject: ***desk|book=furniture***  
 
+- Test the opposite with NOT  
+If we write: ***man=!robot***, we ask if a man is NOT a robot.  
+This function exploits the disjoint description. So in this example, test ***!robot*** is equivalent to testing ***human|animal***.  
+> /:exclamation:\\ The Not symbol is not taken into account on the subject side
+
 - Combine all symbols:  
-Now, you can create complex queries by combining the different symbols: ***red_cube|young_animal=color_animal|color_object***  
+Now, you can create complex queries by combining the different symbols: ***red_cube|young_animal=color_!animal|color_object***  
 > This example is strange but you see the meaning ...  
 
 #### Send a question

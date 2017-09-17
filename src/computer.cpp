@@ -74,23 +74,35 @@ bool computer::compute(string equation, tree& onto)
         {
           for(unsigned int andR = 0; andR < R[orR].size(); andR++)
           {
-            cout << "-> compare with " << R[orR][andR] << " : ";
             if(notR[orR][andR])
-              cout << " as NOT ";
-            if(finder.words[j].find(R[orR][andR]) == finder.words[j].end())
-              cout << " NO" << endl;
+            {
+              cout << "-> compare with !" << R[orR][andR] << " : ";
+              set<string> disjoint = onto.getDisjoint(R[orR][andR]);
+              for(set<string>::iterator it = disjoint.begin(); it != disjoint.end(); ++it)
+              {
+                if(finder.words[j].find(*it) != finder.words[j].end())
+                {
+                  cout << *finder.words[j].find(*it) << endl;
+                  finder.find[orR][andR] = true;
+                }
+              }
+
+              if(finder.find[orR][andR] != true)
+                cout << " NO" << endl;
+              else
+                cout << endl;
+            }
             else
             {
-              cout << *finder.words[j].find(R[orR][andR]) << endl;
-              finder.find[orR][andR] = true;
+              cout << "-> compare with " << R[orR][andR] << " : ";
+              if(finder.words[j].find(R[orR][andR]) == finder.words[j].end())
+                cout << " NO" << endl;
+              else
+              {
+                cout << *finder.words[j].find(R[orR][andR]) << endl;
+                finder.find[orR][andR] = true;
+              }
             }
-            /*if(!(notR[orR][andR] && notL[i][j]))
-            {
-              if(notR[orR][andR])
-                finder.find[orR][andR] = !finder.find[orR][andR];
-              if(notL[i][j])
-                finder.find[orR][andR] = !finder.find[orR][andR];
-            }*/
             cout << "and" << endl;
           }
           cout << "or" << endl;

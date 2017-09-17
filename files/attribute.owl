@@ -7,10 +7,10 @@
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
     <owl:Ontology rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute"/>
-    
 
 
-    <!-- 
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // Classes
@@ -18,7 +18,7 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#activity -->
@@ -28,7 +28,7 @@
         <rdfs:comment>explain if an entity can move by it self</rdfs:comment>
         <rdfs:label>activity</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#actuator -->
@@ -36,7 +36,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#actuator">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#technicalObject"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#adult -->
@@ -45,7 +45,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#age"/>
         <rdfs:label>adult</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#affair -->
@@ -56,7 +56,7 @@
         <rdfs:comment>affairs are every little non alive objects</rdfs:comment>
         <rdfs:label>affair</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#age -->
@@ -66,7 +66,7 @@
         <rdfs:comment>approximated age description</rdfs:comment>
         <rdfs:label>age</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#agent -->
@@ -77,7 +77,7 @@
         <rdfs:comment>an agent is an animated entity</rdfs:comment>
         <rdfs:label>agent</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#alive -->
@@ -86,7 +86,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#vitality"/>
         <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#nonalive"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#animal -->
@@ -96,7 +96,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#alive"/>
         <rdfs:label>animal</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#animate -->
@@ -106,7 +106,7 @@
         <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#inanimate"/>
         <rdfs:label>animate</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#area -->
@@ -114,7 +114,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#area">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#attribute"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#arm -->
@@ -122,13 +122,13 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#arm">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#joint"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#attribute -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#attribute"/>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#bed -->
@@ -136,7 +136,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#bed">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#furniture"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#black -->
@@ -144,7 +144,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#black">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#color"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#blue -->
@@ -152,7 +152,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#blue">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#color"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#book -->
@@ -160,7 +160,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#book">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#affair"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#box -->
@@ -168,7 +168,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#box">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#affair"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#chair -->
@@ -176,7 +176,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#chair">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#furniture"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#child -->
@@ -185,7 +185,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#human"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#young"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#color -->
@@ -194,7 +194,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#attribute"/>
         <rdfs:label>color</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#conveyance -->
@@ -202,7 +202,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#conveyance">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#technicalObject"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#cube -->
@@ -210,7 +210,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#cube">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#affair"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#desk -->
@@ -218,7 +218,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#desk">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#furniture"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#door -->
@@ -226,7 +226,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#door">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#furniture"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity -->
@@ -236,7 +236,7 @@
         <rdfs:comment>entity can describe every physical things like human, robot, objetcs, ...</rdfs:comment>
         <rdfs:label>entity</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#fan -->
@@ -245,7 +245,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#actuator"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#affair"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#feet -->
@@ -253,7 +253,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#feet">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#joint"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#female -->
@@ -262,7 +262,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#gender"/>
         <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#male"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#furniture -->
@@ -272,7 +272,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#object"/>
         <rdfs:label>furniture</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#gender -->
@@ -281,7 +281,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#attribute"/>
         <rdfs:label>gender</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#grass -->
@@ -290,7 +290,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#vegetal"/>
         <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#tree"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#green -->
@@ -298,7 +298,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#green">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#color"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#hand -->
@@ -306,7 +306,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#hand">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#joint"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#head -->
@@ -314,7 +314,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#head">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#joint"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#human -->
@@ -324,7 +324,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#alive"/>
         <rdfs:label>human</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#inanimate -->
@@ -333,7 +333,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#activity"/>
         <rdfs:label>inanimate</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#indoorArea -->
@@ -342,7 +342,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#area"/>
         <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#outdoorArea"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#joint -->
@@ -352,7 +352,7 @@
         <rdfs:comment>joints are parts of agent</rdfs:comment>
         <rdfs:label>joint</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#lamp -->
@@ -361,7 +361,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#actuator"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#affair"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#leg -->
@@ -369,7 +369,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#leg">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#joint"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#luminositySensor -->
@@ -377,7 +377,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#luminositySensor">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#sensor"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#male -->
@@ -385,7 +385,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#male">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#gender"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#man -->
@@ -395,7 +395,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#male"/>
         <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#woman"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#motionSensor -->
@@ -403,7 +403,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#motionSensor">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#sensor"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#mug -->
@@ -411,7 +411,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#mug">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#affair"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#nonalive -->
@@ -419,7 +419,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#nonalive">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#vitality"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#object -->
@@ -430,7 +430,7 @@
         <rdfs:comment>an object is an inanimated entity</rdfs:comment>
         <rdfs:label>object</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#old -->
@@ -439,7 +439,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#age"/>
         <rdfs:label>old</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#outdoorArea -->
@@ -447,7 +447,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#outdoorArea">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#area"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#pink -->
@@ -455,7 +455,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#pink">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#color"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#plant -->
@@ -463,7 +463,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#plant">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#vegetal"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#presenceSensor -->
@@ -471,7 +471,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#presenceSensor">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#sensor"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#purple -->
@@ -479,7 +479,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#purple">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#color"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#red -->
@@ -487,7 +487,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#red">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#color"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#robot -->
@@ -497,7 +497,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#nonalive"/>
         <rdfs:label>robot</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#sensor -->
@@ -506,7 +506,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#affair"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#technicalObject"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#shelf -->
@@ -514,7 +514,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#shelf">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#furniture"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#sofa -->
@@ -522,7 +522,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#sofa">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#furniture"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#table -->
@@ -530,7 +530,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#table">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#furniture"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#tape -->
@@ -538,7 +538,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#tape">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#affair"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#technicalObject -->
@@ -552,7 +552,7 @@
         <rdfs:seeAlso>affair
 furniture</rdfs:seeAlso>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#temperatureSensor -->
@@ -560,7 +560,7 @@ furniture</rdfs:seeAlso>
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#temperatureSensor">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#sensor"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#torso -->
@@ -568,7 +568,7 @@ furniture</rdfs:seeAlso>
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#torso">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#joint"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#trashbin -->
@@ -576,7 +576,7 @@ furniture</rdfs:seeAlso>
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#trashbin">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#affair"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#tree -->
@@ -584,7 +584,7 @@ furniture</rdfs:seeAlso>
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#tree">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#vegetal"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#vegetal -->
@@ -594,7 +594,7 @@ furniture</rdfs:seeAlso>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#object"/>
         <rdfs:label>vegetal</rdfs:label>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#vitality -->
@@ -605,7 +605,7 @@ furniture</rdfs:seeAlso>
         <rdfs:label>vitality</rdfs:label>
         <rdfs:seeAlso>entity</rdfs:seeAlso>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#white -->
@@ -613,7 +613,7 @@ furniture</rdfs:seeAlso>
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#white">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#color"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#woman -->
@@ -622,7 +622,7 @@ furniture</rdfs:seeAlso>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#female"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#human"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#yellow -->
@@ -630,7 +630,7 @@ furniture</rdfs:seeAlso>
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#yellow">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#color"/>
     </owl:Class>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#young -->
@@ -639,10 +639,10 @@ furniture</rdfs:seeAlso>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#age"/>
         <rdfs:label>young</rdfs:label>
     </owl:Class>
-    
 
 
-    <!-- 
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // General axioms
@@ -706,4 +706,3 @@ furniture</rdfs:seeAlso>
 
 
 <!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
-

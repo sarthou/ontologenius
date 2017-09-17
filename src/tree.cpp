@@ -93,6 +93,7 @@ void tree::add(string value, vector<string>& mothers, vector<string>& disjoints)
       if(disjoints[disjoints_i] == roots[root_i]->value)
       {
         me->disjoints.push_back(roots[root_i]);
+        roots[root_i]->disjoints.push_back(me);
         i_find_my_disjoint = true;
       }
 
@@ -101,6 +102,7 @@ void tree::add(string value, vector<string>& mothers, vector<string>& disjoints)
       if(disjoints[disjoints_i] == branchs[branch_i]->value)
       {
         me->disjoints.push_back(branchs[branch_i]);
+        branchs[branch_i]->disjoints.push_back(me);
         i_find_my_disjoint = true;
       }
 
@@ -109,6 +111,7 @@ void tree::add(string value, vector<string>& mothers, vector<string>& disjoints)
       if(disjoints[disjoints_i] == tmp_mothers[branch_i]->value)
       {
         me->disjoints.push_back(tmp_mothers[branch_i]);
+        tmp_mothers[branch_i]->disjoints.push_back(me);
         i_find_my_disjoint = true;
       }
 
@@ -117,6 +120,7 @@ void tree::add(string value, vector<string>& mothers, vector<string>& disjoints)
     {
       branch_t* my_disjoint = new struct branch_t(disjoints[disjoints_i]);
       me->disjoints.push_back(my_disjoint);
+      my_disjoint->disjoints.push_back(me);
       tmp_mothers.push_back(my_disjoint); //I put my disjoint as tmp_mother
     }
   }
