@@ -13,6 +13,7 @@ struct branch_t
   string value;
   vector<branch_t*> childs;
   vector<branch_t*> mothers;
+  vector<branch_t*> disjoints;
   uint8_t family;
   uint8_t nb_mothers;
 
@@ -29,11 +30,13 @@ public:
   tree() {}
   ~tree();
 
-  void add(string value, vector<string> mothers);
+  void add(string value, vector<string>& mothers, vector<string>& disjoints);
+  void add(vector<string>& disjoints);
   void close();
 
   set<string> getDown(string value);
   set<string> getUp(string value);
+  set<string> getDisjoint(string value);
 
 private:
   vector<branch_t*> branchs;

@@ -24,8 +24,7 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
   if(req.action == "add")
   {
     Ontology_reader reader(&onto);
-    res.code = reader.read(req.param, type_class);
-    res.code = reader.read(req.param, type_individual);
+    res.code = reader.read(req.param);
   }
   else if(req.action == "close")
   {
@@ -42,6 +41,14 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
   else if(req.action == "getUp")
   {
     set<string> entities = onto.getUp(req.param);
+    string result = "";
+    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
+      result += *it + " ";
+    res.value = result;
+  }
+  else if(req.action == "getDisjoint")
+  {
+    set<string> entities = onto.getDisjoint(req.param);
     string result = "";
     for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
       result += *it + " ";
@@ -77,8 +84,7 @@ int main(int argc, char** argv)
   for(unsigned int i = 1; i < argc; i++)
   {
     Ontology_reader reader(&onto);
-    reader.readFile(string(argv[i]), type_class);
-    reader.readFile(argv[i], type_individual);
+    reader.readFile(string(argv[i]));
   }
 
   // Start up ROS service with callbacks

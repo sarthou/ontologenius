@@ -11,7 +11,7 @@ int main(int argc, char** argv)
   tree onto;
   Ontology_reader reader(&onto);
 
-  reader.read("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/attribute.owl", type_class);
+  reader.read("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/attribute.owl");
 
   onto.close();
 
@@ -24,7 +24,7 @@ int main(int argc, char** argv)
   tree onto;
   Ontology_reader reader(&onto);
 
-  reader.read("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/measure.owl", type_class);
+  reader.read("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/measure.owl");
 
   onto.close();
 

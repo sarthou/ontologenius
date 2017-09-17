@@ -39,9 +39,9 @@ On this launcher file, you will find an argument indicating the path to the onto
 
 You can add your own ontology files in the argument if you want them to be loaded at the beginning of the program.
 
-# Load ontologies
+## Load ontologies
 
-The ontologenius allows to load several ontologies throw files on your computer (at the launch of the program) or from internet.
+The ontologenius allows to load several ontologies through files on your computer (at the launch of the program) or from internet.
 This node is able to load different ontologies and link them automatically.
 
 - Add the ontologies from internet:
@@ -60,22 +60,28 @@ $ rosservice call /ontoloGenius/actions "{param: '', action: 'reset'}"
 ```
 > The action will erase ALL ontologies, even those loaded at the launch of the program
 
-# Usage
+## Usage
 
 ### Exploration
 Ontologenius allow a bi-directonnal exploration.
 
-- ***getDown*** will give you all classes below that given in the parameter
+- ***getDown*** will give you all classes below the one given in the parameter
 ```sh
 $ rosservice call /ontoloGenius/actions "{param: 'human', action: 'getDown'}"
 ```
 > result => child human man woman
 
-- ***getUp*** will give you all classes above that given in the parameter
+- ***getUp*** will give you all classes above the one given in the parameter
 ```sh
 $ rosservice call /ontoloGenius/actions "{param: 'human', action: 'getUp'}"
 ```
 > result => activity agent alive animate attribute entity human vitality
+
+- ***getDisjoint*** will give you all the disjoint classes of the one given in the parameter
+```sh
+rosservice call /ontoloGenius/actions "{param: 'human', action: 'getDisjoint'}"
+```
+> result => animal robot
 
 ### Relationship test
 Ontologenius makes it possible to test the relationship between classes
@@ -116,4 +122,4 @@ To send a question, just put it in the stock service like this:
 ```sh
 $ rosservice call /ontoloGenius/actions "{param: 'blue_box|red_cube=alive', action: 'test'}"
 ```
-The service will return the answer as *true* or *false*. 
+The service will return the answer as *true* or *false*.

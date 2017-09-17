@@ -22,7 +22,9 @@ public:
 
 private:
   vector<vector<string>> L;
+  vector<vector<bool>> notL;
   vector<vector<string>> R;
+  vector<vector<bool>> notR;
 
   bool split(const string &txt, vector<string> &strs, char ch);
 };
