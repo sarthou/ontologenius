@@ -94,6 +94,8 @@ _               | AND
 \|              | OR
 !               | NOT
 =               | equality test
+!               | NOT
+\-              | comment
 
 > Do not use _ in your class and individual names
 
@@ -116,6 +118,13 @@ It is also possible to use it on the side of the subject: ***desk|book=furniture
 If we write: ***man=!robot***, we ask if a man is NOT a robot.  
 This function exploits the disjoint description. So in this example, test ***!robot*** is equivalent to testing ***human|animal***.  
 > /:exclamation:\\ The Not symbol is not taken into account on the subject side
+
+- Comment on your courses
+We often use identifiers to distinguish names that do not represent the same entity. For example, if you have two red cubes, you will call them red_cube_1 and red_cube_2.
+To avoid this problem and do not create any problems with identifiers that do not represent anything in our representation of the world, you can put these ids in comment with **'-'**.
+If we write: ***red_cube-1 = object***, we ask if a red cube is an object but without taking into account the identifier.
+Comments can be used on both sides of the equality test and after each class name.
+> You can put everything in the comment: robot-theTinyOne = agent
 
 - Combine all symbols:  
 Now, you can create complex queries by combining the different symbols: ***red_cube|young_animal=color_!animal|color_object***  

@@ -22,6 +22,9 @@ bool computer::compute(string equation, tree& onto)
       split(tmp[i], L[i], '_');
       for(unsigned int j = 0; j < L[i].size(); j++)
       {
+        vector<string> word;
+        split(L[i][j], word, '-');
+        L[i][j] = word[0];
         notL[i].resize(L[i].size(), false);
         if(L[i][j][0] == '!')
         {
@@ -40,6 +43,9 @@ bool computer::compute(string equation, tree& onto)
       split(tmp[i], R[i], '_');
       for(unsigned int j = 0; j < R[i].size(); j++)
       {
+        vector<string> word;
+        split(L[i][j], word, '-');
+        L[i][j] = word[0];
         notR[i].resize(R[i].size(), false);
         if(R[i][j][0] == '!')
         {
