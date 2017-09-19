@@ -94,10 +94,10 @@ _               | AND
 \|              | OR
 !               | NOT
 =               | equality test
-!               | NOT
 \-              | comment
 
-> Do not use _ in your class and individual names
+> Do not use _ or - in your class and individual names
+> prefer this notation: myClassName
 
 #### Create questions
 
