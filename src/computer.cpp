@@ -9,8 +9,16 @@ bool computer::compute(string equation, tree& onto)
 {
   cout << " init " << endl;
   size_t pos = 0;
+  bool invert = false;
   vector<string> LR;
-  split(equation, LR, '=');
+  split(equation, LR, "!=");
+  if(LR.size() > 1)
+    invert = true;
+  else
+  {
+    LR.clear();
+    split(equation, LR, "==");
+  }
   if(LR.size() == 2)
   {
     vector<string> tmp;
@@ -122,6 +130,8 @@ bool computer::compute(string equation, tree& onto)
         for(unsigned int j = 0; j < R[i].size(); j++)
           find &= finder.find[i][j];
 
+        if(invert)
+          find = !find;
         if(find)
         {
           cout << "TRUE !!!!!" << endl;
@@ -145,6 +155,24 @@ bool computer::split(const string &txt, vector<string> &strs, char ch)
   string s;
   while(getline(iss, s, ch))
     strs.push_back(s);
+  if(strs.size() > 1)
+    return true;
+  else
+    return false;
+}
+
+bool computer::split(const string &txt, vector<string> &strs, string delim)
+{
+  string text = txt;
+  while(text.find(delim) != string::npos)
+  {
+    cout << text << endl;
+    size_t pos = text.find(delim);
+    string part = text.substr(0, pos);
+    text = text.substr(pos + delim.size(), text.size() - pos - delim.size());
+    strs.push_back(part);
+  }
+  strs.push_back(text);
   if(strs.size() > 1)
     return true;
   else

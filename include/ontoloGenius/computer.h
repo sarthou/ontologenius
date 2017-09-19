@@ -27,4 +27,5 @@ private:
   vector<vector<bool>> notR;
 
   bool split(const string &txt, vector<string> &strs, char ch);
+  bool split(const string &txt, vector<string> &strs, string delim);
 };
