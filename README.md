@@ -96,8 +96,8 @@ _               | AND
 =               | equality test
 \-              | comment
 
-> Do not use _ or - in your class and individual names
-> prefer this notation: myClassName
+> Do not use _ or - in your class and individual names  
+> prefer this notation: myClassName  
 
 #### Create questions
 
@@ -122,12 +122,12 @@ This function exploits the disjoint description. So in this example, test ***!ro
 - Comment on your courses
 We often use identifiers to distinguish names that do not represent the same entity. For example, if you have two red cubes, you will call them red_cube_1 and red_cube_2.
 To avoid this problem and do not create any problems with identifiers that do not represent anything in our representation of the world, you can put these ids in comment with **'-'**.
-If we write: ***red_cube-1 = object***, we ask if a red cube is an object but without taking into account the identifier.
+If we write: ***red_cube-1=object***, we ask if a red cube is an object but without taking into account the identifier.
 Comments can be used on both sides of the equality test and after each class name.
-> You can put everything in the comment: robot-theTinyOne = agent
+> You can put everything in the comment: robot-theTinyOne=agent
 
 - Combine all symbols:  
-Now, you can create complex queries by combining the different symbols: ***red_cube|young_animal=color_!animal|color_object***  
+Now, you can create complex queries by combining the different symbols: ***red_cube-2|young_animal=color_!animal|color_object***  
 > This example is strange but you see the meaning ...  
 
 #### Send a question
