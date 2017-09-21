@@ -2,7 +2,7 @@
 #include <string>
 #include <set>
 
-#include "ontoloGenius/tree.h"
+#include "ontoloGenius/treeObject.h"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ public:
   computer() {};
   ~computer() {};
 
-  bool compute(string equation, tree& onto);
+  bool compute(string equation, treeObject& onto);
 
 private:
   vector<vector<string>> L;

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-bool computer::compute(string equation, tree& onto)
+bool computer::compute(string equation, treeObject& onto)
 {
   using namespace std::chrono;
 

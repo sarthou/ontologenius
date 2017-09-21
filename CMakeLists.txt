@@ -128,7 +128,8 @@ include_directories(
 
 ## Declare a C++ library
 add_library(ontologenius_lib
-  src/tree.cpp
+  src/treeObject.cpp
+  src/treeProperty.cpp
   src/tree_drawer.cpp
   src/ontology_reader.cpp
   src/computer.cpp

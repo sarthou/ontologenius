@@ -10,7 +10,7 @@ using namespace std;
 #define MARKER_HEIGHT     100
 #define MIN_HEIGHT_SPACE  1000
 
-tree_drawer::tree_drawer(tree* p_tree)
+tree_drawer::tree_drawer(treeObject* p_tree)
 {
   m_tree = p_tree;
   init();

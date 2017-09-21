@@ -1,9 +1,9 @@
-#include "ontoloGenius/tree.h"
+#include "ontoloGenius/treeProperty.h"
 #include <iostream>
 
 using namespace std;
 
-tree::~tree()
+treeProperty::~treeProperty()
 {
   for(unsigned int i = 0; i < branchs.size(); i++)
     delete branchs[i];
@@ -12,10 +12,10 @@ tree::~tree()
     delete roots[i];
 }
 
-void tree::add(string value, vector<string>& mothers, vector<string>& disjoints)
+void treeProperty::add(string value, vector<string>& mothers, vector<string>& disjoints, vector<string>& inverses)
 {
   //am I a created mother ?
-  branch_t* me = nullptr;
+  propertyBranch_t* me = nullptr;
   for(unsigned int i = 0; i < tmp_mothers.size(); i++)
   {
     if(tmp_mothers[i]->value == value)
@@ -28,7 +28,7 @@ void tree::add(string value, vector<string>& mothers, vector<string>& disjoints)
 
   //am I created ?
   if(me == nullptr)
-    me = new struct branch_t(value);
+    me = new struct propertyBranch_t(value);
 
   me->nb_mothers = mothers.size();
 
@@ -72,7 +72,7 @@ void tree::add(string value, vector<string>& mothers, vector<string>& disjoints)
       //I create my mother
       if(!i_find_my_mother)
       {
-        branch_t* my_mother = new struct branch_t(mothers[mothers_i]);
+        propertyBranch_t* my_mother = new struct propertyBranch_t(mothers[mothers_i]);
         my_mother->childs.push_back(me);
         me->mothers.push_back(my_mother);
         tmp_mothers.push_back(my_mother);
@@ -118,20 +118,62 @@ void tree::add(string value, vector<string>& mothers, vector<string>& disjoints)
     //I create my disjoint
     if(!i_find_my_disjoint)
     {
-      branch_t* my_disjoint = new struct branch_t(disjoints[disjoints_i]);
+      propertyBranch_t* my_disjoint = new struct propertyBranch_t(disjoints[disjoints_i]);
       me->disjoints.push_back(my_disjoint);
       my_disjoint->disjoints.push_back(me);
       tmp_mothers.push_back(my_disjoint); //I put my disjoint as tmp_mother
     }
   }
+
+  //for all my inverses
+  for(unsigned int inverses_i = 0; inverses_i < inverses.size(); inverses_i++)
+  {
+    bool i_find_my_inverse = false;
+
+    //is a root my inverse ?
+    for(unsigned int root_i = 0; root_i < roots.size(); root_i++)
+      if(inverses[inverses_i] == roots[root_i]->value)
+      {
+        me->inverses.push_back(roots[root_i]);
+        roots[root_i]->inverses.push_back(me);
+        i_find_my_inverse = true;
+      }
+
+    //is a branch my inverse ?
+    for(unsigned int branch_i = 0; branch_i < branchs.size(); branch_i++)
+      if(inverses[inverses_i] == branchs[branch_i]->value)
+      {
+        me->inverses.push_back(branchs[branch_i]);
+        branchs[branch_i]->inverses.push_back(me);
+        i_find_my_inverse = true;
+      }
+
+    //is a tmp mother is my inverse ?
+    for(unsigned int branch_i  =0; branch_i < tmp_mothers.size(); branch_i++)
+      if(inverses[inverses_i] == tmp_mothers[branch_i]->value)
+      {
+        me->inverses.push_back(tmp_mothers[branch_i]);
+        tmp_mothers[branch_i]->inverses.push_back(me);
+        i_find_my_inverse = true;
+      }
+
+    //I create my inverse
+    if(!i_find_my_inverse)
+    {
+      propertyBranch_t* my_inverse = new struct propertyBranch_t(inverses[inverses_i]);
+      me->inverses.push_back(my_inverse);
+      my_inverse->inverses.push_back(me);
+      tmp_mothers.push_back(my_inverse); //I put my inverse as tmp_mother
+    }
+  }
 }
 
-void tree::add(vector<string>& disjoints)
+void treeProperty::add(vector<string>& disjoints)
 {
   for(unsigned int disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
-    branch_t* me = nullptr;
+    propertyBranch_t* me = nullptr;
     //Am I a root ?
     for(unsigned int root_i = 0; root_i < roots.size(); root_i++)
       if(disjoints[disjoints_i] == roots[root_i]->value)
@@ -152,7 +194,7 @@ void tree::add(vector<string>& disjoints)
     // I don't exist ? so I will be a tmp_mother
     if(me == nullptr)
     {
-      me = new struct branch_t(disjoints[disjoints_i]);
+      me = new struct propertyBranch_t(disjoints[disjoints_i]);
       tmp_mothers.push_back(me);
     }
 
@@ -191,7 +233,7 @@ void tree::add(vector<string>& disjoints)
         //I create my disjoint
         if(!i_find_my_disjoint)
         {
-          branch_t* my_disjoint = new struct branch_t(disjoints[disjoints_j]);
+          propertyBranch_t* my_disjoint = new struct propertyBranch_t(disjoints[disjoints_j]);
           me->disjoints.push_back(my_disjoint);
           tmp_mothers.push_back(my_disjoint); //I put my disjoint as tmp_mother
         }
@@ -200,7 +242,7 @@ void tree::add(vector<string>& disjoints)
   }
 }
 
-void tree::close()
+void treeProperty::close()
 {
   for(unsigned int i = 0; i < tmp_mothers.size(); i++)
     roots.push_back(tmp_mothers[i]);
@@ -210,7 +252,7 @@ void tree::close()
   link();
 }
 
-set<string> tree::getDown(string value)
+set<string> treeProperty::getDown(string value)
 {
   set<string> res;
 
@@ -242,7 +284,7 @@ set<string> tree::getDown(string value)
   return res;
 }
 
-set<string> tree::getUp(string value)
+set<string> treeProperty::getUp(string value)
 {
   set<string> res;
 
@@ -274,7 +316,7 @@ set<string> tree::getUp(string value)
   return res;
 }
 
-set<string> tree::getDisjoint(string value)
+set<string> treeProperty::getDisjoint(string value)
 {
   set<string> res;
 
@@ -306,6 +348,46 @@ set<string> tree::getDisjoint(string value)
           set<string> tmp = getDown(branchs[i]->disjoints[disjoint_i], value);
 
           if(tmp.size())
+            res.insert(tmp.begin(), tmp.end());
+        }
+        break;
+      }
+
+  return res;
+}
+
+set<string> treeProperty::getInverse(string value)
+{
+  set<string> res;
+
+  for(unsigned int i = 0; i < roots.size(); i++)
+    if(roots[i]->value == value)
+    {
+      cout << roots[i]->value << endl;
+      for(unsigned inverse_i = 0; inverse_i < roots[i]->inverses.size(); inverse_i++)
+      {
+        cout << "------" << roots[i]->inverses[inverse_i]->value << endl;
+        set<string> tmp = getDown(roots[i]->inverses[inverse_i], value);
+
+        if(tmp.size())
+        {
+          res.insert(tmp.begin(), tmp.end());
+          break;
+        }
+      }
+    }
+
+  if(!res.size())
+    for(unsigned int i = 0; i < branchs.size(); i++)
+      if(branchs[i]->value == value)
+      {
+        cout << branchs[i]->value << endl;
+        for(unsigned inverse_i = 0; inverse_i < branchs[i]->inverses.size(); inverse_i++)
+        {
+          cout << "------" << branchs[i]->inverses[inverse_i]->value << endl;
+          set<string> tmp = getDown(branchs[i]->inverses[inverse_i], value);
+
+          if(tmp.size())
           {
             res.insert(tmp.begin(), tmp.end());
             break;
@@ -316,7 +398,7 @@ set<string> tree::getDisjoint(string value)
   return res;
 }
 
-void tree::link()
+void treeProperty::link()
 {
   depth = 0;
 
@@ -329,7 +411,7 @@ void tree::link()
   }
 }
 
-void tree::add_family(branch_t* branch, uint8_t family)
+void treeProperty::add_family(propertyBranch_t* branch, uint8_t family)
 {
   branch->family += family/branch->nb_mothers;
   for(unsigned int i = 0; i < branch->childs.size(); i++)
@@ -341,7 +423,7 @@ void tree::add_family(branch_t* branch, uint8_t family)
   }
 }
 
-set<string> tree::getDown(branch_t* branch, string value)
+set<string> treeProperty::getDown(propertyBranch_t* branch, string value)
 {
   set<string> res;
   res.insert(branch->value);
@@ -356,7 +438,7 @@ set<string> tree::getDown(branch_t* branch, string value)
   return res;
 }
 
-set<string> tree::getUp(branch_t* branch, string value)
+set<string> treeProperty::getUp(propertyBranch_t* branch, string value)
 {
   set<string> res;
   res.insert(branch->value);

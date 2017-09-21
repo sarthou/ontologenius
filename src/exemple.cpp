@@ -1,4 +1,5 @@
-#include "ontoloGenius/tree.h"
+#include "ontoloGenius/treeObject.h"
+#include "ontoloGenius/treeProperty.h"
 #include "ontoloGenius/tree_drawer.h"
 #include "ontoloGenius/ontology_reader.h"
 #include "ros/ros.h"
@@ -8,8 +9,9 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "tree");
 
 {
-  tree onto;
-  Ontology_reader reader(&onto);
+  treeObject onto;
+  treeProperty propOnto;
+  Ontology_reader reader(&onto, &propOnto);
 
   reader.read("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/attribute.owl");
 
@@ -21,8 +23,9 @@ int main(int argc, char** argv)
 }
 
 {
-  tree onto;
-  Ontology_reader reader(&onto);
+  treeObject onto;
+  treeProperty propOnto;
+  Ontology_reader reader(&onto, &propOnto);
 
   reader.read("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/measure.owl");
 

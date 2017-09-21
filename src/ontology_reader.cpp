@@ -61,7 +61,9 @@ int Ontology_reader::readFile(string fileName)
       read_class(elem);
       read_individual(elem);
       read_description(elem);
+      read_property(elem);
     }
+    cout << "-------------------- "<< elemLoaded << " readed ! -------------------- " << endl;
     return NO_ERROR;
   }
 }
@@ -103,8 +105,9 @@ void Ontology_reader::read_class(TiXmlElement* elem)
         }
       }
     }
-    m_tree->add(node_name, subClass, disjoint);
+    m_objTree->add(node_name, subClass, disjoint);
     subClass.clear();
+    elemLoaded++;
   }
 }
 
@@ -145,8 +148,9 @@ void Ontology_reader::read_individual(TiXmlElement* elem)
         }
       }
     }
-    m_tree->add(node_name, subClass, disjoint);
+    m_objTree->add(node_name, subClass, disjoint);
     subClass.clear();
+    elemLoaded++;
   }
 }
 
@@ -195,9 +199,64 @@ void Ontology_reader::read_description(TiXmlElement* elem)
         }
       }
     }
-    m_tree->add(disjoints);
+    m_objTree->add(disjoints);
     disjoints.clear();
   } // end if(elemName == "rdf:Description")
+}
+
+void Ontology_reader::read_property(TiXmlElement* elem)
+{
+  string elemName = elem->Value();
+  if(elemName == "owl:ObjectProperty")
+  {
+    string node_name = "";
+    vector<string> subProperty;
+    vector<string> disjoint;
+    vector<string> inverses;
+    const char* attr = elem->Attribute("rdf:about");
+    if(attr != NULL)
+    {
+      cout << "-->" << get_name(string(attr)) << endl;
+      node_name = get_name(string(attr));
+      for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
+      {
+        string subElemName = subElem->Value();
+        const char* subAttr;
+        if(subElemName == "rdfs:subPropertyOf")
+        {
+          subAttr = subElem->Attribute("rdf:resource");
+          if(subAttr != NULL)
+          {
+            subProperty.push_back(get_name(string(subAttr)));
+            cout << "+" << get_name(string(subAttr)) << endl;
+          }
+        }
+        else if(subElemName == "owl:disjointWith")
+        {
+          subAttr = subElem->Attribute("rdf:resource");
+          if(subAttr != NULL)
+          {
+            disjoint.push_back(get_name(string(subAttr)));
+            cout << "-" << get_name(string(subAttr)) << endl;
+          }
+        }
+        else if(subElemName == "owl:inverseOf")
+        {
+          subAttr = subElem->Attribute("rdf:resource");
+          if(subAttr != NULL)
+          {
+            inverses.push_back(get_name(string(subAttr)));
+            cout << "/" << get_name(string(subAttr)) << endl;
+          }
+        }
+      }
+    }
+
+    m_propTree->add(node_name, subProperty, disjoint, inverses);
+    subProperty.clear();
+    disjoint.clear();
+    elemLoaded++;
+  }
 }
 
 string Ontology_reader::get_name(string uri)

@@ -63,25 +63,56 @@ $ rosservice call /ontoloGenius/actions "{param: '', action: 'reset'}"
 ## Usage
 
 ### Exploration
-Ontologenius allow a bi-directonnal exploration.
+
+#### Class exploration
+
+Ontologenius allow a tri-directonnal class exploration.
 
 - ***getDown*** will give you all classes below the one given in the parameter
 ```sh
-$ rosservice call /ontoloGenius/actions "{param: 'human', action: 'getDown'}"
+$ rosservice call /ontoloGenius/class "{param: 'human', action: 'getDown'}"
 ```
 > result => child human man woman
 
 - ***getUp*** will give you all classes above the one given in the parameter
 ```sh
-$ rosservice call /ontoloGenius/actions "{param: 'human', action: 'getUp'}"
+$ rosservice call /ontoloGenius/class "{param: 'human', action: 'getUp'}"
 ```
 > result => activity agent alive animate attribute entity human vitality
 
 - ***getDisjoint*** will give you all the disjoint classes of the one given in the parameter
 ```sh
-rosservice call /ontoloGenius/actions "{param: 'human', action: 'getDisjoint'}"
+$ rosservice call /ontoloGenius/class "{param: 'human', action: 'getDisjoint'}"
 ```
 > result => animal robot
+
+#### Property exploration
+
+Ontologenius allow a quadri-directonnal property exploration.
+
+- ***getDown*** will give you all properties below the one given in the parameter
+```sh
+$ rosservice call /ontoloGenius/property "{param: 'isInArea', action: 'getDown'}"
+```
+> result => isInArea isInBuilding isInRoom
+
+- ***getUp*** will give you all properties above the one given in the parameter
+```sh
+$ rosservice call /ontoloGenius/property "{param: 'isInArea', action: 'getUp'}"
+```
+> result => isIn isInArea isPositioned
+
+- ***getInverse*** will give you all the inverses properties of the one given in the parameter
+```sh
+$ rosservice call /ontoloGenius/property "{param: 'isOn', action: 'getInverse'}"
+```
+> result => isUnder
+
+- ***getDisjoint*** will give you all the disjoint properties of the one given in the parameter
+```sh
+$ rosservice call /ontoloGenius/property "{param: 'aProperty', action: 'getDisjoint'}"
+```
+> It is not recommended to disjoin properties
 
 ### Relationship test
 Ontologenius makes it possible to test the relationship between classes
@@ -132,7 +163,7 @@ Comments can be used on both sides of the equality test and after each class nam
 Now, you can create complex queries by combining the different symbols: ***red_cube-2|young_animal==color_!animal|color_object***  
 > This example is strange but you see the meaning ...  
 
-- All these examples are shown with an equality test, but you can also use an inequality test: ***object!=robot*** 
+- All these examples are shown with an equality test, but you can also use an inequality test: ***object!=robot***
 > /:exclamation:\\ test ***object!=robot*** is different than testing ***object==!robot*** !!!!!
 
 #### Send a question

@@ -1,4 +1,5 @@
-#include "ontoloGenius/tree.h"
+#include "ontoloGenius/treeObject.h"
+#include "ontoloGenius/treeProperty.h"
 #include "ontoloGenius/tree_drawer.h"
 #include "ontoloGenius/ontology_reader.h"
 
@@ -12,7 +13,8 @@
 
 using namespace std;
 
-tree onto;
+treeObject onto;
+treeProperty propOnto;
 
 bool reference_handle(ontologenius::standard_service::Request  &req,
                       ontologenius::standard_service::Response &res)
@@ -23,14 +25,40 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
 
   if(req.action == "add")
   {
-    Ontology_reader reader(&onto);
+    Ontology_reader reader(&onto, &propOnto);
     res.code = reader.read(req.param);
   }
   else if(req.action == "close")
   {
     onto.close();
   }
-  else if(req.action == "getDown")
+  else if(req.action == "reset")
+  {
+    onto = treeObject();
+  }
+  else if(req.action == "test")
+  {
+    computer comp;
+    if(comp.compute(req.param, onto))
+      res.value = "true";
+    else
+      res.value = "false";
+    //comp.compute("red_cube|young_animal=color_animal|age_object", onto);
+  }
+  else
+    res.code = UNKNOW_ACTION;
+
+  return true;
+}
+
+bool class_handle(ontologenius::standard_service::Request  &req,
+                  ontologenius::standard_service::Response &res)
+{
+  bool done = false;
+  res.value = "";
+  res.code = 0;
+
+if(req.action == "getDown")
   {
     set<string> entities = onto.getDown(req.param);
     string result = "";
@@ -54,18 +82,50 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
       result += *it + " ";
     res.value = result;
   }
-  else if(req.action == "reset")
+  else
+    res.code = UNKNOW_ACTION;
+
+  return true;
+}
+
+bool property_handle(ontologenius::standard_service::Request  &req,
+                    ontologenius::standard_service::Response &res)
+{
+  bool done = false;
+  res.value = "";
+  res.code = 0;
+
+if(req.action == "getDown")
   {
-    onto = tree();
+    set<string> entities = propOnto.getDown(req.param);
+    string result = "";
+    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
+      result += *it + " ";
+    res.value = result;
   }
-  else if(req.action == "test")
+  else if(req.action == "getUp")
   {
-    computer comp;
-    if(comp.compute(req.param, onto))
-      res.value = "true";
-    else
-      res.value = "false";
-    //comp.compute("red_cube|young_animal=color_animal|age_object", onto);
+    set<string> entities = propOnto.getUp(req.param);
+    string result = "";
+    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
+      result += *it + " ";
+    res.value = result;
+  }
+  else if(req.action == "getDisjoint")
+  {
+    set<string> entities = propOnto.getDisjoint(req.param);
+    string result = "";
+    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
+      result += *it + " ";
+    res.value = result;
+  }
+  else if(req.action == "getInverse")
+  {
+    set<string> entities = propOnto.getInverse(req.param);
+    string result = "";
+    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
+      result += *it + " ";
+    res.value = result;
   }
   else
     res.code = UNKNOW_ACTION;
@@ -83,12 +143,14 @@ int main(int argc, char** argv)
 
   for(unsigned int i = 1; i < argc; i++)
   {
-    Ontology_reader reader(&onto);
+    Ontology_reader reader(&onto, &propOnto);
     reader.readFile(string(argv[i]));
   }
 
   // Start up ROS service with callbacks
   ros::ServiceServer service = n.advertiseService("ontoloGenius/actions", reference_handle);
+  ros::ServiceServer serviceClass = n.advertiseService("ontoloGenius/class", class_handle);
+  ros::ServiceServer serviceProperty = n.advertiseService("ontoloGenius/property", property_handle);
   ROS_DEBUG("ontoloGenius ready");
 
   ros::spin();

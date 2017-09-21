@@ -3,8 +3,8 @@
 #include <set>
 #include <stdint.h>
 
-#ifndef TREE_H
-#define TREE_H
+#ifndef TREEOBJECT_H
+#define TREEOBJECT_H
 
 using namespace std;
 
@@ -23,12 +23,12 @@ struct branch_t
 
 class tree_drawer;
 
-class tree
+class treeObject
 {
   friend tree_drawer;
 public:
-  tree() {}
-  ~tree();
+  treeObject() {}
+  ~treeObject();
 
   void add(string value, vector<string>& mothers, vector<string>& disjoints);
   void add(vector<string>& disjoints);
@@ -53,4 +53,4 @@ private:
   set<string> getUp(branch_t* branch, string value);
 };
 
-#endif /* TREE_H */
+#endif /* TREEOBJECT_H */
