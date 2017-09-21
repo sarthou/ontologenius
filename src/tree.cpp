@@ -212,7 +212,6 @@ void tree::close()
 
 set<string> tree::getDown(string value)
 {
-  cout << "[CALL] getDown" << endl;
   set<string> res;
 
   for(unsigned int i = 0; i < roots.size(); i++)
@@ -221,24 +220,30 @@ set<string> tree::getDown(string value)
       set<string> tmp = getDown(roots[i], value);
 
       if(tmp.size())
+      {
         res.insert(tmp.begin(), tmp.end());
+        break;
+      }
     }
 
-  for(unsigned int i = 0; i < branchs.size(); i++)
-    if(branchs[i]->value == value)
-    {
-      set<string> tmp = getDown(branchs[i], value);
+  if(!res.size())
+    for(unsigned int i = 0; i < branchs.size(); i++)
+      if(branchs[i]->value == value)
+      {
+        set<string> tmp = getDown(branchs[i], value);
 
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+        if(tmp.size())
+        {
+          res.insert(tmp.begin(), tmp.end());
+          break;
+        }
+      }
 
   return res;
 }
 
 set<string> tree::getUp(string value)
 {
-  cout << "[CALL] getUp" << endl;
   set<string> res;
 
   for(unsigned int i = 0; i < roots.size(); i++)
@@ -247,24 +252,30 @@ set<string> tree::getUp(string value)
       set<string> tmp = getUp(roots[i], value);
 
       if(tmp.size())
+      {
         res.insert(tmp.begin(), tmp.end());
+        break;
+      }
     }
 
-  for(unsigned int i = 0; i < branchs.size(); i++)
-    if(branchs[i]->value == value)
-    {
-      set<string> tmp = getUp(branchs[i], value);
+  if(!res.size())
+    for(unsigned int i = 0; i < branchs.size(); i++)
+      if(branchs[i]->value == value)
+      {
+        set<string> tmp = getUp(branchs[i], value);
 
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+        if(tmp.size())
+        {
+          res.insert(tmp.begin(), tmp.end());
+          break;
+        }
+      }
 
   return res;
 }
 
 set<string> tree::getDisjoint(string value)
 {
-  cout << "[CALL] getDisjoint" << endl;
   set<string> res;
 
   for(unsigned int i = 0; i < roots.size(); i++)
@@ -277,23 +288,30 @@ set<string> tree::getDisjoint(string value)
         set<string> tmp = getDown(roots[i]->disjoints[disjoint_i], value);
 
         if(tmp.size())
+        {
           res.insert(tmp.begin(), tmp.end());
+          break;
+        }
       }
     }
 
-  for(unsigned int i = 0; i < branchs.size(); i++)
-    if(branchs[i]->value == value)
-    {
-      cout << branchs[i]->value << endl;
-      for(unsigned disjoint_i = 0; disjoint_i < branchs[i]->disjoints.size(); disjoint_i++)
+  if(!res.size())
+    for(unsigned int i = 0; i < branchs.size(); i++)
+      if(branchs[i]->value == value)
       {
-        cout << "------" << branchs[i]->disjoints[disjoint_i]->value << endl;
-        set<string> tmp = getDown(branchs[i]->disjoints[disjoint_i], value);
+        cout << branchs[i]->value << endl;
+        for(unsigned disjoint_i = 0; disjoint_i < branchs[i]->disjoints.size(); disjoint_i++)
+        {
+          cout << "------" << branchs[i]->disjoints[disjoint_i]->value << endl;
+          set<string> tmp = getDown(branchs[i]->disjoints[disjoint_i], value);
 
-        if(tmp.size())
-          res.insert(tmp.begin(), tmp.end());
+          if(tmp.size())
+          {
+            res.insert(tmp.begin(), tmp.end());
+            break;
+          }
+        }
       }
-    }
 
   return res;
 }

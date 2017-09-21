@@ -2,12 +2,16 @@
 
 #include <iostream>
 #include <sstream>
+#include <chrono>
 
 using namespace std;
 
 bool computer::compute(string equation, tree& onto)
 {
-  cout << " init " << endl;
+  using namespace std::chrono;
+
+  high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
   size_t pos = 0;
   bool invert = false;
   vector<string> LR;
@@ -41,7 +45,6 @@ bool computer::compute(string equation, tree& onto)
         }
       }
     }
-    cout << " L " << endl;
     tmp.clear();
     split(LR[1], tmp, '|');
     R.resize(tmp.size());
@@ -52,8 +55,8 @@ bool computer::compute(string equation, tree& onto)
       for(unsigned int j = 0; j < R[i].size(); j++)
       {
         vector<string> word;
-        split(L[i][j], word, '-');
-        L[i][j] = word[0];
+        split(R[i][j], word, '-');
+        R[i][j] = word[0];
         notR[i].resize(R[i].size(), false);
         if(R[i][j][0] == '!')
         {
@@ -61,9 +64,7 @@ bool computer::compute(string equation, tree& onto)
           notR[i][j] = true;
         }
       }
-      cout << " R " << endl;
     }
-    cout << " compute " << endl;
 
     for(unsigned int i = 0; i < L.size(); i++)
     {
@@ -76,13 +77,13 @@ bool computer::compute(string equation, tree& onto)
 
       for(unsigned int j = 0; j < L[i].size(); j++)
       {
-        cout << "looking for " << L[i][j] << " as : ";
+        //cout << "looking for " << L[i][j] << " as : ";
         finder.words[j] = onto.getUp(L[i][j]);
-        for(set<string>::iterator it = finder.words[j].begin(); it != finder.words[j].end(); ++it)
+        /*for(set<string>::iterator it = finder.words[j].begin(); it != finder.words[j].end(); ++it)
           cout << *it + " ";
         if(notL[i][j])
           cout << " as NOT ";
-        cout << endl;
+        cout << endl;*/
 
         for(unsigned int orR = 0; orR < R.size(); orR++)
         {
@@ -90,36 +91,36 @@ bool computer::compute(string equation, tree& onto)
           {
             if(notR[orR][andR])
             {
-              cout << "-> compare with !" << R[orR][andR] << " : ";
+              //cout << "-> compare with !" << R[orR][andR] << " : ";
               set<string> disjoint = onto.getDisjoint(R[orR][andR]);
               for(set<string>::iterator it = disjoint.begin(); it != disjoint.end(); ++it)
               {
                 if(finder.words[j].find(*it) != finder.words[j].end())
                 {
-                  cout << *finder.words[j].find(*it) << endl;
+                  //cout << *finder.words[j].find(*it) << endl;
                   finder.find[orR][andR] = true;
                 }
               }
 
-              if(finder.find[orR][andR] != true)
+              /*if(finder.find[orR][andR] != true)
                 cout << " NO" << endl;
               else
-                cout << endl;
+                cout << endl;*/
             }
             else
             {
-              cout << "-> compare with " << R[orR][andR] << " : ";
-              if(finder.words[j].find(R[orR][andR]) == finder.words[j].end())
-                cout << " NO" << endl;
-              else
+              //cout << "-> compare with " << R[orR][andR] << " : ";
+              if(finder.words[j].find(R[orR][andR]) != finder.words[j].end())
               {
-                cout << *finder.words[j].find(R[orR][andR]) << endl;
+                //cout << *finder.words[j].find(R[orR][andR]) << endl;
                 finder.find[orR][andR] = true;
               }
+              /*else
+                cout << " NO" << endl;*/
             }
-            cout << "and" << endl;
+            //cout << "and" << endl;
           }
-          cout << "or" << endl;
+          //cout << "or" << endl;
         }
       }
 
@@ -134,6 +135,13 @@ bool computer::compute(string equation, tree& onto)
           find = !find;
         if(find)
         {
+          high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+          duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+
+          std::cout << "It took me " << time_span.count() << " seconds.";
+          std::cout << std::endl;
+
           cout << "TRUE !!!!!" << endl;
           return true;
         }
@@ -144,6 +152,13 @@ bool computer::compute(string equation, tree& onto)
   }
   else
     cout << " = error" << endl;
+
+  high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+  duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+
+  std::cout << "It took me " << time_span.count() << " seconds.";
+  std::cout << std::endl;
 
   cout << "FALSE !!!!!" << endl;
   return false;
