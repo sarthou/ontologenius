@@ -10,7 +10,7 @@ int main(int argc, char** argv)
 
 {
   treeObject onto;
-  treeProperty propOnto;
+  treeProperty propOnto(&onto);
   Ontology_reader reader(&onto, &propOnto);
 
   reader.read("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/attribute.owl");
@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 
 {
   treeObject onto;
-  treeProperty propOnto;
+  treeProperty propOnto(&onto);
   Ontology_reader reader(&onto, &propOnto);
 
   reader.read("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/measure.owl");

@@ -14,21 +14,7 @@ int Ontology_reader::read(string uri)
     TiXmlDocument doc;
     doc.Parse((const char*)response.c_str(), 0, TIXML_ENCODING_UTF8);
     TiXmlElement* rdf = doc.FirstChildElement();
-    if(rdf == NULL)
-    {
-        cerr << "Failed to load file: No root element."<< endl;
-        return OTHER;
-    }
-    else
-    {
-      for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
-      {
-        read_class(elem);
-        read_individual(elem);
-        read_description(elem);
-      }
-      return NO_ERROR;
-    }
+    return read(rdf, uri);
   }
   else
     return REQUEST_ERROR;
@@ -49,6 +35,11 @@ int Ontology_reader::readFile(string fileName)
   TiXmlDocument doc;
   doc.Parse((const char*)response.c_str(), 0, TIXML_ENCODING_UTF8);
   TiXmlElement* rdf = doc.FirstChildElement();
+  return read(rdf, fileName);
+}
+
+int Ontology_reader::read(TiXmlElement* rdf, string name)
+{
   if(rdf == NULL)
   {
       cerr << "Failed to load file: No root element."<< endl;
@@ -56,14 +47,26 @@ int Ontology_reader::readFile(string fileName)
   }
   else
   {
+    cout << name << endl;
+    cout << "************************" << endl;
+    cout << "+ sub       | > domain" << endl;
+    cout << "- disjoint  | < range" << endl;
+    cout << "/ inverse   |" << endl;
+    cout << "************************" << endl;
+    cout << "├── Class" << endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
-    {
       read_class(elem);
+    cout << "├── Individuals" << endl;
+    for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
       read_individual(elem);
+    cout << "├── Description" << endl;
+    for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
       read_description(elem);
+    cout << "├── Property" << endl;
+    for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
       read_property(elem);
-    }
-    cout << "-------------------- "<< elemLoaded << " readed ! -------------------- " << endl;
+
+    cout << "└── "<< elemLoaded << " readed ! -------------------- " << endl;
     return NO_ERROR;
   }
 }
@@ -79,30 +82,16 @@ void Ontology_reader::read_class(TiXmlElement* elem)
     const char* attr = elem->Attribute("rdf:about");
     if(attr != NULL)
     {
-      cout << "-->" << get_name(string(attr)) << endl;
+      cout << "│   ├──" << get_name(string(attr)) << endl;
       node_name = get_name(string(attr));
       for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
       {
         string subElemName = subElem->Value();
         const char* subAttr;
         if(subElemName == "rdfs:subClassOf")
-        {
-          subAttr = subElem->Attribute("rdf:resource");
-          if(subAttr != NULL)
-          {
-            subClass.push_back(get_name(string(subAttr)));
-            cout << "+" << get_name(string(subAttr)) << endl;
-          }
-        }
+          push(subClass, subElem, "+");
         else if(subElemName == "owl:disjointWith")
-        {
-          subAttr = subElem->Attribute("rdf:resource");
-          if(subAttr != NULL)
-          {
-            disjoint.push_back(get_name(string(subAttr)));
-            cout << "-" << get_name(string(subAttr)) << endl;
-          }
-        }
+          push(disjoint, subElem, "-");
       }
     }
     m_objTree->add(node_name, subClass, disjoint);
@@ -122,30 +111,16 @@ void Ontology_reader::read_individual(TiXmlElement* elem)
     const char* attr = elem->Attribute("rdf:about");
     if(attr != NULL)
     {
-      cout << "-->" << get_name(string(attr)) << endl;
+      cout << "│   ├──" << get_name(string(attr)) << endl;
       node_name = get_name(string(attr));
       for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
       {
         string subElemName = subElem->Value();
-        const char* subAttr;
+
         if(subElemName == "rdf:type")
-        {
-          subAttr = subElem->Attribute("rdf:resource");
-          if(subAttr != NULL)
-          {
-            subClass.push_back(get_name(string(subAttr)));
-            cout << "+" << get_name(string(subAttr)) << endl;
-          }
-        }
+          push(subClass, subElem, "+");
         else if(subElemName == "owl:disjointWith")
-        {
-          subAttr = subElem->Attribute("rdf:resource");
-          if(subAttr != NULL)
-          {
-            disjoint.push_back(get_name(string(subAttr)));
-            cout << "-" << get_name(string(subAttr)) << endl;
-          }
-        }
+          push(disjoint, subElem, "-");
       }
     }
     m_objTree->add(node_name, subClass, disjoint);
@@ -190,7 +165,13 @@ void Ontology_reader::read_description(TiXmlElement* elem)
                 subSubAttr = subSubElem->Attribute("rdf:about");
                 if(subSubAttr != NULL)
                 {
-                  cout << "<--" << get_name(string(subSubAttr)) << endl;
+                  if(subSubElem == subElem->FirstChildElement())
+                    cout << "│   ├───┬── -";
+                  else if(subSubElem->NextSiblingElement() == NULL)
+                    cout << "│   │   └── -";
+                  else
+                    cout << "│   │   ├── -";
+                  cout << get_name(string(subSubAttr)) << endl;
                   disjoints.push_back(get_name(string(subSubAttr)));
                 }
               }
@@ -210,52 +191,41 @@ void Ontology_reader::read_property(TiXmlElement* elem)
   if(elemName == "owl:ObjectProperty")
   {
     string node_name = "";
-    vector<string> subProperty;
-    vector<string> disjoint;
-    vector<string> inverses;
+    PropertyVectors_t propertyVectors;
     const char* attr = elem->Attribute("rdf:about");
     if(attr != NULL)
     {
-      cout << "-->" << get_name(string(attr)) << endl;
+      cout << "│   ├──" << get_name(string(attr)) << endl;
       node_name = get_name(string(attr));
       for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
       {
         string subElemName = subElem->Value();
-        const char* subAttr;
         if(subElemName == "rdfs:subPropertyOf")
-        {
-          subAttr = subElem->Attribute("rdf:resource");
-          if(subAttr != NULL)
-          {
-            subProperty.push_back(get_name(string(subAttr)));
-            cout << "+" << get_name(string(subAttr)) << endl;
-          }
-        }
+          push(propertyVectors.mothers, subElem, "+");
         else if(subElemName == "owl:disjointWith")
-        {
-          subAttr = subElem->Attribute("rdf:resource");
-          if(subAttr != NULL)
-          {
-            disjoint.push_back(get_name(string(subAttr)));
-            cout << "-" << get_name(string(subAttr)) << endl;
-          }
-        }
+          push(propertyVectors.disjoints, subElem, "-");
         else if(subElemName == "owl:inverseOf")
-        {
-          subAttr = subElem->Attribute("rdf:resource");
-          if(subAttr != NULL)
-          {
-            inverses.push_back(get_name(string(subAttr)));
-            cout << "/" << get_name(string(subAttr)) << endl;
-          }
-        }
+          push(propertyVectors.inverses, subElem, "/");
+        else if(subElemName == "rdfs:domain")
+          push(propertyVectors.domains, subElem, ">");
+        else if(subElemName == "rdfs:range")
+          push(propertyVectors.ranges, subElem, "<");
       }
     }
 
-    m_propTree->add(node_name, subProperty, disjoint, inverses);
-    subProperty.clear();
-    disjoint.clear();
+    m_propTree->add(node_name, propertyVectors);
     elemLoaded++;
+  }
+}
+
+void Ontology_reader::push(vector<string>& vect, TiXmlElement* subElem, string symbole, string attribute)
+{
+  const char* subAttr;
+  subAttr = subElem->Attribute(attribute.c_str());
+  if(subAttr != NULL)
+  {
+    vect.push_back(get_name(string(subAttr)));
+    cout << "│   │   ├── " << symbole << get_name(string(subAttr)) << endl;
   }
 }
 

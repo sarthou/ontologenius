@@ -23,17 +23,20 @@ public:
   int read(string uri);
   int readFile(string fileName);
 
+
 private:
   treeObject* m_objTree;
   treeProperty* m_propTree;
 
   int elemLoaded;
 
+  int read(TiXmlElement* rdf, string name);
   void read_class(TiXmlElement* elem);
   void read_individual(TiXmlElement* elem);
   void read_description(TiXmlElement* elem);
   void read_property(TiXmlElement* elem);
 
+  void push(vector<string>& vect, TiXmlElement* subElem, string symbole = "", string attribute = "rdf:resource");
   string get_name(string uri);
 };
 

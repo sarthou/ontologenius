@@ -40,7 +40,7 @@ struct propertyBranch_t
   vector<propertyBranch_t*> disjoints;
   vector<propertyBranch_t*> inverses;
   vector<branch_t*> domains;
-  vector<branch_t*> range;
+  vector<branch_t*> ranges;
   uint8_t family;
   uint8_t nb_mothers;
   properties_t properties;
@@ -49,16 +49,25 @@ struct propertyBranch_t
     {value = p_value; };
 };
 
+struct PropertyVectors_t
+{
+   vector<string> mothers;
+   vector<string> disjoints;
+   vector<string> inverses;
+   vector<string> domains;
+   vector<string> ranges;
+};
+
 class tree_drawer;
 
 class treeProperty
 {
   friend tree_drawer;
 public:
-  treeProperty() {}
+  treeProperty(treeObject* p_treeObject) {treeObject_ = p_treeObject; }
   ~treeProperty();
 
-  void add(string value, vector<string>& mothers, vector<string>& disjoints, vector<string>& inverses);
+  void add(string value, PropertyVectors_t& propertyVectors);
   void add(vector<string>& disjoints);
   void close();
 
@@ -66,6 +75,8 @@ public:
   set<string> getUp(string value);
   set<string> getDisjoint(string value);
   set<string> getInverse(string value);
+  set<string> getDomain(string value);
+  set<string> getRange(string value);
 
 private:
   vector<propertyBranch_t*> branchs;
@@ -74,6 +85,8 @@ private:
   vector<propertyBranch_t*> tmp_mothers;
 
   int depth;
+
+  treeObject* treeObject_;
 
   void link();
   void add_family(propertyBranch_t* branch, uint8_t family);

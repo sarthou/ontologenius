@@ -22,10 +22,12 @@ struct branch_t
 };
 
 class tree_drawer;
+class treeProperty;
 
 class treeObject
 {
   friend tree_drawer;
+  friend treeProperty;
 public:
   treeObject() {}
   ~treeObject();

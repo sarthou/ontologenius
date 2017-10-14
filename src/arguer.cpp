@@ -14,7 +14,7 @@
 using namespace std;
 
 treeObject onto;
-treeProperty propOnto;
+treeProperty propOnto(&onto);
 
 bool reference_handle(ontologenius::standard_service::Request  &req,
                       ontologenius::standard_service::Response &res)
@@ -122,6 +122,22 @@ if(req.action == "getDown")
   else if(req.action == "getInverse")
   {
     set<string> entities = propOnto.getInverse(req.param);
+    string result = "";
+    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
+      result += *it + " ";
+    res.value = result;
+  }
+  else if(req.action == "getDomain")
+  {
+    set<string> entities = propOnto.getDomain(req.param);
+    string result = "";
+    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
+      result += *it + " ";
+    res.value = result;
+  }
+  else if(req.action == "getRange")
+  {
+    set<string> entities = propOnto.getRange(req.param);
     string result = "";
     for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
       result += *it + " ";

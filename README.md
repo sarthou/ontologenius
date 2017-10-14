@@ -114,6 +114,18 @@ $ rosservice call /ontoloGenius/property "{param: 'aProperty', action: 'getDisjo
 ```
 > It is not recommended to disjoin properties
 
+- ***getDomain*** will give you all the domains classes of the property given in the parameter
+```sh
+$ rosservice call /ontoloGenius/property "{param: 'isInArea', action: 'getDomain'}"
+```
+> result => actuator affair agent animal arm bed book box chair child conveyance cube desk door entity fan feet furniture grass hand head human joint lamp leg luminositySensor man motionSensor mug object plant presenceSensor robot sensor shelf sofa table tape technicalObject temperatureSensor torso trashbin tree vegetal woman
+
+- ***getRange*** will give you all the ranges classes of the property given in the parameter
+```sh
+$ rosservice call /ontoloGenius/property "{param: 'isInArea', action: 'getRange'}"
+```
+> result => area indoorArea outdoorArea 
+
 ### Relationship test
 Ontologenius makes it possible to test the relationship between classes
 
