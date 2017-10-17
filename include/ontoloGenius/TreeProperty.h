@@ -56,6 +56,7 @@ struct PropertyVectors_t
    vector<string> inverses_;
    vector<string> domains_;
    vector<string> ranges_;
+   Properties_t properties_;
 };
 
 class TreeDrawer;

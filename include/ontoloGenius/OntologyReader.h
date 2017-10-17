@@ -37,6 +37,7 @@ private:
   void read_property(TiXmlElement* elem);
 
   void push(vector<string>& vect, TiXmlElement* subElem, string symbole = "", string attribute = "rdf:resource");
+  void push(Properties_t& properties, TiXmlElement* subElem, string symbole = "", string attribute = "rdf:resource");
   string get_name(string uri);
 };
 

@@ -268,8 +268,10 @@ void TreeProperty::add(string value, PropertyVectors_t& property_vectors)
     }
   }
 
-
   //////
+  // Construction properties
+  //////
+  me->properties_ = property_vectors.properties_;
 }
 
 void TreeProperty::add(vector<string>& disjoints)

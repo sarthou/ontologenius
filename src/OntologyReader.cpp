@@ -51,7 +51,7 @@ int OntologyReader::read(TiXmlElement* rdf, string name)
     cout << "************************" << endl;
     cout << "+ sub       | > domain" << endl;
     cout << "- disjoint  | < range" << endl;
-    cout << "/ inverse   |" << endl;
+    cout << "/ inverse   | * type" << endl;
     cout << "************************" << endl;
     cout << "├── Class" << endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
@@ -210,6 +210,8 @@ void OntologyReader::read_property(TiXmlElement* elem)
           push(propertyVectors.domains_, subElem, ">");
         else if(subElemName == "rdfs:range")
           push(propertyVectors.ranges_, subElem, "<");
+        else if(subElemName == "rdf:type")
+          push(propertyVectors.properties_, subElem, "*");
       }
     }
 
@@ -226,6 +228,35 @@ void OntologyReader::push(vector<string>& vect, TiXmlElement* subElem, string sy
   {
     vect.push_back(get_name(string(subAttr)));
     cout << "│   │   ├── " << symbole << get_name(string(subAttr)) << endl;
+  }
+}
+
+void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, string symbole, string attribute)
+{
+  const char* subAttr;
+  subAttr = subElem->Attribute(attribute.c_str());
+  if(subAttr != NULL)
+  {
+    string property = get_name(string(subAttr));
+    if(property == "AsymmetricProperty")
+      properties.antisymetric_property_ = true;
+    else if(property == "TransitiveProperty")
+      properties.transitive_property_ = true;
+    else if(property == "FunctionalProperty")
+      properties.functional_property_ = true;
+    else if(property == "InverseFunctionalProperty")
+      properties.inverse_functional_property_ = true;
+    else if(property == "IrreflexiveProperty")
+      properties.irreflexive_property_ = true;
+    else if(property == "ReflexiveProperty")
+      properties.reflexive_property_ = true;
+    else if(property == "SymmetricProperty")
+      properties.symetric_property_ = true;
+    else
+      property = "";
+
+    if(property != "")
+      cout << "│   │   ├── " << symbole << property << endl;
   }
 }
 
