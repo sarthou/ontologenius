@@ -1,5 +1,5 @@
-#include "ontoloGenius/treeObject.h"
-#include "ontoloGenius/treeProperty.h"
+#include "ontoloGenius/TreeObject.h"
+#include "ontoloGenius/TreeProperty.h"
 #include "ontoloGenius/utility/utility.h"
 
 #include <vector>
@@ -14,19 +14,19 @@
 
 using namespace std;
 
-class Ontology_reader
+class OntologyReader
 {
 public:
-  Ontology_reader(treeObject* p_objTree, treeProperty* p_propTree) {m_objTree = p_objTree; m_propTree = p_propTree; elemLoaded = 0; }
-  ~Ontology_reader() {};
+  OntologyReader(TreeObject* p_objTree, TreeProperty* p_propTree) {m_objTree = p_objTree; m_propTree = p_propTree; elemLoaded = 0; }
+  ~OntologyReader() {};
 
   int read(string uri);
   int readFile(string fileName);
 
 
 private:
-  treeObject* m_objTree;
-  treeProperty* m_propTree;
+  TreeObject* m_objTree;
+  TreeProperty* m_propTree;
 
   int elemLoaded;
 

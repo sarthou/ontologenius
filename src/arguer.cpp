@@ -1,7 +1,7 @@
-#include "ontoloGenius/treeObject.h"
-#include "ontoloGenius/treeProperty.h"
-#include "ontoloGenius/tree_drawer.h"
-#include "ontoloGenius/ontology_reader.h"
+#include "ontoloGenius/TreeObject.h"
+#include "ontoloGenius/TreeProperty.h"
+#include "ontoloGenius/TreeDrawer.h"
+#include "ontoloGenius/OntologyReader.h"
 
 #include "ontologenius/standard_service.h"
 #include "ontoloGenius/utility/error_code.h"
@@ -9,12 +9,12 @@
 #include <iostream>
 #include "ros/ros.h"
 
-#include "ontoloGenius/computer.h"
+#include "ontoloGenius/Computer.h"
 
 using namespace std;
 
-treeObject onto;
-treeProperty propOnto(&onto);
+TreeObject onto;
+TreeProperty propOnto(&onto);
 
 bool reference_handle(ontologenius::standard_service::Request  &req,
                       ontologenius::standard_service::Response &res)
@@ -25,7 +25,7 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
 
   if(req.action == "add")
   {
-    Ontology_reader reader(&onto, &propOnto);
+    OntologyReader reader(&onto, &propOnto);
     res.code = reader.read(req.param);
   }
   else if(req.action == "close")
@@ -34,11 +34,11 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
   }
   else if(req.action == "reset")
   {
-    onto = treeObject();
+    onto = TreeObject();
   }
   else if(req.action == "test")
   {
-    computer comp;
+    Computer comp;
     if(comp.compute(req.param, onto))
       res.value = "true";
     else
@@ -159,7 +159,7 @@ int main(int argc, char** argv)
 
   for(unsigned int i = 1; i < argc; i++)
   {
-    Ontology_reader reader(&onto, &propOnto);
+    OntologyReader reader(&onto, &propOnto);
     reader.readFile(string(argv[i]));
   }
 

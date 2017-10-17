@@ -1,8 +1,8 @@
-#include "ontoloGenius/ontology_reader.h"
+#include "ontoloGenius/OntologyReader.h"
 #include <fstream>
 #include "ontoloGenius/utility/error_code.h"
 
-int Ontology_reader::read(string uri)
+int OntologyReader::read(string uri)
 {
   int nb_elem = 0;
 
@@ -20,7 +20,7 @@ int Ontology_reader::read(string uri)
     return REQUEST_ERROR;
 }
 
-int Ontology_reader::readFile(string fileName)
+int OntologyReader::readFile(string fileName)
 {
   int nb_elem = 0;
 
@@ -38,7 +38,7 @@ int Ontology_reader::readFile(string fileName)
   return read(rdf, fileName);
 }
 
-int Ontology_reader::read(TiXmlElement* rdf, string name)
+int OntologyReader::read(TiXmlElement* rdf, string name)
 {
   if(rdf == NULL)
   {
@@ -71,7 +71,7 @@ int Ontology_reader::read(TiXmlElement* rdf, string name)
   }
 }
 
-void Ontology_reader::read_class(TiXmlElement* elem)
+void OntologyReader::read_class(TiXmlElement* elem)
 {
   string elemName = elem->Value();
   if(elemName == "owl:Class")
@@ -100,7 +100,7 @@ void Ontology_reader::read_class(TiXmlElement* elem)
   }
 }
 
-void Ontology_reader::read_individual(TiXmlElement* elem)
+void OntologyReader::read_individual(TiXmlElement* elem)
 {
   string elemName = elem->Value();
   if(elemName == "owl:NamedIndividual")
@@ -129,7 +129,7 @@ void Ontology_reader::read_individual(TiXmlElement* elem)
   }
 }
 
-void Ontology_reader::read_description(TiXmlElement* elem)
+void OntologyReader::read_description(TiXmlElement* elem)
 {
   string elemName = elem->Value();
   if(elemName == "rdf:Description")
@@ -185,7 +185,7 @@ void Ontology_reader::read_description(TiXmlElement* elem)
   } // end if(elemName == "rdf:Description")
 }
 
-void Ontology_reader::read_property(TiXmlElement* elem)
+void OntologyReader::read_property(TiXmlElement* elem)
 {
   string elemName = elem->Value();
   if(elemName == "owl:ObjectProperty")
@@ -201,15 +201,15 @@ void Ontology_reader::read_property(TiXmlElement* elem)
       {
         string subElemName = subElem->Value();
         if(subElemName == "rdfs:subPropertyOf")
-          push(propertyVectors.mothers, subElem, "+");
+          push(propertyVectors.mothers_, subElem, "+");
         else if(subElemName == "owl:disjointWith")
-          push(propertyVectors.disjoints, subElem, "-");
+          push(propertyVectors.disjoints_, subElem, "-");
         else if(subElemName == "owl:inverseOf")
-          push(propertyVectors.inverses, subElem, "/");
+          push(propertyVectors.inverses_, subElem, "/");
         else if(subElemName == "rdfs:domain")
-          push(propertyVectors.domains, subElem, ">");
+          push(propertyVectors.domains_, subElem, ">");
         else if(subElemName == "rdfs:range")
-          push(propertyVectors.ranges, subElem, "<");
+          push(propertyVectors.ranges_, subElem, "<");
       }
     }
 
@@ -218,7 +218,7 @@ void Ontology_reader::read_property(TiXmlElement* elem)
   }
 }
 
-void Ontology_reader::push(vector<string>& vect, TiXmlElement* subElem, string symbole, string attribute)
+void OntologyReader::push(vector<string>& vect, TiXmlElement* subElem, string symbole, string attribute)
 {
   const char* subAttr;
   subAttr = subElem->Attribute(attribute.c_str());
@@ -229,7 +229,7 @@ void Ontology_reader::push(vector<string>& vect, TiXmlElement* subElem, string s
   }
 }
 
-string Ontology_reader::get_name(string uri)
+string OntologyReader::get_name(string uri)
 {
   size_t pos = uri.find("#");
   string result = uri.substr(pos+1);

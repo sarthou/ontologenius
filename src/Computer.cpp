@@ -1,4 +1,4 @@
-#include "ontoloGenius/computer.h"
+#include "ontoloGenius/Computer.h"
 
 #include <iostream>
 #include <sstream>
@@ -6,7 +6,7 @@
 
 using namespace std;
 
-bool computer::compute(string equation, treeObject& onto)
+bool Computer::compute(string equation, TreeObject& onto)
 {
   using namespace std::chrono;
 
@@ -164,7 +164,7 @@ bool computer::compute(string equation, treeObject& onto)
   return false;
 }
 
-bool computer::split(const string &txt, vector<string> &strs, char ch)
+bool Computer::split(const string &txt, vector<string> &strs, char ch)
 {
   istringstream iss(txt.c_str());
   string s;
@@ -176,7 +176,7 @@ bool computer::split(const string &txt, vector<string> &strs, char ch)
     return false;
 }
 
-bool computer::split(const string &txt, vector<string> &strs, string delim)
+bool Computer::split(const string &txt, vector<string> &strs, string delim)
 {
   string text = txt;
   while(text.find(delim) != string::npos)

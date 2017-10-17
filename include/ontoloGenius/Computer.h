@@ -2,7 +2,7 @@
 #include <string>
 #include <set>
 
-#include "ontoloGenius/treeObject.h"
+#include "ontoloGenius/TreeObject.h"
 
 using namespace std;
 
@@ -12,13 +12,13 @@ struct finder_t
   vector<vector<bool>> find;
 };
 
-class computer
+class Computer
 {
 public:
-  computer() {};
-  ~computer() {};
+  Computer() {};
+  ~Computer() {};
 
-  bool compute(string equation, treeObject& onto);
+  bool compute(string equation, TreeObject& onto);
 
 private:
   vector<vector<string>> L;

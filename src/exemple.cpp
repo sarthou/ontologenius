@@ -1,7 +1,7 @@
-#include "ontoloGenius/treeObject.h"
-#include "ontoloGenius/treeProperty.h"
-#include "ontoloGenius/tree_drawer.h"
-#include "ontoloGenius/ontology_reader.h"
+#include "ontoloGenius/TreeObject.h"
+#include "ontoloGenius/TreeProperty.h"
+#include "ontoloGenius/TreeDrawer.h"
+#include "ontoloGenius/OntologyReader.h"
 #include "ros/ros.h"
 
 int main(int argc, char** argv)
@@ -9,29 +9,29 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "tree");
 
 {
-  treeObject onto;
-  treeProperty propOnto(&onto);
-  Ontology_reader reader(&onto, &propOnto);
+  TreeObject onto;
+  TreeProperty propOnto(&onto);
+  OntologyReader reader(&onto, &propOnto);
 
   reader.read("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/attribute.owl");
 
   onto.close();
 
-  tree_drawer drawer(&onto);
+  TreeDrawer drawer(&onto);
   drawer.put_in_layers();
   drawer.draw("attribute.png");
 }
 
 {
-  treeObject onto;
-  treeProperty propOnto(&onto);
-  Ontology_reader reader(&onto, &propOnto);
+  TreeObject onto;
+  TreeProperty propOnto(&onto);
+  OntologyReader reader(&onto, &propOnto);
 
   reader.read("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/measure.owl");
 
   onto.close();
 
-  tree_drawer drawer(&onto);
+  TreeDrawer drawer(&onto);
   drawer.put_in_layers();
   drawer.draw("measure.png");
 }

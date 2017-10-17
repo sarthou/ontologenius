@@ -128,11 +128,11 @@ include_directories(
 
 ## Declare a C++ library
 add_library(ontologenius_lib
-  src/treeObject.cpp
-  src/treeProperty.cpp
-  src/tree_drawer.cpp
-  src/ontology_reader.cpp
-  src/computer.cpp
+  src/TreeObject.cpp
+  src/TreeProperty.cpp
+  src/TreeDrawer.cpp
+  src/OntologyReader.cpp
+  src/Computer.cpp
 )
 add_dependencies(ontologenius_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_lib ${OpenCV_LIBS})
