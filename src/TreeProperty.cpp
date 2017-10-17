@@ -211,8 +211,8 @@ void TreeProperty::add(string value, PropertyVectors_t& property_vectors)
     //I create my domain
     if(!i_find_my_domain)
     {
-      vector<string> empty_mothers, empty_disjoints;
-      treeObject_->add(property_vectors.domains_[domains_i], empty_mothers, empty_disjoints);
+      ObjectVectors_t empty_vectors;
+      treeObject_->add(property_vectors.domains_[domains_i], empty_vectors);
       for(unsigned int root_i = 0; root_i < treeObject_->roots_.size(); root_i++)
         if(property_vectors.domains_[domains_i] == treeObject_->roots_[root_i]->value_)
         {
@@ -257,8 +257,8 @@ void TreeProperty::add(string value, PropertyVectors_t& property_vectors)
     //I create my range
     if(!i_find_my_range)
     {
-      vector<string> empty_mothers, empty_disjoints;
-      treeObject_->add(property_vectors.ranges_[ranges_i], empty_mothers, empty_disjoints);
+      ObjectVectors_t empty_vectors;
+      treeObject_->add(property_vectors.ranges_[ranges_i], empty_vectors);
       for(unsigned int root_i = 0; root_i < treeObject_->roots_.size(); root_i++)
         if(property_vectors.ranges_[ranges_i] == treeObject_->roots_[root_i]->value_)
         {
@@ -269,9 +269,12 @@ void TreeProperty::add(string value, PropertyVectors_t& property_vectors)
   }
 
   //////
-  // Construction properties
+  // Construction and language properties
   //////
   me->properties_ = property_vectors.properties_;
+  me->dictionary_ = property_vectors.dictionary_;
+  if(me->dictionary_.find("en") == me->dictionary_.end())
+    me->dictionary_["en"] = me->value_;
 }
 
 void TreeProperty::add(vector<string>& disjoints)

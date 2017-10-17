@@ -6,11 +6,7 @@
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-    <owl:Ontology rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty">
-        <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure"/>
-        <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property"/>
-        <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute"/>
-    </owl:Ontology>
+    <owl:Ontology rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty"/>
     
 
 
@@ -195,6 +191,46 @@
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
     </owl:ObjectProperty>
     
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#area -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#area"/>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#box -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#box"/>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#hand -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#hand"/>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#indoorArea -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#indoorArea"/>
 </rdf:RDF>
 
 

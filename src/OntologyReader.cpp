@@ -48,11 +48,11 @@ int OntologyReader::read(TiXmlElement* rdf, string name)
   else
   {
     cout << name << endl;
-    cout << "************************" << endl;
-    cout << "+ sub       | > domain" << endl;
-    cout << "- disjoint  | < range" << endl;
-    cout << "/ inverse   | * type" << endl;
-    cout << "************************" << endl;
+    cout << "************************************" << endl;
+    cout << "+ sub       | > domain  | @ language" << endl;
+    cout << "- disjoint  | < range   |" << endl;
+    cout << "/ inverse   | * type    |" << endl;
+    cout << "************************************" << endl;
     cout << "├── Class" << endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
       read_class(elem);
@@ -77,8 +77,7 @@ void OntologyReader::read_class(TiXmlElement* elem)
   if(elemName == "owl:Class")
   {
     string node_name = "";
-    vector<string> subClass;
-    vector<string> disjoint;
+    ObjectVectors_t object_vector;
     const char* attr = elem->Attribute("rdf:about");
     if(attr != NULL)
     {
@@ -89,13 +88,14 @@ void OntologyReader::read_class(TiXmlElement* elem)
         string subElemName = subElem->Value();
         const char* subAttr;
         if(subElemName == "rdfs:subClassOf")
-          push(subClass, subElem, "+");
+          push(object_vector.mothers_, subElem, "+");
         else if(subElemName == "owl:disjointWith")
-          push(disjoint, subElem, "-");
+          push(object_vector.disjoints_, subElem, "-");
+        else if(subElemName == "rdfs:label")
+          pushLang(object_vector.dictionary_, subElem);
       }
     }
-    m_objTree->add(node_name, subClass, disjoint);
-    subClass.clear();
+    m_objTree->add(node_name, object_vector);
     elemLoaded++;
   }
 }
@@ -106,8 +106,7 @@ void OntologyReader::read_individual(TiXmlElement* elem)
   if(elemName == "owl:NamedIndividual")
   {
     string node_name = "";
-    vector<string> subClass;
-    vector<string> disjoint;
+    ObjectVectors_t object_vector;
     const char* attr = elem->Attribute("rdf:about");
     if(attr != NULL)
     {
@@ -118,13 +117,14 @@ void OntologyReader::read_individual(TiXmlElement* elem)
         string subElemName = subElem->Value();
 
         if(subElemName == "rdf:type")
-          push(subClass, subElem, "+");
+          push(object_vector.mothers_, subElem, "+");
         else if(subElemName == "owl:disjointWith")
-          push(disjoint, subElem, "-");
+          push(object_vector.disjoints_, subElem, "-");
+        else if(subElemName == "rdfs:label")
+          pushLang(object_vector.dictionary_, subElem);
       }
     }
-    m_objTree->add(node_name, subClass, disjoint);
-    subClass.clear();
+    m_objTree->add(node_name, object_vector);
     elemLoaded++;
   }
 }
@@ -212,6 +212,8 @@ void OntologyReader::read_property(TiXmlElement* elem)
           push(propertyVectors.ranges_, subElem, "<");
         else if(subElemName == "rdf:type")
           push(propertyVectors.properties_, subElem, "*");
+        else if(subElemName == "rdfs:label")
+          pushLang(propertyVectors.dictionary_, subElem);
       }
     }
 
@@ -257,6 +259,23 @@ void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, strin
 
     if(property != "")
       cout << "│   │   ├── " << symbole << property << endl;
+  }
+}
+
+void OntologyReader::pushLang(map<string,string>& dictionary, TiXmlElement* subElem)
+{
+  const char* subAttr;
+  subAttr = subElem->Attribute("xml:lang");
+  if(subAttr != NULL)
+  {
+    string lang = get_name(string(subAttr));
+
+    const char* value;
+    value = subElem->GetText();
+    dictionary[lang] = string(value);
+
+    if((lang != "") && (value != ""))
+      cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang] << endl;
   }
 }
 

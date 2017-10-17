@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 #include <iostream>
 #include "ros/ros.h"
 
@@ -38,6 +39,7 @@ private:
 
   void push(vector<string>& vect, TiXmlElement* subElem, string symbole = "", string attribute = "rdf:resource");
   void push(Properties_t& properties, TiXmlElement* subElem, string symbole = "", string attribute = "rdf:resource");
+  void pushLang(map<string,string>& dictionary, TiXmlElement* subElem);
   string get_name(string uri);
 };
 

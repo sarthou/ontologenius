@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <map>
 #include <stdint.h>
 
 #include "ontoloGenius/TreeObject.h"
@@ -44,6 +45,7 @@ struct PropertyBranch_t
   uint8_t family;
   uint8_t nb_mothers_;
   Properties_t properties_;
+  map<string, string> dictionary_;
 
   PropertyBranch_t(string value) : family(0), nb_mothers_(0)
     {value_ = value; };
@@ -57,6 +59,7 @@ struct PropertyVectors_t
    vector<string> domains_;
    vector<string> ranges_;
    Properties_t properties_;
+   map<string, string> dictionary_;
 };
 
 class TreeDrawer;

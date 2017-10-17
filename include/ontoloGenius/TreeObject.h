@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <map>
 #include <set>
 #include <stdint.h>
 
@@ -16,9 +17,17 @@ struct Branch_t
   vector<Branch_t*> disjoints_;
   uint8_t family;
   uint8_t nb_mothers_;
+  map<string, string> dictionary_;
 
   Branch_t(string value) : family(0), nb_mothers_(0)
     {value_ = value; };
+};
+
+struct ObjectVectors_t
+{
+   vector<string> mothers_;
+   vector<string> disjoints_;
+   map<string, string> dictionary_;
 };
 
 class TreeDrawer;
@@ -32,7 +41,7 @@ public:
   TreeObject() {}
   ~TreeObject();
 
-  void add(string value, vector<string>& mothers, vector<string>& disjoints);
+  void add(string value, ObjectVectors_t& object_vector);
   void add(vector<string>& disjoints);
   void close();
 

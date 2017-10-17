@@ -12,7 +12,7 @@ TreeObject::~TreeObject()
     delete roots_[i];
 }
 
-void TreeObject::add(string value, vector<string>& mothers, vector<string>& disjoints)
+void TreeObject::add(string value, ObjectVectors_t& object_vector)
 {
   //am I a created mother ?
   Branch_t* me = nullptr;
@@ -30,7 +30,7 @@ void TreeObject::add(string value, vector<string>& mothers, vector<string>& disj
   if(me == nullptr)
     me = new struct Branch_t(value);
 
-  me->nb_mothers_ = mothers.size();
+  me->nb_mothers_ = object_vector.mothers_.size();
 
   //am I a root ?
   if(me->nb_mothers_ == 0)
@@ -38,13 +38,13 @@ void TreeObject::add(string value, vector<string>& mothers, vector<string>& disj
   else
   {
     //for all my mothers
-    for(unsigned int mothers_i = 0; mothers_i < mothers.size(); mothers_i++)
+    for(unsigned int mothers_i = 0; mothers_i < object_vector.mothers_.size(); mothers_i++)
     {
       bool i_find_my_mother = false;
 
       //is a root my mother ?
       for(unsigned int root_i = 0; root_i < roots_.size(); root_i++)
-        if(mothers[mothers_i] == roots_[root_i]->value_)
+        if(object_vector.mothers_[mothers_i] == roots_[root_i]->value_)
         {
           roots_[root_i]->childs_.push_back(me);
           me->mothers_.push_back(roots_[root_i]);
@@ -53,7 +53,7 @@ void TreeObject::add(string value, vector<string>& mothers, vector<string>& disj
 
       //is a branch my mother ?
       for(unsigned int branch_i = 0; branch_i < branchs_.size(); branch_i++)
-        if(mothers[mothers_i] == branchs_[branch_i]->value_)
+        if(object_vector.mothers_[mothers_i] == branchs_[branch_i]->value_)
         {
           branchs_[branch_i]->childs_.push_back(me);
           me->mothers_.push_back(branchs_[branch_i]);
@@ -61,8 +61,8 @@ void TreeObject::add(string value, vector<string>& mothers, vector<string>& disj
         }
 
       //is a tmp mother is mine ?
-      for(unsigned int branch_i  =0; branch_i < tmp_mothers_.size(); branch_i++)
-        if(mothers[mothers_i] == tmp_mothers_[branch_i]->value_)
+      for(unsigned int branch_i = 0; branch_i < tmp_mothers_.size(); branch_i++)
+        if(object_vector.mothers_[mothers_i] == tmp_mothers_[branch_i]->value_)
         {
           tmp_mothers_[branch_i]->childs_.push_back(me);
           me->mothers_.push_back(tmp_mothers_[branch_i]);
@@ -72,7 +72,7 @@ void TreeObject::add(string value, vector<string>& mothers, vector<string>& disj
       //I create my mother
       if(!i_find_my_mother)
       {
-        Branch_t* my_mother = new struct Branch_t(mothers[mothers_i]);
+        Branch_t* my_mother = new struct Branch_t(object_vector.mothers_[mothers_i]);
         my_mother->childs_.push_back(me);
         me->mothers_.push_back(my_mother);
         tmp_mothers_.push_back(my_mother);
@@ -84,13 +84,13 @@ void TreeObject::add(string value, vector<string>& mothers, vector<string>& disj
   }
 
   //for all my disjoints
-  for(unsigned int disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
+  for(unsigned int disjoints_i = 0; disjoints_i < object_vector.disjoints_.size(); disjoints_i++)
   {
     bool i_find_my_disjoint = false;
 
     //is a root my disjoint ?
     for(unsigned int root_i = 0; root_i < roots_.size(); root_i++)
-      if(disjoints[disjoints_i] == roots_[root_i]->value_)
+      if(object_vector.disjoints_[disjoints_i] == roots_[root_i]->value_)
       {
         me->disjoints_.push_back(roots_[root_i]);
         roots_[root_i]->disjoints_.push_back(me);
@@ -99,7 +99,7 @@ void TreeObject::add(string value, vector<string>& mothers, vector<string>& disj
 
     //is a branch my disjoint ?
     for(unsigned int branch_i = 0; branch_i < branchs_.size(); branch_i++)
-      if(disjoints[disjoints_i] == branchs_[branch_i]->value_)
+      if(object_vector.disjoints_[disjoints_i] == branchs_[branch_i]->value_)
       {
         me->disjoints_.push_back(branchs_[branch_i]);
         branchs_[branch_i]->disjoints_.push_back(me);
@@ -108,7 +108,7 @@ void TreeObject::add(string value, vector<string>& mothers, vector<string>& disj
 
     //is a tmp mother is my disjoint ?
     for(unsigned int branch_i  =0; branch_i < tmp_mothers_.size(); branch_i++)
-      if(disjoints[disjoints_i] == tmp_mothers_[branch_i]->value_)
+      if(object_vector.disjoints_[disjoints_i] == tmp_mothers_[branch_i]->value_)
       {
         me->disjoints_.push_back(tmp_mothers_[branch_i]);
         tmp_mothers_[branch_i]->disjoints_.push_back(me);
@@ -118,12 +118,16 @@ void TreeObject::add(string value, vector<string>& mothers, vector<string>& disj
     //I create my disjoint
     if(!i_find_my_disjoint)
     {
-      Branch_t* my_disjoint = new struct Branch_t(disjoints[disjoints_i]);
+      Branch_t* my_disjoint = new struct Branch_t(object_vector.disjoints_[disjoints_i]);
       me->disjoints_.push_back(my_disjoint);
       my_disjoint->disjoints_.push_back(me);
       tmp_mothers_.push_back(my_disjoint); //I put my disjoint as tmp_mother
     }
   }
+
+  me->dictionary_ = object_vector.dictionary_;
+  if(me->dictionary_.find("en") == me->dictionary_.end())
+    me->dictionary_["en"] = me->value_;
 }
 
 void TreeObject::add(vector<string>& disjoints)
