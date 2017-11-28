@@ -1,7 +1,7 @@
 # <img src="logo/ontologenius.png" width="150"> ontolo**G**enius
 This repository is a ROS package to link, explore and interrogate ontologies.
 
-[**Wiki homepage **](https://github.com/sarthou/ontologenius/wiki#-ontologenius)
+[**Wiki homepage**](https://github.com/sarthou/ontologenius/wiki#-ontologenius)
 
 [**1. Installation**](https://github.com/sarthou/ontologenius/wiki/Installation#installation)
 
