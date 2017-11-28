@@ -11,6 +11,8 @@
 
 #include "ontoloGenius/Computer.h"
 
+#include "ontoloGenius/Parser.h"
+
 using namespace std;
 
 TreeObject onto;
@@ -168,6 +170,26 @@ int main(int argc, char** argv)
   ros::ServiceServer serviceClass = n.advertiseService("ontoloGenius/class", class_handle);
   ros::ServiceServer serviceProperty = n.advertiseService("ontoloGenius/property", property_handle);
   ROS_DEBUG("ontoloGenius ready");
+
+  std::string code = "";
+  code += "var::man = fablab.isIn();\n";
+  code += "if(adult == age)\n";
+  code += "{\n";
+  code += "//this is a comment\n";
+  code += "\tif(age == adult)\n";
+  code += "\t\tont::print(var::man);\n";
+  code += "}\n";
+  code += "else if(old == age)\n";
+  code += "\tif(young == age)\n";
+  code += "\t\tont::print(\"this is an else if\");\n";
+  code += "/*\n";
+  code += "an other comment";
+  code += "*/\n";
+  code += "out::print(\"this is the else\");\n";
+  code += "var::men =if(var::man == man);\n";
+
+  Parser p(code, onto);
+  while(p.move());
 
   ros::spin();
 

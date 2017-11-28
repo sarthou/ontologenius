@@ -133,6 +133,7 @@ add_library(ontologenius_lib
   src/TreeDrawer.cpp
   src/OntologyReader.cpp
   src/Computer.cpp
+  src/Parser.cpp
 )
 add_dependencies(ontologenius_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_lib ${OpenCV_LIBS})
