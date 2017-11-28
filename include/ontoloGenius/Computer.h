@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <set>
+#include <iostream>
 
 #include "ontoloGenius/TreeObject.h"
 
@@ -15,8 +16,8 @@ struct finder_t
 class Computer
 {
 public:
-  Computer() {};
-  ~Computer() {};
+  Computer() {}
+  ~Computer() {}
 
   bool compute(string equation, TreeObject& onto);
 

@@ -10,6 +10,11 @@ TreeObject::~TreeObject()
 
   for(unsigned int i = 0; i < roots_.size(); i++)
     delete roots_[i];
+
+  branchs_.clear();
+  roots_.clear();
+
+  std::cout << "TreeObject" << std::endl;
 }
 
 void TreeObject::add(string value, ObjectVectors_t& object_vector)
