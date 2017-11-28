@@ -26,7 +26,7 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/property#absolute">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#reference"/>
         <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#relative"/>
-        <rdfs:label>absolute</rdfs:label>
+        <rdfs:label xml:lang="fr">absolu</rdfs:label>
     </owl:Class>
     
 
@@ -34,7 +34,7 @@
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/property#property -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/property#property">
-        <rdfs:label>property</rdfs:label>
+        <rdfs:label xml:lang="fr">propriété</rdfs:label>
     </owl:Class>
     
 
@@ -43,7 +43,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/property#reference">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#property"/>
-        <rdfs:label>reference</rdfs:label>
+        <rdfs:label xml:lang="fr">référence</rdfs:label>
     </owl:Class>
     
 
@@ -52,7 +52,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/property#relative">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#reference"/>
-        <rdfs:label>relative</rdfs:label>
+        <rdfs:label xml:lang="fr">relatif</rdfs:label>
     </owl:Class>
 </rdf:RDF>
 
