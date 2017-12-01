@@ -178,14 +178,14 @@ int main(int argc, char** argv)
   code += "//this is a comment\n";
   code += "\tif(age == adult)\n";
   code += "\t\tont::print(var::man);\n";
-  code += "//}\n";
+  code += "}\n";
   code += "else if(old == age)\n";
   code += "\tif(young == age)\n";
   code += "\t\tont::print(\"this is an else if\");\n";
   code += "/*\n";
   code += "an other comment";
   code += "*/\n";
-  code += "out::print(\"this is the else\");/*\n";
+  code += "out::print(\"this is the else\");*/\n";
   code += "var::men =if(var::man == man);\n";
 
   Parser p(code, onto);

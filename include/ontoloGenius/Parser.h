@@ -69,7 +69,6 @@ private:
   void instruction();
 
   void removeComments();
-
   void getSubsections();
   void getIfBlock();
   size_t getNextIfBlock(int& nb_block, size_t pose);

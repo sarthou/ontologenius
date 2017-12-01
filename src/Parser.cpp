@@ -191,6 +191,12 @@ size_t Parser::getLineNumber(size_t final_pose)
       current += comments_[code_.substr(i, semicolon-i+1)].lines_count.getNbLines();
       i += semicolon-i;
     }
+    else if(findAfter(i, "__subsection(") != std::string::npos)
+    {
+      size_t semicolon = code_.find(";", i);
+      current += subsections_[code_.substr(i, semicolon-i+1)].lines_count.getNbLines();
+      i += semicolon-i;
+    }
   }
 
   return current;
@@ -211,6 +217,12 @@ size_t Parser::getBeginOfLine(size_t line_nb)
     {
       size_t semicolon = code_.find(";", i);
       line_nb -= comments_[code_.substr(i, semicolon-i+1)].lines_count.getNbLines();
+      i += semicolon-i;
+    }
+    else if(findAfter(i, "__subsection(") != std::string::npos)
+    {
+      size_t semicolon = code_.find(";", i);
+      line_nb -= subsections_[code_.substr(i, semicolon-i+1)].lines_count.getNbLines();
       i += semicolon-i;
     }
   }
@@ -283,6 +295,27 @@ void Parser::removeComments()
     }
   }
   while(!eof);
+
+  eof = false;
+  size_t bad_comment = 0;
+  do
+  {
+    bad_comment = code_.find("*/", bad_comment);
+    if(bad_comment == std::string::npos)
+      eof = true;
+    else
+    {
+      size_t line_error = getLineNumber(bad_comment);
+      size_t error_begin = getBeginOfLine(line_error);
+      std::cout << "[" << line_error << ":" << (bad_comment - error_begin + 1) << "] error: expected primary-expression before ‘*/’ token" << std::endl;
+      size_t new_line = code_.find("\n", bad_comment);
+      std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
+      printCursor(bad_comment - error_begin);
+
+      bad_comment++;
+    }
+  }
+  while(!eof);
 }
 
 /*
@@ -337,6 +370,27 @@ void Parser::getSubsections()
 
         eof = true;
       }
+    }
+  }
+  while(!eof);
+
+  eof = false;
+  size_t bad_subsection = 0;
+  do
+  {
+    bad_subsection = code_.find("}", bad_subsection);
+    if(bad_subsection == std::string::npos)
+      eof = true;
+    else
+    {
+      size_t line_error = getLineNumber(bad_subsection);
+      size_t error_begin = getBeginOfLine(line_error);
+      std::cout << "[" << line_error << ":" << (bad_subsection - error_begin + 1) << "] error: expected primary-expression before ‘}’ token" << std::endl;
+      size_t new_line = code_.find("\n", bad_subsection);
+      std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
+      printCursor(bad_subsection - error_begin);
+
+      bad_subsection++;
     }
   }
   while(!eof);
