@@ -3,12 +3,15 @@
 #include "ontoloGenius/Parser.h"
 #include "ontoloGenius/Computer.h"
 
-Parser::Parser(std::string code, TreeObject& onto) : onto_(onto)
+Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(onto)
 {
   code_ = code;
   parser_state_ = ParserState::wait;
   subparser_ = nullptr;
   begin_ = end_ = 0;
+
+  lines_counter_.current_line_ = current_line;
+  lines_counter_.setStart(current_line);
 
   std::cout << code_ << std::endl;
   std::cout << "----------------------" << std::endl;
@@ -20,9 +23,7 @@ Parser::Parser(std::string code, TreeObject& onto) : onto_(onto)
 
   for (int i = 0; i < code_.length(); )
   {
-    if(code_[i] == '\n')
-      code_.erase(i, 1);
-    else if(code_[i] == '\t')
+    if(code_[i] == '\t')
       code_.erase(i, 1);
     else
       i++;
@@ -159,7 +160,7 @@ size_t Parser::getInBraquet(size_t begin, std::string& in_braquet)
 
 bool Parser::findBefore(size_t begin, char symbol)
 {
-  while(code_[begin-1] == ' ')
+  while((code_[begin-1] == ' ') || (code_[begin-1] == '\n'))
     begin -= 1;
 
   if(code_[begin-1] == symbol)
@@ -170,7 +171,7 @@ bool Parser::findBefore(size_t begin, char symbol)
 
 size_t Parser::findAfter(size_t begin, std::string symbol)
 {
-  while(code_[begin+1] == ' ')
+  while((code_[begin+1] == ' ') || (code_[begin+1] == '\n'))
     begin += 1;
 
   size_t pose = code_.find(symbol, begin);
@@ -181,9 +182,58 @@ size_t Parser::findAfter(size_t begin, std::string symbol)
     return std::string::npos;
 }
 
+size_t Parser::getLineNumber(size_t final_pose)
+{
+  size_t current = lines_counter_.getStart();
+  for(size_t i = 0; i < final_pose; i++)
+  {
+    if(code_[i] == '\n')
+      current++;
+    else if(code_[i] == ' ')
+      continue;
+    else if(findAfter(i, "__comment(") != std::string::npos)
+    {
+      size_t semicolon = code_.find(";", i);
+      current += comments_[code_.substr(i, semicolon-i+1)].lines_count.getNbLines();
+      i += semicolon-i;
+    }
+  }
+
+  return current;
+}
+
+size_t Parser::getBeginOfLine(size_t line_nb)
+{
+  line_nb -= lines_counter_.getStart();
+
+  size_t i = 0;
+  for(; line_nb != 0; i++)
+  {
+    if(code_[i] == '\n')
+      line_nb--;
+    else if(code_[i] == ' ')
+      continue;
+    else if(findAfter(i, "__comment(") != std::string::npos)
+    {
+      size_t semicolon = code_.find(";", i);
+      line_nb -= comments_[code_.substr(i, semicolon-i+1)].lines_count.getNbLines();
+      i += semicolon-i;
+    }
+  }
+  return i;
+}
+
+void Parser::printCursor(size_t pose)
+{
+  for(size_t i = 0; i < pose; i++)
+    std::cout << " ";
+  std::cout << "^" << std::endl;
+}
+
 void Parser::removeComments()
 {
   bool eof = false;
+  uint16_t nb_comments = 0;
 
   do
   {
@@ -193,7 +243,14 @@ void Parser::removeComments()
     else
     {
       size_t new_line = code_.find("\n", comment);
-      code_.replace(comment, new_line-comment+1, "");
+      CommentBlock_t comment_i;
+      comment_i.comment = code_.substr(comment, new_line-comment);
+      comment_i.lines_count.setStart(getLineNumber(comment));
+      comment_i.lines_count.setStop(comment_i.lines_count.getStart());
+      comments_["__comment(" + std::to_string(nb_comments) + ");"] = comment_i;
+      code_.replace(comment, new_line-comment, "__comment(" + std::to_string(nb_comments) + ");");
+
+      nb_comments++;
     }
   }
   while(!eof);
@@ -206,8 +263,29 @@ void Parser::removeComments()
       eof = true;
     else
     {
-      size_t comment_end = code_.find("*/", comment);
-      code_.replace(comment, comment_end-comment+2, "");
+      size_t comment_end = code_.find("*/", comment+2);
+      if(comment_end != std::string::npos)
+      {
+        CommentBlock_t comment_i;
+        comment_i.comment = code_.substr(comment, comment_end-comment+2);
+        comment_i.lines_count.setStart(getLineNumber(comment));
+        comment_i.lines_count.setStop(getLineNumber(comment_end));
+        comments_["__comment(" + std::to_string(nb_comments) + ");"] = comment_i;
+        code_.replace(comment, comment_end-comment+2, "__comment(" + std::to_string(nb_comments) + ");");
+
+        nb_comments++;
+      }
+      else
+      {
+        size_t line_error = getLineNumber(comment);
+        size_t error_begin = getBeginOfLine(line_error);
+        std::cout << "[" << line_error << ":" << (comment - error_begin + 1) << "] error: expected ‘*/’ at end of input" << std::endl;
+        size_t new_line = code_.find("\n", comment);
+        std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
+        printCursor(comment - error_begin);
+
+        eof = true;
+      }
     }
   }
   while(!eof);
