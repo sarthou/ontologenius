@@ -18,9 +18,6 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
 
   removeComments();
 
-  std::cout << code_ << std::endl;
-  std::cout << "----------------------" << std::endl;
-
   for (int i = 0; i < code_.length(); )
   {
     if(code_[i] == '\t')
@@ -28,9 +25,6 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
     else
       i++;
   }
-
-  std::cout << code_ << std::endl;
-  std::cout << "----------------------" << std::endl;
 
   getSubsections();
 
@@ -100,7 +94,7 @@ void Parser::instruction()
     std::cout << "[inst]" << instruction << std::endl;
     if(instruction.find("__subsection") != std::string::npos)
     {
-      Parser p(subsections_[instruction], onto_);
+      Parser p(subsections_[instruction].subsection, onto_);
       std::cout << "{" << std::endl;
       while(p.move());
       std::cout << "}" << std::endl;
@@ -310,7 +304,7 @@ void Parser::getSubsections()
       size_t braquet = code_.find("{", begin);
       size_t first_braquet = braquet;
       int cpt = 1;
-      while(cpt != 0)
+      while((cpt != 0) && (code_[braquet] != '\0'))
       {
         ++braquet;
         if(code_[braquet] == '{')
@@ -319,10 +313,30 @@ void Parser::getSubsections()
           cpt--;
 
       }
-      subsections_["__subsection(" + std::to_string(nb_sub) + ");"] = code_.substr(first_braquet+1, braquet-first_braquet-1);
-      code_.replace(first_braquet, braquet-first_braquet+1, "__subsection(" + std::to_string(nb_sub) + ");");
 
-      nb_sub++;
+      if(cpt == 0)
+      {
+        SubsectionBlock_t subsection_i;
+        subsection_i.subsection = code_.substr(first_braquet+1, braquet-first_braquet-1);
+        subsection_i.lines_count.setStart(getLineNumber(first_braquet));
+        subsection_i.lines_count.setStop(getLineNumber(braquet));
+
+        subsections_["__subsection(" + std::to_string(nb_sub) + ");"] = subsection_i;
+        code_.replace(first_braquet, braquet-first_braquet+1, "__subsection(" + std::to_string(nb_sub) + ");");
+
+        nb_sub++;
+      }
+      else
+      {
+        size_t line_error = getLineNumber(first_braquet);
+        size_t error_begin = getBeginOfLine(line_error);
+        std::cout << "[" << line_error << ":" << (first_braquet - error_begin + 1) << "] error: expected ‘}’ at end of input" << std::endl;
+        size_t new_line = code_.find("\n", first_braquet);
+        std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
+        printCursor(first_braquet - error_begin);
+
+        eof = true;
+      }
     }
   }
   while(!eof);

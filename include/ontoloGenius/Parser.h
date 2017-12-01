@@ -48,6 +48,12 @@ struct CommentBlock_t
   LinesCounter_t lines_count;
 };
 
+struct SubsectionBlock_t
+{
+  std::string subsection;
+  LinesCounter_t lines_count;
+};
+
 class Parser
 {
 public:
@@ -80,7 +86,7 @@ private:
   std::string code_;
   TreeObject& onto_;
   std::map<std::string, CommentBlock_t> comments_;
-  std::map<std::string, std::string> subsections_;
+  std::map<std::string, SubsectionBlock_t> subsections_;
   std::map<std::string, IfBlock_t> ifelse_;
 
 
