@@ -16,8 +16,6 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
   std::cout << code_ << std::endl;
   std::cout << "----------------------" << std::endl;
 
-  removeComments();
-
   for (int i = 0; i < code_.length(); )
   {
     if(code_[i] == '\t')
@@ -26,10 +24,9 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
       i++;
   }
 
-  getSubsections();
+  removeComments();
 
-  std::cout << code_ << std::endl;
-  std::cout << "----------------------" << std::endl;
+  getSubsections();
 
   getIfBlock();
 
@@ -49,87 +46,6 @@ ParserState Parser::getState() const
     return parser_state_;
   else
     return subparser_->getState();
-}
-
-bool Parser::move()
-{
-  if((parser_state_ == ParserState::instruction) || (parser_state_ == ParserState::loop))
-    parser_state_ = ParserState::wait;
-
-  size_t find_semicolon = code_.find(";", begin_);
-  size_t find_if = code_.find("if", begin_);
-  size_t find_egual_if = code_.find("=if", begin_);
-
-  if(find_semicolon < find_if)
-  {
-    end_ = find_semicolon;
-    instruction();
-  }
-  else if(find_egual_if < find_if)
-  {
-    end_ = find_semicolon;
-    loop();
-  }
-  else if(find_if != std::string::npos)
-    if_condition();
-  else
-    return false;
-
-  begin_ = end_+1;
-  return true;
-}
-
-void Parser::loop()
-{
-  parser_state_ = ParserState::loop;
-  std::cout << "[loop]" << code_.substr(begin_, end_-begin_+1) << std::endl;
-}
-
-void Parser::instruction()
-{
-  if(parser_state_ != ParserState::condition_if_false)
-  {
-    parser_state_ = ParserState::instruction;
-    std::string instruction = code_.substr(begin_, end_-begin_+1);
-    std::cout << "[inst]" << instruction << std::endl;
-    if(instruction.find("__subsection") != std::string::npos)
-    {
-      Parser p(subsections_[instruction].subsection, onto_);
-      std::cout << "{" << std::endl;
-      while(p.move());
-      std::cout << "}" << std::endl;
-    }
-  }
-}
-
-bool Parser::if_condition()
-{
-  parser_state_ = ParserState::condition_if;
-  size_t braquet = code_.find("(", begin_);
-  size_t first_braquet = braquet;
-  int cpt = 1;
-  while(cpt != 0)
-  {
-    ++braquet;
-    if(code_[braquet] == '(')
-      cpt++;
-    else if(code_[braquet] == ')')
-      cpt--;
-
-  }
-  end_ = braquet;
-
-  std::cout << "[if]" << code_.substr(begin_, end_-begin_+1) << std::endl;
-
-  bool result = true;
-  Computer comp;
-  //result = comp.compute(code_.substr(first_braquet+1, end_-first_braquet-1), onto_);
-  if(result)
-    parser_state_ = ParserState::condition_if_true;
-  else
-    parser_state_ = ParserState::condition_if_false;
-
-  return result;
 }
 
 size_t Parser::getInBraquet(size_t begin, std::string& in_braquet)
@@ -163,6 +79,11 @@ bool Parser::findBefore(size_t begin, char symbol)
     return false;
 }
 
+/*
+Return the position of the first caracter of the searched symbol if the symbol was found
+return std::string::npos even else
+/!\ begin can be on the last caracter of the precedent word
+*/
 size_t Parser::findAfter(size_t begin, std::string symbol)
 {
   while((code_[begin+1] == ' ') || (code_[begin+1] == '\n'))
@@ -176,28 +97,69 @@ size_t Parser::findAfter(size_t begin, std::string symbol)
     return std::string::npos;
 }
 
+/*
+Return true the symbol was found
+return false even else
+/!\ begin must be on the first caracter
+*/
+bool Parser::findHere(size_t begin, std::string symbol)
+{
+  size_t pose = code_.find(symbol, begin);
+
+  if(pose == begin)
+    return true;
+  else
+    return false;
+}
+
+size_t Parser::getNbOfSublines(size_t& current_pose, size_t stop)
+{
+  bool eol = false;
+  size_t nb_of_sublines = 0;
+
+  while(eol == false)
+  {
+    if(current_pose > stop)
+      break;
+    else if(code_[current_pose] == '\0')
+      return 0;
+    else if(code_[current_pose] == '\n')
+    {
+      nb_of_sublines += 1;
+      eol = true;
+    }
+    else if(code_[current_pose] == ' ')
+    {}
+    else if(findHere(current_pose, "__comment("))
+    {
+      size_t semicolon = code_.find(";", current_pose);
+      nb_of_sublines += comments_[code_.substr(current_pose, semicolon-current_pose+1)].lines_count.getNbLines() - 1;
+      current_pose = semicolon;
+    }
+    else if(findHere(current_pose, "__subsection("))
+    {
+      size_t semicolon = code_.find(";", current_pose);
+      nb_of_sublines += subsections_[code_.substr(current_pose, semicolon-current_pose+1)].lines_count.getNbLines() - 1;
+      current_pose = semicolon;
+    }
+    else if(findHere(current_pose, "__ifelse("))
+    {
+      size_t semicolon = code_.find(";", current_pose);
+      nb_of_sublines += ifelse_[code_.substr(current_pose, semicolon-current_pose+1)].lines_count.getNbLines() - 1;
+      current_pose = semicolon;
+    }
+    current_pose++;
+  }
+
+  return nb_of_sublines;
+}
+
 size_t Parser::getLineNumber(size_t final_pose)
 {
   size_t current = lines_counter_.getStart();
-  for(size_t i = 0; i < final_pose; i++)
-  {
-    if(code_[i] == '\n')
-      current++;
-    else if(code_[i] == ' ')
-      continue;
-    else if(findAfter(i, "__comment(") != std::string::npos)
-    {
-      size_t semicolon = code_.find(";", i);
-      current += comments_[code_.substr(i, semicolon-i+1)].lines_count.getNbLines();
-      i += semicolon-i;
-    }
-    else if(findAfter(i, "__subsection(") != std::string::npos)
-    {
-      size_t semicolon = code_.find(";", i);
-      current += subsections_[code_.substr(i, semicolon-i+1)].lines_count.getNbLines();
-      i += semicolon-i;
-    }
-  }
+
+  for(size_t i = 0; i < final_pose;)
+    current += getNbOfSublines(i, final_pose);
 
   return current;
 }
@@ -207,25 +169,9 @@ size_t Parser::getBeginOfLine(size_t line_nb)
   line_nb -= lines_counter_.getStart();
 
   size_t i = 0;
-  for(; line_nb != 0; i++)
-  {
-    if(code_[i] == '\n')
-      line_nb--;
-    else if(code_[i] == ' ')
-      continue;
-    else if(findAfter(i, "__comment(") != std::string::npos)
-    {
-      size_t semicolon = code_.find(";", i);
-      line_nb -= comments_[code_.substr(i, semicolon-i+1)].lines_count.getNbLines();
-      i += semicolon-i;
-    }
-    else if(findAfter(i, "__subsection(") != std::string::npos)
-    {
-      size_t semicolon = code_.find(";", i);
-      line_nb -= subsections_[code_.substr(i, semicolon-i+1)].lines_count.getNbLines();
-      i += semicolon-i;
-    }
-  }
+  for(; line_nb != 0; )
+    line_nb -= getNbOfSublines(i);
+
   return i;
 }
 
@@ -412,6 +358,33 @@ void Parser::getIfBlock()
       eof = true;
   }
   while(!eof);
+
+  eof = false;
+  pose = 0;
+  do
+  {
+    size_t else_error = code_.find("else", pose);
+    if(else_error == std::string::npos)
+      eof = true;
+    else
+    {
+      if(((code_[else_error - 1] == ' ') || (code_[else_error - 1] == '\n') || (code_[else_error - 1] == ';')) &&
+        ((code_[else_error + 4] == ' ') || (code_[else_error + 4 ] == '\n') || (code_[else_error + 4] == ';')))
+        {
+          size_t line_error = getLineNumber(else_error);
+          size_t error_begin = getBeginOfLine(line_error);
+          std::cout << "[" << line_error << ":" << (else_error - error_begin + 1) << "] error: ‘else’ without a previous ‘if’" << std::endl;
+          size_t new_line = code_.find("\n", else_error);
+          std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
+          printCursor(else_error - error_begin);
+
+          eof = true;
+        }
+        else
+          pose = else_error + 1;
+    }
+  }
+  while(!eof);
 }
 
 size_t Parser::getNextIfBlock(int& nb_block, size_t pose)
@@ -431,6 +404,8 @@ size_t Parser::getNextIfBlock(int& nb_block, size_t pose)
 
     size_t semicolon = code_.find(";", pose);
     if_block.IfBlock_if = code_.substr(pose+1, semicolon-pose);
+    if_block.lines_count.setStart(getLineNumber(if_start));
+    if_block.lines_count.setStop(getLineNumber(semicolon));
     pose = semicolon;
     end = semicolon;
 
@@ -442,11 +417,10 @@ size_t Parser::getNextIfBlock(int& nb_block, size_t pose)
     {
       if(findAfter(else_start+4, "if") != std::string::npos)
         getNextIfBlock(nb_block, else_start);
-      else
-        std::cout << "i don't find" << std::endl;
 
       semicolon = code_.find(";", else_start);
       if_block.IfBlock_else = code_.substr(else_start+4, semicolon-else_start-4+1);
+      if_block.lines_count.setStop(getLineNumber(semicolon));
       pose = semicolon;
       end = semicolon;
     }

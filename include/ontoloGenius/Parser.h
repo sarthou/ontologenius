@@ -61,12 +61,8 @@ public:
   ~Parser();
 
   ParserState getState() const;
-  bool move();
 
 private:
-  bool if_condition();
-  void loop();
-  void instruction();
 
   void removeComments();
   void getSubsections();
@@ -76,6 +72,9 @@ private:
   size_t getInBraquet(size_t begin, std::string& in_braquet);
   bool findBefore(size_t begin, char symbol);
   size_t findAfter(size_t begin, std::string symbol);
+  bool findHere(size_t begin, std::string symbol);
+
+  size_t getNbOfSublines(size_t& current_pose, size_t stop = -1);
   size_t getLineNumber(size_t final_pose);
   size_t getBeginOfLine(size_t line_nb);
   void printCursor(size_t pose);
