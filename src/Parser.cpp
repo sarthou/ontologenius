@@ -50,22 +50,33 @@ ParserState Parser::getState() const
 
 size_t Parser::getInBraquet(size_t begin, std::string& in_braquet)
 {
-  size_t braquet = code_.find("(", begin);
-  size_t first_braquet = braquet;
-  int cpt = 1;
-  while(cpt != 0)
+  size_t braquet = begin;
+  while((code_[braquet] == ' ') || (code_[braquet] == '\n'))
+    braquet += 1;
+
+  if(code_[braquet] == '(')
   {
-    ++braquet;
-    if(code_[braquet] == '(')
-      cpt++;
-    else if(code_[braquet] == ')')
-      cpt--;
+    size_t first_braquet = braquet;
+    int cpt = 1;
+    while((cpt != 0) && (braquet+1 < code_.length()))
+    {
+      ++braquet;
+      if(code_[braquet] == '(')
+        cpt++;
+      else if(code_[braquet] == ')')
+        cpt--;
 
+    }
+
+    in_braquet = code_.substr(first_braquet+1, braquet-first_braquet-1);
+
+    if(cpt == 0)
+      return braquet;
+    else
+      return std::string::npos;
   }
-  braquet;
-
-  in_braquet = code_.substr(first_braquet+1, braquet-first_braquet-1);
-  return braquet;
+  else
+    return begin;
 }
 
 bool Parser::findBefore(size_t begin, char symbol)
@@ -397,7 +408,29 @@ size_t Parser::getNextIfBlock(int& nb_block, size_t pose)
   else
   {
     IfBlock_t if_block;
-    pose = getInBraquet(if_start, if_block.IfBlock_condition);
+    pose = getInBraquet(if_start+2, if_block.IfBlock_condition);
+
+    if(pose == if_start+2)
+    {
+      size_t line_error = getLineNumber(pose);
+      size_t error_begin = getBeginOfLine(line_error);
+      std::cout << "[" << line_error << ":" << (pose - error_begin + 1) << "] error: expected ‘(’ after 'if’" << std::endl;
+      size_t new_line = code_.find("\n", pose);
+      std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
+      printCursor(pose - error_begin);
+      return std::string::npos;
+    }
+    else if(pose == std::string::npos)
+    {
+      pose = if_start+2;
+      size_t line_error = getLineNumber(pose);
+      size_t error_begin = getBeginOfLine(line_error);
+      std::cout << "[" << line_error << ":" << (pose - error_begin + 1) << "] error: expected corresponding ‘)’ after previous '(’" << std::endl;
+      size_t new_line = code_.find("\n", pose);
+      std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
+      printCursor(pose - error_begin);
+      return std::string::npos;
+    }
 
     if(findAfter(pose, "if") != std::string::npos)
       getNextIfBlock(nb_block, pose);

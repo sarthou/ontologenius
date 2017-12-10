@@ -173,7 +173,7 @@ int main(int argc, char** argv)
 
   std::string code = "";
   code += "var::man = fablab.isIn();\n";
-  code += "if(adult == age)\n";
+  code += "if(adult == age\n";
   code += "{\n";
   code += "//this is a comment\n";
   code += "\tif(age == adult)\n";
@@ -184,7 +184,7 @@ int main(int argc, char** argv)
   code += "\t\tont::print(\"this is an else if\");\n";
   code += "/*\n";
   code += "an other comment*/\n\n";
-  code += "out::print(\"this is the else\");\nelse\n";
+  code += "out::print(\"this is the else\");\n\n";
   code += "var::men =if(var::man == man);\n";
 
   Parser p(code, onto);
