@@ -173,7 +173,7 @@ int main(int argc, char** argv)
 
   std::string code = "";
   code += "var::man = fablab.isIn();\n";
-  code += "if(adult == age\n";
+  code += "if/*(*/adult == age\n";///*\n*/
   code += "{\n";
   code += "//this is a comment\n";
   code += "\tif(age == adult)\n";

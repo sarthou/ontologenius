@@ -48,27 +48,27 @@ ParserState Parser::getState() const
     return subparser_->getState();
 }
 
-size_t Parser::getInBraquet(size_t begin, std::string& in_braquet)
+size_t Parser::getInBraquet(size_t begin, std::string& in_braquet, std::string& text)
 {
   size_t braquet = begin;
-  while((code_[braquet] == ' ') || (code_[braquet] == '\n'))
+  while((text[braquet] == ' ') || (text[braquet] == '\n'))
     braquet += 1;
 
-  if(code_[braquet] == '(')
+  if(text[braquet] == '(')
   {
     size_t first_braquet = braquet;
     int cpt = 1;
-    while((cpt != 0) && (braquet+1 < code_.length()))
+    while((cpt != 0) && (braquet+1 < text.length()))
     {
       ++braquet;
-      if(code_[braquet] == '(')
+      if(text[braquet] == '(')
         cpt++;
-      else if(code_[braquet] == ')')
+      else if(text[braquet] == ')')
         cpt--;
 
     }
 
-    in_braquet = code_.substr(first_braquet+1, braquet-first_braquet-1);
+    in_braquet = text.substr(first_braquet+1, braquet-first_braquet-1);
 
     if(cpt == 0)
       return braquet;
@@ -193,6 +193,29 @@ void Parser::printCursor(size_t pose)
   std::cout << "^" << std::endl;
 }
 
+void Parser::printError(size_t pose, std::string message)
+{
+  size_t line_error = getLineNumber(pose);
+  size_t error_begin = getBeginOfLine(line_error);
+  std::cout << "[" << line_error << ":" << (pose - error_begin + 1) << "] error: " << message << std::endl;
+  size_t new_line = code_.find("\n", pose);
+  std::string full_line = code_.substr(error_begin, new_line-error_begin);
+
+  while(full_line.find("__comment(") != std::string::npos)
+  {
+    size_t comment_pose = full_line.find("__comment(");
+    std::string comment_no;
+    getInBraquet(comment_pose+9, comment_no, full_line);
+    std::string comment = "__comment(" + comment_no + ");";
+    full_line.replace(comment_pose, comment.size(), comments_[comment].comment );
+    if(comment_pose + 1 < (pose - error_begin + 1))
+      error_begin += comment.size() - comments_[comment].comment.size();
+  }
+
+  std::cout << full_line << std::endl;
+  printCursor(pose - error_begin);
+}
+
 void Parser::removeComments()
 {
   bool eof = false;
@@ -240,13 +263,7 @@ void Parser::removeComments()
       }
       else
       {
-        size_t line_error = getLineNumber(comment);
-        size_t error_begin = getBeginOfLine(line_error);
-        std::cout << "[" << line_error << ":" << (comment - error_begin + 1) << "] error: expected ‘*/’ at end of input" << std::endl;
-        size_t new_line = code_.find("\n", comment);
-        std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
-        printCursor(comment - error_begin);
-
+        printError(comment, "expected ‘*/’ at end of input");
         eof = true;
       }
     }
@@ -262,13 +279,7 @@ void Parser::removeComments()
       eof = true;
     else
     {
-      size_t line_error = getLineNumber(bad_comment);
-      size_t error_begin = getBeginOfLine(line_error);
-      std::cout << "[" << line_error << ":" << (bad_comment - error_begin + 1) << "] error: expected primary-expression before ‘*/’ token" << std::endl;
-      size_t new_line = code_.find("\n", bad_comment);
-      std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
-      printCursor(bad_comment - error_begin);
-
+      printError(bad_comment, "expected primary-expression before ‘*/’ token");
       bad_comment++;
     }
   }
@@ -318,13 +329,7 @@ void Parser::getSubsections()
       }
       else
       {
-        size_t line_error = getLineNumber(first_braquet);
-        size_t error_begin = getBeginOfLine(line_error);
-        std::cout << "[" << line_error << ":" << (first_braquet - error_begin + 1) << "] error: expected ‘}’ at end of input" << std::endl;
-        size_t new_line = code_.find("\n", first_braquet);
-        std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
-        printCursor(first_braquet - error_begin);
-
+        printError(first_braquet, "expected ‘}’ at end of input");
         eof = true;
       }
     }
@@ -340,13 +345,7 @@ void Parser::getSubsections()
       eof = true;
     else
     {
-      size_t line_error = getLineNumber(bad_subsection);
-      size_t error_begin = getBeginOfLine(line_error);
-      std::cout << "[" << line_error << ":" << (bad_subsection - error_begin + 1) << "] error: expected primary-expression before ‘}’ token" << std::endl;
-      size_t new_line = code_.find("\n", bad_subsection);
-      std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
-      printCursor(bad_subsection - error_begin);
-
+      printError(bad_subsection, "expected primary-expression before ‘}’ token");
       bad_subsection++;
     }
   }
@@ -382,13 +381,7 @@ void Parser::getIfBlock()
       if(((code_[else_error - 1] == ' ') || (code_[else_error - 1] == '\n') || (code_[else_error - 1] == ';')) &&
         ((code_[else_error + 4] == ' ') || (code_[else_error + 4 ] == '\n') || (code_[else_error + 4] == ';')))
         {
-          size_t line_error = getLineNumber(else_error);
-          size_t error_begin = getBeginOfLine(line_error);
-          std::cout << "[" << line_error << ":" << (else_error - error_begin + 1) << "] error: ‘else’ without a previous ‘if’" << std::endl;
-          size_t new_line = code_.find("\n", else_error);
-          std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
-          printCursor(else_error - error_begin);
-
+          printError(else_error, "‘else’ without a previous ‘if’");
           eof = true;
         }
         else
@@ -408,27 +401,16 @@ size_t Parser::getNextIfBlock(int& nb_block, size_t pose)
   else
   {
     IfBlock_t if_block;
-    pose = getInBraquet(if_start+2, if_block.IfBlock_condition);
+    pose = getInBraquet(if_start+2, if_block.IfBlock_condition, code_);
 
     if(pose == if_start+2)
     {
-      size_t line_error = getLineNumber(pose);
-      size_t error_begin = getBeginOfLine(line_error);
-      std::cout << "[" << line_error << ":" << (pose - error_begin + 1) << "] error: expected ‘(’ after 'if’" << std::endl;
-      size_t new_line = code_.find("\n", pose);
-      std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
-      printCursor(pose - error_begin);
+      printError(pose, "expected ‘(’ after 'if’");
       return std::string::npos;
     }
     else if(pose == std::string::npos)
     {
-      pose = if_start+2;
-      size_t line_error = getLineNumber(pose);
-      size_t error_begin = getBeginOfLine(line_error);
-      std::cout << "[" << line_error << ":" << (pose - error_begin + 1) << "] error: expected corresponding ‘)’ after previous '(’" << std::endl;
-      size_t new_line = code_.find("\n", pose);
-      std::cout << code_.substr(error_begin, new_line-error_begin) << std::endl;
-      printCursor(pose - error_begin);
+      printError(if_start+2, "expected corresponding ‘)’ after previous '(’");
       return std::string::npos;
     }
 
