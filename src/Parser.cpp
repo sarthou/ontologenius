@@ -226,6 +226,17 @@ void Parser::printError(size_t pose, std::string message)
       error_begin += comment.size() - comments_[comment].comment.size();
   }
 
+  while(full_line.find("__subsection(") != std::string::npos)
+  {
+    size_t subsection_pose = full_line.find("__subsection(");
+    std::string subsection_no;
+    getInBraquet(subsection_pose+12, subsection_no, full_line);
+    std::string subsection = "__subsection(" + subsection_no + ");";
+    full_line.replace(subsection_pose, subsection.size(), std::string("{" + subsections_[subsection].subsection + "}"));
+    if(subsection_pose + 1 < (pose - error_begin + 1))
+      error_begin += subsection.size() - std::string("{" + subsections_[subsection].subsection + "}").size();
+  }
+
   for(size_t i = (pose - error_begin + 1); i < full_line.size(); i++)
   {
     if(full_line[i] == '\n')
