@@ -130,7 +130,7 @@ size_t Parser::getNbOfSublines(size_t& current_pose, size_t stop)
 
   while(eol == false)
   {
-    if(current_pose > stop)
+    if(current_pose >= stop)
       break;
     else if(code_[current_pose] == '\0')
       return 0;
@@ -179,9 +179,24 @@ size_t Parser::getBeginOfLine(size_t line_nb)
 {
   line_nb -= lines_counter_.getStart();
 
+  int nb_line  = line_nb;
+
   size_t i = 0;
-  for(; line_nb != 0; )
-    line_nb -= getNbOfSublines(i);
+  size_t savedN = i;
+  size_t savedN_1 = i;
+  for(; nb_line > 0; )
+  {
+    size_t nb_sublines = getNbOfSublines(i);
+    if(nb_sublines != 0)
+    {
+      nb_line -= nb_sublines;
+      savedN_1 = savedN;
+      savedN = i;
+    }
+  }
+
+  if(nb_line < 0)
+    i = savedN_1;
 
   return i;
 }
@@ -197,7 +212,6 @@ void Parser::printError(size_t pose, std::string message)
 {
   size_t line_error = getLineNumber(pose);
   size_t error_begin = getBeginOfLine(line_error);
-  std::cout << "[" << line_error << ":" << (pose - error_begin + 1) << "] error: " << message << std::endl;
   size_t new_line = code_.find("\n", pose);
   std::string full_line = code_.substr(error_begin, new_line-error_begin);
 
@@ -212,6 +226,26 @@ void Parser::printError(size_t pose, std::string message)
       error_begin += comment.size() - comments_[comment].comment.size();
   }
 
+  for(size_t i = (pose - error_begin + 1); i < full_line.size(); i++)
+  {
+    if(full_line[i] == '\n')
+    {
+      full_line = full_line.substr(0, i);
+      break;
+    }
+  }
+
+  while(full_line.find("\n") != std::string::npos)
+  {
+    size_t newline_pose = full_line.find("\n");
+    if(newline_pose < error_begin)
+    {
+      full_line = full_line.substr(newline_pose+1, full_line.size() - (newline_pose+1));
+      error_begin = error_begin + newline_pose + 1;
+    }
+  }
+
+  std::cout << "[" << line_error << ":" << (pose - error_begin + 1) << "] error: " << message << std::endl;
   std::cout << full_line << std::endl;
   printCursor(pose - error_begin);
 }
