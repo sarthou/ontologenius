@@ -54,6 +54,12 @@ struct SubsectionBlock_t
   LinesCounter_t lines_count;
 };
 
+struct StringBlock_t
+{
+  std::string strings;
+  LinesCounter_t lines_count;
+};
+
 class Parser
 {
 public:
@@ -68,6 +74,7 @@ private:
   void getSubsections();
   void getIfBlock();
   size_t getNextIfBlock(int& nb_block, size_t pose);
+  void getStrings();
 
   size_t getInBraquet(size_t begin, std::string& in_braquet, std::string& text);
   bool findBefore(size_t begin, char symbol);
@@ -87,7 +94,7 @@ private:
   std::map<std::string, CommentBlock_t> comments_;
   std::map<std::string, SubsectionBlock_t> subsections_;
   std::map<std::string, IfBlock_t> ifelse_;
-
+  std::map<std::string, StringBlock_t> strings_;
 
   LinesCounter_t lines_counter_;
   size_t begin_;

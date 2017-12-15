@@ -24,6 +24,8 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
       i++;
   }
 
+  getStrings();
+
   removeComments();
 
   getSubsections();
@@ -159,6 +161,12 @@ size_t Parser::getNbOfSublines(size_t& current_pose, size_t stop)
       nb_of_sublines += ifelse_[code_.substr(current_pose, semicolon-current_pose+1)].lines_count.getNbLines() - 1;
       current_pose = semicolon;
     }
+    else if(findHere(current_pose, "__string("))
+    {
+      size_t braquet = code_.find(")", current_pose);
+      nb_of_sublines += strings_[code_.substr(current_pose, braquet-current_pose+1)].lines_count.getNbLines() - 1;
+      current_pose = braquet;
+    }
     current_pose++;
   }
 
@@ -215,17 +223,6 @@ void Parser::printError(size_t pose, std::string message)
   size_t new_line = code_.find("\n", pose);
   std::string full_line = code_.substr(error_begin, new_line-error_begin);
 
-  while(full_line.find("__comment(") != std::string::npos)
-  {
-    size_t comment_pose = full_line.find("__comment(");
-    std::string comment_no;
-    getInBraquet(comment_pose+9, comment_no, full_line);
-    std::string comment = "__comment(" + comment_no + ");";
-    full_line.replace(comment_pose, comment.size(), comments_[comment].comment );
-    if(comment_pose + 1 < (pose - error_begin + 1))
-      error_begin += comment.size() - comments_[comment].comment.size();
-  }
-
   while(full_line.find("__subsection(") != std::string::npos)
   {
     size_t subsection_pose = full_line.find("__subsection(");
@@ -234,7 +231,30 @@ void Parser::printError(size_t pose, std::string message)
     std::string subsection = "__subsection(" + subsection_no + ");";
     full_line.replace(subsection_pose, subsection.size(), std::string("{" + subsections_[subsection].subsection + "}"));
     if(subsection_pose + 1 < (pose - error_begin + 1))
-      error_begin += subsection.size() - std::string("{" + subsections_[subsection].subsection + "}").size();
+      pose += std::string("{" + subsections_[subsection].subsection + "}").size() - subsection.size();
+  }
+
+  while(full_line.find("__comment(") != std::string::npos)
+  {
+    size_t comment_pose = full_line.find("__comment(");
+    std::string comment_no;
+    getInBraquet(comment_pose+9, comment_no, full_line);
+    std::string comment = "__comment(" + comment_no + ");";
+    full_line.replace(comment_pose, comment.size(), comments_[comment].comment );
+    if(comment_pose + 1 < (pose - error_begin + 1))
+      pose += comments_[comment].comment.size() - comment.size();
+  }
+
+  while(full_line.find("__string(") != std::string::npos)
+  {
+    size_t string_pose = full_line.find("__string(");
+    std::string string_no;
+    getInBraquet(string_pose+8, string_no, full_line);
+    std::string strings = "__string(" + string_no + ")";
+
+    full_line.replace(string_pose, strings.size(), std::string("\"" + strings_[strings].strings + "\""));
+    if(string_pose + 1 < (pose - error_begin + 1))
+      pose += std::string("\"" + strings_[strings].strings + "\"").size() - strings.size();
   }
 
   for(size_t i = (pose - error_begin + 1); i < full_line.size(); i++)
@@ -494,4 +514,38 @@ size_t Parser::getNextIfBlock(int& nb_block, size_t pose)
   }
 
   return pose;
+}
+
+void Parser::getStrings()
+{
+  bool eof = false;
+  uint16_t nb_strings = 0;
+
+  do
+  {
+    size_t strings = code_.find("\"", 0);
+    if(strings == std::string::npos)
+      eof = true;
+    else
+    {
+      size_t string_end = code_.find("\"", strings+1);
+      if(string_end != std::string::npos)
+      {
+        StringBlock_t string_i;
+        string_i.strings = code_.substr(strings+1, string_end-strings - 1);
+        string_i.lines_count.setStart(getLineNumber(strings));
+        string_i.lines_count.setStop(getLineNumber(string_end));
+        strings_["__string(" + std::to_string(nb_strings) + ")"] = string_i;
+        code_.replace(strings, string_end-strings+1, "__string(" + std::to_string(nb_strings) + ")");
+
+        nb_strings++;
+      }
+      else
+      {
+        printError(strings, "expected ‘\"’ at end of input");
+        eof = true;
+      }
+    }
+  }
+  while(!eof);
 }
