@@ -134,6 +134,7 @@ add_library(ontologenius_lib
   src/OntologyReader.cpp
   src/Computer.cpp
   src/Parser.cpp
+  src/Variables.cpp
 )
 add_dependencies(ontologenius_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_lib ${OpenCV_LIBS})

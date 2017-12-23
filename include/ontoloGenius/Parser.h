@@ -3,8 +3,10 @@
 
 #include <string>
 #include <map>
+#include <set>
 
 #include "ontoloGenius/TreeObject.h"
+#include "ontoloGenius/Variables.h"
 
 enum class ParserState
 {
@@ -60,6 +62,12 @@ struct StringBlock_t
   LinesCounter_t lines_count;
 };
 
+struct FunctionBlock_t
+{
+  std::string name;
+  std::vector<std::string> params;
+};
+
 class Parser
 {
 public:
@@ -75,9 +83,13 @@ private:
   void getIfBlock();
   size_t getNextIfBlock(int& nb_block, size_t pose);
   void getStrings();
+  void getFromNamespace();
 
   size_t getInBraquet(size_t begin, std::string& in_braquet, std::string& text);
   bool findBefore(size_t begin, char symbol);
+  bool findJustBefore(size_t begin, std::string symbol);
+  std::string getWordBefore(size_t begin);
+  std::string getWordAfter(size_t begin);
   size_t findAfter(size_t begin, std::string symbol);
   bool findHere(size_t begin, std::string symbol);
 
@@ -95,6 +107,8 @@ private:
   std::map<std::string, SubsectionBlock_t> subsections_;
   std::map<std::string, IfBlock_t> ifelse_;
   std::map<std::string, StringBlock_t> strings_;
+  Variables variables_;
+  std::map<std::string, FunctionBlock_t> functions_;
 
   LinesCounter_t lines_counter_;
   size_t begin_;

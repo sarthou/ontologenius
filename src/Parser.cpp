@@ -3,6 +3,10 @@
 #include "ontoloGenius/Parser.h"
 #include "ontoloGenius/Computer.h"
 
+#define COLOR_OFF   "\x1B[0m"
+#define COLOR_RED   "\x1B[0;91m"
+#define COLOR_GREEN "\x1B[1;92m"
+
 Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(onto)
 {
   code_ = code;
@@ -30,7 +34,9 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
 
   getSubsections();
 
-  getIfBlock();
+  getFromNamespace();
+
+  //getIfBlock();
 
   std::cout << code_ << std::endl;
   std::cout << "----------------------" << std::endl;
@@ -90,6 +96,44 @@ bool Parser::findBefore(size_t begin, char symbol)
     return true;
   else
     return false;
+}
+
+bool Parser::findJustBefore(size_t begin, std::string symbol)
+{
+  for(int i = 0; i < symbol.size(); i++)
+  {
+    if(code_[begin - 1 - i] != symbol[symbol.size() - 1 - i])
+      return false;
+  }
+  return true;
+}
+
+std::string Parser::getWordBefore(size_t begin)
+{
+  size_t i = begin;
+  while((i != 0) && ((code_[i -1] >= '0' && code_[i-1] <= '9') ||
+                      (code_[i-1] >= 'A' && code_[i-1] <= 'Z') ||
+                      (code_[i-1] >= 'a' && code_[i-1] <= 'z') ||
+                      (code_[i-1] == '_')))
+  {
+    i--;
+  }
+  std::string result = code_.substr(i, begin - i);
+  return result;
+}
+
+std::string Parser::getWordAfter(size_t begin)
+{
+  size_t i = begin;
+  while((i != code_.size() - 1) && ((code_[i+1] >= '0' && code_[i+1] <= '9') ||
+                                    (code_[i+1] >= 'A' && code_[i+1] <= 'Z') ||
+                                    (code_[i+1] >= 'a' && code_[i+1] <= 'z') ||
+                                    (code_[i+1] == '_')))
+  {
+    i++;
+  }
+  std::string result = code_.substr(begin + 1, i - begin);
+  return result;
 }
 
 /*
@@ -213,7 +257,7 @@ void Parser::printCursor(size_t pose)
 {
   for(size_t i = 0; i < pose; i++)
     std::cout << " ";
-  std::cout << "^" << std::endl;
+  std::cout << COLOR_GREEN << "^" << COLOR_OFF << std::endl;
 }
 
 void Parser::printError(size_t pose, std::string message)
@@ -276,7 +320,7 @@ void Parser::printError(size_t pose, std::string message)
     }
   }
 
-  std::cout << "[" << line_error << ":" << (pose - error_begin + 1) << "] error: " << message << std::endl;
+  std::cout << "[" << line_error << ":" << (pose - error_begin + 1) << "] " << COLOR_RED << "error: " << COLOR_OFF << message << std::endl;
   std::cout << full_line << std::endl;
   printCursor(pose - error_begin);
 }
@@ -543,6 +587,53 @@ void Parser::getStrings()
       else
       {
         printError(strings, "expected ‘\"’ at end of input");
+        eof = true;
+      }
+    }
+  }
+  while(!eof);
+}
+
+void Parser::getFromNamespace()
+{
+  bool eof = false;
+  uint16_t nb_var = 0;
+  uint16_t nb_func = 0;
+
+  do
+  {
+    size_t ns_pose = code_.find(":", 0);
+    if(ns_pose == std::string::npos)
+      eof = true;
+    else
+    {
+      if(findHere(ns_pose+1, ":"))
+      {
+        if(findJustBefore(ns_pose, "var")) //TODO : test if var already exist
+        {
+          std::string var = getWordAfter(ns_pose+1);
+          std::string var_id = variables_.add(var);
+          code_.replace(ns_pose - 3, var.size() + 5, var_id);
+        }
+        else if(findJustBefore(ns_pose, "ont")) //TODO : create special function to process it
+        {
+          FunctionBlock_t block;
+          block.name = getWordAfter(ns_pose+1);
+          std::string func = "__func(" + std::to_string(nb_func) + ")";
+          functions_[func] = block;
+          code_.replace(ns_pose - 3, block.name.size() + 5, func);
+          nb_func++;
+        }
+        else
+        {
+          std::string bad_ns = getWordBefore(ns_pose);
+          printError(ns_pose - bad_ns.size(), "unknow namespace '" + bad_ns + "'");
+          eof = true;
+        }
+      }
+      else
+      {
+        printError(ns_pose, "unknow operator ':'");
         eof = true;
       }
     }
