@@ -4,19 +4,52 @@
 
 #define COLOR_OFF     "\x1B[0m"
 #define COLOR_RED     "\x1B[0;91m"
-#define COLOR_ORANGE  "\x1B[0;31m"
+#define COLOR_ORANGE  "\x1B[1;33m"
 #define COLOR_GREEN   "\x1B[1;92m"
+
+Error::Error(Code* code)
+{
+  code_ = code;
+  nb_error = 0;
+  nb_wrng = 0;
+}
 
 void Error::printError(size_t pose, std::string message)
 {
   std::string msg = std::string(COLOR_RED + std::string("error: ") + COLOR_OFF + message);
   printMessage(pose, msg);
+  nb_error++;
 }
 
 void Error::printWarning(size_t pose, std::string message)
 {
   std::string msg = std::string(COLOR_ORANGE + std::string("warning: ") + COLOR_OFF + message);
   printMessage(pose, msg);
+  nb_wrng++;
+}
+
+void Error::printStatus()
+{
+  if(nb_error)
+    std::cout << COLOR_RED;
+  std::cout << nb_error << " errors " << COLOR_OFF << "and ";
+
+  if(nb_wrng)
+    std::cout << COLOR_ORANGE;
+  std::cout << nb_wrng << " warnings " << COLOR_OFF << std::endl;
+
+  if(nb_error)
+    std::cout << COLOR_RED << std::string("pre-processing failed") << COLOR_OFF << std::endl;
+  else
+    std::cout << COLOR_GREEN << std::string("pre-processing succeed") << COLOR_OFF << std::endl;
+}
+
+bool Error::isOnError()
+{
+  if(nb_error)
+    return true;
+  else
+    return false;
 }
 
 size_t Error::getBeginOfLine(size_t line_nb)

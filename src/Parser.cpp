@@ -28,6 +28,8 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
 
   code_.print();
   std::cout << "----------------------" << std::endl;
+
+  error_.printStatus();
 }
 
 Parser::~Parser()

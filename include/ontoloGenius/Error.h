@@ -11,13 +11,20 @@
 class Error
 {
 public:
-  Error(Code* code) {code_ = code; }
+  Error(Code* code);
   ~Error() {}
 
   void printError(size_t pose, std::string message);
   void printWarning(size_t pose, std::string message);
+
+  void printStatus();
+
+  bool isOnError();
 private:
   Code* code_;
+
+  uint16_t nb_error;
+  uint16_t nb_wrng;
 
   size_t getBeginOfLine(size_t line_nb);
   void printCursor(size_t pose);
