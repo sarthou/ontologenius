@@ -6,75 +6,14 @@
 #include <set>
 
 #include "ontoloGenius/TreeObject.h"
-#include "ontoloGenius/Variables.h"
-
-enum class ParserState
-{
-  wait,
-  assignment,
-  loop,
-  instruction,
-  condition_if,
-  condition_if_true,
-  condition_if_false
-};
-
-struct LinesCounter_t
-{
-private:
-  size_t start_;
-  size_t stop_;
-  size_t nb_lines_;
-
-public:
-  size_t getStart() {return start_;}
-  size_t getStop() {return stop_;}
-  size_t getNbLines() {return (nb_lines_ = (stop_ - start_ + 1));}
-  void setStart(size_t start) {start_ = start;}
-  void setStop(size_t stop) {stop_ = stop;}
-
-  size_t current_line_;
-};
-
-struct IfBlock_t
-{
-  std::string IfBlock_condition;
-  std::string IfBlock_if;
-  std::string IfBlock_else;
-  LinesCounter_t lines_count;
-};
-
-struct CommentBlock_t
-{
-  std::string comment;
-  LinesCounter_t lines_count;
-};
-
-struct SubsectionBlock_t
-{
-  std::string subsection;
-  LinesCounter_t lines_count;
-};
-
-struct StringBlock_t
-{
-  std::string strings;
-  LinesCounter_t lines_count;
-};
-
-struct FunctionBlock_t
-{
-  std::string name;
-  std::vector<std::string> params;
-};
+#include "ontoloGenius/Code.h"
+#include "ontoloGenius/Error.h"
 
 class Parser
 {
 public:
   Parser(std::string code, TreeObject& onto, size_t current_line = 1);
   ~Parser();
-
-  ParserState getState() const;
 
 private:
 
@@ -85,32 +24,12 @@ private:
   void getStrings();
   void getFromNamespace();
 
-  size_t getInBraquet(size_t begin, std::string& in_braquet, std::string& text);
-  bool findBefore(size_t begin, char symbol);
-  bool findJustBefore(size_t begin, std::string symbol);
-  std::string getWordBefore(size_t begin);
-  std::string getWordAfter(size_t begin);
-  size_t findAfter(size_t begin, std::string symbol);
-  bool findHere(size_t begin, std::string symbol);
-
-  size_t getNbOfSublines(size_t& current_pose, size_t stop = -1);
-  size_t getLineNumber(size_t final_pose);
-  size_t getBeginOfLine(size_t line_nb);
-  void printCursor(size_t pose);
-  void printError(size_t pose, std::string message);
-
-  ParserState parser_state_;
   Parser* subparser_;
-  std::string code_;
   TreeObject& onto_;
-  std::map<std::string, CommentBlock_t> comments_;
-  std::map<std::string, SubsectionBlock_t> subsections_;
-  std::map<std::string, IfBlock_t> ifelse_;
-  std::map<std::string, StringBlock_t> strings_;
-  Variables variables_;
-  std::map<std::string, FunctionBlock_t> functions_;
 
-  LinesCounter_t lines_counter_;
+  Code code_;
+  Error error_;
+
   size_t begin_;
   size_t end_;
 };
