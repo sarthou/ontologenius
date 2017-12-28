@@ -310,7 +310,6 @@ void Parser::getStrings()
 void Parser::getFromNamespace()
 {
   bool eof = false;
-  uint16_t nb_var = 0;
   uint16_t nb_func = 0;
 
   do
@@ -322,13 +321,14 @@ void Parser::getFromNamespace()
     {
       if(code_.findHere(ns_pose+1, ":"))
       {
-        if(code_.findJustBefore(ns_pose, "var"))
+        std::string ns = code_.getWordBefore(ns_pose);
+        if(code_.variables_.isThisNamespace(ns))
         {
           std::string var = code_.getWordAfter(ns_pose+1);
           std::string var_id = code_.variables_.add(var);
           code_.text.replace(ns_pose - 3, var.size() + 5, var_id);
         }
-        else if(code_.findJustBefore(ns_pose, "ont")) //TODO : create special function to process it
+        else if(ns == "ont") //TODO : create special function to process it
         {
           FunctionBlock_t block;
           block.name = code_.getWordAfter(ns_pose+1);
@@ -339,8 +339,7 @@ void Parser::getFromNamespace()
         }
         else
         {
-          std::string bad_ns = code_.getWordBefore(ns_pose);
-          error_.printError(ns_pose - bad_ns.size(), "unknow namespace '" + bad_ns + "'");
+          error_.printError(ns_pose - ns.size(), "unknow namespace '" + ns + "'");
           eof = true;
         }
       }

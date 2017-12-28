@@ -137,6 +137,7 @@ add_library(ontologenius_lib
   src/Variables.cpp
   src/Error.cpp
   src/Code.cpp
+  src/Namespace.cpp
 )
 add_dependencies(ontologenius_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_lib ${OpenCV_LIBS})

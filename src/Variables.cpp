@@ -1,5 +1,10 @@
 #include "ontoloGenius/Variables.h"
 
+Variables::Variables() : Namespace("var")
+{
+  nb_variables_ = 0;
+}
+
 std::string Variables::add(std::string name)
 {
   std::string id = "";

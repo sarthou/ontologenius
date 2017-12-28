@@ -7,16 +7,18 @@
 
 #include <stdint.h>
 
+#include "ontoloGenius/Namespace.h"
+
 struct Variable_t
 {
   std::string name;
   std::set<std::string> values;
 };
 
-class Variables
+class Variables : public Namespace
 {
 public:
-  Variables() {nb_variables_ = 0; };
+  Variables();
   ~Variables() {};
 
   std::string add(std::string name);
