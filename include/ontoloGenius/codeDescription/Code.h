@@ -32,12 +32,6 @@ struct SubsectionBlock_t
   LinesCounter lines_count;
 };
 
-struct FunctionBlock_t
-{
-  std::string name;
-  std::vector<std::string> params;
-};
-
 class Code
 {
 public:
@@ -52,7 +46,6 @@ public:
   std::map<std::string, IfBlock_t> ifelse_;
   String strings_;
   Variables variables_;
-  std::map<std::string, FunctionBlock_t> functions_;
 
   size_t getInBraquet(size_t begin, std::string& in_braquet, std::string& text);
   bool findBefore(size_t begin, char symbol);

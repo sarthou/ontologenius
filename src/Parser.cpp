@@ -24,7 +24,7 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
 
   getFromNamespace();
 
-  //getIfBlock();
+  getIfBlock();
 
   code_.print();
   std::cout << "----------------------" << std::endl;
@@ -304,7 +304,6 @@ void Parser::getStrings()
 void Parser::getFromNamespace()
 {
   bool eof = false;
-  uint16_t nb_func = 0;
 
   do
   {
@@ -324,12 +323,7 @@ void Parser::getFromNamespace()
         }
         else if(ns == "ont") //TODO : create special function to process it
         {
-          FunctionBlock_t block;
-          block.name = code_.getWordAfter(ns_pose+1);
-          std::string func = "__func(" + std::to_string(nb_func) + ")";
-          code_.functions_[func] = block;
-          code_.text.replace(ns_pose - 3, block.name.size() + 5, func);
-          nb_func++;
+          code_.text.replace(ns_pose - 3, 5, "__ont().");
         }
         else
         {

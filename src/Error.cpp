@@ -92,6 +92,25 @@ void Error::printMessage(size_t pose, std::string message)
   size_t new_line = code_->text.find("\n", pose);
   std::string full_line = code_->text.substr(error_begin, new_line-error_begin);
 
+  while(full_line.find("__ont(") != std::string::npos)
+  {
+    size_t ont_pose = full_line.find("__ont(");
+    full_line.replace(ont_pose, 7, "ont::");
+    if(ont_pose + 1 < (pose - error_begin + 1))
+      pose += std::string("ont::").size() - std::string("__ont()").size();
+  }
+
+  while(full_line.find("__var(") != std::string::npos)
+  {
+    size_t var_pose = full_line.find("__var(");
+    size_t var_end = full_line.find(")", var_pose);
+    std::string var = code_->text.substr(var_pose, var_end-var_pose+1);
+    std::string ns_var = code_->variables_.ns() + "::" + code_->variables_.name(var);
+    full_line.replace(var_pose, var.size(), ns_var);
+    if(var_pose + 1 < (pose - error_begin + 1))
+      pose += ns_var.size() - var.size();
+  }
+
   while(full_line.find("__subsection(") != std::string::npos)
   {
     size_t subsection_pose = full_line.find("__subsection(");
