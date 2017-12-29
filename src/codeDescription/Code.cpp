@@ -147,7 +147,7 @@ size_t Code::getNbOfSublines(size_t& current_pose, size_t stop)
     else if(findHere(current_pose, "__string("))
     {
       size_t braquet = text.find(")", current_pose);
-      nb_of_sublines += strings_[text.substr(current_pose, braquet-current_pose+1)].lines_count.getNbLines() - 1;
+      nb_of_sublines += strings_.nbLines(text.substr(current_pose, braquet-current_pose+1)) - 1;
       current_pose = braquet;
     }
     current_pose++;

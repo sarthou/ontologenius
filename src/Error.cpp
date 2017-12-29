@@ -121,9 +121,9 @@ void Error::printMessage(size_t pose, std::string message)
     code_->getInBraquet(string_pose+8, string_no, full_line);
     std::string strings = "__string(" + string_no + ")";
 
-    full_line.replace(string_pose, strings.size(), std::string("\"" + code_->strings_[strings].strings + "\""));
+    full_line.replace(string_pose, strings.size(), std::string("\"" + code_->strings_.get(strings) + "\""));
     if(string_pose + 1 < (pose - error_begin + 1))
-      pose += std::string("\"" + code_->strings_[strings].strings + "\"").size() - strings.size();
+      pose += std::string("\"" + code_->strings_.get(strings) + "\"").size() - strings.size();
   }
 
   for(size_t i = (pose - error_begin + 1); i < full_line.size(); i++)

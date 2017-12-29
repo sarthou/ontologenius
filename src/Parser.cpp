@@ -276,7 +276,6 @@ size_t Parser::getNextIfBlock(int& nb_block, size_t pose)
 void Parser::getStrings()
 {
   bool eof = false;
-  uint16_t nb_strings = 0;
 
   do
   {
@@ -288,14 +287,9 @@ void Parser::getStrings()
       size_t string_end = code_.text.find("\"", strings+1);
       if(string_end != std::string::npos)
       {
-        StringBlock_t string_i;
-        string_i.strings = code_.text.substr(strings+1, string_end-strings - 1);
-        string_i.lines_count.setStart(code_.getLineNumber(strings));
-        string_i.lines_count.setStop(code_.getLineNumber(string_end));
-        code_.strings_["__string(" + std::to_string(nb_strings) + ")"] = string_i;
-        code_.text.replace(strings, string_end-strings+1, "__string(" + std::to_string(nb_strings) + ")");
-
-        nb_strings++;
+        std::string text = code_.text.substr(strings+1, string_end-strings - 1);
+        std::string id = code_.strings_.add(text, code_.getLineNumber(strings), code_.getLineNumber(string_end));
+        code_.text.replace(strings, string_end-strings+1, id);
       }
       else
       {
