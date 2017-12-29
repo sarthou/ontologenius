@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 #include "ontoloGenius/codeDescription/Namespace.h"
+#include "ontoloGenius/codeDescription/FunctionContainer.h"
 
 struct Variable_t
 {
@@ -15,7 +16,7 @@ struct Variable_t
   std::set<std::string> values;
 };
 
-class Variables : public Namespace
+class Variables : public Namespace, public FunctionContainer
 {
 public:
   Variables();

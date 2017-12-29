@@ -132,6 +132,8 @@ add_library(codeDescription_lib
   src/codeDescription/Code.cpp
   src/codeDescription/Namespace.cpp
   src/codeDescription/String.cpp
+  src/codeDescription/FunctionDescriptor.cpp
+  src/codeDescription/FunctionContainer.cpp
 )
 
 add_library(ontologenius_lib

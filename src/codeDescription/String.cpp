@@ -3,6 +3,24 @@
 String::String()
 {
   nb_strings_ = 0;
+
+  FunctionDescriptor op_add = FunctionDescriptor("opAdd", type_string, std::vector<type_t>(1, type_string));
+  op_add.overload(type_string, std::vector<type_t>(1, type_word));
+  op_add.overload(type_string, std::vector<type_t>(1, type_word_set));
+  op_add.addExplicitName("addition operator");
+  functions_.push_back(op_add);
+
+  FunctionDescriptor op_sub = FunctionDescriptor("opSub", type_string, std::vector<type_t>(1, type_string));
+  op_sub.overload(type_string, std::vector<type_t>(1, type_word));
+  op_sub.overload(type_string, std::vector<type_t>(1, type_word_set));
+  op_sub.addExplicitName("substraction operator");
+  functions_.push_back(op_sub);
+
+  FunctionDescriptor op_assign = FunctionDescriptor("opAssign", type_string, std::vector<type_t>(1, type_string));
+  op_assign.overload(type_string, std::vector<type_t>(1, type_word));
+  op_assign.overload(type_string, std::vector<type_t>(1, type_word_set));
+  op_assign.addExplicitName("assignment operator");
+  functions_.push_back(op_assign);
 }
 
 std::string String::add(std::string text, size_t line_start, size_t line_stop)

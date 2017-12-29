@@ -5,6 +5,7 @@
 #include <map>
 
 #include "ontoloGenius/codeDescription/LinesCounter.h"
+#include "ontoloGenius/codeDescription/FunctionContainer.h"
 
 struct StringBlock_t
 {
@@ -12,7 +13,7 @@ struct StringBlock_t
   LinesCounter lines_count;
 };
 
-class String
+class String : public FunctionContainer
 {
 public:
   String();

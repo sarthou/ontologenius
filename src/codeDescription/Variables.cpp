@@ -3,6 +3,27 @@
 Variables::Variables() : Namespace("var")
 {
   nb_variables_ = 0;
+
+  FunctionDescriptor to_string = FunctionDescriptor("toString", type_string, std::vector<type_t>(1, type_void));
+  functions_.push_back(to_string);
+
+  FunctionDescriptor empty = FunctionDescriptor("empty", type_bool, std::vector<type_t>(1, type_void));
+  functions_.push_back(empty);
+
+  FunctionDescriptor op_add = FunctionDescriptor("opAdd", type_word_set, std::vector<type_t>(1, type_word_set));
+  op_add.overload(type_word_set, std::vector<type_t>(1, type_word));
+  op_add.addExplicitName("addition operator");
+  functions_.push_back(op_add);
+
+  FunctionDescriptor op_sub = FunctionDescriptor("opSub", type_word_set, std::vector<type_t>(1, type_word_set));
+  op_sub.overload(type_word_set, std::vector<type_t>(1, type_word));
+  op_sub.addExplicitName("substraction operator");
+  functions_.push_back(op_sub);
+
+  FunctionDescriptor op_assign = FunctionDescriptor("opAssign", type_word_set, std::vector<type_t>(1, type_word_set));
+  op_assign.overload(type_word_set, std::vector<type_t>(1, type_word));
+  op_assign.addExplicitName("assignment operator");
+  functions_.push_back(op_assign);
 }
 
 std::string Variables::add(std::string name)
