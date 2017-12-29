@@ -5,8 +5,9 @@
 #include <map>
 #include <set>
 
+#include "ontoloGenius/codeDescription/Code.h"
+
 #include "ontoloGenius/TreeObject.h"
-#include "ontoloGenius/Code.h"
 #include "ontoloGenius/Error.h"
 
 class Parser

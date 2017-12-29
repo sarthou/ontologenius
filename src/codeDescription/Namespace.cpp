@@ -1,4 +1,4 @@
-#include "ontoloGenius/Namespace.h"
+#include "ontoloGenius/codeDescription/Namespace.h"
 
 Namespace::Namespace(std::string name)
 {

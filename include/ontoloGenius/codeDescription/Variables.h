@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 
-#include "ontoloGenius/Namespace.h"
+#include "ontoloGenius/codeDescription/Namespace.h"
 
 struct Variable_t
 {

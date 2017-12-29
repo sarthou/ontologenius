@@ -127,6 +127,12 @@ include_directories(
 )
 
 ## Declare a C++ library
+add_library(codeDescription_lib
+  src/codeDescription/Variables.cpp
+  src/codeDescription/Code.cpp
+  src/codeDescription/Namespace.cpp
+)
+
 add_library(ontologenius_lib
   src/TreeObject.cpp
   src/TreeProperty.cpp
@@ -134,12 +140,11 @@ add_library(ontologenius_lib
   src/OntologyReader.cpp
   src/Computer.cpp
   src/Parser.cpp
-  src/Variables.cpp
   src/Error.cpp
-  src/Code.cpp
-  src/Namespace.cpp
 )
+
 add_dependencies(ontologenius_lib ontologenius_gencpp)
+target_link_libraries(ontologenius_lib codeDescription_lib)
 target_link_libraries(ontologenius_lib ${OpenCV_LIBS})
 target_link_libraries(ontologenius_lib ${TinyXML_LIBRARIES})
 

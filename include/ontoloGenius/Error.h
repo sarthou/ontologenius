@@ -6,7 +6,7 @@
 
 #include <stdint.h>
 
-#include "ontoloGenius/Code.h"
+#include "ontoloGenius/codeDescription/Code.h"
 
 class Error
 {

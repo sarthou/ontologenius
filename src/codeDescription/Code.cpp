@@ -1,4 +1,4 @@
-#include "ontoloGenius/Code.h"
+#include "ontoloGenius/codeDescription/Code.h"
 
 size_t Code::getInBraquet(size_t begin, std::string& in_braquet, std::string& text)
 {

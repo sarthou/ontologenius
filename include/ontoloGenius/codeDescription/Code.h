@@ -9,7 +9,7 @@
 
 #include <stdint.h>
 
-#include "ontoloGenius/Variables.h"
+#include "ontoloGenius/codeDescription/Variables.h"
 
 struct LinesCounter_t
 {

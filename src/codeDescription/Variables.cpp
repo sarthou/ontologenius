@@ -1,4 +1,4 @@
-#include "ontoloGenius/Variables.h"
+#include "ontoloGenius/codeDescription/Variables.h"
 
 Variables::Variables() : Namespace("var")
 {
