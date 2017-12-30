@@ -16,9 +16,13 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
 
   code_.remove('\t');
 
+  checkReservedWord("__string");
   getStrings();
 
+  checkReservedWord("__comment");
   removeComments();
+
+  checkReserved();
 
   getSubsections();
 
@@ -36,6 +40,33 @@ Parser::~Parser()
 {
   if(subparser_ != nullptr)
     delete subparser_;
+}
+
+void Parser::checkReserved()
+{
+  checkReservedWord("__subsection");
+  checkReservedWord("__ifelse");
+  checkReservedWord("__ont");
+  checkReservedWord("__var");
+}
+
+void Parser::checkReservedWord(std::string symbol)
+{
+  bool eof = false;
+  size_t pose = 0;
+
+  do
+  {
+    size_t find = code_.text.find(symbol, pose);
+    if(find == std::string::npos)
+      eof = true;
+    else
+    {
+      error_.printError(find, std::string("The name ‘" + symbol + "’ is a reserved word of C^ language"));
+      pose = find+1;
+    }
+  }
+  while(!eof);
 }
 
 void Parser::removeComments()

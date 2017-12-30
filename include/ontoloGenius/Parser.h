@@ -17,7 +17,8 @@ public:
   ~Parser();
 
 private:
-
+  void checkReserved();
+  void checkReservedWord(std::string symbol);
   void removeComments();
   void getSubsections();
   void getIfBlock();
