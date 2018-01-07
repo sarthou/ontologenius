@@ -19,8 +19,6 @@ struct OperatorDescriptor_t
 {
   std::string op;
   std::string function;
-  std::string function_2;
-  bool composite;
   bool whole_line;
   uint8_t priority;
   bool dont_carre;
@@ -34,7 +32,6 @@ public:
   Operators(std::string* code) {code_ = code; }
   ~Operators() {}
 
-  bool describe(std::string op, std::string function, std::string function_2, bool whole_line, uint8_t priority);
   bool describe(std::string op, std::string function, bool whole_line, uint8_t priority);
   void dontCarre(std::string op);
 

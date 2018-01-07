@@ -2,26 +2,11 @@
 
 #include <iostream>
 
-bool Operators::describe(std::string op, std::string function, std::string function_2, bool whole_line, uint8_t priority)
-{
-  OperatorDescriptor_t tmp;
-  tmp.op = op;
-  tmp.function = function;
-  tmp.function_2 = function_2;
-  tmp.composite = true;
-  tmp.priority = priority;
-  tmp.whole_line = whole_line;
-  tmp.dont_carre = false;
-  descriptors_.push_back(tmp);
-}
-
 bool Operators::describe(std::string op, std::string function, bool whole_line, uint8_t priority)
 {
   OperatorDescriptor_t tmp;
   tmp.op = op;
   tmp.function = function;
-  tmp.function_2 = "";
-  tmp.composite = false;
   tmp.priority = priority;
   tmp.whole_line = whole_line;
   tmp.dont_carre = false;
@@ -47,32 +32,16 @@ void Operators::op2Function()
       tmp_op.op = op->op;
       tmp_op.begin = i - op->op.size() + 1;
       std::cout << op->op << " " << (*code_)[tmp_op.begin];
-      if(op->composite)
-      {
-        std::cout << " composite";
-        if(op->whole_line)
-        {
-          std::cout << " whole";
-          tmp_op.end_braquet = code_->find(";", i);
-        }
-        else
-        {
-          std::cout << " next";
-          tmp_op.end_braquet = findNextOperator(i+1);
-        }
-        std::cout << " => " << (*code_)[tmp_op.end_braquet];
-      }
-      else
-      {
-        if(op->whole_line)
-          tmp_op.end_braquet = code_->find(";", i);
-        else
-          tmp_op.end_braquet = findNextOperator(i+1);
 
-        tmp_op.replace = "." + op->function + "(";
-        code_->insert(tmp_op.end_braquet, ")");
-        code_->replace(tmp_op.begin, tmp_op.op.size(), tmp_op.replace);
-      }
+      if(op->whole_line)
+        tmp_op.end_braquet = code_->find(";", i);
+      else
+        tmp_op.end_braquet = findNextOperator(i+1);
+
+      tmp_op.replace = "." + op->function + "(";
+      code_->insert(tmp_op.end_braquet, ")");
+      code_->replace(tmp_op.begin, tmp_op.op.size(), tmp_op.replace);
+
       std::cout << std::endl;
 
       operators_.push_back(tmp_op);
@@ -126,15 +95,24 @@ OperatorDescriptor_t* Operators::isPreOperator(size_t& pose)
 OperatorDescriptor_t* Operators::isPostOperator(size_t pose)
 {
   std::vector<OperatorDescriptor_t*> goods;
+  size_t offset = 0;
+
+  if((*code_)[pose] != '.')
+    return nullptr;
+
+    offset++;
+    while(((*code_)[pose+offset] == ' ') || (*code_)[pose+offset] == '\n')
+      offset++;
+
   for(size_t op = 0; op < descriptors_.size(); op++)
   {
-    if((descriptors_[op].composite == false) && (descriptors_[op].dont_carre == false))
+    if(descriptors_[op].dont_carre == false)
     {
       bool ok = true;
 
       for(size_t i = 0; i < descriptors_[op].function.size(); i++)
       {
-        if(descriptors_[op].function[i] != (*code_)[pose + i])
+        if(descriptors_[op].function[i] != (*code_)[pose + offset + i])
         {
           ok = false;
           break;
@@ -165,7 +143,7 @@ OperatorDescriptor_t* Operators::isPostOperator(size_t pose)
     return nullptr;
 }
 
-size_t Operators::findNextOperator(size_t pose)
+size_t Operators::findNextOperator(size_t pose) //TODO : take () in acount for priorities
 {
   bool find = false;
   OperatorDescriptor_t* op = nullptr;

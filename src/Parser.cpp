@@ -376,12 +376,11 @@ void Parser::getFromNamespace()
 
 void Parser::replaceOperator()
 {
-  code_.operators_.describe("+=", "opAssign", "opAdd", true, 0);
-  code_.operators_.describe("-=", "opAssign", "opSub", true, 0);
+  code_.operators_.describe("+=", "opAddAssign", true, 0);
+  code_.operators_.describe("-=", "opSubAssign", true, 0);
   code_.operators_.describe("-", "opSub", false, 0);
   code_.operators_.describe("+", "opAdd", false, 0);
   code_.operators_.describe("=", "opAssign", true, 0);
-  //code_.operators_.describe("=if", "opLoop", true, 0);
   code_.operators_.dontCarre("==");
   code_.operators_.dontCarre("!=");
   code_.operators_.dontCarre("=if");
