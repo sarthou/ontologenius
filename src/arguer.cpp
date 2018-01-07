@@ -172,7 +172,7 @@ int main(int argc, char** argv)
   ROS_DEBUG("ontoloGenius ready");
 
   std::string code = "";
-  code += "var::man = fablab.isIn();\n";
+  code += "var::man = fablab.isIn() - bob + max;\n";
   code += "if(adult == age) \n";
   code += "{\n";
   code += "//this is a comment\n";

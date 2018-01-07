@@ -28,6 +28,8 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
 
   getFromNamespace();
 
+  replaceOperator();
+
   getIfBlock();
 
   code_.print();
@@ -370,4 +372,62 @@ void Parser::getFromNamespace()
     }
   }
   while(!eof);
+}
+
+void Parser::replaceOperator()
+{
+  code_.operators_.describe("+=", "opAssign", "opAdd", true, 0);
+  code_.operators_.describe("-=", "opAssign", "opSub", true, 0);
+  code_.operators_.describe("-", "opSub", false, 0);
+  code_.operators_.describe("+", "opAdd", false, 0);
+  code_.operators_.describe("=", "opAssign", true, 0);
+  //code_.operators_.describe("=if", "opLoop", true, 0);
+  code_.operators_.dontCarre("==");
+  code_.operators_.dontCarre("!=");
+  code_.operators_.dontCarre("=if");
+
+  code_.operators_.op2Function();
+}
+
+void Parser::replaceOperator(std::string oper, std::string function, bool all_line)
+{
+  bool eof = false;
+
+  do
+  {
+    size_t op_pose = code_.text.find(oper, 0);
+    if(op_pose == std::string::npos)
+      eof = true;
+    else
+    {
+      if(all_line)
+      {
+        size_t semicolon = code_.text.find(";", op_pose);
+        code_.text.insert(semicolon, ")");
+      }
+      else
+      {
+        size_t end = op_pose + 1;
+        while((code_.text[end] != ';') && (!isOperator(code_.text[end])) && end < code_.text.size()) // TODO if "(" wait ")" => priorities
+          end++;
+
+        code_.text.insert(end, ")");
+      }
+      code_.text.replace(op_pose, 1, std::string("." + function + "("));
+    }
+  }
+  while(!eof);
+}
+
+void Parser::replaceOperator(std::string oper, std::string primary_function, std::string assign_function)
+{
+
+}
+
+bool Parser::isOperator(char character) // TODO test .opEct to remove priorities
+{
+  if((character == '+') || (character == '-') || (character == '=') || (character == '/') || (character == '*'))
+    return true;
+  else
+    return false;
 }
