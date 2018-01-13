@@ -128,15 +128,15 @@ size_t Code::getNbOfSublines(size_t& current_pose, size_t stop)
     {}
     else if(findHere(current_pose, "__comment("))
     {
-      size_t semicolon = text.find(";", current_pose);
-      nb_of_sublines += comments_[text.substr(current_pose, semicolon-current_pose+1)].lines_count.getNbLines() - 1;
-      current_pose = semicolon;
+      size_t braquet = text.find(")", current_pose);
+      nb_of_sublines += comments_[text.substr(current_pose, braquet-current_pose+1)].lines_count.getNbLines() - 1;
+      current_pose = braquet;
     }
     else if(findHere(current_pose, "__subsection("))
     {
-      size_t semicolon = text.find(";", current_pose);
-      nb_of_sublines += subsections_[text.substr(current_pose, semicolon-current_pose+1)].lines_count.getNbLines() - 1;
-      current_pose = semicolon;
+      size_t braquet = text.find(")", current_pose);
+      nb_of_sublines += subsections_[text.substr(current_pose, braquet-current_pose+1)].lines_count.getNbLines() - 1;
+      current_pose = braquet;
     }
     else if(findHere(current_pose, "__ifelse("))
     {

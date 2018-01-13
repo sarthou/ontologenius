@@ -17,12 +17,13 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
   code_.remove('\t');
 
   checkReservedWord("__string");
-  getStrings();
-
   checkReservedWord("__comment");
-  removeComments();
+
+  checkStringAndComment();
 
   checkReserved();
+
+  checkBraquets();
 
   getSubsections();
 
@@ -71,74 +72,89 @@ void Parser::checkReservedWord(std::string symbol)
   while(!eof);
 }
 
-void Parser::removeComments()
+void Parser::checkStringAndComment()
 {
-  bool eof = false;
-  uint16_t nb_comments = 0;
+  int16_t nb_comments = 0;
 
-  do
+  for(size_t pose = 0; pose < code_.text.size(); pose++)
   {
-    size_t comment = code_.text.find("//", 0);
-    if(comment == std::string::npos)
-      eof = true;
-    else
+    if((code_.text[pose] == '/') && (code_.text[pose+1] == '/'))
     {
-      size_t new_line = code_.text.find("\n", comment);
+      size_t new_line = code_.text.find("\n", pose);
       CommentBlock_t comment_i;
-      comment_i.comment = code_.text.substr(comment, new_line-comment);
-      comment_i.lines_count.setStart(code_.getLineNumber(comment));
+      comment_i.comment = code_.text.substr(pose, new_line-pose);
+      comment_i.lines_count.setStart(code_.getLineNumber(pose));
       comment_i.lines_count.setStop(comment_i.lines_count.getStart());
-      code_.comments_["__comment(" + std::to_string(nb_comments) + ");"] = comment_i;
-      code_.text.replace(comment, new_line-comment, "__comment(" + std::to_string(nb_comments) + ");");
+      code_.comments_["__comment(" + std::to_string(nb_comments) + ")"] = comment_i;
+      code_.text.replace(pose, new_line-pose, "__comment(" + std::to_string(nb_comments) + ")");
 
       nb_comments++;
     }
-  }
-  while(!eof);
-
-  eof = false;
-  do
-  {
-    size_t comment = code_.text.find("/*", 0);
-    if(comment == std::string::npos)
-      eof = true;
-    else
+    else if((code_.text[pose] == '/') && (code_.text[pose+1] == '*'))
     {
-      size_t comment_end = code_.text.find("*/", comment+2);
+      size_t comment_end = code_.text.find("*/", pose+2);
       if(comment_end != std::string::npos)
       {
         CommentBlock_t comment_i;
-        comment_i.comment = code_.text.substr(comment, comment_end-comment+2);
-        comment_i.lines_count.setStart(code_.getLineNumber(comment));
+        comment_i.comment = code_.text.substr(pose, comment_end-pose+2);
+        comment_i.lines_count.setStart(code_.getLineNumber(pose));
         comment_i.lines_count.setStop(code_.getLineNumber(comment_end));
-        code_.comments_["__comment(" + std::to_string(nb_comments) + ");"] = comment_i;
-        code_.text.replace(comment, comment_end-comment+2, "__comment(" + std::to_string(nb_comments) + ");");
+        code_.comments_["__comment(" + std::to_string(nb_comments) + ")"] = comment_i;
+        code_.text.replace(pose, comment_end-pose+2, "__comment(" + std::to_string(nb_comments) + ")");
 
         nb_comments++;
       }
       else
-      {
-        error_.printError(comment, "expected ‘*/’ at end of input");
-        eof = true;
-      }
+        error_.printError(pose, "expected ‘*/’ at end of input");
     }
-  }
-  while(!eof);
-
-  eof = false;
-  size_t bad_comment = 0;
-  do
-  {
-    bad_comment = code_.text.find("*/", bad_comment);
-    if(bad_comment == std::string::npos)
-      eof = true;
-    else
+    else if((code_.text[pose] == '*') && (code_.text[pose+1] == '/'))
     {
-      error_.printError(bad_comment, "expected primary-expression before ‘*/’ token");
-      bad_comment++;
+      error_.printError(pose, "expected primary-expression before ‘*/’ token");
+    }
+    else if(code_.text[pose] == '"')
+    {
+      size_t string_end = code_.text.find("\"", pose+1);
+      if(string_end != std::string::npos)
+      {
+        std::string text = code_.text.substr(pose+1, string_end-pose - 1);
+        std::string id = code_.strings_.add(text, code_.getLineNumber(pose), code_.getLineNumber(string_end));
+        code_.text.replace(pose, string_end-pose+1, id);
+      }
+      else
+        error_.printError(pose, "expected ‘\"’ at end of input");
     }
   }
-  while(!eof);
+}
+
+void Parser::checkBraquets()
+{
+  int16_t nb_braquet = 0;
+  size_t braquet_open, braquet_close = 0;
+
+  for(size_t pose = 0; pose < code_.text.size(); pose++)
+  {
+    if(code_.text[pose] == '(')
+    {
+      nb_braquet++;
+      if(nb_braquet == 1)
+        braquet_open = pose;
+    }
+    else if(code_.text[pose] == ')')
+    {
+      nb_braquet--;
+      if(nb_braquet == -1)
+        braquet_close = pose;
+    }
+    else if(code_.text[pose] == ';')
+    {
+      if(nb_braquet > 0)
+        error_.printError(braquet_open, "expected corresponding ‘)’ after previous '(’");
+      else if(nb_braquet < 0)
+        error_.printError(braquet_close, "expected primary-expression before ‘(’ token");
+
+      nb_braquet = 0;
+    }
+  }
 }
 
 /*
@@ -306,34 +322,6 @@ size_t Parser::getNextIfBlock(int& nb_block, size_t pose)
   return pose;
 }
 
-void Parser::getStrings()
-{
-  bool eof = false;
-
-  do
-  {
-    size_t strings = code_.text.find("\"", 0);
-    if(strings == std::string::npos)
-      eof = true;
-    else
-    {
-      size_t string_end = code_.text.find("\"", strings+1);
-      if(string_end != std::string::npos)
-      {
-        std::string text = code_.text.substr(strings+1, string_end-strings - 1);
-        std::string id = code_.strings_.add(text, code_.getLineNumber(strings), code_.getLineNumber(string_end));
-        code_.text.replace(strings, string_end-strings+1, id);
-      }
-      else
-      {
-        error_.printError(strings, "expected ‘\"’ at end of input");
-        eof = true;
-      }
-    }
-  }
-  while(!eof);
-}
-
 void Parser::getFromNamespace()
 {
   bool eof = false;
@@ -385,7 +373,7 @@ void Parser::replaceOperator()
   code_.operators_.dontCarre("!=");
   code_.operators_.dontCarre("=if");
 
-  code_.operators_.op2Function();
+  code_.operators_.op2Function(&error_);
 }
 
 void Parser::replaceOperator(std::string oper, std::string function, bool all_line)

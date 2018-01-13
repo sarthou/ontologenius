@@ -1,5 +1,7 @@
 #include "ontoloGenius/codeDescription/Operators.h"
 
+#include "ontoloGenius/Error.h"
+
 #include <iostream>
 
 bool Operators::describe(std::string op, std::string function, bool whole_line, uint8_t priority)
@@ -21,8 +23,9 @@ void Operators::dontCarre(std::string op)
   descriptors_.push_back(tmp);
 }
 
-void Operators::op2Function()
+void Operators::op2Function(Error* error)
 {
+  error_ = error;
   OperatorDescriptor_t* op = nullptr;
   for(size_t i = 0; i < code_->size(); i++)
   {
@@ -47,6 +50,7 @@ void Operators::op2Function()
       operators_.push_back(tmp_op);
     }
   }
+  error_ = nullptr;
 }
 
 OperatorDescriptor_t* Operators::isPreOperator(size_t& pose)
@@ -143,23 +147,50 @@ OperatorDescriptor_t* Operators::isPostOperator(size_t pose)
     return nullptr;
 }
 
-size_t Operators::findNextOperator(size_t pose) //TODO : take () in acount for priorities
+size_t Operators::findNextOperator(size_t pose) //TODO : add error
 {
   bool find = false;
   OperatorDescriptor_t* op = nullptr;
+  int16_t nb_braquet = 0;
+  size_t braquet_pose = 0;
 
   do
   {
-    if((*code_)[pose] == ';')
-      find = true;
-    else if((op = isPreOperator(pose)) != nullptr)
+    if((*code_)[pose] == '(')
+    {
+      if((braquet_pose == 0) && (nb_braquet == 0))
+        braquet_pose = pose;
+      nb_braquet++;
+      pose++;
+    }
+    else if((*code_)[pose] == ')')
+    {
+      nb_braquet--;
+      pose++;
+    }
+    else if((*code_)[pose] == ';')
     {
       find = true;
-      pose -= op->op.size() - 1;
+      if(nb_braquet > 0)
+        error_->printError(braquet_pose, "expected corresponding ‘)’ after previous '(’");
+      // TODO: if(nb_braquet < 0) => invert wi=hile (nb_braquet == 0 OR pose = initial pose)
+    }
+    else if((op = isPreOperator(pose)) != nullptr)
+    {
+      if(nb_braquet == 0)
+      {
+        find = true;
+        pose -= op->op.size() - 1;
+      }
+      else
+        pose++;
     }
     else if((op = isPostOperator(pose)) != nullptr)
     {
-      find = true;
+      if(nb_braquet == 0)
+        find = true;
+      else
+        pose++;
     }
     else
       pose++;
