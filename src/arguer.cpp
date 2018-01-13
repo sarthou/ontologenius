@@ -172,7 +172,7 @@ int main(int argc, char** argv)
   ROS_DEBUG("ontoloGenius ready");
 
   std::string code = "";
-  code += "var::man += fablab.isIn() - bob + max;\n";
+  code += "var::man += fablab.isIn() - (bob + max);\n";
   code += "if(adult == age) \n";
   code += "{\n";
   code += "//this is a comment\n";
@@ -183,7 +183,7 @@ int main(int argc, char** argv)
   code += "\tif(young == age)\n";
   code += "\t\tont::print(\"this is an else if\");\n";
   code += "/*\n";
-  code += "an other comment*/ /*\n\n";
+  code += "an other comment*/ \n";
   code += "ont::print(\"this is the else \");\n\n";
   code += "var::men =if(var::man == man);\n";
 

@@ -373,7 +373,7 @@ void Parser::replaceOperator()
   code_.operators_.dontCarre("!=");
   code_.operators_.dontCarre("=if");
 
-  code_.operators_.op2Function(&error_);
+  code_.operators_.op2Function();
 }
 
 void Parser::replaceOperator(std::string oper, std::string function, bool all_line)

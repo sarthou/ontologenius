@@ -24,18 +24,17 @@ struct OperatorDescriptor_t
   bool dont_carre;
 };
 
-class Error;
 
 class Operators
 {
 public:
-  Operators(std::string* code) {code_ = code; error_ = nullptr; }
+  Operators(std::string* code) {code_ = code; }
   ~Operators() {}
 
   bool describe(std::string op, std::string function, bool whole_line, uint8_t priority);
   void dontCarre(std::string op);
 
-  void op2Function(Error* error);
+  void op2Function();
 
   size_t findNextOperator(size_t pose);
   OperatorDescriptor_t* isPreOperator(size_t& pose);
@@ -43,7 +42,6 @@ public:
 
 private:
   std::string* code_;
-  Error* error_;
 
   std::vector<Operator_t> operators_;
   std::vector<OperatorDescriptor_t> descriptors_;

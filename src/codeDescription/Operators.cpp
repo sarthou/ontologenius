@@ -1,7 +1,5 @@
 #include "ontoloGenius/codeDescription/Operators.h"
 
-#include "ontoloGenius/Error.h"
-
 #include <iostream>
 
 bool Operators::describe(std::string op, std::string function, bool whole_line, uint8_t priority)
@@ -23,9 +21,8 @@ void Operators::dontCarre(std::string op)
   descriptors_.push_back(tmp);
 }
 
-void Operators::op2Function(Error* error)
+void Operators::op2Function()
 {
-  error_ = error;
   OperatorDescriptor_t* op = nullptr;
   for(size_t i = 0; i < code_->size(); i++)
   {
@@ -34,7 +31,6 @@ void Operators::op2Function(Error* error)
       Operator_t tmp_op;
       tmp_op.op = op->op;
       tmp_op.begin = i - op->op.size() + 1;
-      std::cout << op->op << " " << (*code_)[tmp_op.begin];
 
       if(op->whole_line)
         tmp_op.end_braquet = code_->find(";", i);
@@ -45,12 +41,9 @@ void Operators::op2Function(Error* error)
       code_->insert(tmp_op.end_braquet, ")");
       code_->replace(tmp_op.begin, tmp_op.op.size(), tmp_op.replace);
 
-      std::cout << std::endl;
-
       operators_.push_back(tmp_op);
     }
   }
-  error_ = nullptr;
 }
 
 OperatorDescriptor_t* Operators::isPreOperator(size_t& pose)
@@ -152,14 +145,11 @@ size_t Operators::findNextOperator(size_t pose) //TODO : add error
   bool find = false;
   OperatorDescriptor_t* op = nullptr;
   int16_t nb_braquet = 0;
-  size_t braquet_pose = 0;
 
   do
   {
     if((*code_)[pose] == '(')
     {
-      if((braquet_pose == 0) && (nb_braquet == 0))
-        braquet_pose = pose;
       nb_braquet++;
       pose++;
     }
@@ -169,12 +159,7 @@ size_t Operators::findNextOperator(size_t pose) //TODO : add error
       pose++;
     }
     else if((*code_)[pose] == ';')
-    {
       find = true;
-      if(nb_braquet > 0)
-        error_->printError(braquet_pose, "expected corresponding ‘)’ after previous '(’");
-      // TODO: if(nb_braquet < 0) => invert wi=hile (nb_braquet == 0 OR pose = initial pose)
-    }
     else if((op = isPreOperator(pose)) != nullptr)
     {
       if(nb_braquet == 0)
