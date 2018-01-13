@@ -49,7 +49,7 @@ public:
   Variables variables_;
   Operators operators_;
 
-  size_t getInBraquet(size_t begin, std::string& in_braquet, std::string& text);
+  size_t getInBraquet(size_t begin, std::string& in_bracket, std::string& text);
   bool findBefore(size_t begin, char symbol);
   bool findJustBefore(size_t begin, std::string symbol);
   std::string getWordBefore(size_t begin);

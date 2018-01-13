@@ -33,12 +33,12 @@ void Operators::op2Function()
       tmp_op.begin = i - op->op.size() + 1;
 
       if(op->whole_line)
-        tmp_op.end_braquet = code_->find(";", i);
+        tmp_op.end_bracket = code_->find(";", i);
       else
-        tmp_op.end_braquet = findNextOperator(i+1);
+        tmp_op.end_bracket = findNextOperator(i+1);
 
       tmp_op.replace = "." + op->function + "(";
-      code_->insert(tmp_op.end_braquet, ")");
+      code_->insert(tmp_op.end_bracket, ")");
       code_->replace(tmp_op.begin, tmp_op.op.size(), tmp_op.replace);
 
       operators_.push_back(tmp_op);
@@ -144,25 +144,25 @@ size_t Operators::findNextOperator(size_t pose) //TODO : add error
 {
   bool find = false;
   OperatorDescriptor_t* op = nullptr;
-  int16_t nb_braquet = 0;
+  int16_t nb_bracket = 0;
 
   do
   {
     if((*code_)[pose] == '(')
     {
-      nb_braquet++;
+      nb_bracket++;
       pose++;
     }
     else if((*code_)[pose] == ')')
     {
-      nb_braquet--;
+      nb_bracket--;
       pose++;
     }
     else if((*code_)[pose] == ';')
       find = true;
     else if((op = isPreOperator(pose)) != nullptr)
     {
-      if(nb_braquet == 0)
+      if(nb_bracket == 0)
       {
         find = true;
         pose -= op->op.size() - 1;
@@ -172,7 +172,7 @@ size_t Operators::findNextOperator(size_t pose) //TODO : add error
     }
     else if((op = isPostOperator(pose)) != nullptr)
     {
-      if(nb_braquet == 0)
+      if(nb_bracket == 0)
         find = true;
       else
         pose++;

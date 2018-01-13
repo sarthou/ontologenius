@@ -1,29 +1,29 @@
 #include "ontoloGenius/codeDescription/Code.h"
 
-size_t Code::getInBraquet(size_t begin, std::string& in_braquet, std::string& text)
+size_t Code::getInBraquet(size_t begin, std::string& in_bracket, std::string& text)
 {
-  size_t braquet = begin;
-  while((text[braquet] == ' ') || (text[braquet] == '\n'))
-    braquet += 1;
+  size_t bracket = begin;
+  while((text[bracket] == ' ') || (text[bracket] == '\n'))
+    bracket += 1;
 
-  if(text[braquet] == '(')
+  if(text[bracket] == '(')
   {
-    size_t first_braquet = braquet;
+    size_t first_bracket = bracket;
     int cpt = 1;
-    while((cpt != 0) && (braquet+1 < text.length()))
+    while((cpt != 0) && (bracket+1 < text.length()))
     {
-      ++braquet;
-      if(text[braquet] == '(')
+      ++bracket;
+      if(text[bracket] == '(')
         cpt++;
-      else if(text[braquet] == ')')
+      else if(text[bracket] == ')')
         cpt--;
 
     }
 
-    in_braquet = text.substr(first_braquet+1, braquet-first_braquet-1);
+    in_bracket = text.substr(first_bracket+1, bracket-first_bracket-1);
 
     if(cpt == 0)
-      return braquet;
+      return bracket;
     else
       return std::string::npos;
   }
@@ -128,15 +128,15 @@ size_t Code::getNbOfSublines(size_t& current_pose, size_t stop)
     {}
     else if(findHere(current_pose, "__comment("))
     {
-      size_t braquet = text.find(")", current_pose);
-      nb_of_sublines += comments_[text.substr(current_pose, braquet-current_pose+1)].lines_count.getNbLines() - 1;
-      current_pose = braquet;
+      size_t bracket = text.find(")", current_pose);
+      nb_of_sublines += comments_[text.substr(current_pose, bracket-current_pose+1)].lines_count.getNbLines() - 1;
+      current_pose = bracket;
     }
     else if(findHere(current_pose, "__subsection("))
     {
-      size_t braquet = text.find(")", current_pose);
-      nb_of_sublines += subsections_[text.substr(current_pose, braquet-current_pose+1)].lines_count.getNbLines() - 1;
-      current_pose = braquet;
+      size_t bracket = text.find(")", current_pose);
+      nb_of_sublines += subsections_[text.substr(current_pose, bracket-current_pose+1)].lines_count.getNbLines() - 1;
+      current_pose = bracket;
     }
     else if(findHere(current_pose, "__ifelse("))
     {
@@ -146,9 +146,9 @@ size_t Code::getNbOfSublines(size_t& current_pose, size_t stop)
     }
     else if(findHere(current_pose, "__string("))
     {
-      size_t braquet = text.find(")", current_pose);
-      nb_of_sublines += strings_.nbLines(text.substr(current_pose, braquet-current_pose+1)) - 1;
-      current_pose = braquet;
+      size_t bracket = text.find(")", current_pose);
+      nb_of_sublines += strings_.nbLines(text.substr(current_pose, bracket-current_pose+1)) - 1;
+      current_pose = bracket;
     }
     current_pose++;
   }

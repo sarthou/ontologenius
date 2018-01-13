@@ -12,7 +12,7 @@ struct Operator_t
   std::string replace;
   size_t begin;
   size_t size;
-  size_t end_braquet;
+  size_t end_bracket;
 };
 
 struct OperatorDescriptor_t

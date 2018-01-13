@@ -128,31 +128,31 @@ void Parser::checkStringAndComment()
 
 void Parser::checkBraquets()
 {
-  int16_t nb_braquet = 0;
-  size_t braquet_open, braquet_close = 0;
+  int16_t nb_bracket = 0;
+  size_t bracket_open, bracket_close = 0;
 
   for(size_t pose = 0; pose < code_.text.size(); pose++)
   {
     if(code_.text[pose] == '(')
     {
-      nb_braquet++;
-      if(nb_braquet == 1)
-        braquet_open = pose;
+      nb_bracket++;
+      if(nb_bracket == 1)
+        bracket_open = pose;
     }
     else if(code_.text[pose] == ')')
     {
-      nb_braquet--;
-      if(nb_braquet == -1)
-        braquet_close = pose;
+      nb_bracket--;
+      if(nb_bracket == -1)
+        bracket_close = pose;
     }
     else if(code_.text[pose] == ';')
     {
-      if(nb_braquet > 0)
-        error_.printError(braquet_open, "expected corresponding ‘)’ after previous '(’");
-      else if(nb_braquet < 0)
-        error_.printError(braquet_close, "expected primary-expression before ‘(’ token");
+      if(nb_bracket > 0)
+        error_.printError(bracket_open, "expected corresponding ‘)’ after previous '(’");
+      else if(nb_bracket < 0)
+        error_.printError(bracket_close, "expected primary-expression before ‘(’ token");
 
-      nb_braquet = 0;
+      nb_bracket = 0;
     }
   }
 }
@@ -168,20 +168,20 @@ void Parser::getSubsections()
 
   do
   {
-    size_t braquet = code_.text.find("{", begin);
-    if(braquet == std::string::npos)
+    size_t bracket = code_.text.find("{", begin);
+    if(bracket == std::string::npos)
       eof = true;
     else
     {
-      size_t braquet = code_.text.find("{", begin);
-      size_t first_braquet = braquet;
+      size_t bracket = code_.text.find("{", begin);
+      size_t first_bracket = bracket;
       int cpt = 1;
-      while((cpt != 0) && (code_.text[braquet] != '\0'))
+      while((cpt != 0) && (code_.text[bracket] != '\0'))
       {
-        ++braquet;
-        if(code_.text[braquet] == '{')
+        ++bracket;
+        if(code_.text[bracket] == '{')
           cpt++;
-        else if(code_.text[braquet] == '}')
+        else if(code_.text[bracket] == '}')
           cpt--;
 
       }
@@ -189,18 +189,18 @@ void Parser::getSubsections()
       if(cpt == 0)
       {
         SubsectionBlock_t subsection_i;
-        subsection_i.subsection = code_.text.substr(first_braquet+1, braquet-first_braquet-1);
-        subsection_i.lines_count.setStart(code_.getLineNumber(first_braquet));
-        subsection_i.lines_count.setStop(code_.getLineNumber(braquet));
+        subsection_i.subsection = code_.text.substr(first_bracket+1, bracket-first_bracket-1);
+        subsection_i.lines_count.setStart(code_.getLineNumber(first_bracket));
+        subsection_i.lines_count.setStop(code_.getLineNumber(bracket));
 
         code_.subsections_["__subsection(" + std::to_string(nb_sub) + ");"] = subsection_i;
-        code_.text.replace(first_braquet, braquet-first_braquet+1, "__subsection(" + std::to_string(nb_sub) + ");");
+        code_.text.replace(first_bracket, bracket-first_bracket+1, "__subsection(" + std::to_string(nb_sub) + ");");
 
         nb_sub++;
       }
       else
       {
-        error_.printError(first_braquet, "expected ‘}’ at end of input");
+        error_.printError(first_bracket, "expected ‘}’ at end of input");
         eof = true;
       }
     }
