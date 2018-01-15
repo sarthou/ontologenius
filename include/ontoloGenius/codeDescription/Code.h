@@ -11,6 +11,7 @@
 
 #include "ontoloGenius/codeDescription/Variables.h"
 #include "ontoloGenius/codeDescription/String.h"
+#include "ontoloGenius/codeDescription/Operators.h"
 
 struct IfBlock_t
 {
@@ -35,7 +36,7 @@ struct SubsectionBlock_t
 class Code
 {
 public:
-  Code(std::string code) {text = code; }
+  Code(std::string code) : operators_(&text) {text = code; }
   ~Code() {}
 
   std::string text;
@@ -46,8 +47,9 @@ public:
   std::map<std::string, IfBlock_t> ifelse_;
   String strings_;
   Variables variables_;
+  Operators operators_;
 
-  size_t getInBraquet(size_t begin, std::string& in_braquet, std::string& text);
+  size_t getInBraquet(size_t begin, std::string& in_bracket, std::string& text);
   bool findBefore(size_t begin, char symbol);
   bool findJustBefore(size_t begin, std::string symbol);
   std::string getWordBefore(size_t begin);

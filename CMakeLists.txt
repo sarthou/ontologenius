@@ -134,6 +134,7 @@ add_library(codeDescription_lib
   src/codeDescription/String.cpp
   src/codeDescription/FunctionDescriptor.cpp
   src/codeDescription/FunctionContainer.cpp
+  src/codeDescription/Operators.cpp
 )
 
 add_library(ontologenius_lib

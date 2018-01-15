@@ -116,7 +116,7 @@ void Error::printMessage(size_t pose, std::string message)
     size_t subsection_pose = full_line.find("__subsection(");
     std::string subsection_no;
     code_->getInBraquet(subsection_pose+12, subsection_no, full_line);
-    std::string subsection = "__subsection(" + subsection_no + ");";
+    std::string subsection = "__subsection(" + subsection_no + ")";
     full_line.replace(subsection_pose, subsection.size(), std::string("{" + code_->subsections_[subsection].subsection + "}"));
     if(subsection_pose + 1 < (pose - error_begin + 1))
       pose += std::string("{" + code_->subsections_[subsection].subsection + "}").size() - subsection.size();
@@ -127,7 +127,7 @@ void Error::printMessage(size_t pose, std::string message)
     size_t comment_pose = full_line.find("__comment(");
     std::string comment_no;
     code_->getInBraquet(comment_pose+9, comment_no, full_line);
-    std::string comment = "__comment(" + comment_no + ");";
+    std::string comment = "__comment(" + comment_no + ")";
     full_line.replace(comment_pose, comment.size(), code_->comments_[comment].comment );
     if(comment_pose + 1 < (pose - error_begin + 1))
       pose += code_->comments_[comment].comment.size() - comment.size();
