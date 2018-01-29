@@ -136,6 +136,7 @@ add_library(codeDescription_lib
   src/codeDescription/FunctionContainer.cpp
   src/codeDescription/Operators.cpp
 )
+add_dependencies(codeDescription_lib ontologenius_gencpp)
 
 add_library(ontologenius_lib
   src/TreeObject.cpp
@@ -146,7 +147,6 @@ add_library(ontologenius_lib
   src/Parser.cpp
   src/Error.cpp
 )
-
 add_dependencies(ontologenius_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_lib codeDescription_lib)
 target_link_libraries(ontologenius_lib ${OpenCV_LIBS})
