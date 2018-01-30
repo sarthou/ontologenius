@@ -140,7 +140,7 @@ OperatorDescriptor_t* Operators::isPostOperator(size_t pose)
     return nullptr;
 }
 
-size_t Operators::findNextOperator(size_t pose) //TODO : add error
+size_t Operators::findNextOperator(size_t pose)
 {
   bool find = false;
   OperatorDescriptor_t* op = nullptr;
@@ -156,7 +156,10 @@ size_t Operators::findNextOperator(size_t pose) //TODO : add error
     else if((*code_)[pose] == ')')
     {
       nb_bracket--;
-      pose++;
+      if(nb_bracket < 0)
+        find = true;
+      else
+        pose++;
     }
     else if((*code_)[pose] == ';')
       find = true;
