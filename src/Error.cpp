@@ -92,6 +92,8 @@ void Error::printMessage(size_t pose, std::string message)
   size_t new_line = code_->text.find("\n", pose);
   std::string full_line = code_->text.substr(error_begin, new_line-error_begin);
 
+  code_->operators_.function2Op(full_line, error_begin, pose);
+
   while(full_line.find("__ont(") != std::string::npos)
   {
     size_t ont_pose = full_line.find("__ont(");

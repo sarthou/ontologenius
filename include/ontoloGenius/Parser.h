@@ -26,10 +26,7 @@ private:
   size_t getNextIfBlock(int& nb_block, size_t pose);
   void getFromNamespace();
   void replaceOperator();
-  void replaceOperator(std::string oper, std::string function, bool all_line = false);
-  void replaceOperator(std::string oper, std::string primary_function, std::string assign_function);
-  bool isOperator(char character);
-
+  
   Parser* subparser_;
   TreeObject& onto_;
 

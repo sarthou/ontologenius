@@ -249,8 +249,10 @@ void Parser::getIfBlock()
       eof = true;
     else
     {
-      if(((code_.text[else_error - 1] == ' ') || (code_.text[else_error - 1] == '\n') || (code_.text[else_error - 1] == ';')) &&
-        ((code_.text[else_error + 4] == ' ') || (code_.text[else_error + 4 ] == '\n') || (code_.text[else_error + 4] == ';')))
+      size_t prev = else_error - 1;
+      size_t post = else_error + 4;
+      if(((code_.text[prev] == ' ') || (code_.text[prev] == '\n') || (code_.text[prev] == ';') || (code_.text[prev] == ')') || (code_.text[prev] == '(')) &&
+        ((code_.text[post] == ' ') || (code_.text[post] == '\n') || (code_.text[post] == ';') || (code_.text[post] == ')') || (code_.text[post] == '(')))
         {
           error_.printError(else_error, "‘else’ without a previous ‘if’");
           eof = true;
@@ -374,47 +376,4 @@ void Parser::replaceOperator()
   code_.operators_.dontCarre("=if");
 
   code_.operators_.op2Function();
-}
-
-void Parser::replaceOperator(std::string oper, std::string function, bool all_line)
-{
-  bool eof = false;
-
-  do
-  {
-    size_t op_pose = code_.text.find(oper, 0);
-    if(op_pose == std::string::npos)
-      eof = true;
-    else
-    {
-      if(all_line)
-      {
-        size_t semicolon = code_.text.find(";", op_pose);
-        code_.text.insert(semicolon, ")");
-      }
-      else
-      {
-        size_t end = op_pose + 1;
-        while((code_.text[end] != ';') && (!isOperator(code_.text[end])) && end < code_.text.size()) // TODO if "(" wait ")" => priorities
-          end++;
-
-        code_.text.insert(end, ")");
-      }
-      code_.text.replace(op_pose, 1, std::string("." + function + "("));
-    }
-  }
-  while(!eof);
-}
-
-void Parser::replaceOperator(std::string oper, std::string primary_function, std::string assign_function)
-{
-
-}
-
-bool Parser::isOperator(char character) // TODO test .opEct to remove priorities
-{
-  if((character == '+') || (character == '-') || (character == '=') || (character == '/') || (character == '*'))
-    return true;
-  else
-    return false;
 }

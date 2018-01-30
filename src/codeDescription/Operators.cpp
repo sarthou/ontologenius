@@ -46,6 +46,39 @@ void Operators::op2Function()
   }
 }
 
+void Operators::function2Op(std::string& text, size_t pose, size_t& track_pose)
+{
+  int16_t init_pose = pose;
+  int16_t max_pose = text.size() + init_pose;
+  size_t stop = 0;
+  do
+  {
+    int16_t tmp_max = -1;
+    size_t op_index = 0;
+    for(size_t i = 0; i < operators_.size(); i++)
+    {
+      if(((int16_t)operators_[i].begin > tmp_max) && ((int16_t)operators_[i].begin < max_pose))
+      {
+        tmp_max = operators_[i].begin;
+        op_index = i;
+      }
+    }
+    max_pose = tmp_max;
+    stop++;
+
+    if(max_pose >= init_pose)
+    {
+      text.replace(operators_[op_index].begin, operators_[op_index].replace.size(), operators_[op_index].op);
+      if(operators_[op_index].begin < track_pose)
+        track_pose -= operators_[op_index].replace.size() - operators_[op_index].op.size();
+      text.replace(operators_[op_index].end_bracket, 1, "");
+      if(operators_[op_index].end_bracket < track_pose)
+        track_pose -= 1;
+    }
+  }
+  while((max_pose >= init_pose) && (stop < 10));
+}
+
 OperatorDescriptor_t* Operators::isPreOperator(size_t& pose)
 {
   std::vector<OperatorDescriptor_t*> goods;
@@ -140,7 +173,7 @@ OperatorDescriptor_t* Operators::isPostOperator(size_t pose)
     return nullptr;
 }
 
-size_t Operators::findNextOperator(size_t pose) //TODO : add error
+size_t Operators::findNextOperator(size_t pose)
 {
   bool find = false;
   OperatorDescriptor_t* op = nullptr;
@@ -156,7 +189,10 @@ size_t Operators::findNextOperator(size_t pose) //TODO : add error
     else if((*code_)[pose] == ')')
     {
       nb_bracket--;
-      pose++;
+      if(nb_bracket < 0)
+        find = true;
+      else
+        pose++;
     }
     else if((*code_)[pose] == ';')
       find = true;
