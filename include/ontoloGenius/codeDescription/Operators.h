@@ -35,6 +35,7 @@ public:
   void dontCarre(std::string op);
 
   void op2Function();
+  void function2Op(std::string& text, size_t pose);
 
   size_t findNextOperator(size_t pose);
   OperatorDescriptor_t* isPreOperator(size_t& pose);
