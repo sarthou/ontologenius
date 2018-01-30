@@ -46,7 +46,7 @@ void Operators::op2Function()
   }
 }
 
-void Operators::function2Op(std::string& text, size_t pose)
+void Operators::function2Op(std::string& text, size_t pose, size_t& track_pose)
 {
   int16_t init_pose = pose;
   int16_t max_pose = text.size() + init_pose;
@@ -69,7 +69,11 @@ void Operators::function2Op(std::string& text, size_t pose)
     if(max_pose >= init_pose)
     {
       text.replace(operators_[op_index].begin, operators_[op_index].replace.size(), operators_[op_index].op);
+      if(operators_[op_index].begin < track_pose)
+        track_pose -= operators_[op_index].replace.size() - operators_[op_index].op.size();
       text.replace(operators_[op_index].end_bracket, 1, "");
+      if(operators_[op_index].end_bracket < track_pose)
+        track_pose -= 1;
     }
   }
   while((max_pose >= init_pose) && (stop < 10));
