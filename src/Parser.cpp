@@ -249,8 +249,10 @@ void Parser::getIfBlock()
       eof = true;
     else
     {
-      if(((code_.text[else_error - 1] == ' ') || (code_.text[else_error - 1] == '\n') || (code_.text[else_error - 1] == ';')) &&
-        ((code_.text[else_error + 4] == ' ') || (code_.text[else_error + 4 ] == '\n') || (code_.text[else_error + 4] == ';')))
+      size_t prev = else_error - 1;
+      size_t post = else_error + 4;
+      if(((code_.text[prev] == ' ') || (code_.text[prev] == '\n') || (code_.text[prev] == ';') || (code_.text[prev] == ')') || (code_.text[prev] == '(')) &&
+        ((code_.text[post] == ' ') || (code_.text[post] == '\n') || (code_.text[post] == ';') || (code_.text[post] == ')') || (code_.text[post] == '(')))
         {
           error_.printError(else_error, "‘else’ without a previous ‘if’");
           eof = true;
