@@ -66,9 +66,14 @@ std::string Code::getWordBefore(size_t begin)
   return result;
 }
 
-std::string Code::getWordAfter(size_t begin)
+std::string Code::getWordAfter(size_t begin, bool just_after)
 {
+  if(just_after == false)
+    while((text[begin+1] == ' ') || (text[begin+1] == '\n'))
+      begin += 1;
+
   size_t i = begin;
+
   while((i != text.size() - 1) && ((text[i+1] >= '0' && text[i+1] <= '9') ||
                                     (text[i+1] >= 'A' && text[i+1] <= 'Z') ||
                                     (text[i+1] >= 'a' && text[i+1] <= 'z') ||

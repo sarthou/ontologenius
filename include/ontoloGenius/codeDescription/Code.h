@@ -53,7 +53,7 @@ public:
   bool findBefore(size_t begin, char symbol);
   bool findJustBefore(size_t begin, std::string symbol);
   std::string getWordBefore(size_t begin);
-  std::string getWordAfter(size_t begin);
+  std::string getWordAfter(size_t begin, bool just_after = true);
   size_t findAfter(size_t begin, std::string symbol);
   bool findHere(size_t begin, std::string symbol);
 
