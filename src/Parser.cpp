@@ -11,8 +11,8 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
   code_.lines_counter_.current_line_ = current_line;
   code_.lines_counter_.setStart(current_line);
 
-  code_.print();
-  std::cout << "----------------------" << std::endl;
+  //code_.print();
+  //std::cout << "----------------------" << std::endl;
 
   code_.remove('\t');
 
@@ -33,10 +33,11 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
 
   getIfBlock();
 
-  code_.print();
+  error_.printStatus();
+
   std::cout << "----------------------" << std::endl;
 
-  error_.printStatus();
+  code_.print();
 }
 
 Parser::~Parser()
