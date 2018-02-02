@@ -180,7 +180,7 @@ int main(int argc, char** argv)
   code += "\t\tont::print(var::man);\n";
   code += "}\n";
   code += "else if(old == /* */age)\n";
-  code += "\tif(young == age)\n";
+  code += "\tif(/*young == age*/)\n";
   code += "\t\tont::print(\"this is an else if\");\n";
   code += "/*\n";
   code += "an other comment*/ \n";

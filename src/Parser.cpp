@@ -31,7 +31,9 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
 
   replaceOperator();
 
-  getIfBlock();
+  code_.ifelse_.compact(code_, error_);
+
+  splitBySemicolon();
 
   error_.printStatus();
 
@@ -224,107 +226,6 @@ void Parser::getSubsections()
   while(!eof);
 }
 
-/*
-* replace condition (if and else) by the key word __ifBlock with the corresponding index
-*/
-void Parser::getIfBlock()
-{
-  int nb_block = 0;
-  size_t pose = 0;
-  bool eof = false;
-
-  do
-  {
-    pose = getNextIfBlock(nb_block, pose);
-    if(pose == std::string::npos)
-      eof = true;
-  }
-  while(!eof);
-
-  eof = false;
-  pose = 0;
-  do
-  {
-    size_t else_error = code_.text.find("else", pose);
-    if(else_error == std::string::npos)
-      eof = true;
-    else
-    {
-      size_t prev = else_error - 1;
-      size_t post = else_error + 4;
-      if(((code_.text[prev] == ' ') || (code_.text[prev] == '\n') || (code_.text[prev] == ';') || (code_.text[prev] == ')') || (code_.text[prev] == '(')) &&
-        ((code_.text[post] == ' ') || (code_.text[post] == '\n') || (code_.text[post] == ';') || (code_.text[post] == ')') || (code_.text[post] == '(')))
-        {
-          error_.printError(else_error, "‘else’ without a previous ‘if’");
-          eof = true;
-        }
-        else
-          pose = else_error + 1;
-    }
-  }
-  while(!eof);
-}
-
-size_t Parser::getNextIfBlock(int& nb_block, size_t pose)
-{
-  size_t end = 0;
-
-  size_t if_start = code_.text.find("if", pose);
-  if(if_start == std::string::npos)
-    return std::string::npos;
-  else
-  {
-    IfBlock_t if_block;
-    pose = code_.getInBraquet(if_start+2, if_block.IfBlock_condition, code_.text);
-
-    if(pose == if_start+2)
-    {
-      error_.printError(pose, "expected ‘(’ after 'if’");
-      return std::string::npos;
-    }
-    else if(pose == std::string::npos)
-    {
-      error_.printError(if_start+2, "expected corresponding ‘)’ after previous '(’");
-      return std::string::npos;
-    }
-
-    if(code_.findAfter(pose, "if") != std::string::npos)
-      getNextIfBlock(nb_block, pose);
-
-    size_t semicolon = code_.text.find(";", pose);
-    if_block.IfBlock_if = code_.text.substr(pose+1, semicolon-pose);
-    if_block.lines_count.setStart(code_.getLineNumber(if_start));
-    if_block.lines_count.setStop(code_.getLineNumber(semicolon));
-    pose = semicolon;
-    end = semicolon;
-
-    if(code_.findBefore(if_start, '='))
-      return code_.text.find(";", if_start);
-
-    size_t else_start = code_.findAfter(pose, "else");
-    if(else_start != std::string::npos)
-    {
-      if(code_.findAfter(else_start+4, "if") != std::string::npos)
-        getNextIfBlock(nb_block, else_start);
-
-      semicolon = code_.text.find(";", else_start);
-      if_block.IfBlock_else = code_.text.substr(else_start+4, semicolon-else_start-4+1);
-      if_block.lines_count.setStop(code_.getLineNumber(semicolon));
-      pose = semicolon;
-      end = semicolon;
-    }
-
-    code_.ifelse_["__ifelse(" + std::to_string(nb_block) + ");"] = if_block;
-    code_.text.replace(if_start, end-if_start+1, "__ifelse(" + std::to_string(nb_block) + ");");
-
-    pose -= (end-if_start+1) - std::string("__ifelse(" + std::to_string(nb_block) + ");").size();
-
-    nb_block++;
-  }
-
-  return pose;
-}
-
 void Parser::getFromNamespace()
 {
   bool eof = false;
@@ -377,4 +278,95 @@ void Parser::replaceOperator()
   code_.operators_.dontCarre("=if");
 
   code_.operators_.op2Function();
+}
+
+std::map<size_t, std::string> Parser::splitBySemicolon()
+{
+  size_t start = 0;
+  size_t stop = 0;
+  std::map<size_t, std::string> splited;
+
+  while(stop != std::string::npos)
+  {
+    stop = code_.text.find(";", start);
+    if(stop != std::string::npos)
+    {
+      std::string subcode = code_.text.substr(start, stop - start);
+      code_.goToEffectiveCode(subcode, start);
+      size_t if_pose = subcode.find("__ifelse(");
+      if(if_pose == 0)
+      {
+        std::string ifelse_id = subcode + ";";
+        splitIfBlock(splited, ifelse_id);
+      }
+      else if(if_pose != std::string::npos)
+        error_.printError(start+if_pose, "expected ‘;’ before 'if'");
+      else
+          splited[start] = subcode;
+
+      start = stop +1;
+    }
+  }
+
+  for (std::map<size_t,std::string>::iterator it=splited.begin(); it!=splited.end(); ++it)
+    std::cout << it->first << " => " << it->second << '\n';
+
+  return splited;
+}
+
+void Parser::splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id)
+{
+  /*Get code of if condition*/
+  std::string if_code = code_.ifelse_[ifelse_id].IfBlock_if;
+  size_t if_start = code_.ifelse_[ifelse_id].if_pose;
+
+  code_.goToEffectiveCode(if_code, if_start);
+  if(if_code != "")
+  {
+    size_t if_pose = if_code.find("__ifelse(");
+    if(if_pose == 0)
+    {
+      std::string sub_ifelse_id = if_code;
+      splitIfBlock(splited, sub_ifelse_id);
+    }
+    else if(if_pose != std::string::npos)
+      error_.printError(if_start+if_pose, "expected ‘;’ before 'if'");
+    else
+      splited[if_start] = if_code.substr(0, if_code.size() - 1);
+  }
+
+  /*Get code of else condition*/
+  std::string else_code = code_.ifelse_[ifelse_id].IfBlock_else;
+  size_t else_start = code_.ifelse_[ifelse_id].else_pose;
+
+  code_.goToEffectiveCode(else_code, else_start);
+  if(else_code != "")
+  {
+    size_t if_pose = else_code.find("__ifelse(");
+    if(if_pose == 0)
+    {
+      std::string sub_ifelse_id = else_code;
+      splitIfBlock(splited, sub_ifelse_id);
+    }
+    else if(if_pose != std::string::npos)
+      error_.printError(else_start+if_pose, "expected ‘;’ before 'if'");
+    else
+      splited[else_start] = else_code.substr(0, else_code.size() - 1);;
+  }
+
+  /*Check semicolon in condition*/
+  std::string condition = code_.ifelse_[ifelse_id].IfBlock_condition;
+  size_t condition_start = code_.ifelse_[ifelse_id].cond_pose;
+  error_.printWarning(condition_start, "condition_start");
+  std::cout << condition_start << ";" << code_.text[condition_start] << code_.text[condition_start+1] << code_.text[condition_start+2] << std::endl;
+
+  //code_.goToEffectiveCode(condition, condition_start);
+  if(condition != "")
+  {
+    std::cout << "ok" ;
+  }
+  else
+  {
+    error_.printError(condition_start, "expected primary-expression before ‘)’ token");
+  }
 }

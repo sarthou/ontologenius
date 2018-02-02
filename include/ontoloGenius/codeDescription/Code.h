@@ -13,19 +13,8 @@
 
 #include "ontoloGenius/codeDescription/Types/VariablesType.h"
 #include "ontoloGenius/codeDescription/Types/StringType.h"
-#include "ontoloGenius/codeDescription/Operators.h"
-
-struct IfBlock_t
-{
-  std::string IfBlock_condition;
-  size_t cond_pose;
-  std::string IfBlock_if;
-  size_t if_pose;
-  std::string IfBlock_else;
-  size_t else_pose;
-  LinesCounter lines_count;
-  std::string initial_code;
-};
+#include "ontoloGenius/codeDescription/Syntax/Operators.h"
+#include "ontoloGenius/codeDescription/Syntax/IfelseCF.h"
 
 struct CommentBlock_t
 {
@@ -45,12 +34,9 @@ public:
   Code(std::string code) : TextManipulator(code), operators_(&text) {}
   ~Code() {}
 
-  std::string text;
-  LinesCounter lines_counter_;
-
   std::map<std::string, CommentBlock_t> comments_;
   std::map<std::string, SubsectionBlock_t> subsections_;
-  std::map<std::string, IfBlock_t> ifelse_;
+  IfelseCF ifelse_;
   StringType strings_;
   VariablesType variables_;
   Operators operators_;

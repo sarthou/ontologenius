@@ -135,7 +135,8 @@ add_library(codeDescription_lib
   src/codeDescription/TextManipulator.cpp
   src/codeDescription/Code.cpp
   src/codeDescription/Namespace.cpp
-  src/codeDescription/Operators.cpp
+  src/codeDescription/Syntax/Operators.cpp
+  src/codeDescription/Syntax/IfelseCF.cpp
 )
 add_dependencies(codeDescription_lib ontologenius_gencpp)
 
