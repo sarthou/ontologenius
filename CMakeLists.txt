@@ -132,6 +132,7 @@ add_library(codeDescription_lib
   src/codeDescription/Types/StringType.cpp
   src/codeDescription/Functions/FunctionDescriptor.cpp
   src/codeDescription/Functions/FunctionContainer.cpp
+  src/codeDescription/TextManipulator.cpp
   src/codeDescription/Code.cpp
   src/codeDescription/Namespace.cpp
   src/codeDescription/Operators.cpp

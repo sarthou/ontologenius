@@ -9,16 +9,22 @@
 
 #include <stdint.h>
 
-#include "ontoloGenius/codeDescription/Variables.h"
-#include "ontoloGenius/codeDescription/String.h"
+#include "ontoloGenius/codeDescription/TextManipulator.h"
+
+#include "ontoloGenius/codeDescription/Types/VariablesType.h"
+#include "ontoloGenius/codeDescription/Types/StringType.h"
 #include "ontoloGenius/codeDescription/Operators.h"
 
 struct IfBlock_t
 {
   std::string IfBlock_condition;
+  size_t cond_pose;
   std::string IfBlock_if;
+  size_t if_pose;
   std::string IfBlock_else;
+  size_t else_pose;
   LinesCounter lines_count;
+  std::string initial_code;
 };
 
 struct CommentBlock_t
@@ -33,10 +39,10 @@ struct SubsectionBlock_t
   LinesCounter lines_count;
 };
 
-class Code
+class Code : public TextManipulator
 {
 public:
-  Code(std::string code) : operators_(&text) {text = code; }
+  Code(std::string code) : TextManipulator(code), operators_(&text) {}
   ~Code() {}
 
   std::string text;
@@ -45,23 +51,14 @@ public:
   std::map<std::string, CommentBlock_t> comments_;
   std::map<std::string, SubsectionBlock_t> subsections_;
   std::map<std::string, IfBlock_t> ifelse_;
-  String strings_;
-  Variables variables_;
+  StringType strings_;
+  VariablesType variables_;
   Operators operators_;
-
-  size_t getInBraquet(size_t begin, std::string& in_bracket, std::string& text);
-  bool findBefore(size_t begin, char symbol);
-  bool findJustBefore(size_t begin, std::string symbol);
-  std::string getWordBefore(size_t begin);
-  std::string getWordAfter(size_t begin, bool just_after = true);
-  size_t findAfter(size_t begin, std::string symbol);
-  bool findHere(size_t begin, std::string symbol);
 
   size_t getLineNumber(size_t final_pose);
   size_t getNbOfSublines(size_t& current_pose, size_t stop = -1);
 
-  void print() {std::cout << text << std::endl; }
-  void remove(char character);
+  void goToEffectiveCode(std::string& code, size_t& pose);
 
 private:
 };
