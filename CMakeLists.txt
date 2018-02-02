@@ -128,12 +128,12 @@ include_directories(
 
 ## Declare a C++ library
 add_library(codeDescription_lib
-  src/codeDescription/Variables.cpp
+  src/codeDescription/Types/VariablesType.cpp
+  src/codeDescription/Types/StringType.cpp
+  src/codeDescription/Functions/FunctionDescriptor.cpp
+  src/codeDescription/Functions/FunctionContainer.cpp
   src/codeDescription/Code.cpp
   src/codeDescription/Namespace.cpp
-  src/codeDescription/String.cpp
-  src/codeDescription/FunctionDescriptor.cpp
-  src/codeDescription/FunctionContainer.cpp
   src/codeDescription/Operators.cpp
 )
 add_dependencies(codeDescription_lib ontologenius_gencpp)
