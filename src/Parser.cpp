@@ -31,7 +31,7 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
 
   replaceOperator();
 
-  code_.ifelse_.compact(code_, error_);
+  code_.ifelse_.compact(code_, &error_);
 
   splitBySemicolon();
 

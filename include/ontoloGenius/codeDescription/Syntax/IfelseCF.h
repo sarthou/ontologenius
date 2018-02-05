@@ -27,8 +27,8 @@ public:
   IfelseCF() {}
   ~IfelseCF() {}
 
-  void compact(Code& code, Error& error);
-  void uncompact(Code& code, Error& error);
+  void compact(Code& code, Error* error = nullptr);
+  void uncompact(Code& code);
 
   IfBlock_t &operator[] (std::string index) {return ifelse_[index]; }
 
@@ -36,7 +36,7 @@ private:
   std::map<std::string, IfBlock_t> ifelse_;
   std::map<std::string, std::string> ifelse_code_;
 
-  size_t getNextIfBlock(int& nb_block, size_t pose, Code& code, Error& error);
+  size_t getNextIfBlock(int& nb_block, size_t pose, Code& code, Error* error = nullptr);
 };
 
 #endif

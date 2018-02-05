@@ -87,17 +87,7 @@ void Error::printCursor(size_t pose)
 
 void Error::printMessage(size_t pose, std::string message)
 {
-  /*while(full_line.find("__ifelse(") != std::string::npos)
-  {
-    size_t ifelse_pose = full_line.find("__ifelse(");
-    size_t ifelse_end = full_line.find(")", ifelse_pose);
-    std::string ifelse = code_->text.substr(ifelse_pose, ifelse_end-ifelse_pose+1);
-    std::cout << "*" << ifelse << "*" << std::endl;
-    std::string initial_code = code_->ifelse_[ifelse].initial_code;
-    full_line.replace(ifelse_pose, ifelse.size(), initial_code);
-    if(ifelse_pose + 1 < (pose - error_begin + 1))
-      pose += ifelse.size() - initial_code.size();
-  }*/
+  code_->ifelse_.uncompact(*code_);
 
   size_t line_error = code_->getLineNumber(pose);
   size_t error_begin = getBeginOfLine(line_error);
@@ -181,4 +171,6 @@ void Error::printMessage(size_t pose, std::string message)
   std::cout << "[" << line_error << ":" << (pose - error_begin + 1) << "] " << message << std::endl;
   std::cout << full_line << std::endl;
   printCursor(pose - error_begin);
+
+  code_->ifelse_.compact(*code_, this);
 }

@@ -6,7 +6,7 @@
 /*
 * replace condition (if and else) by the key word __ifelse with the corresponding index
 */
-void IfelseCF::compact(Code& code, Error& error)
+void IfelseCF::compact(Code& code, Error* error)
 {
   int nb_block = 0;
   size_t pose = 0;
@@ -34,7 +34,8 @@ void IfelseCF::compact(Code& code, Error& error)
       if(((code.text[prev] == ' ') || (code.text[prev] == '\n') || (code.text[prev] == ';') || (code.text[prev] == ')') || (code.text[prev] == '(')) &&
         ((code.text[post] == ' ') || (code.text[post] == '\n') || (code.text[post] == ';') || (code.text[post] == ')') || (code.text[post] == '(')))
         {
-          error.printError(else_error, "‘else’ without a previous ‘if’");
+          if(error)
+            error->printError(else_error, "‘else’ without a previous ‘if’");
           eof = true;
         }
         else
@@ -44,7 +45,7 @@ void IfelseCF::compact(Code& code, Error& error)
   while(!eof);
 }
 
-size_t IfelseCF::getNextIfBlock(int& nb_block, size_t pose, Code& code, Error& error)
+size_t IfelseCF::getNextIfBlock(int& nb_block, size_t pose, Code& code, Error* error)
 {
   size_t end = 0;
 
@@ -59,12 +60,14 @@ size_t IfelseCF::getNextIfBlock(int& nb_block, size_t pose, Code& code, Error& e
 
     if(pose == if_start+2)
     {
-      error.printError(pose, "expected ‘(’ after 'if’");
+      if(error)
+        error->printError(pose, "expected ‘(’ after 'if’");
       return std::string::npos;
     }
     else if(pose == std::string::npos)
     {
-      error.printError(if_start+2, "expected corresponding ‘)’ after previous '(’");
+      if(error)
+        error->printError(if_start+2, "expected corresponding ‘)’ after previous '(’");
       return std::string::npos;
     }
 
@@ -108,7 +111,15 @@ size_t IfelseCF::getNextIfBlock(int& nb_block, size_t pose, Code& code, Error& e
   return pose;
 }
 
-void IfelseCF::uncompact(Code& code, Error& error)
+void IfelseCF::uncompact(Code& code)
 {
-
+  while(code.text.find("__ifelse(") != std::string::npos)
+  {
+    size_t ifelse_pose = code.text.find("__ifelse(");
+    size_t ifelse_end = code.text.find(")", ifelse_pose);
+    std::string ifelse = code.text.substr(ifelse_pose, ifelse_end-ifelse_pose+2);
+    std::cout << "*" << ifelse << "*" << std::endl;
+    std::string initial_code = code.ifelse_.ifelse_code_[ifelse];
+    code.text.replace(ifelse_pose, ifelse.size(), initial_code);
+  }
 }
