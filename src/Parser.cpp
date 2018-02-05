@@ -132,7 +132,7 @@ void Parser::checkStringAndComment()
 void Parser::checkBraquets()
 {
   int16_t nb_bracket = 0;
-  size_t bracket_open, bracket_close = 0;
+  size_t bracket_open, bracket_close, first_bracket_closed = 0;
 
   for(size_t pose = 0; pose < code_.text.size(); pose++)
   {
@@ -144,16 +144,18 @@ void Parser::checkBraquets()
     }
     else if(code_.text[pose] == ')')
     {
-      nb_bracket--;
-      if(nb_bracket == -1)
+      if(nb_bracket == 0)
+      {
         bracket_close = pose;
+        error_.printError(bracket_close, "expected primary-expression before ‘)’ token");
+      }
+      else
+        nb_bracket--;
     }
     else if(code_.text[pose] == ';')
     {
       if(nb_bracket > 0)
         error_.printError(bracket_open, "expected corresponding ‘)’ after previous '(’");
-      else if(nb_bracket < 0)
-        error_.printError(bracket_close, "expected primary-expression before ‘(’ token");
 
       nb_bracket = 0;
     }
@@ -357,13 +359,17 @@ void Parser::splitIfBlock(std::map<size_t, std::string>& splited, std::string if
   /*Check semicolon in condition*/
   std::string condition = code_.ifelse_[ifelse_id].IfBlock_condition;
   size_t condition_start = code_.ifelse_[ifelse_id].cond_pose;
-  error_.printWarning(condition_start, "condition_start");
-  std::cout << condition_start << ";" << code_.text[condition_start] << code_.text[condition_start+1] << code_.text[condition_start+2] << std::endl;
+  code_.goToEffectiveCode(condition, condition_start);
 
-  //code_.goToEffectiveCode(condition, condition_start);
   if(condition != "")
   {
-    std::cout << "ok" ;
+    size_t semicolon = condition.find(";");
+    if(semicolon != std::string::npos)
+    {
+      error_.printError(condition_start + semicolon, "expected ‘)’ before ';'");
+    }
+    else
+      std::cout << "ok" ;
   }
   else
   {

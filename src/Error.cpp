@@ -87,7 +87,7 @@ void Error::printCursor(size_t pose)
 
 void Error::printMessage(size_t pose, std::string message)
 {
-  code_->ifelse_.uncompact(*code_);
+  bool uncompact = code_->ifelse_.uncompact(*code_);
 
   size_t line_error = code_->getLineNumber(pose);
   size_t error_begin = getBeginOfLine(line_error);
@@ -172,5 +172,6 @@ void Error::printMessage(size_t pose, std::string message)
   std::cout << full_line << std::endl;
   printCursor(pose - error_begin);
 
-  code_->ifelse_.compact(*code_, this);
+  if(uncompact)
+    code_->ifelse_.compact(*code_);
 }

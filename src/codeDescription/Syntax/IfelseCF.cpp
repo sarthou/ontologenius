@@ -56,7 +56,7 @@ size_t IfelseCF::getNextIfBlock(int& nb_block, size_t pose, Code& code, Error* e
   {
     IfBlock_t if_block;
     pose = code.getInBraquet(if_start+2, if_block.IfBlock_condition, code.text);
-    if_block.cond_pose = if_start;
+    if_block.cond_pose = code.text.find("(", if_start) +1;
 
     if(pose == if_start+2)
     {
@@ -111,15 +111,18 @@ size_t IfelseCF::getNextIfBlock(int& nb_block, size_t pose, Code& code, Error* e
   return pose;
 }
 
-void IfelseCF::uncompact(Code& code)
+bool IfelseCF::uncompact(Code& code)
 {
+  bool worked = false;
   while(code.text.find("__ifelse(") != std::string::npos)
   {
     size_t ifelse_pose = code.text.find("__ifelse(");
     size_t ifelse_end = code.text.find(")", ifelse_pose);
     std::string ifelse = code.text.substr(ifelse_pose, ifelse_end-ifelse_pose+2);
-    std::cout << "*" << ifelse << "*" << std::endl;
     std::string initial_code = code.ifelse_.ifelse_code_[ifelse];
     code.text.replace(ifelse_pose, ifelse.size(), initial_code);
+    worked = true;
   }
+
+  return worked;
 }

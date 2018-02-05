@@ -28,7 +28,7 @@ public:
   ~IfelseCF() {}
 
   void compact(Code& code, Error* error = nullptr);
-  void uncompact(Code& code);
+  bool uncompact(Code& code);
 
   IfBlock_t &operator[] (std::string index) {return ifelse_[index]; }
 
