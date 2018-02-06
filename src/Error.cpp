@@ -87,6 +87,8 @@ void Error::printCursor(size_t pose)
 
 void Error::printMessage(size_t pose, std::string message)
 {
+  bool uncompact = code_->ifelse_.uncompact(*code_);
+
   size_t line_error = code_->getLineNumber(pose);
   size_t error_begin = getBeginOfLine(line_error);
   size_t new_line = code_->text.find("\n", pose);
@@ -97,9 +99,9 @@ void Error::printMessage(size_t pose, std::string message)
   while(full_line.find("__ont(") != std::string::npos)
   {
     size_t ont_pose = full_line.find("__ont(");
-    full_line.replace(ont_pose, 7, "ont::");
+    full_line.replace(ont_pose, 8, "ont::");
     if(ont_pose + 1 < (pose - error_begin + 1))
-      pose += std::string("ont::").size() - std::string("__ont()").size();
+      pose += std::string("ont::").size() - std::string("__ont().").size();
   }
 
   while(full_line.find("__var(") != std::string::npos)
@@ -118,7 +120,7 @@ void Error::printMessage(size_t pose, std::string message)
     size_t subsection_pose = full_line.find("__subsection(");
     std::string subsection_no;
     code_->getInBraquet(subsection_pose+12, subsection_no, full_line);
-    std::string subsection = "__subsection(" + subsection_no + ")";
+    std::string subsection = "__subsection(" + subsection_no + ");";
     full_line.replace(subsection_pose, subsection.size(), std::string("{" + code_->subsections_[subsection].subsection + "}"));
     if(subsection_pose + 1 < (pose - error_begin + 1))
       pose += std::string("{" + code_->subsections_[subsection].subsection + "}").size() - subsection.size();
@@ -169,4 +171,7 @@ void Error::printMessage(size_t pose, std::string message)
   std::cout << "[" << line_error << ":" << (pose - error_begin + 1) << "] " << message << std::endl;
   std::cout << full_line << std::endl;
   printCursor(pose - error_begin);
+
+  if(uncompact)
+    code_->ifelse_.compact(*code_);
 }

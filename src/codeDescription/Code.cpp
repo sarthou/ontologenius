@@ -1,103 +1,5 @@
 #include "ontoloGenius/codeDescription/Code.h"
 
-size_t Code::getInBraquet(size_t begin, std::string& in_bracket, std::string& text)
-{
-  size_t bracket = begin;
-  while((text[bracket] == ' ') || (text[bracket] == '\n'))
-    bracket += 1;
-
-  if(text[bracket] == '(')
-  {
-    size_t first_bracket = bracket;
-    int cpt = 1;
-    while((cpt != 0) && (bracket+1 < text.length()))
-    {
-      ++bracket;
-      if(text[bracket] == '(')
-        cpt++;
-      else if(text[bracket] == ')')
-        cpt--;
-
-    }
-
-    in_bracket = text.substr(first_bracket+1, bracket-first_bracket-1);
-
-    if(cpt == 0)
-      return bracket;
-    else
-      return std::string::npos;
-  }
-  else
-    return begin;
-}
-
-bool Code::findBefore(size_t begin, char symbol)
-{
-  while((text[begin-1] == ' ') || (text[begin-1] == '\n'))
-    begin -= 1;
-
-  if(text[begin-1] == symbol)
-    return true;
-  else
-    return false;
-}
-
-bool Code::findJustBefore(size_t begin, std::string symbol)
-{
-  for(int i = 0; i < symbol.size(); i++)
-  {
-    if(text[begin - 1 - i] != symbol[symbol.size() - 1 - i])
-      return false;
-  }
-  return true;
-}
-
-std::string Code::getWordBefore(size_t begin)
-{
-  size_t i = begin;
-  while((i != 0) && ((text[i -1] >= '0' && text[i-1] <= '9') ||
-                      (text[i-1] >= 'A' && text[i-1] <= 'Z') ||
-                      (text[i-1] >= 'a' && text[i-1] <= 'z') ||
-                      (text[i-1] == '_')))
-  {
-    i--;
-  }
-  std::string result = text.substr(i, begin - i);
-  return result;
-}
-
-std::string Code::getWordAfter(size_t begin)
-{
-  size_t i = begin;
-  while((i != text.size() - 1) && ((text[i+1] >= '0' && text[i+1] <= '9') ||
-                                    (text[i+1] >= 'A' && text[i+1] <= 'Z') ||
-                                    (text[i+1] >= 'a' && text[i+1] <= 'z') ||
-                                    (text[i+1] == '_')))
-  {
-    i++;
-  }
-  std::string result = text.substr(begin + 1, i - begin);
-  return result;
-}
-
-/*
-Return the position of the first caracter of the searched symbol if the symbol was found
-return std::string::npos even else
-/!\ begin can be on the last caracter of the precedent word
-*/
-size_t Code::findAfter(size_t begin, std::string symbol)
-{
-  while((text[begin+1] == ' ') || (text[begin+1] == '\n'))
-    begin += 1;
-
-  size_t pose = text.find(symbol, begin);
-
-  if(pose == begin+1)
-    return pose;
-  else
-    return std::string::npos;
-}
-
 size_t Code::getLineNumber(size_t final_pose)
 {
   size_t current = lines_counter_.getStart();
@@ -156,28 +58,26 @@ size_t Code::getNbOfSublines(size_t& current_pose, size_t stop)
   return nb_of_sublines;
 }
 
-/*
-Return true the symbol was found
-return false even else
-/!\ begin must be on the first caracter
-*/
-bool Code::findHere(size_t begin, std::string symbol)
+void Code::goToEffectiveCode(std::string& code, size_t& pose)
 {
-  size_t pose = text.find(symbol, begin);
+  bool done = false;
 
-  if(pose == begin)
-    return true;
-  else
-    return false;
-}
-
-void Code::remove(char character)
-{
-  for (int i = 0; i < text.length(); )
+  while(done == false)
   {
-    if(text[i] == character)
-      text.erase(i, 1);
-    else
-      i++;
+    done = true;
+    size_t useless = 0;
+    while((code[useless] == ' ') || (code[useless] == '\n'))
+      useless += 1;
+    pose += useless; //TODO remove if ok
+    code = code.substr(useless);
+
+    size_t comment = code.find("__comment(");
+    if(comment == 0)
+    {
+      done = false;
+      comment = code.find(")");
+      pose += comment + 1;
+      code = code.substr(comment + 1);
+    }
   }
 }

@@ -1,4 +1,4 @@
-#include "ontoloGenius/codeDescription/FunctionDescriptor.h"
+#include "ontoloGenius/codeDescription/Functions/FunctionDescriptor.h"
 
 FunctionDescriptor::FunctionDescriptor(std::string name, type_t return_type, std::vector<type_t> params_type)
 {

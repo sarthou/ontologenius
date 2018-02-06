@@ -11,8 +11,8 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
   code_.lines_counter_.current_line_ = current_line;
   code_.lines_counter_.setStart(current_line);
 
-  code_.print();
-  std::cout << "----------------------" << std::endl;
+  //code_.print();
+  //std::cout << "----------------------" << std::endl;
 
   code_.remove('\t');
 
@@ -31,12 +31,16 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
 
   replaceOperator();
 
-  getIfBlock();
+  code_.ifelse_.compact(code_, &error_);
 
-  code_.print();
-  std::cout << "----------------------" << std::endl;
+  std::map<size_t, std::string> splited = splitBySemicolon();
+  checkInstructionValidity(splited);
 
   error_.printStatus();
+
+  std::cout << "----------------------" << std::endl;
+
+  code_.print();
 }
 
 Parser::~Parser()
@@ -129,7 +133,7 @@ void Parser::checkStringAndComment()
 void Parser::checkBraquets()
 {
   int16_t nb_bracket = 0;
-  size_t bracket_open, bracket_close = 0;
+  size_t bracket_open, bracket_close, first_bracket_closed = 0;
 
   for(size_t pose = 0; pose < code_.text.size(); pose++)
   {
@@ -141,16 +145,18 @@ void Parser::checkBraquets()
     }
     else if(code_.text[pose] == ')')
     {
-      nb_bracket--;
-      if(nb_bracket == -1)
+      if(nb_bracket == 0)
+      {
         bracket_close = pose;
+        error_.printError(bracket_close, "expected primary-expression before ‘)’ token");
+      }
+      else
+        nb_bracket--;
     }
     else if(code_.text[pose] == ';')
     {
       if(nb_bracket > 0)
         error_.printError(bracket_open, "expected corresponding ‘)’ after previous '(’");
-      else if(nb_bracket < 0)
-        error_.printError(bracket_close, "expected primary-expression before ‘(’ token");
 
       nb_bracket = 0;
     }
@@ -223,107 +229,6 @@ void Parser::getSubsections()
   while(!eof);
 }
 
-/*
-* replace condition (if and else) by the key word __ifBlock with the corresponding index
-*/
-void Parser::getIfBlock()
-{
-  int nb_block = 0;
-  size_t pose = 0;
-  bool eof = false;
-
-  do
-  {
-    pose = getNextIfBlock(nb_block, pose);
-    if(pose == std::string::npos)
-      eof = true;
-  }
-  while(!eof);
-
-  eof = false;
-  pose = 0;
-  do
-  {
-    size_t else_error = code_.text.find("else", pose);
-    if(else_error == std::string::npos)
-      eof = true;
-    else
-    {
-      size_t prev = else_error - 1;
-      size_t post = else_error + 4;
-      if(((code_.text[prev] == ' ') || (code_.text[prev] == '\n') || (code_.text[prev] == ';') || (code_.text[prev] == ')') || (code_.text[prev] == '(')) &&
-        ((code_.text[post] == ' ') || (code_.text[post] == '\n') || (code_.text[post] == ';') || (code_.text[post] == ')') || (code_.text[post] == '(')))
-        {
-          error_.printError(else_error, "‘else’ without a previous ‘if’");
-          eof = true;
-        }
-        else
-          pose = else_error + 1;
-    }
-  }
-  while(!eof);
-}
-
-size_t Parser::getNextIfBlock(int& nb_block, size_t pose)
-{
-  size_t end = 0;
-
-  size_t if_start = code_.text.find("if", pose);
-  if(if_start == std::string::npos)
-    return std::string::npos;
-  else
-  {
-    IfBlock_t if_block;
-    pose = code_.getInBraquet(if_start+2, if_block.IfBlock_condition, code_.text);
-
-    if(pose == if_start+2)
-    {
-      error_.printError(pose, "expected ‘(’ after 'if’");
-      return std::string::npos;
-    }
-    else if(pose == std::string::npos)
-    {
-      error_.printError(if_start+2, "expected corresponding ‘)’ after previous '(’");
-      return std::string::npos;
-    }
-
-    if(code_.findAfter(pose, "if") != std::string::npos)
-      getNextIfBlock(nb_block, pose);
-
-    size_t semicolon = code_.text.find(";", pose);
-    if_block.IfBlock_if = code_.text.substr(pose+1, semicolon-pose);
-    if_block.lines_count.setStart(code_.getLineNumber(if_start));
-    if_block.lines_count.setStop(code_.getLineNumber(semicolon));
-    pose = semicolon;
-    end = semicolon;
-
-    if(code_.findBefore(if_start, '='))
-      return code_.text.find(";", if_start);
-
-    size_t else_start = code_.findAfter(pose, "else");
-    if(else_start != std::string::npos)
-    {
-      if(code_.findAfter(else_start+4, "if") != std::string::npos)
-        getNextIfBlock(nb_block, else_start);
-
-      semicolon = code_.text.find(";", else_start);
-      if_block.IfBlock_else = code_.text.substr(else_start+4, semicolon-else_start-4+1);
-      if_block.lines_count.setStop(code_.getLineNumber(semicolon));
-      pose = semicolon;
-      end = semicolon;
-    }
-
-    code_.ifelse_["__ifelse(" + std::to_string(nb_block) + ");"] = if_block;
-    code_.text.replace(if_start, end-if_start+1, "__ifelse(" + std::to_string(nb_block) + ");");
-
-    pose -= (end-if_start+1) - std::string("__ifelse(" + std::to_string(nb_block) + ");").size();
-
-    nb_block++;
-  }
-
-  return pose;
-}
-
 void Parser::getFromNamespace()
 {
   bool eof = false;
@@ -371,9 +276,187 @@ void Parser::replaceOperator()
   code_.operators_.describe("-", "opSub", false, 0);
   code_.operators_.describe("+", "opAdd", false, 0);
   code_.operators_.describe("=", "opAssign", true, 0);
+  //code_.operators_.describe("=if", "opLoop", true, 0);
   code_.operators_.dontCarre("==");
   code_.operators_.dontCarre("!=");
   code_.operators_.dontCarre("=if");
 
   code_.operators_.op2Function();
+}
+
+std::map<size_t, std::string> Parser::splitBySemicolon()
+{
+  size_t start = 0;
+  size_t stop = 0;
+  std::map<size_t, std::string> splited;
+  size_t offset = 0;
+
+  while(stop != std::string::npos)
+  {
+    stop = code_.text.find(";", start);
+    if(stop != std::string::npos)
+    {
+      std::string subcode = code_.text.substr(start, stop - start);
+      code_.goToEffectiveCode(subcode, start);
+      size_t if_pose = subcode.find("__ifelse(");
+      if(if_pose == 0)
+      {
+        std::string ifelse_id = subcode + ";";
+        offset += splitIfBlock(splited, ifelse_id);
+      }
+      else if(if_pose != std::string::npos)
+        error_.printError(start+if_pose+offset, "expected ‘;’ before 'if'");
+      else
+          splited[start+offset] = subcode;
+
+      start = stop +1;
+    }
+  }
+
+  return splited;
+}
+
+int Parser::splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id)
+{
+  int offset = 0;
+
+  /*Get code of if condition*/
+  std::string if_code = code_.ifelse_[ifelse_id].IfBlock_if;
+  size_t if_start = code_.ifelse_[ifelse_id].if_pose;
+
+  offset = code_.ifelse_.ifelse_code_[ifelse_id].size() - ifelse_id.size();
+
+  code_.goToEffectiveCode(if_code, if_start);
+  if(if_code != "")
+  {
+    size_t if_pose = if_code.find("__ifelse(");
+    if(if_pose == 0)
+    {
+      std::string sub_ifelse_id = if_code;
+      offset += splitIfBlock(splited, sub_ifelse_id);
+    }
+    else if(if_pose != std::string::npos)
+      error_.printError(if_start+if_pose, "expected ‘;’ before 'if'");
+    else
+      splited[if_start] = if_code.substr(0, if_code.size() - 1);
+  }
+
+  /*Get code of else condition*/
+  std::string else_code = code_.ifelse_[ifelse_id].IfBlock_else;
+  size_t else_start = code_.ifelse_[ifelse_id].else_pose;
+
+  code_.goToEffectiveCode(else_code, else_start);
+  if(else_code != "")
+  {
+    size_t if_pose = else_code.find("__ifelse(");
+    if(if_pose == 0)
+    {
+      std::string sub_ifelse_id = else_code;
+      offset += splitIfBlock(splited, sub_ifelse_id);
+    }
+    else if(if_pose != std::string::npos)
+      error_.printError(else_start+if_pose, "expected ‘;’ before 'if'");
+    else
+      splited[else_start] = else_code.substr(0, else_code.size() - 1);;
+  }
+
+  /*Check semicolon in condition and empty conditions*/
+  std::string condition = code_.ifelse_[ifelse_id].IfBlock_condition;
+  size_t condition_start = code_.ifelse_[ifelse_id].cond_pose;
+  code_.goToEffectiveCode(condition, condition_start);
+
+  if(condition != "")
+  {
+    size_t semicolon = condition.find(";");
+    if(semicolon != std::string::npos)
+      error_.printError(condition_start + semicolon, "expected ‘)’ before ';'");
+  }
+  else
+    error_.printError(condition_start, "expected primary-expression before ‘)’ token");
+
+  return offset;
+}
+
+void Parser::checkInstructionValidity(std::map<size_t, std::string>& splited)
+{
+  for (std::map<size_t,std::string>::iterator it=splited.begin(); it!=splited.end(); ++it)
+  {
+    std::string code = it->second;
+    size_t pose = it->first;
+    code_.goToEffectiveCode(code, pose);
+    size_t sub = code.find("__subsection(");
+    if((sub == std::string::npos) || (sub != 0))
+    {
+      if(code.find(".") == std::string::npos)
+        error_.printWarning(pose, "instruction with no effect");
+      else
+        checkInstructionValidity(pose, code);
+    }
+  }
+}
+
+void Parser::checkInstructionValidity(size_t pose, std::string code, bool onFunction)
+{
+  std::string on = "";
+  std::string func = "";
+  std::string arg = "";
+  std::vector<std::string> args;
+  std::vector<size_t> args_pose;
+  TextManipulator manipulator(code);
+
+  size_t dot = 0;
+  if(onFunction == false)
+  {
+    dot = code.find(".", 0);
+    on = code.substr(0, dot);
+  }
+  else
+    on = "__onfunc";
+  size_t open_arg = code.find("(", dot + 1);
+  func = code.substr(dot + 1, open_arg - dot - 1);
+  manipulator.getInBraquet(open_arg, arg, code);
+  size_t close_arg = open_arg + arg.size() + 1;
+
+  size_t start_arg = 0;
+  while(arg.find(",", start_arg) != std::string::npos)
+  {
+    size_t nex_arg = arg.find(",", start_arg);
+    args.push_back(arg.substr(start_arg, nex_arg - start_arg));
+    args_pose.push_back(pose+open_arg+1+start_arg);
+    start_arg = nex_arg+1;
+  }
+  args.push_back(arg.substr(start_arg));
+  args_pose.push_back(pose+open_arg+1+start_arg);
+
+  for(int i = 0; i < args.size(); i++)
+    checkArgumentValidity(args_pose[i], args[i]);
+
+  size_t next_func = manipulator.findAfter(close_arg, ".");
+  if(next_func != std::string::npos)
+    checkInstructionValidity(pose + next_func+1, code.substr(next_func), true);
+  else
+  {
+    std::string next = manipulator.getWordAfter(close_arg, false);
+    if(next != "")
+    {
+      size_t err_pose = code.find(next, close_arg);
+      err_pose += pose;
+      error_.printError(err_pose, "expected ';' before ‘" + next + "’");
+    }
+  }
+}
+
+void Parser::checkArgumentValidity(size_t pose, std::string code)
+{
+  code_.goToEffectiveCode(code, pose);
+  if(code.find("__subsection(") == std::string::npos)
+  {
+    if(code.find(".") != std::string::npos)
+      checkInstructionValidity(pose, code);
+  }
+  else
+  {
+    size_t sub = code.find("__subsection(");
+    error_.printError(pose+sub, "unexpected ‘{’");
+  }
 }

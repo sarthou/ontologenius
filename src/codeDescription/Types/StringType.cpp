@@ -1,6 +1,6 @@
-#include "ontoloGenius/codeDescription/String.h"
+#include "ontoloGenius/codeDescription/Types/StringType.h"
 
-String::String()
+StringType::StringType()
 {
   nb_strings_ = 0;
 
@@ -23,7 +23,7 @@ String::String()
   functions_.push_back(op_assign);
 }
 
-std::string String::add(std::string text, size_t line_start, size_t line_stop)
+std::string StringType::add(std::string text, size_t line_start, size_t line_stop)
 {
   std::string id = "__string(" + std::to_string(nb_strings_) + ")";
   nb_strings_++;
@@ -37,21 +37,21 @@ std::string String::add(std::string text, size_t line_start, size_t line_stop)
   return id;
 }
 
-std::string String::get(std::string id)
+std::string StringType::get(std::string id)
 {
   if(strings_.find(id) != strings_.end())
     return strings_[id].strings;
   return "";
 }
 
-size_t String::nbLines(std::string id)
+size_t StringType::nbLines(std::string id)
 {
   if(strings_.find(id) != strings_.end())
     return strings_[id].lines_count.getNbLines();
   return 0;
 }
 
-size_t String::size(std::string id)
+size_t StringType::size(std::string id)
 {
   if(strings_.find(id) != strings_.end())
     return strings_[id].strings.size();

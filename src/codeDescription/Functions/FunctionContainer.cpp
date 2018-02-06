@@ -1,4 +1,4 @@
-#include "ontoloGenius/codeDescription/FunctionContainer.h"
+#include "ontoloGenius/codeDescription/Functions/FunctionContainer.h"
 
 bool FunctionContainer::functionExist(std::string name)
 {

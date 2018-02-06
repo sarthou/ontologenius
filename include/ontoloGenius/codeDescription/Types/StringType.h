@@ -5,7 +5,7 @@
 #include <map>
 
 #include "ontoloGenius/codeDescription/LinesCounter.h"
-#include "ontoloGenius/codeDescription/FunctionContainer.h"
+#include "ontoloGenius/codeDescription/Functions/FunctionContainer.h"
 
 struct StringBlock_t
 {
@@ -13,11 +13,11 @@ struct StringBlock_t
   LinesCounter lines_count;
 };
 
-class String : public FunctionContainer
+class StringType : public FunctionContainer
 {
 public:
-  String();
-  ~String() {};
+  StringType();
+  ~StringType() {};
 
   std::string add(std::string text, size_t line_start, size_t line_stop);
   std::string get(std::string id);

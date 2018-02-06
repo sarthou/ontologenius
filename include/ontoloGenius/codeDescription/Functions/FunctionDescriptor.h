@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "ontoloGenius/codeDescription/Types.h"
+#include "ontoloGenius/codeDescription/Types/Types.h"
 
 class FunctionDescriptor
 {

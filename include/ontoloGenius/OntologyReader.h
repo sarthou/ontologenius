@@ -19,7 +19,7 @@ class OntologyReader
 {
 public:
   OntologyReader(TreeObject* p_objTree, TreeProperty* p_propTree) {m_objTree = p_objTree; m_propTree = p_propTree; elemLoaded = 0; }
-  ~OntologyReader() {std::cout << "Computer" << std::endl;}
+  ~OntologyReader() {}
 
   int read(string uri);
   int readFile(string fileName);

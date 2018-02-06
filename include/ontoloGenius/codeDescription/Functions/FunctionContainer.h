@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "ontoloGenius/codeDescription/FunctionDescriptor.h"
+#include "ontoloGenius/codeDescription/Functions/FunctionDescriptor.h"
 
 class FunctionContainer
 {

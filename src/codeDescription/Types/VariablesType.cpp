@@ -1,6 +1,6 @@
-#include "ontoloGenius/codeDescription/Variables.h"
+#include "ontoloGenius/codeDescription/Types/VariablesType.h"
 
-Variables::Variables() : Namespace("var")
+VariablesType::VariablesType() : Namespace("var")
 {
   nb_variables_ = 0;
 
@@ -26,7 +26,7 @@ Variables::Variables() : Namespace("var")
   functions_.push_back(op_assign);
 }
 
-std::string Variables::add(std::string name)
+std::string VariablesType::add(std::string name)
 {
   std::string id = "";
 
@@ -54,21 +54,21 @@ std::string Variables::add(std::string name)
   return id;
 }
 
-std::string Variables::name(std::string id)
+std::string VariablesType::name(std::string id)
 {
   if(var_.find(id) != var_.end())
     return var_[id].name;
   return "";
 }
 
-std::set<std::string> Variables::get(std::string id)
+std::set<std::string> VariablesType::get(std::string id)
 {
   if(var_.find(id) != var_.end())
     return var_[id].values;
   return std::set<std::string>();
 }
 
-std::string Variables::toString(std::string id)
+std::string VariablesType::toString(std::string id)
 {
   std::string str = "";
   if(var_.find(id) != var_.end())
@@ -84,13 +84,13 @@ std::string Variables::toString(std::string id)
   return str;
 }
 
-bool Variables::set(std::string id, std::string value)
+bool VariablesType::set(std::string id, std::string value)
 {
   remove(id);
   insert(id, value);
 }
 
-bool Variables::set(std::string id, std::set<std::string> value)
+bool VariablesType::set(std::string id, std::set<std::string> value)
 {
   if(var_.find(id) != var_.end())
   {
@@ -100,7 +100,7 @@ bool Variables::set(std::string id, std::set<std::string> value)
   return false;
 }
 
-bool Variables::insert(std::string id, std::string value)
+bool VariablesType::insert(std::string id, std::string value)
 {
   if(var_.find(id) != var_.end())
   {
@@ -110,7 +110,7 @@ bool Variables::insert(std::string id, std::string value)
   return false;
 }
 
-bool Variables::insert(std::string id, std::set<std::string> value)
+bool VariablesType::insert(std::string id, std::set<std::string> value)
 {
   if(var_.find(id) != var_.end())
   {
@@ -120,7 +120,7 @@ bool Variables::insert(std::string id, std::set<std::string> value)
   return false;
 }
 
-bool Variables::remove(std::string id)
+bool VariablesType::remove(std::string id)
 {
   if(var_.find(id) != var_.end())
   {
@@ -130,7 +130,7 @@ bool Variables::remove(std::string id)
   return false;
 }
 
-bool Variables::remove(std::string id, std::string value)
+bool VariablesType::remove(std::string id, std::string value)
 {
   if(var_.find(id) != var_.end())
   {
@@ -140,7 +140,7 @@ bool Variables::remove(std::string id, std::string value)
   return false;
 }
 
-bool Variables::remove(std::string id, std::set<std::string> value)
+bool VariablesType::remove(std::string id, std::set<std::string> value)
 {
   if(var_.find(id) != var_.end())
   {
@@ -155,7 +155,7 @@ bool Variables::remove(std::string id, std::set<std::string> value)
   return false;
 }
 
-size_t Variables::size(std::string id)
+size_t VariablesType::size(std::string id)
 {
   if(var_.find(id) != var_.end())
     return var_[id].values.size();
