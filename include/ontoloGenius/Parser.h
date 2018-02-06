@@ -29,7 +29,8 @@ private:
   std::map<size_t, std::string> splitBySemicolon();
   int splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id);
   void checkInstructionValidity(std::map<size_t, std::string>& splited);
-  void checkInstructionValidity(size_t pose, std::string code);
+  void checkInstructionValidity(size_t pose, std::string code, bool onFunction = false);
+  void checkArgumentValidity(size_t pose, std::string code);
 
   Parser* subparser_;
   TreeObject& onto_;

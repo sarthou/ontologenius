@@ -305,7 +305,7 @@ std::map<size_t, std::string> Parser::splitBySemicolon()
         offset += splitIfBlock(splited, ifelse_id);
       }
       else if(if_pose != std::string::npos)
-        error_.printError(start+if_pose, "expected ‘;’ before 'if'");
+        error_.printError(start+if_pose+offset, "expected ‘;’ before 'if'");
       else
           splited[start+offset] = subcode;
 
@@ -384,20 +384,79 @@ void Parser::checkInstructionValidity(std::map<size_t, std::string>& splited)
     std::string code = it->second;
     size_t pose = it->first;
     code_.goToEffectiveCode(code, pose);
-    if(code.find("__subsection(") == std::string::npos)
+    size_t sub = code.find("__subsection(");
+    if((sub == std::string::npos) || (sub != 0))
     {
       if(code.find(".") == std::string::npos)
-      {
         error_.printWarning(pose, "instruction with no effect");
-        std::cout << pose << " ===> " << code << '\n';
-      }
       else
         checkInstructionValidity(pose, code);
     }
   }
 }
 
-void Parser::checkInstructionValidity(size_t pose, std::string code)
+void Parser::checkInstructionValidity(size_t pose, std::string code, bool onFunction)
 {
-  std::cout << pose << " => " << code << '\n';
+  std::string on = "";
+  std::string func = "";
+  std::string arg = "";
+  std::vector<std::string> args;
+  std::vector<size_t> args_pose;
+  TextManipulator manipulator(code);
+
+  size_t dot = 0;
+  if(onFunction == false)
+  {
+    dot = code.find(".", 0);
+    on = code.substr(0, dot);
+  }
+  else
+    on = "__onfunc";
+  size_t open_arg = code.find("(", dot + 1);
+  func = code.substr(dot + 1, open_arg - dot - 1);
+  manipulator.getInBraquet(open_arg, arg, code);
+  size_t close_arg = open_arg + arg.size() + 1;
+
+  size_t start_arg = 0;
+  while(arg.find(",", start_arg) != std::string::npos)
+  {
+    size_t nex_arg = arg.find(",", start_arg);
+    args.push_back(arg.substr(start_arg, nex_arg - start_arg));
+    args_pose.push_back(pose+open_arg+1+start_arg);
+    start_arg = nex_arg+1;
+  }
+  args.push_back(arg.substr(start_arg));
+  args_pose.push_back(pose+open_arg+1+start_arg);
+
+  for(int i = 0; i < args.size(); i++)
+    checkArgumentValidity(args_pose[i], args[i]);
+
+  size_t next_func = manipulator.findAfter(close_arg, ".");
+  if(next_func != std::string::npos)
+    checkInstructionValidity(pose + next_func+1, code.substr(next_func), true);
+  else
+  {
+    std::string next = manipulator.getWordAfter(close_arg, false);
+    if(next != "")
+    {
+      size_t err_pose = code.find(next, close_arg);
+      err_pose += pose;
+      error_.printError(err_pose, "expected ';' before ‘" + next + "’");
+    }
+  }
+}
+
+void Parser::checkArgumentValidity(size_t pose, std::string code)
+{
+  code_.goToEffectiveCode(code, pose);
+  if(code.find("__subsection(") == std::string::npos)
+  {
+    if(code.find(".") != std::string::npos)
+      checkInstructionValidity(pose, code);
+  }
+  else
+  {
+    size_t sub = code.find("__subsection(");
+    error_.printError(pose+sub, "unexpected ‘{’");
+  }
 }
