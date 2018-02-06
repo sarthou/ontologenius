@@ -33,7 +33,8 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
 
   code_.ifelse_.compact(code_, &error_);
 
-  splitBySemicolon();
+  std::map<size_t, std::string> splited = splitBySemicolon();
+  checkInstructionValidity(splited);
 
   error_.printStatus();
 
@@ -275,6 +276,7 @@ void Parser::replaceOperator()
   code_.operators_.describe("-", "opSub", false, 0);
   code_.operators_.describe("+", "opAdd", false, 0);
   code_.operators_.describe("=", "opAssign", true, 0);
+  //code_.operators_.describe("=if", "opLoop", true, 0);
   code_.operators_.dontCarre("==");
   code_.operators_.dontCarre("!=");
   code_.operators_.dontCarre("=if");
@@ -287,6 +289,7 @@ std::map<size_t, std::string> Parser::splitBySemicolon()
   size_t start = 0;
   size_t stop = 0;
   std::map<size_t, std::string> splited;
+  size_t offset = 0;
 
   while(stop != std::string::npos)
   {
@@ -299,28 +302,29 @@ std::map<size_t, std::string> Parser::splitBySemicolon()
       if(if_pose == 0)
       {
         std::string ifelse_id = subcode + ";";
-        splitIfBlock(splited, ifelse_id);
+        offset += splitIfBlock(splited, ifelse_id);
       }
       else if(if_pose != std::string::npos)
         error_.printError(start+if_pose, "expected ‘;’ before 'if'");
       else
-          splited[start] = subcode;
+          splited[start+offset] = subcode;
 
       start = stop +1;
     }
   }
 
-  for (std::map<size_t,std::string>::iterator it=splited.begin(); it!=splited.end(); ++it)
-    std::cout << it->first << " => " << it->second << '\n';
-
   return splited;
 }
 
-void Parser::splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id)
+int Parser::splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id)
 {
+  int offset = 0;
+
   /*Get code of if condition*/
   std::string if_code = code_.ifelse_[ifelse_id].IfBlock_if;
   size_t if_start = code_.ifelse_[ifelse_id].if_pose;
+
+  offset = code_.ifelse_.ifelse_code_[ifelse_id].size() - ifelse_id.size();
 
   code_.goToEffectiveCode(if_code, if_start);
   if(if_code != "")
@@ -329,7 +333,7 @@ void Parser::splitIfBlock(std::map<size_t, std::string>& splited, std::string if
     if(if_pose == 0)
     {
       std::string sub_ifelse_id = if_code;
-      splitIfBlock(splited, sub_ifelse_id);
+      offset += splitIfBlock(splited, sub_ifelse_id);
     }
     else if(if_pose != std::string::npos)
       error_.printError(if_start+if_pose, "expected ‘;’ before 'if'");
@@ -348,7 +352,7 @@ void Parser::splitIfBlock(std::map<size_t, std::string>& splited, std::string if
     if(if_pose == 0)
     {
       std::string sub_ifelse_id = else_code;
-      splitIfBlock(splited, sub_ifelse_id);
+      offset += splitIfBlock(splited, sub_ifelse_id);
     }
     else if(if_pose != std::string::npos)
       error_.printError(else_start+if_pose, "expected ‘;’ before 'if'");
@@ -356,7 +360,7 @@ void Parser::splitIfBlock(std::map<size_t, std::string>& splited, std::string if
       splited[else_start] = else_code.substr(0, else_code.size() - 1);;
   }
 
-  /*Check semicolon in condition*/
+  /*Check semicolon in condition and empty conditions*/
   std::string condition = code_.ifelse_[ifelse_id].IfBlock_condition;
   size_t condition_start = code_.ifelse_[ifelse_id].cond_pose;
   code_.goToEffectiveCode(condition, condition_start);
@@ -365,14 +369,35 @@ void Parser::splitIfBlock(std::map<size_t, std::string>& splited, std::string if
   {
     size_t semicolon = condition.find(";");
     if(semicolon != std::string::npos)
-    {
       error_.printError(condition_start + semicolon, "expected ‘)’ before ';'");
-    }
-    else
-      std::cout << "ok" ;
   }
   else
-  {
     error_.printError(condition_start, "expected primary-expression before ‘)’ token");
+
+  return offset;
+}
+
+void Parser::checkInstructionValidity(std::map<size_t, std::string>& splited)
+{
+  for (std::map<size_t,std::string>::iterator it=splited.begin(); it!=splited.end(); ++it)
+  {
+    std::string code = it->second;
+    size_t pose = it->first;
+    code_.goToEffectiveCode(code, pose);
+    if(code.find("__subsection(") == std::string::npos)
+    {
+      if(code.find(".") == std::string::npos)
+      {
+        error_.printWarning(pose, "instruction with no effect");
+        std::cout << pose << " ===> " << code << '\n';
+      }
+      else
+        checkInstructionValidity(pose, code);
+    }
   }
+}
+
+void Parser::checkInstructionValidity(size_t pose, std::string code)
+{
+  std::cout << pose << " => " << code << '\n';
 }

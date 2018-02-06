@@ -120,7 +120,7 @@ void Error::printMessage(size_t pose, std::string message)
     size_t subsection_pose = full_line.find("__subsection(");
     std::string subsection_no;
     code_->getInBraquet(subsection_pose+12, subsection_no, full_line);
-    std::string subsection = "__subsection(" + subsection_no + ")";
+    std::string subsection = "__subsection(" + subsection_no + ");";
     full_line.replace(subsection_pose, subsection.size(), std::string("{" + code_->subsections_[subsection].subsection + "}"));
     if(subsection_pose + 1 < (pose - error_begin + 1))
       pose += std::string("{" + code_->subsections_[subsection].subsection + "}").size() - subsection.size();

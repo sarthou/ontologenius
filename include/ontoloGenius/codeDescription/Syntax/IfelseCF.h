@@ -32,10 +32,11 @@ public:
 
   IfBlock_t &operator[] (std::string index) {return ifelse_[index]; }
 
-private:
-  std::map<std::string, IfBlock_t> ifelse_;
   std::map<std::string, std::string> ifelse_code_;
 
+private:
+  std::map<std::string, IfBlock_t> ifelse_;
+  
   size_t getNextIfBlock(int& nb_block, size_t pose, Code& code, Error* error = nullptr);
 };
 

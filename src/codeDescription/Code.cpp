@@ -68,6 +68,7 @@ void Code::goToEffectiveCode(std::string& code, size_t& pose)
     size_t useless = 0;
     while((code[useless] == ' ') || (code[useless] == '\n'))
       useless += 1;
+    pose += useless; //TODO remove if ok
     code = code.substr(useless);
 
     size_t comment = code.find("__comment(");

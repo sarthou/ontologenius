@@ -27,7 +27,9 @@ private:
   void getFromNamespace();
   void replaceOperator();
   std::map<size_t, std::string> splitBySemicolon();
-  void splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id);
+  int splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id);
+  void checkInstructionValidity(std::map<size_t, std::string>& splited);
+  void checkInstructionValidity(size_t pose, std::string code);
 
   Parser* subparser_;
   TreeObject& onto_;
