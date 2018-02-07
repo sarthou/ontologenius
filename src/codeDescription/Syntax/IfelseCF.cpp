@@ -99,12 +99,12 @@ size_t IfelseCF::getNextIfBlock(int& nb_block, size_t pose, Code& code, Error* e
       end = semicolon;
     }
 
-    ifelse_code_["__ifelse(" + std::to_string(nb_block) + ");"] = code.text.substr(if_start, end-if_start+1);
-    code.text.replace(if_start, end-if_start+1, "__ifelse(" + std::to_string(nb_block) + ");");
+    ifelse_code_["__ifelse[" + std::to_string(nb_block) + "];"] = code.text.substr(if_start, end-if_start+1);
+    code.text.replace(if_start, end-if_start+1, "__ifelse[" + std::to_string(nb_block) + "];");
 
-    ifelse_["__ifelse(" + std::to_string(nb_block) + ");"] = if_block;
+    ifelse_["__ifelse[" + std::to_string(nb_block) + "];"] = if_block;
 
-    pose -= (end-if_start+1) - std::string("__ifelse(" + std::to_string(nb_block) + ");").size();
+    pose -= (end-if_start+1) - std::string("__ifelse[" + std::to_string(nb_block) + "];").size();
     nb_block++;
   }
 
@@ -114,10 +114,10 @@ size_t IfelseCF::getNextIfBlock(int& nb_block, size_t pose, Code& code, Error* e
 bool IfelseCF::uncompact(Code& code)
 {
   bool worked = false;
-  while(code.text.find("__ifelse(") != std::string::npos)
+  while(code.text.find("__ifelse[") != std::string::npos)
   {
-    size_t ifelse_pose = code.text.find("__ifelse(");
-    size_t ifelse_end = code.text.find(")", ifelse_pose);
+    size_t ifelse_pose = code.text.find("__ifelse[");
+    size_t ifelse_end = code.text.find("]", ifelse_pose);
     std::string ifelse = code.text.substr(ifelse_pose, ifelse_end-ifelse_pose+2);
     std::string initial_code = code.ifelse_.ifelse_code_[ifelse];
     code.text.replace(ifelse_pose, ifelse.size(), initial_code);

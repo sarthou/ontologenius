@@ -89,8 +89,8 @@ void Parser::checkStringAndComment()
       comment_i.comment = code_.text.substr(pose, new_line-pose);
       comment_i.lines_count.setStart(code_.getLineNumber(pose));
       comment_i.lines_count.setStop(comment_i.lines_count.getStart());
-      code_.comments_["__comment(" + std::to_string(nb_comments) + ")"] = comment_i;
-      code_.text.replace(pose, new_line-pose, "__comment(" + std::to_string(nb_comments) + ")");
+      code_.comments_["__comment[" + std::to_string(nb_comments) + "]"] = comment_i;
+      code_.text.replace(pose, new_line-pose, "__comment[" + std::to_string(nb_comments) + "]");
 
       nb_comments++;
     }
@@ -103,8 +103,8 @@ void Parser::checkStringAndComment()
         comment_i.comment = code_.text.substr(pose, comment_end-pose+2);
         comment_i.lines_count.setStart(code_.getLineNumber(pose));
         comment_i.lines_count.setStop(code_.getLineNumber(comment_end));
-        code_.comments_["__comment(" + std::to_string(nb_comments) + ")"] = comment_i;
-        code_.text.replace(pose, comment_end-pose+2, "__comment(" + std::to_string(nb_comments) + ")");
+        code_.comments_["__comment[" + std::to_string(nb_comments) + "]"] = comment_i;
+        code_.text.replace(pose, comment_end-pose+2, "__comment[" + std::to_string(nb_comments) + "]");
 
         nb_comments++;
       }
@@ -199,8 +199,8 @@ void Parser::getSubsections()
         subsection_i.lines_count.setStart(code_.getLineNumber(first_bracket));
         subsection_i.lines_count.setStop(code_.getLineNumber(bracket));
 
-        code_.subsections_["__subsection(" + std::to_string(nb_sub) + ");"] = subsection_i;
-        code_.text.replace(first_bracket, bracket-first_bracket+1, "__subsection(" + std::to_string(nb_sub) + ");");
+        code_.subsections_["__subsection[" + std::to_string(nb_sub) + "];"] = subsection_i;
+        code_.text.replace(first_bracket, bracket-first_bracket+1, "__subsection[" + std::to_string(nb_sub) + "];");
 
         nb_sub++;
       }
@@ -249,10 +249,8 @@ void Parser::getFromNamespace()
           std::string var_id = code_.variables_.add(var);
           code_.text.replace(ns_pose - 3, var.size() + 5, var_id);
         }
-        else if(ns == "ont") //TODO : create special function to process it
-        {
-          code_.text.replace(ns_pose - 3, 5, "__ont().");
-        }
+        else if(ns == "ont")
+          code_.text.replace(ns_pose - 3, 5, "__ont.");
         else
         {
           error_.printError(ns_pose - ns.size(), "unknow namespace '" + ns + "'");
@@ -298,7 +296,7 @@ std::map<size_t, std::string> Parser::splitBySemicolon()
     {
       std::string subcode = code_.text.substr(start, stop - start);
       code_.goToEffectiveCode(subcode, start);
-      size_t if_pose = subcode.find("__ifelse(");
+      size_t if_pose = subcode.find("__ifelse[");
       if(if_pose == 0)
       {
         std::string ifelse_id = subcode + ";";
@@ -329,7 +327,7 @@ int Parser::splitIfBlock(std::map<size_t, std::string>& splited, std::string ife
   code_.goToEffectiveCode(if_code, if_start);
   if(if_code != "")
   {
-    size_t if_pose = if_code.find("__ifelse(");
+    size_t if_pose = if_code.find("__ifelse[");
     if(if_pose == 0)
     {
       std::string sub_ifelse_id = if_code;
@@ -348,7 +346,7 @@ int Parser::splitIfBlock(std::map<size_t, std::string>& splited, std::string ife
   code_.goToEffectiveCode(else_code, else_start);
   if(else_code != "")
   {
-    size_t if_pose = else_code.find("__ifelse(");
+    size_t if_pose = else_code.find("__ifelse[");
     if(if_pose == 0)
     {
       std::string sub_ifelse_id = else_code;
@@ -384,7 +382,7 @@ void Parser::checkInstructionValidity(std::map<size_t, std::string>& splited)
     std::string code = it->second;
     size_t pose = it->first;
     code_.goToEffectiveCode(code, pose);
-    size_t sub = code.find("__subsection(");
+    size_t sub = code.find("__subsection[");
     if((sub == std::string::npos) || (sub != 0))
     {
       if(code.find(".") == std::string::npos)
@@ -403,7 +401,9 @@ void Parser::checkInstructionValidity(size_t pose, std::string code, bool onFunc
   std::vector<std::string> args;
   std::vector<size_t> args_pose;
   TextManipulator manipulator(code);
+  size_t word_integrity = 0;
 
+  /*Getting founction object*/
   size_t dot = 0;
   if(onFunction == false)
   {
@@ -412,8 +412,15 @@ void Parser::checkInstructionValidity(size_t pose, std::string code, bool onFunc
   }
   else
     on = "__onfunc";
+
+  /*Getting function name*/
   size_t open_arg = code.find("(", dot + 1);
   func = code.substr(dot + 1, open_arg - dot - 1);
+  word_integrity = code_.checkWordIntegrity(func);
+  if(word_integrity != std::string::npos)
+    error_.printError(pose + dot + 1 + word_integrity, "invalid syntax in ‘" + func + "’");
+
+  /*Getting arguments*/
   manipulator.getInBraquet(open_arg, arg, code);
   size_t close_arg = open_arg + arg.size() + 1;
 
@@ -428,14 +435,17 @@ void Parser::checkInstructionValidity(size_t pose, std::string code, bool onFunc
   args.push_back(arg.substr(start_arg));
   args_pose.push_back(pose+open_arg+1+start_arg);
 
+  /*Checking arguments validity*/
   for(int i = 0; i < args.size(); i++)
     checkArgumentValidity(args_pose[i], args[i]);
 
+  /*Checking if a function is applied on the function result*/
   size_t next_func = manipulator.findAfter(close_arg, ".");
   if(next_func != std::string::npos)
     checkInstructionValidity(pose + next_func+1, code.substr(next_func), true);
   else
   {
+    /*Checking if no residual word is present after the end on instruction*/
     std::string next = manipulator.getWordAfter(close_arg, false);
     if(next != "")
     {
@@ -449,14 +459,14 @@ void Parser::checkInstructionValidity(size_t pose, std::string code, bool onFunc
 void Parser::checkArgumentValidity(size_t pose, std::string code)
 {
   code_.goToEffectiveCode(code, pose);
-  if(code.find("__subsection(") == std::string::npos)
+  if(code.find("__subsection[") == std::string::npos)
   {
     if(code.find(".") != std::string::npos)
       checkInstructionValidity(pose, code);
   }
   else
   {
-    size_t sub = code.find("__subsection(");
+    size_t sub = code.find("__subsection[");
     error_.printError(pose+sub, "unexpected ‘{’");
   }
 }

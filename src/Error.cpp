@@ -96,54 +96,50 @@ void Error::printMessage(size_t pose, std::string message)
 
   code_->operators_.function2Op(full_line, error_begin, pose);
 
-  while(full_line.find("__ont(") != std::string::npos)
+  while(full_line.find("__ont") != std::string::npos)
   {
-    size_t ont_pose = full_line.find("__ont(");
+    size_t ont_pose = full_line.find("__ont");
     full_line.replace(ont_pose, 8, "ont::");
     if(ont_pose + 1 < (pose - error_begin + 1))
-      pose += std::string("ont::").size() - std::string("__ont().").size();
+      pose += std::string("ont::").size() - std::string("__ont.").size();
   }
 
-  while(full_line.find("__var(") != std::string::npos)
+  while(full_line.find("__var[") != std::string::npos)
   {
-    size_t var_pose = full_line.find("__var(");
-    size_t var_end = full_line.find(")", var_pose);
-    std::string var = code_->text.substr(var_pose, var_end-var_pose+1);
+    size_t var_pose = full_line.find("__var[");
+    size_t var_end = full_line.find("]", var_pose);
+    std::string var = full_line.substr(var_pose, var_end-var_pose+1);
     std::string ns_var = code_->variables_.ns() + "::" + code_->variables_.name(var);
     full_line.replace(var_pose, var.size(), ns_var);
     if(var_pose + 1 < (pose - error_begin + 1))
       pose += ns_var.size() - var.size();
   }
 
-  while(full_line.find("__subsection(") != std::string::npos)
+  while(full_line.find("__subsection[") != std::string::npos)
   {
-    size_t subsection_pose = full_line.find("__subsection(");
-    std::string subsection_no;
-    code_->getInBraquet(subsection_pose+12, subsection_no, full_line);
-    std::string subsection = "__subsection(" + subsection_no + ");";
+    size_t subsection_pose = full_line.find("__subsection[");
+    size_t subsection_end = full_line.find("]", subsection_pose);
+    std::string subsection = full_line.substr(subsection_pose, subsection_end-subsection_pose+1+1);
     full_line.replace(subsection_pose, subsection.size(), std::string("{" + code_->subsections_[subsection].subsection + "}"));
     if(subsection_pose + 1 < (pose - error_begin + 1))
       pose += std::string("{" + code_->subsections_[subsection].subsection + "}").size() - subsection.size();
   }
 
-  while(full_line.find("__comment(") != std::string::npos)
+  while(full_line.find("__comment[") != std::string::npos)
   {
-    size_t comment_pose = full_line.find("__comment(");
-    std::string comment_no;
-    code_->getInBraquet(comment_pose+9, comment_no, full_line);
-    std::string comment = "__comment(" + comment_no + ")";
+    size_t comment_pose = full_line.find("__comment[");
+    size_t comment_end = full_line.find("]", comment_pose);
+    std::string comment = full_line.substr(comment_pose, comment_end-comment_pose+1);
     full_line.replace(comment_pose, comment.size(), code_->comments_[comment].comment );
     if(comment_pose + 1 < (pose - error_begin + 1))
       pose += code_->comments_[comment].comment.size() - comment.size();
   }
 
-  while(full_line.find("__string(") != std::string::npos)
+  while(full_line.find("__string[") != std::string::npos)
   {
-    size_t string_pose = full_line.find("__string(");
-    std::string string_no;
-    code_->getInBraquet(string_pose+8, string_no, full_line);
-    std::string strings = "__string(" + string_no + ")";
-
+    size_t string_pose = full_line.find("__string[");
+    size_t string_end = full_line.find("]", string_pose);
+    std::string strings = full_line.substr(string_pose, string_end-string_pose+1);
     full_line.replace(string_pose, strings.size(), std::string("\"" + code_->strings_.get(strings) + "\""));
     if(string_pose + 1 < (pose - error_begin + 1))
       pose += std::string("\"" + code_->strings_.get(strings) + "\"").size() - strings.size();

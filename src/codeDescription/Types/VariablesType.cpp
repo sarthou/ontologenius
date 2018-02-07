@@ -43,7 +43,7 @@ std::string VariablesType::add(std::string name)
 
   if(id == "")
   {
-    id = "__var(" + std::to_string(nb_variables_) + ")";
+    id = "__var[" + std::to_string(nb_variables_) + "]";
     nb_variables_++;
 
     Variable_t tmp;

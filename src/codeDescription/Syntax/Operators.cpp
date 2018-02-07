@@ -48,8 +48,6 @@ void Operators::op2Function()
 
 void Operators::function2Op(std::string& text, size_t pose, size_t& track_pose)
 {
-  std::cout << text << ":" << pose << ":" << track_pose << std::endl;
-
   int16_t init_pose = pose;
   int16_t max_pose = text.size() + init_pose;
   size_t stop = 0;

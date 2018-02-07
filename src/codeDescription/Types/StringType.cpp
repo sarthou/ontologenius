@@ -25,7 +25,7 @@ StringType::StringType()
 
 std::string StringType::add(std::string text, size_t line_start, size_t line_stop)
 {
-  std::string id = "__string(" + std::to_string(nb_strings_) + ")";
+  std::string id = "__string[" + std::to_string(nb_strings_) + "]";
   nb_strings_++;
 
   StringBlock_t tmp;
