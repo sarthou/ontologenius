@@ -68,7 +68,7 @@ void Code::goToEffectiveCode(std::string& code, size_t& pose)
     size_t useless = 0;
     while((code[useless] == ' ') || (code[useless] == '\n'))
       useless += 1;
-    pose += useless; //TODO remove if ok
+    pose += useless;
     code = code.substr(useless);
 
     size_t comment = code.find("__comment(");
@@ -80,4 +80,25 @@ void Code::goToEffectiveCode(std::string& code, size_t& pose)
       code = code.substr(comment + 1);
     }
   }
+}
+
+size_t Code::checkWordIntegrity(std::string wholeWord)
+{
+  size_t i = 0;
+
+  while((wholeWord[i] == ' ') || (wholeWord[i] == '\n'))
+    i++;
+
+  while((i < wholeWord.size()) && ((wholeWord[i] >= '0' && wholeWord[i] <= '9') ||
+                                  (wholeWord[i] >= 'A' && wholeWord[i] <= 'Z') ||
+                                  (wholeWord[i] >= 'a' && wholeWord[i] <= 'z') ||
+                                  (wholeWord[i] == '_')))
+  {
+    i++;
+  }
+  std::string validWord = wholeWord.substr(0, i);
+  if(wholeWord == validWord)
+    return std::string::npos;
+  else
+    return i;
 }
