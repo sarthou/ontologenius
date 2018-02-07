@@ -36,8 +36,9 @@ public:
 
 private:
   std::map<std::string, IfBlock_t> ifelse_;
-  
+
   size_t getNextIfBlock(int& nb_block, size_t pose, Code& code, Error* error = nullptr);
+  size_t getCorrectCharPosition(std::string text, size_t pose);
 };
 
 #endif

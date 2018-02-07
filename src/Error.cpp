@@ -99,7 +99,7 @@ void Error::printMessage(size_t pose, std::string message)
   while(full_line.find("__ont") != std::string::npos)
   {
     size_t ont_pose = full_line.find("__ont");
-    full_line.replace(ont_pose, 8, "ont::");
+    full_line.replace(ont_pose, 6, "ont::");
     if(ont_pose + 1 < (pose - error_begin + 1))
       pose += std::string("ont::").size() - std::string("__ont.").size();
   }
