@@ -48,6 +48,8 @@ void Operators::op2Function()
 
 void Operators::function2Op(std::string& text, size_t pose, size_t& track_pose)
 {
+  std::cout << text << ":" << pose << ":" << track_pose << std::endl;
+
   int16_t init_pose = pose;
   int16_t max_pose = text.size() + init_pose;
   size_t stop = 0;
@@ -68,10 +70,10 @@ void Operators::function2Op(std::string& text, size_t pose, size_t& track_pose)
 
     if(max_pose >= init_pose)
     {
-      text.replace(operators_[op_index].begin, operators_[op_index].replace.size(), operators_[op_index].op);
+      text.replace(operators_[op_index].begin - pose, operators_[op_index].replace.size(), operators_[op_index].op);
       if(operators_[op_index].begin < track_pose)
         track_pose -= operators_[op_index].replace.size() - operators_[op_index].op.size();
-      text.replace(operators_[op_index].end_bracket, 1, "");
+      text.replace(operators_[op_index].end_bracket - pose, 1, "");
       if(operators_[op_index].end_bracket < track_pose)
         track_pose -= 1;
     }
