@@ -11,8 +11,10 @@
 class Parser
 {
 public:
-  Parser(std::string code, size_t current_line = 1);
+  Parser(Code* code, size_t current_line = 1, bool subparser = false);
   ~Parser();
+
+  Error& getError() {return error_; }
 
 private:
   void checkCode();
@@ -32,11 +34,9 @@ private:
   void checkInstructionValidity(size_t pose, std::string code, bool onFunction = false);
   void checkArgumentValidity(size_t pose, std::string code);
 
-  Code code_;
+  Code* code_;
   Error error_;
-
-  size_t begin_;
-  size_t end_;
+  bool subparser_;
 };
 
 #endif

@@ -17,6 +17,7 @@ public:
 
   std::string text;
   LinesCounter lines_counter_;
+  size_t first_char_pose;
 
   size_t getInBraquet(size_t begin, std::string& in_bracket, std::string& text);
   bool findBefore(size_t begin, char symbol);

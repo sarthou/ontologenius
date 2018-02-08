@@ -11,7 +11,7 @@
 class Error
 {
 public:
-  Error(Code* code);
+  Error(Code* code = nullptr);
   ~Error() {}
 
   void printError(size_t pose, std::string message);
@@ -20,6 +20,8 @@ public:
   void printStatus();
 
   bool isOnError();
+
+  void cpy(Error& error);
 private:
   Code* code_;
 

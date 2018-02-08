@@ -1,5 +1,11 @@
 #include "ontoloGenius/codeDescription/Code.h"
 
+Code::~Code()
+{
+  for (std::map<std::string, SubsectionBlock_t>::iterator it=subsections_.begin(); it!=subsections_.end(); ++it)
+      delete it->second.subsection;
+}
+
 size_t Code::getLineNumber(size_t final_pose)
 {
   size_t current = lines_counter_.getStart();
