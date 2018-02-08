@@ -45,7 +45,9 @@ public:
   size_t getNbOfSublines(size_t& current_pose, size_t stop = -1);
 
   void goToEffectiveCode(std::string& code, size_t& pose);
-  size_t checkWordIntegrity(std::string wholeWord);
+  void removeNonEffectiveCode(std::string& code);
+  size_t checkWordIntegrity(std::string& wholeWord);
+  void removeProtectedWord(std::string& text);
 
 private:
 };

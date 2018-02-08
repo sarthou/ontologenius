@@ -3,38 +3,16 @@
 #include "ontoloGenius/Parser.h"
 #include "ontoloGenius/Computer.h"
 
-Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(onto), code_(code), error_(&code_)
+Parser::Parser(std::string code, size_t current_line) : code_(code), error_(&code_)
 {
-  subparser_ = nullptr;
   begin_ = end_ = 0;
 
   code_.lines_counter_.current_line_ = current_line;
   code_.lines_counter_.setStart(current_line);
 
-  //code_.print();
-  //std::cout << "----------------------" << std::endl;
-
   code_.remove('\t');
 
-  checkReservedWord("__string");
-  checkReservedWord("__comment");
-
-  checkStringAndComment();
-
-  checkReserved();
-
-  checkBraquets();
-
-  getSubsections();
-
-  getFromNamespace();
-
-  replaceOperator();
-
-  code_.ifelse_.compact(code_, &error_);
-
-  std::map<size_t, std::string> splited = splitBySemicolon();
-  checkInstructionValidity(splited);
+  checkCode();
 
   error_.printStatus();
 
@@ -45,8 +23,42 @@ Parser::Parser(std::string code, TreeObject& onto, size_t current_line) : onto_(
 
 Parser::~Parser()
 {
-  if(subparser_ != nullptr)
-    delete subparser_;
+}
+
+void Parser::checkCode()
+{
+  checkReservedWord("__string");
+  checkReservedWord("__comment");
+  if(error_.isOnError())
+    return;
+
+  checkStringAndComment();
+
+  checkReserved();
+  if(error_.isOnError())
+    return;
+
+  checkBraquets();
+
+  getSubsections();
+  if(error_.isOnError())
+    return;
+
+  getFromNamespace();
+
+  replaceOperator();
+  if(error_.isOnError())
+    return;
+
+  code_.ifelse_.compact(code_, &error_);
+  if(error_.isOnError())
+    return;
+
+  std::map<size_t, std::string> splited = splitBySemicolon();
+  if(error_.isOnError())
+    return;
+
+  checkInstructionValidity(splited);
 }
 
 void Parser::checkReserved()
@@ -390,6 +402,9 @@ void Parser::checkInstructionValidity(std::map<size_t, std::string>& splited)
       else
         checkInstructionValidity(pose, code);
     }
+
+    if(error_.isOnError())
+      break;
   }
 }
 
@@ -418,7 +433,10 @@ void Parser::checkInstructionValidity(size_t pose, std::string code, bool onFunc
   func = code.substr(dot + 1, open_arg - dot - 1);
   word_integrity = code_.checkWordIntegrity(func);
   if(word_integrity != std::string::npos)
-    error_.printError(pose + dot + 1 + word_integrity, "invalid syntax in ‘" + func + "’");
+  {
+    code_.removeProtectedWord(func);
+    error_.printError(pose + dot + 1 + word_integrity, "invalid syntax after ‘" + func + "’");
+  }
 
   /*Getting arguments*/
   manipulator.getInBraquet(open_arg, arg, code);
@@ -451,6 +469,7 @@ void Parser::checkInstructionValidity(size_t pose, std::string code, bool onFunc
     {
       size_t err_pose = code.find(next, close_arg);
       err_pose += pose;
+      code_.removeProtectedWord(next);
       error_.printError(err_pose, "expected ';' before ‘" + next + "’");
     }
   }

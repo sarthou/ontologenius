@@ -82,23 +82,61 @@ void Code::goToEffectiveCode(std::string& code, size_t& pose)
   }
 }
 
-size_t Code::checkWordIntegrity(std::string wholeWord)
+void Code::removeNonEffectiveCode(std::string& code)
 {
+  bool done = false;
+
+  while(done == false)
+  {
+    done = true;
+    int16_t useless = code.size() - 1;
+    while(((code[useless] == ' ') || (code[useless] == '\n')) && (useless >= 0))
+      useless -= 1;
+    code = code.substr(0,useless+1);
+
+    size_t tmp_useless = code.size() - 1;
+    if(code[tmp_useless] ==']')
+    {
+      while(code[--tmp_useless] != '[');
+      if(code.find("__comment[", tmp_useless - 9) != std::string::npos)
+      {
+        code = code.substr(0, tmp_useless - 9);
+        done = false;
+      }
+    }
+  }
+}
+
+size_t Code::checkWordIntegrity(std::string& wholeWord)
+{
+  std::string tmp_wholeWord = wholeWord;
+
+  size_t offset = 0;
+  removeNonEffectiveCode(tmp_wholeWord);
+  goToEffectiveCode(tmp_wholeWord, offset);
+
   size_t i = 0;
 
-  while((wholeWord[i] == ' ') || (wholeWord[i] == '\n'))
-    i++;
-
-  while((i < wholeWord.size()) && ((wholeWord[i] >= '0' && wholeWord[i] <= '9') ||
-                                  (wholeWord[i] >= 'A' && wholeWord[i] <= 'Z') ||
-                                  (wholeWord[i] >= 'a' && wholeWord[i] <= 'z') ||
-                                  (wholeWord[i] == '_')))
+  while((i < tmp_wholeWord.size()) && ((tmp_wholeWord[i] >= '0' && tmp_wholeWord[i] <= '9') ||
+                                      (tmp_wholeWord[i] >= 'A' && tmp_wholeWord[i] <= 'Z') ||
+                                      (tmp_wholeWord[i] >= 'a' && tmp_wholeWord[i] <= 'z') ||
+                                      (tmp_wholeWord[i] == '_')))
   {
     i++;
   }
-  std::string validWord = wholeWord.substr(0, i);
-  if(wholeWord == validWord)
+  std::string validWord = tmp_wholeWord.substr(0, i);
+  if(tmp_wholeWord == validWord)
     return std::string::npos;
   else
-    return i;
+  {
+    wholeWord=validWord;
+    return i+offset;
+  }
+}
+
+void Code::removeProtectedWord(std::string& text)
+{
+  size_t protect = text.find("__");
+  if(protect != std::string::npos)
+    text = text.substr(0, protect);
 }
