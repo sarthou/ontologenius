@@ -442,41 +442,46 @@ void Parser::checkInstructionValidity(size_t pose, std::string code, bool onFunc
     error_.printError(pose + dot + 1 + word_integrity, "invalid syntax after ‘" + func + "’");
   }
 
-  /*Getting arguments*/
-  manipulator.getInBraquet(open_arg, arg, code);
-  size_t close_arg = open_arg + arg.size() + 1;
-
-  size_t start_arg = 0;
-  while(arg.find(",", start_arg) != std::string::npos)
+  if(open_arg != std::string::npos)
   {
-    size_t nex_arg = arg.find(",", start_arg);
-    args.push_back(arg.substr(start_arg, nex_arg - start_arg));
-    args_pose.push_back(pose+open_arg+1+start_arg);
-    start_arg = nex_arg+1;
-  }
-  args.push_back(arg.substr(start_arg));
-  args_pose.push_back(pose+open_arg+1+start_arg);
+    /*Getting arguments*/
+    manipulator.getInBraquet(open_arg, arg, code);
+    size_t close_arg = open_arg + arg.size() + 1;
 
-  /*Checking arguments validity*/
-  for(int i = 0; i < args.size(); i++)
-    checkArgumentValidity(args_pose[i], args[i]);
-
-  /*Checking if a function is applied on the function result*/
-  size_t next_func = manipulator.findAfter(close_arg, ".");
-  if(next_func != std::string::npos)
-    checkInstructionValidity(pose + next_func+1, code.substr(next_func), true);
-  else
-  {
-    /*Checking if no residual word is present after the end on instruction*/
-    std::string next = manipulator.getWordAfter(close_arg, false);
-    if(next != "")
+    size_t start_arg = 0;
+    while(arg.find(",", start_arg) != std::string::npos)
     {
-      size_t err_pose = code.find(next, close_arg);
-      err_pose += pose;
-      code_->removeProtectedWord(next);
-      error_.printError(err_pose, "expected ';' before ‘" + next + "’");
+      size_t nex_arg = arg.find(",", start_arg);
+      args.push_back(arg.substr(start_arg, nex_arg - start_arg));
+      args_pose.push_back(pose+open_arg+1+start_arg);
+      start_arg = nex_arg+1;
+    }
+    args.push_back(arg.substr(start_arg));
+    args_pose.push_back(pose+open_arg+1+start_arg);
+
+    /*Checking arguments validity*/
+    for(int i = 0; i < args.size(); i++)
+      checkArgumentValidity(args_pose[i], args[i]);
+
+    /*Checking if a function is applied on the function result*/
+    size_t next_func = manipulator.findAfter(close_arg, ".");
+    if(next_func != std::string::npos)
+      checkInstructionValidity(pose + next_func+1, code.substr(next_func), true);
+    else
+    {
+      /*Checking if no residual word is present after the end on instruction*/
+      std::string next = manipulator.getWordAfter(close_arg, false);
+      if(next != "")
+      {
+        size_t err_pose = code.find(next, close_arg);
+        err_pose += pose;
+        code_->removeProtectedWord(next);
+        error_.printError(err_pose, "expected ';' before ‘" + next + "’");
+      }
     }
   }
+  else
+    error_.printError(pose + dot + func.size(), "miss ‘(‘ after ‘" + func + "’");
 }
 
 void Parser::checkArgumentValidity(size_t pose, std::string code)
