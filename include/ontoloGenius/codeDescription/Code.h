@@ -22,9 +22,10 @@ struct CommentBlock_t
   LinesCounter lines_count;
 };
 
+class Code;
 struct SubsectionBlock_t
 {
-  std::string subsection;
+  Code* subsection;
   LinesCounter lines_count;
 };
 
@@ -32,7 +33,7 @@ class Code : public TextManipulator
 {
 public:
   Code(std::string code) : TextManipulator(code), operators_(&text) {}
-  ~Code() {}
+  ~Code();
 
   std::map<std::string, CommentBlock_t> comments_;
   std::map<std::string, SubsectionBlock_t> subsections_;
@@ -45,6 +46,9 @@ public:
   size_t getNbOfSublines(size_t& current_pose, size_t stop = -1);
 
   void goToEffectiveCode(std::string& code, size_t& pose);
+  void removeNonEffectiveCode(std::string& code);
+  size_t checkWordIntegrity(std::string& wholeWord);
+  void removeProtectedWord(std::string& text);
 
 private:
 };

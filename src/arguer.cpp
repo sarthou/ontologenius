@@ -174,7 +174,7 @@ int main(int argc, char** argv)
   std::string code = "";
   code += "var::man += fablab.isIn() - (bob + max);\n";
   code += "if(adult == age) \n";
-  code += "{\n";
+  code += "{";
   code += "//this is a comment\n";
   code += "\tif(age == adult)\n";
   code += "\t\tont::print(var::man);\n";
@@ -185,10 +185,16 @@ int main(int argc, char** argv)
   code += "/*\n";
   code += "an other comment*/ \n";
   code += "ont::print(\"this is the else \");\n\n";
+  code += "function(var::men - bob);\n";
   code += "var::men =if(var::man == man);\n";
 
-  Parser p(code, onto);
-  //while(p.move());
+  Error error;
+
+  Code my_code(code);
+  Parser p(&my_code);
+
+  error.cpy(p.getError());
+  error.printStatus();
 
   ros::spin();
 
