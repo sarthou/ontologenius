@@ -185,7 +185,7 @@ int main(int argc, char** argv)
   code += "/*\n";
   code += "an other comment*/ \n";
   code += "ont::print(\"this is the else \");\n\n";
-  code += "function(var::men - bob);\n";
+  code += "ont::null();\n";
   code += "var::men =if(var::man == man);\n";
 
   Error error;
