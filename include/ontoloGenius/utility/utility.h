@@ -3,9 +3,8 @@
 #include "ontologenius/REST.h"
 #include "ros/ros.h"
 
-using namespace std;
 
-int send_request(string method, string url, string body, string* response)
+int send_request(std::string method, std::string url, std::string body, std::string* response)
 {
   ros::NodeHandle n;
 

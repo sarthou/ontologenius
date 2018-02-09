@@ -3,7 +3,7 @@
 #include <set>
 #include <iostream>
 
-#include "ontoloGenius/TreeObject.h"
+#include "ontoloGenius/ontoGraphs/ClassGraph.h"
 
 using namespace std;
 
@@ -19,7 +19,7 @@ public:
   Computer() {}
   ~Computer() {}
 
-  bool compute(string equation, TreeObject& onto);
+  bool compute(string equation, ClassGraph& onto);
 
 private:
   vector<vector<string>> L;
