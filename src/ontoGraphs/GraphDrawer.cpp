@@ -3,8 +3,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 #define MARKER_WIDTH      350
 #define MIN_WIDTH_SPACE   50
 #define MARKER_HEIGHT     100
@@ -34,7 +32,7 @@ void GraphDrawer::put_in_layers()
 
     while(!test_end())
     {
-      layer_nodes.push_back(vector<node_t*>());
+      layer_nodes.push_back(std::vector<node_t*>());
       put_layer(layer);
       layer++;
     }
@@ -99,7 +97,7 @@ bool GraphDrawer::test_end()
   return end;
 }
 
-void GraphDrawer::draw(string file_name)
+void GraphDrawer::draw(std::string file_name)
 {
   long int height = (layer_nodes.size() /*+1*/)*(MARKER_HEIGHT + MIN_HEIGHT_SPACE) + 1;
 
@@ -109,7 +107,7 @@ void GraphDrawer::draw(string file_name)
         width = layer_nodes[i].size();
   width = width*(MARKER_WIDTH + MIN_WIDTH_SPACE) + 1;
 
-  cout << height << " : " << width << endl;
+  std::cout << height << " : " << width << std::endl;
 
   image = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
   cvSet(image, cvScalar(255,255,255));
@@ -164,7 +162,7 @@ void GraphDrawer::link()
       }
 }
 
-bool GraphDrawer::exist(string value)
+bool GraphDrawer::exist(std::string value)
 {
   for(unsigned long int i = 0; i < branchs_nodes.size(); i++)
     if(branchs_nodes[i]->value == value)
@@ -198,8 +196,8 @@ int GraphDrawer::create_node(ClassBranch_t* branch, node_t* mother)
 
 void GraphDrawer::init()
 {
-  vector<node_t*> single;
-  vector<node_t*> couple;
+  std::vector<node_t*> single;
+  std::vector<node_t*> couple;
   if(m_tree != nullptr)
   {
     for(unsigned long int i = 0; i < m_tree->roots_.size(); i++)

@@ -1,9 +1,7 @@
 #include "ontoloGenius/ontoGraphs/PropertyGraph.h"
 #include <iostream>
 
-using namespace std;
-
-void PropertyGraph::add(string value, PropertyVectors_t& property_vectors)
+void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
 {
 /**********************
 ** Mothers
@@ -268,7 +266,7 @@ void PropertyGraph::add(string value, PropertyVectors_t& property_vectors)
     me->dictionary_["en"] = me->value_;
 }
 
-void PropertyGraph::add(vector<string>& disjoints)
+void PropertyGraph::add(std::vector<std::string>& disjoints)
 {
   for(unsigned int disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
@@ -343,18 +341,18 @@ void PropertyGraph::add(vector<string>& disjoints)
 }
 
 
-set<string> PropertyGraph::getDisjoint(string value)
+std::set<std::string> PropertyGraph::getDisjoint(std::string value)
 {
-  set<string> res;
+  std::set<std::string> res;
 
   for(unsigned int i = 0; i < roots_.size(); i++)
     if(roots_[i]->value_ == value)
     {
-      cout << roots_[i]->value_ << endl;
+      std::cout << roots_[i]->value_ << std::endl;
       for(unsigned disjoint_i = 0; disjoint_i < roots_[i]->disjoints_.size(); disjoint_i++)
       {
-        cout << "------" << roots_[i]->disjoints_[disjoint_i]->value_ << endl;
-        set<string> tmp = getDown(roots_[i]->disjoints_[disjoint_i], value);
+        std::cout << "------" << roots_[i]->disjoints_[disjoint_i]->value_ << std::endl;
+        std::set<std::string> tmp = getDown(roots_[i]->disjoints_[disjoint_i], value);
 
         if(tmp.size())
         {
@@ -368,11 +366,11 @@ set<string> PropertyGraph::getDisjoint(string value)
     for(unsigned int i = 0; i < branchs_.size(); i++)
       if(branchs_[i]->value_ == value)
       {
-        cout << branchs_[i]->value_ << endl;
+        std::cout << branchs_[i]->value_ << std::endl;
         for(unsigned disjoint_i = 0; disjoint_i < branchs_[i]->disjoints_.size(); disjoint_i++)
         {
-          cout << "------" << branchs_[i]->disjoints_[disjoint_i]->value_ << endl;
-          set<string> tmp = getDown(branchs_[i]->disjoints_[disjoint_i], value);
+          std::cout << "------" << branchs_[i]->disjoints_[disjoint_i]->value_ << std::endl;
+          std::set<std::string> tmp = getDown(branchs_[i]->disjoints_[disjoint_i], value);
 
           if(tmp.size())
             res.insert(tmp.begin(), tmp.end());
@@ -383,18 +381,18 @@ set<string> PropertyGraph::getDisjoint(string value)
   return res;
 }
 
-set<string> PropertyGraph::getInverse(string value)
+std::set<std::string> PropertyGraph::getInverse(std::string value)
 {
-  set<string> res;
+  std::set<std::string> res;
 
   for(unsigned int i = 0; i < roots_.size(); i++)
     if(roots_[i]->value_ == value)
     {
-      cout << roots_[i]->value_ << endl;
+      std::cout << roots_[i]->value_ << std::endl;
       for(unsigned inverse_i = 0; inverse_i < roots_[i]->inverses_.size(); inverse_i++)
       {
-        cout << "------" << roots_[i]->inverses_[inverse_i]->value_ << endl;
-        set<string> tmp = getDown(roots_[i]->inverses_[inverse_i], value);
+        std::cout << "------" << roots_[i]->inverses_[inverse_i]->value_ << std::endl;
+        std::set<std::string> tmp = getDown(roots_[i]->inverses_[inverse_i], value);
 
         if(tmp.size())
         {
@@ -408,11 +406,11 @@ set<string> PropertyGraph::getInverse(string value)
     for(unsigned int i = 0; i < branchs_.size(); i++)
       if(branchs_[i]->value_ == value)
       {
-        cout << branchs_[i]->value_ << endl;
+        std::cout << branchs_[i]->value_ << std::endl;
         for(unsigned inverse_i = 0; inverse_i < branchs_[i]->inverses_.size(); inverse_i++)
         {
-          cout << "------" << branchs_[i]->inverses_[inverse_i]->value_ << endl;
-          set<string> tmp = getDown(branchs_[i]->inverses_[inverse_i], value);
+          std::cout << "------" << branchs_[i]->inverses_[inverse_i]->value_ << std::endl;
+          std::set<std::string> tmp = getDown(branchs_[i]->inverses_[inverse_i], value);
 
           if(tmp.size())
           {
@@ -425,18 +423,18 @@ set<string> PropertyGraph::getInverse(string value)
   return res;
 }
 
-set<string> PropertyGraph::getDomain(string value)
+std::set<std::string> PropertyGraph::getDomain(std::string value)
 {
-  set<string> res;
+  std::set<std::string> res;
 
   for(unsigned int i = 0; i < roots_.size(); i++)
     if(roots_[i]->value_ == value)
     {
-      cout << roots_[i]->value_ << endl;
+      std::cout << roots_[i]->value_ << std::endl;
       for(unsigned domain_i = 0; domain_i < roots_[i]->domains_.size(); domain_i++)
       {
-        cout << "------" << roots_[i]->domains_[domain_i]->value_ << endl;
-        set<string> tmp = treeObject_->getDown(roots_[i]->domains_[domain_i], value);
+        std::cout << "------" << roots_[i]->domains_[domain_i]->value_ << std::endl;
+        std::set<std::string> tmp = treeObject_->getDown(roots_[i]->domains_[domain_i], value);
 
         if(tmp.size())
         {
@@ -450,11 +448,11 @@ set<string> PropertyGraph::getDomain(string value)
     for(unsigned int i = 0; i < branchs_.size(); i++)
       if(branchs_[i]->value_ == value)
       {
-        cout << branchs_[i]->value_ << endl;
+        std::cout << branchs_[i]->value_ << std::endl;
         for(unsigned domain_i = 0; domain_i < branchs_[i]->domains_.size(); domain_i++)
         {
-          cout << "------" << branchs_[i]->domains_[domain_i]->value_ << endl;
-          set<string> tmp = treeObject_->getDown(branchs_[i]->domains_[domain_i], value);
+          std::cout << "------" << branchs_[i]->domains_[domain_i]->value_ << std::endl;
+          std::set<std::string> tmp = treeObject_->getDown(branchs_[i]->domains_[domain_i], value);
 
           if(tmp.size())
           {
@@ -467,18 +465,18 @@ set<string> PropertyGraph::getDomain(string value)
   return res;
 }
 
-set<string> PropertyGraph::getRange(string value)
+std::set<std::string> PropertyGraph::getRange(std::string value)
 {
-  set<string> res;
+  std::set<std::string> res;
 
   for(unsigned int i = 0; i < roots_.size(); i++)
     if(roots_[i]->value_ == value)
     {
-      cout << roots_[i]->value_ << endl;
+      std::cout << roots_[i]->value_ << std::endl;
       for(unsigned range_i = 0; range_i < roots_[i]->ranges_.size(); range_i++)
       {
-        cout << "------" << roots_[i]->ranges_[range_i]->value_ << endl;
-        set<string> tmp = treeObject_->getDown(roots_[i]->ranges_[range_i], value);
+        std::cout << "------" << roots_[i]->ranges_[range_i]->value_ << std::endl;
+        std::set<std::string> tmp = treeObject_->getDown(roots_[i]->ranges_[range_i], value);
 
         if(tmp.size())
         {
@@ -492,11 +490,11 @@ set<string> PropertyGraph::getRange(string value)
     for(unsigned int i = 0; i < branchs_.size(); i++)
       if(branchs_[i]->value_ == value)
       {
-        cout << branchs_[i]->value_ << endl;
+        std::cout << branchs_[i]->value_ << std::endl;
         for(unsigned range_i = 0; range_i < branchs_[i]->ranges_.size(); range_i++)
         {
-          cout << "------" << branchs_[i]->ranges_[range_i]->value_ << endl;
-          set<string> tmp = treeObject_->getDown(branchs_[i]->ranges_[range_i], value);
+          std::cout << "------" << branchs_[i]->ranges_[range_i]->value_ << std::endl;
+          std::set<std::string> tmp = treeObject_->getDown(branchs_[i]->ranges_[range_i], value);
 
           if(tmp.size())
           {

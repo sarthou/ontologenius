@@ -2,11 +2,11 @@
 #include <fstream>
 #include "ontoloGenius/utility/error_code.h"
 
-int OntologyReader::readFromUri(string uri)
+int OntologyReader::readFromUri(std::string uri)
 {
   int nb_elem = 0;
 
-  string response = "";
+  std::string response = "";
   int err = send_request("GET", uri, "", &response);
 
   if(err == NO_ERROR)
@@ -20,12 +20,12 @@ int OntologyReader::readFromUri(string uri)
     return REQUEST_ERROR;
 }
 
-int OntologyReader::readFromFile(string fileName)
+int OntologyReader::readFromFile(std::string fileName)
 {
   int nb_elem = 0;
 
-  string response = "";
-  string tmp = "";
+  std::string response = "";
+  std::string tmp = "";
   std::ifstream f(fileName);
   while(getline(f,tmp))
   {
@@ -38,54 +38,54 @@ int OntologyReader::readFromFile(string fileName)
   return read(rdf, fileName);
 }
 
-int OntologyReader::read(TiXmlElement* rdf, string name)
+int OntologyReader::read(TiXmlElement* rdf, std::string name)
 {
   if(rdf == NULL)
   {
-      cerr << "Failed to load file: No root element."<< endl;
+      std::cerr << "Failed to load file: No root element."<< std::endl;
       return OTHER;
   }
   else
   {
-    cout << name << endl;
-    cout << "************************************" << endl;
-    cout << "+ sub       | > domain  | @ language" << endl;
-    cout << "- disjoint  | < range   |" << endl;
-    cout << "/ inverse   | * type    |" << endl;
-    cout << "************************************" << endl;
-    cout << "├── Class" << endl;
+    std::cout << name << std::endl;
+    std::cout << "************************************" << std::endl;
+    std::cout << "+ sub       | > domain  | @ language" << std::endl;
+    std::cout << "- disjoint  | < range   |" << std::endl;
+    std::cout << "/ inverse   | * type    |" << std::endl;
+    std::cout << "************************************" << std::endl;
+    std::cout << "├── Class" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
       read_class(elem);
-    cout << "├── Individuals" << endl;
+    std::cout << "├── Individuals" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
       read_individual(elem);
-    cout << "├── Description" << endl;
+    std::cout << "├── Description" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
       read_description(elem);
-    cout << "├── Property" << endl;
+    std::cout << "├── Property" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
       read_property(elem);
 
-    cout << "└── "<< elemLoaded << " readed ! -------------------- " << endl;
+    std::cout << "└── "<< elemLoaded << " readed ! -------------------- " << std::endl;
     return NO_ERROR;
   }
 }
 
 void OntologyReader::read_class(TiXmlElement* elem)
 {
-  string elemName = elem->Value();
+  std::string elemName = elem->Value();
   if(elemName == "owl:Class")
   {
-    string node_name = "";
+    std::string node_name = "";
     ObjectVectors_t object_vector;
     const char* attr = elem->Attribute("rdf:about");
     if(attr != NULL)
     {
-      cout << "│   ├──" << get_name(string(attr)) << endl;
-      node_name = get_name(string(attr));
+      std::cout << "│   ├──" << get_name(std::string(attr)) << std::endl;
+      node_name = get_name(std::string(attr));
       for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
       {
-        string subElemName = subElem->Value();
+        std::string subElemName = subElem->Value();
 
         if(subElemName == "rdfs:subClassOf")
           push(object_vector.mothers_, subElem, "+");
@@ -102,19 +102,19 @@ void OntologyReader::read_class(TiXmlElement* elem)
 
 void OntologyReader::read_individual(TiXmlElement* elem)
 {
-  string elemName = elem->Value();
+  std::string elemName = elem->Value();
   if(elemName == "owl:NamedIndividual")
   {
-    string node_name = "";
+    std::string node_name = "";
     ObjectVectors_t object_vector;
     const char* attr = elem->Attribute("rdf:about");
     if(attr != NULL)
     {
-      cout << "│   ├──" << get_name(string(attr)) << endl;
-      node_name = get_name(string(attr));
+      std::cout << "│   ├──" << get_name(std::string(attr)) << std::endl;
+      node_name = get_name(std::string(attr));
       for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
       {
-        string subElemName = subElem->Value();
+        std::string subElemName = subElem->Value();
 
         if(subElemName == "rdf:type")
           push(object_vector.mothers_, subElem, "+");
@@ -131,21 +131,21 @@ void OntologyReader::read_individual(TiXmlElement* elem)
 
 void OntologyReader::read_description(TiXmlElement* elem)
 {
-  string elemName = elem->Value();
+  std::string elemName = elem->Value();
   if(elemName == "rdf:Description")
   {
-    vector<string> disjoints;
+    std::vector<std::string> disjoints;
     bool isDisjointAll = false;
     for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
     {
-      string subElemName = subElem->Value();
+      std::string subElemName = subElem->Value();
       const char* subAttr;
       if(subElemName == "rdf:type")
       {
         subAttr = subElem->Attribute("rdf:resource");
         if(subAttr != NULL)
         {
-          if(get_name(string(subAttr)) == "AllDisjointClasses")
+          if(get_name(std::string(subAttr)) == "AllDisjointClasses")
             isDisjointAll = true;
         }
       }
@@ -154,11 +154,11 @@ void OntologyReader::read_description(TiXmlElement* elem)
         subAttr = subElem->Attribute("rdf:parseType");
         if(subAttr != NULL)
         {
-          if(string(subAttr) == "Collection")
+          if(std::string(subAttr) == "Collection")
           {
             for(TiXmlElement* subSubElem = subElem->FirstChildElement(); subSubElem != NULL; subSubElem = subSubElem->NextSiblingElement())
             {
-              string subSubElemName = subSubElem->Value();
+              std::string subSubElemName = subSubElem->Value();
               const char* subSubAttr;
               if(subSubElemName == "rdf:Description")
               {
@@ -166,13 +166,13 @@ void OntologyReader::read_description(TiXmlElement* elem)
                 if(subSubAttr != NULL)
                 {
                   if(subSubElem == subElem->FirstChildElement())
-                    cout << "│   ├───┬── -";
+                    std::cout << "│   ├───┬── -";
                   else if(subSubElem->NextSiblingElement() == NULL)
-                    cout << "│   │   └── -";
+                    std::cout << "│   │   └── -";
                   else
-                    cout << "│   │   ├── -";
-                  cout << get_name(string(subSubAttr)) << endl;
-                  disjoints.push_back(get_name(string(subSubAttr)));
+                    std::cout << "│   │   ├── -";
+                  std::cout << get_name(std::string(subSubAttr)) << std::endl;
+                  disjoints.push_back(get_name(std::string(subSubAttr)));
                 }
               }
             }
@@ -187,19 +187,19 @@ void OntologyReader::read_description(TiXmlElement* elem)
 
 void OntologyReader::read_property(TiXmlElement* elem)
 {
-  string elemName = elem->Value();
+  std::string elemName = elem->Value();
   if(elemName == "owl:ObjectProperty")
   {
-    string node_name = "";
+    std::string node_name = "";
     PropertyVectors_t propertyVectors;
     const char* attr = elem->Attribute("rdf:about");
     if(attr != NULL)
     {
-      cout << "│   ├──" << get_name(string(attr)) << endl;
-      node_name = get_name(string(attr));
+      std::cout << "│   ├──" << get_name(std::string(attr)) << std::endl;
+      node_name = get_name(std::string(attr));
       for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
       {
-        string subElemName = subElem->Value();
+        std::string subElemName = subElem->Value();
 
         if(subElemName == "rdfs:subPropertyOf")
           push(propertyVectors.mothers_, subElem, "+");
@@ -223,24 +223,24 @@ void OntologyReader::read_property(TiXmlElement* elem)
   }
 }
 
-void OntologyReader::push(vector<string>& vect, TiXmlElement* subElem, string symbole, string attribute)
+void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem, std::string symbole, std::string attribute)
 {
   const char* subAttr;
   subAttr = subElem->Attribute(attribute.c_str());
   if(subAttr != NULL)
   {
-    vect.push_back(get_name(string(subAttr)));
-    cout << "│   │   ├── " << symbole << get_name(string(subAttr)) << endl;
+    vect.push_back(get_name(std::string(subAttr)));
+    std::cout << "│   │   ├── " << symbole << get_name(std::string(subAttr)) << std::endl;
   }
 }
 
-void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, string symbole, string attribute)
+void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, std::string symbole, std::string attribute)
 {
   const char* subAttr;
   subAttr = subElem->Attribute(attribute.c_str());
   if(subAttr != NULL)
   {
-    string property = get_name(string(subAttr));
+    std::string property = get_name(std::string(subAttr));
     if(property == "AsymmetricProperty")
       properties.antisymetric_property_ = true;
     else if(property == "TransitiveProperty")
@@ -259,30 +259,30 @@ void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, strin
       property = "";
 
     if(property != "")
-      cout << "│   │   ├── " << symbole << property << endl;
+      std::cout << "│   │   ├── " << symbole << property << std::endl;
   }
 }
 
-void OntologyReader::pushLang(map<string,string>& dictionary, TiXmlElement* subElem)
+void OntologyReader::pushLang(std::map<std::string, std::string>& dictionary, TiXmlElement* subElem)
 {
   const char* subAttr;
   subAttr = subElem->Attribute("xml:lang");
   if(subAttr != NULL)
   {
-    string lang = get_name(string(subAttr));
+    std::string lang = get_name(std::string(subAttr));
 
     const char* value;
     value = subElem->GetText();
-    dictionary[lang] = string(value);
+    dictionary[lang] = std::string(value);
 
     if((lang != "") && (value != ""))
-      cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang] << endl;
+      std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang] << std::endl;
   }
 }
 
-string OntologyReader::get_name(string uri)
+std::string OntologyReader::get_name(std::string uri)
 {
   size_t pos = uri.find("#");
-  string result = uri.substr(pos+1);
+  std::string result = uri.substr(pos+1);
   return result;
 }

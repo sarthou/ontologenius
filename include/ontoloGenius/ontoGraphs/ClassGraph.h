@@ -9,8 +9,6 @@
 #ifndef TREEOBJECT_H
 #define TREEOBJECT_H
 
-using namespace std;
-
 class ClassBranch_t : public Branch_t<ClassBranch_t>
 {
 public:
@@ -21,9 +19,9 @@ public:
 
 struct ObjectVectors_t
 {
-   vector<string> mothers_;
-   vector<string> disjoints_;
-   map<string, string> dictionary_;
+   std::vector<std::string> mothers_;
+   std::vector<std::string> disjoints_;
+   std::map<std::string, std::string> dictionary_;
 };
 
 class GraphDrawer;
@@ -37,10 +35,10 @@ public:
   ClassGraph() {}
   ~ClassGraph() {}
 
-  void add(string value, ObjectVectors_t& object_vector);
-  void add(vector<string>& disjoints);
+  void add(std::string value, ObjectVectors_t& object_vector);
+  void add(std::vector<std::string>& disjoints);
 
-  set<string> getDisjoint(string value);
+  std::set<std::string> getDisjoint(std::string value);
 
 private:
 };

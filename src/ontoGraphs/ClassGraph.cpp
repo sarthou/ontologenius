@@ -1,9 +1,7 @@
 #include "ontoloGenius/ontoGraphs/ClassGraph.h"
 #include <iostream>
 
-using namespace std;
-
-void ClassGraph::add(string value, ObjectVectors_t& object_vector)
+void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
 {
   //am I a created mother ?
   ClassBranch_t* me = nullptr;
@@ -121,7 +119,7 @@ void ClassGraph::add(string value, ObjectVectors_t& object_vector)
     me->dictionary_["en"] = me->value_;
 }
 
-void ClassGraph::add(vector<string>& disjoints)
+void ClassGraph::add(std::vector<std::string>& disjoints)
 {
   for(unsigned int disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
@@ -195,18 +193,18 @@ void ClassGraph::add(vector<string>& disjoints)
   }
 }
 
-set<string> ClassGraph::getDisjoint(string value)
+std::set<std::string> ClassGraph::getDisjoint(std::string value)
 {
-  set<string> res;
+  std::set<std::string> res;
 
   for(unsigned int i = 0; i < roots_.size(); i++)
     if(roots_[i]->value_ == value)
     {
-      cout << roots_[i]->value_ << endl;
+      std::cout << roots_[i]->value_ << std::endl;
       for(unsigned disjoint_i = 0; disjoint_i < roots_[i]->disjoints_.size(); disjoint_i++)
       {
-        cout << "------" << roots_[i]->disjoints_[disjoint_i]->value_ << endl;
-        set<string> tmp = getDown(roots_[i]->disjoints_[disjoint_i], value);
+        std::cout << "------" << roots_[i]->disjoints_[disjoint_i]->value_ << std::endl;
+        std::set<std::string> tmp = getDown(roots_[i]->disjoints_[disjoint_i], value);
 
         if(tmp.size())
         {
@@ -220,11 +218,11 @@ set<string> ClassGraph::getDisjoint(string value)
     for(unsigned int i = 0; i < branchs_.size(); i++)
       if(branchs_[i]->value_ == value)
       {
-        cout << branchs_[i]->value_ << endl;
+        std::cout << branchs_[i]->value_ << std::endl;
         for(unsigned disjoint_i = 0; disjoint_i < branchs_[i]->disjoints_.size(); disjoint_i++)
         {
-          cout << "------" << branchs_[i]->disjoints_[disjoint_i]->value_ << endl;
-          set<string> tmp = getDown(branchs_[i]->disjoints_[disjoint_i], value);
+          std::cout << "------" << branchs_[i]->disjoints_[disjoint_i]->value_ << std::endl;
+          std::set<std::string> tmp = getDown(branchs_[i]->disjoints_[disjoint_i], value);
 
           if(tmp.size())
             res.insert(tmp.begin(), tmp.end());
