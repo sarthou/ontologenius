@@ -1,7 +1,7 @@
-#include "ontoloGenius/TreeObject.h"
-#include "ontoloGenius/TreeProperty.h"
-#include "ontoloGenius/TreeDrawer.h"
-#include "ontoloGenius/OntologyReader.h"
+#include "ontoloGenius/ontoGraphs/ClassGraph.h"
+#include "ontoloGenius/ontoGraphs/PropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/GraphDrawer.h"
+#include "ontoloGenius/ontoGraphs/OntologyReader.h"
 
 #include "ontologenius/standard_service.h"
 #include "ontoloGenius/utility/error_code.h"
@@ -15,8 +15,8 @@
 
 using namespace std;
 
-TreeObject onto;
-TreeProperty propOnto(&onto);
+ClassGraph onto;
+PropertyGraph propOnto(&onto);
 
 bool reference_handle(ontologenius::standard_service::Request  &req,
                       ontologenius::standard_service::Response &res)
@@ -28,7 +28,7 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
   if(req.action == "add")
   {
     OntologyReader reader(&onto, &propOnto);
-    res.code = reader.read(req.param);
+    res.code = reader.readFromUri(req.param);
   }
   else if(req.action == "close")
   {
@@ -36,7 +36,7 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
   }
   else if(req.action == "reset")
   {
-    onto = TreeObject();
+    onto = ClassGraph();
   }
   else if(req.action == "test")
   {
@@ -162,7 +162,7 @@ int main(int argc, char** argv)
   for(unsigned int i = 1; i < argc; i++)
   {
     OntologyReader reader(&onto, &propOnto);
-    reader.readFile(string(argv[i]));
+    reader.readFromFile(string(argv[i]));
   }
 
   // Start up ROS service with callbacks
@@ -185,7 +185,7 @@ int main(int argc, char** argv)
   code += "/*\n";
   code += "an other comment*/ \n";
   code += "ont::print(\"this is the else \");\n\n";
-  code += "function(var::men - bob);\n";
+  code += "ont::null();\n";
   code += "var::men =if(var::man == man);\n";
 
   Error error;
