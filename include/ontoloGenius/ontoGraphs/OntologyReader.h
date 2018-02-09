@@ -1,5 +1,5 @@
-#include "ontoloGenius/TreeObject.h"
-#include "ontoloGenius/TreeProperty.h"
+#include "ontoloGenius/ontoGraphs/ClassGraph.h"
+#include "ontoloGenius/ontoGraphs/PropertyGraph.h"
 #include "ontoloGenius/utility/utility.h"
 
 #include <vector>
@@ -18,16 +18,16 @@ using namespace std;
 class OntologyReader
 {
 public:
-  OntologyReader(TreeObject* p_objTree, TreeProperty* p_propTree) {m_objTree = p_objTree; m_propTree = p_propTree; elemLoaded = 0; }
+  OntologyReader(ClassGraph* p_objTree, PropertyGraph* p_propTree) {m_objTree = p_objTree; m_propTree = p_propTree; elemLoaded = 0; }
   ~OntologyReader() {}
 
-  int read(string uri);
-  int readFile(string fileName);
+  int readFromUri(string uri);
+  int readFromFile(string fileName);
 
 
 private:
-  TreeObject* m_objTree;
-  TreeProperty* m_propTree;
+  ClassGraph* m_objTree;
+  PropertyGraph* m_propTree;
 
   int elemLoaded;
 

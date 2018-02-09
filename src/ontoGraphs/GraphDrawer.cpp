@@ -1,4 +1,4 @@
-#include "ontoloGenius/TreeDrawer.h"
+#include "ontoloGenius/ontoGraphs/GraphDrawer.h"
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include <iostream>
@@ -10,13 +10,13 @@ using namespace std;
 #define MARKER_HEIGHT     100
 #define MIN_HEIGHT_SPACE  1000
 
-TreeDrawer::TreeDrawer(TreeObject* p_tree)
+GraphDrawer::GraphDrawer(ClassGraph* p_tree)
 {
   m_tree = p_tree;
   init();
 }
 
-void TreeDrawer::put_in_layers()
+void GraphDrawer::put_in_layers()
 {
   if((m_tree != nullptr) && (m_tree->roots_.size() != 0))
   {
@@ -42,7 +42,7 @@ void TreeDrawer::put_in_layers()
   }
 }
 
-void TreeDrawer::put_layer(int layer)
+void GraphDrawer::put_layer(int layer)
 {
   int pos = 0;
   bool had_update = true;
@@ -68,7 +68,7 @@ void TreeDrawer::put_layer(int layer)
   } // end while
 }
 
-bool TreeDrawer::update_one_marker(int layer)
+bool GraphDrawer::update_one_marker(int layer)
 {
   for(unsigned long int i = 0; i < roots_nodes.size(); i++)
     if((roots_nodes[i]->layer == layer) && (roots_nodes[i]->marker == false))
@@ -88,7 +88,7 @@ bool TreeDrawer::update_one_marker(int layer)
   return false;
 }
 
-bool TreeDrawer::test_end()
+bool GraphDrawer::test_end()
 {
   bool end = true;
 
@@ -99,7 +99,7 @@ bool TreeDrawer::test_end()
   return end;
 }
 
-void TreeDrawer::draw(string file_name)
+void GraphDrawer::draw(string file_name)
 {
   long int height = (layer_nodes.size() /*+1*/)*(MARKER_HEIGHT + MIN_HEIGHT_SPACE) + 1;
 
@@ -128,7 +128,7 @@ void TreeDrawer::draw(string file_name)
   cvSaveImage(file_name.c_str(), image);
 }
 
-void TreeDrawer::set_rect(int layer, int nb_layer, int nb_index, node_t* node)
+void GraphDrawer::set_rect(int layer, int nb_layer, int nb_index, node_t* node)
 {
   long int X = cvGetSize(image).width;
   long int Y = cvGetSize(image).height;
@@ -150,7 +150,7 @@ void TreeDrawer::set_rect(int layer, int nb_layer, int nb_index, node_t* node)
             ScalarHSV2BGR(255, node->family, node->family));
 }
 
-void TreeDrawer::link()
+void GraphDrawer::link()
 {
   for(unsigned long int layer = 0; layer < layer_nodes.size(); layer++)
     for(unsigned long int i = 0; i < layer_nodes[layer].size(); i++)
@@ -164,7 +164,7 @@ void TreeDrawer::link()
       }
 }
 
-bool TreeDrawer::exist(string value)
+bool GraphDrawer::exist(string value)
 {
   for(unsigned long int i = 0; i < branchs_nodes.size(); i++)
     if(branchs_nodes[i]->value == value)
@@ -173,7 +173,7 @@ bool TreeDrawer::exist(string value)
   return false;
 }
 
-int TreeDrawer::create_node(Branch_t* branch, node_t* mother)
+int GraphDrawer::create_node(ClassBranch_t* branch, node_t* mother)
 {
   int family = branch->family;
   if(!exist(branch->value_))
@@ -196,7 +196,7 @@ int TreeDrawer::create_node(Branch_t* branch, node_t* mother)
 
 }
 
-void TreeDrawer::init()
+void GraphDrawer::init()
 {
   vector<node_t*> single;
   vector<node_t*> couple;
@@ -231,7 +231,7 @@ void TreeDrawer::init()
   }
 }
 
-cv::Scalar TreeDrawer::ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V)
+cv::Scalar GraphDrawer::ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V)
 {
     cv::Mat rgb;
     cv::Mat hsv(1,1, CV_8UC3, cv::Scalar(H,S,V));

@@ -6,7 +6,7 @@
 #include <highgui.h>
 #include <opencv2/highgui/highgui_c.h>
 
-#include "ontoloGenius/TreeObject.h"
+#include "ontoloGenius/ontoGraphs/ClassGraph.h"
 
 #ifndef TREE_DRAWER_H
 #define TREE_DRAWER_H
@@ -39,13 +39,13 @@ struct node_t
   node_t(string p_value, int p_layer = -1) : value(p_value), layer(p_layer), pos(-1), marker(false) {}
 };
 
-class TreeDrawer
+class GraphDrawer
 {
 public:
-  TreeDrawer(TreeObject* p_tree = nullptr);
-  ~TreeDrawer() {}
+  GraphDrawer(ClassGraph* p_tree = nullptr);
+  ~GraphDrawer() {}
 
-  void set_tree(TreeObject* p_tree) {m_tree = p_tree; init(); };
+  void set_tree(ClassGraph* p_tree) {m_tree = p_tree; init(); };
 
   void put_in_layers();
   void draw(string file_name);
@@ -57,9 +57,9 @@ private:
   vector<vector<node_t*>> layer_nodes;
 
   IplImage* image;
-  TreeObject* m_tree;
+  ClassGraph* m_tree;
   bool exist(string value);
-  int create_node(Branch_t* branch, node_t* mother);
+  int create_node(ClassBranch_t* branch, node_t* mother);
   void init();
 
   void set_rect(int layer, int nb_layer, int nb_index, node_t* node);

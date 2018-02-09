@@ -1,8 +1,8 @@
-#include "ontoloGenius/OntologyReader.h"
+#include "ontoloGenius/ontoGraphs/OntologyReader.h"
 #include <fstream>
 #include "ontoloGenius/utility/error_code.h"
 
-int OntologyReader::read(string uri)
+int OntologyReader::readFromUri(string uri)
 {
   int nb_elem = 0;
 
@@ -20,7 +20,7 @@ int OntologyReader::read(string uri)
     return REQUEST_ERROR;
 }
 
-int OntologyReader::readFile(string fileName)
+int OntologyReader::readFromFile(string fileName)
 {
   int nb_elem = 0;
 
@@ -86,7 +86,7 @@ void OntologyReader::read_class(TiXmlElement* elem)
       for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
       {
         string subElemName = subElem->Value();
-        const char* subAttr;
+
         if(subElemName == "rdfs:subClassOf")
           push(object_vector.mothers_, subElem, "+");
         else if(subElemName == "owl:disjointWith")
@@ -200,6 +200,7 @@ void OntologyReader::read_property(TiXmlElement* elem)
       for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
       {
         string subElemName = subElem->Value();
+
         if(subElemName == "rdfs:subPropertyOf")
           push(propertyVectors.mothers_, subElem, "+");
         else if(subElemName == "owl:disjointWith")
@@ -243,7 +244,7 @@ void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, strin
     if(property == "AsymmetricProperty")
       properties.antisymetric_property_ = true;
     else if(property == "TransitiveProperty")
-      properties.transitive_property_ = true;
+      properties.transitive_property_ = true; //transitive_with_ ???
     else if(property == "FunctionalProperty")
       properties.functional_property_ = true;
     else if(property == "InverseFunctionalProperty")

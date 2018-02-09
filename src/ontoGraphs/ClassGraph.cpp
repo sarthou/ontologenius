@@ -1,26 +1,12 @@
-#include "ontoloGenius/TreeObject.h"
+#include "ontoloGenius/ontoGraphs/ClassGraph.h"
 #include <iostream>
 
 using namespace std;
 
-TreeObject::~TreeObject()
-{
-  for(unsigned int i = 0; i < branchs_.size(); i++)
-    delete branchs_[i];
-
-  for(unsigned int i = 0; i < roots_.size(); i++)
-    delete roots_[i];
-
-  branchs_.clear();
-  roots_.clear();
-
-  std::cout << "TreeObject" << std::endl;
-}
-
-void TreeObject::add(string value, ObjectVectors_t& object_vector)
+void ClassGraph::add(string value, ObjectVectors_t& object_vector)
 {
   //am I a created mother ?
-  Branch_t* me = nullptr;
+  ClassBranch_t* me = nullptr;
   for(unsigned int i = 0; i < tmp_mothers_.size(); i++)
   {
     if(tmp_mothers_[i]->value_ == value)
@@ -33,7 +19,7 @@ void TreeObject::add(string value, ObjectVectors_t& object_vector)
 
   //am I created ?
   if(me == nullptr)
-    me = new struct Branch_t(value);
+    me = new struct ClassBranch_t(value);
 
   me->nb_mothers_ = object_vector.mothers_.size();
 
@@ -77,7 +63,7 @@ void TreeObject::add(string value, ObjectVectors_t& object_vector)
       //I create my mother
       if(!i_find_my_mother)
       {
-        Branch_t* my_mother = new struct Branch_t(object_vector.mothers_[mothers_i]);
+        ClassBranch_t* my_mother = new struct ClassBranch_t(object_vector.mothers_[mothers_i]);
         my_mother->childs_.push_back(me);
         me->mothers_.push_back(my_mother);
         tmp_mothers_.push_back(my_mother);
@@ -123,7 +109,7 @@ void TreeObject::add(string value, ObjectVectors_t& object_vector)
     //I create my disjoint
     if(!i_find_my_disjoint)
     {
-      Branch_t* my_disjoint = new struct Branch_t(object_vector.disjoints_[disjoints_i]);
+      ClassBranch_t* my_disjoint = new struct ClassBranch_t(object_vector.disjoints_[disjoints_i]);
       me->disjoints_.push_back(my_disjoint);
       my_disjoint->disjoints_.push_back(me);
       tmp_mothers_.push_back(my_disjoint); //I put my disjoint as tmp_mother
@@ -135,12 +121,12 @@ void TreeObject::add(string value, ObjectVectors_t& object_vector)
     me->dictionary_["en"] = me->value_;
 }
 
-void TreeObject::add(vector<string>& disjoints)
+void ClassGraph::add(vector<string>& disjoints)
 {
   for(unsigned int disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
-    Branch_t* me = nullptr;
+    ClassBranch_t* me = nullptr;
     //Am I a root ?
     for(unsigned int root_i = 0; root_i < roots_.size(); root_i++)
       if(disjoints[disjoints_i] == roots_[root_i]->value_)
@@ -161,7 +147,7 @@ void TreeObject::add(vector<string>& disjoints)
     // I don't exist ? so I will be a tmp_mother
     if(me == nullptr)
     {
-      me = new struct Branch_t(disjoints[disjoints_i]);
+      me = new struct ClassBranch_t(disjoints[disjoints_i]);
       tmp_mothers_.push_back(me);
     }
 
@@ -200,7 +186,7 @@ void TreeObject::add(vector<string>& disjoints)
         //I create my disjoint
         if(!i_find_my_disjoint)
         {
-          Branch_t* my_disjoint = new struct Branch_t(disjoints[disjoints_j]);
+          ClassBranch_t* my_disjoint = new struct ClassBranch_t(disjoints[disjoints_j]);
           me->disjoints_.push_back(my_disjoint);
           tmp_mothers_.push_back(my_disjoint); //I put my disjoint as tmp_mother
         }
@@ -209,81 +195,7 @@ void TreeObject::add(vector<string>& disjoints)
   }
 }
 
-void TreeObject::close()
-{
-  for(unsigned int i = 0; i < tmp_mothers_.size(); i++)
-    roots_.push_back(tmp_mothers_[i]);
-
-  tmp_mothers_.clear();
-
-  link();
-}
-
-set<string> TreeObject::getDown(string value)
-{
-  set<string> res;
-
-  for(unsigned int i = 0; i < roots_.size(); i++)
-    if(roots_[i]->value_ == value)
-    {
-      set<string> tmp = getDown(roots_[i], value);
-
-      if(tmp.size())
-      {
-        res.insert(tmp.begin(), tmp.end());
-        break;
-      }
-    }
-
-  if(!res.size())
-    for(unsigned int i = 0; i < branchs_.size(); i++)
-      if(branchs_[i]->value_ == value)
-      {
-        set<string> tmp = getDown(branchs_[i], value);
-
-        if(tmp.size())
-        {
-          res.insert(tmp.begin(), tmp.end());
-          break;
-        }
-      }
-
-  return res;
-}
-
-set<string> TreeObject::getUp(string value)
-{
-  set<string> res;
-
-  for(unsigned int i = 0; i < roots_.size(); i++)
-    if(roots_[i]->value_ == value)
-    {
-      set<string> tmp = getUp(roots_[i], value);
-
-      if(tmp.size())
-      {
-        res.insert(tmp.begin(), tmp.end());
-        break;
-      }
-    }
-
-  if(!res.size())
-    for(unsigned int i = 0; i < branchs_.size(); i++)
-      if(branchs_[i]->value_ == value)
-      {
-        set<string> tmp = getUp(branchs_[i], value);
-
-        if(tmp.size())
-        {
-          res.insert(tmp.begin(), tmp.end());
-          break;
-        }
-      }
-
-  return res;
-}
-
-set<string> TreeObject::getDisjoint(string value)
+set<string> ClassGraph::getDisjoint(string value)
 {
   set<string> res;
 
@@ -319,61 +231,6 @@ set<string> TreeObject::getDisjoint(string value)
         }
         break;
       }
-
-  return res;
-}
-
-void TreeObject::link()
-{
-  depth_ = 0;
-
-  uint8_t nb_root_family = roots_.size();
-  for(uint8_t root_i = 0; root_i < roots_.size(); root_i++)
-  {
-    roots_[root_i]->family = 256/(nb_root_family+1) * root_i;
-    for(unsigned int i = 0; i < roots_[root_i]->childs_.size(); i++)
-      add_family(roots_[root_i]->childs_[i], roots_[root_i]->family);
-  }
-}
-
-void TreeObject::add_family(Branch_t* branch, uint8_t family)
-{
-  branch->family += family/branch->nb_mothers_;
-  for(unsigned int i = 0; i < branch->childs_.size(); i++)
-  {
-    depth_++;
-    if(depth_ < 20)
-      add_family(branch->childs_[i], family/branch->nb_mothers_);
-    depth_--;
-  }
-}
-
-set<string> TreeObject::getDown(Branch_t* branch, string value)
-{
-  set<string> res;
-  res.insert(branch->value_);
-  for(unsigned int i = 0; i < branch->childs_.size(); i++)
-  {
-    set<string> tmp = getDown(branch->childs_[i], value);
-
-    if(tmp.size())
-      res.insert(tmp.begin(), tmp.end());
-  }
-
-  return res;
-}
-
-set<string> TreeObject::getUp(Branch_t* branch, string value)
-{
-  set<string> res;
-  res.insert(branch->value_);
-  for(unsigned int i = 0; i < branch->mothers_.size(); i++)
-  {
-    set<string> tmp = getUp(branch->mothers_[i], value);
-
-    if(tmp.size())
-      res.insert(tmp.begin(), tmp.end());
-  }
 
   return res;
 }

@@ -140,20 +140,24 @@ add_library(codeDescription_lib
 )
 add_dependencies(codeDescription_lib ontologenius_gencpp)
 
+add_library(ontoGraphs_lib
+  src/ontoGraphs/ClassGraph.cpp
+  src/ontoGraphs/PropertyGraph.cpp
+  src/ontoGraphs/GraphDrawer.cpp
+  src/ontoGraphs/OntologyReader.cpp
+)
+add_dependencies(ontoGraphs_lib ontologenius_gencpp)
+target_link_libraries(ontoGraphs_lib ${OpenCV_LIBS})
+target_link_libraries(ontoGraphs_lib ${TinyXML_LIBRARIES})
+
 add_library(ontologenius_lib
-  src/TreeObject.cpp
-  src/TreeProperty.cpp
-  src/TreeDrawer.cpp
-  src/OntologyReader.cpp
   src/Computer.cpp
   src/Parser.cpp
   src/Error.cpp
 )
 add_dependencies(ontologenius_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_lib codeDescription_lib)
-target_link_libraries(ontologenius_lib ${OpenCV_LIBS})
-target_link_libraries(ontologenius_lib ${TinyXML_LIBRARIES})
-
+target_link_libraries(ontologenius_lib ontoGraphs_lib)
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
