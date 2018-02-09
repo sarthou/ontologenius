@@ -172,6 +172,11 @@ add_dependencies(ontoloGeniusExemple ontologenius_gencpp)
 target_link_libraries(ontoloGeniusExemple ${catkin_LIBRARIES})
 target_link_libraries(ontoloGeniusExemple ontologenius_lib)
 
+add_executable(tester src/tester.cpp)
+add_dependencies(tester ontologenius_gencpp)
+target_link_libraries(tester ${catkin_LIBRARIES})
+target_link_libraries(tester ontologenius_lib)
+
 
 #############
 ## Install ##

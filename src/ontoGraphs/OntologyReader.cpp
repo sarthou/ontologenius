@@ -223,17 +223,6 @@ void OntologyReader::read_property(TiXmlElement* elem)
   }
 }
 
-void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem, std::string symbole, std::string attribute)
-{
-  const char* subAttr;
-  subAttr = subElem->Attribute(attribute.c_str());
-  if(subAttr != NULL)
-  {
-    vect.push_back(get_name(std::string(subAttr)));
-    std::cout << "│   │   ├── " << symbole << get_name(std::string(subAttr)) << std::endl;
-  }
-}
-
 void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, std::string symbole, std::string attribute)
 {
   const char* subAttr;
@@ -278,11 +267,4 @@ void OntologyReader::pushLang(std::map<std::string, std::string>& dictionary, Ti
     if((lang != "") && (value != ""))
       std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang] << std::endl;
   }
-}
-
-std::string OntologyReader::get_name(std::string uri)
-{
-  size_t pos = uri.find("#");
-  std::string result = uri.substr(pos+1);
-  return result;
 }

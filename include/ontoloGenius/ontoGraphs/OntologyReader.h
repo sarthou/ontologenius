@@ -22,7 +22,6 @@ public:
   int readFromUri(std::string uri);
   int readFromFile(std::string fileName);
 
-
 private:
   ClassGraph* m_objTree;
   PropertyGraph* m_propTree;
@@ -35,10 +34,28 @@ private:
   void read_description(TiXmlElement* elem);
   void read_property(TiXmlElement* elem);
 
-  void push(std::vector<std::string>& vect, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
+  inline void push(std::vector<std::string>& vect, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   void push(Properties_t& properties, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   void pushLang(std::map<std::string, std::string>& dictionary, TiXmlElement* subElem);
-  std::string get_name(std::string uri);
+  inline std::string get_name(std::string uri);
 };
+
+void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem, std::string symbole, std::string attribute)
+{
+  const char* subAttr;
+  subAttr = subElem->Attribute(attribute.c_str());
+  if(subAttr != NULL)
+  {
+    vect.push_back(get_name(std::string(subAttr)));
+    std::cout << "│   │   ├── " << symbole << get_name(std::string(subAttr)) << std::endl;
+  }
+}
+
+std::string OntologyReader::get_name(std::string uri)
+{
+  size_t pos = uri.find("#");
+  std::string result = uri.substr(pos+1);
+  return result;
+}
 
 #endif
