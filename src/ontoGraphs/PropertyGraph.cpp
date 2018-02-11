@@ -345,38 +345,14 @@ std::set<std::string> PropertyGraph::getDisjoint(std::string value)
 {
   std::set<std::string> res;
 
-  for(unsigned int i = 0; i < roots_.size(); i++)
-    if(roots_[i]->value_ == value)
-    {
-      std::cout << roots_[i]->value_ << std::endl;
-      for(unsigned disjoint_i = 0; disjoint_i < roots_[i]->disjoints_.size(); disjoint_i++)
-      {
-        std::cout << "------" << roots_[i]->disjoints_[disjoint_i]->value_ << std::endl;
-        std::set<std::string> tmp = getDown(roots_[i]->disjoints_[disjoint_i], value);
+  PropertyClassBranch_t* branch = container_.find(value);
+  for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
+  {
+    std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i], value);
 
-        if(tmp.size())
-        {
-          res.insert(tmp.begin(), tmp.end());
-          break;
-        }
-      }
-    }
-
-  if(!res.size())
-    for(unsigned int i = 0; i < branchs_.size(); i++)
-      if(branchs_[i]->value_ == value)
-      {
-        std::cout << branchs_[i]->value_ << std::endl;
-        for(unsigned disjoint_i = 0; disjoint_i < branchs_[i]->disjoints_.size(); disjoint_i++)
-        {
-          std::cout << "------" << branchs_[i]->disjoints_[disjoint_i]->value_ << std::endl;
-          std::set<std::string> tmp = getDown(branchs_[i]->disjoints_[disjoint_i], value);
-
-          if(tmp.size())
-            res.insert(tmp.begin(), tmp.end());
-        }
-        break;
-      }
+    if(tmp.size())
+      res.insert(tmp.begin(), tmp.end());
+  }
 
   return res;
 }
@@ -385,40 +361,14 @@ std::set<std::string> PropertyGraph::getInverse(std::string value)
 {
   std::set<std::string> res;
 
-  for(unsigned int i = 0; i < roots_.size(); i++)
-    if(roots_[i]->value_ == value)
-    {
-      std::cout << roots_[i]->value_ << std::endl;
-      for(unsigned inverse_i = 0; inverse_i < roots_[i]->inverses_.size(); inverse_i++)
-      {
-        std::cout << "------" << roots_[i]->inverses_[inverse_i]->value_ << std::endl;
-        std::set<std::string> tmp = getDown(roots_[i]->inverses_[inverse_i], value);
+  PropertyClassBranch_t* branch = container_.find(value);
+  for(unsigned inverse_i = 0; inverse_i < branch->inverses_.size(); inverse_i++)
+  {
+    std::set<std::string> tmp = getDown(branch->inverses_[inverse_i], value);
 
-        if(tmp.size())
-        {
-          res.insert(tmp.begin(), tmp.end());
-          break;
-        }
-      }
-    }
-
-  if(!res.size())
-    for(unsigned int i = 0; i < branchs_.size(); i++)
-      if(branchs_[i]->value_ == value)
-      {
-        std::cout << branchs_[i]->value_ << std::endl;
-        for(unsigned inverse_i = 0; inverse_i < branchs_[i]->inverses_.size(); inverse_i++)
-        {
-          std::cout << "------" << branchs_[i]->inverses_[inverse_i]->value_ << std::endl;
-          std::set<std::string> tmp = getDown(branchs_[i]->inverses_[inverse_i], value);
-
-          if(tmp.size())
-          {
-            res.insert(tmp.begin(), tmp.end());
-            break;
-          }
-        }
-      }
+    if(tmp.size())
+      res.insert(tmp.begin(), tmp.end());
+  }
 
   return res;
 }
@@ -427,40 +377,14 @@ std::set<std::string> PropertyGraph::getDomain(std::string value)
 {
   std::set<std::string> res;
 
-  for(unsigned int i = 0; i < roots_.size(); i++)
-    if(roots_[i]->value_ == value)
-    {
-      std::cout << roots_[i]->value_ << std::endl;
-      for(unsigned domain_i = 0; domain_i < roots_[i]->domains_.size(); domain_i++)
-      {
-        std::cout << "------" << roots_[i]->domains_[domain_i]->value_ << std::endl;
-        std::set<std::string> tmp = treeObject_->getDown(roots_[i]->domains_[domain_i], value);
+  PropertyClassBranch_t* branch = container_.find(value);
+  for(unsigned domain_i = 0; domain_i < branch->domains_.size(); domain_i++)
+  {
+    std::set<std::string> tmp = treeObject_->getDown(branch->domains_[domain_i], value);
 
-        if(tmp.size())
-        {
-          res.insert(tmp.begin(), tmp.end());
-          break;
-        }
-      }
-    }
-
-  if(!res.size())
-    for(unsigned int i = 0; i < branchs_.size(); i++)
-      if(branchs_[i]->value_ == value)
-      {
-        std::cout << branchs_[i]->value_ << std::endl;
-        for(unsigned domain_i = 0; domain_i < branchs_[i]->domains_.size(); domain_i++)
-        {
-          std::cout << "------" << branchs_[i]->domains_[domain_i]->value_ << std::endl;
-          std::set<std::string> tmp = treeObject_->getDown(branchs_[i]->domains_[domain_i], value);
-
-          if(tmp.size())
-          {
-            res.insert(tmp.begin(), tmp.end());
-            break;
-          }
-        }
-      }
+    if(tmp.size())
+      res.insert(tmp.begin(), tmp.end());
+  }
 
   return res;
 }
@@ -469,40 +393,14 @@ std::set<std::string> PropertyGraph::getRange(std::string value)
 {
   std::set<std::string> res;
 
-  for(unsigned int i = 0; i < roots_.size(); i++)
-    if(roots_[i]->value_ == value)
-    {
-      std::cout << roots_[i]->value_ << std::endl;
-      for(unsigned range_i = 0; range_i < roots_[i]->ranges_.size(); range_i++)
-      {
-        std::cout << "------" << roots_[i]->ranges_[range_i]->value_ << std::endl;
-        std::set<std::string> tmp = treeObject_->getDown(roots_[i]->ranges_[range_i], value);
+  PropertyClassBranch_t* branch = container_.find(value);
+  for(unsigned range_i = 0; range_i < branch->ranges_.size(); range_i++)
+  {
+    std::set<std::string> tmp = treeObject_->getDown(branch->ranges_[range_i], value);
 
-        if(tmp.size())
-        {
-          res.insert(tmp.begin(), tmp.end());
-          break;
-        }
-      }
-    }
-
-  if(!res.size())
-    for(unsigned int i = 0; i < branchs_.size(); i++)
-      if(branchs_[i]->value_ == value)
-      {
-        std::cout << branchs_[i]->value_ << std::endl;
-        for(unsigned range_i = 0; range_i < branchs_[i]->ranges_.size(); range_i++)
-        {
-          std::cout << "------" << branchs_[i]->ranges_[range_i]->value_ << std::endl;
-          std::set<std::string> tmp = treeObject_->getDown(branchs_[i]->ranges_[range_i], value);
-
-          if(tmp.size())
-          {
-            res.insert(tmp.begin(), tmp.end());
-            break;
-          }
-        }
-      }
+    if(tmp.size())
+      res.insert(tmp.begin(), tmp.end());
+  }
 
   return res;
 }
