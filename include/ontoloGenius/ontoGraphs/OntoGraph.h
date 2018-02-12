@@ -52,7 +52,7 @@ public:
   }
 
 protected:
-  BranchContainerDyn<B> container_;
+  BranchContainerMap<B> container_;
   std::vector<B*> branchs_;
   std::vector<B*> roots_;
 

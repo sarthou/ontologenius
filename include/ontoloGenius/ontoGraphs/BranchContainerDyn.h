@@ -3,6 +3,7 @@
 
 #include <map>
 #include <iostream>
+#include <math.h>
 
 #include "ontoloGenius/ontoGraphs/BranchContainerBase.h"
 
@@ -34,6 +35,7 @@ public:
 private:
   BramchNode_t<B>* nodes_;
   BramchNode_t<B>* nodes_end_;
+  size_t buffer_size_;
 
   void insertEnd(std::string id, B* branch);
   void reconf(BramchNode_t<B>* node);
@@ -49,7 +51,7 @@ B* BranchContainerDyn<B>::find(std::string word)
     if(node->next->id == word)
     {
       tmp = node->next->branch;
-      if(i > 30)
+      if(i > 5)
         reconf(node);
       break;
     }
@@ -67,6 +69,8 @@ void BranchContainerDyn<B>::load(std::vector<B*> roots, std::vector<B*> branchs)
 
   for(size_t i = 0; i < branchs.size(); i++)
     insertEnd(branchs[i]->value_, branchs[i]);
+
+  buffer_size_ = log2(roots.size() + branchs.size());
 }
 
 template <typename B>
