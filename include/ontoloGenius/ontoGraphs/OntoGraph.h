@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 #include "ontoloGenius/ontoGraphs/BranchContainerMap.h"
+#include "ontoloGenius/ontoGraphs/BranchContainerDyn.h"
 
 /*
 This file use CRTP (curiously recurring template pattern)
@@ -51,7 +52,7 @@ public:
   }
 
 protected:
-  BranchContainerMap<B> container_;
+  BranchContainerDyn<B> container_;
   std::vector<B*> branchs_;
   std::vector<B*> roots_;
 
