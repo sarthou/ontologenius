@@ -1,6 +1,4 @@
-#include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontoloGenius/ontoGraphs/Graphs/PropertyGraph.h"
-#include "ontoloGenius/ontoGraphs/GraphDrawer.h"
+#include "ontoloGenius/ontoGraphs/Ontology.h"
 #include "ontoloGenius/ontoGraphs/OntologyReader.h"
 
 #include "ontologenius/standard_service.h"
@@ -15,8 +13,7 @@
 
 using namespace std;
 
-ClassGraph onto;
-PropertyGraph propOnto(&onto);
+Ontology onto;
 
 bool reference_handle(ontologenius::standard_service::Request  &req,
                       ontologenius::standard_service::Response &res)
@@ -27,7 +24,7 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
 
   if(req.action == "add")
   {
-    OntologyReader reader(&onto, &propOnto);
+    OntologyReader reader(onto);
     res.code = reader.readFromUri(req.param);
   }
   else if(req.action == "close")
@@ -36,12 +33,12 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
   }
   else if(req.action == "reset")
   {
-    onto = ClassGraph();
+    onto = Ontology();
   }
   else if(req.action == "test")
   {
     Computer comp;
-    if(comp.compute(req.param, onto))
+    if(comp.compute(req.param, onto.classes_))
       res.value = "true";
     else
       res.value = "false";
@@ -62,7 +59,7 @@ bool class_handle(ontologenius::standard_service::Request  &req,
 
 if(req.action == "getDown")
   {
-    set<string> entities = onto.getDown(req.param);
+    set<string> entities = onto.classes_.getDown(req.param);
     string result = "";
     for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
       result += *it + " ";
@@ -70,7 +67,7 @@ if(req.action == "getDown")
   }
   else if(req.action == "getUp")
   {
-    set<string> entities = onto.getUp(req.param);
+    set<string> entities = onto.classes_.getUp(req.param);
     string result = "";
     for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
       result += *it + " ";
@@ -78,7 +75,7 @@ if(req.action == "getDown")
   }
   else if(req.action == "getDisjoint")
   {
-    set<string> entities = onto.getDisjoint(req.param);
+    set<string> entities = onto.classes_.getDisjoint(req.param);
     string result = "";
     for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
       result += *it + " ";
@@ -99,7 +96,7 @@ bool property_handle(ontologenius::standard_service::Request  &req,
 
 if(req.action == "getDown")
   {
-    set<string> entities = propOnto.getDown(req.param);
+    set<string> entities = onto.properties_.getDown(req.param);
     string result = "";
     for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
       result += *it + " ";
@@ -107,7 +104,7 @@ if(req.action == "getDown")
   }
   else if(req.action == "getUp")
   {
-    set<string> entities = propOnto.getUp(req.param);
+    set<string> entities = onto.properties_.getUp(req.param);
     string result = "";
     for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
       result += *it + " ";
@@ -115,7 +112,7 @@ if(req.action == "getDown")
   }
   else if(req.action == "getDisjoint")
   {
-    set<string> entities = propOnto.getDisjoint(req.param);
+    set<string> entities = onto.properties_.getDisjoint(req.param);
     string result = "";
     for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
       result += *it + " ";
@@ -123,7 +120,7 @@ if(req.action == "getDown")
   }
   else if(req.action == "getInverse")
   {
-    set<string> entities = propOnto.getInverse(req.param);
+    set<string> entities = onto.properties_.getInverse(req.param);
     string result = "";
     for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
       result += *it + " ";
@@ -131,7 +128,7 @@ if(req.action == "getDown")
   }
   else if(req.action == "getDomain")
   {
-    set<string> entities = propOnto.getDomain(req.param);
+    set<string> entities = onto.properties_.getDomain(req.param);
     string result = "";
     for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
       result += *it + " ";
@@ -139,7 +136,7 @@ if(req.action == "getDown")
   }
   else if(req.action == "getRange")
   {
-    set<string> entities = propOnto.getRange(req.param);
+    set<string> entities = onto.properties_.getRange(req.param);
     string result = "";
     for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
       result += *it + " ";
@@ -161,7 +158,7 @@ int main(int argc, char** argv)
 
   for(unsigned int i = 1; i < argc; i++)
   {
-    OntologyReader reader(&onto, &propOnto);
+    OntologyReader reader(onto);
     reader.readFromFile(string(argv[i]));
   }
 

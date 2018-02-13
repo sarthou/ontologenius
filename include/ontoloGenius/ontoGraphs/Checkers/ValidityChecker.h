@@ -60,6 +60,8 @@ protected:
     return res;
   }
 
+  size_t getErrors() {return nb_error_; }
+
 private:
   size_t nb_error_;
 };

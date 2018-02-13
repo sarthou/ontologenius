@@ -145,6 +145,7 @@ add_library(ontoGraphs_lib
   src/ontoGraphs/Graphs/PropertyGraph.cpp
   src/ontoGraphs/Checkers/ClassChecker.cpp
   src/ontoGraphs/Checkers/PropertyChecker.cpp
+  src/ontoGraphs/Ontology.cpp
   src/ontoGraphs/GraphDrawer.cpp
   src/ontoGraphs/OntologyReader.cpp
 )

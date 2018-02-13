@@ -1,9 +1,5 @@
-#include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontoloGenius/ontoGraphs/Graphs/PropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/Ontology.h"
 #include "ontoloGenius/ontoGraphs/OntologyReader.h"
-
-#include "ontoloGenius/ontoGraphs/Checkers/ClassChecker.h"
-#include "ontoloGenius/ontoGraphs/Checkers/PropertyChecker.h"
 
 #include "ros/ros.h"
 
@@ -98,9 +94,8 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "tester");
 
-  ClassGraph onto;
-  PropertyGraph propOnto(&onto);
-  OntologyReader reader(&onto, &propOnto);
+  Ontology onto;
+  OntologyReader reader(onto);
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
@@ -109,35 +104,16 @@ int main(int argc, char** argv)
   reader.readFromFile("/home/gsarthou/Desktop/positionProperty.owl");
 
   onto.close();
-  propOnto.close();
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-
-  std::cout << onto.get().size() << " classes" << std::endl;
-  std::cout << propOnto.get().size() << " properties" << std::endl;
   std::cout << "It took me " << time_span.count() << " seconds to read" << std::endl;
-
-  ClassChecker classChecker(&onto);
-  PropertyChecker propertyChecker(&propOnto);
-
-  t1 = high_resolution_clock::now();
-  classChecker.check();
-  t2 = high_resolution_clock::now();
-  time_span = duration_cast<duration<double>>(t2 - t1);
-  std::cout << "It took me " << time_span.count() << " seconds to check classes" << std::endl;
-
-  t1 = high_resolution_clock::now();
-  propertyChecker.check();
-  t2 = high_resolution_clock::now();
-  time_span = duration_cast<duration<double>>(t2 - t1);
-  std::cout << "It took me " << time_span.count() << " seconds to check properties" << std::endl;
 
   /*double total = 0;
   for(int i = 0; i < 10000; i++)
   {
     std::cout << "[ " << i/100. << "%]";
-    total += testOne(onto);
+    total += testOne(onto.classes_);
   }
 
   std::cout << "mean = " << total/10000.0 << std::endl;*/
