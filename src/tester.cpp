@@ -1,6 +1,10 @@
 #include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/ontoGraphs/Graphs/PropertyGraph.h"
 #include "ontoloGenius/ontoGraphs/OntologyReader.h"
+
+#include "ontoloGenius/ontoGraphs/Checkers/ClassChecker.h"
+#include "ontoloGenius/ontoGraphs/Checkers/PropertyChecker.h"
+
 #include "ros/ros.h"
 
 #include <chrono>
@@ -101,7 +105,11 @@ int main(int argc, char** argv)
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
   reader.readFromFile("/home/gsarthou/Desktop/test.owl");
+  reader.readFromFile("/home/gsarthou/Desktop/attribute.owl");
+  reader.readFromFile("/home/gsarthou/Desktop/positionProperty.owl");
+
   onto.close();
+  propOnto.close();
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
@@ -110,14 +118,29 @@ int main(int argc, char** argv)
   std::cout << propOnto.get().size() << " properties" << std::endl;
   std::cout << "It took me " << time_span.count() << " seconds to read" << std::endl;
 
-  double total = 0;
+  ClassChecker classChecker(&onto);
+  PropertyChecker propertyChecker(&propOnto);
+
+  t1 = high_resolution_clock::now();
+  classChecker.check();
+  t2 = high_resolution_clock::now();
+  time_span = duration_cast<duration<double>>(t2 - t1);
+  std::cout << "It took me " << time_span.count() << " seconds to check classes" << std::endl;
+
+  t1 = high_resolution_clock::now();
+  propertyChecker.check();
+  t2 = high_resolution_clock::now();
+  time_span = duration_cast<duration<double>>(t2 - t1);
+  std::cout << "It took me " << time_span.count() << " seconds to check properties" << std::endl;
+
+  /*double total = 0;
   for(int i = 0; i < 10000; i++)
   {
     std::cout << "[ " << i/100. << "%]";
     total += testOne(onto);
   }
 
-  std::cout << "mean = " << total/10000.0 << std::endl;
+  std::cout << "mean = " << total/10000.0 << std::endl;*/
 
   ROS_DEBUG("Drawing done");
 

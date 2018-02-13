@@ -17,7 +17,6 @@ struct Properties_t
   bool functional_property_;
   bool inverse_functional_property_;
   bool transitive_property_;
-  std::vector<PropertyClassBranch_t*> transitive_with_;
   bool symetric_property_;
   bool antisymetric_property_;
   bool reflexive_property_;
