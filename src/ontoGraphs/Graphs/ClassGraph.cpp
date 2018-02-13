@@ -1,4 +1,4 @@
-#include "ontoloGenius/ontoGraphs/ClassGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 #include <iostream>
 
 void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
@@ -15,11 +15,35 @@ void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
     }
   }
 
+  //am I a created branch ?
+  if(me == nullptr)
+    for(unsigned int i = 0; i < branchs_.size(); i++)
+    {
+      if(branchs_[i]->value_ == value)
+      {
+        me = branchs_[i];
+        branchs_.erase(branchs_.begin() + i);
+        break;
+      }
+    }
+
+  //am I a created root ?
+  if(me == nullptr)
+    for(unsigned int i = 0; i < roots_.size(); i++)
+    {
+      if(roots_[i]->value_ == value)
+      {
+        me = roots_[i];
+        roots_.erase(roots_.begin() + i);
+        break;
+      }
+    }
+
   //am I created ?
   if(me == nullptr)
     me = new struct ClassBranch_t(value);
 
-  me->nb_mothers_ = object_vector.mothers_.size();
+  me->nb_mothers_ += object_vector.mothers_.size();
 
   //am I a root ?
   if(me->nb_mothers_ == 0)
@@ -197,38 +221,14 @@ std::set<std::string> ClassGraph::getDisjoint(std::string value)
 {
   std::set<std::string> res;
 
-  for(unsigned int i = 0; i < roots_.size(); i++)
-    if(roots_[i]->value_ == value)
-    {
-      std::cout << roots_[i]->value_ << std::endl;
-      for(unsigned disjoint_i = 0; disjoint_i < roots_[i]->disjoints_.size(); disjoint_i++)
-      {
-        std::cout << "------" << roots_[i]->disjoints_[disjoint_i]->value_ << std::endl;
-        std::set<std::string> tmp = getDown(roots_[i]->disjoints_[disjoint_i], value);
+  ClassBranch_t* branch = container_.find(value);
+  for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
+  {
+    std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i], value);
 
-        if(tmp.size())
-        {
-          res.insert(tmp.begin(), tmp.end());
-          break;
-        }
-      }
-    }
-
-  if(!res.size())
-    for(unsigned int i = 0; i < branchs_.size(); i++)
-      if(branchs_[i]->value_ == value)
-      {
-        std::cout << branchs_[i]->value_ << std::endl;
-        for(unsigned disjoint_i = 0; disjoint_i < branchs_[i]->disjoints_.size(); disjoint_i++)
-        {
-          std::cout << "------" << branchs_[i]->disjoints_[disjoint_i]->value_ << std::endl;
-          std::set<std::string> tmp = getDown(branchs_[i]->disjoints_[disjoint_i], value);
-
-          if(tmp.size())
-            res.insert(tmp.begin(), tmp.end());
-        }
-        break;
-      }
+    if(tmp.size())
+      res.insert(tmp.begin(), tmp.end());
+  }
 
   return res;
 }

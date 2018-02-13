@@ -1,5 +1,4 @@
-#include "ontoloGenius/ontoGraphs/ClassGraph.h"
-#include "ontoloGenius/ontoGraphs/PropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/Ontology.h"
 #include "ontoloGenius/utility/utility.h"
 
 #include <vector>
@@ -17,6 +16,7 @@ class OntologyReader
 {
 public:
   OntologyReader(ClassGraph* p_objTree, PropertyGraph* p_propTree) {m_objTree = p_objTree; m_propTree = p_propTree; elemLoaded = 0; }
+  OntologyReader(Ontology& onto) {m_objTree = &onto.classes_; m_propTree = &onto.properties_; elemLoaded = 0; }
   ~OntologyReader() {}
 
   int readFromUri(std::string uri);

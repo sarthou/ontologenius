@@ -233,7 +233,7 @@ void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, std::
     if(property == "AsymmetricProperty")
       properties.antisymetric_property_ = true;
     else if(property == "TransitiveProperty")
-      properties.transitive_property_ = true; //transitive_with_ ???
+      properties.transitive_property_ = true;
     else if(property == "FunctionalProperty")
       properties.functional_property_ = true;
     else if(property == "InverseFunctionalProperty")

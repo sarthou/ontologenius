@@ -7,6 +7,9 @@
 #include <set>
 #include <stdint.h>
 
+#include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerMap.h"
+#include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerDyn.h"
+
 /*
 This file use CRTP (curiously recurring template pattern)
 be really carreful of how you use it
@@ -40,7 +43,16 @@ public:
   std::set<std::string> getDown(std::string value);
   std::set<std::string> getUp(std::string value);
 
+  std::vector<B*> get()
+  {
+    std::vector<B*> out;
+    out.insert( out.end(), branchs_.begin(), branchs_.end() );
+    out.insert( out.end(), roots_.begin(), roots_.end() );
+    return out;
+  }
+
 protected:
+  BranchContainerMap<B> container_;
   std::vector<B*> branchs_;
   std::vector<B*> roots_;
 
@@ -77,6 +89,8 @@ void OntoGraph<B>::close()
   tmp_mothers_.clear();
 
   link();
+
+  container_.load(roots_, branchs_);
 }
 
 template <typename B>
@@ -84,30 +98,10 @@ std::set<std::string> OntoGraph<B>::getDown(std::string value)
 {
   std::set<std::string> res;
 
-  for(unsigned int i = 0; i < roots_.size(); i++)
-    if(roots_[i]->value_ == value)
-    {
-      std::set<std::string> tmp = getDown(roots_[i], value);
-
-      if(tmp.size())
-      {
-        res.insert(tmp.begin(), tmp.end());
-        break;
-      }
-    }
-
-  if(!res.size())
-    for(unsigned int i = 0; i < branchs_.size(); i++)
-      if(branchs_[i]->value_ == value)
-      {
-        std::set<std::string> tmp = getDown(branchs_[i], value);
-
-        if(tmp.size())
-        {
-          res.insert(tmp.begin(), tmp.end());
-          break;
-        }
-      }
+  B* branch = container_.find(value);
+  std::set<std::string> tmp = getDown(branch, value);
+  if(tmp.size())
+    res.insert(tmp.begin(), tmp.end());
 
   return res;
 }
@@ -117,30 +111,10 @@ std::set<std::string> OntoGraph<B>::getUp(std::string value)
 {
   std::set<std::string> res;
 
-  for(unsigned int i = 0; i < roots_.size(); i++)
-    if(roots_[i]->value_ == value)
-    {
-      std::set<std::string> tmp = getUp(roots_[i], value);
-
-      if(tmp.size())
-      {
-        res.insert(tmp.begin(), tmp.end());
-        break;
-      }
-    }
-
-  if(!res.size())
-    for(unsigned int i = 0; i < branchs_.size(); i++)
-      if(branchs_[i]->value_ == value)
-      {
-        std::set<std::string> tmp = getUp(branchs_[i], value);
-
-        if(tmp.size())
-        {
-          res.insert(tmp.begin(), tmp.end());
-          break;
-        }
-      }
+  B* branch = container_.find(value);
+  std::set<std::string> tmp = getUp(branch, value);
+  if(tmp.size())
+    res.insert(tmp.begin(), tmp.end());
 
   return res;
 }
@@ -203,6 +177,5 @@ std::set<std::string> OntoGraph<B>::getUp(B* branch, std::string value)
 
   return res;
 }
-
 
 #endif
