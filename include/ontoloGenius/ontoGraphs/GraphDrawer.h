@@ -6,7 +6,7 @@
 #include <highgui.h>
 #include <opencv2/highgui/highgui_c.h>
 
-#include "ontoloGenius/ontoGraphs/ClassGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 
 #ifndef TREE_DRAWER_H
 #define TREE_DRAWER_H

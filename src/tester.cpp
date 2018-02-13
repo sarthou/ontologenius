@@ -1,5 +1,5 @@
-#include "ontoloGenius/ontoGraphs/ClassGraph.h"
-#include "ontoloGenius/ontoGraphs/PropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/PropertyGraph.h"
 #include "ontoloGenius/ontoGraphs/OntologyReader.h"
 #include "ros/ros.h"
 
@@ -86,7 +86,7 @@ double testOne(ClassGraph& onto)
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
-  std::cout << "It took me " << time_span.count() << " seconds for " << seq.size() << std::endl;
+  std::cout << "It took me " << time_span.count() << std::endl;
   return time_span.count();
 }
 
@@ -100,7 +100,7 @@ int main(int argc, char** argv)
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-  reader.readFromFile("/home/osboxes/Desktop/test.owl");
+  reader.readFromFile("/home/gsarthou/Desktop/test.owl");
   onto.close();
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();

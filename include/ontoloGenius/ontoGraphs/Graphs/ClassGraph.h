@@ -4,7 +4,7 @@
 #include <set>
 #include <stdint.h>
 
-#include "ontoloGenius/ontoGraphs/OntoGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/OntoGraph.h"
 
 #ifndef TREEOBJECT_H
 #define TREEOBJECT_H

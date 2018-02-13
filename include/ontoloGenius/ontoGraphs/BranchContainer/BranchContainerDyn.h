@@ -5,7 +5,7 @@
 #include <iostream>
 #include <math.h>
 
-#include "ontoloGenius/ontoGraphs/BranchContainerBase.h"
+#include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerBase.h"
 
 template <typename T>
 struct BramchNode_t

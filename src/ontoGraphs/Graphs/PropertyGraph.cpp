@@ -1,4 +1,4 @@
-#include "ontoloGenius/ontoGraphs/PropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/PropertyGraph.h"
 #include <iostream>
 
 void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)

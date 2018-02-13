@@ -1,5 +1,5 @@
-#include "ontoloGenius/ontoGraphs/ClassGraph.h"
-#include "ontoloGenius/ontoGraphs/PropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/PropertyGraph.h"
 #include "ontoloGenius/utility/utility.h"
 
 #include <vector>

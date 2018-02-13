@@ -3,7 +3,7 @@
 
 #include <map>
 
-#include "ontoloGenius/ontoGraphs/BranchContainerBase.h"
+#include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerBase.h"
 
 template <typename B>
 class BranchContainerMap : public BranchContainerBase<B>

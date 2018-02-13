@@ -7,8 +7,8 @@
 #include <set>
 #include <stdint.h>
 
-#include "ontoloGenius/ontoGraphs/BranchContainerMap.h"
-#include "ontoloGenius/ontoGraphs/BranchContainerDyn.h"
+#include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerMap.h"
+#include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerDyn.h"
 
 /*
 This file use CRTP (curiously recurring template pattern)

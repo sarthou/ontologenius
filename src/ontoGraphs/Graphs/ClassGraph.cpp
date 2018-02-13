@@ -1,4 +1,4 @@
-#include "ontoloGenius/ontoGraphs/ClassGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 #include <iostream>
 
 void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
