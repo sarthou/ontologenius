@@ -15,11 +15,35 @@ void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
     }
   }
 
+  //am I a created branch ?
+  if(me == nullptr)
+    for(unsigned int i = 0; i < branchs_.size(); i++)
+    {
+      if(branchs_[i]->value_ == value)
+      {
+        me = branchs_[i];
+        branchs_.erase(branchs_.begin() + i);
+        break;
+      }
+    }
+
+  //am I a created root ?
+  if(me == nullptr)
+    for(unsigned int i = 0; i < roots_.size(); i++)
+    {
+      if(roots_[i]->value_ == value)
+      {
+        me = roots_[i];
+        roots_.erase(roots_.begin() + i);
+        break;
+      }
+    }
+
   //am I created ?
   if(me == nullptr)
     me = new struct ClassBranch_t(value);
 
-  me->nb_mothers_ = object_vector.mothers_.size();
+  me->nb_mothers_ += object_vector.mothers_.size();
 
   //am I a root ?
   if(me->nb_mothers_ == 0)
