@@ -38,6 +38,30 @@
     
 
 
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#cube1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#cube1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#cube"/>
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#greenCube"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#greenCube -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#greenCube">
+        <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#cube"/>
+        <positionProperty:isOn rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blueCube"/>
+    </owl:NamedIndividual>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NegativePropertyAssertion"/>
+        <owl:sourceIndividual rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#greenCube"/>
+        <owl:assertionProperty rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isUnder"/>
+        <owl:targetIndividual rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blueCube"/>
+    </rdf:Description>
+    
+
+
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#redCube -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#redCube">
@@ -45,6 +69,24 @@
         <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#red"/>
         <rdfs:comment xml:lang="en"></rdfs:comment>
     </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blueCube"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#greenCube"/>
+        </owl:distinctMembers>
+    </rdf:Description>
 </rdf:RDF>
 
 

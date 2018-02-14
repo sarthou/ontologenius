@@ -15,8 +15,8 @@
 class OntologyReader
 {
 public:
-  OntologyReader(ClassGraph* p_objTree, PropertyGraph* p_propTree) {m_objTree = p_objTree; m_propTree = p_propTree; elemLoaded = 0; }
-  OntologyReader(Ontology& onto) {m_objTree = &onto.classes_; m_propTree = &onto.properties_; elemLoaded = 0; }
+  OntologyReader(ClassGraph* p_objTree, PropertyGraph* p_propTree, IndividualGraph* individual_graph);
+  OntologyReader(Ontology& onto);
   ~OntologyReader() {}
 
   int readFromUri(std::string uri);
@@ -25,6 +25,7 @@ public:
 private:
   ClassGraph* m_objTree;
   PropertyGraph* m_propTree;
+  IndividualGraph* individual_graph_;
 
   int elemLoaded;
 
@@ -35,6 +36,7 @@ private:
   void read_property(TiXmlElement* elem);
 
   inline void push(std::vector<std::string>& vect, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
+  inline void push(std::vector<std::string>& vect, std::string elem, std::string symbole);
   void push(Properties_t& properties, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   void pushLang(std::map<std::string, std::string>& dictionary, TiXmlElement* subElem);
   inline std::string get_name(std::string uri);
@@ -49,6 +51,12 @@ void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem,
     vect.push_back(get_name(std::string(subAttr)));
     std::cout << "│   │   ├── " << symbole << get_name(std::string(subAttr)) << std::endl;
   }
+}
+
+void OntologyReader::push(std::vector<std::string>& vect, std::string elem, std::string symbole)
+{
+  vect.push_back(elem);
+  std::cout << "│   │   ├── " << symbole << elem << std::endl;
 }
 
 std::string OntologyReader::get_name(std::string uri)

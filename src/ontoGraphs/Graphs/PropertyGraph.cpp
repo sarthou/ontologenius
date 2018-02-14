@@ -44,7 +44,7 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
 
   //am I created ?
   if(me == nullptr)
-    me = new struct PropertyClassBranch_t(value);
+    me = new PropertyClassBranch_t(value);
 
   me->nb_mothers_ += property_vectors.mothers_.size();
 

@@ -55,10 +55,12 @@ struct PropertyVectors_t
 };
 
 class GraphDrawer;
+class IndividualGraph;
 
 class PropertyGraph : public OntoGraph<PropertyClassBranch_t>
 {
   friend GraphDrawer;
+  friend IndividualGraph;
 public:
   PropertyGraph(ClassGraph* treeObject) {treeObject_ = treeObject; }
   ~PropertyGraph() {}

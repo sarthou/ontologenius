@@ -3,17 +3,19 @@
 
 #include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/ontoGraphs/Graphs/PropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/IndividualGraph.h"
 
 class Ontology
 {
 public:
-  Ontology() : properties_(&classes_) {}
+  Ontology() : properties_(&classes_), individuals_(&classes_, &properties_) {}
   ~Ontology() {}
 
   int close();
 
   ClassGraph classes_;
   PropertyGraph properties_;
+  IndividualGraph individuals_;
 };
 
 

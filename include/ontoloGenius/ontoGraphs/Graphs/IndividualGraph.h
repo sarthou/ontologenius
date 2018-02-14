@@ -1,0 +1,50 @@
+#ifndef INDIVIDUALGRAPH_H
+#define INDIVIDUALGRAPH_H
+
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <stdint.h>
+
+#include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/PropertyGraph.h"
+
+class IndividualBranch_t
+{
+public:
+  std::string value_;
+  std::vector<ClassBranch_t*> is_a_;
+  std::vector<PropertyClassBranch_t*> properties_name_;
+  std::vector<ClassBranch_t*> properties_on_;
+  std::vector<IndividualBranch_t*> same_as_;
+  std::vector<IndividualBranch_t*> distinct_;
+
+  IndividualBranch_t(std::string value) {value_ = value; }
+};
+
+struct IndividualVectors_t
+{
+   std::vector<std::string> is_a_;
+   std::vector<std::string> properties_name_;
+   std::vector<std::string> properties_on_;
+   std::vector<std::string> same_as_;
+};
+
+class IndividualGraph
+{
+public:
+  IndividualGraph(ClassGraph* classes, PropertyGraph* properties);
+  ~IndividualGraph();
+
+  void add(std::string value, IndividualVectors_t& individual_vector);
+  void add(std::vector<std::string>& distinct_);
+
+private:
+  ClassGraph* classes_;
+  PropertyGraph* properties_;
+
+  std::vector<IndividualBranch_t*> individuals_;
+};
+
+#endif /* INDIVIDUALGRAPH_H */

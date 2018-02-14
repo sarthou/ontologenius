@@ -2,6 +2,23 @@
 #include <fstream>
 #include "ontoloGenius/utility/error_code.h"
 
+OntologyReader::OntologyReader(ClassGraph* p_objTree, PropertyGraph* p_propTree, IndividualGraph* individual_graph)
+{
+  m_objTree = p_objTree;
+  m_propTree = p_propTree;
+  individual_graph_ = individual_graph;
+  elemLoaded = 0;
+}
+
+OntologyReader::OntologyReader(Ontology& onto)
+{
+  m_objTree = &onto.classes_;
+  m_propTree = &onto.properties_;
+  individual_graph_ = &onto.individuals_;
+  elemLoaded = 0;
+}
+
+
 int OntologyReader::readFromUri(std::string uri)
 {
   int nb_elem = 0;
@@ -50,8 +67,8 @@ int OntologyReader::read(TiXmlElement* rdf, std::string name)
     std::cout << name << std::endl;
     std::cout << "************************************" << std::endl;
     std::cout << "+ sub       | > domain  | @ language" << std::endl;
-    std::cout << "- disjoint  | < range   |" << std::endl;
-    std::cout << "/ inverse   | * type    |" << std::endl;
+    std::cout << "- disjoint  | < range   | = same" << std::endl;
+    std::cout << "/ inverse   | * type    | ^ related" << std::endl;
     std::cout << "************************************" << std::endl;
     std::cout << "├── Class" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
@@ -106,7 +123,7 @@ void OntologyReader::read_individual(TiXmlElement* elem)
   if(elemName == "owl:NamedIndividual")
   {
     std::string node_name = "";
-    ObjectVectors_t object_vector;
+    IndividualVectors_t individual_vector;
     const char* attr = elem->Attribute("rdf:about");
     if(attr != NULL)
     {
@@ -117,14 +134,22 @@ void OntologyReader::read_individual(TiXmlElement* elem)
         std::string subElemName = subElem->Value();
 
         if(subElemName == "rdf:type")
-          push(object_vector.mothers_, subElem, "+");
-        else if(subElemName == "owl:disjointWith")
-          push(object_vector.disjoints_, subElem, "-");
-        else if(subElemName == "rdfs:label")
-          pushLang(object_vector.dictionary_, subElem);
+          push(individual_vector.is_a_, subElem, "+");
+        else if(subElemName == "owl:sameAs")
+          push(individual_vector.same_as_, subElem, "=");
+        else
+        {
+          std::string ns = subElemName.substr(0,subElemName.find(":"));
+          if((ns != "owl") && (ns != "rdf") && (ns != "rdfs"))
+          {
+            std::string property = subElemName.substr(subElemName.find(":")+1);
+            push(individual_vector.properties_name_, property, "+");
+            push(individual_vector.properties_on_, subElem, "^");
+          }
+        }
       }
     }
-    m_objTree->add(node_name, object_vector);
+    individual_graph_->add(node_name, individual_vector);
     elemLoaded++;
   }
 }

@@ -41,7 +41,7 @@ void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
 
   //am I created ?
   if(me == nullptr)
-    me = new struct ClassBranch_t(value);
+    me = new ClassBranch_t(value);
 
   me->nb_mothers_ += object_vector.mothers_.size();
 

@@ -26,11 +26,13 @@ struct ObjectVectors_t
 
 class GraphDrawer;
 class PropertyGraph;
+class IndividualGraph;
 
 class ClassGraph : public OntoGraph<ClassBranch_t>
 {
   friend GraphDrawer;
   friend PropertyGraph;
+  friend IndividualGraph;
 public:
   ClassGraph() {}
   ~ClassGraph() {}

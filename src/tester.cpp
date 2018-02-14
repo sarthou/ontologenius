@@ -102,6 +102,7 @@ int main(int argc, char** argv)
   reader.readFromFile("/home/gsarthou/Desktop/test.owl");
   reader.readFromFile("/home/gsarthou/Desktop/attribute.owl");
   reader.readFromFile("/home/gsarthou/Desktop/positionProperty.owl");
+  reader.readFromFile("/home/gsarthou/Desktop/testIndividuals.owl");
 
   onto.close();
 
