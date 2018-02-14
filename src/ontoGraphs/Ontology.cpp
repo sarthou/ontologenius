@@ -7,6 +7,7 @@ int Ontology::close()
 {
   classes_.close();
   properties_.close();
+  individuals_.close();
 
   ClassChecker classChecker(&classes_);
   PropertyChecker propertyChecker(&properties_);

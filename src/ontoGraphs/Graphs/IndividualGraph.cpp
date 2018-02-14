@@ -14,6 +14,11 @@ IndividualGraph::~IndividualGraph()
   individuals_.clear();
 }
 
+void IndividualGraph::close()
+{
+  container_.load(individuals_);
+}
+
 void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vector)
 {
   //am I created ?

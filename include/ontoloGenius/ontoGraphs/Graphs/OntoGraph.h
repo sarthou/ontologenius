@@ -10,24 +10,31 @@
 #include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerMap.h"
 #include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerDyn.h"
 
+class ValuedNode
+{
+public:
+  std::string value_;
+
+  ValuedNode(std::string value) {value_ = value; }
+};
+
 /*
 This file use CRTP (curiously recurring template pattern)
 be really carreful of how you use it
 */
 
 template <typename T>
-class Branch_t
+class Branch_t : public ValuedNode
 {
 public:
-  std::string value_;
   std::vector<T*> childs_;
   std::vector<T*> mothers_;
   uint8_t family;
   uint8_t nb_mothers_;
   std::map<std::string, std::string> dictionary_;
 
-  Branch_t(std::string value) : family(0), nb_mothers_(0)
-    {value_ = value; };
+  Branch_t(std::string value) : ValuedNode(value), family(0), nb_mothers_(0)
+    {};
 };
 
 template <typename B>
@@ -90,7 +97,8 @@ void OntoGraph<B>::close()
 
   link();
 
-  container_.load(roots_, branchs_);
+  container_.load(roots_);
+  container_.load(branchs_);
 }
 
 template <typename B>
