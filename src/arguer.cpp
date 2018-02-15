@@ -12,6 +12,14 @@
 
 using namespace std;
 
+std::string set2string(std::set<std::string> word_set)
+{
+  string result = "";
+  for(set<string>::iterator it = word_set.begin(); it != word_set.end(); ++it)
+    result += *it + " ";
+  return result;
+}
+
 Ontology onto;
 
 bool reference_handle(ontologenius::standard_service::Request  &req,
@@ -22,17 +30,11 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
   res.code = 0;
 
   if(req.action == "add")
-  {
     res.code = onto.readFromUri(req.param);
-  }
   else if(req.action == "close")
-  {
     onto.close();
-  }
   else if(req.action == "reset")
-  {
     onto = Ontology();
-  }
   else if(req.action == "test")
   {
     Computer comp;
@@ -55,30 +57,12 @@ bool class_handle(ontologenius::standard_service::Request  &req,
   res.value = "";
   res.code = 0;
 
-if(req.action == "getDown")
-  {
-    set<string> entities = onto.classes_.getDown(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+  if(req.action == "getDown")
+    res.value = set2string(onto.classes_.getDown(req.param));
   else if(req.action == "getUp")
-  {
-    set<string> entities = onto.classes_.getUp(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.classes_.getUp(req.param));
   else if(req.action == "getDisjoint")
-  {
-    set<string> entities = onto.classes_.getDisjoint(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.classes_.getDisjoint(req.param));
   else
     res.code = UNKNOW_ACTION;
 
@@ -92,54 +76,18 @@ bool property_handle(ontologenius::standard_service::Request  &req,
   res.value = "";
   res.code = 0;
 
-if(req.action == "getDown")
-  {
-    set<string> entities = onto.properties_.getDown(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+  if(req.action == "getDown")
+    res.value = set2string(onto.properties_.getDown(req.param));
   else if(req.action == "getUp")
-  {
-    set<string> entities = onto.properties_.getUp(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.properties_.getUp(req.param));
   else if(req.action == "getDisjoint")
-  {
-    set<string> entities = onto.properties_.getDisjoint(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.properties_.getDisjoint(req.param));
   else if(req.action == "getInverse")
-  {
-    set<string> entities = onto.properties_.getInverse(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.properties_.getInverse(req.param));
   else if(req.action == "getDomain")
-  {
-    set<string> entities = onto.properties_.getDomain(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.properties_.getDomain(req.param));
   else if(req.action == "getRange")
-  {
-    set<string> entities = onto.properties_.getRange(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.properties_.getRange(req.param));
   else
     res.code = UNKNOW_ACTION;
 
