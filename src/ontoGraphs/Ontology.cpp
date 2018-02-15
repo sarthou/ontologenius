@@ -3,6 +3,15 @@
 #include "ontoloGenius/ontoGraphs/Checkers/ClassChecker.h"
 #include "ontoloGenius/ontoGraphs/Checkers/PropertyChecker.h"
 
+#include <iostream>
+
+#ifndef COLOR_OFF
+#define COLOR_OFF     "\x1B[0m"
+#endif
+#ifndef COLOR_RED
+#define COLOR_RED     "\x1B[0;91m"
+#endif
+
 int Ontology::close()
 {
   classes_.close();
@@ -20,7 +29,7 @@ int Ontology::close()
   else
   {
     reader.displayIndividualRules();
-    
+
     for(size_t i = 0; i < uri_.size(); i++)
       reader.readFromUri(uri_[i], true);
     uri_.clear();
@@ -29,6 +38,7 @@ int Ontology::close()
       reader.readFromFile(files_[i], true);
     files_.clear();
 
+    is_init_ = true;
     return 0;
   }
 }
@@ -43,4 +53,11 @@ int Ontology::readFromFile(std::string fileName)
 {
   files_.push_back(fileName);
   reader.readFromFile(fileName);
+}
+
+bool Ontology::isInit()
+{
+  if(is_init_ == false)
+    std::cout << COLOR_RED << "Ontology is not closed" << COLOR_OFF << std::endl;
+  return is_init_;
 }

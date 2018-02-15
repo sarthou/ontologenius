@@ -57,6 +57,9 @@ bool class_handle(ontologenius::standard_service::Request  &req,
   res.value = "";
   res.code = 0;
 
+  if(onto.isInit() == false)
+    res.code = UNINIT;
+
   if(req.action == "getDown")
     res.value = set2string(onto.classes_.getDown(req.param));
   else if(req.action == "getUp")
@@ -75,6 +78,9 @@ bool property_handle(ontologenius::standard_service::Request  &req,
   bool done = false;
   res.value = "";
   res.code = 0;
+
+  if(onto.isInit() == false)
+    res.code = UNINIT;
 
   if(req.action == "getDown")
     res.value = set2string(onto.properties_.getDown(req.param));

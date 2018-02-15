@@ -10,13 +10,16 @@
 class Ontology
 {
 public:
-  Ontology() : properties_(&classes_), individuals_(&classes_, &properties_), reader((Ontology&)*this) {}
+  Ontology() : properties_(&classes_), individuals_(&classes_, &properties_), reader((Ontology&)*this)
+  {is_init_ = false; }
   ~Ontology() {}
 
   int close();
 
   int readFromUri(std::string uri);
   int readFromFile(std::string fileName);
+
+  bool isInit();
 
   ClassGraph classes_;
   PropertyGraph properties_;
@@ -26,6 +29,8 @@ private:
   OntologyReader reader;
   std::vector<std::string> files_;
   std::vector<std::string> uri_;
+
+  bool is_init_;
 };
 
 

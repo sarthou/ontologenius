@@ -222,13 +222,14 @@ std::set<std::string> ClassGraph::getDisjoint(std::string& value)
   std::set<std::string> res;
 
   ClassBranch_t* branch = container_.find(value);
-  for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
-  {
-    std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i]);
+  if(branch != nullptr)
+    for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
+    {
+      std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i]);
 
-    if(tmp.size())
-      res.insert(tmp.begin(), tmp.end());
-  }
+      if(tmp.size())
+        res.insert(tmp.begin(), tmp.end());
+    }
 
   return res;
 }
