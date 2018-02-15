@@ -68,10 +68,10 @@ public:
   void add(std::string value, PropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 
-  std::set<std::string> getDisjoint(std::string value);
-  std::set<std::string> getInverse(std::string value);
-  std::set<std::string> getDomain(std::string value);
-  std::set<std::string> getRange(std::string value);
+  std::set<std::string> getDisjoint(std::string& value);
+  std::set<std::string> getInverse(std::string& value);
+  std::set<std::string> getDomain(std::string& value);
+  std::set<std::string> getRange(std::string& value);
 
 private:
   ClassGraph* treeObject_;

@@ -40,7 +40,7 @@ public:
   void add(std::string value, ObjectVectors_t& object_vector);
   void add(std::vector<std::string>& disjoints);
 
-  std::set<std::string> getDisjoint(std::string value);
+  std::set<std::string> getDisjoint(std::string& value);
 
 private:
 };

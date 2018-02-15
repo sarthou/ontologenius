@@ -47,8 +47,8 @@ public:
 
   void close();
 
-  std::set<std::string> getDown(std::string value);
-  std::set<std::string> getUp(std::string value);
+  std::set<std::string> getDown(std::string& value);
+  std::set<std::string> getUp(std::string& value);
 
   std::vector<B*> get()
   {
@@ -70,8 +70,8 @@ protected:
   void link();
   void add_family(B* branch, uint8_t family);
 
-  std::set<std::string> getDown(B* branch, std::string value);
-  std::set<std::string> getUp(B* branch, std::string value);
+  std::set<std::string> getDown(B* branch);
+  std::set<std::string> getUp(B* branch);
 };
 
 template <typename B>
@@ -102,12 +102,12 @@ void OntoGraph<B>::close()
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getDown(std::string value)
+std::set<std::string> OntoGraph<B>::getDown(std::string& value)
 {
   std::set<std::string> res;
 
   B* branch = container_.find(value);
-  std::set<std::string> tmp = getDown(branch, value);
+  std::set<std::string> tmp = getDown(branch);
   if(tmp.size())
     res.insert(tmp.begin(), tmp.end());
 
@@ -115,12 +115,12 @@ std::set<std::string> OntoGraph<B>::getDown(std::string value)
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getUp(std::string value)
+std::set<std::string> OntoGraph<B>::getUp(std::string& value)
 {
   std::set<std::string> res;
 
   B* branch = container_.find(value);
-  std::set<std::string> tmp = getUp(branch, value);
+  std::set<std::string> tmp = getUp(branch);
   if(tmp.size())
     res.insert(tmp.begin(), tmp.end());
 
@@ -155,13 +155,14 @@ void OntoGraph<B>::add_family(B* branch, uint8_t family)
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getDown(B* branch, std::string value)
+std::set<std::string> OntoGraph<B>::getDown(B* branch)
 {
   std::set<std::string> res;
   res.insert(branch->value_);
-  for(unsigned int i = 0; i < branch->childs_.size(); i++)
+  size_t size = branch->childs_.size();
+  for(unsigned int i = 0; i < size; i++)
   {
-    std::set<std::string> tmp = getDown(branch->childs_[i], value);
+    std::set<std::string> tmp = getDown(branch->childs_[i]);
 
     if(tmp.size())
       res.insert(tmp.begin(), tmp.end());
@@ -171,13 +172,14 @@ std::set<std::string> OntoGraph<B>::getDown(B* branch, std::string value)
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getUp(B* branch, std::string value)
+std::set<std::string> OntoGraph<B>::getUp(B* branch)
 {
   std::set<std::string> res;
   res.insert(branch->value_);
-  for(unsigned int i = 0; i < branch->mothers_.size(); i++)
+  size_t size = branch->mothers_.size();
+  for(unsigned int i = 0; i < size; i++)
   {
-    std::set<std::string> tmp = getUp(branch->mothers_[i], value);
+    std::set<std::string> tmp = getUp(branch->mothers_[i]);
 
     if(tmp.size())
       res.insert(tmp.begin(), tmp.end());

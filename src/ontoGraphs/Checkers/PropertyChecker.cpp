@@ -19,7 +19,7 @@ void PropertyChecker::checkDisjoint()
     std::set<std::string>::iterator it;
     for (it = up.begin(); it != up.end(); it++)
     {
-      std::set<std::string> tmp = property_graph_->getDisjoint(*it);
+      std::set<std::string> tmp = property_graph_->getDisjoint((std::string&)*it);
       disjoint.insert(tmp.begin(), tmp.end());
     }
 

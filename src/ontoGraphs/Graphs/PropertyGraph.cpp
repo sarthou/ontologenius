@@ -365,14 +365,14 @@ void PropertyGraph::add(std::vector<std::string>& disjoints)
 }
 
 
-std::set<std::string> PropertyGraph::getDisjoint(std::string value)
+std::set<std::string> PropertyGraph::getDisjoint(std::string& value)
 {
   std::set<std::string> res;
 
   PropertyClassBranch_t* branch = container_.find(value);
   for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
   {
-    std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i], value);
+    std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i]);
 
     if(tmp.size())
       res.insert(tmp.begin(), tmp.end());
@@ -381,14 +381,14 @@ std::set<std::string> PropertyGraph::getDisjoint(std::string value)
   return res;
 }
 
-std::set<std::string> PropertyGraph::getInverse(std::string value)
+std::set<std::string> PropertyGraph::getInverse(std::string& value)
 {
   std::set<std::string> res;
 
   PropertyClassBranch_t* branch = container_.find(value);
   for(unsigned inverse_i = 0; inverse_i < branch->inverses_.size(); inverse_i++)
   {
-    std::set<std::string> tmp = getDown(branch->inverses_[inverse_i], value);
+    std::set<std::string> tmp = getDown(branch->inverses_[inverse_i]);
 
     if(tmp.size())
       res.insert(tmp.begin(), tmp.end());
@@ -397,14 +397,14 @@ std::set<std::string> PropertyGraph::getInverse(std::string value)
   return res;
 }
 
-std::set<std::string> PropertyGraph::getDomain(std::string value)
+std::set<std::string> PropertyGraph::getDomain(std::string& value)
 {
   std::set<std::string> res;
 
   PropertyClassBranch_t* branch = container_.find(value);
   for(unsigned domain_i = 0; domain_i < branch->domains_.size(); domain_i++)
   {
-    std::set<std::string> tmp = treeObject_->getDown(branch->domains_[domain_i], value);
+    std::set<std::string> tmp = treeObject_->getDown(branch->domains_[domain_i]);
 
     if(tmp.size())
       res.insert(tmp.begin(), tmp.end());
@@ -413,14 +413,14 @@ std::set<std::string> PropertyGraph::getDomain(std::string value)
   return res;
 }
 
-std::set<std::string> PropertyGraph::getRange(std::string value)
+std::set<std::string> PropertyGraph::getRange(std::string& value)
 {
   std::set<std::string> res;
 
   PropertyClassBranch_t* branch = container_.find(value);
   for(unsigned range_i = 0; range_i < branch->ranges_.size(); range_i++)
   {
-    std::set<std::string> tmp = treeObject_->getDown(branch->ranges_[range_i], value);
+    std::set<std::string> tmp = treeObject_->getDown(branch->ranges_[range_i]);
 
     if(tmp.size())
       res.insert(tmp.begin(), tmp.end());
