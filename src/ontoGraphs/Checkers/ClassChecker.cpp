@@ -6,9 +6,10 @@ size_t ClassChecker::check()
   checkDisjoint();
 
   printStatus("Class");
+  return getErrors();
 }
 
-size_t ClassChecker::checkDisjoint()
+void ClassChecker::checkDisjoint()
 {
   for(size_t i = 0; i < graph_.size(); i++)
   {

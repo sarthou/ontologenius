@@ -12,7 +12,7 @@ public:
 
   size_t check();
 private:
-  size_t checkDisjoint();
+  void checkDisjoint();
 
   ClassGraph* class_graph_;
 };

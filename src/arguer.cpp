@@ -1,5 +1,4 @@
 #include "ontoloGenius/ontoGraphs/Ontology.h"
-#include "ontoloGenius/ontoGraphs/OntologyReader.h"
 
 #include "ontologenius/standard_service.h"
 #include "ontoloGenius/utility/error_code.h"
@@ -24,8 +23,7 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
 
   if(req.action == "add")
   {
-    OntologyReader reader(onto);
-    res.code = reader.readFromUri(req.param);
+    res.code = onto.readFromUri(req.param);
   }
   else if(req.action == "close")
   {

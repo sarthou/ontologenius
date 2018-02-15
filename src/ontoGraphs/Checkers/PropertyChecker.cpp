@@ -7,6 +7,7 @@ size_t PropertyChecker::check()
   checkCharacteristics();
 
   printStatus("Property");
+  return getErrors();
 }
 
 void PropertyChecker::checkDisjoint()

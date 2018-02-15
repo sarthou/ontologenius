@@ -1,5 +1,4 @@
 #include "ontoloGenius/ontoGraphs/Ontology.h"
-#include "ontoloGenius/ontoGraphs/OntologyReader.h"
 
 #include "ros/ros.h"
 
@@ -95,14 +94,13 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "tester");
 
   Ontology onto;
-  OntologyReader reader(onto);
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-  reader.readFromFile("/home/gsarthou/Desktop/test.owl");
-  reader.readFromFile("/home/gsarthou/Desktop/attribute.owl");
-  reader.readFromFile("/home/gsarthou/Desktop/positionProperty.owl");
-  reader.readFromFile("/home/gsarthou/Desktop/testIndividuals.owl");
+  onto.readFromFile("/home/gsarthou/Desktop/test.owl");
+  onto.readFromFile("/home/gsarthou/Desktop/attribute.owl");
+  onto.readFromFile("/home/gsarthou/Desktop/positionProperty.owl");
+  onto.readFromFile("/home/gsarthou/Desktop/testIndividuals.owl");
 
   onto.close();
 

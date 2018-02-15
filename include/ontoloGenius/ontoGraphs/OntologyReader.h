@@ -1,5 +1,9 @@
-#include "ontoloGenius/ontoGraphs/Ontology.h"
-#include "ontoloGenius/utility/utility.h"
+#ifndef ONTOLOGY_READER_H
+#define ONTOLOGY_READER_H
+
+#include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/PropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/IndividualGraph.h"
 
 #include <vector>
 #include <string>
@@ -9,8 +13,7 @@
 
 #include <tinyxml.h>
 
-#ifndef ONTOLOGY_READER_H
-#define ONTOLOGY_READER_H
+class Ontology;
 
 class OntologyReader
 {
@@ -19,8 +22,10 @@ public:
   OntologyReader(Ontology& onto);
   ~OntologyReader() {}
 
-  int readFromUri(std::string uri);
-  int readFromFile(std::string fileName);
+  int readFromUri(std::string uri, bool individual = false);
+  int readFromFile(std::string fileName, bool individual = false);
+
+  void displayIndividualRules();
 
 private:
   ClassGraph* m_objTree;
@@ -30,9 +35,12 @@ private:
   int elemLoaded;
 
   int read(TiXmlElement* rdf, std::string name);
+  int readIndividual(TiXmlElement* rdf, std::string name);
+
   void read_class(TiXmlElement* elem);
   void read_individual(TiXmlElement* elem);
   void read_description(TiXmlElement* elem);
+  void read_individual_description(TiXmlElement* elem);
   void read_property(TiXmlElement* elem);
 
   inline void push(std::vector<std::string>& vect, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");

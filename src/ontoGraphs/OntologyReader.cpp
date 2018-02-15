@@ -1,6 +1,9 @@
 #include "ontoloGenius/ontoGraphs/OntologyReader.h"
 #include <fstream>
 #include "ontoloGenius/utility/error_code.h"
+#include "ontoloGenius/ontoGraphs/Ontology.h"
+
+#include "ontoloGenius/utility/utility.h"
 
 OntologyReader::OntologyReader(ClassGraph* p_objTree, PropertyGraph* p_propTree, IndividualGraph* individual_graph)
 {
@@ -19,7 +22,7 @@ OntologyReader::OntologyReader(Ontology& onto)
 }
 
 
-int OntologyReader::readFromUri(std::string uri)
+int OntologyReader::readFromUri(std::string uri, bool individual)
 {
   int nb_elem = 0;
 
@@ -31,13 +34,16 @@ int OntologyReader::readFromUri(std::string uri)
     TiXmlDocument doc;
     doc.Parse((const char*)response.c_str(), 0, TIXML_ENCODING_UTF8);
     TiXmlElement* rdf = doc.FirstChildElement();
-    return read(rdf, uri);
+    if(individual == false)
+      return read(rdf, uri);
+    else
+      return readIndividual(rdf, uri);
   }
   else
     return REQUEST_ERROR;
 }
 
-int OntologyReader::readFromFile(std::string fileName)
+int OntologyReader::readFromFile(std::string fileName, bool individual)
 {
   int nb_elem = 0;
 
@@ -52,7 +58,10 @@ int OntologyReader::readFromFile(std::string fileName)
   TiXmlDocument doc;
   doc.Parse((const char*)response.c_str(), 0, TIXML_ENCODING_UTF8);
   TiXmlElement* rdf = doc.FirstChildElement();
-  return read(rdf, fileName);
+  if(individual == false)
+    return read(rdf, fileName);
+  else
+    return readIndividual(rdf, fileName);
 }
 
 int OntologyReader::read(TiXmlElement* rdf, std::string name)
@@ -67,15 +76,12 @@ int OntologyReader::read(TiXmlElement* rdf, std::string name)
     std::cout << name << std::endl;
     std::cout << "************************************" << std::endl;
     std::cout << "+ sub       | > domain  | @ language" << std::endl;
-    std::cout << "- disjoint  | < range   | = same" << std::endl;
-    std::cout << "/ inverse   | * type    | ^ related" << std::endl;
+    std::cout << "- disjoint  | < range   | " << std::endl;
+    std::cout << "/ inverse   | * type    | " << std::endl;
     std::cout << "************************************" << std::endl;
     std::cout << "├── Class" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
       read_class(elem);
-    std::cout << "├── Individuals" << std::endl;
-    for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
-      read_individual(elem);
     std::cout << "├── Description" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
       read_description(elem);
@@ -83,7 +89,37 @@ int OntologyReader::read(TiXmlElement* rdf, std::string name)
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
       read_property(elem);
 
-    std::cout << "└── "<< elemLoaded << " readed ! -------------------- " << std::endl;
+    std::cout << "└── "<< elemLoaded << " readed ! " << std::endl;
+    return NO_ERROR;
+  }
+}
+
+void OntologyReader::displayIndividualRules()
+{
+  std::cout << "************************************" << std::endl;
+  std::cout << "+ sub        | = same" << std::endl;
+  std::cout << "^ related    | @ language" << std::endl;
+  std::cout << "************************************" << std::endl;
+}
+
+int OntologyReader::readIndividual(TiXmlElement* rdf, std::string name)
+{
+  if(rdf == NULL)
+  {
+      std::cerr << "Failed to load file: No root element."<< std::endl;
+      return OTHER;
+  }
+  else
+  {
+    std::cout << name << std::endl;
+    std::cout << "├── Individuals" << std::endl;
+    for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
+      read_individual(elem);
+    std::cout << "├── Description" << std::endl;
+    for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
+      read_individual_description(elem);
+
+    std::cout << "└── "<< elemLoaded << " readed ! " << std::endl;
     return NO_ERROR;
   }
 }
@@ -208,6 +244,11 @@ void OntologyReader::read_description(TiXmlElement* elem)
     m_objTree->add(disjoints);
     disjoints.clear();
   } // end if(elemName == "rdf:Description")
+}
+
+void OntologyReader::read_individual_description(TiXmlElement* elem)
+{
+
 }
 
 void OntologyReader::read_property(TiXmlElement* elem)

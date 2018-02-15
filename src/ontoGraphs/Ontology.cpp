@@ -13,10 +13,34 @@ int Ontology::close()
   PropertyChecker propertyChecker(&properties_);
 
   size_t err = classChecker.check();
-  err = propertyChecker.check();
+  err += propertyChecker.check();
 
   if(err)
     return -1;
   else
+  {
+    reader.displayIndividualRules();
+    
+    for(size_t i = 0; i < uri_.size(); i++)
+      reader.readFromUri(uri_[i], true);
+    uri_.clear();
+
+    for(size_t i = 0; i < files_.size(); i++)
+      reader.readFromFile(files_[i], true);
+    files_.clear();
+
     return 0;
+  }
+}
+
+int Ontology::readFromUri(std::string uri)
+{
+  uri_.push_back(uri);
+  reader.readFromUri(uri);
+}
+
+int Ontology::readFromFile(std::string fileName)
+{
+  files_.push_back(fileName);
+  reader.readFromFile(fileName);
 }
