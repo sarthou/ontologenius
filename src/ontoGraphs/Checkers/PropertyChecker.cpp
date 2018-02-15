@@ -6,7 +6,7 @@ size_t PropertyChecker::check()
   checkDisjoint();
   checkCharacteristics();
 
-  printStatus("Property");
+  printStatus("property", "properties", graph_.size());
   return getErrors();
 }
 

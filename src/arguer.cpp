@@ -155,10 +155,7 @@ int main(int argc, char** argv)
   ros::service::waitForService("ontoloGenius/REST", -1);
 
   for(unsigned int i = 1; i < argc; i++)
-  {
-    OntologyReader reader(onto);
-    reader.readFromFile(string(argv[i]));
-  }
+    onto.readFromFile(string(argv[i]));
 
   // Start up ROS service with callbacks
   ros::ServiceServer service = n.advertiseService("ontoloGenius/actions", reference_handle);

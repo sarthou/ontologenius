@@ -5,7 +5,7 @@ size_t ClassChecker::check()
 {
   checkDisjoint();
 
-  printStatus("Class");
+  printStatus("class", "classes", graph_.size());
   return getErrors();
 }
 
