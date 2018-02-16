@@ -100,6 +100,30 @@ bool property_handle(ontologenius::standard_service::Request  &req,
   return true;
 }
 
+bool individual_handle(ontologenius::standard_service::Request  &req,
+                      ontologenius::standard_service::Response &res)
+{
+  bool done = false;
+  res.value = "";
+  res.code = 0;
+
+  if(onto.isInit() == false)
+    res.code = UNINIT;
+
+  if(req.action == "getSame")
+    res.value = set2string(onto.individuals_.getSame(req.param));
+  else if(req.action == "getRelationFrom")
+    res.value = set2string(onto.individuals_.getRelationFrom(req.param));
+  else if(req.action == "getRelatedWith")
+    res.value = set2string(onto.individuals_.getRelatedWith(req.param));
+  else if(req.action == "getUp")
+    res.value = set2string(onto.individuals_.getUp(req.param));
+  else
+    res.code = UNKNOW_ACTION;
+
+  return true;
+}
+
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontoloGenius");
@@ -115,6 +139,7 @@ int main(int argc, char** argv)
   ros::ServiceServer service = n.advertiseService("ontoloGenius/actions", reference_handle);
   ros::ServiceServer serviceClass = n.advertiseService("ontoloGenius/class", class_handle);
   ros::ServiceServer serviceProperty = n.advertiseService("ontoloGenius/property", property_handle);
+  ros::ServiceServer serviceIndividual = n.advertiseService("ontoloGenius/individual", individual_handle);
   ROS_DEBUG("ontoloGenius ready");
 
   std::string code = "";

@@ -10,7 +10,6 @@ template <typename B>
 class BranchContainerBase
 {
   static_assert(std::is_base_of<ValuedNode,B>::value, "B must be derived from ValuedNode");
-  //static_assert(std::is_pointer<B>::value, "B must be a pointer");
 public:
   BranchContainerBase() {}
   virtual ~BranchContainerBase() {}

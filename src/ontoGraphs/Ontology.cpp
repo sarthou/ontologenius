@@ -16,7 +16,6 @@ int Ontology::close()
 {
   classes_.close();
   properties_.close();
-  individuals_.close();
 
   ClassChecker classChecker(&classes_);
   PropertyChecker propertyChecker(&properties_);
@@ -37,6 +36,8 @@ int Ontology::close()
     for(size_t i = 0; i < files_.size(); i++)
       reader.readFromFile(files_[i], true);
     files_.clear();
+
+    individuals_.close();
 
     is_init_ = true;
     return 0;

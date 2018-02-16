@@ -16,6 +16,7 @@ IndividualGraph::~IndividualGraph()
 
 void IndividualGraph::close()
 {
+  std::cout << "load indiv" << std::endl;
   container_.load(individuals_);
 }
 
@@ -60,14 +61,6 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
         i_find_my_is_a_ = true;
       }
 
-    //is a tmp mother is my class ?
-    for(unsigned int branch_i  =0; branch_i < classes_->tmp_mothers_.size(); branch_i++)
-      if(individual_vector.is_a_[is_a_i] == classes_->tmp_mothers_[branch_i]->value_)
-      {
-        me->is_a_.push_back(classes_->tmp_mothers_[branch_i]);
-        i_find_my_is_a_ = true;
-      }
-
     //I create my class
     if(!i_find_my_is_a_)
     {
@@ -106,14 +99,6 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
         i_find_my_properties = true;
       }
 
-    //is a tmp mother is my properties ?
-    for(unsigned int branch_i  =0; branch_i < properties_->tmp_mothers_.size(); branch_i++)
-      if(individual_vector.properties_name_[property_i] == properties_->tmp_mothers_[branch_i]->value_)
-      {
-        me->properties_name_.push_back(properties_->tmp_mothers_[branch_i]);
-        i_find_my_properties = true;
-      }
-
     //I create my properties
     if(!i_find_my_properties)
     {
@@ -129,48 +114,27 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   }
 
   /**********************
-  ** Object Property assertion on class
+  ** Object Property assertion on indiv
   **********************/
-  //for all my classes
-  for(unsigned int is_a_i = 0; is_a_i < individual_vector.properties_on_.size(); is_a_i++)
+  //for all my individuals
+  for(unsigned int properties_on_i = 0; properties_on_i < individual_vector.properties_on_.size(); properties_on_i++)
   {
     bool i_find_my_properties_on = false;
 
-    //is a root my class ?
-    for(unsigned int root_i = 0; root_i < classes_->roots_.size(); root_i++)
-      if(individual_vector.properties_on_[is_a_i] == classes_->roots_[root_i]->value_)
+    //is a individual exist ?
+    for(unsigned int indiv_i = 0; indiv_i < individuals_.size(); indiv_i++)
+      if(individual_vector.properties_on_[properties_on_i] == individuals_[indiv_i]->value_)
       {
-        me->properties_on_.push_back(classes_->roots_[root_i]);
+        me->properties_on_.push_back(individuals_[indiv_i]);
         i_find_my_properties_on = true;
       }
 
-    //is a branch my class ?
-    for(unsigned int branch_i = 0; branch_i < classes_->branchs_.size(); branch_i++)
-      if(individual_vector.properties_on_[is_a_i] == classes_->branchs_[branch_i]->value_)
-      {
-        me->properties_on_.push_back(classes_->branchs_[branch_i]);
-        i_find_my_properties_on = true;
-      }
-
-    //is a tmp mother is my class ?
-    for(unsigned int branch_i  =0; branch_i < classes_->tmp_mothers_.size(); branch_i++)
-      if(individual_vector.properties_on_[is_a_i] == classes_->tmp_mothers_[branch_i]->value_)
-      {
-        me->properties_on_.push_back(classes_->tmp_mothers_[branch_i]);
-        i_find_my_properties_on = true;
-      }
-
-    //I create my class
+    //I create my individual
     if(!i_find_my_properties_on)
     {
-      ObjectVectors_t empty_vectors;
-      classes_->add(individual_vector.properties_on_[is_a_i], empty_vectors);
-      for(unsigned int root_i = 0; root_i < classes_->roots_.size(); root_i++)
-        if(individual_vector.properties_on_[is_a_i] == classes_->roots_[root_i]->value_)
-        {
-          me->properties_on_.push_back(classes_->roots_[root_i]);
-          i_find_my_properties_on = true;
-        }
+      IndividualBranch_t* tmp = new IndividualBranch_t(individual_vector.properties_on_[properties_on_i]);
+      individuals_.push_back(tmp);
+      me->properties_on_.push_back(tmp);
     }
   }
 
@@ -200,6 +164,8 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
       individuals_.push_back(my_same);
     }
   }
+
+  individuals_.push_back(me);
 }
 
 void IndividualGraph::add(std::vector<std::string>& distinct)
@@ -246,4 +212,76 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
       }
     }
   }
+}
+
+std::set<std::string> IndividualGraph::getSame(std::string individual)
+{
+  std::set<std::string> res;
+  std::set<IndividualBranch_t*> tmp = getSame(container_.find(individual));
+  cleanMarks(tmp);
+  for(std::set<IndividualBranch_t*>::iterator it = tmp.begin(); it != tmp.end(); ++it)
+    res.insert((*it)->value_);
+  return res;
+}
+
+std::set<std::string> IndividualGraph::getRelationFrom(std::string individual)
+{
+  std::set<std::string> res;
+  IndividualBranch_t* indiv = container_.find(individual);
+  std::set<IndividualBranch_t*> sames = getSame(indiv);
+  for(std::set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
+    for(size_t i = 0; i < (*it)->properties_name_.size(); i++)
+      res.insert((*it)->properties_name_[i]->value_);
+
+  return res;
+}
+
+std::set<std::string> IndividualGraph::getRelatedWith(std::string individual)
+{
+  std::set<std::string> res;
+  IndividualBranch_t* indiv = container_.find(individual);
+  std::set<IndividualBranch_t*> sames = getSame(indiv);
+  for(std::set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
+    for(size_t i = 0; i < (*it)->properties_on_.size(); i++)
+      res.insert((*it)->properties_on_[i]->value_);
+
+  return res;
+}
+
+std::set<std::string> IndividualGraph::getUp(std::string individual)
+{
+  std::set<std::string> res;
+  IndividualBranch_t* indiv = container_.find(individual);
+  std::set<IndividualBranch_t*> sames = getSame(indiv);
+  for(std::set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
+    for(size_t i = 0; i < (*it)->is_a_.size(); i++)
+    {
+      std::set<std::string> tmp = classes_->getUp((*it)->is_a_[i]);
+      if(tmp.size())
+        res.insert(tmp.begin(), tmp.end());
+    }
+  return res;
+}
+
+std::set<IndividualBranch_t*> IndividualGraph::getSame(IndividualBranch_t* individual)
+{
+  std::set<IndividualBranch_t*> res;
+  res.insert(individual);
+  individual->mark = true;
+  for(size_t i = 0; i < individual->same_as_.size(); i++)
+  {
+    if(individual->same_as_[i]->mark == false)
+    {
+      std::set<IndividualBranch_t*> tmp = getSame(individual->same_as_[i]);
+      if(tmp.size())
+        res.insert(tmp.begin(), tmp.end());
+    }
+  }
+  return res;
+}
+
+void IndividualGraph::cleanMarks(std::set<IndividualBranch_t*>& indSet)
+{
+  for(std::set<IndividualBranch_t*>::iterator it = indSet.begin(); it != indSet.end(); ++it)
+    (*it)->mark = false;
 }

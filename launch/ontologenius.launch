@@ -5,6 +5,7 @@
   $(find ontologenius)/files/measure.owl
   $(find ontologenius)/files/property.owl
   $(find ontologenius)/files/positionProperty.owl
+  $(find ontologenius)/files/testIndividuals.owl
   "/>
   <node name="ontology_arguer" pkg="ontologenius" type="ontoloGenius" output="screen" args="$(arg files)"> </node>
   <node name="ontology_requests" pkg="ontologenius" type="REST.py" output="screen"> </node>
