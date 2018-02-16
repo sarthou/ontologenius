@@ -5,10 +5,11 @@ size_t ClassChecker::check()
 {
   checkDisjoint();
 
-  printStatus("Class");
+  printStatus("class", "classes", graph_.size());
+  return getErrors();
 }
 
-size_t ClassChecker::checkDisjoint()
+void ClassChecker::checkDisjoint()
 {
   for(size_t i = 0; i < graph_.size(); i++)
   {
@@ -18,7 +19,7 @@ size_t ClassChecker::checkDisjoint()
     std::set<std::string>::iterator it;
     for (it = up.begin(); it != up.end(); it++)
     {
-      std::set<std::string> tmp = class_graph_->getDisjoint(*it);
+      std::set<std::string> tmp = class_graph_->getDisjoint((std::string&)*it);
       disjoint.insert(tmp.begin(), tmp.end());
     }
 

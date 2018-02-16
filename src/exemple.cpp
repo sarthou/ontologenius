@@ -1,6 +1,5 @@
 #include "ontoloGenius/ontoGraphs/Ontology.h"
 #include "ontoloGenius/ontoGraphs/GraphDrawer.h"
-#include "ontoloGenius/ontoGraphs/OntologyReader.h"
 #include "ros/ros.h"
 
 int main(int argc, char** argv)
@@ -9,9 +8,8 @@ int main(int argc, char** argv)
 
 {
   Ontology onto;
-  OntologyReader reader(onto);
 
-  reader.readFromUri("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/attribute.owl");
+  onto.readFromUri("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/attribute.owl");
 
   onto.close();
 
@@ -22,9 +20,8 @@ int main(int argc, char** argv)
 
 {
   Ontology onto;
-  OntologyReader reader(onto);
 
-  reader.readFromUri("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/measure.owl");
+  onto.readFromUri("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/measure.owl");
 
   onto.close();
 

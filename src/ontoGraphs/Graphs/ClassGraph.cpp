@@ -41,7 +41,7 @@ void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
 
   //am I created ?
   if(me == nullptr)
-    me = new struct ClassBranch_t(value);
+    me = new ClassBranch_t(value);
 
   me->nb_mothers_ += object_vector.mothers_.size();
 
@@ -217,18 +217,19 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
   }
 }
 
-std::set<std::string> ClassGraph::getDisjoint(std::string value)
+std::set<std::string> ClassGraph::getDisjoint(std::string& value)
 {
   std::set<std::string> res;
 
   ClassBranch_t* branch = container_.find(value);
-  for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
-  {
-    std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i], value);
+  if(branch != nullptr)
+    for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
+    {
+      std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i]);
 
-    if(tmp.size())
-      res.insert(tmp.begin(), tmp.end());
-  }
+      if(tmp.size())
+        res.insert(tmp.begin(), tmp.end());
+    }
 
   return res;
 }

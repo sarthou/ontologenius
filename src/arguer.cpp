@@ -1,5 +1,4 @@
 #include "ontoloGenius/ontoGraphs/Ontology.h"
-#include "ontoloGenius/ontoGraphs/OntologyReader.h"
 
 #include "ontologenius/standard_service.h"
 #include "ontoloGenius/utility/error_code.h"
@@ -13,6 +12,14 @@
 
 using namespace std;
 
+std::string set2string(std::set<std::string> word_set)
+{
+  string result = "";
+  for(set<string>::iterator it = word_set.begin(); it != word_set.end(); ++it)
+    result += *it + " ";
+  return result;
+}
+
 Ontology onto;
 
 bool reference_handle(ontologenius::standard_service::Request  &req,
@@ -23,18 +30,11 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
   res.code = 0;
 
   if(req.action == "add")
-  {
-    OntologyReader reader(onto);
-    res.code = reader.readFromUri(req.param);
-  }
+    res.code = onto.readFromUri(req.param);
   else if(req.action == "close")
-  {
     onto.close();
-  }
   else if(req.action == "reset")
-  {
     onto = Ontology();
-  }
   else if(req.action == "test")
   {
     Computer comp;
@@ -57,30 +57,15 @@ bool class_handle(ontologenius::standard_service::Request  &req,
   res.value = "";
   res.code = 0;
 
-if(req.action == "getDown")
-  {
-    set<string> entities = onto.classes_.getDown(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+  if(onto.isInit() == false)
+    res.code = UNINIT;
+
+  if(req.action == "getDown")
+    res.value = set2string(onto.classes_.getDown(req.param));
   else if(req.action == "getUp")
-  {
-    set<string> entities = onto.classes_.getUp(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.classes_.getUp(req.param));
   else if(req.action == "getDisjoint")
-  {
-    set<string> entities = onto.classes_.getDisjoint(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.classes_.getDisjoint(req.param));
   else
     res.code = UNKNOW_ACTION;
 
@@ -94,54 +79,53 @@ bool property_handle(ontologenius::standard_service::Request  &req,
   res.value = "";
   res.code = 0;
 
-if(req.action == "getDown")
-  {
-    set<string> entities = onto.properties_.getDown(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+  if(onto.isInit() == false)
+    res.code = UNINIT;
+
+  if(req.action == "getDown")
+    res.value = set2string(onto.properties_.getDown(req.param));
   else if(req.action == "getUp")
-  {
-    set<string> entities = onto.properties_.getUp(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.properties_.getUp(req.param));
   else if(req.action == "getDisjoint")
-  {
-    set<string> entities = onto.properties_.getDisjoint(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.properties_.getDisjoint(req.param));
   else if(req.action == "getInverse")
-  {
-    set<string> entities = onto.properties_.getInverse(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.properties_.getInverse(req.param));
   else if(req.action == "getDomain")
-  {
-    set<string> entities = onto.properties_.getDomain(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.properties_.getDomain(req.param));
   else if(req.action == "getRange")
-  {
-    set<string> entities = onto.properties_.getRange(req.param);
-    string result = "";
-    for(set<string>::iterator it = entities.begin(); it != entities.end(); ++it)
-      result += *it + " ";
-    res.value = result;
-  }
+    res.value = set2string(onto.properties_.getRange(req.param));
+  else
+    res.code = UNKNOW_ACTION;
+
+  return true;
+}
+
+bool individual_handle(ontologenius::standard_service::Request  &req,
+                      ontologenius::standard_service::Response &res)
+{
+  bool done = false;
+  res.value = "";
+  res.code = 0;
+
+  if(onto.isInit() == false)
+    res.code = UNINIT;
+
+  if(req.action == "getSame")
+    res.value = set2string(onto.individuals_.getSame(req.param));
+  else if(req.action == "getRelationFrom")
+    res.value = set2string(onto.individuals_.getRelationFrom(req.param));
+  else if(req.action == "getRelatedFrom")
+    res.value = set2string(onto.individuals_.getRelatedFrom(req.param));
+  else if(req.action == "getRelationOn")
+    res.value = set2string(onto.individuals_.getRelationOn(req.param));
+  else if(req.action == "getRelatedOn")
+    res.value = set2string(onto.individuals_.getRelatedOn(req.param));
+  else if(req.action == "getRelationWith")
+    res.value = set2string(onto.individuals_.getRelationWith(req.param));
+  else if(req.action == "getRelatedWith")
+    res.value = set2string(onto.individuals_.getRelatedWith(req.param));
+  else if(req.action == "getUp")
+    res.value = set2string(onto.individuals_.getUp(req.param));
   else
     res.code = UNKNOW_ACTION;
 
@@ -157,15 +141,13 @@ int main(int argc, char** argv)
   ros::service::waitForService("ontoloGenius/REST", -1);
 
   for(unsigned int i = 1; i < argc; i++)
-  {
-    OntologyReader reader(onto);
-    reader.readFromFile(string(argv[i]));
-  }
+    onto.readFromFile(string(argv[i]));
 
   // Start up ROS service with callbacks
   ros::ServiceServer service = n.advertiseService("ontoloGenius/actions", reference_handle);
   ros::ServiceServer serviceClass = n.advertiseService("ontoloGenius/class", class_handle);
   ros::ServiceServer serviceProperty = n.advertiseService("ontoloGenius/property", property_handle);
+  ros::ServiceServer serviceIndividual = n.advertiseService("ontoloGenius/individual", individual_handle);
   ROS_DEBUG("ontoloGenius ready");
 
   std::string code = "";

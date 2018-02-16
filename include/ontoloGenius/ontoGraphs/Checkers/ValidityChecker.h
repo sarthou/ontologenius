@@ -36,15 +36,17 @@ protected:
     nb_error_++;
   }
 
-  void printStatus(std::string type)
+  void printStatus(std::string type, std::string types, size_t nb)
   {
     if(nb_error_)
-      std::cout << nb_error_ << " errors " << COLOR_OFF << std::endl;
+      std::cout << COLOR_RED << nb_error_ << " errors " << COLOR_OFF << std::endl;
 
     if(nb_error_)
-      std::cout << COLOR_RED << type << " analyse failed" << COLOR_OFF << std::endl;
+      std::cout << COLOR_RED << "Failure of " << type << " analysis" << COLOR_OFF;
     else
-      std::cout << COLOR_GREEN << type << " analyse succeed" << COLOR_OFF << std::endl;
+      std::cout << COLOR_GREEN << "Succeed " << type << " analysis" << COLOR_OFF;
+
+    std::cout << " : " << nb << " " << types << " analyzed" << std::endl;
   }
 
   std::string findIntersection(std::set<std::string>& base, std::set<std::string>& comp)

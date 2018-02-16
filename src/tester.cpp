@@ -1,13 +1,21 @@
 #include "ontoloGenius/ontoGraphs/Ontology.h"
-#include "ontoloGenius/ontoGraphs/OntologyReader.h"
 
 #include "ros/ros.h"
 
 #include <chrono>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
+#include <set>
 
 using namespace std::chrono;
+
+std::string set2string(std::set<std::string> word_set)
+{
+  std::string result = "";
+  for(std::set<std::string>::iterator it = word_set.begin(); it != word_set.end(); ++it)
+    result += *it + " ";
+  return result;
+}
 
 std::vector<std::string> generate_sequence(ClassGraph& onto)
 {
@@ -95,19 +103,22 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "tester");
 
   Ontology onto;
-  OntologyReader reader(onto);
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-  reader.readFromFile("/home/gsarthou/Desktop/test.owl");
-  reader.readFromFile("/home/gsarthou/Desktop/attribute.owl");
-  reader.readFromFile("/home/gsarthou/Desktop/positionProperty.owl");
+  onto.readFromFile("/home/gsarthou/Desktop/test.owl");
+  onto.readFromFile("/home/gsarthou/Desktop/attribute.owl");
+  onto.readFromFile("/home/gsarthou/Desktop/positionProperty.owl");
+  onto.readFromFile("/home/gsarthou/Desktop/testIndividuals.owl");
 
   onto.close();
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
   std::cout << "It took me " << time_span.count() << " seconds to read" << std::endl;
+
+  std::string tmp = "isOn";
+  std::cout << "=" << set2string(onto.individuals_.getRelatedFrom(tmp)) << std::endl;
 
   /*double total = 0;
   for(int i = 0; i < 10000; i++)

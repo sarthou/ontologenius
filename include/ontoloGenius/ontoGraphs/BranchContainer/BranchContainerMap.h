@@ -13,7 +13,7 @@ public:
   virtual ~BranchContainerMap() {}
 
   virtual B* find(std::string word);
-  virtual void load(std::vector<B*> roots, std::vector<B*> branchs);
+  virtual void load(std::vector<B*>& vect);
 private:
   std::map<std::string, B*> nodes_;
 };
@@ -29,13 +29,10 @@ B* BranchContainerMap<B>::find(std::string word)
 }
 
 template <typename B>
-void BranchContainerMap<B>::load(std::vector<B*> roots, std::vector<B*> branchs)
+void BranchContainerMap<B>::load(std::vector<B*>& vect)
 {
-  for(size_t i = 0; i < roots.size(); i++)
-    nodes_[roots[i]->value_] = roots[i];
-
-  for(size_t i = 0; i < branchs.size(); i++)
-    nodes_[branchs[i]->value_] = branchs[i];
+  for(size_t i = 0; i < vect.size(); i++)
+    nodes_[vect[i]->value_] = vect[i];
 }
 
 #endif

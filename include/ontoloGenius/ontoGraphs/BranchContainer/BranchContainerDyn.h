@@ -26,16 +26,18 @@ public:
   {
     nodes_ = new BramchNode_t<B>;
     nodes_end_ = nodes_;
+    nb_elem_ = 0;
   }
 
   virtual ~BranchContainerDyn() {delete nodes_; }
 
   virtual B* find(std::string word);
-  virtual void load(std::vector<B*> roots, std::vector<B*> branchs);
+  virtual void load(std::vector<B*>& vect);
 private:
   BramchNode_t<B>* nodes_;
   BramchNode_t<B>* nodes_end_;
   size_t buffer_size_;
+  size_t nb_elem_;
 
   void insertEnd(std::string id, B* branch);
   void reconf(BramchNode_t<B>* node);
@@ -62,15 +64,13 @@ B* BranchContainerDyn<B>::find(std::string word)
 }
 
 template <typename B>
-void BranchContainerDyn<B>::load(std::vector<B*> roots, std::vector<B*> branchs)
+void BranchContainerDyn<B>::load(std::vector<B*>& vect)
 {
-  for(size_t i = 0; i < roots.size(); i++)
-    insertEnd(roots[i]->value_, roots[i]);
+  for(size_t i = 0; i < vect.size(); i++)
+    insertEnd(vect[i]->value_, vect[i]);
 
-  for(size_t i = 0; i < branchs.size(); i++)
-    insertEnd(branchs[i]->value_, branchs[i]);
-
-  buffer_size_ = log2(roots.size() + branchs.size());
+  nb_elem_ += vect.size();
+  buffer_size_ = log2(nb_elem_);
 }
 
 template <typename B>

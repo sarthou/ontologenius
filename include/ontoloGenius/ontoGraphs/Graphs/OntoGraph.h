@@ -10,24 +10,31 @@
 #include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerMap.h"
 #include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerDyn.h"
 
+class ValuedNode
+{
+public:
+  std::string value_;
+
+  ValuedNode(std::string value) {value_ = value; }
+};
+
 /*
 This file use CRTP (curiously recurring template pattern)
 be really carreful of how you use it
 */
 
 template <typename T>
-class Branch_t
+class Branch_t : public ValuedNode
 {
 public:
-  std::string value_;
   std::vector<T*> childs_;
   std::vector<T*> mothers_;
   uint8_t family;
   uint8_t nb_mothers_;
   std::map<std::string, std::string> dictionary_;
 
-  Branch_t(std::string value) : family(0), nb_mothers_(0)
-    {value_ = value; };
+  Branch_t(std::string value) : ValuedNode(value), family(0), nb_mothers_(0)
+    {};
 };
 
 template <typename B>
@@ -40,8 +47,11 @@ public:
 
   void close();
 
-  std::set<std::string> getDown(std::string value);
-  std::set<std::string> getUp(std::string value);
+  std::set<std::string> getDown(std::string& value);
+  std::set<std::string> getUp(std::string& value);
+
+  std::set<std::string> getDown(B* branch);
+  std::set<std::string> getUp(B* branch);
 
   std::vector<B*> get()
   {
@@ -62,9 +72,6 @@ protected:
 
   void link();
   void add_family(B* branch, uint8_t family);
-
-  std::set<std::string> getDown(B* branch, std::string value);
-  std::set<std::string> getUp(B* branch, std::string value);
 };
 
 template <typename B>
@@ -90,31 +97,38 @@ void OntoGraph<B>::close()
 
   link();
 
-  container_.load(roots_, branchs_);
+  container_.load(roots_);
+  container_.load(branchs_);
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getDown(std::string value)
+std::set<std::string> OntoGraph<B>::getDown(std::string& value)
 {
   std::set<std::string> res;
 
   B* branch = container_.find(value);
-  std::set<std::string> tmp = getDown(branch, value);
-  if(tmp.size())
-    res.insert(tmp.begin(), tmp.end());
+  if(branch != nullptr)
+  {
+    std::set<std::string> tmp = getDown(branch);
+    if(tmp.size())
+      res.insert(tmp.begin(), tmp.end());
+  }
 
   return res;
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getUp(std::string value)
+std::set<std::string> OntoGraph<B>::getUp(std::string& value)
 {
   std::set<std::string> res;
 
   B* branch = container_.find(value);
-  std::set<std::string> tmp = getUp(branch, value);
-  if(tmp.size())
-    res.insert(tmp.begin(), tmp.end());
+  if(branch != nullptr)
+  {
+    std::set<std::string> tmp = getUp(branch);
+    if(tmp.size())
+      res.insert(tmp.begin(), tmp.end());
+  }
 
   return res;
 }
@@ -147,13 +161,14 @@ void OntoGraph<B>::add_family(B* branch, uint8_t family)
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getDown(B* branch, std::string value)
+std::set<std::string> OntoGraph<B>::getDown(B* branch)
 {
   std::set<std::string> res;
   res.insert(branch->value_);
-  for(unsigned int i = 0; i < branch->childs_.size(); i++)
+  size_t size = branch->childs_.size();
+  for(unsigned int i = 0; i < size; i++)
   {
-    std::set<std::string> tmp = getDown(branch->childs_[i], value);
+    std::set<std::string> tmp = getDown(branch->childs_[i]);
 
     if(tmp.size())
       res.insert(tmp.begin(), tmp.end());
@@ -163,13 +178,14 @@ std::set<std::string> OntoGraph<B>::getDown(B* branch, std::string value)
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getUp(B* branch, std::string value)
+std::set<std::string> OntoGraph<B>::getUp(B* branch)
 {
   std::set<std::string> res;
   res.insert(branch->value_);
-  for(unsigned int i = 0; i < branch->mothers_.size(); i++)
+  size_t size = branch->mothers_.size();
+  for(unsigned int i = 0; i < size; i++)
   {
-    std::set<std::string> tmp = getUp(branch->mothers_[i], value);
+    std::set<std::string> tmp = getUp(branch->mothers_[i]);
 
     if(tmp.size())
       res.insert(tmp.begin(), tmp.end());
