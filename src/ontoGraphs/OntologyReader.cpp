@@ -97,8 +97,8 @@ int OntologyReader::read(TiXmlElement* rdf, std::string name)
 void OntologyReader::displayIndividualRules()
 {
   std::cout << "************************************" << std::endl;
-  std::cout << "+ sub        | = same" << std::endl;
-  std::cout << "^ related    | @ language" << std::endl;
+  std::cout << "+ sub        | = same       | - distinct" << std::endl;
+  std::cout << "^ related    | @ language   |" << std::endl;
   std::cout << "************************************" << std::endl;
 }
 
@@ -248,7 +248,59 @@ void OntologyReader::read_description(TiXmlElement* elem)
 
 void OntologyReader::read_individual_description(TiXmlElement* elem)
 {
-
+  std::string elemName = elem->Value();
+  if(elemName == "rdf:Description")
+  {
+    std::vector<std::string> distincts;
+    bool isDistincttAll = false;
+    for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
+    {
+      std::string subElemName = subElem->Value();
+      const char* subAttr;
+      if(subElemName == "rdf:type")
+      {
+        subAttr = subElem->Attribute("rdf:resource");
+        if(subAttr != NULL)
+        {
+          if(get_name(std::string(subAttr)) == "AllDifferent")
+            isDistincttAll = true;
+        }
+      }
+      else if(subElemName == "owl:distinctMembers")
+      {
+        subAttr = subElem->Attribute("rdf:parseType");
+        if(subAttr != NULL)
+        {
+          if(std::string(subAttr) == "Collection")
+          {
+            for(TiXmlElement* subSubElem = subElem->FirstChildElement(); subSubElem != NULL; subSubElem = subSubElem->NextSiblingElement())
+            {
+              std::string subSubElemName = subSubElem->Value();
+              const char* subSubAttr;
+              if(subSubElemName == "rdf:Description")
+              {
+                subSubAttr = subSubElem->Attribute("rdf:about");
+                if(subSubAttr != NULL)
+                {
+                  if(subSubElem == subElem->FirstChildElement())
+                    std::cout << "│   ├───┬── -";
+                  else if(subSubElem->NextSiblingElement() == NULL)
+                    std::cout << "│   │   └── -";
+                  else
+                    std::cout << "│   │   ├── -";
+                  std::cout << get_name(std::string(subSubAttr)) << std::endl;
+                  distincts.push_back(get_name(std::string(subSubAttr)));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    if(isDistincttAll)
+      individual_graph_->add(distincts);
+    distincts.clear();
+  } // end if(elemName == "rdf:Description")
 }
 
 void OntologyReader::read_property(TiXmlElement* elem)

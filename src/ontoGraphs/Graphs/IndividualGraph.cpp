@@ -224,6 +224,18 @@ std::set<std::string> IndividualGraph::getSame(std::string individual)
   return res;
 }
 
+std::set<std::string> IndividualGraph::getDistincts(std::string individual)
+{
+  std::set<std::string> res;
+  IndividualBranch_t* indiv = container_.find(individual);
+  for(size_t i = 0; i < indiv->distinct_.size(); i++)
+  {
+    std::set<std::string> tmp = set2set(getSame(indiv->distinct_[i]));
+    res.insert(tmp.begin(), tmp.end());
+  }
+  return res;
+}
+
 std::set<std::string> IndividualGraph::getRelationFrom(std::string individual)
 {
   std::set<std::string> res;

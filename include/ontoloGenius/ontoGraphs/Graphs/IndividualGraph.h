@@ -44,6 +44,7 @@ public:
   void add(std::vector<std::string>& distinct_);
 
   std::set<std::string> getSame(std::string individual);          //C1
+  std::set<std::string> getDistincts(std::string individual);     //C2
   std::set<std::string> getRelationFrom(std::string individual);  //C3
   std::set<std::string> getRelatedFrom(std::string property);     //C3
   std::set<std::string> getRelationOn(std::string individual);    //C4
