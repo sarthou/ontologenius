@@ -1,7 +1,5 @@
-#include "ontoloGenius/ontoGraphs/ClassGraph.h"
-#include "ontoloGenius/ontoGraphs/PropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/Ontology.h"
 #include "ontoloGenius/ontoGraphs/GraphDrawer.h"
-#include "ontoloGenius/ontoGraphs/OntologyReader.h"
 #include "ros/ros.h"
 
 int main(int argc, char** argv)
@@ -9,29 +7,25 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "tree");
 
 {
-  ClassGraph onto;
-  PropertyGraph propOnto(&onto);
-  OntologyReader reader(&onto, &propOnto);
+  Ontology onto;
 
-  reader.readFromUri("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/attribute.owl");
+  onto.readFromUri("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/attribute.owl");
 
   onto.close();
 
-  GraphDrawer drawer(&onto);
+  GraphDrawer drawer(&onto.classes_);
   drawer.put_in_layers();
   drawer.draw("attribute.png");
 }
 
 {
-  ClassGraph onto;
-  PropertyGraph propOnto(&onto);
-  OntologyReader reader(&onto, &propOnto);
+  Ontology onto;
 
-  reader.readFromUri("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/measure.owl");
+  onto.readFromUri("https://raw.githubusercontent.com/sarthou/toaster/master/tools/Ontology/measure.owl");
 
   onto.close();
 
-  GraphDrawer drawer(&onto);
+  GraphDrawer drawer(&onto.classes_);
   drawer.put_in_layers();
   drawer.draw("measure.png");
 }

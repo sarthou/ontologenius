@@ -4,8 +4,8 @@
 #include <map>
 #include <stdint.h>
 
-#include "ontoloGenius/ontoGraphs/OntoGraph.h"
-#include "ontoloGenius/ontoGraphs/ClassGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/OntoGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 
 #ifndef TREEPROPERTY_H
 #define TREEPROPERTY_H
@@ -17,7 +17,6 @@ struct Properties_t
   bool functional_property_;
   bool inverse_functional_property_;
   bool transitive_property_;
-  std::vector<PropertyClassBranch_t*> transitive_with_;
   bool symetric_property_;
   bool antisymetric_property_;
   bool reflexive_property_;
@@ -56,10 +55,12 @@ struct PropertyVectors_t
 };
 
 class GraphDrawer;
+class IndividualGraph;
 
 class PropertyGraph : public OntoGraph<PropertyClassBranch_t>
 {
   friend GraphDrawer;
+  friend IndividualGraph;
 public:
   PropertyGraph(ClassGraph* treeObject) {treeObject_ = treeObject; }
   ~PropertyGraph() {}
@@ -67,10 +68,10 @@ public:
   void add(std::string value, PropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 
-  std::set<std::string> getDisjoint(std::string value);
-  std::set<std::string> getInverse(std::string value);
-  std::set<std::string> getDomain(std::string value);
-  std::set<std::string> getRange(std::string value);
+  std::set<std::string> getDisjoint(std::string& value);
+  std::set<std::string> getInverse(std::string& value);
+  std::set<std::string> getDomain(std::string& value);
+  std::set<std::string> getRange(std::string& value);
 
 private:
   ClassGraph* treeObject_;

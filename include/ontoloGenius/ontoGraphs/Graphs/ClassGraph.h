@@ -4,7 +4,7 @@
 #include <set>
 #include <stdint.h>
 
-#include "ontoloGenius/ontoGraphs/OntoGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/OntoGraph.h"
 
 #ifndef TREEOBJECT_H
 #define TREEOBJECT_H
@@ -26,11 +26,13 @@ struct ObjectVectors_t
 
 class GraphDrawer;
 class PropertyGraph;
+class IndividualGraph;
 
 class ClassGraph : public OntoGraph<ClassBranch_t>
 {
   friend GraphDrawer;
   friend PropertyGraph;
+  friend IndividualGraph;
 public:
   ClassGraph() {}
   ~ClassGraph() {}
@@ -38,7 +40,7 @@ public:
   void add(std::string value, ObjectVectors_t& object_vector);
   void add(std::vector<std::string>& disjoints);
 
-  std::set<std::string> getDisjoint(std::string value);
+  std::set<std::string> getDisjoint(std::string& value);
 
 private:
 };
