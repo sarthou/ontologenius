@@ -117,8 +117,8 @@ int main(int argc, char** argv)
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
   std::cout << "It took me " << time_span.count() << " seconds to read" << std::endl;
 
-  std::string tmp = "cube1";
-  std::cout << "=" << set2string(onto.individuals_.getUp(tmp)) << std::endl;
+  std::string tmp = "isOn";
+  std::cout << "=" << set2string(onto.individuals_.getRelatedFrom(tmp)) << std::endl;
 
   /*double total = 0;
   for(int i = 0; i < 10000; i++)

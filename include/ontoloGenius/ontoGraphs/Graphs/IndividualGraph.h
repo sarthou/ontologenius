@@ -43,10 +43,14 @@ public:
   void add(std::string value, IndividualVectors_t& individual_vector);
   void add(std::vector<std::string>& distinct_);
 
-  std::set<std::string> getSame(std::string individual);
-  std::set<std::string> getRelationFrom(std::string individual);
-  std::set<std::string> getRelatedWith(std::string individual);
-  std::set<std::string> getUp(std::string individual);
+  std::set<std::string> getSame(std::string individual);          //C1
+  std::set<std::string> getRelationFrom(std::string individual);  //C3
+  std::set<std::string> getRelatedFrom(std::string property);     //C3
+  std::set<std::string> getRelationOn(std::string individual);    //C4
+  std::set<std::string> getRelatedOn(std::string property);       //C3
+  std::set<std::string> getRelationWith(std::string individual);  //C3
+  std::set<std::string> getRelatedWith(std::string individual);   //C3
+  std::set<std::string> getUp(std::string individual);            //C3
 
 private:
   ClassGraph* classes_;
@@ -57,6 +61,7 @@ private:
 
   std::set<IndividualBranch_t*> getSame(IndividualBranch_t* individual);
   void cleanMarks(std::set<IndividualBranch_t*>& indSet);
+  std::set<std::string> set2set(std::set<IndividualBranch_t*> indSet, bool clean = true);
 };
 
 #endif /* INDIVIDUALGRAPH_H */

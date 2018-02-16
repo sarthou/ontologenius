@@ -114,6 +114,14 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
     res.value = set2string(onto.individuals_.getSame(req.param));
   else if(req.action == "getRelationFrom")
     res.value = set2string(onto.individuals_.getRelationFrom(req.param));
+  else if(req.action == "getRelatedFrom")
+    res.value = set2string(onto.individuals_.getRelatedFrom(req.param));
+  else if(req.action == "getRelationOn")
+    res.value = set2string(onto.individuals_.getRelationOn(req.param));
+  else if(req.action == "getRelatedOn")
+    res.value = set2string(onto.individuals_.getRelatedOn(req.param));
+  else if(req.action == "getRelationWith")
+    res.value = set2string(onto.individuals_.getRelationWith(req.param));
   else if(req.action == "getRelatedWith")
     res.value = set2string(onto.individuals_.getRelatedWith(req.param));
   else if(req.action == "getUp")
