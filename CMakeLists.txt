@@ -167,7 +167,7 @@ target_link_libraries(ontologenius_lib ontoGraphs_lib)
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(ontoloGenius src/arguer.cpp)
+add_executable(ontoloGenius src/rosInterface.cpp)
 add_dependencies(ontoloGenius ontologenius_gencpp)
 target_link_libraries(ontoloGenius ${catkin_LIBRARIES})
 target_link_libraries(ontoloGenius ontologenius_lib)
