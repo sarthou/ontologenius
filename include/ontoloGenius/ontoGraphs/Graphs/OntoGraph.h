@@ -7,16 +7,7 @@
 #include <set>
 #include <stdint.h>
 
-#include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerMap.h"
-#include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerDyn.h"
-
-class ValuedNode
-{
-public:
-  std::string value_;
-
-  ValuedNode(std::string value) {value_ = value; }
-};
+#include "ontoloGenius/ontoGraphs/Graphs/Graph.h"
 
 /*
 This file use CRTP (curiously recurring template pattern)
@@ -38,7 +29,7 @@ public:
 };
 
 template <typename B>
-class OntoGraph
+class OntoGraph : public Graph<B>
 {
   static_assert(std::is_base_of<Branch_t<B>,B>::value, "B must be derived from Branch_t<B>");
 public:
@@ -62,7 +53,6 @@ public:
   }
 
 protected:
-  BranchContainerMap<B> container_;
   std::vector<B*> branchs_;
   std::vector<B*> roots_;
 
@@ -97,8 +87,8 @@ void OntoGraph<B>::close()
 
   link();
 
-  container_.load(roots_);
-  container_.load(branchs_);
+  this->container_.load(roots_);
+  this->container_.load(branchs_);
 }
 
 template <typename B>
@@ -106,7 +96,7 @@ std::set<std::string> OntoGraph<B>::getDown(std::string& value)
 {
   std::set<std::string> res;
 
-  B* branch = container_.find(value);
+  B* branch = this->container_.find(value);
   if(branch != nullptr)
   {
     std::set<std::string> tmp = getDown(branch);
@@ -122,7 +112,7 @@ std::set<std::string> OntoGraph<B>::getUp(std::string& value)
 {
   std::set<std::string> res;
 
-  B* branch = container_.find(value);
+  B* branch = this->container_.find(value);
   if(branch != nullptr)
   {
     std::set<std::string> tmp = getUp(branch);
