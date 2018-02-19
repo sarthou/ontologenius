@@ -7,6 +7,7 @@
 #include <set>
 #include <stdint.h>
 
+#include "ontoloGenius/ontoGraphs/Graphs/Graph.h"
 #include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/ontoGraphs/Graphs/PropertyGraph.h"
 
@@ -32,13 +33,17 @@ struct IndividualVectors_t
    std::vector<std::string> same_as_;
 };
 
-class IndividualGraph
+class IndividualChecker;
+
+class IndividualGraph : public Graph<IndividualBranch_t>
 {
+  friend IndividualChecker;
 public:
   IndividualGraph(ClassGraph* classes, PropertyGraph* properties);
   ~IndividualGraph();
 
   void close();
+  std::vector<IndividualBranch_t*> get() {return individuals_; }
 
   void add(std::string value, IndividualVectors_t& individual_vector);
   void add(std::vector<std::string>& distinct_);
@@ -58,7 +63,6 @@ private:
   PropertyGraph* properties_;
 
   std::vector<IndividualBranch_t*> individuals_;
-  BranchContainerMap<IndividualBranch_t> container_;
 
   std::set<IndividualBranch_t*> getSame(IndividualBranch_t* individual);
   void cleanMarks(std::set<IndividualBranch_t*>& indSet);
