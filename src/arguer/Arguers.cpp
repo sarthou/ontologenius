@@ -22,6 +22,7 @@ void Arguers::load()
     for(size_t i = 0; i < arguers.size(); i++)
     {
       ArguerInterface* tmp = loader_.createUnmanagedInstance(arguers[i]);
+      tmp->initialize(ontology_);
       arguers_[arguers[i]] = tmp;
     }
   }

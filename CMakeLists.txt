@@ -185,6 +185,7 @@ add_executable(ontoloGenius src/rosInterface.cpp)
 add_dependencies(ontoloGenius ontologenius_gencpp)
 target_link_libraries(ontoloGenius ${catkin_LIBRARIES})
 target_link_libraries(ontoloGenius ontologenius_lib)
+target_link_libraries(ontoloGenius arguer_lib)
 
 add_executable(ontoloGeniusExemple src/exemple.cpp src/ontoGraphs/GraphDrawer.cpp)
 add_dependencies(ontoloGeniusExemple ontologenius_gencpp)
