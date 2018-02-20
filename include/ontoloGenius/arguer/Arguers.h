@@ -16,7 +16,7 @@ public:
   ~Arguers();
 
   void load();
-  void list();
+  std::string list();
 
   int activate(std::string plugin);
   int deactivate(std::string plugin);

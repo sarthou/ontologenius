@@ -3,6 +3,19 @@
 #include <iostream>
 #include <vector>
 
+#ifndef COLOR_OFF
+#define COLOR_OFF     "\x1B[0m"
+#endif
+#ifndef COLOR_RED
+#define COLOR_RED     "\x1B[0;91m"
+#endif
+#ifndef COLOR_ORANGE
+#define COLOR_ORANGE  "\x1B[1;33m"
+#endif
+#ifndef COLOR_GREEN
+#define COLOR_GREEN   "\x1B[1;92m"
+#endif
+
 Arguers::~Arguers()
 {
   std::map<std::string, ArguerInterface*>::iterator it;
@@ -32,12 +45,18 @@ void Arguers::load()
   }
 }
 
-void Arguers::list()
+std::string Arguers::list()
 {
   std::map<std::string, ArguerInterface*>::iterator it;
-  std::cout << "Pugins loaded :" << std::endl;
+  std::string out =  "Pugins loaded :\n";
+  std::string res;
   for(it = arguers_.begin(); it != arguers_.end(); ++it)
-    std::cout << " - From " << it->first << " : " << arguers_[it->first]->getName() << std::endl;
+  {
+    out += " - From " + it->first + " : " + arguers_[it->first]->getName() + " (" + arguers_[it->first]->getDesciption() + ")\n";
+    res += " -" + it->first;
+  }
+  std::cout << out;
+  return res;
 }
 
 int Arguers::activate(std::string plugin)
@@ -45,12 +64,20 @@ int Arguers::activate(std::string plugin)
   if(arguers_.find(plugin) != arguers_.end())
   {
     if(active_arguers_.find(plugin) == active_arguers_.end())
+    {
       active_arguers_[plugin] = arguers_[plugin];
+      std::cout << COLOR_GREEN << plugin << " has been activated" << COLOR_OFF << std::endl;
+    }
+    else
+      std::cout << COLOR_ORANGE << plugin << " is already activated" << COLOR_OFF << std::endl;
 
     return 0;
   }
   else
+  {
+    std::cout << COLOR_RED << plugin << " does not exist" << COLOR_OFF << std::endl;
     return -1;
+  }
 }
 
 int Arguers::deactivate(std::string plugin)
@@ -58,10 +85,22 @@ int Arguers::deactivate(std::string plugin)
   if(active_arguers_.find(plugin) != active_arguers_.end())
   {
     active_arguers_.erase(plugin);
+    std::cout << COLOR_GREEN << plugin << " has been deactivated" << COLOR_OFF << std::endl;
     return 0;
   }
   else
-    return -1;
+  {
+    if(arguers_.find(plugin) == arguers_.end())
+    {
+      std::cout << COLOR_RED << plugin << " does not exist" << COLOR_OFF << std::endl;
+      return -1;
+    }
+    else
+    {
+      std::cout << COLOR_ORANGE << plugin << " is already deactivated" << COLOR_OFF << std::endl;
+      return 0;
+    }
+  }
 }
 
 void Arguers::runPreArguers()

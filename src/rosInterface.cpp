@@ -145,6 +145,25 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
   return true;
 }
 
+bool arguer_handle(ontologenius::standard_service::Request  &req,
+                   ontologenius::standard_service::Response &res)
+{
+  bool done = false;
+  res.value = "";
+  res.code = 0;
+
+  if(req.action == "activate")
+    res.code = arguers.activate(req.param);
+  else if(req.action == "deactivate")
+    res.code = arguers.deactivate(req.param);
+  else if(req.action == "list")
+    res.value = arguers.list();
+  else
+    res.code = UNKNOW_ACTION;
+
+  return true;
+}
+
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontoloGenius");
@@ -164,6 +183,7 @@ int main(int argc, char** argv)
   ros::ServiceServer serviceClass = n.advertiseService("ontoloGenius/class", class_handle);
   ros::ServiceServer serviceProperty = n.advertiseService("ontoloGenius/property", property_handle);
   ros::ServiceServer serviceIndividual = n.advertiseService("ontoloGenius/individual", individual_handle);
+  ros::ServiceServer serviceArguer = n.advertiseService("ontoloGenius/arguer", arguer_handle);
   ROS_DEBUG("ontoloGenius ready");
 
   std::string code = "";
