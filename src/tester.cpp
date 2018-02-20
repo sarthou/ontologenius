@@ -1,4 +1,5 @@
 #include "ontoloGenius/ontoGraphs/Ontology.h"
+#include "ontoloGenius/arguer/Arguers.h"
 
 #include "ros/ros.h"
 
@@ -117,8 +118,9 @@ int main(int argc, char** argv)
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
   std::cout << "It took me " << time_span.count() << " seconds to read" << std::endl;
 
-  std::string tmp = "blueCube";
-  std::cout << "=" << set2string(onto.individuals_.getDistincts(tmp)) << std::endl;
+  Arguers arguers(&onto);
+  arguers.load();
+  arguers.list();
 
   /*double total = 0;
   for(int i = 0; i < 10000; i++)

@@ -13,13 +13,15 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   genmsg
   message_generation
+  pluginlib
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system)
 find_package(cmake_modules REQUIRED)
 find_package(TinyXML REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(pluginlib REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -148,12 +150,24 @@ add_library(ontoGraphs_lib
   src/ontoGraphs/Checkers/PropertyChecker.cpp
   src/ontoGraphs/Checkers/IndividualChecker.cpp
   src/ontoGraphs/Ontology.cpp
-  src/ontoGraphs/GraphDrawer.cpp
   src/ontoGraphs/OntologyReader.cpp
 )
 add_dependencies(ontoGraphs_lib ontologenius_gencpp)
 target_link_libraries(ontoGraphs_lib ${OpenCV_LIBS})
 target_link_libraries(ontoGraphs_lib ${TinyXML_LIBRARIES})
+
+add_library(plugin_lib
+  src/arguer/plugins/ArguerInterface.cpp
+  )
+add_dependencies(plugin_lib ontologenius_gencpp)
+target_link_libraries(plugin_lib ontoGraphs_lib)
+
+add_library(arguer_lib
+  src/arguer/Arguers.cpp
+  )
+add_dependencies(arguer_lib ontologenius_gencpp)
+target_link_libraries(arguer_lib plugin_lib)
+target_link_libraries(arguer_lib ${catkin_LIBRARIES})
 
 add_library(ontologenius_lib
   src/Computer.cpp
@@ -172,7 +186,7 @@ add_dependencies(ontoloGenius ontologenius_gencpp)
 target_link_libraries(ontoloGenius ${catkin_LIBRARIES})
 target_link_libraries(ontoloGenius ontologenius_lib)
 
-add_executable(ontoloGeniusExemple src/exemple.cpp)
+add_executable(ontoloGeniusExemple src/exemple.cpp src/ontoGraphs/GraphDrawer.cpp)
 add_dependencies(ontoloGeniusExemple ontologenius_gencpp)
 target_link_libraries(ontoloGeniusExemple ${catkin_LIBRARIES})
 target_link_libraries(ontoloGeniusExemple ontologenius_lib)
@@ -181,7 +195,14 @@ add_executable(tester src/tester.cpp)
 add_dependencies(tester ontologenius_gencpp)
 target_link_libraries(tester ${catkin_LIBRARIES})
 target_link_libraries(tester ontologenius_lib)
+target_link_libraries(tester arguer_lib)
 
+## Declare a C++ lib for plugins
+add_library(arguer_plugin
+  src/arguer/plugins/ArguerNone.cpp
+  )
+add_dependencies(arguer_plugin ontologenius_gencpp)
+target_link_libraries(arguer_plugin plugin_lib)
 
 #############
 ## Install ##
