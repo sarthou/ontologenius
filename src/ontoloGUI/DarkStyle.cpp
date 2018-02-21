@@ -11,7 +11,11 @@
 ###############################################################################
 */
 
-#include "DarkStyle.h"
+#include "include/ontoloGenius/ontoloGUI/DarkStyle.h"
+
+#ifndef QStringLiteral
+# define QStringLiteral(str) QString(str)
+#endif
 
 DarkStyle::DarkStyle():
   DarkStyle(styleBase())

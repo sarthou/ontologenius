@@ -1,30 +1,42 @@
-#include "qpushbuttonextended.h"
+#include "include/ontoloGenius/ontoloGUI/qpushbuttonextended.h"
 
 #include <QWidget>
 #include <QEvent>
 #include <QHoverEvent>
 
-QPushButtonExtended::QPushButtonExtended()
+QPushButtonExtended::QPushButtonExtended(QWidget *parent) : QPushButton(parent)
 {
-
+    setMouseTracking(true);
+    setAttribute(Qt::WA_Hover);
 }
 
-void hoverEnter(QHoverEvent *event)
+void QPushButtonExtended::hoverEnter(QHoverEvent *event)
 {
-
+    QFont font = this->font();
+    font.setBold(true);
+    this->setFont(font);
+    repaint();
+    hoverEnter();
 }
 
-void hoverLeave(QHoverEvent *event)
+void QPushButtonExtended::hoverLeave(QHoverEvent *event)
 {
-
+    QFont font = this->font();
+    font.setBold(false);
+    this->setFont(font);
+    repaint();
+    hoverLeave();
 }
 
-void hoverMove(QHoverEvent *event)
+void QPushButtonExtended::hoverMove(QHoverEvent *event)
 {
-
+    QFont font = this->font();
+    font.setBold(true);
+    this->setFont(font);
+    repaint();
 }
 
-bool event(QEvent *event)
+bool QPushButtonExtended::event(QEvent *event)
 {
     switch(event->type())
     {
