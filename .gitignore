@@ -33,7 +33,6 @@
 
 # Qt project
 *.pro
-*.ui
 *.pro.user
 /build-ontoloGUI-Desktop-Debug
 /build-ontoloGUI-Desktop-Release
