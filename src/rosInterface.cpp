@@ -67,14 +67,15 @@ bool class_handle(ontologenius::standard_service::Request  &req,
   else
     arguers.runPreArguers();
 
-  if(req.action == "getDown")
-    res.value = set2string(onto.classes_.getDown(req.param));
-  else if(req.action == "getUp")
-    res.value = set2string(onto.classes_.getUp(req.param));
-  else if(req.action == "getDisjoint")
-    res.value = set2string(onto.classes_.getDisjoint(req.param));
-  else
-    res.code = UNKNOW_ACTION;
+  if(res.code != UNINIT)
+    if(req.action == "getDown")
+      res.value = set2string(onto.classes_.getDown(req.param));
+    else if(req.action == "getUp")
+      res.value = set2string(onto.classes_.getUp(req.param));
+    else if(req.action == "getDisjoint")
+      res.value = set2string(onto.classes_.getDisjoint(req.param));
+    else
+      res.code = UNKNOW_ACTION;
 
   return true;
 }
@@ -91,20 +92,21 @@ bool property_handle(ontologenius::standard_service::Request  &req,
   else
     arguers.runPreArguers();
 
-  if(req.action == "getDown")
-    res.value = set2string(onto.properties_.getDown(req.param));
-  else if(req.action == "getUp")
-    res.value = set2string(onto.properties_.getUp(req.param));
-  else if(req.action == "getDisjoint")
-    res.value = set2string(onto.properties_.getDisjoint(req.param));
-  else if(req.action == "getInverse")
-    res.value = set2string(onto.properties_.getInverse(req.param));
-  else if(req.action == "getDomain")
-    res.value = set2string(onto.properties_.getDomain(req.param));
-  else if(req.action == "getRange")
-    res.value = set2string(onto.properties_.getRange(req.param));
-  else
-    res.code = UNKNOW_ACTION;
+  if(res.code != UNINIT)
+    if(req.action == "getDown")
+      res.value = set2string(onto.properties_.getDown(req.param));
+    else if(req.action == "getUp")
+      res.value = set2string(onto.properties_.getUp(req.param));
+    else if(req.action == "getDisjoint")
+      res.value = set2string(onto.properties_.getDisjoint(req.param));
+    else if(req.action == "getInverse")
+      res.value = set2string(onto.properties_.getInverse(req.param));
+    else if(req.action == "getDomain")
+      res.value = set2string(onto.properties_.getDomain(req.param));
+    else if(req.action == "getRange")
+      res.value = set2string(onto.properties_.getRange(req.param));
+    else
+      res.code = UNKNOW_ACTION;
 
   return true;
 }
@@ -121,26 +123,27 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
   else
     arguers.runPreArguers();
 
-  if(req.action == "getSame")
-    res.value = set2string(onto.individuals_.getSame(req.param));
-  if(req.action == "getDistincts")
-    res.value = set2string(onto.individuals_.getDistincts(req.param));
-  else if(req.action == "getRelationFrom")
-    res.value = set2string(onto.individuals_.getRelationFrom(req.param));
-  else if(req.action == "getRelatedFrom")
-    res.value = set2string(onto.individuals_.getRelatedFrom(req.param));
-  else if(req.action == "getRelationOn")
-    res.value = set2string(onto.individuals_.getRelationOn(req.param));
-  else if(req.action == "getRelatedOn")
-    res.value = set2string(onto.individuals_.getRelatedOn(req.param));
-  else if(req.action == "getRelationWith")
-    res.value = set2string(onto.individuals_.getRelationWith(req.param));
-  else if(req.action == "getRelatedWith")
-    res.value = set2string(onto.individuals_.getRelatedWith(req.param));
-  else if(req.action == "getUp")
-    res.value = set2string(onto.individuals_.getUp(req.param));
-  else
-    res.code = UNKNOW_ACTION;
+  if(res.code != UNINIT)
+    if(req.action == "getSame")
+      res.value = set2string(onto.individuals_.getSame(req.param));
+    if(req.action == "getDistincts")
+      res.value = set2string(onto.individuals_.getDistincts(req.param));
+    else if(req.action == "getRelationFrom")
+      res.value = set2string(onto.individuals_.getRelationFrom(req.param));
+    else if(req.action == "getRelatedFrom")
+      res.value = set2string(onto.individuals_.getRelatedFrom(req.param));
+    else if(req.action == "getRelationOn")
+      res.value = set2string(onto.individuals_.getRelationOn(req.param));
+    else if(req.action == "getRelatedOn")
+      res.value = set2string(onto.individuals_.getRelatedOn(req.param));
+    else if(req.action == "getRelationWith")
+      res.value = set2string(onto.individuals_.getRelationWith(req.param));
+    else if(req.action == "getRelatedWith")
+      res.value = set2string(onto.individuals_.getRelatedWith(req.param));
+    else if(req.action == "getUp")
+      res.value = set2string(onto.individuals_.getUp(req.param));
+    else
+      res.code = UNKNOW_ACTION;
 
   return true;
 }
