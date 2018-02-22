@@ -230,7 +230,9 @@ std::set<std::string> IndividualGraph::getDistincts(std::string individual)
   if(indiv != nullptr)
     for(size_t i = 0; i < indiv->distinct_.size(); i++)
     {
-      std::set<std::string> tmp = set2set(getSame(indiv->distinct_[i]));
+      std::set<IndividualBranch_t*> sames = getSame(indiv->distinct_[i]);
+      std::set<std::string> tmp = set2set(sames);
+      cleanMarks(sames);
       res.insert(tmp.begin(), tmp.end());
     }
   return res;
@@ -243,6 +245,7 @@ std::set<std::string> IndividualGraph::getRelationFrom(std::string individual)
   if(indiv != nullptr)
   {
     std::set<IndividualBranch_t*> sames = getSame(indiv);
+    cleanMarks(sames);
     for(std::set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
       for(size_t i = 0; i < (*it)->properties_name_.size(); i++)
         res.insert((*it)->properties_name_[i]->value_);
@@ -257,7 +260,9 @@ std::set<std::string> IndividualGraph::getRelatedFrom(std::string property)
     for(size_t prop_i = 0; prop_i < individuals_[i]->properties_name_.size(); prop_i++)
       if(individuals_[i]->properties_name_[prop_i]->value_ == property)
       {
-        std::set<std::string> tmp = set2set(getSame(individuals_[i]));
+        std::set<IndividualBranch_t*> sames = getSame(individuals_[i]);
+        std::set<std::string> tmp = set2set(sames);
+        cleanMarks(sames);
         res.insert(tmp.begin(), tmp.end());
       }
 
@@ -283,7 +288,9 @@ std::set<std::string> IndividualGraph::getRelatedOn(std::string property)
     for(size_t prop_i = 0; prop_i < individuals_[i]->properties_name_.size(); prop_i++)
       if(individuals_[i]->properties_name_[prop_i]->value_ == property)
       {
-        std::set<std::string> tmp = set2set(getSame(individuals_[i]->properties_on_[prop_i]));
+        std::set<IndividualBranch_t*> sames = getSame(individuals_[i]->properties_on_[prop_i]);
+        std::set<std::string> tmp = set2set(sames);
+        cleanMarks(sames);
         res.insert(tmp.begin(), tmp.end());
       }
 
@@ -297,6 +304,7 @@ std::set<std::string> IndividualGraph::getRelationWith(std::string individual)
   if(indiv != nullptr)
   {
     std::set<IndividualBranch_t*> sames = getSame(indiv);
+    cleanMarks(sames);
     for(std::set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
       for(size_t i = 0; i < (*it)->properties_on_.size(); i++)
       {
@@ -314,7 +322,9 @@ std::set<std::string> IndividualGraph::getRelatedWith(std::string individual)
     for(size_t prop_i = 0; prop_i < individuals_[i]->properties_on_.size(); prop_i++)
       if(individuals_[i]->properties_on_[prop_i]->value_ == individual)
       {
-        std::set<std::string> tmp = set2set(getSame(individuals_[i]));
+        std::set<IndividualBranch_t*> sames = getSame(individuals_[i]);
+        std::set<std::string> tmp = set2set(sames);
+        cleanMarks(sames);
         res.insert(tmp.begin(), tmp.end());
       }
 
@@ -328,6 +338,7 @@ std::set<std::string> IndividualGraph::getUp(std::string individual)
   if(indiv != nullptr)
   {
     std::set<IndividualBranch_t*> sames = getSame(indiv);
+    cleanMarks(sames);
     for(std::set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
       for(size_t i = 0; i < (*it)->is_a_.size(); i++)
       {
