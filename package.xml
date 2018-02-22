@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>ontologenius</name>
-  <version>0.0.0</version>
+  <version>0.0.3</version>
   <description>The ontoloGenius package</description>
 
   <maintainer email="guillaum324bis@hotmail.fr">srth</maintainer>
@@ -24,6 +24,8 @@
   <build_depend>cv_bridge</build_depend>
   <build_depend>cmake_modules</build_depend>
   <build_depend>pluginlib</build_depend>
+  <build_depend>qt_build</build_depend>
+  <!--<build_depend>libqt5-dev</build_depend> -->
 
   <run_depend>diagnostic_msgs</run_depend>
   <run_depend>rospy</run_depend>
@@ -32,6 +34,8 @@
   <run_depend>tinyxml</run_depend>
   <run_depend>cv_bridge</run_depend>
   <run_depend>pluginlib</run_depend>
+  <run_depend>qt_build</run_depend>
+  <!--<run_depend>libqt5-dev</run_depend> -->
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

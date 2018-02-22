@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   genmsg
   message_generation
   pluginlib
+  qt_build
 )
 
 ## System dependencies are found with CMake's conventions
@@ -22,6 +23,8 @@ find_package(cmake_modules REQUIRED)
 find_package(TinyXML REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(pluginlib REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport)
+
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -204,6 +207,59 @@ add_library(arguer_plugin
   )
 add_dependencies(arguer_plugin ontologenius_gencpp)
 target_link_libraries(arguer_plugin plugin_lib)
+
+##############################################################################
+# Qt Environment
+##############################################################################
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+
+##############################################################################
+# Sections
+##############################################################################
+
+file(GLOB QT_FORMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ui/*.ui)
+file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}  resources/*.qrc)
+
+QT5_ADD_RESOURCES(QT_RESOURCES_CPP ${QT_RESOURCES})
+QT5_WRAP_UI(QT_FORMS_HPP ${QT_FORMS})
+
+include_directories(
+    ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5Gui_INCLUDE_DIRS}
+    ${Qt5Widgets_INCLUDE_DIRS}
+    ${Qt5PrintSupport_INCLUDE_DIRS}
+)
+
+add_definitions( -std=c++11 -fPIC)
+
+##############################################################################
+# Sources
+##############################################################################
+
+set( QT_SOURCES
+    src/ontoloGUI/main.cpp
+    src/ontoloGUI/ontologui.cpp
+    src/ontoloGUI/DarkStyle.cpp
+    src/ontoloGUI/qpushbuttonextended.cpp
+
+    include/ontoloGenius/ontoloGUI/ontologui.h
+    include/ontoloGenius/ontoloGUI/DarkStyle.h
+    include/ontoloGenius/ontoloGUI/qpushbuttonextended.h
+)
+##############################################################################
+# Binaries
+##############################################################################
+
+add_executable(ontoloGUI ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
+target_link_libraries(ontoloGUI
+    ${catkin_LIBRARIES}
+    Qt5::Core
+    Qt5::Widgets
+    Qt5::PrintSupport
+)
+install(TARGETS ontoloGUI RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 #############
 ## Install ##
