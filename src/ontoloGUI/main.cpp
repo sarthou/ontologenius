@@ -2,12 +2,23 @@
 #include "include/ontoloGenius/ontoloGUI/DarkStyle.h"
 #include <QApplication>
 
+#include "ros/ros.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     a.setStyle(new DarkStyle);
     ontoloGUI w;
     w.show();
+
+    ros::init(argc, argv, "ontoloGenius");
+
+    ros::NodeHandle n;
+
+    w.init(&n);
+    w.wait();
+
+    w.start();
 
     return a.exec();
 }

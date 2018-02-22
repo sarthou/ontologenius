@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "ros/ros.h"
+
 namespace Ui {
 class ontoloGUI;
 }
@@ -15,8 +17,13 @@ public:
     explicit ontoloGUI(QWidget *parent = 0);
     ~ontoloGUI();
 
+    void init(ros::NodeHandle* n) {n_ = n; }
+    void wait();
+    void start();
+
 private:
     Ui::ontoloGUI *ui;
+    ros::NodeHandle* n_;
 
 public slots:
   void ClasshoverEnterSlot();
