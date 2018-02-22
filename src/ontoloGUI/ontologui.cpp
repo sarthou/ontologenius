@@ -3,7 +3,6 @@
 #include "ui_ontologui.h"
 
 #include "ontologenius/standard_service.h"
-#include <string>
 
 ontoloGUI::ontoloGUI(QWidget *parent) :
     QMainWindow(parent),
@@ -209,6 +208,38 @@ void ontoloGUI::closeOntologySlot()
   }
 }
 
+void ontoloGUI::ArguerClickedSlot(int)
+{
+  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontoloGenius/arguer");
+
+  ontologenius::standard_service srv;
+  if(((QCheckBoxExtended*)sender())->isChecked())
+    srv.request.action = "activate";
+  else
+    srv.request.action = "deactivate";
+  srv.request.param = ((QCheckBoxExtended*)sender())->text().toStdString();
+
+  if(!client.call(srv))
+    ui->InfoArea->setText("ontoloGenius/arguer client call failed");
+  else
+  {
+    std::string res = srv.response.value;
+    ui->ResultArea->setText(QString::fromStdString(res));
+  }
+}
+
+void ontoloGUI::ArguerhoverEnterSlot()
+{
+  size_t index = getArguerIndex((QCheckBoxExtended*)sender());
+  ui->ArguerDescription->setText(QString::fromStdString(arguers_description_[index]));
+}
+
+void ontoloGUI::ArguerhoverLeaveSlot()
+{
+  size_t index = getArguerIndex((QCheckBoxExtended*)sender());
+  ui->ArguerDescription->setText("");
+}
+
 void ontoloGUI::displayUnClosed()
 {
   QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
@@ -217,4 +248,79 @@ void ontoloGUI::displayUnClosed()
                   "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
                   "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Ontology is not </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">closed</span></p></body></html>";
   ui->InfoArea->setHtml(html);
+}
+
+void ontoloGUI::loadArguers()
+{
+  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontoloGenius/arguer");
+
+  ontologenius::standard_service srv;
+  srv.request.action = "list";
+
+  if(!client.call(srv))
+    ui->InfoArea->setText("ontoloGenius/arguer client call failed");
+  else
+  {
+    std::string res = srv.response.value;
+    ui->ResultArea->setText("");
+
+    if(res.find("-") != std::string::npos)
+    {
+      bool eof = false;
+      size_t begin = 0;
+      do
+      {
+        size_t start = res.find("-", begin);
+        size_t stop = res.find("-", start + 1);
+        std::string arg_name = res.substr(start + 1, stop - start - 2);
+        if(stop == std::string::npos)
+          eof = true;
+        arguers_names_.push_back(arg_name);
+        //ui->ResultArea->append(QString::fromStdString(arg_name));
+      }
+      while(eof == false);
+    }
+
+    constructArguersCheckBoxs();
+  }
+}
+
+void ontoloGUI::constructArguersCheckBoxs()
+{
+  for(size_t i = 0; i < arguers_names_.size(); i++)
+  {
+    arguers_description_.push_back(getArguerDescription(arguers_names_[i]));
+    QCheckBoxExtended* box = new QCheckBoxExtended(QString::fromStdString(arguers_names_[i]), this);
+    ui->ArguerListLayout->addWidget(box);
+    QObject::connect(box, SIGNAL(stateChanged(int)),this, SLOT(ArguerClickedSlot(int)));
+    QObject::connect(box, SIGNAL(hoverEnter()),this, SLOT(ArguerhoverEnterSlot()));
+    QObject::connect(box, SIGNAL(hoverLeave()),this, SLOT(ArguerhoverLeaveSlot()));
+  }
+}
+
+size_t ontoloGUI::getArguerIndex(QCheckBoxExtended* box)
+{
+  size_t index =0;
+  for(size_t i = 0; i < arguers_names_.size(); i++)
+    if(arguers_names_[i] == box->text().toStdString())
+    {
+      index = i;
+      break;
+    }
+}
+
+std::string ontoloGUI::getArguerDescription(std::string box)
+{
+  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontoloGenius/arguer");
+
+  ontologenius::standard_service srv;
+  srv.request.action = "getDescription";
+  srv.request.param = box;
+
+  if(!client.call(srv))
+    ui->InfoArea->setText("ontoloGenius/arguer client call failed");
+  else
+    return srv.response.value;
+
+  return "";
 }

@@ -161,6 +161,8 @@ bool arguer_handle(ontologenius::standard_service::Request  &req,
     res.code = arguers.deactivate(req.param);
   else if(req.action == "list")
     res.value = arguers.list();
+  else if(req.action == "getDescription")
+    res.value = arguers.getDescription(req.param);
   else
     res.code = UNKNOW_ACTION;
 

@@ -103,6 +103,17 @@ int Arguers::deactivate(std::string plugin)
   }
 }
 
+std::string Arguers::getDescription(std::string plugin)
+{
+  if(arguers_.find(plugin) != arguers_.end())
+    return arguers_[plugin]->getDesciption();
+  else
+  {
+    std::cout << COLOR_RED << plugin << " does not exist" << COLOR_OFF << std::endl;
+    return "";
+  }
+}
+
 void Arguers::runPreArguers()
 {
   std::map<std::string, ArguerInterface*>::iterator it;

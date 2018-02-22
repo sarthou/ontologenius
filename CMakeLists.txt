@@ -243,10 +243,12 @@ set( QT_SOURCES
     src/ontoloGUI/ontologui.cpp
     src/ontoloGUI/DarkStyle.cpp
     src/ontoloGUI/qpushbuttonextended.cpp
+    src/ontoloGUI/QCheckBoxExtended.cpp
 
     include/ontoloGenius/ontoloGUI/ontologui.h
     include/ontoloGenius/ontoloGUI/DarkStyle.h
     include/ontoloGenius/ontoloGUI/qpushbuttonextended.h
+    include/ontoloGenius/ontoloGUI/QCheckBoxExtended.h
 )
 ##############################################################################
 # Binaries
