@@ -70,6 +70,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Individual_getRelationWith, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_getSame, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_getUp, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
+
+    QObject::connect(ui->CloseButton, SIGNAL(clicked()),this, SLOT(closeOntologySlot()));
 }
 
 ontoloGUI::~ontoloGUI()
@@ -177,6 +179,22 @@ void ontoloGUI::individualClickedSlot()
 
   if(!client.call(srv))
     ui->InfoArea->setText("ontoloGenius/individual client call failed");
+  else
+  {
+    std::string res = srv.response.value;
+    ui->ResultArea->setText(QString::fromStdString(res));
+  }
+}
+
+void ontoloGUI::closeOntologySlot()
+{
+  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontoloGenius/actions");
+
+  ontologenius::standard_service srv;
+  srv.request.action = "close";
+
+  if(!client.call(srv))
+    ui->InfoArea->setText("ontoloGenius/actions client call failed");
   else
   {
     std::string res = srv.response.value;

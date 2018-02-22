@@ -35,6 +35,7 @@ public slots:
   void classClickedSlot();
   void propertyClickedSlot();
   void individualClickedSlot();
+  void closeOntologySlot();
 };
 
 #endif // ONTOLOGUI_H

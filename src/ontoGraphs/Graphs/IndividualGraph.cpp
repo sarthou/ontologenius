@@ -16,7 +16,6 @@ IndividualGraph::~IndividualGraph()
 
 void IndividualGraph::close()
 {
-  std::cout << "load indiv" << std::endl;
   container_.load(individuals_);
 }
 
