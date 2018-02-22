@@ -145,6 +145,8 @@ void ontoloGUI::classClickedSlot()
   {
     std::string res = srv.response.value;
     ui->ResultArea->setText(QString::fromStdString(res));
+    if(srv.response.code == 3)
+      displayUnClosed();
   }
 }
 
@@ -164,6 +166,8 @@ void ontoloGUI::propertyClickedSlot()
   {
     std::string res = srv.response.value;
     ui->ResultArea->setText(QString::fromStdString(res));
+    if(srv.response.code == 3)
+      displayUnClosed();
   }
 }
 
@@ -183,6 +187,8 @@ void ontoloGUI::individualClickedSlot()
   {
     std::string res = srv.response.value;
     ui->ResultArea->setText(QString::fromStdString(res));
+    if(srv.response.code == 3)
+      displayUnClosed();
   }
 }
 
@@ -199,5 +205,16 @@ void ontoloGUI::closeOntologySlot()
   {
     std::string res = srv.response.value;
     ui->ResultArea->setText(QString::fromStdString(res));
+    start();
   }
+}
+
+void ontoloGUI::displayUnClosed()
+{
+  QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+                  "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+                  "p, li { white-space: pre-wrap; }"
+                  "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+                  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Ontology is not </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">closed</span></p></body></html>";
+  ui->InfoArea->setHtml(html);
 }

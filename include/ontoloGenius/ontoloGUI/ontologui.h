@@ -25,6 +25,8 @@ private:
     Ui::ontoloGUI *ui;
     ros::NodeHandle* n_;
 
+    void displayUnClosed();
+
 public slots:
   void ClasshoverEnterSlot();
   void ClasshoverLeaveSlot();
