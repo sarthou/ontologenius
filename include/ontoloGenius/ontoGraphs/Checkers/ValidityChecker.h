@@ -20,9 +20,9 @@
 template <typename B>
 class ValidityChecker
 {
-  static_assert(std::is_base_of<Branch_t<B>,B>::value, "B must be derived from Branch_t<B>");
+  static_assert(std::is_base_of<ValuedNode,B>::value, "B must be derived from ValuedNode");
 public:
-  ValidityChecker(OntoGraph<B>* graph) {graph_ = graph->get(); nb_error_ = 0; }
+  ValidityChecker(Graph<B>* graph) {graph_ = graph->get(); nb_error_ = 0; }
   virtual ~ValidityChecker() {}
 
   virtual size_t check() = 0;

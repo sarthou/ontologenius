@@ -2,6 +2,7 @@
 
 #include "ontoloGenius/ontoGraphs/Checkers/ClassChecker.h"
 #include "ontoloGenius/ontoGraphs/Checkers/PropertyChecker.h"
+#include "ontoloGenius/ontoGraphs/Checkers/IndividualChecker.h"
 
 #include <iostream>
 
@@ -14,6 +15,9 @@
 
 int Ontology::close()
 {
+  if(is_init_ == true)
+    return 0;
+    
   classes_.close();
   properties_.close();
 
@@ -38,6 +42,9 @@ int Ontology::close()
     files_.clear();
 
     individuals_.close();
+
+    IndividualChecker individualChecker(&individuals_);
+    err += individualChecker.check();
 
     is_init_ = true;
     return 0;
