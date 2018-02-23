@@ -35,6 +35,7 @@ private:
   void constructArguersCheckBoxs();
   size_t getArguerIndex(QCheckBoxExtended* box);
   std::string getArguerDescription(std::string box);
+  void displayErrorInfo(std::string text);
 
 public slots:
   void ClasshoverEnterSlot();

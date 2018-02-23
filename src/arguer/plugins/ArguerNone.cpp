@@ -18,7 +18,7 @@ std::string ArguerNone::getName()
 
 std::string ArguerNone::getDesciption()
 {
-  return "This is arguer template to show how to create your own arguer plugin";
+  return "This is an arguer model to show how to create your own arguer plugin";
 }
 
 PLUGINLIB_EXPORT_CLASS(ArguerNone, ArguerInterface)

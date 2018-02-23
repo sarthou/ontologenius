@@ -139,7 +139,7 @@ void ontoloGUI::classClickedSlot()
   ui->ClassDescription->setText(text);
 
   if(!client.call(srv))
-    ui->InfoArea->setText("ontoloGenius/class client call failed");
+    displayErrorInfo("ontoloGenius/class client call failed");
   else
   {
     std::string res = srv.response.value;
@@ -160,7 +160,7 @@ void ontoloGUI::propertyClickedSlot()
   ui->PropertyDescription->setText(text);
 
   if(!client.call(srv))
-    ui->InfoArea->setText("ontoloGenius/property client call failed");
+    displayErrorInfo("ontoloGenius/property client call failed");
   else
   {
     std::string res = srv.response.value;
@@ -181,7 +181,7 @@ void ontoloGUI::individualClickedSlot()
   ui->IndividualDescription->setText(text);
 
   if(!client.call(srv))
-    ui->InfoArea->setText("ontoloGenius/individual client call failed");
+    displayErrorInfo("ontoloGenius/individual client call failed");
   else
   {
     std::string res = srv.response.value;
@@ -199,7 +199,7 @@ void ontoloGUI::closeOntologySlot()
   srv.request.action = "close";
 
   if(!client.call(srv))
-    ui->InfoArea->setText("ontoloGenius/actions client call failed");
+    displayErrorInfo("ontoloGenius/actions client call failed");
   else
   {
     std::string res = srv.response.value;
@@ -220,7 +220,7 @@ void ontoloGUI::ArguerClickedSlot(int)
   srv.request.param = ((QCheckBoxExtended*)sender())->text().toStdString();
 
   if(!client.call(srv))
-    ui->InfoArea->setText("ontoloGenius/arguer client call failed");
+    displayErrorInfo("ontoloGenius/arguer client call failed");
   else
   {
     std::string res = srv.response.value;
@@ -258,7 +258,7 @@ void ontoloGUI::loadArguers()
   srv.request.action = "list";
 
   if(!client.call(srv))
-    ui->InfoArea->setText("ontoloGenius/arguer client call failed");
+    displayErrorInfo("ontoloGenius/arguer client call failed");
   else
   {
     std::string res = srv.response.value;
@@ -276,7 +276,6 @@ void ontoloGUI::loadArguers()
         if(stop == std::string::npos)
           eof = true;
         arguers_names_.push_back(arg_name);
-        //ui->ResultArea->append(QString::fromStdString(arg_name));
       }
       while(eof == false);
     }
@@ -318,9 +317,19 @@ std::string ontoloGUI::getArguerDescription(std::string box)
   srv.request.param = box;
 
   if(!client.call(srv))
-    ui->InfoArea->setText("ontoloGenius/arguer client call failed");
+    displayErrorInfo("ontoloGenius/arguer client call failed");
   else
     return srv.response.value;
 
   return "";
+}
+
+void ontoloGUI::displayErrorInfo(std::string text)
+{
+  std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+                  "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+                  "p, li { white-space: pre-wrap; }"
+                  "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+                  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">" + text + "</span></p></body></html>";
+  ui->InfoArea->setHtml(QString::fromStdString(html));
 }
