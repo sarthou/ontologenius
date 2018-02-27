@@ -276,6 +276,7 @@ void ontoloGUI::loadArguers()
         if(stop == std::string::npos)
           eof = true;
         arguers_names_.push_back(arg_name);
+        begin = stop;
       }
       while(eof == false);
     }
