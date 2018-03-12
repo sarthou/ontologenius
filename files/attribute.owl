@@ -158,6 +158,26 @@
     
 
 
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#blueBook -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#blueBook">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#blue"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#book"/>
+        <rdfs:label xml:lang="en">blue book</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#blueLamp -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#blueLamp">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#blue"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#lamp"/>
+        <rdfs:label xml:lang="en">blue lamp</rdfs:label>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#book -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#book">
@@ -172,6 +192,14 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#box">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#affair"/>
         <rdfs:label xml:lang="fr">boite</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#cat -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#cat">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#animal"/>
     </owl:Class>
     
 
@@ -239,6 +267,14 @@
     
 
 
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#dog -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#dog">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#animal"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#door -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#door">
@@ -278,6 +314,14 @@
     
 
 
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#fish -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#fish">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#animal"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#foot -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#foot">
@@ -310,6 +354,7 @@
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#grass -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#grass">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#green"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#vegetal"/>
         <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#tree"/>
         <rdfs:label xml:lang="fr">herbe</rdfs:label>
@@ -323,6 +368,16 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#color"/>
         <rdfs:label xml:lang="fr">vert</rdfs:label>
         <rdfs:label xml:lang="fi">vihreä</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#greenCup -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#greenCup">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#cup"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#green"/>
+        <rdfs:label xml:lang="en">green cup</rdfs:label>
     </owl:Class>
     
 
@@ -379,6 +434,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#joint">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
+	<rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#animate"/>
         <rdfs:comment>joints are parts of agent</rdfs:comment>
         <rdfs:label xml:lang="fr">jointure</rdfs:label>
     </owl:Class>
@@ -494,6 +550,15 @@
     
 
 
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#pepper -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#pepper">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#robot"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#pr2"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#pink -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#pink">
@@ -509,6 +574,14 @@
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#plant">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#vegetal"/>
         <rdfs:label xml:lang="fr">plante</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#pr2 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#pr2">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#robot"/>
     </owl:Class>
     
 
@@ -539,6 +612,36 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#color"/>
         <rdfs:label xml:lang="fi">punainen</rdfs:label>
         <rdfs:label xml:lang="fr">rouge</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#redBed -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#redBed">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#bed"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#red"/>
+        <rdfs:label xml:lang="en">red bed</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#redFan -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#redFan">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#fan"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#red"/>
+        <rdfs:label xml:lang="en">red fan</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#redFish -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#redFish">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#fish"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#red"/>
+        <rdfs:label xml:lang="en">red fish</rdfs:label>
     </owl:Class>
     
 
@@ -642,6 +745,7 @@ furniture</rdfs:seeAlso>
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#tree -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#tree">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#green"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#vegetal"/>
         <rdfs:label xml:lang="fr">arbre</rdfs:label>
     </owl:Class>
@@ -766,6 +870,16 @@ furniture</rdfs:seeAlso>
             <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#head"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#leg"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#torso"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#cat"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#dog"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#fish"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#pepper"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#pr2"/>
         </owl:members>
     </rdf:Description>
 </rdf:RDF>
