@@ -56,6 +56,10 @@ public:
   std::set<std::string> getRelatedOn(std::string property);       //C3
   std::set<std::string> getRelationWith(std::string individual);  //C3
   std::set<std::string> getRelatedWith(std::string individual);   //C3
+  std::set<std::string> getFrom(std::string param);
+  std::set<std::string> getFrom(std::string individual, std::string property);
+  std::set<std::string> getOn(std::string param);
+  std::set<std::string> getOn(std::string individual, std::string property);
   std::set<std::string> getUp(std::string individual);            //C3
 
 private:
