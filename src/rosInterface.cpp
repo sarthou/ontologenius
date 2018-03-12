@@ -142,6 +142,10 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
       res.value = set2string(onto.individuals_.getRelatedWith(req.param));
     else if(req.action == "getUp")
       res.value = set2string(onto.individuals_.getUp(req.param));
+    else if(req.action == "getOn")
+      res.value = set2string(onto.individuals_.getOn(req.param));
+    else if(req.action == "getFrom")
+      res.value = set2string(onto.individuals_.getFrom(req.param));
     else
       res.code = UNKNOW_ACTION;
 
