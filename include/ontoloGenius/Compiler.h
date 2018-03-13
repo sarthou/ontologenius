@@ -25,6 +25,7 @@ private:
 
   void compileIntructions(std::map<size_t, std::string> splited);
   std::map<size_t, std::string> splitBySemicolon();
+  int getIfOffset(std::string ifelse_id);
   //int splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id);
 };
 

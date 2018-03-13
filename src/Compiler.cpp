@@ -39,7 +39,7 @@ void Compiler::compileIntructions(std::map<size_t, std::string> splited)
       else if(it->second.find("__ont") != std::string::npos)
         std::cout << "on onto" << std::endl;
       else
-        std::cout << "????????" << std::endl;
+        error_.printWarning(it->first, "instruction with no effect");
     }
     else
     {
@@ -59,6 +59,7 @@ std::map<size_t, std::string> Compiler::splitBySemicolon()
   size_t start = 0;
   size_t stop = 0;
   std::map<size_t, std::string> splited;
+  size_t offset = 0;
 
   while(stop != std::string::npos)
   {
@@ -67,13 +68,50 @@ std::map<size_t, std::string> Compiler::splitBySemicolon()
     {
       std::string subcode = code_->text.substr(start, stop - start);
       code_->goToEffectiveCode(subcode, start);
-        splited[start] = subcode;
+      splited[start+offset] = subcode;
+
+      size_t if_pose = subcode.find("__ifelse[");
+      if(if_pose == 0)
+        offset += getIfOffset(subcode + ";");
 
       start = stop +1;
     }
   }
 
   return splited;
+}
+
+int Compiler::getIfOffset(std::string ifelse_id)
+{
+  int offset = 0;
+
+  /*Get offset of if condition*/
+  std::string if_code = code_->ifelse_[ifelse_id].IfBlock_if;
+  size_t if_start = code_->ifelse_[ifelse_id].if_pose;
+
+  offset = code_->ifelse_.ifelse_code_[ifelse_id].size() - ifelse_id.size();
+
+  code_->goToEffectiveCode(if_code, if_start);
+  if(if_code != "")
+  {
+    size_t if_pose = if_code.find("__ifelse[");
+    if(if_pose == 0)
+      offset += getIfOffset(if_code);
+  }
+
+  /*Get offset of else condition*/
+  std::string else_code = code_->ifelse_[ifelse_id].IfBlock_else;
+  size_t else_start = code_->ifelse_[ifelse_id].else_pose;
+
+  code_->goToEffectiveCode(else_code, else_start);
+  if(else_code != "")
+  {
+    size_t if_pose = else_code.find("__ifelse[");
+    if(if_pose == 0)
+      offset += getIfOffset(else_code);
+  }
+
+  return offset;
 }
 
 /*int Compiler::splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id)
