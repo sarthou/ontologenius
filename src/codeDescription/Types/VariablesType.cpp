@@ -24,6 +24,16 @@ VariablesType::VariablesType() : Namespace("var")
   op_assign.overload(type_word_set, std::vector<type_t>(1, type_word));
   op_assign.addExplicitName("assignment operator");
   functions_.push_back(op_assign);
+
+  FunctionDescriptor op_add_assign = FunctionDescriptor("opAddAssign", type_word_set, std::vector<type_t>(1, type_word_set));
+  op_add_assign.overload(type_word_set, std::vector<type_t>(1, type_word));
+  op_add_assign.addExplicitName("add and assigne operator");
+  functions_.push_back(op_add_assign);
+
+  FunctionDescriptor op_sub_assign = FunctionDescriptor("opSubAssign", type_word_set, std::vector<type_t>(1, type_word_set));
+  op_sub_assign.overload(type_word_set, std::vector<type_t>(1, type_word));
+  op_sub_assign.addExplicitName("substract and assigne operator");
+  functions_.push_back(op_sub_assign);
 }
 
 std::string VariablesType::add(std::string name)
