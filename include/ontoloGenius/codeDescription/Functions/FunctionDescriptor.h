@@ -15,6 +15,7 @@ public:
   bool overload(type_t return_type, std::vector<type_t> params_type);
 
   void addExplicitName(std::string name) { explicit_name_ = name; }
+  std::string getExplicitName();
   std::string getName();
   type_t getReturnType(std::vector<type_t> params);
 

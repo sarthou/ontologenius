@@ -21,6 +21,11 @@ bool FunctionDescriptor::overload(type_t return_type, std::vector<type_t> params
 
 std::string FunctionDescriptor::getName()
 {
+  return name_;
+}
+
+std::string FunctionDescriptor::getExplicitName()
+{
   if(explicit_name_ == "")
     return name_;
   else
