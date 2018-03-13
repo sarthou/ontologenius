@@ -176,6 +176,7 @@ add_library(ontologenius_lib
   src/Computer.cpp
   src/Parser.cpp
   src/Error.cpp
+  src/Compiler.cpp
 )
 add_dependencies(ontologenius_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_lib codeDescription_lib)

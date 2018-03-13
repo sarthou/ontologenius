@@ -2,6 +2,7 @@
 
 #include "ontoloGenius/Parser.h"
 #include "ontoloGenius/Computer.h"
+#include "ontoloGenius/Compiler.h"
 
 Parser::Parser(Code* code, size_t current_line, bool subparser) : code_(code), error_(code_)
 {
@@ -57,6 +58,13 @@ void Parser::checkCode()
     return;
 
   checkInstructionValidity(splited);
+
+  if(error_.isOnError())
+    return;
+
+  Compiler compiler(code_);
+  compiler.compile();
+  error_.cpy(compiler.getError());
 }
 
 void Parser::checkReserved()
