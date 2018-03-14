@@ -1,5 +1,8 @@
 #include "ontoloGenius/Compiler.h"
 
+#include "ontoloGenius/codeDescription/Types/VariablesType.h"
+#include "ontoloGenius/codeDescription/Functions/OntoFunctions.h"
+
 #include <iostream>
 
 size_t Compiler::section_cpt_ = 0;
@@ -31,13 +34,14 @@ void Compiler::compileIntructions(std::map<size_t, std::string> splited)
     {
       std::string on = it->second.substr(0, dot);
       code_->removeNonEffectiveCode(on);
+      std::string instruction = it->second.substr(dot + 1);
 
       if(on.find(" ") != std::string::npos)
         error_.printError(it->first+it->second.find(" "), "unexpected expression after '" + on.substr(0,it->second.find(" ")) + "'");
       if(it->second.find("__var[") != std::string::npos)
-        std::cout << "on variable" << std::endl;
+        onVariableInstruction(on, instruction);
       else if(it->second.find("__ont") != std::string::npos)
-        std::cout << "on onto" << std::endl;
+        onOntologyInstruction(instruction, it->first + it->second.find("__ont")+6);
       else
         error_.printWarning(it->first, "instruction with no effect");
     }
@@ -112,6 +116,32 @@ int Compiler::getIfOffset(std::string ifelse_id)
   }
 
   return offset;
+}
+
+void Compiler::onVariableInstruction(std::string variable, std::string instruction)
+{
+  size_t bracket = instruction.find("(");
+  std::string function = instruction.substr(0,bracket);
+  std::cout << "on variable " << variable << "  " << function <<  std::endl;
+  VariablesType var;
+  if(var.functionExist(function))
+    std::cout << "function exist" << std::endl;
+  else
+    std::cout << "function don't exist" << std::endl;
+}
+
+void Compiler::onOntologyInstruction(std::string instruction, size_t pose)
+{
+  size_t bracket = instruction.find("(");
+  std::string function = instruction.substr(0,bracket);
+  std::cout << "on onto " << function <<  std::endl;
+  OntoFunctions onto;
+  if(onto.functionExist(function) == false)
+  {
+    error_.printError(pose, "'" + function + "' is not a member of 'ont'");
+    return;
+  }
+  std::cout << "function exist" << std::endl;
 }
 
 /*int Compiler::splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id)
