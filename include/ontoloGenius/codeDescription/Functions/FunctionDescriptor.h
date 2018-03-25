@@ -20,6 +20,10 @@ public:
   type_t getReturnType(std::vector<type_t> params);
 
   bool testParams(std::vector<type_t> params);
+  size_t testNbParams(size_t nb);
+  std::string getDeclaration(size_t nb);
+
+  std::string to_string(type_t type);
 
 private:
   std::string name_;

@@ -3,6 +3,8 @@
 #include "ontoloGenius/codeDescription/Types/VariablesType.h"
 #include "ontoloGenius/codeDescription/Functions/OntoFunctions.h"
 
+#include "ontoloGenius/codeDescription/TextManipulator.h"
+
 #include <iostream>
 
 size_t Compiler::section_cpt_ = 0;
@@ -39,7 +41,7 @@ void Compiler::compileIntructions(std::map<size_t, std::string> splited)
       if(on.find(" ") != std::string::npos)
         error_.printError(it->first+it->second.find(" "), "unexpected expression after '" + on.substr(0,it->second.find(" ")) + "'");
       if(it->second.find("__var[") != std::string::npos)
-        onVariableInstruction(on, instruction);
+        onVariableInstruction(on, instruction, it->first + dot + 1);
       else if(it->second.find("__ont") != std::string::npos)
         onOntologyInstruction(instruction, it->first + it->second.find("__ont")+6);
       else
@@ -118,14 +120,30 @@ int Compiler::getIfOffset(std::string ifelse_id)
   return offset;
 }
 
-void Compiler::onVariableInstruction(std::string variable, std::string instruction)
+void Compiler::onVariableInstruction(std::string variable, std::string instruction, size_t pose)
 {
+  TextManipulator manipulator(instruction);
   size_t bracket = instruction.find("(");
   std::string function = instruction.substr(0,bracket);
   std::cout << "on variable " << variable << "  " << function <<  std::endl;
   VariablesType var;
   if(var.functionExist(function))
-    std::cout << "function exist" << std::endl;
+  {
+    FunctionDescriptor* descriptor = var.findFunction(function);
+    std::cout << "function " + descriptor->getExplicitName() + " exist" << std::endl;
+
+    std::string arg;
+    size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
+
+    std::vector<std::string> args;
+    std::vector<size_t> args_pose;
+    getParameters(arg, bracket+1, args, args_pose);
+    if(args.size() != descriptor->testNbParams(args.size()))
+      error_.printError(pose + bracket_end, "no matching function for call to"); //TODO complete message
+      /*candidate: void Error::printError(size_t, std::__cxx11::string)
+   void printError(size_t pose, std::string message);
+*/
+  }
   else
     std::cout << "function don't exist" << std::endl;
 }
@@ -141,7 +159,22 @@ void Compiler::onOntologyInstruction(std::string instruction, size_t pose)
     error_.printError(pose, "'" + function + "' is not a member of 'ont'");
     return;
   }
-  std::cout << "function exist" << std::endl;
+  FunctionDescriptor* descriptor = onto.findFunction(function);
+  std::cout << "function " + descriptor->getExplicitName() + " exist" << std::endl;
+}
+
+void Compiler::getParameters(std::string arg, size_t pose, std::vector<std::string>& args, std::vector<size_t>& args_pose)
+{
+  size_t start_arg = 0;
+  while(arg.find(",", start_arg) != std::string::npos)
+  {
+    size_t nex_arg = arg.find(",", start_arg);
+    args.push_back(arg.substr(start_arg, nex_arg - start_arg));
+    args_pose.push_back(pose+1+start_arg);
+    start_arg = nex_arg+1;
+  }
+  args.push_back(arg.substr(start_arg));
+  args_pose.push_back(pose+1+start_arg);
 }
 
 /*int Compiler::splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id)

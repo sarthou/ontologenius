@@ -197,6 +197,7 @@ int main(int argc, char** argv)
 
   std::string code = "";
   code += "var::man += fablab.isIn() - (bob + max);\n";
+  code += "var::man.toString(test, test);";
   code += "if(adult == age) \n";
   code += "{";
   code += "//this is a comment\n";

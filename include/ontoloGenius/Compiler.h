@@ -27,8 +27,10 @@ private:
   std::map<size_t, std::string> splitBySemicolon();
   int getIfOffset(std::string ifelse_id);
 
-  void onVariableInstruction(std::string variable, std::string instruction);
+  void onVariableInstruction(std::string variable, std::string instruction, size_t pose);
   void onOntologyInstruction(std::string instruction, size_t pose);
+
+  void getParameters(std::string arg, size_t pose, std::vector<std::string>& args, std::vector<size_t>& args_pose);
   //int splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id);
 };
 
