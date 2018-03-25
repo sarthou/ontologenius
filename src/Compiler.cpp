@@ -30,7 +30,6 @@ void Compiler::compileIntructions(std::map<size_t, std::string> splited)
   std::map<size_t, std::string>::iterator it = splited.begin();
   for(; it != splited.end(); ++it)
   {
-    std::cout << it->first << " : " << it->second << " : ";
     size_t dot = it->second.find(".");
     if(dot != std::string::npos)
     {
@@ -40,10 +39,10 @@ void Compiler::compileIntructions(std::map<size_t, std::string> splited)
 
       if(on.find(" ") != std::string::npos)
         error_.printError(it->first+it->second.find(" "), "unexpected expression after '" + on.substr(0,it->second.find(" ")) + "'");
-      if(it->second.find("__var[") != std::string::npos)
+      else if(on.find("__var[") != std::string::npos)
         onVariableInstruction(on, instruction, it->first + dot + 1);
-      else if(it->second.find("__ont") != std::string::npos)
-        onOntologyInstruction(instruction, it->first + it->second.find("__ont")+6);
+      else if(on.find("__ont") != std::string::npos)
+        onOntologyInstruction(instruction, it->first + dot + 1);
       else
         error_.printWarning(it->first, "instruction with no effect");
     }
@@ -53,11 +52,52 @@ void Compiler::compileIntructions(std::map<size_t, std::string> splited)
         std::cout << "if condition" << std::endl;
       else if(it->second.find("__subsection[") != std::string::npos)
         std::cout << "subsection" << std::endl;
+      else if(it->second.find("__var[") != std::string::npos)
+        error_.printWarning(it->first, "instruction with no effect");
+      else if(it->second.find("__ont") != std::string::npos)
+        error_.printError(it->first+it->second.find("__ont")+5, "expected function after 'ont::'");
       else
         std::cout << "????????" << std::endl;
     }
-    std::cout << std::endl;
   }
+}
+
+type_t Compiler::compileIntruction(std::string instruction, size_t pose)
+{
+  size_t dot = instruction.find(".");
+  if(dot != std::string::npos)
+  {
+    std::string on = instruction.substr(0, dot);
+    code_->removeNonEffectiveCode(on);
+    std::string subinstruction = instruction.substr(dot + 1);
+
+    if(on.find(" ") != std::string::npos)
+      error_.printError(pose+instruction.find(" "), "unexpected expression after '" + on.substr(0,instruction.find(" ")) + "'");
+    if(instruction.find("__var[") != std::string::npos)
+      return onVariableInstruction(on, subinstruction, pose + dot + 1);
+    else if(instruction.find("__ont") != std::string::npos)
+      return onOntologyInstruction(subinstruction, pose + instruction.find("__ont")+6);
+    else
+      error_.printWarning(pose, "instruction with no effect");
+  }
+  else
+  {
+    if(instruction.find("__var[") != std::string::npos)
+      return type_word_set;
+    if(instruction.find("__string[") != std::string::npos)
+      return type_string;
+    else if(instruction.find("__ont") != std::string::npos)
+      error_.printError(pose+instruction.find("__ont")+5, "expected function after 'ont::'");
+    else if(instruction.find("__ifelse[") != std::string::npos)
+      error_.printError(pose, "unexpected instruction");
+    else if(instruction.find("__subsection[") != std::string::npos)
+      error_.printError(pose, "unexpected instruction");
+    else if(instruction == "")
+      return type_void;
+    else
+      return type_word;
+  }
+  return type_unknow;
 }
 
 std::map<size_t, std::string> Compiler::splitBySemicolon()
@@ -120,7 +160,7 @@ int Compiler::getIfOffset(std::string ifelse_id)
   return offset;
 }
 
-void Compiler::onVariableInstruction(std::string variable, std::string instruction, size_t pose)
+type_t Compiler::onVariableInstruction(std::string variable, std::string instruction, size_t pose)
 {
   TextManipulator manipulator(instruction);
   size_t bracket = instruction.find("(");
@@ -135,21 +175,28 @@ void Compiler::onVariableInstruction(std::string variable, std::string instructi
     std::string arg;
     size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
 
-    std::vector<std::string> args;
-    std::vector<size_t> args_pose;
-    getParameters(arg, bracket+1, args, args_pose);
-    if(args.size() != descriptor->testNbParams(args.size()))
+    std::vector<type_t> args_types = compileParameters(arg, bracket+1, descriptor);
+    if(descriptor->testParams(args_types))
+      std::cout << "==> good args" << std::endl;
+    else
+      std::cout << "==> bad args" << std::endl;
+
+    /*if(args.size() != descriptor->testNbParams(args.size()))
       error_.printError(pose + bracket_end, "no matching function for call to"); //TODO complete message
       /*candidate: void Error::printError(size_t, std::__cxx11::string)
    void printError(size_t pose, std::string message);
 */
+    //return descriptor->getReturnType()
   }
   else
-    std::cout << "function don't exist" << std::endl;
+    return type_word_set;
+
+  return type_unknow;
 }
 
-void Compiler::onOntologyInstruction(std::string instruction, size_t pose)
+type_t Compiler::onOntologyInstruction(std::string instruction, size_t pose)
 {
+  TextManipulator manipulator(instruction);
   size_t bracket = instruction.find("(");
   std::string function = instruction.substr(0,bracket);
   std::cout << "on onto " << function <<  std::endl;
@@ -157,10 +204,23 @@ void Compiler::onOntologyInstruction(std::string instruction, size_t pose)
   if(onto.functionExist(function) == false)
   {
     error_.printError(pose, "'" + function + "' is not a member of 'ont'");
-    return;
+    return type_unknow;
   }
   FunctionDescriptor* descriptor = onto.findFunction(function);
   std::cout << "function " + descriptor->getExplicitName() + " exist" << std::endl;
+
+  std::string arg;
+  size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
+
+  std::vector<type_t> args_types = compileParameters(arg, bracket+1, descriptor);
+
+  if(descriptor->testParams(args_types))
+    std::cout << "==> good args" << std::endl;
+  else
+    std::cout << "==> bad args" << std::endl;
+
+  //return descriptor->getReturnType()
+  return type_unknow;
 }
 
 void Compiler::getParameters(std::string arg, size_t pose, std::vector<std::string>& args, std::vector<size_t>& args_pose)
@@ -175,6 +235,31 @@ void Compiler::getParameters(std::string arg, size_t pose, std::vector<std::stri
   }
   args.push_back(arg.substr(start_arg));
   args_pose.push_back(pose+1+start_arg);
+
+  for(size_t i = 0; i < args.size(); i++)
+  {
+    code_->goToEffectiveCode(args[i], args_pose[i]);
+    code_->removeNonEffectiveCode(args[i]);
+  }
+}
+
+std::vector<type_t> Compiler::compileParameters(std::string arg, size_t pose, FunctionDescriptor* descriptor)
+{
+  std::vector<std::string> args;
+  std::vector<size_t> args_pose;
+  getParameters(arg, pose, args, args_pose);
+  std::vector<type_t> args_types;
+
+  if(args.size() > 0)
+    for(size_t i = 0; i < args.size(); i++)
+      args_types.push_back(compileIntruction(args[i], args_pose[i]));
+  else
+    args_types.push_back(type_void);
+
+  for(size_t i = 0; i < args_types.size(); i++)
+    std::cout << args[i] << " of type : " << descriptor->to_string(args_types[i]) << std::endl;
+
+  return args_types;
 }
 
 /*int Compiler::splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id)

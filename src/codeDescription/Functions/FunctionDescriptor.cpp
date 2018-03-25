@@ -150,7 +150,7 @@ std::string FunctionDescriptor::getDeclaration(size_t nb)
 std::string FunctionDescriptor::to_string(type_t type)
 {
   if(type == type_void)
-    return "";
+    return "void";
   else if(type == type_string)
     return "string";
   else if(type == type_word)
