@@ -207,6 +207,7 @@ target_link_libraries(tester arguer_lib)
 add_library(arguer_plugin
   src/arguer/plugins/ArguerNone.cpp
   src/arguer/plugins/ArguerTest.cpp
+  src/arguer/plugins/ArguerInverseOf.cpp
   )
 add_dependencies(arguer_plugin ontologenius_gencpp)
 target_link_libraries(arguer_plugin plugin_lib)
