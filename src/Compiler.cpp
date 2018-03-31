@@ -7,6 +7,19 @@
 
 #include <iostream>
 
+#ifndef COLOR_OFF
+#define COLOR_OFF     "\x1B[0m"
+#endif
+#ifndef COLOR_RED
+#define COLOR_RED     "\x1B[0;91m"
+#endif
+#ifndef COLOR_ORANGE
+#define COLOR_ORANGE  "\x1B[1;33m"
+#endif
+#ifndef COLOR_GREEN
+#define COLOR_GREEN   "\x1B[1;92m"
+#endif
+
 size_t Compiler::section_cpt_ = 0;
 
 Compiler::Compiler(Code* code) : code_(code), error_(code_)
@@ -16,11 +29,13 @@ Compiler::Compiler(Code* code) : code_(code), error_(code_)
 size_t Compiler::compile()
 {
   size_t section = section_cpt_;
-  std::cout << "section " << section << std::endl;
+  std::cout << "-------- section " << section << std::endl;
   section_cpt_++;
 
   std::map<size_t, std::string> splited = splitBySemicolon();
   compileIntructions(splited);
+
+  std::cout << "-------- end of section " << section << std::endl;
 
   return section;
 }
@@ -30,9 +45,11 @@ void Compiler::compileIntructions(std::map<size_t, std::string> splited)
   std::map<size_t, std::string>::iterator it = splited.begin();
   for(; it != splited.end(); ++it)
   {
+    std::cout << COLOR_GREEN << "==== Compile instruction" << COLOR_OFF << std::endl;
     size_t dot = it->second.find(".");
     if(dot != std::string::npos)
     {
+      std::cout << COLOR_ORANGE << "--- function" << COLOR_OFF << std::endl;
       std::string on = it->second.substr(0, dot);
       code_->removeNonEffectiveCode(on);
       std::string instruction = it->second.substr(dot + 1);
@@ -48,6 +65,7 @@ void Compiler::compileIntructions(std::map<size_t, std::string> splited)
     }
     else
     {
+      std::cout << COLOR_ORANGE << "--- other" << COLOR_OFF << std::endl;
       if(it->second.find("__ifelse[") != std::string::npos)
         std::cout << "if condition" << std::endl;
       else if(it->second.find("__subsection[") != std::string::npos)
@@ -65,8 +83,10 @@ void Compiler::compileIntructions(std::map<size_t, std::string> splited)
 type_t Compiler::compileIntruction(std::string instruction, size_t pose)
 {
   size_t dot = instruction.find(".");
+  std::cout << COLOR_GREEN << "==compile sub instruction " << COLOR_OFF << instruction << std::endl;
   if(dot != std::string::npos)
   {
+    std::cout << COLOR_ORANGE << "--funtion" << COLOR_OFF << std::endl;
     std::string on = instruction.substr(0, dot);
     code_->removeNonEffectiveCode(on);
     std::string subinstruction = instruction.substr(dot + 1);
@@ -78,10 +98,11 @@ type_t Compiler::compileIntruction(std::string instruction, size_t pose)
     else if(instruction.find("__ont") != std::string::npos)
       return onOntologyInstruction(subinstruction, pose + instruction.find("__ont")+6);
     else
-      error_.printWarning(pose, "instruction with no effect");
+      return type_word_set; //TODO: create onPropertyInstruction
   }
   else
   {
+    std::cout << COLOR_ORANGE << "--other" << COLOR_OFF << std::endl;
     if(instruction.find("__var[") != std::string::npos)
       return type_word_set;
     if(instruction.find("__string[") != std::string::npos)
@@ -179,7 +200,7 @@ type_t Compiler::onVariableInstruction(std::string variable, std::string instruc
     if(descriptor->testParams(args_types))
       std::cout << "==> good args" << std::endl;
     else
-      std::cout << "==> bad args" << std::endl;
+      noMatchigFunction(pose + bracket, descriptor, args_types);
 
     /*if(args.size() != descriptor->testNbParams(args.size()))
       error_.printError(pose + bracket_end, "no matching function for call to"); //TODO complete message
@@ -257,9 +278,38 @@ std::vector<type_t> Compiler::compileParameters(std::string arg, size_t pose, Fu
     args_types.push_back(type_void);
 
   for(size_t i = 0; i < args_types.size(); i++)
-    std::cout << args[i] << " of type : " << descriptor->to_string(args_types[i]) << std::endl;
+    std::cout << "arg " << i << " : " << args[i] << " of type : " << descriptor->to_string(args_types[i]) << std::endl;
 
   return args_types;
+}
+
+void Compiler::noMatchigFunction(size_t pose, FunctionDescriptor* descriptor, std::vector<type_t> args_types)
+{
+  std::string proto = descriptor->getName() + "(";
+  for(size_t i = 0; i < args_types.size(); i++)
+  {
+    proto += descriptor->to_string(args_types[i]);
+    if(i < args_types.size() - 1)
+      proto += ", ";
+  }
+  proto += ")";
+
+  error_.printError(pose, "no matching function for call to " + proto);
+
+  std::vector<std::vector<type_t>> params_types = descriptor->getParameters();
+  for(size_t i = 0; i < params_types.size(); i++)
+  {
+    std::string possible = descriptor->getName() + "(";
+    for(size_t arg_i = 0; arg_i < params_types[i].size(); arg_i++)
+    {
+      possible += descriptor->to_string(params_types[i][arg_i]);
+      if(arg_i < params_types[i].size() - 1)
+        possible += ", ";
+    }
+    possible += ")";
+
+    error_.printNote(pose, "candidate: " + possible);
+  }
 }
 
 /*int Compiler::splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id)

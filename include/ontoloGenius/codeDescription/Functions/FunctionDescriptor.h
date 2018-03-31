@@ -25,6 +25,8 @@ public:
 
   std::string to_string(type_t type);
 
+  std::vector<std::vector<type_t>> getParameters() {return params_; }
+
 private:
   std::string name_;
   std::string explicit_name_;
