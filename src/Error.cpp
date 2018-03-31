@@ -62,8 +62,8 @@ bool Error::isOnError()
 
 void Error::cpy(Error& error)
 {
-  nb_error = error.nb_error;
-  nb_wrng = error.nb_wrng;
+  nb_error += error.nb_error;
+  nb_wrng += error.nb_wrng;
 }
 
 size_t Error::getBeginOfLine(size_t line_nb)

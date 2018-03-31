@@ -137,6 +137,7 @@ add_library(codeDescription_lib
   src/codeDescription/Types/StringType.cpp
   src/codeDescription/Functions/FunctionDescriptor.cpp
   src/codeDescription/Functions/FunctionContainer.cpp
+  src/codeDescription/Functions/OntoFunctions.cpp
   src/codeDescription/TextManipulator.cpp
   src/codeDescription/Code.cpp
   src/codeDescription/Namespace.cpp
@@ -176,6 +177,7 @@ add_library(ontologenius_lib
   src/Computer.cpp
   src/Parser.cpp
   src/Error.cpp
+  src/Compiler.cpp
 )
 add_dependencies(ontologenius_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_lib codeDescription_lib)
@@ -205,6 +207,7 @@ target_link_libraries(tester arguer_lib)
 add_library(arguer_plugin
   src/arguer/plugins/ArguerNone.cpp
   src/arguer/plugins/ArguerTest.cpp
+  src/arguer/plugins/ArguerInverseOf.cpp
   )
 add_dependencies(arguer_plugin ontologenius_gencpp)
 target_link_libraries(arguer_plugin plugin_lib)
