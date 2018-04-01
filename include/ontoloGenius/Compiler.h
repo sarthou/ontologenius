@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <set>
+#include <fstream>
 
 #include "ontoloGenius/codeDescription/Code.h"
 #include "ontoloGenius/Error.h"
@@ -12,7 +13,7 @@ class Compiler
 {
 public:
   Compiler(Code* code);
-  ~Compiler(){}
+  ~Compiler();
 
   size_t compile();
   Error& getError() {return error_; }
@@ -20,6 +21,7 @@ public:
 private:
   Code* code_;
   Error error_;
+  FILE* file_;
 
   static size_t section_cpt_;
 

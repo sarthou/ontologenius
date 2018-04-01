@@ -6,6 +6,7 @@
 #include "ontoloGenius/codeDescription/TextManipulator.h"
 
 #include <iostream>
+#include <ros/package.h>
 
 #ifndef COLOR_OFF
 #define COLOR_OFF     "\x1B[0m"
@@ -24,12 +25,31 @@ size_t Compiler::section_cpt_ = 0;
 
 Compiler::Compiler(Code* code) : code_(code), error_(code_)
 {
+  std::string path = ros::package::getPath("ontologenius");
+  path+= "/build/out.ont";
+  if(section_cpt_ == 0)
+  {
+    file_ = fopen(path.c_str(), "w");
+    fclose(file_);
+  }
+  file_ = NULL;
+
+  file_ = fopen(path.c_str(), "a");
+  if(file_ == NULL)
+    std::cout << "fail to open file" << std::endl;
+}
+
+Compiler::~Compiler()
+{
+  fclose(file_);
 }
 
 size_t Compiler::compile()
 {
   size_t section = section_cpt_;
   std::cout << "-------- section " << section << std::endl;
+  std::string to_file = "section"+ std::to_string(section_cpt_)+":\n";
+  fwrite(to_file.c_str(), sizeof(char), to_file.size(), file_);
   section_cpt_++;
 
   std::map<size_t, std::string> splited = splitBySemicolon();
@@ -202,11 +222,6 @@ type_t Compiler::onVariableInstruction(std::string variable, std::string instruc
     else
       noMatchigFunction(pose + bracket, descriptor, args_types);
 
-    /*if(args.size() != descriptor->testNbParams(args.size()))
-      error_.printError(pose + bracket_end, "no matching function for call to"); //TODO complete message
-      /*candidate: void Error::printError(size_t, std::__cxx11::string)
-   void printError(size_t pose, std::string message);
-*/
     //return descriptor->getReturnType()
   }
   else
@@ -238,7 +253,7 @@ type_t Compiler::onOntologyInstruction(std::string instruction, size_t pose)
   if(descriptor->testParams(args_types))
     std::cout << "==> good args" << std::endl;
   else
-    std::cout << "==> bad args" << std::endl;
+    noMatchigFunction(pose + bracket, descriptor, args_types);
 
   //return descriptor->getReturnType()
   return type_unknow;
