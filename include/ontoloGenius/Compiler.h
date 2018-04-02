@@ -8,6 +8,7 @@
 
 #include "ontoloGenius/codeDescription/Code.h"
 #include "ontoloGenius/Error.h"
+#include "ontoloGenius/fileManagers/FileWriter.h"
 
 class Compiler
 {
@@ -21,7 +22,7 @@ public:
 private:
   Code* code_;
   Error error_;
-  FILE* file_;
+  FileWriter writer_;
 
   static size_t section_cpt_;
 

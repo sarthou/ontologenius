@@ -6,7 +6,6 @@
 #include "ontoloGenius/codeDescription/TextManipulator.h"
 
 #include <iostream>
-#include <ros/package.h>
 
 #ifndef COLOR_OFF
 #define COLOR_OFF     "\x1B[0m"
@@ -25,31 +24,21 @@ size_t Compiler::section_cpt_ = 0;
 
 Compiler::Compiler(Code* code) : code_(code), error_(code_)
 {
-  std::string path = ros::package::getPath("ontologenius");
-  path+= "/build/out.ont";
   if(section_cpt_ == 0)
-  {
-    file_ = fopen(path.c_str(), "w");
-    fclose(file_);
-  }
-  file_ = NULL;
+    writer_.reset("out");
 
-  file_ = fopen(path.c_str(), "a");
-  if(file_ == NULL)
-    std::cout << "fail to open file" << std::endl;
+  writer_.init("out", "a");
 }
 
 Compiler::~Compiler()
 {
-  fclose(file_);
 }
 
 size_t Compiler::compile()
 {
   size_t section = section_cpt_;
   std::cout << "-------- section " << section << std::endl;
-  std::string to_file = "section"+ std::to_string(section_cpt_)+":\n";
-  fwrite(to_file.c_str(), sizeof(char), to_file.size(), file_);
+  writer_.write("section"+ std::to_string(section_cpt_)+":\n");
   section_cpt_++;
 
   std::map<size_t, std::string> splited = splitBySemicolon();
