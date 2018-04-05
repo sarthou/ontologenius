@@ -16,6 +16,7 @@ public:
 
   void printError(size_t pose, std::string message);
   void printWarning(size_t pose, std::string message);
+  void printNote(size_t pose, std::string message);
 
   void printStatus();
 

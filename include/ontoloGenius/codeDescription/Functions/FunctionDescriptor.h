@@ -15,10 +15,17 @@ public:
   bool overload(type_t return_type, std::vector<type_t> params_type);
 
   void addExplicitName(std::string name) { explicit_name_ = name; }
+  std::string getExplicitName();
   std::string getName();
   type_t getReturnType(std::vector<type_t> params);
 
   bool testParams(std::vector<type_t> params);
+  size_t testNbParams(size_t nb);
+  std::string getDeclaration(size_t nb);
+
+  std::string to_string(type_t type);
+
+  std::vector<std::vector<type_t>> getParameters() {return params_; }
 
 private:
   std::string name_;

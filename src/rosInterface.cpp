@@ -123,31 +123,49 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
   else
     arguers.runPreArguers();
 
+  std::set<std::string> set_res;
+  std::string select = "";
+  if(req.action.find("select:") == 0)
+  {
+    req.action = req.action.substr(std::string("select:").size());
+    size_t delimitater = req.param.find("=");
+    if(delimitater != std::string::npos)
+    {
+      select = req.param.substr(0, delimitater);
+      req.param = req.param.substr(delimitater+1);
+    }
+  }
+
   if(res.code != UNINIT)
     if(req.action == "getSame")
-      res.value = set2string(onto.individuals_.getSame(req.param));
+      set_res = onto.individuals_.getSame(req.param);
     if(req.action == "getDistincts")
-      res.value = set2string(onto.individuals_.getDistincts(req.param));
+      set_res = onto.individuals_.getDistincts(req.param);
     else if(req.action == "getRelationFrom")
-      res.value = set2string(onto.individuals_.getRelationFrom(req.param));
+      set_res = onto.individuals_.getRelationFrom(req.param);
     else if(req.action == "getRelatedFrom")
-      res.value = set2string(onto.individuals_.getRelatedFrom(req.param));
+      set_res = onto.individuals_.getRelatedFrom(req.param);
     else if(req.action == "getRelationOn")
-      res.value = set2string(onto.individuals_.getRelationOn(req.param));
+      set_res = onto.individuals_.getRelationOn(req.param);
     else if(req.action == "getRelatedOn")
-      res.value = set2string(onto.individuals_.getRelatedOn(req.param));
+      set_res = onto.individuals_.getRelatedOn(req.param);
     else if(req.action == "getRelationWith")
-      res.value = set2string(onto.individuals_.getRelationWith(req.param));
+      set_res = onto.individuals_.getRelationWith(req.param);
     else if(req.action == "getRelatedWith")
-      res.value = set2string(onto.individuals_.getRelatedWith(req.param));
+      set_res = onto.individuals_.getRelatedWith(req.param);
     else if(req.action == "getUp")
-      res.value = set2string(onto.individuals_.getUp(req.param));
+      set_res = onto.individuals_.getUp(req.param);
     else if(req.action == "getOn")
-      res.value = set2string(onto.individuals_.getOn(req.param));
+      set_res = onto.individuals_.getOn(req.param);
     else if(req.action == "getFrom")
-      res.value = set2string(onto.individuals_.getFrom(req.param));
+      set_res = onto.individuals_.getFrom(req.param);
     else
       res.code = UNKNOW_ACTION;
+
+    if(select != "")
+      set_res = onto.individuals_.selectOnClass(set_res, select);
+
+    res.value = set2string(set_res);
 
   return true;
 }
@@ -197,6 +215,7 @@ int main(int argc, char** argv)
 
   std::string code = "";
   code += "var::man += fablab.isIn() - (bob + max);\n";
+  code += "var::man.toString(test, test);\n";
   code += "if(adult == age) \n";
   code += "{";
   code += "//this is a comment\n";

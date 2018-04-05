@@ -37,3 +37,6 @@
 *.ui.autosave
 /build-ontoloGUI-Desktop-Debug
 /build-ontoloGUI-Desktop-Release
+
+# Ontologenius build files
+*.ont
