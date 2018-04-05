@@ -17,7 +17,7 @@ int Ontology::close()
 {
   if(is_init_ == true)
     return 0;
-    
+
   classes_.close();
   properties_.close();
 

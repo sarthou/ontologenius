@@ -434,6 +434,18 @@ std::set<IndividualBranch_t*> IndividualGraph::getSame(IndividualBranch_t* indiv
   return res;
 }
 
+std::set<std::string> IndividualGraph::selectOnClass(std::set<std::string> on, std::string class_selector)
+{
+  std::set<std::string> res;
+  for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
+  {
+    std::set<std::string> tmp = getUp(*it);
+    if(tmp.find(class_selector) != tmp.end())
+      res.insert(*it);
+  }
+  return res;
+}
+
 void IndividualGraph::cleanMarks(std::set<IndividualBranch_t*>& indSet)
 {
   for(std::set<IndividualBranch_t*>::iterator it = indSet.begin(); it != indSet.end(); ++it)
