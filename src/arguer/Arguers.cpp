@@ -48,14 +48,13 @@ void Arguers::load()
 std::string Arguers::list()
 {
   std::map<std::string, ArguerInterface*>::iterator it;
-  std::string out =  "Pugins loaded :\n";
+  std::string out =  "Plugins loaded :\n";
   std::string res;
   for(it = arguers_.begin(); it != arguers_.end(); ++it)
   {
     out += " - From " + it->first + " : " + arguers_[it->first]->getName() + " (" + arguers_[it->first]->getDesciption() + ")\n";
     res += " -" + it->first;
   }
-  std::cout << out;
   return res;
 }
 
