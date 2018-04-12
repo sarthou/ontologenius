@@ -64,6 +64,7 @@ public:
   std::set<std::string> getOn(std::string individual, std::string property);
   std::set<std::string> getUp(std::string individual);            //C3
   std::set<std::string> select(std::set<std::string> on, std::string class_selector);
+  std::string getName(std::string& value);
 
 private:
   ClassGraph* classes_;

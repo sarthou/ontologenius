@@ -10,8 +10,7 @@
 class Ontology
 {
 public:
-  Ontology() : properties_(&classes_), individuals_(&classes_, &properties_), reader((Ontology&)*this)
-  {is_init_ = false; }
+  Ontology(std::string language = "en");
   ~Ontology() {}
 
   int close();

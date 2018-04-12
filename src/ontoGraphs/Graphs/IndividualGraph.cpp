@@ -450,6 +450,22 @@ std::set<std::string> IndividualGraph::select(std::set<std::string> on, std::str
   return res;
 }
 
+std::string IndividualGraph::getName(std::string& value)
+{
+  std::string res;
+
+  IndividualBranch_t* branch = container_.find(value);
+  if(branch != nullptr)
+  {
+    if(branch->dictionary_.find(language_) != branch->dictionary_.end())
+      res = branch->dictionary_[language_];
+    else
+      res = value;
+  }
+
+  return res;
+}
+
 void IndividualGraph::cleanMarks(std::set<IndividualBranch_t*>& indSet)
 {
   for(std::set<IndividualBranch_t*>::iterator it = indSet.begin(); it != indSet.end(); ++it)

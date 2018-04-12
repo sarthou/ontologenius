@@ -40,6 +40,7 @@ public:
 
   std::set<std::string> getDown(std::string& value);
   std::set<std::string> getUp(std::string& value);
+  std::string getName(std::string& value);
 
   std::set<std::string> getDown(B* branch);
   std::set<std::string> getUp(B* branch);
@@ -118,6 +119,23 @@ std::set<std::string> OntoGraph<B>::getUp(std::string& value)
     std::set<std::string> tmp = getUp(branch);
     if(tmp.size())
       res.insert(tmp.begin(), tmp.end());
+  }
+
+  return res;
+}
+
+template <typename B>
+std::string OntoGraph<B>::getName(std::string& value)
+{
+  std::string res;
+
+  B* branch = this->container_.find(value);
+  if(branch != nullptr)
+  {
+    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
+      res = branch->dictionary_[this->language_];
+    else
+      res = value;
   }
 
   return res;
