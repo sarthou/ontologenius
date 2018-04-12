@@ -4,15 +4,17 @@
 #include <string>
 #include <map>
 #include <set>
+#include <fstream>
 
 #include "ontoloGenius/codeDescription/Code.h"
 #include "ontoloGenius/Error.h"
+#include "ontoloGenius/fileManagers/FileWriter.h"
 
 class Compiler
 {
 public:
   Compiler(Code* code);
-  ~Compiler(){}
+  ~Compiler();
 
   size_t compile();
   Error& getError() {return error_; }
@@ -20,6 +22,7 @@ public:
 private:
   Code* code_;
   Error error_;
+  FileWriter writer_;
 
   static size_t section_cpt_;
 
@@ -33,6 +36,8 @@ private:
   type_t onOntologyInstruction(std::string instruction, size_t pose);
 
   void getParameters(std::string arg, size_t pose, std::vector<std::string>& args, std::vector<size_t>& args_pose);
+
+  void noMatchigFunction(size_t pose, FunctionDescriptor* descriptor, std::vector<type_t> args_types);
   //int splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id);
 };
 

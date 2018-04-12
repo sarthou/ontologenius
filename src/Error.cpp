@@ -14,6 +14,9 @@
 #ifndef COLOR_GREEN
 #define COLOR_GREEN   "\x1B[1;92m"
 #endif
+#ifndef COLOR_BLUE
+#define COLOR_BLUE   "\x1B[1;96m"
+#endif
 
 Error::Error(Code* code)
 {
@@ -34,6 +37,12 @@ void Error::printWarning(size_t pose, std::string message)
   std::string msg = std::string(COLOR_ORANGE + std::string("warning: ") + COLOR_OFF + message);
   printMessage(pose, msg);
   nb_wrng++;
+}
+
+void Error::printNote(size_t pose, std::string message)
+{
+  std::string msg = std::string(COLOR_BLUE + std::string("note: ") + COLOR_OFF + message);
+  printMessage(pose, msg);
 }
 
 void Error::printStatus()
