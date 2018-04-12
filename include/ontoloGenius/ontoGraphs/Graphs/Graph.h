@@ -20,14 +20,19 @@ class Graph
 {
   static_assert(std::is_base_of<ValuedNode,B>::value, "B must be derived from ValuedNode");
 public:
-  Graph() {}
+  Graph() {language_ = "en"; }
   ~Graph() {}
+
+  void setLanguage(std::string language) {language_ = language; }
 
   virtual void close() = 0;
 
   virtual std::vector<B*> get() = 0;
 
   BranchContainerMap<B> container_;
+
+  std::string language_;
+
 };
 
 #endif

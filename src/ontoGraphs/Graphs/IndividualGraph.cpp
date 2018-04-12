@@ -164,6 +164,10 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     }
   }
 
+  me->dictionary_ = individual_vector.dictionary_;
+  if(me->dictionary_.find("en") == me->dictionary_.end())
+    me->dictionary_["en"] = me->value_;
+
   individuals_.push_back(me);
 }
 
@@ -434,7 +438,7 @@ std::set<IndividualBranch_t*> IndividualGraph::getSame(IndividualBranch_t* indiv
   return res;
 }
 
-std::set<std::string> IndividualGraph::selectOnClass(std::set<std::string> on, std::string class_selector)
+std::set<std::string> IndividualGraph::select(std::set<std::string> on, std::string class_selector)
 {
   std::set<std::string> res;
   for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
@@ -443,6 +447,22 @@ std::set<std::string> IndividualGraph::selectOnClass(std::set<std::string> on, s
     if(tmp.find(class_selector) != tmp.end())
       res.insert(*it);
   }
+  return res;
+}
+
+std::string IndividualGraph::getName(std::string& value)
+{
+  std::string res;
+
+  IndividualBranch_t* branch = container_.find(value);
+  if(branch != nullptr)
+  {
+    if(branch->dictionary_.find(language_) != branch->dictionary_.end())
+      res = branch->dictionary_[language_];
+    else
+      res = value;
+  }
+
   return res;
 }
 

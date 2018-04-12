@@ -173,6 +173,8 @@ void OntologyReader::read_individual(TiXmlElement* elem)
           push(individual_vector.is_a_, subElem, "+");
         else if(subElemName == "owl:sameAs")
           push(individual_vector.same_as_, subElem, "=");
+        else if(subElemName == "rdfs:label")
+          pushLang(individual_vector.dictionary_, subElem);
         else
         {
           std::string ns = subElemName.substr(0,subElemName.find(":"));

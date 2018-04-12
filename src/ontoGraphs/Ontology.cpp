@@ -13,6 +13,14 @@
 #define COLOR_RED     "\x1B[0;91m"
 #endif
 
+Ontology::Ontology(std::string language) : properties_(&classes_), individuals_(&classes_, &properties_), reader((Ontology&)*this)
+{
+  is_init_ = false;
+  classes_.setLanguage(language);
+  properties_.setLanguage(language);
+  individuals_.setLanguage(language);
+}
+
 int Ontology::close()
 {
   if(is_init_ == true)

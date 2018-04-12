@@ -74,6 +74,8 @@ bool class_handle(ontologenius::standard_service::Request  &req,
       res.value = set2string(onto.classes_.getUp(req.param));
     else if(req.action == "getDisjoint")
       res.value = set2string(onto.classes_.getDisjoint(req.param));
+    else if(req.action == "getName")
+      res.value = onto.classes_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
 
@@ -105,6 +107,8 @@ bool property_handle(ontologenius::standard_service::Request  &req,
       res.value = set2string(onto.properties_.getDomain(req.param));
     else if(req.action == "getRange")
       res.value = set2string(onto.properties_.getRange(req.param));
+    else if(req.action == "getName")
+      res.value = onto.properties_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
 
@@ -159,13 +163,23 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
       set_res = onto.individuals_.getOn(req.param);
     else if(req.action == "getFrom")
       set_res = onto.individuals_.getFrom(req.param);
+    else if(req.action == "getName")
+      res.value = onto.properties_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
 
     if(select != "")
-      set_res = onto.individuals_.selectOnClass(set_res, select);
+    {
+      if(req.action == "getUp")
+        set_res = onto.classes_.select(set_res, select);
+      else if((req.action == "getRelationFrom") || (req.action == "getRelationOn"))
+        set_res = onto.properties_.select(set_res, select);
+      else if(req.action != "getName")
+        set_res = onto.individuals_.select(set_res, select);
+    }
 
-    res.value = set2string(set_res);
+    if(res.value == "")
+      res.value = set2string(set_res);
 
   return true;
 }
@@ -199,11 +213,14 @@ int main(int argc, char** argv)
 
   ros::service::waitForService("ontoloGenius/REST", -1);
 
-  for(unsigned int i = 1; i < argc; i++)
+  std::string language = string(argv[1]);
+  std::cout << "language " << language << std::endl;
+
+  for(unsigned int i = 2; i < argc; i++)
     onto.readFromFile(string(argv[i]));
 
   arguers.load();
-  arguers.list();
+  std::cout << "Plugins loaded : " << arguers.list() << std::endl;
 
   // Start up ROS service with callbacks
   ros::ServiceServer service = n.advertiseService("ontoloGenius/actions", reference_handle);
@@ -231,13 +248,13 @@ int main(int argc, char** argv)
   code += "ont::null();\n";
   code += "var::men =if(var::man == man);\n";
 
-  Error error;
+  /*Error error;
 
   Code my_code(code);
   Parser p(&my_code);
 
   error.cpy(p.getError());
-  error.printStatus();
+  error.printStatus();*/
 
   ros::spin();
 

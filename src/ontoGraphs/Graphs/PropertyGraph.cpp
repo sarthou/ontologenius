@@ -432,3 +432,16 @@ std::set<std::string> PropertyGraph::getRange(std::string& value)
 
   return res;
 }
+
+std::set<std::string> PropertyGraph::select(std::set<std::string> on, std::string selector)
+{
+  std::set<std::string> res;
+  for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
+  {
+    std::string prop_i = *it;
+    std::set<std::string> tmp = getUp(prop_i);
+    if(tmp.find(selector) != tmp.end())
+      res.insert(*it);
+  }
+  return res;
+}
