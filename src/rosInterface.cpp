@@ -74,6 +74,8 @@ bool class_handle(ontologenius::standard_service::Request  &req,
       res.value = set2string(onto.classes_.getUp(req.param));
     else if(req.action == "getDisjoint")
       res.value = set2string(onto.classes_.getDisjoint(req.param));
+    else if(req.action == "getName")
+      res.value = onto.classes_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
 
@@ -105,6 +107,8 @@ bool property_handle(ontologenius::standard_service::Request  &req,
       res.value = set2string(onto.properties_.getDomain(req.param));
     else if(req.action == "getRange")
       res.value = set2string(onto.properties_.getRange(req.param));
+    else if(req.action == "getName")
+      res.value = onto.properties_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
 
@@ -159,6 +163,8 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
       set_res = onto.individuals_.getOn(req.param);
     else if(req.action == "getFrom")
       set_res = onto.individuals_.getFrom(req.param);
+    else if(req.action == "getName")
+      res.value = onto.properties_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
 
@@ -168,11 +174,12 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
         set_res = onto.classes_.select(set_res, select);
       else if((req.action == "getRelationFrom") || (req.action == "getRelationOn"))
         set_res = onto.properties_.select(set_res, select);
-      else
+      else if(req.action != "getName")
         set_res = onto.individuals_.select(set_res, select);
     }
 
-    res.value = set2string(set_res);
+    if(res.value == "")
+      res.value = set2string(set_res);
 
   return true;
 }
