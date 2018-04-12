@@ -163,7 +163,12 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
       res.code = UNKNOW_ACTION;
 
     if(select != "")
-      set_res = onto.individuals_.selectOnClass(set_res, select);
+    {
+      if(req.action == "getUp")
+        set_res = onto.classes_.selectOnClass(set_res, select);
+      else
+        set_res = onto.individuals_.selectOnClass(set_res, select);
+    }
 
     res.value = set2string(set_res);
 

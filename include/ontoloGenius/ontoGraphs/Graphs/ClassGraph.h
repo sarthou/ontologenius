@@ -41,6 +41,7 @@ public:
   void add(std::vector<std::string>& disjoints);
 
   std::set<std::string> getDisjoint(std::string& value);
+  std::set<std::string> selectOnClass(std::set<std::string> on, std::string class_selector);
 
 private:
 };
