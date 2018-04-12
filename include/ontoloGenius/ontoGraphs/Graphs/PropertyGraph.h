@@ -72,6 +72,7 @@ public:
   std::set<std::string> getInverse(std::string& value);
   std::set<std::string> getDomain(std::string& value);
   std::set<std::string> getRange(std::string& value);
+  std::set<std::string> select(std::set<std::string> on, std::string selector);
 
 private:
   ClassGraph* treeObject_;
