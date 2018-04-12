@@ -206,11 +206,14 @@ int main(int argc, char** argv)
 
   ros::service::waitForService("ontoloGenius/REST", -1);
 
-  for(unsigned int i = 1; i < argc; i++)
+  std::string language = string(argv[1]);
+  std::cout << "language " << language << std::endl;
+
+  for(unsigned int i = 2; i < argc; i++)
     onto.readFromFile(string(argv[i]));
 
   arguers.load();
-  arguers.list();
+  std::cout << "Plugins loaded : " << arguers.list() << std::endl;
 
   // Start up ROS service with callbacks
   ros::ServiceServer service = n.advertiseService("ontoloGenius/actions", reference_handle);
@@ -238,13 +241,13 @@ int main(int argc, char** argv)
   code += "ont::null();\n";
   code += "var::men =if(var::man == man);\n";
 
-  Error error;
+  /*Error error;
 
   Code my_code(code);
   Parser p(&my_code);
 
   error.cpy(p.getError());
-  error.printStatus();
+  error.printStatus();*/
 
   ros::spin();
 
