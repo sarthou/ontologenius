@@ -164,6 +164,10 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     }
   }
 
+  me->dictionary_ = individual_vector.dictionary_;
+  if(me->dictionary_.find("en") == me->dictionary_.end())
+    me->dictionary_["en"] = me->value_;
+
   individuals_.push_back(me);
 }
 

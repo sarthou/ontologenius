@@ -19,6 +19,7 @@ public:
   std::vector<IndividualBranch_t*> properties_on_;
   std::vector<IndividualBranch_t*> same_as_;
   std::vector<IndividualBranch_t*> distinct_;
+  std::map<std::string, std::string> dictionary_;
 
   bool mark;
 
@@ -31,6 +32,7 @@ struct IndividualVectors_t
    std::vector<std::string> properties_name_;
    std::vector<std::string> properties_on_;
    std::vector<std::string> same_as_;
+   std::map<std::string, std::string> dictionary_;
 };
 
 class IndividualChecker;
