@@ -81,7 +81,7 @@ void IndividualChecker::checkRange()
       {
         std::string intersection = findIntersection(up, range);
         if(intersection == "")
-          print_error("'" + graph_[i]->value_ + "' is not in range of '" + graph_[i]->properties_name_[prop_i]->value_ + "'");
+          print_error("'" + graph_[i]->properties_on_[prop_i]->value_ + "' is not in range of '" + graph_[i]->properties_name_[prop_i]->value_ + "'");
       }
     }
   }
