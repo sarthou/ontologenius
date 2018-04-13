@@ -163,6 +163,8 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
       set_res = onto.individuals_.getOn(req.param);
     else if(req.action == "getFrom")
       set_res = onto.individuals_.getFrom(req.param);
+    else if(req.action == "getWith")
+      set_res = onto.individuals_.getWith(req.param);
     else if(req.action == "getName")
       res.value = onto.properties_.getName(req.param);
     else

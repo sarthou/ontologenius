@@ -416,6 +416,34 @@ std::set<std::string> IndividualGraph::getOn(std::string individual, std::string
   return res;
 }
 
+std::set<std::string> IndividualGraph::getWith(std::string param)
+{
+  std::set<std::string> res;
+  size_t pose = param.find(":");
+  if(pose != std::string::npos)
+  {
+    std::string first_individual = param.substr(0, pose);
+    std::string second_individual = param.substr(pose+1);
+    return getWith(first_individual, second_individual);
+  }
+  return res;
+}
+
+std::set<std::string> IndividualGraph::getWith(std::string first_individual, std::string second_individual)
+{
+  std::set<std::string> res;
+  for(size_t i = 0; i < individuals_.size(); i++)
+    if(individuals_[i]->value_ == first_individual)
+      for(size_t indiv_i = 0; indiv_i < individuals_[i]->properties_on_.size(); indiv_i++)
+        if(individuals_[i]->properties_on_[indiv_i]->value_ == second_individual)
+        {
+          std::set<std::string> props = properties_->getUp(individuals_[i]->properties_name_[indiv_i]);
+          res.insert(props.begin(), props.end());
+        }
+
+  return res;
+}
+
 std::set<std::string> IndividualGraph::getUp(std::string individual)
 {
   std::set<std::string> res;
