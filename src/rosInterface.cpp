@@ -174,7 +174,7 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
     {
       if(req.action == "getUp")
         set_res = onto.classes_.select(set_res, select);
-      else if((req.action == "getRelationFrom") || (req.action == "getRelationOn"))
+      else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
         set_res = onto.properties_.select(set_res, select);
       else if(req.action != "getName")
         set_res = onto.individuals_.select(set_res, select);
