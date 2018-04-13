@@ -9,8 +9,10 @@ size_t IndividualChecker::check()
   checkDomain();
 
   checkRange();
+  
+  is_analysed = true;
+  printStatus();
 
-  printStatus("individual", "individuals", graph_.size());
   return getErrors();
 }
 
