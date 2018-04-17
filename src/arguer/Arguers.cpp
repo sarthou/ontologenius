@@ -37,6 +37,9 @@ void Arguers::load()
       ArguerInterface* tmp = loader_.createUnmanagedInstance(arguers[i]);
       tmp->initialize(ontology_);
       arguers_[arguers[i]] = tmp;
+      if(tmp->defaultAvtive())
+        active_arguers_[arguers[i]] = tmp;
+
     }
   }
   catch(pluginlib::PluginlibException& ex)
@@ -66,10 +69,10 @@ int Arguers::activate(std::string plugin)
     {
       active_arguers_[plugin] = arguers_[plugin];
       std::cout << COLOR_GREEN << plugin << " has been activated" << COLOR_OFF << std::endl;
+      runPostArguers();
     }
     else
       std::cout << COLOR_ORANGE << plugin << " is already activated" << COLOR_OFF << std::endl;
-
     return 0;
   }
   else
@@ -116,13 +119,13 @@ std::string Arguers::getDescription(std::string plugin)
 void Arguers::runPreArguers()
 {
   std::map<std::string, ArguerInterface*>::iterator it;
-  for(it = arguers_.begin(); it != arguers_.end(); ++it)
+  for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
     it->second->preReason();
 }
 
 void Arguers::runPostArguers()
 {
   std::map<std::string, ArguerInterface*>::iterator it;
-  for(it = arguers_.begin(); it != arguers_.end(); ++it)
+  for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
     it->second->postReason();
 }
