@@ -77,6 +77,66 @@ public:
 
 private:
   ClassGraph* treeObject_;
+
+  void isMyDisjoint(PropertyClassBranch_t* me, std::string disjoint, std::vector<PropertyClassBranch_t*>& vect, bool& find, bool all = true)
+  {
+    if(find)
+      return;
+
+    for(unsigned int i = 0; i < vect.size(); i++)
+      if(disjoint == vect[i]->value_)
+      {
+        me->disjoints_.push_back(vect[i]);
+        if(all)
+          vect[i]->disjoints_.push_back(me);
+        find = true;
+        break;
+      }
+  }
+
+  void isMyInverse(PropertyClassBranch_t* me, std::string inverse, std::vector<PropertyClassBranch_t*>& vect, bool& find, bool all = true)
+  {
+    if(find)
+      return;
+
+    for(unsigned int i = 0; i < vect.size(); i++)
+      if(inverse == vect[i]->value_)
+      {
+        me->inverses_.push_back(vect[i]);
+        if(all)
+          vect[i]->inverses_.push_back(me);
+        find = true;
+        break;
+      }
+  }
+
+  void isMyDomain(PropertyClassBranch_t* me, std::string domain, std::vector<ClassBranch_t*>& vect, bool& find)
+  {
+    if(find)
+      return;
+
+    for(unsigned int i = 0; i < vect.size(); i++)
+      if(domain == vect[i]->value_)
+      {
+        me->domains_.push_back(vect[i]);
+        find = true;
+        break;
+      }
+  }
+
+  void isMyRange(PropertyClassBranch_t* me, std::string range, std::vector<ClassBranch_t*>& vect, bool& find)
+  {
+    if(find)
+      return;
+
+    for(unsigned int i = 0; i < vect.size(); i++)
+      if(range == vect[i]->value_)
+      {
+        me->ranges_.push_back(vect[i]);
+        find = true;
+        break;
+      }
+  }
 };
 
 #endif /* TREEPROPERTY_H */

@@ -33,13 +33,13 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
       bool i_find_my_mother = false;
 
       //is a root my mother ?
-      i_find_my_mother = isMyMother(me, property_vectors.mothers_[mothers_i], roots_, i_find_my_mother);
+      isMyMother(me, property_vectors.mothers_[mothers_i], roots_, i_find_my_mother);
 
       //is a branch my mother ?
-      i_find_my_mother = isMyMother(me, property_vectors.mothers_[mothers_i], branchs_, i_find_my_mother);
+      isMyMother(me, property_vectors.mothers_[mothers_i], branchs_, i_find_my_mother);
 
       //is a tmp mother is mine ?
-      i_find_my_mother = isMyMother(me, property_vectors.mothers_[mothers_i], tmp_mothers_, i_find_my_mother);
+      isMyMother(me, property_vectors.mothers_[mothers_i], tmp_mothers_, i_find_my_mother);
 
       //I create my mother
       if(!i_find_my_mother)
@@ -64,31 +64,13 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
     bool i_find_my_disjoint = false;
 
     //is a root my disjoint ?
-    for(unsigned int root_i = 0; root_i < roots_.size(); root_i++)
-      if(property_vectors.disjoints_[disjoints_i] == roots_[root_i]->value_)
-      {
-        me->disjoints_.push_back(roots_[root_i]);
-        roots_[root_i]->disjoints_.push_back(me);
-        i_find_my_disjoint = true;
-      }
+    isMyDisjoint(me, property_vectors.disjoints_[disjoints_i], roots_, i_find_my_disjoint);
 
     //is a branch my disjoint ?
-    for(unsigned int branch_i = 0; branch_i < branchs_.size(); branch_i++)
-      if(property_vectors.disjoints_[disjoints_i] == branchs_[branch_i]->value_)
-      {
-        me->disjoints_.push_back(branchs_[branch_i]);
-        branchs_[branch_i]->disjoints_.push_back(me);
-        i_find_my_disjoint = true;
-      }
+    isMyDisjoint(me, property_vectors.disjoints_[disjoints_i], branchs_, i_find_my_disjoint);
 
     //is a tmp mother is my disjoint ?
-    for(unsigned int branch_i  =0; branch_i < tmp_mothers_.size(); branch_i++)
-      if(property_vectors.disjoints_[disjoints_i] == tmp_mothers_[branch_i]->value_)
-      {
-        me->disjoints_.push_back(tmp_mothers_[branch_i]);
-        tmp_mothers_[branch_i]->disjoints_.push_back(me);
-        i_find_my_disjoint = true;
-      }
+    isMyDisjoint(me, property_vectors.disjoints_[disjoints_i], tmp_mothers_, i_find_my_disjoint);
 
     //I create my disjoint
     if(!i_find_my_disjoint)
@@ -109,31 +91,13 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
     bool i_find_my_inverse = false;
 
     //is a root my inverse ?
-    for(unsigned int root_i = 0; root_i < roots_.size(); root_i++)
-      if(property_vectors.inverses_[inverses_i] == roots_[root_i]->value_)
-      {
-        me->inverses_.push_back(roots_[root_i]);
-        roots_[root_i]->inverses_.push_back(me);
-        i_find_my_inverse = true;
-      }
+    isMyInverse(me, property_vectors.inverses_[inverses_i], roots_, i_find_my_inverse);
 
     //is a branch my inverse ?
-    for(unsigned int branch_i = 0; branch_i < branchs_.size(); branch_i++)
-      if(property_vectors.inverses_[inverses_i] == branchs_[branch_i]->value_)
-      {
-        me->inverses_.push_back(branchs_[branch_i]);
-        branchs_[branch_i]->inverses_.push_back(me);
-        i_find_my_inverse = true;
-      }
+    isMyInverse(me, property_vectors.inverses_[inverses_i], branchs_, i_find_my_inverse);
 
     //is a tmp mother is my inverse ?
-    for(unsigned int branch_i  =0; branch_i < tmp_mothers_.size(); branch_i++)
-      if(property_vectors.inverses_[inverses_i] == tmp_mothers_[branch_i]->value_)
-      {
-        me->inverses_.push_back(tmp_mothers_[branch_i]);
-        tmp_mothers_[branch_i]->inverses_.push_back(me);
-        i_find_my_inverse = true;
-      }
+    isMyInverse(me, property_vectors.inverses_[inverses_i], tmp_mothers_, i_find_my_inverse);
 
     //I create my inverse
     if(!i_find_my_inverse)
@@ -154,28 +118,13 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
     bool i_find_my_domain = false;
 
     //is a root my domain ?
-    for(unsigned int root_i = 0; root_i < treeObject_->roots_.size(); root_i++)
-      if(property_vectors.domains_[domains_i] == treeObject_->roots_[root_i]->value_)
-      {
-        me->domains_.push_back(treeObject_->roots_[root_i]);
-        i_find_my_domain = true;
-      }
+    isMyDomain(me, property_vectors.domains_[domains_i], treeObject_->roots_, i_find_my_domain);
 
     //is a branch my domain ?
-    for(unsigned int branch_i = 0; branch_i < treeObject_->branchs_.size(); branch_i++)
-      if(property_vectors.domains_[domains_i] == treeObject_->branchs_[branch_i]->value_)
-      {
-        me->domains_.push_back(treeObject_->branchs_[branch_i]);
-        i_find_my_domain = true;
-      }
+    isMyDomain(me, property_vectors.domains_[domains_i], treeObject_->branchs_, i_find_my_domain);
 
     //is a tmp mother is my domain ?
-    for(unsigned int branch_i  =0; branch_i < treeObject_->tmp_mothers_.size(); branch_i++)
-      if(property_vectors.domains_[domains_i] == treeObject_->tmp_mothers_[branch_i]->value_)
-      {
-        me->domains_.push_back(treeObject_->tmp_mothers_[branch_i]);
-        i_find_my_domain = true;
-      }
+    isMyDomain(me, property_vectors.domains_[domains_i], treeObject_->tmp_mothers_, i_find_my_domain);
 
     //I create my domain
     if(!i_find_my_domain)
@@ -200,28 +149,13 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
     bool i_find_my_range = false;
 
     //is a root my range ?
-    for(unsigned int root_i = 0; root_i < treeObject_->roots_.size(); root_i++)
-      if(property_vectors.ranges_[ranges_i] == treeObject_->roots_[root_i]->value_)
-      {
-        me->ranges_.push_back(treeObject_->roots_[root_i]);
-        i_find_my_range = true;
-      }
+    isMyRange(me, property_vectors.ranges_[ranges_i], treeObject_->roots_, i_find_my_range);
 
     //is a branch my range ?
-    for(unsigned int branch_i = 0; branch_i < treeObject_->branchs_.size(); branch_i++)
-      if(property_vectors.ranges_[ranges_i] == treeObject_->branchs_[branch_i]->value_)
-      {
-        me->ranges_.push_back(treeObject_->branchs_[branch_i]);
-        i_find_my_range = true;
-      }
+    isMyRange(me, property_vectors.ranges_[ranges_i], treeObject_->branchs_, i_find_my_range);
 
     //is a tmp mother is my range ?
-    for(unsigned int branch_i  =0; branch_i < treeObject_->tmp_mothers_.size(); branch_i++)
-      if(property_vectors.ranges_[ranges_i] == treeObject_->tmp_mothers_[branch_i]->value_)
-      {
-        me->ranges_.push_back(treeObject_->tmp_mothers_[branch_i]);
-        i_find_my_range = true;
-      }
+    isMyRange(me, property_vectors.ranges_[ranges_i], treeObject_->tmp_mothers_, i_find_my_range);
 
     //I create my range
     if(!i_find_my_range)
@@ -277,28 +211,13 @@ void PropertyGraph::add(std::vector<std::string>& disjoints)
         bool i_find_my_disjoint = false;
 
         //is a root my disjoint ?
-        for(unsigned int root_i = 0; root_i < roots_.size(); root_i++)
-          if(disjoints[disjoints_j] == roots_[root_i]->value_)
-          {
-            me->disjoints_.push_back(roots_[root_i]);
-            i_find_my_disjoint = true;
-          }
+        isMyDisjoint(me, disjoints[disjoints_j], roots_, i_find_my_disjoint, false);
 
         //is a branch my disjoint ?
-        for(unsigned int branch_i = 0; branch_i < branchs_.size(); branch_i++)
-          if(disjoints[disjoints_j] == branchs_[branch_i]->value_)
-          {
-            me->disjoints_.push_back(branchs_[branch_i]);
-            i_find_my_disjoint = true;
-          }
+        isMyDisjoint(me, disjoints[disjoints_j], branchs_, i_find_my_disjoint, false);
 
         //is a tmp mother is my disjoint ?
-        for(unsigned int branch_i  =0; branch_i < tmp_mothers_.size(); branch_i++)
-          if(disjoints[disjoints_j] == tmp_mothers_[branch_i]->value_)
-          {
-            me->disjoints_.push_back(tmp_mothers_[branch_i]);
-            i_find_my_disjoint = true;
-          }
+        isMyDisjoint(me, disjoints[disjoints_j], tmp_mothers_, i_find_my_disjoint, false);
 
         //I create my disjoint
         if(!i_find_my_disjoint)

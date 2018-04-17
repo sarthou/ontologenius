@@ -30,13 +30,13 @@ void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
       bool i_find_my_mother = false;
 
       //is a root my mother ?
-      i_find_my_mother = isMyMother(me, object_vector.mothers_[mothers_i], roots_, i_find_my_mother);
+      isMyMother(me, object_vector.mothers_[mothers_i], roots_, i_find_my_mother);
 
       //is a branch my mother ?
-      i_find_my_mother = isMyMother(me, object_vector.mothers_[mothers_i], branchs_, i_find_my_mother);
+      isMyMother(me, object_vector.mothers_[mothers_i], branchs_, i_find_my_mother);
 
       //is a tmp mother is mine ?
-      i_find_my_mother = isMyMother(me, object_vector.mothers_[mothers_i], tmp_mothers_, i_find_my_mother);
+      isMyMother(me, object_vector.mothers_[mothers_i], tmp_mothers_, i_find_my_mother);
 
       //I create my mother
       if(!i_find_my_mother)
@@ -58,31 +58,13 @@ void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
     bool i_find_my_disjoint = false;
 
     //is a root my disjoint ?
-    for(unsigned int root_i = 0; root_i < roots_.size(); root_i++)
-      if(object_vector.disjoints_[disjoints_i] == roots_[root_i]->value_)
-      {
-        me->disjoints_.push_back(roots_[root_i]);
-        roots_[root_i]->disjoints_.push_back(me);
-        i_find_my_disjoint = true;
-      }
+    isMyDisjoint(me, object_vector.disjoints_[disjoints_i], roots_, i_find_my_disjoint);
 
     //is a branch my disjoint ?
-    for(unsigned int branch_i = 0; branch_i < branchs_.size(); branch_i++)
-      if(object_vector.disjoints_[disjoints_i] == branchs_[branch_i]->value_)
-      {
-        me->disjoints_.push_back(branchs_[branch_i]);
-        branchs_[branch_i]->disjoints_.push_back(me);
-        i_find_my_disjoint = true;
-      }
+    isMyDisjoint(me, object_vector.disjoints_[disjoints_i], branchs_, i_find_my_disjoint);
 
     //is a tmp mother is my disjoint ?
-    for(unsigned int branch_i  =0; branch_i < tmp_mothers_.size(); branch_i++)
-      if(object_vector.disjoints_[disjoints_i] == tmp_mothers_[branch_i]->value_)
-      {
-        me->disjoints_.push_back(tmp_mothers_[branch_i]);
-        tmp_mothers_[branch_i]->disjoints_.push_back(me);
-        i_find_my_disjoint = true;
-      }
+    isMyDisjoint(me, object_vector.disjoints_[disjoints_i], tmp_mothers_, i_find_my_disjoint);
 
     //I create my disjoint
     if(!i_find_my_disjoint)
@@ -130,28 +112,13 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
         bool i_find_my_disjoint = false;
 
         //is a root my disjoint ?
-        for(unsigned int root_i = 0; root_i < roots_.size(); root_i++)
-          if(disjoints[disjoints_j] == roots_[root_i]->value_)
-          {
-            me->disjoints_.push_back(roots_[root_i]);
-            i_find_my_disjoint = true;
-          }
+        isMyDisjoint(me, disjoints[disjoints_j], roots_, i_find_my_disjoint, false);
 
         //is a branch my disjoint ?
-        for(unsigned int branch_i = 0; branch_i < branchs_.size(); branch_i++)
-          if(disjoints[disjoints_j] == branchs_[branch_i]->value_)
-          {
-            me->disjoints_.push_back(branchs_[branch_i]);
-            i_find_my_disjoint = true;
-          }
+        isMyDisjoint(me, disjoints[disjoints_j], branchs_, i_find_my_disjoint, false);
 
         //is a tmp mother is my disjoint ?
-        for(unsigned int branch_i  =0; branch_i < tmp_mothers_.size(); branch_i++)
-          if(disjoints[disjoints_j] == tmp_mothers_[branch_i]->value_)
-          {
-            me->disjoints_.push_back(tmp_mothers_[branch_i]);
-            i_find_my_disjoint = true;
-          }
+        isMyDisjoint(me, disjoints[disjoints_j], tmp_mothers_, i_find_my_disjoint, false);
 
         //I create my disjoint
         if(!i_find_my_disjoint)

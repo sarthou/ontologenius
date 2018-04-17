@@ -64,7 +64,7 @@ protected:
   void link();
   void add_family(B* branch, uint8_t family);
   void amIA(B** me, std::vector<B*>& vect, std::string value, bool erase = true);
-  bool isMyMother(B* me, std::string mother, std::vector<B*>& vect, bool find);
+  void isMyMother(B* me, std::string mother, std::vector<B*>& vect, bool& find);
 };
 
 template <typename B>
@@ -187,19 +187,19 @@ void OntoGraph<B>::amIA(B** me, std::vector<B*>& vect, std::string value, bool e
 }
 
 template <typename B>
-bool OntoGraph<B>::isMyMother(B* me, std::string mother, std::vector<B*>& vect, bool find)
+void OntoGraph<B>::isMyMother(B* me, std::string mother, std::vector<B*>& vect, bool& find)
 {
   if(find)
-    return true;
+    return;
 
   for(unsigned int i = 0; i < vect.size(); i++)
     if(mother == vect[i]->value_)
     {
       vect[i]->childs_.push_back(me);
       me->mothers_.push_back(vect[i]);
-      return true;
+      find = true;
+      break;
     }
-  return false;
 }
 
 template <typename B>

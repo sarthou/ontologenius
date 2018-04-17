@@ -44,6 +44,21 @@ public:
   std::set<std::string> select(std::set<std::string> on, std::string class_selector);
 
 private:
+  void isMyDisjoint(ClassBranch_t* me, std::string disjoint, std::vector<ClassBranch_t*>& vect, bool& find, bool all = true)
+  {
+    if(find)
+      return;
+
+    for(unsigned int i = 0; i < vect.size(); i++)
+      if(disjoint == vect[i]->value_)
+      {
+        me->disjoints_.push_back(vect[i]);
+        if(all)
+          vect[i]->disjoints_.push_back(me);
+        find = true;
+        break;
+      }
+  }
 };
 
 #endif /* TREEOBJECT_H */
