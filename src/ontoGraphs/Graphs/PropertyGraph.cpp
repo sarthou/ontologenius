@@ -6,41 +6,15 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
 /**********************
 ** Mothers
 **********************/
-  //am I a created mother ?
   PropertyClassBranch_t* me = nullptr;
-  for(unsigned int i = 0; i < tmp_mothers_.size(); i++)
-  {
-    if(tmp_mothers_[i]->value_ == value)
-    {
-      me = tmp_mothers_[i];
-      tmp_mothers_.erase(tmp_mothers_.begin() + i);
-      break;
-    }
-  }
+  //am I a created mother ?
+  amIA(&me, tmp_mothers_, value);
 
   //am I a created branch ?
-  if(me == nullptr)
-    for(unsigned int i = 0; i < branchs_.size(); i++)
-    {
-      if(branchs_[i]->value_ == value)
-      {
-        me = branchs_[i];
-        branchs_.erase(branchs_.begin() + i);
-        break;
-      }
-    }
+  amIA(&me, branchs_, value);
 
   //am I a created root ?
-  if(me == nullptr)
-    for(unsigned int i = 0; i < roots_.size(); i++)
-    {
-      if(roots_[i]->value_ == value)
-      {
-        me = roots_[i];
-        roots_.erase(roots_.begin() + i);
-        break;
-      }
-    }
+  amIA(&me, roots_, value);
 
   //am I created ?
   if(me == nullptr)
@@ -59,31 +33,13 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
       bool i_find_my_mother = false;
 
       //is a root my mother ?
-      for(unsigned int root_i = 0; root_i < roots_.size(); root_i++)
-        if(property_vectors.mothers_[mothers_i] == roots_[root_i]->value_)
-        {
-          roots_[root_i]->childs_.push_back(me);
-          me->mothers_.push_back(roots_[root_i]);
-          i_find_my_mother = true;
-        }
+      i_find_my_mother = isMyMother(me, property_vectors.mothers_[mothers_i], roots_, i_find_my_mother);
 
       //is a branch my mother ?
-      for(unsigned int branch_i = 0; branch_i < branchs_.size(); branch_i++)
-        if(property_vectors.mothers_[mothers_i] == branchs_[branch_i]->value_)
-        {
-          branchs_[branch_i]->childs_.push_back(me);
-          me->mothers_.push_back(branchs_[branch_i]);
-          i_find_my_mother = true;
-        }
+      i_find_my_mother = isMyMother(me, property_vectors.mothers_[mothers_i], branchs_, i_find_my_mother);
 
       //is a tmp mother is mine ?
-      for(unsigned int branch_i  =0; branch_i < tmp_mothers_.size(); branch_i++)
-        if(property_vectors.mothers_[mothers_i] == tmp_mothers_[branch_i]->value_)
-        {
-          tmp_mothers_[branch_i]->childs_.push_back(me);
-          me->mothers_.push_back(tmp_mothers_[branch_i]);
-          i_find_my_mother = true;
-        }
+      i_find_my_mother = isMyMother(me, property_vectors.mothers_[mothers_i], tmp_mothers_, i_find_my_mother);
 
       //I create my mother
       if(!i_find_my_mother)
@@ -297,21 +253,13 @@ void PropertyGraph::add(std::vector<std::string>& disjoints)
     //I need to find myself
     PropertyClassBranch_t* me = nullptr;
     //Am I a root ?
-    for(unsigned int root_i = 0; root_i < roots_.size(); root_i++)
-      if(disjoints[disjoints_i] == roots_[root_i]->value_)
-        me = roots_[root_i];
+    amIA(&me, roots_, disjoints[disjoints_i], false);
 
     //Am I a branch ?
-    if(me == nullptr)
-      for(unsigned int branch_i = 0; branch_i < branchs_.size(); branch_i++)
-        if(disjoints[disjoints_i] == branchs_[branch_i]->value_)
-          me = branchs_[branch_i];
+    amIA(&me, branchs_, disjoints[disjoints_i], false);
 
     //Am I a tmp_mother ?
-    if(me == nullptr)
-      for(unsigned int branch_i  =0; branch_i < tmp_mothers_.size(); branch_i++)
-        if(disjoints[disjoints_i] == tmp_mothers_[branch_i]->value_)
-          me = tmp_mothers_[branch_i];
+    amIA(&me, tmp_mothers_, disjoints[disjoints_i], false);
 
     // I don't exist ? so I will be a tmp_mother
     if(me == nullptr)
