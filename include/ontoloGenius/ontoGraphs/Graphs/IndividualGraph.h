@@ -62,6 +62,8 @@ public:
   std::set<std::string> getFrom(std::string individual, std::string property);
   std::set<std::string> getOn(std::string param);
   std::set<std::string> getOn(std::string individual, std::string property);
+  std::set<std::string> getWith(std::string param);
+  std::set<std::string> getWith(std::string first_individual, std::string second_individual);
   std::set<std::string> getUp(std::string individual);            //C3
   std::set<std::string> select(std::set<std::string> on, std::string class_selector);
   std::string getName(std::string& value);

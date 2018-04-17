@@ -11,6 +11,8 @@ public:
   ~ClassChecker() {}
 
   size_t check();
+  void printStatus(){ValidityChecker<ClassBranch_t>::printStatus("class", "classes", graph_.size());}
+
 private:
   void checkDisjoint();
 

@@ -279,7 +279,7 @@
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getDistincts&lt;/span&gt; will give you all the defined individuals as being distinct from the one given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/individual &amp;quot;{param: 'blueCube', action: 'getDistincts'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
-             <string>getDistinct</string>
+             <string>getDistincts</string>
             </property>
            </widget>
           </item>
@@ -390,6 +390,16 @@
             </property>
             <property name="text">
              <string>getFrom</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Individual_getWith">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getWith&lt;/span&gt; will give you all the properties linking the two individuals given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/individual &quot;{param: 'blueCube:redCube', action: 'getWith'}&quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Here we asked all the properties for whom 'blueCube' is related to 'redCube' them&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getWith</string>
             </property>
            </widget>
           </item>
