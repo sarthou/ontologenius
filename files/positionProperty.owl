@@ -73,6 +73,10 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#area"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isOn"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isIn"/>
+        </owl:propertyChainAxiom>
     </owl:ObjectProperty>
     
 

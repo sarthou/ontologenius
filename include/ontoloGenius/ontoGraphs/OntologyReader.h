@@ -42,7 +42,7 @@ private:
   void read_description(TiXmlElement* elem);
   void read_individual_description(TiXmlElement* elem);
   void read_property(TiXmlElement* elem);
-  void readCollection(std::vector<std::string>& vect, TiXmlElement* elem, std::string symbol);
+  void readCollection(std::vector<std::string>& vect, TiXmlElement* elem, std::string symbol, size_t level = 1);
 
   inline void push(std::vector<std::string>& vect, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   inline void push(std::vector<std::string>& vect, std::string elem, std::string symbole);

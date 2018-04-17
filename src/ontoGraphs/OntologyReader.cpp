@@ -76,7 +76,7 @@ int OntologyReader::read(TiXmlElement* rdf, std::string name)
     std::cout << name << std::endl;
     std::cout << "************************************" << std::endl;
     std::cout << "+ sub       | > domain  | @ language" << std::endl;
-    std::cout << "- disjoint  | < range   | " << std::endl;
+    std::cout << "- disjoint  | < range   | . chain axiom" << std::endl;
     std::cout << "/ inverse   | * type    | " << std::endl;
     std::cout << "************************************" << std::endl;
     std::cout << "├── Class" << std::endl;
@@ -285,6 +285,12 @@ void OntologyReader::read_property(TiXmlElement* elem)
           push(propertyVectors.properties_, subElem, "*");
         else if(subElemName == "rdfs:label")
           pushLang(propertyVectors.dictionary_, subElem);
+        else if(subElemName == "owl:propertyChainAxiom")
+        {
+          std::vector<std::string> tmp;
+          readCollection(tmp, subElem, ".", 2);
+          propertyVectors.chains_.push_back(tmp);
+        }
       }
     }
 
@@ -293,7 +299,7 @@ void OntologyReader::read_property(TiXmlElement* elem)
   }
 }
 
-void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement* elem, std::string symbol)
+void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement* elem, std::string symbol, size_t level)
 {
   for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
   {
@@ -304,12 +310,14 @@ void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement
       subAttr = subElem->Attribute("rdf:about");
       if(subAttr != NULL)
       {
+        for(size_t i = 0; i < level; i++)
+          std::cout << "│   ";
         if(subElem == elem->FirstChildElement())
-          std::cout << "│   ├───┬── " << symbol;
+          std::cout << "├───┬── " << symbol;
         else if(subElem->NextSiblingElement() == NULL)
-          std::cout << "│   │   └── " << symbol;
+          std::cout << "│   └── " << symbol;
         else
-          std::cout << "│   │   ├── " << symbol;
+          std::cout << "│   ├── " << symbol;
         std::cout << get_name(std::string(subAttr)) << std::endl;
         vect.push_back(get_name(std::string(subAttr)));
       }

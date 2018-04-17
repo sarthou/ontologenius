@@ -50,6 +50,7 @@ struct PropertyVectors_t
    std::vector<std::string> inverses_;
    std::vector<std::string> domains_;
    std::vector<std::string> ranges_;
+   std::vector<std::vector<std::string>> chains_;
    Properties_t properties_;
    std::map<std::string, std::string> dictionary_;
 };
