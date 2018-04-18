@@ -171,13 +171,51 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
     }
   }
 
-  //////
-  // Construction and language properties
-  //////
+  /**********************
+  ** Language and properties
+  **********************/
   me->properties_ = property_vectors.properties_;
   me->dictionary_ = property_vectors.dictionary_;
   if(me->dictionary_.find("en") == me->dictionary_.end())
     me->dictionary_["en"] = me->value_;
+
+  /**********************
+  ** Chain axiom
+  **********************/
+  for(size_t chain_i = 0; chain_i < property_vectors.chains_.size(); chain_i++)
+  {
+    std::vector<PropertyClassBranch_t*> chain;
+    PropertyClassBranch_t* fisrt = nullptr;
+
+    for(size_t i = 0; i < property_vectors.chains_[chain_i].size(); i++)
+    {
+      PropertyClassBranch_t* next = nullptr;
+
+      //is a root my next ?
+      getNextChainLink(&next, property_vectors.chains_[chain_i][i], roots_);
+
+      //is a branch my next ?
+      getNextChainLink(&next, property_vectors.chains_[chain_i][i], branchs_);
+
+      //is a tmp mother is my next ?
+      getNextChainLink(&next, property_vectors.chains_[chain_i][i], tmp_mothers_);
+
+      if(next == nullptr)
+      {
+        next = new struct PropertyClassBranch_t(property_vectors.chains_[chain_i][i]);
+        tmp_mothers_.push_back(next);
+      }
+
+      if(fisrt == nullptr)
+        fisrt = next;
+      else
+        chain.push_back(next);
+    }
+
+    chain.push_back(me);
+    fisrt->chains_.push_back(chain);
+  }
+
 }
 
 void PropertyGraph::add(std::vector<std::string>& disjoints)

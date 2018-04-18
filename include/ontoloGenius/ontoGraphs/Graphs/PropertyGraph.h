@@ -38,6 +38,7 @@ public:
   std::vector<PropertyClassBranch_t*> inverses_;
   std::vector<ClassBranch_t*> domains_;
   std::vector<ClassBranch_t*> ranges_;
+  std::vector<std::vector<PropertyClassBranch_t*>> chains_;
   Properties_t properties_;
 
   PropertyClassBranch_t(std::string value) : Branch_t(value) {};
@@ -135,6 +136,19 @@ private:
         me->ranges_.push_back(vect[i]);
         find = true;
         break;
+      }
+  }
+
+  void getNextChainLink(PropertyClassBranch_t** next, std::string next_link, std::vector<PropertyClassBranch_t*>& vect)
+  {
+    if(*next == nullptr)
+      for(unsigned int i = 0; i < vect.size(); i++)
+      {
+        if(vect[i]->value_ == next_link)
+        {
+          *next = vect[i];
+          break;
+        }
       }
   }
 };

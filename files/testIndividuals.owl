@@ -13,7 +13,7 @@
         <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute"/>
         <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty"/>
     </owl:Ontology>
-
+    
 
 
     <!--
@@ -38,6 +38,15 @@
 
 
 
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blue_book -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blue_book">
+        <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#book"/>
+        <positionProperty:isInFrontOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#redCube"/>
+    </owl:NamedIndividual>
+
+
+
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#cube1 -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#cube1">
@@ -50,8 +59,8 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#greenCube">
         <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#cube"/>
-        <positionProperty:isOn rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blueCube"/>
         <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#green"/>
+        <positionProperty:isOn rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blueCube"/>
     </owl:NamedIndividual>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NegativePropertyAssertion"/>
