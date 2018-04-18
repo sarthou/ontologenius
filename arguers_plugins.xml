@@ -3,6 +3,9 @@
     <description>This is a arguer test plugin.</description>
   </class>
   <class type="ArguerInverseOf" base_class_type="ArguerInterface">
-    <description>This is en arguer for inverso of axiom.</description>
+    <description>This is en arguer for invers of axiom.</description>
+  </class>
+  <class type="ArguerSymetric" base_class_type="ArguerInterface">
+    <description>This is en arguer for symetric axiom.</description>
   </class>
 </library>

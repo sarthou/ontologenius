@@ -111,6 +111,15 @@
     
 
 
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isInFrontOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isInFrontOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isPositioned"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isInHand -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isInHand">
