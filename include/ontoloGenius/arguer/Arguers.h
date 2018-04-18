@@ -24,12 +24,14 @@ public:
 
   void runPreArguers();
   void runPostArguers();
+
 private:
   Ontology* ontology_;
   std::map<std::string, ArguerInterface*> arguers_;
   std::map<std::string, ArguerInterface*> active_arguers_;
 
   pluginlib::ClassLoader<ArguerInterface> loader_;
+
 };
 
 #endif

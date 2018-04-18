@@ -35,6 +35,7 @@ void ArguerInverseOf::insetInverse(IndividualBranch_t* indiv_on, PropertyClassBr
 
   indiv_on->properties_name_.push_back(inv_prop);
   indiv_on->properties_on_.push_back(inv_indiv);
+  nb_update_++;
 }
 
 std::string ArguerInverseOf::getName()

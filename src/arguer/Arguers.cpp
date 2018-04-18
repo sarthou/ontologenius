@@ -125,7 +125,16 @@ void Arguers::runPreArguers()
 
 void Arguers::runPostArguers()
 {
-  std::map<std::string, ArguerInterface*>::iterator it;
-  for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
-    it->second->postReason();
+  size_t nb_updates = 0;
+
+  do
+  {
+    std::map<std::string, ArguerInterface*>::iterator it;
+    for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
+      it->second->postReason();
+
+    nb_updates = ArguerInterface::getNbUpdates();
+    ArguerInterface::resetNbUpdates();
+  }
+  while(nb_updates!= 0);
 }
