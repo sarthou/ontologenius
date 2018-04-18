@@ -9,7 +9,9 @@ size_t IndividualChecker::check()
   checkDomain();
 
   checkRange();
-  
+
+  checkAssymetric();
+
   is_analysed = true;
   printStatus();
 
@@ -87,4 +89,28 @@ void IndividualChecker::checkRange()
       }
     }
   }
+}
+
+void IndividualChecker::checkAssymetric()
+{
+  for(size_t i = 0; i < graph_.size(); i++)
+  {
+    for(size_t prop_i = 0; prop_i < graph_[i]->properties_name_.size(); prop_i++)
+    {
+      if(graph_[i]->properties_name_[prop_i]->properties_.antisymetric_property_)
+        if(symetricExist(graph_[i], graph_[i]->properties_name_[prop_i], graph_[i]->properties_on_[prop_i]))
+          print_error("'" + graph_[i]->properties_name_[prop_i]->value_ + "' is antisymetric so can't be from '" + graph_[i]->value_ + "' to '" + graph_[i]->properties_on_[prop_i]->value_ + "' and inverse");
+    }
+  }
+}
+
+bool IndividualChecker::symetricExist(IndividualBranch_t* indiv_on, PropertyClassBranch_t* sym_prop, IndividualBranch_t* sym_indiv)
+{
+  for(size_t i = 0; i < sym_indiv->properties_name_.size(); i++)
+  {
+    if(sym_indiv->properties_name_[i]->value_ == sym_prop->value_)
+      if(sym_indiv->properties_on_[i]->value_ == indiv_on->value_)
+        return true;
+  }
+  return false;
 }

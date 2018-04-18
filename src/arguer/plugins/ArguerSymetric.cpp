@@ -3,6 +3,11 @@
 
 void ArguerSymetric::preReason()
 {
+
+}
+
+void ArguerSymetric::postReason()
+{
   std::vector<IndividualBranch_t*> indiv = ontology_->individuals_.get();
   for(size_t indiv_i = 0; indiv_i < indiv.size(); indiv_i++)
   {
@@ -16,6 +21,7 @@ void ArguerSymetric::preReason()
         {
           sym_indiv->properties_name_.push_back(sym_prop);
           sym_indiv->properties_on_.push_back(indiv[indiv_i]);
+          nb_update_++;
         }
       }
     }
@@ -31,11 +37,6 @@ bool ArguerSymetric::symetricExist(IndividualBranch_t* indiv_on, PropertyClassBr
         return true;
   }
   return false;
-}
-
-void ArguerSymetric::postReason()
-{
-  //put your post-reasonning here
 }
 
 std::string ArguerSymetric::getName()

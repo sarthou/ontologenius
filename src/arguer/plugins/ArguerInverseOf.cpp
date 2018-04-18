@@ -3,6 +3,11 @@
 
 void ArguerInverseOf::preReason()
 {
+
+}
+
+void ArguerInverseOf::postReason()
+{
   std::vector<IndividualBranch_t*> indiv = ontology_->individuals_.get();
   for(size_t indiv_i = 0; indiv_i < indiv.size(); indiv_i++)
   {
@@ -19,11 +24,6 @@ void ArguerInverseOf::preReason()
   }
 }
 
-void ArguerInverseOf::postReason()
-{
-  //put your post-reasonning here
-}
-
 void ArguerInverseOf::insetInverse(IndividualBranch_t* indiv_on, PropertyClassBranch_t* inv_prop, IndividualBranch_t* inv_indiv)
 {
   for(size_t i = 0; i < indiv_on->properties_name_.size(); i++)
@@ -35,6 +35,7 @@ void ArguerInverseOf::insetInverse(IndividualBranch_t* indiv_on, PropertyClassBr
 
   indiv_on->properties_name_.push_back(inv_prop);
   indiv_on->properties_on_.push_back(inv_indiv);
+  nb_update_++;
 }
 
 std::string ArguerInverseOf::getName()
