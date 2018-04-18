@@ -8,4 +8,7 @@
   <class type="ArguerSymetric" base_class_type="ArguerInterface">
     <description>This is en arguer for symetric axiom.</description>
   </class>
+  <class type="ArguerChain" base_class_type="ArguerInterface">
+    <description>This is en arguer for properties chain axiom.</description>
+  </class>
 </library>
