@@ -19,6 +19,9 @@ private:
   void checkReflexive();
   void checkDomain();
   void checkRange();
+  void checkAssymetric();
+
+  bool symetricExist(IndividualBranch_t* indiv_on, PropertyClassBranch_t* sym_prop, IndividualBranch_t* sym_indiv);
 };
 
 #endif
