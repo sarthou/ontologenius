@@ -31,13 +31,12 @@ int Ontology::close()
 
   ClassChecker classChecker(&classes_);
   PropertyChecker propertyChecker(&properties_);
+  IndividualChecker individualChecker(&individuals_);
 
   size_t err = classChecker.check();
   err += propertyChecker.check();
 
-  if(err)
-    return -1;
-  else
+  if(err == 0)
   {
     reader.displayIndividualRules();
 
@@ -51,12 +50,27 @@ int Ontology::close()
 
     individuals_.close();
 
-    IndividualChecker individualChecker(&individuals_);
+    individualChecker = IndividualChecker(&individuals_);
     err += individualChecker.check();
 
     is_init_ = true;
-    return 0;
   }
+
+  std::cout << std::endl << std::endl << "***************SUMMARY****************" << std::endl;
+  if(is_init_)
+    std::cout << "Ontology is closed :" << std::endl;
+  else
+    std::cout << "Ontology is not closed :" << std::endl;
+
+  classChecker.printStatus();
+  propertyChecker.printStatus();
+  individualChecker.printStatus();
+  std::cout << "**************************************" << std::endl;
+
+  if(err)
+    return -1;
+  else
+    return 0;
 }
 
 int Ontology::readFromUri(std::string uri)

@@ -14,6 +14,8 @@ public:
 
   std::string getName();
   std::string getDesciption();
+
+  bool defaultAvtive() {return true;}
 private:
 
   void insetInverse(IndividualBranch_t* indiv_on, PropertyClassBranch_t* inv_prop, IndividualBranch_t* inv_indiv);

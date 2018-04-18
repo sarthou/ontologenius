@@ -11,6 +11,7 @@ public:
   ~IndividualChecker() {}
 
   size_t check();
+  void printStatus(){ValidityChecker<IndividualBranch_t>::printStatus(std::string("individual"), std::string("individuals"), graph_.size());}
 private:
   IndividualGraph* individual_graph_;
 
@@ -18,6 +19,9 @@ private:
   void checkReflexive();
   void checkDomain();
   void checkRange();
+  void checkAssymetric();
+
+  bool symetricExist(IndividualBranch_t* indiv_on, PropertyClassBranch_t* sym_prop, IndividualBranch_t* sym_indiv);
 };
 
 #endif

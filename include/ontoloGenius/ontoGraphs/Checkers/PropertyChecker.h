@@ -11,6 +11,7 @@ public:
   ~PropertyChecker() {}
 
   size_t check();
+  void printStatus(){ValidityChecker<PropertyClassBranch_t>::printStatus(std::string("property"), std::string("properties"), graph_.size());}
 private:
   void checkDisjoint();
   void checkCharacteristics();

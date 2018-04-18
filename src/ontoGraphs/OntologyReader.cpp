@@ -76,7 +76,7 @@ int OntologyReader::read(TiXmlElement* rdf, std::string name)
     std::cout << name << std::endl;
     std::cout << "************************************" << std::endl;
     std::cout << "+ sub       | > domain  | @ language" << std::endl;
-    std::cout << "- disjoint  | < range   | " << std::endl;
+    std::cout << "- disjoint  | < range   | . chain axiom" << std::endl;
     std::cout << "/ inverse   | * type    | " << std::endl;
     std::cout << "************************************" << std::endl;
     std::cout << "├── Class" << std::endl;
@@ -207,40 +207,15 @@ void OntologyReader::read_description(TiXmlElement* elem)
       {
         subAttr = subElem->Attribute("rdf:resource");
         if(subAttr != NULL)
-        {
           if(get_name(std::string(subAttr)) == "AllDisjointClasses")
             isDisjointAll = true;
-        }
       }
       else if(subElemName == "owl:members")
       {
         subAttr = subElem->Attribute("rdf:parseType");
         if(subAttr != NULL)
-        {
           if(std::string(subAttr) == "Collection")
-          {
-            for(TiXmlElement* subSubElem = subElem->FirstChildElement(); subSubElem != NULL; subSubElem = subSubElem->NextSiblingElement())
-            {
-              std::string subSubElemName = subSubElem->Value();
-              const char* subSubAttr;
-              if(subSubElemName == "rdf:Description")
-              {
-                subSubAttr = subSubElem->Attribute("rdf:about");
-                if(subSubAttr != NULL)
-                {
-                  if(subSubElem == subElem->FirstChildElement())
-                    std::cout << "│   ├───┬── -";
-                  else if(subSubElem->NextSiblingElement() == NULL)
-                    std::cout << "│   │   └── -";
-                  else
-                    std::cout << "│   │   ├── -";
-                  std::cout << get_name(std::string(subSubAttr)) << std::endl;
-                  disjoints.push_back(get_name(std::string(subSubAttr)));
-                }
-              }
-            }
-          }
-        }
+            readCollection(disjoints, subElem, "-");
       }
     }
     m_objTree->add(disjoints);
@@ -263,40 +238,15 @@ void OntologyReader::read_individual_description(TiXmlElement* elem)
       {
         subAttr = subElem->Attribute("rdf:resource");
         if(subAttr != NULL)
-        {
           if(get_name(std::string(subAttr)) == "AllDifferent")
             isDistincttAll = true;
-        }
       }
       else if(subElemName == "owl:distinctMembers")
       {
         subAttr = subElem->Attribute("rdf:parseType");
         if(subAttr != NULL)
-        {
           if(std::string(subAttr) == "Collection")
-          {
-            for(TiXmlElement* subSubElem = subElem->FirstChildElement(); subSubElem != NULL; subSubElem = subSubElem->NextSiblingElement())
-            {
-              std::string subSubElemName = subSubElem->Value();
-              const char* subSubAttr;
-              if(subSubElemName == "rdf:Description")
-              {
-                subSubAttr = subSubElem->Attribute("rdf:about");
-                if(subSubAttr != NULL)
-                {
-                  if(subSubElem == subElem->FirstChildElement())
-                    std::cout << "│   ├───┬── -";
-                  else if(subSubElem->NextSiblingElement() == NULL)
-                    std::cout << "│   │   └── -";
-                  else
-                    std::cout << "│   │   ├── -";
-                  std::cout << get_name(std::string(subSubAttr)) << std::endl;
-                  distincts.push_back(get_name(std::string(subSubAttr)));
-                }
-              }
-            }
-          }
-        }
+            readCollection(distincts, subElem, "-");
       }
     }
     if(isDistincttAll)
@@ -335,11 +285,43 @@ void OntologyReader::read_property(TiXmlElement* elem)
           push(propertyVectors.properties_, subElem, "*");
         else if(subElemName == "rdfs:label")
           pushLang(propertyVectors.dictionary_, subElem);
+        else if(subElemName == "owl:propertyChainAxiom")
+        {
+          std::vector<std::string> tmp;
+          readCollection(tmp, subElem, ".", 2);
+          propertyVectors.chains_.push_back(tmp);
+        }
       }
     }
 
     m_propTree->add(node_name, propertyVectors);
     elemLoaded++;
+  }
+}
+
+void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement* elem, std::string symbol, size_t level)
+{
+  for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
+  {
+    std::string subElemName = subElem->Value();
+    const char* subAttr;
+    if(subElemName == "rdf:Description")
+    {
+      subAttr = subElem->Attribute("rdf:about");
+      if(subAttr != NULL)
+      {
+        for(size_t i = 0; i < level; i++)
+          std::cout << "│   ";
+        if(subElem == elem->FirstChildElement())
+          std::cout << "├───┬── " << symbol;
+        else if(subElem->NextSiblingElement() == NULL)
+          std::cout << "│   └── " << symbol;
+        else
+          std::cout << "│   ├── " << symbol;
+        std::cout << get_name(std::string(subAttr)) << std::endl;
+        vect.push_back(get_name(std::string(subAttr)));
+      }
+    }
   }
 }
 
