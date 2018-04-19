@@ -166,7 +166,7 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
     else if(req.action == "getWith")
       set_res = onto.individuals_.getWith(req.param);
     else if(req.action == "getName")
-      res.value = onto.properties_.getName(req.param);
+      res.value = onto.individuals_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
 
