@@ -444,10 +444,9 @@ std::set<std::string> IndividualGraph::getWith(std::string first_individual, std
   return res;
 }
 
-std::set<std::string> IndividualGraph::getUp(std::string individual)
+std::set<std::string> IndividualGraph::getUp(IndividualBranch_t* indiv)
 {
   std::set<std::string> res;
-  IndividualBranch_t* indiv = container_.find(individual);
   if(indiv != nullptr)
   {
     std::set<IndividualBranch_t*> sames = getSame(indiv);
@@ -461,6 +460,12 @@ std::set<std::string> IndividualGraph::getUp(std::string individual)
       }
   }
   return res;
+}
+
+std::set<std::string> IndividualGraph::getUp(std::string individual)
+{
+  IndividualBranch_t* indiv = container_.find(individual);
+  return getUp(indiv);
 }
 
 std::set<IndividualBranch_t*> IndividualGraph::getSame(IndividualBranch_t* individual)
@@ -508,6 +513,18 @@ std::string IndividualGraph::getName(std::string& value)
       res = value;
   }
 
+  return res;
+}
+
+std::set<std::string> IndividualGraph::getType(std::string class_selector)
+{
+  std::set<std::string> res;
+  for(size_t i = 0; i < individuals_.size(); i++)
+  {
+    std::set<std::string> tmp = getUp(individuals_[i]);
+    if(tmp.find(class_selector) != tmp.end())
+      res.insert(individuals_[i]->value_);
+  }
   return res;
 }
 
