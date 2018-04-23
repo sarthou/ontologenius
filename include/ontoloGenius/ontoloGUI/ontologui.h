@@ -42,6 +42,7 @@ public slots:
   void ClasshoverLeaveSlot();
   void PropertyhoverEnterSlot();
   void PropertyhoverLeaveSlot();
+  void IndividualCheckBoxhoverEnterSlot();
   void IndividualhoverEnterSlot();
   void IndividualhoverLeaveSlot();
   void classClickedSlot();

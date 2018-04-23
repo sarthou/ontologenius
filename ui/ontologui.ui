@@ -240,6 +240,16 @@
           <item>
            <widget class="QLineEdit" name="individualParameter"/>
           </item>
+          <item>
+           <widget class="QCheckBoxExtended" name="Individual_select">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;select&lt;/span&gt;  is an option that allows you to make a first selection before returning the result. This option can be used with all previous functions. You select in the normal result of the function only the words of the same class/property as the given parameter. &lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/individual &amp;quot;{param: 'selector=your_word', action: 'select:your_function'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Select</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
@@ -280,6 +290,36 @@
             </property>
             <property name="text">
              <string>getDistincts</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_15">
+          <item>
+           <widget class="QPushButtonExtended" name="Individual_getName">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getName&lt;/span&gt; will give you the label of the individual given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/individual &amp;quot;{param: 'cube1', action: 'getName'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getName</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Individual_getType">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getType&lt;/span&gt; will give you all the individuals of the type of the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/individual &amp;quot;{param: 'cube1', action: 'getType'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getType</string>
             </property>
            </widget>
           </item>
@@ -563,6 +603,11 @@ p, li { white-space: pre-wrap; }
    <class>QPushButtonExtended</class>
    <extends>QPushButton</extends>
    <header>include/ontoloGenius/ontoloGUI/qpushbuttonextended.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QCheckBoxExtended</class>
+   <extends>QCheckBox</extends>
+   <header>include/ontoloGenius/ontoloGUI/QCheckBoxExtended.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
