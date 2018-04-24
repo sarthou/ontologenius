@@ -516,6 +516,18 @@ std::string IndividualGraph::getName(std::string& value)
   return res;
 }
 
+std::set<std::string> IndividualGraph::find(std::string& value)
+{
+  std::set<std::string> res;
+  for(size_t i = 0; i < individuals_.size(); i++)
+  {
+    if(individuals_[i]->dictionary_.find(language_) != individuals_[i]->dictionary_.end())
+      if(individuals_[i]->dictionary_[language_] == value)
+        res.insert(individuals_[i]->value_);
+  }
+  return res;
+}
+
 std::set<std::string> IndividualGraph::getType(std::string class_selector)
 {
   std::set<std::string> res;

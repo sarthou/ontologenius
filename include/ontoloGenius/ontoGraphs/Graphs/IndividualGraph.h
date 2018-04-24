@@ -68,6 +68,7 @@ public:
   std::set<std::string> getUp(std::string individual);            //C3
   std::set<std::string> select(std::set<std::string> on, std::string class_selector);
   std::string getName(std::string& value);
+  std::set<std::string> find(std::string& value);
   std::set<std::string> getType(std::string class_selector);
 
 private:

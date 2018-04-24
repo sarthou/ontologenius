@@ -311,6 +311,19 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButtonExtended" name="Individual_find">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;find&lt;/span&gt; will give you all the individuals with the label given in parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/individual &amp;quot;{param: 'cube1', action: 'find'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>find</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButtonExtended" name="Individual_getType">
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
