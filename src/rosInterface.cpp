@@ -13,6 +13,15 @@
 
 using namespace std;
 
+void removeUselessSpace(std::string& text)
+{
+  while((text[0] == ' ') && (text.size() != 0))
+    text.erase(0,1);
+
+  while((text[text.size() - 1] == ' ') && (text.size() != 0))
+    text.erase(text.size() - 1,1);
+}
+
 std::string set2string(std::set<std::string> word_set)
 {
   string result = "";
@@ -30,6 +39,9 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
   bool done = false;
   res.value = "";
   res.code = 0;
+
+  removeUselessSpace(req.action);
+  removeUselessSpace(req.param);
 
   if(req.action == "add")
     res.code = onto.readFromUri(req.param);
@@ -67,6 +79,9 @@ bool class_handle(ontologenius::standard_service::Request  &req,
   else
     arguers.runPreArguers();
 
+  removeUselessSpace(req.action);
+  removeUselessSpace(req.param);
+
   if(res.code != UNINIT)
     if(req.action == "getDown")
       res.value = set2string(onto.classes_.getDown(req.param));
@@ -93,6 +108,9 @@ bool property_handle(ontologenius::standard_service::Request  &req,
     res.code = UNINIT;
   else
     arguers.runPreArguers();
+
+  removeUselessSpace(req.action);
+  removeUselessSpace(req.param);
 
   if(res.code != UNINIT)
     if(req.action == "getDown")
@@ -127,6 +145,9 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
   else
     arguers.runPreArguers();
 
+  removeUselessSpace(req.action);
+  removeUselessSpace(req.param);
+
   std::set<std::string> set_res;
   std::string select = "";
   if(req.action.find("select:") == 0)
@@ -137,7 +158,11 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
     {
       select = req.param.substr(0, delimitater);
       req.param = req.param.substr(delimitater+1);
+
+      removeUselessSpace(select);
+      removeUselessSpace(req.param);
     }
+    removeUselessSpace(req.action);
   }
 
   if(res.code != UNINIT)
