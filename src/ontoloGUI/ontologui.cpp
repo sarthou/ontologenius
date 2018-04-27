@@ -54,6 +54,14 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Individual_getFrom, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
     QObject::connect(ui->Individual_getWith, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
     QObject::connect(ui->Individual_getWith, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
+    QObject::connect(ui->Individual_getName, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
+    QObject::connect(ui->Individual_getName, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
+    QObject::connect(ui->Individual_find, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
+    QObject::connect(ui->Individual_find, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
+    QObject::connect(ui->Individual_getType, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
+    QObject::connect(ui->Individual_getType, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
+    QObject::connect(ui->Individual_select, SIGNAL(hoverEnter()),this, SLOT(IndividualCheckBoxhoverEnterSlot()));
+    QObject::connect(ui->Individual_select, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
 
     QObject::connect(ui->Class_getUp, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
     QObject::connect(ui->Class_getDown, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
@@ -78,6 +86,9 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Individual_getOn, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_getFrom, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_getWith, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
+    QObject::connect(ui->Individual_getName, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
+    QObject::connect(ui->Individual_find, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
+    QObject::connect(ui->Individual_getType, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
 
     QObject::connect(ui->CloseButton, SIGNAL(clicked()),this, SLOT(closeOntologySlot()));
 }
@@ -127,6 +138,12 @@ void ontoloGUI::PropertyhoverLeaveSlot()
 {
   ui->PropertyDescription->setText("");
 }
+
+void ontoloGUI::IndividualCheckBoxhoverEnterSlot()
+{
+  ui->IndividualDescription->setText(((QCheckBoxExtended*)sender())->whatsThis());
+}
+
 void ontoloGUI::IndividualhoverEnterSlot()
 {
   ui->IndividualDescription->setText(((QPushButtonExtended*)sender())->whatsThis());
@@ -184,7 +201,10 @@ void ontoloGUI::individualClickedSlot()
   ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontoloGenius/individual");
 
   ontologenius::standard_service srv;
-  srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
+  if(ui->Individual_select->checkState() == 0)
+    srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
+  else
+    srv.request.action = "select:" + ((QPushButtonExtended*)sender())->text().toStdString();
   srv.request.param = ui->individualParameter->text().toStdString();
   QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->individualParameter->text();
   ui->IndividualDescription->setText(text);

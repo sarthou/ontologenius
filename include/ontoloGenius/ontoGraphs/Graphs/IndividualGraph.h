@@ -64,9 +64,12 @@ public:
   std::set<std::string> getOn(std::string individual, std::string property);
   std::set<std::string> getWith(std::string param);
   std::set<std::string> getWith(std::string first_individual, std::string second_individual);
+  std::set<std::string> getUp(IndividualBranch_t* indiv);
   std::set<std::string> getUp(std::string individual);            //C3
   std::set<std::string> select(std::set<std::string> on, std::string class_selector);
   std::string getName(std::string& value);
+  std::set<std::string> find(std::string& value);
+  std::set<std::string> getType(std::string class_selector);
 
 private:
   ClassGraph* classes_;
