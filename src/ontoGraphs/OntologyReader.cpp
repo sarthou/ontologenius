@@ -5,18 +5,18 @@
 
 #include "ontoloGenius/utility/utility.h"
 
-OntologyReader::OntologyReader(ClassGraph* p_objTree, ObjectPropertyGraph* p_propTree, IndividualGraph* individual_graph)
+OntologyReader::OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* property_graph, IndividualGraph* individual_graph)
 {
-  m_objTree = p_objTree;
-  m_propTree = p_propTree;
+  class_graph_ = class_graph;
+  property_graph_ = property_graph;
   individual_graph_ = individual_graph;
   elemLoaded = 0;
 }
 
 OntologyReader::OntologyReader(Ontology& onto)
 {
-  m_objTree = &onto.classes_;
-  m_propTree = &onto.properties_;
+  class_graph_ = &onto.classes_;
+  property_graph_ = &onto.properties_;
   individual_graph_ = &onto.individuals_;
   elemLoaded = 0;
 }
@@ -81,13 +81,13 @@ int OntologyReader::read(TiXmlElement* rdf, std::string name)
     std::cout << "************************************" << std::endl;
     std::cout << "├── Class" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
-      read_class(elem);
+      readClass(elem);
     std::cout << "├── Description" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
-      read_description(elem);
+      readDescription(elem);
     std::cout << "├── Property" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
-      read_property(elem);
+      readObjectProperty(elem);
 
     std::cout << "└── "<< elemLoaded << " readed ! " << std::endl;
     return NO_ERROR;
@@ -114,17 +114,17 @@ int OntologyReader::readIndividual(TiXmlElement* rdf, std::string name)
     std::cout << name << std::endl;
     std::cout << "├── Individuals" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
-      read_individual(elem);
+      readIndividual(elem);
     std::cout << "├── Description" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
-      read_individual_description(elem);
+      readIndividualDescription(elem);
 
     std::cout << "└── "<< elemLoaded << " readed ! " << std::endl;
     return NO_ERROR;
   }
 }
 
-void OntologyReader::read_class(TiXmlElement* elem)
+void OntologyReader::readClass(TiXmlElement* elem)
 {
   std::string elemName = elem->Value();
   if(elemName == "owl:Class")
@@ -134,8 +134,8 @@ void OntologyReader::read_class(TiXmlElement* elem)
     const char* attr = elem->Attribute("rdf:about");
     if(attr != NULL)
     {
-      std::cout << "│   ├──" << get_name(std::string(attr)) << std::endl;
-      node_name = get_name(std::string(attr));
+      std::cout << "│   ├──" << getName(std::string(attr)) << std::endl;
+      node_name = getName(std::string(attr));
       for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
       {
         std::string subElemName = subElem->Value();
@@ -148,12 +148,12 @@ void OntologyReader::read_class(TiXmlElement* elem)
           pushLang(object_vector.dictionary_, subElem);
       }
     }
-    m_objTree->add(node_name, object_vector);
+    class_graph_->add(node_name, object_vector);
     elemLoaded++;
   }
 }
 
-void OntologyReader::read_individual(TiXmlElement* elem)
+void OntologyReader::readIndividual(TiXmlElement* elem)
 {
   std::string elemName = elem->Value();
   if(elemName == "owl:NamedIndividual")
@@ -163,8 +163,8 @@ void OntologyReader::read_individual(TiXmlElement* elem)
     const char* attr = elem->Attribute("rdf:about");
     if(attr != NULL)
     {
-      std::cout << "│   ├──" << get_name(std::string(attr)) << std::endl;
-      node_name = get_name(std::string(attr));
+      std::cout << "│   ├──" << getName(std::string(attr)) << std::endl;
+      node_name = getName(std::string(attr));
       for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
       {
         std::string subElemName = subElem->Value();
@@ -192,7 +192,7 @@ void OntologyReader::read_individual(TiXmlElement* elem)
   }
 }
 
-void OntologyReader::read_description(TiXmlElement* elem)
+void OntologyReader::readDescription(TiXmlElement* elem)
 {
   std::string elemName = elem->Value();
   if(elemName == "rdf:Description")
@@ -207,7 +207,7 @@ void OntologyReader::read_description(TiXmlElement* elem)
       {
         subAttr = subElem->Attribute("rdf:resource");
         if(subAttr != NULL)
-          if(get_name(std::string(subAttr)) == "AllDisjointClasses")
+          if(getName(std::string(subAttr)) == "AllDisjointClasses")
             isDisjointAll = true;
       }
       else if(subElemName == "owl:members")
@@ -218,12 +218,12 @@ void OntologyReader::read_description(TiXmlElement* elem)
             readCollection(disjoints, subElem, "-");
       }
     }
-    m_objTree->add(disjoints);
+    class_graph_->add(disjoints);
     disjoints.clear();
   } // end if(elemName == "rdf:Description")
 }
 
-void OntologyReader::read_individual_description(TiXmlElement* elem)
+void OntologyReader::readIndividualDescription(TiXmlElement* elem)
 {
   std::string elemName = elem->Value();
   if(elemName == "rdf:Description")
@@ -238,7 +238,7 @@ void OntologyReader::read_individual_description(TiXmlElement* elem)
       {
         subAttr = subElem->Attribute("rdf:resource");
         if(subAttr != NULL)
-          if(get_name(std::string(subAttr)) == "AllDifferent")
+          if(getName(std::string(subAttr)) == "AllDifferent")
             isDistincttAll = true;
       }
       else if(subElemName == "owl:distinctMembers")
@@ -255,7 +255,7 @@ void OntologyReader::read_individual_description(TiXmlElement* elem)
   } // end if(elemName == "rdf:Description")
 }
 
-void OntologyReader::read_property(TiXmlElement* elem)
+void OntologyReader::readObjectProperty(TiXmlElement* elem)
 {
   std::string elemName = elem->Value();
   if(elemName == "owl:ObjectProperty")
@@ -265,8 +265,8 @@ void OntologyReader::read_property(TiXmlElement* elem)
     const char* attr = elem->Attribute("rdf:about");
     if(attr != NULL)
     {
-      std::cout << "│   ├──" << get_name(std::string(attr)) << std::endl;
-      node_name = get_name(std::string(attr));
+      std::cout << "│   ├──" << getName(std::string(attr)) << std::endl;
+      node_name = getName(std::string(attr));
       for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
       {
         std::string subElemName = subElem->Value();
@@ -294,7 +294,7 @@ void OntologyReader::read_property(TiXmlElement* elem)
       }
     }
 
-    m_propTree->add(node_name, propertyVectors);
+    property_graph_->add(node_name, propertyVectors);
     elemLoaded++;
   }
 }
@@ -318,8 +318,8 @@ void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement
           std::cout << "│   └── " << symbol;
         else
           std::cout << "│   ├── " << symbol;
-        std::cout << get_name(std::string(subAttr)) << std::endl;
-        vect.push_back(get_name(std::string(subAttr)));
+        std::cout << getName(std::string(subAttr)) << std::endl;
+        vect.push_back(getName(std::string(subAttr)));
       }
     }
   }
@@ -331,7 +331,7 @@ void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, std::
   subAttr = subElem->Attribute(attribute.c_str());
   if(subAttr != NULL)
   {
-    std::string property = get_name(std::string(subAttr));
+    std::string property = getName(std::string(subAttr));
     if(property == "AsymmetricProperty")
       properties.antisymetric_property_ = true;
     else if(property == "TransitiveProperty")
@@ -360,7 +360,7 @@ void OntologyReader::pushLang(std::map<std::string, std::string>& dictionary, Ti
   subAttr = subElem->Attribute("xml:lang");
   if(subAttr != NULL)
   {
-    std::string lang = get_name(std::string(subAttr));
+    std::string lang = getName(std::string(subAttr));
 
     const char* value;
     value = subElem->GetText();
