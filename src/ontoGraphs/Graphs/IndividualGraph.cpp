@@ -252,7 +252,10 @@ std::set<std::string> IndividualGraph::getRelationFrom(std::string individual)
     cleanMarks(sames);
     for(std::set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
       for(size_t i = 0; i < (*it)->properties_name_.size(); i++)
-        res.insert((*it)->properties_name_[i]->value_);
+      {
+        std::set<std::string> tmp = properties_->getUp((*it)->properties_name_[i]);
+        res.insert(tmp.begin(), tmp.end());
+      }
   }
   return res;
 }
@@ -285,7 +288,10 @@ std::set<std::string> IndividualGraph::getRelationOn(std::string individual)
     for(size_t i = 0; i < individuals_.size(); i++)
       for(size_t prop_i = 0; prop_i < individuals_[i]->properties_on_.size(); prop_i++)
         if(individuals_[i]->properties_on_[prop_i]->value_ == (*it))
-          res.insert(individuals_[i]->properties_name_[prop_i]->value_);
+        {
+          std::set<std::string> tmp = properties_->getUp(individuals_[i]->properties_name_[prop_i]);
+          res.insert(tmp.begin(), tmp.end());
+        }
 
   return res;
 }
