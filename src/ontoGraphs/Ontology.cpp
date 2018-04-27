@@ -13,12 +13,12 @@
 #define COLOR_RED     "\x1B[0;91m"
 #endif
 
-Ontology::Ontology(std::string language) : properties_(&classes_), individuals_(&classes_, &properties_), reader((Ontology&)*this)
+Ontology::Ontology(std::string language) : object_property_graph_(&class_graph_), individual_graph_(&class_graph_, &object_property_graph_), reader((Ontology&)*this)
 {
   is_init_ = false;
-  classes_.setLanguage(language);
-  properties_.setLanguage(language);
-  individuals_.setLanguage(language);
+  class_graph_.setLanguage(language);
+  object_property_graph_.setLanguage(language);
+  individual_graph_.setLanguage(language);
 }
 
 int Ontology::close()
@@ -26,12 +26,12 @@ int Ontology::close()
   if(is_init_ == true)
     return 0;
 
-  classes_.close();
-  properties_.close();
+  class_graph_.close();
+  object_property_graph_.close();
 
-  ClassChecker classChecker(&classes_);
-  PropertyChecker propertyChecker(&properties_);
-  IndividualChecker individualChecker(&individuals_);
+  ClassChecker classChecker(&class_graph_);
+  PropertyChecker propertyChecker(&object_property_graph_);
+  IndividualChecker individualChecker(&individual_graph_);
 
   size_t err = classChecker.check();
   err += propertyChecker.check();
@@ -48,9 +48,9 @@ int Ontology::close()
       reader.readFromFile(files_[i], true);
     files_.clear();
 
-    individuals_.close();
+    individual_graph_.close();
 
-    individualChecker = IndividualChecker(&individuals_);
+    individualChecker = IndividualChecker(&individual_graph_);
     err += individualChecker.check();
 
     is_init_ = true;

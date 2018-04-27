@@ -8,7 +8,7 @@ void ArguerInverseOf::preReason()
 
 void ArguerInverseOf::postReason()
 {
-  std::vector<IndividualBranch_t*> indiv = ontology_->individuals_.get();
+  std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
   for(size_t indiv_i = 0; indiv_i < indiv.size(); indiv_i++)
   {
     for(size_t prop_i = 0; prop_i < indiv[indiv_i]->properties_name_.size(); prop_i++)

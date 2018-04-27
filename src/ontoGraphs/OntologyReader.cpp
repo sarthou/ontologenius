@@ -15,9 +15,9 @@ OntologyReader::OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* pro
 
 OntologyReader::OntologyReader(Ontology& onto)
 {
-  class_graph_ = &onto.classes_;
-  property_graph_ = &onto.properties_;
-  individual_graph_ = &onto.individuals_;
+  class_graph_ = &onto.class_graph_;
+  property_graph_ = &onto.object_property_graph_;
+  individual_graph_ = &onto.individual_graph_;
   elemLoaded = 0;
 }
 

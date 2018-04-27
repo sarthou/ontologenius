@@ -20,9 +20,9 @@ public:
 
   bool isInit();
 
-  ClassGraph classes_;
-  ObjectPropertyGraph properties_;
-  IndividualGraph individuals_;
+  ClassGraph class_graph_;
+  ObjectPropertyGraph object_property_graph_;
+  IndividualGraph individual_graph_;
 
 private:
   OntologyReader reader;
