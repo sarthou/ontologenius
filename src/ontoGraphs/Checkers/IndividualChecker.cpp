@@ -104,7 +104,7 @@ void IndividualChecker::checkAssymetric()
   }
 }
 
-bool IndividualChecker::symetricExist(IndividualBranch_t* indiv_on, PropertyClassBranch_t* sym_prop, IndividualBranch_t* sym_indiv)
+bool IndividualChecker::symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv)
 {
   for(size_t i = 0; i < sym_indiv->properties_name_.size(); i++)
   {

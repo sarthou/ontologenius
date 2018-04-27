@@ -24,7 +24,7 @@ void ArguerInverseOf::postReason()
   }
 }
 
-void ArguerInverseOf::insetInverse(IndividualBranch_t* indiv_on, PropertyClassBranch_t* inv_prop, IndividualBranch_t* inv_indiv)
+void ArguerInverseOf::insetInverse(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* inv_prop, IndividualBranch_t* inv_indiv)
 {
   for(size_t i = 0; i < indiv_on->properties_name_.size(); i++)
   {

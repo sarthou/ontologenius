@@ -1,6 +1,6 @@
 #include "ontoloGenius/ontoGraphs/Graphs/IndividualGraph.h"
 
-IndividualGraph::IndividualGraph(ClassGraph* classes, PropertyGraph* properties)
+IndividualGraph::IndividualGraph(ClassGraph* classes, ObjectPropertyGraph* properties)
 {
   classes_ = classes;
   properties_ = properties;
@@ -101,7 +101,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     //I create my properties
     if(!i_find_my_properties)
     {
-      PropertyVectors_t empty_vectors;
+      ObjectPropertyVectors_t empty_vectors;
       properties_->add(individual_vector.properties_name_[property_i], empty_vectors);
       for(unsigned int root_i = 0; root_i < properties_->roots_.size(); root_i++)
         if(individual_vector.properties_name_[property_i] == properties_->roots_[root_i]->value_)

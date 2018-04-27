@@ -14,14 +14,14 @@ void ArguerChain::postReason()
   for(size_t indiv_i = 0; indiv_i < indiv.size(); indiv_i++)
     for(size_t prop_i = 0; prop_i < indiv[indiv_i]->properties_name_.size(); prop_i++)
     {
-      std::set<PropertyClassBranch_t*> props = ontology_->properties_.getUpPtr(indiv[indiv_i]->properties_name_[prop_i]);
-      for(std::set<PropertyClassBranch_t*>::iterator it_prop = props.begin(); it_prop != props.end(); ++it_prop)
+      std::set<ObjectPropertyBranch_t*> props = ontology_->properties_.getUpPtr(indiv[indiv_i]->properties_name_[prop_i]);
+      for(std::set<ObjectPropertyBranch_t*>::iterator it_prop = props.begin(); it_prop != props.end(); ++it_prop)
         for(size_t chain_i = 0; chain_i < (*it_prop)->chains_.size(); chain_i++)
           resolveChain((*it_prop)->chains_[chain_i], indiv[indiv_i]->properties_on_[prop_i], indiv[indiv_i]);
     }
 }
 
-void ArguerChain::resolveChain(std::vector<PropertyClassBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on)
+void ArguerChain::resolveChain(std::vector<ObjectPropertyBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on)
 {
   std::vector<IndividualBranch_t*> indivs;
   indivs.push_back(indiv);
@@ -41,7 +41,7 @@ void ArguerChain::resolveChain(std::vector<PropertyClassBranch_t*> chain, Indivi
       }
 }
 
-void ArguerChain::resolveLink(PropertyClassBranch_t* chain_property, std::vector<IndividualBranch_t*>& indivs)
+void ArguerChain::resolveLink(ObjectPropertyBranch_t* chain_property, std::vector<IndividualBranch_t*>& indivs)
 {
   std::vector<IndividualBranch_t*> tmp;
   std::set<std::string> chain_props = ontology_->properties_.getDown(chain_property->value_);
@@ -56,7 +56,7 @@ void ArguerChain::resolveLink(PropertyClassBranch_t* chain_property, std::vector
   indivs = tmp;
 }
 
-bool ArguerChain::porpertyExist(IndividualBranch_t* indiv_on, PropertyClassBranch_t* chain_prop, IndividualBranch_t* chain_indiv)
+bool ArguerChain::porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* chain_prop, IndividualBranch_t* chain_indiv)
 {
   for(size_t i = 0; i < indiv_on->properties_name_.size(); i++)
   {

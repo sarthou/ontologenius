@@ -7,10 +7,10 @@
 #include "ontoloGenius/ontoGraphs/Graphs/OntoGraph.h"
 #include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 
-#ifndef TREEPROPERTY_H
-#define TREEPROPERTY_H
+#ifndef OBJECTROPERTYGRAPH_H
+#define OBJECTROPERTYGRAPH_H
 
-struct PropertyClassBranch_t;
+struct ObjectPropertyBranch_t;
 
 struct Properties_t
 {
@@ -31,20 +31,20 @@ struct Properties_t
                     irreflexive_property_(false) {};
 };
 
-class PropertyClassBranch_t : public Branch_t<PropertyClassBranch_t>
+class ObjectPropertyBranch_t : public Branch_t<ObjectPropertyBranch_t>
 {
 public:
-  std::vector<PropertyClassBranch_t*> disjoints_;
-  std::vector<PropertyClassBranch_t*> inverses_;
+  std::vector<ObjectPropertyBranch_t*> disjoints_;
+  std::vector<ObjectPropertyBranch_t*> inverses_;
   std::vector<ClassBranch_t*> domains_;
   std::vector<ClassBranch_t*> ranges_;
-  std::vector<std::vector<PropertyClassBranch_t*>> chains_;
+  std::vector<std::vector<ObjectPropertyBranch_t*>> chains_;
   Properties_t properties_;
 
-  PropertyClassBranch_t(std::string value) : Branch_t(value) {};
+  ObjectPropertyBranch_t(std::string value) : Branch_t(value) {};
 };
 
-struct PropertyVectors_t
+struct ObjectPropertyVectors_t
 {
    std::vector<std::string> mothers_;
    std::vector<std::string> disjoints_;
@@ -59,15 +59,15 @@ struct PropertyVectors_t
 class GraphDrawer;
 class IndividualGraph;
 
-class PropertyGraph : public OntoGraph<PropertyClassBranch_t>
+class ObjectPropertyGraph : public OntoGraph<ObjectPropertyBranch_t>
 {
   friend GraphDrawer;
   friend IndividualGraph;
 public:
-  PropertyGraph(ClassGraph* treeObject) {treeObject_ = treeObject; }
-  ~PropertyGraph() {}
+  ObjectPropertyGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
+  ~ObjectPropertyGraph() {}
 
-  void add(std::string value, PropertyVectors_t& property_vectors);
+  void add(std::string value, ObjectPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 
   std::set<std::string> getDisjoint(std::string& value);
@@ -77,9 +77,9 @@ public:
   std::set<std::string> select(std::set<std::string> on, std::string selector);
 
 private:
-  ClassGraph* treeObject_;
+  ClassGraph* class_graph_;
 
-  void isMyDisjoint(PropertyClassBranch_t* me, std::string disjoint, std::vector<PropertyClassBranch_t*>& vect, bool& find, bool all = true)
+  void isMyDisjoint(ObjectPropertyBranch_t* me, std::string disjoint, std::vector<ObjectPropertyBranch_t*>& vect, bool& find, bool all = true)
   {
     if(find)
       return;
@@ -95,7 +95,7 @@ private:
       }
   }
 
-  void isMyInverse(PropertyClassBranch_t* me, std::string inverse, std::vector<PropertyClassBranch_t*>& vect, bool& find, bool all = true)
+  void isMyInverse(ObjectPropertyBranch_t* me, std::string inverse, std::vector<ObjectPropertyBranch_t*>& vect, bool& find, bool all = true)
   {
     if(find)
       return;
@@ -111,7 +111,7 @@ private:
       }
   }
 
-  void isMyDomain(PropertyClassBranch_t* me, std::string domain, std::vector<ClassBranch_t*>& vect, bool& find)
+  void isMyDomain(ObjectPropertyBranch_t* me, std::string domain, std::vector<ClassBranch_t*>& vect, bool& find)
   {
     if(find)
       return;
@@ -125,7 +125,7 @@ private:
       }
   }
 
-  void isMyRange(PropertyClassBranch_t* me, std::string range, std::vector<ClassBranch_t*>& vect, bool& find)
+  void isMyRange(ObjectPropertyBranch_t* me, std::string range, std::vector<ClassBranch_t*>& vect, bool& find)
   {
     if(find)
       return;
@@ -139,7 +139,7 @@ private:
       }
   }
 
-  void getNextChainLink(PropertyClassBranch_t** next, std::string next_link, std::vector<PropertyClassBranch_t*>& vect)
+  void getNextChainLink(ObjectPropertyBranch_t** next, std::string next_link, std::vector<ObjectPropertyBranch_t*>& vect)
   {
     if(*next == nullptr)
       for(unsigned int i = 0; i < vect.size(); i++)
@@ -153,4 +153,4 @@ private:
   }
 };
 
-#endif /* TREEPROPERTY_H */
+#endif /* OBJECTROPERTYGRAPH_H */

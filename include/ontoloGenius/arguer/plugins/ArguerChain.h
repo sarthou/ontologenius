@@ -17,9 +17,9 @@ public:
 
   bool defaultAvtive() {return true;}
 private:
-  void resolveChain(std::vector<PropertyClassBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on);
-  void resolveLink(PropertyClassBranch_t* chain_property, std::vector<IndividualBranch_t*>& indivs);
-  bool porpertyExist(IndividualBranch_t* indiv_on, PropertyClassBranch_t* chain_prop, IndividualBranch_t* chain_indiv);
+  void resolveChain(std::vector<ObjectPropertyBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on);
+  void resolveLink(ObjectPropertyBranch_t* chain_property, std::vector<IndividualBranch_t*>& indivs);
+  bool porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* chain_prop, IndividualBranch_t* chain_indiv);
 };
 
 #endif

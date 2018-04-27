@@ -5,7 +5,7 @@
 
 #include "ontoloGenius/utility/utility.h"
 
-OntologyReader::OntologyReader(ClassGraph* p_objTree, PropertyGraph* p_propTree, IndividualGraph* individual_graph)
+OntologyReader::OntologyReader(ClassGraph* p_objTree, ObjectPropertyGraph* p_propTree, IndividualGraph* individual_graph)
 {
   m_objTree = p_objTree;
   m_propTree = p_propTree;
@@ -261,7 +261,7 @@ void OntologyReader::read_property(TiXmlElement* elem)
   if(elemName == "owl:ObjectProperty")
   {
     std::string node_name = "";
-    PropertyVectors_t propertyVectors;
+    ObjectPropertyVectors_t propertyVectors;
     const char* attr = elem->Attribute("rdf:about");
     if(attr != NULL)
     {

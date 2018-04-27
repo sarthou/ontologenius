@@ -2,7 +2,7 @@
 #define ONTOLOGY_H
 
 #include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontoloGenius/ontoGraphs/Graphs/PropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/ontoGraphs/Graphs/IndividualGraph.h"
 
 #include "ontoloGenius/ontoGraphs/OntologyReader.h"
@@ -21,7 +21,7 @@ public:
   bool isInit();
 
   ClassGraph classes_;
-  PropertyGraph properties_;
+  ObjectPropertyGraph properties_;
   IndividualGraph individuals_;
 
 private:
