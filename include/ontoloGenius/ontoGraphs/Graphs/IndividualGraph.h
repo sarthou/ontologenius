@@ -41,7 +41,7 @@ class IndividualGraph : public Graph<IndividualBranch_t>
 {
   friend IndividualChecker;
 public:
-  IndividualGraph(ClassGraph* classes, ObjectPropertyGraph* properties);
+  IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph);
   ~IndividualGraph();
 
   void close();
@@ -72,8 +72,8 @@ public:
   std::set<std::string> getType(std::string class_selector);
 
 private:
-  ClassGraph* classes_;
-  ObjectPropertyGraph* properties_;
+  ClassGraph* class_graph_;
+  ObjectPropertyGraph* object_property_graph_;
 
   std::vector<IndividualBranch_t*> individuals_;
 

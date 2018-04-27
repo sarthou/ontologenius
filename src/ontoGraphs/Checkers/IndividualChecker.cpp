@@ -62,7 +62,7 @@ void IndividualChecker::checkDomain()
 
     for(size_t prop_i = 0; prop_i < graph_[i]->properties_name_.size(); prop_i++)
     {
-      std::set<std::string> domain = individual_graph_->properties_->getDomain(graph_[i]->properties_name_[prop_i]->value_);
+      std::set<std::string> domain = individual_graph_->object_property_graph_->getDomain(graph_[i]->properties_name_[prop_i]->value_);
       if(domain.size() != 0)
       {
         std::string intersection = findIntersection(up, domain);
@@ -80,7 +80,7 @@ void IndividualChecker::checkRange()
     for(size_t prop_i = 0; prop_i < graph_[i]->properties_name_.size(); prop_i++)
     {
       std::set<std::string> up = individual_graph_->getUp(graph_[i]->properties_on_[prop_i]->value_);
-      std::set<std::string> range = individual_graph_->properties_->getRange(graph_[i]->properties_name_[prop_i]->value_);
+      std::set<std::string> range = individual_graph_->object_property_graph_->getRange(graph_[i]->properties_name_[prop_i]->value_);
       if(range.size() != 0)
       {
         std::string intersection = findIntersection(up, range);
