@@ -252,7 +252,10 @@ std::set<std::string> IndividualGraph::getRelationFrom(std::string individual)
     cleanMarks(sames);
     for(std::set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
       for(size_t i = 0; i < (*it)->properties_name_.size(); i++)
-        res.insert((*it)->properties_name_[i]->value_);
+      {
+        std::set<std::string> tmp = properties_->getUp((*it)->properties_name_[i]);
+        res.insert(tmp.begin(), tmp.end());
+      }
   }
   return res;
 }
@@ -285,7 +288,10 @@ std::set<std::string> IndividualGraph::getRelationOn(std::string individual)
     for(size_t i = 0; i < individuals_.size(); i++)
       for(size_t prop_i = 0; prop_i < individuals_[i]->properties_on_.size(); prop_i++)
         if(individuals_[i]->properties_on_[prop_i]->value_ == (*it))
-          res.insert(individuals_[i]->properties_name_[prop_i]->value_);
+        {
+          std::set<std::string> tmp = properties_->getUp(individuals_[i]->properties_name_[prop_i]);
+          res.insert(tmp.begin(), tmp.end());
+        }
 
   return res;
 }
@@ -444,10 +450,9 @@ std::set<std::string> IndividualGraph::getWith(std::string first_individual, std
   return res;
 }
 
-std::set<std::string> IndividualGraph::getUp(std::string individual)
+std::set<std::string> IndividualGraph::getUp(IndividualBranch_t* indiv)
 {
   std::set<std::string> res;
-  IndividualBranch_t* indiv = container_.find(individual);
   if(indiv != nullptr)
   {
     std::set<IndividualBranch_t*> sames = getSame(indiv);
@@ -461,6 +466,12 @@ std::set<std::string> IndividualGraph::getUp(std::string individual)
       }
   }
   return res;
+}
+
+std::set<std::string> IndividualGraph::getUp(std::string individual)
+{
+  IndividualBranch_t* indiv = container_.find(individual);
+  return getUp(indiv);
 }
 
 std::set<IndividualBranch_t*> IndividualGraph::getSame(IndividualBranch_t* individual)
@@ -508,6 +519,30 @@ std::string IndividualGraph::getName(std::string& value)
       res = value;
   }
 
+  return res;
+}
+
+std::set<std::string> IndividualGraph::find(std::string& value)
+{
+  std::set<std::string> res;
+  for(size_t i = 0; i < individuals_.size(); i++)
+  {
+    if(individuals_[i]->dictionary_.find(language_) != individuals_[i]->dictionary_.end())
+      if(individuals_[i]->dictionary_[language_] == value)
+        res.insert(individuals_[i]->value_);
+  }
+  return res;
+}
+
+std::set<std::string> IndividualGraph::getType(std::string class_selector)
+{
+  std::set<std::string> res;
+  for(size_t i = 0; i < individuals_.size(); i++)
+  {
+    std::set<std::string> tmp = getUp(individuals_[i]);
+    if(tmp.find(class_selector) != tmp.end())
+      res.insert(individuals_[i]->value_);
+  }
   return res;
 }
 

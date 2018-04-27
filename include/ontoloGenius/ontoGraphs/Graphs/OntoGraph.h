@@ -45,6 +45,9 @@ public:
   std::set<std::string> getDown(B* branch);
   std::set<std::string> getUp(B* branch);
 
+  std::set<B*> getDownPtr(B* branch);
+  std::set<B*> getUpPtr(B* branch);
+
   std::vector<B*> get()
   {
     std::vector<B*> out;
@@ -228,6 +231,40 @@ std::set<std::string> OntoGraph<B>::getUp(B* branch)
   for(unsigned int i = 0; i < size; i++)
   {
     std::set<std::string> tmp = getUp(branch->mothers_[i]);
+
+    if(tmp.size())
+      res.insert(tmp.begin(), tmp.end());
+  }
+
+  return res;
+}
+
+template <typename B>
+std::set<B*> OntoGraph<B>::getDownPtr(B* branch)
+{
+  std::set<B*> res;
+  res.insert(branch);
+  size_t size = branch->childs_.size();
+  for(unsigned int i = 0; i < size; i++)
+  {
+    std::set<B*> tmp = getDownPtr(branch->childs_[i]);
+
+    if(tmp.size())
+      res.insert(tmp.begin(), tmp.end());
+  }
+
+  return res;
+}
+
+template <typename B>
+std::set<B*> OntoGraph<B>::getUpPtr(B* branch)
+{
+  std::set<B*> res;
+  res.insert(branch);
+  size_t size = branch->mothers_.size();
+  for(unsigned int i = 0; i < size; i++)
+  {
+    std::set<B*> tmp = getUpPtr(branch->mothers_[i]);
 
     if(tmp.size())
       res.insert(tmp.begin(), tmp.end());

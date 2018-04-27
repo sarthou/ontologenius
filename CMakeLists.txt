@@ -184,11 +184,11 @@ add_dependencies(ontoloGeniusExemple ontologenius_gencpp)
 target_link_libraries(ontoloGeniusExemple ${catkin_LIBRARIES})
 target_link_libraries(ontoloGeniusExemple ontologenius_lib)
 
-add_executable(tester src/tester.cpp)
-add_dependencies(tester ontologenius_gencpp)
-target_link_libraries(tester ${catkin_LIBRARIES})
-target_link_libraries(tester ontologenius_lib)
-target_link_libraries(tester arguer_lib)
+add_executable(ontologenius_tester src/tester.cpp)
+add_dependencies(ontologenius_tester ontologenius_gencpp)
+target_link_libraries(ontologenius_tester ${catkin_LIBRARIES})
+target_link_libraries(ontologenius_tester ontologenius_lib)
+target_link_libraries(ontologenius_tester arguer_lib)
 
 ## Declare a C++ lib for plugins
 add_library(arguer_plugin
