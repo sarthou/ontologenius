@@ -100,9 +100,9 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="PropertyTab">
+      <widget class="QWidget" name="ObjectPropertyTab">
        <attribute name="title">
-        <string>Property</string>
+        <string>Object property</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
@@ -115,14 +115,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="propertyParameter"/>
+           <widget class="QLineEdit" name="objectPropertyParameter"/>
           </item>
          </layout>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_7">
           <item>
-           <widget class="QPushButtonExtended" name="Property_getUp">
+           <widget class="QPushButtonExtended" name="ObjectProperty_getUp">
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
@@ -135,7 +135,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButtonExtended" name="Property_getDown">
+           <widget class="QPushButtonExtended" name="ObjectProperty_getDown">
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
@@ -148,7 +148,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButtonExtended" name="Property_getDisjoint">
+           <widget class="QPushButtonExtended" name="ObjectProperty_getDisjoint">
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
@@ -165,7 +165,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_8">
           <item>
-           <widget class="QPushButtonExtended" name="Property_getInverse">
+           <widget class="QPushButtonExtended" name="ObjectProperty_getInverse">
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
@@ -178,7 +178,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButtonExtended" name="Property_getDomain">
+           <widget class="QPushButtonExtended" name="ObjectProperty_getDomain">
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
@@ -191,7 +191,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButtonExtended" name="Property_getRange">
+           <widget class="QPushButtonExtended" name="ObjectProperty_getRange">
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
@@ -206,7 +206,117 @@
          </layout>
         </item>
         <item>
-         <widget class="QTextEdit" name="PropertyDescription">
+         <widget class="QTextEdit" name="ObjectPropertyDescription">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::NoTextInteraction</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="DataPropertyTab">
+       <attribute name="title">
+        <string>Data property</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_16">
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Parameter</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="dataPropertyParameter"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_17">
+          <item>
+           <widget class="QPushButtonExtended" name="DataProperty_getUp">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getUp&lt;/span&gt; will give you all properties above the one given in the parameter &lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/property &amp;quot;{param: 'isInArea', action: 'getUp'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getUp</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="DataProperty_getDown">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getDown&lt;/span&gt; will give you all properties below the one given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/property &amp;quot;{param: 'isInArea', action: 'getDown'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getDown</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="DataProperty_getDisjoint">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getDisjoint&lt;/span&gt; will give you all the disjoint properties of the one given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/property &amp;quot;{param: 'aProperty', action: 'getDisjoint'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getDisjoint</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_18">
+          <item>
+           <widget class="QPushButtonExtended" name="DataProperty_getDomain">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getDomain&lt;/span&gt; will give you all the domains classes of the property given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/property &amp;quot;{param: 'isInArea', action: 'getDomain'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getDomain</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="DataProperty_getRange">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getRange&lt;/span&gt; will give you all the ranges classes of the property given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/property &amp;quot;{param: 'isInArea', action: 'getRange'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getRange</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="DataPropertyDescription">
           <property name="verticalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
