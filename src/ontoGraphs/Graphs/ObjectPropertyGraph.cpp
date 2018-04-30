@@ -1,12 +1,12 @@
-#include "ontoloGenius/ontoGraphs/Graphs/PropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include <iostream>
 
-void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
+void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& property_vectors)
 {
 /**********************
 ** Mothers
 **********************/
-  PropertyClassBranch_t* me = nullptr;
+  ObjectPropertyBranch_t* me = nullptr;
   //am I a created mother ?
   amIA(&me, tmp_mothers_, value);
 
@@ -18,7 +18,7 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
 
   //am I created ?
   if(me == nullptr)
-    me = new PropertyClassBranch_t(value);
+    me = new ObjectPropertyBranch_t(value);
 
   me->nb_mothers_ += property_vectors.mothers_.size();
 
@@ -44,7 +44,7 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
       //I create my mother
       if(!i_find_my_mother)
       {
-        PropertyClassBranch_t* my_mother = new struct PropertyClassBranch_t(property_vectors.mothers_[mothers_i]);
+        ObjectPropertyBranch_t* my_mother = new struct ObjectPropertyBranch_t(property_vectors.mothers_[mothers_i]);
         my_mother->childs_.push_back(me);
         me->mothers_.push_back(my_mother);
         tmp_mothers_.push_back(my_mother);
@@ -75,7 +75,7 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
     //I create my disjoint
     if(!i_find_my_disjoint)
     {
-      PropertyClassBranch_t* my_disjoint = new struct PropertyClassBranch_t(property_vectors.disjoints_[disjoints_i]);
+      ObjectPropertyBranch_t* my_disjoint = new struct ObjectPropertyBranch_t(property_vectors.disjoints_[disjoints_i]);
       me->disjoints_.push_back(my_disjoint);
       my_disjoint->disjoints_.push_back(me);
       tmp_mothers_.push_back(my_disjoint); //I put my disjoint as tmp_mother
@@ -102,7 +102,7 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
     //I create my inverse
     if(!i_find_my_inverse)
     {
-      PropertyClassBranch_t* my_inverse = new struct PropertyClassBranch_t(property_vectors.inverses_[inverses_i]);
+      ObjectPropertyBranch_t* my_inverse = new struct ObjectPropertyBranch_t(property_vectors.inverses_[inverses_i]);
       me->inverses_.push_back(my_inverse);
       my_inverse->inverses_.push_back(me);
       tmp_mothers_.push_back(my_inverse); //I put my inverse as tmp_mother
@@ -118,23 +118,23 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
     bool i_find_my_domain = false;
 
     //is a root my domain ?
-    isMyDomain(me, property_vectors.domains_[domains_i], treeObject_->roots_, i_find_my_domain);
+    isMyDomain(me, property_vectors.domains_[domains_i], class_graph_->roots_, i_find_my_domain);
 
     //is a branch my domain ?
-    isMyDomain(me, property_vectors.domains_[domains_i], treeObject_->branchs_, i_find_my_domain);
+    isMyDomain(me, property_vectors.domains_[domains_i], class_graph_->branchs_, i_find_my_domain);
 
     //is a tmp mother is my domain ?
-    isMyDomain(me, property_vectors.domains_[domains_i], treeObject_->tmp_mothers_, i_find_my_domain);
+    isMyDomain(me, property_vectors.domains_[domains_i], class_graph_->tmp_mothers_, i_find_my_domain);
 
     //I create my domain
     if(!i_find_my_domain)
     {
       ObjectVectors_t empty_vectors;
-      treeObject_->add(property_vectors.domains_[domains_i], empty_vectors);
-      for(unsigned int root_i = 0; root_i < treeObject_->roots_.size(); root_i++)
-        if(property_vectors.domains_[domains_i] == treeObject_->roots_[root_i]->value_)
+      class_graph_->add(property_vectors.domains_[domains_i], empty_vectors);
+      for(unsigned int root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
+        if(property_vectors.domains_[domains_i] == class_graph_->roots_[root_i]->value_)
         {
-          me->domains_.push_back(treeObject_->roots_[root_i]);
+          me->domains_.push_back(class_graph_->roots_[root_i]);
           i_find_my_domain = true;
         }
     }
@@ -149,23 +149,23 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
     bool i_find_my_range = false;
 
     //is a root my range ?
-    isMyRange(me, property_vectors.ranges_[ranges_i], treeObject_->roots_, i_find_my_range);
+    isMyRange(me, property_vectors.ranges_[ranges_i], class_graph_->roots_, i_find_my_range);
 
     //is a branch my range ?
-    isMyRange(me, property_vectors.ranges_[ranges_i], treeObject_->branchs_, i_find_my_range);
+    isMyRange(me, property_vectors.ranges_[ranges_i], class_graph_->branchs_, i_find_my_range);
 
     //is a tmp mother is my range ?
-    isMyRange(me, property_vectors.ranges_[ranges_i], treeObject_->tmp_mothers_, i_find_my_range);
+    isMyRange(me, property_vectors.ranges_[ranges_i], class_graph_->tmp_mothers_, i_find_my_range);
 
     //I create my range
     if(!i_find_my_range)
     {
       ObjectVectors_t empty_vectors;
-      treeObject_->add(property_vectors.ranges_[ranges_i], empty_vectors);
-      for(unsigned int root_i = 0; root_i < treeObject_->roots_.size(); root_i++)
-        if(property_vectors.ranges_[ranges_i] == treeObject_->roots_[root_i]->value_)
+      class_graph_->add(property_vectors.ranges_[ranges_i], empty_vectors);
+      for(unsigned int root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
+        if(property_vectors.ranges_[ranges_i] == class_graph_->roots_[root_i]->value_)
         {
-          me->ranges_.push_back(treeObject_->roots_[root_i]);
+          me->ranges_.push_back(class_graph_->roots_[root_i]);
           i_find_my_range = true;
         }
     }
@@ -184,12 +184,12 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
   **********************/
   for(size_t chain_i = 0; chain_i < property_vectors.chains_.size(); chain_i++)
   {
-    std::vector<PropertyClassBranch_t*> chain;
-    PropertyClassBranch_t* fisrt = nullptr;
+    std::vector<ObjectPropertyBranch_t*> chain;
+    ObjectPropertyBranch_t* fisrt = nullptr;
 
     for(size_t i = 0; i < property_vectors.chains_[chain_i].size(); i++)
     {
-      PropertyClassBranch_t* next = nullptr;
+      ObjectPropertyBranch_t* next = nullptr;
 
       //is a root my next ?
       getNextChainLink(&next, property_vectors.chains_[chain_i][i], roots_);
@@ -202,7 +202,7 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
 
       if(next == nullptr)
       {
-        next = new struct PropertyClassBranch_t(property_vectors.chains_[chain_i][i]);
+        next = new struct ObjectPropertyBranch_t(property_vectors.chains_[chain_i][i]);
         tmp_mothers_.push_back(next);
       }
 
@@ -218,12 +218,12 @@ void PropertyGraph::add(std::string value, PropertyVectors_t& property_vectors)
 
 }
 
-void PropertyGraph::add(std::vector<std::string>& disjoints)
+void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
 {
   for(unsigned int disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
-    PropertyClassBranch_t* me = nullptr;
+    ObjectPropertyBranch_t* me = nullptr;
     //Am I a root ?
     amIA(&me, roots_, disjoints[disjoints_i], false);
 
@@ -236,7 +236,7 @@ void PropertyGraph::add(std::vector<std::string>& disjoints)
     // I don't exist ? so I will be a tmp_mother
     if(me == nullptr)
     {
-      me = new struct PropertyClassBranch_t(disjoints[disjoints_i]);
+      me = new struct ObjectPropertyBranch_t(disjoints[disjoints_i]);
       tmp_mothers_.push_back(me);
     }
 
@@ -260,7 +260,7 @@ void PropertyGraph::add(std::vector<std::string>& disjoints)
         //I create my disjoint
         if(!i_find_my_disjoint)
         {
-          PropertyClassBranch_t* my_disjoint = new struct PropertyClassBranch_t(disjoints[disjoints_j]);
+          ObjectPropertyBranch_t* my_disjoint = new struct ObjectPropertyBranch_t(disjoints[disjoints_j]);
           me->disjoints_.push_back(my_disjoint);
           tmp_mothers_.push_back(my_disjoint); //I put my disjoint as tmp_mother
         }
@@ -270,11 +270,11 @@ void PropertyGraph::add(std::vector<std::string>& disjoints)
 }
 
 
-std::set<std::string> PropertyGraph::getDisjoint(std::string& value)
+std::set<std::string> ObjectPropertyGraph::getDisjoint(std::string& value)
 {
   std::set<std::string> res;
 
-  PropertyClassBranch_t* branch = container_.find(value);
+  ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
     {
@@ -287,11 +287,11 @@ std::set<std::string> PropertyGraph::getDisjoint(std::string& value)
   return res;
 }
 
-std::set<std::string> PropertyGraph::getInverse(std::string& value)
+std::set<std::string> ObjectPropertyGraph::getInverse(std::string& value)
 {
   std::set<std::string> res;
 
-  PropertyClassBranch_t* branch = container_.find(value);
+  ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned inverse_i = 0; inverse_i < branch->inverses_.size(); inverse_i++)
     {
@@ -304,15 +304,15 @@ std::set<std::string> PropertyGraph::getInverse(std::string& value)
   return res;
 }
 
-std::set<std::string> PropertyGraph::getDomain(std::string& value)
+std::set<std::string> ObjectPropertyGraph::getDomain(std::string& value)
 {
   std::set<std::string> res;
 
-  PropertyClassBranch_t* branch = container_.find(value);
+  ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned domain_i = 0; domain_i < branch->domains_.size(); domain_i++)
     {
-      std::set<std::string> tmp = treeObject_->getDown(branch->domains_[domain_i]);
+      std::set<std::string> tmp = class_graph_->getDown(branch->domains_[domain_i]);
 
       if(tmp.size())
         res.insert(tmp.begin(), tmp.end());
@@ -321,15 +321,15 @@ std::set<std::string> PropertyGraph::getDomain(std::string& value)
   return res;
 }
 
-std::set<std::string> PropertyGraph::getRange(std::string& value)
+std::set<std::string> ObjectPropertyGraph::getRange(std::string& value)
 {
   std::set<std::string> res;
 
-  PropertyClassBranch_t* branch = container_.find(value);
+  ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned range_i = 0; range_i < branch->ranges_.size(); range_i++)
     {
-      std::set<std::string> tmp = treeObject_->getDown(branch->ranges_[range_i]);
+      std::set<std::string> tmp = class_graph_->getDown(branch->ranges_[range_i]);
 
       if(tmp.size())
         res.insert(tmp.begin(), tmp.end());
@@ -338,7 +338,7 @@ std::set<std::string> PropertyGraph::getRange(std::string& value)
   return res;
 }
 
-std::set<std::string> PropertyGraph::select(std::set<std::string> on, std::string selector)
+std::set<std::string> ObjectPropertyGraph::select(std::set<std::string> on, std::string selector)
 {
   std::set<std::string> res;
   for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)

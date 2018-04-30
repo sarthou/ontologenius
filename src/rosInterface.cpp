@@ -55,7 +55,7 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
   else if(req.action == "test")
   {
     Computer comp;
-    if(comp.compute(req.param, onto.classes_))
+    if(comp.compute(req.param, onto.class_graph_))
       res.value = "true";
     else
       res.value = "false";
@@ -84,13 +84,13 @@ bool class_handle(ontologenius::standard_service::Request  &req,
 
   if(res.code != UNINIT)
     if(req.action == "getDown")
-      res.value = set2string(onto.classes_.getDown(req.param));
+      res.value = set2string(onto.class_graph_.getDown(req.param));
     else if(req.action == "getUp")
-      res.value = set2string(onto.classes_.getUp(req.param));
+      res.value = set2string(onto.class_graph_.getUp(req.param));
     else if(req.action == "getDisjoint")
-      res.value = set2string(onto.classes_.getDisjoint(req.param));
+      res.value = set2string(onto.class_graph_.getDisjoint(req.param));
     else if(req.action == "getName")
-      res.value = onto.classes_.getName(req.param);
+      res.value = onto.class_graph_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
 
@@ -114,19 +114,19 @@ bool property_handle(ontologenius::standard_service::Request  &req,
 
   if(res.code != UNINIT)
     if(req.action == "getDown")
-      res.value = set2string(onto.properties_.getDown(req.param));
+      res.value = set2string(onto.object_property_graph_.getDown(req.param));
     else if(req.action == "getUp")
-      res.value = set2string(onto.properties_.getUp(req.param));
+      res.value = set2string(onto.object_property_graph_.getUp(req.param));
     else if(req.action == "getDisjoint")
-      res.value = set2string(onto.properties_.getDisjoint(req.param));
+      res.value = set2string(onto.object_property_graph_.getDisjoint(req.param));
     else if(req.action == "getInverse")
-      res.value = set2string(onto.properties_.getInverse(req.param));
+      res.value = set2string(onto.object_property_graph_.getInverse(req.param));
     else if(req.action == "getDomain")
-      res.value = set2string(onto.properties_.getDomain(req.param));
+      res.value = set2string(onto.object_property_graph_.getDomain(req.param));
     else if(req.action == "getRange")
-      res.value = set2string(onto.properties_.getRange(req.param));
+      res.value = set2string(onto.object_property_graph_.getRange(req.param));
     else if(req.action == "getName")
-      res.value = onto.properties_.getName(req.param);
+      res.value = onto.object_property_graph_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
 
@@ -167,46 +167,46 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
 
   if(res.code != UNINIT)
     if(req.action == "getSame")
-      set_res = onto.individuals_.getSame(req.param);
+      set_res = onto.individual_graph_.getSame(req.param);
     if(req.action == "getDistincts")
-      set_res = onto.individuals_.getDistincts(req.param);
+      set_res = onto.individual_graph_.getDistincts(req.param);
     else if(req.action == "getRelationFrom")
-      set_res = onto.individuals_.getRelationFrom(req.param);
+      set_res = onto.individual_graph_.getRelationFrom(req.param);
     else if(req.action == "getRelatedFrom")
-      set_res = onto.individuals_.getRelatedFrom(req.param);
+      set_res = onto.individual_graph_.getRelatedFrom(req.param);
     else if(req.action == "getRelationOn")
-      set_res = onto.individuals_.getRelationOn(req.param);
+      set_res = onto.individual_graph_.getRelationOn(req.param);
     else if(req.action == "getRelatedOn")
-      set_res = onto.individuals_.getRelatedOn(req.param);
+      set_res = onto.individual_graph_.getRelatedOn(req.param);
     else if(req.action == "getRelationWith")
-      set_res = onto.individuals_.getRelationWith(req.param);
+      set_res = onto.individual_graph_.getRelationWith(req.param);
     else if(req.action == "getRelatedWith")
-      set_res = onto.individuals_.getRelatedWith(req.param);
+      set_res = onto.individual_graph_.getRelatedWith(req.param);
     else if(req.action == "getUp")
-      set_res = onto.individuals_.getUp(req.param);
+      set_res = onto.individual_graph_.getUp(req.param);
     else if(req.action == "getOn")
-      set_res = onto.individuals_.getOn(req.param);
+      set_res = onto.individual_graph_.getOn(req.param);
     else if(req.action == "getFrom")
-      set_res = onto.individuals_.getFrom(req.param);
+      set_res = onto.individual_graph_.getFrom(req.param);
     else if(req.action == "getWith")
-      set_res = onto.individuals_.getWith(req.param);
+      set_res = onto.individual_graph_.getWith(req.param);
     else if(req.action == "getName")
-      res.value = onto.individuals_.getName(req.param);
+      res.value = onto.individual_graph_.getName(req.param);
     else if(req.action == "find")
-      set_res = onto.individuals_.find(req.param);
+      set_res = onto.individual_graph_.find(req.param);
     else if(req.action == "getType")
-      set_res = onto.individuals_.getType(req.param);
+      set_res = onto.individual_graph_.getType(req.param);
     else
       res.code = UNKNOW_ACTION;
 
     if(select != "")
     {
       if(req.action == "getUp")
-        set_res = onto.classes_.select(set_res, select);
+        set_res = onto.class_graph_.select(set_res, select);
       else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
-        set_res = onto.properties_.select(set_res, select);
+        set_res = onto.object_property_graph_.select(set_res, select);
       else if(req.action != "getName")
-        set_res = onto.individuals_.select(set_res, select);
+        set_res = onto.individual_graph_.select(set_res, select);
     }
 
     if(res.value == "")

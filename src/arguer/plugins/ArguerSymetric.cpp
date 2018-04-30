@@ -8,7 +8,7 @@ void ArguerSymetric::preReason()
 
 void ArguerSymetric::postReason()
 {
-  std::vector<IndividualBranch_t*> indiv = ontology_->individuals_.get();
+  std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
   for(size_t indiv_i = 0; indiv_i < indiv.size(); indiv_i++)
   {
     for(size_t prop_i = 0; prop_i < indiv[indiv_i]->properties_name_.size(); prop_i++)
@@ -16,7 +16,7 @@ void ArguerSymetric::postReason()
       if(indiv[indiv_i]->properties_name_[prop_i]->properties_.symetric_property_ == true)
       {
         IndividualBranch_t* sym_indiv = indiv[indiv_i]->properties_on_[prop_i];
-        PropertyClassBranch_t* sym_prop = indiv[indiv_i]->properties_name_[prop_i];
+        ObjectPropertyBranch_t* sym_prop = indiv[indiv_i]->properties_name_[prop_i];
         if(!symetricExist(indiv[indiv_i], sym_prop, sym_indiv))
         {
           sym_indiv->properties_name_.push_back(sym_prop);
@@ -28,7 +28,7 @@ void ArguerSymetric::postReason()
   }
 }
 
-bool ArguerSymetric::symetricExist(IndividualBranch_t* indiv_on, PropertyClassBranch_t* sym_prop, IndividualBranch_t* sym_indiv)
+bool ArguerSymetric::symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv)
 {
   for(size_t i = 0; i < sym_indiv->properties_name_.size(); i++)
   {

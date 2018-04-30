@@ -18,7 +18,7 @@ public:
   bool defaultAvtive() {return true;}
 private:
 
-  void insetInverse(IndividualBranch_t* indiv_on, PropertyClassBranch_t* inv_prop, IndividualBranch_t* inv_indiv);
+  void insetInverse(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* inv_prop, IndividualBranch_t* inv_indiv);
 };
 
 #endif
