@@ -153,6 +153,7 @@ add_library(ontoGraphs_lib
   src/ontoGraphs/Graphs/IndividualGraph.cpp
   src/ontoGraphs/Checkers/ClassChecker.cpp
   src/ontoGraphs/Checkers/ObjectPropertyChecker.cpp
+  src/ontoGraphs/Checkers/DataPropertyChecker.cpp
   src/ontoGraphs/Checkers/IndividualChecker.cpp
   src/ontoGraphs/Ontology.cpp
   src/ontoGraphs/OntologyReader.cpp

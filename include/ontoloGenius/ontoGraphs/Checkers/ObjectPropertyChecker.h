@@ -1,5 +1,5 @@
-#ifndef PROPERTYCHECKER_H
-#define PROPERTYCHECKER_H
+#ifndef OBJECTPROPERTYCHECKER_H
+#define OBJECTPROPERTYCHECKER_H
 
 #include "ontoloGenius/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/ontoGraphs/Checkers/ValidityChecker.h"

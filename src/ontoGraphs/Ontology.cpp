@@ -2,6 +2,7 @@
 
 #include "ontoloGenius/ontoGraphs/Checkers/ClassChecker.h"
 #include "ontoloGenius/ontoGraphs/Checkers/ObjectPropertyChecker.h"
+#include "ontoloGenius/ontoGraphs/Checkers/DataPropertyChecker.h"
 #include "ontoloGenius/ontoGraphs/Checkers/IndividualChecker.h"
 
 #include <iostream>
@@ -33,10 +34,12 @@ int Ontology::close()
 
   ClassChecker class_checker(&class_graph_);
   ObjectPropertyChecker object_property_checker(&object_property_graph_);
+  DataPropertyChecker data_property_checker(&data_property_graph_);
   IndividualChecker individual_checker(&individual_graph_);
 
   size_t err = class_checker.check();
   err += object_property_checker.check();
+  err += data_property_checker.check();
 
   if(err == 0)
   {
@@ -66,6 +69,7 @@ int Ontology::close()
 
   class_checker.printStatus();
   object_property_checker.printStatus();
+  data_property_checker.printStatus();
   individual_checker.printStatus();
   std::cout << "**************************************" << std::endl;
 
