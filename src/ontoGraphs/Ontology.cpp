@@ -1,7 +1,7 @@
 #include "ontoloGenius/ontoGraphs/Ontology.h"
 
 #include "ontoloGenius/ontoGraphs/Checkers/ClassChecker.h"
-#include "ontoloGenius/ontoGraphs/Checkers/PropertyChecker.h"
+#include "ontoloGenius/ontoGraphs/Checkers/ObjectPropertyChecker.h"
 #include "ontoloGenius/ontoGraphs/Checkers/IndividualChecker.h"
 
 #include <iostream>
@@ -29,12 +29,12 @@ int Ontology::close()
   class_graph_.close();
   object_property_graph_.close();
 
-  ClassChecker classChecker(&class_graph_);
-  PropertyChecker propertyChecker(&object_property_graph_);
-  IndividualChecker individualChecker(&individual_graph_);
+  ClassChecker class_checker(&class_graph_);
+  ObjectPropertyChecker object_property_checker(&object_property_graph_);
+  IndividualChecker individual_checker(&individual_graph_);
 
-  size_t err = classChecker.check();
-  err += propertyChecker.check();
+  size_t err = class_checker.check();
+  err += object_property_checker.check();
 
   if(err == 0)
   {
@@ -50,8 +50,8 @@ int Ontology::close()
 
     individual_graph_.close();
 
-    individualChecker = IndividualChecker(&individual_graph_);
-    err += individualChecker.check();
+    individual_checker = IndividualChecker(&individual_graph_);
+    err += individual_checker.check();
 
     is_init_ = true;
   }
@@ -62,9 +62,9 @@ int Ontology::close()
   else
     std::cout << "Ontology is not closed :" << std::endl;
 
-  classChecker.printStatus();
-  propertyChecker.printStatus();
-  individualChecker.printStatus();
+  class_checker.printStatus();
+  object_property_checker.printStatus();
+  individual_checker.printStatus();
   std::cout << "**************************************" << std::endl;
 
   if(err)

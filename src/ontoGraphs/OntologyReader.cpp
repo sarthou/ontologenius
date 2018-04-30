@@ -85,9 +85,12 @@ int OntologyReader::read(TiXmlElement* rdf, std::string name)
     std::cout << "├── Description" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
       readDescription(elem);
-    std::cout << "├── Property" << std::endl;
+    std::cout << "├── Object property" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
       readObjectProperty(elem);
+    std::cout << "├── Data property" << std::endl;
+    for(TiXmlElement* elem = rdf->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement())
+      readDataProperty(elem);
 
     std::cout << "└── "<< elemLoaded << " readed ! " << std::endl;
     return NO_ERROR;
@@ -297,6 +300,11 @@ void OntologyReader::readObjectProperty(TiXmlElement* elem)
     object_property_graph_->add(node_name, propertyVectors);
     elemLoaded++;
   }
+}
+
+void OntologyReader::readDataProperty(TiXmlElement* elem)
+{
+
 }
 
 void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement* elem, std::string symbol, size_t level)
