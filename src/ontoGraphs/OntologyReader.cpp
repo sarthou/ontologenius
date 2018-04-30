@@ -8,7 +8,7 @@
 OntologyReader::OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* property_graph, IndividualGraph* individual_graph)
 {
   class_graph_ = class_graph;
-  property_graph_ = property_graph;
+  object_property_graph_ = property_graph;
   individual_graph_ = individual_graph;
   elemLoaded = 0;
 }
@@ -16,7 +16,7 @@ OntologyReader::OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* pro
 OntologyReader::OntologyReader(Ontology& onto)
 {
   class_graph_ = &onto.class_graph_;
-  property_graph_ = &onto.object_property_graph_;
+  object_property_graph_ = &onto.object_property_graph_;
   individual_graph_ = &onto.individual_graph_;
   elemLoaded = 0;
 }
@@ -294,7 +294,7 @@ void OntologyReader::readObjectProperty(TiXmlElement* elem)
       }
     }
 
-    property_graph_->add(node_name, propertyVectors);
+    object_property_graph_->add(node_name, propertyVectors);
     elemLoaded++;
   }
 }

@@ -29,7 +29,7 @@ public:
 
 private:
   ClassGraph* class_graph_;
-  ObjectPropertyGraph* property_graph_;
+  ObjectPropertyGraph* object_property_graph_;
   IndividualGraph* individual_graph_;
 
   int elemLoaded;
