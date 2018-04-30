@@ -97,8 +97,8 @@ bool class_handle(ontologenius::standard_service::Request  &req,
   return true;
 }
 
-bool property_handle(ontologenius::standard_service::Request  &req,
-                    ontologenius::standard_service::Response &res)
+bool object_property_handle(ontologenius::standard_service::Request  &req,
+                            ontologenius::standard_service::Response &res)
 {
   bool done = false;
   res.value = "";
@@ -127,6 +127,40 @@ bool property_handle(ontologenius::standard_service::Request  &req,
       res.value = set2string(onto.object_property_graph_.getRange(req.param));
     else if(req.action == "getName")
       res.value = onto.object_property_graph_.getName(req.param);
+    else
+      res.code = UNKNOW_ACTION;
+
+  return true;
+}
+
+bool data_property_handle(ontologenius::standard_service::Request  &req,
+                          ontologenius::standard_service::Response &res)
+{
+  bool done = false;
+  res.value = "";
+  res.code = 0;
+
+  if(onto.isInit() == false)
+    res.code = UNINIT;
+  else
+    arguers.runPreArguers();
+
+  removeUselessSpace(req.action);
+  removeUselessSpace(req.param);
+
+  if(res.code != UNINIT)
+    if(req.action == "getDown")
+      res.value = set2string(onto.data_property_graph_.getDown(req.param));
+    else if(req.action == "getUp")
+      res.value = set2string(onto.data_property_graph_.getUp(req.param));
+    else if(req.action == "getDisjoint")
+      res.value = set2string(onto.data_property_graph_.getDisjoint(req.param));
+    else if(req.action == "getDomain")
+      res.value = set2string(onto.data_property_graph_.getDomain(req.param));
+    else if(req.action == "getRange")
+      res.value = set2string(onto.data_property_graph_.getRange(req.param));
+    else if(req.action == "getName")
+      res.value = onto.data_property_graph_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
 
@@ -256,7 +290,8 @@ int main(int argc, char** argv)
   // Start up ROS service with callbacks
   ros::ServiceServer service = n.advertiseService("ontoloGenius/actions", reference_handle);
   ros::ServiceServer serviceClass = n.advertiseService("ontoloGenius/class", class_handle);
-  ros::ServiceServer serviceProperty = n.advertiseService("ontoloGenius/property", property_handle);
+  ros::ServiceServer serviceObjectProperty = n.advertiseService("ontoloGenius/object_property", object_property_handle);
+  ros::ServiceServer serviceDataProperty = n.advertiseService("ontoloGenius/data_property", data_property_handle);
   ros::ServiceServer serviceIndividual = n.advertiseService("ontoloGenius/individual", individual_handle);
   ros::ServiceServer serviceArguer = n.advertiseService("ontoloGenius/arguer", arguer_handle);
   ROS_DEBUG("ontoloGenius ready");

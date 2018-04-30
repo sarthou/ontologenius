@@ -40,13 +40,17 @@ private:
 public slots:
   void ClasshoverEnterSlot();
   void ClasshoverLeaveSlot();
-  void PropertyhoverEnterSlot();
-  void PropertyhoverLeaveSlot();
+  void objectPropertyhoverEnterSlot();
+  void objectPropertyhoverLeaveSlot();
+  void dataPropertyhoverEnterSlot();
+  void dataPropertyhoverLeaveSlot();
   void IndividualCheckBoxhoverEnterSlot();
   void IndividualhoverEnterSlot();
   void IndividualhoverLeaveSlot();
+
   void classClickedSlot();
-  void propertyClickedSlot();
+  void objectPropertyClickedSlot();
+  void dataPropertyClickedSlot();
   void individualClickedSlot();
   void closeOntologySlot();
   void ArguerClickedSlot(int);
