@@ -5,10 +5,11 @@
 
 #include "ontoloGenius/utility/utility.h"
 
-OntologyReader::OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* property_graph, IndividualGraph* individual_graph)
+OntologyReader::OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph)
 {
   class_graph_ = class_graph;
-  object_property_graph_ = property_graph;
+  object_property_graph_ = object_property_graph;
+  data_property_graph_ = data_property_graph;
   individual_graph_ = individual_graph;
   elemLoaded = 0;
 }
@@ -18,6 +19,7 @@ OntologyReader::OntologyReader(Ontology& onto)
   class_graph_ = &onto.class_graph_;
   object_property_graph_ = &onto.object_property_graph_;
   individual_graph_ = &onto.individual_graph_;
+  data_property_graph_ = &onto.data_property_graph_;
   elemLoaded = 0;
 }
 
@@ -304,7 +306,36 @@ void OntologyReader::readObjectProperty(TiXmlElement* elem)
 
 void OntologyReader::readDataProperty(TiXmlElement* elem)
 {
+  std::string elemName = elem->Value();
+  if(elemName == "owl:DatatypeProperty")
+  {
+    std::string node_name = "";
+    DataPropertyVectors_t propertyVectors;
+    const char* attr = elem->Attribute("rdf:about");
+    if(attr != NULL)
+    {
+      std::cout << "│   ├──" << getName(std::string(attr)) << std::endl;
+      node_name = getName(std::string(attr));
+      for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
+      {
+        std::string subElemName = subElem->Value();
 
+        if(subElemName == "rdfs:subPropertyOf")
+          push(propertyVectors.mothers_, subElem, "+");
+        else if(subElemName == "owl:disjointWith")
+          push(propertyVectors.disjoints_, subElem, "-");
+        else if(subElemName == "rdfs:domain")
+          push(propertyVectors.domains_, subElem, ">");
+        else if(subElemName == "rdfs:range")
+          push(propertyVectors.ranges_, subElem, "<");
+        else if(subElemName == "rdfs:label")
+          pushLang(propertyVectors.dictionary_, subElem);
+      }
+    }
+
+    data_property_graph_->add(node_name, propertyVectors);
+    elemLoaded++;
+  }
 }
 
 void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement* elem, std::string symbol, size_t level)

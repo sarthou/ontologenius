@@ -13,11 +13,12 @@
 #define COLOR_RED     "\x1B[0;91m"
 #endif
 
-Ontology::Ontology(std::string language) : object_property_graph_(&class_graph_), individual_graph_(&class_graph_, &object_property_graph_), reader((Ontology&)*this)
+Ontology::Ontology(std::string language) : object_property_graph_(&class_graph_), data_property_graph_(&class_graph_), individual_graph_(&class_graph_, &object_property_graph_), reader((Ontology&)*this)
 {
   is_init_ = false;
   class_graph_.setLanguage(language);
   object_property_graph_.setLanguage(language);
+  data_property_graph_.setLanguage(language);
   individual_graph_.setLanguage(language);
 }
 
@@ -28,6 +29,7 @@ int Ontology::close()
 
   class_graph_.close();
   object_property_graph_.close();
+  data_property_graph_.close();
 
   ClassChecker class_checker(&class_graph_);
   ObjectPropertyChecker object_property_checker(&object_property_graph_);

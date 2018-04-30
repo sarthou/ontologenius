@@ -3,6 +3,7 @@
 
 #include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontoloGenius/ontoGraphs/Graphs/IndividualGraph.h"
 
 #include <vector>
@@ -18,7 +19,7 @@ class Ontology;
 class OntologyReader
 {
 public:
-  OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* property_graph, IndividualGraph* individual_graph);
+  OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
   OntologyReader(Ontology& onto);
   ~OntologyReader() {}
 
@@ -30,6 +31,7 @@ public:
 private:
   ClassGraph* class_graph_;
   ObjectPropertyGraph* object_property_graph_;
+  DataPropertyGraph* data_property_graph_;
   IndividualGraph* individual_graph_;
 
   int elemLoaded;

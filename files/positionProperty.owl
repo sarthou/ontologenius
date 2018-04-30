@@ -6,7 +6,9 @@
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-    <owl:Ontology rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty"/>
+    <owl:Ontology rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty">
+        <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute"/>
+    </owl:Ontology>
     
 
 
@@ -203,6 +205,36 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
     </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#have3Dposition -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#have3Dposition">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#real"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#objectHave3Dposition -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#objectHave3Dposition">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#have3Dposition"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#object"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#real"/>
+    </owl:DatatypeProperty>
     
 
 
