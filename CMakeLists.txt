@@ -129,9 +129,11 @@ add_dependencies(codeDescription_lib ontologenius_gencpp)
 add_library(ontoGraphs_lib
   src/ontoGraphs/Graphs/ClassGraph.cpp
   src/ontoGraphs/Graphs/ObjectPropertyGraph.cpp
+  src/ontoGraphs/Graphs/DataPropertyGraph.cpp
   src/ontoGraphs/Graphs/IndividualGraph.cpp
   src/ontoGraphs/Checkers/ClassChecker.cpp
-  src/ontoGraphs/Checkers/PropertyChecker.cpp
+  src/ontoGraphs/Checkers/ObjectPropertyChecker.cpp
+  src/ontoGraphs/Checkers/DataPropertyChecker.cpp
   src/ontoGraphs/Checkers/IndividualChecker.cpp
   src/ontoGraphs/Ontology.cpp
   src/ontoGraphs/OntologyReader.cpp

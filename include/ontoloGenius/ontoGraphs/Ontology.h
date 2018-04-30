@@ -3,6 +3,7 @@
 
 #include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontoloGenius/ontoGraphs/Graphs/IndividualGraph.h"
 
 #include "ontoloGenius/ontoGraphs/OntologyReader.h"
@@ -22,6 +23,7 @@ public:
 
   ClassGraph class_graph_;
   ObjectPropertyGraph object_property_graph_;
+  DataPropertyGraph data_property_graph_;
   IndividualGraph individual_graph_;
 
 private:
