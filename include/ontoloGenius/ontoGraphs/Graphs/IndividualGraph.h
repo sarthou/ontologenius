@@ -10,6 +10,7 @@
 #include "ontoloGenius/ontoGraphs/Graphs/Graph.h"
 #include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontoloGenius/ontoGraphs/Graphs/DataPropertyGraph.h"
 
 class IndividualBranch_t : public ValuedNode
 {
@@ -18,6 +19,10 @@ public:
 
   std::vector<ObjectPropertyBranch_t*> object_properties_name_;
   std::vector<IndividualBranch_t*> object_properties_on_;
+
+  std::vector<DataPropertyBranch_t*> data_properties_name_;
+  std::vector<std::string> data_properties_type_;
+  std::vector<std::string> data_properties_value_;
 
   std::vector<IndividualBranch_t*> same_as_;
   std::vector<IndividualBranch_t*> distinct_;
@@ -49,7 +54,7 @@ class IndividualGraph : public Graph<IndividualBranch_t>
 {
   friend IndividualChecker;
 public:
-  IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph);
+  IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   ~IndividualGraph();
 
   void close();
@@ -82,6 +87,7 @@ public:
 private:
   ClassGraph* class_graph_;
   ObjectPropertyGraph* object_property_graph_;
+  DataPropertyGraph* data_property_graph_;
 
   std::vector<IndividualBranch_t*> individuals_;
 

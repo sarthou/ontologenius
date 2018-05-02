@@ -1,9 +1,10 @@
 #include "ontoloGenius/ontoGraphs/Graphs/IndividualGraph.h"
 
-IndividualGraph::IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph)
+IndividualGraph::IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
 {
   class_graph_ = class_graph;
   object_property_graph_ = object_property_graph;
+  data_property_graph_ = data_property_graph;
 }
 
 IndividualGraph::~IndividualGraph()
@@ -135,6 +136,47 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
       individuals_.push_back(tmp);
       me->object_properties_on_.push_back(tmp);
     }
+  }
+
+  /**********************
+  ** Data Property assertion name
+  **********************/
+  //for all my properties
+  for(unsigned int property_i = 0; property_i < individual_vector.data_properties_name_.size(); property_i++)
+  {
+    bool i_find_my_properties = false;
+
+    //is a root my properties ?
+    for(unsigned int root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
+      if(individual_vector.data_properties_name_[property_i] == data_property_graph_->roots_[root_i]->value_)
+      {
+        me->data_properties_name_.push_back(data_property_graph_->roots_[root_i]);
+        i_find_my_properties = true;
+      }
+
+    //is a branch my properties ?
+    for(unsigned int branch_i = 0; branch_i < data_property_graph_->branchs_.size(); branch_i++)
+      if(individual_vector.data_properties_name_[property_i] == data_property_graph_->branchs_[branch_i]->value_)
+      {
+        me->data_properties_name_.push_back(data_property_graph_->branchs_[branch_i]);
+        i_find_my_properties = true;
+      }
+
+    //I create my properties
+    if(!i_find_my_properties)
+    {
+      DataPropertyVectors_t empty_vectors;
+      data_property_graph_->add(individual_vector.data_properties_name_[property_i], empty_vectors);
+      for(unsigned int root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
+        if(individual_vector.data_properties_name_[property_i] == data_property_graph_->roots_[root_i]->value_)
+        {
+          me->data_properties_name_.push_back(data_property_graph_->roots_[root_i]);
+          i_find_my_properties = true;
+        }
+    }
+
+    me->data_properties_type_.push_back(individual_vector.data_properties_type_[property_i]);
+    me->data_properties_value_.push_back(individual_vector.data_properties_value_[property_i]);
   }
 
   /**********************
