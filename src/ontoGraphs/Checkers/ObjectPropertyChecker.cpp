@@ -1,18 +1,18 @@
-#include "ontoloGenius/ontoGraphs/Checkers/PropertyChecker.h"
+#include "ontoloGenius/ontoGraphs/Checkers/ObjectPropertyChecker.h"
 #include <set>
 
-size_t PropertyChecker::check()
+size_t ObjectPropertyChecker::check()
 {
   checkDisjoint();
   checkCharacteristics();
 
   is_analysed = true;
   printStatus();
-  
+
   return getErrors();
 }
 
-void PropertyChecker::checkDisjoint()
+void ObjectPropertyChecker::checkDisjoint()
 {
   for(size_t i = 0; i < graph_.size(); i++)
   {
@@ -32,7 +32,7 @@ void PropertyChecker::checkDisjoint()
   }
 }
 
-void PropertyChecker::checkCharacteristics()
+void ObjectPropertyChecker::checkCharacteristics()
 {
   for(size_t i = 0; i < graph_.size(); i++)
   {
