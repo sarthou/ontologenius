@@ -52,6 +52,7 @@ private:
   void push(Properties_t& properties, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   void pushLang(std::map<std::string, std::string>& dictionary, TiXmlElement* subElem);
   inline std::string getName(std::string uri);
+  inline bool testAttribute(TiXmlElement* subElem, std::string attribute);
 };
 
 void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem, std::string symbole, std::string attribute)
@@ -76,6 +77,16 @@ std::string OntologyReader::getName(std::string uri)
   size_t pos = uri.find("#");
   std::string result = uri.substr(pos+1);
   return result;
+}
+
+bool OntologyReader::testAttribute(TiXmlElement* subElem, std::string attribute)
+{
+  const char* subAttr;
+  subAttr = subElem->Attribute(attribute.c_str());
+  if(subAttr != NULL)
+    return true;
+  else
+    return false;
 }
 
 #endif

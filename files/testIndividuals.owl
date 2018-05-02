@@ -82,6 +82,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#cube1">
         <owl:sameAs rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#greenCube"/>
+        <positionProperty:objectHave3Dposition rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">236</positionProperty:objectHave3Dposition>
     </owl:NamedIndividual>
     
 

@@ -78,13 +78,13 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   ** Object Property assertion name
   **********************/
   //for all my properties
-  for(unsigned int property_i = 0; property_i < individual_vector.properties_name_.size(); property_i++)
+  for(unsigned int property_i = 0; property_i < individual_vector.object_properties_name_.size(); property_i++)
   {
     bool i_find_my_properties = false;
 
     //is a root my properties ?
     for(unsigned int root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
-      if(individual_vector.properties_name_[property_i] == object_property_graph_->roots_[root_i]->value_)
+      if(individual_vector.object_properties_name_[property_i] == object_property_graph_->roots_[root_i]->value_)
       {
         me->properties_name_.push_back(object_property_graph_->roots_[root_i]);
         i_find_my_properties = true;
@@ -92,7 +92,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 
     //is a branch my properties ?
     for(unsigned int branch_i = 0; branch_i < object_property_graph_->branchs_.size(); branch_i++)
-      if(individual_vector.properties_name_[property_i] == object_property_graph_->branchs_[branch_i]->value_)
+      if(individual_vector.object_properties_name_[property_i] == object_property_graph_->branchs_[branch_i]->value_)
       {
         me->properties_name_.push_back(object_property_graph_->branchs_[branch_i]);
         i_find_my_properties = true;
@@ -102,9 +102,9 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     if(!i_find_my_properties)
     {
       ObjectPropertyVectors_t empty_vectors;
-      object_property_graph_->add(individual_vector.properties_name_[property_i], empty_vectors);
+      object_property_graph_->add(individual_vector.object_properties_name_[property_i], empty_vectors);
       for(unsigned int root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
-        if(individual_vector.properties_name_[property_i] == object_property_graph_->roots_[root_i]->value_)
+        if(individual_vector.object_properties_name_[property_i] == object_property_graph_->roots_[root_i]->value_)
         {
           me->properties_name_.push_back(object_property_graph_->roots_[root_i]);
           i_find_my_properties = true;
@@ -116,13 +116,13 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   ** Object Property assertion on indiv
   **********************/
   //for all my individuals
-  for(unsigned int properties_on_i = 0; properties_on_i < individual_vector.properties_on_.size(); properties_on_i++)
+  for(unsigned int properties_on_i = 0; properties_on_i < individual_vector.object_properties_on_.size(); properties_on_i++)
   {
     bool i_find_my_properties_on = false;
 
     //is a individual exist ?
     for(unsigned int indiv_i = 0; indiv_i < individuals_.size(); indiv_i++)
-      if(individual_vector.properties_on_[properties_on_i] == individuals_[indiv_i]->value_)
+      if(individual_vector.object_properties_on_[properties_on_i] == individuals_[indiv_i]->value_)
       {
         me->properties_on_.push_back(individuals_[indiv_i]);
         i_find_my_properties_on = true;
@@ -131,7 +131,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     //I create my individual
     if(!i_find_my_properties_on)
     {
-      IndividualBranch_t* tmp = new IndividualBranch_t(individual_vector.properties_on_[properties_on_i]);
+      IndividualBranch_t* tmp = new IndividualBranch_t(individual_vector.object_properties_on_[properties_on_i]);
       individuals_.push_back(tmp);
       me->properties_on_.push_back(tmp);
     }

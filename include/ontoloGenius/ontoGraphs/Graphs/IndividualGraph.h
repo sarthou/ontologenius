@@ -29,8 +29,14 @@ public:
 struct IndividualVectors_t
 {
    std::vector<std::string> is_a_;
-   std::vector<std::string> properties_name_;
-   std::vector<std::string> properties_on_;
+
+   std::vector<std::string> object_properties_name_;
+   std::vector<std::string> object_properties_on_;
+
+   std::vector<std::string> data_properties_name_;
+   std::vector<std::string> data_properties_type_;
+   std::vector<std::string> data_properties_value_;
+
    std::vector<std::string> same_as_;
    std::map<std::string, std::string> dictionary_;
 };

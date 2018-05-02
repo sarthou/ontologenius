@@ -103,7 +103,7 @@ void OntologyReader::displayIndividualRules()
 {
   std::cout << "************************************" << std::endl;
   std::cout << "+ sub        | = same       | - distinct" << std::endl;
-  std::cout << "^ related    | @ language   |" << std::endl;
+  std::cout << "^ related    | # data type  | @ language" << std::endl;
   std::cout << "************************************" << std::endl;
 }
 
@@ -186,8 +186,18 @@ void OntologyReader::readIndividual(TiXmlElement* elem)
           if((ns != "owl") && (ns != "rdf") && (ns != "rdfs"))
           {
             std::string property = subElemName.substr(subElemName.find(":")+1);
-            push(individual_vector.properties_name_, property, "+");
-            push(individual_vector.properties_on_, subElem, "^");
+            if(testAttribute(subElem, "rdf:resource"))
+            {
+              push(individual_vector.object_properties_name_, property, "+");
+              push(individual_vector.object_properties_on_, subElem, "^");
+            }
+            else if(testAttribute(subElem, "rdf:datatype"))
+            {
+              push(individual_vector.data_properties_name_, property, "+");
+              const char* value = subElem->GetText();
+              push(individual_vector.data_properties_value_, std::string(value), "^");
+              push(individual_vector.data_properties_type_, subElem, "#", "rdf:datatype");
+            }
           }
         }
       }
