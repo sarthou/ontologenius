@@ -17,8 +17,12 @@ private:
 
   void checkSame();
   void checkReflexive();
-  void checkDomain();
-  void checkRange();
+  void checkObectPropertyDomain();
+  void checkObectPropertyRange();
+
+  void checkDataPropertyDomain();
+  void checkDataPropertyRange();
+
   void checkAssymetric();
 
   bool symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv);

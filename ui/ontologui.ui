@@ -537,22 +537,22 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_14">
           <item>
-           <widget class="QPushButtonExtended" name="Individual_getOn">
-            <property name="whatsThis">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getOn&lt;/span&gt; will give you all the individuals pointed by the property given in the parameter and applied to the given individual in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/individual &amp;quot;{param: 'blueCube:isOn', action: 'getOn'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Here we asked for all the individuals that 'isOn' 'blueCube'&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="text">
-             <string>getOn</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButtonExtended" name="Individual_getFrom">
             <property name="whatsThis">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getFrom&lt;/span&gt; will give you all the individuals having the given property in the parameter and pointing to the given individual in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/individual &quot;{param: 'blueCube:isOn', action: 'getFrom'}&quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Here we asked all the individuals for whom 'blueCube' 'isOn' them&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>getFrom</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Individual_getOn">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getOn&lt;/span&gt; will give you all the individuals pointed by the property given in the parameter and applied to the given individual in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontoloGenius/individual &amp;quot;{param: 'blueCube:isOn', action: 'getOn'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Here we asked for all the individuals that 'isOn' 'blueCube'&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getOn</string>
             </property>
            </widget>
           </item>
