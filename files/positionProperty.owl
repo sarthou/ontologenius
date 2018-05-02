@@ -9,10 +9,10 @@
     <owl:Ontology rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty">
         <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute"/>
     </owl:Ontology>
-    
 
 
-    <!-- 
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // Object Properties
@@ -20,7 +20,7 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isAt -->
@@ -28,7 +28,7 @@
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isAt">
         <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isPositioned"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isBehind -->
@@ -41,7 +41,7 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#area"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isBetween -->
@@ -52,7 +52,7 @@
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#area"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isFront -->
@@ -64,7 +64,7 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#area"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isIn -->
@@ -80,7 +80,7 @@
             <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isIn"/>
         </owl:propertyChainAxiom>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isInArea -->
@@ -90,7 +90,7 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#area"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isInBox -->
@@ -100,7 +100,7 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#box"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isInBuilding -->
@@ -110,7 +110,7 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#indoorArea"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isInFrontOf -->
@@ -119,7 +119,7 @@
         <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isPositioned"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isInHand -->
@@ -129,7 +129,7 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#hand"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isInRoom -->
@@ -139,7 +139,7 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#indoorArea"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isNext -->
@@ -151,7 +151,7 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isOn -->
@@ -164,7 +164,7 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isOnLeft -->
@@ -176,7 +176,7 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isOnRight -->
@@ -187,13 +187,13 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isPositioned -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isPositioned"/>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isUnder -->
@@ -205,10 +205,10 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
     </owl:ObjectProperty>
-    
 
 
-    <!-- 
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // Data properties
@@ -216,7 +216,7 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#have3Dposition -->
@@ -225,7 +225,7 @@
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
         <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#real"/>
     </owl:DatatypeProperty>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#objectHave3Dposition -->
@@ -234,11 +234,12 @@
         <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#have3Dposition"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#object"/>
         <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#real"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/xsd#integer"/>
     </owl:DatatypeProperty>
-    
 
 
-    <!-- 
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // Classes
@@ -246,31 +247,31 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#area -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#area"/>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#box -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#box"/>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#entity"/>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#hand -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/attribute#hand"/>
-    
+
 
 
     <!-- http://www.semanticweb.org/srth/ontologies/toaster/attribute#indoorArea -->
@@ -281,4 +282,3 @@
 
 
 <!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
-
