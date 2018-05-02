@@ -15,8 +15,10 @@ class IndividualBranch_t : public ValuedNode
 {
 public:
   std::vector<ClassBranch_t*> is_a_;
-  std::vector<ObjectPropertyBranch_t*> properties_name_;
-  std::vector<IndividualBranch_t*> properties_on_;
+
+  std::vector<ObjectPropertyBranch_t*> object_properties_name_;
+  std::vector<IndividualBranch_t*> object_properties_on_;
+
   std::vector<IndividualBranch_t*> same_as_;
   std::vector<IndividualBranch_t*> distinct_;
   std::map<std::string, std::string> dictionary_;
