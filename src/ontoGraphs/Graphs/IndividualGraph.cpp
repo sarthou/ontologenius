@@ -175,8 +175,10 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
         }
     }
 
-    me->data_properties_type_.push_back(individual_vector.data_properties_type_[property_i]);
-    me->data_properties_value_.push_back(individual_vector.data_properties_value_[property_i]);
+    data_t data;
+    data.value_ = individual_vector.data_properties_value_[property_i];
+    data.type_ = individual_vector.data_properties_type_[property_i];
+    me->data_properties_data_.push_back(data);
   }
 
   /**********************
@@ -357,8 +359,8 @@ std::set<std::string> IndividualGraph::getRelationOn(std::string individual)
 
   if(res.size() == 0)
     for(size_t i = 0; i < individuals_.size(); i++)
-      for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_value_.size(); prop_i++)
-        if(individuals_[i]->data_properties_value_[prop_i] == individual)
+      for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
+        if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
         {
           std::set<std::string> tmp = data_property_graph_->getUp(individuals_[i]->data_properties_name_[prop_i]);
           res.insert(tmp.begin(), tmp.end());
@@ -389,7 +391,7 @@ std::set<std::string> IndividualGraph::getRelatedOn(std::string property)
     for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
       for (it = data_properties.begin(); it != data_properties.end(); ++it)
         if(individuals_[i]->data_properties_name_[prop_i]->value_ == (*it))
-          res.insert(individuals_[i]->data_properties_type_[prop_i] + ":" + individuals_[i]->data_properties_value_[prop_i]);
+          res.insert(individuals_[i]->data_properties_data_[prop_i].toString());
   }
 
   return res;
@@ -410,8 +412,8 @@ std::set<std::string> IndividualGraph::getRelationWith(std::string individual)
         std::set<std::string> tmp = set2set(getSame((*it)->object_properties_on_[i]));
         res.insert(tmp.begin(), tmp.end());
       }
-      for(size_t i = 0; i < (*it)->data_properties_value_.size(); i++)
-        res.insert((*it)->data_properties_type_[i] + ":" + (*it)->data_properties_value_[i]);
+      for(size_t i = 0; i < (*it)->data_properties_data_.size(); i++)
+        res.insert((*it)->data_properties_data_[i].toString());
     }
   }
   return res;
@@ -431,8 +433,8 @@ std::set<std::string> IndividualGraph::getRelatedWith(std::string individual)
         res.insert(tmp.begin(), tmp.end());
       }
 
-    for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_value_.size(); prop_i++)
-      if(individuals_[i]->data_properties_value_[prop_i] == individual)
+    for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
+      if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
       {
         std::set<IndividualBranch_t*> sames = getSame(individuals_[i]);
         std::set<std::string> tmp = set2set(sames);
@@ -479,8 +481,8 @@ std::set<std::string> IndividualGraph::getFrom(std::string individual, std::stri
             res.insert(tmp.begin(), tmp.end());
           }
 
-    for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_value_.size(); prop_i++)
-      if(individuals_[i]->data_properties_value_[prop_i] == individual)
+    for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
+      if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
         for (it = data_properties.begin(); it != data_properties.end(); ++it)
           if(individuals_[i]->data_properties_name_[prop_i]->value_ == (*it))
           {
@@ -532,7 +534,7 @@ std::set<std::string> IndividualGraph::getOn(std::string individual, std::string
       for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
         for (it = data_properties.begin(); it != data_properties.end(); ++it)
           if(individuals_[i]->data_properties_name_[prop_i]->value_ == (*it))
-            res.insert(individuals_[i]->data_properties_type_[prop_i] + ":" + individuals_[i]->data_properties_value_[prop_i]);
+            res.insert(individuals_[i]->data_properties_data_[prop_i].toString());
     }
 
   return res;
@@ -564,8 +566,8 @@ std::set<std::string> IndividualGraph::getWith(std::string first_individual, std
           res.insert(props.begin(), props.end());
         }
 
-      for(size_t indiv_i = 0; indiv_i < individuals_[i]->data_properties_value_.size(); indiv_i++)
-        if(individuals_[i]->data_properties_value_[indiv_i] == second_individual)
+      for(size_t indiv_i = 0; indiv_i < individuals_[i]->data_properties_data_.size(); indiv_i++)
+        if(individuals_[i]->data_properties_data_[indiv_i].value_ == second_individual)
         {
           std::set<std::string> props = data_property_graph_->getUp(individuals_[i]->data_properties_name_[indiv_i]);
           res.insert(props.begin(), props.end());

@@ -21,8 +21,7 @@ public:
   std::vector<IndividualBranch_t*> object_properties_on_;
 
   std::vector<DataPropertyBranch_t*> data_properties_name_;
-  std::vector<std::string> data_properties_type_;
-  std::vector<std::string> data_properties_value_;
+  std::vector<data_t> data_properties_data_;
 
   std::vector<IndividualBranch_t*> same_as_;
   std::vector<IndividualBranch_t*> distinct_;
