@@ -17,18 +17,29 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Class_getDisjoint, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
     QObject::connect(ui->Class_getDisjoint, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
 
-    QObject::connect(ui->Property_getDisjoint, SIGNAL(hoverEnter()),this, SLOT(PropertyhoverEnterSlot()));
-    QObject::connect(ui->Property_getDisjoint, SIGNAL(hoverLeave()),this, SLOT(PropertyhoverLeaveSlot()));
-    QObject::connect(ui->Property_getDomain, SIGNAL(hoverEnter()),this, SLOT(PropertyhoverEnterSlot()));
-    QObject::connect(ui->Property_getDomain, SIGNAL(hoverLeave()),this, SLOT(PropertyhoverLeaveSlot()));
-    QObject::connect(ui->Property_getDown, SIGNAL(hoverEnter()),this, SLOT(PropertyhoverEnterSlot()));
-    QObject::connect(ui->Property_getDown, SIGNAL(hoverLeave()),this, SLOT(PropertyhoverLeaveSlot()));
-    QObject::connect(ui->Property_getInverse, SIGNAL(hoverEnter()),this, SLOT(PropertyhoverEnterSlot()));
-    QObject::connect(ui->Property_getInverse, SIGNAL(hoverLeave()),this, SLOT(PropertyhoverLeaveSlot()));
-    QObject::connect(ui->Property_getRange, SIGNAL(hoverEnter()),this, SLOT(PropertyhoverEnterSlot()));
-    QObject::connect(ui->Property_getRange, SIGNAL(hoverLeave()),this, SLOT(PropertyhoverLeaveSlot()));
-    QObject::connect(ui->Property_getUp, SIGNAL(hoverEnter()),this, SLOT(PropertyhoverEnterSlot()));
-    QObject::connect(ui->Property_getUp, SIGNAL(hoverLeave()),this, SLOT(PropertyhoverLeaveSlot()));
+    QObject::connect(ui->ObjectProperty_getDisjoint, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
+    QObject::connect(ui->ObjectProperty_getDisjoint, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
+    QObject::connect(ui->ObjectProperty_getDomain, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
+    QObject::connect(ui->ObjectProperty_getDomain, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
+    QObject::connect(ui->ObjectProperty_getDown, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
+    QObject::connect(ui->ObjectProperty_getDown, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
+    QObject::connect(ui->ObjectProperty_getInverse, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
+    QObject::connect(ui->ObjectProperty_getInverse, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
+    QObject::connect(ui->ObjectProperty_getRange, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
+    QObject::connect(ui->ObjectProperty_getRange, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
+    QObject::connect(ui->ObjectProperty_getUp, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
+    QObject::connect(ui->ObjectProperty_getUp, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
+
+    QObject::connect(ui->DataProperty_getDisjoint, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
+    QObject::connect(ui->DataProperty_getDisjoint, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
+    QObject::connect(ui->DataProperty_getDomain, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
+    QObject::connect(ui->DataProperty_getDomain, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
+    QObject::connect(ui->DataProperty_getDown, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
+    QObject::connect(ui->DataProperty_getDown, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
+    QObject::connect(ui->DataProperty_getRange, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
+    QObject::connect(ui->DataProperty_getRange, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
+    QObject::connect(ui->DataProperty_getUp, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
+    QObject::connect(ui->DataProperty_getUp, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
 
     QObject::connect(ui->Individual_getDistinct, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
     QObject::connect(ui->Individual_getDistinct, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
@@ -67,12 +78,18 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Class_getDown, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
     QObject::connect(ui->Class_getDisjoint, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
 
-    QObject::connect(ui->Property_getDisjoint, SIGNAL(clicked()),this, SLOT(propertyClickedSlot()));
-    QObject::connect(ui->Property_getDomain, SIGNAL(clicked()),this, SLOT(propertyClickedSlot()));
-    QObject::connect(ui->Property_getDown, SIGNAL(clicked()),this, SLOT(propertyClickedSlot()));
-    QObject::connect(ui->Property_getInverse, SIGNAL(clicked()),this, SLOT(propertyClickedSlot()));
-    QObject::connect(ui->Property_getRange, SIGNAL(clicked()),this, SLOT(propertyClickedSlot()));
-    QObject::connect(ui->Property_getUp, SIGNAL(clicked()),this, SLOT(propertyClickedSlot()));
+    QObject::connect(ui->ObjectProperty_getDisjoint, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
+    QObject::connect(ui->ObjectProperty_getDomain, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
+    QObject::connect(ui->ObjectProperty_getDown, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
+    QObject::connect(ui->ObjectProperty_getInverse, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
+    QObject::connect(ui->ObjectProperty_getRange, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
+    QObject::connect(ui->ObjectProperty_getUp, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
+
+    QObject::connect(ui->DataProperty_getDisjoint, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
+    QObject::connect(ui->DataProperty_getDomain, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
+    QObject::connect(ui->DataProperty_getDown, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
+    QObject::connect(ui->DataProperty_getRange, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
+    QObject::connect(ui->DataProperty_getUp, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
 
     QObject::connect(ui->Individual_getDistinct, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_getRelatedFrom, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
@@ -129,14 +146,24 @@ void ontoloGUI::ClasshoverLeaveSlot()
   ui->ClassDescription->setText("");
 }
 
-void ontoloGUI::PropertyhoverEnterSlot()
+void ontoloGUI::objectPropertyhoverEnterSlot()
 {
-  ui->PropertyDescription->setText(((QPushButtonExtended*)sender())->whatsThis());
+  ui->ObjectPropertyDescription->setText(((QPushButtonExtended*)sender())->whatsThis());
 }
 
-void ontoloGUI::PropertyhoverLeaveSlot()
+void ontoloGUI::objectPropertyhoverLeaveSlot()
 {
-  ui->PropertyDescription->setText("");
+  ui->ObjectPropertyDescription->setText("");
+}
+
+void ontoloGUI::dataPropertyhoverEnterSlot()
+{
+  ui->DataPropertyDescription->setText(((QPushButtonExtended*)sender())->whatsThis());
+}
+
+void ontoloGUI::dataPropertyhoverLeaveSlot()
+{
+  ui->DataPropertyDescription->setText("");
 }
 
 void ontoloGUI::IndividualCheckBoxhoverEnterSlot()
@@ -175,18 +202,39 @@ void ontoloGUI::classClickedSlot()
   }
 }
 
-void ontoloGUI::propertyClickedSlot()
+void ontoloGUI::objectPropertyClickedSlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontoloGenius/property");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontoloGenius/object_property");
 
   ontologenius::standard_service srv;
   srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
-  srv.request.param = ui->propertyParameter->text().toStdString();
-  QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->propertyParameter->text();
-  ui->PropertyDescription->setText(text);
+  srv.request.param = ui->objectPropertyParameter->text().toStdString();
+  QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->objectPropertyParameter->text();
+  ui->ObjectPropertyDescription->setText(text);
 
   if(!client.call(srv))
-    displayErrorInfo("ontoloGenius/property client call failed");
+    displayErrorInfo("ontoloGenius/object_property client call failed");
+  else
+  {
+    std::string res = srv.response.value;
+    ui->ResultArea->setText(QString::fromStdString(res));
+    if(srv.response.code == 3)
+      displayUnClosed();
+  }
+}
+
+void ontoloGUI::dataPropertyClickedSlot()
+{
+  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontoloGenius/data_property");
+
+  ontologenius::standard_service srv;
+  srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
+  srv.request.param = ui->dataPropertyParameter->text().toStdString();
+  QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->dataPropertyParameter->text();
+  ui->DataPropertyDescription->setText(text);
+
+  if(!client.call(srv))
+    displayErrorInfo("ontoloGenius/data_property client call failed");
   else
   {
     std::string res = srv.response.value;

@@ -13,7 +13,7 @@ int main(int argc, char** argv)
 
   onto.close();
 
-  GraphDrawer drawer(&onto.classes_);
+  GraphDrawer drawer(&onto.class_graph_);
   drawer.put_in_layers();
   drawer.draw("attribute.png");
 }
@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 
   onto.close();
 
-  GraphDrawer drawer(&onto.classes_);
+  GraphDrawer drawer(&onto.class_graph_);
   drawer.put_in_layers();
   drawer.draw("measure.png");
 }

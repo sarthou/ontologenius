@@ -17,7 +17,7 @@ public:
 
   bool defaultAvtive() {return true;}
 private:
-  bool symetricExist(IndividualBranch_t* indiv_on, PropertyClassBranch_t* sym_prop, IndividualBranch_t* sym_indiv);
+  bool symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv);
 };
 
 #endif
