@@ -213,7 +213,9 @@ void OntologyReader::readDescription(TiXmlElement* elem)
   if(elemName == "rdf:Description")
   {
     std::vector<std::string> disjoints;
-    bool isDisjointAll = false;
+    bool isAllDisjointClasses = false;
+    bool isAllDisjointProperties = false;
+
     for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
     {
       std::string subElemName = subElem->Value();
@@ -222,8 +224,12 @@ void OntologyReader::readDescription(TiXmlElement* elem)
       {
         subAttr = subElem->Attribute("rdf:resource");
         if(subAttr != NULL)
+        {
           if(getName(std::string(subAttr)) == "AllDisjointClasses")
-            isDisjointAll = true;
+            isAllDisjointClasses = true;
+          else if(getName(std::string(subAttr)) == "AllDisjointProperties")
+            isAllDisjointProperties = true;
+        }
       }
       else if(subElemName == "owl:members")
       {
@@ -233,7 +239,11 @@ void OntologyReader::readDescription(TiXmlElement* elem)
             readCollection(disjoints, subElem, "-");
       }
     }
-    class_graph_->add(disjoints);
+
+    if(isAllDisjointClasses)
+      class_graph_->add(disjoints);
+    else if(isAllDisjointProperties)
+      object_property_graph_->add(disjoints);
     disjoints.clear();
   } // end if(elemName == "rdf:Description")
 }
