@@ -207,8 +207,8 @@ type_t Compiler::onVariableInstruction(std::string variable, std::string instruc
     std::vector<type_t> args_types = compileParameters(arg, bracket+1, descriptor);
     if(descriptor->testParams(args_types) == false)
       noMatchigFunction(pose + bracket, descriptor, args_types);
-
-    //return descriptor->getReturnType()
+    else
+      return descriptor->getReturnType(args_types);
   }
   else
     return type_word_set;
@@ -237,8 +237,9 @@ type_t Compiler::onOntologyInstruction(std::string instruction, size_t pose)
 
   if(descriptor->testParams(args_types) == false)
     noMatchigFunction(pose + bracket, descriptor, args_types);
+  else
+    return descriptor->getReturnType(args_types);
 
-  //return descriptor->getReturnType()
   return type_unknow;
 }
 

@@ -10,7 +10,7 @@ FileManager::FileManager()
 
 FileManager::~FileManager()
 {
-  if(file_ == NULL)
+  if(file_ != NULL)
     fclose(file_);
 }
 
