@@ -200,15 +200,12 @@ type_t Compiler::onVariableInstruction(std::string variable, std::string instruc
   if(var.functionExist(function))
   {
     FunctionDescriptor* descriptor = var.findFunction(function);
-    std::cout << "function " + descriptor->getExplicitName() + " exist" << std::endl;
 
     std::string arg;
     size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
 
     std::vector<type_t> args_types = compileParameters(arg, bracket+1, descriptor);
-    if(descriptor->testParams(args_types))
-      std::cout << "==> good args" << std::endl;
-    else
+    if(descriptor->testParams(args_types) == false)
       noMatchigFunction(pose + bracket, descriptor, args_types);
 
     //return descriptor->getReturnType()
@@ -232,16 +229,13 @@ type_t Compiler::onOntologyInstruction(std::string instruction, size_t pose)
     return type_unknow;
   }
   FunctionDescriptor* descriptor = onto.findFunction(function);
-  std::cout << "function " + descriptor->getExplicitName() + " exist" << std::endl;
 
   std::string arg;
   size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
 
   std::vector<type_t> args_types = compileParameters(arg, bracket+1, descriptor);
 
-  if(descriptor->testParams(args_types))
-    std::cout << "==> good args" << std::endl;
-  else
+  if(descriptor->testParams(args_types) == false)
     noMatchigFunction(pose + bracket, descriptor, args_types);
 
   //return descriptor->getReturnType()
@@ -280,9 +274,6 @@ std::vector<type_t> Compiler::compileParameters(std::string arg, size_t pose, Fu
       args_types.push_back(compileIntruction(args[i], args_pose[i]));
   else
     args_types.push_back(type_void);
-
-  for(size_t i = 0; i < args_types.size(); i++)
-    std::cout << "arg " << i << " : " << args[i] << " of type : " << descriptor->to_string(args_types[i]) << std::endl;
 
   return args_types;
 }
