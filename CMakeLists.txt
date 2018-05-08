@@ -111,7 +111,9 @@ include_directories(
   ${OpenCV_INCLUDE_DIRS}
 )
 
+##############################
 ## Declare a C++ library
+##############################
 add_library(codeDescription_lib
   src/codeDescription/Types/VariablesType.cpp
   src/codeDescription/Types/StringType.cpp
@@ -172,18 +174,32 @@ target_link_libraries(ontologenius_lib codeDescription_lib)
 target_link_libraries(ontologenius_lib ontoGraphs_lib)
 target_link_libraries(ontologenius_lib filesManager_lib)
 
+add_library(drawer_lib
+  src/ontoGraphs/Drawers/GraphDrawer.cpp
+  src/ontoGraphs/Drawers/ClassDrawer.cpp
+  src/ontoGraphs/Drawers/ObjectPropertyDrawer.cpp
+  src/ontoGraphs/Drawers/DataPropertyDrawer.cpp
+  src/ontoGraphs/Drawers/OntologyDrawer.cpp
+)
+add_dependencies(drawer_lib ontologenius_gencpp)
+target_link_libraries(drawer_lib ${catkin_LIBRARIES})
+target_link_libraries(drawer_lib ontologenius_lib)
+
+##############################
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
+##############################
+
 add_executable(ontoloGenius src/rosInterface.cpp)
 add_dependencies(ontoloGenius ontologenius_gencpp)
 target_link_libraries(ontoloGenius ${catkin_LIBRARIES})
 target_link_libraries(ontoloGenius ontologenius_lib)
 target_link_libraries(ontoloGenius arguer_lib)
 
-add_executable(ontoloGeniusExemple src/exemple.cpp src/ontoGraphs/GraphDrawer.cpp)
+add_executable(ontoloGeniusExemple src/exemple.cpp )
 add_dependencies(ontoloGeniusExemple ontologenius_gencpp)
-target_link_libraries(ontoloGeniusExemple ${catkin_LIBRARIES})
+target_link_libraries(ontoloGeniusExemple drawer_lib)
 target_link_libraries(ontoloGeniusExemple ontologenius_lib)
 
 add_executable(ontologenius_tester src/tester.cpp)

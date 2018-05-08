@@ -24,14 +24,14 @@ struct ObjectVectors_t
    std::map<std::string, std::string> dictionary_;
 };
 
-class GraphDrawer;
+class ClassDrawer;
 class ObjectPropertyGraph;
 class DataPropertyGraph;
 class IndividualGraph;
 
 class ClassGraph : public OntoGraph<ClassBranch_t>
 {
-  friend GraphDrawer;
+  friend ClassDrawer;
   friend ObjectPropertyGraph;
   friend DataPropertyGraph;
   friend IndividualGraph;

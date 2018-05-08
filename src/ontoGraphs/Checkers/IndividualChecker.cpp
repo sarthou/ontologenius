@@ -122,9 +122,9 @@ void IndividualChecker::checkDataPropertyRange()
       std::set<std::string> range = individual_graph_->data_property_graph_->getRange(graph_[i]->data_properties_name_[prop_i]->value_);
       if(range.size() != 0)
       {
-        std::set<std::string>::iterator intersection = std::find(range.begin(), range.end(), graph_[i]->data_properties_type_[prop_i]);
+        std::set<std::string>::iterator intersection = std::find(range.begin(), range.end(), graph_[i]->data_properties_data_[prop_i].type_);
         if(intersection == range.end())
-          print_error("'" + graph_[i]->data_properties_type_[prop_i] + "' is not in range of '" + graph_[i]->data_properties_name_[prop_i]->value_ + "'");
+          print_error("'" + graph_[i]->data_properties_data_[prop_i].type_ + "' is not in range of '" + graph_[i]->data_properties_name_[prop_i]->value_ + "'");
       }
     }
   }
