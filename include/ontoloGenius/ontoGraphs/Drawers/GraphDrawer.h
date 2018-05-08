@@ -8,8 +8,8 @@
 
 #include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 
-#ifndef TREE_DRAWER_H
-#define TREE_DRAWER_H
+#ifndef GRAPH_DRAWER_H
+#define GRAPH_DRAWER_H
 
 struct rect_t
 {
@@ -40,25 +40,19 @@ struct node_t
 class GraphDrawer
 {
 public:
-  GraphDrawer(ClassGraph* p_tree = nullptr);
+  GraphDrawer();
   ~GraphDrawer() {}
 
-  void set_tree(ClassGraph* p_tree) {m_tree = p_tree; init(); };
-
-  void put_in_layers();
   void draw(std::string file_name);
 
-private:
+protected:
   std::vector<node_t*> roots_nodes;
   std::vector<node_t*> branchs_nodes;
 
   std::vector<std::vector<node_t*>> layer_nodes;
 
   IplImage* image;
-  ClassGraph* m_tree;
   bool exist(std::string value);
-  int create_node(ClassBranch_t* branch, node_t* mother);
-  void init();
 
   void set_rect(int layer, int nb_layer, int nb_index, node_t* node);
   void link();
@@ -70,4 +64,4 @@ private:
   cv::Scalar ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V);
 };
 
-#endif /* TREE_DRAWER_H */
+#endif /* GRAPH_DRAWER_H */
