@@ -191,7 +191,8 @@ add_library(drawer_lib
   src/ontoGraphs/Drawers/GraphDrawer.cpp
   src/ontoGraphs/Drawers/ClassDrawer.cpp
   src/ontoGraphs/Drawers/ObjectPropertyDrawer.cpp
-  )
+  src/ontoGraphs/Drawers/DataPropertyDrawer.cpp
+)
 add_dependencies(drawer_lib ontologenius_gencpp)
 target_link_libraries(drawer_lib ${catkin_LIBRARIES})
 target_link_libraries(drawer_lib ontologenius_lib)

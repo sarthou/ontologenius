@@ -42,12 +42,12 @@ struct data_t
   std::string toString() {return( type_ + ":" + value_); }
 };
 
-class GraphDrawer;
+class DataPropertyDrawer;
 class IndividualGraph;
 
 class DataPropertyGraph : public OntoGraph<DataPropertyBranch_t>
 {
-  friend GraphDrawer;
+  friend DataPropertyDrawer;
   friend IndividualGraph;
 public:
   DataPropertyGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
