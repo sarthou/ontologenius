@@ -7,16 +7,16 @@
 class ClassDrawer : public GraphDrawer
 {
 public:
-  ClassDrawer(ClassGraph* p_tree = nullptr);
+  ClassDrawer(ClassGraph* graph = nullptr);
   ~ClassDrawer() {}
 
-  void setGraph(ClassGraph* p_tree) {m_tree = p_tree; init(); };
+  void setGraph(ClassGraph* graph) {graph_ = graph; init(); };
 
-  void put_in_layers();
+  void putInLayers();
 
 private:
-  ClassGraph* m_tree;
-  int create_node(ClassBranch_t* branch, node_t* mother);
+  ClassGraph* graph_;
+  int createNode(ClassBranch_t* branch, node_t* mother);
   void init();
 };
 
