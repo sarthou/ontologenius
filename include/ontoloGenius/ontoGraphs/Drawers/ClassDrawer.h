@@ -1,16 +1,8 @@
-#include <string>
-#include <vector>
-#include <stdint.h>
-
-#include <cv.h>
-#include <highgui.h>
-#include <opencv2/highgui/highgui_c.h>
+#ifndef CLASS_DRAWER_H
+#define CLASS_DRAWER_H
 
 #include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/ontoGraphs/Drawers/GraphDrawer.h"
-
-#ifndef CLASS_DRAWER_H
-#define CLASS_DRAWER_H
 
 class ClassDrawer : public GraphDrawer
 {
