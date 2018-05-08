@@ -10,7 +10,7 @@ public:
   ClassDrawer(ClassGraph* p_tree = nullptr);
   ~ClassDrawer() {}
 
-  void set_tree(ClassGraph* p_tree) {m_tree = p_tree; init(); };
+  void setGraph(ClassGraph* p_tree) {m_tree = p_tree; init(); };
 
   void put_in_layers();
 

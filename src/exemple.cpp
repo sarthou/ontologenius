@@ -1,5 +1,5 @@
 #include "ontoloGenius/ontoGraphs/Ontology.h"
-#include "ontoloGenius/ontoGraphs/Drawers/ClassDrawer.h"
+#include "ontoloGenius/ontoGraphs/Drawers/OntologyDrawer.h"
 #include "ros/ros.h"
 
 int main(int argc, char** argv)
@@ -16,9 +16,8 @@ int main(int argc, char** argv)
 
   onto.close();
 
-  ClassDrawer drawer(&onto.class_graph_);
-  drawer.put_in_layers();
-  drawer.draw("adream_mall.png");
+  OntologyDrawer drawer(&onto);
+  drawer.draw("adream_mall");
 }
 
 /*{

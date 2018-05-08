@@ -10,7 +10,7 @@ public:
   ObjectPropertyDrawer(ObjectPropertyGraph* graph = nullptr);
   ~ObjectPropertyDrawer() {}
 
-  void set_tree(ObjectPropertyGraph* graph) {graph_ = graph; init(); };
+  void setGraph(ObjectPropertyGraph* graph) {graph_ = graph; init(); };
 
   void put_in_layers();
 

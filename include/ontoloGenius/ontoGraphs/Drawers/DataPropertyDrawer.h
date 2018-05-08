@@ -10,7 +10,7 @@ public:
   DataPropertyDrawer(DataPropertyGraph* graph = nullptr);
   ~DataPropertyDrawer() {}
 
-  void set_tree(DataPropertyGraph* graph) {graph_ = graph; init(); };
+  void setGraph(DataPropertyGraph* graph) {graph_ = graph; init(); };
 
   void put_in_layers();
 
