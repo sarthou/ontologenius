@@ -27,9 +27,8 @@ int main(int argc, char** argv)
 
   onto.close();
 
-  GraphDrawer drawer(&onto.class_graph_);
-  drawer.put_in_layers();
-  drawer.draw("measure.png");
+  OntologyDrawer drawer(&onto);
+  drawer.draw("measure");
 }*/
 
   ROS_DEBUG("Drawing done");
