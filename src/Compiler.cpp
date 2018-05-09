@@ -2,6 +2,7 @@
 
 #include "ontoloGenius/codeDescription/Types/VariablesType.h"
 #include "ontoloGenius/codeDescription/Functions/OntoFunctions.h"
+#include "ontoloGenius/codeDescription/Functions/PropertyFunctions.h"
 
 #include "ontoloGenius/codeDescription/TextManipulator.h"
 
@@ -107,7 +108,7 @@ type_t Compiler::compileIntruction(std::string instruction, size_t pose)
     else if(instruction.find("__ont") != std::string::npos)
       return onOntologyInstruction(subinstruction, pose + instruction.find("__ont")+6);
     else
-      return type_word_set; //TODO: create onPropertyInstruction
+      return onPropertyInstruction(on, subinstruction, pose);//type_word_set; //TODO: create onPropertyInstruction
   }
   else
   {
@@ -208,7 +209,10 @@ type_t Compiler::onVariableInstruction(std::string variable, std::string instruc
     if(descriptor->testParams(args_types) == false)
       noMatchigFunction(pose + bracket, descriptor, args_types);
     else
+    {
+      writer_.writeLine(function);
       return descriptor->getReturnType(args_types);
+    }
   }
   else
     return type_word_set;
@@ -238,7 +242,36 @@ type_t Compiler::onOntologyInstruction(std::string instruction, size_t pose)
   if(descriptor->testParams(args_types) == false)
     noMatchigFunction(pose + bracket, descriptor, args_types);
   else
+  {
+    writer_.writeLine(function);
     return descriptor->getReturnType(args_types);
+  }
+
+  return type_unknow;
+}
+
+type_t Compiler::onPropertyInstruction(std::string indiv, std::string instruction, size_t pose)
+{
+  TextManipulator manipulator(instruction);
+  size_t bracket = instruction.find("(");
+
+  std::string function = instruction.substr(0,bracket);
+  std::cout << "on property " << indiv << " : " <<  function <<  std::endl;
+  PropertyFunctions property;
+  FunctionDescriptor* descriptor = property.findFunction(function);
+
+  std::string arg;
+  size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
+
+  std::vector<type_t> args_types = compileParameters(arg, bracket+1, descriptor);
+
+  if(descriptor->testParams(args_types) == false)
+    noMatchigFunction(pose + bracket, descriptor, args_types);
+  else
+  {
+    writer_.writeLine(function);
+    return descriptor->getReturnType(args_types);
+  }
 
   return type_unknow;
 }

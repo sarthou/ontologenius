@@ -118,6 +118,7 @@ add_library(codeDescription_lib
   src/codeDescription/Functions/FunctionDescriptor.cpp
   src/codeDescription/Functions/FunctionContainer.cpp
   src/codeDescription/Functions/OntoFunctions.cpp
+  src/codeDescription/Functions/PropertyFunctions.cpp
   src/codeDescription/TextManipulator.cpp
   src/codeDescription/Code.cpp
   src/codeDescription/Namespace.cpp

@@ -13,6 +13,8 @@
 
 using namespace std;
 
+#define USE_INTEPRETER
+
 std::string set2string(std::set<std::string> word_set)
 {
   string result = "";
@@ -195,9 +197,10 @@ int main(int argc, char** argv)
   ros::ServiceServer serviceArguer = n.advertiseService("ontoloGenius/arguer", arguer_handle);
   ROS_DEBUG("ontoloGenius ready");
 
+#ifdef USE_INTEPRETER
   std::string code = "";
   code += "var::man += fablab.isIn() - (bob + max);\n";
-  code += "var::man.toString(test, test);\n";
+  code += "var::man.toString();\n";
   code += "if(adult == age) \n";
   code += "{";
   code += "//this is a comment\n";
@@ -220,6 +223,7 @@ int main(int argc, char** argv)
 
   error.cpy(p.getError());
   error.printStatus();
+#endif
 
   ros::spin();
 

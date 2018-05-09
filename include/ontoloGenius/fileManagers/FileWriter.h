@@ -12,6 +12,7 @@ public:
   ~FileWriter() {}
 
   void write(std::string text);
+  void writeLine(std::string text) { write(text + "\n"); }
 
 private:
 };
