@@ -55,7 +55,7 @@ void Compiler::compileIntructions(std::map<size_t, std::string> splited)
   std::map<size_t, std::string>::iterator it = splited.begin();
   for(; it != splited.end(); ++it)
   {
-    std::cout << COLOR_GREEN << "==== Compile instruction" << COLOR_OFF << std::endl;
+    std::cout << COLOR_GREEN << "==== Compile instruction" << COLOR_OFF << it->second << std::endl;
     size_t dot = it->second.find(".");
     if(dot != std::string::npos)
     {
@@ -92,6 +92,8 @@ void Compiler::compileIntructions(std::map<size_t, std::string> splited)
 
 type_t Compiler::compileIntruction(std::string instruction, size_t pose)
 {
+  type_t returned_type = type_unknow;
+
   size_t dot = instruction.find(".");
   std::cout << COLOR_GREEN << "==compile sub instruction " << COLOR_OFF << instruction << std::endl;
   if(dot != std::string::npos)
@@ -104,19 +106,19 @@ type_t Compiler::compileIntruction(std::string instruction, size_t pose)
     if(on.find(" ") != std::string::npos)
       error_.printError(pose+instruction.find(" "), "unexpected expression after '" + on.substr(0,instruction.find(" ")) + "'");
     if(instruction.find("__var[") != std::string::npos)
-      return onVariableInstruction(on, subinstruction, pose + dot + 1);
+      returned_type = onVariableInstruction(on, subinstruction, pose + dot + 1);
     else if(instruction.find("__ont") != std::string::npos)
-      return onOntologyInstruction(subinstruction, pose + instruction.find("__ont")+6);
+      returned_type = onOntologyInstruction(subinstruction, pose + instruction.find("__ont")+6);
     else
-      return onPropertyInstruction(on, subinstruction, pose);//type_word_set; //TODO: create onPropertyInstruction
+      returned_type = onPropertyInstruction(on, subinstruction, pose);
   }
   else
   {
     std::cout << COLOR_ORANGE << "--other" << COLOR_OFF << std::endl;
     if(instruction.find("__var[") != std::string::npos)
-      return type_word_set;
+      returned_type = type_word_set;
     if(instruction.find("__string[") != std::string::npos)
-      return type_string;
+      returned_type = type_string;
     else if(instruction.find("__ont") != std::string::npos)
       error_.printError(pose+instruction.find("__ont")+5, "expected function after 'ont::'");
     else if(instruction.find("__ifelse[") != std::string::npos)
@@ -124,11 +126,12 @@ type_t Compiler::compileIntruction(std::string instruction, size_t pose)
     else if(instruction.find("__subsection[") != std::string::npos)
       error_.printError(pose, "unexpected instruction");
     else if(instruction == "")
-      return type_void;
+      returned_type = type_void;
     else
-      return type_word;
+      returned_type = type_word;
   }
-  return type_unknow;
+
+  return returned_type;
 }
 
 std::map<size_t, std::string> Compiler::splitBySemicolon()
