@@ -13,6 +13,8 @@
 
 using namespace std;
 
+#define USE_INTEPRETER
+
 void removeUselessSpace(std::string& text)
 {
   while((text[0] == ' ') && (text.size() != 0))
@@ -296,9 +298,10 @@ int main(int argc, char** argv)
   ros::ServiceServer serviceArguer = n.advertiseService("ontoloGenius/arguer", arguer_handle);
   ROS_DEBUG("ontoloGenius ready");
 
+#ifdef USE_INTEPRETER
   std::string code = "";
   code += "var::man += fablab.isIn() - (bob + max);\n";
-  code += "var::man.toString(test, test);\n";
+  code += "var::man.toString();\n";
   code += "if(adult == age) \n";
   code += "{";
   code += "//this is a comment\n";
@@ -314,13 +317,14 @@ int main(int argc, char** argv)
   code += "ont::null();\n";
   code += "var::men =if(var::man == man);\n";
 
-  /*Error error;
+  Error error;
 
   Code my_code(code);
   Parser p(&my_code);
 
   error.cpy(p.getError());
-  error.printStatus();*/
+  error.printStatus();
+#endif
 
   ros::spin();
 

@@ -2,6 +2,7 @@
 
 #include "ontoloGenius/codeDescription/Types/VariablesType.h"
 #include "ontoloGenius/codeDescription/Functions/OntoFunctions.h"
+#include "ontoloGenius/codeDescription/Functions/PropertyFunctions.h"
 
 #include "ontoloGenius/codeDescription/TextManipulator.h"
 
@@ -54,7 +55,7 @@ void Compiler::compileIntructions(std::map<size_t, std::string> splited)
   std::map<size_t, std::string>::iterator it = splited.begin();
   for(; it != splited.end(); ++it)
   {
-    std::cout << COLOR_GREEN << "==== Compile instruction" << COLOR_OFF << std::endl;
+    std::cout << COLOR_GREEN << "==== Compile instruction" << COLOR_OFF << it->second << std::endl;
     size_t dot = it->second.find(".");
     if(dot != std::string::npos)
     {
@@ -91,6 +92,8 @@ void Compiler::compileIntructions(std::map<size_t, std::string> splited)
 
 type_t Compiler::compileIntruction(std::string instruction, size_t pose)
 {
+  type_t returned_type = type_unknow;
+
   size_t dot = instruction.find(".");
   std::cout << COLOR_GREEN << "==compile sub instruction " << COLOR_OFF << instruction << std::endl;
   if(dot != std::string::npos)
@@ -103,19 +106,19 @@ type_t Compiler::compileIntruction(std::string instruction, size_t pose)
     if(on.find(" ") != std::string::npos)
       error_.printError(pose+instruction.find(" "), "unexpected expression after '" + on.substr(0,instruction.find(" ")) + "'");
     if(instruction.find("__var[") != std::string::npos)
-      return onVariableInstruction(on, subinstruction, pose + dot + 1);
+      returned_type = onVariableInstruction(on, subinstruction, pose + dot + 1);
     else if(instruction.find("__ont") != std::string::npos)
-      return onOntologyInstruction(subinstruction, pose + instruction.find("__ont")+6);
+      returned_type = onOntologyInstruction(subinstruction, pose + instruction.find("__ont")+6);
     else
-      return type_word_set; //TODO: create onPropertyInstruction
+      returned_type = onPropertyInstruction(on, subinstruction, pose);
   }
   else
   {
     std::cout << COLOR_ORANGE << "--other" << COLOR_OFF << std::endl;
     if(instruction.find("__var[") != std::string::npos)
-      return type_word_set;
+      returned_type = type_word_set;
     if(instruction.find("__string[") != std::string::npos)
-      return type_string;
+      returned_type = type_string;
     else if(instruction.find("__ont") != std::string::npos)
       error_.printError(pose+instruction.find("__ont")+5, "expected function after 'ont::'");
     else if(instruction.find("__ifelse[") != std::string::npos)
@@ -123,11 +126,12 @@ type_t Compiler::compileIntruction(std::string instruction, size_t pose)
     else if(instruction.find("__subsection[") != std::string::npos)
       error_.printError(pose, "unexpected instruction");
     else if(instruction == "")
-      return type_void;
+      returned_type = type_void;
     else
-      return type_word;
+      returned_type = type_word;
   }
-  return type_unknow;
+
+  return returned_type;
 }
 
 std::map<size_t, std::string> Compiler::splitBySemicolon()
@@ -200,18 +204,18 @@ type_t Compiler::onVariableInstruction(std::string variable, std::string instruc
   if(var.functionExist(function))
   {
     FunctionDescriptor* descriptor = var.findFunction(function);
-    std::cout << "function " + descriptor->getExplicitName() + " exist" << std::endl;
 
     std::string arg;
     size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
 
     std::vector<type_t> args_types = compileParameters(arg, bracket+1, descriptor);
-    if(descriptor->testParams(args_types))
-      std::cout << "==> good args" << std::endl;
-    else
+    if(descriptor->testParams(args_types) == false)
       noMatchigFunction(pose + bracket, descriptor, args_types);
-
-    //return descriptor->getReturnType()
+    else
+    {
+      writer_.writeLine(function);
+      return descriptor->getReturnType(args_types);
+    }
   }
   else
     return type_word_set;
@@ -232,19 +236,46 @@ type_t Compiler::onOntologyInstruction(std::string instruction, size_t pose)
     return type_unknow;
   }
   FunctionDescriptor* descriptor = onto.findFunction(function);
-  std::cout << "function " + descriptor->getExplicitName() + " exist" << std::endl;
 
   std::string arg;
   size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
 
   std::vector<type_t> args_types = compileParameters(arg, bracket+1, descriptor);
 
-  if(descriptor->testParams(args_types))
-    std::cout << "==> good args" << std::endl;
-  else
+  if(descriptor->testParams(args_types) == false)
     noMatchigFunction(pose + bracket, descriptor, args_types);
+  else
+  {
+    writer_.writeLine(function);
+    return descriptor->getReturnType(args_types);
+  }
 
-  //return descriptor->getReturnType()
+  return type_unknow;
+}
+
+type_t Compiler::onPropertyInstruction(std::string indiv, std::string instruction, size_t pose)
+{
+  TextManipulator manipulator(instruction);
+  size_t bracket = instruction.find("(");
+
+  std::string function = instruction.substr(0,bracket);
+  std::cout << "on property " << indiv << " : " <<  function <<  std::endl;
+  PropertyFunctions property;
+  FunctionDescriptor* descriptor = property.findFunction(function);
+
+  std::string arg;
+  size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
+
+  std::vector<type_t> args_types = compileParameters(arg, bracket+1, descriptor);
+
+  if(descriptor->testParams(args_types) == false)
+    noMatchigFunction(pose + bracket, descriptor, args_types);
+  else
+  {
+    writer_.writeLine(function);
+    return descriptor->getReturnType(args_types);
+  }
+
   return type_unknow;
 }
 
@@ -261,10 +292,14 @@ void Compiler::getParameters(std::string arg, size_t pose, std::vector<std::stri
   args.push_back(arg.substr(start_arg));
   args_pose.push_back(pose+1+start_arg);
 
-  for(size_t i = 0; i < args.size(); i++)
+  for(size_t i = 0; i < args.size();)
   {
     code_->goToEffectiveCode(args[i], args_pose[i]);
     code_->removeNonEffectiveCode(args[i]);
+    if(args[i] != "")
+      i++;
+    else
+      args.erase(args.begin() + i);
   }
 }
 
@@ -280,9 +315,6 @@ std::vector<type_t> Compiler::compileParameters(std::string arg, size_t pose, Fu
       args_types.push_back(compileIntruction(args[i], args_pose[i]));
   else
     args_types.push_back(type_void);
-
-  for(size_t i = 0; i < args_types.size(); i++)
-    std::cout << "arg " << i << " : " << args[i] << " of type : " << descriptor->to_string(args_types[i]) << std::endl;
 
   return args_types;
 }

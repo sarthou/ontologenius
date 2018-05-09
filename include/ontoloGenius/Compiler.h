@@ -34,6 +34,7 @@ private:
 
   type_t onVariableInstruction(std::string variable, std::string instruction, size_t pose);
   type_t onOntologyInstruction(std::string instruction, size_t pose);
+  type_t onPropertyInstruction(std::string indiv, std::string instruction, size_t pose);
 
   void getParameters(std::string arg, size_t pose, std::vector<std::string>& args, std::vector<size_t>& args_pose);
 
