@@ -289,10 +289,14 @@ void Compiler::getParameters(std::string arg, size_t pose, std::vector<std::stri
   args.push_back(arg.substr(start_arg));
   args_pose.push_back(pose+1+start_arg);
 
-  for(size_t i = 0; i < args.size(); i++)
+  for(size_t i = 0; i < args.size();)
   {
     code_->goToEffectiveCode(args[i], args_pose[i]);
     code_->removeNonEffectiveCode(args[i]);
+    if(args[i] != "")
+      i++;
+    else
+      args.erase(args.begin() + i);
   }
 }
 
