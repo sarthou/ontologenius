@@ -46,12 +46,15 @@ private:
   void readObjectProperty(TiXmlElement* elem);
   void readDataProperty(TiXmlElement* elem);
   void readCollection(std::vector<std::string>& vect, TiXmlElement* elem, std::string symbol, size_t level = 1);
+  void readRestriction(TiXmlElement* elem);
+  std::string readSomeValuesFrom(TiXmlElement* elem);
 
   inline void push(std::vector<std::string>& vect, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   inline void push(std::vector<std::string>& vect, std::string elem, std::string symbole);
   void push(Properties_t& properties, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   void pushLang(std::map<std::string, std::string>& dictionary, TiXmlElement* subElem);
   inline std::string getName(std::string uri);
+  inline std::string getAttribute(TiXmlElement* elem, std::string attribute);
   inline bool testAttribute(TiXmlElement* subElem, std::string attribute);
 };
 
@@ -63,6 +66,16 @@ void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem,
   {
     vect.push_back(getName(std::string(subAttr)));
     std::cout << "│   │   ├── " << symbole << getName(std::string(subAttr)) << std::endl;
+  }
+  else
+  {
+    for(TiXmlElement* subsubElem = subElem->FirstChildElement(); subsubElem != NULL; subsubElem = subsubElem->NextSiblingElement())
+    {
+      std::string name = subsubElem->Value();
+      if(name == "owl:Restriction")
+        readRestriction(subsubElem);
+    }
+
   }
 }
 
@@ -77,6 +90,16 @@ std::string OntologyReader::getName(std::string uri)
   size_t pos = uri.find("#");
   std::string result = uri.substr(pos+1);
   return result;
+}
+
+inline std::string OntologyReader::getAttribute(TiXmlElement* elem, std::string attribute)
+{
+  const char* subAttr;
+  subAttr = elem->Attribute(attribute.c_str());
+  if(subAttr != NULL)
+    return getName(std::string(subAttr));
+  else
+    return "";
 }
 
 bool OntologyReader::testAttribute(TiXmlElement* subElem, std::string attribute)
