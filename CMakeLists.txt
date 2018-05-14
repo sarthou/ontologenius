@@ -14,7 +14,6 @@ find_package(catkin REQUIRED COMPONENTS
   genmsg
   message_generation
   pluginlib
-  qt_build
 )
 
 ## System dependencies are found with CMake's conventions
