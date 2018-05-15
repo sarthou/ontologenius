@@ -25,7 +25,7 @@ public:
 
   std::vector<IndividualBranch_t*> same_as_;
   std::vector<IndividualBranch_t*> distinct_;
-  std::map<std::string, std::string> dictionary_;
+  std::map<std::string, std::vector<std::string>> dictionary_;
 
   bool mark;
 
@@ -44,7 +44,7 @@ struct IndividualVectors_t
    std::vector<std::string> data_properties_value_;
 
    std::vector<std::string> same_as_;
-   std::map<std::string, std::string> dictionary_;
+   std::map<std::string, std::vector<std::string>> dictionary_;
 };
 
 class IndividualChecker;

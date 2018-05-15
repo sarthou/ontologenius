@@ -442,7 +442,7 @@ void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, std::
   }
 }
 
-void OntologyReader::pushLang(std::map<std::string, std::string>& dictionary, TiXmlElement* subElem)
+void OntologyReader::pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem)
 {
   const char* subAttr;
   subAttr = subElem->Attribute("xml:lang");
@@ -452,9 +452,9 @@ void OntologyReader::pushLang(std::map<std::string, std::string>& dictionary, Ti
 
     const char* value;
     value = subElem->GetText();
-    dictionary[lang] = std::string(value);
+    dictionary[lang].push_back(std::string(value));
 
     if((lang != "") && (value != ""))
-      std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang] << std::endl;
+      std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang][dictionary[lang].size() - 1] << std::endl;
   }
 }

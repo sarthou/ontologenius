@@ -52,7 +52,7 @@ private:
   inline void push(std::vector<std::string>& vect, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   inline void push(std::vector<std::string>& vect, std::string elem, std::string symbole);
   void push(Properties_t& properties, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
-  void pushLang(std::map<std::string, std::string>& dictionary, TiXmlElement* subElem);
+  void pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem);
   inline std::string getName(std::string uri);
   inline std::string getAttribute(TiXmlElement* elem, std::string attribute);
   inline bool testAttribute(TiXmlElement* subElem, std::string attribute);
