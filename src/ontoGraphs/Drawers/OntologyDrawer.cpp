@@ -22,12 +22,12 @@ void OntologyDrawer::setOntology(Ontology* ontology)
 
 void OntologyDrawer::draw(std::string name)
 {
-  class_drawer_.put_in_layers();
+  class_drawer_.putInLayers();
   class_drawer_.draw(name + "_class.png");
 
-  object_property_drawer_.put_in_layers();
+  object_property_drawer_.putInLayers();
   object_property_drawer_.draw(name + "_objectProperty.png");
 
-  data_property_drawer_.put_in_layers();
+  data_property_drawer_.putInLayers();
   data_property_drawer_.draw(name + "_dataProperty.png");
 }

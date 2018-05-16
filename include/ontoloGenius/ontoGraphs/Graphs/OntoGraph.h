@@ -14,15 +14,23 @@ This file use CRTP (curiously recurring template pattern)
 be really carreful of how you use it
 */
 
+class UpdatableNode
+{
+public:
+  unsigned int nb_updates_;
+  bool updated_;
+  UpdatableNode() {updated_ = true; nb_updates_ = 0; }
+};
+
 template <typename T>
-class Branch_t : public ValuedNode
+class Branch_t : public ValuedNode, public UpdatableNode
 {
 public:
   std::vector<T*> childs_;
   std::vector<T*> mothers_;
   uint8_t family;
   uint8_t nb_mothers_;
-  std::map<std::string, std::string> dictionary_;
+  std::map<std::string, std::vector<std::string>> dictionary_;
 
   Branch_t(std::string value) : ValuedNode(value), family(0), nb_mothers_(0)
     {};
@@ -138,7 +146,10 @@ std::string OntoGraph<B>::getName(std::string& value)
   if(branch != nullptr)
   {
     if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
-      res = branch->dictionary_[this->language_];
+      if(branch->dictionary_[this->language_].size())
+        res = branch->dictionary_[this->language_][0];
+      else
+        res = value;
     else
       res = value;
   }

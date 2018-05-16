@@ -78,7 +78,7 @@ void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
 
   me->dictionary_ = object_vector.dictionary_;
   if(me->dictionary_.find("en") == me->dictionary_.end())
-    me->dictionary_["en"] = me->value_;
+    me->dictionary_["en"].push_back(me->value_);
 }
 
 void ClassGraph::add(std::vector<std::string>& disjoints)

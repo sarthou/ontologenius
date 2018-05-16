@@ -2,15 +2,15 @@
 
 #include <iostream>
 
-ClassDrawer::ClassDrawer(ClassGraph* p_tree)
+ClassDrawer::ClassDrawer(ClassGraph* graph)
 {
-  m_tree = p_tree;
+  graph_ = graph;
   init();
 }
 
-void ClassDrawer::put_in_layers()
+void ClassDrawer::putInLayers()
 {
-  if((m_tree != nullptr) && (m_tree->roots_.size() != 0))
+  if((graph_ != nullptr) && (graph_->roots_.size() != 0))
   {
     //init markers
     for(unsigned long int i = 0; i < branchs_nodes.size(); i++)
@@ -24,17 +24,17 @@ void ClassDrawer::put_in_layers()
 
     int layer = 0;
 
-    while(!test_end())
+    while(!testEnd())
     {
       layer_nodes.push_back(std::vector<node_t*>());
-      put_layer(layer);
+      putLayer(layer);
       layer++;
     }
     layer_nodes.pop_back();
   }
 }
 
-int ClassDrawer::create_node(ClassBranch_t* branch, node_t* mother)
+int ClassDrawer::createNode(ClassBranch_t* branch, node_t* mother)
 {
   int family = branch->family;
   if(!exist(branch->value_))
@@ -44,7 +44,7 @@ int ClassDrawer::create_node(ClassBranch_t* branch, node_t* mother)
     node->prev.push_back(mother);
     node->family = branch->family;
     for(unsigned long int i = 0; i < branch->childs_.size(); i++)
-      family += create_node(branch->childs_[i], node);
+      family += createNode(branch->childs_[i], node);
 
     family = family / (branch->childs_.size() + 1);
   }
@@ -61,19 +61,19 @@ void ClassDrawer::init()
 {
   std::vector<node_t*> single;
   std::vector<node_t*> couple;
-  if(m_tree != nullptr)
+  if(graph_ != nullptr)
   {
-    for(unsigned long int i = 0; i < m_tree->roots_.size(); i++)
+    for(unsigned long int i = 0; i < graph_->roots_.size(); i++)
     {
-      node_t* node = new node_t(m_tree->roots_[i]->value_, 0);
+      node_t* node = new node_t(graph_->roots_[i]->value_, 0);
       //roots_nodes.push_back(node);
-      node->family = m_tree->roots_[i]->family;
-      int family = m_tree->roots_[i]->family;
+      node->family = graph_->roots_[i]->family;
+      int family = graph_->roots_[i]->family;
 
-      for(unsigned long int branch = 0; branch < m_tree->roots_[i]->childs_.size(); branch++)
-        family += create_node(m_tree->roots_[i]->childs_[branch], node);
+      for(unsigned long int branch = 0; branch < graph_->roots_[i]->childs_.size(); branch++)
+        family += createNode(graph_->roots_[i]->childs_[branch], node);
 
-      family = family / (m_tree->roots_[i]->childs_.size() + 1);
+      family = family / (graph_->roots_[i]->childs_.size() + 1);
       if(family == node->family)
         single.push_back(node);
       else

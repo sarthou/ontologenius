@@ -32,6 +32,7 @@ private:
 
   pluginlib::ClassLoader<ArguerInterface> loader_;
 
+  void computeIndividualsUpdates();
 };
 
 #endif

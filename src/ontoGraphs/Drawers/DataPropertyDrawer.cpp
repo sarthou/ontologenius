@@ -8,7 +8,7 @@ DataPropertyDrawer::DataPropertyDrawer(DataPropertyGraph* graph)
   init();
 }
 
-void DataPropertyDrawer::put_in_layers()
+void DataPropertyDrawer::putInLayers()
 {
   if((graph_ != nullptr) && (graph_->roots_.size() != 0))
   {
@@ -24,17 +24,17 @@ void DataPropertyDrawer::put_in_layers()
 
     int layer = 0;
 
-    while(!test_end())
+    while(!testEnd())
     {
       layer_nodes.push_back(std::vector<node_t*>());
-      put_layer(layer);
+      putLayer(layer);
       layer++;
     }
     layer_nodes.pop_back();
   }
 }
 
-int DataPropertyDrawer::create_node(DataPropertyBranch_t* branch, node_t* mother)
+int DataPropertyDrawer::createNode(DataPropertyBranch_t* branch, node_t* mother)
 {
   int family = branch->family;
   if(!exist(branch->value_))
@@ -44,7 +44,7 @@ int DataPropertyDrawer::create_node(DataPropertyBranch_t* branch, node_t* mother
     node->prev.push_back(mother);
     node->family = branch->family;
     for(unsigned long int i = 0; i < branch->childs_.size(); i++)
-      family += create_node(branch->childs_[i], node);
+      family += createNode(branch->childs_[i], node);
 
     family = family / (branch->childs_.size() + 1);
   }
@@ -71,7 +71,7 @@ void DataPropertyDrawer::init()
       int family = graph_->roots_[i]->family;
 
       for(unsigned long int branch = 0; branch < graph_->roots_[i]->childs_.size(); branch++)
-        family += create_node(graph_->roots_[i]->childs_[branch], node);
+        family += createNode(graph_->roots_[i]->childs_[branch], node);
 
       family = family / (graph_->roots_[i]->childs_.size() + 1);
       if(family == node->family)

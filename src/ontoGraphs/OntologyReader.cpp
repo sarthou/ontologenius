@@ -384,6 +384,35 @@ void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement
   }
 }
 
+void OntologyReader::readRestriction(TiXmlElement* elem)
+{
+  std::string on;
+  std::vector<std::string> restriction;
+
+  for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
+  {
+    std::string restriction_name = subElem->Value();
+    if(restriction_name == "owl:onProperty")
+      on = getAttribute(subElem, "rdf:resource");
+    else if(restriction_name == "owl:someValuesFrom")
+      restriction.push_back(readSomeValuesFrom(subElem));
+  }
+  std::cout << "on " << on << std::endl;
+}
+
+std::string OntologyReader::readSomeValuesFrom(TiXmlElement* elem)
+{
+  std::string value = getAttribute(elem, "rdf:resource");
+  if(value == "")
+    for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
+    {
+      std::string restriction_name = subElem->Value();
+      if(restriction_name == "rdfs:Datatype")
+        std::cout << restriction_name << std::endl;
+    }
+  return value;
+}
+
 void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, std::string symbole, std::string attribute)
 {
   const char* subAttr;
@@ -413,7 +442,7 @@ void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, std::
   }
 }
 
-void OntologyReader::pushLang(std::map<std::string, std::string>& dictionary, TiXmlElement* subElem)
+void OntologyReader::pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem)
 {
   const char* subAttr;
   subAttr = subElem->Attribute("xml:lang");
@@ -423,9 +452,9 @@ void OntologyReader::pushLang(std::map<std::string, std::string>& dictionary, Ti
 
     const char* value;
     value = subElem->GetText();
-    dictionary[lang] = std::string(value);
+    dictionary[lang].push_back(std::string(value));
 
     if((lang != "") && (value != ""))
-      std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang] << std::endl;
+      std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang][dictionary[lang].size() - 1] << std::endl;
   }
 }

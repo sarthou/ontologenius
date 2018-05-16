@@ -210,7 +210,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 
   me->dictionary_ = individual_vector.dictionary_;
   if(me->dictionary_.find("en") == me->dictionary_.end())
-    me->dictionary_["en"] = me->value_;
+    me->dictionary_["en"].push_back(me->value_);
 
   individuals_.push_back(me);
 }
@@ -640,7 +640,10 @@ std::string IndividualGraph::getName(std::string& value)
   if(branch != nullptr)
   {
     if(branch->dictionary_.find(language_) != branch->dictionary_.end())
-      res = branch->dictionary_[language_];
+      if(branch->dictionary_[language_].size())
+        res = branch->dictionary_[language_][0];
+      else
+        res = value;
     else
       res = value;
   }
@@ -654,8 +657,9 @@ std::set<std::string> IndividualGraph::find(std::string& value)
   for(size_t i = 0; i < individuals_.size(); i++)
   {
     if(individuals_[i]->dictionary_.find(language_) != individuals_[i]->dictionary_.end())
-      if(individuals_[i]->dictionary_[language_] == value)
-        res.insert(individuals_[i]->value_);
+      for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_[language_].size(); dic_i++)
+        if(individuals_[i]->dictionary_[language_][dic_i] == value)
+          res.insert(individuals_[i]->value_);
   }
   return res;
 }

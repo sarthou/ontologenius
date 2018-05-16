@@ -8,8 +8,8 @@
 
 #include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
 
-#ifndef GRAPH_DRAWER_H
-#define GRAPH_DRAWER_H
+#ifndef GRAPHDRAWER_H
+#define GRAPHDRAWER_H
 
 struct rect_t
 {
@@ -54,14 +54,14 @@ protected:
   IplImage* image;
   bool exist(std::string value);
 
-  void set_rect(int layer, int nb_layer, int nb_index, node_t* node);
+  void setRect(int layer, int nb_layer, int nb_index, node_t* node);
   void link();
 
-  void put_layer(int layer);
-  bool update_one_marker(int layer);
-  bool test_end();
+  void putLayer(int layer);
+  bool updateOneMarker(int layer);
+  bool testEnd();
 
   cv::Scalar ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V);
 };
 
-#endif /* GRAPH_DRAWER_H */
+#endif /* GRAPHDRAWER_H */

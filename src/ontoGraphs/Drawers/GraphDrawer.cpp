@@ -10,13 +10,13 @@
 
 GraphDrawer::GraphDrawer(){}
 
-void GraphDrawer::put_layer(int layer)
+void GraphDrawer::putLayer(int layer)
 {
   int pos = 0;
   bool had_update = true;
   while(had_update)
   {
-    had_update = update_one_marker(layer);
+    had_update = updateOneMarker(layer);
 
     for(unsigned long int i = 0; i < branchs_nodes.size(); i++)
     {
@@ -36,7 +36,7 @@ void GraphDrawer::put_layer(int layer)
   } // end while
 }
 
-bool GraphDrawer::update_one_marker(int layer)
+bool GraphDrawer::updateOneMarker(int layer)
 {
   for(unsigned long int i = 0; i < roots_nodes.size(); i++)
     if((roots_nodes[i]->layer == layer) && (roots_nodes[i]->marker == false))
@@ -56,7 +56,7 @@ bool GraphDrawer::update_one_marker(int layer)
   return false;
 }
 
-bool GraphDrawer::test_end()
+bool GraphDrawer::testEnd()
 {
   bool end = true;
 
@@ -69,7 +69,7 @@ bool GraphDrawer::test_end()
 
 void GraphDrawer::draw(std::string file_name)
 {
-  long int height = (layer_nodes.size() /*+1*/)*(MARKER_HEIGHT + MIN_HEIGHT_SPACE) + 1;
+  long int height = (layer_nodes.size())*(MARKER_HEIGHT + MIN_HEIGHT_SPACE) + 1;
 
   long int width = roots_nodes.size();
   for(unsigned long int i  = 0; i < layer_nodes.size(); i++)
@@ -77,26 +77,26 @@ void GraphDrawer::draw(std::string file_name)
         width = layer_nodes[i].size();
   width = width*(MARKER_WIDTH + MIN_WIDTH_SPACE) + 1;
 
-  std::cout << height << " : " << width << std::endl;
-
   image = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
   cvSet(image, cvScalar(255,255,255));
 
   for(unsigned long int i = 0; i < roots_nodes.size(); i++)
-    set_rect(0, layer_nodes.size() + 1, roots_nodes.size(), roots_nodes[i]);
+    setRect(0, layer_nodes.size() + 1, roots_nodes.size(), roots_nodes[i]);
 
   for(unsigned long int layer = 0; layer < layer_nodes.size(); layer++)
     for(unsigned long int i = 0; i < layer_nodes[layer].size(); i++)
-    set_rect(layer+1, layer_nodes.size() + 1, layer_nodes[layer].size(), layer_nodes[layer][i]);
+    setRect(layer+1, layer_nodes.size() + 1, layer_nodes[layer].size(), layer_nodes[layer][i]);
 
   link();
 
   if(file_name == "")
     file_name = "ontology.png";
-  cvSaveImage(file_name.c_str(), image);
+
+  if((height != 1) && (width != 1))
+    cvSaveImage(file_name.c_str(), image);
 }
 
-void GraphDrawer::set_rect(int layer, int nb_layer, int nb_index, node_t* node)
+void GraphDrawer::setRect(int layer, int nb_layer, int nb_index, node_t* node)
 {
   long int X = cvGetSize(image).width;
   long int Y = cvGetSize(image).height;

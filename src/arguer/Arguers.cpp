@@ -118,9 +118,20 @@ std::string Arguers::getDescription(std::string plugin)
 
 void Arguers::runPreArguers()
 {
-  std::map<std::string, ArguerInterface*>::iterator it;
-  for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
-    it->second->preReason();
+  size_t nb_updates = 0;
+
+  do
+  {
+    std::map<std::string, ArguerInterface*>::iterator it;
+    for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
+      it->second->preReason();
+      
+    computeIndividualsUpdates();
+
+    nb_updates = ArguerInterface::getNbUpdates();
+    ArguerInterface::resetNbUpdates();
+  }
+  while(nb_updates!= 0);
 }
 
 void Arguers::runPostArguers()
@@ -133,8 +144,23 @@ void Arguers::runPostArguers()
     for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
       it->second->postReason();
 
+    computeIndividualsUpdates();
+
     nb_updates = ArguerInterface::getNbUpdates();
     ArguerInterface::resetNbUpdates();
   }
   while(nb_updates!= 0);
+}
+
+void Arguers::computeIndividualsUpdates()
+{
+  std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
+  for(size_t indiv_i = 0; indiv_i < indiv.size(); indiv_i++)
+    if(indiv[indiv_i]->nb_updates_ == 0)
+      indiv[indiv_i]->updated_ = false;
+    else
+    {
+      indiv[indiv_i]->nb_updates_ = 0;
+      indiv[indiv_i]->updated_ = true;
+    }
 }

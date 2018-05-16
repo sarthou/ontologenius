@@ -177,7 +177,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   me->properties_ = property_vectors.properties_;
   me->dictionary_ = property_vectors.dictionary_;
   if(me->dictionary_.find("en") == me->dictionary_.end())
-    me->dictionary_["en"] = me->value_;
+    me->dictionary_["en"].push_back(me->value_);
 
   /**********************
   ** Chain axiom

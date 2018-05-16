@@ -21,7 +21,7 @@ struct ObjectVectors_t
 {
    std::vector<std::string> mothers_;
    std::vector<std::string> disjoints_;
-   std::map<std::string, std::string> dictionary_;
+   std::map<std::string, std::vector<std::string>> dictionary_;
 };
 
 class ClassDrawer;

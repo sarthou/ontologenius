@@ -31,7 +31,7 @@ struct DataPropertyVectors_t
    std::vector<std::string> domains_;
    std::vector<std::string> ranges_;
    Properties_t properties_;
-   std::map<std::string, std::string> dictionary_;
+   std::map<std::string, std::vector<std::string>> dictionary_;
 };
 
 struct data_t

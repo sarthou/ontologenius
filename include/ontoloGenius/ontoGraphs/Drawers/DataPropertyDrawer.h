@@ -12,11 +12,11 @@ public:
 
   void setGraph(DataPropertyGraph* graph) {graph_ = graph; init(); };
 
-  void put_in_layers();
+  void putInLayers();
 
 private:
   DataPropertyGraph* graph_;
-  int create_node(DataPropertyBranch_t* branch, node_t* mother);
+  int createNode(DataPropertyBranch_t* branch, node_t* mother);
   void init();
 };
 
