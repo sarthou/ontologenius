@@ -11,4 +11,7 @@
   <class type="ArguerChain" base_class_type="ArguerInterface">
     <description>This is en arguer for properties chain axiom.</description>
   </class>
+  <class type="ArguerDictionary" base_class_type="ArguerInterface">
+    <description>This is en arguer for expand dictinaries.</description>
+  </class>
 </library>

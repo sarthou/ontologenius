@@ -1,4 +1,4 @@
-#include "ontoloGenius/ontoGraphs/GraphDrawer.h"
+#include "ontoloGenius/ontoGraphs/Drawers/GraphDrawer.h"
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include <iostream>
@@ -8,45 +8,15 @@
 #define MARKER_HEIGHT     100
 #define MIN_HEIGHT_SPACE  1000
 
-GraphDrawer::GraphDrawer(ClassGraph* p_tree)
-{
-  m_tree = p_tree;
-  init();
-}
+GraphDrawer::GraphDrawer(){}
 
-void GraphDrawer::put_in_layers()
-{
-  if((m_tree != nullptr) && (m_tree->roots_.size() != 0))
-  {
-    //init markers
-    for(unsigned long int i = 0; i < branchs_nodes.size(); i++)
-      branchs_nodes[i]->marker = false;
-
-    for(unsigned long int i = 0; i < roots_nodes.size(); i++)
-    {
-      roots_nodes[i]->marker = false;
-      roots_nodes[i]->pos = i;
-    }
-
-    int layer = 0;
-
-    while(!test_end())
-    {
-      layer_nodes.push_back(std::vector<node_t*>());
-      put_layer(layer);
-      layer++;
-    }
-    layer_nodes.pop_back();
-  }
-}
-
-void GraphDrawer::put_layer(int layer)
+void GraphDrawer::putLayer(int layer)
 {
   int pos = 0;
   bool had_update = true;
   while(had_update)
   {
-    had_update = update_one_marker(layer);
+    had_update = updateOneMarker(layer);
 
     for(unsigned long int i = 0; i < branchs_nodes.size(); i++)
     {
@@ -66,7 +36,7 @@ void GraphDrawer::put_layer(int layer)
   } // end while
 }
 
-bool GraphDrawer::update_one_marker(int layer)
+bool GraphDrawer::updateOneMarker(int layer)
 {
   for(unsigned long int i = 0; i < roots_nodes.size(); i++)
     if((roots_nodes[i]->layer == layer) && (roots_nodes[i]->marker == false))
@@ -86,7 +56,7 @@ bool GraphDrawer::update_one_marker(int layer)
   return false;
 }
 
-bool GraphDrawer::test_end()
+bool GraphDrawer::testEnd()
 {
   bool end = true;
 
@@ -99,7 +69,7 @@ bool GraphDrawer::test_end()
 
 void GraphDrawer::draw(std::string file_name)
 {
-  long int height = (layer_nodes.size() /*+1*/)*(MARKER_HEIGHT + MIN_HEIGHT_SPACE) + 1;
+  long int height = (layer_nodes.size())*(MARKER_HEIGHT + MIN_HEIGHT_SPACE) + 1;
 
   long int width = roots_nodes.size();
   for(unsigned long int i  = 0; i < layer_nodes.size(); i++)
@@ -107,26 +77,26 @@ void GraphDrawer::draw(std::string file_name)
         width = layer_nodes[i].size();
   width = width*(MARKER_WIDTH + MIN_WIDTH_SPACE) + 1;
 
-  std::cout << height << " : " << width << std::endl;
-
   image = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
   cvSet(image, cvScalar(255,255,255));
 
   for(unsigned long int i = 0; i < roots_nodes.size(); i++)
-    set_rect(0, layer_nodes.size() + 1, roots_nodes.size(), roots_nodes[i]);
+    setRect(0, layer_nodes.size() + 1, roots_nodes.size(), roots_nodes[i]);
 
   for(unsigned long int layer = 0; layer < layer_nodes.size(); layer++)
     for(unsigned long int i = 0; i < layer_nodes[layer].size(); i++)
-    set_rect(layer+1, layer_nodes.size() + 1, layer_nodes[layer].size(), layer_nodes[layer][i]);
+    setRect(layer+1, layer_nodes.size() + 1, layer_nodes[layer].size(), layer_nodes[layer][i]);
 
   link();
 
   if(file_name == "")
     file_name = "ontology.png";
-  cvSaveImage(file_name.c_str(), image);
+
+  if((height != 1) && (width != 1))
+    cvSaveImage(file_name.c_str(), image);
 }
 
-void GraphDrawer::set_rect(int layer, int nb_layer, int nb_index, node_t* node)
+void GraphDrawer::setRect(int layer, int nb_layer, int nb_index, node_t* node)
 {
   long int X = cvGetSize(image).width;
   long int Y = cvGetSize(image).height;
@@ -140,12 +110,12 @@ void GraphDrawer::set_rect(int layer, int nb_layer, int nb_index, node_t* node)
 
   cvRectangle(image, cvPoint(x,y),
             cvPoint(x+MARKER_WIDTH, y+MARKER_HEIGHT),
-            ScalarHSV2BGR(node->family, 255 - node->family/2, 255 - node->family/2),
+            ScalarHSV2BGR(node->family, 200, 255),
             -1, 8, 0);
   CvFont font;
   cvInitFont(&font, CV_FONT_HERSHEY_COMPLEX, 0.8, 1.0, 0, 3);
   cvPutText(image, node->value.c_str(), cvPoint(x+5,y+MARKER_HEIGHT/2), &font,
-            ScalarHSV2BGR(255, node->family, node->family));
+            ScalarHSV2BGR(255, 255, 0));
 }
 
 void GraphDrawer::link()
@@ -169,64 +139,6 @@ bool GraphDrawer::exist(std::string value)
       return true;
 
   return false;
-}
-
-int GraphDrawer::create_node(ClassBranch_t* branch, node_t* mother)
-{
-  int family = branch->family;
-  if(!exist(branch->value_))
-  {
-    node_t* node = new node_t(branch->value_);
-    branchs_nodes.push_back(node);
-    node->prev.push_back(mother);
-    node->family = branch->family;
-    for(unsigned long int i = 0; i < branch->childs_.size(); i++)
-      family += create_node(branch->childs_[i], node);
-
-    family = family / (branch->childs_.size() + 1);
-  }
-  else
-  {
-    for(unsigned long int i = 0; i < branchs_nodes.size(); i++)
-      if(branchs_nodes[i]->value == branch->value_)
-        branchs_nodes[i]->prev.push_back(mother);
-  }
-
-}
-
-void GraphDrawer::init()
-{
-  std::vector<node_t*> single;
-  std::vector<node_t*> couple;
-  if(m_tree != nullptr)
-  {
-    for(unsigned long int i = 0; i < m_tree->roots_.size(); i++)
-    {
-      node_t* node = new node_t(m_tree->roots_[i]->value_, 0);
-      //roots_nodes.push_back(node);
-      node->family = m_tree->roots_[i]->family;
-      int family = m_tree->roots_[i]->family;
-
-      for(unsigned long int branch = 0; branch < m_tree->roots_[i]->childs_.size(); branch++)
-        family += create_node(m_tree->roots_[i]->childs_[branch], node);
-
-      family = family / (m_tree->roots_[i]->childs_.size() + 1);
-      if(family == node->family)
-        single.push_back(node);
-      else
-        couple.push_back(node);
-    }
-
-    int middle = single.size()/2;
-    for(unsigned long int i = 0; i < middle; i++)
-      roots_nodes.push_back(single[i]);
-
-    for(unsigned long int i = 0; i < couple.size(); i++)
-      roots_nodes.push_back(couple[i]);
-
-    for(unsigned long int i = middle; i < single.size(); i++)
-      roots_nodes.push_back(single[i]);
-  }
 }
 
 cv::Scalar GraphDrawer::ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V)

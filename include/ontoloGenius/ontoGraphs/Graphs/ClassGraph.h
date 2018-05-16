@@ -21,17 +21,17 @@ struct ObjectVectors_t
 {
    std::vector<std::string> mothers_;
    std::vector<std::string> disjoints_;
-   std::map<std::string, std::string> dictionary_;
+   std::map<std::string, std::vector<std::string>> dictionary_;
 };
 
-class GraphDrawer;
+class ClassDrawer;
 class ObjectPropertyGraph;
 class DataPropertyGraph;
 class IndividualGraph;
 
 class ClassGraph : public OntoGraph<ClassBranch_t>
 {
-  friend GraphDrawer;
+  friend ClassDrawer;
   friend ObjectPropertyGraph;
   friend DataPropertyGraph;
   friend IndividualGraph;

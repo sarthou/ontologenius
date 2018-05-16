@@ -53,15 +53,15 @@ struct ObjectPropertyVectors_t
    std::vector<std::string> ranges_;
    std::vector<std::vector<std::string>> chains_;
    Properties_t properties_;
-   std::map<std::string, std::string> dictionary_;
+   std::map<std::string, std::vector<std::string>> dictionary_;
 };
 
-class GraphDrawer;
+class ObjectPropertyDrawer;
 class IndividualGraph;
 
 class ObjectPropertyGraph : public OntoGraph<ObjectPropertyBranch_t>
 {
-  friend GraphDrawer;
+  friend ObjectPropertyDrawer;
   friend IndividualGraph;
 public:
   ObjectPropertyGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
