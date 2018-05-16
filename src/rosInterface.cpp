@@ -288,12 +288,12 @@ int main(int argc, char** argv)
   std::cout << "Plugins loaded : " << arguers.list() << std::endl;
 
   // Start up ROS service with callbacks
-  ros::ServiceServer service = n.advertiseService("ontoloGenius/actions", reference_handle);
-  ros::ServiceServer serviceClass = n.advertiseService("ontoloGenius/class", class_handle);
-  ros::ServiceServer serviceObjectProperty = n.advertiseService("ontoloGenius/object_property", object_property_handle);
-  ros::ServiceServer serviceDataProperty = n.advertiseService("ontoloGenius/data_property", data_property_handle);
-  ros::ServiceServer serviceIndividual = n.advertiseService("ontoloGenius/individual", individual_handle);
-  ros::ServiceServer serviceArguer = n.advertiseService("ontoloGenius/arguer", arguer_handle);
+  ros::ServiceServer service = n.advertiseService("ontologenius/actions", reference_handle);
+  ros::ServiceServer serviceClass = n.advertiseService("ontologenius/class", class_handle);
+  ros::ServiceServer serviceObjectProperty = n.advertiseService("ontologenius/object_property", object_property_handle);
+  ros::ServiceServer serviceDataProperty = n.advertiseService("ontologenius/data_property", data_property_handle);
+  ros::ServiceServer serviceIndividual = n.advertiseService("ontologenius/individual", individual_handle);
+  ros::ServiceServer serviceArguer = n.advertiseService("ontologenius/arguer", arguer_handle);
   ROS_DEBUG("ontoloGenius ready");
 
   std::string code = "";
