@@ -8,7 +8,7 @@ int send_request(std::string method, std::string url, std::string body, std::str
 {
   ros::NodeHandle n;
 
-  ros::ServiceClient client = n.serviceClient<ontologenius::REST>("ontoloGenius/REST");
+  ros::ServiceClient client = n.serviceClient<ontologenius::REST>("ontologenius/rest");
 
   ontologenius::REST srv;
   srv.request.method = method;

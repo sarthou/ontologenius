@@ -272,11 +272,11 @@ bool arguer_handle(ontologenius::standard_service::Request  &req,
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "ontoloGenius");
+  ros::init(argc, argv, "ontologenius");
 
   ros::NodeHandle n;
 
-  ros::service::waitForService("ontoloGenius/REST", -1);
+  ros::service::waitForService("ontologenius/rest", -1);
 
   std::string language = string(argv[1]);
   std::cout << "language " << language << std::endl;
