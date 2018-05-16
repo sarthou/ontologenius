@@ -118,9 +118,20 @@ std::string Arguers::getDescription(std::string plugin)
 
 void Arguers::runPreArguers()
 {
-  std::map<std::string, ArguerInterface*>::iterator it;
-  for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
-    it->second->preReason();
+  size_t nb_updates = 0;
+
+  do
+  {
+    std::map<std::string, ArguerInterface*>::iterator it;
+    for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
+      it->second->preReason();
+      
+    computeIndividualsUpdates();
+
+    nb_updates = ArguerInterface::getNbUpdates();
+    ArguerInterface::resetNbUpdates();
+  }
+  while(nb_updates!= 0);
 }
 
 void Arguers::runPostArguers()
