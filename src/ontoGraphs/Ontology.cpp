@@ -85,13 +85,13 @@ int Ontology::close()
 int Ontology::readFromUri(std::string uri)
 {
   uri_.push_back(uri);
-  reader.readFromUri(uri);
+  return reader.readFromUri(uri);
 }
 
 int Ontology::readFromFile(std::string fileName)
 {
   files_.push_back(fileName);
-  reader.readFromFile(fileName);
+  return reader.readFromFile(fileName);
 }
 
 bool Ontology::isInit()
