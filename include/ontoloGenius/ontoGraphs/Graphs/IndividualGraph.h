@@ -12,7 +12,7 @@
 #include "ontoloGenius/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/ontoGraphs/Graphs/DataPropertyGraph.h"
 
-class IndividualBranch_t : public ValuedNode
+class IndividualBranch_t : public ValuedNode, public UpdatableNode
 {
 public:
   std::vector<ClassBranch_t*> is_a_;
