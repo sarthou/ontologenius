@@ -75,6 +75,11 @@ void ArguerDictionary::replaceQuote(IndividualBranch_t* indiv)
       tmp.erase(std::remove(tmp.begin(), tmp.end(), '\''), tmp.end());
       if (std::find(it->second.begin(), it->second.end(), tmp) == it->second.end())
         it->second.push_back(tmp);
+
+      tmp = it->second[i];
+      std::replace( tmp.begin(), tmp.end(), '\'', ' ');
+      if (std::find(it->second.begin(), it->second.end(), tmp) == it->second.end())
+        it->second.push_back(tmp);
     }
   }
 }
