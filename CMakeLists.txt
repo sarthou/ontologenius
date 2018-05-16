@@ -226,6 +226,7 @@ add_library(arguer_plugin
   src/arguer/plugins/ArguerInverseOf.cpp
   src/arguer/plugins/ArguerSymetric.cpp
   src/arguer/plugins/ArguerChain.cpp
+  src/arguer/plugins/ArguerDictionary.cpp
   )
 add_dependencies(arguer_plugin ontologenius_gencpp)
 target_link_libraries(arguer_plugin plugin_lib)
