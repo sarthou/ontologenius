@@ -274,11 +274,10 @@ bool arguer_handle(ontologenius::standard_service::Request  &req,
 }
 //END OF DEPRECATED
 
-bool referenceHandle(ontologenius::standard_service::Request  &req,
-                      ontologenius::standard_service::Response &res)
+bool actionsHandle(ontologenius::ontologeniusService::Request  &req,
+                      ontologenius::ontologeniusService::Response &res)
 {
   bool done = false;
-  res.value = "";
   res.code = 0;
 
   removeUselessSpace(req.action);
@@ -297,9 +296,9 @@ bool referenceHandle(ontologenius::standard_service::Request  &req,
   {
     Computer comp;
     if(comp.compute(req.param, onto.class_graph_))
-      res.value = "true";
+      res.values[0] = "true";
     else
-      res.value = "false";
+      res.values[0] = "false";
     //comp.compute("red_cube|young_animal=color_animal|age_object", onto);
   }
   else
@@ -538,7 +537,7 @@ int main(int argc, char** argv)
   ros::ServiceServer serviceArguer_deprecated = n.advertiseService("ontoloGenius/arguer", arguer_handle);
   //END OF DEPRECATED
 
-  ros::ServiceServer service = n.advertiseService("ontologenius/actions", referenceHandle);
+  ros::ServiceServer service = n.advertiseService("ontologenius/actions", actionsHandle);
   ros::ServiceServer service_class = n.advertiseService("ontologenius/class", class_handle);
   ros::ServiceServer service_object_property = n.advertiseService("ontologenius/object_property", objectPropertyHandle);
   ros::ServiceServer service_data_property = n.advertiseService("ontologenius/data_property", dataPropertyHandle);
