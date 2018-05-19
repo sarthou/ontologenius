@@ -31,6 +31,14 @@ std::string set2string(std::set<std::string> word_set)
   return result;
 }
 
+std::vector<std::string> set2vector(std::set<std::string> word_set)
+{
+  std::vector<std::string> result;
+  for(set<string>::iterator it = word_set.begin(); it != word_set.end(); ++it)
+    result.push_back(*it);
+  return result;
+}
+
 Ontology onto;
 Arguers arguers(&onto);
 
@@ -295,6 +303,7 @@ bool actionsHandle(ontologenius::ontologeniusService::Request  &req,
   else if(req.action == "test")
   {
     Computer comp;
+    res.values.resize(1);
     if(comp.compute(req.param, onto.class_graph_))
       res.values[0] = "true";
     else
@@ -307,11 +316,10 @@ bool actionsHandle(ontologenius::ontologeniusService::Request  &req,
   return true;
 }
 
-bool classHandle(ontologenius::standard_service::Request  &req,
-                  ontologenius::standard_service::Response &res)
+bool classHandle(ontologenius::ontologeniusService::Request  &req,
+                  ontologenius::ontologeniusService::Response &res)
 {
   bool done = false;
-  res.value = "";
   res.code = 0;
 
   if(onto.isInit() == false)
@@ -324,24 +332,23 @@ bool classHandle(ontologenius::standard_service::Request  &req,
 
   if(res.code != UNINIT)
     if(req.action == "getDown")
-      res.value = set2string(onto.class_graph_.getDown(req.param));
+      res.values = set2vector(onto.class_graph_.getDown(req.param));
     else if(req.action == "getUp")
-      res.value = set2string(onto.class_graph_.getUp(req.param));
+      res.values = set2vector(onto.class_graph_.getUp(req.param));
     else if(req.action == "getDisjoint")
-      res.value = set2string(onto.class_graph_.getDisjoint(req.param));
+      res.values = set2vector(onto.class_graph_.getDisjoint(req.param));
     else if(req.action == "getName")
-      res.value = onto.class_graph_.getName(req.param);
+      res.values.push_back(onto.class_graph_.getName(req.param));
     else
       res.code = UNKNOW_ACTION;
 
   return true;
 }
 
-bool objectPropertyHandle(ontologenius::standard_service::Request  &req,
-                            ontologenius::standard_service::Response &res)
+bool objectPropertyHandle(ontologenius::ontologeniusService::Request  &req,
+                            ontologenius::ontologeniusService::Response &res)
 {
   bool done = false;
-  res.value = "";
   res.code = 0;
 
   if(onto.isInit() == false)
@@ -354,30 +361,29 @@ bool objectPropertyHandle(ontologenius::standard_service::Request  &req,
 
   if(res.code != UNINIT)
     if(req.action == "getDown")
-      res.value = set2string(onto.object_property_graph_.getDown(req.param));
+      res.values = set2vector(onto.object_property_graph_.getDown(req.param));
     else if(req.action == "getUp")
-      res.value = set2string(onto.object_property_graph_.getUp(req.param));
+      res.values = set2vector(onto.object_property_graph_.getUp(req.param));
     else if(req.action == "getDisjoint")
-      res.value = set2string(onto.object_property_graph_.getDisjoint(req.param));
+      res.values = set2vector(onto.object_property_graph_.getDisjoint(req.param));
     else if(req.action == "getInverse")
-      res.value = set2string(onto.object_property_graph_.getInverse(req.param));
+      res.values = set2vector(onto.object_property_graph_.getInverse(req.param));
     else if(req.action == "getDomain")
-      res.value = set2string(onto.object_property_graph_.getDomain(req.param));
+      res.values = set2vector(onto.object_property_graph_.getDomain(req.param));
     else if(req.action == "getRange")
-      res.value = set2string(onto.object_property_graph_.getRange(req.param));
+      res.values = set2vector(onto.object_property_graph_.getRange(req.param));
     else if(req.action == "getName")
-      res.value = onto.object_property_graph_.getName(req.param);
+      res.values.push_back(onto.object_property_graph_.getName(req.param));
     else
       res.code = UNKNOW_ACTION;
 
   return true;
 }
 
-bool dataPropertyHandle(ontologenius::standard_service::Request  &req,
-                          ontologenius::standard_service::Response &res)
+bool dataPropertyHandle(ontologenius::ontologeniusService::Request  &req,
+                          ontologenius::ontologeniusService::Response &res)
 {
   bool done = false;
-  res.value = "";
   res.code = 0;
 
   if(onto.isInit() == false)
@@ -390,28 +396,27 @@ bool dataPropertyHandle(ontologenius::standard_service::Request  &req,
 
   if(res.code != UNINIT)
     if(req.action == "getDown")
-      res.value = set2string(onto.data_property_graph_.getDown(req.param));
+      res.values = set2vector(onto.data_property_graph_.getDown(req.param));
     else if(req.action == "getUp")
-      res.value = set2string(onto.data_property_graph_.getUp(req.param));
+      res.values = set2vector(onto.data_property_graph_.getUp(req.param));
     else if(req.action == "getDisjoint")
-      res.value = set2string(onto.data_property_graph_.getDisjoint(req.param));
+      res.values = set2vector(onto.data_property_graph_.getDisjoint(req.param));
     else if(req.action == "getDomain")
-      res.value = set2string(onto.data_property_graph_.getDomain(req.param));
+      res.values = set2vector(onto.data_property_graph_.getDomain(req.param));
     else if(req.action == "getRange")
-      res.value = set2string(onto.data_property_graph_.getRange(req.param));
+      res.values = set2vector(onto.data_property_graph_.getRange(req.param));
     else if(req.action == "getName")
-      res.value = onto.data_property_graph_.getName(req.param);
+      res.values.push_back(onto.data_property_graph_.getName(req.param));
     else
       res.code = UNKNOW_ACTION;
 
   return true;
 }
 
-bool individualHandle(ontologenius::standard_service::Request  &req,
-                      ontologenius::standard_service::Response &res)
+bool individualHandle(ontologenius::ontologeniusService::Request  &req,
+                      ontologenius::ontologeniusService::Response &res)
 {
   bool done = false;
-  res.value = "";
   res.code = 0;
 
   if(onto.isInit() == false)
@@ -465,7 +470,7 @@ bool individualHandle(ontologenius::standard_service::Request  &req,
     else if(req.action == "getWith")
       set_res = onto.individual_graph_.getWith(req.param);
     else if(req.action == "getName")
-      res.value = onto.individual_graph_.getName(req.param);
+      res.values.push_back(onto.individual_graph_.getName(req.param));
     else if(req.action == "find")
       set_res = onto.individual_graph_.find(req.param);
     else if(req.action == "getType")
@@ -483,8 +488,8 @@ bool individualHandle(ontologenius::standard_service::Request  &req,
         set_res = onto.individual_graph_.select(set_res, select);
     }
 
-    if(res.value == "")
-      res.value = set2string(set_res);
+    if(res.values.size() == 0)
+      res.values = set2vector(set_res);
 
   return true;
 }
