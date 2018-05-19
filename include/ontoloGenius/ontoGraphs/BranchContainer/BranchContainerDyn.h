@@ -32,6 +32,7 @@ public:
   virtual ~BranchContainerDyn() {delete nodes_; }
 
   virtual B* find(std::string word);
+  virtual B* find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang) {};
   virtual void load(std::vector<B*>& vect);
 private:
   BramchNode_t<B>* nodes_;

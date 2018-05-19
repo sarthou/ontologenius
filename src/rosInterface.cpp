@@ -12,8 +12,6 @@
 #include "ontoloGenius/Computer.h"
 #include "ontoloGenius/Parser.h"
 
-using namespace std;
-
 void removeUselessSpace(std::string& text)
 {
   while((text[0] == ' ') && (text.size() != 0))
@@ -339,6 +337,8 @@ bool classHandle(ontologenius::ontologeniusService::Request  &req,
       res.values = set2vector(onto.class_graph_.getDisjoint(req.param));
     else if(req.action == "getName")
       res.values.push_back(onto.class_graph_.getName(req.param));
+    else if(req.action == "find")
+      res.values = set2vector(onto.class_graph_.find(req.param));
     else
       res.code = UNKNOW_ACTION;
 

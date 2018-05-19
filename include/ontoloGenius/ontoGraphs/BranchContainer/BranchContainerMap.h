@@ -13,6 +13,7 @@ public:
   virtual ~BranchContainerMap() {}
 
   virtual B* find(std::string word);
+  virtual B* find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang);
   virtual void load(std::vector<B*>& vect);
 private:
   std::map<std::string, B*> nodes_;
@@ -26,6 +27,16 @@ B* BranchContainerMap<B>::find(std::string word)
     return nullptr;
   else
     return it->second;
+}
+
+template <typename B>
+B* BranchContainerMap<B>::find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang)
+{
+  typename std::map<std::string, B*>::iterator it;
+  for(it = nodes_.begin(); it != nodes_.end(); ++it)
+    if(comp(it->second, word, lang))
+      return it->second;
+  return nullptr;
 }
 
 template <typename B>
