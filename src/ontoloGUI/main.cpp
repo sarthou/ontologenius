@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     ontoloGUI w;
     w.show();
 
-    ros::init(argc, argv, "ontoloGenius");
+    ros::init(argc, argv, "ontoloGUI");
 
     ros::NodeHandle n;
 

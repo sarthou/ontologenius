@@ -507,7 +507,7 @@ bool arguerHandle(ontologenius::ontologeniusService::Request  &req,
   else if(req.action == "list")
     res.values = arguers.listVector();
   else if(req.action == "getDescription")
-    res.values[0] = arguers.getDescription(req.param);
+    res.values.push_back(arguers.getDescription(req.param));
   else
     res.code = UNKNOW_ACTION;
 
@@ -534,16 +534,17 @@ int main(int argc, char** argv)
   // Start up ROS service with callbacks
 
   //DEPRECATED
-  ros::ServiceServer service_deprecated = n.advertiseService("ontoloGenius/actions", reference_handle);
-  ros::ServiceServer serviceClass_deprecated = n.advertiseService("ontoloGenius/class", class_handle);
-  ros::ServiceServer serviceObjectProperty_deprecated = n.advertiseService("ontoloGenius/object_property", object_property_handle);
-  ros::ServiceServer serviceDataProperty_deprecated = n.advertiseService("ontoloGenius/data_property", data_property_handle);
-  ros::ServiceServer serviceIndividual_deprecated = n.advertiseService("ontoloGenius/individual", individual_handle);
-  ros::ServiceServer serviceArguer_deprecated = n.advertiseService("ontoloGenius/arguer", arguer_handle);
+  ros::NodeHandle n_deprecated;
+  ros::ServiceServer service_deprecated = n_deprecated.advertiseService("ontoloGenius/actions", reference_handle);
+  ros::ServiceServer serviceClass_deprecated = n_deprecated.advertiseService("ontoloGenius/class", class_handle);
+  ros::ServiceServer serviceObjectProperty_deprecated = n_deprecated.advertiseService("ontoloGenius/object_property", object_property_handle);
+  ros::ServiceServer serviceDataProperty_deprecated = n_deprecated.advertiseService("ontoloGenius/data_property", data_property_handle);
+  ros::ServiceServer serviceIndividual_deprecated = n_deprecated.advertiseService("ontoloGenius/individual", individual_handle);
+  ros::ServiceServer serviceArguer_deprecated = n_deprecated.advertiseService("ontoloGenius/arguer", arguer_handle);
   //END OF DEPRECATED
 
   ros::ServiceServer service = n.advertiseService("ontologenius/actions", actionsHandle);
-  ros::ServiceServer service_class = n.advertiseService("ontologenius/class", class_handle);
+  ros::ServiceServer service_class = n.advertiseService("ontologenius/class", classHandle);
   ros::ServiceServer service_object_property = n.advertiseService("ontologenius/object_property", objectPropertyHandle);
   ros::ServiceServer service_data_property = n.advertiseService("ontologenius/data_property", dataPropertyHandle);
   ros::ServiceServer service_individual = n.advertiseService("ontologenius/individual", individualHandle);
