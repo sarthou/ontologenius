@@ -2,13 +2,14 @@
 #include "ontoloGenius/arguer/Arguers.h"
 
 #include "ontologenius/standard_service.h"
+#include "ontologenius/ontologeniusService.h"
+
 #include "ontoloGenius/utility/error_code.h"
 
 #include <iostream>
 #include "ros/ros.h"
 
 #include "ontoloGenius/Computer.h"
-
 #include "ontoloGenius/Parser.h"
 
 using namespace std;
@@ -33,6 +34,8 @@ std::string set2string(std::set<std::string> word_set)
 Ontology onto;
 Arguers arguers(&onto);
 
+
+//DEPRECATED
 bool reference_handle(ontologenius::standard_service::Request  &req,
                       ontologenius::standard_service::Response &res)
 {
@@ -269,6 +272,244 @@ bool arguer_handle(ontologenius::standard_service::Request  &req,
 
   return true;
 }
+//END OF DEPRECATED
+
+bool referenceHandle(ontologenius::standard_service::Request  &req,
+                      ontologenius::standard_service::Response &res)
+{
+  bool done = false;
+  res.value = "";
+  res.code = 0;
+
+  removeUselessSpace(req.action);
+  removeUselessSpace(req.param);
+
+  if(req.action == "add")
+    res.code = onto.readFromUri(req.param);
+  else if(req.action == "close")
+  {
+    onto.close();
+    arguers.runPostArguers();
+  }
+  else if(req.action == "reset")
+    onto = Ontology();
+  else if(req.action == "test")
+  {
+    Computer comp;
+    if(comp.compute(req.param, onto.class_graph_))
+      res.value = "true";
+    else
+      res.value = "false";
+    //comp.compute("red_cube|young_animal=color_animal|age_object", onto);
+  }
+  else
+    res.code = UNKNOW_ACTION;
+
+  return true;
+}
+
+bool classHandle(ontologenius::standard_service::Request  &req,
+                  ontologenius::standard_service::Response &res)
+{
+  bool done = false;
+  res.value = "";
+  res.code = 0;
+
+  if(onto.isInit() == false)
+    res.code = UNINIT;
+  else
+    arguers.runPreArguers();
+
+  removeUselessSpace(req.action);
+  removeUselessSpace(req.param);
+
+  if(res.code != UNINIT)
+    if(req.action == "getDown")
+      res.value = set2string(onto.class_graph_.getDown(req.param));
+    else if(req.action == "getUp")
+      res.value = set2string(onto.class_graph_.getUp(req.param));
+    else if(req.action == "getDisjoint")
+      res.value = set2string(onto.class_graph_.getDisjoint(req.param));
+    else if(req.action == "getName")
+      res.value = onto.class_graph_.getName(req.param);
+    else
+      res.code = UNKNOW_ACTION;
+
+  return true;
+}
+
+bool objectPropertyHandle(ontologenius::standard_service::Request  &req,
+                            ontologenius::standard_service::Response &res)
+{
+  bool done = false;
+  res.value = "";
+  res.code = 0;
+
+  if(onto.isInit() == false)
+    res.code = UNINIT;
+  else
+    arguers.runPreArguers();
+
+  removeUselessSpace(req.action);
+  removeUselessSpace(req.param);
+
+  if(res.code != UNINIT)
+    if(req.action == "getDown")
+      res.value = set2string(onto.object_property_graph_.getDown(req.param));
+    else if(req.action == "getUp")
+      res.value = set2string(onto.object_property_graph_.getUp(req.param));
+    else if(req.action == "getDisjoint")
+      res.value = set2string(onto.object_property_graph_.getDisjoint(req.param));
+    else if(req.action == "getInverse")
+      res.value = set2string(onto.object_property_graph_.getInverse(req.param));
+    else if(req.action == "getDomain")
+      res.value = set2string(onto.object_property_graph_.getDomain(req.param));
+    else if(req.action == "getRange")
+      res.value = set2string(onto.object_property_graph_.getRange(req.param));
+    else if(req.action == "getName")
+      res.value = onto.object_property_graph_.getName(req.param);
+    else
+      res.code = UNKNOW_ACTION;
+
+  return true;
+}
+
+bool dataPropertyHandle(ontologenius::standard_service::Request  &req,
+                          ontologenius::standard_service::Response &res)
+{
+  bool done = false;
+  res.value = "";
+  res.code = 0;
+
+  if(onto.isInit() == false)
+    res.code = UNINIT;
+  else
+    arguers.runPreArguers();
+
+  removeUselessSpace(req.action);
+  removeUselessSpace(req.param);
+
+  if(res.code != UNINIT)
+    if(req.action == "getDown")
+      res.value = set2string(onto.data_property_graph_.getDown(req.param));
+    else if(req.action == "getUp")
+      res.value = set2string(onto.data_property_graph_.getUp(req.param));
+    else if(req.action == "getDisjoint")
+      res.value = set2string(onto.data_property_graph_.getDisjoint(req.param));
+    else if(req.action == "getDomain")
+      res.value = set2string(onto.data_property_graph_.getDomain(req.param));
+    else if(req.action == "getRange")
+      res.value = set2string(onto.data_property_graph_.getRange(req.param));
+    else if(req.action == "getName")
+      res.value = onto.data_property_graph_.getName(req.param);
+    else
+      res.code = UNKNOW_ACTION;
+
+  return true;
+}
+
+bool individualHandle(ontologenius::standard_service::Request  &req,
+                      ontologenius::standard_service::Response &res)
+{
+  bool done = false;
+  res.value = "";
+  res.code = 0;
+
+  if(onto.isInit() == false)
+    res.code = UNINIT;
+  else
+    arguers.runPreArguers();
+
+  removeUselessSpace(req.action);
+  removeUselessSpace(req.param);
+
+  std::set<std::string> set_res;
+  std::string select = "";
+  if(req.action.find("select:") == 0)
+  {
+    req.action = req.action.substr(std::string("select:").size());
+    size_t delimitater = req.param.find("=");
+    if(delimitater != std::string::npos)
+    {
+      select = req.param.substr(0, delimitater);
+      req.param = req.param.substr(delimitater+1);
+
+      removeUselessSpace(select);
+      removeUselessSpace(req.param);
+    }
+    removeUselessSpace(req.action);
+  }
+
+  if(res.code != UNINIT)
+    if(req.action == "getSame")
+      set_res = onto.individual_graph_.getSame(req.param);
+    if(req.action == "getDistincts")
+      set_res = onto.individual_graph_.getDistincts(req.param);
+    else if(req.action == "getRelationFrom")
+      set_res = onto.individual_graph_.getRelationFrom(req.param);
+    else if(req.action == "getRelatedFrom")
+      set_res = onto.individual_graph_.getRelatedFrom(req.param);
+    else if(req.action == "getRelationOn")
+      set_res = onto.individual_graph_.getRelationOn(req.param);
+    else if(req.action == "getRelatedOn")
+      set_res = onto.individual_graph_.getRelatedOn(req.param);
+    else if(req.action == "getRelationWith")
+      set_res = onto.individual_graph_.getRelationWith(req.param);
+    else if(req.action == "getRelatedWith")
+      set_res = onto.individual_graph_.getRelatedWith(req.param);
+    else if(req.action == "getUp")
+      set_res = onto.individual_graph_.getUp(req.param);
+    else if(req.action == "getOn")
+      set_res = onto.individual_graph_.getOn(req.param);
+    else if(req.action == "getFrom")
+      set_res = onto.individual_graph_.getFrom(req.param);
+    else if(req.action == "getWith")
+      set_res = onto.individual_graph_.getWith(req.param);
+    else if(req.action == "getName")
+      res.value = onto.individual_graph_.getName(req.param);
+    else if(req.action == "find")
+      set_res = onto.individual_graph_.find(req.param);
+    else if(req.action == "getType")
+      set_res = onto.individual_graph_.getType(req.param);
+    else
+      res.code = UNKNOW_ACTION;
+
+    if(select != "")
+    {
+      if(req.action == "getUp")
+        set_res = onto.class_graph_.select(set_res, select);
+      else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
+        set_res = onto.object_property_graph_.select(set_res, select);
+      else if(req.action != "getName")
+        set_res = onto.individual_graph_.select(set_res, select);
+    }
+
+    if(res.value == "")
+      res.value = set2string(set_res);
+
+  return true;
+}
+
+bool arguerHandle(ontologenius::standard_service::Request  &req,
+                   ontologenius::standard_service::Response &res)
+{
+  bool done = false;
+  res.value = "";
+  res.code = 0;
+
+  if(req.action == "activate")
+    res.code = arguers.activate(req.param);
+  else if(req.action == "deactivate")
+    res.code = arguers.deactivate(req.param);
+  else if(req.action == "list")
+    res.value = arguers.list();
+  else if(req.action == "getDescription")
+    res.value = arguers.getDescription(req.param);
+  else
+    res.code = UNKNOW_ACTION;
+
+  return true;
+}
 
 int main(int argc, char** argv)
 {
@@ -298,13 +539,13 @@ int main(int argc, char** argv)
   ros::ServiceServer serviceArguer_deprecated = n.advertiseService("ontoloGenius/arguer", arguer_handle);
   //END OF DEPRECATED
 
-  ros::ServiceServer service = n.advertiseService("ontologenius/actions", reference_handle);
+  ros::ServiceServer service = n.advertiseService("ontologenius/actions", referenceHandle);
   ros::ServiceServer service_class = n.advertiseService("ontologenius/class", class_handle);
-  ros::ServiceServer service_object_property = n.advertiseService("ontologenius/object_property", object_property_handle);
-  ros::ServiceServer service_data_property = n.advertiseService("ontologenius/data_property", data_property_handle);
-  ros::ServiceServer service_individual = n.advertiseService("ontologenius/individual", individual_handle);
-  ros::ServiceServer service_arguer = n.advertiseService("ontologenius/arguer", arguer_handle);
-  ROS_DEBUG("ontoloGenius ready");
+  ros::ServiceServer service_object_property = n.advertiseService("ontologenius/object_property", objectPropertyHandle);
+  ros::ServiceServer service_data_property = n.advertiseService("ontologenius/data_property", dataPropertyHandle);
+  ros::ServiceServer service_individual = n.advertiseService("ontologenius/individual", individualHandle);
+  ros::ServiceServer service_arguer = n.advertiseService("ontologenius/arguer", arguerHandle);
+  ROS_DEBUG("ontologenius ready");
 
   std::string code = "";
   code += "var::man += fablab.isIn() - (bob + max);\n";

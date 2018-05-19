@@ -65,6 +65,7 @@ find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport)
   FILES
   REST.srv
   standard_service.srv
+  ontologeniusService.srv
  )
 
 ## Generate actions in the 'action' folder

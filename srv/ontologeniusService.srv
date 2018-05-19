@@ -1,6 +1,5 @@
-#DEPRECATED
 string action
 string param
 ---
-string value
+string[] values
 int16 code
