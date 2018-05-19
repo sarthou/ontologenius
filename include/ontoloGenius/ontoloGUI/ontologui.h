@@ -37,6 +37,8 @@ private:
   std::string getArguerDescription(std::string box);
   void displayErrorInfo(std::string text);
 
+  std::string vector2string(std::vector<std::string> vect);
+
 public slots:
   void ClasshoverEnterSlot();
   void ClasshoverLeaveSlot();

@@ -2,7 +2,7 @@
 #include "include/ontoloGenius/ontoloGUI/qpushbuttonextended.h"
 #include "ui_ontologui.h"
 
-#include "ontologenius/standard_service.h"
+#include "ontologenius/ontologeniusService.h"
 
 ontoloGUI::ontoloGUI(QWidget *parent) :
     QMainWindow(parent),
@@ -183,9 +183,9 @@ void ontoloGUI::IndividualhoverLeaveSlot()
 
 void ontoloGUI::classClickedSlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontologenius/class");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/class");
 
-  ontologenius::standard_service srv;
+  ontologenius::ontologeniusService srv;
   srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
   srv.request.param = ui->classParameter->text().toStdString();
   QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->classParameter->text();
@@ -195,7 +195,7 @@ void ontoloGUI::classClickedSlot()
     displayErrorInfo("ontologenius/class client call failed");
   else
   {
-    std::string res = srv.response.value;
+    std::string res = vector2string(srv.response.values);
     ui->ResultArea->setText(QString::fromStdString(res));
     if(srv.response.code == 3)
       displayUnClosed();
@@ -204,9 +204,9 @@ void ontoloGUI::classClickedSlot()
 
 void ontoloGUI::objectPropertyClickedSlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontologenius/object_property");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/object_property");
 
-  ontologenius::standard_service srv;
+  ontologenius::ontologeniusService srv;
   srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
   srv.request.param = ui->objectPropertyParameter->text().toStdString();
   QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->objectPropertyParameter->text();
@@ -216,7 +216,7 @@ void ontoloGUI::objectPropertyClickedSlot()
     displayErrorInfo("ontologenius/object_property client call failed");
   else
   {
-    std::string res = srv.response.value;
+    std::string res = vector2string(srv.response.values);
     ui->ResultArea->setText(QString::fromStdString(res));
     if(srv.response.code == 3)
       displayUnClosed();
@@ -225,9 +225,9 @@ void ontoloGUI::objectPropertyClickedSlot()
 
 void ontoloGUI::dataPropertyClickedSlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontologenius/data_property");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/data_property");
 
-  ontologenius::standard_service srv;
+  ontologenius::ontologeniusService srv;
   srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
   srv.request.param = ui->dataPropertyParameter->text().toStdString();
   QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->dataPropertyParameter->text();
@@ -237,7 +237,7 @@ void ontoloGUI::dataPropertyClickedSlot()
     displayErrorInfo("ontologenius/data_property client call failed");
   else
   {
-    std::string res = srv.response.value;
+    std::string res = vector2string(srv.response.values);
     ui->ResultArea->setText(QString::fromStdString(res));
     if(srv.response.code == 3)
       displayUnClosed();
@@ -246,9 +246,9 @@ void ontoloGUI::dataPropertyClickedSlot()
 
 void ontoloGUI::individualClickedSlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontologenius/individual");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/individual");
 
-  ontologenius::standard_service srv;
+  ontologenius::ontologeniusService srv;
   if(ui->Individual_select->checkState() == 0)
     srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
   else
@@ -261,7 +261,7 @@ void ontoloGUI::individualClickedSlot()
     displayErrorInfo("ontologenius/individual client call failed");
   else
   {
-    std::string res = srv.response.value;
+    std::string res = vector2string(srv.response.values);
     ui->ResultArea->setText(QString::fromStdString(res));
     if(srv.response.code == 3)
       displayUnClosed();
@@ -270,16 +270,16 @@ void ontoloGUI::individualClickedSlot()
 
 void ontoloGUI::closeOntologySlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontologenius/actions");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/actions");
 
-  ontologenius::standard_service srv;
+  ontologenius::ontologeniusService srv;
   srv.request.action = "close";
 
   if(!client.call(srv))
     displayErrorInfo("ontologenius/actions client call failed");
   else
   {
-    std::string res = srv.response.value;
+    std::string res = vector2string(srv.response.values);
     ui->ResultArea->setText(QString::fromStdString(res));
     start();
   }
@@ -287,9 +287,9 @@ void ontoloGUI::closeOntologySlot()
 
 void ontoloGUI::ArguerClickedSlot(int)
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontologenius/arguer");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/arguer");
 
-  ontologenius::standard_service srv;
+  ontologenius::ontologeniusService srv;
   if(((QCheckBoxExtended*)sender())->isChecked())
     srv.request.action = "activate";
   else
@@ -300,7 +300,7 @@ void ontoloGUI::ArguerClickedSlot(int)
     displayErrorInfo("ontologenius/arguer client call failed");
   else
   {
-    std::string res = srv.response.value;
+    std::string res = vector2string(srv.response.values);
     ui->ResultArea->setText(QString::fromStdString(res));
   }
 }
@@ -329,34 +329,17 @@ void ontoloGUI::displayUnClosed()
 
 void ontoloGUI::loadArguers()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontologenius/arguer");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/arguer");
 
-  ontologenius::standard_service srv;
+  ontologenius::ontologeniusService srv;
   srv.request.action = "list";
 
   if(!client.call(srv))
     displayErrorInfo("ontologenius/arguer client call failed");
   else
   {
-    std::string res = srv.response.value;
+    arguers_names_ = srv.response.values;
     ui->ResultArea->setText("");
-
-    if(res.find("-") != std::string::npos)
-    {
-      bool eof = false;
-      size_t begin = 0;
-      do
-      {
-        size_t start = res.find("-", begin);
-        size_t stop = res.find("-", start + 1);
-        std::string arg_name = res.substr(start + 1, stop - start - 2);
-        if(stop == std::string::npos)
-          eof = true;
-        arguers_names_.push_back(arg_name);
-        begin = stop;
-      }
-      while(eof == false);
-    }
 
     constructArguersCheckBoxs();
   }
@@ -388,16 +371,16 @@ size_t ontoloGUI::getArguerIndex(QCheckBoxExtended* box)
 
 std::string ontoloGUI::getArguerDescription(std::string box)
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::standard_service>("ontologenius/arguer");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/arguer");
 
-  ontologenius::standard_service srv;
+  ontologenius::ontologeniusService srv;
   srv.request.action = "getDescription";
   srv.request.param = box;
 
   if(!client.call(srv))
     displayErrorInfo("ontologenius/arguer client call failed");
   else
-    return srv.response.value;
+    return vector2string(srv.response.values);
 
   return "";
 }
@@ -410,4 +393,12 @@ void ontoloGUI::displayErrorInfo(std::string text)
                   "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
                   "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">" + text + "</span></p></body></html>";
   ui->InfoArea->setHtml(QString::fromStdString(html));
+}
+
+std::string ontoloGUI::vector2string(std::vector<std::string> vect)
+{
+  std::string res;
+  for(size_t i = 0; i < vect.size(); i++)
+    res += vect[i] + "\n";
+  return res;
 }
