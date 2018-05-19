@@ -490,11 +490,10 @@ bool individualHandle(ontologenius::standard_service::Request  &req,
   return true;
 }
 
-bool arguerHandle(ontologenius::standard_service::Request  &req,
-                   ontologenius::standard_service::Response &res)
+bool arguerHandle(ontologenius::ontologeniusService::Request  &req,
+                   ontologenius::ontologeniusService::Response &res)
 {
   bool done = false;
-  res.value = "";
   res.code = 0;
 
   if(req.action == "activate")
@@ -502,9 +501,9 @@ bool arguerHandle(ontologenius::standard_service::Request  &req,
   else if(req.action == "deactivate")
     res.code = arguers.deactivate(req.param);
   else if(req.action == "list")
-    res.value = arguers.list();
+    res.values = arguers.listVector();
   else if(req.action == "getDescription")
-    res.value = arguers.getDescription(req.param);
+    res.values[0] = arguers.getDescription(req.param);
   else
     res.code = UNKNOW_ACTION;
 

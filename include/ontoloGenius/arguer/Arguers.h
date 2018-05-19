@@ -17,6 +17,7 @@ public:
 
   void load();
   std::string list();
+  std::vector<std::string> listVector();
 
   int activate(std::string plugin);
   int deactivate(std::string plugin);

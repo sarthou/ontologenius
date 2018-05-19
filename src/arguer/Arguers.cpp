@@ -61,6 +61,19 @@ std::string Arguers::list()
   return res;
 }
 
+std::vector<std::string> Arguers::listVector()
+{
+  std::map<std::string, ArguerInterface*>::iterator it;
+  std::string out =  "Plugins loaded :\n";
+  std::vector<std::string> res;
+  for(it = arguers_.begin(); it != arguers_.end(); ++it)
+  {
+    out += " - From " + it->first + " : " + arguers_[it->first]->getName() + " (" + arguers_[it->first]->getDesciption() + ")\n";
+    res.push_back(it->first);
+  }
+  return res;
+}
+
 int Arguers::activate(std::string plugin)
 {
   if(arguers_.find(plugin) != arguers_.end())
@@ -125,7 +138,7 @@ void Arguers::runPreArguers()
     std::map<std::string, ArguerInterface*>::iterator it;
     for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
       it->second->preReason();
-      
+
     computeIndividualsUpdates();
 
     nb_updates = ArguerInterface::getNbUpdates();
