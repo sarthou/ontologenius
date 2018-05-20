@@ -374,6 +374,8 @@ bool objectPropertyHandle(ontologenius::ontologeniusService::Request  &req,
       res.values = set2vector(onto.object_property_graph_.getRange(req.param));
     else if(req.action == "getName")
       res.values.push_back(onto.object_property_graph_.getName(req.param));
+    else if(req.action == "find")
+      res.values = set2vector(onto.object_property_graph_.find(req.param));
     else
       res.code = UNKNOW_ACTION;
 
@@ -407,6 +409,8 @@ bool dataPropertyHandle(ontologenius::ontologeniusService::Request  &req,
       res.values = set2vector(onto.data_property_graph_.getRange(req.param));
     else if(req.action == "getName")
       res.values.push_back(onto.data_property_graph_.getName(req.param));
+    else if(req.action == "find")
+      res.values = set2vector(onto.object_property_graph_.find(req.param));
     else
       res.code = UNKNOW_ACTION;
 

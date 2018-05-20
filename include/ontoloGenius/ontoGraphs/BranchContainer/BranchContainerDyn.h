@@ -32,7 +32,7 @@ public:
   virtual ~BranchContainerDyn() {delete nodes_; }
 
   virtual B* find(std::string word);
-  virtual B* find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang) {};
+  virtual std::vector<B*> find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang);
   virtual void load(std::vector<B*>& vect);
 private:
   BramchNode_t<B>* nodes_;
@@ -62,6 +62,18 @@ B* BranchContainerDyn<B>::find(std::string word)
   }
 
   return tmp;
+}
+
+template <typename B>
+std::vector<B*> BranchContainerDyn<B>::find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang)
+{
+  std::vector<B*> res;
+
+  for(BramchNode_t<B>* node = nodes_; node->next != nullptr; node = node->next)
+    if(comp( node->next->branch, word, lang))
+      res.push_back(node->next->branch);
+
+  return res;
 }
 
 template <typename B>

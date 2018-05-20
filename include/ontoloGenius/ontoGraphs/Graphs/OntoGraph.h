@@ -65,8 +65,6 @@ public:
     return out;
   }
 
-  //bool comparator(B* branch, std::string value, std::string lang);
-
 protected:
   std::vector<B*> branchs_;
   std::vector<B*> roots_;
@@ -288,7 +286,7 @@ std::set<B*> OntoGraph<B>::getUpPtr(B* branch)
 }
 
 template <typename D>
-bool /*OntoGraph<B>::*/comparator(D* branch, std::string value, std::string lang)
+bool comparator(D* branch, std::string value, std::string lang)
 {
   if(branch->dictionary_.find(lang) != branch->dictionary_.end())
     for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
@@ -301,9 +299,9 @@ template <typename B>
 std::set<std::string> OntoGraph<B>::find(std::string value)
 {
   std::set<std::string> res;
-  auto branch = this->container_.find(&comparator<B>, value, this->language_);
-  if(branch != nullptr)
-    res.insert(branch->value_);
+  std::vector<B*> branch = this->container_.find(&comparator<B>, value, this->language_);
+  for(size_t i = 0; i < branch.size(); i++)
+    res.insert(branch[i]->value_);
 
   return res;
 }
