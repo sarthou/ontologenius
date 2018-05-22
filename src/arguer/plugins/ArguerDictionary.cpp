@@ -27,11 +27,12 @@ void ArguerDictionary::postReason()
 
 void ArguerDictionary::updateDictionary(ValuedNode* node)
 {
-  if(node->updated_ == true)
+  if (node->flags_.find("dico") == node->flags_.end())
   {
     split(node);
     createLowerCase(node);
     replaceQuote(node);
+    node->flags_["dico"] = true;
   }
 }
 
