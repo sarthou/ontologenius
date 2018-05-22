@@ -7,10 +7,19 @@
 #include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerMap.h"
 #include "ontoloGenius/ontoGraphs/BranchContainer/BranchContainerDyn.h"
 
-class ValuedNode
+class UpdatableNode
+{
+public:
+  unsigned int nb_updates_;
+  bool updated_;
+  UpdatableNode() {updated_ = true; nb_updates_ = 0; }
+};
+
+class ValuedNode : public UpdatableNode
 {
 public:
   std::string value_;
+  std::map<std::string, std::vector<std::string>> dictionary_;
 
   ValuedNode(std::string value) {value_ = value; }
 };

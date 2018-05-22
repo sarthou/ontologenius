@@ -9,19 +9,36 @@ void ArguerDictionary::preReason()
 void ArguerDictionary::postReason()
 {
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
-  for(size_t indiv_i = 0; indiv_i < indiv.size(); indiv_i++)
-    if(indiv[indiv_i]->updated_ == true)
-    {
-      split(indiv[indiv_i]);
-      createLowerCase(indiv[indiv_i]);
-      replaceQuote(indiv[indiv_i]);
-    }
+  for(size_t i = 0; i < indiv.size(); i++)
+    updateDictionary(indiv[i]);
+
+  std::vector<ClassBranch_t*> classes = ontology_->class_graph_.get();
+  for(size_t i = 0; i < classes.size(); i++)
+    updateDictionary(classes[i]);
+
+  std::vector<DataPropertyBranch_t*> data_properties = ontology_->data_property_graph_.get();
+  for(size_t i = 0; i < data_properties.size(); i++)
+    updateDictionary(data_properties[i]);
+
+  std::vector<ObjectPropertyBranch_t*> object_properties = ontology_->object_property_graph_.get();
+  for(size_t i = 0; i < object_properties.size(); i++)
+    updateDictionary(object_properties[i]);
 }
 
-void ArguerDictionary::split(IndividualBranch_t* indiv)
+void ArguerDictionary::updateDictionary(ValuedNode* node)
+{
+  if(node->updated_ == true)
+  {
+    split(node);
+    createLowerCase(node);
+    replaceQuote(node);
+  }
+}
+
+void ArguerDictionary::split(ValuedNode* node)
 {
   std::map<std::string, std::vector<std::string>>::iterator it;
-  for (it = indiv->dictionary_.begin(); it != indiv->dictionary_.end(); ++it)
+  for (it = node->dictionary_.begin(); it != node->dictionary_.end(); ++it)
   {
     for(size_t i = 0; i < it->second.size(); i++)
     {
@@ -48,10 +65,10 @@ void ArguerDictionary::split(IndividualBranch_t* indiv)
   }
 }
 
-void ArguerDictionary::createLowerCase(IndividualBranch_t* indiv)
+void ArguerDictionary::createLowerCase(ValuedNode* node)
 {
   std::map<std::string, std::vector<std::string>>::iterator it;
-  for (it = indiv->dictionary_.begin(); it != indiv->dictionary_.end(); ++it)
+  for (it = node->dictionary_.begin(); it != node->dictionary_.end(); ++it)
   {
     for(size_t i = 0; i < it->second.size(); i++)
     {
@@ -64,10 +81,10 @@ void ArguerDictionary::createLowerCase(IndividualBranch_t* indiv)
   }
 }
 
-void ArguerDictionary::replaceQuote(IndividualBranch_t* indiv)
+void ArguerDictionary::replaceQuote(ValuedNode* node)
 {
   std::map<std::string, std::vector<std::string>>::iterator it;
-  for (it = indiv->dictionary_.begin(); it != indiv->dictionary_.end(); ++it)
+  for (it = node->dictionary_.begin(); it != node->dictionary_.end(); ++it)
   {
     for(size_t i = 0; i < it->second.size(); i++)
     {

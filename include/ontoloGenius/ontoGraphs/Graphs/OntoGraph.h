@@ -14,23 +14,14 @@ This file use CRTP (curiously recurring template pattern)
 be really carreful of how you use it
 */
 
-class UpdatableNode
-{
-public:
-  unsigned int nb_updates_;
-  bool updated_;
-  UpdatableNode() {updated_ = true; nb_updates_ = 0; }
-};
-
 template <typename T>
-class Branch_t : public ValuedNode, public UpdatableNode
+class Branch_t : public ValuedNode
 {
 public:
   std::vector<T*> childs_;
   std::vector<T*> mothers_;
   uint8_t family;
   uint8_t nb_mothers_;
-  std::map<std::string, std::vector<std::string>> dictionary_;
 
   Branch_t(std::string value) : ValuedNode(value), family(0), nb_mothers_(0)
     {};

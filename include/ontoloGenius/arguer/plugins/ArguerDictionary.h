@@ -17,10 +17,11 @@ public:
 
   bool defaultAvtive() {return true;}
 private:
+  void updateDictionary(ValuedNode* node);
 
-  void split(IndividualBranch_t* indiv);
-  void createLowerCase(IndividualBranch_t* indiv);
-  void replaceQuote(IndividualBranch_t* indiv);
+  void split(ValuedNode* node);
+  void createLowerCase(ValuedNode* node);
+  void replaceQuote(ValuedNode* node);
 };
 
 #endif
