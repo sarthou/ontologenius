@@ -69,6 +69,8 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
       res.value = "false";
     //comp.compute("red_cube|young_animal=color_animal|age_object", onto);
   }
+  else if(req.action == "setLang")
+    onto.setLanguage(req.param);
   else
     res.code = UNKNOW_ACTION;
 

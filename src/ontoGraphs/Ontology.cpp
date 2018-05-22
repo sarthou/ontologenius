@@ -100,3 +100,11 @@ bool Ontology::isInit()
     std::cout << COLOR_RED << "Ontology is not closed" << COLOR_OFF << std::endl;
   return is_init_;
 }
+
+void Ontology::setLanguage(std::string language)
+{
+  class_graph_.setLanguage(language);
+  object_property_graph_.setLanguage(language);
+  data_property_graph_.setLanguage(language);
+  individual_graph_.setLanguage(language);
+}

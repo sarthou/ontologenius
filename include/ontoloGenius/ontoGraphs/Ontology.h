@@ -20,6 +20,7 @@ public:
   int readFromFile(std::string fileName);
 
   bool isInit();
+  void setLanguage(std::string language);
 
   ClassGraph class_graph_;
   ObjectPropertyGraph object_property_graph_;
