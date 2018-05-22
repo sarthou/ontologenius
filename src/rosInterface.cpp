@@ -45,7 +45,6 @@ Arguers arguers(&onto);
 bool reference_handle(ontologenius::standard_service::Request  &req,
                       ontologenius::standard_service::Response &res)
 {
-  bool done = false;
   res.value = "";
   res.code = 0;
 
@@ -79,7 +78,6 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
 bool class_handle(ontologenius::standard_service::Request  &req,
                   ontologenius::standard_service::Response &res)
 {
-  bool done = false;
   res.value = "";
   res.code = 0;
 
@@ -92,6 +90,7 @@ bool class_handle(ontologenius::standard_service::Request  &req,
   removeUselessSpace(req.param);
 
   if(res.code != UNINIT)
+  {
     if(req.action == "getDown")
       res.value = set2string(onto.class_graph_.getDown(req.param));
     else if(req.action == "getUp")
@@ -102,6 +101,7 @@ bool class_handle(ontologenius::standard_service::Request  &req,
       res.value = onto.class_graph_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
+  }
 
   return true;
 }
@@ -109,7 +109,6 @@ bool class_handle(ontologenius::standard_service::Request  &req,
 bool object_property_handle(ontologenius::standard_service::Request  &req,
                             ontologenius::standard_service::Response &res)
 {
-  bool done = false;
   res.value = "";
   res.code = 0;
 
@@ -122,6 +121,7 @@ bool object_property_handle(ontologenius::standard_service::Request  &req,
   removeUselessSpace(req.param);
 
   if(res.code != UNINIT)
+  {
     if(req.action == "getDown")
       res.value = set2string(onto.object_property_graph_.getDown(req.param));
     else if(req.action == "getUp")
@@ -138,6 +138,7 @@ bool object_property_handle(ontologenius::standard_service::Request  &req,
       res.value = onto.object_property_graph_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
+  }
 
   return true;
 }
@@ -145,7 +146,6 @@ bool object_property_handle(ontologenius::standard_service::Request  &req,
 bool data_property_handle(ontologenius::standard_service::Request  &req,
                           ontologenius::standard_service::Response &res)
 {
-  bool done = false;
   res.value = "";
   res.code = 0;
 
@@ -158,6 +158,7 @@ bool data_property_handle(ontologenius::standard_service::Request  &req,
   removeUselessSpace(req.param);
 
   if(res.code != UNINIT)
+  {
     if(req.action == "getDown")
       res.value = set2string(onto.data_property_graph_.getDown(req.param));
     else if(req.action == "getUp")
@@ -172,6 +173,7 @@ bool data_property_handle(ontologenius::standard_service::Request  &req,
       res.value = onto.data_property_graph_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
+  }
 
   return true;
 }
@@ -179,7 +181,6 @@ bool data_property_handle(ontologenius::standard_service::Request  &req,
 bool individual_handle(ontologenius::standard_service::Request  &req,
                       ontologenius::standard_service::Response &res)
 {
-  bool done = false;
   res.value = "";
   res.code = 0;
 
@@ -209,6 +210,7 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
   }
 
   if(res.code != UNINIT)
+  {
     if(req.action == "getSame")
       set_res = onto.individual_graph_.getSame(req.param);
     if(req.action == "getDistincts")
@@ -241,6 +243,7 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
       set_res = onto.individual_graph_.getType(req.param);
     else
       res.code = UNKNOW_ACTION;
+  }
 
     if(select != "")
     {
@@ -261,7 +264,6 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
 bool arguer_handle(ontologenius::standard_service::Request  &req,
                    ontologenius::standard_service::Response &res)
 {
-  bool done = false;
   res.value = "";
   res.code = 0;
 
@@ -283,7 +285,6 @@ bool arguer_handle(ontologenius::standard_service::Request  &req,
 bool actionsHandle(ontologenius::ontologeniusService::Request  &req,
                       ontologenius::ontologeniusService::Response &res)
 {
-  bool done = false;
   res.code = 0;
 
   removeUselessSpace(req.action);
@@ -317,7 +318,6 @@ bool actionsHandle(ontologenius::ontologeniusService::Request  &req,
 bool classHandle(ontologenius::ontologeniusService::Request  &req,
                   ontologenius::ontologeniusService::Response &res)
 {
-  bool done = false;
   res.code = 0;
 
   if(onto.isInit() == false)
@@ -329,6 +329,7 @@ bool classHandle(ontologenius::ontologeniusService::Request  &req,
   removeUselessSpace(req.param);
 
   if(res.code != UNINIT)
+  {
     if(req.action == "getDown")
       res.values = set2vector(onto.class_graph_.getDown(req.param));
     else if(req.action == "getUp")
@@ -341,6 +342,7 @@ bool classHandle(ontologenius::ontologeniusService::Request  &req,
       res.values = set2vector(onto.class_graph_.find(req.param));
     else
       res.code = UNKNOW_ACTION;
+  }
 
   return true;
 }
@@ -348,7 +350,6 @@ bool classHandle(ontologenius::ontologeniusService::Request  &req,
 bool objectPropertyHandle(ontologenius::ontologeniusService::Request  &req,
                             ontologenius::ontologeniusService::Response &res)
 {
-  bool done = false;
   res.code = 0;
 
   if(onto.isInit() == false)
@@ -360,6 +361,7 @@ bool objectPropertyHandle(ontologenius::ontologeniusService::Request  &req,
   removeUselessSpace(req.param);
 
   if(res.code != UNINIT)
+  {
     if(req.action == "getDown")
       res.values = set2vector(onto.object_property_graph_.getDown(req.param));
     else if(req.action == "getUp")
@@ -378,6 +380,7 @@ bool objectPropertyHandle(ontologenius::ontologeniusService::Request  &req,
       res.values = set2vector(onto.object_property_graph_.find(req.param));
     else
       res.code = UNKNOW_ACTION;
+  }
 
   return true;
 }
@@ -385,7 +388,6 @@ bool objectPropertyHandle(ontologenius::ontologeniusService::Request  &req,
 bool dataPropertyHandle(ontologenius::ontologeniusService::Request  &req,
                           ontologenius::ontologeniusService::Response &res)
 {
-  bool done = false;
   res.code = 0;
 
   if(onto.isInit() == false)
@@ -397,6 +399,7 @@ bool dataPropertyHandle(ontologenius::ontologeniusService::Request  &req,
   removeUselessSpace(req.param);
 
   if(res.code != UNINIT)
+  {
     if(req.action == "getDown")
       res.values = set2vector(onto.data_property_graph_.getDown(req.param));
     else if(req.action == "getUp")
@@ -413,6 +416,7 @@ bool dataPropertyHandle(ontologenius::ontologeniusService::Request  &req,
       res.values = set2vector(onto.object_property_graph_.find(req.param));
     else
       res.code = UNKNOW_ACTION;
+  }
 
   return true;
 }
@@ -420,7 +424,6 @@ bool dataPropertyHandle(ontologenius::ontologeniusService::Request  &req,
 bool individualHandle(ontologenius::ontologeniusService::Request  &req,
                       ontologenius::ontologeniusService::Response &res)
 {
-  bool done = false;
   res.code = 0;
 
   if(onto.isInit() == false)
@@ -449,6 +452,7 @@ bool individualHandle(ontologenius::ontologeniusService::Request  &req,
   }
 
   if(res.code != UNINIT)
+  {
     if(req.action == "getSame")
       set_res = onto.individual_graph_.getSame(req.param);
     if(req.action == "getDistincts")
@@ -481,6 +485,7 @@ bool individualHandle(ontologenius::ontologeniusService::Request  &req,
       set_res = onto.individual_graph_.getType(req.param);
     else
       res.code = UNKNOW_ACTION;
+  }
 
     if(select != "")
     {
@@ -501,7 +506,6 @@ bool individualHandle(ontologenius::ontologeniusService::Request  &req,
 bool arguerHandle(ontologenius::ontologeniusService::Request  &req,
                    ontologenius::ontologeniusService::Response &res)
 {
-  bool done = false;
   res.code = 0;
 
   if(req.action == "activate")
@@ -529,7 +533,7 @@ int main(int argc, char** argv)
   std::string language = string(argv[1]);
   std::cout << "language " << language << std::endl;
 
-  for(unsigned int i = 2; i < argc; i++)
+  for(int i = 2; i < argc; i++)
     onto.readFromFile(string(argv[i]));
 
   arguers.load();

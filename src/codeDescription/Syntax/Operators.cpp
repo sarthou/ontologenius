@@ -11,6 +11,7 @@ bool Operators::describe(std::string op, std::string function, bool whole_line, 
   tmp.whole_line = whole_line;
   tmp.dont_carre = false;
   descriptors_.push_back(tmp);
+  return true;
 }
 
 void Operators::dontCarre(std::string op)

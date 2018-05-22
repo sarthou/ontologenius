@@ -69,9 +69,9 @@ bool GraphDrawer::testEnd()
 
 void GraphDrawer::draw(std::string file_name)
 {
-  long int height = (layer_nodes.size())*(MARKER_HEIGHT + MIN_HEIGHT_SPACE) + 1;
+  unsigned long int height = (layer_nodes.size())*(MARKER_HEIGHT + MIN_HEIGHT_SPACE) + 1;
 
-  long int width = roots_nodes.size();
+  unsigned long int width = roots_nodes.size();
   for(unsigned long int i  = 0; i < layer_nodes.size(); i++)
       if(layer_nodes[i].size() > width)
         width = layer_nodes[i].size();

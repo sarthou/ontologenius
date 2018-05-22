@@ -48,11 +48,15 @@ void IndividualChecker::checkReflexive()
     for(size_t prop_i = 0; prop_i < graph_[i]->object_properties_name_.size(); prop_i++)
     {
       if(graph_[i]->object_properties_name_[prop_i]->properties_.reflexive_property_)
+      {
         if(graph_[i]->value_ != graph_[i]->object_properties_on_[prop_i]->value_)
           print_error("'" + graph_[i]->object_properties_name_[prop_i]->value_ + "' is reflexive so can't be from '" + graph_[i]->value_ + "' to '" + graph_[i]->object_properties_on_[prop_i]->value_ + "'");
+      }
       else if(graph_[i]->object_properties_name_[prop_i]->properties_.irreflexive_property_)
+      {
         if(graph_[i]->value_ == graph_[i]->object_properties_on_[prop_i]->value_)
           print_error("'" + graph_[i]->object_properties_name_[prop_i]->value_ + "' is irreflexive so can't be from '" + graph_[i]->value_ + "' to '" + graph_[i]->object_properties_on_[prop_i]->value_ + "'");
+      }
     }
   }
 }

@@ -76,7 +76,7 @@ std::vector<std::string> generate_sequence(ClassGraph& onto)
   for(int i = 0; i < 100; i++)
     vect10000.insert(vect10000.end(), vect100.begin(), vect100.end());
 
-  for(int i = 0; i < vect10000.size(); i++)
+  for(size_t i = 0; i < vect10000.size(); i++)
     if(vect10000[i] == "")
       vect10000[i] = base[rand() % max_index]->value_;
 
@@ -89,7 +89,7 @@ double testOne(ClassGraph& onto)
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-  for(int i = 0; i < seq.size(); i++)
+  for(size_t i = 0; i < seq.size(); i++)
     std::set<std::string> out = onto.getUp(seq[i]);
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();

@@ -98,6 +98,7 @@ bool VariablesType::set(std::string id, std::string value)
 {
   remove(id);
   insert(id, value);
+  return true;
 }
 
 bool VariablesType::set(std::string id, std::set<std::string> value)

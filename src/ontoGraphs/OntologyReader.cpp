@@ -26,8 +26,6 @@ OntologyReader::OntologyReader(Ontology& onto)
 
 int OntologyReader::readFromUri(std::string uri, bool individual)
 {
-  int nb_elem = 0;
-
   std::string response = "";
   int err = send_request("GET", uri, "", &response);
 
@@ -47,8 +45,6 @@ int OntologyReader::readFromUri(std::string uri, bool individual)
 
 int OntologyReader::readFromFile(std::string fileName, bool individual)
 {
-  int nb_elem = 0;
-
   std::string response = "";
   std::string tmp = "";
   std::ifstream f(fileName);
@@ -454,7 +450,7 @@ void OntologyReader::pushLang(std::map<std::string, std::vector<std::string>>& d
     value = subElem->GetText();
     dictionary[lang].push_back(std::string(value));
 
-    if((lang != "") && (value != ""))
+    if((lang != "") && (std::string(value) != ""))
       std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang][dictionary[lang].size() - 1] << std::endl;
   }
 }

@@ -331,7 +331,6 @@ void ontoloGUI::ArguerhoverEnterSlot()
 
 void ontoloGUI::ArguerhoverLeaveSlot()
 {
-  size_t index = getArguerIndex((QCheckBoxExtended*)sender());
   ui->ArguerDescription->setText("");
 }
 
@@ -385,6 +384,7 @@ size_t ontoloGUI::getArguerIndex(QCheckBoxExtended* box)
       index = i;
       break;
     }
+  return index;
 }
 
 std::string ontoloGUI::getArguerDescription(std::string box)

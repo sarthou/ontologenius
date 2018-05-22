@@ -44,7 +44,7 @@ bool TextManipulator::findBefore(size_t begin, char symbol)
 
 bool TextManipulator::findJustBefore(size_t begin, std::string symbol)
 {
-  for(int i = 0; i < symbol.size(); i++)
+  for(size_t i = 0; i < symbol.size(); i++)
   {
     if(text[begin - 1 - i] != symbol[symbol.size() - 1 - i])
       return false;
@@ -120,7 +120,7 @@ bool TextManipulator::findHere(size_t begin, std::string symbol)
 
 void TextManipulator::remove(char character)
 {
-  for (int i = 0; i < text.length(); )
+  for(size_t i = 0; i < text.length(); )
   {
     if(text[i] == character)
       text.erase(i, 1);

@@ -54,7 +54,7 @@ int ObjectPropertyDrawer::createNode(ObjectPropertyBranch_t* branch, node_t* mot
       if(branchs_nodes[i]->value == branch->value_)
         branchs_nodes[i]->prev.push_back(mother);
   }
-
+  return family;
 }
 
 void ObjectPropertyDrawer::init()
@@ -80,7 +80,7 @@ void ObjectPropertyDrawer::init()
         couple.push_back(node);
     }
 
-    int middle = single.size()/2;
+    unsigned long int middle = single.size()/2;
     for(unsigned long int i = 0; i < middle; i++)
       roots_nodes.push_back(single[i]);
 

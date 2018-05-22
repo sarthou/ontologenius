@@ -151,7 +151,7 @@ void Parser::checkStringAndComment()
 void Parser::checkBraquets()
 {
   int16_t nb_bracket = 0;
-  size_t bracket_open, bracket_close, first_bracket_closed = 0;
+  size_t bracket_open, bracket_close = 0;
 
   for(size_t pose = 0; pose < code_->text.size(); pose++)
   {
@@ -468,7 +468,7 @@ void Parser::checkInstructionValidity(size_t pose, std::string code, bool onFunc
     args_pose.push_back(pose+open_arg+1+start_arg);
 
     /*Checking arguments validity*/
-    for(int i = 0; i < args.size(); i++)
+    for(size_t i = 0; i < args.size(); i++)
       checkArgumentValidity(args_pose[i], args[i]);
 
     /*Checking if a function is applied on the function result*/

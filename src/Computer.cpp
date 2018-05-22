@@ -12,7 +12,6 @@ bool Computer::compute(string equation, ClassGraph& onto)
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-  size_t pos = 0;
   bool invert = false;
   vector<string> LR;
   split(equation, LR, "!=");

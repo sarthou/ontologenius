@@ -26,11 +26,11 @@ struct rect_t
 
 struct node_t
 {
+  std::string value;
   long int layer;
   long int pos;
   bool marker;
   std::vector<node_t*> prev;
-  std::string value;
   rect_t rect;
   int family;
 
