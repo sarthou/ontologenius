@@ -6,8 +6,8 @@
 
 #include "ontoloGenius/ontoGraphs/Graphs/OntoGraph.h"
 
-#ifndef TREEOBJECT_H
-#define TREEOBJECT_H
+#ifndef CLASSGRAPH_H
+#define CLASSGRAPH_H
 
 class ClassBranch_t : public Branch_t<ClassBranch_t>
 {
@@ -63,4 +63,4 @@ private:
   }
 };
 
-#endif /* TREEOBJECT_H */
+#endif /* CLASSGRAPH_H */
