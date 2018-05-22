@@ -2,7 +2,7 @@
 #include "ontoloGenius/arguer/Arguers.h"
 
 #include "ontologenius/standard_service.h"
-#include "ontologenius/ontologeniusService.h"
+#include "ontologenius/OntologeniusService.h"
 
 #include "ontoloGenius/utility/error_code.h"
 
@@ -282,8 +282,8 @@ bool arguer_handle(ontologenius::standard_service::Request  &req,
 }
 //END OF DEPRECATED
 
-bool actionsHandle(ontologenius::ontologeniusService::Request  &req,
-                      ontologenius::ontologeniusService::Response &res)
+bool actionsHandle(ontologenius::OntologeniusService::Request  &req,
+                      ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;
 
@@ -315,8 +315,8 @@ bool actionsHandle(ontologenius::ontologeniusService::Request  &req,
   return true;
 }
 
-bool classHandle(ontologenius::ontologeniusService::Request  &req,
-                  ontologenius::ontologeniusService::Response &res)
+bool classHandle(ontologenius::OntologeniusService::Request  &req,
+                  ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;
 
@@ -347,8 +347,8 @@ bool classHandle(ontologenius::ontologeniusService::Request  &req,
   return true;
 }
 
-bool objectPropertyHandle(ontologenius::ontologeniusService::Request  &req,
-                            ontologenius::ontologeniusService::Response &res)
+bool objectPropertyHandle(ontologenius::OntologeniusService::Request  &req,
+                            ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;
 
@@ -385,8 +385,8 @@ bool objectPropertyHandle(ontologenius::ontologeniusService::Request  &req,
   return true;
 }
 
-bool dataPropertyHandle(ontologenius::ontologeniusService::Request  &req,
-                          ontologenius::ontologeniusService::Response &res)
+bool dataPropertyHandle(ontologenius::OntologeniusService::Request  &req,
+                          ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;
 
@@ -421,8 +421,8 @@ bool dataPropertyHandle(ontologenius::ontologeniusService::Request  &req,
   return true;
 }
 
-bool individualHandle(ontologenius::ontologeniusService::Request  &req,
-                      ontologenius::ontologeniusService::Response &res)
+bool individualHandle(ontologenius::OntologeniusService::Request  &req,
+                      ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;
 
@@ -503,8 +503,8 @@ bool individualHandle(ontologenius::ontologeniusService::Request  &req,
   return true;
 }
 
-bool arguerHandle(ontologenius::ontologeniusService::Request  &req,
-                   ontologenius::ontologeniusService::Response &res)
+bool arguerHandle(ontologenius::OntologeniusService::Request  &req,
+                   ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;
 

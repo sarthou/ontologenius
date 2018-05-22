@@ -2,7 +2,7 @@
 #include "include/ontoloGenius/ontoloGUI/qpushbuttonextended.h"
 #include "ui_ontologui.h"
 
-#include "ontologenius/ontologeniusService.h"
+#include "ontologenius/OntologeniusService.h"
 
 ontoloGUI::ontoloGUI(QWidget *parent) :
     QMainWindow(parent),
@@ -201,9 +201,9 @@ void ontoloGUI::IndividualhoverLeaveSlot()
 
 void ontoloGUI::classClickedSlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/class");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/class");
 
-  ontologenius::ontologeniusService srv;
+  ontologenius::OntologeniusService srv;
   srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
   srv.request.param = ui->classParameter->text().toStdString();
   QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->classParameter->text();
@@ -222,9 +222,9 @@ void ontoloGUI::classClickedSlot()
 
 void ontoloGUI::objectPropertyClickedSlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/object_property");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/object_property");
 
-  ontologenius::ontologeniusService srv;
+  ontologenius::OntologeniusService srv;
   srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
   srv.request.param = ui->objectPropertyParameter->text().toStdString();
   QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->objectPropertyParameter->text();
@@ -243,9 +243,9 @@ void ontoloGUI::objectPropertyClickedSlot()
 
 void ontoloGUI::dataPropertyClickedSlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/data_property");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/data_property");
 
-  ontologenius::ontologeniusService srv;
+  ontologenius::OntologeniusService srv;
   srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
   srv.request.param = ui->dataPropertyParameter->text().toStdString();
   QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->dataPropertyParameter->text();
@@ -264,9 +264,9 @@ void ontoloGUI::dataPropertyClickedSlot()
 
 void ontoloGUI::individualClickedSlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/individual");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/individual");
 
-  ontologenius::ontologeniusService srv;
+  ontologenius::OntologeniusService srv;
   if(ui->Individual_select->checkState() == 0)
     srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
   else
@@ -288,9 +288,9 @@ void ontoloGUI::individualClickedSlot()
 
 void ontoloGUI::closeOntologySlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/actions");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/actions");
 
-  ontologenius::ontologeniusService srv;
+  ontologenius::OntologeniusService srv;
   srv.request.action = "close";
 
   if(!client.call(srv))
@@ -305,9 +305,9 @@ void ontoloGUI::closeOntologySlot()
 
 void ontoloGUI::ArguerClickedSlot(int)
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/arguer");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/arguer");
 
-  ontologenius::ontologeniusService srv;
+  ontologenius::OntologeniusService srv;
   if(((QCheckBoxExtended*)sender())->isChecked())
     srv.request.action = "activate";
   else
@@ -346,9 +346,9 @@ void ontoloGUI::displayUnClosed()
 
 void ontoloGUI::loadArguers()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/arguer");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/arguer");
 
-  ontologenius::ontologeniusService srv;
+  ontologenius::OntologeniusService srv;
   srv.request.action = "list";
 
   if(!client.call(srv))
@@ -389,9 +389,9 @@ size_t ontoloGUI::getArguerIndex(QCheckBoxExtended* box)
 
 std::string ontoloGUI::getArguerDescription(std::string box)
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::ontologeniusService>("ontologenius/arguer");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/arguer");
 
-  ontologenius::ontologeniusService srv;
+  ontologenius::OntologeniusService srv;
   srv.request.action = "getDescription";
   srv.request.param = box;
 
