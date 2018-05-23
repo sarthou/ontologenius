@@ -8,7 +8,7 @@
 #include <iostream>
 #include "ros/ros.h"
 
-#include "ontoloGenius/Computer.h"
+#include "ontoloGenius/core/Computer.h"
 #include "ontoloGenius/interpreter/Parser.h"
 
 void removeUselessSpace(std::string& text)

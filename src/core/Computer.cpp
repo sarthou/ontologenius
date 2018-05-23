@@ -1,4 +1,4 @@
-#include "ontoloGenius/Computer.h"
+#include "ontoloGenius/core/Computer.h"
 
 #include <iostream>
 #include <sstream>

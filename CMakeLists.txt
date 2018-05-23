@@ -156,7 +156,7 @@ target_link_libraries(ontologenius_ontoGraphs_lib ${TinyXML_LIBRARIES})
 add_library(ontologenius_core_lib
   src/core/arguer/plugins/ArguerInterface.cpp
   src/core/arguer/Arguers.cpp
-  src/Computer.cpp
+  src/core/Computer.cpp
   )
 add_dependencies(ontologenius_core_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_core_lib ${catkin_LIBRARIES})
