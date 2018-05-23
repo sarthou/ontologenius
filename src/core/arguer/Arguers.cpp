@@ -27,13 +27,14 @@ Arguers::~Arguers()
       it->second = nullptr;
     }
     //TODO: unload the library cause segfault or exception => unstable behavior
-    /*try
+    try
     {
       loader_.unloadLibraryForClass(it->first);
+      std::cout << it->first << " unloaded" << std::endl;
     }
     catch(class_loader::LibraryUnloadException& ex)
     {
-      std::cout << "class_loader::LibraryUnloadException" << std::endl;
+      std::cout << "class_loader::LibraryUnloadException on " << it->first << " : " << std::string(ex.what()) << std::endl;
       ROS_ERROR("The plugin %s failed to unload for some reason. Error: %s", it->first.c_str(), ex.what());
     }
     catch(pluginlib::LibraryUnloadException& ex)
@@ -44,7 +45,7 @@ Arguers::~Arguers()
     catch(...)
     {
       std::cout << "catch other" << std::endl;
-    }*/
+    }
   }
 }
 
@@ -56,6 +57,7 @@ void Arguers::load()
   {
     for(size_t i = 0; i < arguers.size(); i++)
     {
+      loader_.loadLibraryForClass(arguers[i]);
       ArguerInterface* tmp = loader_.createUnmanagedInstance(arguers[i]);
       tmp->initialize(ontology_);
       arguers_[arguers[i]] = tmp;
@@ -66,6 +68,12 @@ void Arguers::load()
   catch(pluginlib::PluginlibException& ex)
   {
     ROS_ERROR("The plugin failed to load for some reason. Error: %s", ex.what());
+  }
+
+  arguers = loader_.getRegisteredLibraries();
+  for(size_t i = 0; i < arguers.size(); i++)
+  {
+    std::cout << arguers[i] << " registered" << std::endl;
   }
 }
 
