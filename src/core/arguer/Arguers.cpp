@@ -177,8 +177,6 @@ void Arguers::runPostArguers()
     std::map<std::string, ArguerInterface*>::iterator it;
     for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
     {
-      std::cout << it->first << std::endl;
-      std::cout << it->second->getName() << std::endl;
       if(it->second != nullptr)
         it->second->postReason();
     }
