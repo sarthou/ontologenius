@@ -21,8 +21,30 @@ Arguers::~Arguers()
   std::map<std::string, ArguerInterface*>::iterator it;
   for(it = arguers_.begin(); it != arguers_.end(); ++it)
   {
-    delete it->second;
-    loader_.unloadLibraryForClass(it->first);
+    if(it->second != nullptr)
+    {
+      delete it->second;
+      it->second = nullptr;
+    }
+    //TODO: unload the library cause segfault or exception => unstable behavior
+    /*try
+    {
+      loader_.unloadLibraryForClass(it->first);
+    }
+    catch(class_loader::LibraryUnloadException& ex)
+    {
+      std::cout << "class_loader::LibraryUnloadException" << std::endl;
+      ROS_ERROR("The plugin %s failed to unload for some reason. Error: %s", it->first.c_str(), ex.what());
+    }
+    catch(pluginlib::LibraryUnloadException& ex)
+    {
+      std::cout << "pluginlib::LibraryUnloadException" << std::endl;
+      ROS_ERROR("The plugin %s failed to unload for some reason. Error: %s", it->first.c_str(), ex.what());
+    }
+    catch(...)
+    {
+      std::cout << "catch other" << std::endl;
+    }*/
   }
 }
 
