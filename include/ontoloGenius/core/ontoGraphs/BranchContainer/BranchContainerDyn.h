@@ -8,14 +8,14 @@
 #include "ontoloGenius/core/ontoGraphs/BranchContainer/BranchContainerBase.h"
 
 template <typename T>
-struct BramchNode_t
+struct BranchNode_t
 {
-  BramchNode_t* next;
+  BranchNode_t* next;
   std::string id;
   T* branch;
 
-  BramchNode_t() {next = nullptr; id = ""; branch = nullptr; }
-  ~BramchNode_t() { delete next; }
+  BranchNode_t() {next = nullptr; id = ""; branch = nullptr; }
+  ~BranchNode_t() { delete next; }
 };
 
 template <typename B>
@@ -24,7 +24,7 @@ class BranchContainerDyn : public BranchContainerBase<B>
 public:
   BranchContainerDyn()
   {
-    nodes_ = new BramchNode_t<B>;
+    nodes_ = new BranchNode_t<B>;
     nodes_end_ = nodes_;
     nb_elem_ = 0;
   }
@@ -35,13 +35,13 @@ public:
   virtual std::vector<B*> find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang);
   virtual void load(std::vector<B*>& vect);
 private:
-  BramchNode_t<B>* nodes_;
-  BramchNode_t<B>* nodes_end_;
+  BranchNode_t<B>* nodes_;
+  BranchNode_t<B>* nodes_end_;
   size_t buffer_size_;
   size_t nb_elem_;
 
   void insertEnd(std::string id, B* branch);
-  void reconf(BramchNode_t<B>* node);
+  void reconf(BranchNode_t<B>* node);
 };
 
 template <typename B>
@@ -49,7 +49,7 @@ B* BranchContainerDyn<B>::find(std::string word)
 {
   B* tmp = nullptr;
   size_t i = 0;
-  for(BramchNode_t<B>* node = nodes_; node->next != nullptr; node = node->next)
+  for(BranchNode_t<B>* node = nodes_; node->next != nullptr; node = node->next)
   {
     if(node->next->id == word)
     {
@@ -69,7 +69,7 @@ std::vector<B*> BranchContainerDyn<B>::find(bool (*comp)(B*, std::string, std::s
 {
   std::vector<B*> res;
 
-  for(BramchNode_t<B>* node = nodes_; node->next != nullptr; node = node->next)
+  for(BranchNode_t<B>* node = nodes_; node->next != nullptr; node = node->next)
     if(comp( node->next->branch, word, lang))
       res.push_back(node->next->branch);
 
@@ -89,7 +89,7 @@ void BranchContainerDyn<B>::load(std::vector<B*>& vect)
 template <typename B>
 void BranchContainerDyn<B>::insertEnd(std::string id, B* branch)
 {
-  BramchNode_t<B>* tmp = new BramchNode_t<B>;
+  BranchNode_t<B>* tmp = new BranchNode_t<B>;
   tmp->id = id;
   tmp->branch = branch;
   nodes_end_->next = tmp;
@@ -97,9 +97,9 @@ void BranchContainerDyn<B>::insertEnd(std::string id, B* branch)
 }
 
 template <typename B>
-void BranchContainerDyn<B>::reconf(BramchNode_t<B>* node)
+void BranchContainerDyn<B>::reconf(BranchNode_t<B>* node)
 {
- BramchNode_t<B>* tmp = node->next;
+ BranchNode_t<B>* tmp = node->next;
  node->next = tmp->next;
  tmp->next = nodes_->next;
  nodes_->next = tmp;
