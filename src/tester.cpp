@@ -102,6 +102,9 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "ontologenius_tester");
 
   Ontology onto;
+  Arguers arguers(&onto);
+  arguers.load();
+  arguers.list();
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
@@ -116,9 +119,6 @@ int main(int argc, char** argv)
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
   std::cout << "It took me " << time_span.count() << " seconds to read" << std::endl;
 
-  Arguers arguers(&onto);
-  arguers.load();
-  arguers.list();
   arguers.runPostArguers();
 
   int epoch = 10000;

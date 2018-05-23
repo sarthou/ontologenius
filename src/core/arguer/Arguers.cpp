@@ -61,7 +61,6 @@ void Arguers::load()
       arguers_[arguers[i]] = tmp;
       if(tmp->defaultAvtive())
         active_arguers_[arguers[i]] = tmp;
-
     }
   }
   catch(pluginlib::PluginlibException& ex)
@@ -177,7 +176,12 @@ void Arguers::runPostArguers()
   {
     std::map<std::string, ArguerInterface*>::iterator it;
     for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
-      it->second->postReason();
+    {
+      std::cout << it->first << std::endl;
+      std::cout << it->second->getName() << std::endl;
+      if(it->second != nullptr)
+        it->second->postReason();
+    }
 
     computeIndividualsUpdates();
 
