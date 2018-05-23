@@ -393,7 +393,7 @@ void OntologyReader::readRestriction(TiXmlElement* elem)
     else if(restriction_name == "owl:someValuesFrom")
       restriction.push_back(readSomeValuesFrom(subElem));
   }
-  std::cout << "on " << on << std::endl;
+  //std::cout << "on " << on << std::endl;
 }
 
 std::string OntologyReader::readSomeValuesFrom(TiXmlElement* elem)
