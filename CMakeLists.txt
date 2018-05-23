@@ -228,14 +228,14 @@ add_dependencies(ontoloGenius ontologenius_gencpp)
 target_link_libraries(ontoloGenius ontologenius_interpreter_lib)
 target_link_libraries(ontoloGenius ontologenius_core_lib)
 
-add_executable(ontoloGeniusExemple src/exemple.cpp )
-add_dependencies(ontoloGeniusExemple ontologenius_gencpp)
-target_link_libraries(ontoloGeniusExemple ontologenius_drawer_lib)
-target_link_libraries(ontoloGeniusExemple ontologenius_core_lib)
+add_executable(ontoloGenius_exemple src/exemple.cpp )
+add_dependencies(ontoloGenius_exemple ontologenius_gencpp)
+target_link_libraries(ontoloGenius_exemple ontologenius_drawer_lib)
+target_link_libraries(ontoloGenius_exemple ontologenius_core_lib)
 
-add_executable(ontologenius_tester src/tester.cpp)
-add_dependencies(ontologenius_tester ontologenius_gencpp)
-target_link_libraries(ontologenius_tester ontologenius_core_lib)
+add_executable(ontoloGenius_tester src/tester.cpp)
+add_dependencies(ontoloGenius_tester ontologenius_gencpp)
+target_link_libraries(ontoloGenius_tester ontologenius_core_lib)
 
 ##############################################################################
 # Qt Environment

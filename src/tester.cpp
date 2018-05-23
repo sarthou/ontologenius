@@ -83,25 +83,23 @@ std::vector<std::string> generate_sequence(ClassGraph& onto)
   return vect10000;
 }
 
-double testOne(ClassGraph& onto)
+double testOne(std::vector<std::string>& seq, Ontology& onto)
 {
-  std::vector<std::string> seq = generate_sequence(onto);
-
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
   for(size_t i = 0; i < seq.size(); i++)
-    std::set<std::string> out = onto.getUp(seq[i]);
+    /*std::set<std::string> out = */onto.class_graph_.touch(seq[i]);
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
-  std::cout << "It took me " << time_span.count() << std::endl;
+  std::cout << "  " << time_span.count() << " for " << seq.size() << " getUp " << std::endl;
   return time_span.count();
 }
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "tester");
+  ros::init(argc, argv, "ontologenius_tester");
 
   Ontology onto;
 
@@ -123,14 +121,18 @@ int main(int argc, char** argv)
   arguers.list();
   arguers.runPostArguers();
 
-  /*double total = 0;
-  for(int i = 0; i < 10000; i++)
+  int epoch = 10000;
+
+  std::vector<std::string> seq = generate_sequence(onto.class_graph_);
+  double total = 0;
+  for(int i = 0; i < epoch; i++)
   {
-    std::cout << "[ " << i/100. << "%]";
-    total += testOne(onto.classes_);
+    std::cout << "[ " << i/(epoch/100.0) << "%]";
+    total += testOne(seq, onto);
   }
 
-  std::cout << "mean = " << total/10000.0 << std::endl;*/
+  std::cout << "mean = " << total/((float)epoch) << " per sequence of " << seq.size() << std::endl;
+  std::cout << "mean = " << total/((float)epoch)/seq.size() << " per request" << std::endl;
 
   ROS_DEBUG("Drawing done");
 
