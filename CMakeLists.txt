@@ -135,16 +135,16 @@ include_directories(
 ## Declare a C++ library
 ##############################
 add_library(codeDescription_lib
-  src/codeDescription/Types/VariablesType.cpp
-  src/codeDescription/Types/StringType.cpp
-  src/codeDescription/Functions/FunctionDescriptor.cpp
-  src/codeDescription/Functions/FunctionContainer.cpp
-  src/codeDescription/Functions/OntoFunctions.cpp
-  src/codeDescription/TextManipulator.cpp
-  src/codeDescription/Code.cpp
-  src/codeDescription/Namespace.cpp
-  src/codeDescription/Syntax/Operators.cpp
-  src/codeDescription/Syntax/IfelseCF.cpp
+  src/interpreter/codeDescription/Types/VariablesType.cpp
+  src/interpreter/codeDescription/Types/StringType.cpp
+  src/interpreter/codeDescription/Functions/FunctionDescriptor.cpp
+  src/interpreter/codeDescription/Functions/FunctionContainer.cpp
+  src/interpreter/codeDescription/Functions/OntoFunctions.cpp
+  src/interpreter/codeDescription/TextManipulator.cpp
+  src/interpreter/codeDescription/Code.cpp
+  src/interpreter/codeDescription/Namespace.cpp
+  src/interpreter/codeDescription/Syntax/Operators.cpp
+  src/interpreter/codeDescription/Syntax/IfelseCF.cpp
 )
 add_dependencies(codeDescription_lib ontologenius_gencpp)
 
@@ -179,9 +179,9 @@ target_link_libraries(arguer_lib ${catkin_LIBRARIES})
 
 add_library(ontologenius_lib
   src/Computer.cpp
-  src/Parser.cpp
-  src/Error.cpp
-  src/Compiler.cpp
+  src/interpreter/Parser.cpp
+  src/interpreter/Error.cpp
+  src/interpreter/Compiler.cpp
 )
 add_dependencies(ontologenius_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_lib codeDescription_lib)
@@ -204,7 +204,7 @@ target_link_libraries(drawer_lib ontologenius_lib)
 ## The recommended prefix ensures that target names across packages don't collide
 ##############################
 
-add_executable(ontoloGenius src/core/rosInterface.cpp)
+add_executable(ontoloGenius src/rosInterface.cpp)
 add_dependencies(ontoloGenius ontologenius_gencpp)
 target_link_libraries(ontoloGenius ${catkin_LIBRARIES})
 target_link_libraries(ontoloGenius ontologenius_lib)
