@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "ontoloGenius/interpreter/Parser.h"
-#include "ontoloGenius/Computer.h"
 #include "ontoloGenius/interpreter/Compiler.h"
 
 Parser::Parser(Code* code, size_t current_line, bool subparser) : code_(code), error_(code_)
