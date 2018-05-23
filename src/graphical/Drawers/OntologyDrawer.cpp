@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontoGraphs/Drawers/OntologyDrawer.h"
+#include "ontoloGenius/graphical/Drawers/OntologyDrawer.h"
 
 OntologyDrawer::OntologyDrawer(Ontology* ontology)
 {

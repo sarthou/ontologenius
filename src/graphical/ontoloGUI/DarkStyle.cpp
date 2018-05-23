@@ -11,7 +11,7 @@
 ###############################################################################
 */
 
-#include "include/ontoloGenius/ontoloGUI/DarkStyle.h"
+#include "include/ontoloGenius/graphical/ontoloGUI/DarkStyle.h"
 
 #ifndef QStringLiteral
 # define QStringLiteral(str) QString(str)

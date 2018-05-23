@@ -815,12 +815,12 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>QPushButtonExtended</class>
    <extends>QPushButton</extends>
-   <header>include/ontoloGenius/ontoloGUI/qpushbuttonextended.h</header>
+   <header>include/ontoloGenius/graphical/ontoloGUI/qpushbuttonextended.h</header>
   </customwidget>
   <customwidget>
    <class>QCheckBoxExtended</class>
    <extends>QCheckBox</extends>
-   <header>include/ontoloGenius/ontoloGUI/QCheckBoxExtended.h</header>
+   <header>include/ontoloGenius/graphical/ontoloGUI/QCheckBoxExtended.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

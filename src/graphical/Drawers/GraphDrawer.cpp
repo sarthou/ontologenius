@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontoGraphs/Drawers/GraphDrawer.h"
+#include "ontoloGenius/graphical/Drawers/GraphDrawer.h"
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include <iostream>

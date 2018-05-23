@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontoGraphs/Drawers/ClassDrawer.h"
+#include "ontoloGenius/graphical/Drawers/ClassDrawer.h"
 
 #include <iostream>
 

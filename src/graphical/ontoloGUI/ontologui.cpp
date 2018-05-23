@@ -1,5 +1,5 @@
-#include "include/ontoloGenius/ontoloGUI/ontologui.h"
-#include "include/ontoloGenius/ontoloGUI/qpushbuttonextended.h"
+#include "include/ontoloGenius/graphical/ontoloGUI/ontologui.h"
+#include "include/ontoloGenius/graphical/ontoloGUI/qpushbuttonextended.h"
 #include "ui_ontologui.h"
 
 #include "ontologenius/OntologeniusService.h"

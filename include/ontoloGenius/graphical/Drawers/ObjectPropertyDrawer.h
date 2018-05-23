@@ -2,7 +2,7 @@
 #define OBJECTPROPERTYDRAWER_H
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Drawers/GraphDrawer.h"
+#include "ontoloGenius/graphical/Drawers/GraphDrawer.h"
 
 class ObjectPropertyDrawer : public GraphDrawer
 {

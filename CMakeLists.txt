@@ -167,14 +167,15 @@ target_link_libraries(ontologenius_core_lib ontologenius_ontoGraphs_lib)
 ##############################
 
 add_library(ontologenius_drawer_lib
-  src/core/ontoGraphs/Drawers/GraphDrawer.cpp
-  src/core/ontoGraphs/Drawers/ClassDrawer.cpp
-  src/core/ontoGraphs/Drawers/ObjectPropertyDrawer.cpp
-  src/core/ontoGraphs/Drawers/DataPropertyDrawer.cpp
-  src/core/ontoGraphs/Drawers/OntologyDrawer.cpp
+  src/graphical/Drawers/GraphDrawer.cpp
+  src/graphical/Drawers/ClassDrawer.cpp
+  src/graphical/Drawers/ObjectPropertyDrawer.cpp
+  src/graphical/Drawers/DataPropertyDrawer.cpp
+  src/graphical/Drawers/OntologyDrawer.cpp
 )
 add_dependencies(ontologenius_drawer_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_drawer_lib ${catkin_LIBRARIES})
+target_link_libraries(ontologenius_core_lib ontologenius_ontoGraphs_lib)
 
 ##############################
 ## INTERPRETER
@@ -267,16 +268,16 @@ add_definitions( -std=c++11 -fPIC)
 ##############################################################################
 
 set( QT_SOURCES
-    src/ontoloGUI/main.cpp
-    src/ontoloGUI/ontologui.cpp
-    src/ontoloGUI/DarkStyle.cpp
-    src/ontoloGUI/qpushbuttonextended.cpp
-    src/ontoloGUI/QCheckBoxExtended.cpp
+    src/graphical/ontoloGUI/main.cpp
+    src/graphical/ontoloGUI/ontologui.cpp
+    src/graphical/ontoloGUI/DarkStyle.cpp
+    src/graphical/ontoloGUI/qpushbuttonextended.cpp
+    src/graphical/ontoloGUI/QCheckBoxExtended.cpp
 
-    include/ontoloGenius/ontoloGUI/ontologui.h
-    include/ontoloGenius/ontoloGUI/DarkStyle.h
-    include/ontoloGenius/ontoloGUI/qpushbuttonextended.h
-    include/ontoloGenius/ontoloGUI/QCheckBoxExtended.h
+    include/ontoloGenius/graphical/ontoloGUI/ontologui.h
+    include/ontoloGenius/graphical/ontoloGUI/DarkStyle.h
+    include/ontoloGenius/graphical/ontoloGUI/qpushbuttonextended.h
+    include/ontoloGenius/graphical/ontoloGUI/QCheckBoxExtended.h
 )
 ##############################################################################
 # Binaries

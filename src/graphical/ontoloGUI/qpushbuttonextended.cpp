@@ -1,22 +1,16 @@
-#include "include/ontoloGenius/ontoloGUI/QCheckBoxExtended.h"
+#include "include/ontoloGenius/graphical/ontoloGUI/qpushbuttonextended.h"
 
 #include <QWidget>
 #include <QEvent>
 #include <QHoverEvent>
 
-QCheckBoxExtended::QCheckBoxExtended(QWidget *parent) : QCheckBox(parent)
+QPushButtonExtended::QPushButtonExtended(QWidget *parent) : QPushButton(parent)
 {
     setMouseTracking(true);
     setAttribute(Qt::WA_Hover);
 }
 
-QCheckBoxExtended::QCheckBoxExtended(const QString& text, QWidget *parent) : QCheckBox(text, parent)
-{
-    setMouseTracking(true);
-    setAttribute(Qt::WA_Hover);
-}
-
-void QCheckBoxExtended::hoverEnter(QHoverEvent *event)
+void QPushButtonExtended::hoverEnter(QHoverEvent *event)
 {
     QFont font = this->font();
     font.setBold(true);
@@ -25,7 +19,7 @@ void QCheckBoxExtended::hoverEnter(QHoverEvent *event)
     hoverEnter();
 }
 
-void QCheckBoxExtended::hoverLeave(QHoverEvent *event)
+void QPushButtonExtended::hoverLeave(QHoverEvent *event)
 {
     QFont font = this->font();
     font.setBold(false);
@@ -34,7 +28,7 @@ void QCheckBoxExtended::hoverLeave(QHoverEvent *event)
     hoverLeave();
 }
 
-void QCheckBoxExtended::hoverMove(QHoverEvent *event)
+void QPushButtonExtended::hoverMove(QHoverEvent *event)
 {
     QFont font = this->font();
     font.setBold(true);
@@ -42,7 +36,7 @@ void QCheckBoxExtended::hoverMove(QHoverEvent *event)
     repaint();
 }
 
-bool QCheckBoxExtended::event(QEvent *event)
+bool QPushButtonExtended::event(QEvent *event)
 {
     switch(event->type())
     {

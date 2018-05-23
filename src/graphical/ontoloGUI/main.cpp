@@ -1,5 +1,5 @@
-#include "include/ontoloGenius/ontoloGUI/ontologui.h"
-#include "include/ontoloGenius/ontoloGUI/DarkStyle.h"
+#include "include/ontoloGenius/graphical/ontoloGUI/ontologui.h"
+#include "include/ontoloGenius/graphical/ontoloGUI/DarkStyle.h"
 #include <QApplication>
 
 #include "ros/ros.h"

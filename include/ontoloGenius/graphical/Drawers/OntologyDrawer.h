@@ -3,9 +3,9 @@
 
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 
-#include "ontoloGenius/core/ontoGraphs/Drawers/ClassDrawer.h"
-#include "ontoloGenius/core/ontoGraphs/Drawers/ObjectPropertyDrawer.h"
-#include "ontoloGenius/core/ontoGraphs/Drawers/DataPropertyDrawer.h"
+#include "ontoloGenius/graphical/Drawers/ClassDrawer.h"
+#include "ontoloGenius/graphical/Drawers/ObjectPropertyDrawer.h"
+#include "ontoloGenius/graphical/Drawers/DataPropertyDrawer.h"
 
 #include <string>
 

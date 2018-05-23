@@ -1,14 +1,14 @@
-#include "ontoloGenius/core/ontoGraphs/Drawers/DataPropertyDrawer.h"
+#include "ontoloGenius/graphical/Drawers/ObjectPropertyDrawer.h"
 
 #include <iostream>
 
-DataPropertyDrawer::DataPropertyDrawer(DataPropertyGraph* graph)
+ObjectPropertyDrawer::ObjectPropertyDrawer(ObjectPropertyGraph* graph)
 {
   graph_ = graph;
   init();
 }
 
-void DataPropertyDrawer::putInLayers()
+void ObjectPropertyDrawer::putInLayers()
 {
   if((graph_ != nullptr) && (graph_->roots_.size() != 0))
   {
@@ -34,7 +34,7 @@ void DataPropertyDrawer::putInLayers()
   }
 }
 
-int DataPropertyDrawer::createNode(DataPropertyBranch_t* branch, node_t* mother)
+int ObjectPropertyDrawer::createNode(ObjectPropertyBranch_t* branch, node_t* mother)
 {
   int family = branch->family;
   if(!exist(branch->value_))
@@ -57,7 +57,7 @@ int DataPropertyDrawer::createNode(DataPropertyBranch_t* branch, node_t* mother)
   return family;
 }
 
-void DataPropertyDrawer::init()
+void ObjectPropertyDrawer::init()
 {
   std::vector<node_t*> single;
   std::vector<node_t*> couple;

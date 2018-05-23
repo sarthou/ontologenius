@@ -2,7 +2,7 @@
 #define CLASS_DRAWER_H
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Drawers/GraphDrawer.h"
+#include "ontoloGenius/graphical/Drawers/GraphDrawer.h"
 
 class ClassDrawer : public GraphDrawer
 {

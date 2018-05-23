@@ -6,8 +6,6 @@
 #include <highgui.h>
 #include <opencv2/highgui/highgui_c.h>
 
-#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
-
 #ifndef GRAPHDRAWER_H
 #define GRAPHDRAWER_H
 

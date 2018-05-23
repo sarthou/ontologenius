@@ -2,7 +2,7 @@
 #define ONTOLOGUI_H
 
 #include <QMainWindow>
-#include "include/ontoloGenius/ontoloGUI/QCheckBoxExtended.h"
+#include "include/ontoloGenius/graphical/ontoloGUI/QCheckBoxExtended.h"
 
 #include "ros/ros.h"
 #include <vector>
