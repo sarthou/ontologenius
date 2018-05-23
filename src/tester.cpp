@@ -1,5 +1,5 @@
-#include "ontoloGenius/ontoGraphs/Ontology.h"
-#include "ontoloGenius/arguer/Arguers.h"
+#include "ontoloGenius/core/ontoGraphs/Ontology.h"
+#include "ontoloGenius/core/arguer/Arguers.h"
 
 #include "ros/ros.h"
 

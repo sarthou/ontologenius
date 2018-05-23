@@ -3,7 +3,7 @@
 #include <set>
 #include <iostream>
 
-#include "ontoloGenius/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
 using namespace std;
 

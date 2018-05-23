@@ -149,29 +149,29 @@ add_library(codeDescription_lib
 add_dependencies(codeDescription_lib ontologenius_gencpp)
 
 add_library(ontoGraphs_lib
-  src/ontoGraphs/Graphs/ClassGraph.cpp
-  src/ontoGraphs/Graphs/ObjectPropertyGraph.cpp
-  src/ontoGraphs/Graphs/DataPropertyGraph.cpp
-  src/ontoGraphs/Graphs/IndividualGraph.cpp
-  src/ontoGraphs/Checkers/ClassChecker.cpp
-  src/ontoGraphs/Checkers/ObjectPropertyChecker.cpp
-  src/ontoGraphs/Checkers/DataPropertyChecker.cpp
-  src/ontoGraphs/Checkers/IndividualChecker.cpp
-  src/ontoGraphs/Ontology.cpp
-  src/ontoGraphs/OntologyReader.cpp
+  src/core/ontoGraphs/Graphs/ClassGraph.cpp
+  src/core/ontoGraphs/Graphs/ObjectPropertyGraph.cpp
+  src/core/ontoGraphs/Graphs/DataPropertyGraph.cpp
+  src/core/ontoGraphs/Graphs/IndividualGraph.cpp
+  src/core/ontoGraphs/Checkers/ClassChecker.cpp
+  src/core/ontoGraphs/Checkers/ObjectPropertyChecker.cpp
+  src/core/ontoGraphs/Checkers/DataPropertyChecker.cpp
+  src/core/ontoGraphs/Checkers/IndividualChecker.cpp
+  src/core/ontoGraphs/Ontology.cpp
+  src/core/ontoGraphs/OntologyReader.cpp
 )
 add_dependencies(ontoGraphs_lib ontologenius_gencpp)
 target_link_libraries(ontoGraphs_lib ${OpenCV_LIBS})
 target_link_libraries(ontoGraphs_lib ${TinyXML_LIBRARIES})
 
 add_library(plugin_lib
-  src/arguer/plugins/ArguerInterface.cpp
+  src/core/arguer/plugins/ArguerInterface.cpp
   )
 add_dependencies(plugin_lib ontologenius_gencpp)
 target_link_libraries(plugin_lib ontoGraphs_lib)
 
 add_library(arguer_lib
-  src/arguer/Arguers.cpp
+  src/core/arguer/Arguers.cpp
   )
 add_dependencies(arguer_lib ontologenius_gencpp)
 target_link_libraries(arguer_lib plugin_lib)
@@ -188,11 +188,11 @@ target_link_libraries(ontologenius_lib codeDescription_lib)
 target_link_libraries(ontologenius_lib ontoGraphs_lib)
 
 add_library(drawer_lib
-  src/ontoGraphs/Drawers/GraphDrawer.cpp
-  src/ontoGraphs/Drawers/ClassDrawer.cpp
-  src/ontoGraphs/Drawers/ObjectPropertyDrawer.cpp
-  src/ontoGraphs/Drawers/DataPropertyDrawer.cpp
-  src/ontoGraphs/Drawers/OntologyDrawer.cpp
+  src/core/ontoGraphs/Drawers/GraphDrawer.cpp
+  src/core/ontoGraphs/Drawers/ClassDrawer.cpp
+  src/core/ontoGraphs/Drawers/ObjectPropertyDrawer.cpp
+  src/core/ontoGraphs/Drawers/DataPropertyDrawer.cpp
+  src/core/ontoGraphs/Drawers/OntologyDrawer.cpp
 )
 add_dependencies(drawer_lib ontologenius_gencpp)
 target_link_libraries(drawer_lib ${catkin_LIBRARIES})
@@ -204,7 +204,7 @@ target_link_libraries(drawer_lib ontologenius_lib)
 ## The recommended prefix ensures that target names across packages don't collide
 ##############################
 
-add_executable(ontoloGenius src/rosInterface.cpp)
+add_executable(ontoloGenius src/core/rosInterface.cpp)
 add_dependencies(ontoloGenius ontologenius_gencpp)
 target_link_libraries(ontoloGenius ${catkin_LIBRARIES})
 target_link_libraries(ontoloGenius ontologenius_lib)
@@ -223,11 +223,11 @@ target_link_libraries(ontologenius_tester arguer_lib)
 
 ## Declare a C++ lib for plugins
 add_library(arguer_plugin
-  src/arguer/plugins/ArguerNone.cpp
-  src/arguer/plugins/ArguerInverseOf.cpp
-  src/arguer/plugins/ArguerSymetric.cpp
-  src/arguer/plugins/ArguerChain.cpp
-  src/arguer/plugins/ArguerDictionary.cpp
+  src/core/arguer/plugins/ArguerNone.cpp
+  src/core/arguer/plugins/ArguerInverseOf.cpp
+  src/core/arguer/plugins/ArguerSymetric.cpp
+  src/core/arguer/plugins/ArguerChain.cpp
+  src/core/arguer/plugins/ArguerDictionary.cpp
   )
 add_dependencies(arguer_plugin ontologenius_gencpp)
 target_link_libraries(arguer_plugin plugin_lib)

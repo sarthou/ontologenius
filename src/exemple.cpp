@@ -1,5 +1,5 @@
-#include "ontoloGenius/ontoGraphs/Ontology.h"
-#include "ontoloGenius/ontoGraphs/Drawers/OntologyDrawer.h"
+#include "ontoloGenius/core/ontoGraphs/Ontology.h"
+#include "ontoloGenius/core/ontoGraphs/Drawers/OntologyDrawer.h"
 #include "ros/ros.h"
 
 int main(int argc, char** argv)

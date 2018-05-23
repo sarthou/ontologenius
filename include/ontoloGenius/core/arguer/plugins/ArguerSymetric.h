@@ -1,0 +1,23 @@
+#ifndef ARGUERSYMETRIC_H
+#define ARGUERSYMETRIC_H
+
+#include "ontoloGenius/core/arguer/plugins/ArguerInterface.h"
+
+class ArguerSymetric : public ArguerInterface
+{
+public:
+  ArguerSymetric() {}
+  ~ArguerSymetric() {}
+
+  void preReason();
+  void postReason();
+
+  std::string getName();
+  std::string getDesciption();
+
+  bool defaultAvtive() {return true;}
+private:
+  bool symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv);
+};
+
+#endif
