@@ -41,6 +41,7 @@ public:
   std::set<std::string> getUp(std::string& value);
   std::string getName(std::string& value);
   std::set<std::string> find(std::string value);
+  bool touch(std::string& value);
 
   std::set<std::string> getDown(B* branch);
   std::set<std::string> getUp(B* branch);
@@ -147,6 +148,16 @@ std::string OntoGraph<B>::getName(std::string& value)
   }
 
   return res;
+}
+
+template <typename B>
+bool OntoGraph<B>::touch(std::string& value)
+{
+  B* branch = this->container_.find(value);
+  if(branch != nullptr)
+    return true;
+  else
+    return false;
 }
 
 template <typename B>
