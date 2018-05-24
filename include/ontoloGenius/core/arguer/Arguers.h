@@ -12,7 +12,7 @@
 class Arguers
 {
 public:
-  Arguers(Ontology* onto) : loader_("ontologenius", "ArguerInterface") {ontology_ = onto; }
+  Arguers(Ontology* onto);
   ~Arguers();
 
   void load();

@@ -1,5 +1,10 @@
 #include "ontoloGenius/core/arguer/Arguers.h"
 
+#include "ontoloGenius/core/arguer/plugins/ArguerInverseOf.h"
+#include "ontoloGenius/core/arguer/plugins/ArguerSymetric.h"
+#include "ontoloGenius/core/arguer/plugins/ArguerChain.h"
+#include "ontoloGenius/core/arguer/plugins/ArguerDictionary.h"
+
 #include <iostream>
 #include <vector>
 
@@ -15,6 +20,11 @@
 #ifndef COLOR_GREEN
 #define COLOR_GREEN   "\x1B[1;92m"
 #endif
+
+Arguers::Arguers(Ontology* onto) : loader_("ontologenius", "ArguerInterface")
+{
+  ontology_ = onto;
+}
 
 Arguers::~Arguers()
 {
@@ -39,12 +49,21 @@ Arguers::~Arguers()
     }
     catch(pluginlib::LibraryUnloadException& ex)
     {
-      std::cout << "pluginlib::LibraryUnloadException" << std::endl;
+      std::cout << "pluginlib::LibraryUnloadException on " << it->first << " : " << std::string(ex.what()) << std::endl;
       ROS_ERROR("The plugin %s failed to unload for some reason. Error: %s", it->first.c_str(), ex.what());
     }
     catch(...)
     {
       std::cout << "catch other" << std::endl;
+    }
+  }
+
+  for(it = arguers_.begin(); it != arguers_.end(); ++it)
+  {
+    if(it->second != nullptr)
+    {
+      delete it->second;
+      it->second = nullptr;
     }
   }
 }
@@ -60,6 +79,7 @@ void Arguers::load()
       loader_.loadLibraryForClass(arguers[i]);
       ArguerInterface* tmp = loader_.createUnmanagedInstance(arguers[i]);
       tmp->initialize(ontology_);
+      arguers_[arguers[i]] = tmp;
       arguers_[arguers[i]] = tmp;
       if(tmp->defaultAvtive())
         active_arguers_[arguers[i]] = tmp;

@@ -9,13 +9,13 @@ public:
   ArguerChain() {}
   ~ArguerChain() {}
 
-  void preReason();
-  void postReason();
+  virtual void preReason();
+  virtual void postReason();
 
-  std::string getName();
-  std::string getDesciption();
+  virtual std::string getName();
+  virtual std::string getDesciption();
 
-  bool defaultAvtive() {return true;}
+  virtual bool defaultAvtive() {return true;}
 private:
   void resolveChain(std::vector<ObjectPropertyBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on);
   void resolveLink(ObjectPropertyBranch_t* chain_property, std::vector<IndividualBranch_t*>& indivs);

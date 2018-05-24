@@ -40,7 +40,7 @@ public:
 
   virtual std::vector<B*> get() = 0;
 
-  BranchContainerMap<B> container_;
+  BranchContainerDyn<B> container_;
 
   std::string language_;
 
