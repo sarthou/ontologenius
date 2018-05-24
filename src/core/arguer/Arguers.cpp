@@ -1,25 +1,8 @@
 #include "ontoloGenius/core/arguer/Arguers.h"
-
-#include "ontoloGenius/core/arguer/plugins/ArguerInverseOf.h"
-#include "ontoloGenius/core/arguer/plugins/ArguerSymetric.h"
-#include "ontoloGenius/core/arguer/plugins/ArguerChain.h"
-#include "ontoloGenius/core/arguer/plugins/ArguerDictionary.h"
+#include "ontoloGenius/core/utility/color.h"
 
 #include <iostream>
 #include <vector>
-
-#ifndef COLOR_OFF
-#define COLOR_OFF     "\x1B[0m"
-#endif
-#ifndef COLOR_RED
-#define COLOR_RED     "\x1B[0;91m"
-#endif
-#ifndef COLOR_ORANGE
-#define COLOR_ORANGE  "\x1B[1;33m"
-#endif
-#ifndef COLOR_GREEN
-#define COLOR_GREEN   "\x1B[1;92m"
-#endif
 
 Arguers::Arguers(Ontology* onto) : loader_("ontologenius", "ArguerInterface")
 {

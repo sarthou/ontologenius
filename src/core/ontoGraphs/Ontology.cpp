@@ -5,14 +5,9 @@
 #include "ontoloGenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
 #include "ontoloGenius/core/ontoGraphs/Checkers/IndividualChecker.h"
 
-#include <iostream>
+#include "ontoloGenius/core/utility/color.h"
 
-#ifndef COLOR_OFF
-#define COLOR_OFF     "\x1B[0m"
-#endif
-#ifndef COLOR_RED
-#define COLOR_RED     "\x1B[0;91m"
-#endif
+#include <iostream>
 
 Ontology::Ontology(std::string language) : object_property_graph_(&class_graph_),
                                            data_property_graph_(&class_graph_),

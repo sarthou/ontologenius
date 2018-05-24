@@ -1,8 +1,6 @@
 #include "ontoloGenius/core/arguer/plugins/ArguerChain.h"
 #include <pluginlib/class_list_macros.h>
 
-#include <iostream>
-
 void ArguerChain::preReason()
 {
 

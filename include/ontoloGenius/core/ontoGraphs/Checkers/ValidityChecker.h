@@ -2,20 +2,11 @@
 #define VALIDITYCHECKER_H
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
+#include "ontoloGenius/core/utility/color.h"
 
 #include <string>
 #include <iostream>
 #include <set>
-
-#ifndef COLOR_OFF
-#define COLOR_OFF     "\x1B[0m"
-#endif
-#ifndef COLOR_RED
-#define COLOR_RED     "\x1B[0;91m"
-#endif
-#ifndef COLOR_GREEN
-#define COLOR_GREEN   "\x1B[1;92m"
-#endif
 
 template <typename B>
 class ValidityChecker
