@@ -160,9 +160,9 @@ def handle_http(req):
 		return(response, 0)
 
 def http_resquest():
-	rospy.init_node('REST', anonymous=True)
+	rospy.init_node('ontologenius_rest', anonymous=True)
 
-	rospy.Service('ontoloGenius/REST', REST, handle_http)
+	rospy.Service('ontologenius/rest', REST, handle_http)
 	print "[ INFO] ready to make http request"
 	rospy.spin()
 

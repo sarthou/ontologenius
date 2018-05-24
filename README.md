@@ -11,12 +11,6 @@ This repository is a ROS package to link, explore and interrogate ontologies.
 
 [**4. Exploration**](https://github.com/sarthou/ontologenius/wiki/Exploration)
 
-[**5. Reason**](https://github.com/sarthou/ontologenius/wiki/Reason)
-
-[**6. Programming**](https://github.com/sarthou/ontologenius/wiki/Programming)
-
-[**7. OntoloGUI**](https://github.com/sarthou/ontologenius/wiki/ontoloGUI)
-
 ***
 
 ## Run the package
