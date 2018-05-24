@@ -1,15 +1,14 @@
 <?xml version="1.0"?>
 <package>
   <name>ontologenius</name>
-  <version>0.0.3</version>
+  <version>0.1.0</version>
   <description>The ontoloGenius package</description>
 
   <maintainer email="guillaum324bis@hotmail.fr">srth</maintainer>
 
-  <license>GNU AGPLv3</license>
+  <license>GNU LGPLv3</license>
 
-  <!-- Url tags are optional, but multiple are allowed, one per tag -->
-  <!-- <url type="website">http://wiki.ros.org/ontoloGenius</url> -->
+  <url type="website">https://sarthou.github.io/ontologenius/</url>
 
   <author email="guillaum324bis@hotmail.fr">srth</author>
 
