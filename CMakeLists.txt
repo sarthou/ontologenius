@@ -65,6 +65,7 @@ find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport)
   FILES
   REST.srv
   standard_service.srv
+  OntologeniusService.srv
  )
 
 ## Generate actions in the 'action' folder
@@ -113,77 +114,88 @@ include_directories(
 ##############################
 ## Declare a C++ library
 ##############################
-add_library(codeDescription_lib
-  src/codeDescription/Types/VariablesType.cpp
-  src/codeDescription/Types/StringType.cpp
-  src/codeDescription/Functions/FunctionDescriptor.cpp
-  src/codeDescription/Functions/FunctionContainer.cpp
-  src/codeDescription/Functions/OntoFunctions.cpp
-  src/codeDescription/Functions/PropertyFunctions.cpp
-  src/codeDescription/TextManipulator.cpp
-  src/codeDescription/Code.cpp
-  src/codeDescription/Namespace.cpp
-  src/codeDescription/Syntax/Operators.cpp
-  src/codeDescription/Syntax/IfelseCF.cpp
+##############################
+## CORE
+##############################
+add_library(ontologenius_ontoGraphs_lib
+  src/core/ontoGraphs/Graphs/ClassGraph.cpp
+  src/core/ontoGraphs/Graphs/ObjectPropertyGraph.cpp
+  src/core/ontoGraphs/Graphs/DataPropertyGraph.cpp
+  src/core/ontoGraphs/Graphs/IndividualGraph.cpp
+  src/core/ontoGraphs/Checkers/ClassChecker.cpp
+  src/core/ontoGraphs/Checkers/ObjectPropertyChecker.cpp
+  src/core/ontoGraphs/Checkers/DataPropertyChecker.cpp
+  src/core/ontoGraphs/Checkers/IndividualChecker.cpp
+  src/core/ontoGraphs/Ontology.cpp
+  src/core/ontoGraphs/OntologyReader.cpp
 )
-add_dependencies(codeDescription_lib ontologenius_gencpp)
+add_dependencies(ontologenius_ontoGraphs_lib ontologenius_gencpp)
+target_link_libraries(ontologenius_ontoGraphs_lib ${OpenCV_LIBS})
+target_link_libraries(ontologenius_ontoGraphs_lib ${TinyXML_LIBRARIES})
 
-add_library(ontoGraphs_lib
-  src/ontoGraphs/Graphs/ClassGraph.cpp
-  src/ontoGraphs/Graphs/ObjectPropertyGraph.cpp
-  src/ontoGraphs/Graphs/DataPropertyGraph.cpp
-  src/ontoGraphs/Graphs/IndividualGraph.cpp
-  src/ontoGraphs/Checkers/ClassChecker.cpp
-  src/ontoGraphs/Checkers/ObjectPropertyChecker.cpp
-  src/ontoGraphs/Checkers/DataPropertyChecker.cpp
-  src/ontoGraphs/Checkers/IndividualChecker.cpp
-  src/ontoGraphs/Ontology.cpp
-  src/ontoGraphs/OntologyReader.cpp
-)
-add_dependencies(ontoGraphs_lib ontologenius_gencpp)
-target_link_libraries(ontoGraphs_lib ${OpenCV_LIBS})
-target_link_libraries(ontoGraphs_lib ${TinyXML_LIBRARIES})
-
-add_library(plugin_lib
-  src/arguer/plugins/ArguerInterface.cpp
+add_library(ontologenius_core_lib
+  src/core/arguer/plugins/ArguerInterface.cpp
+  src/core/arguer/Arguers.cpp
+  src/core/Computer.cpp
   )
-add_dependencies(plugin_lib ontologenius_gencpp)
-target_link_libraries(plugin_lib ontoGraphs_lib)
+add_dependencies(ontologenius_core_lib ontologenius_gencpp)
+target_link_libraries(ontologenius_core_lib ${catkin_LIBRARIES})
+target_link_libraries(ontologenius_core_lib ontologenius_ontoGraphs_lib)
 
-add_library(arguer_lib
-  src/arguer/Arguers.cpp
+##############################
+## DRAWER
+##############################
+
+add_library(ontologenius_drawer_lib
+  src/graphical/Drawers/GraphDrawer.cpp
+  src/graphical/Drawers/ClassDrawer.cpp
+  src/graphical/Drawers/ObjectPropertyDrawer.cpp
+  src/graphical/Drawers/DataPropertyDrawer.cpp
+  src/graphical/Drawers/OntologyDrawer.cpp
+)
+add_dependencies(ontologenius_drawer_lib ontologenius_gencpp)
+target_link_libraries(ontologenius_drawer_lib ${catkin_LIBRARIES})
+target_link_libraries(ontologenius_core_lib ontologenius_ontoGraphs_lib)
+
+##############################
+## INTERPRETER
+##############################
+
+add_library(ontologenius_codeDescription_lib
+  src/interpreter/codeDescription/Types/VariablesType.cpp
+  src/interpreter/codeDescription/Types/StringType.cpp
+  src/interpreter/codeDescription/Functions/FunctionDescriptor.cpp
+  src/interpreter/codeDescription/Functions/FunctionContainer.cpp
+  src/interpreter/codeDescription/Functions/OntoFunctions.cpp
+  src/interpreter/codeDescription/TextManipulator.cpp
+  src/interpreter/codeDescription/Code.cpp
+  src/interpreter/codeDescription/Namespace.cpp
+  src/interpreter/codeDescription/Syntax/Operators.cpp
+  src/interpreter/codeDescription/Syntax/IfelseCF.cpp
+)
+add_dependencies(ontologenius_codeDescription_lib ontologenius_gencpp)
+
+add_library(ontologenius_interpreter_lib
+  src/interpreter/Parser.cpp
+  src/interpreter/Error.cpp
+  src/interpreter/Compiler.cpp
+)
+add_dependencies(ontologenius_interpreter_lib ontologenius_gencpp)
+target_link_libraries(ontologenius_interpreter_lib ontologenius_codeDescription_lib)
+target_link_libraries(ontologenius_interpreter_lib ontologenius_ontoGraphs_lib)
+
+##############################
+## PLUGINS
+##############################
+add_library(ontologenius_arguer_plugin
+  src/core/arguer/plugins/ArguerNone.cpp
+  src/core/arguer/plugins/ArguerInverseOf.cpp
+  src/core/arguer/plugins/ArguerSymetric.cpp
+  src/core/arguer/plugins/ArguerChain.cpp
+  src/core/arguer/plugins/ArguerDictionary.cpp
   )
-add_dependencies(arguer_lib ontologenius_gencpp)
-target_link_libraries(arguer_lib plugin_lib)
-target_link_libraries(arguer_lib ${catkin_LIBRARIES})
-
-add_library(filesManager_lib
-  src/fileManagers/FileManager.cpp
-  src/fileManagers/FileWriter.cpp
-)
-add_dependencies(filesManager_lib ontologenius_gencpp)
-
-add_library(ontologenius_lib
-  src/Computer.cpp
-  src/Parser.cpp
-  src/Error.cpp
-  src/Compiler.cpp
-)
-add_dependencies(ontologenius_lib ontologenius_gencpp)
-target_link_libraries(ontologenius_lib codeDescription_lib)
-target_link_libraries(ontologenius_lib ontoGraphs_lib)
-target_link_libraries(ontologenius_lib filesManager_lib)
-
-add_library(drawer_lib
-  src/ontoGraphs/Drawers/GraphDrawer.cpp
-  src/ontoGraphs/Drawers/ClassDrawer.cpp
-  src/ontoGraphs/Drawers/ObjectPropertyDrawer.cpp
-  src/ontoGraphs/Drawers/DataPropertyDrawer.cpp
-  src/ontoGraphs/Drawers/OntologyDrawer.cpp
-)
-add_dependencies(drawer_lib ontologenius_gencpp)
-target_link_libraries(drawer_lib ${catkin_LIBRARIES})
-target_link_libraries(drawer_lib ontologenius_lib)
+add_dependencies(ontologenius_arguer_plugin ontologenius_gencpp)
+target_link_libraries(ontologenius_arguer_plugin ontologenius_core_lib)
 
 ##############################
 ## Declare a C++ executable
@@ -193,31 +205,17 @@ target_link_libraries(drawer_lib ontologenius_lib)
 
 add_executable(ontoloGenius src/rosInterface.cpp)
 add_dependencies(ontoloGenius ontologenius_gencpp)
-target_link_libraries(ontoloGenius ${catkin_LIBRARIES})
-target_link_libraries(ontoloGenius ontologenius_lib)
-target_link_libraries(ontoloGenius arguer_lib)
+target_link_libraries(ontoloGenius ontologenius_interpreter_lib)
+target_link_libraries(ontoloGenius ontologenius_core_lib)
 
-add_executable(ontoloGeniusExemple src/exemple.cpp )
-add_dependencies(ontoloGeniusExemple ontologenius_gencpp)
-target_link_libraries(ontoloGeniusExemple drawer_lib)
-target_link_libraries(ontoloGeniusExemple ontologenius_lib)
+add_executable(ontoloGenius_exemple src/exemple.cpp )
+add_dependencies(ontoloGenius_exemple ontologenius_gencpp)
+target_link_libraries(ontoloGenius_exemple ontologenius_drawer_lib)
+target_link_libraries(ontoloGenius_exemple ontologenius_core_lib)
 
-add_executable(ontologenius_tester src/tester.cpp)
-add_dependencies(ontologenius_tester ontologenius_gencpp)
-target_link_libraries(ontologenius_tester ${catkin_LIBRARIES})
-target_link_libraries(ontologenius_tester ontologenius_lib)
-target_link_libraries(ontologenius_tester arguer_lib)
-
-## Declare a C++ lib for plugins
-add_library(arguer_plugin
-  src/arguer/plugins/ArguerNone.cpp
-  src/arguer/plugins/ArguerInverseOf.cpp
-  src/arguer/plugins/ArguerSymetric.cpp
-  src/arguer/plugins/ArguerChain.cpp
-  src/arguer/plugins/ArguerDictionary.cpp
-  )
-add_dependencies(arguer_plugin ontologenius_gencpp)
-target_link_libraries(arguer_plugin plugin_lib)
+add_executable(ontoloGenius_tester src/tester.cpp)
+add_dependencies(ontoloGenius_tester ontologenius_gencpp)
+target_link_libraries(ontoloGenius_tester ontologenius_core_lib)
 
 ##############################################################################
 # Qt Environment
@@ -250,16 +248,16 @@ add_definitions( -std=c++11 -fPIC)
 ##############################################################################
 
 set( QT_SOURCES
-    src/ontoloGUI/main.cpp
-    src/ontoloGUI/ontologui.cpp
-    src/ontoloGUI/DarkStyle.cpp
-    src/ontoloGUI/qpushbuttonextended.cpp
-    src/ontoloGUI/QCheckBoxExtended.cpp
+    src/graphical/ontoloGUI/main.cpp
+    src/graphical/ontoloGUI/ontologui.cpp
+    src/graphical/ontoloGUI/DarkStyle.cpp
+    src/graphical/ontoloGUI/qpushbuttonextended.cpp
+    src/graphical/ontoloGUI/QCheckBoxExtended.cpp
 
-    include/ontoloGenius/ontoloGUI/ontologui.h
-    include/ontoloGenius/ontoloGUI/DarkStyle.h
-    include/ontoloGenius/ontoloGUI/qpushbuttonextended.h
-    include/ontoloGenius/ontoloGUI/QCheckBoxExtended.h
+    include/ontoloGenius/graphical/ontoloGUI/ontologui.h
+    include/ontoloGenius/graphical/ontoloGUI/DarkStyle.h
+    include/ontoloGenius/graphical/ontoloGUI/qpushbuttonextended.h
+    include/ontoloGenius/graphical/ontoloGUI/QCheckBoxExtended.h
 )
 ##############################################################################
 # Binaries

@@ -7,6 +7,6 @@
   $(find ontologenius)/files/positionProperty.owl
   $(find ontologenius)/files/testIndividuals.owl
   "/>
-  <node name="ontology_arguer" pkg="ontologenius" type="ontoloGenius" output="screen" args="$(arg language) $(arg files)"> </node>
-  <node name="ontology_requests" pkg="ontologenius" type="REST.py" output="screen"> </node>
+  <node name="ontologenius_core" pkg="ontologenius" type="ontoloGenius" output="screen" args="$(arg language) $(arg files)"> </node>
+  <node name="ontologenius_rest" pkg="ontologenius" type="REST.py" output="screen"> </node>
 </launch>

@@ -1,4 +1,4 @@
-<library path="lib/libarguer_plugin">
+<library path="lib/libontologenius_arguer_plugin">
   <class type="ArguerNone" base_class_type="ArguerInterface">
     <description>This is a arguer test plugin.</description>
   </class>
