@@ -8,7 +8,7 @@
 
 #include "ontoloGenius/interpreter/codeDescription/Code.h"
 #include "ontoloGenius/interpreter/Error.h"
-#include "ontoloGenius/fileManagers/FileWriter.h"
+#include "ontoloGenius/interpreter/fileManagers/FileWriter.h"
 
 class Compiler
 {

@@ -11,7 +11,7 @@
 #include "ontoloGenius/core/Computer.h"
 #include "ontoloGenius/interpreter/Parser.h"
 
-#define USE_INTEPRETER
+//#define USE_INTEPRETER
 
 void removeUselessSpace(std::string& text)
 {

@@ -2,6 +2,7 @@
 
 #include "ontoloGenius/interpreter/codeDescription/Types/VariablesType.h"
 #include "ontoloGenius/interpreter/codeDescription/Functions/OntoFunctions.h"
+#include "ontoloGenius/interpreter/codeDescription/Functions/PropertyFunctions.h"
 
 #include "ontoloGenius/interpreter/codeDescription/TextManipulator.h"
 

@@ -1,4 +1,4 @@
-#include "ontoloGenius/fileManagers/FileWriter.h"
+#include "ontoloGenius/interpreter/fileManagers/FileWriter.h"
 
 void FileWriter::write(std::string text)
 {

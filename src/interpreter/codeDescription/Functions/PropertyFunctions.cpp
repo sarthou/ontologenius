@@ -1,4 +1,4 @@
-#include "ontoloGenius/codeDescription/Functions/PropertyFunctions.h"
+#include "ontoloGenius/interpreter/codeDescription/Functions/PropertyFunctions.h"
 
 bool PropertyFunctions::functionExist(std::string name)
 {

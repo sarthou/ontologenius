@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "ontoloGenius/codeDescription/Functions/FunctionContainer.h"
+#include "ontoloGenius/interpreter/codeDescription/Functions/FunctionContainer.h"
 
 class PropertyFunctions: public FunctionContainer
 {
