@@ -312,6 +312,8 @@ bool actionsHandle(ontologenius::OntologeniusService::Request  &req,
       res.values[0] = "false";
     //comp.compute("red_cube|young_animal=color_animal|age_object", onto);
   }
+  else if(req.action == "setLang")
+    onto.setLanguage(req.param);
   else
     res.code = UNKNOW_ACTION;
 
