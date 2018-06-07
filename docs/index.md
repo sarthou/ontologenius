@@ -34,12 +34,17 @@ With these changes and with a local and more powerful reasoner, the ultimate goa
 
 [**2. Create ontology**](https://github.com/sarthou/ontologenius/wiki/Create-ontology)
 
-[**3. Load ontology**](https://github.com/sarthou/ontologenius/wiki/Load-ontology)
+[**3. Launch ontoloGenius**](https://github.com/sarthou/ontologenius/wiki/Launch-ontoloGenius)
 
-[**4. Exploration**](https://github.com/sarthou/ontologenius/wiki/Exploration)
+[**4. Load ontology**](https://github.com/sarthou/ontologenius/wiki/Load-ontology)
 
-[**5. Reason**](https://github.com/sarthou/ontologenius/wiki/Reason)
+[**5. Exploration**](https://github.com/sarthou/ontologenius/wiki/Exploration)
+ - [**5.1. Classes exploration**](https://github.com/sarthou/ontologenius/wiki/Classes-exploration)
+ - [**5.2. Properties exploration**](https://github.com/sarthou/ontologenius/wiki/Properties-exploration)
+ - [**5.3. Individuals exploration**](https://github.com/sarthou/ontologenius/wiki/Individuals-exploration)
 
-[**6. Programming**](https://github.com/sarthou/ontologenius/wiki/Programming)
+[**6. Reason**](https://github.com/sarthou/ontologenius/wiki/Reason)
 
-[**7. OntoloGUI**](https://github.com/sarthou/ontologenius/wiki/ontoloGUI)
+[**7. Programming**](https://github.com/sarthou/ontologenius/wiki/Programming)
+
+[**8. OntoloGUI**](https://github.com/sarthou/ontologenius/wiki/ontoloGUI)
