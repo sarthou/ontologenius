@@ -11,16 +11,19 @@
 #ifndef DATAPROPERTYGRAPH_H
 #define DATAPROPERTYGRAPH_H
 
-struct DataPropertyBranch_t;
-
-class DataPropertyBranch_t : public Branch_t<DataPropertyBranch_t>
+template <typename T>
+class DataPropertyBranchData_t
 {
 public:
-  std::vector<DataPropertyBranch_t*> disjoints_;
+  std::vector<T*> disjoints_;
   std::vector<ClassBranch_t*> domains_;
   std::vector<std::string> ranges_;
   Properties_t properties_;
+};
 
+class DataPropertyBranch_t : public Branch_t<DataPropertyBranch_t>, public DataPropertyBranchData_t<DataPropertyBranch_t>
+{
+public:
   DataPropertyBranch_t(std::string value) : Branch_t(value) {};
 };
 

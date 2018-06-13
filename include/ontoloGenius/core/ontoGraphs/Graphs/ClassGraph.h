@@ -9,11 +9,16 @@
 #ifndef CLASSGRAPH_H
 #define CLASSGRAPH_H
 
-class ClassBranch_t : public Branch_t<ClassBranch_t>
+template <typename T>
+class ClassBranchData_t
 {
 public:
-  std::vector<ClassBranch_t*> disjoints_;
+  std::vector<T*> disjoints_;
+};
 
+class ClassBranch_t : public Branch_t<ClassBranch_t>, public ClassBranchData_t<ClassBranch_t>
+{
+public:
   ClassBranch_t(std::string value) : Branch_t(value) {};
 };
 

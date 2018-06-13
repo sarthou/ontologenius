@@ -17,11 +17,16 @@ public:
   UpdatableNode() {updated_ = true; nb_updates_ = 0; }
 };
 
-class ValuedNode : public UpdatableNode
+class ValuedNodeData
+{
+public:
+  std::map<std::string, std::vector<std::string>> dictionary_;
+};
+
+class ValuedNode : public UpdatableNode, public ValuedNodeData
 {
 public:
   std::string value_;
-  std::map<std::string, std::vector<std::string>> dictionary_;
 
   ValuedNode(std::string value) {value_ = value; }
 };

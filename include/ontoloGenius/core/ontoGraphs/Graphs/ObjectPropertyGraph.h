@@ -31,16 +31,21 @@ struct Properties_t
                     irreflexive_property_(false) {};
 };
 
-class ObjectPropertyBranch_t : public Branch_t<ObjectPropertyBranch_t>
+template <typename T>
+class ObjectPropertyBranchData_t
 {
 public:
-  std::vector<ObjectPropertyBranch_t*> disjoints_;
-  std::vector<ObjectPropertyBranch_t*> inverses_;
+  std::vector<T*> disjoints_;
+  std::vector<T*> inverses_;
   std::vector<ClassBranch_t*> domains_;
   std::vector<ClassBranch_t*> ranges_;
-  std::vector<std::vector<ObjectPropertyBranch_t*>> chains_;
+  std::vector<std::vector<T*>> chains_;
   Properties_t properties_;
+};
 
+class ObjectPropertyBranch_t : public Branch_t<ObjectPropertyBranch_t>, public ObjectPropertyBranchData_t<ObjectPropertyBranch_t>
+{
+public:
   ObjectPropertyBranch_t(std::string value) : Branch_t(value) {};
 };
 

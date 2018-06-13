@@ -15,11 +15,17 @@ be really carreful of how you use it
 */
 
 template <typename T>
-class Branch_t : public ValuedNode
+class BranchData_t
 {
 public:
   std::vector<T*> childs_;
   std::vector<T*> mothers_;
+};
+
+template <typename T>
+class Branch_t : public BranchData_t<T>, public ValuedNode
+{
+public:
   uint8_t family;
   uint8_t nb_mothers_;
 
