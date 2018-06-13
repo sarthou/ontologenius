@@ -6,7 +6,6 @@
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h" //TODO remove
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 
