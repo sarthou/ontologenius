@@ -26,10 +26,18 @@ public:
   std::vector<T*> distinct_;
 };
 
+class IndividualBranch_t;
+class IndividualSteady_t : public ValuedNodeData, public IndividualBranchData_t<IndividualBranch_t>
+{
+public:
+  IndividualSteady_t() {}
+};
+
 class IndividualBranch_t : public ValuedNode, public IndividualBranchData_t<IndividualBranch_t>
 {
 public:
   bool mark;
+  IndividualSteady_t steady_;
 
   IndividualBranch_t(std::string value) : ValuedNode(value) {mark = false; }
 };

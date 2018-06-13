@@ -13,9 +13,18 @@ public:
   std::vector<T*> disjoints_;
 };
 
+class ClassBranch_t;
+class ClassSteady_t : public BranchData_t<ClassBranch_t>, public ClassBranchData_t<ClassBranch_t>
+{
+public:
+  ClassSteady_t() {}
+};
+
 class ClassBranch_t : public Branch_t<ClassBranch_t>, public ClassBranchData_t<ClassBranch_t>
 {
 public:
+  ClassSteady_t steady_;
+
   ClassBranch_t(std::string value) : Branch_t(value) {};
 };
 

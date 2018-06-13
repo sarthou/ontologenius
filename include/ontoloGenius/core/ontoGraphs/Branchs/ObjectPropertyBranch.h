@@ -16,10 +16,20 @@ public:
   std::vector<std::vector<T*>> chains_;
 };
 
+class ObjectPropertyBranch_t;
+class ObjectPropertySteady_t :  public BranchData_t<ObjectPropertyBranch_t>,
+                                public ObjectPropertyBranchData_t<ObjectPropertyBranch_t>
+{
+public:
+  ObjectPropertySteady_t() {}
+};
+
 class ObjectPropertyBranch_t :  public Branch_t<ObjectPropertyBranch_t>,
                                 public ObjectPropertyBranchData_t<ObjectPropertyBranch_t>
 {
 public:
+  ObjectPropertySteady_t steady_;
+
   ObjectPropertyBranch_t(std::string value) : Branch_t(value) {};
 };
 

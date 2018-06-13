@@ -30,4 +30,11 @@ public:
     {};
 };
 
+template <typename S>
+class BranchSteady_t : public ValuedNodeData, public BranchData_t<S>
+{
+public:
+  BranchSteady_t() {}
+};
+
 #endif
