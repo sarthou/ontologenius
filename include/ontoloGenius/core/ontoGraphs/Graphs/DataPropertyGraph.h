@@ -22,14 +22,6 @@ struct DataPropertyVectors_t
    std::map<std::string, std::vector<std::string>> dictionary_;
 };
 
-struct data_t
-{
-  std::string value_;
-  std::string type_;
-
-  std::string toString() {return( type_ + ":" + value_); }
-};
-
 class DataPropertyDrawer;
 class IndividualGraph;
 

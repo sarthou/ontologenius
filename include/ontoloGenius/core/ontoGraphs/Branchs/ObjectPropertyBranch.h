@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/PropertyBranch.h"
+#include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
 template <typename T>
 class ObjectPropertyBranchData_t : public PropertyBranchData_t<T>
@@ -17,7 +18,7 @@ public:
 };
 
 class ObjectPropertyBranch_t;
-class ObjectPropertySteady_t :  public BranchData_t<ObjectPropertyBranch_t>,
+class ObjectPropertySteady_t :  public BranchSteady_t<ObjectPropertyBranch_t>,
                                 public ObjectPropertyBranchData_t<ObjectPropertyBranch_t>
 {
 public:
@@ -31,6 +32,17 @@ public:
   ObjectPropertySteady_t steady_;
 
   ObjectPropertyBranch_t(std::string value) : Branch_t(value) {};
+
+  void setFullSteady();
+  void setSteady_disjoint(ObjectPropertyBranch_t* disjoint);
+  void setSteady_properties(Properties_t properties);
+  void setSteady_inverse(ObjectPropertyBranch_t* inverse);
+  void setSteady_domain(ClassBranch_t* domain);
+  void setSteady_range(ClassBranch_t* range);
+  void setSteady_chain(std::vector<ObjectPropertyBranch_t*> chain);
+  void setSteady_child(ObjectPropertyBranch_t* child);
+  void setSteady_mother(ObjectPropertyBranch_t* mother);
+  void setSteady_dictionary(std::string lang, std::string word);
 };
 
 #endif

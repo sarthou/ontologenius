@@ -40,6 +40,15 @@ public:
   IndividualSteady_t steady_;
 
   IndividualBranch_t(std::string value) : ValuedNode(value) {mark = false; }
+
+  void setFullSteady();
+  void setSteady_is_a(ClassBranch_t* is_a);
+  void setSteady_object_properties_name(ObjectPropertyBranch_t* object_properties_name);
+  void setSteady_object_properties_on(IndividualBranch_t* object_properties_on);
+  void setSteady_data_properties_name(DataPropertyBranch_t* data_properties_name);
+  void setSteady_data_properties_data(data_t data_properties_data);
+  void setSteady_same_as(IndividualBranch_t* same_as);
+  void setSteady_distinct(IndividualBranch_t* distinct);
 };
 
 #endif
