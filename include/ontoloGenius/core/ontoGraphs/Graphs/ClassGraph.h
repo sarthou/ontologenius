@@ -1,3 +1,6 @@
+#ifndef CLASSGRAPH_H
+#define CLASSGRAPH_H
+
 #include <string>
 #include <vector>
 #include <map>
@@ -5,22 +8,7 @@
 #include <stdint.h>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
-
-#ifndef CLASSGRAPH_H
-#define CLASSGRAPH_H
-
-template <typename T>
-class ClassBranchData_t
-{
-public:
-  std::vector<T*> disjoints_;
-};
-
-class ClassBranch_t : public Branch_t<ClassBranch_t>, public ClassBranchData_t<ClassBranch_t>
-{
-public:
-  ClassBranch_t(std::string value) : Branch_t(value) {};
-};
+#include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
 struct ObjectVectors_t
 {

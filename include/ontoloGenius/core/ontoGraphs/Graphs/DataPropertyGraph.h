@@ -6,26 +6,12 @@
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h" //TODO remove
+
+#include "ontoloGenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 
 #ifndef DATAPROPERTYGRAPH_H
 #define DATAPROPERTYGRAPH_H
-
-template <typename T>
-class DataPropertyBranchData_t
-{
-public:
-  std::vector<T*> disjoints_;
-  std::vector<ClassBranch_t*> domains_;
-  std::vector<std::string> ranges_;
-  Properties_t properties_;
-};
-
-class DataPropertyBranch_t : public Branch_t<DataPropertyBranch_t>, public DataPropertyBranchData_t<DataPropertyBranch_t>
-{
-public:
-  DataPropertyBranch_t(std::string value) : Branch_t(value) {};
-};
 
 struct DataPropertyVectors_t
 {
