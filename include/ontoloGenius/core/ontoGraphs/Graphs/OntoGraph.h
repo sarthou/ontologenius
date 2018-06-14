@@ -201,7 +201,7 @@ void OntoGraph<B>::isMyMother(B* me, std::string mother, std::vector<B*>& vect, 
     if(mother == vect[i]->value_)
     {
       vect[i]->childs_.push_back(me);
-      me->mothers_.push_back(vect[i]);
+      me->setSteady_mother(vect[i]);
       find = true;
       break;
     }

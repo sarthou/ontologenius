@@ -55,7 +55,7 @@ private:
     for(unsigned int i = 0; i < vect.size(); i++)
       if(disjoint == vect[i]->value_)
       {
-        me->disjoints_.push_back(vect[i]);
+        me->setSteady_disjoint(vect[i]);
         if(all)
           vect[i]->disjoints_.push_back(me);
         find = true;
@@ -71,7 +71,7 @@ private:
     for(unsigned int i = 0; i < vect.size(); i++)
       if(inverse == vect[i]->value_)
       {
-        me->inverses_.push_back(vect[i]);
+        me->setSteady_inverse(vect[i]);
         if(all)
           vect[i]->inverses_.push_back(me);
         find = true;
@@ -87,7 +87,7 @@ private:
     for(unsigned int i = 0; i < vect.size(); i++)
       if(domain == vect[i]->value_)
       {
-        me->domains_.push_back(vect[i]);
+        me->setSteady_domain(vect[i]);
         find = true;
         break;
       }
@@ -101,7 +101,7 @@ private:
     for(unsigned int i = 0; i < vect.size(); i++)
       if(range == vect[i]->value_)
       {
-        me->ranges_.push_back(vect[i]);
+        me->setSteady_range(vect[i]);
         find = true;
         break;
       }

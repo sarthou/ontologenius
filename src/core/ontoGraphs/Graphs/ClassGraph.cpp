@@ -42,8 +42,8 @@ void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
       if(!i_find_my_mother)
       {
         ClassBranch_t* my_mother = new struct ClassBranch_t(object_vector.mothers_[mothers_i]);
-        my_mother->childs_.push_back(me);
-        me->mothers_.push_back(my_mother);
+        my_mother->setSteady_child(me);
+        me->setSteady_mother(my_mother);
         tmp_mothers_.push_back(my_mother);
       }
     }
@@ -70,13 +70,13 @@ void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
     if(!i_find_my_disjoint)
     {
       ClassBranch_t* my_disjoint = new struct ClassBranch_t(object_vector.disjoints_[disjoints_i]);
-      me->disjoints_.push_back(my_disjoint);
+      me->setSteady_disjoint(my_disjoint);
       my_disjoint->disjoints_.push_back(me);
       tmp_mothers_.push_back(my_disjoint); //I put my disjoint as tmp_mother
     }
   }
 
-  me->dictionary_ = object_vector.dictionary_;
+  me->setSteady_dictionary(object_vector.dictionary_);
   if(me->dictionary_.find("en") == me->dictionary_.end())
     me->dictionary_["en"].push_back(me->value_);
 }
@@ -124,7 +124,7 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
         if(!i_find_my_disjoint)
         {
           ClassBranch_t* my_disjoint = new struct ClassBranch_t(disjoints[disjoints_j]);
-          me->disjoints_.push_back(my_disjoint);
+          me->setSteady_disjoint(my_disjoint);
           tmp_mothers_.push_back(my_disjoint); //I put my disjoint as tmp_mother
         }
       }

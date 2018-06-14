@@ -72,3 +72,9 @@ void IndividualBranch_t::setSteady_distinct(IndividualBranch_t* distinct)
   steady_.distinct_.push_back(distinct);
   distinct_.push_back(distinct);
 }
+
+void IndividualBranch_t::setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary)
+{
+  steady_.dictionary_ = dictionary;
+  dictionary_ = dictionary;
+}

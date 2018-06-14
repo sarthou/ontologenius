@@ -76,3 +76,9 @@ void DataPropertyBranch_t::setSteady_dictionary(std::string lang, std::string wo
   steady_.dictionary_[lang].push_back(word);
   dictionary_[lang].push_back(word);
 }
+
+void DataPropertyBranch_t::setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary)
+{
+  steady_.dictionary_ = dictionary;
+  dictionary_ = dictionary;
+}
