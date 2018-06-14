@@ -3,6 +3,9 @@
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 #include "ontoloGenius/core/utility/color.h"
 
+#include "ontoloGenius/core/ontoGraphs/writers/ClassWriter.h"
+#include "ontoloGenius/core/ontoGraphs/writers/ObjectPropertiesWriter.h"
+
 #include <iostream>
 
 OntologyWriter::OntologyWriter(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph)
@@ -37,10 +40,25 @@ void OntologyWriter::write(std::string file_name)
   }
 
   writeStart();
+
   writeBanner("Classes");
+  ClassWriter classes(class_graph_);
+  classes.write(file_);
+
+  writeBanner("Object Properties");
+  ObjectPropertiesWriter object_properties(object_property_graph_);
+  object_properties.write(file_);
+
+  writeBanner("Data properties");
+
+  writeBanner("Individuals");
+
   writeEnd();
 
   std::cout << COLOR_GREEN << "ontology loaded in : " << COLOR_OFF << file_name_ << std::endl;
+
+  if(file_ != NULL)
+    fclose(file_);
 }
 
 void OntologyWriter::writeStart()

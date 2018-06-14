@@ -106,6 +106,8 @@ add_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Ontology.cpp
   src/core/ontoGraphs/OntologyReader.cpp
   src/core/ontoGraphs/OntologyWriter.cpp
+  src/core/ontoGraphs/writers/ClassWriter.cpp
+  src/core/ontoGraphs/writers/ObjectPropertiesWriter.cpp
 )
 add_dependencies(ontologenius_ontoGraphs_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_ontoGraphs_lib ${OpenCV_LIBS})
