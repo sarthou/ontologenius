@@ -18,6 +18,7 @@ public:
 
   int readFromUri(std::string uri);
   int readFromFile(std::string fileName);
+  bool preload(std::string fileName);
 
   bool isInit();
   void setLanguage(std::string language);
@@ -29,6 +30,10 @@ public:
 
 private:
   OntologyReader reader;
+
+  std::string intern_file_;
+  bool is_preloaded_;
+
   std::vector<std::string> files_;
   std::vector<std::string> uri_;
 

@@ -538,8 +538,12 @@ int main(int argc, char** argv)
   std::string language = string(argv[1]);
   std::cout << "language " << language << std::endl;
 
-  for(int i = 2; i < argc; i++)
-    onto.readFromFile(string(argv[i]));
+  std::string intern_file = string(argv[2]);
+  std::cout << "intern_file " << intern_file << std::endl;
+
+  if(onto.preload(intern_file) == false)
+    for(int i = 3; i < argc; i++)
+      onto.readFromFile(string(argv[i]));
 
   arguers.load();
   std::cout << "Plugins loaded : " << arguers.list() << std::endl;

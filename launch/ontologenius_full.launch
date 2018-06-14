@@ -1,5 +1,6 @@
 <launch>
   <arg name="language" default="en"/>
+  <arg name="intern_file" default="$(find ontologenius)/file_intern/ontologenius.owl"/>
   <arg name="files" default="
   $(find ontologenius)/files/attribute.owl
   $(find ontologenius)/files/measure.owl
@@ -7,7 +8,7 @@
   $(find ontologenius)/files/positionProperty.owl
   $(find ontologenius)/files/testIndividuals.owl
   "/>
-  <node name="ontologenius_core" pkg="ontologenius" type="ontoloGenius" output="screen" args="$(arg language) $(arg files)"> </node>
+  <node name="ontologenius_core" pkg="ontologenius" type="ontoloGenius" output="screen" args="$(arg language) $(arg intern_file) $(arg files)"> </node>
   <node name="ontologenius_rest" pkg="ontologenius" type="REST.py" output="screen"> </node>
   <node name="ontologenius_gui" pkg="ontologenius" type="ontoloGUI" output="screen"> </node>
 </launch>

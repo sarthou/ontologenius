@@ -6,6 +6,7 @@
 #include "ontoloGenius/core/ontoGraphs/Checkers/IndividualChecker.h"
 
 #include "ontoloGenius/core/utility/color.h"
+#include "ontoloGenius/core/utility/error_code.h"
 
 #include <iostream>
 
@@ -15,6 +16,7 @@ Ontology::Ontology(std::string language) : object_property_graph_(&class_graph_)
                                            reader((Ontology&)*this)
 {
   is_init_ = false;
+  is_preloaded_ = false;
   class_graph_.setLanguage(language);
   object_property_graph_.setLanguage(language);
   data_property_graph_.setLanguage(language);
@@ -87,6 +89,26 @@ int Ontology::readFromFile(std::string fileName)
 {
   files_.push_back(fileName);
   return reader.readFromFile(fileName);
+}
+
+bool Ontology::preload(std::string fileName)
+{
+  intern_file_ = fileName;
+  if(intern_file_ != "")
+  {
+    if(reader.readFromFile(intern_file_) == NO_ERROR)
+      if(reader.readFromFile(intern_file_, true) == NO_ERROR)
+      {
+        is_preloaded_ = true;
+        std::cout << COLOR_GREEN << "Ontology has been preloaded :" << std::endl <<
+                  "ontoloGenius will NOT consider your default files" << std::endl << COLOR_OFF << std::endl;
+        return true;
+      }
+  }
+
+  std::cout << COLOR_ORANGE << "Nothing to preload :" << std::endl <<
+            "ontoloGenius will consider your default files" << std::endl << COLOR_OFF << std::endl;
+  return false;
 }
 
 bool Ontology::isInit()
