@@ -105,6 +105,7 @@ add_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Checkers/IndividualChecker.cpp
   src/core/ontoGraphs/Ontology.cpp
   src/core/ontoGraphs/OntologyReader.cpp
+  src/core/ontoGraphs/OntologyWriter.cpp
 )
 add_dependencies(ontologenius_ontoGraphs_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_ontoGraphs_lib ${OpenCV_LIBS})

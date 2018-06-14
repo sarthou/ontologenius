@@ -7,12 +7,13 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
 #include "ontoloGenius/core/ontoGraphs/OntologyReader.h"
+#include "ontoloGenius/core/ontoGraphs/OntologyWriter.h"
 
 class Ontology
 {
 public:
   Ontology(std::string language = "en");
-  ~Ontology() {}
+  ~Ontology();
 
   int close();
 
@@ -30,13 +31,12 @@ public:
 
 private:
   OntologyReader reader;
-
-  std::string intern_file_;
-  bool is_preloaded_;
+  OntologyWriter writer;
 
   std::vector<std::string> files_;
   std::vector<std::string> uri_;
 
+  bool is_preloaded_;
   bool is_init_;
 };
 

@@ -13,7 +13,8 @@
 Ontology::Ontology(std::string language) : object_property_graph_(&class_graph_),
                                            data_property_graph_(&class_graph_),
                                            individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
-                                           reader((Ontology&)*this)
+                                           reader((Ontology&)*this),
+                                           writer((Ontology&)*this)
 {
   is_init_ = false;
   is_preloaded_ = false;
@@ -21,6 +22,11 @@ Ontology::Ontology(std::string language) : object_property_graph_(&class_graph_)
   object_property_graph_.setLanguage(language);
   data_property_graph_.setLanguage(language);
   individual_graph_.setLanguage(language);
+}
+
+Ontology::~Ontology()
+{
+  writer.write();
 }
 
 int Ontology::close()
@@ -93,17 +99,18 @@ int Ontology::readFromFile(std::string fileName)
 
 bool Ontology::preload(std::string fileName)
 {
-  intern_file_ = fileName;
-  if(intern_file_ != "")
+  writer.setFileName(fileName);
+  if(fileName != "")
   {
-    if(reader.readFromFile(intern_file_) == NO_ERROR)
-      if(reader.readFromFile(intern_file_, true) == NO_ERROR)
-      {
-        is_preloaded_ = true;
-        std::cout << COLOR_GREEN << "Ontology has been preloaded :" << std::endl <<
-                  "ontoloGenius will NOT consider your default files" << std::endl << COLOR_OFF << std::endl;
-        return true;
-      }
+    if(reader.readFromFile(fileName) == NO_ERROR)
+      if(reader.readFromFile(fileName, true) == NO_ERROR)
+        if(reader.empty() == false)
+        {
+          is_preloaded_ = true;
+          std::cout << COLOR_GREEN << "Ontology has been preloaded :" << std::endl <<
+                    "ontoloGenius will NOT consider your default files" << std::endl << COLOR_OFF << std::endl;
+          return true;
+        }
   }
 
   std::cout << COLOR_ORANGE << "Nothing to preload :" << std::endl <<
