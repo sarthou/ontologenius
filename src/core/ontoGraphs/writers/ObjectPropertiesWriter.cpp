@@ -21,12 +21,59 @@ void ObjectPropertiesWriter::writeProperty(ObjectPropertyBranch_t* branch)
     <owl:ObjectProperty rdf:about=\"ontologenius#" + branch->value_ + "\">\n\r";
   writeString(tmp);
 
+  writeSubPropertyOf(branch);
+  writeDisjointWith(&branch->steady_);
+  writeInverseOf(branch);
+  writeProperties(&branch->steady_);
+  writeRange(branch);
+  writeDomain(branch);
+
+  writeDictionary(&branch->steady_);
+
   tmp = "    </owl:ObjectProperty>\n\r\n\r\n\r\n\r";
   writeString(tmp);
 }
 
-void ObjectPropertiesWriter::writeString(std::string text)
+void ObjectPropertiesWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
 {
-  if(file_ != NULL)
-    fwrite(text.c_str(), sizeof(char), text.size(), file_);
+  for(size_t i = 0; i < branch->steady_.mothers_.size(); i++)
+  {
+    std::string tmp = "        <rdfs:subPropertyOf rdf:resource=\"ontologenius#" +
+                      branch->steady_.mothers_[i]->value_
+                      + "\"/>\n\r";
+    writeString(tmp);
+  }
+}
+
+void ObjectPropertiesWriter::writeInverseOf(ObjectPropertyBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->steady_.inverses_.size(); i++)
+  {
+    std::string tmp = "        <owl:inverseOf rdf:resource=\"ontologenius#" +
+                      branch->steady_.inverses_[i]->value_
+                      + "\"/>\n\r";
+    writeString(tmp);
+  }
+}
+
+void ObjectPropertiesWriter::writeRange(ObjectPropertyBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->steady_.ranges_.size(); i++)
+  {
+    std::string tmp = "        <rdfs:domain rdf:resource=\"ontologenius#" +
+                      branch->steady_.ranges_[i]->value_
+                      + "\"/>\n\r";
+    writeString(tmp);
+  }
+}
+
+void ObjectPropertiesWriter::writeDomain(ObjectPropertyBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->steady_.domains_.size(); i++)
+  {
+    std::string tmp = "        <rdfs:range rdf:resource=\"ontologenius#" +
+                      branch->steady_.domains_[i]->value_
+                      + "\"/>\n\r";
+    writeString(tmp);
+  }
 }

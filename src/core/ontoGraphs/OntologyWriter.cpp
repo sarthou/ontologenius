@@ -5,6 +5,8 @@
 
 #include "ontoloGenius/core/ontoGraphs/writers/ClassWriter.h"
 #include "ontoloGenius/core/ontoGraphs/writers/ObjectPropertiesWriter.h"
+#include "ontoloGenius/core/ontoGraphs/writers/DataPropertiesWriter.h"
+#include "ontoloGenius/core/ontoGraphs/writers/IndividualWriter.h"
 
 #include <iostream>
 
@@ -50,8 +52,12 @@ void OntologyWriter::write(std::string file_name)
   object_properties.write(file_);
 
   writeBanner("Data properties");
+  DataPropertiesWriter data_properties(data_property_graph_);
+  data_properties.write(file_);
 
   writeBanner("Individuals");
+  IndividualWriter individuals(individual_graph_);
+  individuals.write(file_);
 
   writeEnd();
 

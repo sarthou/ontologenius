@@ -21,12 +21,34 @@ void ClassWriter::writeClass(ClassBranch_t* branch)
     <owl:Class rdf:about=\"ontologenius#" + branch->value_ + "\">\n\r";
   writeString(tmp);
 
+  writeSubClassOf(branch);
+
+  writeDisjointWith(branch);
+
+  writeDictionary(&branch->steady_);
+
   tmp = "    </owl:Class>\n\r\n\r\n\r\n\r";
   writeString(tmp);
 }
 
-void ClassWriter::writeString(std::string text)
+void ClassWriter::writeSubClassOf(ClassBranch_t* branch)
 {
-  if(file_ != NULL)
-    fwrite(text.c_str(), sizeof(char), text.size(), file_);
+  for(size_t i = 0; i < branch->steady_.mothers_.size(); i++)
+  {
+    std::string tmp = "        <rdfs:subClassOf rdf:resource=\"ontologenius#" +
+                      branch->steady_.mothers_[i]->value_
+                      + "\"/>\n\r";
+    writeString(tmp);
+  }
+}
+
+void ClassWriter::writeDisjointWith(ClassBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->steady_.disjoints_.size(); i++)
+  {
+    std::string tmp = "        <owl:disjointWith rdf:resource=\"ontologenius#" +
+                      branch->steady_.disjoints_[i]->value_
+                      + "\"/>\n\r";
+    writeString(tmp);
+  }
 }
