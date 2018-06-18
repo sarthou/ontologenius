@@ -22,6 +22,10 @@ void DataPropertiesWriter::writeProperty(DataPropertyBranch_t* branch)
   writeString(tmp);
 
   writeSubPropertyOf(branch);
+  writeDisjointWith(&branch->steady_);
+  writeProperties(&branch->steady_);
+  writeRange(branch);
+  writeDomain(branch);
 
   writeDictionary(&branch->steady_);
 
@@ -35,6 +39,30 @@ void DataPropertiesWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
   {
     std::string tmp = "        <rdfs:subPropertyOf rdf:resource=\"ontologenius#" +
                       branch->steady_.mothers_[i]->value_
+                      + "\"/>\n\r";
+    writeString(tmp);
+  }
+}
+
+void DataPropertiesWriter::writeRange(DataPropertyBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->steady_.ranges_.size(); i++)
+  {
+    std::string tmp = "        <rdfs:domain rdf:resource=\"" +
+                      branch->steady_.ranges_[i].getNs() +
+                      "#" +
+                      branch->steady_.ranges_[i].type_ +
+                      + "\"/>\n\r";
+    writeString(tmp);
+  }
+}
+
+void DataPropertiesWriter::writeDomain(DataPropertyBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->steady_.domains_.size(); i++)
+  {
+    std::string tmp = "        <rdfs:range rdf:resource=\"ontologenius#" +
+                      branch->steady_.domains_[i]->value_
                       + "\"/>\n\r";
     writeString(tmp);
   }

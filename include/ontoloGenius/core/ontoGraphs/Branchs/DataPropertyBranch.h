@@ -6,21 +6,14 @@
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/PropertyBranch.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
-
-struct data_t
-{
-  std::string value_;
-  std::string type_;
-
-  std::string toString() {return( type_ + ":" + value_); }
-};
+#include "ontoloGenius/core/ontoGraphs/Branchs/Data.h"
 
 template <typename T>
 class DataPropertyBranchData_t : public PropertyBranchData_t<T>
 {
 public:
   std::vector<ClassBranch_t*> domains_;
-  std::vector<std::string> ranges_;
+  std::vector<data_t> ranges_;
 };
 
 class DataPropertyBranch_t;

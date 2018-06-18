@@ -55,8 +55,10 @@ void DataPropertyBranch_t::setSteady_domain(ClassBranch_t* domain)
 
 void DataPropertyBranch_t::setSteady_range(std::string range)
 {
-  steady_.ranges_.push_back(range);
-  ranges_.push_back(range);
+  data_t tmp;
+  tmp.type_ = range;
+  steady_.ranges_.push_back(tmp);
+  ranges_.push_back(tmp);
 }
 
 void DataPropertyBranch_t::setSteady_child(DataPropertyBranch_t* child)

@@ -224,7 +224,7 @@ std::set<std::string> DataPropertyGraph::getRange(std::string& value)
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned range_i = 0; range_i < branch->ranges_.size(); range_i++)
-      res.insert(branch->ranges_[range_i]);
+      res.insert(branch->ranges_[range_i].type_);
 
   return res;
 }
