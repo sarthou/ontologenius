@@ -48,7 +48,7 @@ void DataPropertiesWriter::writeRange(DataPropertyBranch_t* branch)
 {
   for(size_t i = 0; i < branch->steady_.ranges_.size(); i++)
   {
-    std::string tmp = "        <rdfs:domain rdf:resource=\"" +
+    std::string tmp = "        <rdfs:range rdf:resource=\"" +
                       branch->steady_.ranges_[i].getNs() +
                       "#" +
                       branch->steady_.ranges_[i].type_ +
@@ -61,7 +61,7 @@ void DataPropertiesWriter::writeDomain(DataPropertyBranch_t* branch)
 {
   for(size_t i = 0; i < branch->steady_.domains_.size(); i++)
   {
-    std::string tmp = "        <rdfs:range rdf:resource=\"ontologenius#" +
+    std::string tmp = "        <rdfs:domain rdf:resource=\"ontologenius#" +
                       branch->steady_.domains_[i]->value_
                       + "\"/>\n\r";
     writeString(tmp);

@@ -4,6 +4,7 @@
 #include "ontoloGenius/core/ontoGraphs/writers/NodeWriter.h"
 
 #include <string>
+#include <vector>
 
 class ClassGraph;
 class ClassBranch_t;
@@ -15,6 +16,7 @@ public:
   ~ClassWriter() {};
 
   void write(FILE* file);
+  void writeGeneralAxioms(FILE* file);
 
 private:
   ClassGraph* class_graph_;
@@ -22,6 +24,9 @@ private:
   void writeClass(ClassBranch_t* branch);
   void writeSubClassOf(ClassBranch_t* branch);
   void writeDisjointWith(ClassBranch_t* branch);
+  void writeDisjointWith(std::vector<ClassBranch_t*>& classes);
+  void getDisjoints(ClassBranch_t* class_branch, std::vector<std::string>& disjoints_current);
+  void removeDifferents(std::vector<std::string>& disjoints_current, std::vector<std::string>& disjoints_class);
 };
 
 #endif

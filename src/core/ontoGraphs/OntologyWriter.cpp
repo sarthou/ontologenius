@@ -60,6 +60,7 @@ void OntologyWriter::write(std::string file_name)
   individuals.write(file_);
 
   writeBanner("General axioms");
+  classes.writeGeneralAxioms(file_);
   individuals.writeGeneralAxioms(file_);
 
   writeEnd();

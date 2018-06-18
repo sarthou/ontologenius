@@ -35,6 +35,7 @@ void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
   writeType(branch);
   writeObjectProperties(branch);
   writeDataProperties(branch);
+  writeSameAs(branch);
 
   writeDictionary(&branch->steady_);
 
@@ -104,7 +105,6 @@ void IndividualWriter::writeDistincts(std::vector<IndividualBranch_t*>& individu
         <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#AllDifferent\"/>\n\r";
 
   std::string end = "    </rdf:Description>\n\r";
-  std::string tmp;
 
   for(size_t i = 0; i < individuals.size(); i++)
   {
@@ -112,6 +112,7 @@ void IndividualWriter::writeDistincts(std::vector<IndividualBranch_t*>& individu
     {
       if(std::find(distincts_done.begin(), distincts_done.end(), individuals[i]->value_) == distincts_done.end())
       {
+        std::string tmp;
         std::vector<std::string> distincts_current;
         getDistincts(individuals[i], distincts_current);
 
