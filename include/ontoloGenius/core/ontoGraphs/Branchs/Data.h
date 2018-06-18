@@ -17,7 +17,7 @@ struct data_t
     else if(type_ == "Literal")
       return "http://www.w3.org/2000/01/rdf-schema";
     else
-      return "http://www.w3.org/2002/07/xsd";
+      return "http://www.w3.org/2002/07/xsd"; //http://www.w3.org/2001/XMLSchema
   }
 
   std::string toString() {return( type_ + ":" + value_); }

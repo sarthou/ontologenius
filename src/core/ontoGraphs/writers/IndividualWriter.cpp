@@ -22,6 +22,8 @@ void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
   writeString(tmp);
 
   writeType(branch);
+  writeObjectProperties(branch);
+  writeDataProperties(branch);
 
   writeDictionary(&branch->steady_);
 
@@ -35,6 +37,49 @@ void IndividualWriter::writeType(IndividualBranch_t* branch)
   {
     std::string tmp = "        <rdf:type rdf:resource=\"ontologenius#" +
                       branch->steady_.is_a_[i]->value_
+                      + "\"/>\n\r";
+    writeString(tmp);
+  }
+}
+
+void IndividualWriter::writeObjectProperties(IndividualBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->steady_.object_properties_name_.size(); i++)
+  {
+    std::string tmp = "        <ontologenius:" +
+                      branch->steady_.object_properties_name_[i]->value_ +
+                      " rdf:resource=\"ontologenius#" +
+                      branch->steady_.object_properties_on_[i]->value_ +
+                      "\"/>\n\r";
+    writeString(tmp);
+  }
+}
+
+void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->steady_.data_properties_name_.size(); i++)
+  {
+    std::string tmp = "        <ontologenius:" +
+                      branch->steady_.data_properties_name_[i]->value_ +
+                      " rdf:datatype=\"" +
+                      branch->steady_.data_properties_data_[i].getNs() +
+                      "#" +
+                      branch->steady_.data_properties_data_[i].type_ +
+                      "\">" +
+                      branch->steady_.data_properties_data_[i].value_ +
+                      "</ontologenius:" +
+                      branch->steady_.data_properties_name_[i]->value_ +
+                      ">\n\r";
+    writeString(tmp);
+  }
+}
+
+void IndividualWriter::writeSameAs(IndividualBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->steady_.same_as_.size(); i++)
+  {
+    std::string tmp = "        <owl:sameAs rdf:resource=\"ontologenius#" +
+                      branch->steady_.same_as_[i]->value_
                       + "\"/>\n\r";
     writeString(tmp);
   }
