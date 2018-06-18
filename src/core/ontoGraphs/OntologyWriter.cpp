@@ -59,6 +59,9 @@ void OntologyWriter::write(std::string file_name)
   IndividualWriter individuals(individual_graph_);
   individuals.write(file_);
 
+  writeBanner("General axioms");
+  individuals.writeGeneralAxioms(file_);
+
   writeEnd();
 
   std::cout << COLOR_GREEN << "ontology loaded in : " << COLOR_OFF << file_name_ << std::endl;

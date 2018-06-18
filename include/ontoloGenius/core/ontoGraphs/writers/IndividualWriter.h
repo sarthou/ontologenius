@@ -4,6 +4,7 @@
 #include "ontoloGenius/core/ontoGraphs/writers/NodeWriter.h"
 
 #include <string>
+#include <vector>
 
 class IndividualGraph;
 class IndividualBranch_t;
@@ -15,6 +16,7 @@ public:
   ~IndividualWriter() {};
 
   void write(FILE* file);
+  void writeGeneralAxioms(FILE* file);
 
 private:
   IndividualGraph* individual_graph_;
@@ -24,6 +26,8 @@ private:
   void writeObjectProperties(IndividualBranch_t* branch);
   void writeDataProperties(IndividualBranch_t* branch);
   void writeSameAs(IndividualBranch_t* branch);
+  void writeDistincts(std::vector<IndividualBranch_t*>& individuals);
+  void getDistincts(IndividualBranch_t* individual, std::vector<std::string>& distincts_current);
 };
 
 #endif
