@@ -100,7 +100,7 @@ int Ontology::readFromFile(std::string fileName)
 bool Ontology::preload(std::string fileName)
 {
   writer.setFileName(fileName);
-  if(fileName != "")
+  if(fileName != "none")
   {
     if(reader.readFromFile(fileName) == NO_ERROR)
       if(reader.readFromFile(fileName, true) == NO_ERROR)
