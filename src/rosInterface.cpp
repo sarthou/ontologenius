@@ -596,7 +596,11 @@ int main(int argc, char** argv)
   error.printStatus();
 #endif
 
-  ros::spin();
+  while(ros::ok())
+  {
+    ros::spinOnce();
+    onto.run();
+  }
 
   ROS_DEBUG("KILL ontoloGenius");
 

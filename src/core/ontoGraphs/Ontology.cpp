@@ -132,3 +132,8 @@ void Ontology::setLanguage(std::string language)
   data_property_graph_.setLanguage(language);
   individual_graph_.setLanguage(language);
 }
+
+void Ontology::run()
+{
+
+}

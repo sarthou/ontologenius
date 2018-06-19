@@ -24,6 +24,8 @@ public:
   bool isInit();
   void setLanguage(std::string language);
 
+  void run();
+
   ClassGraph class_graph_;
   ObjectPropertyGraph object_property_graph_;
   DataPropertyGraph data_property_graph_;
