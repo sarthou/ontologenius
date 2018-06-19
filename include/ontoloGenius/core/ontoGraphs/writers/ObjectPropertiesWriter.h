@@ -24,6 +24,7 @@ private:
   void writeInverseOf(ObjectPropertyBranch_t* branch);
   void writeRange(ObjectPropertyBranch_t* branch);
   void writeDomain(ObjectPropertyBranch_t* branch);
+  void writeChain(ObjectPropertyBranch_t* branch);
 };
 
 #endif

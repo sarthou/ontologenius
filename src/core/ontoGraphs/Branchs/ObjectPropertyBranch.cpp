@@ -78,10 +78,14 @@ void ObjectPropertyBranch_t::setSteady_range(ClassBranch_t* range)
   ranges_.push_back(range);
 }
 
-void ObjectPropertyBranch_t::setSteady_chain(std::vector<ObjectPropertyBranch_t*> chain)
+void ObjectPropertyBranch_t::set_chain(std::vector<ObjectPropertyBranch_t*> chain)
 {
-  steady_.chains_.push_back(chain);
   chains_.push_back(chain);
+}
+
+void ObjectPropertyBranch_t::setSteady_chain(std::vector<std::string> chain)
+{
+  steady_.str_chains_.push_back(chain);
 }
 
 void ObjectPropertyBranch_t::setSteady_child(ObjectPropertyBranch_t* child)

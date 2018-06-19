@@ -213,7 +213,8 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     }
 
     chain.push_back(me);
-    first->setSteady_chain(chain);
+    first->set_chain(chain);
+    me->setSteady_chain(property_vectors.chains_[chain_i]);
   }
 
 }

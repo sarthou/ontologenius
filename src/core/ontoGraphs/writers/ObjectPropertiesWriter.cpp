@@ -27,6 +27,7 @@ void ObjectPropertiesWriter::writeProperty(ObjectPropertyBranch_t* branch)
   writeProperties(&branch->steady_);
   writeRange(branch);
   writeDomain(branch);
+  writeChain(branch);
 
   writeDictionary(&branch->steady_);
 
@@ -74,6 +75,24 @@ void ObjectPropertiesWriter::writeDomain(ObjectPropertyBranch_t* branch)
     std::string tmp = "        <rdfs:range rdf:resource=\"ontologenius#" +
                       branch->steady_.domains_[i]->value_
                       + "\"/>\n\r";
+    writeString(tmp);
+  }
+}
+
+void ObjectPropertiesWriter::writeChain(ObjectPropertyBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->steady_.str_chains_.size(); i++)
+  {
+    std::string tmp = "        <owl:propertyChainAxiom rdf:parseType=\"Collection\">\n\r";
+
+    for(size_t j = 0; j < branch->steady_.str_chains_[i].size(); j++)
+    {
+      tmp += "            <rdf:Description rdf:about=\"ontologenius#" +
+              branch->steady_.str_chains_[i][j] +
+              "\"/>\n\r";
+    }
+
+    tmp += "        </owl:propertyChainAxiom>\n\r";
     writeString(tmp);
   }
 }

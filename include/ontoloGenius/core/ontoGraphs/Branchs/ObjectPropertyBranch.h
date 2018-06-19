@@ -15,6 +15,7 @@ public:
   std::vector<ClassBranch_t*> domains_;
   std::vector<ClassBranch_t*> ranges_;
   std::vector<std::vector<T*>> chains_;
+  std::vector<std::vector<std::string>> str_chains_;
 };
 
 class ObjectPropertyBranch_t;
@@ -39,7 +40,8 @@ public:
   void setSteady_inverse(ObjectPropertyBranch_t* inverse);
   void setSteady_domain(ClassBranch_t* domain);
   void setSteady_range(ClassBranch_t* range);
-  void setSteady_chain(std::vector<ObjectPropertyBranch_t*> chain);
+  void set_chain(std::vector<ObjectPropertyBranch_t*> chain);
+  void setSteady_chain(std::vector<std::string> chain);
   void setSteady_child(ObjectPropertyBranch_t* child);
   void setSteady_mother(ObjectPropertyBranch_t* mother);
   void setSteady_dictionary(std::string lang, std::string word);
