@@ -1,12 +1,12 @@
-#include "ontoloGenius/core/ontoGraphs/OntologyWriter.h"
+#include "ontoloGenius/core/ontologyIO/OntologyWriter.h"
+
+#include "ontoloGenius/core/ontologyIO/writers/ClassWriter.h"
+#include "ontoloGenius/core/ontologyIO/writers/ObjectPropertiesWriter.h"
+#include "ontoloGenius/core/ontologyIO/writers/DataPropertiesWriter.h"
+#include "ontoloGenius/core/ontologyIO/writers/IndividualWriter.h"
 
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 #include "ontoloGenius/core/utility/color.h"
-
-#include "ontoloGenius/core/ontoGraphs/writers/ClassWriter.h"
-#include "ontoloGenius/core/ontoGraphs/writers/ObjectPropertiesWriter.h"
-#include "ontoloGenius/core/ontoGraphs/writers/DataPropertiesWriter.h"
-#include "ontoloGenius/core/ontoGraphs/writers/IndividualWriter.h"
 
 #include <iostream>
 

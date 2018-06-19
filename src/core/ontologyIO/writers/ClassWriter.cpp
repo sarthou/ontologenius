@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontoGraphs/writers/ClassWriter.h"
+#include "ontoloGenius/core/ontologyIO/writers/ClassWriter.h"
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 

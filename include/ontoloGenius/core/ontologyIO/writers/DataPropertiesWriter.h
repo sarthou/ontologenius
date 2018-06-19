@@ -1,7 +1,7 @@
 #ifndef DATAPROPERTIESWRITER_H
 #define DATAPROPERTIESWRITER_H
 
-#include "ontoloGenius/core/ontoGraphs/writers/PropertiesWriter.h"
+#include "ontoloGenius/core/ontologyIO/writers/PropertiesWriter.h"
 
 #include <string>
 

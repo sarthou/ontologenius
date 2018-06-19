@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontoGraphs/writers/NodeWriter.h"
+#include "ontoloGenius/core/ontologyIO/writers/NodeWriter.h"
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/ValuedNode.h"
 

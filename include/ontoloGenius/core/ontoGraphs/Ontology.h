@@ -6,8 +6,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
-#include "ontoloGenius/core/ontoGraphs/OntologyReader.h"
-#include "ontoloGenius/core/ontoGraphs/OntologyWriter.h"
+#include "ontoloGenius/core/ontologyIO/OntologyReader.h"
+#include "ontoloGenius/core/ontologyIO/OntologyWriter.h"
 
 class Ontology
 {

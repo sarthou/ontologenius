@@ -1,7 +1,7 @@
 #ifndef CLASSWRITER_H
 #define CLASSWRITER_H
 
-#include "ontoloGenius/core/ontoGraphs/writers/NodeWriter.h"
+#include "ontoloGenius/core/ontologyIO/writers/NodeWriter.h"
 
 #include <string>
 #include <vector>

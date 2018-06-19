@@ -104,13 +104,13 @@ add_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Checkers/DataPropertyChecker.cpp
   src/core/ontoGraphs/Checkers/IndividualChecker.cpp
   src/core/ontoGraphs/Ontology.cpp
-  src/core/ontoGraphs/OntologyReader.cpp
-  src/core/ontoGraphs/OntologyWriter.cpp
-  src/core/ontoGraphs/writers/NodeWriter.cpp
-  src/core/ontoGraphs/writers/ClassWriter.cpp
-  src/core/ontoGraphs/writers/ObjectPropertiesWriter.cpp
-  src/core/ontoGraphs/writers/DataPropertiesWriter.cpp
-  src/core/ontoGraphs/writers/IndividualWriter.cpp
+  src/core/ontologyIO/OntologyReader.cpp
+  src/core/ontologyIO/OntologyWriter.cpp
+  src/core/ontologyIO/writers/NodeWriter.cpp
+  src/core/ontologyIO/writers/ClassWriter.cpp
+  src/core/ontologyIO/writers/ObjectPropertiesWriter.cpp
+  src/core/ontologyIO/writers/DataPropertiesWriter.cpp
+  src/core/ontologyIO/writers/IndividualWriter.cpp
 )
 add_dependencies(ontologenius_ontoGraphs_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_ontoGraphs_lib ${OpenCV_LIBS})

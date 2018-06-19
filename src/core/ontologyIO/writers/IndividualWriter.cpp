@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontoGraphs/writers/IndividualWriter.h"
+#include "ontoloGenius/core/ontologyIO/writers/IndividualWriter.h"
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 

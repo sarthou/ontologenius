@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontoGraphs/writers/ObjectPropertiesWriter.h"
+#include "ontoloGenius/core/ontologyIO/writers/ObjectPropertiesWriter.h"
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 
