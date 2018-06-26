@@ -12,25 +12,7 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
-class IndividualBranch_t : public ValuedNode
-{
-public:
-  std::vector<ClassBranch_t*> is_a_;
-
-  std::vector<ObjectPropertyBranch_t*> object_properties_name_;
-  std::vector<IndividualBranch_t*> object_properties_on_;
-
-  std::vector<DataPropertyBranch_t*> data_properties_name_;
-  std::vector<data_t> data_properties_data_;
-
-  std::vector<IndividualBranch_t*> same_as_;
-  std::vector<IndividualBranch_t*> distinct_;
-  std::map<std::string, std::vector<std::string>> dictionary_;
-
-  bool mark;
-
-  IndividualBranch_t(std::string value) : ValuedNode(value) {mark = false; }
-};
+#include "ontoloGenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 
 struct IndividualVectors_t
 {
@@ -62,26 +44,26 @@ public:
   void add(std::string value, IndividualVectors_t& individual_vector);
   void add(std::vector<std::string>& distinct_);
 
-  std::set<std::string> getSame(std::string individual);          //C1
-  std::set<std::string> getDistincts(std::string individual);     //C2
-  std::set<std::string> getRelationFrom(std::string individual);  //C3
-  std::set<std::string> getRelatedFrom(std::string property);     //C3
-  std::set<std::string> getRelationOn(std::string individual);    //C4
-  std::set<std::string> getRelatedOn(std::string property);       //C3
-  std::set<std::string> getRelationWith(std::string individual);  //C3
-  std::set<std::string> getRelatedWith(std::string individual);   //C3
-  std::set<std::string> getFrom(std::string param);
-  std::set<std::string> getFrom(std::string individual, std::string property);
-  std::set<std::string> getOn(std::string param);
-  std::set<std::string> getOn(std::string individual, std::string property);
-  std::set<std::string> getWith(std::string param);
-  std::set<std::string> getWith(std::string first_individual, std::string second_individual);
-  std::set<std::string> getUp(IndividualBranch_t* indiv);
-  std::set<std::string> getUp(std::string individual);            //C3
-  std::set<std::string> select(std::set<std::string> on, std::string class_selector);
-  std::string getName(std::string& value);
-  std::set<std::string> find(std::string& value);
-  std::set<std::string> getType(std::string class_selector);
+  std::set<std::string> getSame(const std::string& individual);          //C1
+  std::set<std::string> getDistincts(const std::string& individual);     //C2
+  std::set<std::string> getRelationFrom(const std::string& individual, int depth = -1);  //C3
+  std::set<std::string> getRelatedFrom(const std::string& property);     //C3
+  std::set<std::string> getRelationOn(const std::string& individual, int depth = -1);    //C4
+  std::set<std::string> getRelatedOn(const std::string& property);       //C3
+  std::set<std::string> getRelationWith(const std::string& individual);  //C3
+  std::set<std::string> getRelatedWith(const std::string& individual);   //C3
+  std::set<std::string> getFrom(const std::string& param);
+  std::set<std::string> getFrom(const std::string& individual, const std::string& property);
+  std::set<std::string> getOn(const std::string& param);
+  std::set<std::string> getOn(const std::string& individual, const std::string& property);
+  std::set<std::string> getWith(const std::string& param, int depth = -1);
+  std::set<std::string> getWith(const std::string& first_individual, const std::string& second_individual, int depth = -1);
+  std::set<std::string> getUp(IndividualBranch_t* indiv, int depth = -1, unsigned int current_depth = 0);
+  std::set<std::string> getUp(const std::string& individual, int depth = -1);            //C3
+  std::set<std::string> select(const std::set<std::string>& on, const std::string& class_selector);
+  std::string getName(const std::string& value);
+  std::set<std::string> find(const std::string& value);
+  std::set<std::string> getType(const std::string& class_selector);
 
 private:
   ClassGraph* class_graph_;

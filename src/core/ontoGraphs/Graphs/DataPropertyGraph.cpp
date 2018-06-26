@@ -48,7 +48,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
       {
         DataPropertyBranch_t* my_mother = new struct DataPropertyBranch_t(property_vectors.mothers_[mothers_i]);
         my_mother->childs_.push_back(me);
-        me->mothers_.push_back(my_mother);
+        me->setSteady_mother(my_mother);
         tmp_mothers_.push_back(my_mother);
       }
     }
@@ -78,7 +78,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
     if(!i_find_my_disjoint)
     {
       DataPropertyBranch_t* my_disjoint = new struct DataPropertyBranch_t(property_vectors.disjoints_[disjoints_i]);
-      me->disjoints_.push_back(my_disjoint);
+      me->setSteady_disjoint(my_disjoint);
       my_disjoint->disjoints_.push_back(me);
       tmp_mothers_.push_back(my_disjoint); //I put my disjoint as tmp_mother
     }
@@ -109,7 +109,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
       for(unsigned int root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
         if(property_vectors.domains_[domains_i] == class_graph_->roots_[root_i]->value_)
         {
-          me->domains_.push_back(class_graph_->roots_[root_i]);
+          me->setSteady_domain(class_graph_->roots_[root_i]);
           i_find_my_domain = true;
         }
     }
@@ -120,13 +120,13 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   **********************/
   //for all my ranges
   for(unsigned int ranges_i = 0; ranges_i < property_vectors.ranges_.size(); ranges_i++)
-    me->ranges_.push_back(property_vectors.ranges_[ranges_i]);
+    me->setSteady_range(property_vectors.ranges_[ranges_i]);
 
   /**********************
   ** Language and properties
   **********************/
-  me->properties_ = property_vectors.properties_;
-  me->dictionary_ = property_vectors.dictionary_;
+  me->setSteady_properties(property_vectors.properties_);
+  me->setSteady_dictionary(property_vectors.dictionary_);
   if(me->dictionary_.find("en") == me->dictionary_.end())
     me->dictionary_["en"].push_back(me->value_);
 }
@@ -174,7 +174,7 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
         if(!i_find_my_disjoint)
         {
           DataPropertyBranch_t* my_disjoint = new struct DataPropertyBranch_t(disjoints[disjoints_j]);
-          me->disjoints_.push_back(my_disjoint);
+          me->setSteady_disjoint(my_disjoint);
           tmp_mothers_.push_back(my_disjoint); //I put my disjoint as tmp_mother
         }
       }
@@ -183,7 +183,7 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
 }
 
 
-std::set<std::string> DataPropertyGraph::getDisjoint(std::string& value)
+std::set<std::string> DataPropertyGraph::getDisjoint(const std::string& value)
 {
   std::set<std::string> res;
 
@@ -200,7 +200,7 @@ std::set<std::string> DataPropertyGraph::getDisjoint(std::string& value)
   return res;
 }
 
-std::set<std::string> DataPropertyGraph::getDomain(std::string& value)
+std::set<std::string> DataPropertyGraph::getDomain(const std::string& value)
 {
   std::set<std::string> res;
 
@@ -217,19 +217,19 @@ std::set<std::string> DataPropertyGraph::getDomain(std::string& value)
   return res;
 }
 
-std::set<std::string> DataPropertyGraph::getRange(std::string& value)
+std::set<std::string> DataPropertyGraph::getRange(const std::string& value)
 {
   std::set<std::string> res;
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned range_i = 0; range_i < branch->ranges_.size(); range_i++)
-      res.insert(branch->ranges_[range_i]);
+      res.insert(branch->ranges_[range_i].type_);
 
   return res;
 }
 
-std::set<std::string> DataPropertyGraph::select(std::set<std::string> on, std::string selector)
+std::set<std::string> DataPropertyGraph::select(const std::set<std::string>& on, const std::string& selector)
 {
   std::set<std::string> res;
   for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)

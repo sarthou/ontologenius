@@ -6,21 +6,25 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
-#include "ontoloGenius/core/ontoGraphs/OntologyReader.h"
+#include "ontoloGenius/core/ontologyIO/OntologyReader.h"
+#include "ontoloGenius/core/ontologyIO/OntologyWriter.h"
 
 class Ontology
 {
 public:
   Ontology(std::string language = "en");
-  ~Ontology() {}
+  ~Ontology();
 
   int close();
 
   int readFromUri(std::string uri);
   int readFromFile(std::string fileName);
+  bool preload(std::string fileName);
 
   bool isInit();
   void setLanguage(std::string language);
+
+  void run();
 
   ClassGraph class_graph_;
   ObjectPropertyGraph object_property_graph_;
@@ -29,9 +33,12 @@ public:
 
 private:
   OntologyReader reader;
+  OntologyWriter writer;
+
   std::vector<std::string> files_;
   std::vector<std::string> uri_;
 
+  bool is_preloaded_;
   bool is_init_;
 };
 

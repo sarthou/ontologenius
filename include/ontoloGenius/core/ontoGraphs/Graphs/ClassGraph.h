@@ -1,3 +1,6 @@
+#ifndef CLASSGRAPH_H
+#define CLASSGRAPH_H
+
 #include <string>
 #include <vector>
 #include <map>
@@ -5,17 +8,7 @@
 #include <stdint.h>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
-
-#ifndef CLASSGRAPH_H
-#define CLASSGRAPH_H
-
-class ClassBranch_t : public Branch_t<ClassBranch_t>
-{
-public:
-  std::vector<ClassBranch_t*> disjoints_;
-
-  ClassBranch_t(std::string value) : Branch_t(value) {};
-};
+#include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
 struct ObjectVectors_t
 {
@@ -42,8 +35,8 @@ public:
   void add(std::string value, ObjectVectors_t& object_vector);
   void add(std::vector<std::string>& disjoints);
 
-  std::set<std::string> getDisjoint(std::string& value);
-  std::set<std::string> select(std::set<std::string> on, std::string class_selector);
+  std::set<std::string> getDisjoint(const std::string& value);
+  std::set<std::string> select(const std::set<std::string>& on, const std::string& class_selector);
 
 private:
   void isMyDisjoint(ClassBranch_t* me, std::string disjoint, std::vector<ClassBranch_t*>& vect, bool& find, bool all = true)
@@ -54,7 +47,7 @@ private:
     for(unsigned int i = 0; i < vect.size(); i++)
       if(disjoint == vect[i]->value_)
       {
-        me->disjoints_.push_back(vect[i]);
+        me->setSteady_disjoint(vect[i]);
         if(all)
           vect[i]->disjoints_.push_back(me);
         find = true;

@@ -1,3 +1,6 @@
+#ifndef OBJECTROPERTYGRAPH_H
+#define OBJECTROPERTYGRAPH_H
+
 #include <string>
 #include <vector>
 #include <set>
@@ -7,42 +10,7 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
-#ifndef OBJECTROPERTYGRAPH_H
-#define OBJECTROPERTYGRAPH_H
-
-struct ObjectPropertyBranch_t;
-
-struct Properties_t
-{
-  bool functional_property_;
-  bool inverse_functional_property_;
-  bool transitive_property_;
-  bool symetric_property_;
-  bool antisymetric_property_;
-  bool reflexive_property_;
-  bool irreflexive_property_;
-
-  Properties_t() : functional_property_(false),
-                    inverse_functional_property_(false),
-                    transitive_property_(false),
-                    symetric_property_(false),
-                    antisymetric_property_(false),
-                    reflexive_property_(false),
-                    irreflexive_property_(false) {};
-};
-
-class ObjectPropertyBranch_t : public Branch_t<ObjectPropertyBranch_t>
-{
-public:
-  std::vector<ObjectPropertyBranch_t*> disjoints_;
-  std::vector<ObjectPropertyBranch_t*> inverses_;
-  std::vector<ClassBranch_t*> domains_;
-  std::vector<ClassBranch_t*> ranges_;
-  std::vector<std::vector<ObjectPropertyBranch_t*>> chains_;
-  Properties_t properties_;
-
-  ObjectPropertyBranch_t(std::string value) : Branch_t(value) {};
-};
+#include "ontoloGenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 
 struct ObjectPropertyVectors_t
 {
@@ -70,11 +38,11 @@ public:
   void add(std::string value, ObjectPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 
-  std::set<std::string> getDisjoint(std::string& value);
-  std::set<std::string> getInverse(std::string& value);
-  std::set<std::string> getDomain(std::string& value);
-  std::set<std::string> getRange(std::string& value);
-  std::set<std::string> select(std::set<std::string> on, std::string selector);
+  std::set<std::string> getDisjoint(const std::string& value);
+  std::set<std::string> getInverse(const std::string& value);
+  std::set<std::string> getDomain(const std::string& value);
+  std::set<std::string> getRange(const std::string& value);
+  std::set<std::string> select(const std::set<std::string>& on, const std::string& selector);
 
 private:
   ClassGraph* class_graph_;
@@ -87,7 +55,7 @@ private:
     for(unsigned int i = 0; i < vect.size(); i++)
       if(disjoint == vect[i]->value_)
       {
-        me->disjoints_.push_back(vect[i]);
+        me->setSteady_disjoint(vect[i]);
         if(all)
           vect[i]->disjoints_.push_back(me);
         find = true;
@@ -103,7 +71,7 @@ private:
     for(unsigned int i = 0; i < vect.size(); i++)
       if(inverse == vect[i]->value_)
       {
-        me->inverses_.push_back(vect[i]);
+        me->setSteady_inverse(vect[i]);
         if(all)
           vect[i]->inverses_.push_back(me);
         find = true;
@@ -119,7 +87,7 @@ private:
     for(unsigned int i = 0; i < vect.size(); i++)
       if(domain == vect[i]->value_)
       {
-        me->domains_.push_back(vect[i]);
+        me->setSteady_domain(vect[i]);
         find = true;
         break;
       }
@@ -133,7 +101,7 @@ private:
     for(unsigned int i = 0; i < vect.size(); i++)
       if(range == vect[i]->value_)
       {
-        me->ranges_.push_back(vect[i]);
+        me->setSteady_range(vect[i]);
         find = true;
         break;
       }

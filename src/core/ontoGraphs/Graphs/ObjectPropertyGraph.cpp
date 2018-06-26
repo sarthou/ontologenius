@@ -46,7 +46,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
       {
         ObjectPropertyBranch_t* my_mother = new struct ObjectPropertyBranch_t(property_vectors.mothers_[mothers_i]);
         my_mother->childs_.push_back(me);
-        me->mothers_.push_back(my_mother);
+        me->setSteady_mother(my_mother);
         tmp_mothers_.push_back(my_mother);
       }
     }
@@ -76,7 +76,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     if(!i_find_my_disjoint)
     {
       ObjectPropertyBranch_t* my_disjoint = new struct ObjectPropertyBranch_t(property_vectors.disjoints_[disjoints_i]);
-      me->disjoints_.push_back(my_disjoint);
+      me->setSteady_disjoint(my_disjoint);
       my_disjoint->disjoints_.push_back(me);
       tmp_mothers_.push_back(my_disjoint); //I put my disjoint as tmp_mother
     }
@@ -103,7 +103,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     if(!i_find_my_inverse)
     {
       ObjectPropertyBranch_t* my_inverse = new struct ObjectPropertyBranch_t(property_vectors.inverses_[inverses_i]);
-      me->inverses_.push_back(my_inverse);
+      me->setSteady_inverse(my_inverse);
       my_inverse->inverses_.push_back(me);
       tmp_mothers_.push_back(my_inverse); //I put my inverse as tmp_mother
     }
@@ -134,7 +134,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
       for(unsigned int root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
         if(property_vectors.domains_[domains_i] == class_graph_->roots_[root_i]->value_)
         {
-          me->domains_.push_back(class_graph_->roots_[root_i]);
+          me->setSteady_domain(class_graph_->roots_[root_i]);
           i_find_my_domain = true;
         }
     }
@@ -165,7 +165,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
       for(unsigned int root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
         if(property_vectors.ranges_[ranges_i] == class_graph_->roots_[root_i]->value_)
         {
-          me->ranges_.push_back(class_graph_->roots_[root_i]);
+          me->setSteady_range(class_graph_->roots_[root_i]);
           i_find_my_range = true;
         }
     }
@@ -174,8 +174,8 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   /**********************
   ** Language and properties
   **********************/
-  me->properties_ = property_vectors.properties_;
-  me->dictionary_ = property_vectors.dictionary_;
+  me->setSteady_properties(property_vectors.properties_);
+  me->setSteady_dictionary(property_vectors.dictionary_);
   if(me->dictionary_.find("en") == me->dictionary_.end())
     me->dictionary_["en"].push_back(me->value_);
 
@@ -185,7 +185,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   for(size_t chain_i = 0; chain_i < property_vectors.chains_.size(); chain_i++)
   {
     std::vector<ObjectPropertyBranch_t*> chain;
-    ObjectPropertyBranch_t* fisrt = nullptr;
+    ObjectPropertyBranch_t* first = nullptr;
 
     for(size_t i = 0; i < property_vectors.chains_[chain_i].size(); i++)
     {
@@ -206,14 +206,15 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
         tmp_mothers_.push_back(next);
       }
 
-      if(fisrt == nullptr)
-        fisrt = next;
+      if(first == nullptr)
+        first = next;
       else
         chain.push_back(next);
     }
 
     chain.push_back(me);
-    fisrt->chains_.push_back(chain);
+    first->set_chain(chain);
+    me->setSteady_chain(property_vectors.chains_[chain_i]);
   }
 
 }
@@ -261,7 +262,7 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
         if(!i_find_my_disjoint)
         {
           ObjectPropertyBranch_t* my_disjoint = new struct ObjectPropertyBranch_t(disjoints[disjoints_j]);
-          me->disjoints_.push_back(my_disjoint);
+          me->setSteady_disjoint(my_disjoint);
           tmp_mothers_.push_back(my_disjoint); //I put my disjoint as tmp_mother
         }
       }
@@ -270,7 +271,7 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
 }
 
 
-std::set<std::string> ObjectPropertyGraph::getDisjoint(std::string& value)
+std::set<std::string> ObjectPropertyGraph::getDisjoint(const std::string& value)
 {
   std::set<std::string> res;
 
@@ -287,7 +288,7 @@ std::set<std::string> ObjectPropertyGraph::getDisjoint(std::string& value)
   return res;
 }
 
-std::set<std::string> ObjectPropertyGraph::getInverse(std::string& value)
+std::set<std::string> ObjectPropertyGraph::getInverse(const std::string& value)
 {
   std::set<std::string> res;
 
@@ -304,7 +305,7 @@ std::set<std::string> ObjectPropertyGraph::getInverse(std::string& value)
   return res;
 }
 
-std::set<std::string> ObjectPropertyGraph::getDomain(std::string& value)
+std::set<std::string> ObjectPropertyGraph::getDomain(const std::string& value)
 {
   std::set<std::string> res;
 
@@ -321,7 +322,7 @@ std::set<std::string> ObjectPropertyGraph::getDomain(std::string& value)
   return res;
 }
 
-std::set<std::string> ObjectPropertyGraph::getRange(std::string& value)
+std::set<std::string> ObjectPropertyGraph::getRange(const std::string& value)
 {
   std::set<std::string> res;
 
@@ -338,7 +339,7 @@ std::set<std::string> ObjectPropertyGraph::getRange(std::string& value)
   return res;
 }
 
-std::set<std::string> ObjectPropertyGraph::select(std::set<std::string> on, std::string selector)
+std::set<std::string> ObjectPropertyGraph::select(const std::set<std::string>& on, const std::string& selector)
 {
   std::set<std::string> res;
   for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)

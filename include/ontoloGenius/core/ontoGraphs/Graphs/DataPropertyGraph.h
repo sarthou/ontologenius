@@ -6,23 +6,11 @@
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+
+#include "ontoloGenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 
 #ifndef DATAPROPERTYGRAPH_H
 #define DATAPROPERTYGRAPH_H
-
-struct DataPropertyBranch_t;
-
-class DataPropertyBranch_t : public Branch_t<DataPropertyBranch_t>
-{
-public:
-  std::vector<DataPropertyBranch_t*> disjoints_;
-  std::vector<ClassBranch_t*> domains_;
-  std::vector<std::string> ranges_;
-  Properties_t properties_;
-
-  DataPropertyBranch_t(std::string value) : Branch_t(value) {};
-};
 
 struct DataPropertyVectors_t
 {
@@ -32,14 +20,6 @@ struct DataPropertyVectors_t
    std::vector<std::string> ranges_;
    Properties_t properties_;
    std::map<std::string, std::vector<std::string>> dictionary_;
-};
-
-struct data_t
-{
-  std::string value_;
-  std::string type_;
-
-  std::string toString() {return( type_ + ":" + value_); }
 };
 
 class DataPropertyDrawer;
@@ -56,10 +36,10 @@ public:
   void add(std::string value, DataPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 
-  std::set<std::string> getDisjoint(std::string& value);
-  std::set<std::string> getDomain(std::string& value);
-  std::set<std::string> getRange(std::string& value);
-  std::set<std::string> select(std::set<std::string> on, std::string selector);
+  std::set<std::string> getDisjoint(const std::string& value);
+  std::set<std::string> getDomain(const std::string& value);
+  std::set<std::string> getRange(const std::string& value);
+  std::set<std::string> select(const std::set<std::string>& on, const std::string& selector);
 
 private:
   ClassGraph* class_graph_;
@@ -72,7 +52,7 @@ private:
     for(unsigned int i = 0; i < vect.size(); i++)
       if(disjoint == vect[i]->value_)
       {
-        me->disjoints_.push_back(vect[i]);
+        me->setSteady_disjoint(vect[i]);
         if(all)
           vect[i]->disjoints_.push_back(me);
         find = true;
@@ -88,7 +68,7 @@ private:
     for(unsigned int i = 0; i < vect.size(); i++)
       if(domain == vect[i]->value_)
       {
-        me->domains_.push_back(vect[i]);
+        me->setSteady_domain(vect[i]);
         find = true;
         break;
       }

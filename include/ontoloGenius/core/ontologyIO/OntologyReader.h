@@ -27,6 +27,7 @@ public:
   int readFromFile(std::string fileName, bool individual = false);
 
   void displayIndividualRules();
+  bool empty() {return (elemLoaded == 0); }
 
 private:
   ClassGraph* class_graph_;
