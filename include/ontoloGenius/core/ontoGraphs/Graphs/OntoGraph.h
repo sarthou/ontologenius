@@ -25,11 +25,11 @@ public:
 
   void close();
 
-  std::set<std::string> getDown(std::string& value, int depth = -1);
-  std::set<std::string> getUp(std::string& value, int depth = -1);
-  std::string getName(std::string& value);
-  std::set<std::string> find(std::string value);
-  bool touch(std::string& value);
+  std::set<std::string> getDown(const std::string& value, int depth = -1);
+  std::set<std::string> getUp(const std::string& value, int depth = -1);
+  std::string getName(const std::string& value);
+  std::set<std::string> find(const std::string& value);
+  bool touch(const std::string& value);
 
   std::set<std::string> getDown(B* branch, int depth = -1, unsigned int current_depth = 0);
   std::set<std::string> getUp(B* branch, int depth = -1, unsigned int current_depth = 0);
@@ -87,7 +87,7 @@ void OntoGraph<B>::close()
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getDown(std::string& value, int depth)
+std::set<std::string> OntoGraph<B>::getDown(const std::string& value, int depth)
 {
   std::set<std::string> res;
 
@@ -103,7 +103,7 @@ std::set<std::string> OntoGraph<B>::getDown(std::string& value, int depth)
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getUp(std::string& value, int depth)
+std::set<std::string> OntoGraph<B>::getUp(const std::string& value, int depth)
 {
   std::set<std::string> res;
 
@@ -119,7 +119,7 @@ std::set<std::string> OntoGraph<B>::getUp(std::string& value, int depth)
 }
 
 template <typename B>
-std::string OntoGraph<B>::getName(std::string& value)
+std::string OntoGraph<B>::getName(const std::string& value)
 {
   std::string res;
 
@@ -139,7 +139,7 @@ std::string OntoGraph<B>::getName(std::string& value)
 }
 
 template <typename B>
-bool OntoGraph<B>::touch(std::string& value)
+bool OntoGraph<B>::touch(const std::string& value)
 {
   B* branch = this->container_.find(value);
   if(branch != nullptr)
@@ -294,7 +294,7 @@ bool comparator(D* branch, std::string value, std::string lang)
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::find(std::string value)
+std::set<std::string> OntoGraph<B>::find(const std::string& value)
 {
   std::set<std::string> res;
   std::vector<B*> branch = this->container_.find(&comparator<B>, value, this->language_);

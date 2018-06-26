@@ -183,7 +183,7 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
 }
 
 
-std::set<std::string> DataPropertyGraph::getDisjoint(std::string& value)
+std::set<std::string> DataPropertyGraph::getDisjoint(const std::string& value)
 {
   std::set<std::string> res;
 
@@ -200,7 +200,7 @@ std::set<std::string> DataPropertyGraph::getDisjoint(std::string& value)
   return res;
 }
 
-std::set<std::string> DataPropertyGraph::getDomain(std::string& value)
+std::set<std::string> DataPropertyGraph::getDomain(const std::string& value)
 {
   std::set<std::string> res;
 
@@ -217,7 +217,7 @@ std::set<std::string> DataPropertyGraph::getDomain(std::string& value)
   return res;
 }
 
-std::set<std::string> DataPropertyGraph::getRange(std::string& value)
+std::set<std::string> DataPropertyGraph::getRange(const std::string& value)
 {
   std::set<std::string> res;
 
@@ -229,7 +229,7 @@ std::set<std::string> DataPropertyGraph::getRange(std::string& value)
   return res;
 }
 
-std::set<std::string> DataPropertyGraph::select(std::set<std::string> on, std::string selector)
+std::set<std::string> DataPropertyGraph::select(const std::set<std::string>& on, const std::string& selector)
 {
   std::set<std::string> res;
   for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)

@@ -261,7 +261,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
   }
 }
 
-std::set<std::string> IndividualGraph::getSame(std::string individual)
+std::set<std::string> IndividualGraph::getSame(const std::string& individual)
 {
   std::set<std::string> res;
   std::set<IndividualBranch_t*> tmp = getSame(container_.find(individual));
@@ -271,7 +271,7 @@ std::set<std::string> IndividualGraph::getSame(std::string individual)
   return res;
 }
 
-std::set<std::string> IndividualGraph::getDistincts(std::string individual)
+std::set<std::string> IndividualGraph::getDistincts(const std::string& individual)
 {
   std::set<std::string> res;
   IndividualBranch_t* indiv = container_.find(individual);
@@ -286,7 +286,7 @@ std::set<std::string> IndividualGraph::getDistincts(std::string individual)
   return res;
 }
 
-std::set<std::string> IndividualGraph::getRelationFrom(std::string individual, int depth)
+std::set<std::string> IndividualGraph::getRelationFrom(const std::string& individual, int depth)
 {
   std::set<std::string> res;
   IndividualBranch_t* indiv = container_.find(individual);
@@ -312,7 +312,7 @@ std::set<std::string> IndividualGraph::getRelationFrom(std::string individual, i
   return res;
 }
 
-std::set<std::string> IndividualGraph::getRelatedFrom(std::string property)
+std::set<std::string> IndividualGraph::getRelatedFrom(const std::string& property)
 {
   std::set<std::string> object_properties = object_property_graph_->getDown(property);
   std::set<std::string> data_properties = data_property_graph_->getDown(property);
@@ -344,7 +344,7 @@ std::set<std::string> IndividualGraph::getRelatedFrom(std::string property)
   return res;
 }
 
-std::set<std::string> IndividualGraph::getRelationOn(std::string individual, int depth)
+std::set<std::string> IndividualGraph::getRelationOn(const std::string& individual, int depth)
 {
   std::set<std::string> res;
   std::set<std::string> same = getSame(individual);
@@ -369,7 +369,7 @@ std::set<std::string> IndividualGraph::getRelationOn(std::string individual, int
   return res;
 }
 
-std::set<std::string> IndividualGraph::getRelatedOn(std::string property)
+std::set<std::string> IndividualGraph::getRelatedOn(const std::string& property)
 {
   std::set<std::string> object_properties = object_property_graph_->getDown(property);
   std::set<std::string> data_properties = data_property_graph_->getDown(property);
@@ -397,7 +397,7 @@ std::set<std::string> IndividualGraph::getRelatedOn(std::string property)
   return res;
 }
 
-std::set<std::string> IndividualGraph::getRelationWith(std::string individual)
+std::set<std::string> IndividualGraph::getRelationWith(const std::string& individual)
 {
   std::set<std::string> res;
   IndividualBranch_t* indiv = container_.find(individual);
@@ -419,7 +419,7 @@ std::set<std::string> IndividualGraph::getRelationWith(std::string individual)
   return res;
 }
 
-std::set<std::string> IndividualGraph::getRelatedWith(std::string individual)
+std::set<std::string> IndividualGraph::getRelatedWith(const std::string& individual)
 {
   std::set<std::string> res;
   for(size_t i = 0; i < individuals_.size(); i++)
@@ -446,7 +446,7 @@ std::set<std::string> IndividualGraph::getRelatedWith(std::string individual)
   return res;
 }
 
-std::set<std::string> IndividualGraph::getFrom(std::string param)
+std::set<std::string> IndividualGraph::getFrom(const std::string& param)
 {
   std::set<std::string> res;
   std::string individual;
@@ -461,7 +461,7 @@ std::set<std::string> IndividualGraph::getFrom(std::string param)
   return res;
 }
 
-std::set<std::string> IndividualGraph::getFrom(std::string individual, std::string property)
+std::set<std::string> IndividualGraph::getFrom(const std::string& individual, const std::string& property)
 {
   std::set<std::string> object_properties = object_property_graph_->getDown(property);
   std::set<std::string> data_properties = data_property_graph_->getDown(property);
@@ -496,7 +496,7 @@ std::set<std::string> IndividualGraph::getFrom(std::string individual, std::stri
   return res;
 }
 
-std::set<std::string> IndividualGraph::getOn(std::string param)
+std::set<std::string> IndividualGraph::getOn(const std::string& param)
 {
   std::set<std::string> res;
   std::string individual;
@@ -511,7 +511,7 @@ std::set<std::string> IndividualGraph::getOn(std::string param)
   return res;
 }
 
-std::set<std::string> IndividualGraph::getOn(std::string individual, std::string property)
+std::set<std::string> IndividualGraph::getOn(const std::string& individual, const std::string& property)
 {
   std::set<std::string> object_properties = object_property_graph_->getDown(property);
   std::set<std::string> data_properties = data_property_graph_->getDown(property);
@@ -540,7 +540,7 @@ std::set<std::string> IndividualGraph::getOn(std::string individual, std::string
   return res;
 }
 
-std::set<std::string> IndividualGraph::getWith(std::string param, int depth)
+std::set<std::string> IndividualGraph::getWith(const std::string& param, int depth)
 {
   std::set<std::string> res;
   size_t pose = param.find(":");
@@ -553,7 +553,7 @@ std::set<std::string> IndividualGraph::getWith(std::string param, int depth)
   return res;
 }
 
-std::set<std::string> IndividualGraph::getWith(std::string first_individual, std::string second_individual, int depth)
+std::set<std::string> IndividualGraph::getWith(const std::string& first_individual, const std::string& second_individual, int depth)
 {
   std::set<std::string> res;
   for(size_t i = 0; i < individuals_.size(); i++)
@@ -595,7 +595,7 @@ std::set<std::string> IndividualGraph::getUp(IndividualBranch_t* indiv, int dept
   return res;
 }
 
-std::set<std::string> IndividualGraph::getUp(std::string individual, int depth)
+std::set<std::string> IndividualGraph::getUp(const std::string& individual, int depth)
 {
   IndividualBranch_t* indiv = container_.find(individual);
   return getUp(indiv, depth);
@@ -621,7 +621,7 @@ std::set<IndividualBranch_t*> IndividualGraph::getSame(IndividualBranch_t* indiv
   return res;
 }
 
-std::set<std::string> IndividualGraph::select(std::set<std::string> on, std::string class_selector)
+std::set<std::string> IndividualGraph::select(const std::set<std::string>& on, const std::string& class_selector)
 {
   std::set<std::string> res;
   for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
@@ -633,7 +633,7 @@ std::set<std::string> IndividualGraph::select(std::set<std::string> on, std::str
   return res;
 }
 
-std::string IndividualGraph::getName(std::string& value)
+std::string IndividualGraph::getName(const std::string& value)
 {
   std::string res;
 
@@ -652,7 +652,7 @@ std::string IndividualGraph::getName(std::string& value)
   return res;
 }
 
-std::set<std::string> IndividualGraph::find(std::string& value)
+std::set<std::string> IndividualGraph::find(const std::string& value)
 {
   std::set<std::string> res;
   for(size_t i = 0; i < individuals_.size(); i++)
@@ -665,7 +665,7 @@ std::set<std::string> IndividualGraph::find(std::string& value)
   return res;
 }
 
-std::set<std::string> IndividualGraph::getType(std::string class_selector)
+std::set<std::string> IndividualGraph::getType(const std::string& class_selector)
 {
   std::set<std::string> res;
   for(size_t i = 0; i < individuals_.size(); i++)

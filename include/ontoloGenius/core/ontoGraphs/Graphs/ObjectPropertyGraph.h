@@ -38,11 +38,11 @@ public:
   void add(std::string value, ObjectPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 
-  std::set<std::string> getDisjoint(std::string& value);
-  std::set<std::string> getInverse(std::string& value);
-  std::set<std::string> getDomain(std::string& value);
-  std::set<std::string> getRange(std::string& value);
-  std::set<std::string> select(std::set<std::string> on, std::string selector);
+  std::set<std::string> getDisjoint(const std::string& value);
+  std::set<std::string> getInverse(const std::string& value);
+  std::set<std::string> getDomain(const std::string& value);
+  std::set<std::string> getRange(const std::string& value);
+  std::set<std::string> select(const std::set<std::string>& on, const std::string& selector);
 
 private:
   ClassGraph* class_graph_;

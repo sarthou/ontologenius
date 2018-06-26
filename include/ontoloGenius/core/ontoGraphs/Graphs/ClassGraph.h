@@ -35,8 +35,8 @@ public:
   void add(std::string value, ObjectVectors_t& object_vector);
   void add(std::vector<std::string>& disjoints);
 
-  std::set<std::string> getDisjoint(std::string& value);
-  std::set<std::string> select(std::set<std::string> on, std::string class_selector);
+  std::set<std::string> getDisjoint(const std::string& value);
+  std::set<std::string> select(const std::set<std::string>& on, const std::string& class_selector);
 
 private:
   void isMyDisjoint(ClassBranch_t* me, std::string disjoint, std::vector<ClassBranch_t*>& vect, bool& find, bool all = true)

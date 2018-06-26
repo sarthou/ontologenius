@@ -271,7 +271,7 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
 }
 
 
-std::set<std::string> ObjectPropertyGraph::getDisjoint(std::string& value)
+std::set<std::string> ObjectPropertyGraph::getDisjoint(const std::string& value)
 {
   std::set<std::string> res;
 
@@ -288,7 +288,7 @@ std::set<std::string> ObjectPropertyGraph::getDisjoint(std::string& value)
   return res;
 }
 
-std::set<std::string> ObjectPropertyGraph::getInverse(std::string& value)
+std::set<std::string> ObjectPropertyGraph::getInverse(const std::string& value)
 {
   std::set<std::string> res;
 
@@ -305,7 +305,7 @@ std::set<std::string> ObjectPropertyGraph::getInverse(std::string& value)
   return res;
 }
 
-std::set<std::string> ObjectPropertyGraph::getDomain(std::string& value)
+std::set<std::string> ObjectPropertyGraph::getDomain(const std::string& value)
 {
   std::set<std::string> res;
 
@@ -322,7 +322,7 @@ std::set<std::string> ObjectPropertyGraph::getDomain(std::string& value)
   return res;
 }
 
-std::set<std::string> ObjectPropertyGraph::getRange(std::string& value)
+std::set<std::string> ObjectPropertyGraph::getRange(const std::string& value)
 {
   std::set<std::string> res;
 
@@ -339,7 +339,7 @@ std::set<std::string> ObjectPropertyGraph::getRange(std::string& value)
   return res;
 }
 
-std::set<std::string> ObjectPropertyGraph::select(std::set<std::string> on, std::string selector)
+std::set<std::string> ObjectPropertyGraph::select(const std::set<std::string>& on, const std::string& selector)
 {
   std::set<std::string> res;
   for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
