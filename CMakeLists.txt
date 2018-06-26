@@ -203,6 +203,10 @@ add_executable(ontoloGenius_tester src/tester.cpp)
 add_dependencies(ontoloGenius_tester ontologenius_gencpp)
 target_link_libraries(ontoloGenius_tester ontologenius_core_lib)
 
+add_executable(ontoloGenius_container_tester src/container_test.cpp)
+add_dependencies(ontoloGenius_container_tester ontologenius_gencpp)
+target_link_libraries(ontoloGenius_container_tester ontologenius_core_lib)
+
 ##############################################################################
 # Qt Environment
 ##############################################################################
