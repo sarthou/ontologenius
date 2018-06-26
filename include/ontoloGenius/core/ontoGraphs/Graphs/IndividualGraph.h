@@ -46,9 +46,9 @@ public:
 
   std::set<std::string> getSame(std::string individual);          //C1
   std::set<std::string> getDistincts(std::string individual);     //C2
-  std::set<std::string> getRelationFrom(std::string individual);  //C3
+  std::set<std::string> getRelationFrom(std::string individual, int depth = -1);  //C3
   std::set<std::string> getRelatedFrom(std::string property);     //C3
-  std::set<std::string> getRelationOn(std::string individual);    //C4
+  std::set<std::string> getRelationOn(std::string individual, int depth = -1);    //C4
   std::set<std::string> getRelatedOn(std::string property);       //C3
   std::set<std::string> getRelationWith(std::string individual);  //C3
   std::set<std::string> getRelatedWith(std::string individual);   //C3
@@ -56,10 +56,10 @@ public:
   std::set<std::string> getFrom(std::string individual, std::string property);
   std::set<std::string> getOn(std::string param);
   std::set<std::string> getOn(std::string individual, std::string property);
-  std::set<std::string> getWith(std::string param);
-  std::set<std::string> getWith(std::string first_individual, std::string second_individual);
-  std::set<std::string> getUp(IndividualBranch_t* indiv);
-  std::set<std::string> getUp(std::string individual);            //C3
+  std::set<std::string> getWith(std::string param, int depth = -1);
+  std::set<std::string> getWith(std::string first_individual, std::string second_individual, int depth = -1);
+  std::set<std::string> getUp(IndividualBranch_t* indiv, int depth = -1, unsigned int current_depth = 0);
+  std::set<std::string> getUp(std::string individual, int depth = -1);            //C3
   std::set<std::string> select(std::set<std::string> on, std::string class_selector);
   std::string getName(std::string& value);
   std::set<std::string> find(std::string& value);

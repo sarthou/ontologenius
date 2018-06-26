@@ -38,6 +38,24 @@ std::vector<std::string> set2vector(std::set<std::string> word_set)
   return result;
 }
 
+int getPropagationLevel(std::string& params)
+{
+  size_t delimitater = params.find("<");
+  if(delimitater != std::string::npos)
+  {
+    std::string param = params.substr(0, delimitater);
+    std::string level = params.substr(delimitater+1);
+    removeUselessSpace(level);
+    params = param;
+
+    int res;
+    if(sscanf(level.c_str(), "%d", &res) != 1)
+      res = -1;
+    return res;
+  }
+  return -1;
+}
+
 Ontology onto;
 Arguers arguers(&onto);
 
@@ -330,15 +348,17 @@ bool classHandle(ontologenius::OntologeniusService::Request  &req,
   else
     arguers.runPreArguers();
 
+  int level = getPropagationLevel(req.param);
+
   removeUselessSpace(req.action);
   removeUselessSpace(req.param);
 
   if(res.code != UNINIT)
   {
     if(req.action == "getDown")
-      res.values = set2vector(onto.class_graph_.getDown(req.param));
+      res.values = set2vector(onto.class_graph_.getDown(req.param, level));
     else if(req.action == "getUp")
-      res.values = set2vector(onto.class_graph_.getUp(req.param));
+      res.values = set2vector(onto.class_graph_.getUp(req.param, level));
     else if(req.action == "getDisjoint")
       res.values = set2vector(onto.class_graph_.getDisjoint(req.param));
     else if(req.action == "getName")
@@ -362,15 +382,17 @@ bool objectPropertyHandle(ontologenius::OntologeniusService::Request  &req,
   else
     arguers.runPreArguers();
 
+  int level = getPropagationLevel(req.param);
+
   removeUselessSpace(req.action);
   removeUselessSpace(req.param);
 
   if(res.code != UNINIT)
   {
     if(req.action == "getDown")
-      res.values = set2vector(onto.object_property_graph_.getDown(req.param));
+      res.values = set2vector(onto.object_property_graph_.getDown(req.param, level));
     else if(req.action == "getUp")
-      res.values = set2vector(onto.object_property_graph_.getUp(req.param));
+      res.values = set2vector(onto.object_property_graph_.getUp(req.param, level));
     else if(req.action == "getDisjoint")
       res.values = set2vector(onto.object_property_graph_.getDisjoint(req.param));
     else if(req.action == "getInverse")
@@ -400,15 +422,17 @@ bool dataPropertyHandle(ontologenius::OntologeniusService::Request  &req,
   else
     arguers.runPreArguers();
 
+  int level = getPropagationLevel(req.param);
+
   removeUselessSpace(req.action);
   removeUselessSpace(req.param);
 
   if(res.code != UNINIT)
   {
     if(req.action == "getDown")
-      res.values = set2vector(onto.data_property_graph_.getDown(req.param));
+      res.values = set2vector(onto.data_property_graph_.getDown(req.param, level));
     else if(req.action == "getUp")
-      res.values = set2vector(onto.data_property_graph_.getUp(req.param));
+      res.values = set2vector(onto.data_property_graph_.getUp(req.param, level));
     else if(req.action == "getDisjoint")
       res.values = set2vector(onto.data_property_graph_.getDisjoint(req.param));
     else if(req.action == "getDomain")
@@ -435,6 +459,8 @@ bool individualHandle(ontologenius::OntologeniusService::Request  &req,
     res.code = UNINIT;
   else
     arguers.runPreArguers();
+
+  int level = getPropagationLevel(req.param);
 
   removeUselessSpace(req.action);
   removeUselessSpace(req.param);
@@ -463,11 +489,11 @@ bool individualHandle(ontologenius::OntologeniusService::Request  &req,
     if(req.action == "getDistincts")
       set_res = onto.individual_graph_.getDistincts(req.param);
     else if(req.action == "getRelationFrom")
-      set_res = onto.individual_graph_.getRelationFrom(req.param);
+      set_res = onto.individual_graph_.getRelationFrom(req.param, level);
     else if(req.action == "getRelatedFrom")
       set_res = onto.individual_graph_.getRelatedFrom(req.param);
     else if(req.action == "getRelationOn")
-      set_res = onto.individual_graph_.getRelationOn(req.param);
+      set_res = onto.individual_graph_.getRelationOn(req.param, level);
     else if(req.action == "getRelatedOn")
       set_res = onto.individual_graph_.getRelatedOn(req.param);
     else if(req.action == "getRelationWith")
@@ -475,13 +501,13 @@ bool individualHandle(ontologenius::OntologeniusService::Request  &req,
     else if(req.action == "getRelatedWith")
       set_res = onto.individual_graph_.getRelatedWith(req.param);
     else if(req.action == "getUp")
-      set_res = onto.individual_graph_.getUp(req.param);
+      set_res = onto.individual_graph_.getUp(req.param, level);
     else if(req.action == "getOn")
       set_res = onto.individual_graph_.getOn(req.param);
     else if(req.action == "getFrom")
       set_res = onto.individual_graph_.getFrom(req.param);
     else if(req.action == "getWith")
-      set_res = onto.individual_graph_.getWith(req.param);
+      set_res = onto.individual_graph_.getWith(req.param, level);
     else if(req.action == "getName")
       res.values.push_back(onto.individual_graph_.getName(req.param));
     else if(req.action == "find")
