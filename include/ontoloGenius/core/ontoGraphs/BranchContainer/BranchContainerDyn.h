@@ -10,12 +10,19 @@
 template <typename T>
 struct BranchNode_t
 {
-  BranchNode_t* next;
+  BranchNode_t<T>* next;
   std::string id;
   T* branch;
 
   BranchNode_t() {next = nullptr; id = ""; branch = nullptr; }
-  ~BranchNode_t() { delete next; }
+  ~BranchNode_t()
+  {
+    if(next != nullptr)
+    {
+      delete next;
+      next = nullptr;
+    }
+  }
 };
 
 template <typename B>
@@ -29,7 +36,10 @@ public:
     nb_elem_ = 0;
   }
 
-  virtual ~BranchContainerDyn() {delete nodes_; }
+  virtual ~BranchContainerDyn()
+  {
+    delete nodes_;
+  }
 
   virtual B* find(std::string word);
   virtual std::vector<B*> find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang);
