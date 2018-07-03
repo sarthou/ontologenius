@@ -28,10 +28,10 @@ OntologyWriter::OntologyWriter(Ontology& onto)
 
 void OntologyWriter::write(std::string file_name)
 {
-  if(file_name != "")
+  if(file_name != "none")
     file_name_ = file_name;
 
-  if(file_name_ == "")
+  if(file_name_ == "none")
     return;
 
   file_ = fopen(file_name_.c_str(), "w");
