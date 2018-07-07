@@ -263,12 +263,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
 
 std::unordered_set<std::string> IndividualGraph::getSame(const std::string& individual)
 {
-  std::unordered_set<std::string> res;
-  std::unordered_set<IndividualBranch_t*> tmp = getSame(container_.find(individual));
-  cleanMarks(tmp);
-  for(std::unordered_set<IndividualBranch_t*>::iterator it = tmp.begin(); it != tmp.end(); ++it)
-    res.insert((*it)->value_);
-  return res;
+  return getSameAndClean(container_.find(individual));
 }
 
 std::unordered_set<std::string> IndividualGraph::getDistincts(const std::string& individual)
@@ -278,9 +273,7 @@ std::unordered_set<std::string> IndividualGraph::getDistincts(const std::string&
   if(indiv != nullptr)
     for(size_t i = 0; i < indiv->distinct_.size(); i++)
     {
-      std::unordered_set<IndividualBranch_t*> sames = getSame(indiv->distinct_[i]);
-      std::unordered_set<std::string> tmp = set2set(sames);
-      cleanMarks(sames);
+      std::unordered_set<std::string> tmp = getSameAndClean(indiv->distinct_[i]);
       res.insert(tmp.begin(), tmp.end());
     }
   return res;
@@ -292,7 +285,8 @@ std::unordered_set<std::string> IndividualGraph::getRelationFrom(const std::stri
   IndividualBranch_t* indiv = container_.find(individual);
   if(indiv != nullptr)
   {
-    std::unordered_set<IndividualBranch_t*> sames = getSame(indiv);
+    std::unordered_set<IndividualBranch_t*> sames;
+    getSame(indiv, sames);
     cleanMarks(sames);
     for(std::unordered_set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
     {
@@ -319,9 +313,7 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
       for (it = object_properties.begin(); it != object_properties.end(); ++it)
         if(individuals_[i]->object_properties_name_[prop_i]->value_ == (*it))
         {
-          std::unordered_set<IndividualBranch_t*> sames = getSame(individuals_[i]);
-          std::unordered_set<std::string> tmp = set2set(sames);
-          cleanMarks(sames);
+          std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
           res.insert(tmp.begin(), tmp.end());
         }
 
@@ -329,9 +321,7 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
       for (it = data_properties.begin(); it != data_properties.end(); ++it)
         if(individuals_[i]->data_properties_name_[prop_i]->value_ == (*it))
         {
-          std::unordered_set<IndividualBranch_t*> sames = getSame(individuals_[i]);
-          std::unordered_set<std::string> tmp = set2set(sames);
-          cleanMarks(sames);
+          std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
           res.insert(tmp.begin(), tmp.end());
         }
   }
@@ -370,9 +360,7 @@ std::unordered_set<std::string> IndividualGraph::getRelatedOn(const std::string&
       for (it = object_properties.begin(); it != object_properties.end(); ++it)
         if(individuals_[i]->object_properties_name_[prop_i]->value_ == (*it))
         {
-          std::unordered_set<IndividualBranch_t*> sames = getSame(individuals_[i]->object_properties_on_[prop_i]);
-          std::unordered_set<std::string> tmp = set2set(sames);
-          cleanMarks(sames);
+          std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]->object_properties_on_[prop_i]);
           res.insert(tmp.begin(), tmp.end());
         }
 
@@ -391,13 +379,16 @@ std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::stri
   IndividualBranch_t* indiv = container_.find(individual);
   if(indiv != nullptr)
   {
-    std::unordered_set<IndividualBranch_t*> sames = getSame(indiv);
+    std::unordered_set<IndividualBranch_t*> sames;
+    getSame(indiv, sames);
     cleanMarks(sames);
     for(std::unordered_set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
     {
       for(size_t i = 0; i < (*it)->object_properties_on_.size(); i++)
       {
-        std::unordered_set<std::string> tmp = set2set(getSame((*it)->object_properties_on_[i]));
+        std::unordered_set<IndividualBranch_t*> sames_tmp;
+        getSame((*it)->object_properties_on_[i], sames_tmp);
+        std::unordered_set<std::string> tmp = set2set(sames_tmp);
         res.insert(tmp.begin(), tmp.end());
       }
       for(size_t i = 0; i < (*it)->data_properties_data_.size(); i++)
@@ -415,18 +406,14 @@ std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::strin
     for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
       if(individuals_[i]->object_properties_on_[prop_i]->value_ == individual)
       {
-        std::unordered_set<IndividualBranch_t*> sames = getSame(individuals_[i]);
-        std::unordered_set<std::string> tmp = set2set(sames);
-        cleanMarks(sames);
+        std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
         res.insert(tmp.begin(), tmp.end());
       }
 
     for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
       if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
       {
-        std::unordered_set<IndividualBranch_t*> sames = getSame(individuals_[i]);
-        std::unordered_set<std::string> tmp = set2set(sames);
-        cleanMarks(sames);
+        std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
         res.insert(tmp.begin(), tmp.end());
       }
   }
@@ -463,9 +450,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
         for (it = object_properties.begin(); it != object_properties.end(); ++it)
           if(individuals_[i]->object_properties_name_[prop_i]->value_ == (*it))
           {
-            std::unordered_set<IndividualBranch_t*> sames = getSame(individuals_[i]);
-            std::unordered_set<std::string> tmp = set2set(sames);
-            cleanMarks(sames);
+            std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
             res.insert(tmp.begin(), tmp.end());
           }
 
@@ -474,9 +459,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
         for (it = data_properties.begin(); it != data_properties.end(); ++it)
           if(individuals_[i]->data_properties_name_[prop_i]->value_ == (*it))
           {
-            std::unordered_set<IndividualBranch_t*> sames = getSame(individuals_[i]);
-            std::unordered_set<std::string> tmp = set2set(sames);
-            cleanMarks(sames);
+            std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
             res.insert(tmp.begin(), tmp.end());
           }
   }
@@ -513,9 +496,7 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& indivi
         for (it = object_properties.begin(); it != object_properties.end(); ++it)
           if(individuals_[i]->object_properties_name_[prop_i]->value_ == (*it))
           {
-            std::unordered_set<IndividualBranch_t*> sames = getSame(individuals_[i]->object_properties_on_[prop_i]);
-            std::unordered_set<std::string> tmp = set2set(sames);
-            cleanMarks(sames);
+            std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]->object_properties_on_[prop_i]);
             res.insert(tmp.begin(), tmp.end());
           }
 
@@ -564,7 +545,8 @@ std::unordered_set<std::string> IndividualGraph::getUp(IndividualBranch_t* indiv
   std::unordered_set<std::string> res;
   if(indiv != nullptr)
   {
-    std::unordered_set<IndividualBranch_t*> sames = getSame(indiv);
+    std::unordered_set<IndividualBranch_t*> sames;
+    getSame(indiv, sames);
     cleanMarks(sames);
     for(std::unordered_set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
       for(size_t i = 0; i < (*it)->is_a_.size(); i++)
@@ -579,24 +561,27 @@ std::unordered_set<std::string> IndividualGraph::getUp(const std::string& indivi
   return getUp(indiv, depth);
 }
 
-std::unordered_set<IndividualBranch_t*> IndividualGraph::getSame(IndividualBranch_t* individual)
+void IndividualGraph::getSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res)
 {
-  std::unordered_set<IndividualBranch_t*> res;
   if(individual != nullptr)
   {
     res.insert(individual);
     individual->mark = true;
     for(size_t i = 0; i < individual->same_as_.size(); i++)
-    {
       if(individual->same_as_[i]->mark == false)
-      {
-        std::unordered_set<IndividualBranch_t*> tmp = getSame(individual->same_as_[i]);
-        if(tmp.size())
-          res.insert(tmp.begin(), tmp.end());
-      }
-    }
+        getSame(individual->same_as_[i], res);
   }
-  return res;
+}
+
+std::unordered_set<std::string> IndividualGraph::getSameAndClean(IndividualBranch_t* individual)
+{
+  std::unordered_set<IndividualBranch_t*> sames;
+  getSame(individual, sames);
+  cleanMarks(sames);
+
+  std::vector<std::string> res;
+  for(IndividualBranch_t* it : sames)
+    res.push_back(it->value_);
 }
 
 std::unordered_set<std::string> IndividualGraph::select(std::unordered_set<std::string>& on, const std::string& class_selector)
