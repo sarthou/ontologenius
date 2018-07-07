@@ -297,16 +297,10 @@ std::set<std::string> IndividualGraph::getRelationFrom(const std::string& indivi
     for(std::set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
     {
       for(size_t i = 0; i < (*it)->object_properties_name_.size(); i++)
-      {
-        std::set<std::string> tmp = object_property_graph_->getUp((*it)->object_properties_name_[i], depth);
-        res.insert(tmp.begin(), tmp.end());
-      }
+        object_property_graph_->getUp((*it)->object_properties_name_[i], res, depth);
 
       for(size_t i = 0; i < (*it)->data_properties_name_.size(); i++)
-      {
-        std::set<std::string> tmp = data_property_graph_->getUp((*it)->data_properties_name_[i], depth);
-        res.insert(tmp.begin(), tmp.end());
-      }
+        data_property_graph_->getUp((*it)->data_properties_name_[i], res, depth);
     }
   }
   return res;
@@ -352,19 +346,13 @@ std::set<std::string> IndividualGraph::getRelationOn(const std::string& individu
     for(size_t i = 0; i < individuals_.size(); i++)
       for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
         if(individuals_[i]->object_properties_on_[prop_i]->value_ == (*it))
-        {
-          std::set<std::string> tmp = object_property_graph_->getUp(individuals_[i]->object_properties_name_[prop_i], depth);
-          res.insert(tmp.begin(), tmp.end());
-        }
+          object_property_graph_->getUp(individuals_[i]->object_properties_name_[prop_i], res, depth);
 
   if(res.size() == 0)
     for(size_t i = 0; i < individuals_.size(); i++)
       for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
         if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
-        {
-          std::set<std::string> tmp = data_property_graph_->getUp(individuals_[i]->data_properties_name_[prop_i], depth);
-          res.insert(tmp.begin(), tmp.end());
-        }
+          data_property_graph_->getUp(individuals_[i]->data_properties_name_[prop_i], res, depth);
 
   return res;
 }
@@ -561,17 +549,11 @@ std::set<std::string> IndividualGraph::getWith(const std::string& first_individu
     {
       for(size_t indiv_i = 0; indiv_i < individuals_[i]->object_properties_on_.size(); indiv_i++)
         if(individuals_[i]->object_properties_on_[indiv_i]->value_ == second_individual)
-        {
-          std::set<std::string> props = object_property_graph_->getUp(individuals_[i]->object_properties_name_[indiv_i], depth);
-          res.insert(props.begin(), props.end());
-        }
+          object_property_graph_->getUp(individuals_[i]->object_properties_name_[indiv_i], res, depth);
 
       for(size_t indiv_i = 0; indiv_i < individuals_[i]->data_properties_data_.size(); indiv_i++)
         if(individuals_[i]->data_properties_data_[indiv_i].value_ == second_individual)
-        {
-          std::set<std::string> props = data_property_graph_->getUp(individuals_[i]->data_properties_name_[indiv_i], depth);
-          res.insert(props.begin(), props.end());
-        }
+          data_property_graph_->getUp(individuals_[i]->data_properties_name_[indiv_i], res, depth);
     }
   return res;
 }
@@ -586,11 +568,7 @@ std::set<std::string> IndividualGraph::getUp(IndividualBranch_t* indiv, int dept
     cleanMarks(sames);
     for(std::set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
       for(size_t i = 0; i < (*it)->is_a_.size(); i++)
-      {
-        std::set<std::string> tmp = class_graph_->getUp((*it)->is_a_[i], depth, current_depth);
-        if(tmp.size())
-          res.insert(tmp.begin(), tmp.end());
-      }
+        class_graph_->getUp((*it)->is_a_[i], res, depth, current_depth);
   }
   return res;
 }

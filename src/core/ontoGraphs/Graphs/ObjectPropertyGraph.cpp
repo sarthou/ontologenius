@@ -278,12 +278,7 @@ std::set<std::string> ObjectPropertyGraph::getDisjoint(const std::string& value)
   ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
-    {
-      std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      getDown(branch->disjoints_[disjoint_i], res);
 
   return res;
 }
@@ -295,12 +290,7 @@ std::set<std::string> ObjectPropertyGraph::getInverse(const std::string& value)
   ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned inverse_i = 0; inverse_i < branch->inverses_.size(); inverse_i++)
-    {
-      std::set<std::string> tmp = getDown(branch->inverses_[inverse_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      getDown(branch->inverses_[inverse_i], res);
 
   return res;
 }
@@ -312,12 +302,7 @@ std::set<std::string> ObjectPropertyGraph::getDomain(const std::string& value)
   ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned domain_i = 0; domain_i < branch->domains_.size(); domain_i++)
-    {
-      std::set<std::string> tmp = class_graph_->getDown(branch->domains_[domain_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      class_graph_->getDown(branch->domains_[domain_i], res);
 
   return res;
 }
@@ -329,12 +314,7 @@ std::set<std::string> ObjectPropertyGraph::getRange(const std::string& value)
   ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned range_i = 0; range_i < branch->ranges_.size(); range_i++)
-    {
-      std::set<std::string> tmp = class_graph_->getDown(branch->ranges_[range_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      class_graph_->getDown(branch->ranges_[range_i], res);
 
   return res;
 }

@@ -139,12 +139,7 @@ std::set<std::string> ClassGraph::getDisjoint(const std::string& value)
   ClassBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
-    {
-      std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      getDown(branch->disjoints_[disjoint_i], res);
 
   return res;
 }
