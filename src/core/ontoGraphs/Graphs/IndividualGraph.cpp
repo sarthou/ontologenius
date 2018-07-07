@@ -579,9 +579,11 @@ std::unordered_set<std::string> IndividualGraph::getSameAndClean(IndividualBranc
   getSame(individual, sames);
   cleanMarks(sames);
 
-  std::vector<std::string> res;
+  std::unordered_set<std::string> res;
   for(IndividualBranch_t* it : sames)
-    res.push_back(it->value_);
+    res.insert(it->value_);
+
+  return res;
 }
 
 std::unordered_set<std::string> IndividualGraph::select(std::unordered_set<std::string>& on, const std::string& class_selector)
