@@ -3,7 +3,7 @@
 
 #include <string>
 #include <map>
-#include <set>
+#include <unordered_set>
 
 #include <stdint.h>
 
@@ -13,7 +13,7 @@
 struct Variable_t
 {
   std::string name;
-  std::set<std::string> values;
+  std::unordered_set<std::string> values;
 };
 
 class VariablesType : public Namespace, public FunctionContainer
@@ -25,18 +25,18 @@ public:
   std::string add(std::string name);
 
   std::string name(std::string id);
-  std::set<std::string> get(std::string id);
+  std::unordered_set<std::string> get(std::string id);
   std::string toString(std::string id);
 
   bool set(std::string id, std::string value);
-  bool set(std::string id, std::set<std::string> value);
+  bool set(std::string id, std::unordered_set<std::string> value);
 
   bool insert(std::string id, std::string value);
-  bool insert(std::string id, std::set<std::string> value);
+  bool insert(std::string id, std::unordered_set<std::string> value);
 
   bool remove(std::string id);
   bool remove(std::string id, std::string value);
-  bool remove(std::string id, std::set<std::string> value);
+  bool remove(std::string id, std::unordered_set<std::string> value);
 
   size_t size(std::string id);
 

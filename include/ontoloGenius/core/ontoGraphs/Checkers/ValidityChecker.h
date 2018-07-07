@@ -6,7 +6,7 @@
 
 #include <string>
 #include <iostream>
-#include <set>
+#include <unordered_set>
 
 template <typename B>
 class ValidityChecker
@@ -51,13 +51,13 @@ protected:
     }
   }
 
-  std::string findIntersection(std::set<std::string>& base, std::set<std::string>& comp)
+  std::string findIntersection(std::unordered_set<std::string>& base, std::unordered_set<std::string>& comp)
   {
     std::string res = "";
-    std::set<std::string>::iterator it;
+    std::unordered_set<std::string>::iterator it;
     for (it = comp.begin(); it != comp.end(); it++)
     {
-      std::set<std::string>::iterator find = base.find(*it);
+      std::unordered_set<std::string>::iterator find = base.find(*it);
       if(find != base.end())
         res = *it;
     }

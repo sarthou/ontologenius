@@ -14,8 +14,8 @@ void ArguerChain::postReason()
     {
       for(size_t prop_i = 0; prop_i < indiv[indiv_i]->object_properties_name_.size(); prop_i++)
       {
-        std::set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtr(indiv[indiv_i]->object_properties_name_[prop_i]);
-        for(std::set<ObjectPropertyBranch_t*>::iterator it_prop = props.begin(); it_prop != props.end(); ++it_prop)
+        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtr(indiv[indiv_i]->object_properties_name_[prop_i]);
+        for(std::unordered_set<ObjectPropertyBranch_t*>::iterator it_prop = props.begin(); it_prop != props.end(); ++it_prop)
           for(size_t chain_i = 0; chain_i < (*it_prop)->chains_.size(); chain_i++)
             resolveChain((*it_prop)->chains_[chain_i], indiv[indiv_i]->object_properties_on_[prop_i], indiv[indiv_i]);
       }
@@ -46,7 +46,7 @@ void ArguerChain::resolveChain(std::vector<ObjectPropertyBranch_t*> chain, Indiv
 void ArguerChain::resolveLink(ObjectPropertyBranch_t* chain_property, std::vector<IndividualBranch_t*>& indivs)
 {
   std::vector<IndividualBranch_t*> tmp;
-  std::set<std::string> chain_props = ontology_->object_property_graph_.getDown(chain_property->value_);
+  std::unordered_set<std::string> chain_props = ontology_->object_property_graph_.getDown(chain_property->value_);
 
   for(size_t indiv_i = 0; indiv_i < indivs.size(); indiv_i++)
     for(size_t prop_i = 0; prop_i < indivs[indiv_i]->object_properties_name_.size(); prop_i++)

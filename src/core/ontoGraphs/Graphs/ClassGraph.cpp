@@ -132,9 +132,9 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
   }
 }
 
-std::set<std::string> ClassGraph::getDisjoint(const std::string& value)
+std::unordered_set<std::string> ClassGraph::getDisjoint(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   ClassBranch_t* branch = container_.find(value);
   if(branch != nullptr)
@@ -144,13 +144,13 @@ std::set<std::string> ClassGraph::getDisjoint(const std::string& value)
   return res;
 }
 
-std::set<std::string> ClassGraph::select(const std::set<std::string>& on, const std::string& class_selector)
+std::unordered_set<std::string> ClassGraph::select(std::unordered_set<std::string>& on, const std::string& class_selector)
 {
-  std::set<std::string> res;
-  for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
+  std::unordered_set<std::string> res;
+  for(std::unordered_set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
   {
     std::string class_i = *it;
-    std::set<std::string> tmp = getUp(class_i);
+    std::unordered_set<std::string> tmp = getUp(class_i);
     if(tmp.find(class_selector) != tmp.end())
       res.insert(*it);
   }

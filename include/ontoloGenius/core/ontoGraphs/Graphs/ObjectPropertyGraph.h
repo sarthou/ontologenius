@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <set>
+#include <unordered_set>
 #include <map>
 #include <stdint.h>
 
@@ -38,11 +38,11 @@ public:
   void add(std::string value, ObjectPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 
-  std::set<std::string> getDisjoint(const std::string& value);
-  std::set<std::string> getInverse(const std::string& value);
-  std::set<std::string> getDomain(const std::string& value);
-  std::set<std::string> getRange(const std::string& value);
-  std::set<std::string> select(const std::set<std::string>& on, const std::string& selector);
+  std::unordered_set<std::string> getDisjoint(const std::string& value);
+  std::unordered_set<std::string> getInverse(const std::string& value);
+  std::unordered_set<std::string> getDomain(const std::string& value);
+  std::unordered_set<std::string> getRange(const std::string& value);
+  std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& selector);
 
 private:
   ClassGraph* class_graph_;
