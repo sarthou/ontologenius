@@ -1,7 +1,7 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include <iostream>
 
-void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
+void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
 {
   ClassBranch_t* me = nullptr;
   //am I a created mother ?

@@ -44,7 +44,7 @@ public:
 private:
   ClassGraph* class_graph_;
 
-  void isMyDisjoint(DataPropertyBranch_t* me, std::string disjoint, std::vector<DataPropertyBranch_t*>& vect, bool& find, bool all = true)
+  void isMyDisjoint(DataPropertyBranch_t* me, const std::string& disjoint, std::vector<DataPropertyBranch_t*>& vect, bool& find, bool all = true)
   {
     if(find)
       return;
@@ -60,7 +60,7 @@ private:
       }
   }
 
-  void isMyDomain(DataPropertyBranch_t* me, std::string domain, std::vector<ClassBranch_t*>& vect, bool& find)
+  void isMyDomain(DataPropertyBranch_t* me, const std::string& domain, std::vector<ClassBranch_t*>& vect, bool& find)
   {
     if(find)
       return;

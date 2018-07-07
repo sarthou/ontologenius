@@ -32,14 +32,14 @@ public:
   ClassGraph() {}
   ~ClassGraph() {}
 
-  void add(std::string value, ObjectVectors_t& object_vector);
+  void add(const std::string& value, ObjectVectors_t& object_vector);
   void add(std::vector<std::string>& disjoints);
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);
   std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& class_selector);
 
 private:
-  void isMyDisjoint(ClassBranch_t* me, std::string disjoint, std::vector<ClassBranch_t*>& vect, bool& find, bool all = true)
+  void isMyDisjoint(ClassBranch_t* me, const std::string& disjoint, std::vector<ClassBranch_t*>& vect, bool& find, bool all = true)
   {
     if(find)
       return;
