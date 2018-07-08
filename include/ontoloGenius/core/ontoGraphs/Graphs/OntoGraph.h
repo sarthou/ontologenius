@@ -5,6 +5,7 @@
 #include <vector>
 #include <unordered_set>
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/Branch.h"
@@ -113,14 +114,31 @@ std::unordered_set<std::string> OntoGraph<B>::getUp(const std::string& value, in
 template <typename B>
 std::string OntoGraph<B>::getName(const std::string& value)
 {
-  std::string res;
+  std::string res = "";
 
   B* branch = this->container_.find(value);
   if(branch != nullptr)
   {
     if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
       if(branch->dictionary_[this->language_].size())
-        res = branch->dictionary_[this->language_][0];
+      {
+        std::unordered_set<size_t> tested;
+        srand(time(NULL));
+        size_t dic_size = branch->dictionary_[this->language_].size();
+        while(tested.size() < dic_size)
+        {
+          size_t myIndex = rand() % dic_size;
+          std::string word = branch->dictionary_[this->language_][myIndex];
+          if(word.find("_") != std::string::npos)
+          {
+            res = word;
+            break;
+          }
+          tested.insert(myIndex);
+        }
+        if(res == "")
+          res = branch->dictionary_[this->language_][0];
+      }
       else
         res = value;
     else
