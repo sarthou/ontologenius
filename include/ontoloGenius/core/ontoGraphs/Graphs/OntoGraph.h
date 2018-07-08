@@ -129,7 +129,7 @@ std::string OntoGraph<B>::getName(const std::string& value)
         {
           size_t myIndex = rand() % dic_size;
           std::string word = branch->dictionary_[this->language_][myIndex];
-          if(word.find("_") != std::string::npos)
+          if(word.find("_") == std::string::npos)
           {
             res = word;
             break;
