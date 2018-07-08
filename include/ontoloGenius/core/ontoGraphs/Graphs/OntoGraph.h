@@ -5,7 +5,7 @@
 #include <vector>
 #include <unordered_set>
 #include <stdint.h>
-#include <stdlib.h>
+#include <random>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/Branch.h"
@@ -123,11 +123,15 @@ std::string OntoGraph<B>::getName(const std::string& value)
       if(branch->dictionary_[this->language_].size())
       {
         std::unordered_set<size_t> tested;
-        srand(time(NULL));
+        std::random_device rd;
+        std::mt19937 gen(rd());
+
         size_t dic_size = branch->dictionary_[this->language_].size();
+        std::uniform_int_distribution<> dis(0, dic_size - 1);
+
         while(tested.size() < dic_size)
         {
-          size_t myIndex = rand() % dic_size;
+          size_t myIndex = dis(gen);
           std::string word = branch->dictionary_[this->language_][myIndex];
           if(word.find("_") == std::string::npos)
           {
