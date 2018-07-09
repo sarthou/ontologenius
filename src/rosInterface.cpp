@@ -25,16 +25,16 @@ void removeUselessSpace(std::string& text)
 std::string set2string(std::unordered_set<std::string> word_set)
 {
   std::string result = "";
-  for(std::unordered_set<std::string>::iterator it = word_set.begin(); it != word_set.end(); ++it)
-    result += *it + " ";
+  for(std::string it : word_set)
+    result += it + " ";
   return result;
 }
 
 std::vector<std::string> set2vector(std::unordered_set<std::string> word_set)
 {
   std::vector<std::string> result;
-  for(std::unordered_set<std::string>::iterator it = word_set.begin(); it != word_set.end(); ++it)
-    result.push_back(*it);
+  for(std::string it : word_set)
+    result.push_back(it);
   return result;
 }
 

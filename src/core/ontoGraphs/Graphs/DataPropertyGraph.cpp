@@ -222,12 +222,11 @@ std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& v
 std::unordered_set<std::string> DataPropertyGraph::select(std::unordered_set<std::string>& on, const std::string& selector)
 {
   std::unordered_set<std::string> res;
-  for(std::unordered_set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
+  for(it : on)
   {
-    std::string prop_i = *it;
-    std::unordered_set<std::string> tmp = getUp(prop_i);
+    std::unordered_set<std::string> tmp = getUp(it);
     if(tmp.find(selector) != tmp.end())
-      res.insert(*it);
+      res.insert(it);
   }
   return res;
 }

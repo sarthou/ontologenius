@@ -290,13 +290,13 @@ std::unordered_set<std::string> IndividualGraph::getRelationFrom(const std::stri
     std::unordered_set<IndividualBranch_t*> sames;
     getSame(indiv, sames);
     cleanMarks(sames);
-    for(std::unordered_set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
+    for(IndividualBranch_t* it : sames)
     {
-      for(size_t i = 0; i < (*it)->object_properties_name_.size(); i++)
-        object_property_graph_->getUp((*it)->object_properties_name_[i], res, depth);
+      for(size_t i = 0; i < it->object_properties_name_.size(); i++)
+        object_property_graph_->getUp(it->object_properties_name_[i], res, depth);
 
-      for(size_t i = 0; i < (*it)->data_properties_name_.size(); i++)
-        data_property_graph_->getUp((*it)->data_properties_name_[i], res, depth);
+      for(size_t i = 0; i < it->data_properties_name_.size(); i++)
+        data_property_graph_->getUp(it->data_properties_name_[i], res, depth);
     }
   }
   return res;
@@ -334,10 +334,10 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
 {
   std::unordered_set<std::string> res;
   std::unordered_set<std::string> same = getSame(individual);
-  for(std::unordered_set<std::string>::iterator it = same.begin(); it != same.end(); ++it)
+  for(std::string it : same)
     for(size_t i = 0; i < individuals_.size(); i++)
       for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
-        if(individuals_[i]->object_properties_on_[prop_i]->value_ == (*it))
+        if(individuals_[i]->object_properties_on_[prop_i]->value_ == it)
           object_property_graph_->getUp(individuals_[i]->object_properties_name_[prop_i], res, depth);
 
   if(res.size() == 0)
@@ -353,22 +353,21 @@ std::unordered_set<std::string> IndividualGraph::getRelatedOn(const std::string&
 {
   std::unordered_set<std::string> object_properties = object_property_graph_->getDown(property);
   std::unordered_set<std::string> data_properties = data_property_graph_->getDown(property);
-  std::unordered_set<std::string>::iterator it;
 
   std::unordered_set<std::string> res;
   for(size_t i = 0; i < individuals_.size(); i++)
   {
     for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_name_.size(); prop_i++)
-      for (it = object_properties.begin(); it != object_properties.end(); ++it)
-        if(individuals_[i]->object_properties_name_[prop_i]->value_ == (*it))
+      for (std::string it : object_properties)
+        if(individuals_[i]->object_properties_name_[prop_i]->value_ == it)
         {
           std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]->object_properties_on_[prop_i]);
           res.insert(tmp.begin(), tmp.end());
         }
 
     for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
-      for (it = data_properties.begin(); it != data_properties.end(); ++it)
-        if(individuals_[i]->data_properties_name_[prop_i]->value_ == (*it))
+      for (std::string it : data_properties)
+        if(individuals_[i]->data_properties_name_[prop_i]->value_ == it)
           res.insert(individuals_[i]->data_properties_data_[prop_i].toString());
   }
 
@@ -384,17 +383,17 @@ std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::stri
     std::unordered_set<IndividualBranch_t*> sames;
     getSame(indiv, sames);
     cleanMarks(sames);
-    for(std::unordered_set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
+    for(IndividualBranch_t* it : sames)
     {
-      for(size_t i = 0; i < (*it)->object_properties_on_.size(); i++)
+      for(size_t i = 0; i < it->object_properties_on_.size(); i++)
       {
         std::unordered_set<IndividualBranch_t*> sames_tmp;
-        getSame((*it)->object_properties_on_[i], sames_tmp);
+        getSame(it->object_properties_on_[i], sames_tmp);
         std::unordered_set<std::string> tmp = set2set(sames_tmp);
         res.insert(tmp.begin(), tmp.end());
       }
-      for(size_t i = 0; i < (*it)->data_properties_data_.size(); i++)
-        res.insert((*it)->data_properties_data_[i].toString());
+      for(size_t i = 0; i < it->data_properties_data_.size(); i++)
+        res.insert(it->data_properties_data_[i].toString());
     }
   }
   return res;
@@ -442,15 +441,14 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
 {
   std::unordered_set<std::string> object_properties = object_property_graph_->getDown(property);
   std::unordered_set<std::string> data_properties = data_property_graph_->getDown(property);
-  std::unordered_set<std::string>::iterator it;
 
   std::unordered_set<std::string> res;
   for(size_t i = 0; i < individuals_.size(); i++)
   {
     for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
       if(individuals_[i]->object_properties_on_[prop_i]->value_ == individual)
-        for (it = object_properties.begin(); it != object_properties.end(); ++it)
-          if(individuals_[i]->object_properties_name_[prop_i]->value_ == (*it))
+        for (std::string it : object_properties)
+          if(individuals_[i]->object_properties_name_[prop_i]->value_ == it)
           {
             std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
             res.insert(tmp.begin(), tmp.end());
@@ -458,8 +456,8 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
 
     for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
       if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
-        for (it = data_properties.begin(); it != data_properties.end(); ++it)
-          if(individuals_[i]->data_properties_name_[prop_i]->value_ == (*it))
+        for (std::string it : data_properties)
+          if(individuals_[i]->data_properties_name_[prop_i]->value_ == it)
           {
             std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
             res.insert(tmp.begin(), tmp.end());
@@ -488,23 +486,22 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& indivi
 {
   std::unordered_set<std::string> object_properties = object_property_graph_->getDown(property);
   std::unordered_set<std::string> data_properties = data_property_graph_->getDown(property);
-  std::unordered_set<std::string>::iterator it;
 
   std::unordered_set<std::string> res;
   for(size_t i = 0; i < individuals_.size(); i++)
     if(individuals_[i]->value_ == individual)
     {
       for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_name_.size(); prop_i++)
-        for (it = object_properties.begin(); it != object_properties.end(); ++it)
-          if(individuals_[i]->object_properties_name_[prop_i]->value_ == (*it))
+        for (std::string it : object_properties)
+          if(individuals_[i]->object_properties_name_[prop_i]->value_ == it)
           {
             std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]->object_properties_on_[prop_i]);
             res.insert(tmp.begin(), tmp.end());
           }
 
       for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
-        for (it = data_properties.begin(); it != data_properties.end(); ++it)
-          if(individuals_[i]->data_properties_name_[prop_i]->value_ == (*it))
+        for (std::string it : data_properties)
+          if(individuals_[i]->data_properties_name_[prop_i]->value_ == it)
             res.insert(individuals_[i]->data_properties_data_[prop_i].toString());
     }
 
@@ -550,9 +547,9 @@ std::unordered_set<std::string> IndividualGraph::getUp(IndividualBranch_t* indiv
     std::unordered_set<IndividualBranch_t*> sames;
     getSame(indiv, sames);
     cleanMarks(sames);
-    for(std::unordered_set<IndividualBranch_t*>::iterator it = sames.begin(); it != sames.end(); ++it)
-      for(size_t i = 0; i < (*it)->is_a_.size(); i++)
-        class_graph_->getUp((*it)->is_a_[i], res, depth, current_depth);
+    for(IndividualBranch_t* it : sames)
+      for(size_t i = 0; i < it->is_a_.size(); i++)
+        class_graph_->getUp(it->is_a_[i], res, depth, current_depth);
   }
   return res;
 }
@@ -591,11 +588,11 @@ std::unordered_set<std::string> IndividualGraph::getSameAndClean(IndividualBranc
 std::unordered_set<std::string> IndividualGraph::select(std::unordered_set<std::string>& on, const std::string& class_selector)
 {
   std::unordered_set<std::string> res;
-  for(std::unordered_set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
+  for(std::string it : on)
   {
-    std::unordered_set<std::string> tmp = getUp(*it);
+    std::unordered_set<std::string> tmp = getUp(it);
     if(tmp.find(class_selector) != tmp.end())
-      res.insert(*it);
+      res.insert(it);
   }
   return res;
 }
@@ -667,18 +664,18 @@ std::unordered_set<std::string> IndividualGraph::getType(const std::string& clas
 
 void IndividualGraph::cleanMarks(std::unordered_set<IndividualBranch_t*>& indSet)
 {
-  for(std::unordered_set<IndividualBranch_t*>::iterator it = indSet.begin(); it != indSet.end(); ++it)
-    (*it)->mark = false;
+  for(IndividualBranch_t* it : indSet)
+    it->mark = false;
 }
 
 std::unordered_set<std::string> IndividualGraph::set2set(std::unordered_set<IndividualBranch_t*> indSet, bool clean)
 {
   std::unordered_set<std::string> res;
-  for(std::unordered_set<IndividualBranch_t*>::iterator it = indSet.begin(); it != indSet.end(); ++it)
+  for(IndividualBranch_t* it : indSet)
   {
     if(clean)
-      (*it)->mark = false;
-    res.insert((*it)->value_);
+      it->mark = false;
+    res.insert(it->value_);
   }
   return res;
 }

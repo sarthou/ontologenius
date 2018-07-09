@@ -147,12 +147,11 @@ std::unordered_set<std::string> ClassGraph::getDisjoint(const std::string& value
 std::unordered_set<std::string> ClassGraph::select(std::unordered_set<std::string>& on, const std::string& class_selector)
 {
   std::unordered_set<std::string> res;
-  for(std::unordered_set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
+  for(std::string it : on)
   {
-    std::string class_i = *it;
-    std::unordered_set<std::string> tmp = getUp(class_i);
+    std::unordered_set<std::string> tmp = getUp(it);
     if(tmp.find(class_selector) != tmp.end())
-      res.insert(*it);
+      res.insert(it);
   }
   return res;
 }
