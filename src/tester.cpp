@@ -6,14 +6,14 @@
 #include <chrono>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
-#include <set>
+#include <unordered_set>
 
 using namespace std::chrono;
 
-std::string set2string(std::set<std::string> word_set)
+std::string set2string(std::unordered_set<std::string> word_set)
 {
   std::string result = "";
-  for(std::set<std::string>::iterator it = word_set.begin(); it != word_set.end(); ++it)
+  for(std::unordered_set<std::string>::iterator it = word_set.begin(); it != word_set.end(); ++it)
     result += *it + " ";
   return result;
 }
@@ -88,7 +88,7 @@ double testOne(std::vector<std::string>& seq, Ontology& onto)
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
   for(size_t i = 0; i < seq.size(); i++)
-    /*std::set<std::string> out = */onto.class_graph_.touch(seq[i]);
+    std::unordered_set<std::string> out = onto.class_graph_.getUp(seq[i]);
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
@@ -108,10 +108,11 @@ int main(int argc, char** argv)
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-  onto.readFromFile("/home/gsarthou/Desktop/test.owl");
-  onto.readFromFile("/home/gsarthou/Desktop/attribute.owl");
-  onto.readFromFile("/home/gsarthou/Desktop/positionProperty.owl");
-  onto.readFromFile("/home/gsarthou/Desktop/testIndividuals.owl");
+  onto.readFromFile("/home/osboxes/LAAS/catkin_ws/src/ontologenius/files/attribute.owl");
+  onto.readFromFile("/home/osboxes/LAAS/catkin_ws/src/ontologenius/files/positionProperty.owl");
+  onto.readFromFile("/home/osboxes/LAAS/catkin_ws/src/ontologenius/files/testIndividuals.owl");
+  onto.readFromFile("/home/osboxes/LAAS/catkin_ws/src/ontologenius/files/property.owl");
+  onto.readFromFile("/home/osboxes/LAAS/catkin_ws/src/ontologenius/files/measure.owl");
 
   onto.close();
 

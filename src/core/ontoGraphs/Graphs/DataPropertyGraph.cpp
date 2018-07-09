@@ -183,43 +183,33 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
 }
 
 
-std::set<std::string> DataPropertyGraph::getDisjoint(const std::string& value)
+std::unordered_set<std::string> DataPropertyGraph::getDisjoint(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
-    {
-      std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      getDown(branch->disjoints_[disjoint_i], res);
 
   return res;
 }
 
-std::set<std::string> DataPropertyGraph::getDomain(const std::string& value)
+std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned domain_i = 0; domain_i < branch->domains_.size(); domain_i++)
-    {
-      std::set<std::string> tmp = class_graph_->getDown(branch->domains_[domain_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      class_graph_->getDown(branch->domains_[domain_i], res);
 
   return res;
 }
 
-std::set<std::string> DataPropertyGraph::getRange(const std::string& value)
+std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
@@ -229,13 +219,13 @@ std::set<std::string> DataPropertyGraph::getRange(const std::string& value)
   return res;
 }
 
-std::set<std::string> DataPropertyGraph::select(const std::set<std::string>& on, const std::string& selector)
+std::unordered_set<std::string> DataPropertyGraph::select(std::unordered_set<std::string>& on, const std::string& selector)
 {
-  std::set<std::string> res;
-  for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
+  std::unordered_set<std::string> res;
+  for(std::unordered_set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
   {
     std::string prop_i = *it;
-    std::set<std::string> tmp = getUp(prop_i);
+    std::unordered_set<std::string> tmp = getUp(prop_i);
     if(tmp.find(selector) != tmp.end())
       res.insert(*it);
   }

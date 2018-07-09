@@ -3,8 +3,9 @@
 
 #include <string>
 #include <vector>
-#include <set>
+#include <unordered_set>
 #include <stdint.h>
+#include <random>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/Branch.h"
@@ -25,17 +26,17 @@ public:
 
   void close();
 
-  std::set<std::string> getDown(const std::string& value, int depth = -1);
-  std::set<std::string> getUp(const std::string& value, int depth = -1);
+  std::unordered_set<std::string> getDown(const std::string& value, int depth = -1);
+  std::unordered_set<std::string> getUp(const std::string& value, int depth = -1);
   std::string getName(const std::string& value);
-  std::set<std::string> find(const std::string& value);
+  std::unordered_set<std::string> find(const std::string& value);
   bool touch(const std::string& value);
 
-  std::set<std::string> getDown(B* branch, int depth = -1, unsigned int current_depth = 0);
-  std::set<std::string> getUp(B* branch, int depth = -1, unsigned int current_depth = 0);
+  void getDown(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
+  void getUp(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
 
-  std::set<B*> getDownPtr(B* branch);
-  std::set<B*> getUpPtr(B* branch);
+  std::unordered_set<B*> getDownPtr(B* branch);
+  std::unordered_set<B*> getUpPtr(B* branch);
 
   std::vector<B*> get()
   {
@@ -55,8 +56,8 @@ protected:
 
   void link();
   void add_family(B* branch, uint8_t family);
-  void amIA(B** me, std::vector<B*>& vect, std::string value, bool erase = true);
-  void isMyMother(B* me, std::string mother, std::vector<B*>& vect, bool& find);
+  void amIA(B** me, std::vector<B*>& vect, const std::string& value, bool erase = true);
+  void isMyMother(B* me, const std::string& mother, std::vector<B*>& vect, bool& find);
 };
 
 template <typename B>
@@ -87,33 +88,25 @@ void OntoGraph<B>::close()
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getDown(const std::string& value, int depth)
+std::unordered_set<std::string> OntoGraph<B>::getDown(const std::string& value, int depth)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   B* branch = this->container_.find(value);
   if(branch != nullptr)
-  {
-    std::set<std::string> tmp = getDown(branch, depth);
-    if(tmp.size())
-      res.insert(tmp.begin(), tmp.end());
-  }
+    getDown(branch, res, depth);
 
   return res;
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getUp(const std::string& value, int depth)
+std::unordered_set<std::string> OntoGraph<B>::getUp(const std::string& value, int depth)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   B* branch = this->container_.find(value);
   if(branch != nullptr)
-  {
-    std::set<std::string> tmp = getUp(branch, depth);
-    if(tmp.size())
-      res.insert(tmp.begin(), tmp.end());
-  }
+    getUp(branch, res, depth);
 
   return res;
 }
@@ -121,14 +114,35 @@ std::set<std::string> OntoGraph<B>::getUp(const std::string& value, int depth)
 template <typename B>
 std::string OntoGraph<B>::getName(const std::string& value)
 {
-  std::string res;
+  std::string res = "";
 
   B* branch = this->container_.find(value);
   if(branch != nullptr)
   {
     if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
       if(branch->dictionary_[this->language_].size())
-        res = branch->dictionary_[this->language_][0];
+      {
+        std::unordered_set<size_t> tested;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+
+        size_t dic_size = branch->dictionary_[this->language_].size();
+        std::uniform_int_distribution<> dis(0, dic_size - 1);
+
+        while(tested.size() < dic_size)
+        {
+          size_t myIndex = dis(gen);
+          std::string word = branch->dictionary_[this->language_][myIndex];
+          if(word.find("_") == std::string::npos)
+          {
+            res = word;
+            break;
+          }
+          tested.insert(myIndex);
+        }
+        if(res == "")
+          res = branch->dictionary_[this->language_][0];
+      }
       else
         res = value;
     else
@@ -176,7 +190,7 @@ void OntoGraph<B>::add_family(B* branch, uint8_t family)
 }
 
 template <typename B>
-void OntoGraph<B>::amIA(B** me, std::vector<B*>& vect, std::string value, bool erase)
+void OntoGraph<B>::amIA(B** me, std::vector<B*>& vect, const std::string& value, bool erase)
 {
   if(*me == nullptr)
     for(unsigned int i = 0; i < vect.size(); i++)
@@ -192,7 +206,7 @@ void OntoGraph<B>::amIA(B** me, std::vector<B*>& vect, std::string value, bool e
 }
 
 template <typename B>
-void OntoGraph<B>::isMyMother(B* me, std::string mother, std::vector<B*>& vect, bool& find)
+void OntoGraph<B>::isMyMother(B* me, const std::string& mother, std::vector<B*>& vect, bool& find)
 {
   if(find)
     return;
@@ -208,56 +222,42 @@ void OntoGraph<B>::isMyMother(B* me, std::string mother, std::vector<B*>& vect, 
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getDown(B* branch, int depth, unsigned int current_depth)
+void OntoGraph<B>::getDown(B* branch, std::unordered_set<std::string>& res, int depth, unsigned int current_depth)
 {
-  std::set<std::string> res;
-  res.insert(branch->value_);
   if(current_depth < (unsigned int)depth)
   {
     size_t size = branch->childs_.size();
     current_depth++;
     for(unsigned int i = 0; i < size; i++)
-    {
-      std::set<std::string> tmp = getDown(branch->childs_[i], depth, current_depth);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      getDown(branch->childs_[i], res, depth, current_depth);
   }
 
-  return res;
+  res.insert(branch->value_);
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::getUp(B* branch, int depth, unsigned int current_depth)
+void OntoGraph<B>::getUp(B* branch, std::unordered_set<std::string>& res, int depth, unsigned int current_depth)
 {
-  std::set<std::string> res;
-  res.insert(branch->value_);
   if(current_depth < (unsigned int)depth)
   {
     size_t size = branch->mothers_.size();
     current_depth++;
     for(unsigned int i = 0; i < size; i++)
-    {
-      std::set<std::string> tmp = getUp(branch->mothers_[i], depth, current_depth);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      getUp(branch->mothers_[i], res, depth, current_depth);
   }
 
-  return res;
+  res.insert(branch->value_);
 }
 
 template <typename B>
-std::set<B*> OntoGraph<B>::getDownPtr(B* branch)
+std::unordered_set<B*> OntoGraph<B>::getDownPtr(B* branch)
 {
-  std::set<B*> res;
+  std::unordered_set<B*> res;
   res.insert(branch);
   size_t size = branch->childs_.size();
   for(unsigned int i = 0; i < size; i++)
   {
-    std::set<B*> tmp = getDownPtr(branch->childs_[i]);
+    std::unordered_set<B*> tmp = getDownPtr(branch->childs_[i]);
 
     if(tmp.size())
       res.insert(tmp.begin(), tmp.end());
@@ -267,14 +267,14 @@ std::set<B*> OntoGraph<B>::getDownPtr(B* branch)
 }
 
 template <typename B>
-std::set<B*> OntoGraph<B>::getUpPtr(B* branch)
+std::unordered_set<B*> OntoGraph<B>::getUpPtr(B* branch)
 {
-  std::set<B*> res;
+  std::unordered_set<B*> res;
   res.insert(branch);
   size_t size = branch->mothers_.size();
   for(unsigned int i = 0; i < size; i++)
   {
-    std::set<B*> tmp = getUpPtr(branch->mothers_[i]);
+    std::unordered_set<B*> tmp = getUpPtr(branch->mothers_[i]);
 
     if(tmp.size())
       res.insert(tmp.begin(), tmp.end());
@@ -294,9 +294,9 @@ bool comparator(D* branch, std::string value, std::string lang)
 }
 
 template <typename B>
-std::set<std::string> OntoGraph<B>::find(const std::string& value)
+std::unordered_set<std::string> OntoGraph<B>::find(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
   std::vector<B*> branch = this->container_.find(&comparator<B>, value, this->language_);
   for(size_t i = 0; i < branch.size(); i++)
     res.insert(branch[i]->value_);

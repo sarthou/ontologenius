@@ -1,7 +1,7 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include <iostream>
 
-void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
+void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
 {
   ClassBranch_t* me = nullptr;
   //am I a created mother ?
@@ -132,30 +132,25 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
   }
 }
 
-std::set<std::string> ClassGraph::getDisjoint(const std::string& value)
+std::unordered_set<std::string> ClassGraph::getDisjoint(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   ClassBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
-    {
-      std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      getDown(branch->disjoints_[disjoint_i], res);
 
   return res;
 }
 
-std::set<std::string> ClassGraph::select(const std::set<std::string>& on, const std::string& class_selector)
+std::unordered_set<std::string> ClassGraph::select(std::unordered_set<std::string>& on, const std::string& class_selector)
 {
-  std::set<std::string> res;
-  for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
+  std::unordered_set<std::string> res;
+  for(std::unordered_set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
   {
     std::string class_i = *it;
-    std::set<std::string> tmp = getUp(class_i);
+    std::unordered_set<std::string> tmp = getUp(class_i);
     if(tmp.find(class_selector) != tmp.end())
       res.insert(*it);
   }

@@ -7,7 +7,7 @@
 #include <chrono>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
-#include <set>
+#include <unordered_set>
 #include <stdio.h>
 #include <math.h>
 

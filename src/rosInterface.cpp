@@ -22,18 +22,18 @@ void removeUselessSpace(std::string& text)
     text.erase(text.size() - 1,1);
 }
 
-std::string set2string(std::set<std::string> word_set)
+std::string set2string(std::unordered_set<std::string> word_set)
 {
-  string result = "";
-  for(set<string>::iterator it = word_set.begin(); it != word_set.end(); ++it)
+  std::string result = "";
+  for(std::unordered_set<std::string>::iterator it = word_set.begin(); it != word_set.end(); ++it)
     result += *it + " ";
   return result;
 }
 
-std::vector<std::string> set2vector(std::set<std::string> word_set)
+std::vector<std::string> set2vector(std::unordered_set<std::string> word_set)
 {
   std::vector<std::string> result;
-  for(set<string>::iterator it = word_set.begin(); it != word_set.end(); ++it)
+  for(std::unordered_set<std::string>::iterator it = word_set.begin(); it != word_set.end(); ++it)
     result.push_back(*it);
   return result;
 }
@@ -213,7 +213,7 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
   removeUselessSpace(req.action);
   removeUselessSpace(req.param);
 
-  std::set<std::string> set_res;
+  std::unordered_set<std::string> set_res;
   std::string select = "";
   if(req.action.find("select:") == 0)
   {
@@ -465,7 +465,7 @@ bool individualHandle(ontologenius::OntologeniusService::Request  &req,
   removeUselessSpace(req.action);
   removeUselessSpace(req.param);
 
-  std::set<std::string> set_res;
+  std::unordered_set<std::string> set_res;
   std::string select = "";
   if(req.action.find("select:") == 0)
   {
@@ -561,15 +561,15 @@ int main(int argc, char** argv)
 
   ros::service::waitForService("ontologenius/rest", -1);
 
-  std::string language = string(argv[1]);
+  std::string language = std::string(argv[1]);
   std::cout << "language " << language << std::endl;
 
-  std::string intern_file = string(argv[2]);
+  std::string intern_file = std::string(argv[2]);
   std::cout << "intern_file " << intern_file << std::endl;
 
   if(onto.preload(intern_file) == false)
     for(int i = 3; i < argc; i++)
-      onto.readFromFile(string(argv[i]));
+      onto.readFromFile(std::string(argv[i]));
 
   arguers.load();
   std::cout << "Plugins loaded : " << arguers.list() << std::endl;
