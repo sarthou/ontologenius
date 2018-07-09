@@ -38,9 +38,11 @@ void ArguerDictionary::updateDictionary(ValuedNode* node)
 
 void ArguerDictionary::split(ValuedNode* node)
 {
+  size_t i, dic_size = 0;
   for(auto& it : node->dictionary_)
   {
-    for(size_t i = 0; i < it.second.size(); i++)
+    dic_size = it.second.size();
+    for(i = 0; i < dic_size; i++)
     {
       std::string tmp = it.second[i];
       std::replace( tmp.begin(), tmp.end(), '_', ' ');
@@ -48,7 +50,7 @@ void ArguerDictionary::split(ValuedNode* node)
         it.second.push_back(tmp);
     }
 
-    for(size_t i = 0; i < it.second.size(); i++)
+    for(i = 0; i < dic_size; i++)
     {
       std::string tmp = "";
       tmp = tmp + it.second[i][0];
@@ -67,9 +69,11 @@ void ArguerDictionary::split(ValuedNode* node)
 
 void ArguerDictionary::createLowerCase(ValuedNode* node)
 {
-  for (auto& it : node->dictionary_)
+  size_t i, dic_size = 0;
+  for(auto& it : node->dictionary_)
   {
-    for(size_t i = 0; i < it.second.size(); i++)
+    dic_size = it.second.size();
+    for(i = 0; i < dic_size; i++)
     {
       std::string tmp = "";
       tmp.resize(it.second[i].size());
@@ -82,9 +86,11 @@ void ArguerDictionary::createLowerCase(ValuedNode* node)
 
 void ArguerDictionary::replaceQuote(ValuedNode* node)
 {
+  size_t i, dic_size = 0;
   for (auto& it : node->dictionary_)
   {
-    for(size_t i = 0; i < it.second.size(); i++)
+    dic_size = it.second.size();
+    for(i = 0; i < dic_size; i++)
     {
       std::string tmp = it.second[i];
       tmp.erase(std::remove(tmp.begin(), tmp.end(), '\''), tmp.end());
