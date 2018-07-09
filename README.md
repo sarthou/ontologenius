@@ -43,3 +43,26 @@ On this launcher file, you will find an argument indicating the path to the onto
 > The default ontologies are very simple and I encourage you to contribute to their development!
 
 You can add your own ontology files in the argument if you want them to be loaded at the beginning of the program.
+
+
+## Citation
+
+If you used `ontologenius` for your work, please cite it.
+
+```tex
+@misc{ontologenius,
+  author = {Sarthou, Guillaume},
+  title = {{ontologenius}},
+  organization = {LAAS-CNRS},
+  address = {Toulouse},
+  year = {2017 -- 2018},
+  howpublished = {\url{https://github.com/sarthou/ontologenius}}
+}
+```
+
+The result should look something similar to this (may depend on the bibliography style used):
+
+```
+G. Sarthou, “ontologenius,” https://github.com/sarthou/ontologenius,
+LAAS-CNRS, Toulouse, 2017 – 2018.
+```
