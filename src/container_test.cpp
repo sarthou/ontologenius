@@ -109,7 +109,7 @@ double findAllNTime(BranchContainerBase<ValuedNode>* container, std::vector<Valu
   return sum / n;
 }
 
-std::vector<ValuedNode*> getPartOfWords(size_t percent)
+std::vector<ValuedNode*> getPartOfWords(float percent)
 {
   std::vector<ValuedNode*> tmp;
   for(size_t i = 0; i < full_words.size() * percent / 100; i++)
@@ -121,7 +121,7 @@ std::vector<ValuedNode*> getPartOfWords(size_t percent)
   return tmp;
 }
 
-std::vector<ValuedNode*> creatTestVector(size_t percent, std::vector<ValuedNode*> words)
+std::vector<ValuedNode*> creatTestVector(float percent, std::vector<ValuedNode*> words)
 {
   std::vector<ValuedNode*> tmp;
   for(size_t i = 0; i < words.size() * percent / 100; i++)
@@ -130,13 +130,17 @@ std::vector<ValuedNode*> creatTestVector(size_t percent, std::vector<ValuedNode*
     tmp.push_back(words[myIndex]);
   }
 
-  std::vector<ValuedNode*> res;
-  while(res.size() < full_words.size())
+  if(tmp.size() < full_words.size() / 2)
   {
-    res.insert(res.end(), tmp.begin(), tmp.end());
+    std::vector<ValuedNode*> res;
+    while(res.size() < full_words.size())
+    {
+      res.insert(res.end(), tmp.begin(), tmp.end());
+    }
+    return res;
   }
-
-  return res;
+  else
+    return tmp;
 }
 
 int main(int argc, char** argv)
@@ -147,7 +151,7 @@ int main(int argc, char** argv)
 
   size_t N = 100;
 
-  for(size_t i = 1; i <= 100; i++)
+  for(size_t i = 1; i <= 5; i++)
   {
     std::cout << "########" << std::endl << "#  " << i <<"  #" << std::endl << "########" << std::endl << std::endl;
     BranchContainerDyn<ValuedNode> container_dyn;
@@ -157,7 +161,7 @@ int main(int argc, char** argv)
     container_dyn.load(part_of_words);
     container_map.load(part_of_words);
 
-    for(size_t j = 1; j <= 100; j++)
+    for(float j = 0.1; j <= 2; j = j + 0.1)
     {
       std::vector<ValuedNode*> vect = creatTestVector(j, part_of_words);
       double time_span_dyn = findAllNTime(&container_dyn, vect, N);
