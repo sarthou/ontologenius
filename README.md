@@ -1,6 +1,14 @@
 # <img src="logo/ontologenius.png" width="150"> ontolo**G**enius
 This repository is a ROS package to link, explore and interrogate ontologies.
 
+***
+
+Matser : [![Build Status](https://travis-ci.org/sarthou/ontologenius.svg?branch=master)](https://travis-ci.org/sarthou/ontologenius)
+
+Dev : [![Build Status](https://travis-ci.org/sarthou/ontologenius.svg?branch=dev)](https://travis-ci.org/sarthou/ontologenius)
+
+***
+
 [**Wiki homepage**](https://github.com/sarthou/ontologenius/wiki#-ontologenius)
 
 [**1. Installation**](https://github.com/sarthou/ontologenius/wiki/Installation#installation)
