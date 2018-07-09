@@ -42,8 +42,7 @@ public:
 
   std::vector<B*> get()
   {
-    std::vector<B*> out;
-    out.insert( out.end(), branchs_.begin(), branchs_.end() );
+    std::vector<B*> out = branchs_;
     out.insert( out.end(), roots_.begin(), roots_.end() );
     return out;
   }
