@@ -38,66 +38,63 @@ void ArguerDictionary::updateDictionary(ValuedNode* node)
 
 void ArguerDictionary::split(ValuedNode* node)
 {
-  std::map<std::string, std::vector<std::string>>::iterator it;
-  for (it = node->dictionary_.begin(); it != node->dictionary_.end(); ++it)
+  for(auto& it : node->dictionary_)
   {
-    for(size_t i = 0; i < it->second.size(); i++)
+    for(size_t i = 0; i < it.second.size(); i++)
     {
-      std::string tmp = it->second[i];
+      std::string tmp = it.second[i];
       std::replace( tmp.begin(), tmp.end(), '_', ' ');
-      if (std::find(it->second.begin(), it->second.end(), tmp) == it->second.end())
-        it->second.push_back(tmp);
+      if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
+        it.second.push_back(tmp);
     }
 
-    for(size_t i = 0; i < it->second.size(); i++)
+    for(size_t i = 0; i < it.second.size(); i++)
     {
       std::string tmp = "";
-      tmp = tmp + it->second[i][0];
-      for(size_t char_i = 1; char_i < it->second[i].size(); char_i++)
+      tmp = tmp + it.second[i][0];
+      for(size_t char_i = 1; char_i < it.second[i].size(); char_i++)
       {
-        if((it->second[i][char_i] >= 'A') && (it->second[i][char_i] <= 'Z'))
-          if(it->second[i][char_i - 1] != ' ')
+        if((it.second[i][char_i] >= 'A') && (it.second[i][char_i] <= 'Z'))
+          if(it.second[i][char_i - 1] != ' ')
             tmp = tmp + ' ';
-        tmp = tmp + it->second[i][char_i];
+        tmp = tmp + it.second[i][char_i];
       }
-      if (std::find(it->second.begin(), it->second.end(), tmp) == it->second.end())
-        it->second.push_back(tmp);
+      if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
+        it.second.push_back(tmp);
     }
   }
 }
 
 void ArguerDictionary::createLowerCase(ValuedNode* node)
 {
-  std::map<std::string, std::vector<std::string>>::iterator it;
-  for (it = node->dictionary_.begin(); it != node->dictionary_.end(); ++it)
+  for (auto& it : node->dictionary_)
   {
-    for(size_t i = 0; i < it->second.size(); i++)
+    for(size_t i = 0; i < it.second.size(); i++)
     {
       std::string tmp = "";
-      tmp.resize(it->second[i].size());
-      std::transform(it->second[i].begin(), it->second[i].end(), tmp.begin(), ::tolower);
-      if (std::find(it->second.begin(), it->second.end(), tmp) == it->second.end())
-        it->second.push_back(tmp);
+      tmp.resize(it.second[i].size());
+      std::transform(it.second[i].begin(), it.second[i].end(), tmp.begin(), ::tolower);
+      if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
+        it.second.push_back(tmp);
     }
   }
 }
 
 void ArguerDictionary::replaceQuote(ValuedNode* node)
 {
-  std::map<std::string, std::vector<std::string>>::iterator it;
-  for (it = node->dictionary_.begin(); it != node->dictionary_.end(); ++it)
+  for (auto& it : node->dictionary_)
   {
-    for(size_t i = 0; i < it->second.size(); i++)
+    for(size_t i = 0; i < it.second.size(); i++)
     {
-      std::string tmp = it->second[i];
+      std::string tmp = it.second[i];
       tmp.erase(std::remove(tmp.begin(), tmp.end(), '\''), tmp.end());
-      if (std::find(it->second.begin(), it->second.end(), tmp) == it->second.end())
-        it->second.push_back(tmp);
+      if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
+        it.second.push_back(tmp);
 
-      tmp = it->second[i];
+      tmp = it.second[i];
       std::replace( tmp.begin(), tmp.end(), '\'', ' ');
-      if (std::find(it->second.begin(), it->second.end(), tmp) == it->second.end())
-        it->second.push_back(tmp);
+      if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
+        it.second.push_back(tmp);
     }
   }
 }

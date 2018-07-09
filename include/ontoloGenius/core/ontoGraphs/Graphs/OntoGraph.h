@@ -63,10 +63,10 @@ protected:
 template <typename B>
 OntoGraph<B>::~OntoGraph()
 {
-  for(unsigned int i = 0; i < branchs_.size(); i++)
+  for(size_t i = 0; i < branchs_.size(); i++)
     delete branchs_[i];
 
-  for(unsigned int i = 0; i < roots_.size(); i++)
+  for(size_t i = 0; i < roots_.size(); i++)
     delete roots_[i];
 
   branchs_.clear();
@@ -76,7 +76,7 @@ OntoGraph<B>::~OntoGraph()
 template <typename B>
 void OntoGraph<B>::close()
 {
-  for(unsigned int i = 0; i < tmp_mothers_.size(); i++)
+  for(size_t i = 0; i < tmp_mothers_.size(); i++)
     roots_.push_back(tmp_mothers_[i]);
 
   tmp_mothers_.clear();
@@ -171,7 +171,7 @@ void OntoGraph<B>::link()
   for(uint8_t root_i = 0; root_i < roots_.size(); root_i++)
   {
     roots_[root_i]->family = 256/(nb_root_family+1) * root_i;
-    for(unsigned int i = 0; i < roots_[root_i]->childs_.size(); i++)
+    for(size_t i = 0; i < roots_[root_i]->childs_.size(); i++)
       add_family(roots_[root_i]->childs_[i], roots_[root_i]->family);
   }
 }
@@ -180,7 +180,7 @@ template <typename B>
 void OntoGraph<B>::add_family(B* branch, uint8_t family)
 {
   branch->family += family/branch->nb_mothers_;
-  for(unsigned int i = 0; i < branch->childs_.size(); i++)
+  for(size_t i = 0; i < branch->childs_.size(); i++)
   {
     depth_++;
     if(depth_ < 20)
@@ -193,7 +193,7 @@ template <typename B>
 void OntoGraph<B>::amIA(B** me, std::vector<B*>& vect, const std::string& value, bool erase)
 {
   if(*me == nullptr)
-    for(unsigned int i = 0; i < vect.size(); i++)
+    for(size_t i = 0; i < vect.size(); i++)
     {
       if(vect[i]->value_ == value)
       {
@@ -211,7 +211,7 @@ void OntoGraph<B>::isMyMother(B* me, const std::string& mother, std::vector<B*>&
   if(find)
     return;
 
-  for(unsigned int i = 0; i < vect.size(); i++)
+  for(size_t i = 0; i < vect.size(); i++)
     if(mother == vect[i]->value_)
     {
       vect[i]->childs_.push_back(me);
@@ -228,7 +228,7 @@ void OntoGraph<B>::getDown(B* branch, std::unordered_set<std::string>& res, int 
   {
     size_t size = branch->childs_.size();
     current_depth++;
-    for(unsigned int i = 0; i < size; i++)
+    for(size_t i = 0; i < size; i++)
       getDown(branch->childs_[i], res, depth, current_depth);
   }
 
@@ -242,7 +242,7 @@ void OntoGraph<B>::getUp(B* branch, std::unordered_set<std::string>& res, int de
   {
     size_t size = branch->mothers_.size();
     current_depth++;
-    for(unsigned int i = 0; i < size; i++)
+    for(size_t i = 0; i < size; i++)
       getUp(branch->mothers_[i], res, depth, current_depth);
   }
 
@@ -255,7 +255,7 @@ std::unordered_set<B*> OntoGraph<B>::getDownPtr(B* branch)
   std::unordered_set<B*> res;
   res.insert(branch);
   size_t size = branch->childs_.size();
-  for(unsigned int i = 0; i < size; i++)
+  for(size_t i = 0; i < size; i++)
   {
     std::unordered_set<B*> tmp = getDownPtr(branch->childs_[i]);
 
@@ -272,7 +272,7 @@ std::unordered_set<B*> OntoGraph<B>::getUpPtr(B* branch)
   std::unordered_set<B*> res;
   res.insert(branch);
   size_t size = branch->mothers_.size();
-  for(unsigned int i = 0; i < size; i++)
+  for(size_t i = 0; i < size; i++)
   {
     std::unordered_set<B*> tmp = getUpPtr(branch->mothers_[i]);
 

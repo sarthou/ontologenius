@@ -28,10 +28,10 @@ bool Computer::compute(std::string equation, ClassGraph& onto)
     split(LR[0], tmp, '|');
     L.resize(tmp.size());
     notL.resize(tmp.size());
-    for(unsigned int i = 0; i < tmp.size(); i++)
+    for(size_t i = 0; i < tmp.size(); i++)
     {
       split(tmp[i], L[i], '_');
-      for(unsigned int j = 0; j < L[i].size(); j++)
+      for(size_t j = 0; j < L[i].size(); j++)
       {
         std::vector<std::string> word;
         split(L[i][j], word, '-');
@@ -48,10 +48,10 @@ bool Computer::compute(std::string equation, ClassGraph& onto)
     split(LR[1], tmp, '|');
     R.resize(tmp.size());
     notR.resize(tmp.size());
-    for(unsigned int i = 0; i < tmp.size(); i++)
+    for(size_t i = 0; i < tmp.size(); i++)
     {
       split(tmp[i], R[i], '_');
-      for(unsigned int j = 0; j < R[i].size(); j++)
+      for(size_t j = 0; j < R[i].size(); j++)
       {
         std::vector<std::string> word;
         split(R[i][j], word, '-');
@@ -65,16 +65,16 @@ bool Computer::compute(std::string equation, ClassGraph& onto)
       }
     }
 
-    for(unsigned int i = 0; i < L.size(); i++)
+    for(size_t i = 0; i < L.size(); i++)
     {
       finder_t finder;
       finder.find.resize(R.size());
-      for(unsigned int i = 0; i < R.size(); i++)
+      for(size_t i = 0; i < R.size(); i++)
         finder.find[i].resize(R[i].size(), false);
       finder.words.clear();
       finder.words.resize(L[i].size());
 
-      for(unsigned int j = 0; j < L[i].size(); j++)
+      for(size_t j = 0; j < L[i].size(); j++)
       {
         //cout << "looking for " << L[i][j] << " as : ";
         finder.words[j] = onto.getUp(L[i][j]);
@@ -84,9 +84,9 @@ bool Computer::compute(std::string equation, ClassGraph& onto)
           cout << " as NOT ";
         cout << endl;*/
 
-        for(unsigned int orR = 0; orR < R.size(); orR++)
+        for(size_t orR = 0; orR < R.size(); orR++)
         {
-          for(unsigned int andR = 0; andR < R[orR].size(); andR++)
+          for(size_t andR = 0; andR < R[orR].size(); andR++)
           {
             if(notR[orR][andR])
             {
@@ -124,10 +124,10 @@ bool Computer::compute(std::string equation, ClassGraph& onto)
       }
 
       bool find = false;
-      for(unsigned int i = 0; i < R.size(); i++)
+      for(size_t i = 0; i < R.size(); i++)
       {
         find = true;
-        for(unsigned int j = 0; j < R[i].size(); j++)
+        for(size_t j = 0; j < R[i].size(); j++)
           find &= finder.find[i][j];
 
         if(invert)

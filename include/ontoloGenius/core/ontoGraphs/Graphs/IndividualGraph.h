@@ -75,7 +75,7 @@ private:
   void getSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);
   std::unordered_set<std::string> getSameAndClean(IndividualBranch_t* individual);
   void cleanMarks(std::unordered_set<IndividualBranch_t*>& indSet);
-  std::unordered_set<std::string> set2set(std::unordered_set<IndividualBranch_t*> indSet, bool clean = true);
+  std::unordered_set<std::string> set2set(std::unordered_set<IndividualBranch_t*>& indSet, bool clean = true);
 };
 
 #endif /* INDIVIDUALGRAPH_H */

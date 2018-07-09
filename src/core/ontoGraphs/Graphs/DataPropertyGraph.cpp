@@ -30,7 +30,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   else
   {
     //for all my mothers
-    for(unsigned int mothers_i = 0; mothers_i < property_vectors.mothers_.size(); mothers_i++)
+    for(size_t mothers_i = 0; mothers_i < property_vectors.mothers_.size(); mothers_i++)
     {
       bool i_find_my_mother = false;
 
@@ -61,7 +61,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   ** Disjoints
   **********************/
   //for all my disjoints
-  for(unsigned int disjoints_i = 0; disjoints_i < property_vectors.disjoints_.size(); disjoints_i++)
+  for(size_t disjoints_i = 0; disjoints_i < property_vectors.disjoints_.size(); disjoints_i++)
   {
     bool i_find_my_disjoint = false;
 
@@ -88,7 +88,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   ** Domains
   **********************/
   //for all my domains
-  for(unsigned int domains_i = 0; domains_i < property_vectors.domains_.size(); domains_i++)
+  for(size_t domains_i = 0; domains_i < property_vectors.domains_.size(); domains_i++)
   {
     bool i_find_my_domain = false;
 
@@ -106,7 +106,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
     {
       ObjectVectors_t empty_vectors;
       class_graph_->add(property_vectors.domains_[domains_i], empty_vectors);
-      for(unsigned int root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
+      for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
         if(property_vectors.domains_[domains_i] == class_graph_->roots_[root_i]->value_)
         {
           me->setSteady_domain(class_graph_->roots_[root_i]);
@@ -119,7 +119,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   ** Ranges
   **********************/
   //for all my ranges
-  for(unsigned int ranges_i = 0; ranges_i < property_vectors.ranges_.size(); ranges_i++)
+  for(size_t ranges_i = 0; ranges_i < property_vectors.ranges_.size(); ranges_i++)
     me->setSteady_range(property_vectors.ranges_[ranges_i]);
 
   /**********************
@@ -133,7 +133,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
 
 void DataPropertyGraph::add(std::vector<std::string>& disjoints)
 {
-  for(unsigned int disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
+  for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
     DataPropertyBranch_t* me = nullptr;
@@ -154,7 +154,7 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
     }
 
     //for all my disjoints ...
-    for(unsigned int disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
+    for(size_t disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
     {
       //... excepted me
       if(disjoints_i != disjoints_j)

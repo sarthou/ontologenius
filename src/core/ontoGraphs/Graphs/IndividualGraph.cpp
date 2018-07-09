@@ -11,7 +11,7 @@ IndividualGraph::IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* o
 
 IndividualGraph::~IndividualGraph()
 {
-  for(unsigned int i = 0; i < individuals_.size(); i++)
+  for(size_t i = 0; i < individuals_.size(); i++)
     delete individuals_[i];
 
   individuals_.clear();
@@ -26,7 +26,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 {
   //am I created ?
   IndividualBranch_t* me = nullptr;
-  for(unsigned int i = 0; i < individuals_.size(); i++)
+  for(size_t i = 0; i < individuals_.size(); i++)
   {
     if(individuals_[i]->value_ == value)
     {
@@ -43,12 +43,12 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   ** Class assertion
   **********************/
   //for all my classes
-  for(unsigned int is_a_i = 0; is_a_i < individual_vector.is_a_.size(); is_a_i++)
+  for(size_t is_a_i = 0; is_a_i < individual_vector.is_a_.size(); is_a_i++)
   {
     bool i_find_my_is_a_ = false;
 
     //is a root my class ?
-    for(unsigned int root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
+    for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
       if(individual_vector.is_a_[is_a_i] == class_graph_->roots_[root_i]->value_)
       {
         me->setSteady_is_a(class_graph_->roots_[root_i]);
@@ -56,7 +56,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
       }
 
     //is a branch my class ?
-    for(unsigned int branch_i = 0; branch_i < class_graph_->branchs_.size(); branch_i++)
+    for(size_t branch_i = 0; branch_i < class_graph_->branchs_.size(); branch_i++)
       if(individual_vector.is_a_[is_a_i] == class_graph_->branchs_[branch_i]->value_)
       {
         me->setSteady_is_a(class_graph_->branchs_[branch_i]);
@@ -68,7 +68,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     {
       ObjectVectors_t empty_vectors;
       class_graph_->add(individual_vector.is_a_[is_a_i], empty_vectors);
-      for(unsigned int root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
+      for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
         if(individual_vector.is_a_[is_a_i] == class_graph_->roots_[root_i]->value_)
         {
           me->setSteady_is_a(class_graph_->roots_[root_i]);
@@ -81,12 +81,12 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   ** Object Property assertion name
   **********************/
   //for all my properties
-  for(unsigned int property_i = 0; property_i < individual_vector.object_properties_name_.size(); property_i++)
+  for(size_t property_i = 0; property_i < individual_vector.object_properties_name_.size(); property_i++)
   {
     bool i_find_my_properties = false;
 
     //is a root my properties ?
-    for(unsigned int root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
+    for(size_t root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
       if(individual_vector.object_properties_name_[property_i] == object_property_graph_->roots_[root_i]->value_)
       {
         me->setSteady_object_properties_name(object_property_graph_->roots_[root_i]);
@@ -94,7 +94,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
       }
 
     //is a branch my properties ?
-    for(unsigned int branch_i = 0; branch_i < object_property_graph_->branchs_.size(); branch_i++)
+    for(size_t branch_i = 0; branch_i < object_property_graph_->branchs_.size(); branch_i++)
       if(individual_vector.object_properties_name_[property_i] == object_property_graph_->branchs_[branch_i]->value_)
       {
         me->setSteady_object_properties_name(object_property_graph_->branchs_[branch_i]);
@@ -106,7 +106,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     {
       ObjectPropertyVectors_t empty_vectors;
       object_property_graph_->add(individual_vector.object_properties_name_[property_i], empty_vectors);
-      for(unsigned int root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
+      for(size_t root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
         if(individual_vector.object_properties_name_[property_i] == object_property_graph_->roots_[root_i]->value_)
         {
           me->setSteady_object_properties_name(object_property_graph_->roots_[root_i]);
@@ -119,12 +119,12 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   ** Object Property assertion on indiv
   **********************/
   //for all my individuals
-  for(unsigned int properties_on_i = 0; properties_on_i < individual_vector.object_properties_on_.size(); properties_on_i++)
+  for(size_t properties_on_i = 0; properties_on_i < individual_vector.object_properties_on_.size(); properties_on_i++)
   {
     bool i_find_my_properties_on = false;
 
     //is a individual exist ?
-    for(unsigned int indiv_i = 0; indiv_i < individuals_.size(); indiv_i++)
+    for(size_t indiv_i = 0; indiv_i < individuals_.size(); indiv_i++)
       if(individual_vector.object_properties_on_[properties_on_i] == individuals_[indiv_i]->value_)
       {
         me->setSteady_object_properties_on(individuals_[indiv_i]);
@@ -144,12 +144,12 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   ** Data Property assertion name
   **********************/
   //for all my properties
-  for(unsigned int property_i = 0; property_i < individual_vector.data_properties_name_.size(); property_i++)
+  for(size_t property_i = 0; property_i < individual_vector.data_properties_name_.size(); property_i++)
   {
     bool i_find_my_properties = false;
 
     //is a root my properties ?
-    for(unsigned int root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
+    for(size_t root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
       if(individual_vector.data_properties_name_[property_i] == data_property_graph_->roots_[root_i]->value_)
       {
         me->setSteady_data_properties_name(data_property_graph_->roots_[root_i]);
@@ -157,7 +157,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
       }
 
     //is a branch my properties ?
-    for(unsigned int branch_i = 0; branch_i < data_property_graph_->branchs_.size(); branch_i++)
+    for(size_t branch_i = 0; branch_i < data_property_graph_->branchs_.size(); branch_i++)
       if(individual_vector.data_properties_name_[property_i] == data_property_graph_->branchs_[branch_i]->value_)
       {
         me->setSteady_data_properties_name(data_property_graph_->branchs_[branch_i]);
@@ -169,7 +169,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     {
       DataPropertyVectors_t empty_vectors;
       data_property_graph_->add(individual_vector.data_properties_name_[property_i], empty_vectors);
-      for(unsigned int root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
+      for(size_t root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
         if(individual_vector.data_properties_name_[property_i] == data_property_graph_->roots_[root_i]->value_)
         {
           me->setSteady_data_properties_name(data_property_graph_->roots_[root_i]);
@@ -187,12 +187,12 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   ** Same In Individual
   **********************/
   //for all my inverses
-  for(unsigned int same_i = 0; same_i < individual_vector.same_as_.size(); same_i++)
+  for(size_t same_i = 0; same_i < individual_vector.same_as_.size(); same_i++)
   {
     bool i_find_my_same = false;
 
     //is a root my inverse ?
-    for(unsigned int individual_i = 0; individual_i < individuals_.size(); individual_i++)
+    for(size_t individual_i = 0; individual_i < individuals_.size(); individual_i++)
       if(individual_vector.same_as_[same_i] == individuals_[individual_i]->value_)
       {
         me->setSteady_same_as(individuals_[individual_i]);
@@ -219,12 +219,12 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 
 void IndividualGraph::add(std::vector<std::string>& distinct)
 {
-  for(unsigned int distinct_i = 0; distinct_i < distinct.size(); distinct_i++)
+  for(size_t distinct_i = 0; distinct_i < distinct.size(); distinct_i++)
   {
     //I need to find myself
     IndividualBranch_t* me = nullptr;
     //Am I created ?
-    for(unsigned int individual_i = 0; individual_i < individuals_.size(); individual_i++)
+    for(size_t individual_i = 0; individual_i < individuals_.size(); individual_i++)
       if(distinct[distinct_i] == individuals_[individual_i]->value_)
         me = individuals_[individual_i];
 
@@ -236,7 +236,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
     }
 
     //for all my distincts ...
-    for(unsigned int distinct_j = 0; distinct_j < distinct.size(); distinct_j++)
+    for(size_t distinct_j = 0; distinct_j < distinct.size(); distinct_j++)
     {
       //... excepted me
       if(distinct_i != distinct_j)
@@ -244,7 +244,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
         bool i_find_my_distinct = false;
 
         //is my distinct created ?
-        for(unsigned int individual_i = 0; individual_i < individuals_.size(); individual_i++)
+        for(size_t individual_i = 0; individual_i < individuals_.size(); individual_i++)
           if(distinct[distinct_j] == individuals_[individual_i]->value_)
           {
             me->setSteady_distinct(individuals_[individual_i]);
@@ -306,22 +306,21 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
 {
   std::unordered_set<std::string> object_properties = object_property_graph_->getDown(property);
   std::unordered_set<std::string> data_properties = data_property_graph_->getDown(property);
-  std::unordered_set<std::string>::iterator it;
 
   std::unordered_set<std::string> res;
   for(size_t i = 0; i < individuals_.size(); i++)
   {
     for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_name_.size(); prop_i++)
-      for (it = object_properties.begin(); it != object_properties.end(); ++it)
-        if(individuals_[i]->object_properties_name_[prop_i]->value_ == (*it))
+      for (std::string it : object_properties)
+        if(individuals_[i]->object_properties_name_[prop_i]->value_ == it)
         {
           std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
           res.insert(tmp.begin(), tmp.end());
         }
 
     for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
-      for (it = data_properties.begin(); it != data_properties.end(); ++it)
-        if(individuals_[i]->data_properties_name_[prop_i]->value_ == (*it))
+      for (std::string it : data_properties)
+        if(individuals_[i]->data_properties_name_[prop_i]->value_ == it)
         {
           std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
           res.insert(tmp.begin(), tmp.end());
@@ -668,7 +667,7 @@ void IndividualGraph::cleanMarks(std::unordered_set<IndividualBranch_t*>& indSet
     it->mark = false;
 }
 
-std::unordered_set<std::string> IndividualGraph::set2set(std::unordered_set<IndividualBranch_t*> indSet, bool clean)
+std::unordered_set<std::string> IndividualGraph::set2set(std::unordered_set<IndividualBranch_t*>& indSet, bool clean)
 {
   std::unordered_set<std::string> res;
   for(IndividualBranch_t* it : indSet)

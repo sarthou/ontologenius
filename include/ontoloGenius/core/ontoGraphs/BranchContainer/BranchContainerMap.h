@@ -12,15 +12,15 @@ public:
   BranchContainerMap() {}
   virtual ~BranchContainerMap() {}
 
-  virtual B* find(std::string word);
-  virtual std::vector<B*> find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang);
+  virtual B* find(const std::string& word);
+  virtual std::vector<B*> find(bool (*comp)(B*, std::string, std::string), const std::string& word, const std::string& lang);
   virtual void load(std::vector<B*>& vect);
 private:
   std::map<std::string, B*> nodes_;
 };
 
 template <typename B>
-B* BranchContainerMap<B>::find(std::string word)
+B* BranchContainerMap<B>::find(const std::string& word)
 {
   typename std::map<std::string, B*>::iterator it = nodes_.find(word);
   if(it == nodes_.end())
@@ -30,14 +30,13 @@ B* BranchContainerMap<B>::find(std::string word)
 }
 
 template <typename B>
-std::vector<B*> BranchContainerMap<B>::find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang)
+std::vector<B*> BranchContainerMap<B>::find(bool (*comp)(B*, std::string, std::string), const std::string& word, const std::string& lang)
 {
   std::vector<B*> res;
 
-  typename std::map<std::string, B*>::iterator it;
-  for(it = nodes_.begin(); it != nodes_.end(); ++it)
-    if(comp(it->second, word, lang))
-      res.push_back(it->second);
+  for(auto& it : nodes_)
+    if(comp(it.second, word, lang))
+      res.push_back(it.second);
   return res;
 }
 

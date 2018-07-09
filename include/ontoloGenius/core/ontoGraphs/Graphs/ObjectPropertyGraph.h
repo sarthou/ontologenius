@@ -47,12 +47,12 @@ public:
 private:
   ClassGraph* class_graph_;
 
-  void isMyDisjoint(ObjectPropertyBranch_t* me, std::string disjoint, std::vector<ObjectPropertyBranch_t*>& vect, bool& find, bool all = true)
+  void isMyDisjoint(ObjectPropertyBranch_t* me, std::string& disjoint, std::vector<ObjectPropertyBranch_t*>& vect, bool& find, bool all = true)
   {
     if(find)
       return;
 
-    for(unsigned int i = 0; i < vect.size(); i++)
+    for(size_t i = 0; i < vect.size(); i++)
       if(disjoint == vect[i]->value_)
       {
         me->setSteady_disjoint(vect[i]);
@@ -63,12 +63,12 @@ private:
       }
   }
 
-  void isMyInverse(ObjectPropertyBranch_t* me, std::string inverse, std::vector<ObjectPropertyBranch_t*>& vect, bool& find, bool all = true)
+  void isMyInverse(ObjectPropertyBranch_t* me, std::string& inverse, std::vector<ObjectPropertyBranch_t*>& vect, bool& find, bool all = true)
   {
     if(find)
       return;
 
-    for(unsigned int i = 0; i < vect.size(); i++)
+    for(size_t i = 0; i < vect.size(); i++)
       if(inverse == vect[i]->value_)
       {
         me->setSteady_inverse(vect[i]);
@@ -79,12 +79,12 @@ private:
       }
   }
 
-  void isMyDomain(ObjectPropertyBranch_t* me, std::string domain, std::vector<ClassBranch_t*>& vect, bool& find)
+  void isMyDomain(ObjectPropertyBranch_t* me, std::string& domain, std::vector<ClassBranch_t*>& vect, bool& find)
   {
     if(find)
       return;
 
-    for(unsigned int i = 0; i < vect.size(); i++)
+    for(size_t i = 0; i < vect.size(); i++)
       if(domain == vect[i]->value_)
       {
         me->setSteady_domain(vect[i]);
@@ -93,12 +93,12 @@ private:
       }
   }
 
-  void isMyRange(ObjectPropertyBranch_t* me, std::string range, std::vector<ClassBranch_t*>& vect, bool& find)
+  void isMyRange(ObjectPropertyBranch_t* me, std::string& range, std::vector<ClassBranch_t*>& vect, bool& find)
   {
     if(find)
       return;
 
-    for(unsigned int i = 0; i < vect.size(); i++)
+    for(size_t i = 0; i < vect.size(); i++)
       if(range == vect[i]->value_)
       {
         me->setSteady_range(vect[i]);
@@ -107,10 +107,10 @@ private:
       }
   }
 
-  void getNextChainLink(ObjectPropertyBranch_t** next, std::string next_link, std::vector<ObjectPropertyBranch_t*>& vect)
+  void getNextChainLink(ObjectPropertyBranch_t** next, std::string& next_link, std::vector<ObjectPropertyBranch_t*>& vect)
   {
     if(*next == nullptr)
-      for(unsigned int i = 0; i < vect.size(); i++)
+      for(size_t i = 0; i < vect.size(); i++)
       {
         if(vect[i]->value_ == next_link)
         {

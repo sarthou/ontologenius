@@ -41,8 +41,8 @@ public:
     delete nodes_;
   }
 
-  virtual B* find(std::string word);
-  virtual std::vector<B*> find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang);
+  virtual B* find(const std::string& word);
+  virtual std::vector<B*> find(bool (*comp)(B*, std::string, std::string), const std::string& word, const std::string& lang);
   virtual void load(std::vector<B*>& vect);
 private:
   BranchNode_t<B>* nodes_;
@@ -55,7 +55,7 @@ private:
 };
 
 template <typename B>
-B* BranchContainerDyn<B>::find(std::string word)
+B* BranchContainerDyn<B>::find(const std::string& word)
 {
   B* tmp = nullptr;
   size_t i = 0;
@@ -75,7 +75,7 @@ B* BranchContainerDyn<B>::find(std::string word)
 }
 
 template <typename B>
-std::vector<B*> BranchContainerDyn<B>::find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang)
+std::vector<B*> BranchContainerDyn<B>::find(bool (*comp)(B*, std::string, std::string), const std::string& word, const std::string& lang)
 {
   std::vector<B*> res;
 

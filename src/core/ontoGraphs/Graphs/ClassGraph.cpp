@@ -25,7 +25,7 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
   else
   {
     //for all my mothers
-    for(unsigned int mothers_i = 0; mothers_i < object_vector.mothers_.size(); mothers_i++)
+    for(size_t mothers_i = 0; mothers_i < object_vector.mothers_.size(); mothers_i++)
     {
       bool i_find_my_mother = false;
 
@@ -53,7 +53,7 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
   }
 
   //for all my disjoints
-  for(unsigned int disjoints_i = 0; disjoints_i < object_vector.disjoints_.size(); disjoints_i++)
+  for(size_t disjoints_i = 0; disjoints_i < object_vector.disjoints_.size(); disjoints_i++)
   {
     bool i_find_my_disjoint = false;
 
@@ -83,7 +83,7 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
 
 void ClassGraph::add(std::vector<std::string>& disjoints)
 {
-  for(unsigned int disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
+  for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
     ClassBranch_t* me = nullptr;
@@ -104,7 +104,7 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
     }
 
     //for all my disjoints ...
-    for(unsigned int disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
+    for(size_t disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
     {
       //... excepted me
       if(disjoints_i != disjoints_j)
@@ -138,7 +138,7 @@ std::unordered_set<std::string> ClassGraph::getDisjoint(const std::string& value
 
   ClassBranch_t* branch = container_.find(value);
   if(branch != nullptr)
-    for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
+    for(size_t disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
       getDown(branch->disjoints_[disjoint_i], res);
 
   return res;

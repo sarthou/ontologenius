@@ -28,7 +28,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   else
   {
     //for all my mothers
-    for(unsigned int mothers_i = 0; mothers_i < property_vectors.mothers_.size(); mothers_i++)
+    for(size_t mothers_i = 0; mothers_i < property_vectors.mothers_.size(); mothers_i++)
     {
       bool i_find_my_mother = false;
 
@@ -59,7 +59,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   ** Disjoints
   **********************/
   //for all my disjoints
-  for(unsigned int disjoints_i = 0; disjoints_i < property_vectors.disjoints_.size(); disjoints_i++)
+  for(size_t disjoints_i = 0; disjoints_i < property_vectors.disjoints_.size(); disjoints_i++)
   {
     bool i_find_my_disjoint = false;
 
@@ -86,7 +86,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   ** Inverses
   **********************/
   //for all my inverses
-  for(unsigned int inverses_i = 0; inverses_i < property_vectors.inverses_.size(); inverses_i++)
+  for(size_t inverses_i = 0; inverses_i < property_vectors.inverses_.size(); inverses_i++)
   {
     bool i_find_my_inverse = false;
 
@@ -113,7 +113,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   ** Domains
   **********************/
   //for all my domains
-  for(unsigned int domains_i = 0; domains_i < property_vectors.domains_.size(); domains_i++)
+  for(size_t domains_i = 0; domains_i < property_vectors.domains_.size(); domains_i++)
   {
     bool i_find_my_domain = false;
 
@@ -131,7 +131,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     {
       ObjectVectors_t empty_vectors;
       class_graph_->add(property_vectors.domains_[domains_i], empty_vectors);
-      for(unsigned int root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
+      for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
         if(property_vectors.domains_[domains_i] == class_graph_->roots_[root_i]->value_)
         {
           me->setSteady_domain(class_graph_->roots_[root_i]);
@@ -144,7 +144,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   ** Ranges
   **********************/
   //for all my ranges
-  for(unsigned int ranges_i = 0; ranges_i < property_vectors.ranges_.size(); ranges_i++)
+  for(size_t ranges_i = 0; ranges_i < property_vectors.ranges_.size(); ranges_i++)
   {
     bool i_find_my_range = false;
 
@@ -162,7 +162,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     {
       ObjectVectors_t empty_vectors;
       class_graph_->add(property_vectors.ranges_[ranges_i], empty_vectors);
-      for(unsigned int root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
+      for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
         if(property_vectors.ranges_[ranges_i] == class_graph_->roots_[root_i]->value_)
         {
           me->setSteady_range(class_graph_->roots_[root_i]);
@@ -221,7 +221,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
 
 void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
 {
-  for(unsigned int disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
+  for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
     ObjectPropertyBranch_t* me = nullptr;
@@ -242,7 +242,7 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
     }
 
     //for all my disjoints ...
-    for(unsigned int disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
+    for(size_t disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
     {
       //... excepted me
       if(disjoints_i != disjoints_j)

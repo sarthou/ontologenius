@@ -18,10 +18,9 @@ void ClassChecker::checkDisjoint()
     std::unordered_set<std::string> up = class_graph_->getUp(graph_[i]->value_);
     std::unordered_set<std::string> disjoint;
 
-    std::unordered_set<std::string>::iterator it;
-    for (it = up.begin(); it != up.end(); it++)
+    for(std::string it : up)
     {
-      std::unordered_set<std::string> tmp = class_graph_->getDisjoint((std::string&)*it);
+      std::unordered_set<std::string> tmp = class_graph_->getDisjoint(it);
       disjoint.insert(tmp.begin(), tmp.end());
     }
 
