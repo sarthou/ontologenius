@@ -36,7 +36,9 @@ public:
   void getUp(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
 
   std::unordered_set<B*> getDownPtr(B* branch);
+  void getDownPtr(B* branch, std::unordered_set<B*>& res);
   std::unordered_set<B*> getUpPtr(B* branch);
+  void getUpPtr(B* branch, std::unordered_set<B*>& res);
 
   std::vector<B*> get()
   {
@@ -253,34 +255,35 @@ template <typename B>
 std::unordered_set<B*> OntoGraph<B>::getDownPtr(B* branch)
 {
   std::unordered_set<B*> res;
+  getDownPtr(branch, res);
+  return res;
+}
+
+template <typename B>
+void OntoGraph<B>::getDownPtr(B* branch, std::unordered_set<B*>& res)
+{
   res.insert(branch);
   size_t size = branch->childs_.size();
   for(size_t i = 0; i < size; i++)
-  {
-    std::unordered_set<B*> tmp = getDownPtr(branch->childs_[i]);
-
-    if(tmp.size())
-      res.insert(tmp.begin(), tmp.end());
-  }
-
-  return res;
+    getDownPtr(branch->childs_[i], res);
 }
 
 template <typename B>
 std::unordered_set<B*> OntoGraph<B>::getUpPtr(B* branch)
 {
   std::unordered_set<B*> res;
+  getUpPtr(branch, res);
+  return res;
+}
+
+template <typename B>
+void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res)
+{
   res.insert(branch);
   size_t size = branch->mothers_.size();
   for(size_t i = 0; i < size; i++)
-  {
-    std::unordered_set<B*> tmp = getUpPtr(branch->mothers_[i]);
+    getUpPtr(branch->mothers_[i], res);
 
-    if(tmp.size())
-      res.insert(tmp.begin(), tmp.end());
-  }
-
-  return res;
 }
 
 template <typename D>
