@@ -2,6 +2,7 @@
 #define ONTOLOGYMANIPULATOR_H
 
 #include "ontoloGenius/utility/IndividualClient.h"
+#include "ontoloGenius/utility/ObjectPropertyClient.h"
 
 #include "ros/ros.h"
 
@@ -21,6 +22,7 @@ public:
   bool close();
 
   IndividualClient individuals;
+  ObjectPropertyClient objectProperties;
 
 private:
   ros::NodeHandle* n_;

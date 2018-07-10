@@ -170,6 +170,7 @@ add_library(ontoloGenius_lib
   src/utility/OntologyManipulator.cpp
   src/utility/ClientBase.cpp
   src/utility/IndividualClient.cpp
+  src/utility/ObjectPropertyClient.cpp
 )
 add_dependencies(ontoloGenius_lib ontologenius_gencpp)
 target_link_libraries(ontoloGenius_lib ontologenius_interpreter_lib)

@@ -1,6 +1,7 @@
 #include "ontoloGenius/utility/OntologyManipulator.h"
 
-OntologyManipulator::OntologyManipulator(ros::NodeHandle* n) :  individuals(n)
+OntologyManipulator::OntologyManipulator(ros::NodeHandle* n) :  individuals(n),
+                                                                objectProperties(n)
 {
   n_ = n;
 }
