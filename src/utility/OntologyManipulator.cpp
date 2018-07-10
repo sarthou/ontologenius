@@ -2,7 +2,8 @@
 
 OntologyManipulator::OntologyManipulator(ros::NodeHandle* n) :  individuals(n),
                                                                 objectProperties(n),
-                                                                dataProperties(n)
+                                                                dataProperties(n),
+                                                                classes(n)
 {
   n_ = n;
 }
