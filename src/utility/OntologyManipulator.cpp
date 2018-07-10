@@ -1,7 +1,5 @@
 #include "ontoloGenius/utility/OntologyManipulator.h"
 
-#include "ontologenius/OntologeniusService.h"
-
 OntologyManipulator::OntologyManipulator(ros::NodeHandle* n) :  class_client(n->serviceClient<ontologenius::OntologeniusService>("ontologenius/class", true)),
                                                                 object_property_client(n->serviceClient<ontologenius::OntologeniusService>("ontologenius/object_property", true)),
                                                                 data_property_client(n->serviceClient<ontologenius::OntologeniusService>("ontologenius/data_property", true)),

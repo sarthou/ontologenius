@@ -1,6 +1,8 @@
 #ifndef ONTOLOGYMANIPULATOR_H
 #define ONTOLOGYMANIPULATOR_H
 
+#include "ontologenius/OntologeniusService.h"
+
 #include "ros/ros.h"
 
 #include <vector>
@@ -38,6 +40,62 @@ private:
   ros::ServiceClient data_property_client;
   ros::ServiceClient individual_client;
   ros::ServiceClient arguer_client;
+
+
+  inline std::vector<std::string> callIndividual(ontologenius::OntologeniusService& srv)
+  {
+    std::vector<std::string> res;
+    cpt++;
+
+    if(individual_client.call(srv))
+      return srv.response.values;
+    else
+      return res;
+  }
+
+  inline std::vector<std::string> callObjectProperty(ontologenius::OntologeniusService& srv)
+  {
+    std::vector<std::string> res;
+    cpt++;
+
+    if(object_property_client.call(srv))
+      return srv.response.values;
+    else
+      return res;
+  }
+
+  inline std::vector<std::string> callDataProperty(ontologenius::OntologeniusService& srv)
+  {
+    std::vector<std::string> res;
+    cpt++;
+
+    if(data_property_client.call(srv))
+      return srv.response.values;
+    else
+      return res;
+  }
+
+  inline std::vector<std::string> callClass(ontologenius::OntologeniusService& srv)
+  {
+    std::vector<std::string> res;
+    cpt++;
+
+    if(class_client.call(srv))
+      return srv.response.values;
+    else
+      return res;
+  }
+
+  inline std::vector<std::string> callArguer(ontologenius::OntologeniusService& srv)
+  {
+    std::vector<std::string> res;
+    cpt++;
+
+    if(arguer_client.call(srv))
+      return srv.response.values;
+    else
+      return res;
+  }
 };
 
 #endif
