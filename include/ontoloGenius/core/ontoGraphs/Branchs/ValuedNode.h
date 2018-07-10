@@ -5,6 +5,8 @@
 #include <vector>
 #include <map>
 
+#include "ontoloGenius/core/ontoGraphs/Branchs/WordTable.h"
+
 class UpdatableNode
 {
 public:
@@ -23,9 +25,16 @@ public:
 class ValuedNode : public UpdatableNode, public ValuedNodeData
 {
 public:
-  std::string value_;
+  ValuedNode(const std::string& value) {value_ = value; index_ = table_.add(value); }
 
-  ValuedNode(std::string value) {value_ = value; }
+  uint32_t get() {return index_; }
+  std::string value() {return table_[index_]; }
+
+  std::string value_;
+  static WordTable table_;
+private:
+
+  uint32_t index_;
 };
 
 #endif
