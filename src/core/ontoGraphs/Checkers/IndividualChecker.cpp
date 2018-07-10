@@ -3,6 +3,7 @@
 
 size_t IndividualChecker::check()
 {
+  graph_size = graph_.size();
   checkSame();
 
   checkReflexive();
@@ -23,15 +24,14 @@ size_t IndividualChecker::check()
 
 void IndividualChecker::checkSame()
 {
-  for(size_t i = 0; i < graph_.size(); i++)
+  for(size_t i = 0; i < graph_size; i++)
   {
     std::unordered_set<std::string> same = individual_graph_->getSame(graph_[i]->value_);
     std::unordered_set<std::string> distinct;
 
-    std::unordered_set<std::string>::iterator it;
-    for (it = same.begin(); it != same.end(); it++)
+    for (std::string it : same)
     {
-      std::unordered_set<std::string> tmp = individual_graph_->getDistincts((std::string&)*it);
+      std::unordered_set<std::string> tmp = individual_graph_->getDistincts(it);
       distinct.insert(tmp.begin(), tmp.end());
     }
 
@@ -43,7 +43,7 @@ void IndividualChecker::checkSame()
 
 void IndividualChecker::checkReflexive()
 {
-  for(size_t i = 0; i < graph_.size(); i++)
+  for(size_t i = 0; i < graph_size; i++)
   {
     for(size_t prop_i = 0; prop_i < graph_[i]->object_properties_name_.size(); prop_i++)
     {
@@ -63,7 +63,7 @@ void IndividualChecker::checkReflexive()
 
 void IndividualChecker::checkObectPropertyDomain()
 {
-  for(size_t i = 0; i < graph_.size(); i++)
+  for(size_t i = 0; i < graph_size; i++)
   {
     std::unordered_set<std::string> up = individual_graph_->getUp(graph_[i]->value_);
 
@@ -82,7 +82,7 @@ void IndividualChecker::checkObectPropertyDomain()
 
 void IndividualChecker::checkObectPropertyRange()
 {
-  for(size_t i = 0; i < graph_.size(); i++)
+  for(size_t i = 0; i < graph_size; i++)
   {
     for(size_t prop_i = 0; prop_i < graph_[i]->object_properties_name_.size(); prop_i++)
     {
@@ -100,7 +100,7 @@ void IndividualChecker::checkObectPropertyRange()
 
 void IndividualChecker::checkDataPropertyDomain()
 {
-  for(size_t i = 0; i < graph_.size(); i++)
+  for(size_t i = 0; i < graph_size; i++)
   {
     std::unordered_set<std::string> up = individual_graph_->getUp(graph_[i]->value_);
 
@@ -119,7 +119,7 @@ void IndividualChecker::checkDataPropertyDomain()
 
 void IndividualChecker::checkDataPropertyRange()
 {
-  for(size_t i = 0; i < graph_.size(); i++)
+  for(size_t i = 0; i < graph_size; i++)
   {
     for(size_t prop_i = 0; prop_i < graph_[i]->data_properties_name_.size(); prop_i++)
     {
@@ -136,7 +136,7 @@ void IndividualChecker::checkDataPropertyRange()
 
 void IndividualChecker::checkAssymetric()
 {
-  for(size_t i = 0; i < graph_.size(); i++)
+  for(size_t i = 0; i < graph_size; i++)
   {
     for(size_t prop_i = 0; prop_i < graph_[i]->object_properties_name_.size(); prop_i++)
     {

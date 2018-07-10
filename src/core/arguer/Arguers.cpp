@@ -198,7 +198,8 @@ void Arguers::runPostArguers()
 void Arguers::computeIndividualsUpdates()
 {
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
-  for(size_t indiv_i = 0; indiv_i < indiv.size(); indiv_i++)
+  size_t indiv_size = indiv.size();
+  for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
     if(indiv[indiv_i]->nb_updates_ == 0)
       indiv[indiv_i]->updated_ = false;
     else

@@ -13,7 +13,13 @@ class ValidityChecker
 {
   static_assert(std::is_base_of<ValuedNode,B>::value, "B must be derived from ValuedNode");
 public:
-  ValidityChecker(Graph<B>* graph) {graph_ = graph->get(); nb_error_ = 0; is_analysed = false;}
+  ValidityChecker(Graph<B>* graph)
+  {
+    graph_ = graph->get();
+    graph_size = graph_.size();
+    nb_error_ = 0;
+    is_analysed = false;
+  }
   virtual ~ValidityChecker() {}
 
   virtual size_t check() = 0;
@@ -21,6 +27,7 @@ public:
 protected:
   std::vector<B*> graph_;
   bool is_analysed;
+  size_t graph_size;
 
   void print_error(std::string err)
   {

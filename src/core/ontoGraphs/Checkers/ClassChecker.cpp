@@ -3,6 +3,7 @@
 
 size_t ClassChecker::check()
 {
+  graph_size = graph_.size();
   checkDisjoint();
 
   is_analysed = true;
@@ -13,7 +14,7 @@ size_t ClassChecker::check()
 
 void ClassChecker::checkDisjoint()
 {
-  for(size_t i = 0; i < graph_.size(); i++)
+  for(size_t i = 0; i < graph_size; i++)
   {
     std::unordered_set<std::string> up = class_graph_->getUp(graph_[i]->value_);
     std::unordered_set<std::string> disjoint;

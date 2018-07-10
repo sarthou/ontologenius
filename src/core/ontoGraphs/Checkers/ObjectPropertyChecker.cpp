@@ -3,6 +3,7 @@
 
 size_t ObjectPropertyChecker::check()
 {
+  graph_size = graph_.size();
   checkDisjoint();
   checkCharacteristics();
 
@@ -14,15 +15,14 @@ size_t ObjectPropertyChecker::check()
 
 void ObjectPropertyChecker::checkDisjoint()
 {
-  for(size_t i = 0; i < graph_.size(); i++)
+  for(size_t i = 0; i < graph_size; i++)
   {
     std::unordered_set<std::string> up = property_graph_->getUp(graph_[i]->value_);
     std::unordered_set<std::string> disjoint;
 
-    std::unordered_set<std::string>::iterator it;
-    for (it = up.begin(); it != up.end(); it++)
+    for (std::string it : up)
     {
-      std::unordered_set<std::string> tmp = property_graph_->getDisjoint((std::string&)*it);
+      std::unordered_set<std::string> tmp = property_graph_->getDisjoint(it);
       disjoint.insert(tmp.begin(), tmp.end());
     }
 
@@ -34,7 +34,7 @@ void ObjectPropertyChecker::checkDisjoint()
 
 void ObjectPropertyChecker::checkCharacteristics()
 {
-  for(size_t i = 0; i < graph_.size(); i++)
+  for(size_t i = 0; i < graph_size; i++)
   {
     Properties_t properties = graph_[i]->properties_;
 

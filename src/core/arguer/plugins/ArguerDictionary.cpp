@@ -8,20 +8,25 @@ void ArguerDictionary::preReason()
 
 void ArguerDictionary::postReason()
 {
+  size_t graph_size;
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
-  for(size_t i = 0; i < indiv.size(); i++)
+  graph_size = indiv.size();
+  for(size_t i = 0; i < graph_size; i++)
     updateDictionary(indiv[i]);
 
   std::vector<ClassBranch_t*> classes = ontology_->class_graph_.get();
-  for(size_t i = 0; i < classes.size(); i++)
+  graph_size = classes.size();
+  for(size_t i = 0; i < graph_size; i++)
     updateDictionary(classes[i]);
 
   std::vector<DataPropertyBranch_t*> data_properties = ontology_->data_property_graph_.get();
-  for(size_t i = 0; i < data_properties.size(); i++)
+  graph_size = data_properties.size();
+  for(size_t i = 0; i < graph_size; i++)
     updateDictionary(data_properties[i]);
 
   std::vector<ObjectPropertyBranch_t*> object_properties = ontology_->object_property_graph_.get();
-  for(size_t i = 0; i < object_properties.size(); i++)
+  graph_size = object_properties.size();
+  for(size_t i = 0; i < graph_size; i++)
     updateDictionary(object_properties[i]);
 }
 
