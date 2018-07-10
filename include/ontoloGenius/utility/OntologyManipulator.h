@@ -3,6 +3,7 @@
 
 #include "ontoloGenius/utility/IndividualClient.h"
 #include "ontoloGenius/utility/ObjectPropertyClient.h"
+#include "ontoloGenius/utility/DataPropertyClient.h"
 
 #include "ros/ros.h"
 
@@ -23,6 +24,7 @@ public:
 
   IndividualClient individuals;
   ObjectPropertyClient objectProperties;
+  DataPropertyClient dataProperties;
 
 private:
   ros::NodeHandle* n_;
