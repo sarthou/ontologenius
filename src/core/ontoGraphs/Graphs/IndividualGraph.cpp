@@ -333,7 +333,7 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
 {
   std::unordered_set<std::string> res;
   std::unordered_set<std::string> same = getSame(individual);
-  for(std::string it : same)
+  for(const std::string& it : same)
     for(size_t i = 0; i < individuals_.size(); i++)
       for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
         if(individuals_[i]->object_properties_on_[prop_i]->value_ == it)
@@ -587,7 +587,7 @@ std::unordered_set<std::string> IndividualGraph::getSameAndClean(IndividualBranc
 std::unordered_set<std::string> IndividualGraph::select(std::unordered_set<std::string>& on, const std::string& class_selector)
 {
   std::unordered_set<std::string> res;
-  for(std::string it : on)
+  for(const std::string& it : on)
   {
     std::unordered_set<std::string> tmp = getUp(it);
     if(tmp.find(class_selector) != tmp.end())

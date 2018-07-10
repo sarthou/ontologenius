@@ -322,7 +322,7 @@ std::unordered_set<std::string> ObjectPropertyGraph::getRange(const std::string&
 std::unordered_set<std::string> ObjectPropertyGraph::select(std::unordered_set<std::string>& on, const std::string& selector)
 {
   std::unordered_set<std::string> res;
-  for(std::string it : on)
+  for(const std::string& it : on)
   {
     std::unordered_set<std::string> tmp = getUp(it);
     if(tmp.find(selector) != tmp.end())

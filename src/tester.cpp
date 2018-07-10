@@ -13,7 +13,7 @@ using namespace std::chrono;
 std::string set2string(std::unordered_set<std::string> word_set)
 {
   std::string result = "";
-  for(std::string it : word_set)
+  for(const std::string& it : word_set)
     result += it + " ";
   return result;
 }
@@ -108,11 +108,11 @@ int main(int argc, char** argv)
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/attribute.owl");
-  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/positionProperty.owl");
-  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/testIndividuals.owl");
-  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/property.owl");
-  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/measure.owl");
+  onto.readFromFile("/home/osboxes/LAAS/catkin_ws/src/ontologenius/files/attribute.owl");
+  onto.readFromFile("/home/osboxes/LAAS/catkin_ws/src/ontologenius/files/positionProperty.owl");
+  onto.readFromFile("/home/osboxes/LAAS/catkin_ws/src/ontologenius/files/testIndividuals.owl");
+  onto.readFromFile("/home/osboxes/LAAS/catkin_ws/src/ontologenius/files/property.owl");
+  onto.readFromFile("/home/osboxes/LAAS/catkin_ws/src/ontologenius/files/measure.owl");
 
   onto.close();
 

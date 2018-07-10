@@ -92,7 +92,7 @@ bool Computer::compute(std::string equation, ClassGraph& onto)
             {
               //cout << "-> compare with !" << R[orR][andR] << " : ";
               std::unordered_set<std::string> disjoint = onto.getDisjoint(R[orR][andR]);
-              for(std::string it : disjoint)
+              for(const std::string& it : disjoint)
               {
                 if(finder.words[j].find(it) != finder.words[j].end())
                 {

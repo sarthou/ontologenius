@@ -147,7 +147,7 @@ std::unordered_set<std::string> ClassGraph::getDisjoint(const std::string& value
 std::unordered_set<std::string> ClassGraph::select(std::unordered_set<std::string>& on, const std::string& class_selector)
 {
   std::unordered_set<std::string> res;
-  for(std::string it : on)
+  for(const std::string& it : on)
   {
     std::unordered_set<std::string> tmp = getUp(it);
     if(tmp.find(class_selector) != tmp.end())
