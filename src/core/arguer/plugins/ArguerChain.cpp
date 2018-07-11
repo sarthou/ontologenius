@@ -67,8 +67,8 @@ bool ArguerChain::porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBran
   size_t properties_size = indiv_on->object_properties_name_.size();
   for(size_t i = 0; i < properties_size; i++)
   {
-    if(indiv_on->object_properties_name_[i]->value() == chain_prop->value())
-      if(indiv_on->object_properties_on_[i]->value() == chain_indiv->value())
+    if(indiv_on->object_properties_name_[i]->get() == chain_prop->get())
+      if(indiv_on->object_properties_on_[i]->get() == chain_indiv->get())
         return true;
   }
   return false;

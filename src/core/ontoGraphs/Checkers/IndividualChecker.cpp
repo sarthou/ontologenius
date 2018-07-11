@@ -49,12 +49,12 @@ void IndividualChecker::checkReflexive()
     {
       if(graph_[i]->object_properties_name_[prop_i]->properties_.reflexive_property_)
       {
-        if(graph_[i]->value() != graph_[i]->object_properties_on_[prop_i]->value())
+        if(graph_[i]->get() != graph_[i]->object_properties_on_[prop_i]->get())
           print_error("'" + graph_[i]->object_properties_name_[prop_i]->value() + "' is reflexive so can't be from '" + graph_[i]->value() + "' to '" + graph_[i]->object_properties_on_[prop_i]->value() + "'");
       }
       else if(graph_[i]->object_properties_name_[prop_i]->properties_.irreflexive_property_)
       {
-        if(graph_[i]->value() == graph_[i]->object_properties_on_[prop_i]->value())
+        if(graph_[i]->get() == graph_[i]->object_properties_on_[prop_i]->get())
           print_error("'" + graph_[i]->object_properties_name_[prop_i]->value() + "' is irreflexive so can't be from '" + graph_[i]->value() + "' to '" + graph_[i]->object_properties_on_[prop_i]->value() + "'");
       }
     }
@@ -151,8 +151,8 @@ bool IndividualChecker::symetricExist(IndividualBranch_t* indiv_on, ObjectProper
 {
   for(size_t i = 0; i < sym_indiv->object_properties_name_.size(); i++)
   {
-    if(sym_indiv->object_properties_name_[i]->value() == sym_prop->value())
-      if(sym_indiv->object_properties_on_[i]->value() == indiv_on->value())
+    if(sym_indiv->object_properties_name_[i]->get() == sym_prop->get())
+      if(sym_indiv->object_properties_on_[i]->get() == indiv_on->get())
         return true;
   }
   return false;

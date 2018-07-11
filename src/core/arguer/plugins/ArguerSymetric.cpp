@@ -37,8 +37,8 @@ bool ArguerSymetric::symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyB
   size_t properties_size = sym_indiv->object_properties_name_.size();
   for(size_t i = 0; i < properties_size; i++)
   {
-    if(sym_indiv->object_properties_name_[i]->value() == sym_prop->value())
-      if(sym_indiv->object_properties_on_[i]->value() == indiv_on->value())
+    if(sym_indiv->object_properties_name_[i]->get() == sym_prop->get())
+      if(sym_indiv->object_properties_on_[i]->get() == indiv_on->get())
         return true;
   }
   return false;
