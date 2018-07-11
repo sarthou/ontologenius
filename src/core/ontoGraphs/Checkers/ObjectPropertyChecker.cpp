@@ -17,7 +17,7 @@ void ObjectPropertyChecker::checkDisjoint()
 {
   for(size_t i = 0; i < graph_size; i++)
   {
-    std::unordered_set<std::string> up = property_graph_->getUp(graph_[i]->value_);
+    std::unordered_set<std::string> up = property_graph_->getUp(graph_[i]->value());
     std::unordered_set<std::string> disjoint;
 
     for (std::string it : up)
@@ -28,7 +28,7 @@ void ObjectPropertyChecker::checkDisjoint()
 
     std::string intersection = findIntersection(up, disjoint);
     if(intersection != "")
-      print_error("'" + graph_[i]->value_ + "' can't be a '" + intersection + "' because of disjonction");
+      print_error("'" + graph_[i]->value() + "' can't be a '" + intersection + "' because of disjonction");
   }
 }
 
@@ -39,9 +39,9 @@ void ObjectPropertyChecker::checkCharacteristics()
     Properties_t properties = graph_[i]->properties_;
 
     if(properties.symetric_property_ && properties.antisymetric_property_)
-      print_error("'" + graph_[i]->value_ + "' can't be a 'symetric' and 'antisymetric'");
+      print_error("'" + graph_[i]->value() + "' can't be a 'symetric' and 'antisymetric'");
 
     if(properties.reflexive_property_ && properties.irreflexive_property_)
-      print_error("'" + graph_[i]->value_ + "' can't be a 'reflexive' and 'irreflexive'");
+      print_error("'" + graph_[i]->value() + "' can't be a 'reflexive' and 'irreflexive'");
   }
 }

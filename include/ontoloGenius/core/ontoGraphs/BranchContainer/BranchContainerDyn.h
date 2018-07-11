@@ -90,7 +90,7 @@ template <typename B>
 void BranchContainerDyn<B>::load(std::vector<B*>& vect)
 {
   for(size_t i = 0; i < vect.size(); i++)
-    insertEnd(vect[i]->value_, vect[i]);
+    insertEnd(vect[i]->value(), vect[i]);
 
   nb_elem_ += vect.size();
   buffer_size_ = log2(nb_elem_);

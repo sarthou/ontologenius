@@ -196,7 +196,7 @@ void OntoGraph<B>::amIA(B** me, std::vector<B*>& vect, const std::string& value,
   if(*me == nullptr)
     for(size_t i = 0; i < vect.size(); i++)
     {
-      if(vect[i]->value_ == value)
+      if(vect[i]->value() == value)
       {
         *me = vect[i];
         if(erase)
@@ -213,7 +213,7 @@ void OntoGraph<B>::isMyMother(B* me, const std::string& mother, std::vector<B*>&
     return;
 
   for(size_t i = 0; i < vect.size(); i++)
-    if(mother == vect[i]->value_)
+    if(mother == vect[i]->value())
     {
       vect[i]->childs_.push_back(me);
       me->setSteady_mother(vect[i]);
@@ -233,7 +233,7 @@ void OntoGraph<B>::getDown(B* branch, std::unordered_set<std::string>& res, int 
       getDown(branch->childs_[i], res, depth, current_depth);
   }
 
-  res.insert(branch->value_);
+  res.insert(branch->value());
 }
 
 template <typename B>
@@ -247,7 +247,7 @@ void OntoGraph<B>::getUp(B* branch, std::unordered_set<std::string>& res, int de
       getUp(branch->mothers_[i], res, depth, current_depth);
   }
 
-  res.insert(branch->value_);
+  res.insert(branch->value());
 }
 
 template <typename B>
@@ -301,7 +301,7 @@ std::unordered_set<std::string> OntoGraph<B>::find(const std::string& value)
   std::unordered_set<std::string> res;
   std::vector<B*> branch = this->container_.find(&comparator<B>, value, this->language_);
   for(size_t i = 0; i < branch.size(); i++)
-    res.insert(branch[i]->value_);
+    res.insert(branch[i]->value());
 
   return res;
 }

@@ -28,7 +28,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   IndividualBranch_t* me = nullptr;
   for(size_t i = 0; i < individuals_.size(); i++)
   {
-    if(individuals_[i]->value_ == value)
+    if(individuals_[i]->value() == value)
     {
       me = individuals_[i];
       individuals_.erase(individuals_.begin() + i);
@@ -49,7 +49,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 
     //is a root my class ?
     for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
-      if(individual_vector.is_a_[is_a_i] == class_graph_->roots_[root_i]->value_)
+      if(individual_vector.is_a_[is_a_i] == class_graph_->roots_[root_i]->value())
       {
         me->setSteady_is_a(class_graph_->roots_[root_i]);
         i_find_my_is_a_ = true;
@@ -57,7 +57,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 
     //is a branch my class ?
     for(size_t branch_i = 0; branch_i < class_graph_->branchs_.size(); branch_i++)
-      if(individual_vector.is_a_[is_a_i] == class_graph_->branchs_[branch_i]->value_)
+      if(individual_vector.is_a_[is_a_i] == class_graph_->branchs_[branch_i]->value())
       {
         me->setSteady_is_a(class_graph_->branchs_[branch_i]);
         i_find_my_is_a_ = true;
@@ -69,7 +69,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
       ObjectVectors_t empty_vectors;
       class_graph_->add(individual_vector.is_a_[is_a_i], empty_vectors);
       for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
-        if(individual_vector.is_a_[is_a_i] == class_graph_->roots_[root_i]->value_)
+        if(individual_vector.is_a_[is_a_i] == class_graph_->roots_[root_i]->value())
         {
           me->setSteady_is_a(class_graph_->roots_[root_i]);
           i_find_my_is_a_ = true;
@@ -87,7 +87,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 
     //is a root my properties ?
     for(size_t root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
-      if(individual_vector.object_properties_name_[property_i] == object_property_graph_->roots_[root_i]->value_)
+      if(individual_vector.object_properties_name_[property_i] == object_property_graph_->roots_[root_i]->value())
       {
         me->setSteady_object_properties_name(object_property_graph_->roots_[root_i]);
         i_find_my_properties = true;
@@ -95,7 +95,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 
     //is a branch my properties ?
     for(size_t branch_i = 0; branch_i < object_property_graph_->branchs_.size(); branch_i++)
-      if(individual_vector.object_properties_name_[property_i] == object_property_graph_->branchs_[branch_i]->value_)
+      if(individual_vector.object_properties_name_[property_i] == object_property_graph_->branchs_[branch_i]->value())
       {
         me->setSteady_object_properties_name(object_property_graph_->branchs_[branch_i]);
         i_find_my_properties = true;
@@ -107,7 +107,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
       ObjectPropertyVectors_t empty_vectors;
       object_property_graph_->add(individual_vector.object_properties_name_[property_i], empty_vectors);
       for(size_t root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
-        if(individual_vector.object_properties_name_[property_i] == object_property_graph_->roots_[root_i]->value_)
+        if(individual_vector.object_properties_name_[property_i] == object_property_graph_->roots_[root_i]->value())
         {
           me->setSteady_object_properties_name(object_property_graph_->roots_[root_i]);
           i_find_my_properties = true;
@@ -125,7 +125,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 
     //is a individual exist ?
     for(size_t indiv_i = 0; indiv_i < individuals_.size(); indiv_i++)
-      if(individual_vector.object_properties_on_[properties_on_i] == individuals_[indiv_i]->value_)
+      if(individual_vector.object_properties_on_[properties_on_i] == individuals_[indiv_i]->value())
       {
         me->setSteady_object_properties_on(individuals_[indiv_i]);
         i_find_my_properties_on = true;
@@ -150,7 +150,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 
     //is a root my properties ?
     for(size_t root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
-      if(individual_vector.data_properties_name_[property_i] == data_property_graph_->roots_[root_i]->value_)
+      if(individual_vector.data_properties_name_[property_i] == data_property_graph_->roots_[root_i]->value())
       {
         me->setSteady_data_properties_name(data_property_graph_->roots_[root_i]);
         i_find_my_properties = true;
@@ -158,7 +158,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 
     //is a branch my properties ?
     for(size_t branch_i = 0; branch_i < data_property_graph_->branchs_.size(); branch_i++)
-      if(individual_vector.data_properties_name_[property_i] == data_property_graph_->branchs_[branch_i]->value_)
+      if(individual_vector.data_properties_name_[property_i] == data_property_graph_->branchs_[branch_i]->value())
       {
         me->setSteady_data_properties_name(data_property_graph_->branchs_[branch_i]);
         i_find_my_properties = true;
@@ -170,7 +170,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
       DataPropertyVectors_t empty_vectors;
       data_property_graph_->add(individual_vector.data_properties_name_[property_i], empty_vectors);
       for(size_t root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
-        if(individual_vector.data_properties_name_[property_i] == data_property_graph_->roots_[root_i]->value_)
+        if(individual_vector.data_properties_name_[property_i] == data_property_graph_->roots_[root_i]->value())
         {
           me->setSteady_data_properties_name(data_property_graph_->roots_[root_i]);
           i_find_my_properties = true;
@@ -193,7 +193,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 
     //is a root my inverse ?
     for(size_t individual_i = 0; individual_i < individuals_.size(); individual_i++)
-      if(individual_vector.same_as_[same_i] == individuals_[individual_i]->value_)
+      if(individual_vector.same_as_[same_i] == individuals_[individual_i]->value())
       {
         me->setSteady_same_as(individuals_[individual_i]);
         individuals_[individual_i]->same_as_.push_back(me);
@@ -212,7 +212,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 
   me->setSteady_dictionary(individual_vector.dictionary_);
   if(me->dictionary_.find("en") == me->dictionary_.end())
-    me->dictionary_["en"].push_back(me->value_);
+    me->dictionary_["en"].push_back(me->value());
 
   individuals_.push_back(me);
 }
@@ -225,7 +225,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
     IndividualBranch_t* me = nullptr;
     //Am I created ?
     for(size_t individual_i = 0; individual_i < individuals_.size(); individual_i++)
-      if(distinct[distinct_i] == individuals_[individual_i]->value_)
+      if(distinct[distinct_i] == individuals_[individual_i]->value())
         me = individuals_[individual_i];
 
     // I don't exist ?
@@ -245,7 +245,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
 
         //is my distinct created ?
         for(size_t individual_i = 0; individual_i < individuals_.size(); individual_i++)
-          if(distinct[distinct_j] == individuals_[individual_i]->value_)
+          if(distinct[distinct_j] == individuals_[individual_i]->value())
           {
             me->setSteady_distinct(individuals_[individual_i]);
             i_find_my_distinct = true;
@@ -312,7 +312,7 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
   {
     for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_name_.size(); prop_i++)
       for (std::string it : object_properties)
-        if(individuals_[i]->object_properties_name_[prop_i]->value_ == it)
+        if(individuals_[i]->object_properties_name_[prop_i]->value() == it)
         {
           std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
           res.insert(tmp.begin(), tmp.end());
@@ -320,7 +320,7 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
 
     for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
       for (std::string it : data_properties)
-        if(individuals_[i]->data_properties_name_[prop_i]->value_ == it)
+        if(individuals_[i]->data_properties_name_[prop_i]->value() == it)
         {
           std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
           res.insert(tmp.begin(), tmp.end());
@@ -336,7 +336,7 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
   for(const std::string& it : same)
     for(size_t i = 0; i < individuals_.size(); i++)
       for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
-        if(individuals_[i]->object_properties_on_[prop_i]->value_ == it)
+        if(individuals_[i]->object_properties_on_[prop_i]->value() == it)
           object_property_graph_->getUp(individuals_[i]->object_properties_name_[prop_i], res, depth);
 
   if(res.size() == 0)
@@ -358,7 +358,7 @@ std::unordered_set<std::string> IndividualGraph::getRelatedOn(const std::string&
   {
     for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_name_.size(); prop_i++)
       for (std::string it : object_properties)
-        if(individuals_[i]->object_properties_name_[prop_i]->value_ == it)
+        if(individuals_[i]->object_properties_name_[prop_i]->value() == it)
         {
           std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]->object_properties_on_[prop_i]);
           res.insert(tmp.begin(), tmp.end());
@@ -366,7 +366,7 @@ std::unordered_set<std::string> IndividualGraph::getRelatedOn(const std::string&
 
     for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
       for (std::string it : data_properties)
-        if(individuals_[i]->data_properties_name_[prop_i]->value_ == it)
+        if(individuals_[i]->data_properties_name_[prop_i]->value() == it)
           res.insert(individuals_[i]->data_properties_data_[prop_i].toString());
   }
 
@@ -404,7 +404,7 @@ std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::strin
   for(size_t i = 0; i < individuals_.size(); i++)
   {
     for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
-      if(individuals_[i]->object_properties_on_[prop_i]->value_ == individual)
+      if(individuals_[i]->object_properties_on_[prop_i]->value() == individual)
       {
         std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
         res.insert(tmp.begin(), tmp.end());
@@ -445,9 +445,9 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
   for(size_t i = 0; i < individuals_.size(); i++)
   {
     for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
-      if(individuals_[i]->object_properties_on_[prop_i]->value_ == individual)
+      if(individuals_[i]->object_properties_on_[prop_i]->value() == individual)
         for (std::string it : object_properties)
-          if(individuals_[i]->object_properties_name_[prop_i]->value_ == it)
+          if(individuals_[i]->object_properties_name_[prop_i]->value() == it)
           {
             std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
             res.insert(tmp.begin(), tmp.end());
@@ -456,7 +456,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
     for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
       if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
         for (std::string it : data_properties)
-          if(individuals_[i]->data_properties_name_[prop_i]->value_ == it)
+          if(individuals_[i]->data_properties_name_[prop_i]->value() == it)
           {
             std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
             res.insert(tmp.begin(), tmp.end());
@@ -488,11 +488,11 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& indivi
 
   std::unordered_set<std::string> res;
   for(size_t i = 0; i < individuals_.size(); i++)
-    if(individuals_[i]->value_ == individual)
+    if(individuals_[i]->value() == individual)
     {
       for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_name_.size(); prop_i++)
         for (std::string it : object_properties)
-          if(individuals_[i]->object_properties_name_[prop_i]->value_ == it)
+          if(individuals_[i]->object_properties_name_[prop_i]->value() == it)
           {
             std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]->object_properties_on_[prop_i]);
             res.insert(tmp.begin(), tmp.end());
@@ -500,7 +500,7 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& indivi
 
       for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
         for (std::string it : data_properties)
-          if(individuals_[i]->data_properties_name_[prop_i]->value_ == it)
+          if(individuals_[i]->data_properties_name_[prop_i]->value() == it)
             res.insert(individuals_[i]->data_properties_data_[prop_i].toString());
     }
 
@@ -524,10 +524,10 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
 {
   std::unordered_set<std::string> res;
   for(size_t i = 0; i < individuals_.size(); i++)
-    if(individuals_[i]->value_ == first_individual)
+    if(individuals_[i]->value() == first_individual)
     {
       for(size_t indiv_i = 0; indiv_i < individuals_[i]->object_properties_on_.size(); indiv_i++)
-        if(individuals_[i]->object_properties_on_[indiv_i]->value_ == second_individual)
+        if(individuals_[i]->object_properties_on_[indiv_i]->value() == second_individual)
           object_property_graph_->getUp(individuals_[i]->object_properties_name_[indiv_i], res, depth);
 
       for(size_t indiv_i = 0; indiv_i < individuals_[i]->data_properties_data_.size(); indiv_i++)
@@ -579,7 +579,7 @@ std::unordered_set<std::string> IndividualGraph::getSameAndClean(IndividualBranc
 
   std::unordered_set<std::string> res;
   for(IndividualBranch_t* it : sames)
-    res.insert(it->value_);
+    res.insert(it->value());
 
   return res;
 }
@@ -644,7 +644,7 @@ std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
     if(individuals_[i]->dictionary_.find(language_) != individuals_[i]->dictionary_.end())
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_[language_].size(); dic_i++)
         if(individuals_[i]->dictionary_[language_][dic_i] == value)
-          res.insert(individuals_[i]->value_);
+          res.insert(individuals_[i]->value());
   }
   return res;
 }
@@ -656,7 +656,7 @@ std::unordered_set<std::string> IndividualGraph::getType(const std::string& clas
   {
     std::unordered_set<std::string> tmp = getUp(individuals_[i]);
     if(tmp.find(class_selector) != tmp.end())
-      res.insert(individuals_[i]->value_);
+      res.insert(individuals_[i]->value());
   }
   return res;
 }
@@ -674,7 +674,7 @@ std::unordered_set<std::string> IndividualGraph::set2set(std::unordered_set<Indi
   {
     if(clean)
       it->mark = false;
-    res.insert(it->value_);
+    res.insert(it->value());
   }
   return res;
 }

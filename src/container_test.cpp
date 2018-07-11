@@ -91,7 +91,7 @@ double findAll(BranchContainerBase<ValuedNode>* container, std::vector<ValuedNod
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
   for(size_t i = 0; i < words.size(); i++)
-    ValuedNode* none = container->find(words[i]->value_);
+    ValuedNode* none = container->find(words[i]->value());
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);

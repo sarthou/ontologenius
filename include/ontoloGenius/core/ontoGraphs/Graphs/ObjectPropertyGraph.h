@@ -53,7 +53,7 @@ private:
       return;
 
     for(size_t i = 0; i < vect.size(); i++)
-      if(disjoint == vect[i]->value_)
+      if(disjoint == vect[i]->value())
       {
         me->setSteady_disjoint(vect[i]);
         if(all)
@@ -69,7 +69,7 @@ private:
       return;
 
     for(size_t i = 0; i < vect.size(); i++)
-      if(inverse == vect[i]->value_)
+      if(inverse == vect[i]->value())
       {
         me->setSteady_inverse(vect[i]);
         if(all)
@@ -85,7 +85,7 @@ private:
       return;
 
     for(size_t i = 0; i < vect.size(); i++)
-      if(domain == vect[i]->value_)
+      if(domain == vect[i]->value())
       {
         me->setSteady_domain(vect[i]);
         find = true;
@@ -99,7 +99,7 @@ private:
       return;
 
     for(size_t i = 0; i < vect.size(); i++)
-      if(range == vect[i]->value_)
+      if(range == vect[i]->value())
       {
         me->setSteady_range(vect[i]);
         find = true;
@@ -112,7 +112,7 @@ private:
     if(*next == nullptr)
       for(size_t i = 0; i < vect.size(); i++)
       {
-        if(vect[i]->value_ == next_link)
+        if(vect[i]->value() == next_link)
         {
           *next = vect[i];
           break;

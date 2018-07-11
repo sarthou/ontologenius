@@ -50,12 +50,12 @@ void ArguerChain::resolveLink(ObjectPropertyBranch_t* chain_property, std::vecto
 {
   size_t indiv_i, prop_i = 0;
   std::vector<IndividualBranch_t*> tmp;
-  std::unordered_set<std::string> chain_props = ontology_->object_property_graph_.getDown(chain_property->value_);
+  std::unordered_set<std::string> chain_props = ontology_->object_property_graph_.getDown(chain_property->value());
 
   for(indiv_i = 0; indiv_i < indivs.size(); indiv_i++)
     for(prop_i = 0; prop_i < indivs[indiv_i]->object_properties_name_.size(); prop_i++)
     {
-      if(chain_props.find(indivs[indiv_i]->object_properties_name_[prop_i]->value_) != chain_props.end())
+      if(chain_props.find(indivs[indiv_i]->object_properties_name_[prop_i]->value()) != chain_props.end())
         tmp.push_back(indivs[indiv_i]->object_properties_on_[prop_i]);
     }
 
@@ -67,8 +67,8 @@ bool ArguerChain::porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBran
   size_t properties_size = indiv_on->object_properties_name_.size();
   for(size_t i = 0; i < properties_size; i++)
   {
-    if(indiv_on->object_properties_name_[i]->value_ == chain_prop->value_)
-      if(indiv_on->object_properties_on_[i]->value_ == chain_indiv->value_)
+    if(indiv_on->object_properties_name_[i]->value() == chain_prop->value())
+      if(indiv_on->object_properties_on_[i]->value() == chain_indiv->value())
         return true;
   }
   return false;

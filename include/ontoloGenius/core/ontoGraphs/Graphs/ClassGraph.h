@@ -45,7 +45,7 @@ private:
       return;
 
     for(size_t i = 0; i < vect.size(); i++)
-      if(disjoint == vect[i]->value_)
+      if(disjoint == vect[i]->value())
       {
         me->setSteady_disjoint(vect[i]);
         if(all)

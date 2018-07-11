@@ -17,8 +17,8 @@ void ObjectPropertiesWriter::write(FILE* file)
 
 void ObjectPropertiesWriter::writeProperty(ObjectPropertyBranch_t* branch)
 {
-  std::string tmp = "    <!-- ontologenius#" + branch->value_ + " -->\n\r\n\r\
-    <owl:ObjectProperty rdf:about=\"ontologenius#" + branch->value_ + "\">\n\r";
+  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\r\n\r\
+    <owl:ObjectProperty rdf:about=\"ontologenius#" + branch->value() + "\">\n\r";
   writeString(tmp);
 
   writeSubPropertyOf(branch);
@@ -40,7 +40,7 @@ void ObjectPropertiesWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.mothers_.size(); i++)
   {
     std::string tmp = "        <rdfs:subPropertyOf rdf:resource=\"ontologenius#" +
-                      branch->steady_.mothers_[i]->value_
+                      branch->steady_.mothers_[i]->value()
                       + "\"/>\n\r";
     writeString(tmp);
   }
@@ -51,7 +51,7 @@ void ObjectPropertiesWriter::writeInverseOf(ObjectPropertyBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.inverses_.size(); i++)
   {
     std::string tmp = "        <owl:inverseOf rdf:resource=\"ontologenius#" +
-                      branch->steady_.inverses_[i]->value_
+                      branch->steady_.inverses_[i]->value()
                       + "\"/>\n\r";
     writeString(tmp);
   }
@@ -62,7 +62,7 @@ void ObjectPropertiesWriter::writeRange(ObjectPropertyBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.ranges_.size(); i++)
   {
     std::string tmp = "        <rdfs:domain rdf:resource=\"ontologenius#" +
-                      branch->steady_.ranges_[i]->value_
+                      branch->steady_.ranges_[i]->value()
                       + "\"/>\n\r";
     writeString(tmp);
   }
@@ -73,7 +73,7 @@ void ObjectPropertiesWriter::writeDomain(ObjectPropertyBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.domains_.size(); i++)
   {
     std::string tmp = "        <rdfs:range rdf:resource=\"ontologenius#" +
-                      branch->steady_.domains_[i]->value_
+                      branch->steady_.domains_[i]->value()
                       + "\"/>\n\r";
     writeString(tmp);
   }

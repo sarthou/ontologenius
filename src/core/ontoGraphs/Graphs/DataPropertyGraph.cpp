@@ -107,7 +107,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
       ObjectVectors_t empty_vectors;
       class_graph_->add(property_vectors.domains_[domains_i], empty_vectors);
       for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
-        if(property_vectors.domains_[domains_i] == class_graph_->roots_[root_i]->value_)
+        if(property_vectors.domains_[domains_i] == class_graph_->roots_[root_i]->value())
         {
           me->setSteady_domain(class_graph_->roots_[root_i]);
           i_find_my_domain = true;
@@ -128,7 +128,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   me->setSteady_properties(property_vectors.properties_);
   me->setSteady_dictionary(property_vectors.dictionary_);
   if(me->dictionary_.find("en") == me->dictionary_.end())
-    me->dictionary_["en"].push_back(me->value_);
+    me->dictionary_["en"].push_back(me->value());
 }
 
 void DataPropertyGraph::add(std::vector<std::string>& disjoints)

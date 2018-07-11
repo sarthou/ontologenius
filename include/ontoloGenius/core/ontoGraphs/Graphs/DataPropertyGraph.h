@@ -50,7 +50,7 @@ private:
       return;
 
     for(size_t i = 0; i < vect.size(); i++)
-      if(disjoint == vect[i]->value_)
+      if(disjoint == vect[i]->value())
       {
         me->setSteady_disjoint(vect[i]);
         if(all)
@@ -66,7 +66,7 @@ private:
       return;
 
     for(size_t i = 0; i < vect.size(); i++)
-      if(domain == vect[i]->value_)
+      if(domain == vect[i]->value())
       {
         me->setSteady_domain(vect[i]);
         find = true;

@@ -16,7 +16,7 @@ void DataPropertyChecker::checkDisjoint()
 {
   for(size_t i = 0; i < graph_size; i++)
   {
-    std::unordered_set<std::string> up = property_graph_->getUp(graph_[i]->value_);
+    std::unordered_set<std::string> up = property_graph_->getUp(graph_[i]->value());
     std::unordered_set<std::string> disjoint;
 
     for (std::string it : up)
@@ -27,6 +27,6 @@ void DataPropertyChecker::checkDisjoint()
 
     std::string intersection = findIntersection(up, disjoint);
     if(intersection != "")
-      print_error("'" + graph_[i]->value_ + "' can't be a '" + intersection + "' because of disjonction");
+      print_error("'" + graph_[i]->value() + "' can't be a '" + intersection + "' because of disjonction");
   }
 }

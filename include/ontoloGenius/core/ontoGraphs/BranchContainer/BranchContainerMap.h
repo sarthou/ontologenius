@@ -44,7 +44,7 @@ template <typename B>
 void BranchContainerMap<B>::load(std::vector<B*>& vect)
 {
   for(size_t i = 0; i < vect.size(); i++)
-    nodes_[vect[i]->value_] = vect[i];
+    nodes_[vect[i]->value()] = vect[i];
 }
 
 #endif

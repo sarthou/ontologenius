@@ -28,8 +28,8 @@ void IndividualWriter::writeGeneralAxioms(FILE* file)
 
 void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
 {
-  std::string tmp = "    <!-- ontologenius#" + branch->value_ + " -->\n\r\n\r\
-    <owl:NamedIndividual rdf:about=\"ontologenius#" + branch->value_ + "\">\n\r";
+  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\r\n\r\
+    <owl:NamedIndividual rdf:about=\"ontologenius#" + branch->value() + "\">\n\r";
   writeString(tmp);
 
   writeType(branch);
@@ -48,7 +48,7 @@ void IndividualWriter::writeType(IndividualBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.is_a_.size(); i++)
   {
     std::string tmp = "        <rdf:type rdf:resource=\"ontologenius#" +
-                      branch->steady_.is_a_[i]->value_
+                      branch->steady_.is_a_[i]->value()
                       + "\"/>\n\r";
     writeString(tmp);
   }
@@ -59,9 +59,9 @@ void IndividualWriter::writeObjectProperties(IndividualBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.object_properties_name_.size(); i++)
   {
     std::string tmp = "        <ontologenius:" +
-                      branch->steady_.object_properties_name_[i]->value_ +
+                      branch->steady_.object_properties_name_[i]->value() +
                       " rdf:resource=\"ontologenius#" +
-                      branch->steady_.object_properties_on_[i]->value_ +
+                      branch->steady_.object_properties_on_[i]->value() +
                       "\"/>\n\r";
     writeString(tmp);
   }
@@ -72,7 +72,7 @@ void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.data_properties_name_.size(); i++)
   {
     std::string tmp = "        <ontologenius:" +
-                      branch->steady_.data_properties_name_[i]->value_ +
+                      branch->steady_.data_properties_name_[i]->value() +
                       " rdf:datatype=\"" +
                       branch->steady_.data_properties_data_[i].getNs() +
                       "#" +
@@ -80,7 +80,7 @@ void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
                       "\">" +
                       branch->steady_.data_properties_data_[i].value_ +
                       "</ontologenius:" +
-                      branch->steady_.data_properties_name_[i]->value_ +
+                      branch->steady_.data_properties_name_[i]->value() +
                       ">\n\r";
     writeString(tmp);
   }
@@ -91,7 +91,7 @@ void IndividualWriter::writeSameAs(IndividualBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.same_as_.size(); i++)
   {
     std::string tmp = "        <owl:sameAs rdf:resource=\"ontologenius#" +
-                      branch->steady_.same_as_[i]->value_
+                      branch->steady_.same_as_[i]->value()
                       + "\"/>\n\r";
     writeString(tmp);
   }
@@ -110,7 +110,7 @@ void IndividualWriter::writeDistincts(std::vector<IndividualBranch_t*>& individu
   {
     if(individuals[i]->distinct_.size() != 0)
     {
-      if(std::find(distincts_done.begin(), distincts_done.end(), individuals[i]->value_) == distincts_done.end())
+      if(std::find(distincts_done.begin(), distincts_done.end(), individuals[i]->value()) == distincts_done.end())
       {
         std::string tmp;
         std::vector<std::string> distincts_current;
@@ -137,9 +137,9 @@ void IndividualWriter::writeDistincts(std::vector<IndividualBranch_t*>& individu
 
 void IndividualWriter::getDistincts(IndividualBranch_t* individual, std::vector<std::string>& distincts_current)
 {
-  if(std::find(distincts_current.begin(), distincts_current.end(), individual->value_) == distincts_current.end())
+  if(std::find(distincts_current.begin(), distincts_current.end(), individual->value()) == distincts_current.end())
   {
-    distincts_current.push_back(individual->value_);
+    distincts_current.push_back(individual->value());
     for(size_t i = 0; i < individual->distinct_.size(); i++)
       getDistincts(individual->distinct_[i], distincts_current);
   }
