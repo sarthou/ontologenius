@@ -1,4 +1,5 @@
 # <img src="logo/ontologenius.png" width="150"> ontolo**G**enius
+[![Release][Release-Image]][Release-Url]  
 This repository is a ROS package to link, explore and interrogate ontologies.
 
 ***
@@ -66,3 +67,6 @@ The result should look something similar to this (may depend on the bibliography
 G. Sarthou, “ontologenius,” https://github.com/sarthou/ontologenius,
 LAAS-CNRS, Toulouse, 2017 – 2018.
 ```
+
+[Release-Url]: https://sarthou.github.io/ontologenius/
+[Release-image]: http://img.shields.io/badge/release-v0.1.2-1eb0fc.svg
