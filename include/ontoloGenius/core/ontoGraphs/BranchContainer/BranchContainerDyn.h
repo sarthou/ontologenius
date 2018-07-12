@@ -10,12 +10,19 @@
 template <typename T>
 struct BranchNode_t
 {
-  BranchNode_t* next;
+  BranchNode_t<T>* next;
   std::string id;
   T* branch;
 
   BranchNode_t() {next = nullptr; id = ""; branch = nullptr; }
-  ~BranchNode_t() { delete next; }
+  ~BranchNode_t()
+  {
+    if(next != nullptr)
+    {
+      delete next;
+      next = nullptr;
+    }
+  }
 };
 
 template <typename B>
@@ -29,10 +36,13 @@ public:
     nb_elem_ = 0;
   }
 
-  virtual ~BranchContainerDyn() {delete nodes_; }
+  virtual ~BranchContainerDyn()
+  {
+    delete nodes_;
+  }
 
-  virtual B* find(std::string word);
-  virtual std::vector<B*> find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang);
+  virtual B* find(const std::string& word);
+  virtual std::vector<B*> find(bool (*comp)(B*, std::string, std::string), const std::string& word, const std::string& lang);
   virtual void load(std::vector<B*>& vect);
 private:
   BranchNode_t<B>* nodes_;
@@ -45,7 +55,7 @@ private:
 };
 
 template <typename B>
-B* BranchContainerDyn<B>::find(std::string word)
+B* BranchContainerDyn<B>::find(const std::string& word)
 {
   B* tmp = nullptr;
   size_t i = 0;
@@ -65,7 +75,7 @@ B* BranchContainerDyn<B>::find(std::string word)
 }
 
 template <typename B>
-std::vector<B*> BranchContainerDyn<B>::find(bool (*comp)(B*, std::string, std::string), std::string word, std::string lang)
+std::vector<B*> BranchContainerDyn<B>::find(bool (*comp)(B*, std::string, std::string), const std::string& word, const std::string& lang)
 {
   std::vector<B*> res;
 
@@ -80,7 +90,7 @@ template <typename B>
 void BranchContainerDyn<B>::load(std::vector<B*>& vect)
 {
   for(size_t i = 0; i < vect.size(); i++)
-    insertEnd(vect[i]->value_, vect[i]);
+    insertEnd(vect[i]->value(), vect[i]);
 
   nb_elem_ += vect.size();
   buffer_size_ = log2(nb_elem_);

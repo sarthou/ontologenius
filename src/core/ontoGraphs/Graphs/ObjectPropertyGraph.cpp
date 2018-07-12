@@ -28,7 +28,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   else
   {
     //for all my mothers
-    for(unsigned int mothers_i = 0; mothers_i < property_vectors.mothers_.size(); mothers_i++)
+    for(size_t mothers_i = 0; mothers_i < property_vectors.mothers_.size(); mothers_i++)
     {
       bool i_find_my_mother = false;
 
@@ -59,7 +59,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   ** Disjoints
   **********************/
   //for all my disjoints
-  for(unsigned int disjoints_i = 0; disjoints_i < property_vectors.disjoints_.size(); disjoints_i++)
+  for(size_t disjoints_i = 0; disjoints_i < property_vectors.disjoints_.size(); disjoints_i++)
   {
     bool i_find_my_disjoint = false;
 
@@ -86,7 +86,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   ** Inverses
   **********************/
   //for all my inverses
-  for(unsigned int inverses_i = 0; inverses_i < property_vectors.inverses_.size(); inverses_i++)
+  for(size_t inverses_i = 0; inverses_i < property_vectors.inverses_.size(); inverses_i++)
   {
     bool i_find_my_inverse = false;
 
@@ -113,7 +113,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   ** Domains
   **********************/
   //for all my domains
-  for(unsigned int domains_i = 0; domains_i < property_vectors.domains_.size(); domains_i++)
+  for(size_t domains_i = 0; domains_i < property_vectors.domains_.size(); domains_i++)
   {
     bool i_find_my_domain = false;
 
@@ -131,8 +131,8 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     {
       ObjectVectors_t empty_vectors;
       class_graph_->add(property_vectors.domains_[domains_i], empty_vectors);
-      for(unsigned int root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
-        if(property_vectors.domains_[domains_i] == class_graph_->roots_[root_i]->value_)
+      for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
+        if(property_vectors.domains_[domains_i] == class_graph_->roots_[root_i]->value())
         {
           me->setSteady_domain(class_graph_->roots_[root_i]);
           i_find_my_domain = true;
@@ -144,7 +144,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   ** Ranges
   **********************/
   //for all my ranges
-  for(unsigned int ranges_i = 0; ranges_i < property_vectors.ranges_.size(); ranges_i++)
+  for(size_t ranges_i = 0; ranges_i < property_vectors.ranges_.size(); ranges_i++)
   {
     bool i_find_my_range = false;
 
@@ -162,8 +162,8 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     {
       ObjectVectors_t empty_vectors;
       class_graph_->add(property_vectors.ranges_[ranges_i], empty_vectors);
-      for(unsigned int root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
-        if(property_vectors.ranges_[ranges_i] == class_graph_->roots_[root_i]->value_)
+      for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
+        if(property_vectors.ranges_[ranges_i] == class_graph_->roots_[root_i]->value())
         {
           me->setSteady_range(class_graph_->roots_[root_i]);
           i_find_my_range = true;
@@ -177,7 +177,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   me->setSteady_properties(property_vectors.properties_);
   me->setSteady_dictionary(property_vectors.dictionary_);
   if(me->dictionary_.find("en") == me->dictionary_.end())
-    me->dictionary_["en"].push_back(me->value_);
+    me->dictionary_["en"].push_back(me->value());
 
   /**********************
   ** Chain axiom
@@ -221,7 +221,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
 
 void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
 {
-  for(unsigned int disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
+  for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
     ObjectPropertyBranch_t* me = nullptr;
@@ -242,7 +242,7 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
     }
 
     //for all my disjoints ...
-    for(unsigned int disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
+    for(size_t disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
     {
       //... excepted me
       if(disjoints_i != disjoints_j)
@@ -271,83 +271,62 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
 }
 
 
-std::set<std::string> ObjectPropertyGraph::getDisjoint(const std::string& value)
+std::unordered_set<std::string> ObjectPropertyGraph::getDisjoint(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
-    {
-      std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      getDown(branch->disjoints_[disjoint_i], res);
 
   return res;
 }
 
-std::set<std::string> ObjectPropertyGraph::getInverse(const std::string& value)
+std::unordered_set<std::string> ObjectPropertyGraph::getInverse(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned inverse_i = 0; inverse_i < branch->inverses_.size(); inverse_i++)
-    {
-      std::set<std::string> tmp = getDown(branch->inverses_[inverse_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      getDown(branch->inverses_[inverse_i], res);
 
   return res;
 }
 
-std::set<std::string> ObjectPropertyGraph::getDomain(const std::string& value)
+std::unordered_set<std::string> ObjectPropertyGraph::getDomain(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned domain_i = 0; domain_i < branch->domains_.size(); domain_i++)
-    {
-      std::set<std::string> tmp = class_graph_->getDown(branch->domains_[domain_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      class_graph_->getDown(branch->domains_[domain_i], res);
 
   return res;
 }
 
-std::set<std::string> ObjectPropertyGraph::getRange(const std::string& value)
+std::unordered_set<std::string> ObjectPropertyGraph::getRange(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned range_i = 0; range_i < branch->ranges_.size(); range_i++)
-    {
-      std::set<std::string> tmp = class_graph_->getDown(branch->ranges_[range_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      class_graph_->getDown(branch->ranges_[range_i], res);
 
   return res;
 }
 
-std::set<std::string> ObjectPropertyGraph::select(const std::set<std::string>& on, const std::string& selector)
+std::unordered_set<std::string> ObjectPropertyGraph::select(std::unordered_set<std::string>& on, const std::string& selector)
 {
-  std::set<std::string> res;
-  for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
+  std::unordered_set<std::string> res;
+  for(const std::string& it : on)
   {
-    std::string prop_i = *it;
-    std::set<std::string> tmp = getUp(prop_i);
+    std::unordered_set<std::string> tmp = getUp(it);
     if(tmp.find(selector) != tmp.end())
-      res.insert(*it);
+      res.insert(it);
   }
   return res;
 }

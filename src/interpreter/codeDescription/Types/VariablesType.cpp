@@ -71,11 +71,11 @@ std::string VariablesType::name(std::string id)
   return "";
 }
 
-std::set<std::string> VariablesType::get(std::string id)
+std::unordered_set<std::string> VariablesType::get(std::string id)
 {
   if(var_.find(id) != var_.end())
     return var_[id].values;
-  return std::set<std::string>();
+  return std::unordered_set<std::string>();
 }
 
 std::string VariablesType::toString(std::string id)
@@ -83,7 +83,7 @@ std::string VariablesType::toString(std::string id)
   std::string str = "";
   if(var_.find(id) != var_.end())
   {
-    std::set<std::string>::iterator it = var_[id].values.begin();
+    std::unordered_set<std::string>::iterator it = var_[id].values.begin();
     while(it != var_[id].values.end())
     {
       str += " " + (*it);
@@ -101,7 +101,7 @@ bool VariablesType::set(std::string id, std::string value)
   return true;
 }
 
-bool VariablesType::set(std::string id, std::set<std::string> value)
+bool VariablesType::set(std::string id, std::unordered_set<std::string> value)
 {
   if(var_.find(id) != var_.end())
   {
@@ -121,7 +121,7 @@ bool VariablesType::insert(std::string id, std::string value)
   return false;
 }
 
-bool VariablesType::insert(std::string id, std::set<std::string> value)
+bool VariablesType::insert(std::string id, std::unordered_set<std::string> value)
 {
   if(var_.find(id) != var_.end())
   {
@@ -151,11 +151,11 @@ bool VariablesType::remove(std::string id, std::string value)
   return false;
 }
 
-bool VariablesType::remove(std::string id, std::set<std::string> value)
+bool VariablesType::remove(std::string id, std::unordered_set<std::string> value)
 {
   if(var_.find(id) != var_.end())
   {
-    std::set<std::string>::iterator it = value.begin();
+    std::unordered_set<std::string>::iterator it = value.begin();
     while(it != value.end())
     {
       var_[id].values.erase(*it);

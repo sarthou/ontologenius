@@ -1,6 +1,6 @@
 #include <string>
 #include <vector>
-#include <set>
+#include <unordered_set>
 #include <map>
 #include <stdint.h>
 
@@ -36,21 +36,21 @@ public:
   void add(std::string value, DataPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 
-  std::set<std::string> getDisjoint(const std::string& value);
-  std::set<std::string> getDomain(const std::string& value);
-  std::set<std::string> getRange(const std::string& value);
-  std::set<std::string> select(const std::set<std::string>& on, const std::string& selector);
+  std::unordered_set<std::string> getDisjoint(const std::string& value);
+  std::unordered_set<std::string> getDomain(const std::string& value);
+  std::unordered_set<std::string> getRange(const std::string& value);
+  std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& selector);
 
 private:
   ClassGraph* class_graph_;
 
-  void isMyDisjoint(DataPropertyBranch_t* me, std::string disjoint, std::vector<DataPropertyBranch_t*>& vect, bool& find, bool all = true)
+  void isMyDisjoint(DataPropertyBranch_t* me, const std::string& disjoint, std::vector<DataPropertyBranch_t*>& vect, bool& find, bool all = true)
   {
     if(find)
       return;
 
-    for(unsigned int i = 0; i < vect.size(); i++)
-      if(disjoint == vect[i]->value_)
+    for(size_t i = 0; i < vect.size(); i++)
+      if(disjoint == vect[i]->value())
       {
         me->setSteady_disjoint(vect[i]);
         if(all)
@@ -60,13 +60,13 @@ private:
       }
   }
 
-  void isMyDomain(DataPropertyBranch_t* me, std::string domain, std::vector<ClassBranch_t*>& vect, bool& find)
+  void isMyDomain(DataPropertyBranch_t* me, const std::string& domain, std::vector<ClassBranch_t*>& vect, bool& find)
   {
     if(find)
       return;
 
-    for(unsigned int i = 0; i < vect.size(); i++)
-      if(domain == vect[i]->value_)
+    for(size_t i = 0; i < vect.size(); i++)
+      if(domain == vect[i]->value())
       {
         me->setSteady_domain(vect[i]);
         find = true;

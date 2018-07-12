@@ -1,7 +1,7 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include <iostream>
 
-void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
+void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
 {
   ClassBranch_t* me = nullptr;
   //am I a created mother ?
@@ -25,7 +25,7 @@ void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
   else
   {
     //for all my mothers
-    for(unsigned int mothers_i = 0; mothers_i < object_vector.mothers_.size(); mothers_i++)
+    for(size_t mothers_i = 0; mothers_i < object_vector.mothers_.size(); mothers_i++)
     {
       bool i_find_my_mother = false;
 
@@ -53,7 +53,7 @@ void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
   }
 
   //for all my disjoints
-  for(unsigned int disjoints_i = 0; disjoints_i < object_vector.disjoints_.size(); disjoints_i++)
+  for(size_t disjoints_i = 0; disjoints_i < object_vector.disjoints_.size(); disjoints_i++)
   {
     bool i_find_my_disjoint = false;
 
@@ -78,12 +78,12 @@ void ClassGraph::add(std::string value, ObjectVectors_t& object_vector)
 
   me->setSteady_dictionary(object_vector.dictionary_);
   if(me->dictionary_.find("en") == me->dictionary_.end())
-    me->dictionary_["en"].push_back(me->value_);
+    me->dictionary_["en"].push_back(me->value());
 }
 
 void ClassGraph::add(std::vector<std::string>& disjoints)
 {
-  for(unsigned int disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
+  for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
     ClassBranch_t* me = nullptr;
@@ -104,7 +104,7 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
     }
 
     //for all my disjoints ...
-    for(unsigned int disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
+    for(size_t disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
     {
       //... excepted me
       if(disjoints_i != disjoints_j)
@@ -132,32 +132,26 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
   }
 }
 
-std::set<std::string> ClassGraph::getDisjoint(const std::string& value)
+std::unordered_set<std::string> ClassGraph::getDisjoint(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   ClassBranch_t* branch = container_.find(value);
   if(branch != nullptr)
-    for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
-    {
-      std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+    for(size_t disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
+      getDown(branch->disjoints_[disjoint_i], res);
 
   return res;
 }
 
-std::set<std::string> ClassGraph::select(const std::set<std::string>& on, const std::string& class_selector)
+std::unordered_set<std::string> ClassGraph::select(std::unordered_set<std::string>& on, const std::string& class_selector)
 {
-  std::set<std::string> res;
-  for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
+  std::unordered_set<std::string> res;
+  for(const std::string& it : on)
   {
-    std::string class_i = *it;
-    std::set<std::string> tmp = getUp(class_i);
+    std::unordered_set<std::string> tmp = getUp(it);
     if(tmp.find(class_selector) != tmp.end())
-      res.insert(*it);
+      res.insert(it);
   }
   return res;
 }

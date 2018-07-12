@@ -1,8 +1,9 @@
 #include "ontoloGenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
-#include <set>
+#include <unordered_set>
 
 size_t DataPropertyChecker::check()
 {
+  graph_size = graph_.size();
   checkDisjoint();
 
   is_analysed = true;
@@ -13,20 +14,19 @@ size_t DataPropertyChecker::check()
 
 void DataPropertyChecker::checkDisjoint()
 {
-  for(size_t i = 0; i < graph_.size(); i++)
+  for(size_t i = 0; i < graph_size; i++)
   {
-    std::set<std::string> up = property_graph_->getUp(graph_[i]->value_);
-    std::set<std::string> disjoint;
+    std::unordered_set<std::string> up = property_graph_->getUp(graph_[i]->value());
+    std::unordered_set<std::string> disjoint;
 
-    std::set<std::string>::iterator it;
-    for (it = up.begin(); it != up.end(); it++)
+    for (std::string it : up)
     {
-      std::set<std::string> tmp = property_graph_->getDisjoint((std::string&)*it);
+      std::unordered_set<std::string> tmp = property_graph_->getDisjoint(it);
       disjoint.insert(tmp.begin(), tmp.end());
     }
 
     std::string intersection = findIntersection(up, disjoint);
     if(intersection != "")
-      print_error("'" + graph_[i]->value_ + "' can't be a '" + intersection + "' because of disjonction");
+      print_error("'" + graph_[i]->value() + "' can't be a '" + intersection + "' because of disjonction");
   }
 }

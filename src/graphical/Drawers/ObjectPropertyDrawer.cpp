@@ -37,9 +37,9 @@ void ObjectPropertyDrawer::putInLayers()
 int ObjectPropertyDrawer::createNode(ObjectPropertyBranch_t* branch, node_t* mother)
 {
   int family = branch->family;
-  if(!exist(branch->value_))
+  if(!exist(branch->value()))
   {
-    node_t* node = new node_t(branch->value_);
+    node_t* node = new node_t(branch->value());
     branchs_nodes.push_back(node);
     node->prev.push_back(mother);
     node->family = branch->family;
@@ -51,7 +51,7 @@ int ObjectPropertyDrawer::createNode(ObjectPropertyBranch_t* branch, node_t* mot
   else
   {
     for(unsigned long int i = 0; i < branchs_nodes.size(); i++)
-      if(branchs_nodes[i]->value == branch->value_)
+      if(branchs_nodes[i]->value == branch->value())
         branchs_nodes[i]->prev.push_back(mother);
   }
   return family;
@@ -65,7 +65,7 @@ void ObjectPropertyDrawer::init()
   {
     for(unsigned long int i = 0; i < graph_->roots_.size(); i++)
     {
-      node_t* node = new node_t(graph_->roots_[i]->value_, 0);
+      node_t* node = new node_t(graph_->roots_[i]->value(), 0);
       //roots_nodes.push_back(node);
       node->family = graph_->roots_[i]->family;
       int family = graph_->roots_[i]->family;

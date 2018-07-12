@@ -11,29 +11,28 @@ Arguers::Arguers(Ontology* onto) : loader_("ontologenius", "ArguerInterface")
 
 Arguers::~Arguers()
 {
-  std::map<std::string, ArguerInterface*>::iterator it;
-  for(it = arguers_.begin(); it != arguers_.end(); ++it)
+  for(auto& it : arguers_)
   {
-    if(it->second != nullptr)
+    if(it.second != nullptr)
     {
-      delete it->second;
-      it->second = nullptr;
+      delete it.second;
+      it.second = nullptr;
     }
     //TODO: unload the library cause segfault or exception => unstable behavior
     try
     {
-      loader_.unloadLibraryForClass(it->first);
-      std::cout << it->first << " unloaded" << std::endl;
+      loader_.unloadLibraryForClass(it.first);
+      std::cout << it.first << " unloaded" << std::endl;
     }
     catch(class_loader::LibraryUnloadException& ex)
     {
-      std::cout << "class_loader::LibraryUnloadException on " << it->first << " : " << std::string(ex.what()) << std::endl;
-      ROS_ERROR("The plugin %s failed to unload for some reason. Error: %s", it->first.c_str(), ex.what());
+      std::cout << "class_loader::LibraryUnloadException on " << it.first << " : " << std::string(ex.what()) << std::endl;
+      ROS_ERROR("The plugin %s failed to unload for some reason. Error: %s", it.first.c_str(), ex.what());
     }
     catch(pluginlib::LibraryUnloadException& ex)
     {
-      std::cout << "pluginlib::LibraryUnloadException on " << it->first << " : " << std::string(ex.what()) << std::endl;
-      ROS_ERROR("The plugin %s failed to unload for some reason. Error: %s", it->first.c_str(), ex.what());
+      std::cout << "pluginlib::LibraryUnloadException on " << it.first << " : " << std::string(ex.what()) << std::endl;
+      ROS_ERROR("The plugin %s failed to unload for some reason. Error: %s", it.first.c_str(), ex.what());
     }
     catch(...)
     {
@@ -41,12 +40,12 @@ Arguers::~Arguers()
     }
   }
 
-  for(it = arguers_.begin(); it != arguers_.end(); ++it)
+  for(auto& it : arguers_)
   {
-    if(it->second != nullptr)
+    if(it.second != nullptr)
     {
-      delete it->second;
-      it->second = nullptr;
+      delete it.second;
+      it.second = nullptr;
     }
   }
 }
@@ -82,26 +81,24 @@ void Arguers::load()
 
 std::string Arguers::list()
 {
-  std::map<std::string, ArguerInterface*>::iterator it;
   std::string out =  "Plugins loaded :\n";
   std::string res;
-  for(it = arguers_.begin(); it != arguers_.end(); ++it)
+  for(auto& it : arguers_)
   {
-    out += " - From " + it->first + " : " + arguers_[it->first]->getName() + " (" + arguers_[it->first]->getDesciption() + ")\n";
-    res += " -" + it->first;
+    out += " - From " + it.first + " : " + arguers_[it.first]->getName() + " (" + arguers_[it.first]->getDesciption() + ")\n";
+    res += " -" + it.first;
   }
   return res;
 }
 
 std::vector<std::string> Arguers::listVector()
 {
-  std::map<std::string, ArguerInterface*>::iterator it;
   std::string out =  "Plugins loaded :\n";
   std::vector<std::string> res;
-  for(it = arguers_.begin(); it != arguers_.end(); ++it)
+  for(auto& it : arguers_)
   {
-    out += " - From " + it->first + " : " + arguers_[it->first]->getName() + " (" + arguers_[it->first]->getDesciption() + ")\n";
-    res.push_back(it->first);
+    out += " - From " + it.first + " : " + arguers_[it.first]->getName() + " (" + arguers_[it.first]->getDesciption() + ")\n";
+    res.push_back(it.first);
   }
   return res;
 }
@@ -167,9 +164,8 @@ void Arguers::runPreArguers()
 
   do
   {
-    std::map<std::string, ArguerInterface*>::iterator it;
-    for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
-      it->second->preReason();
+    for(auto& it : active_arguers_)
+      it.second->preReason();
 
     computeIndividualsUpdates();
 
@@ -185,11 +181,10 @@ void Arguers::runPostArguers()
 
   do
   {
-    std::map<std::string, ArguerInterface*>::iterator it;
-    for(it = active_arguers_.begin(); it != active_arguers_.end(); ++it)
+    for(auto& it : active_arguers_)
     {
-      if(it->second != nullptr)
-        it->second->postReason();
+      if(it.second != nullptr)
+        it.second->postReason();
     }
 
     computeIndividualsUpdates();
@@ -203,7 +198,8 @@ void Arguers::runPostArguers()
 void Arguers::computeIndividualsUpdates()
 {
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
-  for(size_t indiv_i = 0; indiv_i < indiv.size(); indiv_i++)
+  size_t indiv_size = indiv.size();
+  for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
     if(indiv[indiv_i]->nb_updates_ == 0)
       indiv[indiv_i]->updated_ = false;
     else

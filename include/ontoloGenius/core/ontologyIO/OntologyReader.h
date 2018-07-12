@@ -23,8 +23,8 @@ public:
   OntologyReader(Ontology& onto);
   ~OntologyReader() {}
 
-  int readFromUri(std::string uri, bool individual = false);
-  int readFromFile(std::string fileName, bool individual = false);
+  int readFromUri(std::string& uri, bool individual = false);
+  int readFromFile(std::string& fileName, bool individual = false);
 
   void displayIndividualRules();
   bool empty() {return (elemLoaded == 0); }
@@ -37,8 +37,8 @@ private:
 
   int elemLoaded;
 
-  int read(TiXmlElement* rdf, std::string name);
-  int readIndividual(TiXmlElement* rdf, std::string name);
+  int read(TiXmlElement* rdf, std::string& name);
+  int readIndividual(TiXmlElement* rdf, std::string& name);
 
   void readClass(TiXmlElement* elem);
   void readIndividual(TiXmlElement* elem);
@@ -50,16 +50,16 @@ private:
   void readRestriction(TiXmlElement* elem);
   std::string readSomeValuesFrom(TiXmlElement* elem);
 
-  inline void push(std::vector<std::string>& vect, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
-  inline void push(std::vector<std::string>& vect, std::string elem, std::string symbole);
+  inline void push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
+  inline void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole);
   void push(Properties_t& properties, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   void pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem);
-  inline std::string getName(std::string uri);
-  inline std::string getAttribute(TiXmlElement* elem, std::string attribute);
-  inline bool testAttribute(TiXmlElement* subElem, std::string attribute);
+  inline std::string getName(const std::string& uri);
+  inline std::string getAttribute(TiXmlElement* elem, const std::string& attribute);
+  inline bool testAttribute(TiXmlElement* subElem, const std::string& attribute);
 };
 
-void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem, std::string symbole, std::string attribute)
+void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole, const std::string& attribute)
 {
   const char* subAttr;
   subAttr = subElem->Attribute(attribute.c_str());
@@ -80,20 +80,20 @@ void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem,
   }
 }
 
-void OntologyReader::push(std::vector<std::string>& vect, std::string elem, std::string symbole)
+void OntologyReader::push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole)
 {
   vect.push_back(elem);
   std::cout << "│   │   ├── " << symbole << elem << std::endl;
 }
 
-std::string OntologyReader::getName(std::string uri)
+std::string OntologyReader::getName(const std::string& uri)
 {
   size_t pos = uri.find("#");
   std::string result = uri.substr(pos+1);
   return result;
 }
 
-inline std::string OntologyReader::getAttribute(TiXmlElement* elem, std::string attribute)
+inline std::string OntologyReader::getAttribute(TiXmlElement* elem, const std::string& attribute)
 {
   const char* subAttr;
   subAttr = elem->Attribute(attribute.c_str());
@@ -103,7 +103,7 @@ inline std::string OntologyReader::getAttribute(TiXmlElement* elem, std::string 
     return "";
 }
 
-bool OntologyReader::testAttribute(TiXmlElement* subElem, std::string attribute)
+bool OntologyReader::testAttribute(TiXmlElement* subElem, const std::string& attribute)
 {
   const char* subAttr;
   subAttr = subElem->Attribute(attribute.c_str());

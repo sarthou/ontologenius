@@ -6,14 +6,20 @@
 
 #include <string>
 #include <iostream>
-#include <set>
+#include <unordered_set>
 
 template <typename B>
 class ValidityChecker
 {
   static_assert(std::is_base_of<ValuedNode,B>::value, "B must be derived from ValuedNode");
 public:
-  ValidityChecker(Graph<B>* graph) {graph_ = graph->get(); nb_error_ = 0; is_analysed = false;}
+  ValidityChecker(Graph<B>* graph)
+  {
+    graph_ = graph->get();
+    graph_size = graph_.size();
+    nb_error_ = 0;
+    is_analysed = false;
+  }
   virtual ~ValidityChecker() {}
 
   virtual size_t check() = 0;
@@ -21,6 +27,7 @@ public:
 protected:
   std::vector<B*> graph_;
   bool is_analysed;
+  size_t graph_size;
 
   void print_error(std::string err)
   {
@@ -51,13 +58,13 @@ protected:
     }
   }
 
-  std::string findIntersection(std::set<std::string>& base, std::set<std::string>& comp)
+  std::string findIntersection(std::unordered_set<std::string>& base, std::unordered_set<std::string>& comp)
   {
     std::string res = "";
-    std::set<std::string>::iterator it;
+    std::unordered_set<std::string>::iterator it;
     for (it = comp.begin(); it != comp.end(); it++)
     {
-      std::set<std::string>::iterator find = base.find(*it);
+      std::unordered_set<std::string>::iterator find = base.find(*it);
       if(find != base.end())
         res = *it;
     }

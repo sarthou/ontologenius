@@ -25,11 +25,6 @@ find_package(pluginlib REQUIRED)
 find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport)
 
 
-## Uncomment this if the package has a setup.py. This macro ensures
-## modules and global scripts declared therein get installed
-## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
-
 ################################################
 ## Declare ROS messages, services and actions ##
 ################################################
@@ -95,6 +90,7 @@ add_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Branchs/ObjectPropertyBranch.cpp
   src/core/ontoGraphs/Branchs/DataPropertyBranch.cpp
   src/core/ontoGraphs/Branchs/IndividualBranch.cpp
+  src/core/ontoGraphs/Branchs/ValuedNode.cpp
   src/core/ontoGraphs/Graphs/ClassGraph.cpp
   src/core/ontoGraphs/Graphs/ObjectPropertyGraph.cpp
   src/core/ontoGraphs/Graphs/DataPropertyGraph.cpp
@@ -202,6 +198,10 @@ target_link_libraries(ontoloGenius_exemple ontologenius_core_lib)
 add_executable(ontoloGenius_tester src/tester.cpp)
 add_dependencies(ontoloGenius_tester ontologenius_gencpp)
 target_link_libraries(ontoloGenius_tester ontologenius_core_lib)
+
+add_executable(ontoloGenius_container_tester src/container_test.cpp)
+add_dependencies(ontoloGenius_container_tester ontologenius_gencpp)
+target_link_libraries(ontoloGenius_container_tester ontologenius_core_lib)
 
 ##############################################################################
 # Qt Environment

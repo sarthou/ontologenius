@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <stdint.h>
-#include <set>
+#include <unordered_set>
 
 struct Operator_t
 {

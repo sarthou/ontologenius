@@ -24,7 +24,7 @@ OntologyReader::OntologyReader(Ontology& onto)
 }
 
 
-int OntologyReader::readFromUri(std::string uri, bool individual)
+int OntologyReader::readFromUri(std::string& uri, bool individual)
 {
   std::string response = "";
   int err = send_request("GET", uri, "", &response);
@@ -43,7 +43,7 @@ int OntologyReader::readFromUri(std::string uri, bool individual)
     return REQUEST_ERROR;
 }
 
-int OntologyReader::readFromFile(std::string fileName, bool individual)
+int OntologyReader::readFromFile(std::string& fileName, bool individual)
 {
   std::string response = "";
   std::string tmp = "";
@@ -62,7 +62,7 @@ int OntologyReader::readFromFile(std::string fileName, bool individual)
     return readIndividual(rdf, fileName);
 }
 
-int OntologyReader::read(TiXmlElement* rdf, std::string name)
+int OntologyReader::read(TiXmlElement* rdf, std::string& name)
 {
   if(rdf == NULL)
   {
@@ -103,7 +103,7 @@ void OntologyReader::displayIndividualRules()
   std::cout << "************************************" << std::endl;
 }
 
-int OntologyReader::readIndividual(TiXmlElement* rdf, std::string name)
+int OntologyReader::readIndividual(TiXmlElement* rdf, std::string& name)
 {
   if(rdf == NULL)
   {

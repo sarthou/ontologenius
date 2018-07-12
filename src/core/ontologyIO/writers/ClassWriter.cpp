@@ -28,8 +28,8 @@ void ClassWriter::writeGeneralAxioms(FILE* file)
 
 void ClassWriter::writeClass(ClassBranch_t* branch)
 {
-  std::string tmp = "    <!-- ontologenius#" + branch->value_ + " -->\n\r\n\r\
-    <owl:Class rdf:about=\"ontologenius#" + branch->value_ + "\">\n\r";
+  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\r\n\r\
+    <owl:Class rdf:about=\"ontologenius#" + branch->value() + "\">\n\r";
   writeString(tmp);
 
   writeSubClassOf(branch);
@@ -47,7 +47,7 @@ void ClassWriter::writeSubClassOf(ClassBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.mothers_.size(); i++)
   {
     std::string tmp = "        <rdfs:subClassOf rdf:resource=\"ontologenius#" +
-                      branch->steady_.mothers_[i]->value_
+                      branch->steady_.mothers_[i]->value()
                       + "\"/>\n\r";
     writeString(tmp);
   }
@@ -59,7 +59,7 @@ void ClassWriter::writeDisjointWith(ClassBranch_t* branch)
     for(size_t i = 0; i < branch->steady_.disjoints_.size(); i++)
     {
       std::string tmp = "        <owl:disjointWith rdf:resource=\"ontologenius#" +
-                        branch->steady_.disjoints_[i]->value_
+                        branch->steady_.disjoints_[i]->value()
                         + "\"/>\n\r";
       writeString(tmp);
     }
@@ -78,14 +78,14 @@ void ClassWriter::writeDisjointWith(std::vector<ClassBranch_t*>& classes)
   {
     if(classes[i]->disjoints_.size() > 1)
     {
-      if(std::find(disjoint_done.begin(), disjoint_done.end(), classes[i]->value_) == disjoint_done.end())
+      if(std::find(disjoint_done.begin(), disjoint_done.end(), classes[i]->value()) == disjoint_done.end())
       {
         std::string tmp;
         std::vector<std::string> disjoints_current;
 
         for(size_t j = 0; j < classes[i]->disjoints_.size(); j++)
-          disjoints_current.push_back(classes[i]->disjoints_[j]->value_);
-        disjoints_current.push_back(classes[i]->value_);
+          disjoints_current.push_back(classes[i]->disjoints_[j]->value());
+        disjoints_current.push_back(classes[i]->value());
 
         getDisjoints(classes[i], disjoints_current);
 
@@ -117,8 +117,8 @@ void ClassWriter::getDisjoints(ClassBranch_t* class_branch, std::vector<std::str
   {
     std::vector<std::string> disjoints_class;
     for(size_t j = 0; j < class_branch->disjoints_[i]->disjoints_.size(); j++)
-      disjoints_class.push_back(class_branch->disjoints_[i]->disjoints_[j]->value_);
-    disjoints_class.push_back(class_branch->disjoints_[i]->value_);
+      disjoints_class.push_back(class_branch->disjoints_[i]->disjoints_[j]->value());
+    disjoints_class.push_back(class_branch->disjoints_[i]->value());
     removeDifferents(disjoints_current, disjoints_class);
   }
 }

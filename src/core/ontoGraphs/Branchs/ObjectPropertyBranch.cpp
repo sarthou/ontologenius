@@ -38,13 +38,12 @@ void ObjectPropertyBranch_t::setFullSteady()
     steady_.mothers_.push_back(mothers_[i]);
 
   steady_.dictionary_.clear();
-  std::map<std::string, std::vector<std::string>>::iterator it;
-  for(it = dictionary_.begin(); it != dictionary_.end(); ++it)
+  for(auto& it : dictionary_)
   {
     std::vector<std::string> tmp;
-    for(size_t i = 0; i < it->second.size(); i++)
-      tmp.push_back(it->second[i]);
-    steady_.dictionary_[it->first] = tmp;
+    for(size_t i = 0; i < it.second.size(); i++)
+      tmp.push_back(it.second[i]);
+    steady_.dictionary_[it.first] = tmp;
   }
 }
 

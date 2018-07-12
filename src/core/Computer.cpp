@@ -6,14 +6,14 @@
 
 using namespace std;
 
-bool Computer::compute(string equation, ClassGraph& onto)
+bool Computer::compute(std::string equation, ClassGraph& onto)
 {
   using namespace std::chrono;
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
   bool invert = false;
-  vector<string> LR;
+  std::vector<std::string> LR;
   split(equation, LR, "!=");
   if(LR.size() > 1)
     invert = true;
@@ -24,16 +24,16 @@ bool Computer::compute(string equation, ClassGraph& onto)
   }
   if(LR.size() == 2)
   {
-    vector<string> tmp;
+    std::vector<std::string> tmp;
     split(LR[0], tmp, '|');
     L.resize(tmp.size());
     notL.resize(tmp.size());
-    for(unsigned int i = 0; i < tmp.size(); i++)
+    for(size_t i = 0; i < tmp.size(); i++)
     {
       split(tmp[i], L[i], '_');
-      for(unsigned int j = 0; j < L[i].size(); j++)
+      for(size_t j = 0; j < L[i].size(); j++)
       {
-        vector<string> word;
+        std::vector<std::string> word;
         split(L[i][j], word, '-');
         L[i][j] = word[0];
         notL[i].resize(L[i].size(), false);
@@ -48,12 +48,12 @@ bool Computer::compute(string equation, ClassGraph& onto)
     split(LR[1], tmp, '|');
     R.resize(tmp.size());
     notR.resize(tmp.size());
-    for(unsigned int i = 0; i < tmp.size(); i++)
+    for(size_t i = 0; i < tmp.size(); i++)
     {
       split(tmp[i], R[i], '_');
-      for(unsigned int j = 0; j < R[i].size(); j++)
+      for(size_t j = 0; j < R[i].size(); j++)
       {
-        vector<string> word;
+        std::vector<std::string> word;
         split(R[i][j], word, '-');
         R[i][j] = word[0];
         notR[i].resize(R[i].size(), false);
@@ -65,36 +65,36 @@ bool Computer::compute(string equation, ClassGraph& onto)
       }
     }
 
-    for(unsigned int i = 0; i < L.size(); i++)
+    for(size_t i = 0; i < L.size(); i++)
     {
       finder_t finder;
       finder.find.resize(R.size());
-      for(unsigned int i = 0; i < R.size(); i++)
+      for(size_t i = 0; i < R.size(); i++)
         finder.find[i].resize(R[i].size(), false);
       finder.words.clear();
       finder.words.resize(L[i].size());
 
-      for(unsigned int j = 0; j < L[i].size(); j++)
+      for(size_t j = 0; j < L[i].size(); j++)
       {
         //cout << "looking for " << L[i][j] << " as : ";
         finder.words[j] = onto.getUp(L[i][j]);
-        /*for(set<string>::iterator it = finder.words[j].begin(); it != finder.words[j].end(); ++it)
+        /*for(std::unordered_set<std::string>::iterator it = finder.words[j].begin(); it != finder.words[j].end(); ++it)
           cout << *it + " ";
         if(notL[i][j])
           cout << " as NOT ";
         cout << endl;*/
 
-        for(unsigned int orR = 0; orR < R.size(); orR++)
+        for(size_t orR = 0; orR < R.size(); orR++)
         {
-          for(unsigned int andR = 0; andR < R[orR].size(); andR++)
+          for(size_t andR = 0; andR < R[orR].size(); andR++)
           {
             if(notR[orR][andR])
             {
               //cout << "-> compare with !" << R[orR][andR] << " : ";
-              set<string> disjoint = onto.getDisjoint(R[orR][andR]);
-              for(set<string>::iterator it = disjoint.begin(); it != disjoint.end(); ++it)
+              std::unordered_set<std::string> disjoint = onto.getDisjoint(R[orR][andR]);
+              for(const std::string& it : disjoint)
               {
-                if(finder.words[j].find(*it) != finder.words[j].end())
+                if(finder.words[j].find(it) != finder.words[j].end())
                 {
                   //cout << *finder.words[j].find(*it) << endl;
                   finder.find[orR][andR] = true;
@@ -124,10 +124,10 @@ bool Computer::compute(string equation, ClassGraph& onto)
       }
 
       bool find = false;
-      for(unsigned int i = 0; i < R.size(); i++)
+      for(size_t i = 0; i < R.size(); i++)
       {
         find = true;
-        for(unsigned int j = 0; j < R[i].size(); j++)
+        for(size_t j = 0; j < R[i].size(); j++)
           find &= finder.find[i][j];
 
         if(invert)
@@ -163,10 +163,10 @@ bool Computer::compute(string equation, ClassGraph& onto)
   return false;
 }
 
-bool Computer::split(const string &txt, vector<string> &strs, char ch)
+bool Computer::split(const std::string &txt, std::vector<std::string> &strs, char ch)
 {
   istringstream iss(txt.c_str());
-  string s;
+  std::string s;
   while(getline(iss, s, ch))
     strs.push_back(s);
   if(strs.size() > 1)
@@ -175,14 +175,14 @@ bool Computer::split(const string &txt, vector<string> &strs, char ch)
     return false;
 }
 
-bool Computer::split(const string &txt, vector<string> &strs, string delim)
+bool Computer::split(const std::string &txt, std::vector<std::string> &strs, std::string delim)
 {
-  string text = txt;
-  while(text.find(delim) != string::npos)
+  std::string text = txt;
+  while(text.find(delim) != std::string::npos)
   {
     cout << text << endl;
     size_t pos = text.find(delim);
-    string part = text.substr(0, pos);
+    std::string part = text.substr(0, pos);
     text = text.substr(pos + delim.size(), text.size() - pos - delim.size());
     strs.push_back(part);
   }

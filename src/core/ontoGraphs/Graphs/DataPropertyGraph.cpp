@@ -30,7 +30,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   else
   {
     //for all my mothers
-    for(unsigned int mothers_i = 0; mothers_i < property_vectors.mothers_.size(); mothers_i++)
+    for(size_t mothers_i = 0; mothers_i < property_vectors.mothers_.size(); mothers_i++)
     {
       bool i_find_my_mother = false;
 
@@ -61,7 +61,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   ** Disjoints
   **********************/
   //for all my disjoints
-  for(unsigned int disjoints_i = 0; disjoints_i < property_vectors.disjoints_.size(); disjoints_i++)
+  for(size_t disjoints_i = 0; disjoints_i < property_vectors.disjoints_.size(); disjoints_i++)
   {
     bool i_find_my_disjoint = false;
 
@@ -88,7 +88,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   ** Domains
   **********************/
   //for all my domains
-  for(unsigned int domains_i = 0; domains_i < property_vectors.domains_.size(); domains_i++)
+  for(size_t domains_i = 0; domains_i < property_vectors.domains_.size(); domains_i++)
   {
     bool i_find_my_domain = false;
 
@@ -106,8 +106,8 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
     {
       ObjectVectors_t empty_vectors;
       class_graph_->add(property_vectors.domains_[domains_i], empty_vectors);
-      for(unsigned int root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
-        if(property_vectors.domains_[domains_i] == class_graph_->roots_[root_i]->value_)
+      for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
+        if(property_vectors.domains_[domains_i] == class_graph_->roots_[root_i]->value())
         {
           me->setSteady_domain(class_graph_->roots_[root_i]);
           i_find_my_domain = true;
@@ -119,7 +119,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   ** Ranges
   **********************/
   //for all my ranges
-  for(unsigned int ranges_i = 0; ranges_i < property_vectors.ranges_.size(); ranges_i++)
+  for(size_t ranges_i = 0; ranges_i < property_vectors.ranges_.size(); ranges_i++)
     me->setSteady_range(property_vectors.ranges_[ranges_i]);
 
   /**********************
@@ -128,12 +128,12 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   me->setSteady_properties(property_vectors.properties_);
   me->setSteady_dictionary(property_vectors.dictionary_);
   if(me->dictionary_.find("en") == me->dictionary_.end())
-    me->dictionary_["en"].push_back(me->value_);
+    me->dictionary_["en"].push_back(me->value());
 }
 
 void DataPropertyGraph::add(std::vector<std::string>& disjoints)
 {
-  for(unsigned int disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
+  for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
     DataPropertyBranch_t* me = nullptr;
@@ -154,7 +154,7 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
     }
 
     //for all my disjoints ...
-    for(unsigned int disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
+    for(size_t disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
     {
       //... excepted me
       if(disjoints_i != disjoints_j)
@@ -183,43 +183,33 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
 }
 
 
-std::set<std::string> DataPropertyGraph::getDisjoint(const std::string& value)
+std::unordered_set<std::string> DataPropertyGraph::getDisjoint(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
-    {
-      std::set<std::string> tmp = getDown(branch->disjoints_[disjoint_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      getDown(branch->disjoints_[disjoint_i], res);
 
   return res;
 }
 
-std::set<std::string> DataPropertyGraph::getDomain(const std::string& value)
+std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(unsigned domain_i = 0; domain_i < branch->domains_.size(); domain_i++)
-    {
-      std::set<std::string> tmp = class_graph_->getDown(branch->domains_[domain_i]);
-
-      if(tmp.size())
-        res.insert(tmp.begin(), tmp.end());
-    }
+      class_graph_->getDown(branch->domains_[domain_i], res);
 
   return res;
 }
 
-std::set<std::string> DataPropertyGraph::getRange(const std::string& value)
+std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& value)
 {
-  std::set<std::string> res;
+  std::unordered_set<std::string> res;
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
@@ -229,15 +219,14 @@ std::set<std::string> DataPropertyGraph::getRange(const std::string& value)
   return res;
 }
 
-std::set<std::string> DataPropertyGraph::select(const std::set<std::string>& on, const std::string& selector)
+std::unordered_set<std::string> DataPropertyGraph::select(std::unordered_set<std::string>& on, const std::string& selector)
 {
-  std::set<std::string> res;
-  for(std::set<std::string>::iterator it = on.begin(); it != on.end(); ++it)
+  std::unordered_set<std::string> res;
+  for(const std::string& it : on)
   {
-    std::string prop_i = *it;
-    std::set<std::string> tmp = getUp(prop_i);
+    std::unordered_set<std::string> tmp = getUp(it);
     if(tmp.find(selector) != tmp.end())
-      res.insert(*it);
+      res.insert(it);
   }
   return res;
 }

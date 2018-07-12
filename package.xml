@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>ontologenius</name>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
   <description>The ontoloGenius package</description>
 
   <maintainer email="guillaum324bis@hotmail.fr">srth</maintainer>
@@ -23,6 +23,7 @@
   <build_depend>cv_bridge</build_depend>
   <build_depend>cmake_modules</build_depend>
   <build_depend>pluginlib</build_depend>
+  <build_depend>qtbase5-dev</build_depend>
 
   <run_depend>diagnostic_msgs</run_depend>
   <run_depend>rospy</run_depend>

@@ -7,15 +7,14 @@
 
 void NodeWriter::writeDictionary(ValuedNodeData* node)
 {
-  std::map<std::string, std::vector<std::string>>::iterator it;
-  for(it = node->dictionary_.begin(); it != node->dictionary_.end(); ++it)
+  for(auto& it : node->dictionary_)
   {
-    for(size_t i = 0; i < it->second.size(); i++)
+    for(size_t i = 0; i < it.second.size(); i++)
     {
       std::string tmp = "        <rdfs:label xml:lang=\"" +
-                        it->first +
+                        it.first +
                         "\">" +
-                        it->second[i] +
+                        it.second[i] +
                         + "</rdfs:label>\n\r";
       writeString(tmp);
     }

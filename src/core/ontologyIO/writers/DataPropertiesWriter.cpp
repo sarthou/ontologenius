@@ -17,8 +17,8 @@ void DataPropertiesWriter::write(FILE* file)
 
 void DataPropertiesWriter::writeProperty(DataPropertyBranch_t* branch)
 {
-  std::string tmp = "    <!-- ontologenius#" + branch->value_ + " -->\n\r\n\r\
-    <owl:DatatypeProperty rdf:about=\"ontologenius#" + branch->value_ + "\">\n\r";
+  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\r\n\r\
+    <owl:DatatypeProperty rdf:about=\"ontologenius#" + branch->value() + "\">\n\r";
   writeString(tmp);
 
   writeSubPropertyOf(branch);
@@ -38,7 +38,7 @@ void DataPropertiesWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.mothers_.size(); i++)
   {
     std::string tmp = "        <rdfs:subPropertyOf rdf:resource=\"ontologenius#" +
-                      branch->steady_.mothers_[i]->value_
+                      branch->steady_.mothers_[i]->value()
                       + "\"/>\n\r";
     writeString(tmp);
   }
@@ -62,7 +62,7 @@ void DataPropertiesWriter::writeDomain(DataPropertyBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.domains_.size(); i++)
   {
     std::string tmp = "        <rdfs:domain rdf:resource=\"ontologenius#" +
-                      branch->steady_.domains_[i]->value_
+                      branch->steady_.domains_[i]->value()
                       + "\"/>\n\r";
     writeString(tmp);
   }

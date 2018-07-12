@@ -6,15 +6,15 @@
 #include <chrono>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
-#include <set>
+#include <unordered_set>
 
 using namespace std::chrono;
 
-std::string set2string(std::set<std::string> word_set)
+std::string set2string(std::unordered_set<std::string> word_set)
 {
   std::string result = "";
-  for(std::set<std::string>::iterator it = word_set.begin(); it != word_set.end(); ++it)
-    result += *it + " ";
+  for(const std::string& it : word_set)
+    result += it + " ";
   return result;
 }
 
@@ -25,21 +25,21 @@ std::vector<std::string> generate_sequence(ClassGraph& onto)
   std::vector<ClassBranch_t*> base = onto.get();
   size_t max_index = base.size();
 
-  std::string _1_10_1 = base[rand() % max_index]->value_;
-  std::string _1_10_2 = base[rand() % max_index]->value_;
+  std::string _1_10_1 = base[rand() % max_index]->value();
+  std::string _1_10_2 = base[rand() % max_index]->value();
 
-  std::string _1_20_1 = base[rand() % max_index]->value_;
-  std::string _1_20_2 = base[rand() % max_index]->value_;
+  std::string _1_20_1 = base[rand() % max_index]->value();
+  std::string _1_20_2 = base[rand() % max_index]->value();
 
-  std::string _1_25_1 = base[rand() % max_index]->value_;
-  std::string _1_25_2 = base[rand() % max_index]->value_;
-  std::string _1_25_3 = base[rand() % max_index]->value_;
+  std::string _1_25_1 = base[rand() % max_index]->value();
+  std::string _1_25_2 = base[rand() % max_index]->value();
+  std::string _1_25_3 = base[rand() % max_index]->value();
 
-  std::string _1_50_1 = base[rand() % max_index]->value_;
-  std::string _1_50_2 = base[rand() % max_index]->value_;
-  std::string _1_50_3 = base[rand() % max_index]->value_;
-  std::string _1_50_4 = base[rand() % max_index]->value_;
-  std::string _1_50_5 = base[rand() % max_index]->value_;
+  std::string _1_50_1 = base[rand() % max_index]->value();
+  std::string _1_50_2 = base[rand() % max_index]->value();
+  std::string _1_50_3 = base[rand() % max_index]->value();
+  std::string _1_50_4 = base[rand() % max_index]->value();
+  std::string _1_50_5 = base[rand() % max_index]->value();
 
   std::vector<std::string> vect20;
   vect20.resize(10);
@@ -69,8 +69,8 @@ std::vector<std::string> generate_sequence(ClassGraph& onto)
   for(int i = 14; i < 100; i += 50)
     vect100[i] = _1_50_4;
 
-  vect100[24] = base[rand() % max_index]->value_;
-  vect100[34] = base[rand() % max_index]->value_;
+  vect100[24] = base[rand() % max_index]->value();
+  vect100[34] = base[rand() % max_index]->value();
 
   std::vector<std::string> vect10000 = vect100;
   for(int i = 0; i < 100; i++)
@@ -78,7 +78,7 @@ std::vector<std::string> generate_sequence(ClassGraph& onto)
 
   for(size_t i = 0; i < vect10000.size(); i++)
     if(vect10000[i] == "")
-      vect10000[i] = base[rand() % max_index]->value_;
+      vect10000[i] = base[rand() % max_index]->value();
 
   return vect10000;
 }
@@ -88,7 +88,7 @@ double testOne(std::vector<std::string>& seq, Ontology& onto)
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
   for(size_t i = 0; i < seq.size(); i++)
-    /*std::set<std::string> out = */onto.class_graph_.touch(seq[i]);
+    std::unordered_set<std::string> out = onto.class_graph_.getUp(seq[i]);
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
@@ -108,16 +108,18 @@ int main(int argc, char** argv)
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-  onto.readFromFile("/home/gsarthou/Desktop/test.owl");
-  onto.readFromFile("/home/gsarthou/Desktop/attribute.owl");
-  onto.readFromFile("/home/gsarthou/Desktop/positionProperty.owl");
-  onto.readFromFile("/home/gsarthou/Desktop/testIndividuals.owl");
+  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/attribute.owl");
+  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/positionProperty.owl");
+  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/testIndividuals.owl");
+  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/property.owl");
+  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/measure.owl");
 
   onto.close();
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
   std::cout << "It took me " << time_span.count() << " seconds to read" << std::endl;
+  double read_time = time_span.count();
 
   arguers.runPostArguers();
 
@@ -133,6 +135,7 @@ int main(int argc, char** argv)
 
   std::cout << "mean = " << total/((float)epoch) << " per sequence of " << seq.size() << std::endl;
   std::cout << "mean = " << total/((float)epoch)/seq.size() << " per request" << std::endl;
+  std::cout << "It took me " << read_time << " seconds to read" << std::endl;
 
   ROS_DEBUG("Drawing done");
 
