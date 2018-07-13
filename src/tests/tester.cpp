@@ -137,7 +137,7 @@ int main(int argc, char** argv)
   std::cout << "mean = " << total/((float)epoch)/seq.size() << " per request" << std::endl;
   std::cout << "It took me " << read_time << " seconds to read" << std::endl;
 
-  ROS_DEBUG("Drawing done");
+  ROS_DEBUG("Test done");
 
   return 0;
 }
