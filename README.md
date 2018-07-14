@@ -1,4 +1,4 @@
-# <img src="logo/ontologenius.png" width="150"> ontolo**G**enius
+# <img src="docs/img/logo/ontologenius.png" width="150"> ontolo**G**enius
 This repository is a ROS package to link, explore and interrogate ontologies.
 
 ***
