@@ -29,7 +29,7 @@ bool close()
 double tester(std::vector<std::string>& actions, const std::string& service)
 {
   double res = 0;
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + service);
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + service, true);
   for(size_t i = 0; i < NB_PER_SERVICE; i++)
   {
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
