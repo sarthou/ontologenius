@@ -26,11 +26,10 @@ bool close()
     return true;
 };
 
-double classTester()
+double tester(std::vector<std::string>& actions, const std::string& service)
 {
   double res = 0;
-  std::vector<std::string> actions = {"getDown", "getUp", "getDisjoint", "getName", "find"};
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/class");
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + service);
   for(size_t i = 0; i < NB_PER_SERVICE; i++)
   {
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -48,54 +47,37 @@ double classTester()
     std::cout << "[ " << i/(NB_PER_SERVICE/100.0) << "%] " << time_span.count()/actions.size() << std::endl;
     res += time_span.count()/actions.size();
   }
+  return res;
+}
+
+double classTester()
+{
+  std::vector<std::string> actions = {"getDown", "getUp", "getDisjoint", "getName", "find"};
+  return tester(actions, "class");
 }
 
 double objectPropertyTester()
 {
-  double res = 0;
   std::vector<std::string> actions = {"getDown", "getUp", "getDisjoint", "getName", "find", "getInverse", "getDomain", "getRange"};
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/object_property");
-  for(size_t i = 0; i < NB_PER_SERVICE; i++)
-  {
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-    for(size_t j = 0; j < actions.size(); j++)
-    {
-      ontologenius::OntologeniusService srv;
-      srv.request.action = actions[j];
-      srv.request.param = "this_is_a_test";
-
-      if(!client.call(srv))
-        return -1;
-    }
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "[ " << i/(NB_PER_SERVICE/100.0) << "%] " << time_span.count()/actions.size() << std::endl;
-    res += time_span.count()/actions.size();
-  }
+  return tester(actions, "object_property");
 }
 
 double dataPropertyTester()
 {
-  double res = 0;
   std::vector<std::string> actions = {"getDown", "getUp", "getDisjoint", "getName", "find", "getDomain", "getRange"};
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/data_property");
-  for(size_t i = 0; i < NB_PER_SERVICE; i++)
-  {
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-    for(size_t j = 0; j < actions.size(); j++)
-    {
-      ontologenius::OntologeniusService srv;
-      srv.request.action = actions[j];
-      srv.request.param = "this_is_a_test";
+  return tester(actions, "data_property");
+}
 
-      if(!client.call(srv))
-        return -1;
-    }
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "[ " << i/(NB_PER_SERVICE/100.0) << "%] " << time_span.count()/actions.size() << std::endl;
-    res += time_span.count()/actions.size();
-  }
+double individualTester()
+{
+  std::vector<std::string> actions = {"getSame", "getDistincts", "getRelationFrom", "getRelatedFrom", "getRelationOn", "getRelatedOn", "getRelationWith", "getRelatedWith", "getUp", "getOn", "getFrom", "getWith", "getName", "find", "getType"};
+  return tester(actions, "individual");
+}
+
+double arguerTester()
+{
+  std::vector<std::string> actions = {"activate", "deactivate", "list", "getDescription"};
+  return tester(actions, "arguer");
 }
 
 int main(int argc, char** argv)
@@ -111,13 +93,17 @@ int main(int argc, char** argv)
   double class_time = classTester();
   double objetc_time = objectPropertyTester();
   double data_time = dataPropertyTester();
+  double indiv_time = individualTester();
+  double arguer_time = arguerTester();
 
-  double total = class_time + objetc_time + data_time;
-  total = total/3.;
+  double total = class_time + objetc_time + data_time + indiv_time + arguer_time;
+  total = total/5.;
 
   std::cout << "classes = " << class_time << std::endl;
   std::cout << "objects = " << objetc_time << std::endl;
   std::cout << "datas   = " << data_time << std::endl;
+  std::cout << "indivs  = " << indiv_time << std::endl;
+  std::cout << "arguers = " << arguer_time << std::endl;
   std::cout << "mean = " << total << " per service"<< std::endl;
   std::cout << "mean = " << total/NB_PER_SERVICE << " per request" << std::endl;
 
