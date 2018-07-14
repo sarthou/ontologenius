@@ -104,10 +104,20 @@ int main(int argc, char** argv)
   std::cout << "datas   = " << data_time << std::endl;
   std::cout << "indivs  = " << indiv_time << std::endl;
   std::cout << "arguers = " << arguer_time << std::endl;
-  std::cout << "mean = " << total << " per service"<< std::endl;
-  std::cout << "mean = " << total/NB_PER_SERVICE << " per request" << std::endl;
 
-  ROS_DEBUG("Service test done");
+  bool err = false;
+  if(class_time < 0) {err = true; std::cout << "class service error" << std::endl; }
+  if(objetc_time < 0) {err = true; std::cout << "object property service error" << std::endl; }
+  if(data_time < 0) {err = true; std::cout << "data property service error" << std::endl; }
+  if(indiv_time < 0) {err = true; std::cout << "individual service error" << std::endl; }
+  if(arguer_time < 0) {err = true; std::cout << "arguer service error" << std::endl; }
 
-  return 0;
+  if(err == false)
+  {
+    std::cout << "mean = " << total << " per service"<< std::endl;
+    std::cout << "mean = " << total/NB_PER_SERVICE << " per request" << std::endl;
+    return 0;
+  }
+  else
+    return -1;
 }
