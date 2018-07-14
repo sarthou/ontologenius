@@ -166,6 +166,13 @@ add_dependencies(ontologenius_interpreter_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_interpreter_lib ontologenius_codeDescription_lib)
 target_link_libraries(ontologenius_interpreter_lib ontologenius_ontoGraphs_lib)
 
+add_library(ontoloGenius_lib
+  src/utility/OntologyManipulator.cpp
+)
+add_dependencies(ontoloGenius_lib ontologenius_gencpp)
+target_link_libraries(ontoloGenius_lib ontologenius_interpreter_lib)
+target_link_libraries(ontoloGenius_lib ontologenius_core_lib)
+
 ##############################
 ## PLUGINS
 ##############################
