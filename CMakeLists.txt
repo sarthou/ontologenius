@@ -60,7 +60,7 @@ find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-#  LIBRARIES ontoloGenius
+  LIBRARIES ontoloGenius_lib
   CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
   DEPENDS TinyXML
@@ -166,6 +166,18 @@ add_dependencies(ontologenius_interpreter_lib ontologenius_gencpp)
 target_link_libraries(ontologenius_interpreter_lib ontologenius_codeDescription_lib)
 target_link_libraries(ontologenius_interpreter_lib ontologenius_ontoGraphs_lib)
 
+add_library(ontoloGenius_lib
+  src/utility/OntologyManipulator.cpp
+  src/utility/ClientBase.cpp
+  src/utility/IndividualClient.cpp
+  src/utility/ObjectPropertyClient.cpp
+  src/utility/DataPropertyClient.cpp
+  src/utility/ClassClient.cpp
+)
+add_dependencies(ontoloGenius_lib ontologenius_gencpp)
+target_link_libraries(ontoloGenius_lib ontologenius_interpreter_lib)
+target_link_libraries(ontoloGenius_lib ontologenius_core_lib)
+
 ##############################
 ## PLUGINS
 ##############################
@@ -195,13 +207,17 @@ add_dependencies(ontoloGenius_exemple ontologenius_gencpp)
 target_link_libraries(ontoloGenius_exemple ontologenius_drawer_lib)
 target_link_libraries(ontoloGenius_exemple ontologenius_core_lib)
 
-add_executable(ontoloGenius_tester src/tester.cpp)
+add_executable(ontoloGenius_tester src/tests/tester.cpp)
 add_dependencies(ontoloGenius_tester ontologenius_gencpp)
 target_link_libraries(ontoloGenius_tester ontologenius_core_lib)
 
-add_executable(ontoloGenius_container_tester src/container_test.cpp)
+add_executable(ontoloGenius_container_tester src/tests/container_test.cpp)
 add_dependencies(ontoloGenius_container_tester ontologenius_gencpp)
 target_link_libraries(ontoloGenius_container_tester ontologenius_core_lib)
+
+add_executable(ontoloGenius_services_tester src/tests/service_tester.cpp)
+add_dependencies(ontoloGenius_services_tester ontologenius_gencpp)
+target_link_libraries(ontoloGenius_services_tester ontologenius_core_lib)
 
 ##############################################################################
 # Qt Environment
@@ -257,3 +273,21 @@ target_link_libraries(ontoloGUI
     Qt5::PrintSupport
 )
 install(TARGETS ontoloGUI RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+##############################
+## Install
+##############################
+
+install(TARGETS
+  ontoloGenius_lib
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.h"
+  PATTERN ".svn" EXCLUDE
+)

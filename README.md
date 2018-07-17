@@ -64,4 +64,4 @@ LAAS-CNRS, Toulouse, 2017 – 2018.
 ```
 
 [Release-Url]: https://sarthou.github.io/ontologenius/
-[Release-image]: http://img.shields.io/badge/release-v0.1.2-1eb0fc.svg
+[Release-image]: http://img.shields.io/badge/release-v0.1.3-1eb0fc.svg
