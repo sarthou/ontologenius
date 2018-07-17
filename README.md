@@ -1,11 +1,7 @@
-# <img src="docs/img/logo/ontologenius.png" width="150"> ontolo**G**enius
+# <img src="logo/ontologenius.png" width="150"> ontolo**G**enius
+[![Release][Release-Image]][Release-Url]  Matser : [![Build Status](https://travis-ci.org/sarthou/ontologenius.svg?branch=master)](https://travis-ci.org/sarthou/ontologenius) Dev : [![Build Status](https://travis-ci.org/sarthou/ontologenius.svg?branch=dev)](https://travis-ci.org/sarthou/ontologenius)
+
 This repository is a ROS package to link, explore and interrogate ontologies.
-
-***
-
-Matser : [![Build Status](https://travis-ci.org/sarthou/ontologenius.svg?branch=master)](https://travis-ci.org/sarthou/ontologenius)
-
-Dev : [![Build Status](https://travis-ci.org/sarthou/ontologenius.svg?branch=dev)](https://travis-ci.org/sarthou/ontologenius)
 
 ***
 
@@ -66,3 +62,6 @@ The result should look something similar to this (may depend on the bibliography
 G. Sarthou, “ontologenius,” https://github.com/sarthou/ontologenius,
 LAAS-CNRS, Toulouse, 2017 – 2018.
 ```
+
+[Release-Url]: https://sarthou.github.io/ontologenius/
+[Release-image]: http://img.shields.io/badge/release-v0.1.3-1eb0fc.svg
