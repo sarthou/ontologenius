@@ -18,7 +18,7 @@ public:
   ~OntologyManipulator() {}
 
 
-  size_t nb() {individuals.nb();}
+  size_t nb() {return individuals.nb();}
   void reset() {individuals.reset();}
 
   bool close();

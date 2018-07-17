@@ -60,7 +60,7 @@ find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-#  LIBRARIES ontoloGenius
+  LIBRARIES ontoloGenius_lib
   CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
   DEPENDS TinyXML
@@ -273,3 +273,21 @@ target_link_libraries(ontoloGUI
     Qt5::PrintSupport
 )
 install(TARGETS ontoloGUI RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+##############################
+## Install
+##############################
+
+install(TARGETS
+  ontoloGenius_lib
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.h"
+  PATTERN ".svn" EXCLUDE
+)
