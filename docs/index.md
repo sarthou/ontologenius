@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/sarthou/ontologenius/master/logo/ontologenius.png" width="150"> ontolo**G**enius
+# <img src="https://raw.githubusercontent.com/sarthou/ontologenius/master/docs/img/logo/ontologenius.png" width="150"> ontolo**G**enius
 
 ##### An easy way to use ontologies for robotic applications.
 ##### A fast way to interrogate your robot's knowledge.
