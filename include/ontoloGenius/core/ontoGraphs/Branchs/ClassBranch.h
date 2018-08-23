@@ -6,11 +6,21 @@
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/Branch.h"
 
+#include "ontoloGenius/core/ontoGraphs/Branchs/Data.h"
+class ObjectPropertyBranch_t;
+class DataPropertyBranch_t;
+
 template <typename T>
 class ClassBranchData_t
 {
 public:
   std::vector<T*> disjoints_;
+
+  std::vector<ObjectPropertyBranch_t*> object_properties_name_;
+  std::vector<T*> object_properties_on_;
+
+  std::vector<DataPropertyBranch_t*> data_properties_name_;
+  std::vector<data_t> data_properties_data_;
 };
 
 class ClassBranch_t;
@@ -33,6 +43,10 @@ public:
   void setSteady_mother(ClassBranch_t* mother);
   void setSteady_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
+  void setSteady_object_properties_name(ObjectPropertyBranch_t* object_properties_name);
+  void setSteady_object_properties_on(ClassBranch_t* object_properties_on);
+  void setSteady_data_properties_name(DataPropertyBranch_t* data_properties_name);
+  void setSteady_data_properties_data(data_t data_properties_data);
 };
 
 #endif
