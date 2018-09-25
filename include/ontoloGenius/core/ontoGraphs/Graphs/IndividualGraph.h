@@ -62,6 +62,7 @@ public:
   std::unordered_set<std::string> getUp(const std::string& individual, int depth = -1);            //C3
   std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& class_selector);
   std::string getName(const std::string& value);
+  std::vector<std::string> getNames(const std::string& value);
   std::unordered_set<std::string> find(const std::string& value);
   std::unordered_set<std::string> getType(const std::string& class_selector);
 

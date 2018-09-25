@@ -299,7 +299,7 @@ bool arguer_handle(ontologenius::standard_service::Request  &req,
 }
 //END OF DEPRECATED
 
-bool actionsHandle(ontologenius::OntologeniusService::Request  &req,
+bool actionsHandle(ontologenius::OntologeniusService::Request &req,
                       ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;
@@ -334,7 +334,7 @@ bool actionsHandle(ontologenius::OntologeniusService::Request  &req,
   return true;
 }
 
-bool classHandle(ontologenius::OntologeniusService::Request  &req,
+bool classHandle(ontologenius::OntologeniusService::Request &req,
                   ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;
@@ -358,6 +358,8 @@ bool classHandle(ontologenius::OntologeniusService::Request  &req,
       set2vector(onto.class_graph_.getDisjoint(req.param), res.values);
     else if(req.action == "getName")
       res.values.push_back(onto.class_graph_.getName(req.param));
+    else if(req.action == "getNames")
+      res.values = onto.class_graph_.getNames(req.param);
     else if(req.action == "find")
       set2vector(onto.class_graph_.find(req.param), res.values);
     else
@@ -367,7 +369,7 @@ bool classHandle(ontologenius::OntologeniusService::Request  &req,
   return true;
 }
 
-bool objectPropertyHandle(ontologenius::OntologeniusService::Request  &req,
+bool objectPropertyHandle(ontologenius::OntologeniusService::Request &req,
                             ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;
@@ -396,6 +398,8 @@ bool objectPropertyHandle(ontologenius::OntologeniusService::Request  &req,
       set2vector(onto.object_property_graph_.getRange(req.param), res.values);
     else if(req.action == "getName")
       res.values.push_back(onto.object_property_graph_.getName(req.param));
+    else if(req.action == "getNames")
+      res.values = onto.object_property_graph_.getNames(req.param);
     else if(req.action == "find")
       set2vector(onto.object_property_graph_.find(req.param), res.values);
     else
@@ -405,7 +409,7 @@ bool objectPropertyHandle(ontologenius::OntologeniusService::Request  &req,
   return true;
 }
 
-bool dataPropertyHandle(ontologenius::OntologeniusService::Request  &req,
+bool dataPropertyHandle(ontologenius::OntologeniusService::Request &req,
                           ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;
@@ -433,6 +437,8 @@ bool dataPropertyHandle(ontologenius::OntologeniusService::Request  &req,
       set2vector(onto.data_property_graph_.getRange(req.param), res.values);
     else if(req.action == "getName")
       res.values.push_back(onto.data_property_graph_.getName(req.param));
+    else if(req.action == "getNames")
+      res.values = onto.data_property_graph_.getNames(req.param);
     else if(req.action == "find")
       set2vector(onto.object_property_graph_.find(req.param), res.values);
     else
@@ -501,6 +507,8 @@ bool individualHandle(ontologenius::OntologeniusService::Request  &req,
       set_res = onto.individual_graph_.getWith(req.param, level);
     else if(req.action == "getName")
       res.values.push_back(onto.individual_graph_.getName(req.param));
+    else if(req.action == "getNames")
+      res.values = onto.individual_graph_.getNames(req.param);
     else if(req.action == "find")
       set_res = onto.individual_graph_.find(req.param);
     else if(req.action == "getType")
@@ -514,7 +522,7 @@ bool individualHandle(ontologenius::OntologeniusService::Request  &req,
         set_res = onto.class_graph_.select(set_res, select);
       else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
         set_res = onto.object_property_graph_.select(set_res, select);
-      else if(req.action != "getName")
+      else if(req.action != "find")
         set_res = onto.individual_graph_.select(set_res, select);
     }
 

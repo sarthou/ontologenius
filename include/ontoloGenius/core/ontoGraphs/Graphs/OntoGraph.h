@@ -31,6 +31,7 @@ public:
   std::unordered_set<uint32_t> getDownId(const std::string& value, int depth = -1);
   std::unordered_set<uint32_t> getUpId(const std::string& value, int depth = -1);
   std::string getName(const std::string& value);
+  std::vector<std::string> getNames(const std::string& value);
   std::unordered_set<std::string> find(const std::string& value);
   bool touch(const std::string& value);
 
@@ -177,6 +178,23 @@ std::string OntoGraph<B>::getName(const std::string& value)
         res = value;
     else
       res = value;
+  }
+
+  return res;
+}
+
+template <typename B>
+std::vector<std::string> OntoGraph<B>::getNames(const std::string& value)
+{
+  std::vector<std::string> res;
+
+  B* branch = this->container_.find(value);
+  if(branch != nullptr)
+  {
+    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
+      res = branch->dictionary_[this->language_];
+    else
+      res.push_back(value);
   }
 
   return res;

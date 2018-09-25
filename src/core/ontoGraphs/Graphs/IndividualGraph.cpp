@@ -654,6 +654,22 @@ std::string IndividualGraph::getName(const std::string& value)
   return res;
 }
 
+std::vector<std::string> IndividualGraph::getNames(const std::string& value)
+{
+  std::vector<std::string> res;
+
+  IndividualBranch_t* branch = container_.find(value);
+  if(branch != nullptr)
+  {
+    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
+      res = branch->dictionary_[this->language_];
+    else
+      res.push_back(value);
+  }
+
+  return res;
+}
+
 std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
 {
   std::unordered_set<std::string> res;
