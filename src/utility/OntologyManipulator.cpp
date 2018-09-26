@@ -6,6 +6,7 @@ OntologyManipulator::OntologyManipulator(ros::NodeHandle* n) :  individuals(n),
                                                                 classes(n)
 {
   n_ = n;
+  ros::service::waitForService("ontologenius/arguer");
 }
 
 bool OntologyManipulator::close()

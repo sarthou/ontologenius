@@ -17,7 +17,6 @@ public:
   OntologyManipulator(ros::NodeHandle* n);
   ~OntologyManipulator() {}
 
-
   size_t nb() {return individuals.nb();}
   void reset() {individuals.reset();}
 
