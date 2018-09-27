@@ -7,7 +7,6 @@ class ArguerNone : public ArguerInterface
 {
 public:
   ArguerNone() {}
-  ~ArguerNone() {}
 
   virtual void preReason();
   virtual void postReason();

@@ -7,7 +7,6 @@ class ArguerDictionary : public ArguerInterface
 {
 public:
   ArguerDictionary() {}
-  ~ArguerDictionary() {}
 
   virtual void preReason();
   virtual void postReason();

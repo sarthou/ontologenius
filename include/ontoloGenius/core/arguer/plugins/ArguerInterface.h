@@ -7,8 +7,6 @@
 class ArguerInterface
 {
 public:
-  virtual ~ArguerInterface() {}
-
   virtual void initialize(Ontology* onto) {ontology_ = onto; }
 
   virtual void preReason() {}
