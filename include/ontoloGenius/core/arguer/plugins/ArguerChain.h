@@ -7,6 +7,7 @@ class ArguerChain : public ArguerInterface
 {
 public:
   ArguerChain() {}
+  ~ArguerChain() {}
 
   virtual void preReason();
   virtual void postReason();

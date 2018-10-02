@@ -7,6 +7,7 @@ class ArguerInverseOf : public ArguerInterface
 {
 public:
   ArguerInverseOf() {}
+  ~ArguerInverseOf() {}
 
   virtual void preReason();
   virtual void postReason();

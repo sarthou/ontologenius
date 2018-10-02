@@ -15,6 +15,34 @@ Arguers::~Arguers()
   {
     if(it.second != nullptr)
     {
+      delete it.second;
+      it.second = nullptr;
+    }
+    //TODO: unload the library cause segfault or exception => unstable behavior
+    try
+    {
+      loader_.unloadLibraryForClass(it.first);
+      std::cout << it.first << " unloaded" << std::endl;
+    }
+    catch(class_loader::LibraryUnloadException& ex)
+    {
+      std::cout << "class_loader::LibraryUnloadException on " << it.first << " : " << std::string(ex.what()) << std::endl;
+      ROS_ERROR("The plugin %s failed to unload for some reason. Error: %s", it.first.c_str(), ex.what());
+    }
+    catch(pluginlib::LibraryUnloadException& ex)
+    {
+      std::cout << "pluginlib::LibraryUnloadException on " << it.first << " : " << std::string(ex.what()) << std::endl;
+      ROS_ERROR("The plugin %s failed to unload for some reason. Error: %s", it.first.c_str(), ex.what());
+    }
+    catch(...)
+    {
+      std::cout << "catch other" << std::endl;
+    }
+  }
+  for(auto& it : arguers_)
+  {
+    if(it.second != nullptr)
+    {
       std::cout << "delete " << it.first << std::endl;
       delete it.second;
       it.second = nullptr;

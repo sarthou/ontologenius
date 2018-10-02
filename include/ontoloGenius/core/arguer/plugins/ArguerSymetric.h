@@ -7,6 +7,7 @@ class ArguerSymetric : public ArguerInterface
 {
 public:
   ArguerSymetric() {}
+  ~ArguerSymetric() {}
 
   virtual void preReason();
   virtual void postReason();
