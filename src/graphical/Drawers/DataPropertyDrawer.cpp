@@ -30,7 +30,9 @@ void DataPropertyDrawer::putInLayers()
       putLayer(layer);
       layer++;
     }
-    layer_nodes.pop_back();
+
+    if(layer_nodes.size() > 0)
+      layer_nodes.pop_back();
   }
 }
 
