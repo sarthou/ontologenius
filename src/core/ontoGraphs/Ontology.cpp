@@ -22,6 +22,7 @@ Ontology::Ontology(std::string language) : object_property_graph_(&class_graph_)
   object_property_graph_.setLanguage(language);
   data_property_graph_.setLanguage(language);
   individual_graph_.setLanguage(language);
+  writer.setFileName("none");
 }
 
 Ontology::~Ontology()
