@@ -1,5 +1,6 @@
 # <img src="logo/ontologenius.png" width="150"> ontolo**G**enius
-[![Release][Release-Image]][Release-Url]  Matser : [![Build Status](https://travis-ci.org/sarthou/ontologenius.svg?branch=master)](https://travis-ci.org/sarthou/ontologenius) Dev : [![Build Status](https://travis-ci.org/sarthou/ontologenius.svg?branch=dev)](https://travis-ci.org/sarthou/ontologenius)
+[![Release][Release-Image]][Release-Url]  Matser : [![Build Status](https://gitlab.com/sarthou/ontologenius/badges/master/pipeline.svg)](https://gitlab.com/sarthou/ontologenius/commits/master) Dev : [![Build Status](https://gitlab.com/sarthou/ontologenius/badges/dev/pipeline.svg)](https://gitlab.com/sarthou/ontologenius/commits/dev)
+
 
 This repository is a ROS package to link, explore and interrogate ontologies.
 
