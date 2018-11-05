@@ -16,6 +16,7 @@
     - cd src
     - cp -r /builds/$GITLAB_USER_LOGIN/ontologenius .
     - cd ..
+    - catkin_make
     - catkin_make run_tests_ontologenius_rostest
 
 .kinetic_before_template : &kinetic_before_definition
