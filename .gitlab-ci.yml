@@ -21,7 +21,9 @@
     - cd requests
     - python setup.py install --prefix=~/ros_ws/devel
     - cd ../..
+    - source devel/setup.bash
     - catkin_make
+    - source devel/setup.bash
     - catkin_make run_tests_ontologenius_rostest
 
 .kinetic_before_template : &kinetic_before_definition
