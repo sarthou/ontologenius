@@ -1,0 +1,70 @@
+.build_script_template : &build_script_definition
+  script:
+    - mkdir -p ~/ros_ws/src
+    - cd ~/ros_ws
+    - catkin_make
+    - cd src
+    - cp -r /builds/$GITLAB_USER_LOGIN/ontologenius .
+    - cd ..
+    - catkin_make
+
+.test_script_template : &test_script_definition
+  script:
+    - mkdir -p ~/ros_ws/src
+    - cd ~/ros_ws
+    - catkin_make
+    - cd src
+    - cp -r /builds/$GITLAB_USER_LOGIN/ontologenius .
+    - cd ..
+    - catkin_make run_tests
+
+.kinetic_before_template : &kinetic_before_definition
+  before_script:
+  - source /opt/ros/kinetic/setup.bash
+  - apt-get update -qq && apt-get install -y libcppunit-1.13-0v5 libcppunit-dev
+
+.lunar_before_template : &lunar_before_definition
+  before_script:
+  - source /opt/ros/lunar/setup.bash
+  - apt-get update -qq && apt-get install -y libcppunit-1.13-0v5 libcppunit-dev libtinyxml-dev
+
+.melodic_before_template : &melodic_before_definition
+  before_script:
+  - source /opt/ros/melodic/setup.bash
+  - apt-get update -qq && apt-get install -y libcppunit-1.14-0 libcppunit-dev libtinyxml-dev
+
+
+stages:
+  - build
+  - test
+
+run-build-kinetic:
+  image: ros:kinetic-perception-xenial
+  stage: build
+  <<: *kinetic_before_definition
+  <<: *build_script_definition
+
+run-test-kinetic:
+  stage: test
+  image: ros:kinetic-perception-xenial
+  <<: *kinetic_before_definition
+  <<: *test_script_definition
+
+run-test-melodic:
+  stage: test
+  image: ros:melodic-perception-bionic
+  <<: *melodic_before_definition
+  <<: *test_script_definition
+
+run-build-melodic:
+  image: ros:melodic-perception-bionic
+  stage: build
+  <<: *melodic_before_definition
+  <<: *build_script_definition
+
+run-build-lunar:
+  image: ros:lunar-perception-xenial
+  stage: build
+  allow_failure : true
+  <<: *lunar_before_definition
+  <<: *build_script_definition
