@@ -15,7 +15,12 @@
     - catkin_make
     - cd src
     - cp -r /builds/$GITLAB_USER_LOGIN/ontologenius .
-    - cd ..
+    - git clone https://github.com/kennethreitz/requests.git
+    - mkdir -p ~/ros_ws/devel/lib/python2.7/site-packages
+    - export PYTHONPATH=~/ros_ws/devel/lib/python2.7/site-packages:$PYTHONPATH
+    - cd requests
+    - python setup.py install --prefix=~/ros_ws/devel
+    - cd ../..
     - catkin_make
     - catkin_make run_tests_ontologenius_rostest
 
