@@ -291,3 +291,14 @@ install(DIRECTORY include/${PROJECT_NAME}/
   FILES_MATCHING PATTERN "*.h"
   PATTERN ".svn" EXCLUDE
 )
+
+##############################
+## Tests
+##############################
+
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+
+  add_rostest_gtest(ontoloGenius_library_tester test/library.test src/tests/library.cpp)
+  target_link_libraries(ontoloGenius_library_tester ontoloGenius_lib)
+endif()

@@ -60,6 +60,7 @@ protected:
       else
       {
         std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        res.push_back("ERR:SERVICE_FAIL");
         return res;
       }
     }
