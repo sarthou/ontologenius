@@ -24,7 +24,7 @@
     - source devel/setup.bash
     - catkin_make
     - source devel/setup.bash
-    - catkin_make run_tests_ontologenius_rostest
+    - catkin_make run_tests_ontologenius_rostest && catkin_make test
 
 .kinetic_before_template : &kinetic_before_definition
   before_script:
