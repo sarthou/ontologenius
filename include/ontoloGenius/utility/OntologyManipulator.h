@@ -5,6 +5,7 @@
 #include "ontoloGenius/utility/ObjectPropertyClient.h"
 #include "ontoloGenius/utility/DataPropertyClient.h"
 #include "ontoloGenius/utility/ClassClient.h"
+#include "ontoloGenius/utility/ActionClient.h"
 
 #include "ros/ros.h"
 
@@ -17,15 +18,15 @@ public:
   OntologyManipulator(ros::NodeHandle* n);
   ~OntologyManipulator() {}
 
-  size_t nb() {return individuals.nb();}
-  void reset() {individuals.reset();}
-
-  bool close();
+  size_t nb() {return actions.nb();}
+  void resetNb() {actions.resetNb();}
+  bool close() {return actions.close(); }
 
   IndividualClient individuals;
   ObjectPropertyClient objectProperties;
   DataPropertyClient dataProperties;
   ClassClient classes;
+  ActionClient actions;
 
 private:
   ros::NodeHandle* n_;

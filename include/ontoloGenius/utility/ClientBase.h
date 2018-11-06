@@ -31,7 +31,7 @@ public:
   }
 
   size_t nb() {return cpt;}
-  void reset() {cpt = 0;}
+  void resetNb() {cpt = 0;}
 
   std::vector<std::string> getUp(std::string& name, int depth = -1, const std::string& selector = "");
   bool isA(std::string& name, const std::string& base_class);
@@ -62,6 +62,29 @@ protected:
         std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
         res.push_back("ERR:SERVICE_FAIL");
         return res;
+      }
+    }
+  }
+
+  inline bool callNR(ontologenius::OntologeniusService& srv)
+  {
+    cpt++;
+
+    if(client.call(srv))
+      return true;
+    else
+    {
+      std::cout << COLOR_ORANGE << "Failure to call ontoloGenius services" << COLOR_OFF << std::endl;
+      client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + name_, true);
+      if(client.call(srv))
+      {
+        std::cout << COLOR_GREEN << "Restored ontoloGenius services" << COLOR_OFF << std::endl;
+        return true;
+      }
+      else
+      {
+        std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        return false;
       }
     }
   }
