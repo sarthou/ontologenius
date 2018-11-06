@@ -303,6 +303,6 @@ if(CATKIN_ENABLE_TESTING)
   add_rostest_gtest(ontoloGenius_library_tester test/library.test src/tests/library.cpp)
   target_link_libraries(ontoloGenius_library_tester ontoloGenius_lib)
 
-  #add_rostest_gtest(ontoloGenius_requests_tester test/requests.test src/tests/requests.cpp)
-  #target_link_libraries(ontoloGenius_requests_tester ontoloGenius_lib)
+  add_rostest_gtest(ontoloGenius_requests_tester test/requests.test src/tests/requests.cpp)
+  target_link_libraries(ontoloGenius_requests_tester ontoloGenius_lib)
 endif()
