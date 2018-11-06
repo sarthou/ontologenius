@@ -309,6 +309,8 @@ bool actionsHandle(ontologenius::OntologeniusService::Request &req,
 
   if(req.action == "add")
     res.code = onto.readFromUri(req.param);
+  else if(req.action == "fadd")
+    res.code = onto.readFromFile(req.param);
   else if(req.action == "close")
   {
     onto.close();
