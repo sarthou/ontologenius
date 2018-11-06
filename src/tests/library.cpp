@@ -73,6 +73,19 @@ TEST(library_tests, classes_call)
   EXPECT_TRUE(res_bool);
 }
 
+TEST(library_tests, actions_call)
+{
+  bool res_bool = true;
+
+  for(size_t i = 0; i < 1000; i++)
+  {
+    res_bool = res_bool && onto_ptr->actions.setLang("en");
+  }
+
+  EXPECT_TRUE(res_bool);
+}
+
+
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius_library_tester");
