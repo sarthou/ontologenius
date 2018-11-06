@@ -52,6 +52,26 @@ int getPropagationLevel(std::string& params)
   return -1;
 }
 
+std::string getSelector(std::string& action, std::string& param)
+{
+  std::string select = "";
+  if(action.find("select:") == 0)
+  {
+    action = action.substr(std::string("select:").size());
+    size_t delimitater = param.find("=");
+    if(delimitater != std::string::npos)
+    {
+      select = param.substr(0, delimitater);
+      param = param.substr(delimitater+1);
+
+      removeUselessSpace(select);
+      removeUselessSpace(param);
+    }
+    removeUselessSpace(action);
+  }
+  return select;
+}
+
 Ontology onto;
 Arguers arguers(&onto);
 
@@ -352,12 +372,15 @@ bool classHandle(ontologenius::OntologeniusService::Request &req,
     removeUselessSpace(req.action);
     removeUselessSpace(req.param);
 
+    std::unordered_set<std::string> set_res;
+    std::string select = getSelector(req.action, req.param);
+
     if(req.action == "getDown")
-      set2vector(onto.class_graph_.getDown(req.param, level), res.values);
+      set_res = onto.class_graph_.getDown(req.param, level);
     else if(req.action == "getUp")
-      set2vector(onto.class_graph_.getUp(req.param, level), res.values);
+      set_res = onto.class_graph_.getUp(req.param, level);
     else if(req.action == "getDisjoint")
-      set2vector(onto.class_graph_.getDisjoint(req.param), res.values);
+      set_res = onto.class_graph_.getDisjoint(req.param);
     else if(req.action == "getName")
       res.values.push_back(onto.class_graph_.getName(req.param));
     else if(req.action == "getNames")
@@ -366,6 +389,16 @@ bool classHandle(ontologenius::OntologeniusService::Request &req,
       set2vector(onto.class_graph_.find(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
+
+    if(select != "")
+    {
+      if((req.action == "getUp") || (req.action == "getDown") ||
+        (req.action == "getDisjoint"))
+        set_res = onto.class_graph_.select(set_res, select);
+    }
+
+    if(res.values.size() == 0)
+      set2vector(set_res, res.values);
   }
 
   return true;
@@ -383,21 +416,25 @@ bool objectPropertyHandle(ontologenius::OntologeniusService::Request &req,
     arguers.runPreArguers();
 
     int level = getPropagationLevel(req.param);
+
     removeUselessSpace(req.action);
     removeUselessSpace(req.param);
 
+    std::unordered_set<std::string> set_res;
+    std::string select = getSelector(req.action, req.param);
+
     if(req.action == "getDown")
-      set2vector(onto.object_property_graph_.getDown(req.param, level), res.values);
+      set_res = onto.object_property_graph_.getDown(req.param, level);
     else if(req.action == "getUp")
-      set2vector(onto.object_property_graph_.getUp(req.param, level), res.values);
+      set_res = onto.object_property_graph_.getUp(req.param, level);
     else if(req.action == "getDisjoint")
-      set2vector(onto.object_property_graph_.getDisjoint(req.param), res.values);
+      set_res = onto.object_property_graph_.getDisjoint(req.param);
     else if(req.action == "getInverse")
-      set2vector(onto.object_property_graph_.getInverse(req.param), res.values);
+      set_res = onto.object_property_graph_.getInverse(req.param);
     else if(req.action == "getDomain")
-      set2vector(onto.object_property_graph_.getDomain(req.param), res.values);
+      set_res = onto.object_property_graph_.getDomain(req.param);
     else if(req.action == "getRange")
-      set2vector(onto.object_property_graph_.getRange(req.param), res.values);
+      set_res = onto.object_property_graph_.getRange(req.param);
     else if(req.action == "getName")
       res.values.push_back(onto.object_property_graph_.getName(req.param));
     else if(req.action == "getNames")
@@ -406,6 +443,18 @@ bool objectPropertyHandle(ontologenius::OntologeniusService::Request &req,
       set2vector(onto.object_property_graph_.find(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
+
+    if(select != "")
+    {
+      if((req.action == "getUp") || (req.action == "getDown") ||
+        (req.action == "getDisjoint") || (req.action == "getInverse"))
+        set_res = onto.object_property_graph_.select(set_res, select);
+      else if((req.action == "getDomain") || (req.action == "getRange"))
+        set_res = onto.class_graph_.select(set_res, select);
+    }
+
+    if(res.values.size() == 0)
+      set2vector(set_res, res.values);
   }
 
   return true;
@@ -427,14 +476,17 @@ bool dataPropertyHandle(ontologenius::OntologeniusService::Request &req,
     removeUselessSpace(req.action);
     removeUselessSpace(req.param);
 
+    std::unordered_set<std::string> set_res;
+    std::string select = getSelector(req.action, req.param);
+
     if(req.action == "getDown")
-      set2vector(onto.data_property_graph_.getDown(req.param, level), res.values);
+      set_res = onto.data_property_graph_.getDown(req.param, level);
     else if(req.action == "getUp")
-      set2vector(onto.data_property_graph_.getUp(req.param, level), res.values);
+      set_res = onto.data_property_graph_.getUp(req.param, level);
     else if(req.action == "getDisjoint")
-      set2vector(onto.data_property_graph_.getDisjoint(req.param), res.values);
+      set_res = onto.data_property_graph_.getDisjoint(req.param);
     else if(req.action == "getDomain")
-      set2vector(onto.data_property_graph_.getDomain(req.param), res.values);
+      set_res = onto.data_property_graph_.getDomain(req.param);
     else if(req.action == "getRange")
       set2vector(onto.data_property_graph_.getRange(req.param), res.values);
     else if(req.action == "getName")
@@ -445,6 +497,17 @@ bool dataPropertyHandle(ontologenius::OntologeniusService::Request &req,
       set2vector(onto.object_property_graph_.find(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
+
+    if(select != "")
+    {
+      if((req.action == "getUp") || (req.action == "getDown") || (req.action == "getDisjoint"))
+        set_res = onto.data_property_graph_.select(set_res, select);
+      else if(req.action == "getDomain")
+        set_res = onto.class_graph_.select(set_res, select);
+    }
+
+    if(res.values.size() == 0)
+      set2vector(set_res, res.values);
   }
 
   return true;
@@ -467,21 +530,7 @@ bool individualHandle(ontologenius::OntologeniusService::Request  &req,
     removeUselessSpace(req.param);
 
     std::unordered_set<std::string> set_res;
-    std::string select = "";
-    if(req.action.find("select:") == 0)
-    {
-      req.action = req.action.substr(std::string("select:").size());
-      size_t delimitater = req.param.find("=");
-      if(delimitater != std::string::npos)
-      {
-        select = req.param.substr(0, delimitater);
-        req.param = req.param.substr(delimitater+1);
-
-        removeUselessSpace(select);
-        removeUselessSpace(req.param);
-      }
-      removeUselessSpace(req.action);
-    }
+    std::string select = getSelector(req.action, req.param);
 
     if(req.action == "getSame")
       set_res = onto.individual_graph_.getSame(req.param);
