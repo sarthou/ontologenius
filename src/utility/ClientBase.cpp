@@ -50,7 +50,24 @@ std::string ClientBase::getName(const std::string& name)
       return res;
   }
   else
-    return res;
+  {
+    std::cout << COLOR_ORANGE << "Failure to call ontoloGenius services" << COLOR_OFF << std::endl;
+    client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + name_, true);
+    if(client.call(srv))
+    {
+      std::cout << COLOR_GREEN << "Restored ontoloGenius services" << COLOR_OFF << std::endl;
+      if(srv.response.values.size())
+        return srv.response.values[0];
+      else
+        return res;
+    }
+    else
+    {
+      std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+      res = "ERR:SERVICE_FAIL";
+      return res;
+    }
+  }
 }
 
 std::vector<std::string> ClientBase::find(const std::string& name)
