@@ -584,7 +584,7 @@ bool individualHandle(ontologenius::OntologeniusService::Request  &req,
   return true;
 }
 
-bool arguerHandle(ontologenius::OntologeniusService::Request  &req,
+bool arguerHandle(ontologenius::OntologeniusService::Request &req,
                    ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;

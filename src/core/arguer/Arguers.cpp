@@ -147,7 +147,7 @@ int Arguers::deactivate(std::string plugin)
   }
 }
 
-std::string Arguers::getDescription(std::string plugin)
+std::string Arguers::getDescription(std::string& plugin)
 {
   if(arguers_.find(plugin) != arguers_.end())
     return arguers_[plugin]->getDesciption();

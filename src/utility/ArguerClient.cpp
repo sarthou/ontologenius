@@ -12,6 +12,7 @@ bool ArguerClient::activate(const std::string& name)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "activate";
+  srv.request.param = name;
 
   return callNR(srv);
 }
@@ -20,14 +21,16 @@ bool ArguerClient::deactivate(const std::string& name)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "deactivate";
+  srv.request.param = name;
 
   return callNR(srv);
 }
 
-std::string ArguerClient::getDescription(const std::string& file)
+std::string ArguerClient::getDescription(const std::string& name)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "getDescription";
+  srv.request.param = name;
 
   return callStr(srv);
 }

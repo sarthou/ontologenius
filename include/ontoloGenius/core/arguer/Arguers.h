@@ -21,7 +21,7 @@ public:
 
   int activate(std::string plugin);
   int deactivate(std::string plugin);
-  std::string getDescription(std::string plugin);
+  std::string getDescription(std::string& plugin);
 
   void runPreArguers();
   void runPostArguers();

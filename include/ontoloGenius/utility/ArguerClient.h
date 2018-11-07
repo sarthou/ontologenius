@@ -13,7 +13,7 @@ public:
   std::vector<std::string> list();
   bool activate(const std::string& name);
   bool deactivate(const std::string& name);
-  std::string getDescription(const std::string& file);
+  std::string getDescription(const std::string& name);
 
 private:
 
