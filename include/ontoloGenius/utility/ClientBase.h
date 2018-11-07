@@ -33,11 +33,6 @@ public:
   size_t nb() {return cpt;}
   void resetNb() {cpt = 0;}
 
-  std::vector<std::string> getUp(std::string& name, int depth = -1, const std::string& selector = "");
-  bool isA(std::string& name, const std::string& base_class);
-  std::string getName(const std::string& name);
-  std::vector<std::string> find(const std::string& name);
-
 protected:
   ros::ServiceClient client;
 
@@ -61,6 +56,39 @@ protected:
       {
         std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
         res.push_back("ERR:SERVICE_FAIL");
+        return res;
+      }
+    }
+  }
+
+  inline std::string callStr(ontologenius::OntologeniusService& srv)
+  {
+    std::string res = "";
+    cpt++;
+
+    if(client.call(srv))
+    {
+      if(srv.response.values.size())
+        return srv.response.values[0];
+      else
+        return res;
+    }
+    else
+    {
+      std::cout << COLOR_ORANGE << "Failure to call ontoloGenius services" << COLOR_OFF << std::endl;
+      client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + name_, true);
+      if(client.call(srv))
+      {
+        std::cout << COLOR_GREEN << "Restored ontoloGenius services" << COLOR_OFF << std::endl;
+        if(srv.response.values.size())
+          return srv.response.values[0];
+        else
+          return res;
+      }
+      else
+      {
+        std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        res = "ERR:SERVICE_FAIL";
         return res;
       }
     }

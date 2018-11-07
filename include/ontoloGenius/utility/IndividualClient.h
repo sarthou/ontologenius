@@ -1,12 +1,12 @@
 #ifndef INDIVIDUALCLIENT_H
 #define INDIVIDUALCLIENT_H
 
-#include "ontoloGenius/utility/ClientBase.h"
+#include "ontoloGenius/utility/OntologyClient.h"
 
-class IndividualClient : public ClientBase
+class IndividualClient : public OntologyClient
 {
 public:
-  IndividualClient(ros::NodeHandle* n) : ClientBase(n, "individual")
+  IndividualClient(ros::NodeHandle* n) : OntologyClient(n, "individual")
   {
   }
 
