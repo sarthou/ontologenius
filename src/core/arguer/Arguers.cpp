@@ -117,6 +117,7 @@ int Arguers::activate(std::string plugin)
     {
       active_arguers_[plugin] = arguers_[plugin];
       std::cout << COLOR_GREEN << plugin << " has been activated" << COLOR_OFF << std::endl;
+      resetIndividualsUpdates();
       runPostArguers();
     }
     else
@@ -213,4 +214,15 @@ void Arguers::computeIndividualsUpdates()
       indiv[indiv_i]->nb_updates_ = 0;
       indiv[indiv_i]->updated_ = true;
     }
+}
+
+void Arguers::resetIndividualsUpdates()
+{
+  std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
+  size_t indiv_size = indiv.size();
+  for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
+  {
+    indiv[indiv_i]->nb_updates_ = 0;
+    indiv[indiv_i]->updated_ = true;
+  }
 }
