@@ -307,4 +307,7 @@ if(CATKIN_ENABLE_TESTING)
 
   add_rostest_gtest(ontoloGenius_requests_tester test/requests.test src/tests/requests.cpp)
   target_link_libraries(ontoloGenius_requests_tester ontoloGenius_lib)
+
+  add_rostest_gtest(ontoloGenius_global_tester test/globalFeatures.test src/tests/globalFeatures.cpp)
+  target_link_libraries(ontoloGenius_global_tester ontoloGenius_lib)
 endif()
