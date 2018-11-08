@@ -15,6 +15,8 @@ public:
   Arguers(Ontology* onto);
   ~Arguers();
 
+  void link(Ontology* onto);
+
   void load();
   std::string list();
   std::vector<std::string> listVector();

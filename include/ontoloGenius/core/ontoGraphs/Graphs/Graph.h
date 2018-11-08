@@ -16,6 +16,12 @@ class Graph
   static_assert(std::is_base_of<ValuedNode,B>::value, "B must be derived from ValuedNode");
 public:
   Graph() {language_ = "en"; }
+  Graph(const Graph& base)
+  {
+    std::cout << "Graph have been copied" << std::endl; //TODO REMOVE
+    container_ = base.container_;
+    language_ = base.language_;
+  }
   virtual ~Graph() {}
 
   void setLanguage(std::string language) {language_ = language; }

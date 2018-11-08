@@ -31,7 +31,10 @@ class DataPropertyGraph : public OntoGraph<DataPropertyBranch_t>
   friend IndividualGraph;
 public:
   DataPropertyGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
+  DataPropertyGraph(const DataPropertyGraph& base) : OntoGraph<DataPropertyBranch_t>(base) {}
   ~DataPropertyGraph() {}
+
+  void linkGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
 
   void add(std::string value, DataPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);

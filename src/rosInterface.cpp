@@ -337,7 +337,10 @@ bool actionsHandle(ontologenius::OntologeniusService::Request &req,
     arguers.runPostArguers();
   }
   else if(req.action == "reset")
+  {
     onto = Ontology();
+    arguers.link(&onto);
+  }
   else if(req.action == "test")
   {
     Computer comp;

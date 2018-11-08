@@ -39,7 +39,7 @@ public:
   bool mark;
   IndividualSteady_t steady_;
 
-  IndividualBranch_t(std::string value) : ValuedNode(value) {mark = false; }
+  IndividualBranch_t(std::string value = "") : ValuedNode(value) {mark = false; }
 
   void setFullSteady();
   void setSteady_is_a(ClassBranch_t* is_a);

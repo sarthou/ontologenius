@@ -36,7 +36,10 @@ class IndividualGraph : public Graph<IndividualBranch_t>
   friend IndividualChecker;
 public:
   IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
+  IndividualGraph(const IndividualGraph& base);
   ~IndividualGraph();
+
+  void linkGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
 
   void close();
   std::vector<IndividualBranch_t*> get() {return individuals_; }

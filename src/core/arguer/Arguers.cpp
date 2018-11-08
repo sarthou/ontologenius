@@ -50,6 +50,13 @@ Arguers::~Arguers()
   }
 }
 
+void Arguers::link(Ontology* onto)
+{
+  ontology_ = onto;
+  for(auto& it : arguers_)
+    it.second->initialize(ontology_);
+}
+
 void Arguers::load()
 {
   std::vector<std::string> arguers = loader_.getDeclaredClasses();
@@ -61,7 +68,6 @@ void Arguers::load()
       loader_.loadLibraryForClass(arguers[i]);
       ArguerInterface* tmp = loader_.createUnmanagedInstance(arguers[i]);
       tmp->initialize(ontology_);
-      arguers_[arguers[i]] = tmp;
       arguers_[arguers[i]] = tmp;
       if(tmp->defaultAvtive())
         active_arguers_[arguers[i]] = tmp;

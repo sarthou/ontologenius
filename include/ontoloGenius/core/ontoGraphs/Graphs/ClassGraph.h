@@ -30,6 +30,7 @@ class ClassGraph : public OntoGraph<ClassBranch_t>
   friend IndividualGraph;
 public:
   ClassGraph() {}
+  ClassGraph(const ClassGraph& base) : OntoGraph<ClassBranch_t>(base) {}
   ~ClassGraph() {}
 
   void add(const std::string& value, ObjectVectors_t& object_vector);
