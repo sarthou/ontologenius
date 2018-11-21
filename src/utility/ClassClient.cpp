@@ -3,7 +3,7 @@
 std::vector<std::string> ClassClient::getDown(const std::string& name, int depth)
 {
   ontologenius::OntologeniusService srv;
-  srv.request.action = "getDisjoint";
+  srv.request.action = "getDown";
   srv.request.param = name;
 
   if(depth >= 0)

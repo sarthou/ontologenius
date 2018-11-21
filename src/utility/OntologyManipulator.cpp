@@ -3,19 +3,10 @@
 OntologyManipulator::OntologyManipulator(ros::NodeHandle* n) :  individuals(n),
                                                                 objectProperties(n),
                                                                 dataProperties(n),
-                                                                classes(n)
+                                                                classes(n),
+                                                                actions(n),
+                                                                arguers(n)
 {
   n_ = n;
-}
-
-bool OntologyManipulator::close()
-{
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/actions");
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "close";
-
-  if(!client.call(srv))
-    return false;
-  else
-    return true;
+  ros::service::waitForService("ontologenius/arguer");
 }

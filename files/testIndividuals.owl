@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
-<rdf:RDF xmlns="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#"
-     xml:base="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals"
+<rdf:RDF xmlns="ontologenius/testIndividuals#"
+     xml:base="ontologenius/testIndividuals"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-     xmlns:positionProperty="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#"
+     xmlns:positionProperty="ontologenius/positionProperty#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-    <owl:Ontology rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals">
-        <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure"/>
-        <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property"/>
-        <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute"/>
-        <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty"/>
+    <owl:Ontology rdf:about="ontologenius/testIndividuals">
+        <owl:imports rdf:resource="ontologenius/measure"/>
+        <owl:imports rdf:resource="ontologenius/property"/>
+        <owl:imports rdf:resource="ontologenius/attribute"/>
+        <owl:imports rdf:resource="ontologenius/positionProperty"/>
     </owl:Ontology>
-    
 
 
-    <!-- 
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // Annotation properties
@@ -24,22 +24,22 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isInFrontOf -->
 
-    <owl:AnnotationProperty rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isInFrontOf"/>
-    
+    <!-- ontologenius/positionProperty#isInFrontOf -->
 
-
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isOn -->
-
-    <owl:AnnotationProperty rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isOn"/>
-    
+    <owl:AnnotationProperty rdf:about="ontologenius/positionProperty#isInFrontOf"/>
 
 
-    <!-- 
+
+    <!-- ontologenius/positionProperty#isOn -->
+
+    <owl:AnnotationProperty rdf:about="ontologenius/positionProperty#isOn"/>
+
+
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // Individuals
@@ -47,92 +47,92 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#big_box -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#big_box">
-        <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#box"/>
+    <!-- ontologenius/testIndividuals#big_box -->
+
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#big_box">
+        <rdf:type rdf:resource="ontologenius/attribute#box"/>
     </owl:NamedIndividual>
-    
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blueCube -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blueCube">
-        <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#blue"/>
-        <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#cube"/>
-        <positionProperty:isOn rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#redCube"/>
+    <!-- ontologenius/testIndividuals#blueCube -->
+
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#blueCube">
+        <rdf:type rdf:resource="ontologenius/attribute#blue"/>
+        <rdf:type rdf:resource="ontologenius/attribute#cube"/>
+        <positionProperty:isOn rdf:resource="ontologenius/testIndividuals#redCube"/>
         <rdfs:comment xml:lang="en"></rdfs:comment>
     </owl:NamedIndividual>
-    
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blue_book -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blue_book">
-        <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#book"/>
-        <positionProperty:isInFrontOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#redCube"/>
+    <!-- ontologenius/testIndividuals#blue_book -->
+
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#blue_book">
+        <rdf:type rdf:resource="ontologenius/attribute#book"/>
+        <positionProperty:isInFrontOf rdf:resource="ontologenius/testIndividuals#redCube"/>
     </owl:NamedIndividual>
-    
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#cube1 -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#cube1">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#greenCube"/>
+    <!-- ontologenius/testIndividuals#cube1 -->
+
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#cube1">
+        <owl:sameAs rdf:resource="ontologenius/testIndividuals#greenCube"/>
         <positionProperty:objectHave3Dposition rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">236</positionProperty:objectHave3Dposition>
     </owl:NamedIndividual>
-    
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#greenCube -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#greenCube">
-        <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#cube"/>
-        <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#green"/>
-        <positionProperty:isOn rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blueCube"/>
+    <!-- ontologenius/testIndividuals#greenCube -->
+
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#greenCube">
+        <rdf:type rdf:resource="ontologenius/attribute#cube"/>
+        <rdf:type rdf:resource="ontologenius/attribute#green"/>
+        <positionProperty:isOn rdf:resource="ontologenius/testIndividuals#blueCube"/>
     </owl:NamedIndividual>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NegativePropertyAssertion"/>
-        <owl:sourceIndividual rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#greenCube"/>
-        <owl:assertionProperty rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/positionProperty#isUnder"/>
-        <owl:targetIndividual rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blueCube"/>
+        <owl:sourceIndividual rdf:resource="ontologenius/testIndividuals#greenCube"/>
+        <owl:assertionProperty rdf:resource="ontologenius/positionProperty#isUnder"/>
+        <owl:targetIndividual rdf:resource="ontologenius/testIndividuals#blueCube"/>
     </rdf:Description>
-    
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#little_box -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#little_box">
-        <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#box"/>
-        <positionProperty:isIn rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#big_box"/>
+    <!-- ontologenius/testIndividuals#little_box -->
+
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#little_box">
+        <rdf:type rdf:resource="ontologenius/attribute#box"/>
+        <positionProperty:isIn rdf:resource="ontologenius/testIndividuals#big_box"/>
     </owl:NamedIndividual>
-    
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#mini_box -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#mini_box">
-        <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#box"/>
-        <positionProperty:isOn rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#little_box"/>
+    <!-- ontologenius/testIndividuals#mini_box -->
+
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#mini_box">
+        <rdf:type rdf:resource="ontologenius/attribute#box"/>
+        <positionProperty:isOn rdf:resource="ontologenius/testIndividuals#little_box"/>
     </owl:NamedIndividual>
-    
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#redCube -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#redCube">
-        <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#cube"/>
-        <rdf:type rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute#red"/>
-        <positionProperty:isIn rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#big_box"/>
+    <!-- ontologenius/testIndividuals#redCube -->
+
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#redCube">
+        <rdf:type rdf:resource="ontologenius/attribute#cube"/>
+        <rdf:type rdf:resource="ontologenius/attribute#red"/>
+        <positionProperty:isIn rdf:resource="ontologenius/testIndividuals#big_box"/>
         <rdfs:comment xml:lang="en"></rdfs:comment>
     </owl:NamedIndividual>
-    
 
 
-    <!-- 
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // General axioms
@@ -143,8 +143,8 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <owl:distinctMembers rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#blueCube"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/testIndividuals#greenCube"/>
+            <rdf:Description rdf:about="ontologenius/testIndividuals#blueCube"/>
+            <rdf:Description rdf:about="ontologenius/testIndividuals#greenCube"/>
         </owl:distinctMembers>
     </rdf:Description>
 </rdf:RDF>
@@ -152,4 +152,3 @@
 
 
 <!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
-

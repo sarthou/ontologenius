@@ -173,6 +173,9 @@ add_library(ontoloGenius_lib
   src/utility/ObjectPropertyClient.cpp
   src/utility/DataPropertyClient.cpp
   src/utility/ClassClient.cpp
+  src/utility/ActionClient.cpp
+  src/utility/OntologyClient.cpp
+  src/utility/ArguerClient.cpp
 )
 add_dependencies(ontoloGenius_lib ontologenius_gencpp)
 target_link_libraries(ontoloGenius_lib ontologenius_interpreter_lib)
@@ -291,3 +294,20 @@ install(DIRECTORY include/${PROJECT_NAME}/
   FILES_MATCHING PATTERN "*.h"
   PATTERN ".svn" EXCLUDE
 )
+
+##############################
+## Tests
+##############################
+
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+
+  add_rostest_gtest(ontoloGenius_library_tester test/library.test src/tests/library.cpp)
+  target_link_libraries(ontoloGenius_library_tester ontoloGenius_lib)
+
+  add_rostest_gtest(ontoloGenius_requests_tester test/requests.test src/tests/requests.cpp)
+  target_link_libraries(ontoloGenius_requests_tester ontoloGenius_lib)
+
+  add_rostest_gtest(ontoloGenius_global_tester test/globalFeatures.test src/tests/globalFeatures.cpp)
+  target_link_libraries(ontoloGenius_global_tester ontoloGenius_lib)
+endif()

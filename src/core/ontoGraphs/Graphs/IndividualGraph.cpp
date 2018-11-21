@@ -9,6 +9,16 @@ IndividualGraph::IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* o
   data_property_graph_ = data_property_graph;
 }
 
+IndividualGraph::IndividualGraph(const IndividualGraph& base) : Graph<IndividualBranch_t>(base)
+{
+  for(IndividualBranch_t* b : base.individuals_)
+  {
+    IndividualBranch_t* tmp = new IndividualBranch_t();
+    *tmp = *b;
+    individuals_.push_back(b);
+  }
+}
+
 IndividualGraph::~IndividualGraph()
 {
   for(size_t i = 0; i < individuals_.size(); i++)
@@ -649,6 +659,22 @@ std::string IndividualGraph::getName(const std::string& value)
         res = value;
     else
       res = value;
+  }
+
+  return res;
+}
+
+std::vector<std::string> IndividualGraph::getNames(const std::string& value)
+{
+  std::vector<std::string> res;
+
+  IndividualBranch_t* branch = container_.find(value);
+  if(branch != nullptr)
+  {
+    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
+      res = branch->dictionary_[this->language_];
+    else
+      res.push_back(value);
   }
 
   return res;

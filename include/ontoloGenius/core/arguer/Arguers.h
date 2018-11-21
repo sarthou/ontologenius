@@ -15,13 +15,15 @@ public:
   Arguers(Ontology* onto);
   ~Arguers();
 
+  void link(Ontology* onto);
+
   void load();
   std::string list();
   std::vector<std::string> listVector();
 
   int activate(std::string plugin);
   int deactivate(std::string plugin);
-  std::string getDescription(std::string plugin);
+  std::string getDescription(std::string& plugin);
 
   void runPreArguers();
   void runPostArguers();
@@ -34,6 +36,7 @@ private:
   pluginlib::ClassLoader<ArguerInterface> loader_;
 
   void computeIndividualsUpdates();
+  void resetIndividualsUpdates();
 };
 
 #endif

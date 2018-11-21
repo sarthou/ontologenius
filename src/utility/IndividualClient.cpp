@@ -43,19 +43,55 @@ std::vector<std::string> IndividualClient::getWith(const std::string& indiv_1, c
   return call(srv);
 }
 
-std::vector<std::string> IndividualClient::getDown(std::string& name)
+std::vector<std::string> IndividualClient::getRelatedFrom(const std::string& property)
 {
   ontologenius::OntologeniusService srv;
-  srv.request.action = "getDown";
+  srv.request.action = "getRelatedFrom";
+  srv.request.param = property;
+
+  return call(srv);
+}
+
+std::vector<std::string> IndividualClient::getRelatedOn(const std::string& property)
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "getRelatedOn";
+  srv.request.param = property;
+
+  return call(srv);
+}
+
+std::vector<std::string> IndividualClient::getRelatedWith(const std::string& name)
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "getRelatedWith";
   srv.request.param = name;
 
   return call(srv);
 }
 
-std::vector<std::string> IndividualClient::getRelatedFrom(const std::string& name)
+std::vector<std::string> IndividualClient::getRelationFrom(const std::string& name)
 {
   ontologenius::OntologeniusService srv;
-  srv.request.action = "getRelatedFrom";
+  srv.request.action = "getRelationFrom";
+  srv.request.param = name;
+
+  return call(srv);
+}
+
+std::vector<std::string> IndividualClient::getRelationOn(const std::string& name)
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "getRelationOn";
+  srv.request.param = name;
+
+  return call(srv);
+}
+
+std::vector<std::string> IndividualClient::getRelationWith(const std::string& name)
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "getRelationWith";
   srv.request.param = name;
 
   return call(srv);
@@ -65,6 +101,24 @@ std::vector<std::string> IndividualClient::getType(const std::string& name)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "getType";
+  srv.request.param = name;
+
+  return call(srv);
+}
+
+std::vector<std::string> IndividualClient::getSame(const std::string& name)
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "getSame";
+  srv.request.param = name;
+
+  return call(srv);
+}
+
+std::vector<std::string> IndividualClient::getDistincts(const std::string& name)
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "getDistincts";
   srv.request.param = name;
 
   return call(srv);

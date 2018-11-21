@@ -18,7 +18,7 @@ public:
   ~OntologyWriter() {}
 
   void setFileName(std::string name) {file_name_ = name; }
-  void write(std::string file_name = "");
+  void write(std::string file_name = "none");
 
 private:
   ClassGraph* class_graph_;

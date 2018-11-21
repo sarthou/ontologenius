@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
-<rdf:RDF xmlns="http://www.semanticweb.org/srth/ontologies/toaster/measure#"
-     xml:base="http://www.semanticweb.org/srth/ontologies/toaster/measure"
+<rdf:RDF xmlns="ontologenius/measure#"
+     xml:base="ontologenius/measure"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-    <owl:Ontology rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure">
-        <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property"/>
-        <owl:imports rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/attribute"/>
+    <owl:Ontology rdf:about="ontologenius/measure">
+        <owl:imports rdf:resource="ontologenius/property"/>
+        <owl:imports rdf:resource="ontologenius/attribute"/>
     </owl:Ontology>
     
 
@@ -24,304 +24,304 @@
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#XDayAgo -->
+    <!-- ontologenius/measure#XDayAgo -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#XDayAgo">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate"/>
+    <owl:Class rdf:about="ontologenius/measure#XDayAgo">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#relativeDate"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteDistance -->
+    <!-- ontologenius/measure#absoluteDistance -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteDistance">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#distance"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#absolute"/>
-        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDistance"/>
+    <owl:Class rdf:about="ontologenius/measure#absoluteDistance">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#distance"/>
+        <rdfs:subClassOf rdf:resource="ontologenius/property#absolute"/>
+        <owl:disjointWith rdf:resource="ontologenius/measure#relativeDistance"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteSpeed -->
+    <!-- ontologenius/measure#absoluteSpeed -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteSpeed">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#speed"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#absolute"/>
-        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeSpeed"/>
+    <owl:Class rdf:about="ontologenius/measure#absoluteSpeed">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#speed"/>
+        <rdfs:subClassOf rdf:resource="ontologenius/property#absolute"/>
+        <owl:disjointWith rdf:resource="ontologenius/measure#relativeSpeed"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#active -->
+    <!-- ontologenius/measure#active -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#active">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#state"/>
-        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#inactive"/>
+    <owl:Class rdf:about="ontologenius/measure#active">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#state"/>
+        <owl:disjointWith rdf:resource="ontologenius/measure#inactive"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#areaDensity -->
+    <!-- ontologenius/measure#areaDensity -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#areaDensity">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#density"/>
+    <owl:Class rdf:about="ontologenius/measure#areaDensity">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#density"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar -->
+    <!-- ontologenius/measure#calendar -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#time"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#absolute"/>
+    <owl:Class rdf:about="ontologenius/measure#calendar">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#time"/>
+        <rdfs:subClassOf rdf:resource="ontologenius/property#absolute"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#centimeter -->
+    <!-- ontologenius/measure#centimeter -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#centimeter">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteDistance"/>
+    <owl:Class rdf:about="ontologenius/measure#centimeter">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#absoluteDistance"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#clockTime -->
+    <!-- ontologenius/measure#clockTime -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#clockTime">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#time"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#absolute"/>
+    <owl:Class rdf:about="ontologenius/measure#clockTime">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#time"/>
+        <rdfs:subClassOf rdf:resource="ontologenius/property#absolute"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#date -->
+    <!-- ontologenius/measure#date -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#date">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar"/>
+    <owl:Class rdf:about="ontologenius/measure#date">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#calendar"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#day -->
+    <!-- ontologenius/measure#day -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#day">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar"/>
+    <owl:Class rdf:about="ontologenius/measure#day">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#calendar"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#density -->
+    <!-- ontologenius/measure#density -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#density">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#physicalQuantity"/>
+    <owl:Class rdf:about="ontologenius/measure#density">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#physicalQuantity"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#distance -->
+    <!-- ontologenius/measure#distance -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#distance">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#physicalQuantity"/>
+    <owl:Class rdf:about="ontologenius/measure#distance">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#physicalQuantity"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#far -->
+    <!-- ontologenius/measure#far -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#far">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDistance"/>
-        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#near"/>
+    <owl:Class rdf:about="ontologenius/measure#far">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#relativeDistance"/>
+        <owl:disjointWith rdf:resource="ontologenius/measure#near"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#fast -->
+    <!-- ontologenius/measure#fast -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#fast">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeSpeed"/>
-        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#slow"/>
+    <owl:Class rdf:about="ontologenius/measure#fast">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#relativeSpeed"/>
+        <owl:disjointWith rdf:resource="ontologenius/measure#slow"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#foot -->
+    <!-- ontologenius/measure#foot -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#foot">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteDistance"/>
+    <owl:Class rdf:about="ontologenius/measure#foot">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#absoluteDistance"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#inXDay -->
+    <!-- ontologenius/measure#inXDay -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#inXDay">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate"/>
+    <owl:Class rdf:about="ontologenius/measure#inXDay">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#relativeDate"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#inactive -->
+    <!-- ontologenius/measure#inactive -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#inactive">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#state"/>
+    <owl:Class rdf:about="ontologenius/measure#inactive">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#state"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#inch -->
+    <!-- ontologenius/measure#inch -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#inch">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteDistance"/>
+    <owl:Class rdf:about="ontologenius/measure#inch">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#absoluteDistance"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#measure -->
+    <!-- ontologenius/measure#measure -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#measure">
+    <owl:Class rdf:about="ontologenius/measure#measure">
         <rdfs:label>measure</rdfs:label>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#meter -->
+    <!-- ontologenius/measure#meter -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#meter">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteDistance"/>
+    <owl:Class rdf:about="ontologenius/measure#meter">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#absoluteDistance"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#near -->
+    <!-- ontologenius/measure#near -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#near">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDistance"/>
+    <owl:Class rdf:about="ontologenius/measure#near">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#relativeDistance"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#physicalQuantity -->
+    <!-- ontologenius/measure#physicalQuantity -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#physicalQuantity">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#measure"/>
-        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#state"/>
+    <owl:Class rdf:about="ontologenius/measure#physicalQuantity">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#measure"/>
+        <owl:disjointWith rdf:resource="ontologenius/measure#state"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate -->
+    <!-- ontologenius/measure#relativeDate -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#time"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#relative"/>
+    <owl:Class rdf:about="ontologenius/measure#relativeDate">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#time"/>
+        <rdfs:subClassOf rdf:resource="ontologenius/property#relative"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDistance -->
+    <!-- ontologenius/measure#relativeDistance -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDistance">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#distance"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#relative"/>
+    <owl:Class rdf:about="ontologenius/measure#relativeDistance">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#distance"/>
+        <rdfs:subClassOf rdf:resource="ontologenius/property#relative"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeSpeed -->
+    <!-- ontologenius/measure#relativeSpeed -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeSpeed">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#speed"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/property#relative"/>
+    <owl:Class rdf:about="ontologenius/measure#relativeSpeed">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#speed"/>
+        <rdfs:subClassOf rdf:resource="ontologenius/property#relative"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#slow -->
+    <!-- ontologenius/measure#slow -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#slow">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeSpeed"/>
+    <owl:Class rdf:about="ontologenius/measure#slow">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#relativeSpeed"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#speed -->
+    <!-- ontologenius/measure#speed -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#speed">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#physicalQuantity"/>
+    <owl:Class rdf:about="ontologenius/measure#speed">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#physicalQuantity"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#state -->
+    <!-- ontologenius/measure#state -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#state">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#measure"/>
+    <owl:Class rdf:about="ontologenius/measure#state">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#measure"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#time -->
+    <!-- ontologenius/measure#time -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#time">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#physicalQuantity"/>
+    <owl:Class rdf:about="ontologenius/measure#time">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#physicalQuantity"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#today -->
+    <!-- ontologenius/measure#today -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#today">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate"/>
+    <owl:Class rdf:about="ontologenius/measure#today">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#relativeDate"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#tomorrow -->
+    <!-- ontologenius/measure#tomorrow -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#tomorrow">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate"/>
+    <owl:Class rdf:about="ontologenius/measure#tomorrow">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#relativeDate"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#week -->
+    <!-- ontologenius/measure#week -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#week">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar"/>
+    <owl:Class rdf:about="ontologenius/measure#week">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#calendar"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#year -->
+    <!-- ontologenius/measure#year -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#year">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar"/>
+    <owl:Class rdf:about="ontologenius/measure#year">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#calendar"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#yesterday -->
+    <!-- ontologenius/measure#yesterday -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#yesterday">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate"/>
+    <owl:Class rdf:about="ontologenius/measure#yesterday">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#relativeDate"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#km/h -->
+    <!-- ontologenius/measure#km/h -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#km/h">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteSpeed"/>
-        <owl:disjointWith rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#m/s"/>
+    <owl:Class rdf:about="ontologenius/measure#km/h">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#absoluteSpeed"/>
+        <owl:disjointWith rdf:resource="ontologenius/measure#m/s"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/srth/ontologies/toaster/measure#m/s -->
+    <!-- ontologenius/measure#m/s -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#m/s">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/srth/ontologies/toaster/measure#absoluteSpeed"/>
+    <owl:Class rdf:about="ontologenius/measure#m/s">
+        <rdfs:subClassOf rdf:resource="ontologenius/measure#absoluteSpeed"/>
     </owl:Class>
     
 
@@ -337,37 +337,37 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#XDayAgo"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#inXDay"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#today"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#tomorrow"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#yesterday"/>
+            <rdf:Description rdf:about="ontologenius/measure#XDayAgo"/>
+            <rdf:Description rdf:about="ontologenius/measure#inXDay"/>
+            <rdf:Description rdf:about="ontologenius/measure#today"/>
+            <rdf:Description rdf:about="ontologenius/measure#tomorrow"/>
+            <rdf:Description rdf:about="ontologenius/measure#yesterday"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#calendar"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#clockTime"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#relativeDate"/>
+            <rdf:Description rdf:about="ontologenius/measure#calendar"/>
+            <rdf:Description rdf:about="ontologenius/measure#clockTime"/>
+            <rdf:Description rdf:about="ontologenius/measure#relativeDate"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#centimeter"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#foot"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#inch"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#meter"/>
+            <rdf:Description rdf:about="ontologenius/measure#centimeter"/>
+            <rdf:Description rdf:about="ontologenius/measure#foot"/>
+            <rdf:Description rdf:about="ontologenius/measure#inch"/>
+            <rdf:Description rdf:about="ontologenius/measure#meter"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#date"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#day"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#week"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/srth/ontologies/toaster/measure#year"/>
+            <rdf:Description rdf:about="ontologenius/measure#date"/>
+            <rdf:Description rdf:about="ontologenius/measure#day"/>
+            <rdf:Description rdf:about="ontologenius/measure#week"/>
+            <rdf:Description rdf:about="ontologenius/measure#year"/>
         </owl:members>
     </rdf:Description>
 </rdf:RDF>

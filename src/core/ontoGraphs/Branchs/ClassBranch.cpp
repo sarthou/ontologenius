@@ -22,6 +22,22 @@ void ClassBranch_t::setFullSteady()
       tmp.push_back(it.second[i]);
     steady_.dictionary_[it.first] = tmp;
   }
+
+  steady_.object_properties_name_.clear();
+  for(size_t i = 0; i < object_properties_name_.size(); i++)
+    steady_.object_properties_name_.push_back(object_properties_name_[i]);
+
+  steady_.object_properties_on_.clear();
+  for(size_t i = 0; i < object_properties_on_.size(); i++)
+    steady_.object_properties_on_.push_back(object_properties_on_[i]);
+
+  steady_.data_properties_name_.clear();
+  for(size_t i = 0; i < data_properties_name_.size(); i++)
+    steady_.data_properties_name_.push_back(data_properties_name_[i]);
+
+  steady_.data_properties_data_.clear();
+  for(size_t i = 0; i < data_properties_data_.size(); i++)
+    steady_.data_properties_data_.push_back(data_properties_data_[i]);
 }
 
 void ClassBranch_t::setSteady_disjoint(ClassBranch_t* disjoint)
@@ -52,4 +68,28 @@ void ClassBranch_t::setSteady_dictionary(std::map<std::string, std::vector<std::
 {
   steady_.dictionary_ = dictionary;
   dictionary_ = dictionary;
+}
+
+void ClassBranch_t::setSteady_object_properties_name(ObjectPropertyBranch_t* object_properties_name)
+{
+  steady_.object_properties_name_.push_back(object_properties_name);
+  object_properties_name_.push_back(object_properties_name);
+}
+
+void ClassBranch_t::setSteady_object_properties_on(ClassBranch_t* object_properties_on)
+{
+  steady_.object_properties_on_.push_back(object_properties_on);
+  object_properties_on_.push_back(object_properties_on);
+}
+
+void ClassBranch_t::setSteady_data_properties_name(DataPropertyBranch_t* data_properties_name)
+{
+  steady_.data_properties_name_.push_back(data_properties_name);
+  data_properties_name_.push_back(data_properties_name);
+}
+
+void ClassBranch_t::setSteady_data_properties_data(data_t data_properties_data)
+{
+  steady_.data_properties_data_.push_back(data_properties_data);
+  data_properties_data_.push_back(data_properties_data);
 }

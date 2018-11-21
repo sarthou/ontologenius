@@ -30,7 +30,7 @@ class DataPropertyBranch_t :  public Branch_t<DataPropertyBranch_t>,
 public:
   DataPropertySteady_t steady_;
 
-  DataPropertyBranch_t(std::string value) : Branch_t(value) {};
+  DataPropertyBranch_t(std::string value = "") : Branch_t(value) {};
 
   void setFullSteady();
   void setSteady_disjoint(DataPropertyBranch_t* disjoint);
