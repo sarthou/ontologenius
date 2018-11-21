@@ -1,6 +1,9 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include <iostream>
 
+#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+
 ClassGraph::ClassGraph(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
 {
   object_property_graph_ = object_property_graph;
@@ -159,5 +162,222 @@ std::unordered_set<std::string> ClassGraph::select(std::unordered_set<std::strin
     if(tmp.find(class_selector) != tmp.end())
       res.insert(it);
   }
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& _class, int depth)
+{
+  std::unordered_set<std::string> res;
+  ClassBranch_t* class_branch = container_.find(_class);
+  if(class_branch != nullptr)
+  {
+    for(size_t i = 0; i < class_branch->object_properties_name_.size(); i++)
+      object_property_graph_->getUp(class_branch->object_properties_name_[i], res, depth);
+
+    for(size_t i = 0; i < class_branch->data_properties_name_.size(); i++)
+      data_property_graph_->getUp(class_branch->data_properties_name_[i], res, depth);
+  }
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getRelatedFrom(const std::string& property)
+{
+  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
+
+  std::unordered_set<std::string> res;
+  for(size_t i = 0; i < all_branchs_.size(); i++)
+  {
+    for(size_t prop_i = 0; prop_i < all_branchs_[i]->object_properties_name_.size(); prop_i++)
+      for (uint32_t id : object_properties)
+        if(all_branchs_[i]->object_properties_name_[prop_i]->get() == id)
+          res.insert(all_branchs_[i]->value());
+
+    for(size_t prop_i = 0; prop_i < all_branchs_[i]->data_properties_name_.size(); prop_i++)
+      for (uint32_t id : data_properties)
+        if(all_branchs_[i]->data_properties_name_[prop_i]->get() == id)
+          res.insert(all_branchs_[i]->value());
+  }
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getRelationOn(const std::string& _class, int depth)
+{
+  std::unordered_set<std::string> res;
+  ClassBranch_t* class_branch = container_.find(_class);
+  uint32_t id = class_branch->get();
+
+  for(size_t i = 0; i < all_branchs_.size(); i++)
+    for(size_t prop_i = 0; prop_i < all_branchs_[i]->object_properties_on_.size(); prop_i++)
+      if(all_branchs_[i]->object_properties_on_[prop_i]->get() == id)
+        object_property_graph_->getUp(all_branchs_[i]->object_properties_name_[prop_i], res, depth);
+
+  if(res.size() == 0)
+    for(size_t i = 0; i < all_branchs_.size(); i++)
+      for(size_t prop_i = 0; prop_i < all_branchs_[i]->data_properties_data_.size(); prop_i++)
+        if(all_branchs_[i]->data_properties_data_[prop_i].value_ == _class)
+          data_property_graph_->getUp(all_branchs_[i]->data_properties_name_[prop_i], res, depth);
+
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getRelatedOn(const std::string& property)
+{
+  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
+
+  std::unordered_set<std::string> res;
+  for(size_t i = 0; i < all_branchs_.size(); i++)
+  {
+    for(size_t prop_i = 0; prop_i < all_branchs_[i]->object_properties_name_.size(); prop_i++)
+      for (uint32_t id : object_properties)
+        if(all_branchs_[i]->object_properties_name_[prop_i]->get() == id)
+          res.insert(all_branchs_[i]->object_properties_on_[prop_i]->value());
+
+    for(size_t prop_i = 0; prop_i < all_branchs_[i]->data_properties_name_.size(); prop_i++)
+      for (uint32_t id : data_properties)
+        if(all_branchs_[i]->data_properties_name_[prop_i]->get() == id)
+          res.insert(all_branchs_[i]->data_properties_data_[prop_i].toString());
+  }
+
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getRelationWith(const std::string& _class)
+{
+  std::unordered_set<std::string> res;
+  ClassBranch_t* class_branch = container_.find(_class);
+  if(class_branch != nullptr)
+  {
+    for(size_t i = 0; i < class_branch->object_properties_on_.size(); i++)
+      res.insert(class_branch->object_properties_on_[i]->value());
+
+    for(size_t i = 0; i < class_branch->data_properties_data_.size(); i++)
+      res.insert(class_branch->data_properties_data_[i].toString());
+  }
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _class)
+{
+  std::unordered_set<std::string> res;
+  for(size_t i = 0; i < all_branchs_.size(); i++)
+  {
+    for(size_t prop_i = 0; prop_i < all_branchs_[i]->object_properties_on_.size(); prop_i++)
+      if(all_branchs_[i]->object_properties_on_[prop_i]->value() == _class)
+        res.insert(all_branchs_[i]->value());
+
+    for(size_t prop_i = 0; prop_i < all_branchs_[i]->data_properties_data_.size(); prop_i++)
+      if(all_branchs_[i]->data_properties_data_[prop_i].value_ == _class)
+        res.insert(all_branchs_[i]->value());
+  }
+
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getFrom(const std::string& param)
+{
+  std::unordered_set<std::string> res;
+  std::string _class;
+  std::string property;
+  size_t pose = param.find(":");
+  if(pose != std::string::npos)
+  {
+    _class = param.substr(0, pose);
+    property = param.substr(pose+1);
+    return getFrom(_class, property);
+  }
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getFrom(const std::string& _class, const std::string& property)
+{
+  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
+
+  std::unordered_set<std::string> res;
+  for(size_t i = 0; i < all_branchs_.size(); i++)
+  {
+    for(size_t prop_i = 0; prop_i < all_branchs_[i]->object_properties_on_.size(); prop_i++)
+      if(all_branchs_[i]->object_properties_on_[prop_i]->value() == _class)
+        for (uint32_t id : object_properties)
+          if(all_branchs_[i]->object_properties_name_[prop_i]->get() == id)
+            res.insert(all_branchs_[i]->value());
+
+    for(size_t prop_i = 0; prop_i < all_branchs_[i]->data_properties_data_.size(); prop_i++)
+      if(all_branchs_[i]->data_properties_data_[prop_i].value_ == _class)
+        for (uint32_t id : data_properties)
+          if(all_branchs_[i]->data_properties_name_[prop_i]->get() == id)
+            res.insert(all_branchs_[i]->value());
+  }
+
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getOn(const std::string& param)
+{
+  std::unordered_set<std::string> res;
+  std::string _class;
+  std::string property;
+  size_t pose = param.find(":");
+  if(pose != std::string::npos)
+  {
+    _class = param.substr(0, pose);
+    property = param.substr(pose+1);
+    return getOn(_class, property);
+  }
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getOn(const std::string& _class, const std::string& property)
+{
+  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
+
+  std::unordered_set<std::string> res;
+  for(size_t i = 0; i < all_branchs_.size(); i++)
+    if(all_branchs_[i]->value() == _class)
+    {
+      for(size_t prop_i = 0; prop_i < all_branchs_[i]->object_properties_name_.size(); prop_i++)
+        for (uint32_t id : object_properties)
+          if(all_branchs_[i]->object_properties_name_[prop_i]->get() == id)
+            res.insert(all_branchs_[i]->object_properties_on_[prop_i]->value());
+
+      for(size_t prop_i = 0; prop_i < all_branchs_[i]->data_properties_name_.size(); prop_i++)
+        for (uint32_t id : data_properties)
+          if(all_branchs_[i]->data_properties_name_[prop_i]->get() == id)
+            res.insert(all_branchs_[i]->data_properties_data_[prop_i].toString());
+    }
+
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getWith(const std::string& param, int depth)
+{
+  std::unordered_set<std::string> res;
+  size_t pose = param.find(":");
+  if(pose != std::string::npos)
+  {
+    std::string first_class = param.substr(0, pose);
+    std::string second_class = param.substr(pose+1);
+    return getWith(first_class, second_class, depth);
+  }
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getWith(const std::string& first_class, const std::string& second_class, int depth)
+{
+  std::unordered_set<std::string> res;
+  for(size_t i = 0; i < all_branchs_.size(); i++)
+    if(all_branchs_[i]->value() == first_class)
+    {
+      for(size_t indiv_i = 0; indiv_i < all_branchs_[i]->object_properties_on_.size(); indiv_i++)
+        if(all_branchs_[i]->object_properties_on_[indiv_i]->value() == second_class)
+          object_property_graph_->getUp(all_branchs_[i]->object_properties_name_[indiv_i], res, depth);
+
+      for(size_t indiv_i = 0; indiv_i < all_branchs_[i]->data_properties_data_.size(); indiv_i++)
+        if(all_branchs_[i]->data_properties_data_[indiv_i].value_ == second_class)
+          data_property_graph_->getUp(all_branchs_[i]->data_properties_name_[indiv_i], res, depth);
+    }
   return res;
 }

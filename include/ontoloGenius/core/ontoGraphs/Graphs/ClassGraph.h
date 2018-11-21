@@ -40,6 +40,19 @@ public:
   std::unordered_set<std::string> getDisjoint(const std::string& value);
   std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& class_selector);
 
+  std::unordered_set<std::string> getRelationFrom(const std::string& _class, int depth = -1);  //C3
+  std::unordered_set<std::string> getRelatedFrom(const std::string& property);     //C3
+  std::unordered_set<std::string> getRelationOn(const std::string& _class, int depth = -1);    //C4
+  std::unordered_set<std::string> getRelatedOn(const std::string& property);       //C3
+  std::unordered_set<std::string> getRelationWith(const std::string& _class);  //C3
+  std::unordered_set<std::string> getRelatedWith(const std::string& _class);   //C3
+  std::unordered_set<std::string> getFrom(const std::string& param);
+  std::unordered_set<std::string> getFrom(const std::string& _class, const std::string& property);
+  std::unordered_set<std::string> getOn(const std::string& param);
+  std::unordered_set<std::string> getOn(const std::string& _class, const std::string& property);
+  std::unordered_set<std::string> getWith(const std::string& param, int depth = -1);
+  std::unordered_set<std::string> getWith(const std::string& first_class, const std::string& second_class, int depth = -1);
+
 private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
