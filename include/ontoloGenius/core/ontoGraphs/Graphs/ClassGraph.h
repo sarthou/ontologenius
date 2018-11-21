@@ -17,6 +17,7 @@ struct ObjectVectors_t
    std::map<std::string, std::vector<std::string>> dictionary_;
 };
 
+//for friend
 class ClassDrawer;
 class ObjectPropertyGraph;
 class DataPropertyGraph;

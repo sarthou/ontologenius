@@ -1,6 +1,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include <iostream>
 
+#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
+
 void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& property_vectors)
 {
 /**********************

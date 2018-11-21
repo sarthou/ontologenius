@@ -1,5 +1,9 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
+#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+
 #include <random>
 
 IndividualGraph::IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)

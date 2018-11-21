@@ -8,9 +8,6 @@
 #include <stdint.h>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/Graph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 
@@ -29,7 +26,13 @@ struct IndividualVectors_t
    std::map<std::string, std::vector<std::string>> dictionary_;
 };
 
+//for friend
 class IndividualChecker;
+
+//for graphs usage
+class ClassGraph;
+class ObjectPropertyGraph;
+class DataPropertyGraph;
 
 class IndividualGraph : public Graph<IndividualBranch_t>
 {
