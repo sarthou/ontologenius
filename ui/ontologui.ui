@@ -113,6 +113,126 @@
          </layout>
         </item>
         <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_22">
+          <item>
+           <widget class="QPushButtonExtended" name="Class_getRelationFrom">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getRelationFrom&lt;/span&gt; will give you all the properties applied to the class given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'human', action: 'getRelationFrom'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getRelationFrom</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Class_getRelationOn">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getRelationOn&lt;/span&gt; will give you all the properties going to the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'human', action: 'getRelationOn'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getRelationOn</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Class_getRelationWith">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getRelationWith&lt;/span&gt; will give you all the classes pointed by a property applied to the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'human', action: 'getRelationWith'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getRelationWith</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_23">
+          <item>
+           <widget class="QPushButtonExtended" name="Class_getRelatedFrom">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getRelatedFrom&lt;/span&gt; will give you all the classes possessing the property given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'hasLeg', action: 'getRelatedFrom'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getRelatedFrom</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Class_getRelatedOn">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getRelatedOn&lt;/span&gt; will give you all the classes pointed to by the property given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'hasLeg', action: 'getRelatedOn'}&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getRelatedOn</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Class_getRelatedWith">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getRelatedWith&lt;/span&gt; will give you all classes having a property pointing to the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'human', action: 'getRelatedWith'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getRelatedWith</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_24">
+          <item>
+           <widget class="QPushButtonExtended" name="Class_getFrom">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getFrom&lt;/span&gt; will give you all the classes having the given property in the parameter and pointing to the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &quot;{param: 'human:hasLeg', action: 'getFrom'}&quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Here we asked all the classes for whom 'human' 'hasLeg' them&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getFrom</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Class_getOn">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getOn&lt;/span&gt; will give you all the classes pointed by the property given in the parameter and applied to the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'human:hasLeg', action: 'getOn'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Here we asked for all the classes that 'hasLeg' 'human'&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getOn</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Class_getWith">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getWith&lt;/span&gt; will give you all the properties linking the two classes given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &quot;{param: 'human:man', action: 'getWith'}&quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Here we asked all the properties for whom 'human' is related to 'man' them&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getWith</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
          <widget class="QTextEdit" name="ClassDescription">
           <property name="verticalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOff</enum>

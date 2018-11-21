@@ -20,6 +20,24 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Class_getDown, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
     QObject::connect(ui->Class_getDisjoint, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
     QObject::connect(ui->Class_getDisjoint, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
+    QObject::connect(ui->Class_getRelatedOn, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
+    QObject::connect(ui->Class_getRelatedOn, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
+    QObject::connect(ui->Class_getRelationOn, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
+    QObject::connect(ui->Class_getRelationOn, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
+    QObject::connect(ui->Class_getRelatedFrom, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
+    QObject::connect(ui->Class_getRelatedFrom, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
+    QObject::connect(ui->Class_getRelatedWith, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
+    QObject::connect(ui->Class_getRelatedWith, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
+    QObject::connect(ui->Class_getRelationFrom, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
+    QObject::connect(ui->Class_getRelationFrom, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
+    QObject::connect(ui->Class_getRelationWith, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
+    QObject::connect(ui->Class_getRelationWith, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
+    QObject::connect(ui->Class_getFrom, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
+    QObject::connect(ui->Class_getFrom, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
+    QObject::connect(ui->Class_getOn, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
+    QObject::connect(ui->Class_getOn, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
+    QObject::connect(ui->Class_getWith, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
+    QObject::connect(ui->Class_getWith, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
 
     QObject::connect(ui->ObjectProperty_getName, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
     QObject::connect(ui->ObjectProperty_getName, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
@@ -91,6 +109,15 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Class_getUp, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
     QObject::connect(ui->Class_getDown, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
     QObject::connect(ui->Class_getDisjoint, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
+    QObject::connect(ui->Class_getRelatedOn, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
+    QObject::connect(ui->Class_getRelationOn, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
+    QObject::connect(ui->Class_getRelatedFrom, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
+    QObject::connect(ui->Class_getRelatedWith, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
+    QObject::connect(ui->Class_getRelationFrom, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
+    QObject::connect(ui->Class_getRelationWith, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
+    QObject::connect(ui->Class_getFrom, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
+    QObject::connect(ui->Class_getOn, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
+    QObject::connect(ui->Class_getWith, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
 
     QObject::connect(ui->ObjectProperty_getName, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
     QObject::connect(ui->ObjectProperty_find, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
