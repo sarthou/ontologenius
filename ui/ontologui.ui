@@ -133,7 +133,7 @@
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="whatsThis">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getRelationOn&lt;/span&gt; will give you all the properties going to the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'human', action: 'getRelationOn'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getRelationOn&lt;/span&gt; will give you all the properties going to the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'woman', action: 'getRelationOn'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>getRelationOn</string>
@@ -189,7 +189,7 @@
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="whatsThis">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getRelatedWith&lt;/span&gt; will give you all classes having a property pointing to the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'human', action: 'getRelatedWith'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getRelatedWith&lt;/span&gt; will give you all classes having a property pointing to the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'woman', action: 'getRelatedWith'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>getRelatedWith</string>
@@ -203,7 +203,7 @@
           <item>
            <widget class="QPushButtonExtended" name="Class_getFrom">
             <property name="whatsThis">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getFrom&lt;/span&gt; will give you all the classes having the given property in the parameter and pointing to the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &quot;{param: 'human:hasLeg', action: 'getFrom'}&quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Here we asked all the classes for whom 'human' 'hasLeg' them&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getFrom&lt;/span&gt; will give you all the classes having the given property in the parameter and pointing to the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &quot;{param: 'woman:hasMother', action: 'getFrom'}&quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Here we asked all the classes for whom 'woman' 'hasMother' them&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>getFrom</string>
@@ -213,7 +213,7 @@
           <item>
            <widget class="QPushButtonExtended" name="Class_getOn">
             <property name="whatsThis">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getOn&lt;/span&gt; will give you all the classes pointed by the property given in the parameter and applied to the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'human:hasLeg', action: 'getOn'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Here we asked for all the classes that 'hasLeg' 'human'&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getOn&lt;/span&gt; will give you all the classes pointed by the property given in the parameter and applied to the given class in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'human:hasMother', action: 'getOn'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Here we asked for all the classes that 'hasMother' 'human'&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>getOn</string>
@@ -223,7 +223,7 @@
           <item>
            <widget class="QPushButtonExtended" name="Class_getWith">
             <property name="whatsThis">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getWith&lt;/span&gt; will give you all the properties linking the two classes given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &quot;{param: 'human:man', action: 'getWith'}&quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Here we asked all the properties for whom 'human' is related to 'man' them&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getWith&lt;/span&gt; will give you all the properties linking the two classes given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &quot;{param: 'human:woman', action: 'getWith'}&quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Here we asked all the properties for whom 'human' is related to 'woman' them&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>getWith</string>
