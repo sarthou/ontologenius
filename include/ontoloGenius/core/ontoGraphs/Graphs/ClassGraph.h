@@ -30,7 +30,7 @@ class ClassGraph : public OntoGraph<ClassBranch_t>
   friend DataPropertyGraph;
   friend IndividualGraph;
 public:
-  ClassGraph() {}
+  ClassGraph(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   ClassGraph(const ClassGraph& base) : OntoGraph<ClassBranch_t>(base) {}
   ~ClassGraph() {}
 
@@ -41,6 +41,9 @@ public:
   std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& class_selector);
 
 private:
+  ObjectPropertyGraph* object_property_graph_;
+  DataPropertyGraph* data_property_graph_;
+
   void isMyDisjoint(ClassBranch_t* me, const std::string& disjoint, std::vector<ClassBranch_t*>& vect, bool& find, bool all = true)
   {
     if(find)

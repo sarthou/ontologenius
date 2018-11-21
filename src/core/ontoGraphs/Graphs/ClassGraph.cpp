@@ -1,6 +1,12 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include <iostream>
 
+ClassGraph::ClassGraph(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
+{
+  object_property_graph_ = object_property_graph;
+  data_property_graph_ = data_property_graph;
+}
+
 void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
 {
   ClassBranch_t* me = nullptr;
