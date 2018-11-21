@@ -15,6 +15,13 @@ struct ObjectVectors_t
    std::vector<std::string> mothers_;
    std::vector<std::string> disjoints_;
    std::map<std::string, std::vector<std::string>> dictionary_;
+
+   std::vector<std::string> object_properties_name_;
+   std::vector<std::string> object_properties_on_;
+
+   std::vector<std::string> data_properties_name_;
+   std::vector<std::string> data_properties_type_;
+   std::vector<std::string> data_properties_value_;
 };
 
 //for friend
@@ -68,6 +75,20 @@ private:
         me->setSteady_disjoint(vect[i]);
         if(all)
           vect[i]->disjoints_.push_back(me);
+        find = true;
+        break;
+      }
+  }
+
+  void isMyObjectPropertiesOn(ClassBranch_t* me, const std::string& propertyOn, std::vector<ClassBranch_t*>& vect, bool& find)
+  {
+    if(find)
+      return;
+
+    for(size_t i = 0; i < vect.size(); i++)
+      if(propertyOn == vect[i]->value())
+      {
+        me->setSteady_object_properties_on(vect[i]);
         find = true;
         break;
       }

@@ -35,6 +35,7 @@ class ObjectPropertyGraph : public OntoGraph<ObjectPropertyBranch_t>
 {
   friend ObjectPropertyDrawer;
   friend IndividualGraph;
+  friend ClassGraph;
 public:
   ObjectPropertyGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
   ObjectPropertyGraph(const ObjectPropertyGraph& base) : OntoGraph<ObjectPropertyBranch_t>(base) {}
