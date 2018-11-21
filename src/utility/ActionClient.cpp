@@ -29,7 +29,7 @@ bool ActionClient::add(const std::string& uri)
 bool ActionClient::fadd(const std::string& file)
 {
   ontologenius::OntologeniusService srv;
-  srv.request.action = "close";
+  srv.request.action = "fadd";
   srv.request.param = file;
 
   return callNR(srv);

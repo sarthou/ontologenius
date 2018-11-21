@@ -2,6 +2,7 @@
 #define BRANCHCONTAINERMAP_H
 
 #include <map>
+#include <iostream> //TODO REMOVE
 
 #include "ontoloGenius/core/ontoGraphs/BranchContainer/BranchContainerBase.h"
 
@@ -10,7 +11,8 @@ class BranchContainerMap : public BranchContainerBase<B>
 {
 public:
   BranchContainerMap() {}
-  virtual ~BranchContainerMap() {}
+  BranchContainerMap(const BranchContainerMap& base);
+  virtual ~BranchContainerMap() {} //B* is destructed by ontograph
 
   virtual B* find(const std::string& word);
   virtual std::vector<B*> find(bool (*comp)(B*, std::string, std::string), const std::string& word, const std::string& lang);
@@ -18,6 +20,18 @@ public:
 private:
   std::map<std::string, B*> nodes_;
 };
+
+template <typename B>
+BranchContainerMap<B>::BranchContainerMap(const BranchContainerMap& base)
+{
+  std::cout << "BranchContainerMap have been copied" << std::endl; //TODO REMOVE
+  for(auto& it : base.nodes_)
+  {
+    B* tmp = new B();
+    *tmp = *(it.second);
+    nodes_[it.first] = tmp;
+  }
+}
 
 template <typename B>
 B* BranchContainerMap<B>::find(const std::string& word)

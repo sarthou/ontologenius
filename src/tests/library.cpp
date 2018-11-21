@@ -85,6 +85,19 @@ TEST(library_tests, actions_call)
   EXPECT_TRUE(res_bool);
 }
 
+TEST(library_tests, arguers_call)
+{
+  std::vector<std::string> res;
+  bool res_bool = true;
+
+  for(size_t i = 0; i < 1000; i++)
+  {
+    res = onto_ptr->arguers.list();
+    res_bool = res_bool && ((res.size() != 1) || (res[0] != "ERR:SERVICE_FAIL"));
+  }
+
+  EXPECT_TRUE(res_bool);
+}
 
 int main(int argc, char** argv)
 {

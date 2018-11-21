@@ -6,6 +6,7 @@
 #include "ontoloGenius/utility/DataPropertyClient.h"
 #include "ontoloGenius/utility/ClassClient.h"
 #include "ontoloGenius/utility/ActionClient.h"
+#include "ontoloGenius/utility/ArguerClient.h"
 
 #include "ros/ros.h"
 
@@ -27,6 +28,7 @@ public:
   DataPropertyClient dataProperties;
   ClassClient classes;
   ActionClient actions;
+  ArguerClient arguers;
 
 private:
   ros::NodeHandle* n_;

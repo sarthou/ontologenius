@@ -1,12 +1,12 @@
 #ifndef DATAPROPERTYCLIENT_H
 #define DATAPROPERTYCLIENT_H
 
-#include "ontoloGenius/utility/ClientBase.h"
+#include "ontoloGenius/utility/OntologyClient.h"
 
-class DataPropertyClient : public ClientBase
+class DataPropertyClient : public OntologyClient
 {
 public:
-  DataPropertyClient(ros::NodeHandle* n) : ClientBase(n, "data_property")
+  DataPropertyClient(ros::NodeHandle* n) : OntologyClient(n, "data_property")
   {
   }
 

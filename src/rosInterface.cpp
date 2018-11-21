@@ -72,8 +72,8 @@ std::string getSelector(std::string& action, std::string& param)
   return select;
 }
 
-Ontology onto;
-Arguers arguers(&onto);
+Ontology* onto;
+Arguers arguers(onto);
 
 
 //DEPRECATED
@@ -87,25 +87,29 @@ bool reference_handle(ontologenius::standard_service::Request  &req,
   removeUselessSpace(req.param);
 
   if(req.action == "add")
-    res.code = onto.readFromUri(req.param);
+    res.code = onto->readFromUri(req.param);
   else if(req.action == "close")
   {
-    onto.close();
+    onto->close();
     arguers.runPostArguers();
   }
   else if(req.action == "reset")
-    onto = Ontology();
+  {
+    delete onto;
+    onto = new Ontology();
+    arguers.link(onto);
+  }
   else if(req.action == "test")
   {
     Computer comp;
-    if(comp.compute(req.param, onto.class_graph_))
+    if(comp.compute(req.param, onto->class_graph_))
       res.value = "true";
     else
       res.value = "false";
     //comp.compute("red_cube|young_animal=color_animal|age_object", onto);
   }
   else if(req.action == "setLang")
-    onto.setLanguage(req.param);
+    onto->setLanguage(req.param);
   else
     res.code = UNKNOW_ACTION;
 
@@ -118,7 +122,7 @@ bool class_handle(ontologenius::standard_service::Request  &req,
   res.value = "";
   res.code = 0;
 
-  if(onto.isInit() == false)
+  if(onto->isInit() == false)
     res.code = UNINIT;
   else
     arguers.runPreArguers();
@@ -129,13 +133,13 @@ bool class_handle(ontologenius::standard_service::Request  &req,
   if(res.code != UNINIT)
   {
     if(req.action == "getDown")
-      set2string(onto.class_graph_.getDown(req.param), res.value);
+      set2string(onto->class_graph_.getDown(req.param), res.value);
     else if(req.action == "getUp")
-      set2string(onto.class_graph_.getUp(req.param), res.value);
+      set2string(onto->class_graph_.getUp(req.param), res.value);
     else if(req.action == "getDisjoint")
-      set2string(onto.class_graph_.getDisjoint(req.param), res.value);
+      set2string(onto->class_graph_.getDisjoint(req.param), res.value);
     else if(req.action == "getName")
-      res.value = onto.class_graph_.getName(req.param);
+      res.value = onto->class_graph_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
   }
@@ -149,7 +153,7 @@ bool object_property_handle(ontologenius::standard_service::Request  &req,
   res.value = "";
   res.code = 0;
 
-  if(onto.isInit() == false)
+  if(onto->isInit() == false)
     res.code = UNINIT;
   else
     arguers.runPreArguers();
@@ -160,19 +164,19 @@ bool object_property_handle(ontologenius::standard_service::Request  &req,
   if(res.code != UNINIT)
   {
     if(req.action == "getDown")
-      set2string(onto.object_property_graph_.getDown(req.param), res.value);
+      set2string(onto->object_property_graph_.getDown(req.param), res.value);
     else if(req.action == "getUp")
-      set2string(onto.object_property_graph_.getUp(req.param), res.value);
+      set2string(onto->object_property_graph_.getUp(req.param), res.value);
     else if(req.action == "getDisjoint")
-      set2string(onto.object_property_graph_.getDisjoint(req.param), res.value);
+      set2string(onto->object_property_graph_.getDisjoint(req.param), res.value);
     else if(req.action == "getInverse")
-      set2string(onto.object_property_graph_.getInverse(req.param), res.value);
+      set2string(onto->object_property_graph_.getInverse(req.param), res.value);
     else if(req.action == "getDomain")
-      set2string(onto.object_property_graph_.getDomain(req.param), res.value);
+      set2string(onto->object_property_graph_.getDomain(req.param), res.value);
     else if(req.action == "getRange")
-      set2string(onto.object_property_graph_.getRange(req.param), res.value);
+      set2string(onto->object_property_graph_.getRange(req.param), res.value);
     else if(req.action == "getName")
-      res.value = onto.object_property_graph_.getName(req.param);
+      res.value = onto->object_property_graph_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
   }
@@ -186,7 +190,7 @@ bool data_property_handle(ontologenius::standard_service::Request  &req,
   res.value = "";
   res.code = 0;
 
-  if(onto.isInit() == false)
+  if(onto->isInit() == false)
     res.code = UNINIT;
   else
     arguers.runPreArguers();
@@ -197,17 +201,17 @@ bool data_property_handle(ontologenius::standard_service::Request  &req,
   if(res.code != UNINIT)
   {
     if(req.action == "getDown")
-      set2string(onto.data_property_graph_.getDown(req.param), res.value);
+      set2string(onto->data_property_graph_.getDown(req.param), res.value);
     else if(req.action == "getUp")
-      set2string(onto.data_property_graph_.getUp(req.param), res.value);
+      set2string(onto->data_property_graph_.getUp(req.param), res.value);
     else if(req.action == "getDisjoint")
-      set2string(onto.data_property_graph_.getDisjoint(req.param), res.value);
+      set2string(onto->data_property_graph_.getDisjoint(req.param), res.value);
     else if(req.action == "getDomain")
-      set2string(onto.data_property_graph_.getDomain(req.param), res.value);
+      set2string(onto->data_property_graph_.getDomain(req.param), res.value);
     else if(req.action == "getRange")
-      set2string(onto.data_property_graph_.getRange(req.param), res.value);
+      set2string(onto->data_property_graph_.getRange(req.param), res.value);
     else if(req.action == "getName")
-      res.value = onto.data_property_graph_.getName(req.param);
+      res.value = onto->data_property_graph_.getName(req.param);
     else
       res.code = UNKNOW_ACTION;
   }
@@ -221,7 +225,7 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
   res.value = "";
   res.code = 0;
 
-  if(onto.isInit() == false)
+  if(onto->isInit() == false)
     res.code = UNINIT;
   else
     arguers.runPreArguers();
@@ -249,35 +253,35 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
   if(res.code != UNINIT)
   {
     if(req.action == "getSame")
-      set_res = onto.individual_graph_.getSame(req.param);
+      set_res = onto->individual_graph_.getSame(req.param);
     if(req.action == "getDistincts")
-      set_res = onto.individual_graph_.getDistincts(req.param);
+      set_res = onto->individual_graph_.getDistincts(req.param);
     else if(req.action == "getRelationFrom")
-      set_res = onto.individual_graph_.getRelationFrom(req.param);
+      set_res = onto->individual_graph_.getRelationFrom(req.param);
     else if(req.action == "getRelatedFrom")
-      set_res = onto.individual_graph_.getRelatedFrom(req.param);
+      set_res = onto->individual_graph_.getRelatedFrom(req.param);
     else if(req.action == "getRelationOn")
-      set_res = onto.individual_graph_.getRelationOn(req.param);
+      set_res = onto->individual_graph_.getRelationOn(req.param);
     else if(req.action == "getRelatedOn")
-      set_res = onto.individual_graph_.getRelatedOn(req.param);
+      set_res = onto->individual_graph_.getRelatedOn(req.param);
     else if(req.action == "getRelationWith")
-      set_res = onto.individual_graph_.getRelationWith(req.param);
+      set_res = onto->individual_graph_.getRelationWith(req.param);
     else if(req.action == "getRelatedWith")
-      set_res = onto.individual_graph_.getRelatedWith(req.param);
+      set_res = onto->individual_graph_.getRelatedWith(req.param);
     else if(req.action == "getUp")
-      set_res = onto.individual_graph_.getUp(req.param);
+      set_res = onto->individual_graph_.getUp(req.param);
     else if(req.action == "getOn")
-      set_res = onto.individual_graph_.getOn(req.param);
+      set_res = onto->individual_graph_.getOn(req.param);
     else if(req.action == "getFrom")
-      set_res = onto.individual_graph_.getFrom(req.param);
+      set_res = onto->individual_graph_.getFrom(req.param);
     else if(req.action == "getWith")
-      set_res = onto.individual_graph_.getWith(req.param);
+      set_res = onto->individual_graph_.getWith(req.param);
     else if(req.action == "getName")
-      res.value = onto.individual_graph_.getName(req.param);
+      res.value = onto->individual_graph_.getName(req.param);
     else if(req.action == "find")
-      set_res = onto.individual_graph_.find(req.param);
+      set_res = onto->individual_graph_.find(req.param);
     else if(req.action == "getType")
-      set_res = onto.individual_graph_.getType(req.param);
+      set_res = onto->individual_graph_.getType(req.param);
     else
       res.code = UNKNOW_ACTION;
   }
@@ -285,11 +289,11 @@ bool individual_handle(ontologenius::standard_service::Request  &req,
     if(select != "")
     {
       if(req.action == "getUp")
-        set_res = onto.class_graph_.select(set_res, select);
+        set_res = onto->class_graph_.select(set_res, select);
       else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
-        set_res = onto.object_property_graph_.select(set_res, select);
+        set_res = onto->object_property_graph_.select(set_res, select);
       else if(req.action != "getName")
-        set_res = onto.individual_graph_.select(set_res, select);
+        set_res = onto->individual_graph_.select(set_res, select);
     }
 
     if(res.value == "")
@@ -320,7 +324,7 @@ bool arguer_handle(ontologenius::standard_service::Request  &req,
 //END OF DEPRECATED
 
 bool actionsHandle(ontologenius::OntologeniusService::Request &req,
-                      ontologenius::OntologeniusService::Response &res)
+                   ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;
 
@@ -328,28 +332,32 @@ bool actionsHandle(ontologenius::OntologeniusService::Request &req,
   removeUselessSpace(req.param);
 
   if(req.action == "add")
-    res.code = onto.readFromUri(req.param);
+    res.code = onto->readFromUri(req.param);
   else if(req.action == "fadd")
-    res.code = onto.readFromFile(req.param);
+    res.code = onto->readFromFile(req.param);
   else if(req.action == "close")
   {
-    onto.close();
+    onto->close();
     arguers.runPostArguers();
   }
   else if(req.action == "reset")
-    onto = Ontology();
+  {
+    delete onto;
+    onto = new Ontology();
+    arguers.link(onto);
+  }
   else if(req.action == "test")
   {
     Computer comp;
     res.values.resize(1);
-    if(comp.compute(req.param, onto.class_graph_))
+    if(comp.compute(req.param, onto->class_graph_))
       res.values[0] = "true";
     else
       res.values[0] = "false";
     //comp.compute("red_cube|young_animal=color_animal|age_object", onto);
   }
   else if(req.action == "setLang")
-    onto.setLanguage(req.param);
+    onto->setLanguage(req.param);
   else
     res.code = UNKNOW_ACTION;
 
@@ -361,7 +369,7 @@ bool classHandle(ontologenius::OntologeniusService::Request &req,
 {
   res.code = 0;
 
-  if(onto.isInit() == false)
+  if(onto->isInit() == false)
     res.code = UNINIT;
   else
   {
@@ -376,17 +384,17 @@ bool classHandle(ontologenius::OntologeniusService::Request &req,
     std::string select = getSelector(req.action, req.param);
 
     if(req.action == "getDown")
-      set_res = onto.class_graph_.getDown(req.param, level);
+      set_res = onto->class_graph_.getDown(req.param, level);
     else if(req.action == "getUp")
-      set_res = onto.class_graph_.getUp(req.param, level);
+      set_res = onto->class_graph_.getUp(req.param, level);
     else if(req.action == "getDisjoint")
-      set_res = onto.class_graph_.getDisjoint(req.param);
+      set_res = onto->class_graph_.getDisjoint(req.param);
     else if(req.action == "getName")
-      res.values.push_back(onto.class_graph_.getName(req.param));
+      res.values.push_back(onto->class_graph_.getName(req.param));
     else if(req.action == "getNames")
-      res.values = onto.class_graph_.getNames(req.param);
+      res.values = onto->class_graph_.getNames(req.param);
     else if(req.action == "find")
-      set2vector(onto.class_graph_.find(req.param), res.values);
+      set2vector(onto->class_graph_.find(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
 
@@ -394,7 +402,7 @@ bool classHandle(ontologenius::OntologeniusService::Request &req,
     {
       if((req.action == "getUp") || (req.action == "getDown") ||
         (req.action == "getDisjoint"))
-        set_res = onto.class_graph_.select(set_res, select);
+        set_res = onto->class_graph_.select(set_res, select);
     }
 
     if(res.values.size() == 0)
@@ -409,7 +417,7 @@ bool objectPropertyHandle(ontologenius::OntologeniusService::Request &req,
 {
   res.code = 0;
 
-  if(onto.isInit() == false)
+  if(onto->isInit() == false)
     res.code = UNINIT;
   else
   {
@@ -424,23 +432,23 @@ bool objectPropertyHandle(ontologenius::OntologeniusService::Request &req,
     std::string select = getSelector(req.action, req.param);
 
     if(req.action == "getDown")
-      set_res = onto.object_property_graph_.getDown(req.param, level);
+      set_res = onto->object_property_graph_.getDown(req.param, level);
     else if(req.action == "getUp")
-      set_res = onto.object_property_graph_.getUp(req.param, level);
+      set_res = onto->object_property_graph_.getUp(req.param, level);
     else if(req.action == "getDisjoint")
-      set_res = onto.object_property_graph_.getDisjoint(req.param);
+      set_res = onto->object_property_graph_.getDisjoint(req.param);
     else if(req.action == "getInverse")
-      set_res = onto.object_property_graph_.getInverse(req.param);
+      set_res = onto->object_property_graph_.getInverse(req.param);
     else if(req.action == "getDomain")
-      set_res = onto.object_property_graph_.getDomain(req.param);
+      set_res = onto->object_property_graph_.getDomain(req.param);
     else if(req.action == "getRange")
-      set_res = onto.object_property_graph_.getRange(req.param);
+      set_res = onto->object_property_graph_.getRange(req.param);
     else if(req.action == "getName")
-      res.values.push_back(onto.object_property_graph_.getName(req.param));
+      res.values.push_back(onto->object_property_graph_.getName(req.param));
     else if(req.action == "getNames")
-      res.values = onto.object_property_graph_.getNames(req.param);
+      res.values = onto->object_property_graph_.getNames(req.param);
     else if(req.action == "find")
-      set2vector(onto.object_property_graph_.find(req.param), res.values);
+      set2vector(onto->object_property_graph_.find(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
 
@@ -448,9 +456,9 @@ bool objectPropertyHandle(ontologenius::OntologeniusService::Request &req,
     {
       if((req.action == "getUp") || (req.action == "getDown") ||
         (req.action == "getDisjoint") || (req.action == "getInverse"))
-        set_res = onto.object_property_graph_.select(set_res, select);
+        set_res = onto->object_property_graph_.select(set_res, select);
       else if((req.action == "getDomain") || (req.action == "getRange"))
-        set_res = onto.class_graph_.select(set_res, select);
+        set_res = onto->class_graph_.select(set_res, select);
     }
 
     if(res.values.size() == 0)
@@ -465,7 +473,7 @@ bool dataPropertyHandle(ontologenius::OntologeniusService::Request &req,
 {
   res.code = 0;
 
-  if(onto.isInit() == false)
+  if(onto->isInit() == false)
     res.code = UNINIT;
   else
   {
@@ -480,30 +488,30 @@ bool dataPropertyHandle(ontologenius::OntologeniusService::Request &req,
     std::string select = getSelector(req.action, req.param);
 
     if(req.action == "getDown")
-      set_res = onto.data_property_graph_.getDown(req.param, level);
+      set_res = onto->data_property_graph_.getDown(req.param, level);
     else if(req.action == "getUp")
-      set_res = onto.data_property_graph_.getUp(req.param, level);
+      set_res = onto->data_property_graph_.getUp(req.param, level);
     else if(req.action == "getDisjoint")
-      set_res = onto.data_property_graph_.getDisjoint(req.param);
+      set_res = onto->data_property_graph_.getDisjoint(req.param);
     else if(req.action == "getDomain")
-      set_res = onto.data_property_graph_.getDomain(req.param);
+      set_res = onto->data_property_graph_.getDomain(req.param);
     else if(req.action == "getRange")
-      set2vector(onto.data_property_graph_.getRange(req.param), res.values);
+      set2vector(onto->data_property_graph_.getRange(req.param), res.values);
     else if(req.action == "getName")
-      res.values.push_back(onto.data_property_graph_.getName(req.param));
+      res.values.push_back(onto->data_property_graph_.getName(req.param));
     else if(req.action == "getNames")
-      res.values = onto.data_property_graph_.getNames(req.param);
+      res.values = onto->data_property_graph_.getNames(req.param);
     else if(req.action == "find")
-      set2vector(onto.object_property_graph_.find(req.param), res.values);
+      set2vector(onto->object_property_graph_.find(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
 
     if(select != "")
     {
       if((req.action == "getUp") || (req.action == "getDown") || (req.action == "getDisjoint"))
-        set_res = onto.data_property_graph_.select(set_res, select);
+        set_res = onto->data_property_graph_.select(set_res, select);
       else if(req.action == "getDomain")
-        set_res = onto.class_graph_.select(set_res, select);
+        set_res = onto->class_graph_.select(set_res, select);
     }
 
     if(res.values.size() == 0)
@@ -518,7 +526,7 @@ bool individualHandle(ontologenius::OntologeniusService::Request  &req,
 {
   res.code = 0;
 
-  if(onto.isInit() == false)
+  if(onto->isInit() == false)
     res.code = UNINIT;
   else
   {
@@ -533,48 +541,48 @@ bool individualHandle(ontologenius::OntologeniusService::Request  &req,
     std::string select = getSelector(req.action, req.param);
 
     if(req.action == "getSame")
-      set_res = onto.individual_graph_.getSame(req.param);
+      set_res = onto->individual_graph_.getSame(req.param);
     if(req.action == "getDistincts")
-      set_res = onto.individual_graph_.getDistincts(req.param);
+      set_res = onto->individual_graph_.getDistincts(req.param);
     else if(req.action == "getRelationFrom")
-      set_res = onto.individual_graph_.getRelationFrom(req.param, level);
+      set_res = onto->individual_graph_.getRelationFrom(req.param, level);
     else if(req.action == "getRelatedFrom")
-      set_res = onto.individual_graph_.getRelatedFrom(req.param);
+      set_res = onto->individual_graph_.getRelatedFrom(req.param);
     else if(req.action == "getRelationOn")
-      set_res = onto.individual_graph_.getRelationOn(req.param, level);
+      set_res = onto->individual_graph_.getRelationOn(req.param, level);
     else if(req.action == "getRelatedOn")
-      set_res = onto.individual_graph_.getRelatedOn(req.param);
+      set_res = onto->individual_graph_.getRelatedOn(req.param);
     else if(req.action == "getRelationWith")
-      set_res = onto.individual_graph_.getRelationWith(req.param);
+      set_res = onto->individual_graph_.getRelationWith(req.param);
     else if(req.action == "getRelatedWith")
-      set_res = onto.individual_graph_.getRelatedWith(req.param);
+      set_res = onto->individual_graph_.getRelatedWith(req.param);
     else if(req.action == "getUp")
-      set_res = onto.individual_graph_.getUp(req.param, level);
+      set_res = onto->individual_graph_.getUp(req.param, level);
     else if(req.action == "getOn")
-      set_res = onto.individual_graph_.getOn(req.param);
+      set_res = onto->individual_graph_.getOn(req.param);
     else if(req.action == "getFrom")
-      set_res = onto.individual_graph_.getFrom(req.param);
+      set_res = onto->individual_graph_.getFrom(req.param);
     else if(req.action == "getWith")
-      set_res = onto.individual_graph_.getWith(req.param, level);
+      set_res = onto->individual_graph_.getWith(req.param, level);
     else if(req.action == "getName")
-      res.values.push_back(onto.individual_graph_.getName(req.param));
+      res.values.push_back(onto->individual_graph_.getName(req.param));
     else if(req.action == "getNames")
-      res.values = onto.individual_graph_.getNames(req.param);
+      res.values = onto->individual_graph_.getNames(req.param);
     else if(req.action == "find")
-      set_res = onto.individual_graph_.find(req.param);
+      set_res = onto->individual_graph_.find(req.param);
     else if(req.action == "getType")
-      set_res = onto.individual_graph_.getType(req.param);
+      set_res = onto->individual_graph_.getType(req.param);
     else
       res.code = UNKNOW_ACTION;
 
     if(select != "")
     {
       if(req.action == "getUp")
-        set_res = onto.class_graph_.select(set_res, select);
+        set_res = onto->class_graph_.select(set_res, select);
       else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
-        set_res = onto.object_property_graph_.select(set_res, select);
+        set_res = onto->object_property_graph_.select(set_res, select);
       else if(req.action != "find")
-        set_res = onto.individual_graph_.select(set_res, select);
+        set_res = onto->individual_graph_.select(set_res, select);
     }
 
     if(res.values.size() == 0)
@@ -584,7 +592,7 @@ bool individualHandle(ontologenius::OntologeniusService::Request  &req,
   return true;
 }
 
-bool arguerHandle(ontologenius::OntologeniusService::Request  &req,
+bool arguerHandle(ontologenius::OntologeniusService::Request &req,
                    ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;
@@ -611,15 +619,18 @@ int main(int argc, char** argv)
 
   ros::service::waitForService("ontologenius/rest", -1);
 
+  onto = new Ontology();
+  arguers.link(onto);
+
   std::string language = std::string(argv[1]);
   std::cout << "language " << language << std::endl;
 
   std::string intern_file = std::string(argv[2]);
   std::cout << "intern_file " << intern_file << std::endl;
 
-  if(onto.preload(intern_file) == false)
+  if(onto->preload(intern_file) == false)
     for(int i = 3; i < argc; i++)
-      onto.readFromFile(std::string(argv[i]));
+      onto->readFromFile(std::string(argv[i]));
 
   arguers.load();
   std::cout << "Plugins loaded : " << arguers.list() << std::endl;
@@ -675,9 +686,11 @@ int main(int argc, char** argv)
   /*while(ros::ok())
   {
     ros::spinOnce();
-    onto.run();
+    onto->run();
   }*/
   ros::spin();
+
+  delete onto;
 
   ROS_DEBUG("KILL ontoloGenius");
 

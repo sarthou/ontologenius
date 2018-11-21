@@ -22,6 +22,7 @@ class OntoGraph : public Graph<B>
   static_assert(std::is_base_of<Branch_t<B>,B>::value, "B must be derived from Branch_t<B>");
 public:
   OntoGraph() {}
+  OntoGraph(const OntoGraph &graph);
   ~OntoGraph();
 
   void close();
@@ -65,6 +66,31 @@ protected:
   void amIA(B** me, std::vector<B*>& vect, const std::string& value, bool erase = true);
   void isMyMother(B* me, const std::string& mother, std::vector<B*>& vect, bool& find);
 };
+
+template <typename B>
+OntoGraph<B>::OntoGraph(const OntoGraph &base) : Graph<B>(base)
+{
+  std::cout << "BranchContainerMap have been copied" << std::endl; //TODO REMOVE
+  for(B* b : base.branchs_)
+  {
+    B* tmp = new B();
+    *tmp = *b;
+    branchs_.push_back(b);
+  }
+  for(B* b : base.roots_)
+  {
+    B* tmp = new B();
+    *tmp = *b;
+    roots_.push_back(b);
+  }
+  for(B* b : base.tmp_mothers_)
+  {
+    B* tmp = new B();
+    *tmp = *b;
+    tmp_mothers_.push_back(b);
+  }
+  depth_ = base.depth_;
+}
 
 template <typename B>
 OntoGraph<B>::~OntoGraph()

@@ -1,12 +1,12 @@
 #ifndef CLASSCLIENT_H
 #define CLASSCLIENT_H
 
-#include "ontoloGenius/utility/ClientBase.h"
+#include "ontoloGenius/utility/OntologyClient.h"
 
-class ClassClient : public ClientBase
+class ClassClient : public OntologyClient
 {
 public:
-  ClassClient(ros::NodeHandle* n) : ClientBase(n, "class")
+  ClassClient(ros::NodeHandle* n) : OntologyClient(n, "class")
   {
   }
 

@@ -50,6 +50,13 @@ Arguers::~Arguers()
   }
 }
 
+void Arguers::link(Ontology* onto)
+{
+  ontology_ = onto;
+  for(auto& it : arguers_)
+    it.second->initialize(ontology_);
+}
+
 void Arguers::load()
 {
   std::vector<std::string> arguers = loader_.getDeclaredClasses();
@@ -61,7 +68,6 @@ void Arguers::load()
       loader_.loadLibraryForClass(arguers[i]);
       ArguerInterface* tmp = loader_.createUnmanagedInstance(arguers[i]);
       tmp->initialize(ontology_);
-      arguers_[arguers[i]] = tmp;
       arguers_[arguers[i]] = tmp;
       if(tmp->defaultAvtive())
         active_arguers_[arguers[i]] = tmp;
@@ -111,6 +117,7 @@ int Arguers::activate(std::string plugin)
     {
       active_arguers_[plugin] = arguers_[plugin];
       std::cout << COLOR_GREEN << plugin << " has been activated" << COLOR_OFF << std::endl;
+      resetIndividualsUpdates();
       runPostArguers();
     }
     else
@@ -147,7 +154,7 @@ int Arguers::deactivate(std::string plugin)
   }
 }
 
-std::string Arguers::getDescription(std::string plugin)
+std::string Arguers::getDescription(std::string& plugin)
 {
   if(arguers_.find(plugin) != arguers_.end())
     return arguers_[plugin]->getDesciption();
@@ -207,4 +214,15 @@ void Arguers::computeIndividualsUpdates()
       indiv[indiv_i]->nb_updates_ = 0;
       indiv[indiv_i]->updated_ = true;
     }
+}
+
+void Arguers::resetIndividualsUpdates()
+{
+  std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
+  size_t indiv_size = indiv.size();
+  for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
+  {
+    indiv[indiv_i]->nb_updates_ = 0;
+    indiv[indiv_i]->updated_ = true;
+  }
 }

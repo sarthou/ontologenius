@@ -1,4 +1,4 @@
-# <img src="logo/ontologenius.png" width="150"> ontolo**G**enius
+# <img src="docs/img/logo/ontologenius.png" width="150"> ontolo**G**enius
 [![Release][Release-Image]][Release-Url]  Matser : [![Build Status](https://gitlab.com/sarthou/ontologenius/badges/master/pipeline.svg)](https://gitlab.com/sarthou/ontologenius/commits/master) Dev : [![Build Status](https://gitlab.com/sarthou/ontologenius/badges/dev/pipeline.svg)](https://gitlab.com/sarthou/ontologenius/commits/dev)
 
 
