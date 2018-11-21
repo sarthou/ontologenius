@@ -10,6 +10,7 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
 struct ObjectPropertyVectors_t
 {

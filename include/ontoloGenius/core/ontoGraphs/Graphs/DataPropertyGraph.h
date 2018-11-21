@@ -7,6 +7,7 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
+#include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
 #ifndef DATAPROPERTYGRAPH_H
 #define DATAPROPERTYGRAPH_H
