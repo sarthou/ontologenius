@@ -70,7 +70,6 @@ protected:
 template <typename B>
 OntoGraph<B>::OntoGraph(const OntoGraph &base) : Graph<B>(base)
 {
-  std::cout << "BranchContainerMap have been copied" << std::endl; //TODO REMOVE
   for(B* b : base.branchs_)
   {
     B* tmp = new B();

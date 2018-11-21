@@ -2,7 +2,6 @@
 #define BRANCHCONTAINERMAP_H
 
 #include <map>
-#include <iostream> //TODO REMOVE
 
 #include "ontoloGenius/core/ontoGraphs/BranchContainer/BranchContainerBase.h"
 
@@ -24,7 +23,6 @@ private:
 template <typename B>
 BranchContainerMap<B>::BranchContainerMap(const BranchContainerMap& base)
 {
-  std::cout << "BranchContainerMap have been copied" << std::endl; //TODO REMOVE
   for(auto& it : base.nodes_)
   {
     B* tmp = new B();
