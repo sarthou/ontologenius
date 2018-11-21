@@ -393,6 +393,26 @@ bool classHandle(ontologenius::OntologeniusService::Request &req,
       res.values.push_back(onto->class_graph_.getName(req.param));
     else if(req.action == "getNames")
       res.values = onto->class_graph_.getNames(req.param);
+    else if(req.action == "getRelationFrom")
+      set_res = onto->class_graph_.getRelationFrom(req.param, level);
+    else if(req.action == "getRelatedFrom")
+      set_res = onto->class_graph_.getRelatedFrom(req.param);
+    else if(req.action == "getRelationOn")
+      set_res = onto->class_graph_.getRelationOn(req.param, level);
+    else if(req.action == "getRelatedOn")
+      set_res = onto->class_graph_.getRelatedOn(req.param);
+    else if(req.action == "getRelationWith")
+      set_res = onto->class_graph_.getRelationWith(req.param);
+    else if(req.action == "getRelatedWith")
+      set_res = onto->class_graph_.getRelatedWith(req.param);
+    else if(req.action == "getUp")
+      set_res = onto->class_graph_.getUp(req.param, level);
+    else if(req.action == "getOn")
+      set_res = onto->class_graph_.getOn(req.param);
+    else if(req.action == "getFrom")
+      set_res = onto->class_graph_.getFrom(req.param);
+    else if(req.action == "getWith")
+      set_res = onto->class_graph_.getWith(req.param, level);
     else if(req.action == "find")
       set2vector(onto->class_graph_.find(req.param), res.values);
     else
@@ -403,6 +423,8 @@ bool classHandle(ontologenius::OntologeniusService::Request &req,
       if((req.action == "getUp") || (req.action == "getDown") ||
         (req.action == "getDisjoint"))
         set_res = onto->class_graph_.select(set_res, select);
+      else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
+        set_res = onto->object_property_graph_.select(set_res, select);
     }
 
     if(res.values.size() == 0)
