@@ -64,6 +64,8 @@ private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
 
+  void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth);
+
   void isMyDisjoint(ClassBranch_t* me, const std::string& disjoint, std::vector<ClassBranch_t*>& vect, bool& find, bool all = true)
   {
     if(find)

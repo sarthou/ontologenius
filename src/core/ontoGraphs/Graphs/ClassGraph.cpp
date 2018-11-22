@@ -298,6 +298,15 @@ std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& _
 {
   std::unordered_set<std::string> res;
   ClassBranch_t* class_branch = container_.find(_class);
+  std::unordered_set<ClassBranch_t*> up_classes = getUpPtr(class_branch);
+  for(ClassBranch_t* it : up_classes)
+    getRelationFrom(it, res, depth);
+
+  return res;
+}
+
+void ClassGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth)
+{
   if(class_branch != nullptr)
   {
     for(size_t i = 0; i < class_branch->object_properties_name_.size(); i++)
@@ -306,7 +315,6 @@ std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& _
     for(size_t i = 0; i < class_branch->data_properties_name_.size(); i++)
       data_property_graph_->getUp(class_branch->data_properties_name_[i], res, depth);
   }
-  return res;
 }
 
 std::unordered_set<std::string> ClassGraph::getRelatedFrom(const std::string& property)
