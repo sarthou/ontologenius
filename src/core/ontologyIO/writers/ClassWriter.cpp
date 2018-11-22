@@ -2,6 +2,9 @@
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
+#include "ontoloGenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontoloGenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
+
 #include <algorithm>
 
 void ClassWriter::write(FILE* file)
@@ -35,6 +38,10 @@ void ClassWriter::writeClass(ClassBranch_t* branch)
   writeSubClassOf(branch);
 
   writeDisjointWith(branch);
+
+  writeObjectProperties(branch);
+
+  writeDataProperties(branch);
 
   writeDictionary(&branch->steady_);
 
@@ -134,4 +141,36 @@ void ClassWriter::removeDifferents(std::vector<std::string>& disjoints_current, 
   }
 
   disjoints_current = sames;
+}
+
+void ClassWriter::writeObjectProperties(ClassBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->steady_.object_properties_name_.size(); i++)
+  {
+    std::string tmp = "        <ontologenius:" +
+                      branch->steady_.object_properties_name_[i]->value() +
+                      " rdf:resource=\"ontologenius#" +
+                      branch->steady_.object_properties_on_[i]->value() +
+                      "\"/>\n\r";
+    writeString(tmp);
+  }
+}
+
+void ClassWriter::writeDataProperties(ClassBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->steady_.data_properties_name_.size(); i++)
+  {
+    std::string tmp = "        <ontologenius:" +
+                      branch->steady_.data_properties_name_[i]->value() +
+                      " rdf:datatype=\"" +
+                      branch->steady_.data_properties_data_[i].getNs() +
+                      "#" +
+                      branch->steady_.data_properties_data_[i].type_ +
+                      "\">" +
+                      branch->steady_.data_properties_data_[i].value_ +
+                      "</ontologenius:" +
+                      branch->steady_.data_properties_name_[i]->value() +
+                      ">\n\r";
+    writeString(tmp);
+  }
 }
