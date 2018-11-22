@@ -400,13 +400,66 @@ std::unordered_set<std::string> ClassGraph::getRelationWith(const std::string& _
   ClassBranch_t* class_branch = container_.find(_class);
   if(class_branch != nullptr)
   {
-    for(size_t i = 0; i < class_branch->object_properties_on_.size(); i++)
-      res.insert(class_branch->object_properties_on_[i]->value());
-
-    for(size_t i = 0; i < class_branch->data_properties_data_.size(); i++)
-      res.insert(class_branch->data_properties_data_[i].toString());
+    std::map<std::string, int> properties;
+    std::vector<int> depths;
+    std::vector<std::string> tmp_res;
+    getRelationWith(class_branch, properties, depths, tmp_res, 0);
+    for(auto it : tmp_res)
+      res.insert(it);
   }
   return res;
+}
+
+void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<std::string, int>& properties, std::vector<int>& depths, std::vector<std::string>& res, int depth)
+{
+  depth++;
+  if(class_branch != nullptr)
+  {
+    for(size_t i = 0; i < class_branch->object_properties_on_.size(); i++)
+    {
+      auto it = properties.find(class_branch->object_properties_name_[i]->value());
+      if(it != properties.end())
+      {
+        int index = properties[class_branch->object_properties_name_[i]->value()];
+        if(depths[index] > depth)
+        {
+          depths[index] = depth;
+          res[index] = class_branch->object_properties_on_[i]->value();
+        }
+      }
+      else
+      {
+        properties[class_branch->object_properties_name_[i]->value()] = res.size();
+        depths.push_back(depth);
+        res.push_back(class_branch->object_properties_on_[i]->value());
+      }
+    }
+
+    for(size_t i = 0; i < class_branch->data_properties_data_.size(); i++)
+    {
+      auto it = properties.find(class_branch->data_properties_name_[i]->value());
+      if(it != properties.end())
+      {
+        int index = properties[class_branch->data_properties_name_[i]->value()];
+        if(depths[index] > depth)
+        {
+          depths[index] = depth;
+          res[index] = class_branch->data_properties_data_[i].toString();
+        }
+      }
+      else
+      {
+        properties[class_branch->data_properties_name_[i]->value()] = res.size();
+        depths.push_back(depth);
+        res.push_back(class_branch->data_properties_data_[i].toString());
+      }
+    }
+
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtr(class_branch);
+    for(ClassBranch_t* up : up_set)
+      if(up != class_branch)
+        getRelationWith(up, properties, depths, res, depth);
+  }
 }
 
 std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _class)

@@ -500,6 +500,7 @@
         <rdfs:subClassOf rdf:resource="ontologenius/attribute#human"/>
         <rdfs:subClassOf rdf:resource="ontologenius/attribute#male"/>
         <owl:disjointWith rdf:resource="ontologenius/attribute#woman"/>
+        <positionProperty:hasLeg rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</positionProperty:hasLeg>
         <rdfs:label xml:lang="fr">homme</rdfs:label>
     </owl:Class>
 
