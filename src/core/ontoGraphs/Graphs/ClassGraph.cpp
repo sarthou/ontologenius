@@ -298,9 +298,12 @@ std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& _
 {
   std::unordered_set<std::string> res;
   ClassBranch_t* class_branch = container_.find(_class);
-  std::unordered_set<ClassBranch_t*> up_classes = getUpPtr(class_branch);
-  for(ClassBranch_t* it : up_classes)
-    getRelationFrom(it, res, depth);
+  if(class_branch != nullptr)
+  {
+    std::unordered_set<ClassBranch_t*> up_classes = getUpPtr(class_branch);
+    for(ClassBranch_t* it : up_classes)
+      getRelationFrom(it, res, depth);
+  }
 
   return res;
 }
