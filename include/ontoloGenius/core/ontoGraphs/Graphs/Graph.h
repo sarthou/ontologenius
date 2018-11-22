@@ -18,7 +18,6 @@ public:
   Graph() {language_ = "en"; }
   Graph(const Graph& base)
   {
-    std::cout << "Graph have been copied" << std::endl; //TODO REMOVE
     container_ = base.container_;
     language_ = base.language_;
   }

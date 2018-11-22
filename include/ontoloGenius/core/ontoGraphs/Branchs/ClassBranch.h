@@ -7,6 +7,8 @@
 #include "ontoloGenius/core/ontoGraphs/Branchs/Branch.h"
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/Data.h"
+
+//for branch type usage
 class ObjectPropertyBranch_t;
 class DataPropertyBranch_t;
 
@@ -23,6 +25,7 @@ public:
   std::vector<data_t> data_properties_data_;
 };
 
+//for template usage
 class ClassBranch_t;
 class ClassSteady_t : public BranchSteady_t<ClassBranch_t>, public ClassBranchData_t<ClassBranch_t>
 {

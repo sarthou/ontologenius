@@ -27,6 +27,8 @@ private:
   void writeDisjointWith(std::vector<ClassBranch_t*>& classes);
   void getDisjoints(ClassBranch_t* class_branch, std::vector<std::string>& disjoints_current);
   void removeDifferents(std::vector<std::string>& disjoints_current, std::vector<std::string>& disjoints_class);
+  void writeObjectProperties(ClassBranch_t* branch);
+  void writeDataProperties(ClassBranch_t* branch);
 };
 
 #endif

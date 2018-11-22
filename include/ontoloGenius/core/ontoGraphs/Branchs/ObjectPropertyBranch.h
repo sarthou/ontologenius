@@ -5,7 +5,9 @@
 #include <vector>
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/PropertyBranch.h"
-#include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
+
+//for branch type usage
+class ClassBranch_t;
 
 template <typename T>
 class ObjectPropertyBranchData_t : public PropertyBranchData_t<T>
@@ -18,6 +20,7 @@ public:
   std::vector<std::vector<std::string>> str_chains_;
 };
 
+//for template usage
 class ObjectPropertyBranch_t;
 class ObjectPropertySteady_t :  public BranchSteady_t<ObjectPropertyBranch_t>,
                                 public ObjectPropertyBranchData_t<ObjectPropertyBranch_t>

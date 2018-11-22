@@ -56,6 +56,7 @@ public:
 protected:
   std::vector<B*> branchs_;
   std::vector<B*> roots_;
+  std::vector<B*> all_branchs_;
 
   std::vector<B*> tmp_mothers_;
 
@@ -70,7 +71,6 @@ protected:
 template <typename B>
 OntoGraph<B>::OntoGraph(const OntoGraph &base) : Graph<B>(base)
 {
-  std::cout << "BranchContainerMap have been copied" << std::endl; //TODO REMOVE
   for(B* b : base.branchs_)
   {
     B* tmp = new B();
@@ -117,6 +117,12 @@ void OntoGraph<B>::close()
 
   this->container_.load(roots_);
   this->container_.load(branchs_);
+
+  for(size_t i = 0; i < roots_.size(); i++)
+    all_branchs_.push_back(roots_[i]);
+
+  for(size_t i = 0; i < branchs_.size(); i++)
+    all_branchs_.push_back(branchs_[i]);
 }
 
 template <typename B>

@@ -10,7 +10,8 @@
 
 #include <iostream>
 
-Ontology::Ontology(std::string language) : object_property_graph_(&class_graph_),
+Ontology::Ontology(std::string language) : class_graph_(&object_property_graph_, &data_property_graph_),
+                                           object_property_graph_(&class_graph_),
                                            data_property_graph_(&class_graph_),
                                            individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
                                            reader((Ontology&)*this),
@@ -23,14 +24,14 @@ Ontology::Ontology(std::string language) : object_property_graph_(&class_graph_)
   data_property_graph_.setLanguage(language);
   individual_graph_.setLanguage(language);
   writer.setFileName("none");
-  std::cout << "Ontology created" << std::endl; //TODO REMOVE
 }
 
-Ontology::Ontology(const Ontology& base): object_property_graph_(&class_graph_),
-                                           data_property_graph_(&class_graph_),
-                                           individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
-                                           reader((Ontology&)*this),
-                                           writer((Ontology&)*this)
+Ontology::Ontology(const Ontology& base): class_graph_(&object_property_graph_, &data_property_graph_),
+                                          object_property_graph_(&class_graph_),
+                                          data_property_graph_(&class_graph_),
+                                          individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
+                                          reader((Ontology&)*this),
+                                          writer((Ontology&)*this)
 {
   class_graph_ = base.class_graph_;
   object_property_graph_ = base.object_property_graph_;
@@ -42,14 +43,11 @@ Ontology::Ontology(const Ontology& base): object_property_graph_(&class_graph_),
 
   files_ = base.files_;
   uri_ = base.uri_;
-
-  std::cout << "Ontology have been copied" << std::endl; //TODO REMOVE
 }
 
 Ontology::~Ontology()
 {
   writer.write();
-  std::cout << "Ontology destructed" << std::endl; //TODO REMOVE
 }
 
 int Ontology::close()

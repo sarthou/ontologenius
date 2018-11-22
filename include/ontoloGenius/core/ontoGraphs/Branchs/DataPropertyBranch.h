@@ -5,8 +5,10 @@
 #include <vector>
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/PropertyBranch.h"
-#include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/Data.h"
+
+//for branch type usage
+class ClassBranch_t;
 
 template <typename T>
 class DataPropertyBranchData_t : public PropertyBranchData_t<T>
@@ -16,6 +18,7 @@ public:
   std::vector<data_t> ranges_;
 };
 
+//for template usage
 class DataPropertyBranch_t;
 class DataPropertySteady_t :  public BranchSteady_t<DataPropertyBranch_t>,
                               public DataPropertyBranchData_t<DataPropertyBranch_t>
