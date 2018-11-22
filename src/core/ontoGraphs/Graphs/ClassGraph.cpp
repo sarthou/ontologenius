@@ -328,12 +328,20 @@ std::unordered_set<std::string> ClassGraph::getRelatedFrom(const std::string& pr
     for(size_t prop_i = 0; prop_i < all_branchs_[i]->object_properties_name_.size(); prop_i++)
       for (uint32_t id : object_properties)
         if(all_branchs_[i]->object_properties_name_[prop_i]->get() == id)
-          res.insert(all_branchs_[i]->value());
+        {
+          std::unordered_set<ClassBranch_t*> tmp = getDownPtr(all_branchs_[i]);
+          for(auto tmp_i : tmp)
+            res.insert(tmp_i->value());
+        }
 
     for(size_t prop_i = 0; prop_i < all_branchs_[i]->data_properties_name_.size(); prop_i++)
       for (uint32_t id : data_properties)
         if(all_branchs_[i]->data_properties_name_[prop_i]->get() == id)
-          res.insert(all_branchs_[i]->value());
+        {
+          std::unordered_set<ClassBranch_t*> tmp = getDownPtr(all_branchs_[i]);
+          for(auto tmp_i : tmp)
+            res.insert(tmp_i->value());
+        }
   }
   return res;
 }
