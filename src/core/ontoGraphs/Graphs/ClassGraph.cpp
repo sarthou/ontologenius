@@ -665,17 +665,51 @@ std::unordered_set<std::string> ClassGraph::getWith(const std::string& first_cla
 {
   std::unordered_set<std::string> res;
 
-  ClassBranch_t* class_branch = container_.find(first_class);
-  if(class_branch != nullptr)
-  {
-    for(size_t indiv_i = 0; indiv_i < class_branch->object_properties_on_.size(); indiv_i++)
-      if(class_branch->object_properties_on_[indiv_i]->value() == second_class)
-        object_property_graph_->getUp(class_branch->object_properties_name_[indiv_i], res, depth);
-
-    for(size_t indiv_i = 0; indiv_i < class_branch->data_properties_data_.size(); indiv_i++)
-      if(class_branch->data_properties_data_[indiv_i].value_ == second_class)
-        data_property_graph_->getUp(class_branch->data_properties_name_[indiv_i], res, depth);
-  }
+  int found_depth = -1;
+  std::unordered_set<uint32_t> doNotTake;
+  ClassBranch_t* first_branch = container_.find(first_class);
+  getWith(first_branch, second_class, res, doNotTake, 0, found_depth, depth);
 
   return res;
+}
+
+void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake, uint32_t current_depth, int& found_depth, int depth_prop)
+{
+  if(first_class != nullptr)
+  {
+    std::unordered_set<std::string> tmp_res;
+    std::unordered_set<uint32_t> doNotTake_tmp;
+
+    for(size_t indiv_i = 0; indiv_i < first_class->object_properties_on_.size(); indiv_i++)
+    {
+      doNotTake_tmp.insert(first_class->object_properties_name_[indiv_i]->get());
+      if(first_class->object_properties_on_[indiv_i]->value() == second_class)
+        if(doNotTake.find(first_class->object_properties_name_[indiv_i]->get()) == doNotTake.end())
+          object_property_graph_->getUp(first_class->object_properties_name_[indiv_i], tmp_res, depth_prop);
+    }
+
+    for(size_t indiv_i = 0; indiv_i < first_class->data_properties_data_.size(); indiv_i++)
+    {
+      doNotTake_tmp.insert(first_class->data_properties_name_[indiv_i]->get());
+      if(first_class->data_properties_data_[indiv_i].value_ == second_class)
+        if(doNotTake.find(first_class->data_properties_name_[indiv_i]->get()) == doNotTake.end())
+          data_property_graph_->getUp(first_class->data_properties_name_[indiv_i], tmp_res, depth_prop);
+    }
+
+    doNotTake.insert(doNotTake_tmp.begin(), doNotTake_tmp.end());
+
+    if(tmp_res.size() != 0)
+      if(current_depth < (uint32_t)found_depth)
+      {
+        res = tmp_res;
+        found_depth = current_depth;
+        return;
+      }
+
+    current_depth++;
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtr(first_class, 1);
+    for(ClassBranch_t* up : up_set)
+      if(up != first_class)
+        getWith(up, second_class, res, doNotTake, current_depth, found_depth, depth_prop);
+  }
 }
