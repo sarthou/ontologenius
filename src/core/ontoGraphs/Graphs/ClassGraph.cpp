@@ -471,11 +471,11 @@ std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _c
   {
     for(size_t prop_i = 0; prop_i < all_branchs_[i]->object_properties_on_.size(); prop_i++)
       if(all_branchs_[i]->object_properties_on_[prop_i]->value() == _class)
-        objectGetRelationWith(all_branchs_[i], all_branchs_[i]->object_properties_name_[prop_i]->value(), _class, res, doNotTake);
+        objectGetRelatedWith(all_branchs_[i], all_branchs_[i]->object_properties_name_[prop_i]->value(), _class, res, doNotTake);
 
     for(size_t prop_i = 0; prop_i < all_branchs_[i]->data_properties_data_.size(); prop_i++)
       if(all_branchs_[i]->data_properties_data_[prop_i].value_ == _class)
-        dataGetRelationWith(all_branchs_[i], all_branchs_[i]->data_properties_name_[prop_i]->value(), _class, res, doNotTake);
+        dataGetRelatedWith(all_branchs_[i], all_branchs_[i]->data_properties_name_[prop_i]->value(), _class, res, doNotTake);
   }
 
   for(auto i : doNotTake)
@@ -485,7 +485,7 @@ std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _c
   return res;
 }
 
-void ClassGraph::dataGetRelationWith(ClassBranch_t* class_branch, const std::string& property, const std::string& _class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake)
+void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const std::string& _class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake)
 {
   if(doNotTake.find(class_branch->get()) != doNotTake.end())
     return;
@@ -509,12 +509,12 @@ void ClassGraph::dataGetRelationWith(ClassBranch_t* class_branch, const std::str
             }
 
         if(found == false)
-          dataGetRelationWith(down, property, _class, res, doNotTake);
+          dataGetRelatedWith(down, property, _class, res, doNotTake);
       }
   }
 }
 
-void ClassGraph::objectGetRelationWith(ClassBranch_t* class_branch, const std::string& property, const std::string& _class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake)
+void ClassGraph::objectGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const std::string& _class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake)
 {
   if(doNotTake.find(class_branch->get()) != doNotTake.end())
     return;
@@ -537,7 +537,7 @@ void ClassGraph::objectGetRelationWith(ClassBranch_t* class_branch, const std::s
             }
 
         if(found == false)
-          objectGetRelationWith(down, property, _class, res, doNotTake);
+          objectGetRelatedWith(down, property, _class, res, doNotTake);
       }
   }
 }
@@ -571,13 +571,13 @@ std::unordered_set<std::string> ClassGraph::getFrom(const std::string& _class, c
       if(all_branchs_[i]->object_properties_on_[prop_i]->value() == _class)
         for (uint32_t id : object_properties)
           if(all_branchs_[i]->object_properties_name_[prop_i]->get() == id)
-            objectGetRelationWith(all_branchs_[i], all_branchs_[i]->object_properties_name_[prop_i]->value(), _class, res, doNotTake);
+            objectGetRelatedWith(all_branchs_[i], all_branchs_[i]->object_properties_name_[prop_i]->value(), _class, res, doNotTake);
 
     for(size_t prop_i = 0; prop_i < all_branchs_[i]->data_properties_data_.size(); prop_i++)
       if(all_branchs_[i]->data_properties_data_[prop_i].value_ == _class)
         for (uint32_t id : data_properties)
           if(all_branchs_[i]->data_properties_name_[prop_i]->get() == id)
-            dataGetRelationWith(all_branchs_[i], all_branchs_[i]->data_properties_name_[prop_i]->value(), _class, res, doNotTake);
+            dataGetRelatedWith(all_branchs_[i], all_branchs_[i]->data_properties_name_[prop_i]->value(), _class, res, doNotTake);
   }
 
   for(auto i : doNotTake)
