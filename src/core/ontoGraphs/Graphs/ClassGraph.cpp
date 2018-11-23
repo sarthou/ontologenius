@@ -478,6 +478,10 @@ std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _c
         dataGetRelationWith(all_branchs_[i], all_branchs_[i]->data_properties_name_[prop_i]->value(), _class, res, doNotTake);
   }
 
+  for(auto i : doNotTake)
+    if(res.find(ValuedNode::table_[i]) != res.end())
+      res.erase(ValuedNode::table_[i]);
+
   return res;
 }
 
