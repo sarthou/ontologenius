@@ -127,7 +127,34 @@
         <rdf:type rdf:resource="ontologenius/attribute#cube"/>
         <rdf:type rdf:resource="ontologenius/attribute#red"/>
         <positionProperty:isIn rdf:resource="ontologenius/testIndividuals#big_box"/>
-        <rdfs:comment xml:lang="en"></rdfs:comment>
+        <rdfs:comment xml:lang="en">cube rouge</rdfs:comment>
+    </owl:NamedIndividual>
+
+
+
+    <!-- ontologenius/testIndividuals#bob -->
+
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#bob">
+        <rdf:type rdf:resource="ontologenius/attribute#man"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- ontologenius/testIndividuals#alice -->
+
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#alice">
+        <rdf:type rdf:resource="ontologenius/attribute#woman"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- ontologenius/testIndividuals#kevin -->
+
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#kevin">
+        <rdf:type rdf:resource="ontologenius/attribute#man"/>
+        <rdf:type rdf:resource="ontologenius/attribute#child"/>
+        <positionProperty:hasMother rdf:resource="ontologenius/testIndividuals#alice"/>
+        <positionProperty:hasFather rdf:resource="ontologenius/testIndividuals#bob"/>
     </owl:NamedIndividual>
 
 
