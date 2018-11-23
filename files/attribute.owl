@@ -409,6 +409,7 @@
         <rdfs:subClassOf rdf:resource="ontologenius/attribute#agent"/>
         <rdfs:subClassOf rdf:resource="ontologenius/attribute#living"/>
         <positionProperty:hasMother rdf:resource="ontologenius/testIndividuals#woman"/>
+        <positionProperty:hasFather rdf:resource="ontologenius/testIndividuals#man"/>
         <positionProperty:hasLeg rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</positionProperty:hasLeg>
         <rdfs:label xml:lang="fr">humain</rdfs:label>
     </owl:Class>

@@ -236,6 +236,15 @@
 
 
 
+    <!-- ontologenius/positionProperty#hasFather -->
+
+    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#hasFather">
+        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#hasParent"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+    </owl:ObjectProperty>
+
+
+
     <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
