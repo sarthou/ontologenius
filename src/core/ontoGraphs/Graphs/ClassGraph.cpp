@@ -608,19 +608,19 @@ std::unordered_set<std::string> ClassGraph::getOn(const std::string& _class, con
   std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
   std::unordered_set<std::string> res;
-  for(size_t i = 0; i < all_branchs_.size(); i++)
-    if(all_branchs_[i]->value() == _class)
-    {
-      for(size_t prop_i = 0; prop_i < all_branchs_[i]->object_properties_name_.size(); prop_i++)
-        for (uint32_t id : object_properties)
-          if(all_branchs_[i]->object_properties_name_[prop_i]->get() == id)
-            res.insert(all_branchs_[i]->object_properties_on_[prop_i]->value());
+  ClassBranch_t* class_branch = container_.find(_class);
+  if(class_branch != nullptr)
+  {
+    for(size_t prop_i = 0; prop_i < class_branch->object_properties_name_.size(); prop_i++)
+      for (uint32_t id : object_properties)
+        if(class_branch->object_properties_name_[prop_i]->get() == id)
+          res.insert(class_branch->object_properties_on_[prop_i]->value());
 
-      for(size_t prop_i = 0; prop_i < all_branchs_[i]->data_properties_name_.size(); prop_i++)
-        for (uint32_t id : data_properties)
-          if(all_branchs_[i]->data_properties_name_[prop_i]->get() == id)
-            res.insert(all_branchs_[i]->data_properties_data_[prop_i].toString());
-    }
+    for(size_t prop_i = 0; prop_i < class_branch->data_properties_name_.size(); prop_i++)
+      for (uint32_t id : data_properties)
+        if(class_branch->data_properties_name_[prop_i]->get() == id)
+          res.insert(class_branch->data_properties_data_[prop_i].toString());
+  }
 
   return res;
 }
@@ -641,16 +641,18 @@ std::unordered_set<std::string> ClassGraph::getWith(const std::string& param, in
 std::unordered_set<std::string> ClassGraph::getWith(const std::string& first_class, const std::string& second_class, int depth)
 {
   std::unordered_set<std::string> res;
-  for(size_t i = 0; i < all_branchs_.size(); i++)
-    if(all_branchs_[i]->value() == first_class)
-    {
-      for(size_t indiv_i = 0; indiv_i < all_branchs_[i]->object_properties_on_.size(); indiv_i++)
-        if(all_branchs_[i]->object_properties_on_[indiv_i]->value() == second_class)
-          object_property_graph_->getUp(all_branchs_[i]->object_properties_name_[indiv_i], res, depth);
 
-      for(size_t indiv_i = 0; indiv_i < all_branchs_[i]->data_properties_data_.size(); indiv_i++)
-        if(all_branchs_[i]->data_properties_data_[indiv_i].value_ == second_class)
-          data_property_graph_->getUp(all_branchs_[i]->data_properties_name_[indiv_i], res, depth);
-    }
+  ClassBranch_t* class_branch = container_.find(first_class);
+  if(class_branch != nullptr)
+  {
+    for(size_t indiv_i = 0; indiv_i < class_branch->object_properties_on_.size(); indiv_i++)
+      if(class_branch->object_properties_on_[indiv_i]->value() == second_class)
+        object_property_graph_->getUp(class_branch->object_properties_name_[indiv_i], res, depth);
+
+    for(size_t indiv_i = 0; indiv_i < class_branch->data_properties_data_.size(); indiv_i++)
+      if(class_branch->data_properties_data_[indiv_i].value_ == second_class)
+        data_property_graph_->getUp(class_branch->data_properties_name_[indiv_i], res, depth);
+  }
+
   return res;
 }
