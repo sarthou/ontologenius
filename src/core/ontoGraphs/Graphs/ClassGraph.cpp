@@ -585,6 +585,7 @@ std::unordered_set<std::string> ClassGraph::getFrom(const std::string& _class, c
 {
   std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
   std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> up_classes = getDownId(_class);
 
   std::unordered_set<std::string> res;
   std::unordered_set<uint32_t> doNotTake;
@@ -592,10 +593,11 @@ std::unordered_set<std::string> ClassGraph::getFrom(const std::string& _class, c
   for(size_t i = 0; i < all_branchs_.size(); i++)
   {
     for(size_t prop_i = 0; prop_i < all_branchs_[i]->object_properties_on_.size(); prop_i++)
-      if(all_branchs_[i]->object_properties_on_[prop_i]->value() == _class)
-        for (uint32_t id : object_properties)
-          if(all_branchs_[i]->object_properties_name_[prop_i]->get() == id)
-            objectGetRelatedWith(all_branchs_[i], all_branchs_[i]->object_properties_name_[prop_i]->value(), _class, res, doNotTake);
+      for(uint32_t class_id : up_classes)
+        if(all_branchs_[i]->object_properties_on_[prop_i]->get() == class_id)
+          for (uint32_t id : object_properties)
+            if(all_branchs_[i]->object_properties_name_[prop_i]->get() == id)
+              objectGetRelatedWith(all_branchs_[i], all_branchs_[i]->object_properties_name_[prop_i]->value(), ValuedNode::table_[class_id], res, doNotTake);
 
     for(size_t prop_i = 0; prop_i < all_branchs_[i]->data_properties_data_.size(); prop_i++)
       if(all_branchs_[i]->data_properties_data_[prop_i].value_ == _class)
