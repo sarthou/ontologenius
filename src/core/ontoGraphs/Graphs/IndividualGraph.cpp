@@ -416,6 +416,11 @@ std::unordered_set<std::string> IndividualGraph::getRelatedOn(const std::string&
 std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::string& individual)
 {
   std::unordered_set<std::string> res;
+
+  std::map<std::string, int> properties;
+  std::vector<int> depths;
+  std::vector<std::string> tmp_res;
+
   IndividualBranch_t* indiv = container_.find(individual);
   if(indiv != nullptr)
   {
@@ -430,10 +435,27 @@ std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::stri
         getSame(it->object_properties_on_[i], sames_tmp);
         std::unordered_set<std::string> tmp = set2set(sames_tmp);
         res.insert(tmp.begin(), tmp.end());
+
+        properties[it->object_properties_name_[i]->value()] = tmp_res.size();
+        depths.push_back(0);
+        tmp_res.push_back(it->object_properties_on_[i]->value());
       }
       for(size_t i = 0; i < it->data_properties_data_.size(); i++)
+      {
         res.insert(it->data_properties_data_[i].toString());
+
+        properties[it->data_properties_name_[i]->value()] = tmp_res.size();
+        depths.push_back(0);
+        tmp_res.push_back(it->data_properties_data_[i].toString());
+      }
     }
+
+    std::unordered_set<ClassBranch_t*> up_set;
+    getUpPtr(indiv, up_set, 1);
+    for(auto up : up_set)
+      class_graph_->getRelationWith(up, properties, depths, tmp_res, 0);
+    for(auto it : tmp_res)
+      res.insert(it);
   }
   return res;
 }
@@ -443,21 +465,68 @@ std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::strin
   std::unordered_set<std::string> res;
   for(size_t i = 0; i < individuals_.size(); i++)
   {
+    bool found = false;
+    std::unordered_set<uint32_t> took;
+
     for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
       if(individuals_[i]->object_properties_on_[prop_i]->value() == individual)
       {
-        std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
-        res.insert(tmp.begin(), tmp.end());
+        found = true;
+        took.insert(individuals_[i]->object_properties_name_[prop_i]->get());
       }
 
     for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
       if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
       {
-        std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
-        res.insert(tmp.begin(), tmp.end());
+        found = true;
+        took.insert(individuals_[i]->data_properties_name_[prop_i]->get());
       }
+
+    std::unordered_set<ClassBranch_t*> up_set;
+    getUpPtr(individuals_[i], up_set, 1);
+    while(up_set.size() > 0)
+    {
+      std::unordered_set<ClassBranch_t*> next_step;
+      for(auto up : up_set)
+        found = found || getRelatedWith(up, individual, next_step, took);
+
+      up_set = next_step;
+    }
+
+    if(found == true)
+    {
+      std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
+      res.insert(tmp.begin(), tmp.end());
+    }
   }
 
+  return res;
+}
+
+bool IndividualGraph::getRelatedWith(ClassBranch_t* class_branch, const std::string& data, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& took)
+{
+  bool res = false;
+  if(class_branch != nullptr)
+  {
+    for(size_t prop_i = 0; prop_i < class_branch->object_properties_name_.size(); prop_i++)
+    {
+      if(class_branch->object_properties_on_[prop_i]->value() == data)
+        if(took.find(class_branch->object_properties_name_[prop_i]->get()) == took.end())
+          res = true;
+      took.insert(class_branch->object_properties_name_[prop_i]->get());
+    }
+
+    for(size_t prop_i = 0; prop_i < class_branch->data_properties_name_.size(); prop_i++)
+    {
+      if(class_branch->data_properties_data_[prop_i].value_ == data)
+        if(took.find(class_branch->data_properties_name_[prop_i]->get()) == took.end())
+          res = true;
+      took.insert(class_branch->data_properties_name_[prop_i]->get());
+    }
+
+    class_graph_->getUpPtr(class_branch, next_step, 1);
+    next_step.erase(class_branch);
+  }
   return res;
 }
 

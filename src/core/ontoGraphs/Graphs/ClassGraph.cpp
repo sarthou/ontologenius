@@ -479,7 +479,7 @@ void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<std::stri
       }
     }
 
-    std::unordered_set<ClassBranch_t*> up_set = getUpPtr(class_branch);
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtr(class_branch, 1);
     for(ClassBranch_t* up : up_set)
       if(up != class_branch)
         getRelationWith(up, properties, depths, res, depth);
