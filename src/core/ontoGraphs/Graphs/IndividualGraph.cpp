@@ -725,26 +725,43 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& param)
 
 std::unordered_set<std::string> IndividualGraph::getOn(const std::string& individual, const std::string& property)
 {
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
-
   std::unordered_set<std::string> res;
+  IndividualBranch_t* indiv = nullptr;
+
   for(size_t i = 0; i < individuals_.size(); i++)
     if(individuals_[i]->value() == individual)
     {
-      for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_name_.size(); prop_i++)
-        for (uint32_t id : object_properties)
-          if(individuals_[i]->object_properties_name_[prop_i]->get() == id)
-          {
-            std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]->object_properties_on_[prop_i]);
-            res.insert(tmp.begin(), tmp.end());
-          }
-
-      for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
-        for (uint32_t id : data_properties)
-          if(individuals_[i]->data_properties_name_[prop_i]->get() == id)
-            res.insert(individuals_[i]->data_properties_data_[prop_i].toString());
+      indiv = individuals_[i];
+      break;
     }
+
+  if(indiv != nullptr)
+  {
+    std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+    std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
+    
+    for(size_t prop_i = 0; prop_i < indiv->object_properties_name_.size(); prop_i++)
+      for (uint32_t id : object_properties)
+        if(indiv->object_properties_name_[prop_i]->get() == id)
+        {
+          std::unordered_set<std::string> tmp = getSameAndClean(indiv->object_properties_on_[prop_i]);
+          res.insert(tmp.begin(), tmp.end());
+        }
+
+    for(size_t prop_i = 0; prop_i < indiv->data_properties_name_.size(); prop_i++)
+      for (uint32_t id : data_properties)
+        if(indiv->data_properties_name_[prop_i]->get() == id)
+          res.insert(indiv->data_properties_data_[prop_i].toString());
+
+    if(res.size() == 0)
+    {
+      int found_depth = -1;
+      std::unordered_set<ClassBranch_t*> up_set;
+      getUpPtr(indiv, up_set, 1);
+      for(ClassBranch_t* up : up_set)
+        class_graph_->getOn(up, object_properties, data_properties, res, 1, found_depth);
+    }
+  }
 
   return res;
 }
