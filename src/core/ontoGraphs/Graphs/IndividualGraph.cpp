@@ -599,10 +599,10 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
   std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
   std::unordered_set<std::string> res;
-  bool found = false;
 
   for(size_t i = 0; i < individuals_.size(); i++)
   {
+    bool found = false;
     bool defined = false;
 
     for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_name_.size(); prop_i++)
@@ -634,6 +634,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
     if(found == false)
     {
       std::unordered_set<uint32_t> down_classes = class_graph_->getDownId(individual);
+      std::unordered_set<uint32_t> doNotTake;
 
       std::unordered_set<ClassBranch_t*> up_set;
       getUpPtr(individuals_[i], up_set, 1);
@@ -641,7 +642,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
       {
         std::unordered_set<ClassBranch_t*> next_step;
         for(auto up : up_set)
-          found = found || getFrom(up, object_properties, data_properties, individual, down_classes, next_step);
+          found = found || getFrom(up, object_properties, data_properties, individual, down_classes, next_step, doNotTake);
 
         up_set = next_step;
       }
@@ -657,10 +658,13 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
   return res;
 }
 
-bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const std::string& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step)
+bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const std::string& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake)
 {
   if(class_branch != nullptr)
   {
+    if(doNotTake.find(class_branch->get()) != doNotTake.end())
+      return false;
+
     bool found = false;
     bool defined = false;
 
@@ -691,7 +695,10 @@ bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<ui
           }
 
     if(defined == true)
+    {
+      class_graph_->getUpId(class_branch, doNotTake);
       return found;
+    }
     else
     {
       class_graph_->getUpPtr(class_branch, next_step, 1);
