@@ -311,9 +311,26 @@ std::unordered_set<std::string> IndividualGraph::getRelationFrom(const std::stri
 
       for(size_t i = 0; i < it->data_properties_name_.size(); i++)
         data_property_graph_->getUp(it->data_properties_name_[i], res, depth);
+
+      std::unordered_set<ClassBranch_t*> up_set;
+      getUpPtr(it, up_set);
+      for(auto up : up_set)
+        getRelationFrom(up, res, depth);
     }
   }
   return res;
+}
+
+void IndividualGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth)
+{
+  if(class_branch != nullptr)
+  {
+    for(size_t i = 0; i < class_branch->object_properties_name_.size(); i++)
+      object_property_graph_->getUp(class_branch->object_properties_name_[i], res, depth);
+
+    for(size_t i = 0; i < class_branch->data_properties_name_.size(); i++)
+      data_property_graph_->getUp(class_branch->data_properties_name_[i], res, depth);
+  }
 }
 
 std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::string& property)
@@ -340,6 +357,9 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
           res.insert(tmp.begin(), tmp.end());
         }
   }
+
+  class_graph_->getRelatedFrom(object_properties, data_properties, res);
+
   return res;
 }
 
@@ -354,10 +374,14 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
           object_property_graph_->getUp(individuals_[i]->object_properties_name_[prop_i], res, depth);
 
   if(res.size() == 0)
+  {
     for(size_t i = 0; i < individuals_.size(); i++)
       for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
         if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
           data_property_graph_->getUp(individuals_[i]->data_properties_name_[prop_i], res, depth);
+
+    class_graph_->getRelationOnDataProperties(individual, res, depth);
+  }
 
   return res;
 }
@@ -384,12 +408,19 @@ std::unordered_set<std::string> IndividualGraph::getRelatedOn(const std::string&
           res.insert(individuals_[i]->data_properties_data_[prop_i].toString());
   }
 
+  class_graph_->getRelatedOnDataProperties(property, res);
+
   return res;
 }
 
 std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::string& individual)
 {
   std::unordered_set<std::string> res;
+
+  std::map<std::string, int> properties;
+  std::vector<int> depths;
+  std::vector<std::string> tmp_res;
+
   IndividualBranch_t* indiv = container_.find(individual);
   if(indiv != nullptr)
   {
@@ -404,10 +435,27 @@ std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::stri
         getSame(it->object_properties_on_[i], sames_tmp);
         std::unordered_set<std::string> tmp = set2set(sames_tmp);
         res.insert(tmp.begin(), tmp.end());
+
+        properties[it->object_properties_name_[i]->value()] = tmp_res.size();
+        depths.push_back(0);
+        tmp_res.push_back(it->object_properties_on_[i]->value());
       }
       for(size_t i = 0; i < it->data_properties_data_.size(); i++)
+      {
         res.insert(it->data_properties_data_[i].toString());
+
+        properties[it->data_properties_name_[i]->value()] = tmp_res.size();
+        depths.push_back(0);
+        tmp_res.push_back(it->data_properties_data_[i].toString());
+      }
     }
+
+    std::unordered_set<ClassBranch_t*> up_set;
+    getUpPtr(indiv, up_set, 1);
+    for(auto up : up_set)
+      class_graph_->getRelationWith(up, properties, depths, tmp_res, 0);
+    for(auto it : tmp_res)
+      res.insert(it);
   }
   return res;
 }
@@ -417,21 +465,68 @@ std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::strin
   std::unordered_set<std::string> res;
   for(size_t i = 0; i < individuals_.size(); i++)
   {
+    bool found = false;
+    std::unordered_set<uint32_t> took;
+
     for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
       if(individuals_[i]->object_properties_on_[prop_i]->value() == individual)
       {
-        std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
-        res.insert(tmp.begin(), tmp.end());
+        found = true;
+        took.insert(individuals_[i]->object_properties_name_[prop_i]->get());
       }
 
     for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
       if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
       {
-        std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
-        res.insert(tmp.begin(), tmp.end());
+        found = true;
+        took.insert(individuals_[i]->data_properties_name_[prop_i]->get());
       }
+
+    std::unordered_set<ClassBranch_t*> up_set;
+    getUpPtr(individuals_[i], up_set, 1);
+    while(up_set.size() > 0)
+    {
+      std::unordered_set<ClassBranch_t*> next_step;
+      for(auto up : up_set)
+        found = found || getRelatedWith(up, individual, next_step, took);
+
+      up_set = next_step;
+    }
+
+    if(found == true)
+    {
+      std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
+      res.insert(tmp.begin(), tmp.end());
+    }
   }
 
+  return res;
+}
+
+bool IndividualGraph::getRelatedWith(ClassBranch_t* class_branch, const std::string& data, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& took)
+{
+  bool res = false;
+  if(class_branch != nullptr)
+  {
+    for(size_t prop_i = 0; prop_i < class_branch->object_properties_name_.size(); prop_i++)
+    {
+      if(class_branch->object_properties_on_[prop_i]->value() == data)
+        if(took.find(class_branch->object_properties_name_[prop_i]->get()) == took.end())
+          res = true;
+      took.insert(class_branch->object_properties_name_[prop_i]->get());
+    }
+
+    for(size_t prop_i = 0; prop_i < class_branch->data_properties_name_.size(); prop_i++)
+    {
+      if(class_branch->data_properties_data_[prop_i].value_ == data)
+        if(took.find(class_branch->data_properties_name_[prop_i]->get()) == took.end())
+          res = true;
+      took.insert(class_branch->data_properties_name_[prop_i]->get());
+    }
+
+    class_graph_->getUpPtr(class_branch, next_step, 1);
+    next_step.erase(class_branch);
+  }
   return res;
 }
 
@@ -456,28 +551,113 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
   std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
   std::unordered_set<std::string> res;
+
   for(size_t i = 0; i < individuals_.size(); i++)
   {
-    for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
-      if(individuals_[i]->object_properties_on_[prop_i]->value() == individual)
-        for (uint32_t id : object_properties)
-          if(individuals_[i]->object_properties_name_[prop_i]->get() == id)
-          {
-            std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
-            res.insert(tmp.begin(), tmp.end());
-          }
+    bool found = false;
+    bool defined = false;
 
-    for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
-      if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
+    for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_name_.size(); prop_i++)
+      for (uint32_t id : object_properties)
+        if(individuals_[i]->object_properties_name_[prop_i]->get() == id)
+        {
+          defined = true;
+          if(individuals_[i]->object_properties_on_[prop_i]->value() == individual)
+          {
+            found = true;
+            break;
+          }
+        }
+
+    if(defined == false)
+      for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
         for (uint32_t id : data_properties)
           if(individuals_[i]->data_properties_name_[prop_i]->get() == id)
           {
-            std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
-            res.insert(tmp.begin(), tmp.end());
+            defined = true;
+            if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
+            {
+              found = true;
+              break;
+            }
           }
+
+
+    if(found == false)
+    {
+      std::unordered_set<uint32_t> down_classes = class_graph_->getDownId(individual);
+      std::unordered_set<uint32_t> doNotTake;
+
+      std::unordered_set<ClassBranch_t*> up_set;
+      getUpPtr(individuals_[i], up_set, 1);
+      while(up_set.size() > 0)
+      {
+        std::unordered_set<ClassBranch_t*> next_step;
+        for(auto up : up_set)
+          found = found || getFrom(up, object_properties, data_properties, individual, down_classes, next_step, doNotTake);
+
+        up_set = next_step;
+      }
+    }
+
+    if(found == true)
+    {
+      std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
+      res.insert(tmp.begin(), tmp.end());
+    }
   }
 
   return res;
+}
+
+bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const std::string& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake)
+{
+  if(class_branch != nullptr)
+  {
+    if(doNotTake.find(class_branch->get()) != doNotTake.end())
+      return false;
+
+    bool found = false;
+    bool defined = false;
+
+    for(size_t prop_i = 0; prop_i < class_branch->object_properties_name_.size(); prop_i++)
+      for (uint32_t id : object_properties)
+        if(class_branch->object_properties_name_[prop_i]->get() == id)
+        {
+          defined = true;
+          for(uint32_t class_id : down_classes)
+            if(class_branch->object_properties_on_[prop_i]->get() == class_id)
+            {
+              found = true;
+              break;
+            }
+        }
+
+    if(defined == false)
+      for(size_t prop_i = 0; prop_i < class_branch->data_properties_name_.size(); prop_i++)
+        for (uint32_t id : data_properties)
+          if(class_branch->data_properties_name_[prop_i]->get() == id)
+          {
+            defined = true;
+            if(class_branch->data_properties_data_[prop_i].value_ == data)
+            {
+              found = true;
+              break;
+            }
+          }
+
+    if(defined == true)
+    {
+      class_graph_->getUpId(class_branch, doNotTake);
+      return found;
+    }
+    else
+    {
+      class_graph_->getUpPtr(class_branch, next_step, 1);
+      next_step.erase(class_branch);
+    }
+  }
+  return false;
 }
 
 std::unordered_set<std::string> IndividualGraph::getOn(const std::string& param)
@@ -497,26 +677,36 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& param)
 
 std::unordered_set<std::string> IndividualGraph::getOn(const std::string& individual, const std::string& property)
 {
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
-
   std::unordered_set<std::string> res;
-  for(size_t i = 0; i < individuals_.size(); i++)
-    if(individuals_[i]->value() == individual)
-    {
-      for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_name_.size(); prop_i++)
-        for (uint32_t id : object_properties)
-          if(individuals_[i]->object_properties_name_[prop_i]->get() == id)
-          {
-            std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]->object_properties_on_[prop_i]);
-            res.insert(tmp.begin(), tmp.end());
-          }
+  IndividualBranch_t* indiv = container_.find(individual);
 
-      for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
-        for (uint32_t id : data_properties)
-          if(individuals_[i]->data_properties_name_[prop_i]->get() == id)
-            res.insert(individuals_[i]->data_properties_data_[prop_i].toString());
+  if(indiv != nullptr)
+  {
+    std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+    std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
+
+    for(size_t prop_i = 0; prop_i < indiv->object_properties_name_.size(); prop_i++)
+      for (uint32_t id : object_properties)
+        if(indiv->object_properties_name_[prop_i]->get() == id)
+        {
+          std::unordered_set<std::string> tmp = getSameAndClean(indiv->object_properties_on_[prop_i]);
+          res.insert(tmp.begin(), tmp.end());
+        }
+
+    for(size_t prop_i = 0; prop_i < indiv->data_properties_name_.size(); prop_i++)
+      for (uint32_t id : data_properties)
+        if(indiv->data_properties_name_[prop_i]->get() == id)
+          res.insert(indiv->data_properties_data_[prop_i].toString());
+
+    if(res.size() == 0)
+    {
+      int found_depth = -1;
+      std::unordered_set<ClassBranch_t*> up_set;
+      getUpPtr(indiv, up_set, 1);
+      for(ClassBranch_t* up : up_set)
+        class_graph_->getOn(up, object_properties, data_properties, res, 1, found_depth);
     }
+  }
 
   return res;
 }
@@ -537,17 +727,34 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& para
 std::unordered_set<std::string> IndividualGraph::getWith(const std::string& first_individual, const std::string& second_individual, int depth)
 {
   std::unordered_set<std::string> res;
-  for(size_t i = 0; i < individuals_.size(); i++)
-    if(individuals_[i]->value() == first_individual)
-    {
-      for(size_t indiv_i = 0; indiv_i < individuals_[i]->object_properties_on_.size(); indiv_i++)
-        if(individuals_[i]->object_properties_on_[indiv_i]->value() == second_individual)
-          object_property_graph_->getUp(individuals_[i]->object_properties_name_[indiv_i], res, depth);
+  IndividualBranch_t* indiv = container_.find(first_individual);
 
-      for(size_t indiv_i = 0; indiv_i < individuals_[i]->data_properties_data_.size(); indiv_i++)
-        if(individuals_[i]->data_properties_data_[indiv_i].value_ == second_individual)
-          data_property_graph_->getUp(individuals_[i]->data_properties_name_[indiv_i], res, depth);
+  if(indiv != nullptr)
+  {
+    for(size_t indiv_i = 0; indiv_i < indiv->object_properties_on_.size(); indiv_i++)
+      if(indiv->object_properties_on_[indiv_i]->value() == second_individual)
+        object_property_graph_->getUp(indiv->object_properties_name_[indiv_i], res, depth);
+
+    for(size_t indiv_i = 0; indiv_i < indiv->data_properties_data_.size(); indiv_i++)
+      if(indiv->data_properties_data_[indiv_i].value_ == second_individual)
+        data_property_graph_->getUp(indiv->data_properties_name_[indiv_i], res, depth);
+
+    int found_depth = -1;
+    uint32_t current_depth = 0;
+    std::unordered_set<uint32_t> doNotTake;
+    std::unordered_set<ClassBranch_t*> up_set;
+    getUpPtr(indiv, up_set, 1);
+    while(up_set.size() > 0)
+    {
+      std::unordered_set<ClassBranch_t*> next_step;
+      for(auto up : up_set)
+        class_graph_->getWith(up, second_individual, res, doNotTake, current_depth, found_depth, depth, next_step);
+
+      up_set = next_step;
+      current_depth++;
     }
+  }
+
   return res;
 }
 
@@ -571,6 +778,20 @@ std::unordered_set<std::string> IndividualGraph::getUp(const std::string& indivi
 {
   IndividualBranch_t* indiv = container_.find(individual);
   return getUp(indiv, depth);
+}
+
+void IndividualGraph::getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth, unsigned int current_depth)
+{
+  current_depth++;
+  if(indiv != nullptr)
+  {
+    std::unordered_set<IndividualBranch_t*> sames;
+    getSame(indiv, sames);
+    cleanMarks(sames);
+    for(IndividualBranch_t* it : sames)
+      for(size_t i = 0; i < it->is_a_.size(); i++)
+        class_graph_->getUpPtr(it->is_a_[i], res, depth, current_depth);
+  }
 }
 
 std::unordered_set<uint32_t> IndividualGraph::getSameId(const std::string& individual)
