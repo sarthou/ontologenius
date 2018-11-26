@@ -357,6 +357,9 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
           res.insert(tmp.begin(), tmp.end());
         }
   }
+
+  class_graph_->getRelatedFrom(object_properties, data_properties, res);
+
   return res;
 }
 

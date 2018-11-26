@@ -326,6 +326,13 @@ std::unordered_set<std::string> ClassGraph::getRelatedFrom(const std::string& pr
   std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
   std::unordered_set<std::string> res;
+  getRelatedFrom(object_properties, data_properties, res);
+
+  return res;
+}
+
+void ClassGraph::getRelatedFrom(std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res)
+{
   for(size_t i = 0; i < all_branchs_.size(); i++)
   {
     for(size_t prop_i = 0; prop_i < all_branchs_[i]->object_properties_name_.size(); prop_i++)
@@ -346,7 +353,6 @@ std::unordered_set<std::string> ClassGraph::getRelatedFrom(const std::string& pr
             res.insert(tmp_i->value());
         }
   }
-  return res;
 }
 
 std::unordered_set<std::string> ClassGraph::getRelationOn(const std::string& _class, int depth)
