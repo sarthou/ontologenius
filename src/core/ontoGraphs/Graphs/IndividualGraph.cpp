@@ -545,54 +545,6 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& para
   return res;
 }
 
-/*std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& individual, const std::string& property)
-{
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
-
-  std::unordered_set<std::string> res;
-  bool found = false;
-
-  for(size_t i = 0; i < individuals_.size(); i++)
-  {
-    for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
-      if(individuals_[i]->object_properties_on_[prop_i]->value() == individual)
-        for (uint32_t id : object_properties)
-          if(individuals_[i]->object_properties_name_[prop_i]->get() == id)
-            found = true;
-
-    if(found == false)
-      for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
-        if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
-          for (uint32_t id : data_properties)
-            if(individuals_[i]->data_properties_name_[prop_i]->get() == id)
-              found = true;
-
-
-    if(found == false)
-    {
-      std::unordered_set<ClassBranch_t*> up_set;
-      getUpPtr(individuals_[i], up_set, 1);
-      while(up_set.size() > 0)
-      {
-        std::unordered_set<ClassBranch_t*> next_step;
-        for(auto up : up_set)
-          found = found || getFrom(up, object_properties, data_properties, individual, next_step);
-
-        up_set = next_step;
-      }
-    }
-
-    if(found == true)
-    {
-      std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
-      res.insert(tmp.begin(), tmp.end());
-    }
-  }
-
-  return res;
-}*/
-
 std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& individual, const std::string& property)
 {
   std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
@@ -726,20 +678,13 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& param)
 std::unordered_set<std::string> IndividualGraph::getOn(const std::string& individual, const std::string& property)
 {
   std::unordered_set<std::string> res;
-  IndividualBranch_t* indiv = nullptr;
-
-  for(size_t i = 0; i < individuals_.size(); i++)
-    if(individuals_[i]->value() == individual)
-    {
-      indiv = individuals_[i];
-      break;
-    }
+  IndividualBranch_t* indiv = container_.find(individual);
 
   if(indiv != nullptr)
   {
     std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
     std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
-    
+
     for(size_t prop_i = 0; prop_i < indiv->object_properties_name_.size(); prop_i++)
       for (uint32_t id : object_properties)
         if(indiv->object_properties_name_[prop_i]->get() == id)
