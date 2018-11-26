@@ -408,6 +408,8 @@ std::unordered_set<std::string> IndividualGraph::getRelatedOn(const std::string&
           res.insert(individuals_[i]->data_properties_data_[prop_i].toString());
   }
 
+  class_graph_->getRelatedOnDataProperties(property, res);
+
   return res;
 }
 
