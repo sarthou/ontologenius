@@ -370,12 +370,17 @@ std::unordered_set<std::string> ClassGraph::getRelationOn(const std::string& _cl
   }
 
   if(res.size() == 0)
-    for(size_t i = 0; i < all_branchs_.size(); i++)
-      for(size_t prop_i = 0; prop_i < all_branchs_[i]->data_properties_data_.size(); prop_i++)
-        if(all_branchs_[i]->data_properties_data_[prop_i].value_ == _class)
-          data_property_graph_->getUp(all_branchs_[i]->data_properties_name_[prop_i], res, depth);
+    getRelationOnDataProperties(_class, res, depth);
 
   return res;
+}
+
+void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth)
+{
+  for(size_t i = 0; i < all_branchs_.size(); i++)
+    for(size_t prop_i = 0; prop_i < all_branchs_[i]->data_properties_data_.size(); prop_i++)
+      if(all_branchs_[i]->data_properties_data_[prop_i].value_ == _class)
+        data_property_graph_->getUp(all_branchs_[i]->data_properties_name_[prop_i], res, depth);
 }
 
 std::unordered_set<std::string> ClassGraph::getRelatedOn(const std::string& property)

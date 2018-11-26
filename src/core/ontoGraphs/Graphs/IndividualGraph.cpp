@@ -374,10 +374,14 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
           object_property_graph_->getUp(individuals_[i]->object_properties_name_[prop_i], res, depth);
 
   if(res.size() == 0)
+  {
     for(size_t i = 0; i < individuals_.size(); i++)
       for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
         if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
           data_property_graph_->getUp(individuals_[i]->data_properties_name_[prop_i], res, depth);
+
+    class_graph_->getRelationOnDataProperties(individual, res, depth);
+  }
 
   return res;
 }
