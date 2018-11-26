@@ -692,14 +692,24 @@ std::unordered_set<std::string> ClassGraph::getWith(const std::string& first_cla
   std::unordered_set<std::string> res;
 
   int found_depth = -1;
+  uint32_t current_depth = 0;
   std::unordered_set<uint32_t> doNotTake;
-  ClassBranch_t* first_branch = container_.find(first_class);
-  getWith(first_branch, second_class, res, doNotTake, 0, found_depth, depth);
+  std::unordered_set<ClassBranch_t*> up_set;
+  up_set.insert(container_.find(first_class));
+  while(up_set.size() > 0)
+  {
+    std::unordered_set<ClassBranch_t*> next_step;
+    for(auto up : up_set)
+      getWith(up, second_class, res, doNotTake, current_depth, found_depth, depth, next_step);
+
+    up_set = next_step;
+    current_depth++;
+  }
 
   return res;
 }
 
-void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake, uint32_t current_depth, int& found_depth, int depth_prop)
+void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step)
 {
   if(first_class != nullptr)
   {
@@ -733,9 +743,7 @@ void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_c
       }
 
     current_depth++;
-    std::unordered_set<ClassBranch_t*> up_set = getUpPtr(first_class, 1);
-    for(ClassBranch_t* up : up_set)
-      if(up != first_class)
-        getWith(up, second_class, res, doNotTake, current_depth, found_depth, depth_prop);
+    getUpPtr(first_class, next_step, 1);
+    next_step.erase(first_class);
   }
 }

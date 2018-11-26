@@ -727,17 +727,34 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& para
 std::unordered_set<std::string> IndividualGraph::getWith(const std::string& first_individual, const std::string& second_individual, int depth)
 {
   std::unordered_set<std::string> res;
-  for(size_t i = 0; i < individuals_.size(); i++)
-    if(individuals_[i]->value() == first_individual)
-    {
-      for(size_t indiv_i = 0; indiv_i < individuals_[i]->object_properties_on_.size(); indiv_i++)
-        if(individuals_[i]->object_properties_on_[indiv_i]->value() == second_individual)
-          object_property_graph_->getUp(individuals_[i]->object_properties_name_[indiv_i], res, depth);
+  IndividualBranch_t* indiv = container_.find(first_individual);
 
-      for(size_t indiv_i = 0; indiv_i < individuals_[i]->data_properties_data_.size(); indiv_i++)
-        if(individuals_[i]->data_properties_data_[indiv_i].value_ == second_individual)
-          data_property_graph_->getUp(individuals_[i]->data_properties_name_[indiv_i], res, depth);
+  if(indiv != nullptr)
+  {
+    for(size_t indiv_i = 0; indiv_i < indiv->object_properties_on_.size(); indiv_i++)
+      if(indiv->object_properties_on_[indiv_i]->value() == second_individual)
+        object_property_graph_->getUp(indiv->object_properties_name_[indiv_i], res, depth);
+
+    for(size_t indiv_i = 0; indiv_i < indiv->data_properties_data_.size(); indiv_i++)
+      if(indiv->data_properties_data_[indiv_i].value_ == second_individual)
+        data_property_graph_->getUp(indiv->data_properties_name_[indiv_i], res, depth);
+
+    int found_depth = -1;
+    uint32_t current_depth = 0;
+    std::unordered_set<uint32_t> doNotTake;
+    std::unordered_set<ClassBranch_t*> up_set;
+    getUpPtr(indiv, up_set, 1);
+    while(up_set.size() > 0)
+    {
+      std::unordered_set<ClassBranch_t*> next_step;
+      for(auto up : up_set)
+        class_graph_->getWith(up, second_individual, res, doNotTake, current_depth, found_depth, depth, next_step);
+
+      up_set = next_step;
+      current_depth++;
     }
+  }
+
   return res;
 }
 
