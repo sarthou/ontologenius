@@ -338,6 +338,9 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
   std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
   std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
+  std::unordered_set<std::string> class_res;
+  class_graph_->getRelatedFrom(object_properties, data_properties, class_res);
+
   std::unordered_set<std::string> res;
   for(size_t i = 0; i < individuals_.size(); i++)
   {
@@ -347,6 +350,7 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
         {
           std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
           res.insert(tmp.begin(), tmp.end());
+          break;
         }
 
     for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
@@ -355,10 +359,18 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
         {
           std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
           res.insert(tmp.begin(), tmp.end());
+          break;
         }
-  }
 
-  class_graph_->getRelatedFrom(object_properties, data_properties, res);
+    std::unordered_set<std::string> up_set = getUp(individuals_[i], 1);
+    for(auto up : up_set)
+      if(class_res.find(up) != class_res.end())
+      {
+        std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
+        res.insert(tmp.begin(), tmp.end());
+        break;
+      }
+  }
 
   return res;
 }
