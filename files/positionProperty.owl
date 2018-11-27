@@ -217,6 +217,34 @@
 
 
 
+    <!-- ontologenius/positionProperty#hasParent -->
+
+    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#hasParent">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="ontologenius/attribute#human"/>
+        <rdfs:range rdf:resource="ontologenius/attribute#human"/>
+    </owl:ObjectProperty>
+
+
+
+    <!-- ontologenius/positionProperty#hasMother -->
+
+    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#hasMother">
+        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#hasParent"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+    </owl:ObjectProperty>
+
+
+
+    <!-- ontologenius/positionProperty#hasFather -->
+
+    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#hasFather">
+        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#hasParent"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+    </owl:ObjectProperty>
+
+
+
     <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -243,6 +271,15 @@
         <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#have3Dposition"/>
         <rdfs:domain rdf:resource="ontologenius/attribute#object"/>
         <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#real"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/xsd#integer"/>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- ontologenius/positionProperty#hasLeg -->
+
+    <owl:DatatypeProperty rdf:about="ontologenius/positionProperty#hasLeg">
+        <rdfs:domain rdf:resource="ontologenius/attribute#human"/>
         <rdfs:range rdf:resource="http://www.w3.org/2002/07/xsd#integer"/>
     </owl:DatatypeProperty>
 

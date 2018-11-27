@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <package>
   <name>ontologenius</name>
-  <version>0.1.4</version>
+  <version>0.1.5</version>
   <description>The ontoloGenius package</description>
 
-  <maintainer email="guillaum324bis@hotmail.fr">srth</maintainer>
+  <maintainer email="guillaume.sarthou@laas.fr">srth</maintainer>
 
   <license>GNU LGPLv3</license>
 
   <url type="website">https://sarthou.github.io/ontologenius/</url>
 
-  <author email="guillaum324bis@hotmail.fr">srth</author>
+  <author email="guillaume.sarthou@laas.fr">srth</author>
 
   <build_depend>message_generation</build_depend>
   <run_depend>message_runtime</run_depend>

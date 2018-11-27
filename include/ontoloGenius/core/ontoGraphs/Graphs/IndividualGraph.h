@@ -8,9 +8,6 @@
 #include <stdint.h>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/Graph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 
@@ -29,7 +26,13 @@ struct IndividualVectors_t
    std::map<std::string, std::vector<std::string>> dictionary_;
 };
 
+//for friend
 class IndividualChecker;
+
+//for graphs usage
+class ClassGraph;
+class ObjectPropertyGraph;
+class DataPropertyGraph;
 
 class IndividualGraph : public Graph<IndividualBranch_t>
 {
@@ -75,6 +78,12 @@ private:
   DataPropertyGraph* data_property_graph_;
 
   std::vector<IndividualBranch_t*> individuals_;
+
+  void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, unsigned int current_depth = 0);
+
+  void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth = -1);
+  bool getRelatedWith(ClassBranch_t* class_branch, const std::string& data, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& took);
+  bool getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const std::string& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake);
 
   std::unordered_set<uint32_t> getSameId(const std::string& individual);
   void getSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);

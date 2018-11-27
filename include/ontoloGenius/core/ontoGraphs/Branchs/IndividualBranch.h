@@ -26,6 +26,7 @@ public:
   std::vector<T*> distinct_;
 };
 
+//for template usage
 class IndividualBranch_t;
 class IndividualSteady_t : public ValuedNodeData, public IndividualBranchData_t<IndividualBranch_t>
 {

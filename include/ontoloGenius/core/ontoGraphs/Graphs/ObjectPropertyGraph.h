@@ -8,9 +8,9 @@
 #include <stdint.h>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
 struct ObjectPropertyVectors_t
 {
@@ -24,13 +24,18 @@ struct ObjectPropertyVectors_t
    std::map<std::string, std::vector<std::string>> dictionary_;
 };
 
+//for friend
 class ObjectPropertyDrawer;
 class IndividualGraph;
+
+//for graphs usage
+class ClassGraph;
 
 class ObjectPropertyGraph : public OntoGraph<ObjectPropertyBranch_t>
 {
   friend ObjectPropertyDrawer;
   friend IndividualGraph;
+  friend ClassGraph;
 public:
   ObjectPropertyGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
   ObjectPropertyGraph(const ObjectPropertyGraph& base) : OntoGraph<ObjectPropertyBranch_t>(base) {}

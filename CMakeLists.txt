@@ -310,4 +310,7 @@ if(CATKIN_ENABLE_TESTING)
 
   add_rostest_gtest(ontoloGenius_global_tester test/globalFeatures.test src/tests/globalFeatures.cpp)
   target_link_libraries(ontoloGenius_global_tester ontoloGenius_lib)
+
+  add_rostest_gtest(ontoloGenius_propertiesInheritage_tester test/propertiesInheritage.test src/tests/propertiesInheritage.cpp)
+  target_link_libraries(ontoloGenius_propertiesInheritage_tester ontoloGenius_lib)
 endif()

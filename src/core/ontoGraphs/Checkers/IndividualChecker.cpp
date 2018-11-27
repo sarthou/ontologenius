@@ -1,6 +1,10 @@
 #include "ontoloGenius/core/ontoGraphs/Checkers/IndividualChecker.h"
 #include <algorithm>
 
+#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+
 size_t IndividualChecker::check()
 {
   graph_size = graph_.size();

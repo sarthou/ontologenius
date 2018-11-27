@@ -5,9 +5,9 @@
 #include <stdint.h>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
+#include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
 #ifndef DATAPROPERTYGRAPH_H
 #define DATAPROPERTYGRAPH_H
@@ -22,13 +22,18 @@ struct DataPropertyVectors_t
    std::map<std::string, std::vector<std::string>> dictionary_;
 };
 
+//for friend
 class DataPropertyDrawer;
 class IndividualGraph;
+
+//for graphs usage
+class ClassGraph;
 
 class DataPropertyGraph : public OntoGraph<DataPropertyBranch_t>
 {
   friend DataPropertyDrawer;
   friend IndividualGraph;
+  friend ClassGraph;
 public:
   DataPropertyGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
   DataPropertyGraph(const DataPropertyGraph& base) : OntoGraph<DataPropertyBranch_t>(base) {}
