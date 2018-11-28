@@ -87,7 +87,7 @@ int main(int argc, char** argv)
   ros::NodeHandle n;
   n_ = &n;
 
-  ros::service::waitForService("ontoloGenius/arguer", -1);
+  ros::service::waitForService("ontologenius/arguer", -1);
   close();
 
   double class_time = classTester();
