@@ -820,6 +820,112 @@ furniture</rdfs:seeAlso>
 
 
 
+    <!-- ontologenius/attribute#bird -->
+
+    <owl:Class rdf:about="ontologenius/attribute#bird">
+        <rdfs:subClassOf rdf:resource="ontologenius/attribute#animal"/>
+        <rdfs:label xml:lang="fr">oiseau</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- ontologenius/attribute#Penguin -->
+
+    <owl:Class rdf:about="ontologenius/attribute#Penguin">
+        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
+        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</positionProperty:canFly>
+        <rdfs:label xml:lang="fr">manchot</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- ontologenius/attribute#Ostrich -->
+
+    <owl:Class rdf:about="ontologenius/attribute#Ostrich">
+        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
+        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</positionProperty:canFly>
+        <rdfs:label xml:lang="fr">autruche</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- ontologenius/attribute#Takahe -->
+
+    <owl:Class rdf:about="ontologenius/attribute#Takahe">
+        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
+        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</positionProperty:canFly>
+        <rdfs:label xml:lang="fr">takahe</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- ontologenius/attribute#Kiwi -->
+
+    <owl:Class rdf:about="ontologenius/attribute#Kiwi">
+        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
+        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</positionProperty:canFly>
+        <rdfs:label xml:lang="fr">kiwi</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- ontologenius/attribute#Cassowary -->
+
+    <owl:Class rdf:about="ontologenius/attribute#Cassowary">
+        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
+        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</positionProperty:canFly>
+    </owl:Class>
+
+
+
+    <!-- ontologenius/attribute#Kakapo -->
+
+    <owl:Class rdf:about="ontologenius/attribute#Kakapo">
+        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
+        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</positionProperty:canFly>
+    </owl:Class>
+
+
+
+    <!-- ontologenius/attribute#Canary -->
+
+    <owl:Class rdf:about="ontologenius/attribute#Canary">
+        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
+        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">true</positionProperty:canFly>
+        <rdfs:label xml:lang="fr">canari</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- ontologenius/attribute#Dove -->
+
+    <owl:Class rdf:about="ontologenius/attribute#Dove">
+        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
+        <rdfs:label xml:lang="fr">colombe</rdfs:label>
+    </owl:Class>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- ontologenius/positionProperty#canFly -->
+
+    <owl:DatatypeProperty rdf:about="ontologenius#canFly">
+        <rdfs:domain rdf:resource="ontologenius/attribute#animal"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#bool"/>
+    </owl:DatatypeProperty>
+
+
+
     <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
