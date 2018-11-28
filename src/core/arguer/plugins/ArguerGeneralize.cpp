@@ -1,14 +1,25 @@
 #include "ontoloGenius/core/arguer/plugins/ArguerGeneralize.h"
 #include <pluginlib/class_list_macros.h>
+#include <iostream>
 
 void ArguerGeneralize::preReason()
 {
-  //put your pre-reasonning here
+
 }
 
 void ArguerGeneralize::postReason()
 {
-  //put your post-reasonning here
+
+}
+
+void ArguerGeneralize::periodicReason()
+{
+  std::vector<IndividualBranch_t*> individuals = ontology_->individual_graph_.get();
+  for(auto indiv : individuals)
+    if(indiv->updated_ == true)
+    {
+
+    }
 }
 
 std::string ArguerGeneralize::getName()

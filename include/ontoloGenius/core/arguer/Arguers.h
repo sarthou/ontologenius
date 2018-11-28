@@ -27,6 +27,7 @@ public:
 
   void runPreArguers();
   void runPostArguers();
+  void runPeriodicArguers();
 
 private:
   Ontology* ontology_;

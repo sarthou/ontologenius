@@ -13,6 +13,7 @@ public:
 
   virtual void preReason() {}
   virtual void postReason() {}
+  virtual void periodicReason() {}
 
   virtual std::string getName() = 0;
   virtual std::string getDesciption() = 0;

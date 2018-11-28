@@ -6,6 +6,7 @@
 #include "ontologenius/OntologeniusService.h"
 
 #include <iostream>
+#include <thread>
 #include "ros/ros.h"
 
 #include "ontoloGenius/core/Computer.h"
@@ -633,6 +634,22 @@ bool arguerHandle(ontologenius::OntologeniusService::Request &req,
   return true;
 }
 
+void periodicReasoning()
+{
+  ros::Rate wait(10);
+  while((ros::ok()) && (onto->isInit(false) == false))
+  {
+    wait.sleep();
+  }
+
+  ros::Rate r(100);
+  while(ros::ok())
+  {
+    arguers.runPeriodicArguers();
+    r.sleep();
+  }
+}
+
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius");
@@ -705,12 +722,10 @@ int main(int argc, char** argv)
   error.printStatus();
 #endif
 
-  /*while(ros::ok())
-  {
-    ros::spinOnce();
-    onto->run();
-  }*/
+  std::thread periodic_reasoning_thread(periodicReasoning);
+
   ros::spin();
+  periodic_reasoning_thread.join();
 
   delete onto;
 

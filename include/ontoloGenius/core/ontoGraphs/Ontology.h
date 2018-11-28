@@ -22,10 +22,8 @@ public:
   int readFromFile(std::string fileName);
   bool preload(std::string fileName);
 
-  bool isInit();
+  bool isInit(bool print = true);
   void setLanguage(std::string language);
-
-  void run();
 
   ClassGraph class_graph_;
   ObjectPropertyGraph object_property_graph_;

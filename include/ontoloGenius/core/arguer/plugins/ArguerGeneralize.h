@@ -11,6 +11,7 @@ public:
 
   virtual void preReason();
   virtual void postReason();
+  virtual void periodicReason();
 
   virtual std::string getName();
   virtual std::string getDesciption();

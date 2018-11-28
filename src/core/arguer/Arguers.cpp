@@ -202,6 +202,17 @@ void Arguers::runPostArguers()
   while(nb_updates!= 0);
 }
 
+void Arguers::runPeriodicArguers()
+{
+  for(auto& it : active_arguers_)
+  {
+    if(it.second != nullptr)
+      it.second->periodicReason();
+  }
+
+  computeIndividualsUpdates();
+}
+
 void Arguers::computeIndividualsUpdates()
 {
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
