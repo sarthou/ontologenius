@@ -140,12 +140,13 @@ TEST(requests_tests, arguers_list_call)
   for(size_t i = 0; i < 1000; i++)
   {
     res = onto_ptr->arguers.list();
-    res_bool = res_bool && ((res.size() == 5) &&
+    res_bool = res_bool && ((res.size() == 6) &&
                             (find(res.begin(), res.end(), "ArguerChain") != res.end()) &&
                             (find(res.begin(), res.end(), "ArguerDictionary") != res.end()) &&
                             (find(res.begin(), res.end(), "ArguerInverseOf") != res.end()) &&
                             (find(res.begin(), res.end(), "ArguerNone") != res.end()) &&
-                            (find(res.begin(), res.end(), "ArguerSymetric") != res.end()));
+                            (find(res.begin(), res.end(), "ArguerSymetric") != res.end()) &&
+                            (find(res.begin(), res.end(), "ArguerGeneralize") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
