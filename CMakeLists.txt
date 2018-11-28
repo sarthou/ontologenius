@@ -190,6 +190,7 @@ add_library(ontologenius_arguer_plugin
   src/core/arguer/plugins/ArguerSymetric.cpp
   src/core/arguer/plugins/ArguerChain.cpp
   src/core/arguer/plugins/ArguerDictionary.cpp
+  src/core/arguer/plugins/ArguerGeneralize.cpp
   )
 add_dependencies(ontologenius_arguer_plugin ontologenius_gencpp)
 target_link_libraries(ontologenius_arguer_plugin ontologenius_core_lib)
