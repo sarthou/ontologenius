@@ -81,21 +81,14 @@ TEST(requests_tests, getDown_call)
 TEST(requests_tests, getDisjoint_call)
 {
   std::vector<std::string> res;
-  std::string test_word = "human";
+  std::string test_word = "woman";
   bool res_bool = true;
 
   for(size_t i = 0; i < 1000; i++)
   {
     res = onto_ptr->classes.getDisjoint(test_word);
-    res_bool = res_bool && ((res.size() == 8) &&
-                            (find(res.begin(), res.end(), "fish") != res.end()) &&
-                            (find(res.begin(), res.end(), "redFish") != res.end()) &&
-                            (find(res.begin(), res.end(), "dog") != res.end()) &&
-                            (find(res.begin(), res.end(), "cat") != res.end()) &&
-                            (find(res.begin(), res.end(), "animal") != res.end()) &&
-                            (find(res.begin(), res.end(), "robot") != res.end()) &&
-                            (find(res.begin(), res.end(), "pepper") != res.end()) &&
-                            (find(res.begin(), res.end(), "pr2") != res.end()));
+    res_bool = res_bool && ((res.size() == 1) &&
+                            (find(res.begin(), res.end(), "man") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
