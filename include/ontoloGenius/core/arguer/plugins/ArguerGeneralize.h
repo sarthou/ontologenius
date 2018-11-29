@@ -90,40 +90,43 @@ void PropertiesCounter<B,P>::add(ClassBranch_t* _class, B propertie, P data)
 template <typename B, typename P>
 void PropertiesCounter<B,P>::get(std::vector<B>& properties, std::vector<P>& datas, std::vector<std::vector<ClassBranch_t*> >& classes, size_t nb_classes)
 {
-  std::vector<B> properties_set;
-  std::vector<std::vector<size_t> > index_set;
-
-  for(size_t i = 0; i < properties_.size(); i++)
+  if(properties_.size() > 0)
   {
-    int index = -1;
-    for(size_t j = 0; j < properties_set.size(); j++)
-      if(properties_set[j] == properties_[i])
-      {
-        index = j;
-        break;
-      }
+    std::vector<B> properties_set;
+    std::vector<std::vector<size_t> > index_set;
 
-    if(index == -1)
+    for(size_t i = 0; i < properties_.size(); i++)
     {
-      properties_set.push_back(properties_[i]);
-      std::vector<size_t> index_tmp;
-      index_tmp.push_back(i);
-      index_set.push_back(index_tmp);
-    }
-    else
-      index_set[index].push_back(i);
-  }
-
-  for(size_t i = 0; i < properties_set.size(); i++)
-  {
-    for(size_t j = 0; j < index_set[i].size(); j++)
-      if(classes_[index_set[i][j]].size() >= min_count)
-        if(classes_[index_set[i][j]].size() / (double)nb_classes >= min_percent)
+      int index = -1;
+      for(size_t j = 0; j < properties_set.size(); j++)
+        if(properties_set[j] == properties_[i])
         {
-          properties.push_back(properties_set[i]);
-          datas.push_back(datas_[index_set[i][j]]);
-          classes.push_back(classes_[index_set[i][j]]);
+          index = j;
+          break;
         }
+
+      if(index == -1)
+      {
+        properties_set.push_back(properties_[i]);
+        std::vector<size_t> index_tmp;
+        index_tmp.push_back(i);
+        index_set.push_back(index_tmp);
+      }
+      else
+        index_set[index].push_back(i);
+    }
+
+    for(size_t i = 0; i < properties_set.size(); i++)
+    {
+      for(size_t j = 0; j < index_set[i].size(); j++)
+        if(classes_[index_set[i][j]].size() >= min_count)
+          if(classes_[index_set[i][j]].size() / (double)nb_classes >= min_percent)
+          {
+            properties.push_back(properties_set[i]);
+            datas.push_back(datas_[index_set[i][j]]);
+            classes.push_back(classes_[index_set[i][j]]);
+          }
+    }
   }
 }
 
