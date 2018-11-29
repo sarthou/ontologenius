@@ -17,10 +17,12 @@ struct IndividualVectors_t
 
    std::vector<std::string> object_properties_name_;
    std::vector<std::string> object_properties_on_;
+   std::vector<bool> object_properties_deduced_;
 
    std::vector<std::string> data_properties_name_;
    std::vector<std::string> data_properties_type_;
    std::vector<std::string> data_properties_value_;
+   std::vector<bool> data_properties_deduced_;
 
    std::vector<std::string> same_as_;
    std::map<std::string, std::vector<std::string>> dictionary_;

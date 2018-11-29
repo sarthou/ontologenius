@@ -51,7 +51,8 @@ private:
   std::string readSomeValuesFrom(TiXmlElement* elem);
 
   inline void push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
-  inline void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole);
+  inline void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole = "");
+  inline void push(std::vector<bool>& vect, bool elem, const std::string& symbole = "");
   void push(Properties_t& properties, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   void pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem);
   inline std::string getName(const std::string& uri);
@@ -83,7 +84,20 @@ void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem,
 void OntologyReader::push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole)
 {
   vect.push_back(elem);
-  std::cout << "│   │   ├── " << symbole << elem << std::endl;
+  if(symbole != "")
+    std::cout << "│   │   ├── " << symbole << elem << std::endl;
+}
+
+void OntologyReader::push(std::vector<bool>& vect, bool elem, const std::string& symbole)
+{
+  vect.push_back(elem);
+  if(symbole != "")
+  {
+    if(elem == true)
+      std::cout << "│   │   ├── " << symbole << " true" << std::endl;
+    else
+      std::cout << "│   │   ├── " << symbole << " false" << std::endl;
+  }
 }
 
 std::string OntologyReader::getName(const std::string& uri)

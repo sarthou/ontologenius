@@ -159,6 +159,13 @@ void OntologyReader::readClass(TiXmlElement* elem)
             {
               push(object_vector.object_properties_name_, property, "$");
               push(object_vector.object_properties_on_, subElem, "^");
+              push(object_vector.object_properties_deduced_, false);
+            }
+            else if(testAttribute(subElem, "rdf:resourceDeduced"))
+            {
+              push(object_vector.object_properties_name_, property, "$");
+              push(object_vector.object_properties_on_, subElem, "^");
+              push(object_vector.object_properties_deduced_, true);
             }
             else if(testAttribute(subElem, "rdf:datatype"))
             {
@@ -166,6 +173,15 @@ void OntologyReader::readClass(TiXmlElement* elem)
               const char* value = subElem->GetText();
               push(object_vector.data_properties_value_, std::string(value), "^");
               push(object_vector.data_properties_type_, subElem, "#", "rdf:datatype");
+              push(object_vector.data_properties_deduced_, false);
+            }
+            else if(testAttribute(subElem, "rdf:datatypeDeduced"))
+            {
+              push(object_vector.data_properties_name_, property, "+");
+              const char* value = subElem->GetText();
+              push(object_vector.data_properties_value_, std::string(value), "^");
+              push(object_vector.data_properties_type_, subElem, "#", "rdf:datatypeDeduced");
+              push(object_vector.data_properties_deduced_, true);
             }
           }
         }
@@ -209,12 +225,26 @@ void OntologyReader::readIndividual(TiXmlElement* elem)
               push(individual_vector.object_properties_name_, property, "$");
               push(individual_vector.object_properties_on_, subElem, "^");
             }
+            else if(testAttribute(subElem, "rdf:resourceDeduced"))
+            {
+              push(individual_vector.object_properties_name_, property, "$");
+              push(individual_vector.object_properties_on_, subElem, "^");
+              push(individual_vector.object_properties_deduced_, true);
+            }
             else if(testAttribute(subElem, "rdf:datatype"))
             {
               push(individual_vector.data_properties_name_, property, "+");
               const char* value = subElem->GetText();
               push(individual_vector.data_properties_value_, std::string(value), "^");
               push(individual_vector.data_properties_type_, subElem, "#", "rdf:datatype");
+            }
+            else if(testAttribute(subElem, "rdf:datatypeDeduced"))
+            {
+              push(individual_vector.data_properties_name_, property, "+");
+              const char* value = subElem->GetText();
+              push(individual_vector.data_properties_value_, std::string(value), "^");
+              push(individual_vector.data_properties_type_, subElem, "#", "rdf:datatypeDeduced");
+              push(individual_vector.data_properties_deduced_, true);
             }
           }
         }
