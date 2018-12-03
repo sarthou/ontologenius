@@ -24,7 +24,9 @@ private:
   void writeIndividual(IndividualBranch_t* branch);
   void writeType(IndividualBranch_t* branch);
   void writeObjectProperties(IndividualBranch_t* branch);
+  void writeObjectPropertiesDeduced(IndividualBranch_t* branch);
   void writeDataProperties(IndividualBranch_t* branch);
+  void writeDataPropertiesDeduced(IndividualBranch_t* branch);
   void writeSameAs(IndividualBranch_t* branch);
   void writeDistincts(std::vector<IndividualBranch_t*>& individuals);
   void getDistincts(IndividualBranch_t* individual, std::vector<std::string>& distincts_current);

@@ -40,8 +40,10 @@ void ClassWriter::writeClass(ClassBranch_t* branch)
   writeDisjointWith(branch);
 
   writeObjectProperties(branch);
+  writeObjectPropertiesDeduced(branch);
 
   writeDataProperties(branch);
+  writeDataPropertiesDeduced(branch);
 
   writeDictionary(&branch->steady_);
 
@@ -156,6 +158,20 @@ void ClassWriter::writeObjectProperties(ClassBranch_t* branch)
   }
 }
 
+void ClassWriter::writeObjectPropertiesDeduced(ClassBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->object_properties_name_.size(); i++)
+    if(branch->object_properties_deduced_[i] == true)
+    {
+      std::string tmp = "        <ontologenius:" +
+                        branch->object_properties_name_[i]->value() +
+                        " rdf:resourceDeduced=\"ontologenius#" +
+                        branch->object_properties_on_[i]->value() +
+                        "\"/>\n\r";
+      writeString(tmp);
+    }
+}
+
 void ClassWriter::writeDataProperties(ClassBranch_t* branch)
 {
   for(size_t i = 0; i < branch->steady_.data_properties_name_.size(); i++)
@@ -173,4 +189,24 @@ void ClassWriter::writeDataProperties(ClassBranch_t* branch)
                       ">\n\r";
     writeString(tmp);
   }
+}
+
+void ClassWriter::writeDataPropertiesDeduced(ClassBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->data_properties_name_.size(); i++)
+    if(branch->data_properties_deduced_[i] == true)
+    {
+      std::string tmp = "        <ontologenius:" +
+                        branch->data_properties_name_[i]->value() +
+                        " rdf:datatypeDeduced=\"" +
+                        branch->data_properties_data_[i].getNs() +
+                        "#" +
+                        branch->data_properties_data_[i].type_ +
+                        "\">" +
+                        branch->data_properties_data_[i].value_ +
+                        "</ontologenius:" +
+                        branch->data_properties_name_[i]->value() +
+                        ">\n\r";
+      writeString(tmp);
+    }
 }
