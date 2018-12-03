@@ -274,7 +274,7 @@
 
     <owl:Class rdf:about="ontologenius/attribute#dog">
         <rdfs:subClassOf rdf:resource="ontologenius/attribute#animal"/>
-        <positionProperty:hasLeg rdf:datatypeDeduced="http://www.w3.org/2001/XMLSchema#integer">2</positionProperty:hasLeg>
+        <positionProperty:hasTail rdf:datatypeDeduced="http://www.w3.org/2001/XMLSchema#integer">1</positionProperty:hasTail>
     </owl:Class>
 
 
