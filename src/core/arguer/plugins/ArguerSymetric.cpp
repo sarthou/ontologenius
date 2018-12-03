@@ -24,6 +24,7 @@ void ArguerSymetric::postReason()
           {
             sym_indiv->object_properties_name_.push_back(sym_prop);
             sym_indiv->object_properties_on_.push_back(indiv[indiv_i]);
+            sym_indiv->object_properties_deduced_.push_back(false);
             sym_indiv->nb_updates_++;
             nb_update_++;
           }

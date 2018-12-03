@@ -103,6 +103,8 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
 
     //Object Property assertion on class
     addObjectPropertyOn(me, object_vector.object_properties_on_[property_i], deduced);
+
+    me->object_properties_deduced_.push_back(deduced);
   }
 
   /**********************
@@ -121,6 +123,8 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
     data.value_ = object_vector.data_properties_value_[property_i];
     data.type_ = object_vector.data_properties_type_[property_i];
     addDataPropertyData(me, data, deduced);
+
+    me->data_properties_deduced_.push_back(deduced);
   }
 
   me->setSteady_dictionary(object_vector.dictionary_);

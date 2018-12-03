@@ -103,6 +103,8 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
 
     //Object Property assertion on indiv
     addObjectPropertyOn(me, individual_vector.object_properties_on_[property_i], deduced);
+
+    me->object_properties_deduced_.push_back(deduced);
   }
 
   /**********************
@@ -119,6 +121,8 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     data.value_ = individual_vector.data_properties_value_[property_i];
     data.type_ = individual_vector.data_properties_type_[property_i];
     addDataPropertyData(me, data, deduced);
+
+    me->data_properties_deduced_.push_back(deduced);
   }
 
   /**********************
