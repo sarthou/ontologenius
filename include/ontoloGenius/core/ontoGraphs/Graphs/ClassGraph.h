@@ -66,6 +66,11 @@ private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
 
+  void addObjectPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
+  void addObjectPropertyOn(ClassBranch_t* me, std::string& name, bool deduced);
+  void addDataPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
+  void addDataPropertyData(ClassBranch_t* me, data_t& data, bool deduced);
+
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth);
   void getRelatedFrom(std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res);
   void getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth);

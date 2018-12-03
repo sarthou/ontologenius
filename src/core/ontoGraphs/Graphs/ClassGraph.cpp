@@ -92,156 +92,35 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
   }
 
   /**********************
-  ** Object Property assertion name
+  ** Object Property assertion
   **********************/
-  //for all my properties
   for(size_t property_i = 0; property_i < object_vector.object_properties_name_.size(); property_i++)
   {
-    bool i_find_my_properties = false;
+    bool deduced = object_vector.object_properties_deduced_[property_i];
 
-    //is a root my properties ?
-    for(size_t root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
-      if(object_vector.object_properties_name_[property_i] == object_property_graph_->roots_[root_i]->value())
-      {
-        if(object_vector.object_properties_deduced_[property_i] == false)
-          me->setSteady_object_properties_name(object_property_graph_->roots_[root_i]);
-        else
-          me->object_properties_name_.push_back(object_property_graph_->roots_[root_i]);
-        i_find_my_properties = true;
-      }
+    //Object Property assertion name
+    addObjectPropertyName(me, object_vector.object_properties_name_[property_i], deduced);
 
-    //is a branch my properties ?
-    for(size_t branch_i = 0; branch_i < object_property_graph_->branchs_.size(); branch_i++)
-      if(object_vector.object_properties_name_[property_i] == object_property_graph_->branchs_[branch_i]->value())
-      {
-        if(object_vector.object_properties_deduced_[property_i] == false)
-          me->setSteady_object_properties_name(object_property_graph_->branchs_[branch_i]);
-        else
-          me->object_properties_name_.push_back(object_property_graph_->branchs_[branch_i]);
-        i_find_my_properties = true;
-      }
-
-    //is a tmp_mother my properties ?
-    for(size_t branch_i = 0; branch_i < object_property_graph_->tmp_mothers_.size(); branch_i++)
-      if(object_vector.object_properties_name_[property_i] == object_property_graph_->tmp_mothers_[branch_i]->value())
-      {
-        if(object_vector.object_properties_deduced_[property_i] == false)
-          me->setSteady_object_properties_name(object_property_graph_->tmp_mothers_[branch_i]);
-        else
-          me->object_properties_name_.push_back(object_property_graph_->tmp_mothers_[branch_i]);
-        i_find_my_properties = true;
-      }
-
-    //I create my properties
-    if(!i_find_my_properties)
-    {
-      ObjectPropertyVectors_t empty_vectors;
-      object_property_graph_->add(object_vector.object_properties_name_[property_i], empty_vectors);
-      for(size_t root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
-        if(object_vector.object_properties_name_[property_i] == object_property_graph_->roots_[root_i]->value())
-        {
-          if(object_vector.object_properties_deduced_[property_i] == false)
-            me->setSteady_object_properties_name(object_property_graph_->roots_[root_i]);
-          else
-            me->object_properties_name_.push_back(object_property_graph_->roots_[root_i]);
-          i_find_my_properties = true;
-        }
-    }
+    //Object Property assertion on class
+    addObjectPropertyOn(me, object_vector.object_properties_on_[property_i], deduced);
   }
 
   /**********************
-  ** Object Property assertion on class
-  **********************/
-  //for all my individuals
-  for(size_t properties_on_i = 0; properties_on_i < object_vector.object_properties_on_.size(); properties_on_i++)
-  {
-    bool i_find_my_properties_on = false;
-
-    //is a class exist in roots ?
-    isMyObjectPropertiesOn(me, object_vector.object_properties_on_[properties_on_i], roots_, i_find_my_properties_on, object_vector.object_properties_deduced_[properties_on_i]);
-
-    //is a class exist in branchs ?
-    isMyObjectPropertiesOn(me, object_vector.object_properties_on_[properties_on_i], branchs_, i_find_my_properties_on, object_vector.object_properties_deduced_[properties_on_i]);
-
-    //is a class exist in tmp_mothers ?
-    isMyObjectPropertiesOn(me, object_vector.object_properties_on_[properties_on_i], tmp_mothers_, i_find_my_properties_on, object_vector.object_properties_deduced_[properties_on_i]);
-
-    //I create my individual
-    if(!i_find_my_properties_on)
-    {
-      ClassBranch_t* tmp = new ClassBranch_t(object_vector.object_properties_on_[properties_on_i]);
-      tmp_mothers_.push_back(tmp); //I put my propertyOn as tmp_mother
-      if(object_vector.object_properties_deduced_[properties_on_i] == false)
-        me->setSteady_object_properties_on(tmp);
-      else
-        me->object_properties_on_.push_back(tmp);
-    }
-  }
-
-  /**********************
-  ** Data Property assertion name
+  ** Data Property assertion
   **********************/
   //for all my properties
   for(size_t property_i = 0; property_i < object_vector.data_properties_name_.size(); property_i++)
   {
-    bool i_find_my_properties = false;
+    bool deduced = object_vector.data_properties_deduced_[property_i];
 
-    //is a root my properties ?
-    for(size_t root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
-      if(object_vector.data_properties_name_[property_i] == data_property_graph_->roots_[root_i]->value())
-      {
-        if(object_vector.data_properties_deduced_[property_i] == false)
-          me->setSteady_data_properties_name(data_property_graph_->roots_[root_i]);
-        else
-          me->data_properties_name_.push_back(data_property_graph_->roots_[root_i]);
-        i_find_my_properties = true;
-      }
+    //Data Property assertion name
+    addDataPropertyName(me, object_vector.data_properties_name_[property_i], deduced);
 
-    //is a branch my properties ?
-    for(size_t branch_i = 0; branch_i < data_property_graph_->branchs_.size(); branch_i++)
-      if(object_vector.data_properties_name_[property_i] == data_property_graph_->branchs_[branch_i]->value())
-      {
-        if(object_vector.data_properties_deduced_[property_i] == false)
-          me->setSteady_data_properties_name(data_property_graph_->branchs_[branch_i]);
-        else
-          me->data_properties_name_.push_back(data_property_graph_->branchs_[branch_i]);
-        i_find_my_properties = true;
-      }
-
-    //is a tmp_mother my properties ?
-    for(size_t branch_i = 0; branch_i < data_property_graph_->tmp_mothers_.size(); branch_i++)
-      if(object_vector.data_properties_name_[property_i] == data_property_graph_->tmp_mothers_[branch_i]->value())
-      {
-        if(object_vector.data_properties_deduced_[property_i] == false)
-          me->setSteady_data_properties_name(data_property_graph_->tmp_mothers_[branch_i]);
-        else
-          me->data_properties_name_.push_back(data_property_graph_->tmp_mothers_[branch_i]);
-        i_find_my_properties = true;
-      }
-
-    //I create my properties
-    if(!i_find_my_properties)
-    {
-      DataPropertyVectors_t empty_vectors;
-      data_property_graph_->add(object_vector.data_properties_name_[property_i], empty_vectors);
-      for(size_t root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
-        if(object_vector.data_properties_name_[property_i] == data_property_graph_->roots_[root_i]->value())
-        {
-          if(object_vector.data_properties_deduced_[property_i] == false)
-            me->setSteady_data_properties_name(data_property_graph_->roots_[root_i]);
-          else
-            me->data_properties_name_.push_back(data_property_graph_->roots_[root_i]);
-          i_find_my_properties = true;
-        }
-    }
-
+    //Data Property assertion data
     data_t data;
     data.value_ = object_vector.data_properties_value_[property_i];
     data.type_ = object_vector.data_properties_type_[property_i];
-    if(object_vector.data_properties_deduced_[property_i] == false)
-      me->setSteady_data_properties_data(data);
-    else
-     me->data_properties_data_.push_back(data);
+    addDataPropertyData(me, data, deduced);
   }
 
   me->setSteady_dictionary(object_vector.dictionary_);
@@ -299,6 +178,163 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
     }
   }
 }
+
+/*********
+*
+* add functions
+*
+*********/
+
+void ClassGraph::addObjectPropertyName(ClassBranch_t* me, std::string& name, bool deduced)
+{
+  bool i_find_my_properties = false;
+
+  //is a root my properties ?
+  for(size_t root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
+    if(name == object_property_graph_->roots_[root_i]->value())
+    {
+      if(deduced == false)
+        me->setSteady_object_properties_name(object_property_graph_->roots_[root_i]);
+      else
+        me->object_properties_name_.push_back(object_property_graph_->roots_[root_i]);
+      i_find_my_properties = true;
+    }
+
+  //is a branch my properties ?
+  if(!i_find_my_properties)
+    for(size_t branch_i = 0; branch_i < object_property_graph_->branchs_.size(); branch_i++)
+      if(name == object_property_graph_->branchs_[branch_i]->value())
+      {
+        if(deduced == false)
+          me->setSteady_object_properties_name(object_property_graph_->branchs_[branch_i]);
+        else
+          me->object_properties_name_.push_back(object_property_graph_->branchs_[branch_i]);
+        i_find_my_properties = true;
+      }
+
+  //is a tmp_mother my properties ?
+  if(!i_find_my_properties)
+    for(size_t branch_i = 0; branch_i < object_property_graph_->tmp_mothers_.size(); branch_i++)
+      if(name == object_property_graph_->tmp_mothers_[branch_i]->value())
+      {
+        if(deduced == false)
+          me->setSteady_object_properties_name(object_property_graph_->tmp_mothers_[branch_i]);
+        else
+          me->object_properties_name_.push_back(object_property_graph_->tmp_mothers_[branch_i]);
+        i_find_my_properties = true;
+      }
+
+  //I create my properties
+  if(!i_find_my_properties)
+  {
+    ObjectPropertyVectors_t empty_vectors;
+    object_property_graph_->add(name, empty_vectors);
+    for(size_t root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
+      if(name == object_property_graph_->roots_[root_i]->value())
+      {
+        if(deduced == false)
+          me->setSteady_object_properties_name(object_property_graph_->roots_[root_i]);
+        else
+          me->object_properties_name_.push_back(object_property_graph_->roots_[root_i]);
+        i_find_my_properties = true;
+      }
+  }
+}
+
+void ClassGraph::addObjectPropertyOn(ClassBranch_t* me, std::string& name, bool deduced)
+{
+  bool i_find_my_properties_on = false;
+
+  //is a class exist in roots ?
+  isMyObjectPropertiesOn(me, name, roots_, i_find_my_properties_on, deduced);
+
+  //is a class exist in branchs ?
+  isMyObjectPropertiesOn(me, name, branchs_, i_find_my_properties_on, deduced);
+
+  //is a class exist in tmp_mothers ?
+  isMyObjectPropertiesOn(me, name, tmp_mothers_, i_find_my_properties_on, deduced);
+
+  //I create my individual
+  if(!i_find_my_properties_on)
+  {
+    ClassBranch_t* tmp = new ClassBranch_t(name);
+    tmp_mothers_.push_back(tmp); //I put my propertyOn as tmp_mother
+    if(deduced == false)
+      me->setSteady_object_properties_on(tmp);
+    else
+      me->object_properties_on_.push_back(tmp);
+  }
+}
+
+void ClassGraph::addDataPropertyName(ClassBranch_t* me, std::string& name, bool deduced)
+{
+  bool i_find_my_properties = false;
+
+  //is a root my properties ?
+  for(size_t root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
+    if(name == data_property_graph_->roots_[root_i]->value())
+    {
+      if(deduced == false)
+        me->setSteady_data_properties_name(data_property_graph_->roots_[root_i]);
+      else
+        me->data_properties_name_.push_back(data_property_graph_->roots_[root_i]);
+      i_find_my_properties = true;
+    }
+
+  //is a branch my properties ?
+  if(!i_find_my_properties)
+    for(size_t branch_i = 0; branch_i < data_property_graph_->branchs_.size(); branch_i++)
+      if(name == data_property_graph_->branchs_[branch_i]->value())
+      {
+        if(deduced == false)
+          me->setSteady_data_properties_name(data_property_graph_->branchs_[branch_i]);
+        else
+          me->data_properties_name_.push_back(data_property_graph_->branchs_[branch_i]);
+        i_find_my_properties = true;
+      }
+
+  //is a tmp_mother my properties ?
+  if(!i_find_my_properties)
+    for(size_t branch_i = 0; branch_i < data_property_graph_->tmp_mothers_.size(); branch_i++)
+      if(name == data_property_graph_->tmp_mothers_[branch_i]->value())
+      {
+        if(deduced == false)
+          me->setSteady_data_properties_name(data_property_graph_->tmp_mothers_[branch_i]);
+        else
+          me->data_properties_name_.push_back(data_property_graph_->tmp_mothers_[branch_i]);
+        i_find_my_properties = true;
+      }
+
+  //I create my properties
+  if(!i_find_my_properties)
+  {
+    DataPropertyVectors_t empty_vectors;
+    data_property_graph_->add(name, empty_vectors);
+    for(size_t root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
+      if(name == data_property_graph_->roots_[root_i]->value())
+      {
+        if(deduced == false)
+          me->setSteady_data_properties_name(data_property_graph_->roots_[root_i]);
+        else
+          me->data_properties_name_.push_back(data_property_graph_->roots_[root_i]);
+        i_find_my_properties = true;
+      }
+  }
+}
+
+void ClassGraph::addDataPropertyData(ClassBranch_t* me, data_t& data, bool deduced)
+{
+  if(deduced == false)
+    me->setSteady_data_properties_data(data);
+  else
+   me->data_properties_data_.push_back(data);
+}
+
+/*********
+*
+* get functions
+*
+*********/
 
 std::unordered_set<std::string> ClassGraph::getDisjoint(const std::string& value)
 {

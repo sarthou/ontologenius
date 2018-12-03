@@ -81,6 +81,11 @@ private:
 
   std::vector<IndividualBranch_t*> individuals_;
 
+  void addObjectPropertyName(IndividualBranch_t* me, std::string& name, bool deduced);
+  void addObjectPropertyOn(IndividualBranch_t* me, std::string& name, bool deduced);
+  void addDataPropertyName(IndividualBranch_t* me, std::string& name, bool deduced);
+  void addDataPropertyData(IndividualBranch_t* me, data_t& data, bool deduced);
+
   void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, unsigned int current_depth = 0);
 
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth = -1);
