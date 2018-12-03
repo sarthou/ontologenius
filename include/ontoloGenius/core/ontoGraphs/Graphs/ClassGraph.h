@@ -92,7 +92,7 @@ private:
       }
   }
 
-  void isMyObjectPropertiesOn(ClassBranch_t* me, const std::string& propertyOn, std::vector<ClassBranch_t*>& vect, bool& find)
+  void isMyObjectPropertiesOn(ClassBranch_t* me, const std::string& propertyOn, std::vector<ClassBranch_t*>& vect, bool& find, bool deduced)
   {
     if(find)
       return;
@@ -100,7 +100,11 @@ private:
     for(size_t i = 0; i < vect.size(); i++)
       if(propertyOn == vect[i]->value())
       {
-        me->setSteady_object_properties_on(vect[i]);
+        if(deduced == false)
+          me->setSteady_object_properties_on(vect[i]);
+        else
+          me->object_properties_on_.push_back(vect[i]);
+
         find = true;
         break;
       }
