@@ -18,6 +18,9 @@ public:
 private:
   size_t current_id_;
   size_t class_per_period_;
+
+  void setDeduced(ClassBranch_t* me, std::vector<DataPropertyBranch_t*> properties, std::vector<std::string> datas);
+  void setDeduced(ClassBranch_t* me, std::vector<ObjectPropertyBranch_t*> properties, std::vector<ClassBranch_t*> datas);
 };
 
 /***********
@@ -37,7 +40,7 @@ public:
   }
 
   void add(ClassBranch_t* _class, B propertie, P data);
-  void get(std::vector<B>& properties, std::vector<P>& datas, std::vector<std::vector<ClassBranch_t*> >& classes, size_t nb_classes);
+  void get(std::vector<B>& properties, std::vector<P>& datas);
 
 private:
   std::vector<B> properties_;
@@ -88,12 +91,13 @@ void PropertiesCounter<B,P>::add(ClassBranch_t* _class, B propertie, P data)
 }
 
 template <typename B, typename P>
-void PropertiesCounter<B,P>::get(std::vector<B>& properties, std::vector<P>& datas, std::vector<std::vector<ClassBranch_t*> >& classes, size_t nb_classes)
+void PropertiesCounter<B,P>::get(std::vector<B>& properties, std::vector<P>& datas)
 {
   if(properties_.size() > 0)
   {
     std::vector<B> properties_set;
     std::vector<std::vector<size_t> > index_set;
+    std::vector<size_t> counts_set;
 
     for(size_t i = 0; i < properties_.size(); i++)
     {
@@ -111,20 +115,23 @@ void PropertiesCounter<B,P>::get(std::vector<B>& properties, std::vector<P>& dat
         std::vector<size_t> index_tmp;
         index_tmp.push_back(i);
         index_set.push_back(index_tmp);
+        counts_set.push_back(classes_[i].size());
       }
       else
+      {
         index_set[index].push_back(i);
+        counts_set[index] += classes_[i].size();
+      }
     }
 
     for(size_t i = 0; i < properties_set.size(); i++)
     {
       for(size_t j = 0; j < index_set[i].size(); j++)
         if(classes_[index_set[i][j]].size() >= min_count)
-          if(classes_[index_set[i][j]].size() / (double)nb_classes >= min_percent)
+          if(classes_[index_set[i][j]].size() / (double)counts_set[i] >= min_percent)
           {
             properties.push_back(properties_set[i]);
             datas.push_back(datas_[index_set[i][j]]);
-            classes.push_back(classes_[index_set[i][j]]);
           }
     }
   }
