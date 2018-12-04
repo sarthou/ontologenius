@@ -139,10 +139,11 @@ bool Ontology::preload(std::string fileName)
   return false;
 }
 
-bool Ontology::isInit()
+bool Ontology::isInit(bool print)
 {
   if(is_init_ == false)
-    std::cout << COLOR_RED << "Ontology is not closed" << COLOR_OFF << std::endl;
+    if(print == true)
+      std::cout << COLOR_RED << "Ontology is not closed" << COLOR_OFF << std::endl;
   return is_init_;
 }
 
@@ -152,9 +153,4 @@ void Ontology::setLanguage(std::string language)
   object_property_graph_.setLanguage(language);
   data_property_graph_.setLanguage(language);
   individual_graph_.setLanguage(language);
-}
-
-void Ontology::run()
-{
-
 }

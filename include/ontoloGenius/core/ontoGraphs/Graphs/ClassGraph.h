@@ -18,10 +18,12 @@ struct ObjectVectors_t
 
    std::vector<std::string> object_properties_name_;
    std::vector<std::string> object_properties_on_;
+   std::vector<bool> object_properties_deduced_;
 
    std::vector<std::string> data_properties_name_;
    std::vector<std::string> data_properties_type_;
    std::vector<std::string> data_properties_value_;
+   std::vector<bool> data_properties_deduced_;
 };
 
 //for friend
@@ -64,6 +66,11 @@ private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
 
+  void addObjectPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
+  void addObjectPropertyOn(ClassBranch_t* me, std::string& name, bool deduced);
+  void addDataPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
+  void addDataPropertyData(ClassBranch_t* me, data_t& data, bool deduced);
+
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth);
   void getRelatedFrom(std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res);
   void getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth);
@@ -90,7 +97,7 @@ private:
       }
   }
 
-  void isMyObjectPropertiesOn(ClassBranch_t* me, const std::string& propertyOn, std::vector<ClassBranch_t*>& vect, bool& find)
+  void isMyObjectPropertiesOn(ClassBranch_t* me, const std::string& propertyOn, std::vector<ClassBranch_t*>& vect, bool& find, bool deduced)
   {
     if(find)
       return;
@@ -98,7 +105,11 @@ private:
     for(size_t i = 0; i < vect.size(); i++)
       if(propertyOn == vect[i]->value())
       {
-        me->setSteady_object_properties_on(vect[i]);
+        if(deduced == false)
+          me->setSteady_object_properties_on(vect[i]);
+        else
+          me->object_properties_on_.push_back(vect[i]);
+
         find = true;
         break;
       }

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(ontologenius)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+add_compile_options(-std=c++14)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -190,6 +190,7 @@ add_library(ontologenius_arguer_plugin
   src/core/arguer/plugins/ArguerSymetric.cpp
   src/core/arguer/plugins/ArguerChain.cpp
   src/core/arguer/plugins/ArguerDictionary.cpp
+  src/core/arguer/plugins/ArguerGeneralize.cpp
   )
 add_dependencies(ontologenius_arguer_plugin ontologenius_gencpp)
 target_link_libraries(ontologenius_arguer_plugin ontologenius_core_lib)

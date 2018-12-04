@@ -17,10 +17,12 @@ struct IndividualVectors_t
 
    std::vector<std::string> object_properties_name_;
    std::vector<std::string> object_properties_on_;
+   std::vector<bool> object_properties_deduced_;
 
    std::vector<std::string> data_properties_name_;
    std::vector<std::string> data_properties_type_;
    std::vector<std::string> data_properties_value_;
+   std::vector<bool> data_properties_deduced_;
 
    std::vector<std::string> same_as_;
    std::map<std::string, std::vector<std::string>> dictionary_;
@@ -78,6 +80,11 @@ private:
   DataPropertyGraph* data_property_graph_;
 
   std::vector<IndividualBranch_t*> individuals_;
+
+  void addObjectPropertyName(IndividualBranch_t* me, std::string& name, bool deduced);
+  void addObjectPropertyOn(IndividualBranch_t* me, std::string& name, bool deduced);
+  void addDataPropertyName(IndividualBranch_t* me, std::string& name, bool deduced);
+  void addDataPropertyData(IndividualBranch_t* me, data_t& data, bool deduced);
 
   void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, unsigned int current_depth = 0);
 

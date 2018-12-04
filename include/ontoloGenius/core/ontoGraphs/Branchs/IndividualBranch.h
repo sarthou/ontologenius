@@ -18,9 +18,11 @@ public:
 
   std::vector<ObjectPropertyBranch_t*> object_properties_name_;
   std::vector<T*> object_properties_on_;
+  std::vector<bool> object_properties_deduced_;
 
   std::vector<DataPropertyBranch_t*> data_properties_name_;
   std::vector<data_t> data_properties_data_;
+  std::vector<bool> data_properties_deduced_;
 
   std::vector<T*> same_as_;
   std::vector<T*> distinct_;

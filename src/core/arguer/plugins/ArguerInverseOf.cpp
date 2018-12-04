@@ -39,6 +39,7 @@ void ArguerInverseOf::insetInverse(IndividualBranch_t* indiv_on, ObjectPropertyB
 
   indiv_on->object_properties_name_.push_back(inv_prop);
   indiv_on->object_properties_on_.push_back(inv_indiv);
+  indiv_on->object_properties_deduced_.push_back(false);
   indiv_on->nb_updates_++;
   nb_update_++;
 }
