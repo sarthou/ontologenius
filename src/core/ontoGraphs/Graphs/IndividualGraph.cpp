@@ -66,6 +66,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
       if(individual_vector.is_a_[is_a_i] == class_graph_->roots_[root_i]->value())
       {
         me->setSteady_is_a(class_graph_->roots_[root_i]);
+        class_graph_->roots_[root_i]->setSteady_individual_child(me);
         i_find_my_is_a_ = true;
       }
 
@@ -74,6 +75,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
       if(individual_vector.is_a_[is_a_i] == class_graph_->branchs_[branch_i]->value())
       {
         me->setSteady_is_a(class_graph_->branchs_[branch_i]);
+        class_graph_->branchs_[branch_i]->setSteady_individual_child(me);
         i_find_my_is_a_ = true;
       }
 
@@ -86,6 +88,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
         if(individual_vector.is_a_[is_a_i] == class_graph_->roots_[root_i]->value())
         {
           me->setSteady_is_a(class_graph_->roots_[root_i]);
+          class_graph_->roots_[root_i]->setSteady_individual_child(me);
           i_find_my_is_a_ = true;
         }
     }
@@ -996,12 +999,15 @@ std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
 std::unordered_set<std::string> IndividualGraph::getType(const std::string& class_selector)
 {
   std::unordered_set<std::string> res;
-  for(size_t i = 0; i < individuals_.size(); i++)
+  ClassBranch_t* class_branch = class_graph_->container_.find(class_selector);
+  if(class_branch != nullptr)
   {
-    std::unordered_set<std::string> tmp = getUp(individuals_[i]);
-    if(tmp.find(class_selector) != tmp.end())
-      res.insert(individuals_[i]->value());
+    std::unordered_set<ClassBranch_t*> down_set = class_graph_->getDownPtr(class_branch);
+    for(auto down : down_set)
+      class_graph_->getDownIndividual(down, res);
   }
+
+
   return res;
 }
 

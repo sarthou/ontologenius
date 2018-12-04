@@ -62,6 +62,11 @@ public:
   std::unordered_set<std::string> getWith(const std::string& param, int depth = -1);
   std::unordered_set<std::string> getWith(const std::string& first_class, const std::string& second_class, int depth = -1);
 
+  std::unordered_set<std::string> getDownIndividual(ClassBranch_t* branch);
+  void getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res);
+  std::unordered_set<IndividualBranch_t*> getDownIndividualPtr(ClassBranch_t* branch);
+  void getDownIndividualPtr(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res);
+
 private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;

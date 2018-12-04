@@ -11,11 +11,14 @@
 //for branch type usage
 class ObjectPropertyBranch_t;
 class DataPropertyBranch_t;
+class IndividualBranch_t;
 
 template <typename T>
 class ClassBranchData_t
 {
 public:
+  std::vector<IndividualBranch_t*> individual_childs_;
+
   std::vector<T*> disjoints_;
 
   std::vector<ObjectPropertyBranch_t*> object_properties_name_;
@@ -45,6 +48,7 @@ public:
   void setFullSteady();
   void setSteady_disjoint(ClassBranch_t* disjoint);
   void setSteady_child(ClassBranch_t* child);
+  void setSteady_individual_child(IndividualBranch_t* child);
   void setSteady_mother(ClassBranch_t* mother);
   void setSteady_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);

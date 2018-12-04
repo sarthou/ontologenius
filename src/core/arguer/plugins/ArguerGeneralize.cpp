@@ -17,6 +17,7 @@ void ArguerGeneralize::periodicReason()
     {
       std::unordered_set<ClassBranch_t*> down_set = ontology_->class_graph_.getDownPtr(classes[current_id_], 1);
       down_set.erase(classes[current_id_]);
+      std::unordered_set<IndividualBranch_t*> indiv_down_set = ontology_->class_graph_.getDownIndividualPtr(classes[current_id_]);
 
       PropertiesCounter<DataPropertyBranch_t*, std::string> data_counter;
       PropertiesCounter<ObjectPropertyBranch_t*, ClassBranch_t*> object_counter;
@@ -24,10 +25,16 @@ void ArguerGeneralize::periodicReason()
       for(auto down : down_set)
       {
         for(size_t j = 0; j < down->data_properties_name_.size(); j++)
-          data_counter.add(down, down->data_properties_name_[j], down->data_properties_data_[j].toString());
+          data_counter.add(down->data_properties_name_[j], down->data_properties_data_[j].toString());
 
         for(size_t j = 0; j < down->object_properties_name_.size(); j++)
-          object_counter.add(down, down->object_properties_name_[j], down->object_properties_on_[j]);
+          object_counter.add(down->object_properties_name_[j], down->object_properties_on_[j]);
+      }
+
+      for(auto down : indiv_down_set)
+      {
+        for(size_t j = 0; j < down->data_properties_name_.size(); j++)
+          data_counter.add(down->data_properties_name_[j], down->data_properties_data_[j].toString());
       }
 
       std::vector<DataPropertyBranch_t*> data_properties;
