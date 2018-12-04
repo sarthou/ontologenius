@@ -824,7 +824,14 @@ std::unordered_set<std::string> ClassGraph::getDownIndividual(ClassBranch_t* bra
   std::unordered_set<std::string> res;
   for(auto indiv : branch->individual_childs_)
     res.insert(indiv->value());
+
   return res;
+}
+
+void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res)
+{
+  for(auto indiv : branch->individual_childs_)
+    res.insert(indiv->value());
 }
 
 std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtr(ClassBranch_t* branch)
@@ -832,6 +839,7 @@ std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtr(ClassBr
   std::unordered_set<IndividualBranch_t*> res;
   for(auto indiv : branch->individual_childs_)
     res.insert(indiv);
+
   return res;
 }
 
