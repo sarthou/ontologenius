@@ -13,7 +13,6 @@ class Ontology
 {
 public:
   Ontology(std::string language = "en");
-  Ontology(const Ontology& base);
   ~Ontology();
 
   int close();

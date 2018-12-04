@@ -36,7 +36,6 @@ class DataPropertyGraph : public OntoGraph<DataPropertyBranch_t>
   friend ClassGraph;
 public:
   DataPropertyGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
-  DataPropertyGraph(const DataPropertyGraph& base) : OntoGraph<DataPropertyBranch_t>(base) {}
   ~DataPropertyGraph() {}
 
   void linkGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }

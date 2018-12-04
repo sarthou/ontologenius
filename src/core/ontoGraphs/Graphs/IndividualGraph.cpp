@@ -13,16 +13,6 @@ IndividualGraph::IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* o
   data_property_graph_ = data_property_graph;
 }
 
-IndividualGraph::IndividualGraph(const IndividualGraph& base) : Graph<IndividualBranch_t>(base)
-{
-  for(IndividualBranch_t* b : base.individuals_)
-  {
-    IndividualBranch_t* tmp = new IndividualBranch_t();
-    *tmp = *b;
-    individuals_.push_back(b);
-  }
-}
-
 IndividualGraph::~IndividualGraph()
 {
   for(size_t i = 0; i < individuals_.size(); i++)
