@@ -10,6 +10,10 @@ void ClassBranch_t::setFullSteady()
   for(size_t i = 0; i < childs_.size(); i++)
     steady_.childs_.push_back(childs_[i]);
 
+  steady_.individual_childs_.clear();
+  for(size_t i = 0; i < individual_childs_.size(); i++)
+    steady_.individual_childs_.push_back(individual_childs_[i]);
+
   steady_.mothers_.clear();
   for(size_t i = 0; i < mothers_.size(); i++)
     steady_.mothers_.push_back(mothers_[i]);
@@ -50,6 +54,12 @@ void ClassBranch_t::setSteady_child(ClassBranch_t* child)
 {
   steady_.childs_.push_back(child);
   childs_.push_back(child);
+}
+
+void ClassBranch_t::setSteady_individual_child(IndividualBranch_t* child)
+{
+  steady_.individual_childs_.push_back(child);
+  individual_childs_.push_back(child);
 }
 
 void ClassBranch_t::setSteady_mother(ClassBranch_t* mother)

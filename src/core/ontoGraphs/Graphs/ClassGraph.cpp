@@ -3,6 +3,7 @@
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
 ClassGraph::ClassGraph(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
 {
@@ -816,4 +817,26 @@ void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_c
     getUpPtr(first_class, next_step, 1);
     next_step.erase(first_class);
   }
+}
+
+std::unordered_set<std::string> ClassGraph::getDownIndividual(ClassBranch_t* branch)
+{
+  std::unordered_set<std::string> res;
+  for(auto indiv : branch->individual_childs_)
+    res.insert(indiv->value());
+  return res;
+}
+
+std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtr(ClassBranch_t* branch)
+{
+  std::unordered_set<IndividualBranch_t*> res;
+  for(auto indiv : branch->individual_childs_)
+    res.insert(indiv);
+  return res;
+}
+
+void ClassGraph::getDownIndividualPtr(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res)
+{
+  for(auto indiv : branch->individual_childs_)
+    res.insert(indiv);
 }
