@@ -70,17 +70,21 @@ void ArguerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyBra
       for(size_t prop_i = 0; prop_i < me->data_properties_name_.size(); prop_i++)
         if(me->data_properties_name_[prop_i] == properties[prop])
         {
-          index = prop_i;
-          deduced_indexs.erase(index);
           data_t tmp;
           tmp.set(datas[prop]);
+
+          if(me->data_properties_data_[prop_i].toString() != tmp.toString())
+            notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]);
+
+          index = prop_i;
+          deduced_indexs.erase(index);
           me->data_properties_data_[prop_i] = tmp;
           me->data_properties_deduced_[prop_i] = true;
         }
 
       if(index == -1)
       {
-        std::cout << me->value() << " NEW infer " << properties[prop]->value() << " : " << datas[prop] << std::endl;
+        notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]);
         me->data_properties_name_.push_back(properties[prop]);
         data_t tmp;
         tmp.set(datas[prop]);
@@ -95,7 +99,7 @@ void ArguerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyBra
     size_t deleted = 0;
     for(auto i : deduced_indexs)
     {
-      std::cout << "remove generalization " << me->value() << " > " << me->data_properties_name_[i- deleted]->value() << " : " << me->data_properties_data_[i- deleted].toString() << std::endl;
+      notifications_.push_back("[DELETE]" + me->value() + ">" + me->data_properties_name_[i- deleted]->value() + ":" + me->data_properties_data_[i- deleted].toString());
       me->data_properties_name_.erase(me->data_properties_name_.begin() + i - deleted);
       me->data_properties_data_.erase(me->data_properties_data_.begin() + i - deleted);
       me->data_properties_deduced_.erase(me->data_properties_deduced_.begin() + i - deleted);
@@ -127,6 +131,8 @@ void ArguerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropertyB
         for(size_t prop_i = 0; prop_i < me->object_properties_name_.size(); prop_i++)
           if(me->object_properties_name_[prop_i] == properties[prop])
           {
+            if(me->object_properties_on_[prop_i] != datas[prop])
+            notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
             index = prop_i;
             deduced_indexs.erase(index);
             me->object_properties_on_[prop_i] = datas[prop];
@@ -135,7 +141,7 @@ void ArguerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropertyB
 
         if(index == -1)
         {
-          std::cout << me->value() << " NEW infer " << properties[prop]->value() << " : " << datas[prop]->value() << std::endl;
+          notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
           me->object_properties_name_.push_back(properties[prop]);
           me->object_properties_on_.push_back(datas[prop]);
           me->object_properties_deduced_.push_back(true);
@@ -148,7 +154,7 @@ void ArguerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropertyB
     size_t deleted = 0;
     for(auto i : deduced_indexs)
     {
-      std::cout << "remove generalization " << me->value() << " > " << me->object_properties_name_[i- deleted]->value() << " : " << me->object_properties_on_[i- deleted]->value() << std::endl;
+      notifications_.push_back("[DELETE]" + me->value() + ">" + me->object_properties_name_[i- deleted]->value() + ":" + me->object_properties_on_[i- deleted]->value());
       me->object_properties_name_.erase(me->object_properties_name_.begin() + i - deleted);
       me->object_properties_on_.erase(me->object_properties_on_.begin() + i - deleted);
       me->object_properties_deduced_.erase(me->object_properties_deduced_.begin() + i - deleted);

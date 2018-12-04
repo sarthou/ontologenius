@@ -4,6 +4,7 @@
 
 #include "ontologenius/standard_service.h"
 #include "ontologenius/OntologeniusService.h"
+#include "std_msgs/String.h"
 
 #include <iostream>
 #include <thread>
@@ -73,6 +74,7 @@ std::string getSelector(std::string& action, std::string& param)
   return select;
 }
 
+ros::NodeHandle* n_;
 Ontology* onto;
 Arguers arguers(onto);
 
@@ -388,6 +390,8 @@ bool arguerHandle(ontologenius::OntologeniusService::Request &req,
 
 void periodicReasoning()
 {
+  ros::Publisher arguer_publisher = n_->advertise<std_msgs::String>("ontologenius/arguer_notifications", 1000);
+  
   ros::Rate wait(10);
   while((ros::ok()) && (onto->isInit(false) == false))
   {
@@ -398,6 +402,15 @@ void periodicReasoning()
   while(ros::ok())
   {
     arguers.runPeriodicArguers();
+
+    std_msgs::String msg;
+    std::vector<std::string> notifications = arguers.getNotifications();
+    for(auto notif : notifications)
+    {
+      std::cout << notif << std::endl;
+      msg.data = notif;
+      arguer_publisher.publish(msg);
+    }
     r.sleep();
   }
 }
@@ -407,6 +420,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "ontologenius");
 
   ros::NodeHandle n;
+  n_ = &n;
 
   ros::service::waitForService("ontologenius/rest", -1);
 
