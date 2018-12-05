@@ -1,5 +1,6 @@
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 #include "ontoloGenius/core/arguer/Arguers.h"
+#include "ontoloGenius/core/feeder/FeedStorage.h"
 #include "ontoloGenius/core/utility/error_code.h"
 
 #include "ontologenius/standard_service.h"
@@ -77,6 +78,7 @@ std::string getSelector(std::string& action, std::string& param)
 ros::NodeHandle* n_;
 Ontology* onto;
 Arguers arguers(onto);
+FeedStorage feeder;
 
 bool actionsHandle(ontologenius::OntologeniusService::Request &req,
                    ontologenius::OntologeniusService::Response &res)
@@ -388,10 +390,15 @@ bool arguerHandle(ontologenius::OntologeniusService::Request &req,
   return true;
 }
 
+void knowledgeCallback(const std_msgs::String::ConstPtr& msg)
+{
+  feeder.add(msg->data);
+}
+
 void periodicReasoning()
 {
   ros::Publisher arguer_publisher = n_->advertise<std_msgs::String>("ontologenius/arguer_notifications", 1000);
-  
+
   ros::Rate wait(10);
   while((ros::ok()) && (onto->isInit(false) == false))
   {
@@ -439,6 +446,8 @@ int main(int argc, char** argv)
 
   arguers.load();
   std::cout << "Plugins loaded : " << arguers.list() << std::endl;
+
+  ros::Subscriber knowledge_subscriber = n.subscribe("ontologenius/insert", 1000, knowledgeCallback);
 
   // Start up ROS service with callbacks
   ros::ServiceServer service = n.advertiseService("ontologenius/actions", actionsHandle);

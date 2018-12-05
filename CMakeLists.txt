@@ -113,6 +113,7 @@ target_link_libraries(ontologenius_ontoGraphs_lib ${OpenCV_LIBS})
 target_link_libraries(ontologenius_ontoGraphs_lib ${TinyXML_LIBRARIES})
 
 add_library(ontologenius_core_lib
+  src/core/feeder/FeedStorage.cpp
   src/core/arguer/plugins/ArguerInterface.cpp
   src/core/arguer/Arguers.cpp
   src/core/Computer.cpp
