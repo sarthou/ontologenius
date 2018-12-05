@@ -5,9 +5,10 @@
 
 void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& property_vectors)
 {
-/**********************
-** Mothers
-**********************/
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+  /**********************
+  ** Mothers
+  **********************/
   ObjectPropertyBranch_t* me = nullptr;
   //am I a created mother ?
   amIA(&me, tmp_mothers_, value);
@@ -223,6 +224,8 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
 
 void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
 {
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+
   for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
@@ -276,6 +279,7 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
 std::unordered_set<std::string> ObjectPropertyGraph::getDisjoint(const std::string& value)
 {
   std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
 
   ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
@@ -288,6 +292,7 @@ std::unordered_set<std::string> ObjectPropertyGraph::getDisjoint(const std::stri
 std::unordered_set<std::string> ObjectPropertyGraph::getInverse(const std::string& value)
 {
   std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
 
   ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
@@ -300,6 +305,7 @@ std::unordered_set<std::string> ObjectPropertyGraph::getInverse(const std::strin
 std::unordered_set<std::string> ObjectPropertyGraph::getDomain(const std::string& value)
 {
   std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
 
   ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
@@ -312,6 +318,7 @@ std::unordered_set<std::string> ObjectPropertyGraph::getDomain(const std::string
 std::unordered_set<std::string> ObjectPropertyGraph::getRange(const std::string& value)
 {
   std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
 
   ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)

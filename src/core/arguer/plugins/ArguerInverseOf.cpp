@@ -8,6 +8,7 @@ void ArguerInverseOf::preReason()
 
 void ArguerInverseOf::postReason()
 {
+  std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   size_t indiv_i, prop_i, inv_i = 0;
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
   size_t indiv_size = indiv.size();

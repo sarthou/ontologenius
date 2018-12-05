@@ -47,6 +47,7 @@ void IndividualChecker::checkSame()
 
 void IndividualChecker::checkReflexive()
 {
+  std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
   for(size_t i = 0; i < graph_size; i++)
   {
     for(size_t prop_i = 0; prop_i < graph_[i]->object_properties_name_.size(); prop_i++)
@@ -70,6 +71,7 @@ void IndividualChecker::checkObectPropertyDomain()
   for(size_t i = 0; i < graph_size; i++)
   {
     std::unordered_set<std::string> up = individual_graph_->getUp(graph_[i]->value());
+    std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
 
     for(size_t prop_i = 0; prop_i < graph_[i]->object_properties_name_.size(); prop_i++)
     {
@@ -91,6 +93,7 @@ void IndividualChecker::checkObectPropertyRange()
     for(size_t prop_i = 0; prop_i < graph_[i]->object_properties_name_.size(); prop_i++)
     {
       std::unordered_set<std::string> up = individual_graph_->getUp(graph_[i]->object_properties_on_[prop_i]->value());
+      std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
       std::unordered_set<std::string> range = individual_graph_->object_property_graph_->getRange(graph_[i]->object_properties_name_[prop_i]->value());
       if(range.size() != 0)
       {
@@ -107,6 +110,7 @@ void IndividualChecker::checkDataPropertyDomain()
   for(size_t i = 0; i < graph_size; i++)
   {
     std::unordered_set<std::string> up = individual_graph_->getUp(graph_[i]->value());
+    std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
 
     for(size_t prop_i = 0; prop_i < graph_[i]->data_properties_name_.size(); prop_i++)
     {
@@ -123,6 +127,7 @@ void IndividualChecker::checkDataPropertyDomain()
 
 void IndividualChecker::checkDataPropertyRange()
 {
+  std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
   for(size_t i = 0; i < graph_size; i++)
   {
     for(size_t prop_i = 0; prop_i < graph_[i]->data_properties_name_.size(); prop_i++)
@@ -140,6 +145,7 @@ void IndividualChecker::checkDataPropertyRange()
 
 void IndividualChecker::checkAssymetric()
 {
+  std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
   for(size_t i = 0; i < graph_size; i++)
   {
     for(size_t prop_i = 0; prop_i < graph_[i]->object_properties_name_.size(); prop_i++)
@@ -153,6 +159,7 @@ void IndividualChecker::checkAssymetric()
 
 bool IndividualChecker::symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv)
 {
+  std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
   for(size_t i = 0; i < sym_indiv->object_properties_name_.size(); i++)
   {
     if(sym_indiv->object_properties_name_[i]->get() == sym_prop->get())

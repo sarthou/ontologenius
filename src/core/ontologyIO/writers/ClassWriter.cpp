@@ -11,6 +11,8 @@ void ClassWriter::write(FILE* file)
 {
   file_ = file;
 
+  std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
+
   std::vector<ClassBranch_t*> classes = class_graph_->get();
   for(size_t i = 0; i < classes.size(); i++)
     writeClass(classes[i]);
@@ -21,6 +23,8 @@ void ClassWriter::write(FILE* file)
 void ClassWriter::writeGeneralAxioms(FILE* file)
 {
   file_ = file;
+
+  std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
 
   std::vector<ClassBranch_t*> classes = class_graph_->get();
   writeDisjointWith(classes);

@@ -31,8 +31,8 @@ public:
   std::string language_;
 
   mutable std::shared_timed_mutex mutex_;
-  //use std::lock_guard<std::shared_timed_mutex> lock(mutex_); to WRITE A DATA
-  //use std::shared_lock<std::shared_timed_mutex> lock(mutex_); to READ A DATA
+  //use std::lock_guard<std::shared_timed_mutex> lock(Graph<B>::mutex_); to WRITE A DATA
+  //use std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_); to READ A DATA
 };
 
 #endif

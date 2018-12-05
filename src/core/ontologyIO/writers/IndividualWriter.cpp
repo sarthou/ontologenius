@@ -9,6 +9,8 @@ void IndividualWriter::write(FILE* file)
 {
   file_ = file;
 
+  std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
+
   std::vector<IndividualBranch_t*> individuals = individual_graph_->get();
   for(size_t i = 0; i < individuals.size(); i++)
     writeIndividual(individuals[i]);
@@ -19,6 +21,8 @@ void IndividualWriter::write(FILE* file)
 void IndividualWriter::writeGeneralAxioms(FILE* file)
 {
   file_ = file;
+
+  std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
 
   std::vector<IndividualBranch_t*> individuals = individual_graph_->get();
   writeDistincts(individuals);

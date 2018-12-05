@@ -8,6 +8,7 @@ void ArguerChain::preReason()
 
 void ArguerChain::postReason()
 {
+  std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
   size_t indiv_size = indiv.size();
   for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)

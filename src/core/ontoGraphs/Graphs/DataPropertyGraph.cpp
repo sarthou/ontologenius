@@ -5,9 +5,10 @@
 
 void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_vectors)
 {
-/**********************
-** Mothers
-**********************/
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+  /**********************
+  ** Mothers
+  **********************/
   DataPropertyBranch_t* me = nullptr;
   //am I a created mother ?
   amIA(&me, tmp_mothers_, value);
@@ -135,6 +136,8 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
 
 void DataPropertyGraph::add(std::vector<std::string>& disjoints)
 {
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+
   for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
@@ -188,6 +191,7 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
 std::unordered_set<std::string> DataPropertyGraph::getDisjoint(const std::string& value)
 {
   std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
@@ -200,6 +204,7 @@ std::unordered_set<std::string> DataPropertyGraph::getDisjoint(const std::string
 std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& value)
 {
   std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
@@ -212,6 +217,7 @@ std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& 
 std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& value)
 {
   std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
