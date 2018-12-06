@@ -1045,8 +1045,8 @@ void IndividualGraph::deleteIndividual(IndividualBranch_t* indiv)
 {
   if(indiv != nullptr)
   {
-    std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
 
     // erase indiv from parents
     std::unordered_set<ClassBranch_t*> up_set;
