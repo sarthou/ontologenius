@@ -1,6 +1,6 @@
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 #include "ontoloGenius/core/arguer/Arguers.h"
-#include "ontoloGenius/core/feeder/FeedStorage.h"
+#include "ontoloGenius/core/feeder/Feeder.h"
 #include "ontoloGenius/core/utility/error_code.h"
 
 #include "ontologenius/standard_service.h"
@@ -78,7 +78,7 @@ std::string getSelector(std::string& action, std::string& param)
 ros::NodeHandle* n_;
 Ontology* onto;
 Arguers arguers(onto);
-FeedStorage feeder;
+Feeder feeder;
 
 bool actionsHandle(ontologenius::OntologeniusService::Request &req,
                    ontologenius::OntologeniusService::Response &res)
@@ -392,7 +392,22 @@ bool arguerHandle(ontologenius::OntologeniusService::Request &req,
 
 void knowledgeCallback(const std_msgs::String::ConstPtr& msg)
 {
-  feeder.add(msg->data);
+  feeder.store(msg->data);
+}
+
+void feedThread()
+{
+  ros::Rate wait(10);
+  while((ros::ok()) && (onto->isInit(false) == false))
+  {
+    wait.sleep();
+  }
+
+  while(ros::ok())
+  {
+    feeder.run();
+    wait.sleep();
+  }
 }
 
 void periodicReasoning()
@@ -487,9 +502,11 @@ int main(int argc, char** argv)
 #endif
 
   std::thread periodic_reasoning_thread(periodicReasoning);
+  std::thread feed_thread(feedThread);
 
   ros::spin();
   periodic_reasoning_thread.join();
+  feed_thread.join();
 
   delete onto;
 
