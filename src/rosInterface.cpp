@@ -78,7 +78,7 @@ std::string getSelector(std::string& action, std::string& param)
 ros::NodeHandle* n_;
 Ontology* onto;
 Arguers arguers(onto);
-Feeder feeder;
+Feeder feeder(onto);
 
 bool actionsHandle(ontologenius::OntologeniusService::Request &req,
                    ontologenius::OntologeniusService::Response &res)

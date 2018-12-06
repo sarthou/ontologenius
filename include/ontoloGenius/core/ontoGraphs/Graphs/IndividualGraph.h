@@ -73,6 +73,8 @@ public:
   std::unordered_set<std::string> find(const std::string& value);
   std::unordered_set<std::string> getType(const std::string& class_selector);
 
+  void deleteIndividual(IndividualBranch_t* indiv);
+
 private:
   ClassGraph* class_graph_;
   ObjectPropertyGraph* object_property_graph_;

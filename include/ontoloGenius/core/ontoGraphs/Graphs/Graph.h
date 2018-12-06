@@ -25,6 +25,8 @@ public:
   virtual void close() = 0;
 
   virtual std::vector<B*> get() = 0;
+  virtual B* findBranch(std::string name);
+  virtual B* create(std::string name);
 
   BranchContainerMap<B> container_;
 
@@ -34,5 +36,33 @@ public:
   //use std::lock_guard<std::shared_timed_mutex> lock(Graph<B>::mutex_); to WRITE A DATA
   //use std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_); to READ A DATA
 };
+
+template <typename B>
+B* Graph<B>::findBranch(std::string name)
+{
+  B* indiv = nullptr;
+  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+  indiv = container_.find(name);
+
+  return indiv;
+}
+
+template <typename B>
+B* Graph<B>::create(std::string name)
+{
+  B* indiv = nullptr;
+  {
+    std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+    indiv = container_.find(name);
+  }
+
+  if(indiv == nullptr)
+  {
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    indiv = new B(name);
+    container_.insert(indiv);
+  }
+  return indiv;
+}
 
 #endif

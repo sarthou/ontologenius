@@ -16,6 +16,8 @@ public:
   virtual B* find(const std::string& word);
   virtual std::vector<B*> find(bool (*comp)(B*, std::string, std::string), const std::string& word, const std::string& lang);
   virtual void load(std::vector<B*>& vect);
+  virtual void insert(B* branch);
+  virtual void erase(B* branch);
 private:
   std::map<std::string, B*> nodes_;
 };
@@ -57,6 +59,18 @@ void BranchContainerMap<B>::load(std::vector<B*>& vect)
 {
   for(size_t i = 0; i < vect.size(); i++)
     nodes_[vect[i]->value()] = vect[i];
+}
+
+template <typename B>
+void BranchContainerMap<B>::insert(B* branch)
+{
+  nodes_[branch->value()] = branch;
+}
+
+template <typename B>
+void BranchContainerMap<B>::erase(B* branch)
+{
+  nodes_.erase(branch->value());
 }
 
 #endif

@@ -1040,3 +1040,60 @@ std::unordered_set<std::string> IndividualGraph::set2set(std::unordered_set<Indi
   }
   return res;
 }
+
+void IndividualGraph::deleteIndividual(IndividualBranch_t* indiv)
+{
+  if(indiv != nullptr)
+  {
+    std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+
+    // erase indiv from parents
+    std::unordered_set<ClassBranch_t*> up_set;
+    getUpPtr(indiv, up_set, 1);
+
+    for(auto up : up_set)
+    {
+      for(size_t i = 0; i < up->individual_childs_.size();)
+      {
+        if(up->individual_childs_[i] == indiv)
+          up->individual_childs_.erase(up->individual_childs_.begin() + i);
+        else
+          i++;
+      }
+    }
+
+    //erase properties applied to indiv
+    size_t indiv_index = 0;
+    for(size_t indiv_i = 0; indiv_i < individuals_.size(); indiv_i++)
+    {
+      if(individuals_[indiv_i] == indiv)
+        indiv_index = indiv_i;
+
+      for(size_t i = 0; i < individuals_[indiv_i]->object_properties_on_.size();)
+        if(individuals_[indiv_i]->object_properties_on_[i] == indiv)
+        {
+          individuals_[indiv_i]->object_properties_on_.erase(individuals_[indiv_i]->object_properties_on_.begin() + i);
+          individuals_[indiv_i]->object_properties_name_.erase(individuals_[indiv_i]->object_properties_name_.begin() + i);
+          individuals_[indiv_i]->object_properties_deduced_.erase(individuals_[indiv_i]->object_properties_deduced_.begin() + i);
+        }
+        else
+          i++;
+
+      for(size_t i = 0; i < individuals_[indiv_i]->steady_.object_properties_on_.size();)
+        if(individuals_[indiv_i]->steady_.object_properties_on_[i] == indiv)
+        {
+          individuals_[indiv_i]->steady_.object_properties_on_.erase(individuals_[indiv_i]->steady_.object_properties_on_.begin() + i);
+          individuals_[indiv_i]->steady_.object_properties_name_.erase(individuals_[indiv_i]->steady_.object_properties_name_.begin() + i);
+          individuals_[indiv_i]->steady_.object_properties_deduced_.erase(individuals_[indiv_i]->steady_.object_properties_deduced_.begin() + i);
+        }
+        else
+          i++;
+    }
+
+    //delete indiv
+    individuals_.erase(individuals_.begin() + indiv_index);
+    container_.erase(indiv);
+    delete indiv;
+  }
+}
