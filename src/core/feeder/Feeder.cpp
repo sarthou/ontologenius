@@ -10,6 +10,7 @@ void Feeder::run()
   {
     feed_t feed = feeds.front();
     feeds.pop();
+    bool done = false;
 
     if(feed.prop_ == "")
     {
@@ -21,9 +22,13 @@ void Feeder::run()
     else if(feed.on_ != "")
     {
       if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
-        modifyDataProperty(feed);
-      /*else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
-      else if(onto_->class_graph_.findBranch(feed.from_) != nullptr)*/
+        done = modifyDataProperty(feed);
+      else if(onto_->data_property_graph_.findBranch(feed.on_) != nullptr)
+        done = modifyDataPropertyInvert(feed);
+      else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
+        done = modifyObjectProperty(feed);
+      else if(onto_->object_property_graph_.findBranch(feed.on_) != nullptr)
+        done = modifyObjectPropertyInvert(feed);
     }
     std::cout << feed.from_ << " : " << feed.prop_ << " : " << feed.on_ << std::endl;
   }
@@ -51,11 +56,38 @@ void Feeder::addDelIndiv(action_t& action, std::string& name)
   }
 }
 
-void Feeder::modifyDataProperty(feed_t& feed)
+bool Feeder::modifyDataProperty(feed_t& feed)
 {
   DataPropertyBranch_t* tmp = onto_->data_property_graph_.findBranch(feed.from_);
   if(feed.action_ == action_add)
-    onto_->data_property_graph_.add(tmp, feed.prop_, feed.on_);
+    return onto_->data_property_graph_.add(tmp, feed.prop_, feed.on_);
   else
-    onto_->data_property_graph_.remove(tmp, feed.prop_, feed.on_);
+    return onto_->data_property_graph_.remove(tmp, feed.prop_, feed.on_);
+}
+
+bool Feeder::modifyDataPropertyInvert(feed_t& feed)
+{
+  DataPropertyBranch_t* tmp = onto_->data_property_graph_.findBranch(feed.on_);
+  if(feed.action_ == action_add)
+    return onto_->data_property_graph_.addInvert(tmp, feed.prop_, feed.from_);
+  else
+    return false;
+}
+
+bool Feeder::modifyObjectProperty(feed_t& feed)
+{
+  ObjectPropertyBranch_t* tmp = onto_->object_property_graph_.findBranch(feed.from_);
+  if(feed.action_ == action_add)
+    return onto_->object_property_graph_.add(tmp, feed.prop_, feed.on_);
+  else
+    return onto_->object_property_graph_.remove(tmp, feed.prop_, feed.on_);
+}
+
+bool Feeder::modifyObjectPropertyInvert(feed_t& feed)
+{
+  ObjectPropertyBranch_t* tmp = onto_->object_property_graph_.findBranch(feed.on_);
+  if(feed.action_ == action_add)
+    return onto_->object_property_graph_.addInvert(tmp, feed.prop_, feed.from_);
+  else
+    return false;
 }

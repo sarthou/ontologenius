@@ -239,7 +239,7 @@ std::unordered_set<std::string> DataPropertyGraph::select(std::unordered_set<std
   return res;
 }
 
-void DataPropertyGraph::add(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool DataPropertyGraph::add(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
 {
   if(relation != "")
   {
@@ -259,10 +259,36 @@ void DataPropertyGraph::add(DataPropertyBranch_t* prop, std::string& relation, s
       prop->updated_ = true;
       tmp->updated_ = true;
     }
+    else
+      return false;
   }
+  else
+    return false;
+  return true;
 }
 
-void DataPropertyGraph::remove(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool DataPropertyGraph::addInvert(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
 {
+  if(relation != "")
+  {
+    if((relation == "+") || (relation == "isA"))
+    {
+      DataPropertyBranch_t* tmp = create(data);
+      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+      tmp->setSteady_mother(prop);
+      prop->setSteady_child(tmp);
+      prop->updated_ = true;
+      tmp->updated_ = true;
+    }
+    else
+      return false;
+  }
+  else
+    return false;
+  return true;
+}
 
+bool DataPropertyGraph::remove(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+{
+  return false;
 }

@@ -339,3 +339,57 @@ std::unordered_set<std::string> ObjectPropertyGraph::select(std::unordered_set<s
   }
   return res;
 }
+
+bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data)
+{
+  if(relation != "")
+  {
+    if(relation[0] == '@')
+    {
+      relation = relation.substr(1);
+      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+      prop->setSteady_dictionary(relation, data);
+      prop->updated_ = true;
+    }
+    else if((relation == "+") || (relation == "isA"))
+    {
+      ObjectPropertyBranch_t* tmp = create(data);
+      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+      prop->setSteady_mother(tmp);
+      tmp->setSteady_child(prop);
+      prop->updated_ = true;
+      tmp->updated_ = true;
+    }
+    else
+      return false;
+  }
+  else
+    return false;
+  return true;
+}
+
+bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data)
+{
+  if(relation != "")
+  {
+    if((relation == "+") || (relation == "isA"))
+    {
+      ObjectPropertyBranch_t* tmp = create(data);
+      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+      tmp->setSteady_mother(prop);
+      prop->setSteady_child(tmp);
+      prop->updated_ = true;
+      tmp->updated_ = true;
+    }
+    else
+      return false;
+  }
+  else
+    return false;
+  return true;
+}
+
+bool ObjectPropertyGraph::remove(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data)
+{
+  return false;
+}

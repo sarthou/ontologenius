@@ -51,6 +51,10 @@ public:
   std::unordered_set<std::string> getRange(const std::string& value);
   std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& selector);
 
+  bool add(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
+  bool addInvert(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
+  bool remove(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
+
 private:
   ClassGraph* class_graph_;
 

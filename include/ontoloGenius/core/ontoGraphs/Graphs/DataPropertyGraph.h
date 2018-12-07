@@ -48,8 +48,9 @@ public:
   std::unordered_set<std::string> getRange(const std::string& value);
   std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& selector);
 
-  void add(DataPropertyBranch_t* prop, std::string& relation, std::string& data);
-  void remove(DataPropertyBranch_t* prop, std::string& relation, std::string& data);
+  bool add(DataPropertyBranch_t* prop, std::string& relation, std::string& data);
+  bool addInvert(DataPropertyBranch_t* prop, std::string& relation, std::string& data);
+  bool remove(DataPropertyBranch_t* prop, std::string& relation, std::string& data);
 
 private:
   ClassGraph* class_graph_;
