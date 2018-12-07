@@ -42,7 +42,7 @@ public:
 
   std::unordered_set<B*> getDownPtr(B* branch, int depth = -1);
   void getDownPtr(B* branch, std::unordered_set<B*>& res, int depth = -1, unsigned int current_depth = 0);
-  std::unordered_set<B*> getUpPtr(B* branch, int depth = -1);
+  std::unordered_set<B*> getUpPtrSafe(B* branch, int depth = -1);
   void getUpPtr(B* branch, std::unordered_set<B*>& res, int depth = -1, unsigned int current_depth = 0);
 
   std::vector<B*> get()
@@ -382,9 +382,10 @@ void OntoGraph<B>::getDownPtr(B* branch, std::unordered_set<B*>& res, int depth,
 }
 
 template <typename B>
-std::unordered_set<B*> OntoGraph<B>::getUpPtr(B* branch, int depth)
+std::unordered_set<B*> OntoGraph<B>::getUpPtrSafe(B* branch, int depth)
 {
   std::unordered_set<B*> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   getUpPtr(branch, res, depth);
   return res;
 }
@@ -397,7 +398,6 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res, int depth, u
     current_depth++;
     res.insert(branch);
 
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
     size_t size = branch->mothers_.size();
     for(size_t i = 0; i < size; i++)
       getUpPtr(branch->mothers_[i], res, depth, current_depth);

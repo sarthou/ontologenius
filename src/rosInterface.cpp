@@ -448,6 +448,7 @@ int main(int argc, char** argv)
 
   onto = new Ontology();
   arguers.link(onto);
+  feeder.link(onto);
 
   std::string language = std::string(argv[1]);
   std::cout << "language " << language << std::endl;

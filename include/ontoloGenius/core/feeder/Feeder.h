@@ -12,6 +12,7 @@ public:
 
   void store(std::string feed) { feed_storage_.add(feed); }
   void run();
+  void link(Ontology* onto) {onto_ = onto; }
 
 private:
   FeedStorage feed_storage_;

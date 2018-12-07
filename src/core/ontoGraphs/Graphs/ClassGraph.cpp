@@ -379,7 +379,7 @@ std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& _
   ClassBranch_t* class_branch = container_.find(_class);
   if(class_branch != nullptr)
   {
-    std::unordered_set<ClassBranch_t*> up_classes = getUpPtr(class_branch);
+    std::unordered_set<ClassBranch_t*> up_classes = getUpPtrSafe(class_branch);
     for(ClassBranch_t* it : up_classes)
       getRelationFrom(it, res, depth);
   }
@@ -566,7 +566,7 @@ void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<std::stri
       }
     }
 
-    std::unordered_set<ClassBranch_t*> up_set = getUpPtr(class_branch, 1);
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_branch, 1);
     for(ClassBranch_t* up : up_set)
       if(up != class_branch)
         getRelationWith(up, properties, depths, res, depth);
@@ -758,7 +758,7 @@ void ClassGraph::getOn(ClassBranch_t* class_branch, std::unordered_set<uint32_t>
       }
 
     current_depth++;
-    std::unordered_set<ClassBranch_t*> up_set = getUpPtr(class_branch, 1);
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_branch, 1);
     for(ClassBranch_t* up : up_set)
       if(up != class_branch)
         getOn(up, object_properties, data_properties, res, current_depth, found_depth);
