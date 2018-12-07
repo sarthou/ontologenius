@@ -18,8 +18,9 @@ private:
   FeedStorage feed_storage_;
   Ontology* onto_;
 
-  void addDelClass(action_t action, std::string name);
-  void addDelIndiv(action_t action, std::string name);
+  void addDelClass(action_t& action, std::string& name);
+  void addDelIndiv(action_t& action, std::string& name);
+  void modifyDataProperty(feed_t& feed);
 };
 
 #endif

@@ -883,7 +883,7 @@ void ClassGraph::deleteClass(ClassBranch_t* _class)
   {
     //std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-    
+
     // erase indiv from parents
     std::unordered_set<ClassBranch_t*> up_set;
     getUpPtr(_class, up_set, 1);

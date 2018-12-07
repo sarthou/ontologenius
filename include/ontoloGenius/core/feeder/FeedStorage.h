@@ -25,7 +25,7 @@ class FeedStorage
 public:
   FeedStorage();
 
-  void add(std::string regex);
+  void add(std::string& regex);
   std::queue<feed_t> get();
 
 private:

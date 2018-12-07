@@ -18,11 +18,18 @@ void Feeder::run()
       else
         addDelIndiv(feed.action_, feed.from_);
     }
+    else if(feed.on_ != "")
+    {
+      if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
+        modifyDataProperty(feed);
+      /*else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
+      else if(onto_->class_graph_.findBranch(feed.from_) != nullptr)*/
+    }
     std::cout << feed.from_ << " : " << feed.prop_ << " : " << feed.on_ << std::endl;
   }
 }
 
-void Feeder::addDelClass(action_t action, std::string name)
+void Feeder::addDelClass(action_t& action, std::string& name)
 {
   if(action == action_add)
     onto_->class_graph_.create(name);
@@ -33,7 +40,7 @@ void Feeder::addDelClass(action_t action, std::string name)
   }
 }
 
-void Feeder::addDelIndiv(action_t action, std::string name)
+void Feeder::addDelIndiv(action_t& action, std::string& name)
 {
   if(action == action_add)
     onto_->individual_graph_.create(name);
@@ -42,4 +49,13 @@ void Feeder::addDelIndiv(action_t action, std::string name)
     IndividualBranch_t* tmp = onto_->individual_graph_.findBranch(name);
     onto_->individual_graph_.deleteIndividual(tmp);
   }
+}
+
+void Feeder::modifyDataProperty(feed_t& feed)
+{
+  DataPropertyBranch_t* tmp = onto_->data_property_graph_.findBranch(feed.from_);
+  if(feed.action_ == action_add)
+    onto_->data_property_graph_.add(tmp, feed.prop_, feed.on_);
+  else
+    onto_->data_property_graph_.remove(tmp, feed.prop_, feed.on_);
 }

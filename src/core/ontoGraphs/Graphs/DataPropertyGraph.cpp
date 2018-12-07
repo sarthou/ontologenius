@@ -238,3 +238,31 @@ std::unordered_set<std::string> DataPropertyGraph::select(std::unordered_set<std
   }
   return res;
 }
+
+void DataPropertyGraph::add(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+{
+  if(relation != "")
+  {
+    if(relation[0] == '@')
+    {
+      relation = relation.substr(1);
+      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+      prop->setSteady_dictionary(relation, data);
+      prop->updated_ = true;
+    }
+    else if((relation == "+") || (relation == "isA"))
+    {
+      DataPropertyBranch_t* tmp = create(data);
+      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+      prop->setSteady_mother(tmp);
+      tmp->setSteady_child(prop);
+      prop->updated_ = true;
+      tmp->updated_ = true;
+    }
+  }
+}
+
+void DataPropertyGraph::remove(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+{
+
+}
