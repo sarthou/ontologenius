@@ -63,8 +63,11 @@ public:
 
   std::unordered_set<std::string> getDownIndividual(ClassBranch_t* branch);
   void getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res);
-  std::unordered_set<IndividualBranch_t*> getDownIndividualPtr(ClassBranch_t* branch);
-  void getDownIndividualPtr(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res);
+  std::unordered_set<IndividualBranch_t*> getDownIndividualPtrSafe(ClassBranch_t* branch);
+  void getDownIndividualPtrSafe(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res);
+
+  void deleteClass(ClassBranch_t* _class);
+  int deletePropertiesOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect);
 
 private:
   ObjectPropertyGraph* object_property_graph_;

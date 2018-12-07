@@ -420,7 +420,7 @@ void ClassGraph::getRelatedFrom(std::unordered_set<uint32_t>& object_properties,
       for (uint32_t id : object_properties)
         if(all_branchs_[i]->object_properties_name_[prop_i]->get() == id)
         {
-          std::unordered_set<ClassBranch_t*> tmp = getDownPtr(all_branchs_[i]);
+          std::unordered_set<ClassBranch_t*> tmp = getDownPtrSafe(all_branchs_[i]);
           for(auto tmp_i : tmp)
             res.insert(tmp_i->value());
         }
@@ -429,7 +429,7 @@ void ClassGraph::getRelatedFrom(std::unordered_set<uint32_t>& object_properties,
       for (uint32_t id : data_properties)
         if(all_branchs_[i]->data_properties_name_[prop_i]->get() == id)
         {
-          std::unordered_set<ClassBranch_t*> tmp = getDownPtr(all_branchs_[i]);
+          std::unordered_set<ClassBranch_t*> tmp = getDownPtrSafe(all_branchs_[i]);
           for(auto tmp_i : tmp)
             res.insert(tmp_i->value());
         }
@@ -606,7 +606,7 @@ void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::stri
   {
     res.insert(class_branch->value());
 
-    std::unordered_set<ClassBranch_t*> down_set = getDownPtr(class_branch, 1);
+    std::unordered_set<ClassBranch_t*> down_set = getDownPtrSafe(class_branch, 1);
     for(ClassBranch_t* down : down_set)
       if(down != class_branch)
       {
@@ -635,7 +635,7 @@ void ClassGraph::objectGetRelatedWith(ClassBranch_t* class_branch, const std::st
   {
     res.insert(class_branch->value());
 
-    std::unordered_set<ClassBranch_t*> down_set = getDownPtr(class_branch, 1);
+    std::unordered_set<ClassBranch_t*> down_set = getDownPtrSafe(class_branch, 1);
     for(ClassBranch_t* down : down_set)
       if(down != class_branch)
       {
@@ -859,7 +859,7 @@ void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<std
     res.insert(indiv->value());
 }
 
-std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtr(ClassBranch_t* branch)
+std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtrSafe(ClassBranch_t* branch)
 {
   std::unordered_set<IndividualBranch_t*> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
@@ -870,9 +870,105 @@ std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtr(ClassBr
   return res;
 }
 
-void ClassGraph::getDownIndividualPtr(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res)
+void ClassGraph::getDownIndividualPtrSafe(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
   for(auto indiv : branch->individual_childs_)
     res.insert(indiv);
+}
+
+void ClassGraph::deleteClass(ClassBranch_t* _class)
+{
+  if(_class != nullptr)
+  {
+    //std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    
+    // erase indiv from parents
+    std::unordered_set<ClassBranch_t*> up_set;
+    getUpPtr(_class, up_set, 1);
+    for(auto up : up_set)
+    {
+      for(size_t i = 0; i < up->childs_.size();)
+      {
+        if(up->childs_[i] == _class)
+          up->childs_.erase(up->childs_.begin() + i);
+        else
+          i++;
+      }
+    }
+
+    std::unordered_set<ClassBranch_t*> down_set;
+    getDownPtr(_class, down_set, 1);
+    for(auto down : down_set)
+    {
+      for(size_t i = 0; i < down->mothers_.size();)
+      {
+        if(down->mothers_[i] == _class)
+          down->mothers_.erase(down->mothers_.begin() + i);
+        else
+          i++;
+      }
+    }
+
+    for(auto indiv : _class->individual_childs_)
+    {
+      for(size_t i = 0; i < indiv->is_a_.size();)
+      {
+        if(indiv->is_a_[i] == _class)
+          indiv->is_a_.erase(indiv->is_a_.begin() + i);
+        else
+          i++;
+      }
+    }
+
+    //erase properties applied to _class
+    int branchs_index = deletePropertiesOnClass(_class, branchs_);
+    int roots_index = deletePropertiesOnClass(_class, roots_);
+
+    //delete indiv
+    if(branchs_index > 0)
+      branchs_.erase(branchs_.begin() + branchs_index);
+    if(roots_index > 0)
+      roots_.erase(roots_.begin() + roots_index);
+    for(size_t i = 0 ; i < all_branchs_.size(); i++)
+      if(all_branchs_[i] == _class)
+      {
+        all_branchs_.erase(all_branchs_.begin() + i);
+        break;
+      }
+    container_.erase(_class);
+    delete _class;
+  }
+}
+
+int ClassGraph::deletePropertiesOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect)
+{
+  int class_index = -1;
+  for(size_t class_i = 0; class_i < vect.size(); class_i++)
+  {
+    if(vect[class_i] == _class)
+      class_index = class_i;
+
+    for(size_t i = 0; i < vect[class_i]->object_properties_on_.size();)
+      if(vect[class_i]->object_properties_on_[i] == _class)
+      {
+        vect[class_i]->object_properties_on_.erase(vect[class_i]->object_properties_on_.begin() + i);
+        vect[class_i]->object_properties_name_.erase(vect[class_i]->object_properties_name_.begin() + i);
+        vect[class_i]->object_properties_deduced_.erase(vect[class_i]->object_properties_deduced_.begin() + i);
+      }
+      else
+        i++;
+
+    for(size_t i = 0; i < vect[class_i]->steady_.object_properties_on_.size();)
+      if(vect[class_i]->steady_.object_properties_on_[i] == _class)
+      {
+        vect[class_i]->steady_.object_properties_on_.erase(vect[class_i]->steady_.object_properties_on_.begin() + i);
+        vect[class_i]->steady_.object_properties_name_.erase(vect[class_i]->steady_.object_properties_name_.begin() + i);
+        vect[class_i]->steady_.object_properties_deduced_.erase(vect[class_i]->steady_.object_properties_deduced_.begin() + i);
+      }
+      else
+        i++;
+  }
+  return class_index;
 }

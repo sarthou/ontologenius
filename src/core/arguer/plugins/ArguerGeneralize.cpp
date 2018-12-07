@@ -15,14 +15,14 @@ void ArguerGeneralize::periodicReason()
   {
     for(size_t i = 0; i < class_per_period_; i++)
     {
-      std::unordered_set<ClassBranch_t*> down_set = ontology_->class_graph_.getDownPtr(classes[current_id_], 1);
+      std::unordered_set<ClassBranch_t*> down_set = ontology_->class_graph_.getDownPtrSafe(classes[current_id_], 1);
       down_set.erase(classes[current_id_]);
 
-      std::unordered_set<IndividualBranch_t*> indiv_down_set = ontology_->class_graph_.getDownIndividualPtr(classes[current_id_]);
+      std::unordered_set<IndividualBranch_t*> indiv_down_set = ontology_->class_graph_.getDownIndividualPtrSafe(classes[current_id_]);
 
       std::lock_guard<std::shared_timed_mutex> lock_indiv(ontology_->individual_graph_.mutex_);
       std::lock_guard<std::shared_timed_mutex> lock(ontology_->class_graph_.mutex_);
-      
+
       PropertiesCounter<DataPropertyBranch_t*, std::string> data_counter;
       PropertiesCounter<ObjectPropertyBranch_t*, ClassBranch_t*> object_counter;
 

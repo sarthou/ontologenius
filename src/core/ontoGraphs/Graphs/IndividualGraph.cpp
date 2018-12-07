@@ -1014,7 +1014,7 @@ std::unordered_set<std::string> IndividualGraph::getType(const std::string& clas
   ClassBranch_t* class_branch = class_graph_->container_.find(class_selector);
   if(class_branch != nullptr)
   {
-    std::unordered_set<ClassBranch_t*> down_set = class_graph_->getDownPtr(class_branch);
+    std::unordered_set<ClassBranch_t*> down_set = class_graph_->getDownPtrSafe(class_branch);
     for(auto down : down_set)
       class_graph_->getDownIndividual(down, res);
   }

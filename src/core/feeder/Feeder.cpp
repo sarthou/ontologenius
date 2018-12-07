@@ -29,6 +29,7 @@ void Feeder::addDelClass(action_t action, std::string name)
   else
   {
     ClassBranch_t* tmp = onto_->class_graph_.findBranch(name);
+    onto_->class_graph_.deleteClass(tmp);
   }
 }
 
