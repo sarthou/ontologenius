@@ -5,8 +5,9 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
-ClassGraph::ClassGraph(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
+ClassGraph::ClassGraph(IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
 {
+  individual_graph_ = individual_graph;
   object_property_graph_ = object_property_graph;
   data_property_graph_ = data_property_graph;
 }
@@ -971,4 +972,43 @@ int ClassGraph::deletePropertiesOnClass(ClassBranch_t* _class, std::vector<Class
         i++;
   }
   return class_index;
+}
+
+void ClassGraph::addLang(std::string& _class, std::string& lang, std::string& name)
+{
+  ClassBranch_t* branch = findBranch(_class);
+  if(branch != nullptr)
+  {
+    lang = lang.substr(1);
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    branch->setSteady_dictionary(lang, name);
+    branch->updated_ = true;
+  }
+}
+
+void ClassGraph::addInheritage(std::string& class_base, std::string& class_inherited)
+{
+  ClassBranch_t* branch = findBranch(class_base);
+  if(branch != nullptr)
+  {
+    ClassBranch_t* inherited = findBranch(class_inherited);
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    if(inherited == nullptr)
+    {
+      IndividualBranch_t* tmp = individual_graph_->findBranch(class_inherited);
+      if(tmp != nullptr)
+        inherited = individual_graph_->upgradeToBranch(tmp);
+      else
+      {
+        inherited = new ClassBranch_t(class_inherited);
+        container_.insert(inherited);
+        roots_.push_back(inherited);
+        all_branchs_.push_back(inherited);
+      }
+    }
+    branch->setSteady_mother(inherited);
+    inherited->setSteady_child(branch);
+    branch->updated_ = true;
+    inherited->updated_ = true;
+  }
 }

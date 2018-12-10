@@ -39,7 +39,7 @@ class ClassGraph : public OntoGraph<ClassBranch_t>
   friend DataPropertyGraph;
   friend IndividualGraph;
 public:
-  ClassGraph(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
+  ClassGraph(IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   ~ClassGraph() {}
 
   void add(const std::string& value, ObjectVectors_t& object_vector);
@@ -68,10 +68,13 @@ public:
 
   void deleteClass(ClassBranch_t* _class);
   int deletePropertiesOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect);
+  void addLang(std::string& _class, std::string& lang, std::string& name);
+  void addInheritage(std::string& class_base, std::string& class_inherited);
 
 private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
+  IndividualGraph* individual_graph_;
 
   void addObjectPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
   void addObjectPropertyOn(ClassBranch_t* me, std::string& name, bool deduced);

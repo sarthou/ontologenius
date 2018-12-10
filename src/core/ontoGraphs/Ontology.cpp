@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-Ontology::Ontology(std::string language) : class_graph_(&object_property_graph_, &data_property_graph_),
+Ontology::Ontology(std::string language) : class_graph_(&individual_graph_, &object_property_graph_, &data_property_graph_),
                                            object_property_graph_(&class_graph_),
                                            data_property_graph_(&class_graph_),
                                            individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),

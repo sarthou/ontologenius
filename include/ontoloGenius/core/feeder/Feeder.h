@@ -24,6 +24,8 @@ private:
   bool modifyDataPropertyInvert(feed_t& feed);
   bool modifyObjectProperty(feed_t& feed);
   bool modifyObjectPropertyInvert(feed_t& feed);
+  bool classIndividualIsA(feed_t& feed);
+  bool classIndividualLangage(feed_t& feed);
 };
 
 #endif

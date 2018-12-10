@@ -1041,6 +1041,43 @@ std::unordered_set<std::string> IndividualGraph::set2set(std::unordered_set<Indi
   return res;
 }
 
+ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
+{
+  if(indiv != nullptr)
+  {
+    ClassBranch_t* class_branch = new ClassBranch_t(indiv->value());
+    class_branch->mothers_ = indiv->is_a_;
+    class_branch->data_properties_name_ = indiv->data_properties_name_;
+    class_branch->data_properties_data_ = indiv->data_properties_data_;
+    class_branch->data_properties_deduced_ = indiv->data_properties_deduced_;
+
+    class_branch->steady_.mothers_ = indiv->steady_.is_a_;
+    class_branch->steady_.data_properties_name_ = indiv->steady_.data_properties_name_;
+    class_branch->steady_.data_properties_data_ = indiv->steady_.data_properties_data_;
+    class_branch->steady_.data_properties_deduced_ = indiv->steady_.data_properties_deduced_;
+
+    class_graph_->container_.insert(class_branch);
+    class_graph_->roots_.push_back(class_branch);
+    class_graph_->all_branchs_.push_back(class_branch);
+    deleteIndividual(indiv);
+
+    return class_branch;
+  }
+  return nullptr;
+}
+
+void IndividualGraph::createIndividual(std::string& name)
+{
+  IndividualBranch_t* indiv = findBranch(name);
+  if(indiv == nullptr)
+  {
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    indiv = new IndividualBranch_t(name);
+    container_.insert(indiv);
+    individuals_.push_back(indiv);
+  }
+}
+
 void IndividualGraph::deleteIndividual(IndividualBranch_t* indiv)
 {
   if(indiv != nullptr)
@@ -1095,5 +1132,90 @@ void IndividualGraph::deleteIndividual(IndividualBranch_t* indiv)
     individuals_.erase(individuals_.begin() + indiv_index);
     container_.erase(indiv);
     delete indiv;
+  }
+}
+
+void IndividualGraph::addLang(std::string& indiv, std::string& lang, std::string& name)
+{
+  IndividualBranch_t* branch = findBranch(indiv);
+  if(branch != nullptr)
+  {
+    lang = lang.substr(1);
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    branch->setSteady_dictionary(lang, name);
+    branch->updated_ = true;
+  }
+}
+
+void IndividualGraph::addInheritage(std::string& indiv, std::string& class_inherited)
+{
+  IndividualBranch_t* branch = findBranch(indiv);
+  if(branch != nullptr)
+  {
+    ClassBranch_t* inherited = class_graph_->findBranch(class_inherited);
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+    if(inherited == nullptr)
+    {
+      IndividualBranch_t* tmp = findBranch(class_inherited);
+      if(tmp != nullptr)
+        inherited = upgradeToBranch(tmp);
+      else
+      {
+        inherited = new ClassBranch_t(class_inherited);
+        class_graph_->container_.insert(inherited);
+        class_graph_->roots_.push_back(inherited);
+        class_graph_->all_branchs_.push_back(inherited);
+      }
+    }
+    branch->setSteady_is_a(inherited);
+    inherited->setSteady_individual_child(branch);
+    branch->updated_ = true;
+    inherited->updated_ = true;
+  }
+}
+
+void IndividualGraph::addInheritageInvert(std::string& indiv, std::string& class_inherited)
+{
+  ClassBranch_t* inherited = class_graph_->findBranch(class_inherited);
+  if(inherited != nullptr)
+  {
+    IndividualBranch_t* branch = findBranch(indiv);
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+    if(branch == nullptr)
+    {
+      branch = new IndividualBranch_t(indiv);
+      container_.insert(branch);
+      individuals_.push_back(branch);
+    }
+
+    branch->setSteady_is_a(inherited);
+    inherited->setSteady_individual_child(branch);
+    branch->updated_ = true;
+    inherited->updated_ = true;
+  }
+}
+
+void IndividualGraph::addInheritageInvertUpgrade(std::string& indiv, std::string& class_inherited)
+{
+  IndividualBranch_t* tmp = findBranch(class_inherited);
+  if(tmp != nullptr)
+  {
+    ClassBranch_t* inherited = upgradeToBranch(tmp);
+    IndividualBranch_t* branch = findBranch(indiv);
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+    if(branch == nullptr)
+    {
+      branch = new IndividualBranch_t(indiv);
+      container_.insert(branch);
+      individuals_.push_back(branch);
+    }
+
+    branch->setSteady_is_a(inherited);
+    inherited->setSteady_individual_child(branch);
+    branch->updated_ = true;
+    inherited->updated_ = true;
   }
 }

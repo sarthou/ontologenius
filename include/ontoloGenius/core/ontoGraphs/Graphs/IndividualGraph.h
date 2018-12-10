@@ -73,7 +73,13 @@ public:
   std::unordered_set<std::string> find(const std::string& value);
   std::unordered_set<std::string> getType(const std::string& class_selector);
 
+  ClassBranch_t* upgradeToBranch(IndividualBranch_t* indiv);
+  void createIndividual(std::string& name);
   void deleteIndividual(IndividualBranch_t* indiv);
+  void addLang(std::string& indiv, std::string& lang, std::string& name);
+  void addInheritage(std::string& indiv, std::string& class_inherited);
+  void addInheritageInvert(std::string& indiv, std::string& class_inherited);
+  void addInheritageInvertUpgrade(std::string& indiv, std::string& class_inherited);
 
 private:
   ClassGraph* class_graph_;

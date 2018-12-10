@@ -29,6 +29,10 @@ void Feeder::run()
         done = modifyObjectProperty(feed);
       else if(onto_->object_property_graph_.findBranch(feed.on_) != nullptr)
         done = modifyObjectPropertyInvert(feed);
+      else if((feed.prop_ == "+") || (feed.prop_ == "isA"))
+        classIndividualIsA(feed);
+      else if(feed.prop_[0] == '@')
+        classIndividualLangage(feed);
     }
     std::cout << feed.from_ << " : " << feed.prop_ << " : " << feed.on_ << std::endl;
   }
@@ -48,7 +52,7 @@ void Feeder::addDelClass(action_t& action, std::string& name)
 void Feeder::addDelIndiv(action_t& action, std::string& name)
 {
   if(action == action_add)
-    onto_->individual_graph_.create(name);
+    onto_->individual_graph_.createIndividual(name);
   else
   {
     IndividualBranch_t* tmp = onto_->individual_graph_.findBranch(name);
@@ -90,4 +94,30 @@ bool Feeder::modifyObjectPropertyInvert(feed_t& feed)
     return onto_->object_property_graph_.addInvert(tmp, feed.prop_, feed.from_);
   else
     return false;
+}
+
+bool Feeder::classIndividualIsA(feed_t& feed)
+{
+  if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+    onto_->class_graph_.addInheritage(feed.from_, feed.on_);
+  else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+    onto_->individual_graph_.addInheritage(feed.from_, feed.on_);
+  else if(onto_->class_graph_.findBranch(feed.on_) != nullptr)
+    onto_->individual_graph_.addInheritageInvert(feed.from_, feed.on_);
+  else if(onto_->individual_graph_.findBranch(feed.on_) != nullptr)
+    onto_->individual_graph_.addInheritageInvertUpgrade(feed.from_, feed.on_);
+  else
+    return false;
+  return true;
+}
+
+bool Feeder::classIndividualLangage(feed_t& feed)
+{
+  if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+    onto_->class_graph_.addLang(feed.from_, feed.prop_, feed.on_);
+  else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+    onto_->individual_graph_.addLang(feed.from_, feed.prop_, feed.on_);
+  else
+    return false;
+  return true;
 }
