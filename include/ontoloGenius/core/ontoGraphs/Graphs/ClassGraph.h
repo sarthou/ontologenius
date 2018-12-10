@@ -84,6 +84,9 @@ private:
   void addDataPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
   void addDataPropertyData(ClassBranch_t* me, data_t& data, bool deduced);
 
+  void setSteadyObjectProperty(ClassBranch_t* branch_from, ObjectPropertyBranch_t* branch_prop, ClassBranch_t* branch_on);
+  void setSteadyDataProperty(ClassBranch_t* branch_from, DataPropertyBranch_t* branch_prop, data_t data);
+
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth);
   void getRelatedFrom(std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res);
   void getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth);

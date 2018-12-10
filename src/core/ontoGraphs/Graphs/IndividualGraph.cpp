@@ -1059,7 +1059,7 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
     class_graph_->container_.insert(class_branch);
     class_graph_->roots_.push_back(class_branch);
     class_graph_->all_branchs_.push_back(class_branch);
-    deleteIndividual(indiv);
+    redirectDeleteIndividual(indiv, class_branch);
 
     return class_branch;
   }
@@ -1095,6 +1095,91 @@ void IndividualGraph::deleteIndividual(IndividualBranch_t* indiv)
       {
         if(up->individual_childs_[i] == indiv)
           up->individual_childs_.erase(up->individual_childs_.begin() + i);
+        else
+          i++;
+      }
+    }
+
+    for(auto up : up_set)
+    {
+      for(size_t i = 0; i < up->steady_.individual_childs_.size();)
+      {
+        if(up->steady_.individual_childs_[i] == indiv)
+          up->steady_.individual_childs_.erase(up->steady_.individual_childs_.begin() + i);
+        else
+          i++;
+      }
+    }
+
+    //erase properties applied to indiv
+    size_t indiv_index = 0;
+    for(size_t indiv_i = 0; indiv_i < individuals_.size(); indiv_i++)
+    {
+      if(individuals_[indiv_i] == indiv)
+        indiv_index = indiv_i;
+
+      for(size_t i = 0; i < individuals_[indiv_i]->object_properties_on_.size();)
+        if(individuals_[indiv_i]->object_properties_on_[i] == indiv)
+        {
+          individuals_[indiv_i]->object_properties_on_.erase(individuals_[indiv_i]->object_properties_on_.begin() + i);
+          individuals_[indiv_i]->object_properties_name_.erase(individuals_[indiv_i]->object_properties_name_.begin() + i);
+          individuals_[indiv_i]->object_properties_deduced_.erase(individuals_[indiv_i]->object_properties_deduced_.begin() + i);
+        }
+        else
+          i++;
+
+      for(size_t i = 0; i < individuals_[indiv_i]->steady_.object_properties_on_.size();)
+        if(individuals_[indiv_i]->steady_.object_properties_on_[i] == indiv)
+        {
+          individuals_[indiv_i]->steady_.object_properties_on_.erase(individuals_[indiv_i]->steady_.object_properties_on_.begin() + i);
+          individuals_[indiv_i]->steady_.object_properties_name_.erase(individuals_[indiv_i]->steady_.object_properties_name_.begin() + i);
+          individuals_[indiv_i]->steady_.object_properties_deduced_.erase(individuals_[indiv_i]->steady_.object_properties_deduced_.begin() + i);
+        }
+        else
+          i++;
+    }
+
+    //delete indiv
+    individuals_.erase(individuals_.begin() + indiv_index);
+    container_.erase(indiv);
+    delete indiv;
+  }
+}
+
+void IndividualGraph::redirectDeleteIndividual(IndividualBranch_t* indiv, ClassBranch_t* _class)
+{
+  if(indiv != nullptr)
+  {
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+
+    // erase indiv from parents
+    std::unordered_set<ClassBranch_t*> up_set;
+    getUpPtr(indiv, up_set, 1);
+
+    for(auto up : up_set)
+    {
+      for(size_t i = 0; i < up->individual_childs_.size();)
+      {
+        if(up->individual_childs_[i] == indiv)
+        {
+          up->individual_childs_.erase(up->individual_childs_.begin() + i);
+          up->childs_.push_back(_class);
+        }
+        else
+          i++;
+      }
+    }
+
+    for(auto up : up_set)
+    {
+      for(size_t i = 0; i < up->steady_.individual_childs_.size();)
+      {
+        if(up->steady_.individual_childs_[i] == indiv)
+        {
+          up->steady_.individual_childs_.erase(up->steady_.individual_childs_.begin() + i);
+          up->steady_.childs_.push_back(_class);
+        }
         else
           i++;
       }
@@ -1157,7 +1242,7 @@ void IndividualGraph::addInheritage(std::string& indiv, std::string& class_inher
     std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
     if(inherited == nullptr)
     {
-      IndividualBranch_t* tmp = findBranch(class_inherited);
+      IndividualBranch_t* tmp = findBranchUnsafe(class_inherited);
       if(tmp != nullptr)
         inherited = upgradeToBranch(tmp);
       else

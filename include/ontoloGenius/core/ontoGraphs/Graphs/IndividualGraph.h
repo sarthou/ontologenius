@@ -76,6 +76,7 @@ public:
   ClassBranch_t* upgradeToBranch(IndividualBranch_t* indiv);
   void createIndividual(std::string& name);
   void deleteIndividual(IndividualBranch_t* indiv);
+  void redirectDeleteIndividual(IndividualBranch_t* indiv, ClassBranch_t* _class);
   void addLang(std::string& indiv, std::string& lang, std::string& name);
   void addInheritage(std::string& indiv, std::string& class_inherited);
   void addInheritageInvert(std::string& indiv, std::string& class_inherited);

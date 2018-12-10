@@ -13,6 +13,7 @@ void ArguerGeneralize::periodicReason()
   std::vector<ClassBranch_t*> classes = ontology_->class_graph_.get();
   if(classes.size() > 0)
   {
+    size_t first_id = current_id_;
     for(size_t i = 0; i < class_per_period_; i++)
     {
       std::unordered_set<ClassBranch_t*> down_set = ontology_->class_graph_.getDownPtrSafe(classes[current_id_], 1);
@@ -54,6 +55,8 @@ void ArguerGeneralize::periodicReason()
       current_id_++;
       if(current_id_ >= classes.size())
         current_id_ = 0;
+      if(current_id_ == first_id)
+        break;
     }
   }
 }

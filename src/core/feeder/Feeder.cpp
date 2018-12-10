@@ -108,6 +108,7 @@ bool Feeder::classIndividualIsA(feed_t& feed)
     onto_->individual_graph_.addInheritageInvert(feed.from_, feed.on_);
   else if(onto_->individual_graph_.findBranch(feed.on_) != nullptr)
     onto_->individual_graph_.addInheritageInvertUpgrade(feed.from_, feed.on_);
+
   else
     return false;
   return true;

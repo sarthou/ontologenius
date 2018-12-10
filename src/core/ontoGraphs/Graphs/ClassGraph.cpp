@@ -1046,9 +1046,7 @@ bool ClassGraph::addProperty(std::string& class_from, std::string& property, std
       object_property_graph_->all_branchs_.push_back(branch_prop);
     }
 
-    branch_from->setSteady_object_properties_name(branch_prop);
-    branch_from->setSteady_object_properties_on(branch_on);
-    branch_from->object_properties_deduced_.push_back(false);
+    setSteadyObjectProperty(branch_from, branch_prop, branch_on);
     return true;
   }
   return false;
@@ -1077,9 +1075,7 @@ bool ClassGraph::addProperty(std::string& class_from, std::string& property, std
       data_property_graph_->all_branchs_.push_back(branch_prop);
     }
 
-    branch_from->setSteady_data_properties_name(branch_prop);
-    branch_from->setSteady_data_properties_data(data_branch);
-    branch_from->data_properties_deduced_.push_back(false);
+    setSteadyDataProperty(branch_from, branch_prop, data_branch);
     return true;
   }
   return false;
@@ -1118,10 +1114,78 @@ bool ClassGraph::addPropertyInvert(std::string& class_from, std::string& propert
       object_property_graph_->all_branchs_.push_back(branch_prop);
     }
 
-    branch_from->setSteady_object_properties_name(branch_prop);
-    branch_from->setSteady_object_properties_on(branch_on);
-    branch_from->object_properties_deduced_.push_back(false);
+    setSteadyObjectProperty(branch_from, branch_prop, branch_on);
     return true;
   }
   return false;
+}
+
+void ClassGraph::setSteadyObjectProperty(ClassBranch_t* branch_from, ObjectPropertyBranch_t* branch_prop, ClassBranch_t* branch_on)
+{
+  bool found = false;
+  for(size_t i = 0; i < branch_from->steady_.object_properties_name_.size(); i++)
+    if(branch_from->steady_.object_properties_name_[i]->get() == branch_prop->get())
+    {
+      branch_from->steady_.object_properties_on_[i] = branch_on;
+      found = true;
+      break;
+    }
+
+  if(found == false)
+  {
+    branch_from->steady_.object_properties_name_.push_back(branch_prop);
+    branch_from->steady_.object_properties_on_.push_back(branch_on);
+  }
+
+  found = false;
+  for(size_t i = 0; i < branch_from->object_properties_name_.size(); i++)
+    if(branch_from->object_properties_name_[i]->get() == branch_prop->get())
+    {
+      branch_from->object_properties_on_[i] = branch_on;
+      branch_from->object_properties_deduced_[i] = false;
+      found = true;
+      break;
+    }
+
+  if(found == false)
+  {
+    branch_from->object_properties_name_.push_back(branch_prop);
+    branch_from->object_properties_on_.push_back(branch_on);
+    branch_from->object_properties_deduced_.push_back(false);
+  }
+}
+
+void ClassGraph::setSteadyDataProperty(ClassBranch_t* branch_from, DataPropertyBranch_t* branch_prop, data_t data)
+{
+  bool found = false;
+  for(size_t i = 0; i < branch_from->steady_.data_properties_name_.size(); i++)
+    if(branch_from->steady_.data_properties_name_[i]->get() == branch_prop->get())
+    {
+      branch_from->steady_.data_properties_data_[i] = data;
+      found = true;
+      break;
+    }
+
+  if(found == false)
+  {
+    branch_from->steady_.data_properties_name_.push_back(branch_prop);
+    branch_from->steady_.data_properties_data_.push_back(data);
+  }
+
+  found = false;
+  for(size_t i = 0; i < branch_from->data_properties_name_.size(); i++)
+    if(branch_from->data_properties_name_[i]->get() == branch_prop->get())
+    {
+      branch_from->data_properties_data_[i] = data;
+      branch_from->data_properties_deduced_[i] = false;
+      found = true;
+      break;
+    }
+
+  if(found == false)
+  {
+    branch_from->data_properties_name_.push_back(branch_prop);
+    branch_from->data_properties_data_.push_back(data);
+    branch_from->data_properties_deduced_.push_back(false);
+  }
 }
