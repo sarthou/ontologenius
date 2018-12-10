@@ -281,7 +281,7 @@ bool dataPropertyHandle(ontologenius::OntologeniusService::Request &req,
     else if(req.action == "getNames")
       res.values = onto->data_property_graph_.getNames(req.param);
     else if(req.action == "find")
-      set2vector(onto->object_property_graph_.find(req.param), res.values);
+      set2vector(onto->data_property_graph_.find(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
 
