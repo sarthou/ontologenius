@@ -30,9 +30,11 @@ void Feeder::run()
       else if(onto_->object_property_graph_.findBranch(feed.on_) != nullptr)
         done = modifyObjectPropertyInvert(feed);
       else if((feed.prop_ == "+") || (feed.prop_ == "isA"))
-        classIndividualIsA(feed);
+        done = classIndividualIsA(feed);
       else if(feed.prop_[0] == '@')
-        classIndividualLangage(feed);
+        done = classIndividualLangage(feed);
+      else
+        done = applyProperty(feed);
     }
     std::cout << feed.from_ << " : " << feed.prop_ << " : " << feed.on_ << std::endl;
   }
@@ -120,4 +122,42 @@ bool Feeder::classIndividualLangage(feed_t& feed)
   else
     return false;
   return true;
+}
+
+bool Feeder::applyProperty(feed_t& feed)
+{
+  size_t pose = feed.on_.find(":");
+  std::string type = "";
+  std::string data = "";
+  bool data_property = false;
+
+  if(pose != std::string::npos)
+  {
+    type = feed.on_.substr(0, pose);
+    data = feed.on_.substr(pose+1);
+    data_property = true;
+  }
+
+  if(feed.action_ == action_add)
+  {
+    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+    {
+      if(data_property == true)
+        return onto_->class_graph_.addProperty(feed.from_, feed.prop_, type, data);
+      else
+        return onto_->class_graph_.addProperty(feed.from_, feed.prop_, feed.on_);
+    }
+    else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+    {
+      if(data_property == true)
+        return onto_->individual_graph_.addProperty(feed.from_, feed.prop_, type, data);
+      else
+        return onto_->individual_graph_.addProperty(feed.from_, feed.prop_, feed.on_);
+    }
+    else if(onto_->class_graph_.findBranch(feed.on_) != nullptr)
+      return onto_->class_graph_.addPropertyInvert(feed.from_, feed.prop_, feed.on_);
+    else if(onto_->individual_graph_.findBranch(feed.on_) != nullptr)
+      return onto_->individual_graph_.addPropertyInvert(feed.from_, feed.prop_, feed.on_);
+  }
+  return false;
 }

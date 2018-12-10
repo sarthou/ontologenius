@@ -26,6 +26,7 @@ private:
   bool modifyObjectPropertyInvert(feed_t& feed);
   bool classIndividualIsA(feed_t& feed);
   bool classIndividualLangage(feed_t& feed);
+  bool applyProperty(feed_t& feed);
 };
 
 #endif

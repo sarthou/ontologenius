@@ -80,6 +80,9 @@ public:
   void addInheritage(std::string& indiv, std::string& class_inherited);
   void addInheritageInvert(std::string& indiv, std::string& class_inherited);
   void addInheritageInvertUpgrade(std::string& indiv, std::string& class_inherited);
+  bool addProperty(std::string& indiv_from, std::string& property, std::string& indiv_on);
+  bool addProperty(std::string& indiv_from, std::string& property, std::string& type, std::string& data);
+  bool addPropertyInvert(std::string& indiv_from, std::string& property, std::string& indiv_on);
 
 private:
   ClassGraph* class_graph_;

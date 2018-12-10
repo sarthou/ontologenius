@@ -70,6 +70,9 @@ public:
   int deletePropertiesOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect);
   void addLang(std::string& _class, std::string& lang, std::string& name);
   void addInheritage(std::string& class_base, std::string& class_inherited);
+  bool addProperty(std::string& class_from, std::string& property, std::string& class_on);
+  bool addProperty(std::string& class_from, std::string& property, std::string& type, std::string& data);
+  bool addPropertyInvert(std::string& class_from, std::string& property, std::string& class_on);
 
 private:
   ObjectPropertyGraph* object_property_graph_;

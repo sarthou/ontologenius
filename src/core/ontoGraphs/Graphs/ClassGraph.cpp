@@ -1012,3 +1012,116 @@ void ClassGraph::addInheritage(std::string& class_base, std::string& class_inher
     inherited->updated_ = true;
   }
 }
+
+bool ClassGraph::addProperty(std::string& class_from, std::string& property, std::string& class_on)
+{
+  ClassBranch_t* branch_from = findBranch(class_from);
+  if(branch_from != nullptr)
+  {
+    ClassBranch_t* branch_on = findBranch(class_on);
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    if(branch_on == nullptr)
+    {
+      IndividualBranch_t* test = individual_graph_->findBranch(class_on);
+      if(test != nullptr)
+        return false; // TODO ERR
+
+      branch_on = new ClassBranch_t(class_on);
+      container_.insert(branch_on);
+      roots_.push_back(branch_on);
+      all_branchs_.push_back(branch_on);
+    }
+
+    ObjectPropertyBranch_t* branch_prop = object_property_graph_->findBranch(property);
+    if(branch_prop == nullptr)
+    {
+      DataPropertyBranch_t* test = data_property_graph_->findBranch(property);
+      if(test != nullptr)
+        return false; // TODO ERR
+
+      std::lock_guard<std::shared_timed_mutex> lock_property(object_property_graph_->mutex_);
+      branch_prop = new ObjectPropertyBranch_t(property);
+      object_property_graph_->container_.insert(branch_prop);
+      object_property_graph_->roots_.push_back(branch_prop);
+      object_property_graph_->all_branchs_.push_back(branch_prop);
+    }
+
+    branch_from->setSteady_object_properties_name(branch_prop);
+    branch_from->setSteady_object_properties_on(branch_on);
+    branch_from->object_properties_deduced_.push_back(false);
+    return true;
+  }
+  return false;
+}
+
+bool ClassGraph::addProperty(std::string& class_from, std::string& property, std::string& type, std::string& data)
+{
+  ClassBranch_t* branch_from = findBranch(class_from);
+  if(branch_from != nullptr)
+  {
+    data_t data_branch;
+    data_branch.value_ = data;
+    data_branch.type_ = type;
+
+    DataPropertyBranch_t* branch_prop = data_property_graph_->findBranch(property);
+    if(branch_prop == nullptr)
+    {
+      ObjectPropertyBranch_t* test = object_property_graph_->findBranch(property);
+      if(test != nullptr)
+        return false; // TODO ERR
+
+      std::lock_guard<std::shared_timed_mutex> lock_property(data_property_graph_->mutex_);
+      branch_prop = new DataPropertyBranch_t(property);
+      data_property_graph_->container_.insert(branch_prop);
+      data_property_graph_->roots_.push_back(branch_prop);
+      data_property_graph_->all_branchs_.push_back(branch_prop);
+    }
+
+    branch_from->setSteady_data_properties_name(branch_prop);
+    branch_from->setSteady_data_properties_data(data_branch);
+    branch_from->data_properties_deduced_.push_back(false);
+    return true;
+  }
+  return false;
+}
+
+bool ClassGraph::addPropertyInvert(std::string& class_from, std::string& property, std::string& class_on)
+{
+  ClassBranch_t* branch_on = findBranch(class_on);
+  if(branch_on != nullptr)
+  {
+    ClassBranch_t* branch_from = findBranch(class_from);
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    if(branch_from == nullptr)
+    {
+      IndividualBranch_t* test = individual_graph_->findBranch(class_from);
+      if(test != nullptr)
+        return false; // TODO ERR
+
+      branch_from = new ClassBranch_t(class_from);
+      container_.insert(branch_from);
+      roots_.push_back(branch_from);
+      all_branchs_.push_back(branch_from);
+    }
+
+    ObjectPropertyBranch_t* branch_prop = object_property_graph_->findBranch(property);
+    if(branch_prop == nullptr)
+    {
+      DataPropertyBranch_t* test = data_property_graph_->findBranch(property);
+      if(test != nullptr)
+        return false; // TODO ERR
+
+      std::lock_guard<std::shared_timed_mutex> lock_property(object_property_graph_->mutex_);
+      branch_prop = new ObjectPropertyBranch_t(property);
+      object_property_graph_->container_.insert(branch_prop);
+      object_property_graph_->roots_.push_back(branch_prop);
+      object_property_graph_->all_branchs_.push_back(branch_prop);
+    }
+
+    branch_from->setSteady_object_properties_name(branch_prop);
+    branch_from->setSteady_object_properties_on(branch_on);
+    branch_from->object_properties_deduced_.push_back(false);
+    return true;
+  }
+  return false;
+}
