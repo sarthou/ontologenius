@@ -1340,6 +1340,8 @@ bool IndividualGraph::addProperty(std::string& indiv_from, std::string& property
     branch_from->setSteady_object_properties_name(branch_prop);
     branch_from->setSteady_object_properties_on(branch_on);
     branch_from->object_properties_deduced_.push_back(false);
+    branch_from->updated_ = true;
+    setObjectPropertiesUpdated(branch_from->object_properties_on_);
     return true;
   }
   return false;
@@ -1371,6 +1373,7 @@ bool IndividualGraph::addProperty(std::string& indiv_from, std::string& property
     branch_from->setSteady_data_properties_name(branch_prop);
     branch_from->setSteady_data_properties_data(data_branch);
     branch_from->data_properties_deduced_.push_back(false);
+    branch_from->updated_ = true;
     return true;
   }
   return false;
@@ -1411,7 +1414,15 @@ bool IndividualGraph::addPropertyInvert(std::string& indiv_from, std::string& pr
     branch_from->setSteady_object_properties_name(branch_prop);
     branch_from->setSteady_object_properties_on(branch_on);
     branch_from->object_properties_deduced_.push_back(false);
+    branch_from->updated_ = true;
+    setObjectPropertiesUpdated(branch_from->object_properties_on_);
     return true;
   }
   return false;
+}
+
+void IndividualGraph::setObjectPropertiesUpdated(std::vector<IndividualBranch_t*> branchs)
+{
+  for(auto branch : branchs)
+    branch->updated_ = true;
 }

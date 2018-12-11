@@ -11,7 +11,7 @@ public:
   Feeder(Ontology* onto) {onto_ = onto; }
 
   void store(std::string feed) { feed_storage_.add(feed); }
-  void run();
+  bool run();
   void link(Ontology* onto) {onto_ = onto; }
 
 private:

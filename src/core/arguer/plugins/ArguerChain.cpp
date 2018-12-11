@@ -43,6 +43,9 @@ void ArguerChain::resolveChain(std::vector<ObjectPropertyBranch_t*> chain, Indiv
         on->object_properties_name_.push_back(chain[chain_size]);
         on->object_properties_on_.push_back(indivs[i]);
         on->object_properties_deduced_.push_back(false);
+        on->updated_ = true;
+        for(auto branch : on->object_properties_on_)
+          branch->updated_ = true;
         on->nb_updates_++;
         nb_update_++;
       }

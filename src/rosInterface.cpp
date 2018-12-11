@@ -405,7 +405,9 @@ void feedThread()
 
   while(ros::ok())
   {
-    feeder.run();
+    bool run = feeder.run();
+    if(run == true)
+      arguers.runPostArguers();
     wait.sleep();
   }
 }

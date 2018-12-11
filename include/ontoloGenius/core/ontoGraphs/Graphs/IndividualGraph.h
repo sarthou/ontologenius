@@ -96,6 +96,7 @@ private:
   void addObjectPropertyOn(IndividualBranch_t* me, std::string& name, bool deduced);
   void addDataPropertyName(IndividualBranch_t* me, std::string& name, bool deduced);
   void addDataPropertyData(IndividualBranch_t* me, data_t& data, bool deduced);
+  void setObjectPropertiesUpdated(std::vector<IndividualBranch_t*> branchs);
 
   void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, unsigned int current_depth = 0);
 
