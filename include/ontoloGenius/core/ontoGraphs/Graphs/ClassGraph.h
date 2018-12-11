@@ -75,6 +75,8 @@ public:
   bool addPropertyInvert(std::string& class_from, std::string& property, std::string& class_on);
   void removeLang(std::string& indiv, std::string& lang, std::string& name);
   void removeInheritage(std::string& class_base, std::string& class_inherited);
+  bool removeProperty(std::string& class_from, std::string& property, std::string& class_on);
+  bool removeProperty(std::string& class_from, std::string& property, std::string& type, std::string& data);
 
 private:
   ObjectPropertyGraph* object_property_graph_;

@@ -187,7 +187,20 @@ bool Feeder::applyProperty(feed_t& feed)
   }
   else if(feed.action_ == action_del)
   {
-    return false;
+    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+    {
+      if(data_property == true)
+        return onto_->class_graph_.removeProperty(feed.from_, feed.prop_, type, data);
+      else
+        return onto_->class_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
+    }
+    else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+    {
+      if(data_property == true)
+        return onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, type, data);
+      else
+        return onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
+    }
   }
   return false;
 }
