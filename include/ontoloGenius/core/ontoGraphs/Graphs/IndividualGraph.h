@@ -89,6 +89,7 @@ public:
   bool removeProperty(std::string& indiv_from, std::string& property, std::string& indiv_on);
   bool removeProperty(std::string& indiv_from, std::string& property, std::string& type, std::string& data);
   void removePropertyInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  void removePropertySymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
 
 private:
   ClassGraph* class_graph_;
