@@ -104,28 +104,49 @@ bool Feeder::modifyObjectPropertyInvert(feed_t& feed)
 
 bool Feeder::classIndividualIsA(feed_t& feed)
 {
-  if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
-    onto_->class_graph_.addInheritage(feed.from_, feed.on_);
-  else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
-    onto_->individual_graph_.addInheritage(feed.from_, feed.on_);
-  else if(onto_->class_graph_.findBranch(feed.on_) != nullptr)
-    onto_->individual_graph_.addInheritageInvert(feed.from_, feed.on_);
-  else if(onto_->individual_graph_.findBranch(feed.on_) != nullptr)
-    onto_->individual_graph_.addInheritageInvertUpgrade(feed.from_, feed.on_);
-
-  else
+  if(feed.action_ == action_add)
+  {
+    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+      onto_->class_graph_.addInheritage(feed.from_, feed.on_);
+    else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+      onto_->individual_graph_.addInheritage(feed.from_, feed.on_);
+    else if(onto_->class_graph_.findBranch(feed.on_) != nullptr)
+      onto_->individual_graph_.addInheritageInvert(feed.from_, feed.on_);
+    else if(onto_->individual_graph_.findBranch(feed.on_) != nullptr)
+      onto_->individual_graph_.addInheritageInvertUpgrade(feed.from_, feed.on_);
+    else
+      return false;
+  }
+  else if(feed.action_ == action_del)
+  {
+    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+      onto_->class_graph_.removeInheritage(feed.from_, feed.on_);
+    else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+      onto_->individual_graph_.removeInheritage(feed.from_, feed.on_);
     return false;
+  }
   return true;
 }
 
 bool Feeder::classIndividualLangage(feed_t& feed)
 {
-  if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
-    onto_->class_graph_.addLang(feed.from_, feed.prop_, feed.on_);
-  else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
-    onto_->individual_graph_.addLang(feed.from_, feed.prop_, feed.on_);
-  else
+  if(feed.action_ == action_add)
+  {
+    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+      onto_->class_graph_.addLang(feed.from_, feed.prop_, feed.on_);
+    else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+      onto_->individual_graph_.addLang(feed.from_, feed.prop_, feed.on_);
+    else
+      return false;
+  }
+  else if(feed.action_ == action_del)
+  {
+    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+      onto_->class_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
+    else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+      onto_->individual_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
     return false;
+  }
   return true;
 }
 
@@ -163,6 +184,10 @@ bool Feeder::applyProperty(feed_t& feed)
       return onto_->class_graph_.addPropertyInvert(feed.from_, feed.prop_, feed.on_);
     else if(onto_->individual_graph_.findBranch(feed.on_) != nullptr)
       return onto_->individual_graph_.addPropertyInvert(feed.from_, feed.prop_, feed.on_);
+  }
+  else if(feed.action_ == action_del)
+  {
+    return false;
   }
   return false;
 }

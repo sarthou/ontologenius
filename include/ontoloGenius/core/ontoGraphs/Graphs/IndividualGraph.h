@@ -84,6 +84,8 @@ public:
   bool addProperty(std::string& indiv_from, std::string& property, std::string& indiv_on);
   bool addProperty(std::string& indiv_from, std::string& property, std::string& type, std::string& data);
   bool addPropertyInvert(std::string& indiv_from, std::string& property, std::string& indiv_on);
+  void removeLang(std::string& indiv, std::string& lang, std::string& name);
+  void removeInheritage(std::string& indiv, std::string& class_inherited);
 
 private:
   ClassGraph* class_graph_;
