@@ -1496,6 +1496,8 @@ bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& prope
       {
         if(branch_from->object_properties_on_[i]->value() == indiv_on)
         {
+          removePropertyInverse(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
+
           branch_from->object_properties_on_[i]->updated_ = true;
           branch_from->object_properties_name_.erase(branch_from->object_properties_name_.begin() + i);
           branch_from->object_properties_on_.erase(branch_from->object_properties_on_.begin() + i);
@@ -1588,4 +1590,27 @@ void IndividualGraph::setObjectPropertiesUpdated(std::vector<IndividualBranch_t*
 {
   for(auto branch : branchs)
     branch->updated_ = true;
+}
+
+void IndividualGraph::removePropertyInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
+{
+  for(ObjectPropertyBranch_t* invert : property->inverses_)
+  {
+    for(size_t i = 0; i < indiv_on->object_properties_name_.size(); i++)
+      if((indiv_on->object_properties_name_[i] == invert) &&
+        (indiv_on->object_properties_on_[i] == indiv_from))
+        {
+          indiv_on->object_properties_name_.erase(indiv_on->object_properties_name_.begin() + i);
+          indiv_on->object_properties_on_.erase(indiv_on->object_properties_on_.begin() + i);
+          indiv_on->object_properties_deduced_.erase(indiv_on->object_properties_deduced_.begin() + i);
+        }
+
+    for(size_t i = 0; i < indiv_on->steady_.object_properties_name_.size(); i++)
+      if((indiv_on->steady_.object_properties_name_[i] == invert) &&
+        (indiv_on->steady_.object_properties_on_[i] == indiv_from))
+        {
+          indiv_on->steady_.object_properties_name_.erase(indiv_on->steady_.object_properties_name_.begin() + i);
+          indiv_on->steady_.object_properties_on_.erase(indiv_on->steady_.object_properties_on_.begin() + i);
+        }
+  }
 }
