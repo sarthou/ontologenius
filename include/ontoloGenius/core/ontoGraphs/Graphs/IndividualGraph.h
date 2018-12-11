@@ -41,7 +41,6 @@ class IndividualGraph : public Graph<IndividualBranch_t>
   friend IndividualChecker;
 public:
   IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
-  IndividualGraph(const IndividualGraph& base);
   ~IndividualGraph();
 
   void linkGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
@@ -74,6 +73,18 @@ public:
   std::unordered_set<std::string> find(const std::string& value);
   std::unordered_set<std::string> getType(const std::string& class_selector);
 
+  ClassBranch_t* upgradeToBranch(IndividualBranch_t* indiv);
+  void createIndividual(std::string& name);
+  void deleteIndividual(IndividualBranch_t* indiv);
+  void redirectDeleteIndividual(IndividualBranch_t* indiv, ClassBranch_t* _class);
+  void addLang(std::string& indiv, std::string& lang, std::string& name);
+  void addInheritage(std::string& indiv, std::string& class_inherited);
+  void addInheritageInvert(std::string& indiv, std::string& class_inherited);
+  void addInheritageInvertUpgrade(std::string& indiv, std::string& class_inherited);
+  bool addProperty(std::string& indiv_from, std::string& property, std::string& indiv_on);
+  bool addProperty(std::string& indiv_from, std::string& property, std::string& type, std::string& data);
+  bool addPropertyInvert(std::string& indiv_from, std::string& property, std::string& indiv_on);
+
 private:
   ClassGraph* class_graph_;
   ObjectPropertyGraph* object_property_graph_;
@@ -85,6 +96,7 @@ private:
   void addObjectPropertyOn(IndividualBranch_t* me, std::string& name, bool deduced);
   void addDataPropertyName(IndividualBranch_t* me, std::string& name, bool deduced);
   void addDataPropertyData(IndividualBranch_t* me, data_t& data, bool deduced);
+  void setObjectPropertiesUpdated(std::vector<IndividualBranch_t*> branchs);
 
   void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, unsigned int current_depth = 0);
 

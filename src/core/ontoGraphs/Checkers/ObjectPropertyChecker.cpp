@@ -3,6 +3,7 @@
 
 size_t ObjectPropertyChecker::check()
 {
+  std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
   graph_size = graph_.size();
   checkDisjoint();
   checkCharacteristics();

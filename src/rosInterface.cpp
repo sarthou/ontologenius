@@ -1,5 +1,6 @@
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 #include "ontoloGenius/core/arguer/Arguers.h"
+#include "ontoloGenius/core/feeder/Feeder.h"
 #include "ontoloGenius/core/utility/error_code.h"
 
 #include "ontologenius/standard_service.h"
@@ -77,6 +78,7 @@ std::string getSelector(std::string& action, std::string& param)
 ros::NodeHandle* n_;
 Ontology* onto;
 Arguers arguers(onto);
+Feeder feeder(onto);
 
 bool actionsHandle(ontologenius::OntologeniusService::Request &req,
                    ontologenius::OntologeniusService::Response &res)
@@ -279,7 +281,7 @@ bool dataPropertyHandle(ontologenius::OntologeniusService::Request &req,
     else if(req.action == "getNames")
       res.values = onto->data_property_graph_.getNames(req.param);
     else if(req.action == "find")
-      set2vector(onto->object_property_graph_.find(req.param), res.values);
+      set2vector(onto->data_property_graph_.find(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
 
@@ -388,10 +390,32 @@ bool arguerHandle(ontologenius::OntologeniusService::Request &req,
   return true;
 }
 
+void knowledgeCallback(const std_msgs::String::ConstPtr& msg)
+{
+  feeder.store(msg->data);
+}
+
+void feedThread()
+{
+  ros::Rate wait(10);
+  while((ros::ok()) && (onto->isInit(false) == false))
+  {
+    wait.sleep();
+  }
+
+  while(ros::ok())
+  {
+    bool run = feeder.run();
+    if(run == true)
+      arguers.runPostArguers();
+    wait.sleep();
+  }
+}
+
 void periodicReasoning()
 {
   ros::Publisher arguer_publisher = n_->advertise<std_msgs::String>("ontologenius/arguer_notifications", 1000);
-  
+
   ros::Rate wait(10);
   while((ros::ok()) && (onto->isInit(false) == false))
   {
@@ -426,6 +450,7 @@ int main(int argc, char** argv)
 
   onto = new Ontology();
   arguers.link(onto);
+  feeder.link(onto);
 
   std::string language = std::string(argv[1]);
   std::cout << "language " << language << std::endl;
@@ -439,6 +464,8 @@ int main(int argc, char** argv)
 
   arguers.load();
   std::cout << "Plugins loaded : " << arguers.list() << std::endl;
+
+  ros::Subscriber knowledge_subscriber = n.subscribe("ontologenius/insert", 1000, knowledgeCallback);
 
   // Start up ROS service with callbacks
   ros::ServiceServer service = n.advertiseService("ontologenius/actions", actionsHandle);
@@ -478,9 +505,11 @@ int main(int argc, char** argv)
 #endif
 
   std::thread periodic_reasoning_thread(periodicReasoning);
+  std::thread feed_thread(feedThread);
 
   ros::spin();
   periodic_reasoning_thread.join();
+  feed_thread.join();
 
   delete onto;
 

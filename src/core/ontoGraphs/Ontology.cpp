@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-Ontology::Ontology(std::string language) : class_graph_(&object_property_graph_, &data_property_graph_),
+Ontology::Ontology(std::string language) : class_graph_(&individual_graph_, &object_property_graph_, &data_property_graph_),
                                            object_property_graph_(&class_graph_),
                                            data_property_graph_(&class_graph_),
                                            individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
@@ -24,25 +24,6 @@ Ontology::Ontology(std::string language) : class_graph_(&object_property_graph_,
   data_property_graph_.setLanguage(language);
   individual_graph_.setLanguage(language);
   writer.setFileName("none");
-}
-
-Ontology::Ontology(const Ontology& base): class_graph_(&object_property_graph_, &data_property_graph_),
-                                          object_property_graph_(&class_graph_),
-                                          data_property_graph_(&class_graph_),
-                                          individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
-                                          reader((Ontology&)*this),
-                                          writer((Ontology&)*this)
-{
-  class_graph_ = base.class_graph_;
-  object_property_graph_ = base.object_property_graph_;
-  data_property_graph_ = base.data_property_graph_;
-  individual_graph_ = base.individual_graph_;
-
-  is_init_ = base.is_init_;
-  is_preloaded_ = base.is_preloaded_;
-
-  files_ = base.files_;
-  uri_ = base.uri_;
 }
 
 Ontology::~Ontology()

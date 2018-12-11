@@ -18,6 +18,8 @@ public:
   virtual B* find(const std::string& word) = 0;
   virtual std::vector<B*> find(bool (*comp)(B*, std::string, std::string), const std::string& word, const std::string& lang) = 0;
   virtual void load(std::vector<B*>& vect) = 0;
+  virtual void insert(B* branch) = 0;
+  virtual void erase(B* branch) = 0;
 private:
 };
 

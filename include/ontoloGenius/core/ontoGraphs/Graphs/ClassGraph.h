@@ -39,8 +39,7 @@ class ClassGraph : public OntoGraph<ClassBranch_t>
   friend DataPropertyGraph;
   friend IndividualGraph;
 public:
-  ClassGraph(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
-  ClassGraph(const ClassGraph& base) : OntoGraph<ClassBranch_t>(base) {}
+  ClassGraph(IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   ~ClassGraph() {}
 
   void add(const std::string& value, ObjectVectors_t& object_vector);
@@ -64,17 +63,29 @@ public:
 
   std::unordered_set<std::string> getDownIndividual(ClassBranch_t* branch);
   void getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res);
-  std::unordered_set<IndividualBranch_t*> getDownIndividualPtr(ClassBranch_t* branch);
-  void getDownIndividualPtr(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res);
+  std::unordered_set<IndividualBranch_t*> getDownIndividualPtrSafe(ClassBranch_t* branch);
+  void getDownIndividualPtrSafe(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res);
+
+  void deleteClass(ClassBranch_t* _class);
+  int deletePropertiesOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect);
+  void addLang(std::string& _class, std::string& lang, std::string& name);
+  void addInheritage(std::string& class_base, std::string& class_inherited);
+  bool addProperty(std::string& class_from, std::string& property, std::string& class_on);
+  bool addProperty(std::string& class_from, std::string& property, std::string& type, std::string& data);
+  bool addPropertyInvert(std::string& class_from, std::string& property, std::string& class_on);
 
 private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
+  IndividualGraph* individual_graph_;
 
   void addObjectPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
   void addObjectPropertyOn(ClassBranch_t* me, std::string& name, bool deduced);
   void addDataPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
   void addDataPropertyData(ClassBranch_t* me, data_t& data, bool deduced);
+
+  void setSteadyObjectProperty(ClassBranch_t* branch_from, ObjectPropertyBranch_t* branch_prop, ClassBranch_t* branch_on);
+  void setSteadyDataProperty(ClassBranch_t* branch_from, DataPropertyBranch_t* branch_prop, data_t data);
 
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth);
   void getRelatedFrom(std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res);

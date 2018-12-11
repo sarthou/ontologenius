@@ -5,9 +5,10 @@
 
 void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_vectors)
 {
-/**********************
-** Mothers
-**********************/
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+  /**********************
+  ** Mothers
+  **********************/
   DataPropertyBranch_t* me = nullptr;
   //am I a created mother ?
   amIA(&me, tmp_mothers_, value);
@@ -135,6 +136,8 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
 
 void DataPropertyGraph::add(std::vector<std::string>& disjoints)
 {
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+
   for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
@@ -188,6 +191,7 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
 std::unordered_set<std::string> DataPropertyGraph::getDisjoint(const std::string& value)
 {
   std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
@@ -200,6 +204,7 @@ std::unordered_set<std::string> DataPropertyGraph::getDisjoint(const std::string
 std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& value)
 {
   std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
@@ -212,6 +217,7 @@ std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& 
 std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& value)
 {
   std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
@@ -231,4 +237,58 @@ std::unordered_set<std::string> DataPropertyGraph::select(std::unordered_set<std
       res.insert(it);
   }
   return res;
+}
+
+bool DataPropertyGraph::add(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+{
+  if(relation != "")
+  {
+    if(relation[0] == '@')
+    {
+      relation = relation.substr(1);
+      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+      prop->setSteady_dictionary(relation, data);
+      prop->updated_ = true;
+    }
+    else if((relation == "+") || (relation == "isA"))
+    {
+      DataPropertyBranch_t* tmp = create(data);
+      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+      prop->setSteady_mother(tmp);
+      tmp->setSteady_child(prop);
+      prop->updated_ = true;
+      tmp->updated_ = true;
+    }
+    else
+      return false;
+  }
+  else
+    return false;
+  return true;
+}
+
+bool DataPropertyGraph::addInvert(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+{
+  if(relation != "")
+  {
+    if((relation == "+") || (relation == "isA"))
+    {
+      DataPropertyBranch_t* tmp = create(data);
+      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+      tmp->setSteady_mother(prop);
+      prop->setSteady_child(tmp);
+      prop->updated_ = true;
+      tmp->updated_ = true;
+    }
+    else
+      return false;
+  }
+  else
+    return false;
+  return true;
+}
+
+bool DataPropertyGraph::remove(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+{
+  return false;
 }

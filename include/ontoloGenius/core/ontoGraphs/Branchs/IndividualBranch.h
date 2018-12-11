@@ -52,6 +52,7 @@ public:
   void setSteady_data_properties_data(data_t data_properties_data);
   void setSteady_same_as(IndividualBranch_t* same_as);
   void setSteady_distinct(IndividualBranch_t* distinct);
+  void setSteady_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
 };
 

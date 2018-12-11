@@ -38,7 +38,6 @@ class ObjectPropertyGraph : public OntoGraph<ObjectPropertyBranch_t>
   friend ClassGraph;
 public:
   ObjectPropertyGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
-  ObjectPropertyGraph(const ObjectPropertyGraph& base) : OntoGraph<ObjectPropertyBranch_t>(base) {}
   ~ObjectPropertyGraph() {}
 
   void linkGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
@@ -51,6 +50,10 @@ public:
   std::unordered_set<std::string> getDomain(const std::string& value);
   std::unordered_set<std::string> getRange(const std::string& value);
   std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& selector);
+
+  bool add(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
+  bool addInvert(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
+  bool remove(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
 
 private:
   ClassGraph* class_graph_;

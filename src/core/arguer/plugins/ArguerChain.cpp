@@ -8,6 +8,7 @@ void ArguerChain::preReason()
 
 void ArguerChain::postReason()
 {
+  std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
   size_t indiv_size = indiv.size();
   for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
@@ -15,7 +16,7 @@ void ArguerChain::postReason()
     {
       for(size_t prop_i = 0; prop_i < indiv[indiv_i]->object_properties_name_.size(); prop_i++)
       {
-        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtr(indiv[indiv_i]->object_properties_name_[prop_i]);
+        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(indiv[indiv_i]->object_properties_name_[prop_i]);
         for(ObjectPropertyBranch_t* it_prop : props)
           for(size_t chain_i = 0; chain_i < it_prop->chains_.size(); chain_i++)
             resolveChain(it_prop->chains_[chain_i], indiv[indiv_i]->object_properties_on_[prop_i], indiv[indiv_i]);
@@ -42,6 +43,9 @@ void ArguerChain::resolveChain(std::vector<ObjectPropertyBranch_t*> chain, Indiv
         on->object_properties_name_.push_back(chain[chain_size]);
         on->object_properties_on_.push_back(indivs[i]);
         on->object_properties_deduced_.push_back(false);
+        on->updated_ = true;
+        for(auto branch : on->object_properties_on_)
+          branch->updated_ = true;
         on->nb_updates_++;
         nb_update_++;
       }
