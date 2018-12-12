@@ -1484,59 +1484,71 @@ void IndividualGraph::removeInheritage(std::string& class_base, std::string& cla
   branch_inherited->updated_ = true;
 }
 
+bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on)
+{
+  bool updated = false;
+  for(size_t i = 0; i < branch_from->object_properties_name_.size();)
+  {
+    if(branch_from->object_properties_name_[i] == property)
+    {
+      if(branch_from->object_properties_on_[i] == branch_on)
+      {
+        removePropertyInverse(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
+        removePropertySymetric(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
+        removePropertyChain(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
+
+        branch_from->object_properties_on_[i]->updated_ = true;
+        branch_from->object_properties_name_.erase(branch_from->object_properties_name_.begin() + i);
+        branch_from->object_properties_on_.erase(branch_from->object_properties_on_.begin() + i);
+        branch_from->object_properties_deduced_.erase(branch_from->object_properties_deduced_.begin() + i);
+        updated = true;
+      }
+      else
+        i++;
+    }
+    else
+      i++;
+  }
+
+  for(size_t i = 0; i < branch_from->steady_.object_properties_name_.size();)
+  {
+    if(branch_from->steady_.object_properties_name_[i] == property)
+    {
+      if(branch_from->steady_.object_properties_on_[i] == branch_on)
+      {
+        branch_from->steady_.object_properties_on_[i]->updated_ = true;
+        branch_from->steady_.object_properties_name_.erase(branch_from->steady_.object_properties_name_.begin() + i);
+        branch_from->steady_.object_properties_on_.erase(branch_from->steady_.object_properties_on_.begin() + i);
+        branch_from->steady_.object_properties_deduced_.erase(branch_from->steady_.object_properties_deduced_.begin() + i);
+        updated = true;
+      }
+      else
+        i++;
+    }
+    else
+      i++;
+  }
+  if(updated == true)
+  {
+    setObjectPropertiesUpdated(branch_from->steady_.object_properties_on_);
+    setObjectPropertiesUpdated(branch_from->object_properties_on_);
+  }
+
+  return true;
+}
+
 bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& property, std::string& indiv_on)
 {
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
   {
-    bool updated = false;
-    for(size_t i = 0; i < branch_from->object_properties_name_.size();)
+    IndividualBranch_t* branch_on = findBranch(indiv_on);
+    if(branch_on != nullptr)
     {
-      if(branch_from->object_properties_name_[i]->value() == property)
-      {
-        if(branch_from->object_properties_on_[i]->value() == indiv_on)
-        {
-          removePropertyInverse(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
-          removePropertySymetric(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
-
-          branch_from->object_properties_on_[i]->updated_ = true;
-          branch_from->object_properties_name_.erase(branch_from->object_properties_name_.begin() + i);
-          branch_from->object_properties_on_.erase(branch_from->object_properties_on_.begin() + i);
-          branch_from->object_properties_deduced_.erase(branch_from->object_properties_deduced_.begin() + i);
-          updated = true;
-        }
-        else
-          i++;
-      }
-      else
-        i++;
+      ObjectPropertyBranch_t* branch_property = object_property_graph_->findBranch(property);
+      if(branch_property != nullptr)
+        removeProperty(branch_from, branch_property, branch_on);
     }
-
-    for(size_t i = 0; i < branch_from->steady_.object_properties_name_.size();)
-    {
-      if(branch_from->steady_.object_properties_name_[i]->value() == property)
-      {
-        if(branch_from->steady_.object_properties_on_[i]->value() == indiv_on)
-        {
-          branch_from->steady_.object_properties_on_[i]->updated_ = true;
-          branch_from->steady_.object_properties_name_.erase(branch_from->steady_.object_properties_name_.begin() + i);
-          branch_from->steady_.object_properties_on_.erase(branch_from->steady_.object_properties_on_.begin() + i);
-          branch_from->steady_.object_properties_deduced_.erase(branch_from->steady_.object_properties_deduced_.begin() + i);
-          updated = true;
-        }
-        else
-          i++;
-      }
-      else
-        i++;
-    }
-    if(updated == true)
-    {
-      setObjectPropertiesUpdated(branch_from->steady_.object_properties_on_);
-      setObjectPropertiesUpdated(branch_from->object_properties_on_);
-    }
-
-    return true;
   }
   return false;
 }
@@ -1637,4 +1649,40 @@ void IndividualGraph::removePropertySymetric(IndividualBranch_t* indiv_from, Obj
           indiv_on->steady_.object_properties_on_.erase(indiv_on->steady_.object_properties_on_.begin() + i);
         }
   }
+}
+
+void IndividualGraph::removePropertyChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
+{
+  for(size_t k = 0; k < property->chains_.size(); k++)
+  {
+    std::vector<IndividualBranch_t*> indivs_on = resolveLink(property->chains_[k], indiv_on, 0);
+    for(auto indiv : indivs_on)
+    {
+      ObjectPropertyBranch_t* chained_property = property->chains_[k][property->chains_[k].size() - 1];
+      std::cout << "try to remove " << indiv_from->value() << " " << chained_property->value() << " " << indiv->value() << std::endl;
+      removeProperty(indiv_from, chained_property, indiv);
+    }
+  }
+}
+
+std::vector<IndividualBranch_t*> IndividualGraph::resolveLink(std::vector<ObjectPropertyBranch_t*>& chain, IndividualBranch_t* indiv_on, size_t index)
+{
+  std::vector<IndividualBranch_t*> new_on;
+  if(chain.size() > 0)
+  {
+    if(index != chain.size() - 1)
+    {
+      for(size_t i = 0; i < indiv_on->object_properties_name_.size(); i++)
+      {
+        if(indiv_on->object_properties_name_[i] == chain[index])
+        {
+          std::vector<IndividualBranch_t*> tmp = resolveLink(chain, indiv_on->object_properties_on_[i], index + 1);
+          new_on.insert(new_on.end(), tmp.begin(), tmp.end());
+        }
+      }
+    }
+    else
+      new_on.push_back(indiv_on);
+  }
+  return new_on;
 }

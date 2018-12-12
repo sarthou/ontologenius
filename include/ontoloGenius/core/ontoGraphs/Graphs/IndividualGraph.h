@@ -86,10 +86,13 @@ public:
   bool addPropertyInvert(std::string& indiv_from, std::string& property, std::string& indiv_on);
   void removeLang(std::string& indiv, std::string& lang, std::string& name);
   void removeInheritage(std::string& indiv, std::string& class_inherited);
+  bool removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on);
   bool removeProperty(std::string& indiv_from, std::string& property, std::string& indiv_on);
   bool removeProperty(std::string& indiv_from, std::string& property, std::string& type, std::string& data);
   void removePropertyInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
   void removePropertySymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  void removePropertyChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  std::vector<IndividualBranch_t*> resolveLink(std::vector<ObjectPropertyBranch_t*>& chain, IndividualBranch_t* indiv_on, size_t index);
 
 private:
   ClassGraph* class_graph_;
