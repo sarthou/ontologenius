@@ -127,20 +127,27 @@ private:
   bool purge(chainNode_t* node, size_t size, size_t current)
   {
     bool tmp = true;
-    if(current < size)
+    if(node != nullptr)
     {
-      for(auto next : node->nexts)
-        tmp = tmp && purge(next, size, current + 1);
-    }
-    else
-      tmp = false;
+      if(current < size)
+      {
+        for(auto next : node->nexts)
+          tmp = tmp && purge(next, size, current + 1);
+      }
+      else
+        tmp = false;
 
-    if(tmp == true)
-    {
-      for(size_t i = 0; i < node->prev->nexts.size(); )
-        if(node->prev->nexts[i] == node)
-          node->prev->nexts.erase(node->prev->nexts.begin() + i);
-      delete node;
+      if(tmp == true)
+      {
+        if(node->prev != nullptr)
+        {
+          for(size_t i = 0; i < node->prev->nexts.size(); )
+            if(node->prev->nexts[i] == node)
+              node->prev->nexts.erase(node->prev->nexts.begin() + i);
+        }
+
+        delete node;
+      }
     }
     return tmp;
   }

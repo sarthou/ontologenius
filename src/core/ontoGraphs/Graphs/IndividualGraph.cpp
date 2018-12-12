@@ -1497,6 +1497,7 @@ bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectProp
     {
       if(branch_from->object_properties_on_[i] == branch_on)
       {
+        std::cout << "remove " << branch_from->value() << " " << property->value() << " " << branch_on->value() << std::endl;
         removePropertyInverse(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
         removePropertySymetric(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
         removePropertyChain(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
@@ -1664,7 +1665,19 @@ void IndividualGraph::removePropertyChain(IndividualBranch_t* indiv_from, Object
     for(auto indiv : indivs_on)
     {
       ObjectPropertyBranch_t* chained_property = property->chains_[k][property->chains_[k].size() - 1];
-      std::cout << "try to remove " << indiv_from->value() << " " << chained_property->value() << " " << indiv->value() << std::endl;
+
+      for(size_t i = 0; i < indiv_from->object_properties_name_.size(); i++)
+        if(indiv_from->object_properties_name_[i] == chained_property)
+          if(indiv_from->object_properties_on_[i] == indiv)
+          {
+            for(size_t induced = 0; induced < indiv_from->object_properties_has_induced_[i].from_.size(); induced++)
+            {
+              removeProperty(indiv_from->object_properties_has_induced_[i].from_[induced],
+                            indiv_from->object_properties_has_induced_[i].prop_[induced],
+                            indiv_from->object_properties_has_induced_[i].on_[induced]);
+            }
+          }
+
       removeProperty(indiv_from, chained_property, indiv);
     }
   }
