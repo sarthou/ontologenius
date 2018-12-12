@@ -1330,7 +1330,6 @@ bool ClassGraph::removeProperty(std::string& class_from, std::string& property, 
         {
           branch_from->steady_.data_properties_name_.erase(branch_from->steady_.data_properties_name_.begin() + i);
           branch_from->steady_.data_properties_data_.erase(branch_from->steady_.data_properties_data_.begin() + i);
-          branch_from->steady_.data_properties_deduced_.erase(branch_from->steady_.data_properties_deduced_.begin() + i);
         }
         else
           i++;

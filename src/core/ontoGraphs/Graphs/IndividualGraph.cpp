@@ -100,6 +100,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     addObjectPropertyOn(me, individual_vector.object_properties_on_[property_i], deduced);
 
     me->object_properties_deduced_.push_back(deduced);
+    me->object_properties_has_induced_.push_back(Triplet());
   }
 
   /**********************
@@ -1054,7 +1055,6 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
     class_branch->steady_.mothers_ = indiv->steady_.is_a_;
     class_branch->steady_.data_properties_name_ = indiv->steady_.data_properties_name_;
     class_branch->steady_.data_properties_data_ = indiv->steady_.data_properties_data_;
-    class_branch->steady_.data_properties_deduced_ = indiv->steady_.data_properties_deduced_;
 
     class_graph_->container_.insert(class_branch);
     class_graph_->roots_.push_back(class_branch);
@@ -1124,6 +1124,7 @@ void IndividualGraph::deleteIndividual(IndividualBranch_t* indiv)
           individuals_[indiv_i]->object_properties_on_.erase(individuals_[indiv_i]->object_properties_on_.begin() + i);
           individuals_[indiv_i]->object_properties_name_.erase(individuals_[indiv_i]->object_properties_name_.begin() + i);
           individuals_[indiv_i]->object_properties_deduced_.erase(individuals_[indiv_i]->object_properties_deduced_.begin() + i);
+          individuals_[indiv_i]->object_properties_has_induced_.erase(individuals_[indiv_i]->object_properties_has_induced_.begin() + i);
         }
         else
           i++;
@@ -1198,6 +1199,7 @@ void IndividualGraph::redirectDeleteIndividual(IndividualBranch_t* indiv, ClassB
           individuals_[indiv_i]->object_properties_on_.erase(individuals_[indiv_i]->object_properties_on_.begin() + i);
           individuals_[indiv_i]->object_properties_name_.erase(individuals_[indiv_i]->object_properties_name_.begin() + i);
           individuals_[indiv_i]->object_properties_deduced_.erase(individuals_[indiv_i]->object_properties_deduced_.begin() + i);
+          individuals_[indiv_i]->object_properties_has_induced_.erase(individuals_[indiv_i]->object_properties_has_induced_.begin() + i);
         }
         else
           i++;
@@ -1340,6 +1342,7 @@ bool IndividualGraph::addProperty(std::string& indiv_from, std::string& property
     branch_from->setSteady_object_properties_name(branch_prop);
     branch_from->setSteady_object_properties_on(branch_on);
     branch_from->object_properties_deduced_.push_back(false);
+    branch_from->object_properties_has_induced_.push_back(Triplet());
     branch_from->updated_ = true;
     setObjectPropertiesUpdated(branch_from->object_properties_on_);
     return true;
@@ -1414,6 +1417,7 @@ bool IndividualGraph::addPropertyInvert(std::string& indiv_from, std::string& pr
     branch_from->setSteady_object_properties_name(branch_prop);
     branch_from->setSteady_object_properties_on(branch_on);
     branch_from->object_properties_deduced_.push_back(false);
+    branch_from->object_properties_has_induced_.push_back(Triplet());
     branch_from->updated_ = true;
     setObjectPropertiesUpdated(branch_from->object_properties_on_);
     return true;
@@ -1501,6 +1505,7 @@ bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectProp
         branch_from->object_properties_name_.erase(branch_from->object_properties_name_.begin() + i);
         branch_from->object_properties_on_.erase(branch_from->object_properties_on_.begin() + i);
         branch_from->object_properties_deduced_.erase(branch_from->object_properties_deduced_.begin() + i);
+        branch_from->object_properties_has_induced_.erase(branch_from->object_properties_has_induced_.begin() + i);
         updated = true;
       }
       else
@@ -1519,7 +1524,6 @@ bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectProp
         branch_from->steady_.object_properties_on_[i]->updated_ = true;
         branch_from->steady_.object_properties_name_.erase(branch_from->steady_.object_properties_name_.begin() + i);
         branch_from->steady_.object_properties_on_.erase(branch_from->steady_.object_properties_on_.begin() + i);
-        branch_from->steady_.object_properties_deduced_.erase(branch_from->steady_.object_properties_deduced_.begin() + i);
         updated = true;
       }
       else
@@ -1585,7 +1589,6 @@ bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& prope
         {
           branch_from->steady_.data_properties_name_.erase(branch_from->steady_.data_properties_name_.begin() + i);
           branch_from->steady_.data_properties_data_.erase(branch_from->steady_.data_properties_data_.begin() + i);
-          branch_from->steady_.data_properties_deduced_.erase(branch_from->steady_.data_properties_deduced_.begin() + i);
         }
         else
           i++;
@@ -1616,6 +1619,7 @@ void IndividualGraph::removePropertyInverse(IndividualBranch_t* indiv_from, Obje
           indiv_on->object_properties_name_.erase(indiv_on->object_properties_name_.begin() + i);
           indiv_on->object_properties_on_.erase(indiv_on->object_properties_on_.begin() + i);
           indiv_on->object_properties_deduced_.erase(indiv_on->object_properties_deduced_.begin() + i);
+          indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
         }
 
     for(size_t i = 0; i < indiv_on->steady_.object_properties_name_.size(); i++)
@@ -1639,6 +1643,7 @@ void IndividualGraph::removePropertySymetric(IndividualBranch_t* indiv_from, Obj
           indiv_on->object_properties_name_.erase(indiv_on->object_properties_name_.begin() + i);
           indiv_on->object_properties_on_.erase(indiv_on->object_properties_on_.begin() + i);
           indiv_on->object_properties_deduced_.erase(indiv_on->object_properties_deduced_.begin() + i);
+          indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
         }
 
     for(size_t i = 0; i < indiv_on->steady_.object_properties_name_.size(); i++)
