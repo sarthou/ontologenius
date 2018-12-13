@@ -1,7 +1,7 @@
 #ifndef OBJECTPROPERTYCLIENT_H
 #define OBJECTPROPERTYCLIENT_H
 
-#include "ontoloGenius/utility/OntologyClient.h"
+#include "ontoloGenius/utility/clients/ontologyClients/OntologyClient.h"
 
 class ObjectPropertyClient : public OntologyClient
 {

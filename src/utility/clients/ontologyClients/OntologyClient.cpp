@@ -1,4 +1,4 @@
-#include "ontoloGenius/utility/OntologyClient.h"
+#include "ontoloGenius/utility/clients/ontologyClients/OntologyClient.h"
 
 std::vector<std::string> OntologyClient::getUp(const std::string& name, int depth, const std::string& selector)
 {

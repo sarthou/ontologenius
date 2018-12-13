@@ -169,16 +169,16 @@ target_link_libraries(ontologenius_interpreter_lib ontologenius_codeDescription_
 target_link_libraries(ontologenius_interpreter_lib ontologenius_ontoGraphs_lib)
 
 add_library(ontoloGenius_lib
-  src/utility/OntologyManipulator.cpp
-  src/utility/ClientBase.cpp
-  src/utility/IndividualClient.cpp
-  src/utility/ObjectPropertyClient.cpp
-  src/utility/DataPropertyClient.cpp
-  src/utility/ClassClient.cpp
-  src/utility/ActionClient.cpp
-  src/utility/OntologyClient.cpp
-  src/utility/ArguerClient.cpp
+  src/utility/clients/ontologyClients/IndividualClient.cpp
+  src/utility/clients/ontologyClients/ObjectPropertyClient.cpp
+  src/utility/clients/ontologyClients/DataPropertyClient.cpp
+  src/utility/clients/ontologyClients/ClassClient.cpp
+  src/utility/clients/ontologyClients/OntologyClient.cpp
+  src/utility/clients/ArguerClient.cpp
+  src/utility/clients/ActionClient.cpp
+  src/utility/clients/ClientBase.cpp
   src/utility/FeederPublisher.cpp
+  src/utility/OntologyManipulator.cpp
 )
 add_dependencies(ontoloGenius_lib ontologenius_gencpp)
 target_link_libraries(ontoloGenius_lib ontologenius_interpreter_lib)

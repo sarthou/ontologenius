@@ -1,4 +1,4 @@
-#include "ontoloGenius/utility/DataPropertyClient.h"
+#include "ontoloGenius/utility/clients/ontologyClients/DataPropertyClient.h"
 
 std::vector<std::string> DataPropertyClient::getDown(const std::string& name, int depth)
 {
