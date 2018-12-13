@@ -178,6 +178,7 @@ add_library(ontoloGenius_lib
   src/utility/ActionClient.cpp
   src/utility/OntologyClient.cpp
   src/utility/ArguerClient.cpp
+  src/utility/FeederPublisher.cpp
 )
 add_dependencies(ontoloGenius_lib ontologenius_gencpp)
 target_link_libraries(ontoloGenius_lib ontologenius_interpreter_lib)

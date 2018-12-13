@@ -7,6 +7,7 @@
 #include "ontoloGenius/utility/ClassClient.h"
 #include "ontoloGenius/utility/ActionClient.h"
 #include "ontoloGenius/utility/ArguerClient.h"
+#include "ontoloGenius/utility/FeederPublisher.h"
 
 #include "ros/ros.h"
 
@@ -29,6 +30,7 @@ public:
   ClassClient classes;
   ActionClient actions;
   ArguerClient arguers;
+  FeederPublisher feeder;
 
 private:
   ros::NodeHandle* n_;
