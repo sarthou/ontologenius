@@ -397,6 +397,9 @@ void knowledgeCallback(const std_msgs::String::ConstPtr& msg)
 
 void feedThread()
 {
+
+  ros::Publisher feeder_publisher = n_->advertise<std_msgs::String>("ontologenius/feeder_notifications", 1000);
+
   ros::Rate wait(10);
   while((ros::ok()) && (onto->isInit(false) == false))
   {
@@ -407,7 +410,18 @@ void feedThread()
   {
     bool run = feeder.run();
     if(run == true)
+    {
       arguers.runPostArguers();
+
+      std_msgs::String msg;
+      std::vector<std::string> notifications = feeder.getNotifications();
+      for(auto notif : notifications)
+      {
+        std::cout << notif << std::endl;
+        msg.data = notif;
+        feeder_publisher.publish(msg);
+      }
+    }
     wait.sleep();
   }
 }
