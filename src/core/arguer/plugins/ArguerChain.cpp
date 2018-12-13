@@ -27,13 +27,14 @@ void ArguerChain::postReason()
 void ArguerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<ObjectPropertyBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on)
 {
   chainNode_t* indivs_node = new chainNode_t;
-  indivs_node->data.push_back(indiv);
-  indivs_node->data_from.push_back(on);//BAD
-  indivs_node->prop.push_back(prop);
+  indivs_node->ons_.push_back(indiv);
+  indivs_node->froms_.push_back(on);
+  indivs_node->props_.push_back(prop);
 
-  size_t chain_size = chain.size() - 1;
   ChainTree tree;
   tree.push(nullptr, indivs_node);
+
+  size_t chain_size = chain.size() - 1;
   for(size_t link_i = 0; link_i < chain_size; link_i++)
   {
     resolveLink(chain[link_i], &tree, link_i);
@@ -57,16 +58,16 @@ void ArguerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<ObjectP
         on->nb_updates_++;
         nb_update_++;
 
-        for(size_t link_i = 0; link_i < chain_size + 1; link_i++)
+        for(size_t link_i = 0; link_i < chain.size(); link_i++)
         {
           std::vector<chainNode_t*> nodes = tree.getNodes(link_i);
-          for(size_t j = 0; j < nodes.size(); j++)
-            for(size_t k = 0; k < nodes[j]->data.size(); k++)
+          for(size_t node_i = 0; node_i < nodes.size(); node_i++)
+            for(size_t node_it = 0; node_it < nodes[node_i]->ons_.size(); node_it++)
             {
-              for(size_t prop_i = 0; prop_i < nodes[j]->data_from[k]->object_properties_name_.size(); prop_i++)
-                if(nodes[j]->data_from[k]->object_properties_name_[prop_i] == nodes[j]->prop[k])
-                  if(nodes[j]->data_from[k]->object_properties_on_[prop_i] == nodes[j]->data[k])
-                    nodes[j]->data_from[k]->object_properties_has_induced_[prop_i].push(on, chain[chain_size], indivs[i]);
+              for(size_t prop_i = 0; prop_i < nodes[node_i]->froms_[node_it]->object_properties_name_.size(); prop_i++)
+                if(nodes[node_i]->froms_[node_it]->object_properties_name_[prop_i] == nodes[node_i]->props_[node_it])
+                  if(nodes[node_i]->froms_[node_it]->object_properties_on_[prop_i] == nodes[node_i]->ons_[node_it])
+                    addInduced(nodes[node_i]->froms_[node_it], prop_i, on, chain[chain_size], indivs[i]);
             }
         }
       }
@@ -82,7 +83,7 @@ void ArguerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTree*
   std::vector<chainNode_t*> nodes = tree->getNodes(index);
   for(auto node : nodes)
   {
-    for(auto indiv : node->data)
+    for(auto indiv : node->ons_)
     {
       tmp_on.clear();
       tmp_from.clear();
@@ -98,9 +99,9 @@ void ArguerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTree*
       if(tmp_on.size() != 0)
       {
         chainNode_t* indivs = new chainNode_t;
-        indivs->data = tmp_on;
-        indivs->data_from = tmp_from;
-        indivs->prop = tmp_prop;
+        indivs->ons_ = tmp_on;
+        indivs->froms_ = tmp_from;
+        indivs->props_ = tmp_prop;
         tree->push(node, indivs);
       }
     }
@@ -117,6 +118,12 @@ bool ArguerChain::porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBran
         return true;
   }
   return false;
+}
+
+void ArguerChain::addInduced(IndividualBranch_t* indiv, size_t index, IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
+{
+  if(indiv->object_properties_has_induced_[index].exist(indiv_from, property, indiv_on) == false)
+    indiv->object_properties_has_induced_[index].push(indiv_from, property, indiv_on);
 }
 
 std::string ArguerChain::getName()

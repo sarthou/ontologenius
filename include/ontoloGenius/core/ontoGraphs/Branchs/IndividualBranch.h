@@ -70,9 +70,23 @@ public:
     prop_.push_back(prop);
     on_.push_back(on);
   }
+  bool exist(IndividualBranch_t* from,
+            ObjectPropertyBranch_t* prop,
+            IndividualBranch_t* on)
+  {
+    for(auto from_i : from_)
+      if(from_i == from)
+        for(auto prop_i : prop_)
+          if(prop_i == prop)
+            for(auto on_i : on_)
+              if(on_i == on)
+                return true;
+    return false;
+  }
   std::vector<IndividualBranch_t*> from_;
   std::vector<ObjectPropertyBranch_t*> prop_;
   std::vector<IndividualBranch_t*> on_;
+
 };
 
 #endif

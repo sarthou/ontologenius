@@ -1497,7 +1497,6 @@ bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectProp
     {
       if(branch_from->object_properties_on_[i] == branch_on)
       {
-        std::cout << "remove " << branch_from->value() << " " << property->value() << " " << branch_on->value() << std::endl;
         removePropertyInverse(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
         removePropertySymetric(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
         removePropertyChain(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);

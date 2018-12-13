@@ -21,6 +21,7 @@ private:
   void resolveChain(ObjectPropertyBranch_t* prop, std::vector<ObjectPropertyBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on);
   void resolveLink(ObjectPropertyBranch_t* chain_property, ChainTree* tree, size_t index);
   bool porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* chain_prop, IndividualBranch_t* chain_indiv);
+  void addInduced(IndividualBranch_t* indiv, size_t index, IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
 };
 
 class chainNode_t
@@ -37,9 +38,9 @@ public:
     prev = nullptr;
     pose = 0;
   }
-  std::vector<IndividualBranch_t*> data;
-  std::vector<IndividualBranch_t*> data_from;
-  std::vector<ObjectPropertyBranch_t*> prop;
+  std::vector<IndividualBranch_t*> ons_;
+  std::vector<IndividualBranch_t*> froms_;
+  std::vector<ObjectPropertyBranch_t*> props_;
   chainNode_t* prev;
   std::vector<chainNode_t*> nexts;
   size_t pose;
@@ -49,6 +50,7 @@ class ChainTree
 {
 public:
   ChainTree() {size_ = 0; begin = nullptr;}
+  ~ChainTree() {if(begin != nullptr) delete begin; }
   std::vector<IndividualBranch_t*> get(size_t index)
   {
     std::vector<IndividualBranch_t*> res;
@@ -90,7 +92,7 @@ private:
   {
     std::vector<IndividualBranch_t*> res;
     if(current == index)
-      res = node->data;
+      res = node->ons_;
     else
     {
       std::vector<IndividualBranch_t*> tmp;
