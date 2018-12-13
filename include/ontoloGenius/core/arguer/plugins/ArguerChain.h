@@ -38,6 +38,7 @@ public:
     prev = nullptr;
     pose = 0;
   }
+
   std::vector<IndividualBranch_t*> ons_;
   std::vector<IndividualBranch_t*> froms_;
   std::vector<ObjectPropertyBranch_t*> props_;
@@ -148,7 +149,10 @@ private:
               node->prev->nexts.erase(node->prev->nexts.begin() + i);
         }
 
+        if(node == begin)
+          begin = nullptr;
         delete node;
+        node = nullptr;
       }
     }
     return tmp;
