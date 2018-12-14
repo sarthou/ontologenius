@@ -317,4 +317,7 @@ if(CATKIN_ENABLE_TESTING)
 
   add_rostest_gtest(ontoloGenius_propertiesInheritage_tester test/propertiesInheritage.test src/tests/propertiesInheritage.cpp)
   target_link_libraries(ontoloGenius_propertiesInheritage_tester ontoloGenius_lib)
+
+  add_rostest_gtest(ontoloGenius_dynamic_tester test/dynamic.test src/tests/dynamic.cpp)
+  target_link_libraries(ontoloGenius_dynamic_tester ontoloGenius_lib)
 endif()
