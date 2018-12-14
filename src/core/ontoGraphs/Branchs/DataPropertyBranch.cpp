@@ -1,5 +1,7 @@
 #include "ontoloGenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 
+#include <algorithm>
+
 void DataPropertyBranch_t::setFullSteady()
 {
   steady_.disjoints_.clear();
@@ -36,8 +38,10 @@ void DataPropertyBranch_t::setFullSteady()
 
 void DataPropertyBranch_t::setSteady_disjoint(DataPropertyBranch_t* disjoint)
 {
-  steady_.disjoints_.push_back(disjoint);
-  disjoints_.push_back(disjoint);
+  if(std::find(steady_.disjoints_.begin(), steady_.disjoints_.end(), disjoint) == steady_.disjoints_.end())
+    steady_.disjoints_.push_back(disjoint);
+  if(std::find(disjoints_.begin(), disjoints_.end(), disjoint) == disjoints_.end())
+    disjoints_.push_back(disjoint);
 }
 
 void DataPropertyBranch_t::setSteady_properties(Properties_t properties)
@@ -48,8 +52,10 @@ void DataPropertyBranch_t::setSteady_properties(Properties_t properties)
 
 void DataPropertyBranch_t::setSteady_domain(ClassBranch_t* domain)
 {
-  steady_.domains_.push_back(domain);
-  domains_.push_back(domain);
+  if(std::find(steady_.domains_.begin(), steady_.domains_.end(), domain) == steady_.domains_.end())
+    steady_.domains_.push_back(domain);
+  if(std::find(domains_.begin(), domains_.end(), domain) == domains_.end())
+    domains_.push_back(domain);
 }
 
 void DataPropertyBranch_t::setSteady_range(std::string range)
@@ -62,14 +68,18 @@ void DataPropertyBranch_t::setSteady_range(std::string range)
 
 void DataPropertyBranch_t::setSteady_child(DataPropertyBranch_t* child)
 {
-  steady_.childs_.push_back(child);
-  childs_.push_back(child);
+  if(std::find(steady_.childs_.begin(), steady_.childs_.end(), child) == steady_.childs_.end())
+    steady_.childs_.push_back(child);
+  if(std::find(childs_.begin(), childs_.end(), child) == childs_.end())
+    childs_.push_back(child);
 }
 
 void DataPropertyBranch_t::setSteady_mother(DataPropertyBranch_t* mother)
 {
-  steady_.mothers_.push_back(mother);
-  mothers_.push_back(mother);
+  if(std::find(steady_.mothers_.begin(), steady_.mothers_.end(), mother) == steady_.mothers_.end())
+    steady_.mothers_.push_back(mother);
+  if(std::find(mothers_.begin(), mothers_.end(), mother) == mothers_.end())
+    mothers_.push_back(mother);
 }
 
 void DataPropertyBranch_t::setSteady_dictionary(std::string lang, std::string word)
