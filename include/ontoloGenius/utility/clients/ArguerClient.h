@@ -1,7 +1,7 @@
 #ifndef ARGUERCLIENT_H
 #define ARGUERCLIENT_H
 
-#include "ontoloGenius/utility/ClientBase.h"
+#include "ontoloGenius/utility/clients/ClientBase.h"
 
 class ArguerClient : public ClientBase
 {

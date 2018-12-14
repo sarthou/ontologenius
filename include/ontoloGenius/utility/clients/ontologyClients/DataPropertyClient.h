@@ -1,7 +1,7 @@
 #ifndef DATAPROPERTYCLIENT_H
 #define DATAPROPERTYCLIENT_H
 
-#include "ontoloGenius/utility/OntologyClient.h"
+#include "ontoloGenius/utility/clients/ontologyClients/OntologyClient.h"
 
 class DataPropertyClient : public OntologyClient
 {

@@ -1,7 +1,7 @@
 #ifndef ONTOLOGYCLIENT_H
 #define ONTOLOGYCLIENT_H
 
-#include "ontoloGenius/utility/ClientBase.h"
+#include "ontoloGenius/utility/clients/ClientBase.h"
 
 class OntologyClient : public ClientBase
 {

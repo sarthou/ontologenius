@@ -1189,3 +1189,156 @@ void ClassGraph::setSteadyDataProperty(ClassBranch_t* branch_from, DataPropertyB
     branch_from->data_properties_deduced_.push_back(false);
   }
 }
+
+void ClassGraph::removeLang(std::string& indiv, std::string& lang, std::string& name)
+{
+  ClassBranch_t* branch = findBranch(indiv);
+
+  std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+
+  lang = lang.substr(1);
+  if(branch->dictionary_.find(lang) != branch->dictionary_.end())
+  {
+    for(size_t i = 0; i < branch->dictionary_[lang].size();)
+      if(branch->dictionary_[lang][i] == name)
+        branch->dictionary_[lang].erase(branch->dictionary_[lang].begin() + i);
+  }
+
+  if(branch->steady_.dictionary_.find(lang) != branch->steady_.dictionary_.end())
+  {
+    for(size_t i = 0; i < branch->steady_.dictionary_[lang].size();)
+      if(branch->steady_.dictionary_[lang][i] == name)
+        branch->steady_.dictionary_[lang].erase(branch->steady_.dictionary_[lang].begin() + i);
+  }
+}
+
+void ClassGraph::removeInheritage(std::string& class_base, std::string& class_inherited)
+{
+  ClassBranch_t* branch_base = findBranch(class_base);
+  ClassBranch_t* branch_inherited = findBranch(class_inherited);
+
+  if(branch_base == nullptr)
+    return;
+  if(branch_inherited == nullptr)
+    return;
+
+  std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+
+  for(size_t i = 0; i < branch_base->steady_.mothers_.size();)
+    if(branch_base->steady_.mothers_[i] == branch_inherited)
+      branch_base->steady_.mothers_.erase(branch_base->steady_.mothers_.begin() + i);
+    else
+      i++;
+
+  for(size_t i = 0; i < branch_base->mothers_.size();)
+    if(branch_base->mothers_[i] == branch_inherited)
+      branch_base->mothers_.erase(branch_base->mothers_.begin() + i);
+    else
+      i++;
+
+  for(size_t i = 0; i < branch_inherited->steady_.childs_.size();)
+    if(branch_inherited->steady_.childs_[i] == branch_base)
+      branch_inherited->steady_.childs_.erase(branch_inherited->steady_.childs_.begin() + i);
+    else
+      i++;
+
+  for(size_t i = 0; i < branch_inherited->childs_.size();)
+    if(branch_inherited->childs_[i] == branch_base)
+      branch_inherited->childs_.erase(branch_inherited->childs_.begin() + i);
+    else
+      i++;
+
+  branch_base->updated_ = true;
+  branch_inherited->updated_ = true;
+}
+
+bool ClassGraph::removeProperty(std::string& class_from, std::string& property, std::string& class_on)
+{
+  ClassBranch_t* branch_from = findBranch(class_from);
+  if(branch_from != nullptr)
+  {
+    for(size_t i = 0; i < branch_from->object_properties_name_.size();)
+    {
+      if(branch_from->object_properties_name_[i]->value() == property)
+      {
+        if(branch_from->object_properties_on_[i]->value() == class_on)
+        {
+          branch_from->object_properties_on_[i]->updated_ = true;
+          branch_from->object_properties_name_.erase(branch_from->object_properties_name_.begin() + i);
+          branch_from->object_properties_on_.erase(branch_from->object_properties_on_.begin() + i);
+          branch_from->object_properties_deduced_.erase(branch_from->object_properties_deduced_.begin() + i);
+        }
+        else
+          i++;
+      }
+      else
+        i++;
+    }
+
+    for(size_t i = 0; i < branch_from->steady_.object_properties_name_.size();)
+    {
+      if(branch_from->steady_.object_properties_name_[i]->value() == property)
+      {
+        if(branch_from->steady_.object_properties_on_[i]->value() == class_on)
+        {
+          branch_from->steady_.object_properties_on_[i]->updated_ = true;
+          branch_from->steady_.object_properties_name_.erase(branch_from->steady_.object_properties_name_.begin() + i);
+          branch_from->steady_.object_properties_on_.erase(branch_from->steady_.object_properties_on_.begin() + i);
+          branch_from->steady_.object_properties_deduced_.erase(branch_from->steady_.object_properties_deduced_.begin() + i);
+        }
+        else
+          i++;
+      }
+      else
+        i++;
+    }
+
+    return true;
+  }
+  return false;
+}
+
+bool ClassGraph::removeProperty(std::string& class_from, std::string& property, std::string& type, std::string& data)
+{
+  ClassBranch_t* branch_from = findBranch(class_from);
+  if(branch_from != nullptr)
+  {
+    for(size_t i = 0; i < branch_from->data_properties_name_.size();)
+    {
+      if(branch_from->data_properties_name_[i]->value() == property)
+      {
+        if((branch_from->data_properties_data_[i].type_ == type) &&
+          (branch_from->data_properties_data_[i].value_ == data))
+        {
+          branch_from->data_properties_name_.erase(branch_from->data_properties_name_.begin() + i);
+          branch_from->data_properties_data_.erase(branch_from->data_properties_data_.begin() + i);
+          branch_from->data_properties_deduced_.erase(branch_from->data_properties_deduced_.begin() + i);
+        }
+        else
+          i++;
+      }
+      else
+        i++;
+    }
+
+    for(size_t i = 0; i < branch_from->steady_.data_properties_name_.size();)
+    {
+      if(branch_from->steady_.data_properties_name_[i]->value() == property)
+      {
+        if((branch_from->data_properties_data_[i].type_ == type) &&
+          (branch_from->data_properties_data_[i].value_ == data))
+        {
+          branch_from->steady_.data_properties_name_.erase(branch_from->steady_.data_properties_name_.begin() + i);
+          branch_from->steady_.data_properties_data_.erase(branch_from->steady_.data_properties_data_.begin() + i);
+        }
+        else
+          i++;
+      }
+      else
+        i++;
+    }
+
+    return true;
+  }
+  return false;
+}

@@ -1,12 +1,13 @@
 #ifndef ONTOLOGYMANIPULATOR_H
 #define ONTOLOGYMANIPULATOR_H
 
-#include "ontoloGenius/utility/IndividualClient.h"
-#include "ontoloGenius/utility/ObjectPropertyClient.h"
-#include "ontoloGenius/utility/DataPropertyClient.h"
-#include "ontoloGenius/utility/ClassClient.h"
-#include "ontoloGenius/utility/ActionClient.h"
-#include "ontoloGenius/utility/ArguerClient.h"
+#include "ontoloGenius/utility/clients/ontologyClients/IndividualClient.h"
+#include "ontoloGenius/utility/clients/ontologyClients/ObjectPropertyClient.h"
+#include "ontoloGenius/utility/clients/ontologyClients/DataPropertyClient.h"
+#include "ontoloGenius/utility/clients/ontologyClients/ClassClient.h"
+#include "ontoloGenius/utility/clients/ActionClient.h"
+#include "ontoloGenius/utility/clients/ArguerClient.h"
+#include "ontoloGenius/utility/FeederPublisher.h"
 
 #include "ros/ros.h"
 
@@ -29,6 +30,7 @@ public:
   ClassClient classes;
   ActionClient actions;
   ArguerClient arguers;
+  FeederPublisher feeder;
 
 private:
   ros::NodeHandle* n_;

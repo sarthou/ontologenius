@@ -5,7 +5,8 @@ OntologyManipulator::OntologyManipulator(ros::NodeHandle* n) :  individuals(n),
                                                                 dataProperties(n),
                                                                 classes(n),
                                                                 actions(n),
-                                                                arguers(n)
+                                                                arguers(n),
+                                                                feeder(n)
 {
   n_ = n;
   ros::service::waitForService("ontologenius/arguer");

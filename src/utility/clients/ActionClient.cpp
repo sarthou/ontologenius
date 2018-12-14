@@ -1,4 +1,4 @@
-#include "ontoloGenius/utility/ActionClient.h"
+#include "ontoloGenius/utility/clients/ActionClient.h"
 
 bool ActionClient::close()
 {
