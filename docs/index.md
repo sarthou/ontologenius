@@ -1,8 +1,9 @@
 # <img src="https://raw.githubusercontent.com/sarthou/ontologenius/master/docs/img/logo/ontologenius.png" width="150"> ontolo**G**enius
 
 ##### An easy way to use ontologies for robotic applications.
-##### A fast way to interrogate your robot's knowledge.
 ##### A smart way to organize the knowledge of your robot.
+##### A fast way to interrogate your robot's knowledge.
+##### A natural way to evolve the knowledge of your robots.
 
 ---
 
@@ -30,6 +31,8 @@ With these changes and with a local and more powerful reasoner, the ultimate goa
 ---
 ## For more information, visit our wiki pages
 
+[**OntoloGenius**](https://github.com/sarthou/ontologenius/wiki#-ontologenius)
+
 [**1. Installation**](https://github.com/sarthou/ontologenius/wiki/Installation#installation)
 
 [**2. Create ontology**](https://github.com/sarthou/ontologenius/wiki/Create-ontology)
@@ -38,13 +41,15 @@ With these changes and with a local and more powerful reasoner, the ultimate goa
 
 [**4. Load ontology**](https://github.com/sarthou/ontologenius/wiki/Load-ontology)
 
-[**5. Exploration**](https://github.com/sarthou/ontologenius/wiki/Exploration)
- - [**5.1. Classes exploration**](https://github.com/sarthou/ontologenius/wiki/Classes-exploration)
- - [**5.2. Properties exploration**](https://github.com/sarthou/ontologenius/wiki/Properties-exploration)
- - [**5.3. Individuals exploration**](https://github.com/sarthou/ontologenius/wiki/Individuals-exploration)
+[**5. Feed ontology**](https://github.com/sarthou/ontologenius/wiki/Feed-ontology)
 
-[**6. Reason**](https://github.com/sarthou/ontologenius/wiki/Reason)
+[**6. Exploration**](https://github.com/sarthou/ontologenius/wiki/Exploration)
+ - [**6.1. Classes exploration**](https://github.com/sarthou/ontologenius/wiki/Classes-exploration)
+ - [**6.2. Properties exploration**](https://github.com/sarthou/ontologenius/wiki/Properties-exploration)
+ - [**6.3. Individuals exploration**](https://github.com/sarthou/ontologenius/wiki/Individuals-exploration)
 
-[**7. Programming**](https://github.com/sarthou/ontologenius/wiki/Programming)
+[**7. Reason**](https://github.com/sarthou/ontologenius/wiki/Reason)
 
-[**8. OntoloGUI**](https://github.com/sarthou/ontologenius/wiki/ontoloGUI)
+[**8. Program with ontoloGenius**](https://github.com/sarthou/ontologenius/wiki/Program-with-ontoloGenius)
+
+[**9. OntoloGUI**](https://github.com/sarthou/ontologenius/wiki/ontoloGUI)
