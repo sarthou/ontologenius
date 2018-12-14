@@ -8,6 +8,7 @@ void ArguerInverseOf::preReason()
 
 void ArguerInverseOf::postReason()
 {
+  std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   size_t indiv_i, prop_i, inv_i = 0;
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
   size_t indiv_size = indiv.size();
@@ -39,6 +40,8 @@ void ArguerInverseOf::insetInverse(IndividualBranch_t* indiv_on, ObjectPropertyB
 
   indiv_on->object_properties_name_.push_back(inv_prop);
   indiv_on->object_properties_on_.push_back(inv_indiv);
+  indiv_on->object_properties_deduced_.push_back(false);
+  indiv_on->object_properties_has_induced_.push_back(Triplet());
   indiv_on->nb_updates_++;
   nb_update_++;
 }

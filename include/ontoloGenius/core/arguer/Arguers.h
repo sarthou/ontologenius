@@ -27,11 +27,20 @@ public:
 
   void runPreArguers();
   void runPostArguers();
+  void runPeriodicArguers();
+
+  std::vector<std::string> getNotifications()
+  {
+    std::vector<std::string> tmp = notifications_;
+    notifications_.clear();
+    return tmp;
+  }
 
 private:
   Ontology* ontology_;
   std::map<std::string, ArguerInterface*> arguers_;
   std::map<std::string, ArguerInterface*> active_arguers_;
+  std::vector<std::string> notifications_;
 
   pluginlib::ClassLoader<ArguerInterface> loader_;
 

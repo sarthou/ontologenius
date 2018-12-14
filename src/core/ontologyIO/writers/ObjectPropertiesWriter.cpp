@@ -8,6 +8,8 @@ void ObjectPropertiesWriter::write(FILE* file)
 {
   file_ = file;
 
+  std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
+
   std::vector<ObjectPropertyBranch_t*> properties = property_graph_->get();
   for(size_t i = 0; i < properties.size(); i++)
     writeProperty(properties[i]);

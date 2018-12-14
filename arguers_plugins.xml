@@ -3,15 +3,18 @@
     <description>This is a arguer test plugin.</description>
   </class>
   <class type="ArguerInverseOf" base_class_type="ArguerInterface">
-    <description>This is en arguer for invers of axiom.</description>
+    <description>This is an arguer for invers of axiom.</description>
   </class>
   <class type="ArguerSymetric" base_class_type="ArguerInterface">
-    <description>This is en arguer for symetric axiom.</description>
+    <description>This is an arguer for symetric axiom.</description>
   </class>
   <class type="ArguerChain" base_class_type="ArguerInterface">
-    <description>This is en arguer for properties chain axiom.</description>
+    <description>This is an arguer for properties chain axiom.</description>
   </class>
   <class type="ArguerDictionary" base_class_type="ArguerInterface">
-    <description>This is en arguer for expand dictinaries.</description>
+    <description>This is an arguer for expand dictinaries.</description>
+  </class>
+  <class type="ArguerGeneralize" base_class_type="ArguerInterface">
+    <description>This is an arguer to deduce new knowledge.</description>
   </class>
 </library>

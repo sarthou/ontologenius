@@ -46,6 +46,8 @@ public:
   virtual B* find(const std::string& word);
   virtual std::vector<B*> find(bool (*comp)(B*, std::string, std::string), const std::string& word, const std::string& lang);
   virtual void load(std::vector<B*>& vect);
+  virtual void insert(B* branch);
+  virtual void erase(B* branch);
 private:
   BranchNode_t<B>* nodes_;
   BranchNode_t<B>* nodes_end_;
@@ -111,6 +113,25 @@ void BranchContainerDyn<B>::load(std::vector<B*>& vect)
 
   nb_elem_ += vect.size();
   buffer_size_ = log2(nb_elem_);
+}
+
+template <typename B>
+void BranchContainerDyn<B>::insert(B* branch)
+{
+  insertEnd(branch->value(), branch);
+}
+
+template <typename B>
+void BranchContainerDyn<B>::erase(B* branch)
+{
+  for(BranchNode_t<B>* node = nodes_; node->next != nullptr; node = node->next)
+    if(node->next->branch == branch)
+    {
+      BranchNode_t<B>* tmp = node->next;
+      node->next = tmp->next;
+      delete(tmp);
+      break;
+    }
 }
 
 template <typename B>

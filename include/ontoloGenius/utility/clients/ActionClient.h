@@ -1,7 +1,7 @@
 #ifndef ACTIONCLIENT_H
 #define ACTIONCLIENT_H
 
-#include "ontoloGenius/utility/ClientBase.h"
+#include "ontoloGenius/utility/clients/ClientBase.h"
 
 class ActionClient : public ClientBase
 {

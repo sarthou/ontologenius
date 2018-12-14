@@ -1,5 +1,7 @@
 #include "ontoloGenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 
+#include <algorithm>
+
 void ObjectPropertyBranch_t::setFullSteady()
 {
   steady_.disjoints_.clear();
@@ -49,8 +51,10 @@ void ObjectPropertyBranch_t::setFullSteady()
 
 void ObjectPropertyBranch_t::setSteady_disjoint(ObjectPropertyBranch_t* disjoint)
 {
-  steady_.disjoints_.push_back(disjoint);
-  disjoints_.push_back(disjoint);
+  if(std::find(steady_.disjoints_.begin(), steady_.disjoints_.end(), disjoint) == steady_.disjoints_.end())
+    steady_.disjoints_.push_back(disjoint);
+  if(std::find(disjoints_.begin(), disjoints_.end(), disjoint) == disjoints_.end())
+    disjoints_.push_back(disjoint);
 }
 
 void ObjectPropertyBranch_t::setSteady_properties(Properties_t properties)
@@ -61,20 +65,26 @@ void ObjectPropertyBranch_t::setSteady_properties(Properties_t properties)
 
 void ObjectPropertyBranch_t::setSteady_inverse(ObjectPropertyBranch_t* inverse)
 {
-  steady_.inverses_.push_back(inverse);
-  inverses_.push_back(inverse);
+  if(std::find(steady_.inverses_.begin(), steady_.inverses_.end(), inverse) == steady_.inverses_.end())
+    steady_.inverses_.push_back(inverse);
+  if(std::find(inverses_.begin(), inverses_.end(), inverse) == inverses_.end())
+    inverses_.push_back(inverse);
 }
 
 void ObjectPropertyBranch_t::setSteady_domain(ClassBranch_t* domain)
 {
-  steady_.domains_.push_back(domain);
-  domains_.push_back(domain);
+  if(std::find(steady_.domains_.begin(), steady_.domains_.end(), domain) == steady_.domains_.end())
+    steady_.domains_.push_back(domain);
+  if(std::find(domains_.begin(), domains_.end(), domain) == domains_.end())
+    domains_.push_back(domain);
 }
 
 void ObjectPropertyBranch_t::setSteady_range(ClassBranch_t* range)
 {
-  steady_.ranges_.push_back(range);
-  ranges_.push_back(range);
+  if(std::find(steady_.ranges_.begin(), steady_.ranges_.end(), range) == steady_.ranges_.end())
+    steady_.ranges_.push_back(range);
+  if(std::find(ranges_.begin(), ranges_.end(), range) == ranges_.end())
+    ranges_.push_back(range);
 }
 
 void ObjectPropertyBranch_t::set_chain(std::vector<ObjectPropertyBranch_t*> chain)
@@ -89,14 +99,18 @@ void ObjectPropertyBranch_t::setSteady_chain(std::vector<std::string> chain)
 
 void ObjectPropertyBranch_t::setSteady_child(ObjectPropertyBranch_t* child)
 {
-  steady_.childs_.push_back(child);
-  childs_.push_back(child);
+  if(std::find(steady_.childs_.begin(), steady_.childs_.end(), child) == steady_.childs_.end())
+    steady_.childs_.push_back(child);
+  if(std::find(childs_.begin(), childs_.end(), child) == childs_.end())
+    childs_.push_back(child);
 }
 
 void ObjectPropertyBranch_t::setSteady_mother(ObjectPropertyBranch_t* mother)
 {
-  steady_.mothers_.push_back(mother);
-  mothers_.push_back(mother);
+  if(std::find(steady_.mothers_.begin(), steady_.mothers_.end(), mother) == steady_.mothers_.end())
+    steady_.mothers_.push_back(mother);
+  if(std::find(mothers_.begin(), mothers_.end(), mother) == mothers_.end())
+    mothers_.push_back(mother);
 }
 
 void ObjectPropertyBranch_t::setSteady_dictionary(std::string lang, std::string word)

@@ -172,7 +172,11 @@ void Arguers::runPreArguers()
   do
   {
     for(auto& it : active_arguers_)
+    {
       it.second->preReason();
+      std::vector<std::string> notif = it.second->getNotifications();
+      notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+    }
 
     computeIndividualsUpdates();
 
@@ -191,7 +195,11 @@ void Arguers::runPostArguers()
     for(auto& it : active_arguers_)
     {
       if(it.second != nullptr)
+      {
         it.second->postReason();
+        std::vector<std::string> notif = it.second->getNotifications();
+        notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+      }
     }
 
     computeIndividualsUpdates();
@@ -200,6 +208,21 @@ void Arguers::runPostArguers()
     ArguerInterface::resetNbUpdates();
   }
   while(nb_updates!= 0);
+}
+
+void Arguers::runPeriodicArguers()
+{
+  for(auto& it : active_arguers_)
+  {
+    if(it.second != nullptr)
+    {
+      it.second->periodicReason();
+      std::vector<std::string> notif = it.second->getNotifications();
+      notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+    }
+  }
+
+  computeIndividualsUpdates();
 }
 
 void Arguers::computeIndividualsUpdates()

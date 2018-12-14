@@ -9,6 +9,8 @@ void IndividualWriter::write(FILE* file)
 {
   file_ = file;
 
+  std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
+
   std::vector<IndividualBranch_t*> individuals = individual_graph_->get();
   for(size_t i = 0; i < individuals.size(); i++)
     writeIndividual(individuals[i]);
@@ -19,6 +21,8 @@ void IndividualWriter::write(FILE* file)
 void IndividualWriter::writeGeneralAxioms(FILE* file)
 {
   file_ = file;
+
+  std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
 
   std::vector<IndividualBranch_t*> individuals = individual_graph_->get();
   writeDistincts(individuals);
@@ -34,7 +38,9 @@ void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
 
   writeType(branch);
   writeObjectProperties(branch);
+  writeObjectPropertiesDeduced(branch);
   writeDataProperties(branch);
+  writeDataPropertiesDeduced(branch);
   writeSameAs(branch);
 
   writeDictionary(&branch->steady_);
@@ -67,6 +73,20 @@ void IndividualWriter::writeObjectProperties(IndividualBranch_t* branch)
   }
 }
 
+void IndividualWriter::writeObjectPropertiesDeduced(IndividualBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->object_properties_name_.size(); i++)
+    if(branch->object_properties_deduced_[i] == true)
+    {
+      std::string tmp = "        <ontologenius:" +
+                        branch->object_properties_name_[i]->value() +
+                        " rdf:resourceDeduced=\"ontologenius#" +
+                        branch->object_properties_on_[i]->value() +
+                        "\"/>\n\r";
+      writeString(tmp);
+    }
+}
+
 void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
 {
   for(size_t i = 0; i < branch->steady_.data_properties_name_.size(); i++)
@@ -84,6 +104,26 @@ void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
                       ">\n\r";
     writeString(tmp);
   }
+}
+
+void IndividualWriter::writeDataPropertiesDeduced(IndividualBranch_t* branch)
+{
+  for(size_t i = 0; i < branch->data_properties_name_.size(); i++)
+    if(branch->data_properties_deduced_[i] == true)
+    {
+      std::string tmp = "        <ontologenius:" +
+                        branch->data_properties_name_[i]->value() +
+                        " rdf:datatypeDeduced=\"" +
+                        branch->data_properties_data_[i].getNs() +
+                        "#" +
+                        branch->data_properties_data_[i].type_ +
+                        "\">" +
+                        branch->data_properties_data_[i].value_ +
+                        "</ontologenius:" +
+                        branch->data_properties_name_[i]->value() +
+                        ">\n\r";
+      writeString(tmp);
+    }
 }
 
 void IndividualWriter::writeSameAs(IndividualBranch_t* branch)

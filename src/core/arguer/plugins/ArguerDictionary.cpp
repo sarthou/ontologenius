@@ -9,25 +9,37 @@ void ArguerDictionary::preReason()
 void ArguerDictionary::postReason()
 {
   size_t graph_size;
-  std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
-  graph_size = indiv.size();
-  for(size_t i = 0; i < graph_size; i++)
-    updateDictionary(indiv[i]);
+  {
+    std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
+    std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
+    graph_size = indiv.size();
+    for(size_t i = 0; i < graph_size; i++)
+      updateDictionary(indiv[i]);
+  }
 
-  std::vector<ClassBranch_t*> classes = ontology_->class_graph_.get();
-  graph_size = classes.size();
-  for(size_t i = 0; i < graph_size; i++)
-    updateDictionary(classes[i]);
+  {
+    std::vector<ClassBranch_t*> classes = ontology_->class_graph_.getSafe();
+    std::lock_guard<std::shared_timed_mutex> lock(ontology_->class_graph_.mutex_);
+    graph_size = classes.size();
+    for(size_t i = 0; i < graph_size; i++)
+      updateDictionary(classes[i]);
+  }
 
-  std::vector<DataPropertyBranch_t*> data_properties = ontology_->data_property_graph_.get();
-  graph_size = data_properties.size();
-  for(size_t i = 0; i < graph_size; i++)
-    updateDictionary(data_properties[i]);
+  {
+    std::vector<DataPropertyBranch_t*> data_properties = ontology_->data_property_graph_.getSafe();
+    std::lock_guard<std::shared_timed_mutex> lock(ontology_->data_property_graph_.mutex_);
+    graph_size = data_properties.size();
+    for(size_t i = 0; i < graph_size; i++)
+      updateDictionary(data_properties[i]);
+  }
 
-  std::vector<ObjectPropertyBranch_t*> object_properties = ontology_->object_property_graph_.get();
-  graph_size = object_properties.size();
-  for(size_t i = 0; i < graph_size; i++)
-    updateDictionary(object_properties[i]);
+  {
+    std::vector<ObjectPropertyBranch_t*> object_properties = ontology_->object_property_graph_.getSafe();
+    std::lock_guard<std::shared_timed_mutex> lock(ontology_->object_property_graph_.mutex_);
+    graph_size = object_properties.size();
+    for(size_t i = 0; i < graph_size; i++)
+      updateDictionary(object_properties[i]);
+  }
 }
 
 void ArguerDictionary::updateDictionary(ValuedNode* node)

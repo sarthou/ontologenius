@@ -11,6 +11,11 @@ void ArguerNone::postReason()
   //put your post-reasonning here
 }
 
+void ArguerNone::periodicReason()
+{
+  //put your periodic reasonning here
+}
+
 std::string ArguerNone::getName()
 {
   return "arguer none";

@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <mutex>  // For std::unique_lock
+#include <shared_mutex>
 
 #include "ontoloGenius/core/ontoGraphs/BranchContainer/BranchContainerMap.h"
 #include "ontoloGenius/core/ontoGraphs/BranchContainer/BranchContainerDyn.h"
@@ -15,12 +17,7 @@ class Graph
 {
   static_assert(std::is_base_of<ValuedNode,B>::value, "B must be derived from ValuedNode");
 public:
-  Graph() {language_ = "en"; }
-  Graph(const Graph& base)
-  {
-    container_ = base.container_;
-    language_ = base.language_;
-  }
+  Graph() { language_ = "en"; }
   virtual ~Graph() {}
 
   void setLanguage(std::string language) {language_ = language; }
@@ -28,11 +25,54 @@ public:
   virtual void close() = 0;
 
   virtual std::vector<B*> get() = 0;
+  virtual B* findBranch(std::string name);
+  virtual B* findBranchUnsafe(std::string name);
+  virtual B* create(std::string name);
 
   BranchContainerMap<B> container_;
 
   std::string language_;
 
+  mutable std::shared_timed_mutex mutex_;
+  //use std::lock_guard<std::shared_timed_mutex> lock(Graph<B>::mutex_); to WRITE A DATA
+  //use std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_); to READ A DATA
 };
+
+template <typename B>
+B* Graph<B>::findBranch(std::string name)
+{
+  B* indiv = nullptr;
+  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+  indiv = container_.find(name);
+
+  return indiv;
+}
+
+template <typename B>
+B* Graph<B>::findBranchUnsafe(std::string name)
+{
+  B* indiv = nullptr;
+  indiv = container_.find(name);
+
+  return indiv;
+}
+
+template <typename B>
+B* Graph<B>::create(std::string name)
+{
+  B* indiv = nullptr;
+  {
+    std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+    indiv = container_.find(name);
+  }
+
+  if(indiv == nullptr)
+  {
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    indiv = new B(name);
+    container_.insert(indiv);
+  }
+  return indiv;
+}
 
 #endif

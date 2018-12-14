@@ -1,4 +1,4 @@
-#include "ontoloGenius/utility/IndividualClient.h"
+#include "ontoloGenius/utility/clients/ontologyClients/IndividualClient.h"
 
 std::vector<std::string> IndividualClient::getOn(const std::string& name, const std::string& property)
 {

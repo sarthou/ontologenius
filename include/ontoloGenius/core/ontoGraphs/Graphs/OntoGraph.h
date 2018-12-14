@@ -22,15 +22,14 @@ class OntoGraph : public Graph<B>
   static_assert(std::is_base_of<Branch_t<B>,B>::value, "B must be derived from Branch_t<B>");
 public:
   OntoGraph() {}
-  OntoGraph(const OntoGraph &graph);
   ~OntoGraph();
 
   void close();
 
   std::unordered_set<std::string> getDown(const std::string& value, int depth = -1);
   std::unordered_set<std::string> getUp(const std::string& value, int depth = -1);
-  std::unordered_set<uint32_t> getDownId(const std::string& value, int depth = -1);
-  std::unordered_set<uint32_t> getUpId(const std::string& value, int depth = -1);
+  std::unordered_set<uint32_t> getDownIdSafe(const std::string& value, int depth = -1);
+  std::unordered_set<uint32_t> getUpIdSafe(const std::string& value, int depth = -1);
   std::string getName(const std::string& value);
   std::vector<std::string> getNames(const std::string& value);
   std::unordered_set<std::string> find(const std::string& value);
@@ -38,16 +37,25 @@ public:
 
   void getDown(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
   void getUp(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
-  void getDownId(B* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
-  void getUpId(B* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
+  void getDownIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
+  void getUpIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
 
-  std::unordered_set<B*> getDownPtr(B* branch, int depth = -1);
+  std::unordered_set<B*> getDownPtrSafe(B* branch, int depth = -1);
   void getDownPtr(B* branch, std::unordered_set<B*>& res, int depth = -1, unsigned int current_depth = 0);
-  std::unordered_set<B*> getUpPtr(B* branch, int depth = -1);
+  std::unordered_set<B*> getUpPtrSafe(B* branch, int depth = -1);
   void getUpPtr(B* branch, std::unordered_set<B*>& res, int depth = -1, unsigned int current_depth = 0);
 
   std::vector<B*> get()
   {
+    std::vector<B*> out = branchs_;
+    out.insert( out.end(), roots_.begin(), roots_.end() );
+    return out;
+  }
+
+  std::vector<B*> getSafe()
+  {
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+
     std::vector<B*> out = branchs_;
     out.insert( out.end(), roots_.begin(), roots_.end() );
     return out;
@@ -69,30 +77,6 @@ protected:
 };
 
 template <typename B>
-OntoGraph<B>::OntoGraph(const OntoGraph &base) : Graph<B>(base)
-{
-  for(B* b : base.branchs_)
-  {
-    B* tmp = new B();
-    *tmp = *b;
-    branchs_.push_back(b);
-  }
-  for(B* b : base.roots_)
-  {
-    B* tmp = new B();
-    *tmp = *b;
-    roots_.push_back(b);
-  }
-  for(B* b : base.tmp_mothers_)
-  {
-    B* tmp = new B();
-    *tmp = *b;
-    tmp_mothers_.push_back(b);
-  }
-  depth_ = base.depth_;
-}
-
-template <typename B>
 OntoGraph<B>::~OntoGraph()
 {
   for(size_t i = 0; i < branchs_.size(); i++)
@@ -108,6 +92,8 @@ OntoGraph<B>::~OntoGraph()
 template <typename B>
 void OntoGraph<B>::close()
 {
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+
   for(size_t i = 0; i < tmp_mothers_.size(); i++)
     roots_.push_back(tmp_mothers_[i]);
 
@@ -130,7 +116,9 @@ std::unordered_set<std::string> OntoGraph<B>::getDown(const std::string& value, 
 {
   std::unordered_set<std::string> res;
 
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
+
   if(branch != nullptr)
     getDown(branch, res, depth);
 
@@ -142,7 +130,9 @@ std::unordered_set<std::string> OntoGraph<B>::getUp(const std::string& value, in
 {
   std::unordered_set<std::string> res;
 
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
+
   if(branch != nullptr)
     getUp(branch, res, depth);
 
@@ -150,25 +140,29 @@ std::unordered_set<std::string> OntoGraph<B>::getUp(const std::string& value, in
 }
 
 template <typename B>
-std::unordered_set<uint32_t> OntoGraph<B>::getDownId(const std::string& value, int depth)
+std::unordered_set<uint32_t> OntoGraph<B>::getDownIdSafe(const std::string& value, int depth)
 {
   std::unordered_set<uint32_t> res;
 
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
+
   if(branch != nullptr)
-    getDownId(branch, res, depth);
+    getDownIdSafe(branch, res, depth);
 
   return res;
 }
 
 template <typename B>
-std::unordered_set<uint32_t> OntoGraph<B>::getUpId(const std::string& value, int depth)
+std::unordered_set<uint32_t> OntoGraph<B>::getUpIdSafe(const std::string& value, int depth)
 {
   std::unordered_set<uint32_t> res;
 
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
+
   if(branch != nullptr)
-    getUpId(branch, res, depth);
+    getUpIdSafe(branch, res, depth);
 
   return res;
 }
@@ -179,6 +173,7 @@ std::string OntoGraph<B>::getName(const std::string& value)
 {
   std::string res = "";
 
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
   if(branch != nullptr)
   {
@@ -220,6 +215,7 @@ std::vector<std::string> OntoGraph<B>::getNames(const std::string& value)
 {
   std::vector<std::string> res;
 
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
   if(branch != nullptr)
   {
@@ -235,6 +231,7 @@ std::vector<std::string> OntoGraph<B>::getNames(const std::string& value)
 template <typename B>
 bool OntoGraph<B>::touch(const std::string& value)
 {
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
   if(branch != nullptr)
     return true;
@@ -306,6 +303,7 @@ void OntoGraph<B>::getDown(B* branch, std::unordered_set<std::string>& res, int 
 {
   if(current_depth < (unsigned int)depth)
   {
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
     size_t size = branch->childs_.size();
     current_depth++;
     for(size_t i = 0; i < size; i++)
@@ -320,6 +318,7 @@ void OntoGraph<B>::getUp(B* branch, std::unordered_set<std::string>& res, int de
 {
   if(current_depth < (unsigned int)depth)
   {
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
     size_t size = branch->mothers_.size();
     current_depth++;
     for(size_t i = 0; i < size; i++)
@@ -330,37 +329,40 @@ void OntoGraph<B>::getUp(B* branch, std::unordered_set<std::string>& res, int de
 }
 
 template <typename B>
-void OntoGraph<B>::getDownId(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
+void OntoGraph<B>::getDownIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
 {
   if(current_depth < (unsigned int)depth)
   {
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
     size_t size = branch->childs_.size();
     current_depth++;
     for(size_t i = 0; i < size; i++)
-      getDownId(branch->childs_[i], res, depth, current_depth);
+      getDownIdSafe(branch->childs_[i], res, depth, current_depth);
   }
 
   res.insert(branch->get());
 }
 
 template <typename B>
-void OntoGraph<B>::getUpId(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
+void OntoGraph<B>::getUpIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
 {
   if(current_depth < (unsigned int)depth)
   {
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
     size_t size = branch->mothers_.size();
     current_depth++;
     for(size_t i = 0; i < size; i++)
-      getUpId(branch->mothers_[i], res, depth, current_depth);
+      getUpIdSafe(branch->mothers_[i], res, depth, current_depth);
   }
 
   res.insert(branch->get());
 }
 
 template <typename B>
-std::unordered_set<B*> OntoGraph<B>::getDownPtr(B* branch, int depth)
+std::unordered_set<B*> OntoGraph<B>::getDownPtrSafe(B* branch, int depth)
 {
   std::unordered_set<B*> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   getDownPtr(branch, res, depth);
   return res;
 }
@@ -372,6 +374,7 @@ void OntoGraph<B>::getDownPtr(B* branch, std::unordered_set<B*>& res, int depth,
   {
     current_depth++;
     res.insert(branch);
+
     size_t size = branch->childs_.size();
     for(size_t i = 0; i < size; i++)
       getDownPtr(branch->childs_[i], res, depth, current_depth);
@@ -379,9 +382,10 @@ void OntoGraph<B>::getDownPtr(B* branch, std::unordered_set<B*>& res, int depth,
 }
 
 template <typename B>
-std::unordered_set<B*> OntoGraph<B>::getUpPtr(B* branch, int depth)
+std::unordered_set<B*> OntoGraph<B>::getUpPtrSafe(B* branch, int depth)
 {
   std::unordered_set<B*> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   getUpPtr(branch, res, depth);
   return res;
 }
@@ -393,6 +397,7 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res, int depth, u
   {
     current_depth++;
     res.insert(branch);
+
     size_t size = branch->mothers_.size();
     for(size_t i = 0; i < size; i++)
       getUpPtr(branch->mothers_[i], res, depth, current_depth);
@@ -414,6 +419,7 @@ template <typename B>
 std::unordered_set<std::string> OntoGraph<B>::find(const std::string& value)
 {
   std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   std::vector<B*> branch = this->container_.find(&comparator<B>, value, this->language_);
   for(size_t i = 0; i < branch.size(); i++)
     res.insert(branch[i]->value());

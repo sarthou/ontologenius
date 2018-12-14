@@ -1,18 +1,15 @@
-#ifndef CLASSCLIENT_H
-#define CLASSCLIENT_H
+#ifndef INDIVIDUALCLIENT_H
+#define INDIVIDUALCLIENT_H
 
-#include "ontoloGenius/utility/OntologyClient.h"
+#include "ontoloGenius/utility/clients/ontologyClients/OntologyClient.h"
 
-class ClassClient : public OntologyClient
+class IndividualClient : public OntologyClient
 {
 public:
-  ClassClient(ros::NodeHandle* n) : OntologyClient(n, "class")
+  IndividualClient(ros::NodeHandle* n) : OntologyClient(n, "individual")
   {
   }
 
-  std::vector<std::string> getDown(const std::string& name, int depth = -1);
-  std::vector<std::string> getDisjoint(const std::string& name);
-  
   std::vector<std::string> getOn(const std::string& name, const std::string& property);
   std::vector<std::string> getFrom(const std::string& property, const std::string& name, const std::string& selector = "");
   std::vector<std::string> getWith(const std::string& indiv_1, const std::string& indiv_2, const std::string& selector = "");
@@ -24,6 +21,10 @@ public:
   std::vector<std::string> getRelationFrom(const std::string& name);
   std::vector<std::string> getRelationOn(const std::string& name);
   std::vector<std::string> getRelationWith(const std::string& name);
+
+  std::vector<std::string> getType(const std::string& name);
+  std::vector<std::string> getSame(const std::string& name);
+  std::vector<std::string> getDistincts(const std::string& name);
 
 private:
 

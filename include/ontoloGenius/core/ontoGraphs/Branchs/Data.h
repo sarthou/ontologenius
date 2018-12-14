@@ -21,6 +21,11 @@ struct data_t
   }
 
   std::string toString() {return( type_ + ":" + value_); }
+  void set(std::string value)
+  {
+    type_ = value.substr(0,value.find(":"));
+    value_ = value.substr(value.find(":")+1);
+  }
 };
 
 #endif

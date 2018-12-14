@@ -1,4 +1,4 @@
-#include "ontoloGenius/utility/ArguerClient.h"
+#include "ontoloGenius/utility/clients/ArguerClient.h"
 
 std::vector<std::string> ArguerClient::list()
 {

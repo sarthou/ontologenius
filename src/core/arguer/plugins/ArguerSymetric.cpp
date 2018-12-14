@@ -8,6 +8,7 @@ void ArguerSymetric::preReason()
 
 void ArguerSymetric::postReason()
 {
+  std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   size_t prop_i = 0;
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
   size_t indiv_size = indiv.size();
@@ -24,6 +25,8 @@ void ArguerSymetric::postReason()
           {
             sym_indiv->object_properties_name_.push_back(sym_prop);
             sym_indiv->object_properties_on_.push_back(indiv[indiv_i]);
+            sym_indiv->object_properties_deduced_.push_back(false);
+            sym_indiv->object_properties_has_induced_.push_back(Triplet());
             sym_indiv->nb_updates_++;
             nb_update_++;
           }

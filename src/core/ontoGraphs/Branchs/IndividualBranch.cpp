@@ -1,5 +1,7 @@
 #include "ontoloGenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 
+#include <algorithm>
+
 void IndividualBranch_t::setFullSteady()
 {
   steady_.is_a_.clear();
@@ -33,8 +35,10 @@ void IndividualBranch_t::setFullSteady()
 
 void IndividualBranch_t::setSteady_is_a(ClassBranch_t* is_a)
 {
-  steady_.is_a_.push_back(is_a);
-  is_a_.push_back(is_a);
+  if(std::find(steady_.is_a_.begin(), steady_.is_a_.end(), is_a) == steady_.is_a_.end())
+    steady_.is_a_.push_back(is_a);
+  if(std::find(is_a_.begin(), is_a_.end(), is_a) == is_a_.end())
+    is_a_.push_back(is_a);
 }
 
 void IndividualBranch_t::setSteady_object_properties_name(ObjectPropertyBranch_t* object_properties_name)
@@ -63,14 +67,24 @@ void IndividualBranch_t::setSteady_data_properties_data(data_t data_properties_d
 
 void IndividualBranch_t::setSteady_same_as(IndividualBranch_t* same_as)
 {
-  steady_.same_as_.push_back(same_as);
-  same_as_.push_back(same_as);
+  if(std::find(steady_.same_as_.begin(), steady_.same_as_.end(), same_as) == steady_.same_as_.end())
+    steady_.same_as_.push_back(same_as);
+  if(std::find(same_as_.begin(), same_as_.end(), same_as) == same_as_.end())
+    same_as_.push_back(same_as);
 }
 
 void IndividualBranch_t::setSteady_distinct(IndividualBranch_t* distinct)
 {
-  steady_.distinct_.push_back(distinct);
-  distinct_.push_back(distinct);
+  if(std::find(steady_.distinct_.begin(), steady_.distinct_.end(), distinct) == steady_.distinct_.end())
+    steady_.distinct_.push_back(distinct);
+  if(std::find(distinct_.begin(), distinct_.end(), distinct) == distinct_.end())
+    distinct_.push_back(distinct);
+}
+
+void IndividualBranch_t::setSteady_dictionary(std::string lang, std::string word)
+{
+  steady_.dictionary_[lang].push_back(word);
+  dictionary_[lang].push_back(word);
 }
 
 void IndividualBranch_t::setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary)
