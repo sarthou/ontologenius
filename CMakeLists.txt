@@ -199,15 +199,25 @@ add_dependencies(ontologenius_arguer_plugin ontologenius_gencpp)
 target_link_libraries(ontologenius_arguer_plugin ontologenius_core_lib)
 
 ##############################
+## INTERFACE
+##############################
+
+add_library(ontologenius_interface
+  src/RosInterface.cpp
+  )
+add_dependencies(ontologenius_interface ontologenius_gencpp)
+target_link_libraries(ontologenius_interface ontologenius_core_lib)
+
+##############################
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 ##############################
 
-add_executable(ontoloGenius src/rosInterface.cpp)
+add_executable(ontoloGenius src/nodes/ontologenius_single.cpp)
 add_dependencies(ontoloGenius ontologenius_gencpp)
 target_link_libraries(ontoloGenius ontologenius_interpreter_lib)
-target_link_libraries(ontoloGenius ontologenius_core_lib)
+target_link_libraries(ontoloGenius ontologenius_interface)
 
 add_executable(ontoloGenius_exemple src/exemple.cpp )
 add_dependencies(ontoloGenius_exemple ontologenius_gencpp)

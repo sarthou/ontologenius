@@ -13,11 +13,11 @@ Arguers::~Arguers()
 {
   for(auto& it : arguers_)
   {
-    if(it.second != nullptr)
+    /*if(it.second != nullptr)
     {
       delete it.second;
       it.second = nullptr;
-    }
+    }*/
     //TODO: unload the library cause segfault or exception => unstable behavior
     try
     {
@@ -39,7 +39,7 @@ Arguers::~Arguers()
       std::cout << "catch other" << std::endl;
     }
   }
-  for(auto& it : arguers_)
+  /*for(auto& it : arguers_)
   {
     if(it.second != nullptr)
     {
@@ -47,7 +47,7 @@ Arguers::~Arguers()
       delete it.second;
       it.second = nullptr;
     }
-  }
+  }*/
 }
 
 void Arguers::link(Ontology* onto)
