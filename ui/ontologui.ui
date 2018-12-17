@@ -878,6 +878,33 @@ p, li { white-space: pre-wrap; }
           </property>
          </widget>
         </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Name</string>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="OntologyName">
+             <property name="maximumSize">
+              <size>
+               <width>145</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
       </item>
       <item>

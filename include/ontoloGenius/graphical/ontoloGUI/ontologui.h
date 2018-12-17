@@ -55,9 +55,11 @@ public slots:
   void dataPropertyClickedSlot();
   void individualClickedSlot();
   void closeOntologySlot();
+  void nameEditingFinishedSlot();
   void ArguerClickedSlot(int);
   void ArguerhoverEnterSlot();
   void ArguerhoverLeaveSlot();
+  void currentTabChangedSlot(int);
 };
 
 #endif // ONTOLOGUI_H

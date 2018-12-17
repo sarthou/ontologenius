@@ -153,6 +153,9 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Individual_getType, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
 
     QObject::connect(ui->CloseButton, SIGNAL(clicked()),this, SLOT(closeOntologySlot()));
+
+    QObject::connect(ui->OntologyName, SIGNAL(editingFinished()),this, SLOT(nameEditingFinishedSlot()));
+    QObject::connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(currentTabChangedSlot(int)));
 }
 
 ontoloGUI::~ontoloGUI()
@@ -168,7 +171,7 @@ void ontoloGUI::wait()
                   "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
                   "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Wainting for </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">ontoloGenius</span></p></body></html>";
   ui->InfoArea->setHtml(html);
-  ros::service::waitForService("ontologenius/arguer", -1);
+  //ros::service::waitForService("ontologenius/arguer", -1);
 }
 
 void ontoloGUI::start()
@@ -228,7 +231,8 @@ void ontoloGUI::IndividualhoverLeaveSlot()
 
 void ontoloGUI::classClickedSlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/class");
+  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/class" : "ontologenius/class/" + ui->OntologyName->text().toStdString();
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
   srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
@@ -237,9 +241,10 @@ void ontoloGUI::classClickedSlot()
   ui->ClassDescription->setText(text);
 
   if(!client.call(srv))
-    displayErrorInfo("ontologenius/class client call failed");
+    displayErrorInfo(service_name + " client call failed");
   else
   {
+    start();
     std::string res = vector2string(srv.response.values);
     ui->ResultArea->setText(QString::fromStdString(res));
     if(srv.response.code == 3)
@@ -249,7 +254,8 @@ void ontoloGUI::classClickedSlot()
 
 void ontoloGUI::objectPropertyClickedSlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/object_property");
+  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/object_property" : "ontologenius/object_property/" + ui->OntologyName->text().toStdString();
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
   srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
@@ -258,9 +264,10 @@ void ontoloGUI::objectPropertyClickedSlot()
   ui->ObjectPropertyDescription->setText(text);
 
   if(!client.call(srv))
-    displayErrorInfo("ontologenius/object_property client call failed");
+    displayErrorInfo(service_name + " client call failed");
   else
   {
+    start();
     std::string res = vector2string(srv.response.values);
     ui->ResultArea->setText(QString::fromStdString(res));
     if(srv.response.code == 3)
@@ -270,7 +277,8 @@ void ontoloGUI::objectPropertyClickedSlot()
 
 void ontoloGUI::dataPropertyClickedSlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/data_property");
+  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/data_property" : "ontologenius/data_property/" + ui->OntologyName->text().toStdString();
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
   srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
@@ -279,9 +287,10 @@ void ontoloGUI::dataPropertyClickedSlot()
   ui->DataPropertyDescription->setText(text);
 
   if(!client.call(srv))
-    displayErrorInfo("ontologenius/data_property client call failed");
+    displayErrorInfo(service_name + " client call failed");
   else
   {
+    start();
     std::string res = vector2string(srv.response.values);
     ui->ResultArea->setText(QString::fromStdString(res));
     if(srv.response.code == 3)
@@ -291,7 +300,8 @@ void ontoloGUI::dataPropertyClickedSlot()
 
 void ontoloGUI::individualClickedSlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/individual");
+  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/individual" : "ontologenius/individual/" + ui->OntologyName->text().toStdString();
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
   if(ui->Individual_select->checkState() == 0)
@@ -303,9 +313,10 @@ void ontoloGUI::individualClickedSlot()
   ui->IndividualDescription->setText(text);
 
   if(!client.call(srv))
-    displayErrorInfo("ontologenius/individual client call failed");
+    displayErrorInfo(service_name + " client call failed");
   else
   {
+    start();
     std::string res = vector2string(srv.response.values);
     ui->ResultArea->setText(QString::fromStdString(res));
     if(srv.response.code == 3)
@@ -315,13 +326,14 @@ void ontoloGUI::individualClickedSlot()
 
 void ontoloGUI::closeOntologySlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/actions");
+  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/actions" : "ontologenius/actions/" + ui->OntologyName->text().toStdString();
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
   srv.request.action = "close";
 
   if(!client.call(srv))
-    displayErrorInfo("ontologenius/actions client call failed");
+    displayErrorInfo(service_name + " client call failed");
   else
   {
     std::string res = vector2string(srv.response.values);
@@ -330,9 +342,15 @@ void ontoloGUI::closeOntologySlot()
   }
 }
 
+void ontoloGUI::nameEditingFinishedSlot()
+{
+  loadArguers();
+}
+
 void ontoloGUI::ArguerClickedSlot(int)
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/arguer");
+  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/arguer" : "ontologenius/arguer/" + ui->OntologyName->text().toStdString();
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
   if(((QCheckBoxExtended*)sender())->isChecked())
@@ -342,9 +360,10 @@ void ontoloGUI::ArguerClickedSlot(int)
   srv.request.param = ((QCheckBoxExtended*)sender())->text().toStdString();
 
   if(!client.call(srv))
-    displayErrorInfo("ontologenius/arguer client call failed");
+    displayErrorInfo(service_name + " client call failed");
   else
   {
+    start();
     std::string res = vector2string(srv.response.values);
     ui->ResultArea->setText(QString::fromStdString(res));
   }
@@ -373,15 +392,24 @@ void ontoloGUI::displayUnClosed()
 
 void ontoloGUI::loadArguers()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/arguer");
+  QLayoutItem *item;
+  while ((item = ui->ArguerListLayout->takeAt(1)) != 0)
+  {
+    delete item->widget();
+    delete item;
+  }
+
+  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/arguer" : "ontologenius/arguer/" + ui->OntologyName->text().toStdString();
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
   srv.request.action = "list";
 
   if(!client.call(srv))
-    displayErrorInfo("ontologenius/arguer client call failed");
+    displayErrorInfo(service_name + " client call failed");
   else
   {
+    start();
     arguers_names_ = srv.response.values;
     ui->ResultArea->setText("");
 
@@ -416,14 +444,15 @@ size_t ontoloGUI::getArguerIndex(QCheckBoxExtended* box)
 
 std::string ontoloGUI::getArguerDescription(std::string box)
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/arguer");
+  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/arguer" : "ontologenius/arguer/" + ui->OntologyName->text().toStdString();
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
   srv.request.action = "getDescription";
   srv.request.param = box;
 
   if(!client.call(srv))
-    displayErrorInfo("ontologenius/arguer client call failed");
+    displayErrorInfo(service_name + " client call failed");
   else
     return vector2string(srv.response.values);
 
@@ -446,4 +475,10 @@ std::string ontoloGUI::vector2string(std::vector<std::string> vect)
   for(size_t i = 0; i < vect.size(); i++)
     res += vect[i] + "\n";
   return res;
+}
+
+void ontoloGUI::currentTabChangedSlot(int index)
+{
+  if(index == 4)
+    loadArguers();
 }
