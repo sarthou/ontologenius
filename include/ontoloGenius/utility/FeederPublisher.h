@@ -7,7 +7,8 @@
 class FeederPublisher
 {
 public:
-  FeederPublisher(ros::NodeHandle* n) : pub_(n->advertise<std_msgs::String>("ontologenius/insert", 1000))
+  FeederPublisher(ros::NodeHandle* n, const std::string& name) :
+                  pub_(n->advertise<std_msgs::String>((name == "") ? "ontologenius/insert" : "ontologenius/insert/" + name, 1000))
   {
     n_ = n;
   }

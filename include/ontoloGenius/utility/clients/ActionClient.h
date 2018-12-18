@@ -6,7 +6,7 @@
 class ActionClient : public ClientBase
 {
 public:
-  ActionClient(ros::NodeHandle* n) : ClientBase(n, "actions")
+  ActionClient(ros::NodeHandle* n, const std::string& name) : ClientBase(n, (name == "") ? "actions" : "actions/" + name)
   {
   }
 

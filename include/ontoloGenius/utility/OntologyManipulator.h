@@ -17,7 +17,7 @@
 class OntologyManipulator
 {
 public:
-  OntologyManipulator(ros::NodeHandle* n);
+  OntologyManipulator(ros::NodeHandle* n, const std::string& name = "");
   ~OntologyManipulator() {}
 
   size_t nb() {return actions.nb();}

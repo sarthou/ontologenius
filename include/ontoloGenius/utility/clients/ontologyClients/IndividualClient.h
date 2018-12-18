@@ -6,7 +6,7 @@
 class IndividualClient : public OntologyClient
 {
 public:
-  IndividualClient(ros::NodeHandle* n) : OntologyClient(n, "individual")
+  IndividualClient(ros::NodeHandle* n, const std::string& name) : OntologyClient(n, (name == "")? "individual" : "individual/" + name)
   {
   }
 

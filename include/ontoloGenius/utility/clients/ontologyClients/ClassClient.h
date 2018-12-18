@@ -6,7 +6,7 @@
 class ClassClient : public OntologyClient
 {
 public:
-  ClassClient(ros::NodeHandle* n) : OntologyClient(n, "class")
+  ClassClient(ros::NodeHandle* n, const std::string& name) : OntologyClient(n, (name == "") ? "class" : "class/" + name)
   {
   }
 

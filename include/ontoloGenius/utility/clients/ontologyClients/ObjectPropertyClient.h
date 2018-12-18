@@ -6,7 +6,7 @@
 class ObjectPropertyClient : public OntologyClient
 {
 public:
-  ObjectPropertyClient(ros::NodeHandle* n) : OntologyClient(n, "object_property")
+  ObjectPropertyClient(ros::NodeHandle* n, const std::string& name) : OntologyClient(n, (name == "") ? "object_property" : "object_property/" + name)
   {
   }
 

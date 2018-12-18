@@ -6,7 +6,7 @@
 class ArguerClient : public ClientBase
 {
 public:
-  ArguerClient(ros::NodeHandle* n) : ClientBase(n, "arguer")
+  ArguerClient(ros::NodeHandle* n, const std::string& name) : ClientBase(n, (name == "") ? "arguer" : "arguer/" + name)
   {
   }
 
