@@ -219,6 +219,10 @@ add_dependencies(ontoloGenius ontologenius_gencpp)
 target_link_libraries(ontoloGenius ontologenius_interpreter_lib)
 target_link_libraries(ontoloGenius ontologenius_interface)
 
+add_executable(ontoloGenius_multi src/nodes/ontologenius_multi.cpp)
+add_dependencies(ontoloGenius_multi ontologenius_gencpp)
+target_link_libraries(ontoloGenius_multi ontologenius_interface)
+
 add_executable(ontoloGenius_exemple src/exemple.cpp )
 add_dependencies(ontoloGenius_exemple ontologenius_gencpp)
 target_link_libraries(ontoloGenius_exemple ontologenius_drawer_lib)

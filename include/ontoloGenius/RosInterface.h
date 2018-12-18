@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <unordered_set>
+#include <atomic>
 
 #include "ros/ros.h"
 #include "std_msgs/String.h"
@@ -22,6 +23,7 @@ public:
 
   void init(std::string& lang, std::string& intern_file, std::vector<std::string>& files);
   void run();
+  std::atomic<bool>* getAtomicRun() { return &run_; }
 
 private:
   ros::NodeHandle* n_;
@@ -30,6 +32,7 @@ private:
   Feeder feeder_;
 
   std::string name_;
+  std::atomic<bool> run_;
 
   void knowledgeCallback(const std_msgs::String::ConstPtr& msg);
 

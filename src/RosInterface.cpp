@@ -3,8 +3,9 @@
 #include "ontoloGenius/core/utility/error_code.h"
 
 #include <thread>
+#include <ros/callback_queue.h>
 
-RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : arguers_(onto_), feeder_(onto_)
+RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : arguers_(onto_), feeder_(onto_), run_(true)
 {
   n_ = n;
   onto_ = new Ontology();
@@ -71,10 +72,15 @@ void RosInterface::run()
 
   ROS_DEBUG("%s ontologenius ready", name_.c_str());
 
-  ros::spin();
+  while (ros::ok() && (run_ == true))
+  {
+    ros::getGlobalCallbackQueue()->callAvailable(ros::WallDuration(0.1));
+  }
 
   periodic_reasoning_thread.join();
+  std::cout << "periodic_reasoning_thread joined" << std::endl;
   feed_thread.join();
+  std::cout << "feed_thread joined" << std::endl;
 }
 
 
@@ -401,12 +407,12 @@ void RosInterface::feedThread()
   ros::Publisher feeder_publisher = n_->advertise<std_msgs::String>(publisher_name, 1000);
 
   ros::Rate wait(10);
-  while((ros::ok()) && (onto_->isInit(false) == false))
+  while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
   {
     wait.sleep();
   }
 
-  while(ros::ok())
+  while(ros::ok() && (run_ == true))
   {
     bool run = feeder_.run();
     if(run == true)
@@ -432,13 +438,13 @@ void RosInterface::periodicReasoning()
   ros::Publisher arguer_publisher = n_->advertise<std_msgs::String>(publisher_name, 1000);
 
   ros::Rate wait(10);
-  while((ros::ok()) && (onto_->isInit(false) == false))
+  while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
   {
     wait.sleep();
   }
 
   ros::Rate r(100);
-  while(ros::ok())
+  while(ros::ok() && (run_ == true))
   {
     arguers_.runPeriodicArguers();
 
