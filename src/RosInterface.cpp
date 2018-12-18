@@ -22,6 +22,14 @@ RosInterface::~RosInterface()
 void RosInterface::init(std::string& lang, std::string& intern_file, std::vector<std::string>& files)
 {
   onto_->setLanguage(lang);
+  std::string ontology_intern_file = intern_file;
+  if(name_ != "")
+  {
+    size_t pose = intern_file.find(".owl");
+    if(pose != std::string::npos)
+      intern_file.insert(pose, "_" + name_);
+  }
+
   if(onto_->preload(intern_file) == false)
     for(auto file : files)
       onto_->readFromFile(file);
