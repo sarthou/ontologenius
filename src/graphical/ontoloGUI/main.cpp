@@ -3,11 +3,19 @@
 #include <QApplication>
 
 #include "ros/ros.h"
+#include <ros/package.h>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
     a.setStyle(new DarkStyle);
+
+    std::string path = ros::package::getPath("ontologenius");
+    path = path + "/docs/img/logo/ontologenius.ico";
+    QIcon icon(QString::fromStdString(path));
+    a.setWindowIcon(icon);
+
     ontoloGUI w;
     w.show();
 
