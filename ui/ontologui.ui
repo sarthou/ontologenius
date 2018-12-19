@@ -833,6 +833,133 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="ManagerTab">
+       <attribute name="title">
+        <string>Manager</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_25">
+        <item>
+         <layout class="QVBoxLayout" name="ManagerLayout">
+
+          <item >
+           <widget class="QLabel" name="label_6">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>The ontology manager can only be used with the "ontoloGenius_multi" executable</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+
+          <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QPushButton" name="AddPushButton">
+               <property name="text">
+                <string>ADD</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+          </item>
+
+          <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_1">
+             <item>
+              <widget class="QPushButton" name="DelPushButton">
+               <property name="text">
+                <string>DELETE</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+          </item>
+
+          <item>
+           <widget class="QLineEdit" name="OntologyNameAddDel">
+            </widget>
+          </item>
+
+          <item >
+           <widget class="QLabel" name="label_7">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string> </string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+
+           <item>
+            <widget class="Line" name="line">
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="lineWidth">
+              <number>100</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+
+          <item>
+            <widget class="QPushButton" name="RefreshButton">
+              <property name="geometry">
+               <rect>
+                <width>20</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="icon">
+               <iconset>
+                <activeon>:/darkstyle/icon_refresh.png</activeon>
+               </iconset>
+              </property>
+             </widget>
+          </item>
+
+         </layout>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="OntologiesList">
+          <property name="maximumSize">
+           <size>
+            <width>250</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="cursorWidth">
+           <number>1</number>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::NoTextInteraction</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
     <item>
