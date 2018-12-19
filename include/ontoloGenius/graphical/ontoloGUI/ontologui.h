@@ -35,9 +35,11 @@ private:
   void constructArguersCheckBoxs();
   size_t getArguerIndex(QCheckBoxExtended* box);
   std::string getArguerDescription(std::string box);
+  void displayOntologiesList();
   void displayErrorInfo(std::string text);
 
   std::string vector2string(std::vector<std::string> vect);
+  std::string vector2html(std::vector<std::string> vect);
 
 public slots:
   void ClasshoverEnterSlot();
@@ -60,6 +62,8 @@ public slots:
   void ArguerhoverEnterSlot();
   void ArguerhoverLeaveSlot();
   void currentTabChangedSlot(int);
+
+  void displayOntologiesListSlot();
 };
 
 #endif // ONTOLOGUI_H

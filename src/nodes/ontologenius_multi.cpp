@@ -97,8 +97,6 @@ int main(int argc, char** argv)
   for(int i = 3; i < argc; i++)
     files.push_back(std::string(argv[i]));
 
-  /*interface.run();*/
-
   ros::ServiceServer service = n_->advertiseService("ontologenius/manage", managerHandle);
 
   ros::spin();

@@ -153,6 +153,7 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Individual_getType, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
 
     QObject::connect(ui->CloseButton, SIGNAL(clicked()),this, SLOT(closeOntologySlot()));
+    QObject::connect(ui->RefreshButton, SIGNAL(clicked()),this, SLOT(displayOntologiesListSlot()));
 
     QObject::connect(ui->OntologyName, SIGNAL(editingFinished()),this, SLOT(nameEditingFinishedSlot()));
     QObject::connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(currentTabChangedSlot(int)));
@@ -469,6 +470,40 @@ void ontoloGUI::displayErrorInfo(std::string text)
   ui->InfoArea->setHtml(QString::fromStdString(html));
 }
 
+void ontoloGUI::displayOntologiesList()
+{
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/manage");
+
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "list";
+
+  std::string html;
+  if(!client.call(srv))
+  {
+    html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+            "p, li { white-space: pre-wrap; }"
+            "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+            "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">ontoloGenius is not running in multi mode.</span></p></body></html>";
+  }
+  else
+  {
+    std::string text = vector2html(srv.response.values);
+    html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+            "p, li { white-space: pre-wrap; }"
+            "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+            "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + text + "</span></p></body></html>";
+  }
+
+  ui->OntologiesList->setHtml(QString::fromStdString(html));
+}
+
+void ontoloGUI::displayOntologiesListSlot()
+{
+  displayOntologiesList();
+}
+
 std::string ontoloGUI::vector2string(std::vector<std::string> vect)
 {
   std::string res;
@@ -477,8 +512,18 @@ std::string ontoloGUI::vector2string(std::vector<std::string> vect)
   return res;
 }
 
+std::string ontoloGUI::vector2html(std::vector<std::string> vect)
+{
+  std::string res;
+  for(size_t i = 0; i < vect.size(); i++)
+    res += " - " + vect[i] + "<br>";
+  return res;
+}
+
 void ontoloGUI::currentTabChangedSlot(int index)
 {
   if(index == 4)
     loadArguers();
+  else if(index == 5)
+    displayOntologiesList();
 }
