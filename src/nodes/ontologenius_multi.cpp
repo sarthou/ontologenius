@@ -22,6 +22,19 @@ std::string language;
 std::string intern_file = "none";
 std::vector<std::string> files;
 
+void deleteInterface(std::string name)
+{
+  *(interfaces_run_[name]) = false;
+  interfaces_threads_[name].join();
+
+  interfaces_threads_.erase(name);
+  interfaces_run_.erase(name);
+  delete interfaces_[name];
+  interfaces_.erase(name);
+
+  std::cout << name << " STOPED" << std::endl;
+}
+
 bool managerHandle(ontologenius::OntologeniusService::Request &req,
                    ontologenius::OntologeniusService::Response &res)
 {
@@ -53,17 +66,7 @@ bool managerHandle(ontologenius::OntologeniusService::Request &req,
     if(it == interfaces_.end())
       res.code = NO_EFFECT;
     else
-    {
-      *(interfaces_run_[req.param]) = false;
-      interfaces_threads_[req.param].join();
-
-      interfaces_threads_.erase(req.param);
-      interfaces_run_.erase(req.param);
-      delete interfaces_[req.param];
-      interfaces_.erase(req.param);
-
-      std::cout << req.param << " STOPED" << std::endl;
-    }
+      deleteInterface(req.param);
   }
   else if(req.action == "list")
   {
@@ -100,8 +103,12 @@ int main(int argc, char** argv)
 
   ros::spin();
 
+  std::vector<std::string> interfaces_names;
   for(auto intreface : interfaces_)
-    delete intreface.second;
+    interfaces_names.push_back(intreface.first);
+
+  for(size_t i = 0; i < interfaces_names.size(); i++)
+    deleteInterface(interfaces_names[i]);
 
   ROS_DEBUG("KILL ontoloGenius");
 
