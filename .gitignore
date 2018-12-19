@@ -40,3 +40,6 @@
 
 # Ontologenius build files
 *.ont
+
+# Ontologenius intern files
+/file_intern/*
