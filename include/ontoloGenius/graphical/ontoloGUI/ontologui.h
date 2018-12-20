@@ -64,6 +64,8 @@ public slots:
   void currentTabChangedSlot(int);
 
   void displayOntologiesListSlot();
+  void addOntologySlot();
+  void deleteOntologySlot();
 };
 
 #endif // ONTOLOGUI_H
