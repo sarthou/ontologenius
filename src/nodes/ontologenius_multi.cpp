@@ -1,7 +1,9 @@
 #include "ros/ros.h"
 #include <thread>
+#include <regex>
 
 #include "ontoloGenius/RosInterface.h"
+#include "ontoloGenius/core/ontologyOperators/differenceFinder.h"
 #include "ontoloGenius/core/utility/error_code.h"
 
 void removeUselessSpace(std::string& text)
@@ -39,6 +41,49 @@ bool deleteInterface(std::string name)
 
   std::cout << name << " STOPED" << std::endl;
   return true;
+}
+
+std::vector<std::string> getDiff(std::string& param, int& res_code)
+{
+  std::vector<std::string> res;
+
+  differenceFinder diff;
+  std::regex base_regex("(.*)\\|(.*)\\|(.*)");
+  std::smatch base_match;
+  if (std::regex_match(param, base_match, base_regex))
+  {
+    if (base_match.size() == 3)
+    {
+      std::string onto1 = base_match[1].str();
+      Ontology* onto1_ptr;
+      auto it = interfaces_.find(onto1);
+      if(it == interfaces_.end())
+      {
+        res_code = NO_EFFECT;
+        return res;
+      }
+      else
+        onto1_ptr = interfaces_[onto1]->getOntology();
+
+      std::string onto2 = base_match[2].str();
+      Ontology* onto2_ptr;
+      it = interfaces_.find(onto2);
+      if(it == interfaces_.end())
+      {
+        res_code = NO_EFFECT;
+        return res;
+      }
+      else
+        onto2_ptr = interfaces_[onto2]->getOntology();
+
+      std::string concept = base_match[3].str();
+      res = diff.getDiff(onto1_ptr, onto2_ptr, concept);
+    }
+  }
+  else
+    res_code = UNKNOW_ACTION;
+
+  return res;
 }
 
 bool managerHandle(ontologenius::OntologeniusService::Request &req,
@@ -80,6 +125,12 @@ bool managerHandle(ontologenius::OntologeniusService::Request &req,
   {
     for(auto it : interfaces_)
       res.values.push_back(it.first);
+  }
+  else if(req.action == "diffrence")
+  {
+    int code = 0;
+    res.values = getDiff(req.param, code);
+    res.code = code;
   }
   else
     res.code = UNKNOW_ACTION;

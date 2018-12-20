@@ -204,6 +204,7 @@ target_link_libraries(ontologenius_arguer_plugin ontologenius_core_lib)
 
 add_library(ontologenius_interface
   src/RosInterface.cpp
+  src/core/ontologyOperators/differenceFinder.cpp
   )
 add_dependencies(ontologenius_interface ontologenius_gencpp)
 target_link_libraries(ontologenius_interface ontologenius_core_lib)
