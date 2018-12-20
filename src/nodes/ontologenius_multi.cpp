@@ -15,24 +15,30 @@ void removeUselessSpace(std::string& text)
 
 ros::NodeHandle* n_;
 std::map<std::string, RosInterface*> interfaces_;
-std::map<std::string, std::atomic<bool>*> interfaces_run_;
 std::map<std::string, std::thread> interfaces_threads_;
 
 std::string language;
 std::string intern_file = "none";
 std::vector<std::string> files;
 
-void deleteInterface(std::string name)
+bool deleteInterface(std::string name)
 {
-  *(interfaces_run_[name]) = false;
-  interfaces_threads_[name].join();
+  interfaces_[name]->stop();
+  try
+  {
+    interfaces_threads_[name].join();
+  }
+  catch(...)
+  {
+    return false;
+  }
 
   interfaces_threads_.erase(name);
-  interfaces_run_.erase(name);
   delete interfaces_[name];
   interfaces_.erase(name);
 
   std::cout << name << " STOPED" << std::endl;
+  return true;
 }
 
 bool managerHandle(ontologenius::OntologeniusService::Request &req,
@@ -53,7 +59,6 @@ bool managerHandle(ontologenius::OntologeniusService::Request &req,
       RosInterface* tmp = new RosInterface(n_, req.param);
       interfaces_[req.param] = tmp;
       tmp->init(language, intern_file, files);
-      interfaces_run_[req.param] = tmp->getAtomicRun();
       std::thread th(&RosInterface::run, tmp);
       interfaces_threads_[req.param] = std::move(th);
 
@@ -66,7 +71,10 @@ bool managerHandle(ontologenius::OntologeniusService::Request &req,
     if(it == interfaces_.end())
       res.code = NO_EFFECT;
     else
-      deleteInterface(req.param);
+    {
+      if(deleteInterface(req.param) == false)
+        res.code = REQUEST_ERROR;
+    }
   }
   else if(req.action == "list")
   {

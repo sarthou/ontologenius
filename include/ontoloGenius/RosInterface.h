@@ -21,9 +21,11 @@ public:
   RosInterface(ros::NodeHandle* n, std::string name = "");
   ~RosInterface();
 
-  void init(std::string& lang, std::string& intern_file, std::vector<std::string>& files);
+  void init(std::string& lang, std::string intern_file, std::vector<std::string>& files);
   void run();
-  std::atomic<bool>* getAtomicRun() { return &run_; }
+  void stop() {run_ = false; }
+  inline bool isRunning() {return run_; }
+  Ontology* getOntology() {return onto_; }
 
 private:
   ros::NodeHandle* n_;

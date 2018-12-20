@@ -545,6 +545,10 @@ void ontoloGUI::addOntologySlot()
     start();
     if(srv.response.code == 4)
       ui->ResultArea->setText(QString::fromStdString(srv.request.param + " already created"));
+    else if(srv.response.code == 1)
+      ui->ResultArea->setText(QString::fromStdString("fail to stop " + srv.request.param + " : please retry"));
+    else
+      ui->ResultArea->setText(QString::fromStdString(""));
     displayOntologiesList();
   }
 }
@@ -564,6 +568,8 @@ void ontoloGUI::deleteOntologySlot()
     start();
     if(srv.response.code == 4)
       ui->ResultArea->setText(QString::fromStdString(srv.request.param + " don't exist"));
+    else
+      ui->ResultArea->setText(QString::fromStdString(""));
     displayOntologiesList();
   }
 }

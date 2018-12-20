@@ -20,7 +20,7 @@ RosInterface::~RosInterface()
   delete onto_;
 }
 
-void RosInterface::init(std::string& lang, std::string& intern_file, std::vector<std::string>& files)
+void RosInterface::init(std::string& lang, std::string intern_file, std::vector<std::string>& files)
 {
   onto_->setLanguage(lang);
   std::string ontology_intern_file = intern_file;
@@ -72,15 +72,13 @@ void RosInterface::run()
 
   ROS_DEBUG("%s ontologenius ready", name_.c_str());
 
-  while (ros::ok() && (run_ == true))
+  while (ros::ok() && isRunning())
   {
     ros::getGlobalCallbackQueue()->callAvailable(ros::WallDuration(0.1));
   }
 
   periodic_reasoning_thread.join();
-  std::cout << "periodic_reasoning_thread joined" << std::endl;
   feed_thread.join();
-  std::cout << "feed_thread joined" << std::endl;
 }
 
 
