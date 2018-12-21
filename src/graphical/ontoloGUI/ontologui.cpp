@@ -156,6 +156,7 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->RefreshButton, SIGNAL(clicked()),this, SLOT(displayOntologiesListSlot()));
     QObject::connect(ui->AddPushButton, SIGNAL(clicked()),this, SLOT(addOntologySlot()));
     QObject::connect(ui->DelPushButton, SIGNAL(clicked()),this, SLOT(deleteOntologySlot()));
+    QObject::connect(ui->DiffPushButton, SIGNAL(clicked()),this, SLOT(differenceOntologySlot()));
 
     QObject::connect(ui->OntologyName, SIGNAL(editingFinished()),this, SLOT(nameEditingFinishedSlot()));
     QObject::connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(currentTabChangedSlot(int)));
@@ -570,6 +571,34 @@ void ontoloGUI::deleteOntologySlot()
       ui->ResultArea->setText(QString::fromStdString(srv.request.param + " don't exist"));
     else
       ui->ResultArea->setText(QString::fromStdString(""));
+    displayOntologiesList();
+  }
+}
+
+void ontoloGUI::differenceOntologySlot()
+{
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/manage");
+
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "difference";
+  srv.request.param = ui->OntologyDiffName1->text().toStdString() + "|" +
+                      ui->OntologyDiffName2->text().toStdString() + "|" +
+                      ui->OntologyDiffConcept->text().toStdString();
+
+  if(!client.call(srv))
+    displayErrorInfo("ontologenius/manage client call failed");
+  else
+  {
+    start();
+    if(srv.response.code == 4)
+      ui->ResultArea->setText("no effect");
+    else if(srv.response.code == 0)
+    {
+      std::string res = vector2string(srv.response.values);
+      ui->ResultArea->setText(QString::fromStdString(res));
+    }
+    else
+      ui->ResultArea->setText(QString::fromStdString(std::to_string(srv.response.code)));
     displayOntologiesList();
   }
 }

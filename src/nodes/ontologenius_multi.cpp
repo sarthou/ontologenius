@@ -52,7 +52,7 @@ std::vector<std::string> getDiff(std::string& param, int& res_code)
   std::smatch base_match;
   if (std::regex_match(param, base_match, base_regex))
   {
-    if (base_match.size() == 3)
+    if (base_match.size() == 4)
     {
       std::string onto1 = base_match[1].str();
       Ontology* onto1_ptr;
@@ -126,7 +126,7 @@ bool managerHandle(ontologenius::OntologeniusService::Request &req,
     for(auto it : interfaces_)
       res.values.push_back(it.first);
   }
-  else if(req.action == "diffrence")
+  else if(req.action == "difference")
   {
     int code = 0;
     res.values = getDiff(req.param, code);

@@ -864,7 +864,7 @@
           <item>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
-              <widget class="QPushButton" name="AddPushButton">
+              <widget class="QPushButtonExtended" name="AddPushButton">
                <property name="text">
                 <string>ADD</string>
                </property>
@@ -876,7 +876,7 @@
           <item>
             <layout class="QHBoxLayout" name="horizontalLayout_1">
              <item>
-              <widget class="QPushButton" name="DelPushButton">
+              <widget class="QPushButtonExtended" name="DelPushButton">
                <property name="text">
                 <string>DELETE</string>
                </property>
@@ -892,18 +892,6 @@
 
           <item >
            <widget class="QLabel" name="label_7">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string> </string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
            </widget>
           </item>
 
@@ -921,8 +909,188 @@
             </widget>
            </item>
 
+           <item >
+            <widget class="QLabel" name="label_8">
+            </widget>
+           </item>
+
+           <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_26">
+
+               <item >
+                <widget class="QLabel" name="label_10">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>name</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+
+               <item >
+                <widget class="QLabel" name="label_11">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>-</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+
+               <item >
+                <widget class="QLabel" name="label_12">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>name</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+
+               <item >
+                <widget class="QLabel" name="label_13">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+
+               <item >
+                <widget class="QLabel" name="label_14">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>concept</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+
+             </layout>
+           </item>
+
+           <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_27">
+               <item>
+                <widget class="QLineEdit" name="OntologyDiffName1">
+                 </widget>
+               </item>
+
+               <item >
+                <widget class="QLabel" name="label_15">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>-</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+
+               <item>
+                <widget class="QLineEdit" name="OntologyDiffName2">
+                 </widget>
+               </item>
+
+               <item >
+                <widget class="QLabel" name="label_16">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+
+               <item>
+                <widget class="QLineEdit" name="OntologyDiffConcept">
+                 </widget>
+               </item>
+             </layout>
+           </item>
+
+           <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_28">
+              <item>
+               <widget class="QPushButtonExtended" name="DiffPushButton">
+                <property name="text">
+                 <string>Get difference</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+           </item>
+
+           <item >
+            <widget class="QLabel" name="label_9">
+            </widget>
+           </item>
+
+           <item>
+            <widget class="Line" name="line">
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="lineWidth">
+              <number>100</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+
           <item>
-            <widget class="QPushButton" name="RefreshButton">
+            <widget class="QPushButtonExtended" name="RefreshButton">
               <property name="geometry">
                <rect>
                 <width>20</width>

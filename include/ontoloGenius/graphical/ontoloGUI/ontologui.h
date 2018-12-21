@@ -66,6 +66,7 @@ public slots:
   void displayOntologiesListSlot();
   void addOntologySlot();
   void deleteOntologySlot();
+  void differenceOntologySlot();
 };
 
 #endif // ONTOLOGUI_H
