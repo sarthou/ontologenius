@@ -4,27 +4,20 @@
 #include <string>
 #include <vector>
 
-class Ontology;
-class IndividualBranch_t;
-class ClassBranch_t;
-class ObjectPropertyBranch_t;
-class DataPropertyBranch_t;
-
-class ValuedNode;
-struct data_t;
+#include "ontoloGenius/core/ontoGraphs/Ontology.h"
 
 class comparator_t
 {
 public:
-  comparator_t() {concept_ = nullptr; }
-  ValuedNode* concept_;
-  std::vector<ValuedNode*> object_properties_name_;
-  std::vector<ValuedNode*> object_properties_on_;
+  comparator_t() {concept_ = ""; }
+  std::string concept_;
+  std::vector<std::string> object_properties_name_;
+  std::vector<std::string> object_properties_on_;
 
-  std::vector<ValuedNode*> data_properties_name_;
-  std::vector<data_t> data_properties_data_;
+  std::vector<std::string> data_properties_name_;
+  std::vector<std::string> data_properties_data_;
 
-  std::vector<ValuedNode*> mothers_;
+  std::vector<std::string> mothers_;
 };
 
 class differenceFinder
@@ -39,36 +32,47 @@ private:
   comparator_t toComparator(ClassBranch_t* class_);
 
   std::vector<std::string> compare(comparator_t& comp1, comparator_t& comp2);
+  void compareObjects(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res);
+  void compareDatas(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res);
+  void compareMothers(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res);
 
-  std::vector<ValuedNode*> toValued(std::vector<ObjectPropertyBranch_t*> vect)
+  std::vector<std::string> toValued(std::vector<ObjectPropertyBranch_t*> vect)
   {
-    std::vector<ValuedNode*> res;
+    std::vector<std::string> res;
     for(auto it : vect)
-      res.push_back((ValuedNode*)it);
+      res.push_back(it->value());
     return res;
   }
 
-  std::vector<ValuedNode*> toValued(std::vector<DataPropertyBranch_t*> vect)
+  std::vector<std::string> toValued(std::vector<DataPropertyBranch_t*> vect)
   {
-    std::vector<ValuedNode*> res;
+    std::vector<std::string> res;
     for(auto it : vect)
-      res.push_back((ValuedNode*)it);
+      res.push_back(it->value());
     return res;
   }
 
-  std::vector<ValuedNode*> toValued(std::vector<IndividualBranch_t*> vect)
+  std::vector<std::string> toValued(std::vector<IndividualBranch_t*> vect)
   {
-    std::vector<ValuedNode*> res;
+    std::vector<std::string> res;
     for(auto it : vect)
-      res.push_back((ValuedNode*)it);
+      res.push_back(it->value());
     return res;
   }
 
-  std::vector<ValuedNode*> toValued(std::vector<ClassBranch_t*> vect)
+  std::vector<std::string> toValued(std::vector<ClassBranch_t*> vect)
   {
-    std::vector<ValuedNode*> res;
+    std::vector<std::string> res;
     for(auto it : vect)
-      res.push_back((ValuedNode*)it);
+      res.push_back(it->value());
+    return res;
+  }
+
+  std::vector<std::string> toValued(std::vector<data_t> vect)
+  {
+    std::vector<std::string> res;
+    for(auto it : vect)
+      res.push_back(it.toString());
     return res;
   }
 };

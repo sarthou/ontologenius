@@ -50,17 +50,130 @@ std::vector<std::string> differenceFinder::compare(comparator_t& comp1, comparat
 {
   std::vector<std::string> res;
 
+  compareObjects(comp1, comp2, res);
+  compareDatas(comp1, comp2, res);
+  compareMothers(comp1, comp2, res);
+
   return res;
+}
+
+void differenceFinder::compareObjects(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res)
+{
+  std::vector<size_t> explored_indexs;
+
+  if(comp1.concept_ != "")
+  {
+    for(size_t i = 0; i < comp1.object_properties_name_.size(); i++)
+    {
+      std::vector<size_t> found_indexs;
+      for(size_t j = 0; j < comp2.object_properties_name_.size(); i++)
+        if(comp1.object_properties_name_[i] == comp2.object_properties_name_[j])
+        {
+          found_indexs.push_back(j);
+        }
+
+      bool same = false;
+      for(size_t index : found_indexs)
+      {
+        if(comp1.object_properties_on_[i] == comp2.object_properties_on_[index])
+          same = true;
+        else
+          res.push_back("[-]" + comp1.concept_ + "|" + comp2.object_properties_name_[index] + "|" + comp2.object_properties_on_[index]);
+      }
+      if(same == false)
+        res.push_back("[+]" + comp1.concept_ + "|" + comp1.object_properties_name_[i] + "|" + comp1.object_properties_on_[i]);
+      explored_indexs.insert(explored_indexs.end(), found_indexs.begin(), found_indexs.end());
+    }
+  }
+
+  if(comp2.concept_ != "")
+  {
+    for(size_t i = 0; i < comp2.object_properties_name_.size(); i++)
+    {
+      if(std::find(explored_indexs.begin(), explored_indexs.end(), i) == explored_indexs.end())
+        res.push_back("[-]" + comp2.concept_ + "|" + comp2.object_properties_name_[i] + "|" + comp2.object_properties_on_[i]);
+    }
+  }
+}
+
+void differenceFinder::compareDatas(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res)
+{
+  std::vector<size_t> explored_indexs;
+
+  if(comp1.concept_ != "")
+  {
+    for(size_t i = 0; i < comp1.data_properties_name_.size(); i++)
+    {
+      std::vector<size_t> found_indexs;
+      for(size_t j = 0; j < comp2.data_properties_name_.size(); i++)
+        if(comp1.data_properties_name_[i] == comp2.data_properties_name_[j])
+        {
+          found_indexs.push_back(j);
+        }
+
+      bool same = false;
+      for(size_t index : found_indexs)
+      {
+        if(comp1.data_properties_data_[i] == comp2.data_properties_data_[index])
+          same = true;
+        else
+          res.push_back("[-]" + comp1.concept_ + "|" + comp2.data_properties_name_[index] + "|" + comp2.data_properties_data_[index]);
+      }
+      if(same == false)
+        res.push_back("[+]" + comp1.concept_ + "|" + comp1.data_properties_name_[i] + "|" + comp1.data_properties_data_[i]);
+      explored_indexs.insert(explored_indexs.end(), found_indexs.begin(), found_indexs.end());
+    }
+  }
+
+  if(comp2.concept_ != "")
+  {
+    for(size_t i = 0; i < comp2.data_properties_name_.size(); i++)
+    {
+      if(std::find(explored_indexs.begin(), explored_indexs.end(), i) == explored_indexs.end())
+        res.push_back("[-]" + comp2.concept_ + "|" + comp2.data_properties_name_[i] + "|" + comp2.data_properties_data_[i]);
+    }
+  }
+}
+
+void differenceFinder::compareMothers(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res)
+{
+  std::vector<size_t> explored_indexs;
+
+  if(comp1.concept_ != "")
+  {
+    for(size_t i = 0; i < comp1.mothers_.size(); i++)
+    {
+      std::vector<size_t> found_indexs;
+      for(size_t j = 0; j < comp2.mothers_.size(); i++)
+        if(comp1.mothers_[i] == comp2.mothers_[j])
+        {
+          found_indexs.push_back(j);
+        }
+
+      if(found_indexs.size() == 0)
+        res.push_back("[+]" + comp1.concept_ + "|isA|" + comp1.mothers_[i]);
+      explored_indexs.insert(explored_indexs.end(), found_indexs.begin(), found_indexs.end());
+    }
+  }
+
+  if(comp2.concept_ != "")
+  {
+    for(size_t i = 0; i < comp2.mothers_.size(); i++)
+    {
+      if(std::find(explored_indexs.begin(), explored_indexs.end(), i) == explored_indexs.end())
+        res.push_back("[-]" + comp2.concept_ + "|isA|" + comp2.mothers_[i]);
+    }
+  }
 }
 
 comparator_t differenceFinder::toComparator(IndividualBranch_t* indiv)
 {
   comparator_t comp;
-  comp.concept_ = (ValuedNode*)indiv;
+  comp.concept_ = indiv->value();
   comp.object_properties_name_ = toValued(indiv->object_properties_name_);
   comp.object_properties_on_ = toValued(indiv->object_properties_on_);
   comp.data_properties_name_ = toValued(indiv->data_properties_name_);
-  comp.data_properties_data_ = indiv->data_properties_data_;
+  comp.data_properties_data_ = toValued(indiv->data_properties_data_);
   comp.mothers_ = toValued(indiv->is_a_);
   return comp;
 }
@@ -68,11 +181,11 @@ comparator_t differenceFinder::toComparator(IndividualBranch_t* indiv)
 comparator_t differenceFinder::toComparator(ClassBranch_t* class_)
 {
   comparator_t comp;
-  comp.concept_ = (ValuedNode*)class_;
+  comp.concept_ = class_->value();
   comp.object_properties_name_ = toValued(class_->object_properties_name_);
   comp.object_properties_on_ = toValued(class_->object_properties_on_);
   comp.data_properties_name_ = toValued(class_->data_properties_name_);
-  comp.data_properties_data_ = class_->data_properties_data_;
+  comp.data_properties_data_ = toValued(class_->data_properties_data_);
   comp.mothers_ = toValued(class_->mothers_);
   return comp;
 }
