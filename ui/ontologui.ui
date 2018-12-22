@@ -790,13 +790,13 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="ArguerTab">
+      <widget class="QWidget" name="ReasonerTab">
        <attribute name="title">
-        <string>Arguers</string>
+        <string>Reasoners</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_13">
         <item>
-         <layout class="QVBoxLayout" name="ArguerListLayout">
+         <layout class="QVBoxLayout" name="ReasonerListLayout">
           <item alignment="Qt::AlignHCenter|Qt::AlignTop">
            <widget class="QLabel" name="label_4">
             <property name="sizePolicy">
@@ -813,7 +813,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QTextEdit" name="ArguerDescription">
+         <widget class="QTextEdit" name="ReasonerDescription">
           <property name="maximumSize">
            <size>
             <width>350</width>

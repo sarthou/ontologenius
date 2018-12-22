@@ -1,17 +1,17 @@
-#include "ontoloGenius/core/arguer/Arguers.h"
+#include "ontoloGenius/core/reasoner/Reasoners.h"
 #include "ontoloGenius/core/utility/color.h"
 
 #include <iostream>
 #include <vector>
 
-Arguers::Arguers(Ontology* onto) : loader_("ontologenius", "ArguerInterface")
+Reasoners::Reasoners(Ontology* onto) : loader_("ontologenius", "ReasonerInterface")
 {
   ontology_ = onto;
 }
 
-Arguers::~Arguers()
+Reasoners::~Reasoners()
 {
-  for(auto& it : arguers_)
+  for(auto& it : reasoners_)
   {
     /*if(it.second != nullptr)
     {
@@ -39,7 +39,7 @@ Arguers::~Arguers()
       std::cout << "catch other" << std::endl;
     }
   }
-  /*for(auto& it : arguers_)
+  /*for(auto& it : reasoners_)
   {
     if(it.second != nullptr)
     {
@@ -50,27 +50,27 @@ Arguers::~Arguers()
   }*/
 }
 
-void Arguers::link(Ontology* onto)
+void Reasoners::link(Ontology* onto)
 {
   ontology_ = onto;
-  for(auto& it : arguers_)
+  for(auto& it : reasoners_)
     it.second->initialize(ontology_);
 }
 
-void Arguers::load()
+void Reasoners::load()
 {
-  std::vector<std::string> arguers = loader_.getDeclaredClasses();
+  std::vector<std::string> reasoners = loader_.getDeclaredClasses();
 
   try
   {
-    for(size_t i = 0; i < arguers.size(); i++)
+    for(size_t i = 0; i < reasoners.size(); i++)
     {
-      loader_.loadLibraryForClass(arguers[i]);
-      ArguerInterface* tmp = loader_.createUnmanagedInstance(arguers[i]);
+      loader_.loadLibraryForClass(reasoners[i]);
+      ReasonerInterface* tmp = loader_.createUnmanagedInstance(reasoners[i]);
       tmp->initialize(ontology_);
-      arguers_[arguers[i]] = tmp;
+      reasoners_[reasoners[i]] = tmp;
       if(tmp->defaultAvtive())
-        active_arguers_[arguers[i]] = tmp;
+        active_reasoners_[reasoners[i]] = tmp;
     }
   }
   catch(pluginlib::PluginlibException& ex)
@@ -78,47 +78,47 @@ void Arguers::load()
     ROS_ERROR("The plugin failed to load for some reason. Error: %s", ex.what());
   }
 
-  arguers = loader_.getRegisteredLibraries();
-  for(size_t i = 0; i < arguers.size(); i++)
+  reasoners = loader_.getRegisteredLibraries();
+  for(size_t i = 0; i < reasoners.size(); i++)
   {
-    std::cout << arguers[i] << " registered" << std::endl;
+    std::cout << reasoners[i] << " registered" << std::endl;
   }
 }
 
-std::string Arguers::list()
+std::string Reasoners::list()
 {
   std::string out =  "Plugins loaded :\n";
   std::string res;
-  for(auto& it : arguers_)
+  for(auto& it : reasoners_)
   {
-    out += " - From " + it.first + " : " + arguers_[it.first]->getName() + " (" + arguers_[it.first]->getDesciption() + ")\n";
+    out += " - From " + it.first + " : " + reasoners_[it.first]->getName() + " (" + reasoners_[it.first]->getDesciption() + ")\n";
     res += " -" + it.first;
   }
   return res;
 }
 
-std::vector<std::string> Arguers::listVector()
+std::vector<std::string> Reasoners::listVector()
 {
   std::string out =  "Plugins loaded :\n";
   std::vector<std::string> res;
-  for(auto& it : arguers_)
+  for(auto& it : reasoners_)
   {
-    out += " - From " + it.first + " : " + arguers_[it.first]->getName() + " (" + arguers_[it.first]->getDesciption() + ")\n";
+    out += " - From " + it.first + " : " + reasoners_[it.first]->getName() + " (" + reasoners_[it.first]->getDesciption() + ")\n";
     res.push_back(it.first);
   }
   return res;
 }
 
-int Arguers::activate(std::string plugin)
+int Reasoners::activate(std::string plugin)
 {
-  if(arguers_.find(plugin) != arguers_.end())
+  if(reasoners_.find(plugin) != reasoners_.end())
   {
-    if(active_arguers_.find(plugin) == active_arguers_.end())
+    if(active_reasoners_.find(plugin) == active_reasoners_.end())
     {
-      active_arguers_[plugin] = arguers_[plugin];
+      active_reasoners_[plugin] = reasoners_[plugin];
       std::cout << COLOR_GREEN << plugin << " has been activated" << COLOR_OFF << std::endl;
       resetIndividualsUpdates();
-      runPostArguers();
+      runPostReasoners();
     }
     else
       std::cout << COLOR_ORANGE << plugin << " is already activated" << COLOR_OFF << std::endl;
@@ -131,17 +131,17 @@ int Arguers::activate(std::string plugin)
   }
 }
 
-int Arguers::deactivate(std::string plugin)
+int Reasoners::deactivate(std::string plugin)
 {
-  if(active_arguers_.find(plugin) != active_arguers_.end())
+  if(active_reasoners_.find(plugin) != active_reasoners_.end())
   {
-    active_arguers_.erase(plugin);
+    active_reasoners_.erase(plugin);
     std::cout << COLOR_GREEN << plugin << " has been deactivated" << COLOR_OFF << std::endl;
     return 0;
   }
   else
   {
-    if(arguers_.find(plugin) == arguers_.end())
+    if(reasoners_.find(plugin) == reasoners_.end())
     {
       std::cout << COLOR_RED << plugin << " does not exist" << COLOR_OFF << std::endl;
       return -1;
@@ -154,10 +154,10 @@ int Arguers::deactivate(std::string plugin)
   }
 }
 
-std::string Arguers::getDescription(std::string& plugin)
+std::string Reasoners::getDescription(std::string& plugin)
 {
-  if(arguers_.find(plugin) != arguers_.end())
-    return arguers_[plugin]->getDesciption();
+  if(reasoners_.find(plugin) != reasoners_.end())
+    return reasoners_[plugin]->getDesciption();
   else
   {
     std::cout << COLOR_RED << plugin << " does not exist" << COLOR_OFF << std::endl;
@@ -165,13 +165,13 @@ std::string Arguers::getDescription(std::string& plugin)
   }
 }
 
-void Arguers::runPreArguers()
+void Reasoners::runPreReasoners()
 {
   size_t nb_updates = 0;
 
   do
   {
-    for(auto& it : active_arguers_)
+    for(auto& it : active_reasoners_)
     {
       it.second->preReason();
       std::vector<std::string> notif = it.second->getNotifications();
@@ -180,19 +180,19 @@ void Arguers::runPreArguers()
 
     computeIndividualsUpdates();
 
-    nb_updates = ArguerInterface::getNbUpdates();
-    ArguerInterface::resetNbUpdates();
+    nb_updates = ReasonerInterface::getNbUpdates();
+    ReasonerInterface::resetNbUpdates();
   }
   while(nb_updates!= 0);
 }
 
-void Arguers::runPostArguers()
+void Reasoners::runPostReasoners()
 {
   size_t nb_updates = 0;
 
   do
   {
-    for(auto& it : active_arguers_)
+    for(auto& it : active_reasoners_)
     {
       if(it.second != nullptr)
       {
@@ -204,15 +204,15 @@ void Arguers::runPostArguers()
 
     computeIndividualsUpdates();
 
-    nb_updates = ArguerInterface::getNbUpdates();
-    ArguerInterface::resetNbUpdates();
+    nb_updates = ReasonerInterface::getNbUpdates();
+    ReasonerInterface::resetNbUpdates();
   }
   while(nb_updates!= 0);
 }
 
-void Arguers::runPeriodicArguers()
+void Reasoners::runPeriodicReasoners()
 {
-  for(auto& it : active_arguers_)
+  for(auto& it : active_reasoners_)
   {
     if(it.second != nullptr)
     {
@@ -225,7 +225,7 @@ void Arguers::runPeriodicArguers()
   computeIndividualsUpdates();
 }
 
-void Arguers::computeIndividualsUpdates()
+void Reasoners::computeIndividualsUpdates()
 {
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
   size_t indiv_size = indiv.size();
@@ -239,7 +239,7 @@ void Arguers::computeIndividualsUpdates()
     }
 }
 
-void Arguers::resetIndividualsUpdates()
+void Reasoners::resetIndividualsUpdates()
 {
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
   size_t indiv_size = indiv.size();

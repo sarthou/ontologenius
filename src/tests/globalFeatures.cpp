@@ -79,17 +79,17 @@ TEST(global_tests, language)
   EXPECT_FALSE(onto_ptr->classes.getName(test_word) == "affair");
 }
 
-TEST(global_tests, arguers_effect)
+TEST(global_tests, reasoners_effect)
 {
   std::vector<std::string> res;
 
   EXPECT_TRUE(onto_ptr->actions.reset());
 
-  EXPECT_TRUE(onto_ptr->arguers.deactivate("ArguerChain"));
-  EXPECT_TRUE(onto_ptr->arguers.deactivate("ArguerDictionary"));
-  EXPECT_TRUE(onto_ptr->arguers.deactivate("ArguerInverseOf"));
-  EXPECT_TRUE(onto_ptr->arguers.deactivate("ArguerNone"));
-  EXPECT_TRUE(onto_ptr->arguers.deactivate("ArguerSymetric"));
+  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ReasonerChain"));
+  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ReasonerDictionary"));
+  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ReasonerInverseOf"));
+  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ReasonerNone"));
+  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ReasonerSymetric"));
 
   std::string path_base = ros::package::getPath("ontologenius");
   std::string path = path_base + "/files/attribute.owl";
@@ -103,42 +103,42 @@ TEST(global_tests, arguers_effect)
 
   EXPECT_TRUE(onto_ptr->actions.close());
 
-  //ArguerSymetric
+  //ReasonerSymetric
 
   res = onto_ptr->individuals.getOn("redCube", "isInFrontOf");
   EXPECT_TRUE(find(res.begin(), res.end(), "blue_book") == res.end());
 
-  EXPECT_TRUE(onto_ptr->arguers.activate("ArguerSymetric"));
+  EXPECT_TRUE(onto_ptr->reasoners.activate("ReasonerSymetric"));
 
   res = onto_ptr->individuals.getOn("redCube", "isInFrontOf");
   EXPECT_TRUE(find(res.begin(), res.end(), "blue_book") != res.end());
 
-  //ArguerInverseOf
+  //ReasonerInverseOf
 
   res = onto_ptr->individuals.getOn("blueCube", "isUnder");
   EXPECT_TRUE(find(res.begin(), res.end(), "greenCube") == res.end());
 
-  EXPECT_TRUE(onto_ptr->arguers.activate("ArguerInverseOf"));
+  EXPECT_TRUE(onto_ptr->reasoners.activate("ReasonerInverseOf"));
 
   res = onto_ptr->individuals.getOn("blueCube", "isUnder");
   EXPECT_TRUE(find(res.begin(), res.end(), "greenCube") != res.end());
 
-  //ArguerChain
+  //ReasonerChain
 
   res = onto_ptr->individuals.getOn("greenCube", "isIn");
   EXPECT_TRUE(find(res.begin(), res.end(), "big_box") == res.end());
 
-  EXPECT_TRUE(onto_ptr->arguers.activate("ArguerChain"));
+  EXPECT_TRUE(onto_ptr->reasoners.activate("ReasonerChain"));
 
   res = onto_ptr->individuals.getOn("blueCube", "isIn");
   EXPECT_TRUE(find(res.begin(), res.end(), "big_box") != res.end());
 
-  //ArguerDictionary
+  //ReasonerDictionary
 
   res = onto_ptr->individuals.find("big box");
   EXPECT_TRUE(find(res.begin(), res.end(), "big_box") == res.end());
 
-  EXPECT_TRUE(onto_ptr->arguers.activate("ArguerDictionary"));
+  EXPECT_TRUE(onto_ptr->reasoners.activate("ReasonerDictionary"));
 
   res = onto_ptr->individuals.find("big box");
   EXPECT_TRUE(find(res.begin(), res.end(), "big_box") != res.end());

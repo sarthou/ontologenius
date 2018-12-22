@@ -115,8 +115,8 @@ target_link_libraries(ontologenius_ontoGraphs_lib ${TinyXML_LIBRARIES})
 add_library(ontologenius_core_lib
   src/core/feeder/Feeder.cpp
   src/core/feeder/FeedStorage.cpp
-  src/core/arguer/plugins/ArguerInterface.cpp
-  src/core/arguer/Arguers.cpp
+  src/core/reasoner/plugins/ReasonerInterface.cpp
+  src/core/reasoner/Reasoners.cpp
   src/core/Computer.cpp
   )
 add_dependencies(ontologenius_core_lib ontologenius_gencpp)
@@ -174,7 +174,7 @@ add_library(ontoloGenius_lib
   src/utility/clients/ontologyClients/DataPropertyClient.cpp
   src/utility/clients/ontologyClients/ClassClient.cpp
   src/utility/clients/ontologyClients/OntologyClient.cpp
-  src/utility/clients/ArguerClient.cpp
+  src/utility/clients/ReasonerClient.cpp
   src/utility/clients/ActionClient.cpp
   src/utility/clients/ClientBase.cpp
   src/utility/FeederPublisher.cpp
@@ -187,16 +187,16 @@ target_link_libraries(ontoloGenius_lib ontologenius_core_lib)
 ##############################
 ## PLUGINS
 ##############################
-add_library(ontologenius_arguer_plugin
-  src/core/arguer/plugins/ArguerNone.cpp
-  src/core/arguer/plugins/ArguerInverseOf.cpp
-  src/core/arguer/plugins/ArguerSymetric.cpp
-  src/core/arguer/plugins/ArguerChain.cpp
-  src/core/arguer/plugins/ArguerDictionary.cpp
-  src/core/arguer/plugins/ArguerGeneralize.cpp
+add_library(ontologenius_reasoner_plugin
+  src/core/reasoner/plugins/ReasonerNone.cpp
+  src/core/reasoner/plugins/ReasonerInverseOf.cpp
+  src/core/reasoner/plugins/ReasonerSymetric.cpp
+  src/core/reasoner/plugins/ReasonerChain.cpp
+  src/core/reasoner/plugins/ReasonerDictionary.cpp
+  src/core/reasoner/plugins/ReasonerGeneralize.cpp
   )
-add_dependencies(ontologenius_arguer_plugin ontologenius_gencpp)
-target_link_libraries(ontologenius_arguer_plugin ontologenius_core_lib)
+add_dependencies(ontologenius_reasoner_plugin ontologenius_gencpp)
+target_link_libraries(ontologenius_reasoner_plugin ontologenius_core_lib)
 
 ##############################
 ## INTERFACE

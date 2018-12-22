@@ -74,10 +74,10 @@ double individualTester()
   return tester(actions, "individual");
 }
 
-double arguerTester()
+double reasonerTester()
 {
   std::vector<std::string> actions = {"activate", "deactivate", "list", "getDescription"};
-  return tester(actions, "arguer");
+  return tester(actions, "reasoner");
 }
 
 int main(int argc, char** argv)
@@ -87,30 +87,30 @@ int main(int argc, char** argv)
   ros::NodeHandle n;
   n_ = &n;
 
-  ros::service::waitForService("ontologenius/arguer", -1);
+  ros::service::waitForService("ontologenius/reasoner", -1);
   close();
 
   double class_time = classTester();
   double objetc_time = objectPropertyTester();
   double data_time = dataPropertyTester();
   double indiv_time = individualTester();
-  double arguer_time = arguerTester();
+  double reasoner_time = reasonerTester();
 
-  double total = class_time + objetc_time + data_time + indiv_time + arguer_time;
+  double total = class_time + objetc_time + data_time + indiv_time + reasoner_time;
   total = total/5.;
 
   std::cout << "classes = " << class_time << std::endl;
   std::cout << "objects = " << objetc_time << std::endl;
   std::cout << "datas   = " << data_time << std::endl;
   std::cout << "indivs  = " << indiv_time << std::endl;
-  std::cout << "arguers = " << arguer_time << std::endl;
+  std::cout << "reasoners = " << reasoner_time << std::endl;
 
   bool err = false;
   if(class_time < 0) {err = true; std::cout << "class service error" << std::endl; }
   if(objetc_time < 0) {err = true; std::cout << "object property service error" << std::endl; }
   if(data_time < 0) {err = true; std::cout << "data property service error" << std::endl; }
   if(indiv_time < 0) {err = true; std::cout << "individual service error" << std::endl; }
-  if(arguer_time < 0) {err = true; std::cout << "arguer service error" << std::endl; }
+  if(reasoner_time < 0) {err = true; std::cout << "reasoner service error" << std::endl; }
 
   if(err == false)
   {

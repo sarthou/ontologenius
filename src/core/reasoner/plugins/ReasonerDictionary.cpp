@@ -1,12 +1,12 @@
-#include "ontoloGenius/core/arguer/plugins/ArguerDictionary.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerDictionary.h"
 #include <pluginlib/class_list_macros.h>
 
-void ArguerDictionary::preReason()
+void ReasonerDictionary::preReason()
 {
 
 }
 
-void ArguerDictionary::postReason()
+void ReasonerDictionary::postReason()
 {
   size_t graph_size;
   {
@@ -42,7 +42,7 @@ void ArguerDictionary::postReason()
   }
 }
 
-void ArguerDictionary::updateDictionary(ValuedNode* node)
+void ReasonerDictionary::updateDictionary(ValuedNode* node)
 {
   if (node->flags_.find("dico") == node->flags_.end())
   {
@@ -53,7 +53,7 @@ void ArguerDictionary::updateDictionary(ValuedNode* node)
   }
 }
 
-void ArguerDictionary::split(ValuedNode* node)
+void ReasonerDictionary::split(ValuedNode* node)
 {
   size_t i, dic_size = 0;
   for(auto& it : node->dictionary_)
@@ -84,7 +84,7 @@ void ArguerDictionary::split(ValuedNode* node)
   }
 }
 
-void ArguerDictionary::createLowerCase(ValuedNode* node)
+void ReasonerDictionary::createLowerCase(ValuedNode* node)
 {
   size_t i, dic_size = 0;
   for(auto& it : node->dictionary_)
@@ -101,7 +101,7 @@ void ArguerDictionary::createLowerCase(ValuedNode* node)
   }
 }
 
-void ArguerDictionary::replaceQuote(ValuedNode* node)
+void ReasonerDictionary::replaceQuote(ValuedNode* node)
 {
   size_t i, dic_size = 0;
   for (auto& it : node->dictionary_)
@@ -122,14 +122,14 @@ void ArguerDictionary::replaceQuote(ValuedNode* node)
   }
 }
 
-std::string ArguerDictionary::getName()
+std::string ReasonerDictionary::getName()
 {
-  return "arguer dictionary";
+  return "reasoner dictionary";
 }
 
-std::string ArguerDictionary::getDesciption()
+std::string ReasonerDictionary::getDesciption()
 {
-  return "This arguer creates several alternative dictionaries to avoid too many restrictive labels.";
+  return "This reasoner creates several alternative dictionaries to avoid too many restrictive labels.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ArguerDictionary, ArguerInterface)
+PLUGINLIB_EXPORT_CLASS(ReasonerDictionary, ReasonerInterface)

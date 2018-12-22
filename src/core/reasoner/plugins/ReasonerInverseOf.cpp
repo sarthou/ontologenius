@@ -1,12 +1,12 @@
-#include "ontoloGenius/core/arguer/plugins/ArguerInverseOf.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerInverseOf.h"
 #include <pluginlib/class_list_macros.h>
 
-void ArguerInverseOf::preReason()
+void ReasonerInverseOf::preReason()
 {
 
 }
 
-void ArguerInverseOf::postReason()
+void ReasonerInverseOf::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   size_t indiv_i, prop_i, inv_i = 0;
@@ -28,7 +28,7 @@ void ArguerInverseOf::postReason()
     }
 }
 
-void ArguerInverseOf::insetInverse(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* inv_prop, IndividualBranch_t* inv_indiv)
+void ReasonerInverseOf::insetInverse(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* inv_prop, IndividualBranch_t* inv_indiv)
 {
   size_t properties_size = indiv_on->object_properties_name_.size();
   for(size_t i = 0; i < properties_size; i++)
@@ -46,14 +46,14 @@ void ArguerInverseOf::insetInverse(IndividualBranch_t* indiv_on, ObjectPropertyB
   nb_update_++;
 }
 
-std::string ArguerInverseOf::getName()
+std::string ReasonerInverseOf::getName()
 {
-  return "arguer inverse of";
+  return "reasoner inverse of";
 }
 
-std::string ArguerInverseOf::getDesciption()
+std::string ReasonerInverseOf::getDesciption()
 {
-  return "This arguer creates the inverse properties for each individual.";
+  return "This reasoner creates the inverse properties for each individual.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ArguerInverseOf, ArguerInterface)
+PLUGINLIB_EXPORT_CLASS(ReasonerInverseOf, ReasonerInterface)

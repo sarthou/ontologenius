@@ -1,13 +1,13 @@
-#ifndef ARGUERNONE_H
-#define ARGUERNONE_H
+#ifndef REASONERNONE_H
+#define REASONERNONE_H
 
-#include "ontoloGenius/core/arguer/plugins/ArguerInterface.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
-class ArguerNone : public ArguerInterface
+class ReasonerNone : public ReasonerInterface
 {
 public:
-  ArguerNone() {}
-  ~ArguerNone() {}
+  ReasonerNone() {}
+  ~ReasonerNone() {}
 
   virtual void preReason();
   virtual void postReason();

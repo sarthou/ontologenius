@@ -1,12 +1,12 @@
-#ifndef ARGUERCLIENT_H
-#define ARGUERCLIENT_H
+#ifndef REASONERCLIENT_H
+#define REASONERCLIENT_H
 
 #include "ontoloGenius/utility/clients/ClientBase.h"
 
-class ArguerClient : public ClientBase
+class ReasonerClient : public ClientBase
 {
 public:
-  ArguerClient(ros::NodeHandle* n, const std::string& name) : ClientBase(n, (name == "") ? "arguer" : "arguer/" + name)
+  ReasonerClient(ros::NodeHandle* n, const std::string& name) : ClientBase(n, (name == "") ? "reasoner" : "reasoner/" + name)
   {
   }
 

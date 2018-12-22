@@ -1,29 +1,29 @@
-#include "ontoloGenius/core/arguer/plugins/ArguerNone.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerNone.h"
 #include <pluginlib/class_list_macros.h>
 
-void ArguerNone::preReason()
+void ReasonerNone::preReason()
 {
   //put your pre-reasonning here
 }
 
-void ArguerNone::postReason()
+void ReasonerNone::postReason()
 {
   //put your post-reasonning here
 }
 
-void ArguerNone::periodicReason()
+void ReasonerNone::periodicReason()
 {
   //put your periodic reasonning here
 }
 
-std::string ArguerNone::getName()
+std::string ReasonerNone::getName()
 {
-  return "arguer none";
+  return "reasoner none";
 }
 
-std::string ArguerNone::getDesciption()
+std::string ReasonerNone::getDesciption()
 {
-  return "This is an arguer model to show how to create your own arguer plugin";
+  return "This is an reasoner model to show how to create your own reasoner plugin";
 }
 
-PLUGINLIB_EXPORT_CLASS(ArguerNone, ArguerInterface)
+PLUGINLIB_EXPORT_CLASS(ReasonerNone, ReasonerInterface)

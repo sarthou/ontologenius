@@ -5,11 +5,11 @@
 #include <thread>
 #include <ros/callback_queue.h>
 
-RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : arguers_(onto_), feeder_(onto_), run_(true)
+RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : reasoners_(onto_), feeder_(onto_), run_(true)
 {
   n_ = n;
   onto_ = new Ontology();
-  arguers_.link(onto_);
+  reasoners_.link(onto_);
   feeder_.link(onto_);
 
   name_ = name;
@@ -35,8 +35,8 @@ void RosInterface::init(std::string& lang, std::string intern_file, std::vector<
     for(auto file : files)
       onto_->readFromFile(file);
 
-  arguers_.load();
-  std::cout << "Plugins loaded : " << arguers_.list() << std::endl;
+  reasoners_.load();
+  std::cout << "Plugins loaded : " << reasoners_.list() << std::endl;
 
 }
 
@@ -63,8 +63,8 @@ void RosInterface::run()
   service_name = (name_ == "") ? "ontologenius/individual" : "ontologenius/individual/" + name_;
   ros::ServiceServer service_individual = n_->advertiseService(service_name, &RosInterface::individualHandle, this);
 
-  service_name = (name_ == "") ? "ontologenius/arguer" : "ontologenius/arguer/" + name_;
-  ros::ServiceServer service_arguer = n_->advertiseService(service_name, &RosInterface::arguerHandle, this);
+  service_name = (name_ == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + name_;
+  ros::ServiceServer service_reasoner = n_->advertiseService(service_name, &RosInterface::reasonerHandle, this);
 
 
   std::thread feed_thread(&RosInterface::feedThread, this);
@@ -108,13 +108,13 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
   else if(req.action == "close")
   {
     onto_->close();
-    arguers_.runPostArguers();
+    reasoners_.runPostReasoners();
   }
   else if(req.action == "reset")
   {
     delete onto_;
     onto_ = new Ontology();
-    arguers_.link(onto_);
+    reasoners_.link(onto_);
   }
   else if(req.action == "setLang")
     onto_->setLanguage(req.param);
@@ -133,7 +133,7 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
     res.code = UNINIT;
   else
   {
-    arguers_.runPreArguers();
+    reasoners_.runPreReasoners();
 
     int level = getPropagationLevel(req.param);
 
@@ -203,7 +203,7 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
     res.code = UNINIT;
   else
   {
-    arguers_.runPreArguers();
+    reasoners_.runPreReasoners();
 
     int level = getPropagationLevel(req.param);
 
@@ -259,7 +259,7 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
     res.code = UNINIT;
   else
   {
-    arguers_.runPreArguers();
+    reasoners_.runPreReasoners();
 
     int level = getPropagationLevel(req.param);
 
@@ -312,7 +312,7 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
     res.code = UNINIT;
   else
   {
-    arguers_.runPreArguers();
+    reasoners_.runPreReasoners();
 
     int level = getPropagationLevel(req.param);
 
@@ -374,19 +374,19 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
   return true;
 }
 
-bool RosInterface::arguerHandle(ontologenius::OntologeniusService::Request &req,
+bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &req,
                                 ontologenius::OntologeniusService::Response &res)
 {
   res.code = 0;
 
   if(req.action == "activate")
-    res.code = arguers_.activate(req.param);
+    res.code = reasoners_.activate(req.param);
   else if(req.action == "deactivate")
-    res.code = arguers_.deactivate(req.param);
+    res.code = reasoners_.deactivate(req.param);
   else if(req.action == "list")
-    res.values = arguers_.listVector();
+    res.values = reasoners_.listVector();
   else if(req.action == "getDescription")
-    res.values.push_back(arguers_.getDescription(req.param));
+    res.values.push_back(reasoners_.getDescription(req.param));
   else
     res.code = UNKNOW_ACTION;
 
@@ -415,7 +415,7 @@ void RosInterface::feedThread()
     bool run = feeder_.run();
     if(run == true)
     {
-      arguers_.runPostArguers();
+      reasoners_.runPostReasoners();
 
       std_msgs::String msg;
       std::vector<std::string> notifications = feeder_.getNotifications();
@@ -432,8 +432,8 @@ void RosInterface::feedThread()
 
 void RosInterface::periodicReasoning()
 {
-  std::string publisher_name = (name_ == "") ? "ontologenius/arguer_notifications" : "ontologenius/arguer_notifications/" + name_;
-  ros::Publisher arguer_publisher = n_->advertise<std_msgs::String>(publisher_name, 1000);
+  std::string publisher_name = (name_ == "") ? "ontologenius/reasoner_notifications" : "ontologenius/reasoner_notifications/" + name_;
+  ros::Publisher reasoner_publisher = n_->advertise<std_msgs::String>(publisher_name, 1000);
 
   ros::Rate wait(10);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
@@ -444,15 +444,15 @@ void RosInterface::periodicReasoning()
   ros::Rate r(100);
   while(ros::ok() && (run_ == true))
   {
-    arguers_.runPeriodicArguers();
+    reasoners_.runPeriodicReasoners();
 
     std_msgs::String msg;
-    std::vector<std::string> notifications = arguers_.getNotifications();
+    std::vector<std::string> notifications = reasoners_.getNotifications();
     for(auto notif : notifications)
     {
       std::cout << notif << std::endl;
       msg.data = notif;
-      arguer_publisher.publish(msg);
+      reasoner_publisher.publish(msg);
     }
     r.sleep();
   }

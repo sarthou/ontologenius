@@ -1,13 +1,13 @@
-#ifndef ARGUERINTERFACE_H
-#define ARGUERINTERFACE_H
+#ifndef REASONERINTERFACE_H
+#define REASONERINTERFACE_H
 
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 #include <string>
 
-class ArguerInterface
+class ReasonerInterface
 {
 public:
-  virtual ~ArguerInterface() {}
+  virtual ~ReasonerInterface() {}
 
   virtual void initialize(Ontology* onto) {ontology_ = onto; }
 
@@ -30,7 +30,7 @@ public:
     return tmp;
   }
 protected:
-  ArguerInterface() { }
+  ReasonerInterface() { }
 
   Ontology* ontology_;
 

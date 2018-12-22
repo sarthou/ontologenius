@@ -1,5 +1,5 @@
-#include "ontoloGenius/core/arguer/plugins/ArguerInterface.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
 //make compiler happy !!!
 
-size_t ArguerInterface::nb_update_ = 0;
+size_t ReasonerInterface::nb_update_ = 0;

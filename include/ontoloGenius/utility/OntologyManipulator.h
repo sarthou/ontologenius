@@ -6,7 +6,7 @@
 #include "ontoloGenius/utility/clients/ontologyClients/DataPropertyClient.h"
 #include "ontoloGenius/utility/clients/ontologyClients/ClassClient.h"
 #include "ontoloGenius/utility/clients/ActionClient.h"
-#include "ontoloGenius/utility/clients/ArguerClient.h"
+#include "ontoloGenius/utility/clients/ReasonerClient.h"
 #include "ontoloGenius/utility/FeederPublisher.h"
 
 #include "ros/ros.h"
@@ -29,7 +29,7 @@ public:
   DataPropertyClient dataProperties;
   ClassClient classes;
   ActionClient actions;
-  ArguerClient arguers;
+  ReasonerClient reasoners;
   FeederPublisher feeder;
 
 private:

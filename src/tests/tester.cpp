@@ -1,5 +1,5 @@
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
-#include "ontoloGenius/core/arguer/Arguers.h"
+#include "ontoloGenius/core/reasoner/Reasoners.h"
 
 #include "ros/ros.h"
 
@@ -102,9 +102,9 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "ontologenius_tester");
 
   Ontology onto;
-  Arguers arguers(&onto);
-  arguers.load();
-  arguers.list();
+  Reasoners reasoners(&onto);
+  reasoners.load();
+  reasoners.list();
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
@@ -121,7 +121,7 @@ int main(int argc, char** argv)
   std::cout << "It took me " << time_span.count() << " seconds to read" << std::endl;
   double read_time = time_span.count();
 
-  arguers.runPostArguers();
+  reasoners.runPostReasoners();
 
   int epoch = 10000;
 

@@ -12,7 +12,7 @@
 #include "ontologenius/OntologeniusService.h"
 
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
-#include "ontoloGenius/core/arguer/Arguers.h"
+#include "ontoloGenius/core/reasoner/Reasoners.h"
 #include "ontoloGenius/core/feeder/Feeder.h"
 
 class RosInterface
@@ -30,7 +30,7 @@ public:
 private:
   ros::NodeHandle* n_;
   Ontology* onto_;
-  Arguers arguers_;
+  Reasoners reasoners_;
   Feeder feeder_;
 
   std::string name_;
@@ -48,7 +48,7 @@ private:
                           ontologenius::OntologeniusService::Response &res);
   bool individualHandle(ontologenius::OntologeniusService::Request  &req,
                         ontologenius::OntologeniusService::Response &res);
-  bool arguerHandle(ontologenius::OntologeniusService::Request &req,
+  bool reasonerHandle(ontologenius::OntologeniusService::Request &req,
                     ontologenius::OntologeniusService::Response &res);
 
   void feedThread();
