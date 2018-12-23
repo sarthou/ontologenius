@@ -5,10 +5,10 @@ OntologyManipulator::OntologyManipulator(ros::NodeHandle* n, const std::string& 
                                                                                         dataProperties(n, name),
                                                                                         classes(n, name),
                                                                                         actions(n, name),
-                                                                                        arguers(n, name),
+                                                                                        reasoners(n, name),
                                                                                         feeder(n, name)
 {
   n_ = n;
-  std::string servive_name = (name == "") ? "ontologenius/arguer" : "ontologenius/arguer/" + name;
+  std::string servive_name = (name == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + name;
   ros::service::waitForService(servive_name);
 }

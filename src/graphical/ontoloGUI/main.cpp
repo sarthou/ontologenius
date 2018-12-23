@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     w.wait();
 
     w.start();
-    w.loadArguers();
+    w.loadReasoners();
 
     return a.exec();
 }

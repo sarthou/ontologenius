@@ -1,0 +1,20 @@
+<library path="lib/libontologenius_reasoner_plugin">
+  <class type="ReasonerNone" base_class_type="ReasonerInterface">
+    <description>This is a reasoner test plugin.</description>
+  </class>
+  <class type="ReasonerInverseOf" base_class_type="ReasonerInterface">
+    <description>This is an reasoner for invers of axiom.</description>
+  </class>
+  <class type="ReasonerSymetric" base_class_type="ReasonerInterface">
+    <description>This is an reasoner for symetric axiom.</description>
+  </class>
+  <class type="ReasonerChain" base_class_type="ReasonerInterface">
+    <description>This is an reasoner for properties chain axiom.</description>
+  </class>
+  <class type="ReasonerDictionary" base_class_type="ReasonerInterface">
+    <description>This is an reasoner for expand dictinaries.</description>
+  </class>
+  <class type="ReasonerGeneralize" base_class_type="ReasonerInterface">
+    <description>This is an reasoner to deduce new knowledge.</description>
+  </class>
+</library>

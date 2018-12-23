@@ -1,14 +1,14 @@
-#ifndef ARGUERCHAIN_H
-#define ARGUERCHAIN_H
+#ifndef REASONERCHAIN_H
+#define REASONERCHAIN_H
 
-#include "ontoloGenius/core/arguer/plugins/ArguerInterface.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
 class ChainTree;
-class ArguerChain : public ArguerInterface
+class ReasonerChain : public ReasonerInterface
 {
 public:
-  ArguerChain() {}
-  ~ArguerChain() {}
+  ReasonerChain() {}
+  ~ReasonerChain() {}
 
   virtual void preReason();
   virtual void postReason();

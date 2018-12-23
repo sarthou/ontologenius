@@ -1,6 +1,6 @@
-#include "ontoloGenius/utility/clients/ArguerClient.h"
+#include "ontoloGenius/utility/clients/ReasonerClient.h"
 
-std::vector<std::string> ArguerClient::list()
+std::vector<std::string> ReasonerClient::list()
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "list";
@@ -8,7 +8,7 @@ std::vector<std::string> ArguerClient::list()
   return call(srv);
 }
 
-bool ArguerClient::activate(const std::string& name)
+bool ReasonerClient::activate(const std::string& name)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "activate";
@@ -17,7 +17,7 @@ bool ArguerClient::activate(const std::string& name)
   return callNR(srv);
 }
 
-bool ArguerClient::deactivate(const std::string& name)
+bool ReasonerClient::deactivate(const std::string& name)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "deactivate";
@@ -26,7 +26,7 @@ bool ArguerClient::deactivate(const std::string& name)
   return callNR(srv);
 }
 
-std::string ArguerClient::getDescription(const std::string& name)
+std::string ReasonerClient::getDescription(const std::string& name)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "getDescription";

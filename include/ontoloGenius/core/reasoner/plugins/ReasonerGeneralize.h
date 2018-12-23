@@ -1,13 +1,13 @@
-#ifndef ARGUERGENERALIZE_H
-#define ARGUERGENERALIZE_H
+#ifndef REASONERGENERALIZE_H
+#define REASONERGENERALIZE_H
 
-#include "ontoloGenius/core/arguer/plugins/ArguerInterface.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
-class ArguerGeneralize : public ArguerInterface
+class ReasonerGeneralize : public ReasonerInterface
 {
 public:
-  ArguerGeneralize();
-  ~ArguerGeneralize() {}
+  ReasonerGeneralize();
+  ~ReasonerGeneralize() {}
 
   virtual void periodicReason();
 

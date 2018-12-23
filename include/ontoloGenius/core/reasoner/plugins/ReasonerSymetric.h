@@ -1,13 +1,13 @@
-#ifndef ARGUERSYMETRIC_H
-#define ARGUERSYMETRIC_H
+#ifndef REASONERSYMETRIC_H
+#define REASONERSYMETRIC_H
 
-#include "ontoloGenius/core/arguer/plugins/ArguerInterface.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
-class ArguerSymetric : public ArguerInterface
+class ReasonerSymetric : public ReasonerInterface
 {
 public:
-  ArguerSymetric() {}
-  ~ArguerSymetric() {}
+  ReasonerSymetric() {}
+  ~ReasonerSymetric() {}
 
   virtual void preReason();
   virtual void postReason();

@@ -175,7 +175,7 @@ void ontoloGUI::wait()
                   "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
                   "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Wainting for </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">ontoloGenius</span></p></body></html>";
   ui->InfoArea->setHtml(html);
-  //ros::service::waitForService("ontologenius/arguer", -1);
+  //ros::service::waitForService("ontologenius/reasoner", -1);
 }
 
 void ontoloGUI::start()
@@ -348,12 +348,12 @@ void ontoloGUI::closeOntologySlot()
 
 void ontoloGUI::nameEditingFinishedSlot()
 {
-  loadArguers();
+  loadReasoners();
 }
 
-void ontoloGUI::ArguerClickedSlot(int)
+void ontoloGUI::ReasonerClickedSlot(int)
 {
-  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/arguer" : "ontologenius/arguer/" + ui->OntologyName->text().toStdString();
+  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + ui->OntologyName->text().toStdString();
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
@@ -373,15 +373,15 @@ void ontoloGUI::ArguerClickedSlot(int)
   }
 }
 
-void ontoloGUI::ArguerhoverEnterSlot()
+void ontoloGUI::ReasonerhoverEnterSlot()
 {
-  size_t index = getArguerIndex((QCheckBoxExtended*)sender());
-  ui->ArguerDescription->setText(QString::fromStdString(arguers_description_[index]));
+  size_t index = getReasonerIndex((QCheckBoxExtended*)sender());
+  ui->ReasonerDescription->setText(QString::fromStdString(reasoners_description_[index]));
 }
 
-void ontoloGUI::ArguerhoverLeaveSlot()
+void ontoloGUI::ReasonerhoverLeaveSlot()
 {
-  ui->ArguerDescription->setText("");
+  ui->ReasonerDescription->setText("");
 }
 
 void ontoloGUI::displayUnClosed()
@@ -394,16 +394,16 @@ void ontoloGUI::displayUnClosed()
   ui->InfoArea->setHtml(html);
 }
 
-void ontoloGUI::loadArguers()
+void ontoloGUI::loadReasoners()
 {
   QLayoutItem *item;
-  while ((item = ui->ArguerListLayout->takeAt(1)) != 0)
+  while ((item = ui->ReasonerListLayout->takeAt(1)) != 0)
   {
     delete item->widget();
     delete item;
   }
 
-  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/arguer" : "ontologenius/arguer/" + ui->OntologyName->text().toStdString();
+  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + ui->OntologyName->text().toStdString();
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
@@ -414,31 +414,31 @@ void ontoloGUI::loadArguers()
   else
   {
     start();
-    arguers_names_ = srv.response.values;
+    reasoners_names_ = srv.response.values;
     ui->ResultArea->setText("");
 
-    constructArguersCheckBoxs();
+    constructReasonersCheckBoxs();
   }
 }
 
-void ontoloGUI::constructArguersCheckBoxs()
+void ontoloGUI::constructReasonersCheckBoxs()
 {
-  for(size_t i = 0; i < arguers_names_.size(); i++)
+  for(size_t i = 0; i < reasoners_names_.size(); i++)
   {
-    arguers_description_.push_back(getArguerDescription(arguers_names_[i]));
-    QCheckBoxExtended* box = new QCheckBoxExtended(QString::fromStdString(arguers_names_[i]), this);
-    ui->ArguerListLayout->addWidget(box);
-    QObject::connect(box, SIGNAL(stateChanged(int)),this, SLOT(ArguerClickedSlot(int)));
-    QObject::connect(box, SIGNAL(hoverEnter()),this, SLOT(ArguerhoverEnterSlot()));
-    QObject::connect(box, SIGNAL(hoverLeave()),this, SLOT(ArguerhoverLeaveSlot()));
+    reasoners_description_.push_back(getReasonerDescription(reasoners_names_[i]));
+    QCheckBoxExtended* box = new QCheckBoxExtended(QString::fromStdString(reasoners_names_[i]), this);
+    ui->ReasonerListLayout->addWidget(box);
+    QObject::connect(box, SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
+    QObject::connect(box, SIGNAL(hoverEnter()),this, SLOT(ReasonerhoverEnterSlot()));
+    QObject::connect(box, SIGNAL(hoverLeave()),this, SLOT(ReasonerhoverLeaveSlot()));
   }
 }
 
-size_t ontoloGUI::getArguerIndex(QCheckBoxExtended* box)
+size_t ontoloGUI::getReasonerIndex(QCheckBoxExtended* box)
 {
   size_t index =0;
-  for(size_t i = 0; i < arguers_names_.size(); i++)
-    if(arguers_names_[i] == box->text().toStdString())
+  for(size_t i = 0; i < reasoners_names_.size(); i++)
+    if(reasoners_names_[i] == box->text().toStdString())
     {
       index = i;
       break;
@@ -446,9 +446,9 @@ size_t ontoloGUI::getArguerIndex(QCheckBoxExtended* box)
   return index;
 }
 
-std::string ontoloGUI::getArguerDescription(std::string box)
+std::string ontoloGUI::getReasonerDescription(std::string box)
 {
-  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/arguer" : "ontologenius/arguer/" + ui->OntologyName->text().toStdString();
+  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + ui->OntologyName->text().toStdString();
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
@@ -526,7 +526,7 @@ std::string ontoloGUI::vector2html(std::vector<std::string> vect)
 void ontoloGUI::currentTabChangedSlot(int index)
 {
   if(index == 4)
-    loadArguers();
+    loadReasoners();
   else if(index == 5)
     displayOntologiesList();
 }

@@ -1,13 +1,13 @@
-#ifndef ARGUERINVERSEOF_H
-#define ARGUERINVERSEOF_H
+#ifndef REASONERINVERSEOF_H
+#define REASONERINVERSEOF_H
 
-#include "ontoloGenius/core/arguer/plugins/ArguerInterface.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
-class ArguerInverseOf : public ArguerInterface
+class ReasonerInverseOf : public ReasonerInterface
 {
 public:
-  ArguerInverseOf() {}
-  ~ArguerInverseOf() {}
+  ReasonerInverseOf() {}
+  ~ReasonerInverseOf() {}
 
   virtual void preReason();
   virtual void postReason();

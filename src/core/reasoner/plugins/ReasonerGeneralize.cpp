@@ -1,14 +1,14 @@
-#include "ontoloGenius/core/arguer/plugins/ArguerGeneralize.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerGeneralize.h"
 #include <pluginlib/class_list_macros.h>
 #include <iostream>
 
-ArguerGeneralize::ArguerGeneralize()
+ReasonerGeneralize::ReasonerGeneralize()
 {
   current_id_ = 0;
   class_per_period_ = 25;
 }
 
-void ArguerGeneralize::periodicReason()
+void ReasonerGeneralize::periodicReason()
 {
   std::vector<ClassBranch_t*> classes = ontology_->class_graph_.get();
   if(classes.size() > 0)
@@ -61,7 +61,7 @@ void ArguerGeneralize::periodicReason()
   }
 }
 
-void ArguerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyBranch_t*> properties, std::vector<std::string> datas)
+void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyBranch_t*> properties, std::vector<std::string> datas)
 {
   std::unordered_set<size_t> deduced_indexs;
   for(size_t i = 0; i < me->data_properties_deduced_.size(); i++)
@@ -122,7 +122,7 @@ void ArguerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyBra
   }
 }
 
-void ArguerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropertyBranch_t*> properties, std::vector<ClassBranch_t*> datas)
+void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropertyBranch_t*> properties, std::vector<ClassBranch_t*> datas)
 {
   std::unordered_set<size_t> deduced_indexs;
   for(size_t i = 0; i < me->object_properties_deduced_.size(); i++)
@@ -177,14 +177,14 @@ void ArguerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropertyB
   }
 }
 
-std::string ArguerGeneralize::getName()
+std::string ReasonerGeneralize::getName()
 {
-  return "arguer generalize";
+  return "reasoner generalize";
 }
 
-std::string ArguerGeneralize::getDesciption()
+std::string ReasonerGeneralize::getDesciption()
 {
-  return "This arguer aims to infer new knowledge by generalizing explicit relationships between concepts.";
+  return "This reasoner aims to infer new knowledge by generalizing explicit relationships between concepts.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ArguerGeneralize, ArguerInterface)
+PLUGINLIB_EXPORT_CLASS(ReasonerGeneralize, ReasonerInterface)

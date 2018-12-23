@@ -23,18 +23,18 @@ public:
   void init(ros::NodeHandle* n) {n_ = n; }
   void wait();
   void start();
-  void loadArguers();
+  void loadReasoners();
 
 private:
   Ui::ontoloGUI *ui;
   ros::NodeHandle* n_;
-  std::vector<std::string> arguers_names_;
-  std::vector<std::string> arguers_description_;
+  std::vector<std::string> reasoners_names_;
+  std::vector<std::string> reasoners_description_;
 
   void displayUnClosed();
-  void constructArguersCheckBoxs();
-  size_t getArguerIndex(QCheckBoxExtended* box);
-  std::string getArguerDescription(std::string box);
+  void constructReasonersCheckBoxs();
+  size_t getReasonerIndex(QCheckBoxExtended* box);
+  std::string getReasonerDescription(std::string box);
   void displayOntologiesList();
   void displayErrorInfo(std::string text);
 
@@ -58,9 +58,9 @@ public slots:
   void individualClickedSlot();
   void closeOntologySlot();
   void nameEditingFinishedSlot();
-  void ArguerClickedSlot(int);
-  void ArguerhoverEnterSlot();
-  void ArguerhoverLeaveSlot();
+  void ReasonerClickedSlot(int);
+  void ReasonerhoverEnterSlot();
+  void ReasonerhoverLeaveSlot();
   void currentTabChangedSlot(int);
 
   void displayOntologiesListSlot();

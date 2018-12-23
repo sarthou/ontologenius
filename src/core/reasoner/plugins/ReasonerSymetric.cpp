@@ -1,12 +1,12 @@
-#include "ontoloGenius/core/arguer/plugins/ArguerSymetric.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerSymetric.h"
 #include <pluginlib/class_list_macros.h>
 
-void ArguerSymetric::preReason()
+void ReasonerSymetric::preReason()
 {
 
 }
 
-void ArguerSymetric::postReason()
+void ReasonerSymetric::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   size_t prop_i = 0;
@@ -35,7 +35,7 @@ void ArguerSymetric::postReason()
   }
 }
 
-bool ArguerSymetric::symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv)
+bool ReasonerSymetric::symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv)
 {
   size_t properties_size = sym_indiv->object_properties_name_.size();
   for(size_t i = 0; i < properties_size; i++)
@@ -47,14 +47,14 @@ bool ArguerSymetric::symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyB
   return false;
 }
 
-std::string ArguerSymetric::getName()
+std::string ReasonerSymetric::getName()
 {
-  return "arguer symetric";
+  return "reasoner symetric";
 }
 
-std::string ArguerSymetric::getDesciption()
+std::string ReasonerSymetric::getDesciption()
 {
-  return "This arguer creates the symetric properties for each individual.";
+  return "This reasoner creates the symetric properties for each individual.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ArguerSymetric, ArguerInterface)
+PLUGINLIB_EXPORT_CLASS(ReasonerSymetric, ReasonerInterface)

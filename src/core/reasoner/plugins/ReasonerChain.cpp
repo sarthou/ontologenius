@@ -1,12 +1,12 @@
-#include "ontoloGenius/core/arguer/plugins/ArguerChain.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerChain.h"
 #include <pluginlib/class_list_macros.h>
 
-void ArguerChain::preReason()
+void ReasonerChain::preReason()
 {
 
 }
 
-void ArguerChain::postReason()
+void ReasonerChain::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
@@ -24,7 +24,7 @@ void ArguerChain::postReason()
     }
 }
 
-void ArguerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<ObjectPropertyBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on)
+void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<ObjectPropertyBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on)
 {
   chainNode_t* indivs_node = new chainNode_t;
   indivs_node->ons_.push_back(indiv);
@@ -73,7 +73,7 @@ void ArguerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<ObjectP
       }
 }
 
-void ArguerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTree* tree, size_t index)
+void ReasonerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTree* tree, size_t index)
 {
   std::vector<IndividualBranch_t*> tmp_on;
   std::vector<IndividualBranch_t*> tmp_from;
@@ -108,7 +108,7 @@ void ArguerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTree*
   }
 }
 
-bool ArguerChain::porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* chain_prop, IndividualBranch_t* chain_indiv)
+bool ReasonerChain::porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* chain_prop, IndividualBranch_t* chain_indiv)
 {
   size_t properties_size = indiv_on->object_properties_name_.size();
   for(size_t i = 0; i < properties_size; i++)
@@ -120,20 +120,20 @@ bool ArguerChain::porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBran
   return false;
 }
 
-void ArguerChain::addInduced(IndividualBranch_t* indiv, size_t index, IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
+void ReasonerChain::addInduced(IndividualBranch_t* indiv, size_t index, IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
 {
   if(indiv->object_properties_has_induced_[index].exist(indiv_from, property, indiv_on) == false)
     indiv->object_properties_has_induced_[index].push(indiv_from, property, indiv_on);
 }
 
-std::string ArguerChain::getName()
+std::string ReasonerChain::getName()
 {
-  return "arguer chain";
+  return "reasoner chain";
 }
 
-std::string ArguerChain::getDesciption()
+std::string ReasonerChain::getDesciption()
 {
-  return "This arguer resolve the properties chains axioms.";
+  return "This reasoner resolve the properties chains axioms.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ArguerChain, ArguerInterface)
+PLUGINLIB_EXPORT_CLASS(ReasonerChain, ReasonerInterface)

@@ -1,13 +1,13 @@
-#ifndef ARGUERDICTIONARY_H
-#define ARGUERDICTIONARY_H
+#ifndef REASONERDICTIONARY_H
+#define REASONERDICTIONARY_H
 
-#include "ontoloGenius/core/arguer/plugins/ArguerInterface.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
-class ArguerDictionary : public ArguerInterface
+class ReasonerDictionary : public ReasonerInterface
 {
 public:
-  ArguerDictionary() {}
-  ~ArguerDictionary() {}
+  ReasonerDictionary() {}
+  ~ReasonerDictionary() {}
 
   virtual void preReason();
   virtual void postReason();

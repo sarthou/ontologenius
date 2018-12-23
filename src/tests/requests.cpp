@@ -125,43 +125,43 @@ TEST(requests_tests, select_true_call)
   EXPECT_TRUE(res_bool);
 }
 
-TEST(requests_tests, arguers_list_call)
+TEST(requests_tests, reasoners_list_call)
 {
   std::vector<std::string> res;
   bool res_bool = true;
 
   for(size_t i = 0; i < 1000; i++)
   {
-    res = onto_ptr->arguers.list();
+    res = onto_ptr->reasoners.list();
     res_bool = res_bool && ((res.size() == 6) &&
-                            (find(res.begin(), res.end(), "ArguerChain") != res.end()) &&
-                            (find(res.begin(), res.end(), "ArguerDictionary") != res.end()) &&
-                            (find(res.begin(), res.end(), "ArguerInverseOf") != res.end()) &&
-                            (find(res.begin(), res.end(), "ArguerNone") != res.end()) &&
-                            (find(res.begin(), res.end(), "ArguerSymetric") != res.end()) &&
-                            (find(res.begin(), res.end(), "ArguerGeneralize") != res.end()));
+                            (find(res.begin(), res.end(), "ReasonerChain") != res.end()) &&
+                            (find(res.begin(), res.end(), "ReasonerDictionary") != res.end()) &&
+                            (find(res.begin(), res.end(), "ReasonerInverseOf") != res.end()) &&
+                            (find(res.begin(), res.end(), "ReasonerNone") != res.end()) &&
+                            (find(res.begin(), res.end(), "ReasonerSymetric") != res.end()) &&
+                            (find(res.begin(), res.end(), "ReasonerGeneralize") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
 }
 
-TEST(requests_tests, arguer_description_call)
+TEST(requests_tests, reasoner_description_call)
 {
   std::string res;
   bool res_bool = true;
 
   for(size_t i = 0; i < 1000; i++)
   {
-    res = onto_ptr->arguers.getDescription("ArguerChain");
-    res_bool = res_bool && (res == "This arguer resolve the properties chains axioms.");
-    res = onto_ptr->arguers.getDescription("ArguerDictionary");
-    res_bool = res_bool && (res == "This arguer creates several alternative dictionaries to avoid too many restrictive labels.");
-    res = onto_ptr->arguers.getDescription("ArguerInverseOf");
-    res_bool = res_bool && (res == "This arguer creates the inverse properties for each individual.");
-    res = onto_ptr->arguers.getDescription("ArguerNone");
-    res_bool = res_bool && (res == "This is an arguer model to show how to create your own arguer plugin");
-    res = onto_ptr->arguers.getDescription("ArguerSymetric");
-    res_bool = res_bool && (res == "This arguer creates the symetric properties for each individual.");
+    res = onto_ptr->reasoners.getDescription("ReasonerChain");
+    res_bool = res_bool && (res == "This reasoner resolve the properties chains axioms.");
+    res = onto_ptr->reasoners.getDescription("ReasonerDictionary");
+    res_bool = res_bool && (res == "This reasoner creates several alternative dictionaries to avoid too many restrictive labels.");
+    res = onto_ptr->reasoners.getDescription("ReasonerInverseOf");
+    res_bool = res_bool && (res == "This reasoner creates the inverse properties for each individual.");
+    res = onto_ptr->reasoners.getDescription("ReasonerNone");
+    res_bool = res_bool && (res == "This is an reasoner model to show how to create your own reasoner plugin");
+    res = onto_ptr->reasoners.getDescription("ReasonerSymetric");
+    res_bool = res_bool && (res == "This reasoner creates the symetric properties for each individual.");
   }
 
   EXPECT_TRUE(res_bool);
