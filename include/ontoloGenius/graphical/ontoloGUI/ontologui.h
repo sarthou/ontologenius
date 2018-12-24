@@ -67,6 +67,8 @@ public slots:
   void addOntologySlot();
   void deleteOntologySlot();
   void differenceOntologySlot();
+  void OntologyNameAddDelChangedSlot(const QString&);
+  void OntologyNameChangedSlot(const QString&);
 };
 
 #endif // ONTOLOGUI_H

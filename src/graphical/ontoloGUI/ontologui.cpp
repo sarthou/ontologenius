@@ -158,6 +158,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->DelPushButton, SIGNAL(clicked()),this, SLOT(deleteOntologySlot()));
     QObject::connect(ui->DiffPushButton, SIGNAL(clicked()),this, SLOT(differenceOntologySlot()));
 
+    QObject::connect(ui->OntologyNameAddDel, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameAddDelChangedSlot(const QString&)));
+    QObject::connect(ui->OntologyName, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameChangedSlot(const QString&)));
     QObject::connect(ui->OntologyName, SIGNAL(editingFinished()),this, SLOT(nameEditingFinishedSlot()));
     QObject::connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(currentTabChangedSlot(int)));
 }
@@ -601,4 +603,17 @@ void ontoloGUI::differenceOntologySlot()
       ui->ResultArea->setText(QString::fromStdString(std::to_string(srv.response.code)));
     displayOntologiesList();
   }
+}
+
+
+void ontoloGUI::OntologyNameAddDelChangedSlot(const QString& text)
+{
+  if(ui->OntologyName->text() != text)
+    ui->OntologyName->setText(text);
+}
+
+void ontoloGUI::OntologyNameChangedSlot(const QString& text)
+{
+  if(ui->OntologyNameAddDel->text() != text)
+    ui->OntologyNameAddDel->setText(text);
 }
