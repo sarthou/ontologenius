@@ -176,9 +176,11 @@ add_library(ontoloGenius_lib
   src/utility/clients/ontologyClients/OntologyClient.cpp
   src/utility/clients/ReasonerClient.cpp
   src/utility/clients/ActionClient.cpp
+  src/utility/clients/ManagerClient.cpp
   src/utility/clients/ClientBase.cpp
   src/utility/FeederPublisher.cpp
   src/utility/OntologyManipulator.cpp
+  src/utility/OntologiesManipulator.cpp
 )
 add_dependencies(ontoloGenius_lib ontologenius_gencpp)
 target_link_libraries(ontoloGenius_lib ontologenius_interpreter_lib)
