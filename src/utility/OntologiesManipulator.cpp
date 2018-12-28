@@ -12,7 +12,20 @@ OntologiesManipulator::~OntologiesManipulator()
       delete manipulator.second;
 }
 
+void OntologiesManipulator::waitInit(int32_t timeout)
+{
+  ros::service::waitForService("ontologenius/manage", timeout);
+}
+
 OntologyManipulator* OntologiesManipulator::operator[](const std::string& name)
+{
+  if(manipulators_.find(name) != manipulators_.end())
+    return manipulators_[name];
+  else
+    return nullptr;
+}
+
+OntologyManipulator* OntologiesManipulator::get(const std::string& name)
 {
   if(manipulators_.find(name) != manipulators_.end())
     return manipulators_[name];

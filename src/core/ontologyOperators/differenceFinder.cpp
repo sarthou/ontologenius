@@ -144,7 +144,7 @@ void differenceFinder::compareMothers(comparator_t& comp1, comparator_t& comp2, 
     for(size_t i = 0; i < comp1.mothers_.size(); i++)
     {
       std::vector<size_t> found_indexs;
-      for(size_t j = 0; j < comp2.mothers_.size(); i++)
+      for(size_t j = 0; j < comp2.mothers_.size(); j++)
         if(comp1.mothers_[i] == comp2.mothers_[j])
         {
           found_indexs.push_back(j);

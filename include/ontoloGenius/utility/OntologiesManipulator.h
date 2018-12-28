@@ -15,7 +15,10 @@ public:
   OntologiesManipulator(ros::NodeHandle* n);
   ~OntologiesManipulator();
 
+  void waitInit(int32_t timeout = -1);
+
   OntologyManipulator* operator[](const std::string& name);
+  OntologyManipulator* get(const std::string& name);
 
   bool add(const std::string& name);
   bool del(const std::string& name);

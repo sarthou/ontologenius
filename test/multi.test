@@ -1,0 +1,8 @@
+<launch>
+  <include file="$(find ontologenius)/launch/ontologenius_multi.launch">
+    <arg name="intern_file" default="none"/>
+    <arg name="files" default=""/>
+  </include>
+  <arg name='TESTDURATION' value='50' />
+  <test pkg="ontologenius" type="ontoloGenius_multi_tester" test-name="ontoloGenius_multi_tester" time-limit="$(arg TESTDURATION)" retry="0" />
+</launch>
