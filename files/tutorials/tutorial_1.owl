@@ -1,0 +1,471 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="tutorial_1#"
+     xml:base="tutorial_1"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="tutorial_1">
+    </owl:Ontology>
+
+
+
+   <!--
+   ///////////////////////////////////////////////////////////////////////////////////////
+   //
+   // Classes
+   //
+   ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+
+
+   <!-- tutorial_1#object -->
+
+   <owl:Class rdf:about="tutorial_1#object">
+       <rdfs:label xml:lang="en">object</rdfs:label>
+       <rdfs:label xml:lang="fr">objet</rdfs:label>
+   </owl:Class>
+
+
+
+
+   <!-- tutorial_1#cube -->
+
+   <owl:Class rdf:about="tutorial_1#cube">
+       <rdfs:subClassOf rdf:resource="tutorial_1#object"/>
+       <rdfs:label xml:lang="en">cube</rdfs:label>
+       <rdfs:label xml:lang="fr">cube</rdfs:label>
+   </owl:Class>
+
+
+
+
+   <!-- tutorial_1#book -->
+
+   <owl:Class rdf:about="tutorial_1#book">
+       <rdfs:subClassOf rdf:resource="tutorial_1#object"/>
+       <rdfs:label xml:lang="en">book</rdfs:label>
+       <rdfs:label xml:lang="fr">livre</rdfs:label>
+   </owl:Class>
+
+
+
+
+   <!-- tutorial_1#cup -->
+
+   <owl:Class rdf:about="tutorial_1#cup">
+       <rdfs:subClassOf rdf:resource="tutorial_1#object"/>
+       <rdfs:label xml:lang="en">cup</rdfs:label>
+       <rdfs:label xml:lang="fr">tasse</rdfs:label>
+   </owl:Class>
+
+
+
+
+   <!-- tutorial_1#agent -->
+
+   <owl:Class rdf:about="tutorial_1#agent">
+       <rdfs:label xml:lang="en">agent</rdfs:label>
+       <rdfs:label xml:lang="fr">agent</rdfs:label>
+   </owl:Class>
+
+
+
+
+   <!-- tutorial_1#robot -->
+
+  <owl:Class rdf:about="tutorial_1#robot">
+      <rdfs:subClassOf rdf:resource="tutorial_1#agent"/>
+      <rdfs:label xml:lang="en">robot</rdfs:label>
+      <rdfs:label xml:lang="fr">robot</rdfs:label>
+  </owl:Class>
+
+
+
+
+   <!-- tutorial_1#human -->
+
+  <owl:Class rdf:about="tutorial_1#human">
+      <rdfs:subClassOf rdf:resource="tutorial_1#agent"/>
+      <rdfs:label xml:lang="en">human</rdfs:label>
+      <rdfs:label xml:lang="fr">humain</rdfs:label>
+  </owl:Class>
+
+
+
+
+   <!-- tutorial_1#man -->
+
+   <owl:Class rdf:about="tutorial_1#man">
+       <rdfs:subClassOf rdf:resource="tutorial_1#human"/>
+       <rdfs:label xml:lang="en">man</rdfs:label>
+       <rdfs:label xml:lang="fr">homme</rdfs:label>
+   </owl:Class>
+
+
+
+
+    <!-- tutorial_1#woman -->
+
+    <owl:Class rdf:about="tutorial_1#woman">
+        <rdfs:subClassOf rdf:resource="tutorial_1#human"/>
+        <rdfs:label xml:lang="en">woman</rdfs:label>
+        <rdfs:label xml:lang="fr">femme</rdfs:label>
+    </owl:Class>
+
+
+
+
+     <!-- tutorial_1#food -->
+
+     <owl:Class rdf:about="tutorial_1#food">
+         <rdfs:label xml:lang="en">food</rdfs:label>
+         <rdfs:label xml:lang="fr">aliment</rdfs:label>
+     </owl:Class>
+
+
+
+
+      <!-- tutorial_1#fruit -->
+
+      <owl:Class rdf:about="tutorial_1#fruit">
+          <rdfs:subClassOf rdf:resource="tutorial_1#food"/>
+          <rdfs:label xml:lang="en">fruit</rdfs:label>
+          <rdfs:label xml:lang="fr">fruit</rdfs:label>
+      </owl:Class>
+
+
+
+
+       <!-- tutorial_1#vegetable -->
+
+       <owl:Class rdf:about="tutorial_1#vegetable">
+           <rdfs:subClassOf rdf:resource="tutorial_1#food"/>
+           <rdfs:label xml:lang="en">vegetable</rdfs:label>
+           <rdfs:label xml:lang="fr">légume</rdfs:label>
+       </owl:Class>
+
+
+
+
+        <!-- tutorial_1#vegetable -->
+
+        <owl:Class rdf:about="tutorial_1#color">
+            <rdfs:label xml:lang="en">vegetable</rdfs:label>
+            <rdfs:label xml:lang="fr">légume</rdfs:label>
+        </owl:Class>
+
+
+
+       <!-- tutorial_1#black -->
+
+       <owl:Class rdf:about="tutorial_1#black">
+           <rdfs:subClassOf rdf:resource="tutorial_1#color"/>
+           <rdfs:label xml:lang="en">black</rdfs:label>
+           <rdfs:label xml:lang="fr">noir</rdfs:label>
+       </owl:Class>
+
+
+
+       <!-- tutorial_1#blue -->
+
+       <owl:Class rdf:about="tutorial_1#blue">
+           <rdfs:subClassOf rdf:resource="tutorial_1#color"/>
+           <rdfs:label xml:lang="en">blue</rdfs:label>
+           <rdfs:label xml:lang="fr">bleu</rdfs:label>
+       </owl:Class>
+
+
+
+       <!-- tutorial_1#yellow -->
+
+       <owl:Class rdf:about="tutorial_1#yellow">
+           <rdfs:subClassOf rdf:resource="tutorial_1#color"/>
+           <rdfs:label xml:lang="en">yellow</rdfs:label>
+           <rdfs:label xml:lang="fr">jaune</rdfs:label>
+       </owl:Class>
+
+
+
+       <!-- tutorial_1#red -->
+
+       <owl:Class rdf:about="tutorial_1#red">
+           <rdfs:subClassOf rdf:resource="tutorial_1#color"/>
+           <rdfs:label xml:lang="en">red</rdfs:label>
+           <rdfs:label xml:lang="fr">rouge</rdfs:label>
+       </owl:Class>
+
+
+
+       <!-- tutorial_1#green -->
+
+       <owl:Class rdf:about="tutorial_1#green">
+           <rdfs:subClassOf rdf:resource="tutorial_1#color"/>
+           <rdfs:label xml:lang="en">green</rdfs:label>
+           <rdfs:label xml:lang="fr">vert</rdfs:label>
+       </owl:Class>
+
+
+
+       <!-- tutorial_1#orange -->
+
+       <owl:Class rdf:about="tutorial_1#orange">
+           <rdfs:subClassOf rdf:resource="tutorial_1#color"/>
+           <rdfs:label xml:lang="en">orange</rdfs:label>
+           <rdfs:label xml:lang="fr">orange</rdfs:label>
+       </owl:Class>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- tutorial_1#alice -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#alice">
+        <rdf:type rdf:resource="tutorial_1#woman"/>
+        <rdfs:label xml:lang="en">alice</rdfs:label>
+        <rdfs:label xml:lang="fr">alice</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#marie -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#marie">
+        <rdf:type rdf:resource="tutorial_1#woman"/>
+        <rdfs:label xml:lang="en">marie</rdfs:label>
+        <rdfs:label xml:lang="fr">marie</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#bob -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#bob">
+        <rdf:type rdf:resource="tutorial_1#man"/>
+        <rdfs:label xml:lang="en">bob</rdfs:label>
+        <rdfs:label xml:lang="fr">bob</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#kevin -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#kevin">
+        <rdf:type rdf:resource="tutorial_1#man"/>
+        <rdfs:label xml:lang="en">kevin</rdfs:label>
+        <rdfs:label xml:lang="fr">kevin</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#pepper -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#pepper">
+        <rdf:type rdf:resource="tutorial_1#robot"/>
+        <rdfs:label xml:lang="en">pepper</rdfs:label>
+        <rdfs:label xml:lang="fr">pepper</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#pr2 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#pr2">
+        <rdf:type rdf:resource="tutorial_1#robot"/>
+        <rdfs:label xml:lang="en">pr2</rdfs:label>
+        <rdfs:label xml:lang="fr">pr2</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#banana -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#banana">
+        <rdf:type rdf:resource="tutorial_1#fruit"/>
+        <rdf:type rdf:resource="tutorial_1#yellow"/>
+        <rdfs:label xml:lang="en">banana</rdfs:label>
+        <rdfs:label xml:lang="fr">banane</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#lemon -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#lemon">
+        <rdf:type rdf:resource="tutorial_1#fruit"/>
+        <rdf:type rdf:resource="tutorial_1#yellow"/>
+        <rdfs:label xml:lang="en">lemon</rdfs:label>
+        <rdfs:label xml:lang="fr">citron</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#strawberry -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#strawberry">
+        <rdf:type rdf:resource="tutorial_1#fruit"/>
+        <rdf:type rdf:resource="tutorial_1#red"/>
+        <rdfs:label xml:lang="en">strawberry</rdfs:label>
+        <rdfs:label xml:lang="fr">fraise</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#apple -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#apple">
+        <rdf:type rdf:resource="tutorial_1#fruit"/>
+        <rdf:type rdf:resource="tutorial_1#green"/>
+        <rdfs:label xml:lang="en">apple</rdfs:label>
+        <rdfs:label xml:lang="fr">pomme</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#salad -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#salad">
+        <rdf:type rdf:resource="tutorial_1#vegetable"/>
+        <rdf:type rdf:resource="tutorial_1#green"/>
+        <rdfs:label xml:lang="en">salad</rdfs:label>
+        <rdfs:label xml:lang="fr">salade</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#cabbage -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#cabbage">
+        <rdf:type rdf:resource="tutorial_1#vegetable"/>
+        <rdf:type rdf:resource="tutorial_1#green"/>
+        <rdfs:label xml:lang="en">cabbage</rdfs:label>
+        <rdfs:label xml:lang="fr">chou</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#carrot -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#carrot">
+        <rdf:type rdf:resource="tutorial_1#vegetable"/>
+        <rdf:type rdf:resource="tutorial_1#orange"/>
+        <rdfs:label xml:lang="en">carrot</rdfs:label>
+        <rdfs:label xml:lang="fr">carotte</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#blue_book -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#blue_book">
+        <rdf:type rdf:resource="tutorial_1#blue"/>
+        <rdf:type rdf:resource="tutorial_1#book"/>
+        <rdfs:label xml:lang="en">blue book</rdfs:label>
+        <rdfs:label xml:lang="fr">livre blue</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#red_book -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#red_book">
+        <rdf:type rdf:resource="tutorial_1#red"/>
+        <rdf:type rdf:resource="tutorial_1#book"/>
+        <rdfs:label xml:lang="en">red book</rdfs:label>
+        <rdfs:label xml:lang="fr">livre rouge</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#green_book -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#green_book">
+        <rdf:type rdf:resource="tutorial_1#green"/>
+        <rdf:type rdf:resource="tutorial_1#book"/>
+        <rdfs:label xml:lang="en">green book</rdfs:label>
+        <rdfs:label xml:lang="fr">livre vert</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#blue_cube -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#blue_cube">
+        <rdf:type rdf:resource="tutorial_1#blue"/>
+        <rdf:type rdf:resource="tutorial_1#cube"/>
+        <rdfs:label xml:lang="en">blue cube</rdfs:label>
+        <rdfs:label xml:lang="fr">cube blue</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#red_cube -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#red_cube">
+        <rdf:type rdf:resource="tutorial_1#red"/>
+        <rdf:type rdf:resource="tutorial_1#cube"/>
+        <rdfs:label xml:lang="en">red cube</rdfs:label>
+        <rdfs:label xml:lang="fr">cube rouge</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#green_cube -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#green_cube">
+        <rdf:type rdf:resource="tutorial_1#green"/>
+        <rdf:type rdf:resource="tutorial_1#cube"/>
+        <rdfs:label xml:lang="en">green cube</rdfs:label>
+        <rdfs:label xml:lang="fr">cube vert</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#blue_cup -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#blue_cup">
+        <rdf:type rdf:resource="tutorial_1#blue"/>
+        <rdf:type rdf:resource="tutorial_1#cup"/>
+        <rdfs:label xml:lang="en">blue cup</rdfs:label>
+        <rdfs:label xml:lang="fr">tasse blue</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#red_cup -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#red_cup">
+        <rdf:type rdf:resource="tutorial_1#red"/>
+        <rdf:type rdf:resource="tutorial_1#cup"/>
+        <rdfs:label xml:lang="en">red cup</rdfs:label>
+        <rdfs:label xml:lang="fr">tasse rouge</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- tutorial_1#green_cup -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#green_cup">
+        <rdf:type rdf:resource="tutorial_1#green"/>
+        <rdf:type rdf:resource="tutorial_1#cup"/>
+        <rdfs:label xml:lang="en">green cup</rdfs:label>
+        <rdfs:label xml:lang="fr">tasse vert</rdfs:label>
+    </owl:NamedIndividual>
+
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
