@@ -1,0 +1,368 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="tutorial_2#"
+     xml:base="tutorial_2"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="tutorial_2">
+    </owl:Ontology>
+
+
+
+     <!--
+     ///////////////////////////////////////////////////////////////////////////////////////
+     //
+     // Classes
+     //
+     ///////////////////////////////////////////////////////////////////////////////////////
+      -->
+
+
+
+
+     <!-- tutorial_2#path -->
+
+     <owl:Class rdf:about="tutorial_2#path">
+     </owl:Class>
+
+
+
+
+     <!-- tutorial_2#road -->
+
+     <owl:Class rdf:about="tutorial_2#road">
+         <rdfs:subClassOf rdf:resource="tutorial_2#path"/>
+     </owl:Class>
+
+
+
+
+     <!-- tutorial_2#pedestrian_path -->
+
+     <owl:Class rdf:about="tutorial_2#pedestrian_path">
+         <rdfs:subClassOf rdf:resource="tutorial_2#path"/>
+     </owl:Class>
+
+
+
+
+     <!-- tutorial_2#place -->
+
+     <owl:Class rdf:about="tutorial_2#place">
+     </owl:Class>
+
+
+
+
+     <!-- tutorial_2#intersection -->
+
+     <owl:Class rdf:about="tutorial_2#intersection">
+         <rdfs:subClassOf rdf:resource="tutorial_2#place"/>
+     </owl:Class>
+
+
+
+     <!--
+     ///////////////////////////////////////////////////////////////////////////////////////
+     //
+     // Object Properties
+     //
+     ///////////////////////////////////////////////////////////////////////////////////////
+      -->
+
+
+
+     <!-- tutorial_2#isAlong -->
+
+     <owl:ObjectProperty rdf:about="tutorial_2#isAlong">
+     </owl:ObjectProperty>
+
+
+
+    <!-- tutorial_2#hasAlong -->
+
+    <owl:ObjectProperty rdf:about="tutorial_2#hasAlong">
+      <owl:inverseOf rdf:resource="tutorial_2#isAlong"/>
+    </owl:ObjectProperty>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- tutorial_2#house -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#house">
+        <rdf:type rdf:resource="tutorial_2#place"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_3"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#pub -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#pub">
+        <rdfs:type rdf:resource="tutorial_2#place"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_2"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#car -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#car">
+        <rdfs:type rdf:resource="tutorial_2#place"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_4"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#road_1 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#road_1">
+        <rdfs:type rdf:resource="tutorial_2#road"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#road_2 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#road_2">
+        <rdfs:type rdf:resource="tutorial_2#road"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#road_3 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#road_3">
+        <rdfs:type rdf:resource="tutorial_2#road"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#road_4 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#road_4">
+        <rdfs:type rdf:resource="tutorial_2#road"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#road_5 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#road_5">
+        <rdfs:type rdf:resource="tutorial_2#road"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#road_6 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#road_6">
+        <rdfs:type rdf:resource="tutorial_2#road"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#pp_1 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#pp_1">
+        <rdfs:type rdf:resource="tutorial_2#pedestrian_path"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#pp_2 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#pp_2">
+        <rdfs:type rdf:resource="tutorial_2#pedestrian_path"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#pp_3 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#pp_3">
+        <rdfs:type rdf:resource="tutorial_2#pedestrian_path"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#pp_4 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#pp_4">
+        <rdfs:type rdf:resource="tutorial_2#pedestrian_path"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#int_1 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#int_1">
+        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_4"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#pp_1"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#int_2 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#int_2">
+        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_1"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#pp_1"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#int_3 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#int_3">
+        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_1"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_5"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#int_4 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#int_4">
+        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_1"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_6"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#int_5 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#int_5">
+        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_4"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_2"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#int_6 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#int_6">
+        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_5"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_2"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#int_7 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#int_7">
+        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_2"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#pp_4"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#int_8 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#int_8">
+        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_2"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#pp_2"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#int_9 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#int_9">
+        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#pp_2"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_6"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#int_10 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#int_10">
+        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_4"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#pp_3"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#int_11 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#int_11">
+        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#pp_3"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_3"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#int_12 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#int_12">
+        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#pp_4"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_3"/>
+    </owl:NamedIndividual>
+
+
+
+
+    <!-- tutorial_2#int_13 -->
+
+    <owl:NamedIndividual rdf:about="tutorial_2#int_13">
+        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_3"/>
+        <tutorial_2:isAlong rdf:resource="tutorial_2#road_6"/>
+    </owl:NamedIndividual>
+
+
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
