@@ -373,7 +373,7 @@
         <rdf:type rdf:resource="tutorial_1#blue"/>
         <rdf:type rdf:resource="tutorial_1#book"/>
         <rdfs:label xml:lang="en">blue book</rdfs:label>
-        <rdfs:label xml:lang="fr">livre blue</rdfs:label>
+        <rdfs:label xml:lang="fr">livre bleu</rdfs:label>
     </owl:NamedIndividual>
 
 
@@ -406,7 +406,7 @@
         <rdf:type rdf:resource="tutorial_1#blue"/>
         <rdf:type rdf:resource="tutorial_1#cube"/>
         <rdfs:label xml:lang="en">blue cube</rdfs:label>
-        <rdfs:label xml:lang="fr">cube blue</rdfs:label>
+        <rdfs:label xml:lang="fr">cube bleu</rdfs:label>
     </owl:NamedIndividual>
 
 
@@ -439,7 +439,7 @@
         <rdf:type rdf:resource="tutorial_1#blue"/>
         <rdf:type rdf:resource="tutorial_1#cup"/>
         <rdfs:label xml:lang="en">blue cup</rdfs:label>
-        <rdfs:label xml:lang="fr">tasse blue</rdfs:label>
+        <rdfs:label xml:lang="fr">tasse bleu</rdfs:label>
     </owl:NamedIndividual>
 
 
@@ -461,7 +461,7 @@
         <rdf:type rdf:resource="tutorial_1#green"/>
         <rdf:type rdf:resource="tutorial_1#cup"/>
         <rdfs:label xml:lang="en">green cup</rdfs:label>
-        <rdfs:label xml:lang="fr">tasse vert</rdfs:label>
+        <rdfs:label xml:lang="fr">tasse verte</rdfs:label>
     </owl:NamedIndividual>
 
 </rdf:RDF>
