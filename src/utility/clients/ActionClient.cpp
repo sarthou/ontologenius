@@ -17,6 +17,14 @@ bool ActionClient::setLang(const std::string& lang)
   return callNR(srv);
 }
 
+std::string ActionClient::getLang()
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "getLang";
+
+  return callStr(srv);
+}
+
 bool ActionClient::add(const std::string& uri)
 {
   ontologenius::OntologeniusService srv;

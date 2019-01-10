@@ -118,6 +118,8 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
   }
   else if(req.action == "setLang")
     onto_->setLanguage(req.param);
+  else if(req.action == "getLang")
+    res.values.push_back(onto_->getLanguage());
   else
     res.code = UNKNOW_ACTION;
 

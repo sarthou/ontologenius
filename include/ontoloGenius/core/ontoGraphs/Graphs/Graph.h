@@ -21,6 +21,7 @@ public:
   virtual ~Graph() {}
 
   void setLanguage(std::string language) {language_ = language; }
+  std::string getLanguage() {return language_; }
 
   virtual void close() = 0;
 

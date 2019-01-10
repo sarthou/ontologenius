@@ -23,6 +23,7 @@ public:
 
   bool isInit(bool print = true);
   void setLanguage(std::string language);
+  std::string getLanguage();
 
   ClassGraph class_graph_;
   ObjectPropertyGraph object_property_graph_;

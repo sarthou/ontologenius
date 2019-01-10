@@ -12,6 +12,7 @@ public:
 
   bool close();
   bool setLang(const std::string& lang);
+  std::string getLang();
   bool add(const std::string& uri);
   bool fadd(const std::string& file);
   bool reset();
