@@ -113,7 +113,7 @@
     <!-- tutorial_2#pub -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#pub">
-        <rdfs:type rdf:resource="tutorial_2#place"/>
+        <rdf:type rdf:resource="tutorial_2#place"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_2"/>
     </owl:NamedIndividual>
 
@@ -123,7 +123,7 @@
     <!-- tutorial_2#car -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#car">
-        <rdfs:type rdf:resource="tutorial_2#place"/>
+        <rdf:type rdf:resource="tutorial_2#place"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_4"/>
     </owl:NamedIndividual>
 
@@ -133,7 +133,7 @@
     <!-- tutorial_2#road_1 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#road_1">
-        <rdfs:type rdf:resource="tutorial_2#road"/>
+        <rdf:type rdf:resource="tutorial_2#road"/>
     </owl:NamedIndividual>
 
 
@@ -142,7 +142,7 @@
     <!-- tutorial_2#road_2 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#road_2">
-        <rdfs:type rdf:resource="tutorial_2#road"/>
+        <rdf:type rdf:resource="tutorial_2#road"/>
     </owl:NamedIndividual>
 
 
@@ -151,7 +151,7 @@
     <!-- tutorial_2#road_3 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#road_3">
-        <rdfs:type rdf:resource="tutorial_2#road"/>
+        <rdf:type rdf:resource="tutorial_2#road"/>
     </owl:NamedIndividual>
 
 
@@ -160,7 +160,7 @@
     <!-- tutorial_2#road_4 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#road_4">
-        <rdfs:type rdf:resource="tutorial_2#road"/>
+        <rdf:type rdf:resource="tutorial_2#road"/>
     </owl:NamedIndividual>
 
 
@@ -169,7 +169,7 @@
     <!-- tutorial_2#road_5 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#road_5">
-        <rdfs:type rdf:resource="tutorial_2#road"/>
+        <rdf:type rdf:resource="tutorial_2#road"/>
     </owl:NamedIndividual>
 
 
@@ -178,7 +178,7 @@
     <!-- tutorial_2#road_6 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#road_6">
-        <rdfs:type rdf:resource="tutorial_2#road"/>
+        <rdf:type rdf:resource="tutorial_2#road"/>
     </owl:NamedIndividual>
 
 
@@ -187,7 +187,7 @@
     <!-- tutorial_2#pp_1 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#pp_1">
-        <rdfs:type rdf:resource="tutorial_2#pedestrian_path"/>
+        <rdf:type rdf:resource="tutorial_2#pedestrian_path"/>
     </owl:NamedIndividual>
 
 
@@ -196,7 +196,7 @@
     <!-- tutorial_2#pp_2 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#pp_2">
-        <rdfs:type rdf:resource="tutorial_2#pedestrian_path"/>
+        <rdf:type rdf:resource="tutorial_2#pedestrian_path"/>
     </owl:NamedIndividual>
 
 
@@ -205,7 +205,7 @@
     <!-- tutorial_2#pp_3 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#pp_3">
-        <rdfs:type rdf:resource="tutorial_2#pedestrian_path"/>
+        <rdf:type rdf:resource="tutorial_2#pedestrian_path"/>
     </owl:NamedIndividual>
 
 
@@ -214,7 +214,7 @@
     <!-- tutorial_2#pp_4 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#pp_4">
-        <rdfs:type rdf:resource="tutorial_2#pedestrian_path"/>
+        <rdf:type rdf:resource="tutorial_2#pedestrian_path"/>
     </owl:NamedIndividual>
 
 
@@ -223,7 +223,7 @@
     <!-- tutorial_2#int_1 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#int_1">
-        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <rdf:type rdf:resource="tutorial_2#intersection"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_4"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#pp_1"/>
     </owl:NamedIndividual>
@@ -234,7 +234,7 @@
     <!-- tutorial_2#int_2 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#int_2">
-        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <rdf:type rdf:resource="tutorial_2#intersection"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_1"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#pp_1"/>
     </owl:NamedIndividual>
@@ -245,7 +245,7 @@
     <!-- tutorial_2#int_3 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#int_3">
-        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <rdf:type rdf:resource="tutorial_2#intersection"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_1"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_5"/>
     </owl:NamedIndividual>
@@ -256,7 +256,7 @@
     <!-- tutorial_2#int_4 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#int_4">
-        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <rdf:type rdf:resource="tutorial_2#intersection"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_1"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_6"/>
     </owl:NamedIndividual>
@@ -267,7 +267,7 @@
     <!-- tutorial_2#int_5 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#int_5">
-        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <rdf:type rdf:resource="tutorial_2#intersection"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_4"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_2"/>
     </owl:NamedIndividual>
@@ -278,7 +278,7 @@
     <!-- tutorial_2#int_6 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#int_6">
-        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <rdf:type rdf:resource="tutorial_2#intersection"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_5"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_2"/>
     </owl:NamedIndividual>
@@ -289,7 +289,7 @@
     <!-- tutorial_2#int_7 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#int_7">
-        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <rdf:type rdf:resource="tutorial_2#intersection"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_2"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#pp_4"/>
     </owl:NamedIndividual>
@@ -300,7 +300,7 @@
     <!-- tutorial_2#int_8 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#int_8">
-        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <rdf:type rdf:resource="tutorial_2#intersection"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_2"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#pp_2"/>
     </owl:NamedIndividual>
@@ -311,7 +311,7 @@
     <!-- tutorial_2#int_9 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#int_9">
-        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <rdf:type rdf:resource="tutorial_2#intersection"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#pp_2"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_6"/>
     </owl:NamedIndividual>
@@ -322,7 +322,7 @@
     <!-- tutorial_2#int_10 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#int_10">
-        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <rdf:type rdf:resource="tutorial_2#intersection"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_4"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#pp_3"/>
     </owl:NamedIndividual>
@@ -333,7 +333,7 @@
     <!-- tutorial_2#int_11 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#int_11">
-        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <rdf:type rdf:resource="tutorial_2#intersection"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#pp_3"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_3"/>
     </owl:NamedIndividual>
@@ -344,7 +344,7 @@
     <!-- tutorial_2#int_12 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#int_12">
-        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <rdf:type rdf:resource="tutorial_2#intersection"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#pp_4"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_3"/>
     </owl:NamedIndividual>
@@ -355,7 +355,7 @@
     <!-- tutorial_2#int_13 -->
 
     <owl:NamedIndividual rdf:about="tutorial_2#int_13">
-        <rdfs:type rdf:resource="tutorial_2#intersection"/>
+        <rdf:type rdf:resource="tutorial_2#intersection"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_3"/>
         <tutorial_2:isAlong rdf:resource="tutorial_2#road_6"/>
     </owl:NamedIndividual>
