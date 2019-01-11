@@ -1,10 +1,18 @@
 #include "ontoloGenius/utility/clients/ontologyClients/IndividualClient.h"
 
-std::vector<std::string> IndividualClient::getOn(const std::string& name, const std::string& property)
+std::vector<std::string> IndividualClient::getOn(const std::string& name, const std::string& property, const std::string& selector)
 {
   ontologenius::OntologeniusService srv;
-  srv.request.action = "getOn";
-  srv.request.param = name + ":" + property;
+  if(selector == "")
+  {
+    srv.request.action = "getOn";
+    srv.request.param = name + ":" + property;
+  }
+  else
+  {
+    srv.request.action = "select:getOn";
+    srv.request.param = selector + "=" + name + ":" + property;
+  }
 
   return call(srv);
 }

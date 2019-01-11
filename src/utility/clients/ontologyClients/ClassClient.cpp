@@ -21,11 +21,19 @@ std::vector<std::string> ClassClient::getDisjoint(const std::string& name)
   return call(srv);
 }
 
-std::vector<std::string> ClassClient::getOn(const std::string& name, const std::string& property)
+std::vector<std::string> ClassClient::getOn(const std::string& name, const std::string& property, const std::string& selector)
 {
   ontologenius::OntologeniusService srv;
-  srv.request.action = "getOn";
-  srv.request.param = name + ":" + property;
+  if(selector == "")
+  {
+    srv.request.action = "getOn";
+    srv.request.param = name + ":" + property;
+  }
+  else
+  {
+    srv.request.action = "select:getOn";
+    srv.request.param = selector + "=" + name + ":" + property;
+  }
 
   return call(srv);
 }
