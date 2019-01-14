@@ -24,6 +24,8 @@ public:
   void resetNb() {actions.resetNb();}
   bool close() {return actions.close(); }
 
+  void verbose(bool verbose) { ClientBase::verbose(verbose); }
+
   IndividualClient individuals;
   ObjectPropertyClient objectProperties;
   DataPropertyClient dataProperties;

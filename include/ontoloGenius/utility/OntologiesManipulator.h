@@ -23,6 +23,8 @@ public:
   bool add(const std::string& name);
   bool del(const std::string& name);
 
+  void verbose(bool verbose) { ClientBase::verbose(verbose); }
+
 private:
   ros::NodeHandle* n_;
   std::map<std::string, OntologyManipulator*> manipulators_;

@@ -32,6 +32,7 @@ public:
 
   size_t nb() {return cpt;}
   void resetNb() {cpt = 0;}
+  static void verbose(bool verbose) { verbose_ = verbose; }
 
 protected:
   ros::ServiceClient client;
@@ -45,16 +46,19 @@ protected:
       return srv.response.values;
     else
     {
-      std::cout << COLOR_ORANGE << "Failure to call ontoloGenius services" << COLOR_OFF << std::endl;
+      if(verbose_)
+        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
       client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + name_, true);
       if(client.call(srv))
       {
-        std::cout << COLOR_GREEN << "Restored ontoloGenius services" << COLOR_OFF << std::endl;
+        if(verbose_)
+          std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
         return srv.response.values;
       }
       else
       {
-        std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        if(verbose_)
+          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
         res.push_back("ERR:SERVICE_FAIL");
         return res;
       }
@@ -75,11 +79,13 @@ protected:
     }
     else
     {
-      std::cout << COLOR_ORANGE << "Failure to call ontoloGenius services" << COLOR_OFF << std::endl;
+      if(verbose_)
+        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
       client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + name_, true);
       if(client.call(srv))
       {
-        std::cout << COLOR_GREEN << "Restored ontoloGenius services" << COLOR_OFF << std::endl;
+        if(verbose_)
+          std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
         if(srv.response.values.size())
           return srv.response.values[0];
         else
@@ -87,7 +93,8 @@ protected:
       }
       else
       {
-        std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        if(verbose_)
+          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
         res = "ERR:SERVICE_FAIL";
         return res;
       }
@@ -102,16 +109,19 @@ protected:
       return true;
     else
     {
-      std::cout << COLOR_ORANGE << "Failure to call ontoloGenius services" << COLOR_OFF << std::endl;
+      if(verbose_)
+        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
       client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + name_, true);
       if(client.call(srv))
       {
-        std::cout << COLOR_GREEN << "Restored ontoloGenius services" << COLOR_OFF << std::endl;
+        if(verbose_)
+          std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
         return true;
       }
       else
       {
-        std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        if(verbose_)
+          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
         return false;
       }
     }
@@ -121,6 +131,7 @@ private:
     std::string name_;
     ros::NodeHandle* n_;
     static size_t cpt;
+    static bool verbose_;
 };
 
 #endif
