@@ -115,6 +115,7 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
     delete onto_;
     onto_ = new Ontology();
     reasoners_.link(onto_);
+    feeder_.link(onto_);
   }
   else if(req.action == "setLang")
     onto_->setLanguage(req.param);
@@ -447,16 +448,16 @@ void RosInterface::periodicReasoning()
   ros::Rate r(100);
   while(ros::ok() && (run_ == true))
   {
-    reasoners_.runPeriodicReasoners();
+    //reasoners_.runPeriodicReasoners();
 
-    std_msgs::String msg;
+    /*std_msgs::String msg;
     std::vector<std::string> notifications = reasoners_.getNotifications();
     for(auto notif : notifications)
     {
       std::cout << notif << std::endl;
       msg.data = notif;
       reasoner_publisher.publish(msg);
-    }
+    }*/
     r.sleep();
   }
 }
