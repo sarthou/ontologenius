@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <unordered_set>
 #include <stdint.h>
 #include <random>
@@ -94,21 +95,16 @@ void OntoGraph<B>::close()
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<B>::mutex_);
 
-  for(size_t i = 0; i < tmp_mothers_.size(); i++)
-    roots_.push_back(tmp_mothers_[i]);
+  roots_.insert(roots_.end(), tmp_mothers_.begin(), tmp_mothers_.end());
 
   tmp_mothers_.clear();
 
-  link();
+  //link();
 
-  this->container_.load(roots_);
-  this->container_.load(branchs_);
+  all_branchs_.insert(all_branchs_.end(), roots_.begin(), roots_.end());
+  all_branchs_.insert(all_branchs_.end(), branchs_.begin(), branchs_.end());
 
-  for(size_t i = 0; i < roots_.size(); i++)
-    all_branchs_.push_back(roots_[i]);
-
-  for(size_t i = 0; i < branchs_.size(); i++)
-    all_branchs_.push_back(branchs_[i]);
+  this->container_.load(all_branchs_);
 }
 
 template <typename B>
@@ -270,7 +266,9 @@ template <typename B>
 void OntoGraph<B>::amIA(B** me, std::vector<B*>& vect, const std::string& value, bool erase)
 {
   if(*me == nullptr)
-    for(size_t i = 0; i < vect.size(); i++)
+  {
+    size_t size = vect.size();
+    for(size_t i = 0; i < size; i++)
     {
       if(vect[i]->value() == value)
       {
@@ -280,6 +278,7 @@ void OntoGraph<B>::amIA(B** me, std::vector<B*>& vect, const std::string& value,
         break;
       }
     }
+  }
 }
 
 template <typename B>
@@ -288,11 +287,21 @@ void OntoGraph<B>::isMyMother(B* me, const std::string& mother, std::vector<B*>&
   if(find)
     return;
 
-  for(size_t i = 0; i < vect.size(); i++)
+  size_t size = vect.size();
+  for(size_t i = 0; i < size; i++)
     if(mother == vect[i]->value())
     {
-      vect[i]->childs_.push_back(me);
-      me->setSteady_mother(vect[i]);
+      bool loop = false;
+      for(B* it : vect[i]->mothers_)
+        if(it == me)
+          loop = true;
+
+      if(loop == false)
+      {
+        vect[i]->childs_.push_back(me);
+        me->setSteady_mother(vect[i]);
+      }
+
       find = true;
       break;
     }

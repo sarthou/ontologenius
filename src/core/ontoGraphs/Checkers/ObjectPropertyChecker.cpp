@@ -18,18 +18,16 @@ void ObjectPropertyChecker::checkDisjoint()
 {
   for(size_t i = 0; i < graph_size; i++)
   {
-    std::unordered_set<std::string> up = property_graph_->getUp(graph_[i]->value());
-    std::unordered_set<std::string> disjoint;
+    std::unordered_set<ObjectPropertyBranch_t*> up;
+    property_graph_->getUpPtr(graph_[i], up);
+    std::unordered_set<ObjectPropertyBranch_t*> disjoint;
 
-    for (std::string it : up)
-    {
-      std::unordered_set<std::string> tmp = property_graph_->getDisjoint(it);
-      disjoint.insert(tmp.begin(), tmp.end());
-    }
+    for(ObjectPropertyBranch_t* it : up)
+      property_graph_->getDisjoint(it, disjoint);
 
-    std::string intersection = findIntersection(up, disjoint);
-    if(intersection != "")
-      print_error("'" + graph_[i]->value() + "' can't be a '" + intersection + "' because of disjonction");
+    ObjectPropertyBranch_t* intersection = findIntersection(up, disjoint);
+    if(intersection != nullptr)
+      print_error("'" + graph_[i]->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
   }
 }
 

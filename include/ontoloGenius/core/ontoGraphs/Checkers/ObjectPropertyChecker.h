@@ -17,6 +17,16 @@ private:
   void checkCharacteristics();
 
   ObjectPropertyGraph* property_graph_;
+
+  ObjectPropertyBranch_t* findIntersection(std::unordered_set<ObjectPropertyBranch_t*>& base, std::unordered_set<ObjectPropertyBranch_t*>& comp)
+  {
+    for (ObjectPropertyBranch_t* it : comp)
+    {
+      if(base.find(it) != base.end())
+        return it;
+    }
+    return nullptr;
+  }
 };
 
 #endif

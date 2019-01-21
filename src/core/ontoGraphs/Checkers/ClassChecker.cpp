@@ -15,19 +15,17 @@ size_t ClassChecker::check()
 
 void ClassChecker::checkDisjoint()
 {
-  for(size_t i = 0; i < graph_size; i++)
+  for(ClassBranch_t* branch : graph_)
   {
-    std::unordered_set<std::string> up = class_graph_->getUp(graph_[i]->value());
-    std::unordered_set<std::string> disjoint;
+    std::unordered_set<ClassBranch_t*> up;
+    class_graph_->getUpPtr(branch, up);
+    std::unordered_set<ClassBranch_t*> disjoint;
 
-    for(const std::string& it : up)
-    {
-      std::unordered_set<std::string> tmp = class_graph_->getDisjoint(it);
-      disjoint.insert(tmp.begin(), tmp.end());
-    }
+    for(ClassBranch_t* it : up)
+      class_graph_->getDisjoint(it, disjoint);
 
-    std::string intersection = findIntersection(up, disjoint);
-    if(intersection != "")
-      print_error("'" + graph_[i]->value() + "' can't be a '" + intersection + "' because of disjonction");
+    ClassBranch_t* intersection = findIntersection(up, disjoint);
+    if(intersection != nullptr)
+      print_error("'" + branch->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
   }
 }

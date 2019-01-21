@@ -289,6 +289,15 @@ std::unordered_set<std::string> ObjectPropertyGraph::getDisjoint(const std::stri
   return res;
 }
 
+void ObjectPropertyGraph::getDisjoint(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+
+  if(branch != nullptr)
+    for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
+      getDownPtr(branch->disjoints_[disjoint_i], res);
+}
+
 std::unordered_set<std::string> ObjectPropertyGraph::getInverse(const std::string& value)
 {
   std::unordered_set<std::string> res;
