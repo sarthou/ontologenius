@@ -27,7 +27,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
 
   //am I a root ?
   if(me->nb_mothers_ == 0)
-    roots_.push_back(me);
+    roots_[value] = me;
   else
   {
     //for all my mothers
@@ -50,12 +50,12 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
         ObjectPropertyBranch_t* my_mother = new struct ObjectPropertyBranch_t(property_vectors.mothers_[mothers_i]);
         my_mother->childs_.push_back(me);
         me->setSteady_mother(my_mother);
-        tmp_mothers_.push_back(my_mother);
+        tmp_mothers_[my_mother->value()] = my_mother;
       }
     }
 
     //but i am also a branch
-    branchs_.push_back(me);
+    branchs_[me->value()] = me;
   }
 
   /**********************
@@ -81,7 +81,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
       ObjectPropertyBranch_t* my_disjoint = new struct ObjectPropertyBranch_t(property_vectors.disjoints_[disjoints_i]);
       me->setSteady_disjoint(my_disjoint);
       my_disjoint->disjoints_.push_back(me);
-      tmp_mothers_.push_back(my_disjoint); //I put my disjoint as tmp_mother
+      tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother
     }
   }
 
@@ -108,7 +108,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
       ObjectPropertyBranch_t* my_inverse = new struct ObjectPropertyBranch_t(property_vectors.inverses_[inverses_i]);
       me->setSteady_inverse(my_inverse);
       my_inverse->inverses_.push_back(me);
-      tmp_mothers_.push_back(my_inverse); //I put my inverse as tmp_mother
+      tmp_mothers_[my_inverse->value()] = my_inverse; //I put my inverse as tmp_mother
     }
   }
 
@@ -134,12 +134,12 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     {
       ObjectVectors_t empty_vectors;
       class_graph_->add(property_vectors.domains_[domains_i], empty_vectors);
-      for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
-        if(property_vectors.domains_[domains_i] == class_graph_->roots_[root_i]->value())
-        {
-          me->setSteady_domain(class_graph_->roots_[root_i]);
-          i_find_my_domain = true;
-        }
+      auto it = class_graph_->roots_.find(property_vectors.domains_[domains_i]);
+      if(it != class_graph_->roots_.end())
+      {
+        me->setSteady_domain(it->second);
+        i_find_my_domain = true;
+      }
     }
   }
 
@@ -165,12 +165,12 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     {
       ObjectVectors_t empty_vectors;
       class_graph_->add(property_vectors.ranges_[ranges_i], empty_vectors);
-      for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
-        if(property_vectors.ranges_[ranges_i] == class_graph_->roots_[root_i]->value())
-        {
-          me->setSteady_range(class_graph_->roots_[root_i]);
-          i_find_my_range = true;
-        }
+      auto it = class_graph_->roots_.find(property_vectors.ranges_[ranges_i]);
+      if(it != class_graph_->roots_.end())
+      {
+        me->setSteady_range(it->second);
+        i_find_my_range = true;
+      }
     }
   }
 
@@ -206,7 +206,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
       if(next == nullptr)
       {
         next = new struct ObjectPropertyBranch_t(property_vectors.chains_[chain_i][i]);
-        tmp_mothers_.push_back(next);
+        tmp_mothers_[next->value()] = next;
       }
 
       if(first == nullptr)
@@ -243,7 +243,7 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
     if(me == nullptr)
     {
       me = new struct ObjectPropertyBranch_t(disjoints[disjoints_i]);
-      tmp_mothers_.push_back(me);
+      tmp_mothers_[me->value()] = me;
     }
 
     //for all my disjoints ...
@@ -268,7 +268,7 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
         {
           ObjectPropertyBranch_t* my_disjoint = new struct ObjectPropertyBranch_t(disjoints[disjoints_j]);
           me->setSteady_disjoint(my_disjoint);
-          tmp_mothers_.push_back(my_disjoint); //I put my disjoint as tmp_mother
+          tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother
         }
       }
     }

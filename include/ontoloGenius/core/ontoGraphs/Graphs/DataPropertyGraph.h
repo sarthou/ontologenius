@@ -55,34 +55,32 @@ public:
 private:
   ClassGraph* class_graph_;
 
-  void isMyDisjoint(DataPropertyBranch_t* me, const std::string& disjoint, std::vector<DataPropertyBranch_t*>& vect, bool& find, bool all = true)
+  void isMyDisjoint(DataPropertyBranch_t* me, const std::string& disjoint, std::map<std::string, DataPropertyBranch_t*>& vect, bool& find, bool all = true)
   {
     if(find)
       return;
 
-    for(size_t i = 0; i < vect.size(); i++)
-      if(disjoint == vect[i]->value())
-      {
-        me->setSteady_disjoint(vect[i]);
-        if(all)
-          vect[i]->disjoints_.push_back(me);
-        find = true;
-        break;
-      }
+    auto it = vect.find(disjoint);
+    if(it != vect.end())
+    {
+      me->setSteady_disjoint(it->second);
+      if(all)
+        it->second->disjoints_.push_back(me);
+      find = true;
+    }
   }
 
-  void isMyDomain(DataPropertyBranch_t* me, const std::string& domain, std::vector<ClassBranch_t*>& vect, bool& find)
+  void isMyDomain(DataPropertyBranch_t* me, const std::string& domain, std::map<std::string, ClassBranch_t*>& vect, bool& find)
   {
     if(find)
       return;
 
-    for(size_t i = 0; i < vect.size(); i++)
-      if(domain == vect[i]->value())
-      {
-        me->setSteady_domain(vect[i]);
-        find = true;
-        break;
-      }
+    auto it = vect.find(domain);
+    if(it != vect.end())
+    {
+      me->setSteady_domain(it->second);
+      find = true;
+    }
   }
 };
 

@@ -65,17 +65,17 @@ void ObjectPropertyDrawer::init()
   std::vector<node_t*> couple;
   if(graph_ != nullptr)
   {
-    for(unsigned long int i = 0; i < graph_->roots_.size(); i++)
+    for(auto it : graph_->roots_)
     {
-      node_t* node = new node_t(graph_->roots_[i]->value(), 0);
+      node_t* node = new node_t(it.second->value(), 0);
       //roots_nodes.push_back(node);
-      node->family = graph_->roots_[i]->family;
-      int family = graph_->roots_[i]->family;
+      node->family = it.second->family;
+      int family = it.second->family;
 
-      for(unsigned long int branch = 0; branch < graph_->roots_[i]->childs_.size(); branch++)
-        family += createNode(graph_->roots_[i]->childs_[branch], node);
+      for(unsigned long int branch = 0; branch < it.second->childs_.size(); branch++)
+        family += createNode(it.second->childs_[branch], node);
 
-      family = family / (graph_->roots_[i]->childs_.size() + 1);
+      family = family / (it.second->childs_.size() + 1);
       if(family == node->family)
         single.push_back(node);
       else

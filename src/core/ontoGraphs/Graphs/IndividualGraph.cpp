@@ -54,35 +54,35 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     bool i_find_my_is_a_ = false;
 
     //is a root my class ?
-    for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
-      if(individual_vector.is_a_[is_a_i] == class_graph_->roots_[root_i]->value())
-      {
-        me->setSteady_is_a(class_graph_->roots_[root_i]);
-        class_graph_->roots_[root_i]->setSteady_individual_child(me);
-        i_find_my_is_a_ = true;
-      }
+    auto it = class_graph_->roots_.find(individual_vector.is_a_[is_a_i]);
+    if(it != class_graph_->roots_.end())
+    {
+      me->setSteady_is_a(it->second);
+      it->second->setSteady_individual_child(me);
+      i_find_my_is_a_ = true;
+    }
 
     //is a branch my class ?
-    for(size_t branch_i = 0; branch_i < class_graph_->branchs_.size(); branch_i++)
-      if(individual_vector.is_a_[is_a_i] == class_graph_->branchs_[branch_i]->value())
-      {
-        me->setSteady_is_a(class_graph_->branchs_[branch_i]);
-        class_graph_->branchs_[branch_i]->setSteady_individual_child(me);
-        i_find_my_is_a_ = true;
-      }
+    it = class_graph_->branchs_.find(individual_vector.is_a_[is_a_i]);
+    if(it != class_graph_->branchs_.end())
+    {
+      me->setSteady_is_a(it->second);
+      it->second->setSteady_individual_child(me);
+      i_find_my_is_a_ = true;
+    }
 
     //I create my class
     if(!i_find_my_is_a_)
     {
       ObjectVectors_t empty_vectors;
       class_graph_->add(individual_vector.is_a_[is_a_i], empty_vectors);
-      for(size_t root_i = 0; root_i < class_graph_->roots_.size(); root_i++)
-        if(individual_vector.is_a_[is_a_i] == class_graph_->roots_[root_i]->value())
-        {
-          me->setSteady_is_a(class_graph_->roots_[root_i]);
-          class_graph_->roots_[root_i]->setSteady_individual_child(me);
-          i_find_my_is_a_ = true;
-        }
+      it = class_graph_->roots_.find(individual_vector.is_a_[is_a_i]);
+      if(it != class_graph_->roots_.end())
+      {
+        me->setSteady_is_a(it->second);
+        it->second->setSteady_individual_child(me);
+        i_find_my_is_a_ = true;
+      }
     }
   }
 
@@ -214,42 +214,44 @@ void IndividualGraph::addObjectPropertyName(IndividualBranch_t* me, std::string&
   bool i_find_my_properties = false;
 
   //is a root my properties ?
-  for(size_t root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
-    if(name == object_property_graph_->roots_[root_i]->value())
-    {
-      if(deduced == false)
-        me->setSteady_object_properties_name(object_property_graph_->roots_[root_i]);
-      else
-        me->object_properties_name_.push_back(object_property_graph_->roots_[root_i]);
-      i_find_my_properties = true;
-    }
+  auto it = object_property_graph_->roots_.find(name);
+  if(it != object_property_graph_->roots_.end())
+  {
+    if(deduced == false)
+      me->setSteady_object_properties_name(it->second);
+    else
+      me->object_properties_name_.push_back(it->second);
+    i_find_my_properties = true;
+  }
 
   //is a branch my properties ?
   if(!i_find_my_properties)
-    for(size_t branch_i = 0; branch_i < object_property_graph_->branchs_.size(); branch_i++)
-      if(name == object_property_graph_->branchs_[branch_i]->value())
-      {
-        if(deduced == false)
-          me->setSteady_object_properties_name(object_property_graph_->branchs_[branch_i]);
-        else
-          me->object_properties_name_.push_back(object_property_graph_->branchs_[branch_i]);
-        i_find_my_properties = true;
-      }
+  {
+    it = object_property_graph_->branchs_.find(name);
+    if(it != object_property_graph_->branchs_.end())
+    {
+      if(deduced == false)
+        me->setSteady_object_properties_name(it->second);
+      else
+        me->object_properties_name_.push_back(it->second);
+      i_find_my_properties = true;
+    }
+  }
 
   //I create my properties
   if(!i_find_my_properties)
   {
     ObjectPropertyVectors_t empty_vectors;
     object_property_graph_->add(name, empty_vectors);
-    for(size_t root_i = 0; root_i < object_property_graph_->roots_.size(); root_i++)
-      if(name == object_property_graph_->roots_[root_i]->value())
-      {
-        if(deduced == false)
-          me->setSteady_object_properties_name(object_property_graph_->roots_[root_i]);
-        else
-          me->object_properties_name_.push_back(object_property_graph_->roots_[root_i]);
-        i_find_my_properties = true;
-      }
+    it = object_property_graph_->roots_.find(name);
+    if(it != object_property_graph_->roots_.end())
+    {
+      if(deduced == false)
+        me->setSteady_object_properties_name(it->second);
+      else
+        me->object_properties_name_.push_back(it->second);
+      i_find_my_properties = true;
+    }
   }
 }
 
@@ -285,42 +287,44 @@ void IndividualGraph::addDataPropertyName(IndividualBranch_t* me, std::string& n
   bool i_find_my_properties = false;
 
   //is a root my properties ?
-  for(size_t root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
-    if(name == data_property_graph_->roots_[root_i]->value())
-    {
-      if(deduced == false)
-        me->setSteady_data_properties_name(data_property_graph_->roots_[root_i]);
-      else
-        me->data_properties_name_.push_back(data_property_graph_->roots_[root_i]);
-      i_find_my_properties = true;
-    }
+  auto it = data_property_graph_->roots_.find(name);
+  if(it != data_property_graph_->roots_.end())
+  {
+    if(deduced == false)
+      me->setSteady_data_properties_name(it->second);
+    else
+      me->data_properties_name_.push_back(it->second);
+    i_find_my_properties = true;
+  }
 
   //is a branch my properties ?
   if(!i_find_my_properties)
-    for(size_t branch_i = 0; branch_i < data_property_graph_->branchs_.size(); branch_i++)
-      if(name == data_property_graph_->branchs_[branch_i]->value())
-      {
-        if(deduced == false)
-          me->setSteady_data_properties_name(data_property_graph_->branchs_[branch_i]);
-        else
-          me->data_properties_name_.push_back(data_property_graph_->branchs_[branch_i]);
-        i_find_my_properties = true;
-      }
+  {
+    it = data_property_graph_->branchs_.find(name);
+    if(it != data_property_graph_->branchs_.end())
+    {
+      if(deduced == false)
+        me->setSteady_data_properties_name(it->second);
+      else
+        me->data_properties_name_.push_back(it->second);
+      i_find_my_properties = true;
+    }
+  }
 
   //I create my properties
   if(!i_find_my_properties)
   {
     DataPropertyVectors_t empty_vectors;
     data_property_graph_->add(name, empty_vectors);
-    for(size_t root_i = 0; root_i < data_property_graph_->roots_.size(); root_i++)
-      if(name == data_property_graph_->roots_[root_i]->value())
-      {
-        if(deduced == false)
-          me->setSteady_data_properties_name(data_property_graph_->roots_[root_i]);
-        else
-          me->data_properties_name_.push_back(data_property_graph_->roots_[root_i]);
-        i_find_my_properties = true;
-      }
+    it = data_property_graph_->roots_.find(name);
+    if(it != data_property_graph_->roots_.end())
+    {
+      if(deduced == false)
+        me->setSteady_data_properties_name(it->second);
+      else
+        me->data_properties_name_.push_back(it->second);
+      i_find_my_properties = true;
+    }
   }
 }
 
@@ -1057,7 +1061,6 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
     class_branch->steady_.data_properties_data_ = indiv->steady_.data_properties_data_;
 
     class_graph_->container_.insert(class_branch);
-    class_graph_->roots_.push_back(class_branch);
     class_graph_->all_branchs_.push_back(class_branch);
     redirectDeleteIndividual(indiv, class_branch);
 
@@ -1251,7 +1254,6 @@ void IndividualGraph::addInheritage(std::string& indiv, std::string& class_inher
       {
         inherited = new ClassBranch_t(class_inherited);
         class_graph_->container_.insert(inherited);
-        class_graph_->roots_.push_back(inherited);
         class_graph_->all_branchs_.push_back(inherited);
       }
     }
@@ -1335,7 +1337,6 @@ bool IndividualGraph::addProperty(std::string& indiv_from, std::string& property
       std::lock_guard<std::shared_timed_mutex> lock_property(object_property_graph_->mutex_);
       branch_prop = new ObjectPropertyBranch_t(property);
       object_property_graph_->container_.insert(branch_prop);
-      object_property_graph_->roots_.push_back(branch_prop);
       object_property_graph_->all_branchs_.push_back(branch_prop);
     }
 
@@ -1369,7 +1370,6 @@ bool IndividualGraph::addProperty(std::string& indiv_from, std::string& property
       std::lock_guard<std::shared_timed_mutex> lock_property(data_property_graph_->mutex_);
       branch_prop = new DataPropertyBranch_t(property);
       data_property_graph_->container_.insert(branch_prop);
-      data_property_graph_->roots_.push_back(branch_prop);
       data_property_graph_->all_branchs_.push_back(branch_prop);
     }
 
@@ -1410,7 +1410,6 @@ bool IndividualGraph::addPropertyInvert(std::string& indiv_from, std::string& pr
       std::lock_guard<std::shared_timed_mutex> lock_property(object_property_graph_->mutex_);
       branch_prop = new ObjectPropertyBranch_t(property);
       object_property_graph_->container_.insert(branch_prop);
-      object_property_graph_->roots_.push_back(branch_prop);
       object_property_graph_->all_branchs_.push_back(branch_prop);
     }
 

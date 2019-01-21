@@ -60,77 +60,70 @@ public:
 private:
   ClassGraph* class_graph_;
 
-  void isMyDisjoint(ObjectPropertyBranch_t* me, std::string& disjoint, std::vector<ObjectPropertyBranch_t*>& vect, bool& find, bool all = true)
+  void isMyDisjoint(ObjectPropertyBranch_t* me, std::string& disjoint, std::map<std::string, ObjectPropertyBranch_t*>& vect, bool& find, bool all = true)
   {
     if(find)
       return;
 
-    for(size_t i = 0; i < vect.size(); i++)
-      if(disjoint == vect[i]->value())
-      {
-        me->setSteady_disjoint(vect[i]);
-        if(all)
-          vect[i]->disjoints_.push_back(me);
-        find = true;
-        break;
-      }
+    auto it = vect.find(disjoint);
+    if(it != vect.end())
+    {
+      me->setSteady_disjoint(it->second);
+      if(all)
+        it->second->disjoints_.push_back(me);
+      find = true;
+    }
   }
 
-  void isMyInverse(ObjectPropertyBranch_t* me, std::string& inverse, std::vector<ObjectPropertyBranch_t*>& vect, bool& find, bool all = true)
+  void isMyInverse(ObjectPropertyBranch_t* me, std::string& inverse, std::map<std::string, ObjectPropertyBranch_t*>& vect, bool& find, bool all = true)
   {
     if(find)
       return;
 
-    for(size_t i = 0; i < vect.size(); i++)
-      if(inverse == vect[i]->value())
-      {
-        me->setSteady_inverse(vect[i]);
-        if(all)
-          vect[i]->inverses_.push_back(me);
-        find = true;
-        break;
-      }
+    auto it = vect.find(inverse);
+    if(it != vect.end())
+    {
+      me->setSteady_inverse(it->second);
+      if(all)
+        it->second->inverses_.push_back(me);
+      find = true;
+    }
   }
 
-  void isMyDomain(ObjectPropertyBranch_t* me, std::string& domain, std::vector<ClassBranch_t*>& vect, bool& find)
+  void isMyDomain(ObjectPropertyBranch_t* me, std::string& domain, std::map<std::string, ClassBranch_t*>& vect, bool& find)
   {
     if(find)
       return;
 
-    for(size_t i = 0; i < vect.size(); i++)
-      if(domain == vect[i]->value())
-      {
-        me->setSteady_domain(vect[i]);
-        find = true;
-        break;
-      }
+    auto it = vect.find(domain);
+    if(it != vect.end())
+    {
+      me->setSteady_domain(it->second);
+      find = true;
+    }
   }
 
-  void isMyRange(ObjectPropertyBranch_t* me, std::string& range, std::vector<ClassBranch_t*>& vect, bool& find)
+  void isMyRange(ObjectPropertyBranch_t* me, std::string& range, std::map<std::string, ClassBranch_t*>& vect, bool& find)
   {
     if(find)
       return;
 
-    for(size_t i = 0; i < vect.size(); i++)
-      if(range == vect[i]->value())
-      {
-        me->setSteady_range(vect[i]);
-        find = true;
-        break;
-      }
+    auto it = vect.find(range);
+    if(it != vect.end())
+    {
+      me->setSteady_range(it->second);
+      find = true;
+    }
   }
 
-  void getNextChainLink(ObjectPropertyBranch_t** next, std::string& next_link, std::vector<ObjectPropertyBranch_t*>& vect)
+  void getNextChainLink(ObjectPropertyBranch_t** next, std::string& next_link, std::map<std::string, ObjectPropertyBranch_t*>& vect)
   {
     if(*next == nullptr)
-      for(size_t i = 0; i < vect.size(); i++)
-      {
-        if(vect[i]->value() == next_link)
-        {
-          *next = vect[i];
-          break;
-        }
-      }
+    {
+      auto it = vect.find(next_link);
+      if(it != vect.end())
+        *next = it->second;
+    }
   }
 };
 

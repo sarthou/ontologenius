@@ -48,46 +48,40 @@ public:
 
   std::vector<B*> get()
   {
-    std::vector<B*> out = branchs_;
-    out.insert( out.end(), roots_.begin(), roots_.end() );
-    return out;
+    return all_branchs_;
   }
 
   std::vector<B*> getSafe()
   {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
 
-    std::vector<B*> out = branchs_;
-    out.insert( out.end(), roots_.begin(), roots_.end() );
-    return out;
+    return all_branchs_;
   }
 
 protected:
-  std::vector<B*> branchs_;
-  std::vector<B*> roots_;
+  std::map<std::string, B*> branchs_;
+  std::map<std::string, B*> roots_;
   std::vector<B*> all_branchs_;
 
-  std::vector<B*> tmp_mothers_;
+  std::map<std::string, B*> tmp_mothers_;
 
   int depth_;
 
   void link();
   void add_family(B* branch, uint8_t family);
-  void amIA(B** me, std::vector<B*>& vect, const std::string& value, bool erase = true);
-  void isMyMother(B* me, const std::string& mother, std::vector<B*>& vect, bool& find);
+  void amIA(B** me, std::map<std::string, B*>& vect, const std::string& value, bool erase = true);
+  void isMyMother(B* me, const std::string& mother, std::map<std::string, B*>& vect, bool& find);
 };
 
 template <typename B>
 OntoGraph<B>::~OntoGraph()
 {
-  for(size_t i = 0; i < branchs_.size(); i++)
-    delete branchs_[i];
-
-  for(size_t i = 0; i < roots_.size(); i++)
-    delete roots_[i];
+  for(size_t i = 0; i < all_branchs_.size(); i++)
+    delete all_branchs_[i];
 
   branchs_.clear();
   roots_.clear();
+  all_branchs_.clear();
 }
 
 template <typename B>
@@ -95,14 +89,16 @@ void OntoGraph<B>::close()
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<B>::mutex_);
 
-  roots_.insert(roots_.end(), tmp_mothers_.begin(), tmp_mothers_.end());
+  roots_.insert(tmp_mothers_.begin(), tmp_mothers_.end());
 
   tmp_mothers_.clear();
 
   //link();
 
-  all_branchs_.insert(all_branchs_.end(), roots_.begin(), roots_.end());
-  all_branchs_.insert(all_branchs_.end(), branchs_.begin(), branchs_.end());
+  for(auto& it : roots_)
+    all_branchs_.push_back(it.second);
+  for(auto& it : branchs_)
+    all_branchs_.push_back(it.second);
 
   this->container_.load(all_branchs_);
 }
@@ -263,48 +259,42 @@ void OntoGraph<B>::add_family(B* branch, uint8_t family)
 }
 
 template <typename B>
-void OntoGraph<B>::amIA(B** me, std::vector<B*>& vect, const std::string& value, bool erase)
+void OntoGraph<B>::amIA(B** me, std::map<std::string, B*>& vect, const std::string& value, bool erase)
 {
   if(*me == nullptr)
   {
-    size_t size = vect.size();
-    for(size_t i = 0; i < size; i++)
+    auto it = vect.find(value);
+    if(it != vect.end())
     {
-      if(vect[i]->value() == value)
-      {
-        *me = vect[i];
-        if(erase)
-          vect.erase(vect.begin() + i);
-        break;
-      }
+      *me = it->second;
+      if(erase)
+        vect.erase(it);
     }
   }
 }
 
 template <typename B>
-void OntoGraph<B>::isMyMother(B* me, const std::string& mother, std::vector<B*>& vect, bool& find)
+void OntoGraph<B>::isMyMother(B* me, const std::string& mother, std::map<std::string, B*>& vect, bool& find)
 {
   if(find)
     return;
 
-  size_t size = vect.size();
-  for(size_t i = 0; i < size; i++)
-    if(mother == vect[i]->value())
+  auto it = vect.find(mother);
+  if(it != vect.end())
+  {
+    bool loop = false;
+    for(B* mothers : it->second->mothers_)
+      if(mothers == me)
+        loop = true;
+
+    if(loop == false)
     {
-      bool loop = false;
-      for(B* it : vect[i]->mothers_)
-        if(it == me)
-          loop = true;
-
-      if(loop == false)
-      {
-        vect[i]->childs_.push_back(me);
-        me->setSteady_mother(vect[i]);
-      }
-
-      find = true;
-      break;
+      it->second->childs_.push_back(me);
+      me->setSteady_mother(it->second);
     }
+
+    find = true;
+  }
 }
 
 template <typename B>

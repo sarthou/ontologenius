@@ -10,6 +10,11 @@
 
 #include <iostream>
 
+#include <chrono>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+using namespace std::chrono;
+
 Ontology::Ontology(std::string language) : class_graph_(&individual_graph_, &object_property_graph_, &data_property_graph_),
                                            object_property_graph_(&class_graph_),
                                            data_property_graph_(&class_graph_),
@@ -36,18 +41,33 @@ int Ontology::close()
   if(is_init_ == true)
     return 0;
 
+  high_resolution_clock::time_point t1 = high_resolution_clock::now();
   class_graph_.close();
   object_property_graph_.close();
   data_property_graph_.close();
+
+  high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+  std::cout << "graphs closed" << std::endl;
 
   ClassChecker class_checker(&class_graph_);
   ObjectPropertyChecker object_property_checker(&object_property_graph_);
   DataPropertyChecker data_property_checker(&data_property_graph_);
   IndividualChecker individual_checker(&individual_graph_);
 
+  high_resolution_clock::time_point t3 = high_resolution_clock::now();
+
+  std::cout << "graphs checked" << std::endl;
+
   size_t err = class_checker.check();
+  high_resolution_clock::time_point t4 = high_resolution_clock::now();
+  std::cout << " - classes checked" << std::endl;
   err += object_property_checker.check();
+  high_resolution_clock::time_point t5 = high_resolution_clock::now();
+  std::cout << " - object prop checked" << std::endl;
   err += data_property_checker.check();
+  high_resolution_clock::time_point t6 = high_resolution_clock::now();
+  std::cout << " - data prop checked" << std::endl;
 
   if(err == 0)
   {
@@ -80,6 +100,18 @@ int Ontology::close()
   data_property_checker.printStatus();
   individual_checker.printStatus();
   std::cout << "**************************************" << std::endl;
+
+
+  duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+  std::cout << "  " << time_span.count() << std::endl;
+  time_span = duration_cast<duration<double>>(t3 - t2);
+  std::cout << "  " << time_span.count() << std::endl;
+  time_span = duration_cast<duration<double>>(t4 - t3);
+  std::cout << "  " << time_span.count() << std::endl;
+  time_span = duration_cast<duration<double>>(t5 - t4);
+  std::cout << "  " << time_span.count() << std::endl;
+  time_span = duration_cast<duration<double>>(t6 - t5);
+  std::cout << "  " << time_span.count() << std::endl;
 
   if(err)
     return -1;

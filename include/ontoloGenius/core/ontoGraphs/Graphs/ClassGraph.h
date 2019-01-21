@@ -102,38 +102,36 @@ private:
   void getOn(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res, uint32_t current_depth, int& found_depth);
   void getWith(ClassBranch_t* first_class, const std::string& second_class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step);
 
-  void isMyDisjoint(ClassBranch_t* me, const std::string& disjoint, std::vector<ClassBranch_t*>& vect, bool& find, bool all = true)
+  void isMyDisjoint(ClassBranch_t* me, const std::string& disjoint, std::map<std::string, ClassBranch_t*>& vect, bool& find, bool all = true)
   {
     if(find)
       return;
 
-    for(size_t i = 0; i < vect.size(); i++)
-      if(disjoint == vect[i]->value())
-      {
-        me->setSteady_disjoint(vect[i]);
-        if(all)
-          vect[i]->disjoints_.push_back(me);
-        find = true;
-        break;
-      }
+    auto it = vect.find(disjoint);
+    if(it != vect.end())
+    {
+      me->setSteady_disjoint(it->second);
+      if(all)
+        it->second->disjoints_.push_back(me);
+      find = true;
+    }
   }
 
-  void isMyObjectPropertiesOn(ClassBranch_t* me, const std::string& propertyOn, std::vector<ClassBranch_t*>& vect, bool& find, bool deduced)
+  void isMyObjectPropertiesOn(ClassBranch_t* me, const std::string& propertyOn, std::map<std::string, ClassBranch_t*>& vect, bool& find, bool deduced)
   {
     if(find)
       return;
 
-    for(size_t i = 0; i < vect.size(); i++)
-      if(propertyOn == vect[i]->value())
-      {
-        if(deduced == false)
-          me->setSteady_object_properties_on(vect[i]);
-        else
-          me->object_properties_on_.push_back(vect[i]);
+    auto it = vect.find(propertyOn);
+    if(it != vect.end())
+    {
+      if(deduced == false)
+        me->setSteady_object_properties_on(it->second);
+      else
+        me->object_properties_on_.push_back(it->second);
 
-        find = true;
-        break;
-      }
+      find = true;
+    }
   }
 };
 
