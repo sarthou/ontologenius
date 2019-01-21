@@ -11,7 +11,7 @@ public:
   ~DataPropertyChecker() {}
 
   size_t check();
-  void printStatus(){ValidityChecker<DataPropertyBranch_t>::printStatus(std::string("data property"), std::string("data properties"), graph_.size());}
+  void printStatus(){ValidityChecker<DataPropertyBranch_t>::printStatus(std::string("data property"), std::string("data properties"), graph_vect_.size());}
 private:
   void checkDisjoint();
 

@@ -95,10 +95,8 @@ int OntologyReader::read(TiXmlElement* rdf, std::string& name)
     }
 
     std::cout << "├── Class" << std::endl;
-    /*for(TiXmlElement* elem : elem_classes)
-      readClass(elem);*/
-    for(size_t i = 0 ; i < elem_classes.size() / 8; i++)
-      readClass(elem_classes[i]);
+    for(TiXmlElement* elem : elem_classes)
+      readClass(elem);
     std::cout << "├── Description" << std::endl;
     for(TiXmlElement* elem : elem_descriptions)
       readDescription(elem);

@@ -4,7 +4,10 @@
 size_t DataPropertyChecker::check()
 {
   std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
-  graph_size = graph_.size();
+  graph_size = graph_vect_.size();
+  
+  std::unordered_set<std::string> loops_errors = checkLoops();
+
   checkDisjoint();
 
   is_analysed = true;
@@ -17,7 +20,7 @@ void DataPropertyChecker::checkDisjoint()
 {
   for(size_t i = 0; i < graph_size; i++)
   {
-    std::unordered_set<std::string> up = property_graph_->getUp(graph_[i]->value());
+    std::unordered_set<std::string> up = property_graph_->getUp(graph_vect_[i]->value());
     std::unordered_set<std::string> disjoint;
 
     for (std::string it : up)
@@ -28,6 +31,6 @@ void DataPropertyChecker::checkDisjoint()
 
     std::string intersection = findIntersection(up, disjoint);
     if(intersection != "")
-      print_error("'" + graph_[i]->value() + "' can't be a '" + intersection + "' because of disjonction");
+      print_error("'" + graph_vect_[i]->value() + "' can't be a '" + intersection + "' because of disjonction");
   }
 }

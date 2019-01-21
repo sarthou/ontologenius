@@ -306,7 +306,8 @@ void OntoGraph<B>::getDown(B* branch, std::unordered_set<std::string>& res, int 
     size_t size = branch->childs_.size();
     current_depth++;
     for(size_t i = 0; i < size; i++)
-      getDown(branch->childs_[i], res, depth, current_depth);
+      if(res.find(branch->childs_[i]->value()) == res.end())
+        getDown(branch->childs_[i], res, depth, current_depth);
   }
 
   res.insert(branch->value());
@@ -321,7 +322,8 @@ void OntoGraph<B>::getUp(B* branch, std::unordered_set<std::string>& res, int de
     size_t size = branch->mothers_.size();
     current_depth++;
     for(size_t i = 0; i < size; i++)
-      getUp(branch->mothers_[i], res, depth, current_depth);
+      if(res.find(branch->mothers_[i]->value()) == res.end())
+        getUp(branch->mothers_[i], res, depth, current_depth);
   }
 
   res.insert(branch->value());
@@ -376,7 +378,8 @@ void OntoGraph<B>::getDownPtr(B* branch, std::unordered_set<B*>& res, int depth,
 
     size_t size = branch->childs_.size();
     for(size_t i = 0; i < size; i++)
-      getDownPtr(branch->childs_[i], res, depth, current_depth);
+      if(res.find(branch->childs_[i]) == res.end())
+        getDownPtr(branch->childs_[i], res, depth, current_depth);
   }
 }
 
@@ -399,7 +402,8 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res, int depth, u
 
     size_t size = branch->mothers_.size();
     for(size_t i = 0; i < size; i++)
-      getUpPtr(branch->mothers_[i], res, depth, current_depth);
+      if(res.find(branch->mothers_[i]) == res.end())
+        getUpPtr(branch->mothers_[i], res, depth, current_depth);
   }
 
 }

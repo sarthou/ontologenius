@@ -15,8 +15,8 @@ class ValidityChecker
 public:
   ValidityChecker(Graph<B>* graph)
   {
-    graph_ = graph->get();
-    graph_size = graph_.size();
+    graph_vect_ = graph->get();
+    graph_size = graph_vect_.size();
     nb_error_ = 0;
     is_analysed = false;
   }
@@ -25,7 +25,7 @@ public:
   virtual size_t check() = 0;
 
 protected:
-  std::vector<B*> graph_;
+  std::vector<B*> graph_vect_;
   bool is_analysed;
   size_t graph_size;
 
@@ -70,6 +70,15 @@ protected:
     }
     return res;
   }
+
+  std::unordered_set<std::string> checkLoops()
+  {
+    std::unordered_set<std::string> errors;
+
+    return errors;
+  }
+
+
 
   size_t getErrors() {return nb_error_; }
 

@@ -4,7 +4,10 @@
 size_t ObjectPropertyChecker::check()
 {
   std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
-  graph_size = graph_.size();
+  graph_size = graph_vect_.size();
+
+  std::unordered_set<std::string> loops_errors = checkLoops();
+  
   checkDisjoint();
   checkCharacteristics();
 
@@ -19,7 +22,7 @@ void ObjectPropertyChecker::checkDisjoint()
   for(size_t i = 0; i < graph_size; i++)
   {
     std::unordered_set<ObjectPropertyBranch_t*> up;
-    property_graph_->getUpPtr(graph_[i], up);
+    property_graph_->getUpPtr(graph_vect_[i], up);
     std::unordered_set<ObjectPropertyBranch_t*> disjoint;
 
     for(ObjectPropertyBranch_t* it : up)
@@ -27,7 +30,7 @@ void ObjectPropertyChecker::checkDisjoint()
 
     ObjectPropertyBranch_t* intersection = findIntersection(up, disjoint);
     if(intersection != nullptr)
-      print_error("'" + graph_[i]->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
+      print_error("'" + graph_vect_[i]->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
   }
 }
 
@@ -35,12 +38,12 @@ void ObjectPropertyChecker::checkCharacteristics()
 {
   for(size_t i = 0; i < graph_size; i++)
   {
-    Properties_t properties = graph_[i]->properties_;
+    Properties_t properties = graph_vect_[i]->properties_;
 
     if(properties.symetric_property_ && properties.antisymetric_property_)
-      print_error("'" + graph_[i]->value() + "' can't be a 'symetric' and 'antisymetric'");
+      print_error("'" + graph_vect_[i]->value() + "' can't be a 'symetric' and 'antisymetric'");
 
     if(properties.reflexive_property_ && properties.irreflexive_property_)
-      print_error("'" + graph_[i]->value() + "' can't be a 'reflexive' and 'irreflexive'");
+      print_error("'" + graph_vect_[i]->value() + "' can't be a 'reflexive' and 'irreflexive'");
   }
 }
