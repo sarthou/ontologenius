@@ -61,24 +61,16 @@ protected:
   std::string findIntersection(std::unordered_set<std::string>& base, std::unordered_set<std::string>& comp)
   {
     std::string res = "";
-    std::unordered_set<std::string>::iterator it;
-    for (it = comp.begin(); it != comp.end(); it++)
+    for(auto it : comp)
     {
-      std::unordered_set<std::string>::iterator find = base.find(*it);
-      if(find != base.end())
-        res = *it;
+      if(base.find(it) != base.end())
+      {
+        res = it;
+        break;
+      }
     }
     return res;
   }
-
-  std::unordered_set<std::string> checkLoops()
-  {
-    std::unordered_set<std::string> errors;
-
-    return errors;
-  }
-
-
 
   size_t getErrors() {return nb_error_; }
 

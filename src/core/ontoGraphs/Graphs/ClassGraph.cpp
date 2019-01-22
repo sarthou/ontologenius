@@ -368,11 +368,8 @@ std::unordered_set<std::string> ClassGraph::getDisjoint(const std::string& value
 
 void ClassGraph::getDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res)
 {
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-
-  if(branch != nullptr)
-    for(size_t disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
-      getDownPtr(branch->disjoints_[disjoint_i], res);
+  for(ClassBranch_t* it : branch->disjoints_)
+    getDownPtr(it, res);
 }
 
 std::unordered_set<std::string> ClassGraph::select(std::unordered_set<std::string>& on, const std::string& class_selector)

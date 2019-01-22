@@ -42,9 +42,11 @@ public:
   void getUpIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
 
   std::unordered_set<B*> getDownPtrSafe(B* branch, int depth = -1);
-  void getDownPtr(B* branch, std::unordered_set<B*>& res, int depth = -1, unsigned int current_depth = 0);
+  void getDownPtr(B* branch, std::unordered_set<B*>& res, int depth, unsigned int current_depth = 0);
+  inline void getDownPtr(B* branch, std::unordered_set<B*>& res);
   std::unordered_set<B*> getUpPtrSafe(B* branch, int depth = -1);
-  void getUpPtr(B* branch, std::unordered_set<B*>& res, int depth = -1, unsigned int current_depth = 0);
+  void getUpPtr(B* branch, std::unordered_set<B*>& res, int depth, unsigned int current_depth = 0);
+  inline void getUpPtr(B* branch, std::unordered_set<B*>& res);
 
   std::vector<B*> get()
   {
@@ -376,11 +378,20 @@ void OntoGraph<B>::getDownPtr(B* branch, std::unordered_set<B*>& res, int depth,
     current_depth++;
     res.insert(branch);
 
-    size_t size = branch->childs_.size();
-    for(size_t i = 0; i < size; i++)
-      if(res.find(branch->childs_[i]) == res.end())
-        getDownPtr(branch->childs_[i], res, depth, current_depth);
+    for(B* it : branch->childs_)
+      if(res.find(it) == res.end())
+        getDownPtr(it, res, depth, current_depth);
   }
+}
+
+template <typename B>
+void OntoGraph<B>::getDownPtr(B* branch, std::unordered_set<B*>& res)
+{
+  res.insert(branch);
+
+  for(B* it : branch->childs_)
+    if(res.find(it) == res.end())
+      getDownPtr(it, res);
 }
 
 template <typename B>
@@ -406,6 +417,16 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res, int depth, u
         getUpPtr(branch->mothers_[i], res, depth, current_depth);
   }
 
+}
+
+template <typename B>
+void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res)
+{
+  res.insert(branch);
+
+  for(B* it : branch->mothers_)
+    if(res.find(it) == res.end())
+      getUpPtr(it, res);
 }
 
 template <typename D>

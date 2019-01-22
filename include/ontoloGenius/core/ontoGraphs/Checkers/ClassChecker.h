@@ -18,7 +18,7 @@ private:
 
   ClassGraph* class_graph_;
 
-  ClassBranch_t* findIntersection(std::unordered_set<ClassBranch_t*>& base, std::unordered_set<ClassBranch_t*>& comp)
+  inline ClassBranch_t* findIntersection(std::unordered_set<ClassBranch_t*>& base, std::unordered_set<ClassBranch_t*>& comp)
   {
     for (ClassBranch_t* it : comp)
     {

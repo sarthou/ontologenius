@@ -6,8 +6,6 @@ size_t ObjectPropertyChecker::check()
   std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
   graph_size = graph_vect_.size();
 
-  std::unordered_set<std::string> loops_errors = checkLoops();
-  
   checkDisjoint();
   checkCharacteristics();
 
