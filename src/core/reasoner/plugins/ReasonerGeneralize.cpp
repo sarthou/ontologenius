@@ -10,9 +10,13 @@ ReasonerGeneralize::ReasonerGeneralize()
 
 void ReasonerGeneralize::periodicReason()
 {
-  std::vector<ClassBranch_t*> classes = ontology_->class_graph_.get();
+  std::vector<ClassBranch_t*> classes = ontology_->class_graph_.getSafe();
+
   if(classes.size() > 0)
   {
+    if(current_id_ >= classes.size())
+      current_id_ = 0;
+      
     size_t first_id = current_id_;
     for(size_t i = 0; i < class_per_period_; i++)
     {
@@ -20,7 +24,6 @@ void ReasonerGeneralize::periodicReason()
       down_set.erase(classes[current_id_]);
 
       std::unordered_set<IndividualBranch_t*> indiv_down_set = ontology_->class_graph_.getDownIndividualPtrSafe(classes[current_id_]);
-
       std::lock_guard<std::shared_timed_mutex> lock_indiv(ontology_->individual_graph_.mutex_);
       std::lock_guard<std::shared_timed_mutex> lock(ontology_->class_graph_.mutex_);
 
