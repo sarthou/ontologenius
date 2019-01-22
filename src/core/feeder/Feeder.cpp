@@ -27,20 +27,15 @@ bool Feeder::run()
     }
     else if(feed.on_ != "")
     {
-      if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
-        modifyDataProperty(feed);
-      else if(onto_->data_property_graph_.findBranch(feed.on_) != nullptr)
-        modifyDataPropertyInvert(feed);
-      else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
-        modifyObjectProperty(feed);
-      else if(onto_->object_property_graph_.findBranch(feed.on_) != nullptr)
-        modifyObjectPropertyInvert(feed);
-      else if((feed.prop_ == "+") || (feed.prop_ == "isA"))
-        classIndividualIsA(feed);
+      if((feed.prop_ == "+") || (feed.prop_ == "isA"))
+        addInheritage(feed);
       else if(feed.prop_[0] == '@')
         classIndividualLangage(feed);
       else
+      {
+        std::cout << "applyProperty" << std::endl;
         applyProperty(feed);
+      }
     }
     else
       notifications_.push_back("[FAIL][not enough arguments]" + current_str_feed_);
@@ -71,7 +66,21 @@ void Feeder::addDelIndiv(action_t& action, std::string& name)
   }
 }
 
-void Feeder::modifyDataProperty(feed_t& feed)
+void Feeder::addInheritage(feed_t& feed)
+{
+  if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
+    modifyDataPropertyInheritance(feed);
+  else if(onto_->data_property_graph_.findBranch(feed.on_) != nullptr)
+    modifyDataPropertyInheritanceInvert(feed);
+  else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
+    modifyObjectPropertyInheritance(feed);
+  else if(onto_->object_property_graph_.findBranch(feed.on_) != nullptr)
+    modifyObjectPropertyInheritanceInvert(feed);
+  else 
+    classIndividualIsA(feed);
+}
+
+void Feeder::modifyDataPropertyInheritance(feed_t& feed)
 {
   DataPropertyBranch_t* tmp = onto_->data_property_graph_.findBranch(feed.from_);
   if(feed.action_ == action_add)
@@ -80,7 +89,7 @@ void Feeder::modifyDataProperty(feed_t& feed)
     onto_->data_property_graph_.remove(tmp, feed.prop_, feed.on_);
 }
 
-void Feeder::modifyDataPropertyInvert(feed_t& feed)
+void Feeder::modifyDataPropertyInheritanceInvert(feed_t& feed)
 {
   DataPropertyBranch_t* tmp = onto_->data_property_graph_.findBranch(feed.on_);
   if(feed.action_ == action_add)
@@ -89,7 +98,7 @@ void Feeder::modifyDataPropertyInvert(feed_t& feed)
     notifications_.push_back("[FAIL][data property can not be removed by inverse]" + current_str_feed_);
 }
 
-void Feeder::modifyObjectProperty(feed_t& feed)
+void Feeder::modifyObjectPropertyInheritance(feed_t& feed)
 {
   ObjectPropertyBranch_t* tmp = onto_->object_property_graph_.findBranch(feed.from_);
   if(feed.action_ == action_add)
@@ -98,7 +107,7 @@ void Feeder::modifyObjectProperty(feed_t& feed)
     onto_->object_property_graph_.remove(tmp, feed.prop_, feed.on_);
 }
 
-void Feeder::modifyObjectPropertyInvert(feed_t& feed)
+void Feeder::modifyObjectPropertyInheritanceInvert(feed_t& feed)
 {
   ObjectPropertyBranch_t* tmp = onto_->object_property_graph_.findBranch(feed.on_);
   if(feed.action_ == action_add)
@@ -189,6 +198,8 @@ void Feeder::applyProperty(feed_t& feed)
       onto_->class_graph_.addPropertyInvert(feed.from_, feed.prop_, feed.on_);
     else if(onto_->individual_graph_.findBranch(feed.on_) != nullptr)
       onto_->individual_graph_.addPropertyInvert(feed.from_, feed.prop_, feed.on_);
+    else
+      notifications_.push_back("[FAIL][unknown concept to apply property]" + current_str_feed_);
   }
   else if(feed.action_ == action_del)
   {
@@ -206,6 +217,8 @@ void Feeder::applyProperty(feed_t& feed)
       else
         onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
     }
+    else
+      notifications_.push_back("[FAIL][unknown concept to remove property]" + current_str_feed_);
   }
   else
     notifications_.push_back("[FAIL][unknown action]" + current_str_feed_);

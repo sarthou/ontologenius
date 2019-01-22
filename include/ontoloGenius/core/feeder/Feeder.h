@@ -30,11 +30,14 @@ private:
 
   void addDelClass(action_t& action, std::string& name);
   void addDelIndiv(action_t& action, std::string& name);
-  void modifyDataProperty(feed_t& feed);
-  void modifyDataPropertyInvert(feed_t& feed);
-  void modifyObjectProperty(feed_t& feed);
-  void modifyObjectPropertyInvert(feed_t& feed);
+
+  void addInheritage(feed_t& feed);
+  void modifyDataPropertyInheritance(feed_t& feed);
+  void modifyDataPropertyInheritanceInvert(feed_t& feed);
+  void modifyObjectPropertyInheritance(feed_t& feed);
+  void modifyObjectPropertyInheritanceInvert(feed_t& feed);
   void classIndividualIsA(feed_t& feed);
+
   void classIndividualLangage(feed_t& feed);
   void applyProperty(feed_t& feed);
 };
