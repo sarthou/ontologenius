@@ -136,6 +136,16 @@ private:
       find = true;
     }
   }
+
+  ClassBranch_t* findIntersection(std::unordered_set<ClassBranch_t*>& base, std::unordered_set<ClassBranch_t*>& comp)
+  {
+    for (ClassBranch_t* it : comp)
+    {
+      if(base.find(it) != base.end())
+        return it;
+    }
+    return nullptr;
+  }
 };
 
 #endif /* CLASSGRAPH_H */

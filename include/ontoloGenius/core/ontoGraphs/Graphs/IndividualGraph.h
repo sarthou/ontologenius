@@ -118,6 +118,9 @@ private:
   std::unordered_set<uint32_t> getSameIdAndClean(IndividualBranch_t* individual);
   void cleanMarks(std::unordered_set<IndividualBranch_t*>& indSet);
   std::unordered_set<std::string> set2set(std::unordered_set<IndividualBranch_t*>& indSet, bool clean = true);
+
+  bool checkRangeAndDomain(IndividualBranch_t* from, ObjectPropertyBranch_t* prop, IndividualBranch_t* on);
+  bool checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, data_t& data);
 };
 
 #endif /* INDIVIDUALGRAPH_H */
