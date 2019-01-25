@@ -17,6 +17,7 @@ public:
   virtual bool defaultAvtive() {return true;}
 private:
 
+  void postReasonIndividuals();
   void deduceRange(IndividualBranch_t* branch, std::string& prop);
   void deduceDomain(IndividualBranch_t* branch, std::string& prop);
 
@@ -24,6 +25,16 @@ private:
   void deduceDatRange(IndividualBranch_t* branch, size_t index);
   void deduceObjDomain(IndividualBranch_t* branch, size_t index);
   void deduceDatDomain(IndividualBranch_t* branch, size_t index);
+
+
+  void postReasonClasses();
+  void deduceRange(ClassBranch_t* branch, std::string& prop);
+  void deduceDomain(ClassBranch_t* branch, std::string& prop);
+
+  void deduceObjRange(ClassBranch_t* branch, size_t index);
+  void deduceDatRange(ClassBranch_t* branch, size_t index);
+  void deduceObjDomain(ClassBranch_t* branch, size_t index);
+  void deduceDatDomain(ClassBranch_t* branch, size_t index);
 };
 
 #endif

@@ -16,6 +16,12 @@ public:
 private:
   void checkDisjoint();
 
+  void checkObectPropertyDomain();
+  void checkObectPropertyRange();
+
+  void checkDataPropertyDomain();
+  void checkDataPropertyRange();
+
   ClassGraph* class_graph_;
 };
 

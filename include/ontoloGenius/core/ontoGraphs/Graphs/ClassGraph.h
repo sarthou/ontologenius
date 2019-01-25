@@ -31,6 +31,7 @@ class ClassDrawer;
 class ObjectPropertyGraph;
 class DataPropertyGraph;
 class IndividualGraph;
+class ClassChecker;
 
 class ClassGraph : public OntoGraph<ClassBranch_t>
 {
@@ -38,6 +39,8 @@ class ClassGraph : public OntoGraph<ClassBranch_t>
   friend ObjectPropertyGraph;
   friend DataPropertyGraph;
   friend IndividualGraph;
+
+  friend ClassChecker;
 public:
   ClassGraph(IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   ~ClassGraph() {}
