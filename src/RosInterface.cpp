@@ -112,10 +112,14 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
   }
   else if(req.action == "reset")
   {
+    feeder_mutex_.lock();
+    reasoner_mutex_.lock();
     delete onto_;
     onto_ = new Ontology();
     reasoners_.link(onto_);
     feeder_.link(onto_);
+    feeder_mutex_.unlock();
+    reasoner_mutex_.unlock();
   }
   else if(req.action == "setLang")
     onto_->setLanguage(req.param);
@@ -416,6 +420,7 @@ void RosInterface::feedThread()
 
   while(ros::ok() && (run_ == true))
   {
+    feeder_mutex_.lock();
     bool run = feeder_.run();
     if(run == true)
     {
@@ -430,6 +435,7 @@ void RosInterface::feedThread()
         feeder_publisher.publish(msg);
       }
     }
+    feeder_mutex_.unlock();
     wait.sleep();
   }
 }
@@ -448,6 +454,7 @@ void RosInterface::periodicReasoning()
   ros::Rate r(100);
   while(ros::ok() && (run_ == true))
   {
+    reasoner_mutex_.lock();
     reasoners_.runPeriodicReasoners();
 
     std_msgs::String msg;
@@ -458,6 +465,7 @@ void RosInterface::periodicReasoning()
       msg.data = notif;
       reasoner_publisher.publish(msg);
     }
+    reasoner_mutex_.unlock();
     r.sleep();
   }
 }

@@ -5,6 +5,7 @@
 #include <vector>
 #include <unordered_set>
 #include <atomic>
+#include <mutex>
 
 #include "ros/ros.h"
 #include "std_msgs/String.h"
@@ -35,6 +36,9 @@ private:
 
   std::string name_;
   std::atomic<bool> run_;
+
+  std::mutex feeder_mutex_;
+  std::mutex reasoner_mutex_;
 
   void knowledgeCallback(const std_msgs::String::ConstPtr& msg);
 
