@@ -1,5 +1,6 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include <iostream>
+#include <algorithm>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
@@ -1049,8 +1050,13 @@ bool ClassGraph::addProperty(std::string& class_from, std::string& property, std
       object_property_graph_->all_branchs_.push_back(branch_prop);
     }
 
-    setSteadyObjectProperty(branch_from, branch_prop, branch_on);
-    return true;
+    if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
+    {
+      setSteadyObjectProperty(branch_from, branch_prop, branch_on);
+      return true;
+    }
+    else
+        return false;
   }
   return false;
 }
@@ -1077,8 +1083,13 @@ bool ClassGraph::addProperty(std::string& class_from, std::string& property, std
       data_property_graph_->all_branchs_.push_back(branch_prop);
     }
 
-    setSteadyDataProperty(branch_from, branch_prop, data_branch);
-    return true;
+    if(checkRangeAndDomain(branch_from, branch_prop, data_branch))
+    {
+      setSteadyDataProperty(branch_from, branch_prop, data_branch);
+      return true;
+    }
+    else
+      return false;
   }
   return false;
 }
@@ -1114,8 +1125,13 @@ bool ClassGraph::addPropertyInvert(std::string& class_from, std::string& propert
       object_property_graph_->all_branchs_.push_back(branch_prop);
     }
 
-    setSteadyObjectProperty(branch_from, branch_prop, branch_on);
-    return true;
+    if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
+    {
+      setSteadyObjectProperty(branch_from, branch_prop, branch_on);
+      return true;
+    }
+    else
+      return false;
   }
   return false;
 }
@@ -1341,4 +1357,104 @@ bool ClassGraph::removeProperty(std::string& class_from, std::string& property, 
     return true;
   }
   return false;
+}
+
+bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t* prop, ClassBranch_t* on)
+{
+  std::unordered_set<ClassBranch_t*> up_from;
+  getUpPtr(from, up_from);
+
+  std::unordered_set<ObjectPropertyBranch_t*> prop_up;
+  object_property_graph_->getUpPtr(prop, prop_up);
+
+  //DOMAIN
+  std::unordered_set<ClassBranch_t*> domain;
+  for(auto prop : prop_up)
+    object_property_graph_->getDomainPtr(prop, domain);
+
+  if(domain.size() != 0)
+  {
+    ClassBranch_t* intersection = findIntersection(up_from, domain);
+    if(intersection == nullptr)
+    {
+      std::unordered_set<ClassBranch_t*> disjoints;
+      for(auto dom : domain)
+        getDisjoint(dom, disjoints);
+      intersection = findIntersection(up_from, disjoints);
+
+      if(intersection == nullptr)
+        from->flags_["domain"].push_back(prop->value());
+      else
+        return false;
+    }
+  }
+
+  //RANGE
+  std::unordered_set<ClassBranch_t*> up_on;
+  getUpPtr(on, up_on);
+
+  std::unordered_set<ClassBranch_t*> range;
+  for(auto prop : prop_up)
+    object_property_graph_->getRangePtr(prop, range);
+
+  if(range.size() != 0)
+  {
+    ClassBranch_t* intersection = findIntersection(up_on, range);
+    if(intersection == nullptr)
+    {
+      std::unordered_set<ClassBranch_t*> disjoints;
+      for(auto ran : range)
+        getDisjoint(ran, disjoints);
+      intersection = findIntersection(up_on, disjoints);
+
+      if(intersection == nullptr)
+        from->flags_["range"].push_back(prop->value());
+      else
+        return false;
+    }
+  }
+
+  return true;
+}
+
+bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* prop, data_t& data)
+{
+  std::unordered_set<ClassBranch_t*> up_from;
+  getUpPtr(from, up_from);
+
+  std::unordered_set<DataPropertyBranch_t*> prop_up;
+  data_property_graph_->getUpPtr(prop, prop_up);
+
+  //DOMAIN
+  std::unordered_set<ClassBranch_t*> domain;
+  for(auto prop : prop_up)
+    data_property_graph_->getDomainPtr(prop, domain);
+
+  if(domain.size() != 0)
+  {
+    ClassBranch_t* intersection = findIntersection(up_from, domain);
+    if(intersection == nullptr)
+    {
+      std::unordered_set<ClassBranch_t*> disjoints;
+      for(auto dom : domain)
+        getDisjoint(dom, disjoints);
+      intersection = findIntersection(up_from, disjoints);
+
+      if(intersection == nullptr)
+        from->flags_["range"].push_back(prop->value());
+      else
+        return false;
+    }
+  }
+
+  //RANGE
+  std::unordered_set<std::string> range = data_property_graph_->getRange(prop->value());
+  if(range.size() != 0)
+  {
+    std::unordered_set<std::string>::iterator intersection = std::find(range.begin(), range.end(), data.type_);
+    if(intersection == range.end())
+      return false;
+  }
+
+  return true;
 }
