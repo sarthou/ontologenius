@@ -70,17 +70,34 @@ void IndividualChecker::checkObectPropertyDomain()
 {
   for(size_t i = 0; i < graph_size; i++)
   {
-    std::unordered_set<std::string> up = individual_graph_->getUp(graph_vect_[i]->value());
+    std::unordered_set<ClassBranch_t*> up;
+    individual_graph_->getUpPtr(graph_vect_[i], up);
+
     std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
 
     for(size_t prop_i = 0; prop_i < graph_vect_[i]->object_properties_name_.size(); prop_i++)
     {
-      std::unordered_set<std::string> domain = individual_graph_->object_property_graph_->getDomain(graph_vect_[i]->object_properties_name_[prop_i]->value());
+      std::unordered_set<ObjectPropertyBranch_t*> prop_up;
+      individual_graph_->object_property_graph_->getUpPtr(graph_vect_[i]->object_properties_name_[prop_i], prop_up);
+      std::unordered_set<ClassBranch_t*> domain;
+      for(auto prop : prop_up)
+        individual_graph_->object_property_graph_->getDomainPtr(prop, domain);
+
       if(domain.size() != 0)
       {
-        std::string intersection = findIntersection(up, domain);
-        if(intersection == "")
-          print_error("'" + graph_vect_[i]->value() + "' is not in domain of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
+        ClassBranch_t* intersection = findIntersection(up, domain);
+        if(intersection == nullptr)
+        {
+          std::unordered_set<ClassBranch_t*> disjoints;
+          for(auto dom : domain)
+            individual_graph_->class_graph_->getDisjoint(dom, disjoints);
+          intersection = findIntersection(up, disjoints);
+
+          if(intersection == nullptr)
+            print_warning("'" + graph_vect_[i]->value() + "' is not in domain of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
+          else
+            print_error("'" + graph_vect_[i]->value() + "' can not be in domain of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
+        }
       }
     }
   }
@@ -92,14 +109,31 @@ void IndividualChecker::checkObectPropertyRange()
   {
     for(size_t prop_i = 0; prop_i < graph_vect_[i]->object_properties_name_.size(); prop_i++)
     {
-      std::unordered_set<std::string> up = individual_graph_->getUp(graph_vect_[i]->object_properties_on_[prop_i]->value());
+      std::unordered_set<ClassBranch_t*> up;
+      individual_graph_->getUpPtr(graph_vect_[i]->object_properties_on_[prop_i], up);
+
       std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
-      std::unordered_set<std::string> range = individual_graph_->object_property_graph_->getRange(graph_vect_[i]->object_properties_name_[prop_i]->value());
+      std::unordered_set<ObjectPropertyBranch_t*> prop_up;
+      individual_graph_->object_property_graph_->getUpPtr(graph_vect_[i]->object_properties_name_[prop_i], prop_up);
+      std::unordered_set<ClassBranch_t*> range;
+      for(auto prop : prop_up)
+        individual_graph_->object_property_graph_->getRangePtr(prop, range);
+
       if(range.size() != 0)
       {
-        std::string intersection = findIntersection(up, range);
-        if(intersection == "")
-          print_error("'" + graph_vect_[i]->object_properties_on_[prop_i]->value() + "' is not in range of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
+        ClassBranch_t* intersection = findIntersection(up, range);
+        if(intersection == nullptr)
+        {
+          std::unordered_set<ClassBranch_t*> disjoints;
+          for(auto ran : range)
+            individual_graph_->class_graph_->getDisjoint(ran, disjoints);
+          intersection = findIntersection(up, disjoints);
+
+          if(intersection == nullptr)
+            print_warning("'" + graph_vect_[i]->object_properties_on_[prop_i]->value() + "' is not in range of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
+          else
+            print_error("'" + graph_vect_[i]->object_properties_on_[prop_i]->value() + "' can not be in range of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
+        }
       }
     }
   }
@@ -109,17 +143,34 @@ void IndividualChecker::checkDataPropertyDomain()
 {
   for(size_t i = 0; i < graph_size; i++)
   {
-    std::unordered_set<std::string> up = individual_graph_->getUp(graph_vect_[i]->value());
+    std::unordered_set<ClassBranch_t*> up;
+    individual_graph_->getUpPtr(graph_vect_[i], up);
+
     std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
 
     for(size_t prop_i = 0; prop_i < graph_vect_[i]->data_properties_name_.size(); prop_i++)
     {
-      std::unordered_set<std::string> domain = individual_graph_->data_property_graph_->getDomain(graph_vect_[i]->data_properties_name_[prop_i]->value());
+      std::unordered_set<DataPropertyBranch_t*> prop_up;
+      individual_graph_->data_property_graph_->getUpPtr(graph_vect_[i]->data_properties_name_[prop_i], prop_up);
+      std::unordered_set<ClassBranch_t*> domain;
+      for(auto prop : prop_up)
+        individual_graph_->data_property_graph_->getDomainPtr(prop, domain);
+
       if(domain.size() != 0)
       {
-        std::string intersection = findIntersection(up, domain);
-        if(intersection == "")
-          print_error("'" + graph_vect_[i]->value() + "' is not in domain of '" + graph_vect_[i]->data_properties_name_[prop_i]->value() + "'");
+        ClassBranch_t* intersection = findIntersection(up, domain);
+        if(intersection == nullptr)
+        {
+          std::unordered_set<ClassBranch_t*> disjoints;
+          for(auto dom : domain)
+            individual_graph_->class_graph_->getDisjoint(dom, disjoints);
+          intersection = findIntersection(up, disjoints);
+
+          if(intersection == nullptr)
+            print_warning("'" + graph_vect_[i]->value() + "' is not in domain of '" + graph_vect_[i]->data_properties_name_[prop_i]->value() + "'");
+          else
+            print_error("'" + graph_vect_[i]->value() + "' can not be in domain of '" + graph_vect_[i]->data_properties_name_[prop_i]->value() + "'");
+        }
       }
     }
   }

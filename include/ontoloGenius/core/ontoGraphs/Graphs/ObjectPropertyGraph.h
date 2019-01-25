@@ -48,7 +48,9 @@ public:
   std::unordered_set<std::string> getDisjoint(const std::string& value);
   std::unordered_set<std::string> getInverse(const std::string& value);
   std::unordered_set<std::string> getDomain(const std::string& value);
+  void getDomainPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res);
   std::unordered_set<std::string> getRange(const std::string& value);
+  void getRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res);
   std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& selector);
 
   void getDisjoint(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res);

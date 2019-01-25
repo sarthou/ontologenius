@@ -27,8 +27,10 @@ bool Feeder::run()
     }
     else if(feed.on_ != "")
     {
-      if((feed.prop_ == "+") || (feed.prop_ == "isA"))
+      if((feed.prop_ == "+") || (feed.prop_ == "rdfs:subClassOf"))
         addInheritage(feed);
+      //if((feed.prop_ == "<-") || (feed.prop_ == "owl:inverseOf"))
+        //addInverseOf(feed);
       else if(feed.prop_[0] == '@')
         classIndividualLangage(feed);
       else
@@ -76,7 +78,7 @@ void Feeder::addInheritage(feed_t& feed)
     modifyObjectPropertyInheritance(feed);
   else if(onto_->object_property_graph_.findBranch(feed.on_) != nullptr)
     modifyObjectPropertyInheritanceInvert(feed);
-  else 
+  else
     classIndividualIsA(feed);
 }
 

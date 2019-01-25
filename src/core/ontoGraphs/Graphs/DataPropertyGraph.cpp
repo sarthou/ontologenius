@@ -214,6 +214,15 @@ std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& 
   return res;
 }
 
+void DataPropertyGraph::getDomainPtr(DataPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+
+  if(branch != nullptr)
+    for(unsigned domain_i = 0; domain_i < branch->domains_.size(); domain_i++)
+      class_graph_->getDownPtr(branch->domains_[domain_i], res);
+}
+
 std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& value)
 {
   std::unordered_set<std::string> res;

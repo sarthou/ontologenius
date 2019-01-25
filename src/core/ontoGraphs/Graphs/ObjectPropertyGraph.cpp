@@ -324,6 +324,16 @@ std::unordered_set<std::string> ObjectPropertyGraph::getDomain(const std::string
   return res;
 }
 
+void ObjectPropertyGraph::getDomainPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+
+  if(branch != nullptr)
+    for(unsigned domain_i = 0; domain_i < branch->domains_.size(); domain_i++)
+      class_graph_->getDownPtr(branch->domains_[domain_i], res);
+
+}
+
 std::unordered_set<std::string> ObjectPropertyGraph::getRange(const std::string& value)
 {
   std::unordered_set<std::string> res;
@@ -335,6 +345,14 @@ std::unordered_set<std::string> ObjectPropertyGraph::getRange(const std::string&
       class_graph_->getDown(branch->ranges_[range_i], res);
 
   return res;
+}
+
+void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+  if(branch != nullptr)
+    for(unsigned range_i = 0; range_i < branch->ranges_.size(); range_i++)
+      class_graph_->getDownPtr(branch->ranges_[range_i], res);
 }
 
 std::unordered_set<std::string> ObjectPropertyGraph::select(std::unordered_set<std::string>& on, const std::string& selector)

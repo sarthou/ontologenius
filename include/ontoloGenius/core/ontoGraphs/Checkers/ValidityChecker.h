@@ -18,6 +18,7 @@ public:
     graph_vect_ = graph->get();
     graph_size = graph_vect_.size();
     nb_error_ = 0;
+    nb_warn_ = 0;
     is_analysed = false;
   }
   virtual ~ValidityChecker() {}
@@ -35,6 +36,12 @@ protected:
     nb_error_++;
   }
 
+  void print_warning(std::string warn)
+  {
+    std::cout << COLOR_ORANGE << warn << COLOR_OFF << std::endl;
+    nb_warn_++;
+  }
+
   virtual void printStatus() = 0;
 
   void printStatus(std::string type, std::string types, size_t nb)
@@ -43,6 +50,9 @@ protected:
     {
       if(nb_error_)
         std::cout << COLOR_RED << nb_error_ << " errors " << COLOR_OFF << std::endl;
+
+      if(nb_warn_)
+        std::cout << COLOR_ORANGE << nb_warn_ << " warnings " << COLOR_OFF << std::endl;
 
       if(nb_error_)
         std::cout << COLOR_RED << "Failure of " << type << " analysis" << COLOR_OFF;
@@ -72,10 +82,22 @@ protected:
     return res;
   }
 
+  inline ClassBranch_t* findIntersection(std::unordered_set<ClassBranch_t*>& base, std::unordered_set<ClassBranch_t*>& comp)
+  {
+    for (ClassBranch_t* it : comp)
+    {
+      if(base.find(it) != base.end())
+        return it;
+    }
+    return nullptr;
+  }
+
   size_t getErrors() {return nb_error_; }
+  size_t getWarnings() {return nb_warn_; }
 
 private:
   size_t nb_error_;
+  size_t nb_warn_;
 };
 
 #endif
