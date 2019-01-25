@@ -94,7 +94,10 @@ void IndividualChecker::checkObectPropertyDomain()
           intersection = findIntersection(up, disjoints);
 
           if(intersection == nullptr)
+          {
+            graph_vect_[i]->flags_["domain"] = graph_vect_[i]->object_properties_name_[prop_i]->value();
             print_warning("'" + graph_vect_[i]->value() + "' is not in domain of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
+          }
           else
             print_error("'" + graph_vect_[i]->value() + "' can not be in domain of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
         }
@@ -130,7 +133,10 @@ void IndividualChecker::checkObectPropertyRange()
           intersection = findIntersection(up, disjoints);
 
           if(intersection == nullptr)
+          {
+            graph_vect_[i]->flags_["range"] = graph_vect_[i]->object_properties_name_[prop_i]->value();
             print_warning("'" + graph_vect_[i]->object_properties_on_[prop_i]->value() + "' is not in range of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
+          }
           else
             print_error("'" + graph_vect_[i]->object_properties_on_[prop_i]->value() + "' can not be in range of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
         }
@@ -167,7 +173,10 @@ void IndividualChecker::checkDataPropertyDomain()
           intersection = findIntersection(up, disjoints);
 
           if(intersection == nullptr)
+          {
+            graph_vect_[i]->flags_["range"] = graph_vect_[i]->data_properties_name_[prop_i]->value();
             print_warning("'" + graph_vect_[i]->value() + "' is not in domain of '" + graph_vect_[i]->data_properties_name_[prop_i]->value() + "'");
+          }
           else
             print_error("'" + graph_vect_[i]->value() + "' can not be in domain of '" + graph_vect_[i]->data_properties_name_[prop_i]->value() + "'");
         }

@@ -12,7 +12,7 @@ class UpdatableNode
 public:
   unsigned int nb_updates_;
   bool updated_;
-  std::map<std::string, bool> flags_;
+  std::map<std::string, std::string> flags_;
   UpdatableNode() {updated_ = true; nb_updates_ = 0; }
 };
 

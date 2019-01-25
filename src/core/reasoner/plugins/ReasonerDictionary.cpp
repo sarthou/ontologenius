@@ -49,7 +49,7 @@ void ReasonerDictionary::updateDictionary(ValuedNode* node)
     split(node);
     createLowerCase(node);
     replaceQuote(node);
-    node->flags_["dico"] = true;
+    node->flags_["dico"] = "true";
   }
 }
 
