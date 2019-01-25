@@ -17,4 +17,7 @@
   <class type="ReasonerGeneralize" base_class_type="ReasonerInterface">
     <description>This is an reasoner to deduce new knowledge.</description>
   </class>
+  <class type="ReasonerRangeDomain" base_class_type="ReasonerInterface">
+    <description>This is an reasoner to deduce new inheritances based on range and domain of properties.</description>
+  </class>
 </library>

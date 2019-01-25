@@ -196,6 +196,7 @@ add_library(ontologenius_reasoner_plugin
   src/core/reasoner/plugins/ReasonerChain.cpp
   src/core/reasoner/plugins/ReasonerDictionary.cpp
   src/core/reasoner/plugins/ReasonerGeneralize.cpp
+  src/core/reasoner/plugins/ReasonerRangeDomain.cpp
   )
 add_dependencies(ontologenius_reasoner_plugin ontologenius_gencpp)
 target_link_libraries(ontologenius_reasoner_plugin ontologenius_core_lib)
