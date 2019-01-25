@@ -18,6 +18,7 @@ void ReasonerRangeDomain::postReason()
       {
         for(std::string prop : it_range->second)
           deduceRange(indiv[indiv_i], prop);
+        indiv[indiv_i]->flags_.erase("range");
       }
 
       it_domain = indiv[indiv_i]->flags_.find("domain");
@@ -25,13 +26,13 @@ void ReasonerRangeDomain::postReason()
       {
         for(std::string prop : it_domain->second)
           deduceDomain(indiv[indiv_i], prop);
+        indiv[indiv_i]->flags_.erase("domain");
       }
     }
 }
 
 void ReasonerRangeDomain::deduceRange(IndividualBranch_t* branch, std::string& prop)
 {
-  std::cout << "deduceRange on " << branch->value() << std::endl;
   for(size_t i = 0; i < branch->object_properties_name_.size(); i++)
     if(branch->object_properties_name_[i]->value() == prop)
       deduceObjRange(branch, i);
@@ -39,7 +40,6 @@ void ReasonerRangeDomain::deduceRange(IndividualBranch_t* branch, std::string& p
 
 void ReasonerRangeDomain::deduceDomain(IndividualBranch_t* branch, std::string& prop)
 {
-  std::cout << "deduceDomain on " << branch->value() << std::endl;
   for(size_t i = 0; i < branch->object_properties_name_.size(); i++)
     if(branch->object_properties_name_[i]->value() == prop)
       deduceObjDomain(branch, i);
@@ -57,7 +57,7 @@ void ReasonerRangeDomain::deduceObjRange(IndividualBranch_t* branch, size_t inde
   while(ranges.size() == 0)
   {
     for(auto prop : props)
-      ontology_->object_property_graph_.getRangePtr(prop, ranges);
+      ontology_->object_property_graph_.getRangePtr(prop, ranges, 0);
 
     if(ranges.size() == 0)
     {
@@ -92,12 +92,84 @@ void ReasonerRangeDomain::deduceObjRange(IndividualBranch_t* branch, size_t inde
 
 void ReasonerRangeDomain::deduceObjDomain(IndividualBranch_t* branch, size_t index)
 {
-  std::cout << "deduceObjDomain" << std::endl;
+  std::unordered_set<ClassBranch_t*> domains;
+  std::unordered_set<ObjectPropertyBranch_t*> props;
+  props.insert(branch->object_properties_name_[index]);
+  while(domains.size() == 0)
+  {
+    for(auto prop : props)
+      ontology_->object_property_graph_.getDomainPtr(prop, domains, 0);
+
+    if(domains.size() == 0)
+    {
+      std::unordered_set<ObjectPropertyBranch_t*> prop_up;
+      for(auto prop : props)
+      {
+        ontology_->object_property_graph_.getUpPtr(prop, prop_up, 1);
+        prop_up.erase(prop);
+      }
+
+      if(prop_up.size() == 0)
+        break;
+      else
+        props = prop_up;
+    }
+  }
+
+  for(auto domain : domains)
+  {
+    std::unordered_set<ClassBranch_t*> up;
+    ontology_->individual_graph_.getUpPtr(branch, up);
+    if(up.find(domain) == up.end())
+    {
+      branch->is_a_.push_back(domain);
+      domain->individual_childs_.push_back(branch);
+
+      branch->updated_ = true;
+      domain->updated_ = true;
+    }
+  }
 }
 
 void ReasonerRangeDomain::deduceDatDomain(IndividualBranch_t* branch, size_t index)
 {
-  std::cout << "deduceDatDomain" << std::endl;
+  std::unordered_set<ClassBranch_t*> domains;
+  std::unordered_set<DataPropertyBranch_t*> props;
+  props.insert(branch->data_properties_name_[index]);
+  while(domains.size() == 0)
+  {
+    for(auto prop : props)
+      ontology_->data_property_graph_.getDomainPtr(prop, domains, 0);
+
+    if(domains.size() == 0)
+    {
+      std::unordered_set<DataPropertyBranch_t*> prop_up;
+      for(auto prop : props)
+      {
+        ontology_->data_property_graph_.getUpPtr(prop, prop_up, 1);
+        prop_up.erase(prop);
+      }
+
+      if(prop_up.size() == 0)
+        break;
+      else
+        props = prop_up;
+    }
+  }
+
+  for(auto domain : domains)
+  {
+    std::unordered_set<ClassBranch_t*> up;
+    ontology_->individual_graph_.getUpPtr(branch, up);
+    if(up.find(domain) == up.end())
+    {
+      branch->is_a_.push_back(domain);
+      domain->individual_childs_.push_back(branch);
+
+      branch->updated_ = true;
+      domain->updated_ = true;
+    }
+  }
 }
 
 std::string ReasonerRangeDomain::getName()
