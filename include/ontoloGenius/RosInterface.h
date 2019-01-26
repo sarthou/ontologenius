@@ -35,6 +35,8 @@ private:
 
   std::string name_;
   std::atomic<bool> run_;
+  bool feeder_end;
+  ros::Publisher pub_;
 
   void knowledgeCallback(const std_msgs::String::ConstPtr& msg);
 

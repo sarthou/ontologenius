@@ -5,7 +5,8 @@
 #include <thread>
 #include <ros/callback_queue.h>
 
-RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : reasoners_(onto_), feeder_(onto_), run_(true)
+RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : reasoners_(onto_), feeder_(onto_), run_(true),
+                                                                  pub_(n->advertise<std_msgs::String>("ontologenius/end", 1000))
 {
   n_ = n;
   onto_ = new Ontology();
@@ -13,6 +14,7 @@ RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : reasoners_(on
   feeder_.link(onto_);
 
   name_ = name;
+  feeder_end = true;
 }
 
 RosInterface::~RosInterface()
@@ -419,7 +421,14 @@ void RosInterface::feedThread()
     bool run = feeder_.run();
     if(run == true)
     {
+      if(feeder_end == true)
+      {
+        feeder_end = false;
+        std::cout << "feed start" << std::endl;
+      }
+
       reasoners_.runPostReasoners();
+      std::cout << "runPostReasoners" << std::endl;
 
       std_msgs::String msg;
       std::vector<std::string> notifications = feeder_.getNotifications();
@@ -429,6 +438,14 @@ void RosInterface::feedThread()
         msg.data = notif;
         feeder_publisher.publish(msg);
       }
+    }
+    else if(feeder_end == false)
+    {
+      feeder_end = true;
+      std_msgs::String msg;
+      msg.data = "end";
+      pub_.publish(msg);
+      std::cout << "feed end" << std::endl;
     }
     wait.sleep();
   }
