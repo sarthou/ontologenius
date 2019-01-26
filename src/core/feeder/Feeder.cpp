@@ -7,6 +7,7 @@ bool Feeder::run()
 {
   bool has_run = false;
   std::queue<feed_t> feeds = feed_storage_.get();
+
   while(feeds.empty() == false)
   {
     has_run = true;
@@ -34,10 +35,7 @@ bool Feeder::run()
       else if(feed.prop_[0] == '@')
         classIndividualLangage(feed);
       else
-      {
-        std::cout << "applyProperty" << std::endl;
         applyProperty(feed);
-      }
     }
     else
       notifications_.push_back("[FAIL][not enough arguments]" + current_str_feed_);

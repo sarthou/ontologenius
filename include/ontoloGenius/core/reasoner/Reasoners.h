@@ -45,6 +45,7 @@ private:
   pluginlib::ClassLoader<ReasonerInterface> loader_;
 
   void computeIndividualsUpdates();
+  void computeIndividualsUpdatesPeriodic();
   void resetIndividualsUpdates();
 };
 

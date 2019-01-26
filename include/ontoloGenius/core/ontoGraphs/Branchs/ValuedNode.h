@@ -25,7 +25,7 @@ public:
 class ValuedNode : public UpdatableNode, public ValuedNodeData
 {
 public:
-  ValuedNode(const std::string& value) {index_ = table_.add(value); }
+  ValuedNode(const std::string& value) : UpdatableNode() {index_ = table_.add(value); }
 
   uint32_t get() {return index_; }
   std::string value() {return table_[index_]; }
