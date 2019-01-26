@@ -108,11 +108,19 @@ int main(int argc, char** argv)
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/attribute.owl");
+  /*onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/attribute.owl");
   onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/positionProperty.owl");
   onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/testIndividuals.owl");
   onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/property.owl");
-  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/measure.owl");
+  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/measure.owl");*/
+
+  //onto.readFromFile("/home/gsarthou/Downloads/owl-export-unversioned.owl");
+  onto.readFromFile("/home/gsarthou/openrobots/share/ontologies/testsuite.owl");
+  //onto.readFromUri("https://raw.githubusercontent.com/severin-lemaignan/oro-server/master/testing/testsuite.oro.owl");
+
+  high_resolution_clock::time_point t3 = high_resolution_clock::now();
+  duration<double> time_span2 = duration_cast<duration<double>>(t3 - t1);
+  std::cout << "It took me " << time_span2.count() << " seconds to read" << std::endl;
 
   onto.close();
 
@@ -123,7 +131,11 @@ int main(int argc, char** argv)
 
   reasoners.runPostReasoners();
 
-  int epoch = 10000;
+  high_resolution_clock::time_point t4 = high_resolution_clock::now();
+  duration<double> time_span3 = duration_cast<duration<double>>(t4 - t1);
+  std::cout << "It took me " << time_span3.count() << " seconds to runPostReasoners" << std::endl;
+
+  /*int epoch = 10000;
 
   std::vector<std::string> seq = generate_sequence(onto.class_graph_);
   double total = 0;
@@ -135,7 +147,7 @@ int main(int argc, char** argv)
 
   std::cout << "mean = " << total/((float)epoch) << " per sequence of " << seq.size() << std::endl;
   std::cout << "mean = " << total/((float)epoch)/seq.size() << " per request" << std::endl;
-  std::cout << "It took me " << read_time << " seconds to read" << std::endl;
+  std::cout << "It took me " << read_time << " seconds to read" << std::endl;*/
 
   ROS_DEBUG("Test done");
 
