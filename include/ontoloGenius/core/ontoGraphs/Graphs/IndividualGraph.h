@@ -48,6 +48,13 @@ public:
   void close();
   std::vector<IndividualBranch_t*> get() {return individuals_; }
 
+  std::vector<IndividualBranch_t*> getSafe()
+  {
+    std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+
+    return individuals_;
+  }
+
   void add(std::string value, IndividualVectors_t& individual_vector);
   void add(std::vector<std::string>& distinct_);
 

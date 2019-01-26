@@ -16,7 +16,7 @@ void ReasonerGeneralize::periodicReason()
   {
     if(current_id_ >= classes.size())
       current_id_ = 0;
-      
+
     size_t first_id = current_id_;
     for(size_t i = 0; i < class_per_period_; i++)
     {
@@ -24,8 +24,8 @@ void ReasonerGeneralize::periodicReason()
       down_set.erase(classes[current_id_]);
 
       std::unordered_set<IndividualBranch_t*> indiv_down_set = ontology_->class_graph_.getDownIndividualPtrSafe(classes[current_id_]);
-      std::lock_guard<std::shared_timed_mutex> lock_indiv(ontology_->individual_graph_.mutex_);
-      std::lock_guard<std::shared_timed_mutex> lock(ontology_->class_graph_.mutex_);
+      std::shared_lock<std::shared_timed_mutex> lock_indiv_shared(ontology_->individual_graph_.mutex_);
+      std::shared_lock<std::shared_timed_mutex> lock_shared(ontology_->class_graph_.mutex_);
 
       PropertiesCounter<DataPropertyBranch_t*, std::string> data_counter;
       PropertiesCounter<ObjectPropertyBranch_t*, ClassBranch_t*> object_counter;
@@ -44,6 +44,11 @@ void ReasonerGeneralize::periodicReason()
         for(size_t j = 0; j < down->data_properties_name_.size(); j++)
           data_counter.add(down->data_properties_name_[j], down->data_properties_data_[j].toString());
       }
+
+      lock_indiv_shared.unlock();
+      std::lock_guard<std::shared_timed_mutex> lock_indiv(ontology_->individual_graph_.mutex_);
+      lock_shared.unlock();
+      std::lock_guard<std::shared_timed_mutex> lock(ontology_->class_graph_.mutex_);
 
       std::vector<DataPropertyBranch_t*> data_properties;
       std::vector<std::string> data_datas;
