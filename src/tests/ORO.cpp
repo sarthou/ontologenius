@@ -17,9 +17,12 @@ std::atomic<bool> end_;
 
 void insertWords(size_t nb)
 {
-  ros::Rate wait(100);
+  ros::Rate wait(10000);
   for(size_t i = 0; i < nb; i++)
+  {
     onto_ptr->feeder.addProperty("individual" + std::to_string(i), "isOn", "apple");
+    wait.sleep();
+  }
 }
 
 double R1()
@@ -93,7 +96,7 @@ int main(int argc, char** argv)
 
   onto.verbose(true);
 
-  std::vector<size_t> nb_words = {100, 500, 1000, 5000};//, 10000, 50000, 100000, 450000};
+  std::vector<size_t> nb_words = {100, 500, 1000, 5000, 10000, 50000, 100000, 450000};
   std::vector<std::vector<double> > res;
   ros::Rate wait(0.2);
   ros::Rate fast(100);
