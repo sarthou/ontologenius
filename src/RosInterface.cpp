@@ -427,13 +427,9 @@ void RosInterface::feedThread()
     if(run == true)
     {
       if(feeder_end == true)
-      {
         feeder_end = false;
-        std::cout << "feed start" << std::endl;
-      }
 
       reasoners_.runPostReasoners();
-      std::cout << "runPostReasoners" << std::endl;
 
       std_msgs::String msg;
       std::vector<std::string> notifications = feeder_.getNotifications();
