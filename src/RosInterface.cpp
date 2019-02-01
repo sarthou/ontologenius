@@ -446,7 +446,6 @@ void RosInterface::feedThread()
       std_msgs::String msg;
       msg.data = "end";
       pub_.publish(msg);
-      std::cout << "feed end" << std::endl;
     }
     feeder_mutex_.unlock();
     wait.sleep();
