@@ -34,8 +34,8 @@ button {
 
   opacity:0;
   animation-name: appear;
-  animation-duration: 3s;
-  animation-delay: 7s;
+  animation-duration: 2s;
+  animation-delay: 2.5s;
   animation-fill-mode: forwards;
 
   transition:
@@ -127,9 +127,9 @@ button:hover > span {
   height: 0%;
   background-color: #324a5e;
   animation-name: up-box;
-  animation-duration: 1.5s;
+  animation-duration: 0.5s;
   animation-fill-mode: forwards;
-  animation-timing-function: linear;
+  animation-timing-function: ease-out;
 }
 
 .middle-stripe {
@@ -141,11 +141,10 @@ button:hover > span {
   height: 100px;
   background-color: #324a5e;
   animation-name: middle-box;
-  animation-duration: 2.5s;
-  animation-delay: 1.5s;
+  animation-duration: 1.2s;
+  animation-delay: 0.3s;
   animation-fill-mode: forwards;
-  animation-timing-function: linear;
-
+  animation-timing-function: ease-in;
   text-align: center;
   text-indent: -150px;
 }
@@ -160,9 +159,9 @@ button:hover > span {
 
   opacity:0;
   animation-name: appear;
-  animation-duration: 3s;
-  animation-delay: 7s;
-  animation-fill-mode: forwards;s
+  animation-duration: 2s;
+  animation-delay: 2.5s;
+  animation-fill-mode: forwards;
 }
 
 .right-side-stripe, .left-side-stripe {
@@ -172,10 +171,9 @@ button:hover > span {
   height: 0%;
   background-color: #324a5e;
   animation-name: bottom-box;
-  animation-duration: 3s;
-  animation-delay: 4s;
+  animation-duration: 1s;
+  animation-delay: 1.5s;
   animation-fill-mode: forwards;
-  animation-timing-function: linear;
 }
 
 .bl1 {
