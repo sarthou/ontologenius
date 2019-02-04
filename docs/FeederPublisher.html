@@ -1,0 +1,173 @@
+<html lang="en_US">
+
+<head>
+  <title>FeederPublisher Class | Ontologenius 0.2.0</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="images/favicon.ico" rel="shortcut icon">
+  <link href="images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="images/favicon-16x16.png" rel="icon" type="image/png">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="ontologenius.html">
+              <img src="images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/utility">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontoloGenius/utility">C++ API headers</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius API Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -588px;">
+        <div class="contents class-content">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="#public-functions">Public Functions</a></li>
+            <li class="level1"><a href="#details">Detailed Description</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="Download.html">Download</a></li>
+            <li class="level1"><a href="InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="Tutorials.html">Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3><a href="CppAPI.html">All C++ Classes</a></h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="FeederPublisher.html"><b>FeederPublisher</b></a></li>
+            <li class="level1"><a href="IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">FeederPublisher Class</h1>
+        <p>The FeederPublisher class provides an abstraction for ontologenius feeder topic. <a href="#details">More...</a></p>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontoloGenius/utility/FeederPublisher.h&quot;</span>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="public-functions"></a>
+        <h2 id="public-functions">Public Functions</h2>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#FeederPublisher">FeederPublisher</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addProperty">addProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>on</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addProperty">addProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>type</i>, const std::string&amp; <i>value</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addInheritage">addInheritage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>on</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addLanguage">addLanguage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>lang</i>, const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addConcept">addConcept</a></b>(const std::string&amp; <i>from</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty">removeProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>on</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty">removeProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>type</i>, const std::string&amp; <i>value</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeInheritage">removeInheritage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>on</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeLanguage">removeLanguage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>lang</i>, const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeConcept">removeConcept</a></b>(const std::string&amp; <i>from</i>)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="details"></a>
+        <div class="descr">
+          <h2 id="details">Detailed Description</h2>
+          <p>The FeederPublisher class provides an abstraction ontologenius feeder(insert) ROS topic.</p>
+          <p>Working in a closed world can be interesting, but with ontologenius, you can also choose to work in an open world by adding and modifying the agent's knowledge base during its operation. The feeder publisher is used to insert and delete knowledge dynamically. The feeding process is asynchronous and therefore does not guarantee any response time.</p>
+        </div>
+
+        <div class="func">
+          <h2>Public Function Documentation</h2>
+
+          <h3 class="fn" id="FeederPublisher"><a name="FeederPublisher"></a>FeederPublisher::<span class="name">FeederPublisher</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Constructs an FeederPublisher with a pointer to a NodeHandle <i>n</i>.</p>
+          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
+
+          <h3 class="fn" id="addProperty"><a name="addProperty"></a>FeederPublisher::<span class="name">addProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>on</i>)</h3>
+          <p>Adds the fact that <i>from</i> is linked with <i>on</i> by the property <i>property</i>.</p>
+          <p>At least <i>from</i> or <i>on</i> must be already known to the system. If one of them is unknown, it will be automatically created. The property can be unknow before calling this function.</p>
+
+          <h3 class="fn" id="addProperty"><a name="addProperty"></a>FeederPublisher::<span class="name">addProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>type</i>, const <span class="type">std::string</span>&amp; <i>value</i>)</h3>
+          <p>Adds the fact that <i>from</i> is linked to the data <i>value</i> of type <i>type</i> by the property <i>property</i>.</p>
+          <p><i>from</i> must be already known to the system. The property can be unknow before calling this function.</p>
+
+          <h3 class="fn" id="addInheritage"><a name="addInheritage"></a>FeederPublisher::<span class="name">addInheritage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>on</i>)</h3>
+          <p>Adds the inheratage : <i>from</i> is a <i>on</i>. <i>from</i> and <i>on</i> could by a class, an individual or a property.</p>
+          <p>At least <i>from</i> or <i>on</i> must be already known to the system. If one of them is unknown, it will be automatically created.</p>
+
+          <h3 class="fn" id="addLanguage"><a name="addLanguage"></a>FeederPublisher::<span class="name">addLanguage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>lang</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Adds the label <i>name</i> in the language <i>lang</i> the class, individual or property <i>from</i>.</p>
+          <p><i>from</i> must be already known to the system.</p>
+
+          <h3 class="fn" id="addConcept"><a name="addConcept"></a>FeederPublisher::<span class="name">addConcept</span>(const <span class="type">std::string</span>&amp; <i>from</i>)</h3>
+          <p>Adds the class or individual <i>from</i>.</p>
+
+          <h3 class="fn" id="removeProperty"><a name="removeProperty"></a>FeederPublisher::<span class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>on</i>)</h3>
+          <p>Removes the fact that <i>from</i> is linked with <i>on</i> by the property <i>property</i>.</p>
+          <p>After this action, knowledge of the property is not removed.</p>
+
+          <h3 class="fn" id="removeProperty"><a name="removeProperty"></a>FeederPublisher::<span class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>type</i>, const <span class="type">std::string</span>&amp; <i>value</i>)</h3>
+          <p>Removes the fact that <i>from</i> is linked to the data <i>value</i> of type <i>type</i> by the property <i>property</i>.</p>
+          <p>After this action, knowledge of the property is not removed.</p>
+
+          <h3 class="fn" id="removeInheritage"><a name="removeInheritage"></a>FeederPublisher::<span class="name">removeInheritage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>on</i>)</h3>
+          <p>Removes the inheratage : <i>from</i> is a <i>on</i>. <i>from</i> and <i>on</i> could by a class, an individual or a property.</p>
+
+          <h3 class="fn" id="removeLanguage"><a name="removeLanguage"></a>FeederPublisher::<span class="name">removeLanguage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>lang</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Removes the label <i>name</i> in the language <i>lang</i> the class, individual or property <i>from</i>.</p>
+
+          <h3 class="fn" id="removeConcept"><a name="removeConcept"></a>FeederPublisher::<span class="name">removeConcept</span>(const <span class="type">std::string</span>&amp; <i>from</i>)</h3>
+          <p>Removes the class or individual <i>from</i>.</p>
+          <p>All inheritance, properties, and labels applied to <i>from</i> are also removed.</p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

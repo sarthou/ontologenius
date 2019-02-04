@@ -1,0 +1,181 @@
+<html lang="en_US">
+
+<head>
+  <title>Set up | Ontologenius 0.2.0</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="images/favicon.ico" rel="shortcut icon">
+  <link href="images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="ontologenius.html">
+              <img src="images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/utility">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontoloGenius/utility">C++ API headers</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -588px;">
+        <!--div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="#public-functions">Public Functions</a></li>
+            <li class="level1"><a href="#reimplemented-public-functions">Reimplemented Public Functions</a></li>
+            <li class="level1"><a href="#reimplemented-protected-functions">Reimplemented Protected Functions</a></li>
+            <li class="level1"><a href="#details">Detailed Description</a></li>
+          </ul>
+        </div-->
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="Download.html">Download</a></li>
+            <li class="level1"><a href="InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="SetUp.html"><b>Set Up Your Environnement</b></a></li>
+            <li class="level1"><a href="Tutorials.html">Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3><a href="CppAPI.html">All C++ Classes</a></h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">Set Up Your Environnement</h1>
+        <p>To set up your environment, we will first create a new package that represents your application.</p>
+        <div class="code_block">
+          <div class="terminal_line">cd ~/catkin_ws/src</div>
+          <div class="terminal_line"><br></div>
+          <div class="terminal_line">catkin_create_pkg my_pkg roscpp ontologenius</div>
+        </div>
+
+        <p class="tip">For the moment, the API only exist for the C ++ language.</p>
+
+        <p>The package.xml in format 2 should look like this:</p>
+        <div class="code_block">
+          <div class="terminal_line">&lt;package&gt;</div>
+          <div class="terminal_line">  ...</div>
+          <div class="terminal_line">  &lt;buildtool_depend&gt;catkin&lt;/buildtool_depend&gt;</div>
+          <div class="terminal_line">  &lt;build_depend&gt;ontologenius&lt;/build_depend&gt;</div>
+          <div class="terminal_line">  &lt;build_depend&gt;roscpp&lt;/build_depend&gt;</div>
+          <div class="terminal_line">  &lt;build_export_depend&gt;ontologenius&lt;/build_export_depend&gt;</div>
+          <div class="terminal_line">  &lt;build_export_depend&gt;roscpp&lt;/build_export_depend&gt;</div>
+          <div class="terminal_line">  &lt;exec_depend&gt;ontologenius&lt;/exec_depend&gt;</div>
+          <div class="terminal_line">  &lt;exec_depend&gt;roscpp&lt;/exec_depend&gt;</div>
+          <div class="terminal_line">  ...</div>
+          <div class="terminal_line">&lt;/package&gt;</div>
+        </div>
+
+        <p>The CMakeLists.txt should look like this:</p>
+        <div class="code_block">
+          <div class="terminal_line">...</div>
+          <div class="terminal_line">find_package(catkin REQUIRED COMPONENTS</div>
+          <div class="terminal_line">  ontologenius</div>
+          <div class="terminal_line">  roscpp</div>
+          <div class="terminal_line">)</div>
+          <div class="terminal_line">...</div>
+          <div class="terminal_line">catkin_package(</div>
+          <div class="terminal_line">#  INCLUDE_DIRS include</div>
+          <div class="terminal_line">#  LIBRARIES my_pkg</div>
+          <div class="terminal_line">#  CATKIN_DEPENDS ontologenius roscpp</div>
+          <div class="terminal_line">#  DEPENDS system_lib</div>
+          <div class="terminal_line">)</div>
+          <div class="terminal_line">...</div>
+          <div class="terminal_line"># include</div>
+          <div class="terminal_line">  ${catkin_INCLUDE_DIRS}</div>
+          <div class="terminal_line">)</div>
+          <div class="terminal_line">...</div>
+        </div>
+        <p>The package.xml do not need to be modified. For the CMakeLists.txt, we will required a minimal version (optional) and include ontologenius API.</p>
+        <div class="code_block">
+          <div class="terminal_line">find_package(ontologenius 0.2.0 REQUIRED)</div>
+          <div class="terminal_line">...</div>
+          <div class="terminal_line">catkin_package(</div>
+          <div class="terminal_line">#  INCLUDE_DIRS include</div>
+          <div class="terminal_line">#  LIBRARIES my_pkg</div>
+          <div class="terminal_line">   CATKIN_DEPENDS ontologenius</div>
+          <div class="terminal_line">#  DEPENDS system_lib</div>
+          <div class="terminal_line">)</div>
+          <div class="terminal_line">...</div>
+          <div class="terminal_line"># include</div>
+          <div class="terminal_line">  ${catkin_INCLUDE_DIRS}</div>
+          <div class="terminal_line">  ${ontoloGenius_INCLUDE_DIRS}</div>
+          <div class="terminal_line">)</div>
+          <div class="terminal_line">...</div>
+        </div>
+
+        <h2>Create your executable</h2>
+        <p>Now we can create our executable that will use ontologenius. Create your main file that we call main.cpp.</p>
+        <p>In this part, we will not write our program but we will only configure the CMakeLists.txt file to compile our file by linking it to ontologenius.
+        To do this, simply add the following two lines:</p>
+        <div class="code_block">
+          <div class="terminal_line">add_executable(my_exe src/main.cpp)</div>
+          <div class="terminal_line">target_link_libraries(my_exe ${ontologenius_LIBRARIES})</div>
+        </div>
+
+        <p>You are now ready to write your program!</p>
+        <p>To see how to use ontologenius with its C ++ API, continue with the tutorial.</p>
+
+        <nav class="course-pagination">
+          <a href="InstallOntologenius.html" class="course-pagination__btn">
+            <i class="fas fa-angle-left"></i>
+            <span>Install Ontologenius</span>
+          </a>
+          <span class="course-pagination__separator"></span>
+          <a href="Tutorials.html" class="course-pagination__btn">
+            <span>Tutorials</span>
+            <i class="fas fa-angle-right"></i>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

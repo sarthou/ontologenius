@@ -1,0 +1,224 @@
+
+body {
+  background: #E5E5E5;
+  line-height:1;
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight:400;
+  transition-duration:1s;
+  font-size: 16px;
+}
+
+html, body {
+  height: 100%;
+}
+
+@keyframes appear {
+  0%   {opacity:0;}
+  100% {opacity:1;}
+}
+
+button {
+  position: absolute;
+  box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.75);
+  border: 5px solid transparent;
+  background: #000000;
+  color: #F0F0F0;
+  border-radius: 70px;
+  padding: 15px 15;
+  overflow: hidden;
+  width: 140px;
+  height: 140px;
+  white-space: nowrap;
+  font-weight: bold;
+  margin-left: calc(90px + 50px - 70px );
+
+  opacity:0;
+  animation-name: appear;
+  animation-duration: 3s;
+  animation-delay: 7s;
+  animation-fill-mode: forwards;
+
+  transition:
+    box-shadow 0.3s,
+    border     1.0s,
+    margin-left 1.0s,
+    all        1.0s 0.5s;
+}
+
+button > span {
+  transform: translateY(300px);
+  font-weight: normal;
+  opacity: 0;
+  transition:
+    opacity 0.1s,
+    transform 0.4s;
+}
+
+button:hover {
+  background: #d43617;
+  color: #0f0f0f;
+  width: 260px;
+  height: 260px;
+  border-radius: 130px;
+  border: 50px solid #a3a3a3;
+  box-shadow: 0px 0px 59px -20px rgba(0,0,0,0.75);
+  margin-left: calc(90px + 50px - 130px );
+  transition:
+    all        1.2s,
+    border     1.2s 0.5s,
+    margin-left 1.2s,
+    box-shadow 1.2s 0.5s;
+}
+
+button:hover > span {
+  display: inline-block;
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    opacity 0.1s 0.5s,
+    transform 0.4s 0.5s;
+}
+
+.header {
+  width: 100%;
+  height: 220px;
+}
+
+.main {
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+
+.main-left, .main-right {
+  width: 280px;
+  height: auto;
+}
+
+.main-left > button, .main-right > button {
+  display:block;
+}
+
+.main-center {
+  width: calc(100% - 280px * 2);
+}
+
+@keyframes up-box {
+  0%   {height: 0%;}
+  100% {height: 100%;}
+}
+
+@keyframes middle-box {
+  from   {width: 0%;}
+  to {width: calc(100% - 180px);}
+}
+
+@keyframes bottom-box {
+  0%   {height: 0%;}
+  100% {height: calc(100% - 220px);}
+}
+
+/* The element to apply the animation to */
+.up-stripe {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100px;
+  height: 0%;
+  background-color: #324a5e;
+  animation-name: up-box;
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+.middle-stripe {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  bottom: 100px;
+  width: 0%;
+  height: 100px;
+  background-color: #324a5e;
+  animation-name: middle-box;
+  animation-duration: 2.5s;
+  animation-delay: 1.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+
+  text-align: center;
+  text-indent: -150px;
+}
+
+.page-title {
+  position: absolute;
+  padding-top: 25px;
+  width: 300px;
+  font-family:Bookman;
+  font-size: 50px;
+  color: white;
+
+  opacity:0;
+  animation-name: appear;
+  animation-duration: 3s;
+  animation-delay: 7s;
+  animation-fill-mode: forwards;s
+}
+
+.right-side-stripe, .left-side-stripe {
+  position: absolute;
+  margin-left: 90px;
+  width: 100px;
+  height: 0%;
+  background-color: #324a5e;
+  animation-name: bottom-box;
+  animation-duration: 3s;
+  animation-delay: 4s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+.bl1 {
+  top: 300px;
+  transition:
+    top 1.0s,
+}
+.bl1:hover {
+  top: calc(300px - 130px + 70px);
+  transition:
+    top 1.2s,
+}
+
+.bl2 {
+  top: calc(300px + 280px);
+  transition:
+    top 1.0s,
+}
+.bl2:hover {
+  top: calc(300px + 280px - 130px + 70px);
+  transition:
+    top 1.2s,
+}
+
+.bl3 {
+  top: calc(300px + 280px * 2);
+  transition:
+    top 1.0s,
+}
+.bl3:hover {
+  top: calc(300px + 280px * 2 - 130px + 70px);
+  transition:
+    top 1.2s,
+}
+
+.main-content {
+  margin-top: 50px;
+}
+
+hr {
+  height: .25em;
+  padding: 0;
+  margin: 24px 0;
+  background-color: #a1a4a8;
+  border: 0;
+}

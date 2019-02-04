@@ -1,0 +1,490 @@
+<html lang="en_US">
+
+<head>
+  <title>Feed and generalize : Insert new knowledge</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../ontologenius.html">
+              <img src="../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/utility">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontoloGenius/utility">C++ API headers</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -588px;">
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="Presentation.html">1. Presentation of the problem</a></li>
+            <li class="level1"><a href="InsertNewKnowledge.html"><b>2. Insert new knowledge</b></a></li>
+            <li class="level1"><a href="MakeItProactive.html">3. Make our agent proactive</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../Tutorials.html">Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3><a href="CppAPI.html">All C++ Classes</a></h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <div class="toturial-header">
+          <h1 class="title">Feed and generalize</h1>
+          <a class="toturial-subheader">
+            <div class="toturial-subheader__main-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="toturial-subheader__title">
+              <h2 class="title">Do the birds fly ?</h2>
+            </div>
+          </a>
+        </div>
+
+        <h1 class="title">Insert new knowledge</h1>
+
+        <p>Before starting, here are some included, an ontology manipulator pointer, a small function that
+          removes the s of the plural of a word when it is present and especially some regular expressions
+          that I will explain to you.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
+          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;regex&gt;</span></div>
+          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
+          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;algorithm&gt;</span></div>
+          <div class="code_line"><br></div>
+          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ros/ros.h&quot;</span></div>
+          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;std_msgs/String.h&quot;</span></div>
+          <div class="code_line"><br></div>
+          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontoloGenius/utility/OntologyManipulator.h&quot;</span></div>
+          <div class="code_line"><br></div>
+          <div class="code_line"><span class="cpp_type">OntologyManipulator</span><span class="cpp_op">*</span> onto_;</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">std::<span class="cpp_type">regex</span> is_a(<span class="cpp_string">&quot;(a\\s|the\\s)?(\\w+)\\s(is\\sa|is\\san|are)\\s(\\w+)&quot;</span>);</div>
+          <div class="code_line">std::<span class="cpp_type">regex</span> property(<span class="cpp_string">&quot;(a\\s)?(\\w+)\\scan\\s(not\\s)?(\\w+)&quot;</span>);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">std::<span class="cpp_type">regex</span> question(<span class="cpp_string">&quot;can\\s(a\\s)?(\\w+)\\s(\\w+)\\s?\\?&quot;</span>);</div>
+          <div class="code_line">std::<span class="cpp_type">regex</span> what_is(<span class="cpp_string">&quot;what\\s(is|are)\\s(a\\s)?(\\w+)\\s?\\?&quot;</span>);</div>
+          <div class="code_line">std::<span class="cpp_type">regex</span> is_it_a(<span class="cpp_string">&quot;(is\\sa|are)\\s(\\w+)\\s(is\\sa\\s|is\\san\\s|a\\s|an\\s)?(\\w+)\\s?\\?&quot;</span>);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">std::<span class="cpp_type">string</span> singular(std::<span class="cpp_type">string</span> word)</div>
+          <div class="code_line">{</div>
+          <div class="code_line">  <span class="cpp_op">if</span>(word[word.size() <span class="cpp_op">-</span> <span class="cpp_value">1</span>] <span class="cpp_op">==</span> <span class="cpp_string">'s'</span>)</div>
+          <div class="code_line">    word <span class="cpp_op">=</span> word.substr(<span class="cpp_value">0</span>, word.size() <span class="cpp_op">-</span> <span class="cpp_value">1</span>);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  <span class="cpp_return">return</span> word;</div>
+          <div class="code_line">}</div>
+        </div>
+
+        <p>We have described here five regexes that correspond to the five types of sentences that our chatbot
+          will be able to understand. I'm not going to give you a lesson, but remember that an expression in
+          parentheses is what we call a match. When evaluating a regex on a string of characters, if the string
+          matches the regex, we will be able to recover each of these matches. Whenever you see (\\w+) it
+          means that at this end you want to retrieve the set of characters until the next space: so a word.</p>
+
+        <p>For example, the regex is_a accepts all the sentences of the type "bob is a man", "a chicken is
+          a bird" or "the birds are animals". This regex has four matches and the ones we are interested in
+          are the second and fourth. In the previous examples, the second match should be 'bob', 'chicken'
+          or 'birds' and the fourth 'man', 'bird' or 'animals'.</p>
+
+        <ul>
+          <li>The property regexp will accepts sentences of type : "a bird can fly" and "a bird can not swim"</li>
+          <li>The question regexp will accepts sentences of type : "can a bird fly ?"</li>
+          <li>The what_is regexp will accepts sentences of type : "what are kiwis ?" and "what is a bird ?"</li>
+          <li>The is_it_a regexp will accepts sentences of type : "is a kiwi a bird ?" and "are birds animals ?"</li>
+        </ul>
+
+        <p>We will now write the callback function of a ROS topic that will determine the type of sentence and
+          perform the actions corresponding to each type of sentence.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 27;">
+          <div class="code_line"><span class="cpp_type">void</span> inputCallback(<span class="cpp_op">const</span> std_msgs::<span class="cpp_type">String</span>::<span class="cpp_op">const</span>Ptr<span class="cpp_op">&</span> msg)</div>
+          <div class="code_line">{</div>
+          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> msg<span class="cpp_op">-></span>data <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+          <div class="code_line">  std::<span class="cpp_type">string</span> response <span class="cpp_op">=</span> <span class="cpp_string">&quot;&quot;</span>;</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  std::smatch match;</div>
+          <div class="code_line">  <span class="cpp_op">if</span>(std::regex_match(msg<span class="cpp_op">-></span>data, match, is_a))</div>
+          <div class="code_line">    onto_<span class="cpp_op">-></span>feeder.addInheritage( singular(match[<span class="cpp_value">2</span>].str()), singular(match[<span class="cpp_value">4</span>].str()) );</div>
+          <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(std::regex_match(msg<span class="cpp_op">-></span>data, match, property))</div>
+          <div class="code_line">  {</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(match[<span class="cpp_value">3</span>].str() <span class="cpp_op">==</span> <span class="cpp_string">&quot;&quot;</span>)</div>
+          <div class="code_line">    {</div>
+          <div class="code_line">      onto_<span class="cpp_op">-></span>feeder.removeProperty( singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span>+singular(match[<span class="cpp_value">4</span>].str()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+          <div class="code_line">      onto_<span class="cpp_op">-></span>feeder.addProperty( singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span>+singular(match[<span class="cpp_value">4</span>].str()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+          <div class="code_line">    }</div>
+          <div class="code_line">    <span class="cpp_op">else</span></div>
+          <div class="code_line">    {</div>
+          <div class="code_line">      onto_<span class="cpp_op">-></span>feeder.removeProperty( singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span>+singular(match[<span class="cpp_value">4</span>].str()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+          <div class="code_line">      onto_<span class="cpp_op">-></span>feeder.addProperty( singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span>+singular(match[<span class="cpp_value">4</span>].str()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+          <div class="code_line">    }</div>
+          <div class="code_line">  }</div>
+          <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(std::regex_match(msg<span class="cpp_op">-&gt;</span>data, match, question))</div>
+          <div class="code_line">  {</div>
+          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getOn(singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span> <span class="cpp_op">+</span> match[<span class="cpp_value">3</span>].str());</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
+          <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getOn(singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span> <span class="cpp_op">+</span> match[<span class="cpp_value">3</span>].str());</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">    <span class="cpp_op">if</span>(res.size())</div>
+          <div class="code_line">      response <span class="cpp_op">=</span> (res[<span class="cpp_value">0</span>] <span class="cpp_op">==</span> <span class="cpp_string">&quot;bool:true&quot;</span>) ? <span class="cpp_string">&quot;yes&quot;</span> : <span class="cpp_string">&quot;no&quot;</span>;</div>
+          <div class="code_line">    <span class="cpp_op">else</span></div>
+          <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;I do not know&quot;</span>;</div>
+          <div class="code_line">  }</div>
+          <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(std::regex_match(msg<span class="cpp_op">-&gt;</span>data, match, what_is))</div>
+          <div class="code_line">  {</div>
+          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getUp( singular(match[<span class="cpp_value">3</span>].str()), <span class="cpp_value">1</span>);</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
+          <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getUp( singular(match[<span class="cpp_value">3</span>].str()), <span class="cpp_value">1</span>);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
+          <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;I do not know&quot;</span>;</div>
+          <div class="code_line">    <span class="cpp_op">else</span></div>
+          <div class="code_line">    {</div>
+          <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;it is a : &quot;</span>;</div>
+          <div class="code_line">      for(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> res.size(); i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">        response <span class="cpp_op">+=</span> res[i] <span class="cpp_op">+</span> <span class="cpp_string">&quot; &quot;</span>;</div>
+          <div class="code_line">    }</div>
+          <div class="code_line">  }</div>
+          <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(std::regex_match(msg<span class="cpp_op">-&gt;</span>data, match, is_it_a))</div>
+          <div class="code_line">  {</div>
+          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getUp( singular(match[<span class="cpp_value">2</span>].str()) );</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
+          <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getUp( singular(match[<span class="cpp_value">2</span>].str()) );</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(std::find(res.begin(), res.end(), singular(match[<span class="cpp_value">4</span>].str()) ) <span class="cpp_op">!=</span> res.end())</div>
+          <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;yes&quot;</span>;</div>
+          <div class="code_line">    <span class="cpp_op">else</span></div>
+          <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;no&quot;</span>;</div>
+          <div class="code_line">  }</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  <span class="cpp_op">if</span>(response <span class="cpp_op">!=</span> <span class="cpp_string">&quot;&quot;</span>)</div>
+          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;==> &quot;</span> <span class="cpp_op">&lt;&lt;</span> response <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+          <div class="code_line">}</div>
+        </div>
+
+        <p>Let's break down the code:</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 33;">
+          <div class="code_line">  <span class="cpp_op">if</span>(std::regex_match(msg<span class="cpp_op">-></span>data, match, is_a))</div>
+        </div>
+
+        <p>We test here if the sentence sent to the topic corresponds to the regexp is_a. If so, then the
+           different matches will be put in the match variable. We will do the same for all the regexp.</p>
+
+         <div class="code_block cpp_code" style="counter-reset:code_line 34;">
+           <div class="code_line">    onto_<span class="cpp_op">-></span>feeder.addInheritage( singular(match[<span class="cpp_value">2</span>].str()), singular(match[<span class="cpp_value">4</span>].str()) );</div>
+         </div>
+
+         <p>If the sentence matches a heritage relationship, we add the inheritance relationship via the
+           member feeder of the ontology manipulator.</p>
+         <p>Note that we do not directly pass the matches in the parameters but their singular version.</p>
+
+         <div class="code_block cpp_code" style="counter-reset:code_line 37;">
+           <div class="code_line">    <span class="cpp_op">if</span>(match[<span class="cpp_value">3</span>].str() <span class="cpp_op">==</span> <span class="cpp_string">&quot;&quot;</span>)</div>
+           <div class="code_line">    {</div>
+           <div class="code_line">      onto_<span class="cpp_op">-></span>feeder.removeProperty( singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span>+singular(match[<span class="cpp_value">4</span>].str()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+           <div class="code_line">      onto_<span class="cpp_op">-></span>feeder.addProperty( singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span>+singular(match[<span class="cpp_value">4</span>].str()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+           <div class="code_line">    }</div>
+        </div>
+
+        <p>The third match must contain "not" if the sentence is in its negative form and nothing if it is
+          in its positive form.</p>
+        <p>If the sentence is in its positive form, we remove the data property "can_verb" with the booleene value
+          false and add it with the value true. Although it seems strange, ontologenius allows an individual to own
+          the same property with different values. To be sure that this does not happen here because it does not
+          make sense with booleens, we remove the value false before adding true. This is no problem removing a
+          property that does not exist on an individual, it will have no effect. However, if we add to it the
+          knowledge that a bird can not swim and that later we tell him who finally a bird can swim, we will be
+          sure that the first knowledge will be removed.</p>
+        <p>We do the same for the negative form by removing the value true and adding the value false.</p>
+
+        <p>Note, however, that we are applying a data property of the form "can_verb" to an individual or class
+          without ever having defined this property before. In fact, if ontologenius does not find the said
+          property it will create it alone by determining its type with respect to the data pointed. For all
+          times after, the property will exist and will be reused.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 50;">
+          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getOn(singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span> <span class="cpp_op">+</span> match[<span class="cpp_value">3</span>].str());</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
+          <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getOn(singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span> <span class="cpp_op">+</span> match[<span class="cpp_value">3</span>].str());</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">    <span class="cpp_op">if</span>(res.size())</div>
+          <div class="code_line">      response <span class="cpp_op">=</span> (res[<span class="cpp_value">0</span>] <span class="cpp_op">==</span> <span class="cpp_string">&quot;bool:true&quot;</span>) ? <span class="cpp_string">&quot;yes&quot;</span> : <span class="cpp_string">&quot;no&quot;</span>;</div>
+          <div class="code_line">    <span class="cpp_op">else</span></div>
+          <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;I do not know&quot;</span>;</div>
+        </div>
+
+        <p>We are trying here to answer a question such as "can a kiwi fly?" We want to know if the concept
+          "kiwi" has the property "can_fly" with the value true or false. To get this information, we can
+          use the getOn function seen in the previous tutorial. However, we do not know if the concept we are
+          working on is of individual type or class type. The simplest way is to look at whether we have had
+          an answer on the individuals and to test on the classes otherwise.</p>
+
+        <p>If we got an answer, it will be in the form "type: value".</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 61;">
+          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getUp( singular(match[<span class="cpp_value">3</span>].str()), <span class="cpp_value">1</span>);</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
+          <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getUp( singular(match[<span class="cpp_value">3</span>].str()), <span class="cpp_value">1</span>);</div>
+        </div>
+
+        <p>Here we try to answer a question such as "what is a kiwi?" You should directly think about using
+          the getUp! However, this function will give us all the inheritance trees, which is not relevant
+          to answer this question. This is why we add the second parameter to this function, defined here
+          as 1. This value corresponds to the depth of exploration of the inheritance tree. By setting this
+          parameter to 1, we ask to have only direct inheritances.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 76;">
+          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getUp( singular(match[<span class="cpp_value">2</span>].str()) );</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
+          <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getUp( singular(match[<span class="cpp_value">2</span>].str()) );</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(std::find(res.begin(), res.end(), singular(match[<span class="cpp_value">4</span>].str()) ) <span class="cpp_op">!=</span> res.end())</div>
+        </div>
+
+        <p>Finally, we finish on a question of the type "is a kiwi is an animal?". To answer this,
+          nothing more simple, we will recover all the heritage tree and we look if the concept of
+          inheritance suposse is present in.</p>
+
+        <p>Finally, we can write our main function which creates the ontology manipulator, close the ontology
+          and subscribes to the topic "feed_and_generalize/in".</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 89;">
+          <div class="code_line"><span class="cpp_type">int</span> main(<span class="cpp_type">int</span> argc, <span class="cpp_type">char</span><span class="cpp_op">**</span> argv)</div>
+          <div class="code_line">{</div>
+          <div class="code_line">  ros::init(argc, argv, <span class="cpp_string">&quot;feed_and_generalize&quot;</span>);</div>
+          <div class="code_line">  ros::<span class="cpp_type">NodeHandle</span> n;</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  <span class="cpp_type">OntologyManipulator</span> onto(<span class="cpp_op">&</span>n);</div>
+          <div class="code_line">  onto_ <span class="cpp_op">=</span> <span class="cpp_op">&</span>onto;</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  onto.close();</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  sleep(<span class="cpp_value">1</span>);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  onto.feeder.addConcept(<span class="cpp_string">&quot;bird&quot;</span>);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  ros::<span class="cpp_type">Subscriber</span> sub <span class="cpp_op">=</span> n.subscribe(<span class="cpp_string">&quot;feed_and_generalize/in&quot;</span>, <span class="cpp_value">1000</span>, inputCallback);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  ros::spin();</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  <span class="cpp_return">return</span> <span class="cpp_value">0</span>;</div>
+          <div class="code_line">}</div>
+        </div>
+
+        <p>Before moving on, note that we add the concept "bird" before commncer. This is because to
+          build ontology, ontologenius must always know at least one concept. For example, if we want to
+          add the fact that a bird is an animal, ontologenius must know either bird or animal and will
+          automatically create the second if it does not exist yet.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 101;">
+          <div class="code_line">  onto.feeder.addConcept(<span class="cpp_string">&quot;bird&quot;</span>);</div>
+        </div>
+
+        <h2>Let's test!</h2>
+
+        <p>Now that everything is ready, let's launch our program and in another terminal explain to it
+          that a kiwi is a bird and that it can not fly:</p>
+
+        <div class="code_block">
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a kiwi is a bird'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a kiwi can not fly'&quot;</div>
+        </div>
+
+        <p>We can already ask it some questions to evaluate what it knows thanks to this new information:</p>
+
+        <div class="code_block">
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'what is a kiwi?'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a kiwi fly ?'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'is a kiwi an animal?'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        </div>
+
+        <p>It should answer you (in the terminal where the program is launched) that a kiwi is a bird and
+          it can not fly. You should also have that a kiwi is not an animal (since it does not even know what
+          an animal is) and that it does not know if a bird can fly (since it was not nothing says about it).</p>
+
+        <p>We can explain to it that a bird is an animal and ask it again if a kiwi is an animal:</p>
+
+        <div class="code_block">
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'birds are animals'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'is a kiwi an animal?'&quot;</div>
+        </div>
+
+        <p>It is obvious but now our program responds to us that a kiwi is an animal as a kiwi is a bird and a
+          bird is an animal.</p>
+
+        <p>So let's learn it the concept of a penguin who is a bird that can not fly and then ask it again if
+          a bird can fly:</p>
+
+        <div class="code_block">
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a penguin is a bird'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a penguin can not fly'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        </div>
+
+        <p>Surprisingly, our program now responds to the fact that birds can not fly, which is wrong, but
+          above all, that we have never told it!</p>
+
+        <p>This is in fact due to the generalization mechanism. Since all the birds it knows can not fly,
+          it has deduced by itself that all birds can not fly. To excuse it for this mistake, it must be
+          said that we did not help it.</p>
+
+        <p>The basic principle is that ontologenius realizes a generalization if 75% of the individuals
+          inheriting from the same classes have the same property and that from two individuals.</p>
+
+        <p>Trying to remove this property with the call of the removeProperty function would have no effect
+          since it would be deduced again. To make this property accurate, it should be explicitly told that
+          birds can fly but we will not do that.</p>
+
+        <p>Before continuing, kill ontologenius and so your program then restart it and ask it again if the
+          birds can fly.</p>
+
+        <div class="code_block">
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        </div>
+
+        <p>It should answer you again no. Yet you have stopped ontologenius .... This is where we understand its
+          long-term memory principle as well as the usefulness of the internal file. When stopping ontologenius,
+           it stored all its knowledge in the internal file that it reloaded at restart.</p>
+
+       <p>We will now teach it the principle of a parrot that is a bird capable of flying and ask it again if
+         the birds can fly.</p>
+
+        <div class="code_block">
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a parrot is a bird'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a parrot can fly'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        </div>
+
+        <p>You had to suspect that the 75% condition is no longer true and our program finds itself in
+          the inability to know whether birds can fly or not.</p>
+
+        <p>Let's learn it five new birds that can all fly to reach the threshold of 75%.</p>
+
+        <div class="code_block">
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a dove is a bird'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a dove can fly'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a heron is a bird'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a heron can fly'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a gull is a bird'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a gull can fly'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a eagle is a bird'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a eagle can fly'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a albatross is a bird'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a albatross can fly'&quot;</div>
+        </div>
+
+        <p>By asking it one last time if the birds can fly you should finally have a good answer from it and
+          this without ever having explicitly told it.</p>
+
+        <div class="code_block">
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        </div>
+
+        <p>As I did in the introduction of this tutorial, simply teach it that a phalarope is a bird and ask it
+          if it can fly:</p>
+
+        <div class="code_block">
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a phalarope is a bird'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a phalarope fly ?'&quot;</div>
+        </div>
+
+        <p>Since it has no information about this and because thinking that birds can fly in general, it
+          estimates that the phalarope should be able to fly.</p>
+
+        <p>However, by asking if a kiwi can fly, you should always have the answer that not that you have
+          explicitly given this knowledge.</p>
+
+        <div class="code_block">
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a kiwi fly ?'&quot;</div>
+        </div>
+
+        <p>So we have seen here how to add new knowledge during the execution of the program and the impact of
+          this through the mechanism of generalization.</p>
+
+        <p>If you wish, you can delete the internal file ontologenius has created and try again by adding
+          the following line just before closing the ontology in the main function.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 96;">
+          <div class="code_line">onto.reasoners.deactivate(<span class="cpp_string">&quot;ReasonerGeneralize&quot;</span>);</div>
+        </div>
+
+        <p>In fact, the generalization mechanism is a reasoning plugin that like all these mechanisms can be
+          active or not through the reasoning manager.</p>
+
+        <p>However, if you do not delete the ontologenius internal file, the generalization has already been
+          done and will remain so. It will just not be able to achieve new generalizations.</p>
+
+        <nav class="course-pagination">
+          <a href="Presentation.html" class="course-pagination__btn">
+            <i class="fas fa-angle-left"></i>
+            <span>Presentation of the problem</span>
+          </a>
+          <span class="course-pagination__separator"></span>
+          <a href="MakeItProactive.html" class="course-pagination__btn">
+            <span>Make our agent proactive</span>
+            <i class="fas fa-angle-right"></i>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,183 @@
+<html lang="en_US">
+
+<head>
+  <title>Advanced knowledge exploration : Better understand our environment</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../ontologenius.html">
+              <img src="../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/utility">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontoloGenius/utility">C++ API headers</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -588px;">
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="Presentation.html">1. Presentation of the problem</a></li>
+            <li class="level1"><a href="FindOurWay.html">2. Find our way</a></li>
+            <li class="level1"><a href="UnderstandOurEnvironment.html"><b>3. Better understand our environment</b></a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../Tutorials.html">Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3><a href="CppAPI.html">All C++ Classes</a></h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <div class="toturial-header">
+          <h1 class="title">Advanced knowledge exploration</h1>
+          <a class="toturial-subheader">
+            <div class="toturial-subheader__main-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="toturial-subheader__title">
+              <h2 class="title">How to go home ?</h2>
+            </div>
+          </a>
+        </div>
+
+        <h1 class="title">Better understand our environment</h1>
+
+        <p>Bob arrives well at home but he rolls on the pedestrian paths with his car ...</p>
+
+        <p>To settle this, we could use inheritance seen in the previous tutorial to check the type
+          of path but you must already imagine the complexity that it will generate.</p>
+
+        <p>Instead of doing this, we will use the third parameter of the getOn and getFrom functions which
+          is in fact optional. This third parameter is what we will call a selector. If it is set, the
+          functions will only return the individuals inheriting the selector.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+          <div class="code_line">std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt; findRoutes(std::<span class="cpp_type">string</span> path_from, std::<span class="cpp_type">string</span> path_to, std::<span class="cpp_type">string</span> selector)</div>
+        </div>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 18;">
+          <div class="code_line">      std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; intersections <span class="cpp_op">=</span> onto_-&gt;individuals.getFrom(<span class="cpp_string">&quot;isAlong&quot;</span>, routes[route_i][size], selector);</div>
+        </div>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 22;">
+          <div class="code_line">        std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; paths <span class="cpp_op">=</span> onto_-&gt;individuals.getOn(intersections[int_i], <span class="cpp_string">&quot;isAlong&quot;</span>, selector);</div>
+        </div>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 48;">
+          <div class="code_line">std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; find(std::<span class="cpp_type">string</span> from, std::<span class="cpp_type">string</span> to, std::<span class="cpp_type">string</span> selector)</div>
+        </div>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 53;">
+          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; path_from <span class="cpp_op">=</span> onto_-&gt;individuals.getOn(from, <span class="cpp_string">&quot;isAlong&quot;</span>, selector);</div>
+          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; path_to <span class="cpp_op">=</span> onto_-&gt;individuals.getFrom(<span class="cpp_string">&quot;hasAlong&quot;</span>, to, selector);</div>
+        </div>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 59;">
+          <div class="code_line">      std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt; routes <span class="cpp_op">=</span> findRoutes(path_from[from_i], path_to[to_i], selector);</div>
+        </div>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 73;">
+          <div class="code_line">std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; route;</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">route <span class="cpp_op">=</span> find(<span class="cpp_string">&quot;pub&quot;</span>, <span class="cpp_string">&quot;house&quot;</span>, <span class="cpp_string">&quot;path&quot;</span>);</div>
+          <div class="code_line">displayRoute(route);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">route <span class="cpp_op">=</span> find(<span class="cpp_string">&quot;house&quot;</span>, <span class="cpp_string">&quot;car&quot;</span>, <span class="cpp_string">&quot;path&quot;</span>);</div>
+          <div class="code_line">displayRoute(route);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">route <span class="cpp_op">=</span> find(<span class="cpp_string">&quot;car&quot;</span>, <span class="cpp_string">&quot;house&quot;</span>, <span class="cpp_string">&quot;road&quot;</span>);</div>
+          <div class="code_line">displayRoute(route);</div>
+        </div>
+
+        <p>Well we have already finished. It would be almost too simple ...</p>
+        <p>Compile and launch the program. You should have the following result:</p>
+        <div class="code_block">
+          <div class="terminal_line">road_2 - int_7 - pp_4 - int_12 - road_3 -</div>
+          <div class="terminal_line">road_3 - int_11 - pp_3 - int_10 - road_4 -</div>
+          <div class="terminal_line">road_4 - int_5 - road_2 - int_6 - road_5 - int_3 - road_1 - int_4 - road_6 - int_13 - road_3 -</div>
+        </div>
+        <p>This time it's good, Bob stopped driving on pedestrian paths.</p>
+
+        <h2>Go further</h2>
+
+        <p>We have seen here that properties applied to individuals but properties can also be applied to
+          the general concepts of classes. Moreover, we have only seen two properties exploration functions
+          while there are many more. To go further, I advise you to go take a look at the documentation of
+          the API that presents all of these functions : <a href="../IndividualClient.html"><b>IndividualClient</b></a>
+         and <a href="../ClassClient.html"><b>ClassClient</b></a>.</p>
+
+        <nav class="course-pagination">
+          <a href="FindOurWay.html" class="course-pagination__btn">
+            <i class="fas fa-angle-left"></i>
+            <span>Find our way</span>
+          </a>
+          <span class="course-pagination__separator"></span>
+          <a href="../tutorial3/Presentation.html" class="course-pagination__btn">
+            <span>Next tutorial : Feed and generalize</span>
+            <i class="fas fa-angle-right"></i>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

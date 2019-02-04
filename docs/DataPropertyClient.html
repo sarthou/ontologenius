@@ -1,0 +1,153 @@
+<html lang="en_US">
+
+<head>
+  <title>DataPropertyClient Class | Ontologenius 0.2.0</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="images/favicon.ico" rel="shortcut icon">
+  <link href="images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="images/favicon-16x16.png" rel="icon" type="image/png">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="ontologenius.html">
+              <img src="images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/utility">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontoloGenius/utility">C++ API headers</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius API Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -588px;">
+        <div class="contents class-content">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="#public-functions">Public Functions</a></li>
+            <li class="level1"><a href="#reimplemented-public-functions">Reimplemented Public Functions</a></li>
+            <li class="level1"><a href="#reimplemented-protected-functions">Reimplemented Protected Functions</a></li>
+            <li class="level1"><a href="#details">Detailed Description</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="Download.html">Download</a></li>
+            <li class="level1"><a href="InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="Tutorials.html">Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3><a href="CppAPI.html">All C++ Classes</a></h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="DataPropertyClient.html"><b>DataPropertyClient</b></a></li>
+            <li class="level1"><a href="FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">DataPropertyClient Class</h1>
+        <p>The DataPropertyClient class provides a ROS service abstraction for data properties exploration. <a href="#details">More...</a></p>
+        <div class="table">
+          <table class="alignedsummary">
+          <tbody><tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontoloGenius/utility/clients/ontologyClients/DataPropertyClient.h&quot;</span>
+          </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="OntologyClient.html">OntologyClient</a></td></tr></tbody></table>
+        </div>
+
+        <a name="public-functions"></a>
+        <h2 id="public-functions">Public Functions</h2>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyClient.html#DataPropertyClient">DataPropertyClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyClient.html#getDown">getDown</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyClient.html#getDisjoint">getDisjoint</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyClient.html#getDomain">getDomain</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyClient.html#getRange">getRange</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="reimplemented-public-functions"></a>
+        <h2 id="reimplemented-public-functions">Reimplemented Public Functions</h2>
+        <ul>
+          <li class="fn">4 public functions inherited from <a href="OntologyClient.html#public-functions">OntologyClient</a></li>
+          <li class="fn">2 public functions inherited from <a href="ClientBase.html#public-functions">ClientBase</a></li>
+        </ul>
+
+        <a name="details"></a>
+        <div class="descr">
+          <h2 id="details">Detailed Description</h2>
+          <p>The DataPropertyClient class provides an abstraction of ontologenius data properties ROS service.</p>
+          <p>The ontologenius data properties service allow the exploration of data properties cotained by ontologenius core.</p>
+          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with ontologenius/data_property service. The persistent connection ensure a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+        </div>
+
+        <p><b>See also </b><a href="IndividualClient.html">IndividualClient</a>, <a href="ClassClient.html">ClassClient</a> and <a href="ObjectPropertyClient.html">ObjectPropertyClient</a>.</p>
+
+        <div class="func">
+          <h2>Public Function Documentation</h2>
+
+          <h3 class="fn" id="DataPropertyClient"><a name="DataPropertyClient"></a>DataPropertyClient::<span class="name">DataPropertyClient</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Constructs a class client with a pointer to a NodeHandle <i>n</i>.</p>
+          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
+
+          <h3 class="fn" id="getDown"><a name="getDown"></a><span class="type">std::vector&lt;std::string&gt;</span> DataPropertyClient::<span class="name">getDown</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">int</span> <i>depth</i> = -1)</h3>
+          <p>Gives all properties below the one given in the parameter: <i>name</i>.</p>
+          <p>The optional <i>depth</i> parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
+
+          <h3 class="fn" id="getDisjoint"><a name="getDisjoint"></a><span class="type">std::vector&lt;std::string&gt;</span> DataPropertyClient::<span class="name">getDisjoint</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Gives all the disjoint properties of the property <i>name</i>.</p>
+
+          <h3 class="fn" id="getDomain"><a name="getDomain"></a><span class="type">std::vector&lt;std::string&gt;</span> DataPropertyClient::<span class="name">getDomain</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Gives all the domains classes of the property <i>name</i>.</p>
+
+          <h3 class="fn" id="getRange"><a name="getRange"></a><span class="type">std::vector&lt;std::string&gt;</span> DataPropertyClient::<span class="name">getRange</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Gives all the ranges types of the property <i>name</i>.</p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
