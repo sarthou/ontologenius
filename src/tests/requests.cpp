@@ -140,7 +140,7 @@ TEST(requests_tests, reasoners_list_call)
                             (find(res.begin(), res.end(), "ReasonerNone") != res.end()) &&
                             (find(res.begin(), res.end(), "ReasonerSymetric") != res.end()) &&
                             (find(res.begin(), res.end(), "ReasonerGeneralize") != res.end()) &&
-                            (find(res.begin(), res.end(), "ReasonerRangeDomain")));
+                            (find(res.begin(), res.end(), "ReasonerRangeDomain") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
