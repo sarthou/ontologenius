@@ -10,6 +10,7 @@ ReasonerGeneralize::ReasonerGeneralize()
 
 void ReasonerGeneralize::periodicReason()
 {
+  return;
   std::vector<ClassBranch_t*> classes = ontology_->class_graph_.getSafe();
 
   if(classes.size() > 0)
@@ -45,9 +46,9 @@ void ReasonerGeneralize::periodicReason()
           data_counter.add(down->data_properties_name_[j], down->data_properties_data_[j].toString());
       }
 
+      lock_shared.unlock();
       lock_indiv_shared.unlock();
       std::lock_guard<std::shared_timed_mutex> lock_indiv(ontology_->individual_graph_.mutex_);
-      lock_shared.unlock();
       std::lock_guard<std::shared_timed_mutex> lock(ontology_->class_graph_.mutex_);
 
       std::vector<DataPropertyBranch_t*> data_properties;
