@@ -26,9 +26,9 @@ public:
   virtual void close() = 0;
 
   virtual std::vector<B*> get() = 0;
-  virtual B* findBranch(std::string name);
-  virtual B* findBranchUnsafe(std::string name);
-  virtual B* create(std::string name);
+  virtual B* findBranch(const std::string& name);
+  virtual B* findBranchUnsafe(const std::string& name);
+  virtual B* create(const std::string& name);
 
   BranchContainerMap<B> container_;
 
@@ -40,26 +40,20 @@ public:
 };
 
 template <typename B>
-B* Graph<B>::findBranch(std::string name)
+B* Graph<B>::findBranch(const std::string& name)
 {
-  B* indiv = nullptr;
   std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-  indiv = container_.find(name);
-
-  return indiv;
+  return container_.find(name);
 }
 
 template <typename B>
-B* Graph<B>::findBranchUnsafe(std::string name)
+B* Graph<B>::findBranchUnsafe(const std::string& name)
 {
-  B* indiv = nullptr;
-  indiv = container_.find(name);
-
-  return indiv;
+  return container_.find(name);
 }
 
 template <typename B>
-B* Graph<B>::create(std::string name)
+B* Graph<B>::create(const std::string& name)
 {
   B* indiv = nullptr;
   {
