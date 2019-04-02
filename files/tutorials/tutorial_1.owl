@@ -96,7 +96,6 @@
 
 
 
-
    <!-- tutorial_1#man -->
 
    <owl:Class rdf:about="tutorial_1#man">
@@ -151,11 +150,11 @@
 
 
 
-        <!-- tutorial_1#vegetable -->
+        <!-- tutorial_1#color -->
 
         <owl:Class rdf:about="tutorial_1#color">
-            <rdfs:label xml:lang="en">vegetable</rdfs:label>
-            <rdfs:label xml:lang="fr">légume</rdfs:label>
+            <rdfs:label xml:lang="en">color</rdfs:label>
+            <rdfs:label xml:lang="fr">couleur</rdfs:label>
         </owl:Class>
 
 
@@ -216,6 +215,40 @@
            <rdfs:subClassOf rdf:resource="tutorial_1#color"/>
            <rdfs:label xml:lang="en">orange</rdfs:label>
            <rdfs:label xml:lang="fr">orange</rdfs:label>
+       </owl:Class>
+
+
+
+
+        <!-- tutorial_1#animal -->
+
+       <owl:Class rdf:about="tutorial_1#animal">
+           <rdfs:subClassOf rdf:resource="tutorial_1#agent"/>
+           <rdfs:label xml:lang="en">animal</rdfs:label>
+           <rdfs:label xml:lang="fr">animal</rdfs:label>
+       </owl:Class>
+
+
+
+
+        <!-- tutorial_1#dog -->
+
+       <owl:Class rdf:about="tutorial_1#dog">
+           <rdfs:subClassOf rdf:resource="tutorial_1#animal"/>
+           <rdfs:label xml:lang="en">dog</rdfs:label>
+           <rdfs:label xml:lang="fr">chien</rdfs:label>
+       </owl:Class>
+
+
+
+
+
+        <!-- tutorial_1#cat -->
+
+       <owl:Class rdf:about="tutorial_1#cat">
+           <rdfs:subClassOf rdf:resource="tutorial_1#animal"/>
+           <rdfs:label xml:lang="en">cat</rdfs:label>
+           <rdfs:label xml:lang="fr">chat</rdfs:label>
        </owl:Class>
 
 
@@ -462,6 +495,30 @@
         <rdf:type rdf:resource="tutorial_1#cup"/>
         <rdfs:label xml:lang="en">green cup</rdfs:label>
         <rdfs:label xml:lang="fr">tasse verte</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+
+
+     <!-- tutorial_1#a_dog -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#a_dog">
+        <rdfs:type rdf:resource="tutorial_1#dog"/>
+        <rdfs:label xml:lang="en">a dog</rdfs:label>
+        <rdfs:label xml:lang="fr">un chien</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+
+
+     <!-- tutorial_1#a_cat -->
+
+    <owl:NamedIndividual rdf:about="tutorial_1#a_cat">
+        <rdfs:type rdf:resource="tutorial_1#cat"/>
+        <rdfs:label xml:lang="en">a cat</rdfs:label>
+        <rdfs:label xml:lang="fr">un chat</rdfs:label>
     </owl:NamedIndividual>
 
 </rdf:RDF>
