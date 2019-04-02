@@ -8,6 +8,7 @@
 #include <unordered_set>
 #include <stdio.h>
 #include <math.h>
+#include <atomic>
 
 class FileReader
 {
@@ -64,6 +65,13 @@ private:
 using namespace std::chrono;
 
 OntologyManipulator* onto_ptr;
+std::atomic<bool> end_;
+
+void chatterCallback(const std_msgs::String::ConstPtr& msg)
+{
+  end_ = true;
+  std::cout << "end" << std::endl;
+}
 
 std::vector<std::string> readNbWords(size_t nb)
 {
@@ -94,21 +102,22 @@ std::vector<std::string> readNbWords(size_t nb)
 
 void insertWords(std::vector<std::string>& words, bool individual)
 {
-  ros::Rate wait(100);
+  ros::Rate wait(10000);
   if(individual == false)
   {
     onto_ptr->feeder.addConcept("tmp");
     for(size_t i = 0; i < words.size(); i++)
     {
       onto_ptr->feeder.addInheritage("tmp", words[i]);
-      //wait.sleep();
+      onto_ptr->feeder.addLanguage(words[i], "en", words[i]);
+      wait.sleep();
     }
   }
   else
     for(size_t i = 0; i < words.size(); i++)
     {
       onto_ptr->feeder.addConcept(words[i]);
-      //wait.sleep();
+      wait.sleep();
     }
 
 }
@@ -116,93 +125,73 @@ void insertWords(std::vector<std::string>& words, bool individual)
 double find(std::vector<std::string>& words, bool individual)
 {
   size_t syn = 0;
+  high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
   if(individual == false)
   {
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
     for(size_t j = 0; j < 3; j++)
       for(size_t i = 0; i < words.size(); i++)
       {
-        std::vector<std::string> none = onto_ptr->classes.getUp(words[i]);
+        std::vector<std::string> none = onto_ptr->classes.find(words[i]);
         syn += none.size();
       }
-
-    std::cout << syn << " SYN" << std::endl;
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-    return time_span.count() /3;// (double)(words.size() * 3);
   }
   else
   {
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
     for(size_t j = 0; j < 3; j++)
       for(size_t i = 0; i < words.size(); i++)
       {
         std::vector<std::string> none = onto_ptr->individuals.find(words[i]);
         syn += none.size();
       }
-
-    std::cout << syn << " SYN" << std::endl;
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-    return time_span.count() /3;// (double)(words.size() * 3);
   }
+
+  high_resolution_clock::time_point t2 = high_resolution_clock::now();
+  duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+  return time_span.count() * 1000 /1;
 }
 
 double getName(std::vector<std::string>& words, bool individual)
 {
+  high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
   if(individual == false)
   {
-    std::vector<std::string> verify;
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
-    for(size_t j = 0; j < 3; j++)
-    {
-      verify.clear();
+    for(size_t j = 0; j < 1; j++)
       for(size_t i = 0; i < words.size(); i++)
-        verify.push_back(onto_ptr->classes.getName(words[i]));
-    }
-
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-
-    size_t err = 0;
-    for(size_t i = 0; i < words.size(); i++)
-      if(words[i] != verify[i])
-      {
-        err++;
-        std::cout << words[i] << " : " << verify[i] << std::endl;
-      }
-    std::cout << err << " errors" << std::endl;
-
-    return time_span.count() / 3;// (double)(words.size() * 3);
+        onto_ptr->classes.getName(words[i]);
   }
   else
   {
-    std::vector<std::string> verify;
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
-    for(size_t j = 0; j < 3; j++)
-    {
-      verify.clear();
+    for(size_t j = 0; j < 1; j++)
       for(size_t i = 0; i < words.size(); i++)
-        verify.push_back(onto_ptr->individuals.getName(words[i]));
-    }
-
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-
-    size_t err = 0;
-    std::cout << words.size() << " : " << verify.size() << std::endl;
-    for(size_t i = 0; i < words.size(); i++)
-      if(words[i] != verify[i])
-        err++;
-    std::cout << err << " errors" << std::endl;
-
-    return time_span.count() / 3;//(double)(words.size() * 3);
+        onto_ptr->individuals.getName(words[i]);
   }
+
+  high_resolution_clock::time_point t2 = high_resolution_clock::now();
+  duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+
+  return time_span.count() * 1000 / 1;
+}
+
+double getNames(std::vector<std::string>& words, bool individual)
+{
+  double nb = 0;
+
+  if(individual == false)
+  {
+    for(size_t j = 0; j < 1; j++)
+      for(size_t i = 0; i < words.size(); i++)
+        nb += onto_ptr->classes.getNames(words[i]).size();
+  }
+  else
+  {
+    for(size_t j = 0; j < 1; j++)
+      for(size_t i = 0; i < words.size(); i++)
+        nb += onto_ptr->individuals.getNames(words[i]).size();
+  }
+
+  return nb/words.size();
 }
 
 int main(int argc, char** argv)
@@ -213,58 +202,42 @@ int main(int argc, char** argv)
   OntologyManipulator onto(&n);
   onto_ptr = &onto;
 
+  ros::Rate wait(1);
+  ros::Rate fast(100);
+
+  ros::Subscriber sub = n.subscribe("ontologenius/end", 1000, chatterCallback);
+
   onto.verbose(true);
 
   onto.actions.reset();
   onto.close();
+  wait.sleep();
 
   std::vector<size_t> nb_words = {100, 500, 1000, 5000, 10000, 50000, 100000, 450000};
-  std::vector<double> finds, getNames;
-  ros::Rate wait(0.2);
+  std::vector<double> finds, gettedNames;
 
   for(size_t i = 0; i < nb_words.size(); i++)
   {
-    wait.sleep();
-
+    end_ = false;
+    std::cout << "will insert" << std::endl;
     std::vector<std::string> words = readNbWords(nb_words[i]);
     insertWords(words, false);
 
-    wait.sleep();
+    std::cout << "wait" << std::endl;
+    while(end_ == false)
+    {
+      ros::spinOnce();
+      fast.sleep();
+    }
 
-    finds.push_back(find(words, false));
-    getNames.push_back(getName(words, false));
-
-    onto.actions.reset();
-    onto.close();
-  }
-
-  for(size_t j = 0; j < nb_words.size(); j++)
-    std::cout << nb_words[j] << ";";
-  std::cout << std::endl;
-  for(size_t j = 0; j < nb_words.size(); j++)
-    std::cout << finds[j] << ";";
-  std::cout << std::endl;
-  for(size_t j = 0; j < nb_words.size(); j++)
-    std::cout << getNames[j] << ";";
-  std::cout << std::endl;
-
-  finds.clear();
-  getNames.clear();
-  /*for(size_t i = 0; i < nb_words.size(); i++)
-  {
-    wait.sleep();
-
-    std::vector<std::string> words = readNbWords(nb_words[i]);
-    insertWords(words, true);
-
-    wait.sleep();
-
-    finds.push_back(find(words, true));
-    getNames.push_back(getName(words, true));
+    finds.push_back(find(words, false) / nb_words[i]);
+    gettedNames.push_back(getName(words, false) / nb_words[i]);
 
     onto.actions.reset();
     onto.close();
+    wait.sleep();
 
+    std::cout << "*********" << std::endl;
     for(size_t j = 0; j < finds.size(); j++)
       std::cout << nb_words[j] << ";";
     std::cout << std::endl;
@@ -272,9 +245,23 @@ int main(int argc, char** argv)
       std::cout << finds[j] << ";";
     std::cout << std::endl;
     for(size_t j = 0; j < finds.size(); j++)
-      std::cout << getNames[j] << ";";
+      std::cout << gettedNames[j] << ";";
     std::cout << std::endl;
-  }*/
+    std::cout << "*********" << std::endl;
+  }
+
+  std::vector<std::string> words = readNbWords(450000);
+  insertWords(words, false);
+
+  std::cout << "wait" << std::endl;
+  while(end_ == false)
+  {
+    ros::spinOnce();
+    fast.sleep();
+  }
+
+  std::cout << "mean words = " << getNames(words, false) << std::endl;
+
 
   ROS_DEBUG("test done");
 

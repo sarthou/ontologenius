@@ -427,13 +427,9 @@ void RosInterface::feedThread()
     if(run == true)
     {
       if(feeder_end == true)
-      {
         feeder_end = false;
-        std::cout << "feed start" << std::endl;
-      }
 
       reasoners_.runPostReasoners();
-      std::cout << "runPostReasoners" << std::endl;
 
       std_msgs::String msg;
       std::vector<std::string> notifications = feeder_.getNotifications();
@@ -450,7 +446,6 @@ void RosInterface::feedThread()
       std_msgs::String msg;
       msg.data = "end";
       pub_.publish(msg);
-      std::cout << "feed end" << std::endl;
     }
     feeder_mutex_.unlock();
     wait.sleep();
