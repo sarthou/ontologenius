@@ -9,7 +9,7 @@ function(add_onto_library TARGET)
         message(FATAL_ERROR "Expected source file list after target name")
     endif()
     add_library(${TARGET} ${ARGN})
-    add_dependencies(${TARGET} ${catkin_EXPORTED_TARGETS})
+    add_dependencies(${TARGET} ontologenius_gencpp ${catkin_EXPORTED_TARGETS})
     target_include_directories(${TARGET} PUBLIC include PRIVATE ${catkin_INCLUDE_DIRS})
     target_link_libraries(${TARGET} PRIVATE ${catkin_LIBRARIES})
     set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
@@ -129,12 +129,10 @@ add_onto_library(ontologenius_ontoGraphs_lib
 target_include_directories(ontologenius_ontoGraphs_lib
  PUBLIC
   ${TinyXML_INCLUDE_DIRS}
-  ${OpenCV_INCLUDE_DIRS}
 )
 target_link_libraries(ontologenius_ontoGraphs_lib
  PUBLIC
   ${TinyXML_LIBRARIES}
-  ${OpenCV_LIBS}
 )
 
 add_onto_library(ontologenius_core_lib
@@ -159,12 +157,15 @@ add_onto_library(ontologenius_drawer_lib
   src/graphical/Drawers/ObjectPropertyDrawer.cpp
   src/graphical/Drawers/DataPropertyDrawer.cpp
   src/graphical/Drawers/OntologyDrawer.cpp
-  #INCLUDE_DIRECTORIES
-  #${OpenCV_INCLUDE_DIRS}
+)
+target_include_directories(ontologenius_drawer_lib
+PUBLIC
+ ${OpenCV_INCLUDE_DIRS}
 )
 target_link_libraries(ontologenius_drawer_lib
  PUBLIC
   ontologenius_ontoGraphs_lib
+  ${OpenCV_LIBS}
 )
 
 ##############################
