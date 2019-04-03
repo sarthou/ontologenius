@@ -105,6 +105,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getUp">getUp</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#isA">isA</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>base_class</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getName">getName</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getNames">getNames</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#find">find</a></b>(const std::string&amp; <i>name</i>)</td></tr>
             </tbody>
           </table>
@@ -141,6 +142,10 @@
 
           <h3 class="fn" id="getName"><a name="getName"></a><span class="type">std::string</span> OntologyClient::<span class="name">getName</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Gives one of the label of the concept <i>name</i>.</p>
+          <p>The result of this function depends on the setting of the working language.</p>
+
+          <h3 class="fn" id="getNames"><a name="getNames"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">getNames</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Gives all the labels of the concept <i>name</i>.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
           <h3 class="fn" id="find"><a name="find"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">find</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
