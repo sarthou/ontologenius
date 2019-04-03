@@ -1,8 +1,34 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(ontologenius)
 
-## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++14)
+function(add_onto_library TARGET)
+    if(NOT TARGET)
+        message(FATAL_ERROR "Expected the target name as first argument")
+    endif()
+    if(NOT ARGN)
+        message(FATAL_ERROR "Expected source file list after target name")
+    endif()
+    add_library(${TARGET} ${ARGN})
+    add_dependencies(${TARGET} ${catkin_EXPORTED_TARGETS})
+    target_include_directories(${TARGET} PUBLIC include PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(${TARGET} PRIVATE ${catkin_LIBRARIES})
+    set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+endfunction(add_onto_library)
+
+function(add_onto_executable TARGET)
+    if(NOT TARGET)
+        message(FATAL_ERROR "Expected the target name as first argument")
+    endif()
+    if(NOT ARGN)
+        message(FATAL_ERROR "Expected source file list after target name")
+    endif()
+    add_executable(${TARGET} ${ARGN})
+    #add_dependencies(${TARGET} ${catkin_EXPORTED_TARGETS})
+    target_include_directories(${TARGET} PUBLIC include PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(${TARGET} PRIVATE ${catkin_LIBRARIES})
+    set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+endfunction(add_onto_executable)
+
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -70,22 +96,14 @@ catkin_package(
 ## Build ##
 ###########
 
-## Specify additional locations of header files
-## Your package locations should be listed before other locations
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-  ${TinyXML_INCLUDE_DIRS}
-  ${OpenCV_INCLUDE_DIRS}
-)
-
 ##############################
 ## Declare a C++ library
 ##############################
 ##############################
 ## CORE
 ##############################
-add_library(ontologenius_ontoGraphs_lib
+
+add_onto_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Branchs/ClassBranch.cpp
   src/core/ontoGraphs/Branchs/ObjectPropertyBranch.cpp
   src/core/ontoGraphs/Branchs/DataPropertyBranch.cpp
@@ -108,41 +126,52 @@ add_library(ontologenius_ontoGraphs_lib
   src/core/ontologyIO/writers/DataPropertiesWriter.cpp
   src/core/ontologyIO/writers/IndividualWriter.cpp
 )
-add_dependencies(ontologenius_ontoGraphs_lib ontologenius_gencpp)
-target_link_libraries(ontologenius_ontoGraphs_lib ${OpenCV_LIBS})
-target_link_libraries(ontologenius_ontoGraphs_lib ${TinyXML_LIBRARIES})
+target_include_directories(ontologenius_ontoGraphs_lib
+ PUBLIC
+  ${TinyXML_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
+)
+target_link_libraries(ontologenius_ontoGraphs_lib
+ PUBLIC
+  ${TinyXML_LIBRARIES}
+  ${OpenCV_LIBS}
+)
 
-add_library(ontologenius_core_lib
+add_onto_library(ontologenius_core_lib
   src/core/feeder/Feeder.cpp
   src/core/feeder/FeedStorage.cpp
   src/core/reasoner/plugins/ReasonerInterface.cpp
   src/core/reasoner/Reasoners.cpp
   src/core/Computer.cpp
-  )
-add_dependencies(ontologenius_core_lib ontologenius_gencpp)
-target_link_libraries(ontologenius_core_lib ${catkin_LIBRARIES})
-target_link_libraries(ontologenius_core_lib ontologenius_ontoGraphs_lib)
+)
+target_link_libraries(ontologenius_core_lib
+ PUBLIC
+  ontologenius_ontoGraphs_lib
+)
 
 ##############################
 ## DRAWER
 ##############################
 
-add_library(ontologenius_drawer_lib
+add_onto_library(ontologenius_drawer_lib
   src/graphical/Drawers/GraphDrawer.cpp
   src/graphical/Drawers/ClassDrawer.cpp
   src/graphical/Drawers/ObjectPropertyDrawer.cpp
   src/graphical/Drawers/DataPropertyDrawer.cpp
   src/graphical/Drawers/OntologyDrawer.cpp
+  #INCLUDE_DIRECTORIES
+  #${OpenCV_INCLUDE_DIRS}
 )
-add_dependencies(ontologenius_drawer_lib ontologenius_gencpp)
-target_link_libraries(ontologenius_drawer_lib ${catkin_LIBRARIES})
-target_link_libraries(ontologenius_core_lib ontologenius_ontoGraphs_lib)
+target_link_libraries(ontologenius_drawer_lib
+ PUBLIC
+  ontologenius_ontoGraphs_lib
+)
 
 ##############################
 ## INTERPRETER
 ##############################
 
-add_library(ontologenius_codeDescription_lib
+add_onto_library(ontologenius_codeDescription_lib
   src/interpreter/codeDescription/Types/VariablesType.cpp
   src/interpreter/codeDescription/Types/StringType.cpp
   src/interpreter/codeDescription/Functions/FunctionDescriptor.cpp
@@ -157,18 +186,19 @@ add_library(ontologenius_codeDescription_lib
   src/interpreter/fileManagers/FileManager.cpp
   src/interpreter/fileManagers/FileWriter.cpp
 )
-add_dependencies(ontologenius_codeDescription_lib ontologenius_gencpp)
 
-add_library(ontologenius_interpreter_lib
+add_onto_library(ontologenius_interpreter_lib
   src/interpreter/Parser.cpp
   src/interpreter/Error.cpp
   src/interpreter/Compiler.cpp
 )
-add_dependencies(ontologenius_interpreter_lib ontologenius_gencpp)
-target_link_libraries(ontologenius_interpreter_lib ontologenius_codeDescription_lib)
-target_link_libraries(ontologenius_interpreter_lib ontologenius_ontoGraphs_lib)
+target_link_libraries(ontologenius_interpreter_lib
+ PUBLIC
+  ontologenius_codeDescription_lib
+  ontologenius_ontoGraphs_lib
+)
 
-add_library(ontoloGenius_lib
+add_onto_library(ontoloGenius_lib
   src/utility/clients/ontologyClients/IndividualClient.cpp
   src/utility/clients/ontologyClients/ObjectPropertyClient.cpp
   src/utility/clients/ontologyClients/DataPropertyClient.cpp
@@ -182,14 +212,16 @@ add_library(ontoloGenius_lib
   src/utility/OntologyManipulator.cpp
   src/utility/OntologiesManipulator.cpp
 )
-add_dependencies(ontoloGenius_lib ontologenius_gencpp)
-target_link_libraries(ontoloGenius_lib ontologenius_interpreter_lib)
-target_link_libraries(ontoloGenius_lib ontologenius_core_lib)
+target_link_libraries(ontoloGenius_lib
+ PUBLIC
+  ontologenius_interpreter_lib
+  ontologenius_core_lib
+)
 
 ##############################
 ## PLUGINS
 ##############################
-add_library(ontologenius_reasoner_plugin
+add_onto_library(ontologenius_reasoner_plugin
   src/core/reasoner/plugins/ReasonerNone.cpp
   src/core/reasoner/plugins/ReasonerInverseOf.cpp
   src/core/reasoner/plugins/ReasonerSymetric.cpp
@@ -197,20 +229,24 @@ add_library(ontologenius_reasoner_plugin
   src/core/reasoner/plugins/ReasonerDictionary.cpp
   src/core/reasoner/plugins/ReasonerGeneralize.cpp
   src/core/reasoner/plugins/ReasonerRangeDomain.cpp
-  )
-add_dependencies(ontologenius_reasoner_plugin ontologenius_gencpp)
-target_link_libraries(ontologenius_reasoner_plugin ontologenius_core_lib)
+)
+target_link_libraries(ontologenius_reasoner_plugin
+ PUBLIC
+  ontologenius_core_lib
+)
 
 ##############################
 ## INTERFACE
 ##############################
 
-add_library(ontologenius_interface
+add_onto_library(ontologenius_interface
   src/RosInterface.cpp
   src/core/ontologyOperators/differenceFinder.cpp
-  )
-add_dependencies(ontologenius_interface ontologenius_gencpp)
-target_link_libraries(ontologenius_interface ontologenius_core_lib)
+)
+target_link_libraries(ontologenius_interface
+ PUBLIC
+  ontologenius_core_lib
+)
 
 ##############################
 ## Declare a C++ executable
@@ -218,39 +254,29 @@ target_link_libraries(ontologenius_interface ontologenius_core_lib)
 ## The recommended prefix ensures that target names across packages don't collide
 ##############################
 
-add_executable(ontoloGenius src/nodes/ontologenius_single.cpp)
-add_dependencies(ontoloGenius ontologenius_gencpp)
-target_link_libraries(ontoloGenius ontologenius_interpreter_lib)
-target_link_libraries(ontoloGenius ontologenius_interface)
+add_onto_executable(ontoloGenius src/nodes/ontologenius_single.cpp)
+target_link_libraries(ontoloGenius PRIVATE ontologenius_interpreter_lib ontologenius_interface)
 
-add_executable(ontoloGenius_multi src/nodes/ontologenius_multi.cpp)
-add_dependencies(ontoloGenius_multi ontologenius_gencpp)
-target_link_libraries(ontoloGenius_multi ontologenius_interface)
+add_onto_executable(ontoloGenius_multi src/nodes/ontologenius_multi.cpp)
+target_link_libraries(ontoloGenius_multi PRIVATE ontologenius_interface)
 
-add_executable(ontoloGenius_exemple src/exemple.cpp )
-add_dependencies(ontoloGenius_exemple ontologenius_gencpp)
-target_link_libraries(ontoloGenius_exemple ontologenius_drawer_lib)
-target_link_libraries(ontoloGenius_exemple ontologenius_core_lib)
+add_onto_executable(ontoloGenius_exemple src/exemple.cpp )
+target_link_libraries(ontoloGenius_exemple PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
 
-add_executable(ontoloGenius_tester src/tests/tester.cpp)
-add_dependencies(ontoloGenius_tester ontologenius_gencpp)
-target_link_libraries(ontoloGenius_tester ontologenius_core_lib)
+add_onto_executable(ontoloGenius_tester src/tests/tester.cpp)
+target_link_libraries(ontoloGenius_tester PRIVATE ontologenius_core_lib)
 
-add_executable(ontoloGenius_container_tester src/tests/container_test.cpp)
-add_dependencies(ontoloGenius_container_tester ontologenius_gencpp)
-target_link_libraries(ontoloGenius_container_tester ontologenius_core_lib)
+add_onto_executable(ontoloGenius_container_tester src/tests/container_test.cpp)
+target_link_libraries(ontoloGenius_container_tester PRIVATE ontologenius_core_lib)
 
-add_executable(ontoloGenius_find_tester src/tests/getNameVsFind.cpp)
-target_link_libraries(ontoloGenius_find_tester ontoloGenius_lib)
-target_link_libraries(ontoloGenius_container_tester ontologenius_core_lib)
+add_onto_executable(ontoloGenius_find_tester src/tests/getNameVsFind.cpp)
+target_link_libraries(ontoloGenius_find_tester PRIVATE ontoloGenius_lib ontologenius_core_lib)
 
-add_executable(ontoloGenius_ORO src/tests/ORO.cpp)
-target_link_libraries(ontoloGenius_ORO ontoloGenius_lib)
-target_link_libraries(ontoloGenius_ORO ontologenius_core_lib)
+add_onto_executable(ontoloGenius_ORO src/tests/ORO.cpp)
+target_link_libraries(ontoloGenius_ORO PRIVATE ontoloGenius_lib ontologenius_core_lib)
 
-add_executable(ontoloGenius_services_tester src/tests/service_tester.cpp)
-add_dependencies(ontoloGenius_services_tester ontologenius_gencpp)
-target_link_libraries(ontoloGenius_services_tester ontologenius_core_lib)
+add_onto_executable(ontoloGenius_services_tester src/tests/service_tester.cpp)
+target_link_libraries(ontoloGenius_services_tester PRIVATE ontologenius_core_lib)
 
 ##############################################################################
 # Qt Environment
@@ -268,13 +294,6 @@ file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}  resources/*.qrc)
 
 QT5_ADD_RESOURCES(QT_RESOURCES_CPP ${QT_RESOURCES})
 QT5_WRAP_UI(QT_FORMS_HPP ${QT_FORMS})
-
-include_directories(
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Gui_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5PrintSupport_INCLUDE_DIRS}
-)
 
 add_definitions( -std=c++11 -fPIC)
 
@@ -299,6 +318,10 @@ set( QT_SOURCES
 ##############################################################################
 
 add_executable(ontoloGUI ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
+target_include_directories(ontoloGUI
+  PRIVATE
+    ${catkin_INCLUDE_DIRS}
+)
 target_link_libraries(ontoloGUI
     ${catkin_LIBRARIES}
     Qt5::Core
