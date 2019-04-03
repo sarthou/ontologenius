@@ -45,7 +45,7 @@ TEST(dynamic_tests, insert)
               (find(res.begin(), res.end(), "int:2") != res.end()));
   EXPECT_TRUE(res_bool);
   std::cout << "***" << std::endl;
-  if(res == false)
+  if(res_bool == false)
     for(auto x : res)
        std::cout << x << std::endl;
 
