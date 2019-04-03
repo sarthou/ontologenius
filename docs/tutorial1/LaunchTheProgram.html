@@ -1,0 +1,213 @@
+<html lang="en_US">
+
+<head>
+  <title>Use inheritance for my first program : Launch The Program </title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../index.html">
+              <img src="../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/utility">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontoloGenius/utility">C++ API headers</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -588px;">
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="settingUpTheProgram.html">1. Setting up the program</a></li>
+            <li class="level1"><a href="LaunchTheProgram.html"><b>2. Launch the program</b></a></li>
+            <li class="level1"><a href="FindTheIntruder.html">3. Find the intruder</a></li>
+            <li class="level1"><a href="MostRelevantIntruder.html">4. Find the most relevant intruder</a></li>
+            <li class="level1"><a href="ManageTheMultilingual.html">5. Manage the multilingual</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../Tutorials.html">Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3><a href="CppAPI.html">All C++ Classes</a></h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <div class="toturial-header">
+          <h1 class="title">Use inheritance for my first program</h1>
+          <a class="toturial-subheader">
+            <div class="toturial-subheader__main-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="toturial-subheader__title">
+              <h2 class="title">Who is the intruder ?</h2>
+            </div>
+          </a>
+        </div>
+
+        <h1 class="title">Launch the program</h1>
+
+        <p>Perfect, we now have an early program that, while not doing much, is functional.
+          It is therefore time for us to launch our program as well as ontologenius.
+          One way that will seem obvious to us will be to launch our two programs
+          idependament like this:</p>
+        <p>terminal 1:</p>
+        <div class="code_block">
+          <div class="terminal_line">roslaunch ontologenius ontologenius.launch</div>
+        </div>
+        <p>terminal 2:</p>
+        <div class="code_block">
+          <div class="terminal_line">rosrun intruder intruder</div>
+        </div>
+
+        <p>However, ontologenius has three launch parameters and by doing so we take the default
+          parameters that are not necessarily the ones we need. Let's detail the parameters available:</p>
+        <ul>
+          <li class="fn"><b><i>language</i></b>: That's what we call the working language. In fact, ontologenius
+            makes it possible to link natural language words to computer identifiers and vice versa.
+            It is precisely the natural language part that will be impacted by this language parameter.
+            We will see in detail its effect and its uses at the end of this tutorial.</li>
+          <li class="fn"><b><i>intern_file</i></b>: Ontologenius allows for long-term learning by coming
+            to store its current knowledge in a file of its own and that we do not have the vocation to
+            modify as a user. This own file is precisely intern_file. To avoid using an internal file,
+            simply set the <i>none</i> value to a path.</li>
+          <li class="fn"><b><i>files</i></b>: These are the input files, those that will be loaded at the
+            launch of ontologenius. Be careful though, these files are not taken into account if you use
+            an internal file and this file already contains knowledge.</li>
+        </ul>
+
+        <p>Now that we've seen the parameters, let's look at the launch files that are
+          available and that we can re-use.</p>
+        <ul>
+          <li class="fn"><b><i>ontologenius.launch</i></b>: It defines the working language as being English,
+            it also defines an internal file and some input files to be able to realize some tests quickly.</li>
+          <li class="fn"><b><i>ontologenius_empty.launch</i></b>: It defines the working language as being English,
+            it also defines an internal file but does not define any input files.</li>
+          <li class="fn"><b><i>ontologenius_full.launch</i></b>: The parameters are the same as for
+            <i>ontologenius.launch</i>. The only difference is that the ontologenius GUI (ontoloGUI) is also launched.</li>
+        </ul>
+
+        <p>For our application, we do not need the GUI so we will ontologenius.launch or ontologenius_empty.launch.
+          Indeed, we can use one or the other because we will in all cases redefine our own parameters.</p>
+
+        <p>Let's create our own launch file that will launch our application as well as ontologenius with
+          our parameters:</p>
+
+        <div class="code_block xml_code" style="counter-reset:code_line 0;">
+          <div class="code_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
+          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+          <div class="code_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius.launch&quot;</span>&gt;</div>
+          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;none&quot;</span>/&gt;</div>
+          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/tutorials/tutorial_1.owl&quot;</span>/&gt;</div>
+          <div class="code_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
+          <div class="code_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
+        </div>
+
+        <p>Let's call this file <i>intruder.launch</i> and put it in our package in the folder <i>launch</i>.</p>
+
+        <p>We can see that we used the <i>ontologenius.launch</i> file by redefining the internal file
+          to not use it and putting the ontological file of this tutorial as an input file.</p>
+
+        <p>I believe we are ready to launch our program:</p>
+        <div class="code_block">
+          <div class="terminal_line">roslaunch intruder intruder.launch</div>
+        </div>
+
+        <p>If all went well, you should have at the bottom of your terminal a section of which summarizes
+          the number of classes, individuals and property that were loaded from the input file. As a result
+          of this you should find the &quot;Let's play&quot; that we have code together. This summary is
+          generated following the closure of the ontology. It is there to let you know what ontologenius
+          has taken into account. In addition, if you scroll a little upwards, you can observe the complete
+          arborescence of those read by ontologenius.</p>
+
+        <p>So let's check if our topic works well with the following publications:</p>
+        <div class="code_block">
+          <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'bob'"</div>
+          <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'alice'"</div>
+          <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'kevin'"</div>
+        </div>
+
+        <p>Then ask to start the reasoning:</p>
+
+        <div class="code_block">
+          <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'start'"</div>
+        </div>
+
+        <p>You should have the following output that corresponds to the summary and loopback of the program.</p>
+        <div class="code_block">
+          <div class="terminal_line">[SAY]on bob alice kevin</div>
+          <div class="terminal_line">[SAY]Let's play!</div>
+        </div>
+
+        <nav class="course-pagination">
+          <a href="settingUpTheProgram.html" class="course-pagination__btn">
+            <i class="fas fa-angle-left"></i>
+            <span>Setting Up The Program</span>
+          </a>
+          <span class="course-pagination__separator"></span>
+          <a href="FindTheIntruder.html" class="course-pagination__btn">
+            <span>Find the intruder</span>
+            <i class="fas fa-angle-right"></i>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,186 @@
+<html lang="en_US">
+
+<head>
+  <title>Use inheritance for my first program : Find the most relevant intruder</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../index.html">
+              <img src="../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/utility">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontoloGenius/utility">C++ API headers</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -588px;">
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="settingUpTheProgram.html">1. Setting up the program</a></li>
+            <li class="level1"><a href="LaunchTheProgram.html">2. Launch the program</a></li>
+            <li class="level1"><a href="FindTheIntruder.html">3. Find the intruder</a></li>
+            <li class="level1"><a href="MostRelevantIntruder.html"><b>4. Find the most relevant intruder</b></a></li>
+            <li class="level1"><a href="ManageTheMultilingual.html">5. Manage the multilingual</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../Tutorials.html">Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3><a href="CppAPI.html">All C++ Classes</a></h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <div class="toturial-header">
+          <h1 class="title">Use inheritance for my first program</h1>
+          <a class="toturial-subheader">
+            <div class="toturial-subheader__main-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="toturial-subheader__title">
+              <h2 class="title">Who is the intruder ?</h2>
+            </div>
+          </a>
+        </div>
+
+        <h1 class="title">Find the most revelant intruder</h1>
+
+        <p>Our program works pretty well but let's question it with the words: pr2, kevin et bob</p>
+        <p>You should have this:</p>
+        <div class="code_block">
+          <div class="terminal_line">[SAY]on pr2 kevin bob</div>
+          <div class="terminal_line">[SAY]the intruder is pr2 because it is the only one that is not: human</div>
+          <div class="terminal_line">[SAY]the intruder is pr2 because it is the only one that is not: man</div>
+          <div class="terminal_line">[SAY]Let's play!</div>
+        </div>
+
+        <p>We can represent this part of the ontology as follow:</p>
+        <img src="../images/tutorial/inheritance2.png " alt="tutorial 2 map of the city" width="30%" class="center"/>
+
+
+        <p>The result is not false but only one of these two answers would be enough given that one
+          induces the other. We will use ontologenius to try to give only the most relevant answer
+          in such cases.</p>
+
+        <p>To do this we will use a new function: getDown</p>
+        <p>As you can imagine, the getDown function is the exact opposite of the getUp function,
+          that is to say that it returns the concepts inheriting from the one passed in parameter
+          of the function.</p>
+        <p>We will use this function on classes because no concept can inherit an individual but
+          especially because our goal is to find the reasons (which are classes) that overlap.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+          <div class="code_line">std::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">struct intruder_t</span>&gt; refine(std::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">struct intruder_t</span>&gt; intruders)</div>
+          <div class="code_line">{</div>
+          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">struct intruder_t</span>&gt; refine_intruders;</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> intruders.size(); i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">  {</div>
+          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; down <span class="cpp_op">=</span> onto_-&gt;classes.getDown(intruders[i].why_);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">    <span class="cpp_type">bool</span> is_most_relevant <span class="cpp_op">=</span> <span class="cpp_value">true</span>;</div>
+          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> j <span class="cpp_op">=</span> <span class="cpp_value">0</span>; j <span class="cpp_op">&lt;</span> intruders.size(); j<span class="cpp_op">++</span>)</div>
+          <div class="code_line">      <span class="cpp_op">if</span>((i <span class="cpp_op">!=</span> j) <span class="cpp_op">&&</span> (intruders[i].name_ <span class="cpp_op">==</span> intruders[j].name_))</div>
+          <div class="code_line">        <span class="cpp_op">if</span>(find(down.begin(), down.end(), intruders[j].why_) <span class="cpp_op">!=</span> down.end())</div>
+          <div class="code_line">          is_most_relevant <span class="cpp_op">=</span> <span class="cpp_value">false</span>;</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">    <span class="cpp_op">if</span>(is_most_relevant <span class="cpp_op">==</span> <span class="cpp_value">true</span>)</div>
+          <div class="code_line">      refine_intruders.push_back(intruders[i]);</div>
+          <div class="code_line">  }</div>
+          <div class="code_line">  <span class="cpp_return">return</span> refine_intruders;</div>
+          <div class="code_line">}</div>
+        </div>
+
+        <p>So we notice that we are going to look for the object classes of the ontology manipulator instead of the object individuals.</p>
+        <div class="code_block cpp_code" style="counter-reset:code_line 5;">
+          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; down <span class="cpp_op">=</span> onto_-&gt;classes.getDown(intruders[i].why_);</div>
+        </div>
+        <p class="tip">The getUp function is available for individuals, classes, and properties while the
+          getDown function is only available for classes and properties.</p>
+
+        <p>We can call our refining function in our main function just after the function to find intruders</p>
+        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+          <div class="code_line">std::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">struct intruder_t</span>&gt; intruders <span class="cpp_op">=</span> find_intruder(names_, inheritances);</div>
+          <div class="code_line">intruders <span class="cpp_op">=</span> refine(intruders);</div>
+        </div>
+
+        <p>Re-interrogating our program with the words pr2, kevin and bob, we now have the following result:</p>
+        <div class="code_block">
+          <div class="terminal_line">[SAY]on pr2 kevin bob</div>
+          <div class="terminal_line">[SAY]the intruder is pr2 because it is the only one that is not: man</div>
+          <div class="terminal_line">[SAY]Let's play!</div>
+        </div>
+
+        <nav class="course-pagination">
+          <a href="FindTheIntruder.html" class="course-pagination__btn">
+            <i class="fas fa-angle-left"></i>
+            <span>Find the intruder</span>
+          </a>
+          <span class="course-pagination__separator"></span>
+          <a href="ManageTheMultilingual.html" class="course-pagination__btn">
+            <span>Manage the multilingual</span>
+            <i class="fas fa-angle-right"></i>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

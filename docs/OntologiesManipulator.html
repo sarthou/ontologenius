@@ -1,0 +1,168 @@
+<html lang="en_US">
+
+<head>
+  <title>OntologiesManipulator Class | Ontologenius 0.2.0</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="images/favicon.ico" rel="shortcut icon">
+  <link href="images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="images/favicon-16x16.png" rel="icon" type="image/png">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="index.html">
+              <img src="images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/utility">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontoloGenius/utility">C++ API headers</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius API Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -588px;">
+        <div class="contents class-content">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="#public-functions">Public Functions</a></li>
+            <li class="level1"><a href="#reimplemented-public-functions">Reimplemented Public Functions</a></li>
+            <li class="level1"><a href="#details">Detailed Description</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="Download.html">Download</a></li>
+            <li class="level1"><a href="InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="Tutorials.html">Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3><a href="CppAPI.html">All C++ Classes</a></h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="OntologiesManipulator.html"><b>OntologiesManipulator</b></a></li>
+            <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">OntologiesManipulator Class</h1>
+        <p>The OntologiesManipulator class is an interface to manage several instance of <a href="OntologyManipulator.html">OntologyManipulator</a> in a multi-ontology usage. <a href="#details">More...</a></p>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontoloGenius/utility/OntologiesManipulator.h&quot;</span>
+              </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="ManagerClient.html">ManagerClient</a></td></tr></tbody></table>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="public-functions"></a>
+        <h2 id="public-functions">Public Functions</h2>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#OntologiesManipulator">OntologiesManipulator</a></b>(ros::NodeHandle* <i>n</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#waitInit">waitInit</a></b>(int32_t <i>timeout</i> = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> OntologyManipulator* </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#operator">operator[]</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> OntologyManipulator* </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#get">get</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#verbose">verbose</a></b>(bool verbose)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="reimplemented-public-functions"></a>
+        <h2 id="reimplemented-public-functions">Reimplemented Public Functions</h2>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#add">add</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#del">del</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul>
+          <li class="fn">2 public functions inherited from <a href="ManagerClient.html#public-functions">ManagerClient</a></li>
+        </ul>
+
+        <a name="details"></a>
+        <div class="descr">
+          <h2 id="details">Detailed Description</h2>
+          <p>The OntologiesManipulator class allows to create and delete ontologies instances dynamically. It's usage is strongly recommanded for multi-ontology usage and ensure a good thread management.</p>
+          <p>This class allows you to set up the theory of mind quickly in a software application.</p>
+        </div>
+
+        <div class="func">
+          <h2>Public Function Documentation</h2>
+
+          <h3 class="fn" id="OntologiesManipulator"><a name="OntologiesManipulator"></a>OntologiesManipulator::<span class="name">OntologiesManipulator</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>)</h3>
+          <p>Constructs a manipulator for several instance of ontologies with a pointer to a NodeHandle <i>n</i>.</p>
+
+          <h3 class="fn" id="waitInit"><a name="waitInit"></a>OntologiesManipulator::<span class="name">waitInit</span>(<span class="type">int32_t</span><i> timeout</i> = -1)</h3>
+          <p>Wait for ontologenius services to be advertised and available for. Blocks until it is.</p>
+          <p><i>timeout</i> is the amount of time to wait for before timing out. If timeout is -1 (default), waits until the node is shutdown.</p>
+
+          <h3 class="fn" id="operator"><a name="operator"></a><span class="type"><a href="OntologyManipulator.html">OntologyManipulator</a></span>* OntologiesManipulator::<span class="name">operator[]</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Return a pointer on the OntologyManipulator instance named <i>name</i>.</p>
+          <p>Return nullptr if no OntologyManipulator instance is named <i>name</i>.</p>
+
+          <h3 class="fn" id="get"><a name="get"></a><span class="type"><a href="OntologyManipulator.html">OntologyManipulator</a></span>* OntologiesManipulator::<span class="name">get</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Return a pointer on the OntologyManipulator instance named <i>name</i>.</p>
+          <p>Return nullptr if no OntologyManipulator instance is named <i>name</i>.</p>
+
+          <h3 class="fn" id="add"><a name="add"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">add</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Creates a new instance of ontologyManipulator identified by the name <i>name</i>.</p>
+          <p>Returns false creating fails. Returns true even if the instance already exists.</p>
+
+          <h3 class="fn" id="del"><a name="del"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">del</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Deletes the instance of ontologyManipulator identified by the name <i>name</i>.</p>
+          <p>Returns false deletation fails. Returns true even if the instance do not exists.</p>
+
+          <h3 class="fn" id="verbose"><a name="verbose"></a><span class="type"></span> OntologyManipulator::<span class="name">verbose</span>(<span class="type">bool</span> verbose)</h3>
+          <p>If verbose is set to true, the clients will post messages about the failure to call the services and about their restoration.</p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
