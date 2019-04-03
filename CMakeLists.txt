@@ -357,20 +357,26 @@ if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
 
   add_rostest_gtest(ontoloGenius_library_tester test/library.test src/tests/library.cpp)
-  target_link_libraries(ontoloGenius_library_tester ontoloGenius_lib)
+  target_include_directories(ontoloGenius_library_tester PRIVATE ${catkin_INCLUDE_DIRS})
+  target_link_libraries(ontoloGenius_library_tester ontoloGenius_lib ${catkin_LIBRARIES})
 
   add_rostest_gtest(ontoloGenius_requests_tester test/requests.test src/tests/requests.cpp)
-  target_link_libraries(ontoloGenius_requests_tester ontoloGenius_lib)
+  target_include_directories(ontoloGenius_requests_tester PRIVATE ${catkin_INCLUDE_DIRS})
+  target_link_libraries(ontoloGenius_requests_tester ontoloGenius_lib ${catkin_LIBRARIES})
 
   add_rostest_gtest(ontoloGenius_global_tester test/globalFeatures.test src/tests/globalFeatures.cpp)
-  target_link_libraries(ontoloGenius_global_tester ontoloGenius_lib)
+  target_include_directories(ontoloGenius_global_tester PRIVATE ${catkin_INCLUDE_DIRS})
+  target_link_libraries(ontoloGenius_global_tester ontoloGenius_lib ${catkin_LIBRARIES})
 
   add_rostest_gtest(ontoloGenius_propertiesInheritage_tester test/propertiesInheritage.test src/tests/propertiesInheritage.cpp)
-  target_link_libraries(ontoloGenius_propertiesInheritage_tester ontoloGenius_lib)
+  target_include_directories(ontoloGenius_propertiesInheritage_tester PRIVATE ${catkin_INCLUDE_DIRS})
+  target_link_libraries(ontoloGenius_propertiesInheritage_tester ontoloGenius_lib ${catkin_LIBRARIES})
 
   add_rostest_gtest(ontoloGenius_dynamic_tester test/dynamic.test src/tests/dynamic.cpp)
-  target_link_libraries(ontoloGenius_dynamic_tester ontoloGenius_lib)
+  target_include_directories(ontoloGenius_dynamic_tester PRIVATE ${catkin_INCLUDE_DIRS})
+  target_link_libraries(ontoloGenius_dynamic_tester ontoloGenius_lib ${catkin_LIBRARIES})
 
   add_rostest_gtest(ontoloGenius_multi_tester test/multi.test src/tests/multi.cpp)
-  target_link_libraries(ontoloGenius_multi_tester ontoloGenius_lib)
+  target_include_directories(ontoloGenius_multi_tester PRIVATE ${catkin_INCLUDE_DIRS})
+  target_link_libraries(ontoloGenius_multi_tester ontoloGenius_lib ${catkin_LIBRARIES})
 endif()
