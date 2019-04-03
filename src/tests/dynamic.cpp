@@ -8,7 +8,7 @@ OntologyManipulator* onto_ptr;
 
 TEST(dynamic_tests, insert)
 {
-  ros::Rate wait(5);
+  ros::Rate wait(3);
   std::vector<std::string> res;
   bool res_bool = true;
   std::string test_word = "robot";
@@ -44,6 +44,10 @@ TEST(dynamic_tests, insert)
   res_bool = ((res.size() == 1) &&
               (find(res.begin(), res.end(), "int:2") != res.end()));
   EXPECT_TRUE(res_bool);
+  std::cout << "***" << std::endl;
+  if(res == false)
+    for(auto x : res)
+       std::cout << x << std::endl;
 
   onto_ptr->feeder.removeProperty("alice", "hasLeg", "int", "2");
   wait.sleep();
