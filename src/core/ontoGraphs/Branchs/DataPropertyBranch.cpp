@@ -86,14 +86,35 @@ void DataPropertyBranch_t::setSteady_mother(DataPropertyBranch_t* mother)
 
 void DataPropertyBranch_t::setSteady_dictionary(std::string lang, std::string word)
 {
-  steady_.dictionary_[lang].push_back(word);
-  dictionary_[lang].push_back(word);
+  if(find(steady_.dictionary_[lang].begin(), steady_.dictionary_[lang].end(), word) == steady_.dictionary_[lang].end())
+    steady_.dictionary_[lang].push_back(word);
+
+  if(find(dictionary_[lang].begin(), dictionary_[lang].end(), word) == dictionary_[lang].end())
+    dictionary_[lang].push_back(word);
 }
 
 void DataPropertyBranch_t::setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary)
 {
-  steady_.dictionary_ = dictionary;
-  dictionary_ = dictionary;
+  for(auto it : dictionary)
+  {
+    if(steady_.dictionary_.find(it.first) == steady_.dictionary_.end())
+      steady_.dictionary_[it.first] = it.second;
+    else
+    {
+      for(const auto& name : it.second)
+        if(find(steady_.dictionary_[it.first].begin(), steady_.dictionary_[it.first].end(), name) == steady_.dictionary_[it.first].end())
+          steady_.dictionary_[it.first].push_back(name);
+    }
+
+    if(dictionary_.find(it.first) == dictionary_.end())
+      dictionary_[it.first] = it.second;
+    else
+    {
+      for(const auto& name : it.second)
+        if(find(dictionary_[it.first].begin(), dictionary_[it.first].end(), name) == dictionary_[it.first].end())
+          dictionary_[it.first].push_back(name);
+    }
+  }
 }
 
 } // namespace ontologenius
