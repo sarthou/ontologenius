@@ -8,6 +8,8 @@
 
 #include "ontoloGenius/interpreter/codeDescription/Code.h"
 
+namespace ontologenius {
+
 class Error
 {
 public:
@@ -33,5 +35,7 @@ private:
   void printCursor(size_t pose);
   void printMessage(size_t pose, std::string message);
 };
+
+} // namespace ontologenius
 
 #endif

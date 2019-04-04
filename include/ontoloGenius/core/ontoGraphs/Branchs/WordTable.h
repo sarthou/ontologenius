@@ -6,6 +6,8 @@
 #include <unordered_set>
 #include <cstdint>
 
+namespace ontologenius {
+
 class WordTable
 {
 public:
@@ -41,5 +43,7 @@ public:
 private:
   std::vector<std::string> table_;
 };
+
+} // namespace ontologenius
 
 #endif

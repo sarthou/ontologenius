@@ -1,5 +1,7 @@
 #include "ontoloGenius/interpreter/codeDescription/Functions/OntoFunctions.h"
 
+namespace ontologenius {
+
 OntoFunctions::OntoFunctions() : Namespace("ont")
 {
   FunctionDescriptor print = FunctionDescriptor("print", type_void, std::vector<type_t>(1, type_string));
@@ -8,3 +10,5 @@ OntoFunctions::OntoFunctions() : Namespace("ont")
   FunctionDescriptor null = FunctionDescriptor("null", type_bool, std::vector<type_t>(1, type_void));
   functions_.push_back(null);
 }
+
+} // namespace ontologenius

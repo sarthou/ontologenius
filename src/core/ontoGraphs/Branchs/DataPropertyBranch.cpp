@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+namespace ontologenius {
+
 void DataPropertyBranch_t::setFullSteady()
 {
   steady_.disjoints_.clear();
@@ -93,3 +95,5 @@ void DataPropertyBranch_t::setSteady_dictionary(std::map<std::string, std::vecto
   steady_.dictionary_ = dictionary;
   dictionary_ = dictionary;
 }
+
+} // namespace ontologenius

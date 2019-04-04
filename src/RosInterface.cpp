@@ -5,6 +5,8 @@
 #include <thread>
 #include <ros/callback_queue.h>
 
+namespace ontologenius {
+
 RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : reasoners_(onto_), feeder_(onto_), run_(true),
                                                                   pub_(n->advertise<std_msgs::String>("ontologenius/end", 1000))
 {
@@ -546,3 +548,5 @@ std::string RosInterface::getSelector(std::string& action, std::string& param)
   }
   return select;
 }
+
+} // namespace ontologenius

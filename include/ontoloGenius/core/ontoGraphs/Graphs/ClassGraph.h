@@ -10,6 +10,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
+namespace ontologenius {
+
 struct ObjectVectors_t
 {
    std::vector<std::string> mothers_;
@@ -150,5 +152,7 @@ private:
     return nullptr;
   }
 };
+
+} // namespace ontologenius
 
 #endif /* CLASSGRAPH_H */

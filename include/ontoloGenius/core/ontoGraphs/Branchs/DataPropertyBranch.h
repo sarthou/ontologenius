@@ -7,6 +7,8 @@
 #include "ontoloGenius/core/ontoGraphs/Branchs/PropertyBranch.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/Data.h"
 
+namespace ontologenius {
+
 //for branch type usage
 class ClassBranch_t;
 
@@ -46,5 +48,6 @@ public:
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
 };
 
+} // namespace ontologenius
 
 #endif

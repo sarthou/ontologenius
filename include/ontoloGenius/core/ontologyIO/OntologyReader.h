@@ -14,6 +14,8 @@
 
 #include <tinyxml.h>
 
+namespace ontologenius {
+
 class Ontology;
 
 class OntologyReader
@@ -126,5 +128,7 @@ bool OntologyReader::testAttribute(TiXmlElement* subElem, const std::string& att
   else
     return false;
 }
+
+} // namespace ontologenius
 
 #endif

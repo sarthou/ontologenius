@@ -5,6 +5,8 @@
 #include <map>
 #include <vector>
 
+namespace ontologenius {
+
 void NodeWriter::writeDictionary(ValuedNodeData* node)
 {
   for(auto& it : node->dictionary_)
@@ -26,3 +28,5 @@ void NodeWriter::writeString(std::string text)
   if(file_ != NULL)
     fwrite(text.c_str(), sizeof(char), text.size(), file_);
 }
+
+} // namespace ontologenius

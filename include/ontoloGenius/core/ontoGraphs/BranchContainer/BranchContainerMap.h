@@ -5,6 +5,8 @@
 
 #include "ontoloGenius/core/ontoGraphs/BranchContainer/BranchContainerBase.h"
 
+namespace ontologenius {
+
 template <typename B>
 class BranchContainerMap : public BranchContainerBase<B>
 {
@@ -72,5 +74,7 @@ void BranchContainerMap<B>::erase(B* branch)
 {
   nodes_.erase(branch->value());
 }
+
+} // namespace ontologenius
 
 #endif

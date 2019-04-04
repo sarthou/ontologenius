@@ -1,5 +1,7 @@
 #include "ontoloGenius/interpreter/codeDescription/Functions/FunctionDescriptor.h"
 
+namespace ontologenius {
+
 FunctionDescriptor::FunctionDescriptor(std::string name, type_t return_type, std::vector<type_t> params_type)
 {
   name_ = name;
@@ -164,3 +166,5 @@ std::string FunctionDescriptor::to_string(type_t type)
   else
     return "";
 }
+
+} // namespace ontologenius

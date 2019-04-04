@@ -1,6 +1,8 @@
 #include "ontoloGenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
 #include <unordered_set>
 
+namespace ontologenius {
+
 size_t DataPropertyChecker::check()
 {
   std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
@@ -32,3 +34,5 @@ void DataPropertyChecker::checkDisjoint()
       print_error("'" + graph_vect_[i]->value() + "' can't be a '" + intersection + "' because of disjonction");
   }
 }
+
+} // namespace ontologenius

@@ -7,6 +7,8 @@
 #include "ontoloGenius/interpreter/codeDescription/LinesCounter.h"
 #include "ontoloGenius/interpreter/codeDescription/Functions/FunctionContainer.h"
 
+namespace ontologenius {
+
 struct StringBlock_t
 {
   std::string strings;
@@ -30,5 +32,7 @@ private:
 
   std::map <std::string, StringBlock_t> strings_;
 };
+
+} // namespace ontologenius
 
 #endif

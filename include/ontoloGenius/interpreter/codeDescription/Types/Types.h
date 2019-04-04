@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace ontologenius {
+
 enum type_t
 {
   type_void,
@@ -12,5 +14,7 @@ enum type_t
   type_bool,
   type_unknow
 };
+
+} // namespace ontologenius
 
 #endif

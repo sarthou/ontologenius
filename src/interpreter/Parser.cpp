@@ -3,6 +3,8 @@
 #include "ontoloGenius/interpreter/Parser.h"
 #include "ontoloGenius/interpreter/Compiler.h"
 
+namespace ontologenius {
+
 Parser::Parser(Code* code, size_t current_line, bool subparser) : code_(code), error_(code_)
 {
   subparser_ = subparser;
@@ -505,3 +507,5 @@ void Parser::checkArgumentValidity(size_t pose, std::string code)
     error_.printError(pose+sub, "unexpected ‘{’");
   }
 }
+
+} //namespace ontologenius

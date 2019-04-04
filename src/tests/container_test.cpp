@@ -65,7 +65,7 @@ private:
 
 using namespace std::chrono;
 
-std::vector<ValuedNode*> full_words;
+std::vector<ontologenius::ValuedNode*> full_words;
 
 void readFullWords()
 {
@@ -78,7 +78,7 @@ void readFullWords()
       oef = true;
     else
     {
-      ValuedNode* tmp = new ValuedNode(res);
+      ontologenius::ValuedNode* tmp = new ontologenius::ValuedNode(res);
       full_words.push_back(tmp);
     }
   }
@@ -86,19 +86,19 @@ void readFullWords()
   std::cout << reader.getNbLine() << std::endl;
 }
 
-double findAll(BranchContainerBase<ValuedNode>* container, std::vector<ValuedNode*> words)
+double findAll(ontologenius::BranchContainerBase<ontologenius::ValuedNode>* container, std::vector<ontologenius::ValuedNode*> words)
 {
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
   for(size_t i = 0; i < words.size(); i++)
-    ValuedNode* none = container->find(words[i]->value());
+    ontologenius::ValuedNode* none = container->find(words[i]->value());
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
   return time_span.count() / words.size();
 }
 
-double findAllNTime(BranchContainerBase<ValuedNode>* container, std::vector<ValuedNode*> words, size_t n)
+double findAllNTime(ontologenius::BranchContainerBase<ontologenius::ValuedNode>* container, std::vector<ontologenius::ValuedNode*> words, size_t n)
 {
   double sum = 0;
   for(size_t i = 0; i < n; i++)
@@ -109,9 +109,9 @@ double findAllNTime(BranchContainerBase<ValuedNode>* container, std::vector<Valu
   return sum / n;
 }
 
-std::vector<ValuedNode*> getPartOfWords(float percent)
+std::vector<ontologenius::ValuedNode*> getPartOfWords(float percent)
 {
-  std::vector<ValuedNode*> tmp;
+  std::vector<ontologenius::ValuedNode*> tmp;
   for(size_t i = 0; i < full_words.size() * percent / 100; i++)
   {
     size_t myIndex = rand() % full_words.size();
@@ -121,9 +121,9 @@ std::vector<ValuedNode*> getPartOfWords(float percent)
   return tmp;
 }
 
-std::vector<ValuedNode*> creatTestVector(float percent, std::vector<ValuedNode*> words)
+std::vector<ontologenius::ValuedNode*> creatTestVector(float percent, std::vector<ontologenius::ValuedNode*> words)
 {
-  std::vector<ValuedNode*> tmp;
+  std::vector<ontologenius::ValuedNode*> tmp;
   for(size_t i = 0; i < words.size() * percent / 100; i++)
   {
     size_t myIndex = rand() % words.size();
@@ -132,7 +132,7 @@ std::vector<ValuedNode*> creatTestVector(float percent, std::vector<ValuedNode*>
 
   if(tmp.size() < full_words.size() / 2)
   {
-    std::vector<ValuedNode*> res;
+    std::vector<ontologenius::ValuedNode*> res;
     while(res.size() < full_words.size())
     {
       res.insert(res.end(), tmp.begin(), tmp.end());
@@ -154,16 +154,16 @@ int main(int argc, char** argv)
   for(size_t i = 1; i <= 5; i++)
   {
     std::cout << "########" << std::endl << "#  " << i <<"  #" << std::endl << "########" << std::endl << std::endl;
-    BranchContainerDyn<ValuedNode> container_dyn;
-    BranchContainerMap<ValuedNode> container_map;
+    ontologenius::BranchContainerDyn<ontologenius::ValuedNode> container_dyn;
+    ontologenius::BranchContainerMap<ontologenius::ValuedNode> container_map;
 
-    std::vector<ValuedNode*> part_of_words = getPartOfWords(i);
+    std::vector<ontologenius::ValuedNode*> part_of_words = getPartOfWords(i);
     container_dyn.load(part_of_words);
     container_map.load(part_of_words);
 
     for(float j = 0.1; j <= 2; j = j + 0.1)
     {
-      std::vector<ValuedNode*> vect = creatTestVector(j, part_of_words);
+      std::vector<ontologenius::ValuedNode*> vect = creatTestVector(j, part_of_words);
       double time_span_dyn = findAllNTime(&container_dyn, vect, N);
       double time_span_map = findAllNTime(&container_map, vect, N);
 

@@ -3,6 +3,8 @@
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
+namespace ontologenius {
+
 void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& property_vectors)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
@@ -419,3 +421,5 @@ bool ObjectPropertyGraph::remove(ObjectPropertyBranch_t* prop, std::string& rela
 {
   return false;
 }
+
+} // namespace ontologenius

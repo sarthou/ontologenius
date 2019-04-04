@@ -9,6 +9,8 @@
 
 #include <string>
 
+namespace ontologenius {
+
 class OntologyDrawer
 {
 public:
@@ -23,5 +25,7 @@ private:
   ObjectPropertyDrawer object_property_drawer_;
   DataPropertyDrawer data_property_drawer_;
 };
+
+} // namespace ontologenius
 
 #endif

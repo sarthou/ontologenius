@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace ontologenius {
+
 ClassDrawer::ClassDrawer(ClassGraph* graph)
 {
   graph_ = graph;
@@ -93,3 +95,5 @@ void ClassDrawer::init()
       roots_nodes.push_back(single[i]);
   }
 }
+
+} // namespace ontologenius

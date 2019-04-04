@@ -3,6 +3,8 @@
 
 #include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
+namespace ontologenius {
+
 class ReasonerGeneralize : public ReasonerInterface
 {
 public:
@@ -132,5 +134,7 @@ void PropertiesCounter<B,P>::get(std::vector<B>& properties, std::vector<P>& dat
     }
   }
 }
+
+} // namespace ontologenius
 
 #endif

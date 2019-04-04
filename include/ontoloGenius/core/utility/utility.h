@@ -1,8 +1,12 @@
+#ifndef UTILITY_H
+#define UTILITY_H
+
 #include <string>
 
 #include "ontologenius/REST.h"
 #include "ros/ros.h"
 
+namespace ontologenius {
 
 int send_request(std::string method, std::string url, std::string body, std::string* response)
 {
@@ -26,3 +30,7 @@ int send_request(std::string method, std::string url, std::string body, std::str
     return 0;
   }
 }
+
+} // namespace ontologenius
+
+#endif // UTILITY_H

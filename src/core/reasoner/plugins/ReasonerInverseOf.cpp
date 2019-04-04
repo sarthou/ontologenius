@@ -1,6 +1,8 @@
 #include "ontoloGenius/core/reasoner/plugins/ReasonerInverseOf.h"
 #include <pluginlib/class_list_macros.h>
 
+namespace ontologenius {
+
 void ReasonerInverseOf::preReason()
 {
 
@@ -57,3 +59,5 @@ std::string ReasonerInverseOf::getDesciption()
 }
 
 PLUGINLIB_EXPORT_CLASS(ReasonerInverseOf, ReasonerInterface)
+
+} // namespace ontologenius

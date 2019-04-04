@@ -10,6 +10,8 @@
 #include "ontoloGenius/interpreter/codeDescription/Namespace.h"
 #include "ontoloGenius/interpreter/codeDescription/Functions/FunctionContainer.h"
 
+namespace ontologenius {
+
 struct Variable_t
 {
   std::string name;
@@ -45,5 +47,7 @@ private:
 
   std::map <std::string, Variable_t> var_;
 };
+
+} // namespace ontologenius
 
 #endif

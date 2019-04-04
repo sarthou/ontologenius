@@ -8,6 +8,8 @@
 #include <iostream>
 #include <unordered_set>
 
+namespace ontologenius {
+
 template <typename B>
 class ValidityChecker
 {
@@ -99,5 +101,7 @@ private:
   size_t nb_error_;
   size_t nb_warn_;
 };
+
+} // namespace ontologenius
 
 #endif

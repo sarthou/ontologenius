@@ -1,3 +1,6 @@
+#ifndef DATAPROPERTYGRAPH_H
+#define DATAPROPERTYGRAPH_H
+
 #include <string>
 #include <vector>
 #include <unordered_set>
@@ -9,8 +12,7 @@
 #include "ontoloGenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
-#ifndef DATAPROPERTYGRAPH_H
-#define DATAPROPERTYGRAPH_H
+namespace ontologenius {
 
 struct DataPropertyVectors_t
 {
@@ -84,5 +86,7 @@ private:
     }
   }
 };
+
+} // namespace ontologenius
 
 #endif /* DATAPROPERTYGRAPH_H */

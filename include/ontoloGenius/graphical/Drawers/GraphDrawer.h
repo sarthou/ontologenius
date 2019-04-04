@@ -1,3 +1,6 @@
+#ifndef GRAPHDRAWER_H
+#define GRAPHDRAWER_H
+
 #include <string>
 #include <vector>
 #include <stdint.h>
@@ -6,8 +9,7 @@
 #include <highgui.h>
 #include <opencv2/highgui/highgui_c.h>
 
-#ifndef GRAPHDRAWER_H
-#define GRAPHDRAWER_H
+namespace ontologenius {
 
 struct rect_t
 {
@@ -61,5 +63,7 @@ protected:
 
   cv::Scalar ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V);
 };
+
+} // namespace ontologenius
 
 #endif /* GRAPHDRAWER_H */

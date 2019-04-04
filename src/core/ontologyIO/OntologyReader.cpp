@@ -5,6 +5,8 @@
 
 #include "ontoloGenius/core/utility/utility.h"
 
+namespace ontologenius {
+
 OntologyReader::OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph)
 {
   class_graph_ = class_graph;
@@ -522,3 +524,5 @@ void OntologyReader::pushLang(std::map<std::string, std::vector<std::string>>& d
     }
   }
 }
+
+} // namespace ontologenius

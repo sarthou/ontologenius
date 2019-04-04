@@ -8,6 +8,8 @@
 #define MARKER_HEIGHT     100
 #define MIN_HEIGHT_SPACE  1000
 
+namespace ontologenius {
+
 GraphDrawer::GraphDrawer(){}
 
 void GraphDrawer::putLayer(int layer)
@@ -148,3 +150,5 @@ cv::Scalar GraphDrawer::ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V)
     cvtColor(hsv, rgb, CV_HSV2BGR);
     return cv::Scalar(rgb.data[0], rgb.data[1], rgb.data[2]);
 }
+
+} // namespace ontologenius

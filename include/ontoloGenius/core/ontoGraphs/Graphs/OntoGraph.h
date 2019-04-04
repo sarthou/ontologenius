@@ -16,6 +16,7 @@ This file use CRTP (curiously recurring template pattern)
 be really carreful of how you use it
 */
 
+namespace ontologenius {
 
 template <typename B>
 class OntoGraph : public Graph<B>
@@ -450,5 +451,7 @@ std::unordered_set<std::string> OntoGraph<B>::find(const std::string& value)
 
   return res;
 }
+
+} // namespace ontologenius
 
 #endif

@@ -3,6 +3,8 @@
 
 #include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
+namespace ontologenius {
+
 class ReasonerInverseOf : public ReasonerInterface
 {
 public:
@@ -20,5 +22,7 @@ private:
 
   void insetInverse(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* inv_prop, IndividualBranch_t* inv_indiv);
 };
+
+} // namespace ontologenius
 
 #endif

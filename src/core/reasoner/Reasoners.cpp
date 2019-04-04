@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 
+namespace ontologenius {
+
 Reasoners::Reasoners(Ontology* onto) : loader_("ontologenius", "ReasonerInterface")
 {
   ontology_ = onto;
@@ -262,3 +264,5 @@ void Reasoners::resetIndividualsUpdates()
     indiv[indiv_i]->updated_ = true;
   }
 }
+
+} // namespace ontologenius

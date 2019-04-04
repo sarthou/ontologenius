@@ -1,5 +1,7 @@
 #include "ontoloGenius/interpreter/codeDescription/Types/StringType.h"
 
+namespace ontologenius {
+
 StringType::StringType()
 {
   nb_strings_ = 0;
@@ -57,3 +59,5 @@ size_t StringType::size(std::string id)
     return strings_[id].strings.size();
   return 0;
 }
+
+} // namespace ontologenius

@@ -3,6 +3,8 @@
 
 #include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
+namespace ontologenius {
+
 class ReasonerDictionary : public ReasonerInterface
 {
 public:
@@ -23,5 +25,7 @@ private:
   void createLowerCase(ValuedNode* node);
   void replaceQuote(ValuedNode* node);
 };
+
+} // namespace ontologenius
 
 #endif

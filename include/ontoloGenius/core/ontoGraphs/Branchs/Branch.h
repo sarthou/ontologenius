@@ -11,6 +11,8 @@ This file use CRTP (curiously recurring template pattern)
 be really carreful of how you use it
 */
 
+namespace ontologenius {
+
 template <typename B>
 class BranchData_t
 {
@@ -36,5 +38,7 @@ class BranchSteady_t : public ValuedNodeData, public BranchData_t<S>
 public:
   BranchSteady_t() {}
 };
+
+} // namespace ontologenius
 
 #endif

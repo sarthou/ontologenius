@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 
   ros::service::waitForService("ontologenius/rest", -1);
 
-  RosInterface interface(&n);
+  ontologenius::RosInterface interface(&n);
 
   std::string language = std::string(argv[1]);
   std::cout << "language " << language << std::endl;
@@ -50,10 +50,10 @@ int main(int argc, char** argv)
     code += "ont::null();\n";
     code += "var::men =if(var::man == man);\n";
 
-    Error error;
+    ontologenius::Error error;
 
-    Code my_code(code);
-    Parser p(&my_code);
+    ontologenius::Code my_code(code);
+    ontologenius::Parser p(&my_code);
 
     error.cpy(p.getError());
     error.printStatus();

@@ -8,6 +8,8 @@
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/Data.h"
 
+namespace ontologenius {
+
 //for branch type usage
 class ObjectPropertyBranch_t;
 class DataPropertyBranch_t;
@@ -57,5 +59,7 @@ public:
   void setSteady_data_properties_name(DataPropertyBranch_t* data_properties_name);
   void setSteady_data_properties_data(data_t data_properties_data);
 };
+
+} // namespace ontologenius
 
 #endif

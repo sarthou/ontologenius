@@ -7,7 +7,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "ontologeniusExemple");
 
 {
-  Ontology onto;
+  ontologenius::Ontology onto;
 
   onto.readFromUri("https://raw.githubusercontent.com/sarthou/ontologenius/master/files/attribute.owl");
   onto.readFromUri("https://raw.githubusercontent.com/sarthou/ontologenius/master/files/measure.owl");
@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 
   onto.close();
 
-  OntologyDrawer drawer(&onto);
+  ontologenius::OntologyDrawer drawer(&onto);
   drawer.draw("ontologenius_exemple");
 }
 

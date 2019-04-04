@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace ontologenius {
+
 DataPropertyDrawer::DataPropertyDrawer(DataPropertyGraph* graph)
 {
   graph_ = graph;
@@ -93,3 +95,5 @@ void DataPropertyDrawer::init()
       roots_nodes.push_back(single[i]);
   }
 }
+
+} // namespace ontologenius

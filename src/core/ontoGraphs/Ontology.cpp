@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+namespace ontologenius {
+
 Ontology::Ontology(std::string language) : class_graph_(&individual_graph_, &object_property_graph_, &data_property_graph_),
                                            object_property_graph_(&class_graph_),
                                            data_property_graph_(&class_graph_),
@@ -140,3 +142,5 @@ std::string Ontology::getLanguage()
 {
   return class_graph_.getLanguage();
 }
+
+} // namespace ontologenius

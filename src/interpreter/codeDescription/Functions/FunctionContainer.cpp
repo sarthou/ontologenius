@@ -1,5 +1,7 @@
 #include "ontoloGenius/interpreter/codeDescription/Functions/FunctionContainer.h"
 
+namespace ontologenius {
+
 bool FunctionContainer::functionExist(std::string name)
 {
   for(size_t i = 0; i < functions_.size(); i++)
@@ -19,3 +21,5 @@ FunctionDescriptor* FunctionContainer::findFunction(std::string name)
   }
   return nullptr;
 }
+
+} // namespace ontologenius

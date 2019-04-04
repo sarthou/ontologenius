@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+namespace ontologenius {
+
 class ClassGraph;
 class ClassBranch_t;
 
@@ -32,5 +34,7 @@ private:
   void writeDataProperties(ClassBranch_t* branch);
   void writeDataPropertiesDeduced(ClassBranch_t* branch);
 };
+
+} // namespace ontologenius
 
 #endif

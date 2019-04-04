@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+namespace ontologenius {
+
 void ClassBranch_t::setFullSteady()
 {
   steady_.disjoints_.clear();
@@ -113,3 +115,5 @@ void ClassBranch_t::setSteady_data_properties_data(data_t data_properties_data)
   steady_.data_properties_data_.push_back(data_properties_data);
   data_properties_data_.push_back(data_properties_data);
 }
+
+} // namespace ontologenius

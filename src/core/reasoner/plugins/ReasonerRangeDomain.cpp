@@ -1,6 +1,8 @@
 #include "ontoloGenius/core/reasoner/plugins/ReasonerRangeDomain.h"
 #include <pluginlib/class_list_macros.h>
 
+namespace ontologenius {
+
 void ReasonerRangeDomain::postReason()
 {
   postReasonIndividuals();
@@ -361,3 +363,5 @@ std::string ReasonerRangeDomain::getDesciption()
 }
 
 PLUGINLIB_EXPORT_CLASS(ReasonerRangeDomain, ReasonerInterface)
+
+} // namespace ontologenius

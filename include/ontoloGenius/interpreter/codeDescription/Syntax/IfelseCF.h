@@ -7,6 +7,8 @@
 
 #include "ontoloGenius/interpreter/codeDescription/LinesCounter.h"
 
+namespace ontologenius {
+
 struct IfBlock_t
 {
   std::string IfBlock_condition;
@@ -40,5 +42,7 @@ private:
   size_t getNextIfBlock(int& nb_block, size_t pose, Code& code, Error* error = nullptr);
   size_t getCorrectCharPosition(std::string text, size_t pose);
 };
+
+} // namespace ontologenius
 
 #endif

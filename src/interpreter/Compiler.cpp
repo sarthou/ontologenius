@@ -21,6 +21,8 @@
 #define COLOR_GREEN   "\x1B[1;92m"
 #endif
 
+namespace ontologenius {
+
 size_t Compiler::section_cpt_ = 0;
 
 Compiler::Compiler(Code* code) : code_(code), error_(code_)
@@ -390,3 +392,5 @@ void Compiler::noMatchigFunction(size_t pose, FunctionDescriptor* descriptor, st
 
   return offset;
 }*/
+
+} // namespace ontologenius

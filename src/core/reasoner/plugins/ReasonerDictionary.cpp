@@ -1,6 +1,8 @@
 #include "ontoloGenius/core/reasoner/plugins/ReasonerDictionary.h"
 #include <pluginlib/class_list_macros.h>
 
+namespace ontologenius {
+
 void ReasonerDictionary::preReason()
 {
 
@@ -133,3 +135,5 @@ std::string ReasonerDictionary::getDesciption()
 }
 
 PLUGINLIB_EXPORT_CLASS(ReasonerDictionary, ReasonerInterface)
+
+} // namespace ontologenius

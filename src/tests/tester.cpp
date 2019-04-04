@@ -18,11 +18,11 @@ std::string set2string(std::unordered_set<std::string> word_set)
   return result;
 }
 
-std::vector<std::string> generate_sequence(ClassGraph& onto)
+std::vector<std::string> generate_sequence(ontologenius::ClassGraph& onto)
 {
   srand (time(NULL));
 
-  std::vector<ClassBranch_t*> base = onto.get();
+  std::vector<ontologenius::ClassBranch_t*> base = onto.get();
   size_t max_index = base.size();
 
   std::string _1_10_1 = base[rand() % max_index]->value();
@@ -83,7 +83,7 @@ std::vector<std::string> generate_sequence(ClassGraph& onto)
   return vect10000;
 }
 
-double testOne(std::vector<std::string>& seq, Ontology& onto)
+double testOne(std::vector<std::string>& seq, ontologenius::Ontology& onto)
 {
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
@@ -101,8 +101,8 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius_tester");
 
-  Ontology onto;
-  Reasoners reasoners(&onto);
+  ontologenius::Ontology onto;
+  ontologenius::Reasoners reasoners(&onto);
   reasoners.load();
   reasoners.list();
 

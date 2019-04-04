@@ -4,6 +4,8 @@
 
 #include <vector>
 
+namespace ontologenius {
+
 void DataPropertiesWriter::write(FILE* file)
 {
   file_ = file;
@@ -69,3 +71,5 @@ void DataPropertiesWriter::writeDomain(DataPropertyBranch_t* branch)
     writeString(tmp);
   }
 }
+
+} // namespace ontologenius

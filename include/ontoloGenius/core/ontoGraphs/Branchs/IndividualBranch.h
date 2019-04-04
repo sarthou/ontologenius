@@ -10,6 +10,8 @@
 #include "ontoloGenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 
+namespace ontologenius {
+
 class Triplet;
 
 template <typename T>
@@ -88,5 +90,7 @@ public:
   std::vector<IndividualBranch_t*> on_;
 
 };
+
+} // namespace ontologenius
 
 #endif

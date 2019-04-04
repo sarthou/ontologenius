@@ -3,6 +3,8 @@
 
 #include "ontoloGenius/core/feeder/FeedStorage.h"
 
+namespace ontologenius {
+
 class Ontology;
 
 class Feeder
@@ -41,5 +43,7 @@ private:
   void classIndividualLangage(feed_t& feed);
   void applyProperty(feed_t& feed);
 };
+
+} // namespace ontologenius
 
 #endif

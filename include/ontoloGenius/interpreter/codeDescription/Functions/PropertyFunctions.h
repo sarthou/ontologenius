@@ -5,6 +5,8 @@
 
 #include "ontoloGenius/interpreter/codeDescription/Functions/FunctionContainer.h"
 
+namespace ontologenius {
+
 class PropertyFunctions: public FunctionContainer
 {
 public:
@@ -16,5 +18,7 @@ public:
 
 private:
 };
+
+} // namespace ontologenius
 
 #endif

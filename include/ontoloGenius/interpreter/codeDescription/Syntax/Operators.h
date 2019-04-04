@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include <unordered_set>
 
+namespace ontologenius {
+
 struct Operator_t
 {
   std::string op;
@@ -47,5 +49,7 @@ private:
   std::vector<Operator_t> operators_;
   std::vector<OperatorDescriptor_t> descriptors_;
 };
+
+} // namespace ontologenius
 
 #endif

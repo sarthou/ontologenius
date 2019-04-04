@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace ontologenius {
+
 class FileManager
 {
 public:
@@ -14,5 +16,7 @@ public:
 protected:
   FILE* file_;
 };
+
+} // namespace ontologenius
 
 #endif

@@ -6,6 +6,8 @@
 #include <string>
 #include <queue>
 
+namespace ontologenius {
+
 enum action_t
 {
   action_add,
@@ -38,5 +40,7 @@ private:
   std::queue<feed_t> fifo_1;
   std::queue<feed_t> fifo_2;
 };
+
+} // namespace ontologenius
 
 #endif //FEEDSTORAGE

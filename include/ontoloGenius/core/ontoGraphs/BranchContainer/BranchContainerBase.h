@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+namespace ontologenius {
+
 class ValuedNode;
 template <typename T> struct Branch_t;
 
@@ -22,5 +24,7 @@ public:
   virtual void erase(B* branch) = 0;
 private:
 };
+
+} // namespace ontologenius
 
 #endif

@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+namespace ontologenius {
+
 class IndividualGraph;
 class IndividualBranch_t;
 
@@ -31,5 +33,7 @@ private:
   void writeDistincts(std::vector<IndividualBranch_t*>& individuals);
   void getDistincts(IndividualBranch_t* individual, std::vector<std::string>& distincts_current);
 };
+
+} // namespace ontologenius
 
 #endif

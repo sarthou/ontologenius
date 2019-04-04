@@ -4,6 +4,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Checkers/ValidityChecker.h"
 
+namespace ontologenius {
+
 class ObjectPropertyChecker : public ValidityChecker<ObjectPropertyBranch_t>
 {
 public:
@@ -28,5 +30,7 @@ private:
     return nullptr;
   }
 };
+
+} // namespace ontologenius
 
 #endif

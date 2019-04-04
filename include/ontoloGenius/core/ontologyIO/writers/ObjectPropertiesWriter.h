@@ -5,6 +5,8 @@
 
 #include <string>
 
+namespace ontologenius {
+
 class ObjectPropertyGraph;
 class ObjectPropertyBranch_t;
 
@@ -26,5 +28,7 @@ private:
   void writeDomain(ObjectPropertyBranch_t* branch);
   void writeChain(ObjectPropertyBranch_t* branch);
 };
+
+} // namespace ontologenius
 
 #endif

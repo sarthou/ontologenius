@@ -8,6 +8,8 @@
 
 #include <string>
 
+namespace ontologenius {
+
 class Ontology;
 
 class OntologyWriter
@@ -34,5 +36,7 @@ private:
   void writeBanner(std::string name);
   void writeString(std::string text);
 };
+
+} // namespace ontologenius
 
 #endif

@@ -12,6 +12,8 @@
 #include "ontoloGenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
+namespace ontologenius {
+
 struct ObjectPropertyVectors_t
 {
    std::vector<std::string> mothers_;
@@ -128,5 +130,7 @@ private:
     }
   }
 };
+
+} // namespace ontologenius
 
 #endif /* OBJECTROPERTYGRAPH_H */

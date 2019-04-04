@@ -4,6 +4,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/graphical/Drawers/GraphDrawer.h"
 
+namespace ontologenius {
+
 class ClassDrawer : public GraphDrawer
 {
 public:
@@ -19,5 +21,7 @@ private:
   int createNode(ClassBranch_t* branch, node_t* mother);
   void init();
 };
+
+} // namespace ontologenius
 
 #endif /* CLASS_DRAWER_H */

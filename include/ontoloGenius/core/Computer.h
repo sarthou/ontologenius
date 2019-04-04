@@ -5,6 +5,7 @@
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
+namespace ontologenius {
 
 struct finder_t
 {
@@ -29,3 +30,5 @@ private:
   bool split(const std::string &txt, std::vector<std::string> &strs, char ch);
   bool split(const std::string &txt, std::vector<std::string> &strs, std::string delim);
 };
+
+} // namespace ontologenius

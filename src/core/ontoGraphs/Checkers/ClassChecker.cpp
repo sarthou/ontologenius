@@ -4,6 +4,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
+namespace ontologenius {
+
 size_t ClassChecker::check()
 {
   std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
@@ -181,3 +183,5 @@ void ClassChecker::checkDataPropertyRange()
     }
   }
 }
+
+} // namespace ontologenius

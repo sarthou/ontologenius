@@ -7,6 +7,8 @@
 
 #include <algorithm>
 
+namespace ontologenius {
+
 void ClassWriter::write(FILE* file)
 {
   file_ = file;
@@ -214,3 +216,5 @@ void ClassWriter::writeDataPropertiesDeduced(ClassBranch_t* branch)
       writeString(tmp);
     }
 }
+
+} // namespace ontologenius

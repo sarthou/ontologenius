@@ -6,6 +6,8 @@
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/Branch.h"
 
+namespace ontologenius {
+
 struct Properties_t
 {
   bool functional_property_;
@@ -32,5 +34,7 @@ public:
   std::vector<B*> disjoints_;
   Properties_t properties_;
 };
+
+} // namespace ontologenius
 
 #endif

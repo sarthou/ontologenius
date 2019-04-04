@@ -4,6 +4,8 @@
 #include <sstream>
 #include <chrono>
 
+namespace ontologenius {
+
 using namespace std;
 
 bool Computer::compute(std::string equation, ClassGraph& onto)
@@ -192,3 +194,5 @@ bool Computer::split(const std::string &txt, std::vector<std::string> &strs, std
   else
     return false;
 }
+
+} // namespace ontologenius

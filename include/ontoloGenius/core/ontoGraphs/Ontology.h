@@ -9,6 +9,9 @@
 #include "ontoloGenius/core/ontologyIO/OntologyReader.h"
 #include "ontoloGenius/core/ontologyIO/OntologyWriter.h"
 #include <iostream>
+
+namespace ontologenius {
+
 class Ontology
 {
 public:
@@ -41,5 +44,6 @@ private:
   bool is_init_;
 };
 
+} // namespace ontologenius
 
 #endif

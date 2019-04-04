@@ -4,6 +4,8 @@
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 #include <string>
 
+namespace ontologenius {
+
 class ReasonerInterface
 {
 public:
@@ -38,5 +40,7 @@ protected:
 
   static size_t nb_update_;
 };
+
+} // namespace ontologenius
 
 #endif

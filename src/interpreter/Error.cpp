@@ -18,6 +18,8 @@
 #define COLOR_BLUE   "\x1B[1;96m"
 #endif
 
+namespace ontologenius {
+
 Error::Error(Code* code)
 {
   code_ = code;
@@ -201,3 +203,5 @@ void Error::printMessage(size_t pose, std::string message)
       code_->ifelse_.compact(*code_);
   }
 }
+
+} // namespace ontologenius

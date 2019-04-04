@@ -9,6 +9,8 @@
 #include <map>
 #include <string>
 
+namespace ontologenius {
+
 class Reasoners
 {
 public:
@@ -48,5 +50,7 @@ private:
   void computeIndividualsUpdatesPeriodic();
   void resetIndividualsUpdates();
 };
+
+} // namespace ontologenius
 
 #endif

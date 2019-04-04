@@ -3,6 +3,8 @@
 #include <ros/package.h>
 #include <iostream>
 
+namespace ontologenius {
+
 FileManager::FileManager()
 {
   file_ = NULL;
@@ -36,3 +38,5 @@ void FileManager::reset(std::string file_name)
     fclose(file_);
   file_ = NULL;
 }
+
+} // namespace ontologenius

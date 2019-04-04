@@ -1,6 +1,8 @@
 #ifndef LINECOUNTER_H
 #define LINECOUNTER_H
 
+namespace ontologenius {
+
 class LinesCounter
 {
 public:
@@ -18,5 +20,7 @@ private:
   size_t stop_;
   size_t nb_lines_;
 };
+
+} // namespace ontologenius
 
 #endif

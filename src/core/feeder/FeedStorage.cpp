@@ -1,6 +1,8 @@
 #include "ontoloGenius/core/feeder/FeedStorage.h"
 #include <iostream>
 
+namespace ontologenius {
+
 FeedStorage::FeedStorage() : base_regex("^\\[(\\w+)\\](.*)\\|(.*)\\|(.*)$"),
                              simple_regex("^\\[(\\w+)\\](.*)\\|$")
 {
@@ -84,3 +86,5 @@ std::queue<feed_t> FeedStorage::get()
   mutex_.unlock();
   return tmp;
 }
+
+} // namespace ontologenius

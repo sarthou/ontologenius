@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace ontologenius {
+
 class ValuedNodeData;
 
 class NodeWriter
@@ -17,5 +19,7 @@ public:
 
   void writeString(std::string text);
 };
+
+} // namespace ontologenius
 
 #endif

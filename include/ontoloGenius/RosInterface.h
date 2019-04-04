@@ -16,6 +16,8 @@
 #include "ontoloGenius/core/reasoner/Reasoners.h"
 #include "ontoloGenius/core/feeder/Feeder.h"
 
+namespace ontologenius {
+
 class RosInterface
 {
 public:
@@ -66,5 +68,7 @@ private:
   int getPropagationLevel(std::string& params);
   std::string getSelector(std::string& action, std::string& param);
 };
+
+} // namespace ontologenius
 
 #endif

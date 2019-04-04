@@ -3,6 +3,8 @@
 
 #include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
+namespace ontologenius {
+
 class ReasonerSymetric : public ReasonerInterface
 {
 public:
@@ -19,5 +21,7 @@ public:
 private:
   bool symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv);
 };
+
+} // namespace ontologenius
 
 #endif

@@ -7,6 +7,8 @@
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/WordTable.h"
 
+namespace ontologenius {
+
 class UpdatableNode
 {
 public:
@@ -35,5 +37,7 @@ private:
 
   uint32_t index_;
 };
+
+} // namespace ontologenius
 
 #endif

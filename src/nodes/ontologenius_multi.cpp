@@ -16,7 +16,7 @@ void removeUselessSpace(std::string& text)
 }
 
 ros::NodeHandle* n_;
-std::map<std::string, RosInterface*> interfaces_;
+std::map<std::string, ontologenius::RosInterface*> interfaces_;
 std::map<std::string, std::thread> interfaces_threads_;
 
 std::string language;
@@ -47,7 +47,7 @@ std::vector<std::string> getDiff(std::string& param, int& res_code)
 {
   std::vector<std::string> res;
 
-  differenceFinder diff;
+  ontologenius::differenceFinder diff;
   std::regex base_regex("(.*)\\|(.*)\\|(.*)");
   std::smatch base_match;
   if (std::regex_match(param, base_match, base_regex))
@@ -55,7 +55,7 @@ std::vector<std::string> getDiff(std::string& param, int& res_code)
     if (base_match.size() == 4)
     {
       std::string onto1 = base_match[1].str();
-      Ontology* onto1_ptr;
+      ontologenius::Ontology* onto1_ptr;
       auto it = interfaces_.find(onto1);
       if(it == interfaces_.end())
       {
@@ -66,7 +66,7 @@ std::vector<std::string> getDiff(std::string& param, int& res_code)
         onto1_ptr = interfaces_[onto1]->getOntology();
 
       std::string onto2 = base_match[2].str();
-      Ontology* onto2_ptr;
+      ontologenius::Ontology* onto2_ptr;
       it = interfaces_.find(onto2);
       if(it == interfaces_.end())
       {
@@ -101,10 +101,10 @@ bool managerHandle(ontologenius::OntologeniusService::Request &req,
       res.code = NO_EFFECT;
     else
     {
-      RosInterface* tmp = new RosInterface(n_, req.param);
+      ontologenius::RosInterface* tmp = new ontologenius::RosInterface(n_, req.param);
       interfaces_[req.param] = tmp;
       tmp->init(language, intern_file, files);
-      std::thread th(&RosInterface::run, tmp);
+      std::thread th(&ontologenius::RosInterface::run, tmp);
       interfaces_threads_[req.param] = std::move(th);
 
       std::cout << req.param << " STARTED" << std::endl;

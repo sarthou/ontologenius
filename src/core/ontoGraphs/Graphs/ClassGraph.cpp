@@ -6,6 +6,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
+namespace ontologenius {
+
 ClassGraph::ClassGraph(IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
 {
   individual_graph_ = individual_graph;
@@ -1458,3 +1460,5 @@ bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* 
 
   return true;
 }
+
+} // namespace ontologenius

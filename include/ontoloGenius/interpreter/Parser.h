@@ -8,6 +8,8 @@
 #include "ontoloGenius/interpreter/codeDescription/Code.h"
 #include "ontoloGenius/interpreter/Error.h"
 
+namespace ontologenius {
+
 class Parser
 {
 public:
@@ -38,5 +40,7 @@ private:
   Error error_;
   bool subparser_;
 };
+
+} // namespace ontologenius
 
 #endif

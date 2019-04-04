@@ -5,6 +5,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
+namespace ontologenius {
+
 size_t IndividualChecker::check()
 {
   graph_size = graph_vect_.size();
@@ -228,3 +230,5 @@ bool IndividualChecker::symetricExist(IndividualBranch_t* indiv_on, ObjectProper
   }
   return false;
 }
+
+} // namespace ontologenius

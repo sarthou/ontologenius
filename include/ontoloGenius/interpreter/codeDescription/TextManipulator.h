@@ -9,6 +9,8 @@
 
 #include "ontoloGenius/interpreter/codeDescription/LinesCounter.h"
 
+namespace ontologenius {
+
 class TextManipulator
 {
 public:
@@ -32,5 +34,7 @@ public:
 
 private:
 };
+
+} // namespace ontologenius
 
 #endif

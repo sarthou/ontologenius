@@ -3,6 +3,8 @@
 
 #include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
+namespace ontologenius {
+
 class ReasonerNone : public ReasonerInterface
 {
 public:
@@ -17,5 +19,7 @@ public:
   virtual std::string getDesciption();
 private:
 };
+
+} // namespace ontologenius
 
 #endif

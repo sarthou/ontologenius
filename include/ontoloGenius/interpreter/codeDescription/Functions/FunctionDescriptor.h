@@ -6,6 +6,8 @@
 
 #include "ontoloGenius/interpreter/codeDescription/Types/Types.h"
 
+namespace ontologenius {
+
 class FunctionDescriptor
 {
 public:
@@ -33,5 +35,7 @@ private:
   std::vector<type_t> return_;
   std::vector<std::vector<type_t>> params_;
 };
+
+} // namespace ontologenius
 
 #endif

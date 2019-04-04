@@ -4,6 +4,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Checkers/ValidityChecker.h"
 
+namespace ontologenius {
+
 class ClassChecker : public ValidityChecker<ClassBranch_t>
 {
 public:
@@ -24,5 +26,7 @@ private:
 
   ClassGraph* class_graph_;
 };
+
+} // namespace ontologenius
 
 #endif

@@ -6,6 +6,8 @@
 
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 
+namespace ontologenius {
+
 class comparator_t
 {
 public:
@@ -76,5 +78,7 @@ private:
     return res;
   }
 };
+
+} // namespace ontologenius
 
 #endif // DIFFERENCEFINDER_H

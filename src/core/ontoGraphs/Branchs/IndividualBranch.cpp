@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+namespace ontologenius {
+
 void IndividualBranch_t::setFullSteady()
 {
   steady_.is_a_.clear();
@@ -92,3 +94,5 @@ void IndividualBranch_t::setSteady_dictionary(std::map<std::string, std::vector<
   steady_.dictionary_ = dictionary;
   dictionary_ = dictionary;
 }
+
+} // namespace ontologenius

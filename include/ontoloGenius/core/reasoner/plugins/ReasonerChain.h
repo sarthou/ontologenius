@@ -3,6 +3,8 @@
 
 #include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
+namespace ontologenius {
+
 class ChainTree;
 class ReasonerChain : public ReasonerInterface
 {
@@ -160,5 +162,7 @@ private:
 
   size_t size_;
 };
+
+} // namespace ontologenius
 
 #endif

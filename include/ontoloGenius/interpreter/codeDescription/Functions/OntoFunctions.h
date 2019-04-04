@@ -10,6 +10,8 @@
 #include "ontoloGenius/interpreter/codeDescription/Namespace.h"
 #include "ontoloGenius/interpreter/codeDescription/Functions/FunctionContainer.h"
 
+namespace ontologenius {
+
 class OntoFunctions : public Namespace, public FunctionContainer
 {
 public:
@@ -18,5 +20,7 @@ public:
 
 private:
 };
+
+} // namespace ontologenius
 
 #endif

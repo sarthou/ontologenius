@@ -1,6 +1,8 @@
 #include "ontoloGenius/core/reasoner/plugins/ReasonerSymetric.h"
 #include <pluginlib/class_list_macros.h>
 
+namespace ontologenius {
+
 void ReasonerSymetric::preReason()
 {
 
@@ -58,3 +60,5 @@ std::string ReasonerSymetric::getDesciption()
 }
 
 PLUGINLIB_EXPORT_CLASS(ReasonerSymetric, ReasonerInterface)
+
+} // namespace ontologenius

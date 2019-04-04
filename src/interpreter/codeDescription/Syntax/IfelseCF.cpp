@@ -3,6 +3,8 @@
 #include "ontoloGenius/interpreter/codeDescription/Code.h"
 #include "ontoloGenius/interpreter/Error.h"
 
+namespace ontologenius {
+
 /*
 * replace condition (if and else) by the key word __ifelse with the corresponding index
 */
@@ -150,3 +152,5 @@ size_t IfelseCF::getCorrectCharPosition(std::string text, size_t pose)
   }
   return pose;
 }
+
+} // namespace ontologenius

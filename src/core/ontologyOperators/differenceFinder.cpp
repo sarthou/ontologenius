@@ -2,6 +2,8 @@
 
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 
+namespace ontologenius {
+
 std::vector<std::string> differenceFinder::getDiff(Ontology* onto1, Ontology* onto2, const std::string& concept)
 {
   comparator_t comp1, comp2;
@@ -189,3 +191,5 @@ comparator_t differenceFinder::toComparator(ClassBranch_t* class_)
   comp.mothers_ = toValued(class_->mothers_);
   return comp;
 }
+
+} // namespace ontologenius

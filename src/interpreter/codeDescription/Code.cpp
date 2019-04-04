@@ -1,5 +1,7 @@
 #include "ontoloGenius/interpreter/codeDescription/Code.h"
 
+namespace ontologenius {
+
 Code::~Code()
 {
   for (std::map<std::string, SubsectionBlock_t>::iterator it=subsections_.begin(); it!=subsections_.end(); ++it)
@@ -146,3 +148,5 @@ void Code::removeProtectedWord(std::string& text)
   if(protect != std::string::npos)
     text = text.substr(0, protect);
 }
+
+} // namespace ontologenius

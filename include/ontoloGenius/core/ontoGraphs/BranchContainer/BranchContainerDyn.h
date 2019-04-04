@@ -7,6 +7,8 @@
 
 #include "ontoloGenius/core/ontoGraphs/BranchContainer/BranchContainerBase.h"
 
+namespace ontologenius {
+
 template <typename T>
 struct BranchNode_t
 {
@@ -152,5 +154,7 @@ void BranchContainerDyn<B>::reconf(BranchNode_t<B>* node)
  tmp->next = nodes_->next;
  nodes_->next = tmp;
 }
+
+} // namespace ontologenius
 
 #endif

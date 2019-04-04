@@ -1,6 +1,8 @@
 #include "ontoloGenius/core/reasoner/plugins/ReasonerNone.h"
 #include <pluginlib/class_list_macros.h>
 
+namespace ontologenius {
+
 void ReasonerNone::preReason()
 {
   //put your pre-reasonning here
@@ -27,3 +29,5 @@ std::string ReasonerNone::getDesciption()
 }
 
 PLUGINLIB_EXPORT_CLASS(ReasonerNone, ReasonerInterface)
+
+} // namespace ontologenius

@@ -7,6 +7,8 @@
 #include <random>
 #include <algorithm>
 
+namespace ontologenius {
+
 IndividualGraph::IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
 {
   class_graph_ = class_graph;
@@ -1818,3 +1820,5 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataProperty
 
   return true;
 }
+
+} // namespace ontologenius

@@ -3,6 +3,8 @@
 
 #include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
+namespace ontologenius {
+
 class ReasonerRangeDomain : public ReasonerInterface
 {
 public:
@@ -36,5 +38,7 @@ private:
   void deduceObjDomain(ClassBranch_t* branch, size_t index);
   void deduceDatDomain(ClassBranch_t* branch, size_t index);
 };
+
+} // namespace ontologenius
 
 #endif

@@ -11,6 +11,8 @@
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 
+namespace ontologenius {
+
 struct IndividualVectors_t
 {
    std::vector<std::string> is_a_;
@@ -129,5 +131,7 @@ private:
   bool checkRangeAndDomain(IndividualBranch_t* from, ObjectPropertyBranch_t* prop, IndividualBranch_t* on);
   bool checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, data_t& data);
 };
+
+} // namespace ontologenius
 
 #endif /* INDIVIDUALGRAPH_H */

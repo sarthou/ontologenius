@@ -1,5 +1,7 @@
 #include "ontoloGenius/interpreter/codeDescription/TextManipulator.h"
 
+namespace ontologenius {
+
 size_t TextManipulator::getInBraquet(size_t begin, std::string& in_bracket, std::string& text)
 {
   size_t bracket = begin;
@@ -128,3 +130,5 @@ void TextManipulator::remove(char character)
       i++;
   }
 }
+
+} // namespace ontologenius

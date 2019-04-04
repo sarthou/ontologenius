@@ -10,6 +10,8 @@
 #include "ontoloGenius/interpreter/Error.h"
 #include "ontoloGenius/interpreter/fileManagers/FileWriter.h"
 
+namespace ontologenius {
+
 class Compiler
 {
 public:
@@ -41,5 +43,7 @@ private:
   void noMatchigFunction(size_t pose, FunctionDescriptor* descriptor, std::vector<type_t> args_types);
   //int splitIfBlock(std::map<size_t, std::string>& splited, std::string ifelse_id);
 };
+
+} // namespace ontologenius
 
 #endif

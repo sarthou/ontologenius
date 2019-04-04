@@ -5,6 +5,8 @@
 
 #include <string>
 
+namespace ontologenius {
+
 class FileWriter : public FileManager
 {
 public:
@@ -16,5 +18,7 @@ public:
 
 private:
 };
+
+} // namespace ontologenius
 
 #endif

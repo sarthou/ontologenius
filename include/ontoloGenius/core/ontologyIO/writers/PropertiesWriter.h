@@ -6,6 +6,8 @@
 
 #include <string>
 
+namespace ontologenius {
+
 template <typename T>
 class PropertiesWriter : public NodeWriter
 {
@@ -53,5 +55,7 @@ void PropertiesWriter<T>::writeProperties(PropertyBranchData_t<T>* branch)
   if(tmp != "")
     writeString(tmp);
 }
+
+} // namespace ontologenius
 
 #endif

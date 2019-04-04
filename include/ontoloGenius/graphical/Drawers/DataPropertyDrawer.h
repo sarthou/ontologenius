@@ -4,6 +4,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontoloGenius/graphical/Drawers/GraphDrawer.h"
 
+namespace ontologenius {
+
 class DataPropertyDrawer : public GraphDrawer
 {
 public:
@@ -19,5 +21,7 @@ private:
   int createNode(DataPropertyBranch_t* branch, node_t* mother);
   void init();
 };
+
+} // namespace ontologenius
 
 #endif /* DATAPROPERTYDRAWER_H */

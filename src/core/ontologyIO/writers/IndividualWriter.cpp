@@ -5,6 +5,8 @@
 #include <vector>
 #include <algorithm>
 
+namespace ontologenius {
+
 void IndividualWriter::write(FILE* file)
 {
   file_ = file;
@@ -184,3 +186,5 @@ void IndividualWriter::getDistincts(IndividualBranch_t* individual, std::vector<
       getDistincts(individual->distinct_[i], distincts_current);
   }
 }
+
+} // namespace ontologenius

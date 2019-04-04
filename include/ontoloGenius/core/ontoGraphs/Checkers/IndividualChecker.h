@@ -4,6 +4,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Checkers/ValidityChecker.h"
 
+namespace ontologenius {
+
 class IndividualChecker : public ValidityChecker<IndividualBranch_t>
 {
 public:
@@ -27,5 +29,7 @@ private:
 
   bool symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv);
 };
+
+} // namespace ontologenius
 
 #endif

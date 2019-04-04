@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+namespace ontologenius {
+
 OntologyWriter::OntologyWriter(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph)
 {
   class_graph_ = class_graph;
@@ -108,3 +110,5 @@ void OntologyWriter::writeString(std::string text)
   if(file_ != NULL)
     fwrite(text.c_str(), sizeof(char), text.size(), file_);
 }
+
+} // namespace ontologenius

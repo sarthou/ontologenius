@@ -1,5 +1,7 @@
 #include "ontoloGenius/interpreter/codeDescription/Namespace.h"
 
+namespace ontologenius {
+
 Namespace::Namespace(std::string name)
 {
   name_ = name;
@@ -12,3 +14,5 @@ bool Namespace::isThisNamespace(std::string ns)
   else
     return false;
 }
+
+} // namespace ontologenius

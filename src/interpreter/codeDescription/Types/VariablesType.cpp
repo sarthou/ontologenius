@@ -1,5 +1,7 @@
 #include "ontoloGenius/interpreter/codeDescription/Types/VariablesType.h"
 
+namespace ontologenius {
+
 VariablesType::VariablesType() : Namespace("var")
 {
   nb_variables_ = 0;
@@ -172,3 +174,5 @@ size_t VariablesType::size(std::string id)
     return var_[id].values.size();
   return 0;
 }
+
+} // namespace ontologenius

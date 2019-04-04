@@ -12,6 +12,8 @@
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/ValuedNode.h"
 
+namespace ontologenius {
+
 template <typename B>
 class Graph
 {
@@ -69,5 +71,7 @@ B* Graph<B>::create(const std::string& name)
   }
   return indiv;
 }
+
+} // namespace ontologenius
 
 #endif

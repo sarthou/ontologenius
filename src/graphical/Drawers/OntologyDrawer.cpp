@@ -1,5 +1,7 @@
 #include "ontoloGenius/graphical/Drawers/OntologyDrawer.h"
 
+namespace ontologenius {
+
 OntologyDrawer::OntologyDrawer(Ontology* ontology)
 {
   if(ontology != nullptr)
@@ -31,3 +33,5 @@ void OntologyDrawer::draw(std::string name)
   data_property_drawer_.putInLayers();
   data_property_drawer_.draw(name + "_dataProperty.png");
 }
+
+} // namespace ontologenius

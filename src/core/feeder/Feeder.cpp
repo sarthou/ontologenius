@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+namespace ontologenius {
+
 bool Feeder::run()
 {
   bool has_run = false;
@@ -223,3 +225,5 @@ void Feeder::applyProperty(feed_t& feed)
   else
     notifications_.push_back("[FAIL][unknown action]" + current_str_feed_);
 }
+
+} // namespace ontologenius

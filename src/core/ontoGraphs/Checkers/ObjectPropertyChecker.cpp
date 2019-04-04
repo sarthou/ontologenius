@@ -1,6 +1,8 @@
 #include "ontoloGenius/core/ontoGraphs/Checkers/ObjectPropertyChecker.h"
 #include <unordered_set>
 
+namespace ontologenius {
+
 size_t ObjectPropertyChecker::check()
 {
   std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
@@ -45,3 +47,5 @@ void ObjectPropertyChecker::checkCharacteristics()
       print_error("'" + graph_vect_[i]->value() + "' can't be a 'reflexive' and 'irreflexive'");
   }
 }
+
+} // namespace ontologenius

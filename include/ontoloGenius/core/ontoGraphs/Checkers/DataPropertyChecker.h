@@ -4,6 +4,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Checkers/ValidityChecker.h"
 
+namespace ontologenius {
+
 class DataPropertyChecker : public ValidityChecker<DataPropertyBranch_t>
 {
 public:
@@ -17,5 +19,7 @@ private:
 
   DataPropertyGraph* property_graph_;
 };
+
+} // namespace ontologenius
 
 #endif

@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace ontologenius {
+
 bool Operators::describe(std::string op, std::string function, bool whole_line, uint8_t priority)
 {
   OperatorDescriptor_t tmp;
@@ -221,3 +223,5 @@ size_t Operators::findNextOperator(size_t pose)
 
   return pose;
 }
+
+} // namespace ontologenius

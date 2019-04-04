@@ -2,6 +2,8 @@
 #include <pluginlib/class_list_macros.h>
 #include <iostream>
 
+namespace ontologenius {
+
 ReasonerGeneralize::ReasonerGeneralize()
 {
   current_id_ = 0;
@@ -196,3 +198,5 @@ std::string ReasonerGeneralize::getDesciption()
 }
 
 PLUGINLIB_EXPORT_CLASS(ReasonerGeneralize, ReasonerInterface)
+
+} // namespace ontologenius

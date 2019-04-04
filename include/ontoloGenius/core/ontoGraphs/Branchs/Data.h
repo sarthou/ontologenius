@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace ontologenius {
+
 struct data_t
 {
   std::string value_;
@@ -27,5 +29,7 @@ struct data_t
     value_ = value.substr(value.find(":")+1);
   }
 };
+
+} // namespace ontologenius
 
 #endif

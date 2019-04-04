@@ -16,6 +16,8 @@
 #include "ontoloGenius/interpreter/codeDescription/Syntax/Operators.h"
 #include "ontoloGenius/interpreter/codeDescription/Syntax/IfelseCF.h"
 
+namespace ontologenius {
+
 struct CommentBlock_t
 {
   std::string comment;
@@ -52,5 +54,7 @@ public:
 
 private:
 };
+
+} // namespace ontologenius
 
 #endif

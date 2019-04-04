@@ -5,6 +5,8 @@
 
 #include "ontoloGenius/interpreter/codeDescription/Functions/FunctionDescriptor.h"
 
+namespace ontologenius {
+
 class FunctionContainer
 {
 public:
@@ -17,5 +19,7 @@ public:
 protected:
   std::vector<FunctionDescriptor> functions_;
 };
+
+} // namespace ontologenius
 
 #endif

@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace ontologenius {
+
 class Namespace
 {
 public:
@@ -15,5 +17,7 @@ public:
 private:
   std::string name_;
 };
+
+} // namespace ontologenius
 
 #endif
