@@ -10,7 +10,6 @@ ReasonerGeneralize::ReasonerGeneralize()
 
 void ReasonerGeneralize::periodicReason()
 {
-  return;
   std::vector<ClassBranch_t*> classes = ontology_->class_graph_.getSafe();
 
   if(classes.size() > 0)
