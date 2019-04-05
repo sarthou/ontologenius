@@ -1,11 +1,11 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
+#include <random>
+#include <algorithm>
+
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
-
-#include <random>
-#include <algorithm>
 
 namespace ontologenius {
 

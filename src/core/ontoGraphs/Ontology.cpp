@@ -1,5 +1,7 @@
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 
+#include <iostream>
+
 #include "ontoloGenius/core/ontoGraphs/Checkers/ClassChecker.h"
 #include "ontoloGenius/core/ontoGraphs/Checkers/ObjectPropertyChecker.h"
 #include "ontoloGenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
@@ -7,8 +9,6 @@
 
 #include "ontoloGenius/core/utility/color.h"
 #include "ontoloGenius/core/utility/error_code.h"
-
-#include <iostream>
 
 namespace ontologenius {
 

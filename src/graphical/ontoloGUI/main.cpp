@@ -2,7 +2,7 @@
 #include "include/ontoloGenius/graphical/ontoloGUI/DarkStyle.h"
 #include <QApplication>
 
-#include "ros/ros.h"
+#include <ros/ros.h>
 #include <ros/package.h>
 
 int main(int argc, char *argv[])

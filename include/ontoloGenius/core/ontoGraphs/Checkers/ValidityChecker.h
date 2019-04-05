@@ -1,12 +1,12 @@
 #ifndef ONTOLOGENIUS_VALIDITYCHECKER_H
 #define ONTOLOGENIUS_VALIDITYCHECKER_H
 
-#include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
-#include "ontoloGenius/core/utility/color.h"
-
 #include <string>
 #include <iostream>
 #include <unordered_set>
+
+#include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
+#include "ontoloGenius/core/utility/color.h"
 
 namespace ontologenius {
 

@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include "include/ontoloGenius/graphical/ontoloGUI/QCheckBoxExtended.h"
 
-#include "ros/ros.h"
+#include <ros/ros.h>
 #include <vector>
 #include <string>
 

@@ -1,12 +1,13 @@
-#include "ontologenius/OntologeniusService.h"
-
-#include "ros/ros.h"
 #include <iostream>
 #include <chrono>
 #include <stdlib.h>
 #include <time.h>
 #include <vector>
 #include <string>
+
+#include <ros/ros.h>
+
+#include "ontologenius/OntologeniusService.h"
 
 using namespace std::chrono;
 

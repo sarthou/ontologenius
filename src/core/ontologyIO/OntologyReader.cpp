@@ -1,5 +1,7 @@
 #include "ontoloGenius/core/ontologyIO/OntologyReader.h"
+
 #include <fstream>
+
 #include "ontoloGenius/core/utility/error_code.h"
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 

@@ -1,4 +1,5 @@
 #include "ontoloGenius/core/ontoGraphs/Checkers/ObjectPropertyChecker.h"
+
 #include <unordered_set>
 
 namespace ontologenius {

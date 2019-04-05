@@ -1,4 +1,5 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+
 #include <iostream>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"

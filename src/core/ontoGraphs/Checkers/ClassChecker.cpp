@@ -1,4 +1,5 @@
 #include "ontoloGenius/core/ontoGraphs/Checkers/ClassChecker.h"
+
 #include <algorithm>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"

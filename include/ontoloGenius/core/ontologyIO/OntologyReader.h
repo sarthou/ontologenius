@@ -1,18 +1,19 @@
 #ifndef ONTOLOGENIUS_ONTOLOGYREADER_H
 #define ONTOLOGENIUS_ONTOLOGYREADER_H
 
-#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
-
 #include <vector>
 #include <string>
 #include <map>
 #include <iostream>
-#include "ros/ros.h"
 
 #include <tinyxml.h>
+
+#include <ros/ros.h>
+
+#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
 namespace ontologenius {
 

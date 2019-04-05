@@ -1,4 +1,5 @@
 #include "ontoloGenius/core/feeder/FeedStorage.h"
+
 #include <iostream>
 
 namespace ontologenius {

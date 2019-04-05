@@ -1,12 +1,12 @@
-#include "ontoloGenius/core/ontoGraphs/Ontology.h"
-#include "ontoloGenius/core/reasoner/Reasoners.h"
-
-#include "ros/ros.h"
-
 #include <chrono>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 #include <unordered_set>
+
+#include <ros/ros.h>
+
+#include "ontoloGenius/core/ontoGraphs/Ontology.h"
+#include "ontoloGenius/core/reasoner/Reasoners.h"
 
 using namespace std::chrono;
 

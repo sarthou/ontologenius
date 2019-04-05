@@ -1,10 +1,10 @@
 #ifndef ONTOLOGENIUS_PROPERTIESWRITER_H
 #define ONTOLOGENIUS_PROPERTIESWRITER_H
 
+#include <string>
+
 #include "ontoloGenius/core/ontologyIO/writers/NodeWriter.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/PropertyBranch.h"
-
-#include <string>
 
 namespace ontologenius {
 

@@ -4,7 +4,6 @@
 #include <string>
 #include <map>
 #include <unordered_set>
-
 #include <stdint.h>
 
 #include "ontoloGenius/interpreter/codeDescription/Namespace.h"

@@ -1,4 +1,5 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
+
 #include <iostream>
 #include <algorithm>
 

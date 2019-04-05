@@ -1,9 +1,9 @@
 #ifndef ONTOLOGENIUS_DATAPROPERTIESWRITER_H
 #define ONTOLOGENIUS_DATAPROPERTIESWRITER_H
 
-#include "ontoloGenius/core/ontologyIO/writers/PropertiesWriter.h"
-
 #include <string>
+
+#include "ontoloGenius/core/ontologyIO/writers/PropertiesWriter.h"
 
 namespace ontologenius {
 

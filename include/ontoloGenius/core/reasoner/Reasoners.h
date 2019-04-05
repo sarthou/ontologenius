@@ -1,13 +1,13 @@
 #ifndef ONTOLOGENIUS_REASONERS_H
 #define ONTOLOGENIUS_REASONERS_H
 
-#include "ontoloGenius/core/ontoGraphs/Ontology.h"
-#include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
+#include <map>
+#include <string>
 
 #include <pluginlib/class_loader.h>
 
-#include <map>
-#include <string>
+#include "ontoloGenius/core/ontoGraphs/Ontology.h"
+#include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
 namespace ontologenius {
 

@@ -1,7 +1,9 @@
-#include "ros/ros.h"
-#include <gtest/gtest.h>
-#include <ros/package.h>
 #include <iostream>
+
+#include <ros/ros.h>
+#include <ros/package.h>
+
+#include <gtest/gtest.h>
 
 #include "ontoloGenius/utility/OntologiesManipulator.h"
 

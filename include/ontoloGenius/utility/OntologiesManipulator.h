@@ -1,13 +1,13 @@
 #ifndef ONTOLOGENIUS_ONTOLOGIESMANIPULATOR_H
 #define ONTOLOGENIUS_ONTOLOGIESMANIPULATOR_H
 
-#include "ontoloGenius/utility/clients/ManagerClient.h"
-#include "ontoloGenius/utility/OntologyManipulator.h"
-
-#include "ros/ros.h"
-
 #include <vector>
 #include <string>
+
+#include <ros/ros.h>
+
+#include "ontoloGenius/utility/clients/ManagerClient.h"
+#include "ontoloGenius/utility/OntologyManipulator.h"
 
 class OntologiesManipulator : public ManagerClient
 {

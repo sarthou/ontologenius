@@ -1,6 +1,7 @@
-#include "ros/ros.h"
 #include <thread>
 #include <regex>
+
+#include <ros/ros.h>
 
 #include "ontoloGenius/RosInterface.h"
 #include "ontoloGenius/core/ontologyOperators/differenceFinder.h"

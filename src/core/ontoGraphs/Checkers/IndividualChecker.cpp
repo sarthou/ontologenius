@@ -1,4 +1,5 @@
 #include "ontoloGenius/core/ontoGraphs/Checkers/IndividualChecker.h"
+
 #include <algorithm>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"

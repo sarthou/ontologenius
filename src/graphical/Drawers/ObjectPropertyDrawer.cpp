@@ -1,7 +1,5 @@
 #include "ontoloGenius/graphical/Drawers/ObjectPropertyDrawer.h"
 
-#include <iostream>
-
 namespace ontologenius {
 
 ObjectPropertyDrawer::ObjectPropertyDrawer(ObjectPropertyGraph* graph)

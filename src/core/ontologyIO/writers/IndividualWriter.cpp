@@ -1,9 +1,9 @@
 #include "ontoloGenius/core/ontologyIO/writers/IndividualWriter.h"
 
-#include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
-
 #include <vector>
 #include <algorithm>
+
+#include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
 namespace ontologenius {
 

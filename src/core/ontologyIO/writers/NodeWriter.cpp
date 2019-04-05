@@ -1,9 +1,9 @@
 #include "ontoloGenius/core/ontologyIO/writers/NodeWriter.h"
 
-#include "ontoloGenius/core/ontoGraphs/Branchs/ValuedNode.h"
-
 #include <map>
 #include <vector>
+
+#include "ontoloGenius/core/ontoGraphs/Branchs/ValuedNode.h"
 
 namespace ontologenius {
 

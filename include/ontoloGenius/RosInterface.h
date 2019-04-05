@@ -7,7 +7,7 @@
 #include <atomic>
 #include <mutex>
 
-#include "ros/ros.h"
+#include <ros/ros.h>
 #include "std_msgs/String.h"
 
 #include "ontologenius/OntologeniusService.h"

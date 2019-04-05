@@ -1,6 +1,6 @@
-#include <iostream>
-
 #include "ontoloGenius/interpreter/Error.h"
+
+#include <iostream>
 
 #ifndef COLOR_OFF
 #define COLOR_OFF     "\x1B[0m"

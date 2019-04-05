@@ -1,8 +1,9 @@
 #ifndef ONTOLOGENIUS_REASONERINTERFACE_H
 #define ONTOLOGENIUS_REASONERINTERFACE_H
 
-#include "ontoloGenius/core/ontoGraphs/Ontology.h"
 #include <string>
+
+#include "ontoloGenius/core/ontoGraphs/Ontology.h"
 
 namespace ontologenius {
 

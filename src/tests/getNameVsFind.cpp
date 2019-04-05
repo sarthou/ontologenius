@@ -1,7 +1,3 @@
-#include "ontoloGenius/utility/OntologyManipulator.h"
-
-#include "ros/ros.h"
-
 #include <chrono>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
@@ -9,6 +5,10 @@
 #include <stdio.h>
 #include <math.h>
 #include <atomic>
+
+#include <ros/ros.h>
+
+#include "ontoloGenius/utility/OntologyManipulator.h"
 
 class FileReader
 {

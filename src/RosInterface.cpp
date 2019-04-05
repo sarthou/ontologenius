@@ -1,9 +1,10 @@
+#include <thread>
+
+#include <ros/callback_queue.h>
+
 #include "ontoloGenius/RosInterface.h"
 
 #include "ontoloGenius/core/utility/error_code.h"
-
-#include <thread>
-#include <ros/callback_queue.h>
 
 namespace ontologenius {
 

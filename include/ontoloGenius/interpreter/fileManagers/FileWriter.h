@@ -1,9 +1,9 @@
 #ifndef ONTOLOGENIUS_FILEWRITER_H
 #define ONTOLOGENIUS_FILEWRITER_H
 
-#include "ontoloGenius/interpreter/fileManagers/FileManager.h"
-
 #include <string>
+
+#include "ontoloGenius/interpreter/fileManagers/FileManager.h"
 
 namespace ontologenius {
 

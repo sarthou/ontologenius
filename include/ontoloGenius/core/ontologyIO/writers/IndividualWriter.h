@@ -1,10 +1,10 @@
 #ifndef ONTOLOGENIUS_INDIVIDUALWRITER_H
 #define ONTOLOGENIUS_INDIVIDUALWRITER_H
 
-#include "ontoloGenius/core/ontologyIO/writers/NodeWriter.h"
-
 #include <string>
 #include <vector>
+
+#include "ontoloGenius/core/ontologyIO/writers/NodeWriter.h"
 
 namespace ontologenius {
 

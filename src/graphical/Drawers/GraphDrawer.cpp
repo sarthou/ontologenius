@@ -1,7 +1,6 @@
 #include "ontoloGenius/graphical/Drawers/GraphDrawer.h"
-#include <opencv2/imgproc/imgproc.hpp>
 
-#include <iostream>
+#include <opencv2/imgproc/imgproc.hpp>
 
 #define MARKER_WIDTH      350
 #define MIN_WIDTH_SPACE   50

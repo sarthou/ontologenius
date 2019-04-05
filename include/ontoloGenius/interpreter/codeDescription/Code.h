@@ -4,9 +4,6 @@
 #include <string>
 #include <map>
 #include <vector>
-
-#include <iostream>
-
 #include <stdint.h>
 
 #include "ontoloGenius/interpreter/codeDescription/TextManipulator.h"

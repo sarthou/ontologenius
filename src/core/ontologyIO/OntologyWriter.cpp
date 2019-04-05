@@ -1,5 +1,7 @@
 #include "ontoloGenius/core/ontologyIO/OntologyWriter.h"
 
+#include <iostream>
+
 #include "ontoloGenius/core/ontologyIO/writers/ClassWriter.h"
 #include "ontoloGenius/core/ontologyIO/writers/ObjectPropertiesWriter.h"
 #include "ontoloGenius/core/ontologyIO/writers/DataPropertiesWriter.h"
@@ -7,8 +9,6 @@
 
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 #include "ontoloGenius/core/utility/color.h"
-
-#include <iostream>
 
 namespace ontologenius {
 

@@ -1,13 +1,13 @@
 #ifndef ONTOLOGENIUS_ONTOLOGYDRAWER_H
 #define ONTOLOGENIUS_ONTOLOGYDRAWER_H
 
+#include <string>
+
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 
 #include "ontoloGenius/graphical/Drawers/ClassDrawer.h"
 #include "ontoloGenius/graphical/Drawers/ObjectPropertyDrawer.h"
 #include "ontoloGenius/graphical/Drawers/DataPropertyDrawer.h"
-
-#include <string>
 
 namespace ontologenius {
 

@@ -3,7 +3,6 @@
 
 #include <string>
 #include <map>
-
 #include <stdint.h>
 
 #include "ontoloGenius/interpreter/codeDescription/Code.h"

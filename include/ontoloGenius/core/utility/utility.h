@@ -3,8 +3,9 @@
 
 #include <string>
 
+#include <ros/ros.h>
+
 #include "ontologenius/REST.h"
-#include "ros/ros.h"
 
 namespace ontologenius {
 

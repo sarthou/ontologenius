@@ -1,4 +1,5 @@
 #include "ontoloGenius/core/reasoner/plugins/ReasonerRangeDomain.h"
+
 #include <pluginlib/class_list_macros.h>
 
 namespace ontologenius {

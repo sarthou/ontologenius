@@ -1,6 +1,7 @@
+#include <ros/ros.h>
+
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 #include "ontoloGenius/graphical/Drawers/OntologyDrawer.h"
-#include "ros/ros.h"
 
 int main(int argc, char** argv)
 {

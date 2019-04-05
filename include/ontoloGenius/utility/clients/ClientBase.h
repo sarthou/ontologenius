@@ -1,12 +1,12 @@
 #ifndef ONTOLOGENIUS_CLIENTBASE_H
 #define ONTOLOGENIUS_CLIENTBASE_H
 
-#include "ontologenius/OntologeniusService.h"
-
-#include "ros/ros.h"
-
 #include <vector>
 #include <string>
+
+#include <ros/ros.h>
+
+#include "ontologenius/OntologeniusService.h"
 
 #ifndef COLOR_OFF
 #define COLOR_OFF     "\x1B[0m"

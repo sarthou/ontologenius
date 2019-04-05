@@ -1,12 +1,12 @@
 #ifndef ONTOLOGENIUS_ONTOLOGYWRITER_H
 #define ONTOLOGENIUS_ONTOLOGYWRITER_H
 
+#include <string>
+
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
-
-#include <string>
 
 namespace ontologenius {
 

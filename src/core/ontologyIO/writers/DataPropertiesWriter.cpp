@@ -1,8 +1,8 @@
 #include "ontoloGenius/core/ontologyIO/writers/DataPropertiesWriter.h"
 
-#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
-
 #include <vector>
+
+#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
 namespace ontologenius {
 

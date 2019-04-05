@@ -2,9 +2,7 @@
 #define ONTOLOGENIUS_TEXTMANIPULATOR_H
 
 #include <string>
-
 #include <iostream>
-
 #include <stdint.h>
 
 #include "ontoloGenius/interpreter/codeDescription/LinesCounter.h"

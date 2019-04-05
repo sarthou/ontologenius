@@ -1,6 +1,11 @@
 #ifndef ONTOLOGENIUS_ONTOLOGYMANIPULATOR_H
 #define ONTOLOGENIUS_ONTOLOGYMANIPULATOR_H
 
+#include <vector>
+#include <string>
+
+#include <ros/ros.h>
+
 #include "ontoloGenius/utility/clients/ontologyClients/IndividualClient.h"
 #include "ontoloGenius/utility/clients/ontologyClients/ObjectPropertyClient.h"
 #include "ontoloGenius/utility/clients/ontologyClients/DataPropertyClient.h"
@@ -8,11 +13,6 @@
 #include "ontoloGenius/utility/clients/ActionClient.h"
 #include "ontoloGenius/utility/clients/ReasonerClient.h"
 #include "ontoloGenius/utility/FeederPublisher.h"
-
-#include "ros/ros.h"
-
-#include <vector>
-#include <string>
 
 class OntologyManipulator
 {
