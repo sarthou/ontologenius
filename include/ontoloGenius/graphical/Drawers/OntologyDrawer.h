@@ -1,5 +1,5 @@
-#ifndef ONTOLOGYDRAWER_H
-#define ONTOLOGYDRAWER_H
+#ifndef ONTOLOGENIUS_ONTOLOGYDRAWER_H
+#define ONTOLOGENIUS_ONTOLOGYDRAWER_H
 
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 
@@ -28,4 +28,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_ONTOLOGYDRAWER_H

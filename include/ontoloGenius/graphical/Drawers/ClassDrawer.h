@@ -1,5 +1,5 @@
-#ifndef CLASS_DRAWER_H
-#define CLASS_DRAWER_H
+#ifndef ONTOLOGENIUS_CLASSDRAWER_H
+#define ONTOLOGENIUS_CLASSDRAWER_H
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/graphical/Drawers/GraphDrawer.h"
@@ -24,4 +24,4 @@ private:
 
 } // namespace ontologenius
 
-#endif /* CLASS_DRAWER_H */
+#endif // ONTOLOGENIUS_CLASSDRAWER_H

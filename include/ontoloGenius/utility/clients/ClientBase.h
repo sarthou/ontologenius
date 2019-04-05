@@ -1,5 +1,5 @@
-#ifndef CLIENTBASE_H
-#define CLIENTBASE_H
+#ifndef ONTOLOGENIUS_CLIENTBASE_H
+#define ONTOLOGENIUS_CLIENTBASE_H
 
 #include "ontologenius/OntologeniusService.h"
 
@@ -134,4 +134,4 @@ private:
     static bool verbose_;
 };
 
-#endif
+#endif // ONTOLOGENIUS_CLIENTBASE_H

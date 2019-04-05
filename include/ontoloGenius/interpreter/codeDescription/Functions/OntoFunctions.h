@@ -1,5 +1,5 @@
-#ifndef ONTOFUNCTIONS_H
-#define ONTOFUNCTIONS_H
+#ifndef ONTOLOGENIUS_ONTOFUNCTIONS_H
+#define ONTOLOGENIUS_ONTOFUNCTIONS_H
 
 #include <string>
 #include <map>
@@ -23,4 +23,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_ONTOFUNCTIONS_H

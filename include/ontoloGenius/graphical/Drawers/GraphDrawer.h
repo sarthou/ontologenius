@@ -1,5 +1,5 @@
-#ifndef GRAPHDRAWER_H
-#define GRAPHDRAWER_H
+#ifndef ONTOLOGENIUS_GRAPHDRAWER_H
+#define ONTOLOGENIUS_GRAPHDRAWER_H
 
 #include <string>
 #include <vector>
@@ -66,4 +66,4 @@ protected:
 
 } // namespace ontologenius
 
-#endif /* GRAPHDRAWER_H */
+#endif // ONTOLOGENIUS_GRAPHDRAWER_H

@@ -1,5 +1,5 @@
-#ifndef ONTOLOGY_READER_H
-#define ONTOLOGY_READER_H
+#ifndef ONTOLOGENIUS_ONTOLOGYREADER_H
+#define ONTOLOGENIUS_ONTOLOGYREADER_H
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
@@ -131,4 +131,4 @@ bool OntologyReader::testAttribute(TiXmlElement* subElem, const std::string& att
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_ONTOLOGYREADER_H

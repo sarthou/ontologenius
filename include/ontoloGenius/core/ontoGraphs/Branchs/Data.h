@@ -1,5 +1,5 @@
-#ifndef DATA_H
-#define DATA_H
+#ifndef ONTOLOGENIUS_DATA_H
+#define ONTOLOGENIUS_DATA_H
 
 #include <string>
 
@@ -32,4 +32,4 @@ struct data_t
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_DATA_H

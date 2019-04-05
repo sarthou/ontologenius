@@ -1,5 +1,5 @@
-#ifndef REASONERINTERFACE_H
-#define REASONERINTERFACE_H
+#ifndef ONTOLOGENIUS_REASONERINTERFACE_H
+#define ONTOLOGENIUS_REASONERINTERFACE_H
 
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 #include <string>
@@ -43,4 +43,4 @@ protected:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_REASONERINTERFACE_H

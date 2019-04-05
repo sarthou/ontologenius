@@ -1,5 +1,5 @@
-#ifndef ROSINTERFACE_H
-#define ROSINTERFACE_H
+#ifndef ONTOLOGENIUS_ROSINTERFACE_H
+#define ONTOLOGENIUS_ROSINTERFACE_H
 
 #include <string>
 #include <vector>
@@ -71,4 +71,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_ROSINTERFACE_H

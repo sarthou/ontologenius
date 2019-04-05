@@ -1,5 +1,5 @@
-#ifndef NAMESPACE_H
-#define NAMESPACE_H
+#ifndef ONTOLOGENIUS_NAMESPACE_H
+#define ONTOLOGENIUS_NAMESPACE_H
 
 #include <string>
 
@@ -20,4 +20,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_NAMESPACE_H

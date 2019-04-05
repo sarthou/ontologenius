@@ -1,5 +1,5 @@
-#ifndef DATAPROPERTYGRAPH_H
-#define DATAPROPERTYGRAPH_H
+#ifndef ONTOLOGENIUS_DATAPROPERTYGRAPH_H
+#define ONTOLOGENIUS_DATAPROPERTYGRAPH_H
 
 #include <string>
 #include <vector>
@@ -89,4 +89,4 @@ private:
 
 } // namespace ontologenius
 
-#endif /* DATAPROPERTYGRAPH_H */
+#endif // ONTOLOGENIUS_DATAPROPERTYGRAPH_H

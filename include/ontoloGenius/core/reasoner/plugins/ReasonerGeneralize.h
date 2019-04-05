@@ -1,5 +1,5 @@
-#ifndef REASONERGENERALIZE_H
-#define REASONERGENERALIZE_H
+#ifndef ONTOLOGENIUS_REASONERGENERALIZE_H
+#define ONTOLOGENIUS_REASONERGENERALIZE_H
 
 #include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
@@ -137,4 +137,4 @@ void PropertiesCounter<B,P>::get(std::vector<B>& properties, std::vector<P>& dat
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_REASONERGENERALIZE_H

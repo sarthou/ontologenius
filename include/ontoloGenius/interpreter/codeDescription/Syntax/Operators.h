@@ -1,5 +1,5 @@
-#ifndef OPERATORS_H
-#define OPERATORS_H
+#ifndef ONTOLOGENIUS_OPERATORS_H
+#define ONTOLOGENIUS_OPERATORS_H
 
 #include <string>
 #include <vector>
@@ -52,4 +52,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_OPERATORS_H

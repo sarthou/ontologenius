@@ -1,5 +1,5 @@
-#ifndef CLASSCLIENT_H
-#define CLASSCLIENT_H
+#ifndef ONTOLOGENIUS_CLASSCLIENT_H
+#define ONTOLOGENIUS_CLASSCLIENT_H
 
 #include "ontoloGenius/utility/clients/ontologyClients/OntologyClient.h"
 
@@ -29,4 +29,4 @@ private:
 
 };
 
-#endif
+#endif // ONTOLOGENIUS_CLASSCLIENT_H

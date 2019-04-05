@@ -1,5 +1,5 @@
-#ifndef WORDTABLE_H
-#define WORDTABLE_H
+#ifndef ONTOLOGENIUS_WORDTABLE_H
+#define ONTOLOGENIUS_WORDTABLE_H
 
 #include <vector>
 #include <string>
@@ -46,4 +46,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_WORDTABLE_H

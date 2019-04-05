@@ -1,5 +1,5 @@
-#ifndef PROPERTIESWRITER_H
-#define PROPERTIESWRITER_H
+#ifndef ONTOLOGENIUS_PROPERTIESWRITER_H
+#define ONTOLOGENIUS_PROPERTIESWRITER_H
 
 #include "ontoloGenius/core/ontologyIO/writers/NodeWriter.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/PropertyBranch.h"
@@ -58,4 +58,4 @@ void PropertiesWriter<T>::writeProperties(PropertyBranchData_t<T>* branch)
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_PROPERTIESWRITER_H

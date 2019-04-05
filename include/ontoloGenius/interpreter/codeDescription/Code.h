@@ -1,5 +1,5 @@
-#ifndef CODE_H
-#define CODE_H
+#ifndef ONTOLOGENIUS_CODE_H
+#define ONTOLOGENIUS_CODE_H
 
 #include <string>
 #include <map>
@@ -57,4 +57,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_CODE_H

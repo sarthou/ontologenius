@@ -1,5 +1,5 @@
-#ifndef FUNCTIONDESCRIPTOR_H
-#define FUNCTIONDESCRIPTOR_H
+#ifndef ONTOLOGENIUS_FUNCTIONDESCRIPTOR_H
+#define ONTOLOGENIUS_FUNCTIONDESCRIPTOR_H
 
 #include <vector>
 #include <string>
@@ -38,4 +38,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_FUNCTIONDESCRIPTOR_H

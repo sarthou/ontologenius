@@ -1,5 +1,5 @@
-#ifndef VALUEDNODE_H
-#define VALUEDNODE_H
+#ifndef ONTOLOGENIUS_VALUEDNODE_H
+#define ONTOLOGENIUS_VALUEDNODE_H
 
 #include <string>
 #include <vector>
@@ -40,4 +40,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_VALUEDNODE_H

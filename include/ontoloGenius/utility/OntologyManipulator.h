@@ -1,5 +1,5 @@
-#ifndef ONTOLOGYMANIPULATOR_H
-#define ONTOLOGYMANIPULATOR_H
+#ifndef ONTOLOGENIUS_ONTOLOGYMANIPULATOR_H
+#define ONTOLOGENIUS_ONTOLOGYMANIPULATOR_H
 
 #include "ontoloGenius/utility/clients/ontologyClients/IndividualClient.h"
 #include "ontoloGenius/utility/clients/ontologyClients/ObjectPropertyClient.h"
@@ -39,4 +39,4 @@ private:
 
 };
 
-#endif
+#endif // ONTOLOGENIUS_ONTOLOGYMANIPULATOR_H

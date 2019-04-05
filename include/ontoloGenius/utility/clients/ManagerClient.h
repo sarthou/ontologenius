@@ -1,5 +1,5 @@
-#ifndef MANAGERCLIENT_H
-#define MANAGERCLIENT_H
+#ifndef ONTOLOGENIUS_MANAGERCLIENT_H
+#define ONTOLOGENIUS_MANAGERCLIENT_H
 
 #include "ontoloGenius/utility/clients/ClientBase.h"
 
@@ -19,4 +19,4 @@ private:
 
 };
 
-#endif //MANAGERCLIENT_H
+#endif // ONTOLOGENIUS_MANAGERCLIENT_H

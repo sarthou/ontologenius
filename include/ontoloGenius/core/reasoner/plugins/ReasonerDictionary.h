@@ -1,5 +1,5 @@
-#ifndef REASONERDICTIONARY_H
-#define REASONERDICTIONARY_H
+#ifndef ONTOLOGENIUS_REASONERDICTIONARY_H
+#define ONTOLOGENIUS_REASONERDICTIONARY_H
 
 #include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
@@ -28,4 +28,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_REASONERDICTIONARY_H

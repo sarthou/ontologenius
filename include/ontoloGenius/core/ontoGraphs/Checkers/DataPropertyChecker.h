@@ -1,5 +1,5 @@
-#ifndef DATAPROPERTYCHECKER_H
-#define DATAPROPERTYCHECKER_H
+#ifndef ONTOLOGENIUS_DATAPROPERTYCHECKER_H
+#define ONTOLOGENIUS_DATAPROPERTYCHECKER_H
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Checkers/ValidityChecker.h"
@@ -22,4 +22,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_DATAPROPERTYCHECKER_H

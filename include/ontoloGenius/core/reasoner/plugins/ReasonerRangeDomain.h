@@ -1,5 +1,5 @@
-#ifndef REASONERRANGEDOMAIN_H
-#define REASONERRANGEDOMAIN_H
+#ifndef ONTOLOGENIUS_REASONERRANGEDOMAIN_H
+#define ONTOLOGENIUS_REASONERRANGEDOMAIN_H
 
 #include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
@@ -41,4 +41,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_REASONERRANGEDOMAIN_H

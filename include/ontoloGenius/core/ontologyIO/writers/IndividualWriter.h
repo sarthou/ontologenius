@@ -1,5 +1,5 @@
-#ifndef INDIVIDUALWRITER_H
-#define INDIVIDUALWRITER_H
+#ifndef ONTOLOGENIUS_INDIVIDUALWRITER_H
+#define ONTOLOGENIUS_INDIVIDUALWRITER_H
 
 #include "ontoloGenius/core/ontologyIO/writers/NodeWriter.h"
 
@@ -36,4 +36,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_INDIVIDUALWRITER_H

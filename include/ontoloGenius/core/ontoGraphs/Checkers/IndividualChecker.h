@@ -1,5 +1,5 @@
-#ifndef INDIVIDUALCHECKER_H
-#define INDIVIDUALCHECKER_H
+#ifndef ONTOLOGENIUS_INDIVIDUALCHECKER_H
+#define ONTOLOGENIUS_INDIVIDUALCHECKER_H
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Checkers/ValidityChecker.h"
@@ -32,4 +32,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_INDIVIDUALCHECKER_H

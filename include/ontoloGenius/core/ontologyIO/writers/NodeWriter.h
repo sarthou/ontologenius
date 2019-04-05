@@ -1,5 +1,5 @@
-#ifndef NODEWRITER_H
-#define NODEWRITER_H
+#ifndef ONTOLOGENIUS_NODEWRITER_H
+#define ONTOLOGENIUS_NODEWRITER_H
 
 #include <string>
 
@@ -22,4 +22,4 @@ public:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_NODEWRITER_H

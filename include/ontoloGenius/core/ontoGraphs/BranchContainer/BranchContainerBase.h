@@ -1,5 +1,5 @@
-#ifndef BRANCHCONTAINERBASE_H
-#define BRANCHCONTAINERBASE_H
+#ifndef ONTOLOGENIUS_BRANCHCONTAINERBASE_H
+#define ONTOLOGENIUS_BRANCHCONTAINERBASE_H
 
 #include <string>
 #include <vector>
@@ -27,4 +27,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif //ONTOLOGENIUS_BRANCHCONTAINERBASE_H

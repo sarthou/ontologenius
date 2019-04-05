@@ -1,5 +1,5 @@
-#ifndef DATAPROPERTIESWRITER_H
-#define DATAPROPERTIESWRITER_H
+#ifndef ONTOLOGENIUS_DATAPROPERTIESWRITER_H
+#define ONTOLOGENIUS_DATAPROPERTIESWRITER_H
 
 #include "ontoloGenius/core/ontologyIO/writers/PropertiesWriter.h"
 
@@ -29,4 +29,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_DATAPROPERTIESWRITER_H

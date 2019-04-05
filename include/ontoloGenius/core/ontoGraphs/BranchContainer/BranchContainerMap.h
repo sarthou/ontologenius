@@ -1,5 +1,5 @@
-#ifndef BRANCHCONTAINERMAP_H
-#define BRANCHCONTAINERMAP_H
+#ifndef ONTOLOGENIUS_BRANCHCONTAINERMAP_H
+#define ONTOLOGENIUS_BRANCHCONTAINERMAP_H
 
 #include <map>
 
@@ -77,4 +77,4 @@ void BranchContainerMap<B>::erase(B* branch)
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_BRANCHCONTAINERMAP_H

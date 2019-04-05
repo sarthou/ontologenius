@@ -1,5 +1,5 @@
-#ifndef DATAPROPERTYBRANCH_T
-#define DATAPROPERTYBRANCH_T
+#ifndef ONTOLOGENIUS_DATAPROPERTYBRANCH_H
+#define ONTOLOGENIUS_DATAPROPERTYBRANCH_H
 
 #include <string>
 #include <vector>
@@ -50,4 +50,4 @@ public:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_DATAPROPERTYBRANCH_H

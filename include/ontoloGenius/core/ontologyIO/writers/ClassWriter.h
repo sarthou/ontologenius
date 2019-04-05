@@ -1,5 +1,5 @@
-#ifndef CLASSWRITER_H
-#define CLASSWRITER_H
+#ifndef ONTOLOGENIUS_CLASSWRITER_H
+#define ONTOLOGENIUS_CLASSWRITER_H
 
 #include "ontoloGenius/core/ontologyIO/writers/NodeWriter.h"
 
@@ -37,4 +37,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_CLASSWRITER_H

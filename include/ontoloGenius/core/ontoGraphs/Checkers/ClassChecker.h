@@ -1,5 +1,5 @@
-#ifndef CLASSCHECKER_H
-#define CLASSCHECKER_H
+#ifndef ONTOLOGENIUS_CLASSCHECKER_H
+#define ONTOLOGENIUS_CLASSCHECKER_H
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Checkers/ValidityChecker.h"
@@ -29,4 +29,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_CLASSCHECKER_H

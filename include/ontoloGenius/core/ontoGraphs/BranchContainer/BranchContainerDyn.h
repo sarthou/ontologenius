@@ -1,5 +1,5 @@
-#ifndef BRANCHCONTAINERDYN_H
-#define BRANCHCONTAINERDYN_H
+#ifndef ONTOLOGENIUS_BRANCHCONTAINERDYN_H
+#define ONTOLOGENIUS_BRANCHCONTAINERDYN_H
 
 #include <map>
 #include <iostream>
@@ -157,4 +157,4 @@ void BranchContainerDyn<B>::reconf(BranchNode_t<B>* node)
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_BRANCHCONTAINERDYN_H

@@ -1,5 +1,5 @@
-#ifndef LINECOUNTER_H
-#define LINECOUNTER_H
+#ifndef ONTOLOGENIUS_LINECOUNTER_H
+#define ONTOLOGENIUS_LINECOUNTER_H
 
 namespace ontologenius {
 
@@ -23,4 +23,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_LINECOUNTER_H

@@ -1,5 +1,5 @@
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef ONTOLOGENIUS_TYPES_H
+#define ONTOLOGENIUS_TYPES_H
 
 #include <string>
 
@@ -17,4 +17,4 @@ enum type_t
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_TYPES_H

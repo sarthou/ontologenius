@@ -1,5 +1,5 @@
-#ifndef OBJECTROPERTYGRAPH_H
-#define OBJECTROPERTYGRAPH_H
+#ifndef ONTOLOGENIUS_OBJECTROPERTYGRAPH_H
+#define ONTOLOGENIUS_OBJECTROPERTYGRAPH_H
 
 #include <string>
 #include <vector>
@@ -133,4 +133,4 @@ private:
 
 } // namespace ontologenius
 
-#endif /* OBJECTROPERTYGRAPH_H */
+#endif // ONTOLOGENIUS_OBJECTROPERTYGRAPH_H

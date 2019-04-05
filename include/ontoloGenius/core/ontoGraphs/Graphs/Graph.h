@@ -1,5 +1,5 @@
-#ifndef GRAPH_H
-#define GRAPH_H
+#ifndef ONTOLOGENIUS_GRAPH_H
+#define ONTOLOGENIUS_GRAPH_H
 
 #include <string>
 #include <vector>
@@ -74,4 +74,4 @@ B* Graph<B>::create(const std::string& name)
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_GRAPH_H

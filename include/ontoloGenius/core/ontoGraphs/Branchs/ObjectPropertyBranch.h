@@ -1,5 +1,5 @@
-#ifndef OBJETCPROPERTYBRANCH_H
-#define OBJETCPROPERTYBRANCH_H
+#ifndef ONTOLOGENIUS_OBJETCPROPERTYBRANCH_H
+#define ONTOLOGENIUS_OBJETCPROPERTYBRANCH_H
 
 #include <string>
 #include <vector>
@@ -55,4 +55,4 @@ public:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_OBJETCPROPERTYBRANCH_H

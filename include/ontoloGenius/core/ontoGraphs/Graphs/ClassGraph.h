@@ -1,5 +1,5 @@
-#ifndef CLASSGRAPH_H
-#define CLASSGRAPH_H
+#ifndef ONTOLOGENIUS_CLASSGRAPH_H
+#define ONTOLOGENIUS_CLASSGRAPH_H
 
 #include <string>
 #include <vector>
@@ -155,4 +155,4 @@ private:
 
 } // namespace ontologenius
 
-#endif /* CLASSGRAPH_H */
+#endif // ONTOLOGENIUS_CLASSGRAPH_H

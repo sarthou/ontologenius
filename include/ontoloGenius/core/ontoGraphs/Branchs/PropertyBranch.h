@@ -1,5 +1,5 @@
-#ifndef PROPERTYBRANCH_H
-#define PROPERTYBRANCH_H
+#ifndef ONTOLOGENIUS_PROPERTYBRANCH_H
+#define ONTOLOGENIUS_PROPERTYBRANCH_H
 
 #include <string>
 #include <vector>
@@ -37,4 +37,4 @@ public:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_PROPERTYBRANCH_H

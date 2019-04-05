@@ -1,5 +1,5 @@
-#ifndef FILEWRITER_H
-#define FILEWRITER_H
+#ifndef ONTOLOGENIUS_FILEWRITER_H
+#define ONTOLOGENIUS_FILEWRITER_H
 
 #include "ontoloGenius/interpreter/fileManagers/FileManager.h"
 
@@ -21,4 +21,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_FILEWRITER_H

@@ -1,5 +1,5 @@
-#ifndef OBJECTPROPERTYDRAWER_H
-#define OBJECTPROPERTYDRAWER_H
+#ifndef ONTOLOGENIUS_OBJECTPROPERTYDRAWER_H
+#define ONTOLOGENIUS_OBJECTPROPERTYDRAWER_H
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/graphical/Drawers/GraphDrawer.h"
@@ -24,4 +24,4 @@ private:
 
 } // namespace ontologenius
 
-#endif /* OBJECTPROPERTYDRAWER_H */
+#endif // ONTOLOGENIUS_OBJECTPROPERTYDRAWER_H

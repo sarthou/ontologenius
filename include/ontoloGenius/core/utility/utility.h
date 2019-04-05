@@ -1,5 +1,5 @@
-#ifndef UTILITY_H
-#define UTILITY_H
+#ifndef ONTOLOGENIUS_UTILITY_H
+#define ONTOLOGENIUS_UTILITY_H
 
 #include <string>
 
@@ -33,4 +33,4 @@ int send_request(std::string method, std::string url, std::string body, std::str
 
 } // namespace ontologenius
 
-#endif // UTILITY_H
+#endif // ONTOLOGENIUS_UTILITY_H

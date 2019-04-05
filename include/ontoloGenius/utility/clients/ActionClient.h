@@ -1,5 +1,5 @@
-#ifndef ACTIONCLIENT_H
-#define ACTIONCLIENT_H
+#ifndef ONTOLOGENIUS_ACTIONCLIENT_H
+#define ONTOLOGENIUS_ACTIONCLIENT_H
 
 #include "ontoloGenius/utility/clients/ClientBase.h"
 
@@ -21,4 +21,4 @@ private:
 
 };
 
-#endif
+#endif // ONTOLOGENIUS_ACTIONCLIENT_H

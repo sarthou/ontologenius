@@ -1,5 +1,5 @@
-#ifndef CLASSBRANCH_H
-#define CLASSBRANCH_H
+#ifndef ONTOLOGENIUS_CLASSBRANCH_H
+#define ONTOLOGENIUS_CLASSBRANCH_H
 
 #include <string>
 #include <vector>
@@ -62,4 +62,4 @@ public:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_CLASSBRANCH_H

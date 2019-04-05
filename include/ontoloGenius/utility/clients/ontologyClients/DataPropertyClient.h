@@ -1,5 +1,5 @@
-#ifndef DATAPROPERTYCLIENT_H
-#define DATAPROPERTYCLIENT_H
+#ifndef ONTOLOGENIUS_DATAPROPERTYCLIENT_H
+#define ONTOLOGENIUS_DATAPROPERTYCLIENT_H
 
 #include "ontoloGenius/utility/clients/ontologyClients/OntologyClient.h"
 
@@ -19,4 +19,4 @@ private:
 
 };
 
-#endif
+#endif // ONTOLOGENIUS_DATAPROPERTYCLIENT_H

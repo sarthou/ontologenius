@@ -1,5 +1,5 @@
-#ifndef BRANCH_H
-#define BRANCH_H
+#ifndef ONTOLOGENIUS_BRANCH_H
+#define ONTOLOGENIUS_BRANCH_H
 
 #include <string>
 #include <vector>
@@ -41,4 +41,4 @@ public:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_BRANCH_H

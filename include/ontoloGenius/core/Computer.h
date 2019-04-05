@@ -1,3 +1,6 @@
+#ifndef ONTOLOGENIUS_COMPUTER_H
+#define ONTOLOGENIUS_COMPUTER_H
+
 #include <vector>
 #include <string>
 #include <unordered_set>
@@ -32,3 +35,5 @@ private:
 };
 
 } // namespace ontologenius
+
+#endif // ONTOLOGENIUS_COMPUTER_H

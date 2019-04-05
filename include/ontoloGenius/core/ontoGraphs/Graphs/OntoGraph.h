@@ -1,5 +1,5 @@
-#ifndef ONTOGRAPH_H
-#define ONTOGRAPH_H
+#ifndef ONTOLOGENIUS_ONTOGRAPH_H
+#define ONTOLOGENIUS_ONTOGRAPH_H
 
 #include <string>
 #include <vector>
@@ -454,4 +454,4 @@ std::unordered_set<std::string> OntoGraph<B>::find(const std::string& value)
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_ONTOGRAPH_H

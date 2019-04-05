@@ -1,5 +1,5 @@
-#ifndef OBJECTPROPERTIESWRITER_H
-#define OBJECTPROPERTIESWRITER_H
+#ifndef ONTOLOGENIUS_OBJECTPROPERTIESWRITER_H
+#define ONTOLOGENIUS_OBJECTPROPERTIESWRITER_H
 
 #include "ontoloGenius/core/ontologyIO/writers/PropertiesWriter.h"
 
@@ -31,4 +31,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_OBJECTPROPERTIESWRITER_H

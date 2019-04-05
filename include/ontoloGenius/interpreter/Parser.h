@@ -1,5 +1,5 @@
-#ifndef PARSER_H
-#define PARSER_H
+#ifndef ONTOLOGENIUS_PARSER_H
+#define ONTOLOGENIUS_PARSER_H
 
 #include <string>
 #include <map>
@@ -43,4 +43,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_PARSER_H

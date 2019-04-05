@@ -1,5 +1,5 @@
-#ifndef PROPERTYFUNCTIONS_H
-#define PROPERTYFUNCTIONS_H
+#ifndef ONTOLOGENIUS_PROPERTYFUNCTIONS_H
+#define ONTOLOGENIUS_PROPERTYFUNCTIONS_H
 
 #include <string>
 
@@ -21,4 +21,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_PROPERTYFUNCTIONS_H

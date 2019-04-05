@@ -1,5 +1,5 @@
-#ifndef ONTOLOGYCLIENT_H
-#define ONTOLOGYCLIENT_H
+#ifndef ONTOLOGENIUS_ONTOLOGYCLIENT_H
+#define ONTOLOGENIUS_ONTOLOGYCLIENT_H
 
 #include "ontoloGenius/utility/clients/ClientBase.h"
 
@@ -17,4 +17,4 @@ public:
   std::vector<std::string> find(const std::string& name);
 };
 
-#endif
+#endif // ONTOLOGENIUS_ONTOLOGYCLIENT_H

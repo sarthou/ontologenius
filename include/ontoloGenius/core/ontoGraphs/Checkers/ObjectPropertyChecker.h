@@ -1,5 +1,5 @@
-#ifndef OBJECTPROPERTYCHECKER_H
-#define OBJECTPROPERTYCHECKER_H
+#ifndef ONTOLOGENIUS_OBJECTPROPERTYCHECKER_H
+#define ONTOLOGENIUS_OBJECTPROPERTYCHECKER_H
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Checkers/ValidityChecker.h"
@@ -33,4 +33,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_OBJECTPROPERTYCHECKER_H

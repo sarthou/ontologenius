@@ -1,5 +1,5 @@
-#ifndef VALIDITYCHECKER_H
-#define VALIDITYCHECKER_H
+#ifndef ONTOLOGENIUS_VALIDITYCHECKER_H
+#define ONTOLOGENIUS_VALIDITYCHECKER_H
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
 #include "ontoloGenius/core/utility/color.h"
@@ -104,4 +104,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_VALIDITYCHECKER_H

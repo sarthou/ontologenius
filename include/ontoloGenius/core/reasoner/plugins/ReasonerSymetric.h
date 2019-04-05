@@ -1,5 +1,5 @@
-#ifndef REASONERSYMETRIC_H
-#define REASONERSYMETRIC_H
+#ifndef ONTOLOGENIUS_REASONERSYMETRIC_H
+#define ONTOLOGENIUS_REASONERSYMETRIC_H
 
 #include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
@@ -24,4 +24,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_REASONERSYMETRIC_H

@@ -1,5 +1,5 @@
-#ifndef REASONERCLIENT_H
-#define REASONERCLIENT_H
+#ifndef ONTOLOGENIUS_REASONERCLIENT_H
+#define ONTOLOGENIUS_REASONERCLIENT_H
 
 #include "ontoloGenius/utility/clients/ClientBase.h"
 
@@ -19,4 +19,4 @@ private:
 
 };
 
-#endif
+#endif // ONTOLOGENIUS_REASONERCLIENT_H

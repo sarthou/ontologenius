@@ -1,5 +1,5 @@
-#ifndef IFELSECF_H
-#define IFELSECF_H
+#ifndef ONTOLOGENIUS_IFELSECF_H
+#define ONTOLOGENIUS_IFELSECF_H
 
 #include <string>
 #include <map>
@@ -45,4 +45,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_IFELSECF_H

@@ -1,5 +1,5 @@
-#ifndef FEEDERPUBLISHER_H
-#define FEEDERPUBLISHER_H
+#ifndef ONTOLOGENIUS_FEEDERPUBLISHER_H
+#define ONTOLOGENIUS_FEEDERPUBLISHER_H
 
 #include "ros/ros.h"
 #include "std_msgs/String.h"
@@ -32,4 +32,4 @@ private:
   void publish(std::string& str);
 };
 
-#endif
+#endif // ONTOLOGENIUS_FEEDERPUBLISHER_H

@@ -1,5 +1,5 @@
-#ifndef TEXTMANIPULATOR_H
-#define TEXTMANIPULATOR_H
+#ifndef ONTOLOGENIUS_TEXTMANIPULATOR_H
+#define ONTOLOGENIUS_TEXTMANIPULATOR_H
 
 #include <string>
 
@@ -37,4 +37,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_TEXTMANIPULATOR_H

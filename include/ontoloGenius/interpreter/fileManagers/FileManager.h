@@ -1,5 +1,5 @@
-#ifndef FILEMANAGER_H
-#define FILEMANAGER_H
+#ifndef ONTOLOGENIUS_FILEMANAGER_H
+#define ONTOLOGENIUS_FILEMANAGER_H
 
 #include <string>
 
@@ -19,4 +19,4 @@ protected:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_FILEMANAGER_H

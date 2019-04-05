@@ -1,5 +1,5 @@
-#ifndef FEEDSTORAGE
-#define FEEDSTORAGE
+#ifndef ONTOLOGENIUS_FEEDSTORAGE_H
+#define ONTOLOGENIUS_FEEDSTORAGE_H
 
 #include <regex>
 #include <mutex>
@@ -43,4 +43,4 @@ private:
 
 } // namespace ontologenius
 
-#endif //FEEDSTORAGE
+#endif // ONTOLOGENIUS_FEEDSTORAGE_H

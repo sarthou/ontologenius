@@ -1,5 +1,5 @@
-#ifndef ERROR_H
-#define ERROR_H
+#ifndef ONTOLOGENIUS_ERROR_H
+#define ONTOLOGENIUS_ERROR_H
 
 #include <string>
 #include <map>
@@ -38,4 +38,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_ERROR_H

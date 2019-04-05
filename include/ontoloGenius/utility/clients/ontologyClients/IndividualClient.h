@@ -1,5 +1,5 @@
-#ifndef INDIVIDUALCLIENT_H
-#define INDIVIDUALCLIENT_H
+#ifndef ONTOLOGENIUS_INDIVIDUALCLIENT_H
+#define ONTOLOGENIUS_INDIVIDUALCLIENT_H
 
 #include "ontoloGenius/utility/clients/ontologyClients/OntologyClient.h"
 
@@ -30,4 +30,4 @@ private:
 
 };
 
-#endif
+#endif // ONTOLOGENIUS_INDIVIDUALCLIENT_H

@@ -1,5 +1,5 @@
-#ifndef DIFFERENCEFINDER_H
-#define DIFFERENCEFINDER_H
+#ifndef ONTOLOGENIUS_DIFFERENCEFINDER_H
+#define ONTOLOGENIUS_DIFFERENCEFINDER_H
 
 #include <string>
 #include <vector>
@@ -81,4 +81,4 @@ private:
 
 } // namespace ontologenius
 
-#endif // DIFFERENCEFINDER_H
+#endif // ONTOLOGENIUS_DIFFERENCEFINDER_H

@@ -1,5 +1,5 @@
-#ifndef FUNCTIONCONTAINER_H
-#define FUNCTIONCONTAINER_H
+#ifndef ONTOLOGENIUS_FUNCTIONCONTAINER_H
+#define ONTOLOGENIUS_FUNCTIONCONTAINER_H
 
 #include <vector>
 
@@ -22,4 +22,4 @@ protected:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_FUNCTIONCONTAINER_H

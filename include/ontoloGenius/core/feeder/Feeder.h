@@ -1,5 +1,5 @@
-#ifndef FEEDER_H
-#define FEEDER_H
+#ifndef ONTOLOGENIUS_FEEDER_H
+#define ONTOLOGENIUS_FEEDER_H
 
 #include "ontoloGenius/core/feeder/FeedStorage.h"
 
@@ -46,4 +46,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_FEEDER_H

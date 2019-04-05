@@ -1,5 +1,5 @@
-#ifndef INDIVIDUALGRAPH_H
-#define INDIVIDUALGRAPH_H
+#ifndef ONTOLOGENIUS_INDIVIDUALGRAPH_H
+#define ONTOLOGENIUS_INDIVIDUALGRAPH_H
 
 #include <string>
 #include <vector>
@@ -134,4 +134,4 @@ private:
 
 } // namespace ontologenius
 
-#endif /* INDIVIDUALGRAPH_H */
+#endif // ONTOLOGENIUS_INDIVIDUALGRAPH_H

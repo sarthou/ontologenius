@@ -1,5 +1,5 @@
-#ifndef STRING_H
-#define STRING_H
+#ifndef ONTOLOGENIUS_STRING_H
+#define ONTOLOGENIUS_STRING_H
 
 #include <string>
 #include <map>
@@ -35,4 +35,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_STRING_H

@@ -1,5 +1,5 @@
-#ifndef VARIABLES_H
-#define VARIABLES_H
+#ifndef ONTOLOGENIUS_VARIABLES_H
+#define ONTOLOGENIUS_VARIABLES_H
 
 #include <string>
 #include <map>
@@ -50,4 +50,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_VARIABLES_H

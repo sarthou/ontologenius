@@ -1,5 +1,5 @@
-#ifndef COMPILER_H
-#define COMPILER_H
+#ifndef ONTOLOGENIUS_COMPILER_H
+#define ONTOLOGENIUS_COMPILER_H
 
 #include <string>
 #include <map>
@@ -46,4 +46,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_COMPILER_H

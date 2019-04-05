@@ -1,5 +1,5 @@
-#ifndef ONTOLOGY_H
-#define ONTOLOGY_H
+#ifndef ONTOLOGENIUS_ONTOLOGY_H
+#define ONTOLOGENIUS_ONTOLOGY_H
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
@@ -46,4 +46,4 @@ private:
 
 } // namespace ontologenius
 
-#endif
+#endif // ONTOLOGENIUS_ONTOLOGY_H
