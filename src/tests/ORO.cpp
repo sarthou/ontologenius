@@ -81,6 +81,7 @@ double R3()
 
 void chatterCallback(const std_msgs::String::ConstPtr& msg)
 {
+  (void)msg;
   end_ = true;
 }
 

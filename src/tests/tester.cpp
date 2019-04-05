@@ -127,7 +127,6 @@ int main(int argc, char** argv)
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
   std::cout << "It took me " << time_span.count() << " seconds to read" << std::endl;
-  double read_time = time_span.count();
 
   reasoners.runPostReasoners();
 

@@ -69,6 +69,7 @@ std::atomic<bool> end_;
 
 void chatterCallback(const std_msgs::String::ConstPtr& msg)
 {
+  (void)msg;
   end_ = true;
   std::cout << "end" << std::endl;
 }

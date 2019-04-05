@@ -302,6 +302,9 @@ bool DataPropertyGraph::addInvert(DataPropertyBranch_t* prop, std::string& relat
 
 bool DataPropertyGraph::remove(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
 {
+  (void)prop;
+  (void)relation;
+  (void)data;
   return false;
 }
 

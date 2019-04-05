@@ -420,6 +420,9 @@ bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, std::string& r
 
 bool ObjectPropertyGraph::remove(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data)
 {
+  (void)prop;
+  (void)relation;
+  (void)data;
   return false;
 }
 
