@@ -39,6 +39,25 @@ body {
   color:#404244;
 }
 
+footer {
+  line-height:1;
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight:400;
+  transition-duration:1s;
+  font-size: 16px;
+  background-color:#324a5e;
+  color:#ffffff;
+  width:100%;
+  height: 80px;
+  padding: 10px;
+}
+
+a.laas_logo {
+  color:#ffffff;
+  margin: auto auto auto auto;
+  position:relative;
+}
+
 #navbar {
   position:relative;
   top:0;
@@ -317,7 +336,8 @@ body {
   display:inline-block;
   background-color:#fff;
   padding: 25px 35px 20px 30px;
-  box-sizing:border-box
+  box-sizing:border-box;
+  margin-bottom:20px;
 }
 .context ul,.context ol {
   margin-bottom:1.5em
