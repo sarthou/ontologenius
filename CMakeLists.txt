@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(ontologenius)
 
-add_compile_options(-Wall)
-
 function(add_onto_library TARGET)
     if(NOT TARGET)
         message(FATAL_ERROR "Expected the target name as first argument")
@@ -30,7 +28,7 @@ function(add_onto_executable TARGET)
     target_include_directories(${TARGET} PUBLIC include PRIVATE ${catkin_INCLUDE_DIRS})
     target_link_libraries(${TARGET} PRIVATE ${catkin_LIBRARIES})
     set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
-    target_compile_options(${TARGET} PRIVATE -Werror -Wall -Wextra)
+    target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
 endfunction(add_onto_executable)
 
 
