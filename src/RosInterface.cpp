@@ -177,8 +177,6 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
       set_res = onto_->class_graph_.getRelationWith(req.param);
     else if(req.action == "getRelatedWith")
       set_res = onto_->class_graph_.getRelatedWith(req.param);
-    else if(req.action == "getUp")
-      set_res = onto_->class_graph_.getUp(req.param, level);
     else if(req.action == "getOn")
       set_res = onto_->class_graph_.getOn(req.param);
     else if(req.action == "getFrom")
@@ -188,7 +186,7 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
     else if(req.action == "find")
       set2vector(onto_->class_graph_.find(req.param), res.values);
     else if(req.action == "findRegex")
-      set2vector(onto_->class_graph_.find(req.param), res.values);
+      set2vector(onto_->class_graph_.findRegex(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
 
@@ -247,7 +245,7 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
     else if(req.action == "find")
       set2vector(onto_->object_property_graph_.find(req.param), res.values);
     else if(req.action == "findRegex")
-      set2vector(onto_->object_property_graph_.find(req.param), res.values);
+      set2vector(onto_->object_property_graph_.findRegex(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
 
@@ -303,7 +301,7 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
     else if(req.action == "find")
       set2vector(onto_->data_property_graph_.find(req.param), res.values);
     else if(req.action == "findRegex")
-      set2vector(onto_->data_property_graph_.find(req.param), res.values);
+      set2vector(onto_->data_property_graph_.findRegex(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
 
@@ -372,7 +370,7 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
     else if(req.action == "find")
       set_res = onto_->individual_graph_.find(req.param);
     else if(req.action == "findRegex")
-      set_res = onto_->individual_graph_.find(req.param);
+      set_res = onto_->individual_graph_.findRegex(req.param);
     else if(req.action == "getType")
       set_res = onto_->individual_graph_.getType(req.param);
     else

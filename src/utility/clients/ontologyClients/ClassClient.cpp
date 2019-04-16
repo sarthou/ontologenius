@@ -55,7 +55,7 @@ std::vector<std::string> ClassClient::getFrom(const std::string& property, const
   return call(srv);
 }
 
-std::vector<std::string> ClassClient::getWith(const std::string& indiv_1, const std::string& indiv_2, const std::string& selector)
+std::vector<std::string> ClassClient::getWith(const std::string& indiv_1, const std::string& indiv_2, const std::string& selector, int depth)
 {
   ontologenius::OntologeniusService srv;
   if(selector == "")
@@ -68,6 +68,9 @@ std::vector<std::string> ClassClient::getWith(const std::string& indiv_1, const 
     srv.request.action = "select:getWith";
     srv.request.param = selector + "=" + indiv_1 + ":" + indiv_2;
   }
+
+  if(depth >= 0)
+    srv.request.param += " < " + std::to_string(depth);
 
   return call(srv);
 }
@@ -99,20 +102,26 @@ std::vector<std::string> ClassClient::getRelatedWith(const std::string& name)
   return call(srv);
 }
 
-std::vector<std::string> ClassClient::getRelationFrom(const std::string& name)
+std::vector<std::string> ClassClient::getRelationFrom(const std::string& name, int depth)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "getRelationFrom";
   srv.request.param = name;
 
+  if(depth >= 0)
+    srv.request.param += " < " + std::to_string(depth);
+
   return call(srv);
 }
 
-std::vector<std::string> ClassClient::getRelationOn(const std::string& name)
+std::vector<std::string> ClassClient::getRelationOn(const std::string& name, int depth)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "getRelationOn";
   srv.request.param = name;
+
+  if(depth >= 0)
+    srv.request.param += " < " + std::to_string(depth);
 
   return call(srv);
 }
