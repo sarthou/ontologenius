@@ -15,6 +15,7 @@ public:
   std::string getName(const std::string& name);
   std::vector<std::string> getNames(const std::string& name);
   std::vector<std::string> find(const std::string& name);
+  std::vector<std::string> findRegex(const std::string& regex);
 };
 
 #endif // ONTOLOGENIUS_ONTOLOGYCLIENT_H

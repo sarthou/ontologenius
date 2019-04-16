@@ -56,3 +56,13 @@ std::vector<std::string> OntologyClient::find(const std::string& name)
 
   return call(srv);
 }
+
+std::vector<std::string> OntologyClient::findRegex(const std::string& regex)
+{
+  ontologenius::OntologeniusService srv;
+
+  srv.request.action = "findRegex";
+  srv.request.param = regex;
+
+  return call(srv);
+}
