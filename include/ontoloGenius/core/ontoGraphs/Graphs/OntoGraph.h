@@ -7,6 +7,7 @@
 #include <unordered_set>
 #include <stdint.h>
 #include <random>
+#include <regex>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/Branch.h"
@@ -35,6 +36,7 @@ public:
   std::string getName(const std::string& value);
   std::vector<std::string> getNames(const std::string& value);
   std::unordered_set<std::string> find(const std::string& value);
+  std::unordered_set<std::string> findRegex(const std::string& regex);
   bool touch(const std::string& value);
 
   void getDown(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
@@ -431,11 +433,24 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res)
 }
 
 template <typename D>
-bool comparator(D* branch, std::string value, std::string lang)
+bool comparator(D* branch, const std::string& value, const std::string& lang)
 {
   if(branch->dictionary_.find(lang) != branch->dictionary_.end())
     for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
       if(branch->dictionary_[lang][i] == value)
+        return true;
+  return false;
+}
+
+template <typename D>
+bool comparatorRegex(D* branch, const std::string& regex, const std::string& lang)
+{
+  std::regex base_regex(regex);
+  std::smatch match;
+
+  if(branch->dictionary_.find(lang) != branch->dictionary_.end())
+    for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
+      if(std::regex_match(branch->dictionary_[lang][i], match, base_regex))
         return true;
   return false;
 }
@@ -446,6 +461,18 @@ std::unordered_set<std::string> OntoGraph<B>::find(const std::string& value)
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   std::vector<B*> branch = this->container_.find(&comparator<B>, value, this->language_);
+  for(size_t i = 0; i < branch.size(); i++)
+    res.insert(branch[i]->value());
+
+  return res;
+}
+
+template <typename B>
+std::unordered_set<std::string> OntoGraph<B>::findRegex(const std::string& regex)
+{
+  std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  std::vector<B*> branch = this->container_.find(&comparatorRegex<B>, regex, this->language_);
   for(size_t i = 0; i < branch.size(); i++)
     res.insert(branch[i]->value());
 

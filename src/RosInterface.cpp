@@ -187,6 +187,8 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
       set_res = onto_->class_graph_.getWith(req.param, level);
     else if(req.action == "find")
       set2vector(onto_->class_graph_.find(req.param), res.values);
+    else if(req.action == "findRegex")
+      set2vector(onto_->class_graph_.find(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
 
@@ -244,6 +246,8 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
       res.values = onto_->object_property_graph_.getNames(req.param);
     else if(req.action == "find")
       set2vector(onto_->object_property_graph_.find(req.param), res.values);
+    else if(req.action == "findRegex")
+      set2vector(onto_->object_property_graph_.find(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
 
@@ -297,6 +301,8 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
     else if(req.action == "getNames")
       res.values = onto_->data_property_graph_.getNames(req.param);
     else if(req.action == "find")
+      set2vector(onto_->data_property_graph_.find(req.param), res.values);
+    else if(req.action == "findRegex")
       set2vector(onto_->data_property_graph_.find(req.param), res.values);
     else
       res.code = UNKNOW_ACTION;
@@ -365,6 +371,8 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
       res.values = onto_->individual_graph_.getNames(req.param);
     else if(req.action == "find")
       set_res = onto_->individual_graph_.find(req.param);
+    else if(req.action == "findRegex")
+      set_res = onto_->individual_graph_.find(req.param);
     else if(req.action == "getType")
       set_res = onto_->individual_graph_.getType(req.param);
     else
@@ -376,7 +384,7 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
         set_res = onto_->class_graph_.select(set_res, select);
       else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
         set_res = onto_->object_property_graph_.select(set_res, select);
-      else if(req.action != "find")
+      else if((req.action != "find") || (req.action != "findRegex"))
         set_res = onto_->individual_graph_.select(set_res, select);
     }
 
