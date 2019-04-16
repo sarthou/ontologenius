@@ -80,6 +80,7 @@ public:
   std::string getName(const std::string& value);
   std::vector<std::string> getNames(const std::string& value);
   std::unordered_set<std::string> find(const std::string& value);
+  std::unordered_set<std::string> findRegex(const std::string& regex);
   std::unordered_set<std::string> getType(const std::string& class_selector);
 
   ClassBranch_t* upgradeToBranch(IndividualBranch_t* indiv);
