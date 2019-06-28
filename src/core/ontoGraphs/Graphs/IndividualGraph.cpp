@@ -1000,7 +1000,7 @@ std::vector<std::string> IndividualGraph::getNames(const std::string& value)
   return res;
 }
 
-std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
+std::unordered_set<std::string> IndividualGraph::fullFind(const std::string& value)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
@@ -1010,6 +1010,24 @@ std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_[language_].size(); dic_i++)
         if(individuals_[i]->dictionary_[language_][dic_i] == value)
           res.insert(individuals_[i]->value());
+  }
+  return res;
+}
+
+std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
+{
+  std::unordered_set<std::string> res;
+  std::smatch match;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  for(size_t i = 0; i < individuals_.size(); i++)
+  {
+    if(individuals_[i]->dictionary_.find(language_) != individuals_[i]->dictionary_.end())
+      for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_[language_].size(); dic_i++)
+      {
+        std::regex regex(".*" + individuals_[i]->dictionary_[language_][dic_i] + ".*");
+        if(std::regex_match(value, match, regex))
+          res.insert(individuals_[i]->value());
+      }
   }
   return res;
 }
@@ -1025,7 +1043,7 @@ std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& re
   {
     if(individuals_[i]->dictionary_.find(language_) != individuals_[i]->dictionary_.end())
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_[language_].size(); dic_i++)
-        if(std::regex_match(individuals_[i]->dictionary_[language_][dic_i], match, base_regex))
+
           res.insert(individuals_[i]->value());
   }
   return res;

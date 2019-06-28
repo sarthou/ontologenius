@@ -35,6 +35,7 @@ public:
   std::unordered_set<uint32_t> getUpIdSafe(const std::string& value, int depth = -1);
   std::string getName(const std::string& value);
   std::vector<std::string> getNames(const std::string& value);
+  std::unordered_set<std::string> fullFind(const std::string& value);
   std::unordered_set<std::string> find(const std::string& value);
   std::unordered_set<std::string> findRegex(const std::string& regex);
   bool touch(const std::string& value);
@@ -433,12 +434,27 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res)
 }
 
 template <typename D>
-bool comparator(D* branch, const std::string& value, const std::string& lang)
+bool fullComparator(D* branch, const std::string& value, const std::string& lang)
 {
   if(branch->dictionary_.find(lang) != branch->dictionary_.end())
     for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
       if(branch->dictionary_[lang][i] == value)
         return true;
+  return false;
+}
+
+template <typename D>
+bool comparator(D* branch, const std::string& value, const std::string& lang)
+{
+  std::smatch match;
+
+  if(branch->dictionary_.find(lang) != branch->dictionary_.end())
+    for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
+    {
+      std::regex regex(".*" + branch->dictionary_[lang][i] + ".*");
+      if(std::regex_match(value, match, regex))
+        return true;
+    }
   return false;
 }
 
@@ -453,6 +469,18 @@ bool comparatorRegex(D* branch, const std::string& regex, const std::string& lan
       if(std::regex_match(branch->dictionary_[lang][i], match, base_regex))
         return true;
   return false;
+}
+
+template <typename B>
+std::unordered_set<std::string> OntoGraph<B>::fullFind(const std::string& value)
+{
+  std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  std::vector<B*> branch = this->container_.find(&fullComparator<B>, value, this->language_);
+  for(size_t i = 0; i < branch.size(); i++)
+    res.insert(branch[i]->value());
+
+  return res;
 }
 
 template <typename B>
