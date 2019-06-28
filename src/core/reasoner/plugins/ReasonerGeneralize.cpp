@@ -143,34 +143,36 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropert
   {
     int index = -1;
     for(size_t prop_i = 0; prop_i < me->steady_.object_properties_name_.size(); prop_i++)
+    {
       if(me->steady_.object_properties_name_[prop_i] == properties[prop])
       {
         //the property is already know
         index = prop_i;
         break;
       }
+    }
+
+    if(index == -1)
+    {
+      for(size_t prop_i = 0; prop_i < me->object_properties_name_.size(); prop_i++)
+        if(me->object_properties_name_[prop_i] == properties[prop])
+        {
+          if(me->object_properties_on_[prop_i] != datas[prop])
+          notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
+          index = prop_i;
+          deduced_indexs.erase(index);
+          me->object_properties_on_[prop_i] = datas[prop];
+          me->object_properties_deduced_[prop_i] = true;
+        }
 
       if(index == -1)
       {
-        for(size_t prop_i = 0; prop_i < me->object_properties_name_.size(); prop_i++)
-          if(me->object_properties_name_[prop_i] == properties[prop])
-          {
-            if(me->object_properties_on_[prop_i] != datas[prop])
-            notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
-            index = prop_i;
-            deduced_indexs.erase(index);
-            me->object_properties_on_[prop_i] = datas[prop];
-            me->object_properties_deduced_[prop_i] = true;
-          }
-
-        if(index == -1)
-        {
-          notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
-          me->object_properties_name_.push_back(properties[prop]);
-          me->object_properties_on_.push_back(datas[prop]);
-          me->object_properties_deduced_.push_back(true);
-        }
+        notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
+        me->object_properties_name_.push_back(properties[prop]);
+        me->object_properties_on_.push_back(datas[prop]);
+        me->object_properties_deduced_.push_back(true);
       }
+    }
   }
 
   if(deduced_indexs.size() != 0)
