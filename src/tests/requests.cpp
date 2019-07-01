@@ -31,7 +31,7 @@ TEST(requests_tests, find_call)
 
   for(size_t i = 0; i < 1000; i++)
   {
-    res = onto_ptr->classes.fullFind(test_word);
+    res = onto_ptr->classes.find(test_word);
     res_bool = res_bool && ((res.size() == 1) && (res[0] == "human"));
   }
 

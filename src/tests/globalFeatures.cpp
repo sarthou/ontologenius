@@ -12,22 +12,22 @@ TEST(global_tests, reset)
   std::vector<std::string> res;
 
   std::string test_word = "affair";
-  res = onto_ptr->classes.fullFind(test_word);
+  res = onto_ptr->classes.find(test_word);
   EXPECT_TRUE((res.size() == 1) && (res[0] == "affair"));
 
   test_word = "centimeter";
-  res = onto_ptr->classes.fullFind(test_word);
+  res = onto_ptr->classes.find(test_word);
   EXPECT_TRUE((res.size() == 1) && (res[0] == "centimeter"));
 
   EXPECT_TRUE(onto_ptr->actions.reset());
   EXPECT_TRUE(onto_ptr->actions.close());
 
   test_word = "affair";
-  res = onto_ptr->classes.fullFind(test_word);
+  res = onto_ptr->classes.find(test_word);
   EXPECT_FALSE((res.size() == 1) && (res[0] == "affair"));
 
   test_word = "centimeter";
-  res = onto_ptr->classes.fullFind(test_word);
+  res = onto_ptr->classes.find(test_word);
   EXPECT_FALSE((res.size() == 1) && (res[0] == "centimeter"));
 
   EXPECT_TRUE(onto_ptr->actions.reset());
@@ -38,11 +38,11 @@ TEST(global_tests, reset)
   EXPECT_TRUE(onto_ptr->actions.close());
 
   test_word = "affair";
-  res = onto_ptr->classes.fullFind(test_word);
+  res = onto_ptr->classes.find(test_word);
   EXPECT_TRUE((res.size() == 1) && (res[0] == "affair"));
 
   test_word = "centimeter";
-  res = onto_ptr->classes.fullFind(test_word);
+  res = onto_ptr->classes.find(test_word);
   EXPECT_FALSE((res.size() == 1) && (res[0] == "centimeter"));
 }
 
@@ -60,7 +60,7 @@ TEST(global_tests, language)
   EXPECT_TRUE(onto_ptr->actions.setLang("en"));
 
   std::string test_word = "affair";
-  res = onto_ptr->classes.fullFind(test_word);
+  res = onto_ptr->classes.find(test_word);
   EXPECT_TRUE((res.size() == 1) && (res[0] == "affair"));
 
   EXPECT_TRUE(onto_ptr->classes.getName(test_word) == "affair");
@@ -68,11 +68,11 @@ TEST(global_tests, language)
 
   EXPECT_TRUE(onto_ptr->actions.setLang("fr"));
 
-  res = onto_ptr->classes.fullFind(test_word);
+  res = onto_ptr->classes.find(test_word);
   EXPECT_FALSE((res.size() == 1) && (res[0] == "affair"));
 
   test_word = "affaire";
-  res = onto_ptr->classes.fullFind(test_word);
+  res = onto_ptr->classes.find(test_word);
   EXPECT_TRUE((res.size() == 1) && (res[0] == "affair"));
 
   test_word = "affair";
@@ -136,12 +136,12 @@ TEST(global_tests, reasoners_effect)
 
   //ReasonerDictionary
 
-  res = onto_ptr->individuals.fullFind("big box");
+  res = onto_ptr->individuals.find("big box");
   EXPECT_TRUE(find(res.begin(), res.end(), "big_box") == res.end());
 
   EXPECT_TRUE(onto_ptr->reasoners.activate("ReasonerDictionary"));
 
-  res = onto_ptr->individuals.fullFind("big box");
+  res = onto_ptr->individuals.find("big box");
   EXPECT_TRUE(find(res.begin(), res.end(), "big_box") != res.end());
 }
 
