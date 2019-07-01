@@ -1000,7 +1000,7 @@ std::vector<std::string> IndividualGraph::getNames(const std::string& value)
   return res;
 }
 
-std::unordered_set<std::string> IndividualGraph::fullFind(const std::string& value)
+std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
@@ -1014,7 +1014,7 @@ std::unordered_set<std::string> IndividualGraph::fullFind(const std::string& val
   return res;
 }
 
-std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
+std::unordered_set<std::string> IndividualGraph::findSub(const std::string& value)
 {
   std::unordered_set<std::string> res;
   std::smatch match;

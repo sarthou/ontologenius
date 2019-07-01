@@ -35,8 +35,8 @@ public:
   std::unordered_set<uint32_t> getUpIdSafe(const std::string& value, int depth = -1);
   std::string getName(const std::string& value);
   std::vector<std::string> getNames(const std::string& value);
-  std::unordered_set<std::string> fullFind(const std::string& value);
   std::unordered_set<std::string> find(const std::string& value);
+  std::unordered_set<std::string> findSub(const std::string& value);
   std::unordered_set<std::string> findRegex(const std::string& regex);
   bool touch(const std::string& value);
 
@@ -472,7 +472,7 @@ bool comparatorRegex(D* branch, const std::string& regex, const std::string& lan
 }
 
 template <typename B>
-std::unordered_set<std::string> OntoGraph<B>::fullFind(const std::string& value)
+std::unordered_set<std::string> OntoGraph<B>::find(const std::string& value)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
@@ -484,7 +484,7 @@ std::unordered_set<std::string> OntoGraph<B>::fullFind(const std::string& value)
 }
 
 template <typename B>
-std::unordered_set<std::string> OntoGraph<B>::find(const std::string& value)
+std::unordered_set<std::string> OntoGraph<B>::findSub(const std::string& value)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);

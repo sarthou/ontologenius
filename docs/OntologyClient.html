@@ -114,8 +114,8 @@
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#isA">isA</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>base_class</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getName">getName</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getNames">getNames</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#fullFind">fullFind</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#find">find</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findSub">findSub</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findRegex">findRegex</a></b>(const std::string&amp; <i>regex</i>)</td></tr>
             </tbody>
           </table>
@@ -158,11 +158,11 @@
           <p>Gives all the labels of the concept <i>name</i>.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
-          <h3 class="fn" id="fullFind"><a name="fullFind"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">fullFind</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <h3 class="fn" id="find"><a name="find"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">find</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Gives all the concepts having for label <i>name</i>.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
-          <h3 class="fn" id="find"><a name="find"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">find</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <h3 class="fn" id="findSub"><a name="findSub"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">findSub</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Gives all the concepts having for label a subset of <i>name</i>.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 

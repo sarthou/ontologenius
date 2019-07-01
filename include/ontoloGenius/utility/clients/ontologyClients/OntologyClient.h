@@ -14,8 +14,8 @@ public:
   bool isA(std::string& name, const std::string& base_class);
   std::string getName(const std::string& name);
   std::vector<std::string> getNames(const std::string& name);
-  std::vector<std::string> fullFind(const std::string& name);
   std::vector<std::string> find(const std::string& name);
+  std::vector<std::string> findSub(const std::string& name);
   std::vector<std::string> findRegex(const std::string& regex);
 };
 

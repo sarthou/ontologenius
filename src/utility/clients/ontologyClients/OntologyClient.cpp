@@ -47,21 +47,21 @@ std::vector<std::string> OntologyClient::getNames(const std::string& name)
   return call(srv);
 }
 
-std::vector<std::string> OntologyClient::fullFind(const std::string& name)
-{
-  ontologenius::OntologeniusService srv;
-
-  srv.request.action = "fullFind";
-  srv.request.param = name;
-
-  return call(srv);
-}
-
 std::vector<std::string> OntologyClient::find(const std::string& name)
 {
   ontologenius::OntologeniusService srv;
 
   srv.request.action = "find";
+  srv.request.param = name;
+
+  return call(srv);
+}
+
+std::vector<std::string> OntologyClient::findSub(const std::string& name)
+{
+  ontologenius::OntologeniusService srv;
+
+  srv.request.action = "findSub";
   srv.request.param = name;
 
   return call(srv);
