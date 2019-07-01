@@ -208,7 +208,7 @@ type_t Compiler::onVariableInstruction(std::string variable, std::string instruc
     FunctionDescriptor* descriptor = var.findFunction(function);
 
     std::string arg;
-    size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
+    //size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
 
     std::vector<type_t> args_types = compileParameters(arg, bracket+1, descriptor);
     if(descriptor->testParams(args_types) == false)
@@ -240,7 +240,7 @@ type_t Compiler::onOntologyInstruction(std::string instruction, size_t pose)
   FunctionDescriptor* descriptor = onto.findFunction(function);
 
   std::string arg;
-  size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
+  //size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
 
   std::vector<type_t> args_types = compileParameters(arg, bracket+1, descriptor);
 
@@ -266,7 +266,7 @@ type_t Compiler::onPropertyInstruction(std::string indiv, std::string instructio
   FunctionDescriptor* descriptor = property.findFunction(function);
 
   std::string arg;
-  size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
+  //size_t bracket_end = manipulator.getInBraquet(bracket, arg, instruction);
 
   std::vector<type_t> args_types = compileParameters(arg, bracket+1, descriptor);
 
@@ -307,6 +307,7 @@ void Compiler::getParameters(std::string arg, size_t pose, std::vector<std::stri
 
 std::vector<type_t> Compiler::compileParameters(std::string arg, size_t pose, FunctionDescriptor* descriptor)
 {
+  (void)descriptor;
   std::vector<std::string> args;
   std::vector<size_t> args_pose;
   getParameters(arg, pose, args, args_pose);
@@ -354,8 +355,8 @@ void Compiler::noMatchigFunction(size_t pose, FunctionDescriptor* descriptor, st
 {
   int offset = 0;
 
-  /*Get code of if condition*/
-  /*std::string if_code = code_->ifelse_[ifelse_id].IfBlock_if;
+  //Get code of if condition
+  std::string if_code = code_->ifelse_[ifelse_id].IfBlock_if;
   size_t if_start = code_->ifelse_[ifelse_id].if_pose;
 
   offset = code_->ifelse_.ifelse_code_[ifelse_id].size() - ifelse_id.size();
@@ -371,10 +372,10 @@ void Compiler::noMatchigFunction(size_t pose, FunctionDescriptor* descriptor, st
     }
     else
       splited[if_start] = if_code.substr(0, if_code.size() - 1);
-  }*/
+  }
 
-  /*Get code of else condition*/
-  /*std::string else_code = code_->ifelse_[ifelse_id].IfBlock_else;
+  //Get code of else condition
+  std::string else_code = code_->ifelse_[ifelse_id].IfBlock_else;
   size_t else_start = code_->ifelse_[ifelse_id].else_pose;
 
   code_->goToEffectiveCode(else_code, else_start);

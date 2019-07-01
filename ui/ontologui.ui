@@ -896,7 +896,7 @@
           </item>
 
            <item>
-            <widget class="Line" name="line">
+            <widget class="Line" name="line1">
              <property name="frameShadow">
               <enum>QFrame::Plain</enum>
              </property>
@@ -1076,7 +1076,7 @@
            </item>
 
            <item>
-            <widget class="Line" name="line">
+            <widget class="Line" name="line2">
              <property name="frameShadow">
               <enum>QFrame::Plain</enum>
              </property>
@@ -1176,7 +1176,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="label1">
             <property name="text">
              <string>Name</string>
             </property>
@@ -1203,7 +1203,7 @@ p, li { white-space: pre-wrap; }
        </layout>
       </item>
       <item>
-       <widget class="Line" name="line">
+       <widget class="Line" name="line3">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>

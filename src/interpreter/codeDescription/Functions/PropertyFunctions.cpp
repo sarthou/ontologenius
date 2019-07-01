@@ -4,6 +4,7 @@ namespace ontologenius {
 
 bool PropertyFunctions::functionExist(std::string name)
 {
+  (void)name;
   return true;
 }
 

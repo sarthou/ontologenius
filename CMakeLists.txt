@@ -325,6 +325,7 @@ target_include_directories(ontoloGUI
   PRIVATE
     ${catkin_INCLUDE_DIRS}
 )
+add_dependencies(ontoloGUI ontologenius_gencpp)
 target_link_libraries(ontoloGUI
     ${catkin_LIBRARIES}
     Qt5::Core
