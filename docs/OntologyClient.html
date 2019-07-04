@@ -117,6 +117,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#find">find</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findSub">findSub</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findRegex">findRegex</a></b>(const std::string&amp; <i>regex</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#exist">exist</a></b>(const std::string&amp; <i>name</i>)</td></tr>
             </tbody>
           </table>
         </div>
@@ -148,7 +149,7 @@
           <p>The optional <i>depth</i> parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
 
           <h3 class="fn" id="isA"><a name="isA"></a><span class="type">bool</span> OntologyClient::<span class="name">isA</span>(const <span class="type">std::string</span>&amp; <i>name</i>, const <span class="type">std::string</span>&amp; <i>base_class</i>)</h3>
-          <p>Return true if the concepr <i>name</i> is or inherite of the concept <i>base_class</i>. This function corresponds to checking if <i>class_base</i> is part of the result of the function getUp applies to the concept <i>name</i></p>
+          <p>Return true if the concept <i>name</i> is or inherite of the concept <i>base_class</i>. This function corresponds to checking if <i>class_base</i> is part of the result of the function getUp applies to the concept <i>name</i></p>
 
           <h3 class="fn" id="getName"><a name="getName"></a><span class="type">std::string</span> OntologyClient::<span class="name">getName</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Gives one of the label of the concept <i>name</i>.</p>
@@ -169,6 +170,9 @@
           <h3 class="fn" id="findRegex"><a name="findRegex"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">findRegex</span>(const <span class="type">std::string</span>&amp; <i>regex</i>)</h3>
           <p>Give all concepts with a label matching the regular expression <i>regex</i>.</p>
           <p>The result of this function depends on the setting of the working language.</p>
+
+          <h3 class="fn" id="exist"><a name="exist"></a><span class="type">bool</span> OntologyClient::<span class="name">exist</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Return true if the concept <i>name</i> exists in the subpart of the ontology managed by the client (i.e. class, individuals, object properties, data properties).</p>
 
         </div>
       </div>
