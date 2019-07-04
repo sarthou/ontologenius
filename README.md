@@ -54,7 +54,7 @@ If you used `ontologenius` for your work, please cite it.
   title = {{ontologenius}},
   organization = {LAAS-CNRS},
   address = {Toulouse},
-  year = {2017 -- 2018},
+  year = {2017 -- 2019},
   howpublished = {\url{https://github.com/sarthou/ontologenius}}
 }
 ```
@@ -63,8 +63,8 @@ The result should look something similar to this (may depend on the bibliography
 
 ```
 G. Sarthou, “ontologenius,” https://github.com/sarthou/ontologenius,
-LAAS-CNRS, Toulouse, 2017 – 2018.
+LAAS-CNRS, Toulouse, 2017 – 2019.
 ```
 
 [Release-Url]: https://sarthou.github.io/ontologenius/
-[Release-image]: http://img.shields.io/badge/release-v0.2.1-1eb0fc.svg
+[Release-image]: http://img.shields.io/badge/release-v0.2.2-1eb0fc.svg
