@@ -76,3 +76,13 @@ std::vector<std::string> OntologyClient::findRegex(const std::string& regex)
 
   return call(srv);
 }
+
+bool OntologyClient::exist(const std::string& name)
+{
+  ontologenius::OntologeniusService srv;
+
+  srv.request.action = "exist";
+  srv.request.param = name;
+
+  return (callStr(srv) != "");
+}

@@ -82,6 +82,7 @@ public:
   std::unordered_set<std::string> find(const std::string& value);
   std::unordered_set<std::string> findSub(const std::string& value);
   std::unordered_set<std::string> findRegex(const std::string& regex);
+  bool touch(const std::string& value);
   std::unordered_set<std::string> getType(const std::string& class_selector);
 
   ClassBranch_t* upgradeToBranch(IndividualBranch_t* indiv);

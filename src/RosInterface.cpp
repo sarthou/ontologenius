@@ -189,6 +189,11 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
       set2vector(onto_->class_graph_.findSub(req.param), res.values);
     else if(req.action == "findRegex")
       set2vector(onto_->class_graph_.findRegex(req.param), res.values);
+    else if(req.action == "exist")
+    {
+      if(onto_->class_graph_.touch(req.param))
+        res.values.push_back(req.param);
+    }
     else
       res.code = UNKNOW_ACTION;
 
@@ -250,6 +255,11 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
       set2vector(onto_->object_property_graph_.findSub(req.param), res.values);
     else if(req.action == "findRegex")
       set2vector(onto_->object_property_graph_.findRegex(req.param), res.values);
+    else if(req.action == "exist")
+    {
+      if(onto_->object_property_graph_.touch(req.param))
+        res.values.push_back(req.param);
+    }
     else
       res.code = UNKNOW_ACTION;
 
@@ -308,6 +318,11 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
       set2vector(onto_->data_property_graph_.findSub(req.param), res.values);
     else if(req.action == "findRegex")
       set2vector(onto_->data_property_graph_.findRegex(req.param), res.values);
+    else if(req.action == "exist")
+    {
+      if(onto_->data_property_graph_.touch(req.param))
+        res.values.push_back(req.param);
+    }
     else
       res.code = UNKNOW_ACTION;
 
@@ -381,6 +396,11 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
       set_res = onto_->individual_graph_.findRegex(req.param);
     else if(req.action == "getType")
       set_res = onto_->individual_graph_.getType(req.param);
+    else if(req.action == "exist")
+    {
+      if(onto_->individual_graph_.touch(req.param))
+        res.values.push_back(req.param);
+    }
     else
       res.code = UNKNOW_ACTION;
 

@@ -17,6 +17,7 @@ public:
   std::vector<std::string> find(const std::string& name);
   std::vector<std::string> findSub(const std::string& name);
   std::vector<std::string> findRegex(const std::string& regex);
+  bool exist(const std::string& name);
 };
 
 #endif // ONTOLOGENIUS_ONTOLOGYCLIENT_H

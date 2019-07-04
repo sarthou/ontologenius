@@ -1049,6 +1049,17 @@ std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& re
   return res;
 }
 
+bool IndividualGraph::touch(const std::string& value)
+{
+  bool res = false;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  IndividualBranch_t* branch = container_.find(value);
+  if(branch != nullptr)
+    res = true;
+
+  return res;
+}
+
 std::unordered_set<std::string> IndividualGraph::getType(const std::string& class_selector)
 {
   std::shared_lock<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
