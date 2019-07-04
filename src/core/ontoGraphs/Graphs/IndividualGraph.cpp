@@ -1043,7 +1043,7 @@ std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& re
   {
     if(individuals_[i]->dictionary_.find(language_) != individuals_[i]->dictionary_.end())
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_[language_].size(); dic_i++)
-
+        if(std::regex_match(individuals_[i]->dictionary_[language_][dic_i], match, base_regex))
           res.insert(individuals_[i]->value());
   }
   return res;
