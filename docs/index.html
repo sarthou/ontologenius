@@ -1,117 +1,162 @@
 <html lang="en_US">
 
 <head>
-  <title>Ontologenius</title>
+  <title>Ontologenius 0.2.2</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Exemple avec navbar-default</title>
+    <meta name="description" content="Voici un exemple avec de menu avec navbar-default">
+    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+
   <link href="style/index.css" rel="stylesheet" type="text/css">
   <link href="images/favicon.ico" rel="shortcut icon">
   <link href="images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <script src="scripts/jquery-3.3.1.min.js"></script>
 </head>
 
 <body>
-  <div class="header">
-    <div class="up-stripe">
-    </div>
-    <div class="middle-stripe">
-      <span class="page-title">
-        ontologenius
-      </span>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  <div class="onto-teaser">
+    <div class="container">
+      <div class="banner" style="display:table;">
+        <div style="display:table-row;">
+          <div style="display:table-cell; width:216px;">
+            <div class="article">
+              <a href="index.html" alt="ontologenius logo">
+                <img src="images/ontologenius.png " alt="ontologenius" height="100px"/>
+              </a>
+            </div>
+          </div>
+          <div style="display:table-cell;">
+            <div class="article">
+              <h1>Ontologenius</h1>
+              <h2>A long-term semantic memory for robotic agents</h2>
+            </div>
+          </div>
+          <div style="display:table-cell; width:180px;">
+            <div class="article">
+              <a href="https://www.laas.fr/public/" target="_blank" alt="LAAS Website">
+                <img src="images/LogoLAAS-2016.png " alt="LAAS logo" height="100px"/>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="main">
-    <div class="main-left">
-      <div class="left-side-stripe">
-      </div>
-      <a href="Download.html">
-        <button class="bl1">
-          Download<br>
-          <span>current and archived<br>versions</span>
-        </button>
-      </a>
+  <div id="nav-wrapper" style="height: 50px;">
+    <nav id="nav" class="navbar navbar-default affix-top" role="navigation">
+      <div class="container" style="position: relative;">
+            <!-- Brand, toggle pour l'affichage en version mobile -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#"><img src="images/ontologenius_simple.png" alt="">Ontologenius</a>
+            </div>
 
-      <a href="InstallOntologenius.html">
-        <button class="bl2">
-          Install<br>
-          <span>to succeed on the<br>first try</span>
-        </button>
-      </a>
-
-      <a href="SetUp.html">
-        <button class="bl3">
-          Set up<br>
-          <span>good practices</span>
-        </button>
-      </a>
-
-    </div>
-
-    <div class="main-center">
-      <div class="main-content">
-        <h3>An easy way to use ontologies for artificial agent applications.</h3>
-        <h3>A smart way to organize the knowledge of your agent.</h3>
-        <h3>A fast way to interrogate your agent knowledge.</h3>
-        <h3>A natural way to evolve the knowledge of your agents.</h3>
-
-        <hr>
-
-        <p>
-          <img src="http://www.theconstructsim.com/wp-content/uploads/2015/10/rosLarge.png" width="150">
-          <br>Ontologenius uses ROS for maximum compatibility with all robotics projects.
-        </p>
-
-        <hr>
-
-        <p>Ontologenius is a research project aimed at providing that which can be seen as a semantic memory
-          for artificial agents. Focusing only on this task, ontologenius is currently a robust and efficient
-          open-source software that can be deployed in many applications.</p>
-
-        <p>Provided with some algorithms of first order logic inference, it is still possible to make it evolve
-          easily thanks to a plugin mechanism and thus adapt it to your needs.</p>
-
-        <h1>C++ API is now available</h1>
-
-        <p>As part of a recent effort to facilitate the use of ontologenius, we are now developing a C ++ API
-          covering the majority of features. The complete documentation of this API is now available online.</p>
-
-        <p>To take better control of this new API three tutorials have been developed. They make it possible to
-          discover the API as well as the basic ontologenius functionalities through min-projects.</p>
-
-        <P>The auto-generation of the API documentation is under study as is a python version.</p>
-
-      </div>
-    </div>
-
-    <div class="main-right">
-      <div class="right-side-stripe">
-      </div>
-
-      <a href="Tutorials.html">
-        <button class="bl1">
-          Tutorials<br>
-          <span>Learn how to use it</span>
-        </button>
-      </a>
-
-      <a href="CppAPI.html">
-        <button class="bl2">
-          API<br>
-          <span>All c++ classes</span>
-        </button>
-      </a>
-
-      <a href="https://github.com/sarthou/ontologenius/wiki">
-        <button class="bl3">
-          Wiki<br>
-          <span>Latest development<br>information</span>
-        </button>
-      </a>
-
-    </div>
+            <!-- Liens de navigation, formulaires et autres -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li class="menu-item"><a href="InstallOntologenius.html" title="Install">Install</a></li>
+                <li class="menu-item"><a href="Tutorials.html" title="Tutorials">Tutorials</a></li>
+                <li class="menu-item"><a href="CppAPI.html" title="API">API</a></li>
+                <li class="menu-item"><a href="https://github.com/sarthou/ontologenius/wiki" title="Wiki">Wiki</a></li>
+                <!--li class="menu-item"><a href="#" title="Publications">Publications</a></li-->
+              </ul>
+            </div><!-- /.navbar-collapse -->
+    	</div>
+    </nav>
   </div>
 
+  <div class="jumbotron">
+    <div class="row" style="padding:0; margin:0">
+      <div class="col-xs-12 col-sm-10 col-sm-offset-1 text-center jumboopaque">
+
+        <div class="row">
+          <div class="col-md-7">
+            <div class="row">
+              <p><img src="images/ontologenius.png" alt="ontologenius" height="200"></p>
+            </div>
+
+            <div class="row">
+              <div class="text-center">
+                <p>
+                  <a href="https://github.com/sarthou/ontologenius/archive/v0.2.2.zip" class="btn btn-primary btn-lg anchorLink jumbo-button" role="button"><span class="glyphicon glyphicon-download-alt"></span> Download <small>(0.2.2)</small></a>
+                  <a href="https://github.com/sarthou/ontologenius" target="_blank" class="btn btn-custom btn-lg anchorLink jumbo-button" role="button"><span><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" class="github-icon"></span> View on Github</a>
+                </p>
+              </div> <!-- col-md-6 text-center -->
+            </div> <!-- row -->
+          </div> <!-- col-md-7 -->
+
+          <div class="col-md-5">
+            <h4><b>An easy way to use ontologies for artificial agent applications.</b></h4>
+            <br>
+            <h4><b>A smart way to organize the knowledge of your agent.</b></h4>
+            <br>
+            <h4><b>A fast way to interrogate your agent knowledge.</b></h4>
+            <br>
+            <h4><b>A natural way to evolve the knowledge of your agents.</b></h4>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-7">
+            <ul class="jumbo-list">
+              <a class="jumbo-list-item" href="Download.html"><b>Previous versions</b></a>
+              <a class="jumbo-list-item" href="SetUp.html"><b>Setup</b></a>
+            </ul>
+          </div>
+        </div>
+
+      </div> <!-- jumboopaque -->
+    </div> <!-- row -->
+  </div>
+
+
+  <p>
+    <img src="http://www.theconstructsim.com/wp-content/uploads/2015/10/rosLarge.png" width="150">
+    <br>Ontologenius uses ROS for maximum compatibility with all robotics projects.
+  </p>
+
+  <hr>
+
+  <p>Ontologenius is a research project aimed at providing that which can be seen as a semantic memory
+    for artificial agents. Focusing only on this task, ontologenius is currently a robust and efficient
+    open-source software that can be deployed in many applications.</p>
+
+  <p>Provided with some algorithms of first order logic inference, it is still possible to make it evolve
+    easily thanks to a plugin mechanism and thus adapt it to your needs.</p>
+
+  <h1>C++ API is now available</h1>
+
+  <p>As part of a recent effort to facilitate the use of ontologenius, we are now developing a C ++ API
+    covering the majority of features. The complete documentation of this API is now available online.</p>
+
+  <p>To take better control of this new API three tutorials have been developed. They make it possible to
+    discover the API as well as the basic ontologenius functionalities through min-projects.</p>
+
+  <P>The auto-generation of the API documentation is under study as is a python version.</p>
 
 </body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

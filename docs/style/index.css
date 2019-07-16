@@ -1,222 +1,204 @@
+@import url('cookie-confirm.css') screen;
 
 body {
-  background: #E5E5E5;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.onto-teaser {
+  display: none;
+}
+
+.banner {
+  width: 100%;
+}
+
+.banner h1, .banner h2, .banner img{
+  padding: 0;
+  margin: 0px 20px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.banner h1{
+  font-size: 300%;
+}
+
+.banner h2{
+  font-size: 150%;
+}
+
+.onto_container
+{
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 1180px;
+}
+
+.article {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#nav {
+  z-index: 1000000;
+  position: absolute;
+  width: 100%;
+  transition: all 0.5s ease;
+}
+
+.navbar {
+  position: relative;
+  min-height: 50px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+      border-top-color: transparent;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+}
+
+.navbar-default {
+  background-color: #324a5e;
+  border-color: #324a5e;
+}
+
+.navbar-default .navbar-brand,
+.navbar-default .navbar-nav > li > a  {
+  color: #fff;
+}
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-nav > li > a:hover  {
+  color: #ccc;
+}
+
+.navbar-brand img {
+  width: auto;
+  height: 20px;
+  -webkit-filter: invert(1);
+   filter: invert(1);
+}
+
+.navbar-brand > img {
+  display: inline;
+  margin-right: 10px;
+}
+
+.nav > li > a {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+}
+
+.nav::before {
+  content: " ";
+  display: table;
+}
+
+.jumbotron {
+  background: url(../images/background.png) no-repeat center center;
+      background-size: auto;
+  background-size: cover;
+  padding-bottom: 5px;
+  padding: 0;
+}
+
+.jumbotron {
+  margin-top: 50px;
+}
+
+.jumboopaque {
+  padding: 20px;
+  background-color: rgba(240, 240, 240, 0.75);
+}
+
+.github-icon {
+  margin-top: -6px;
+  width: 18px;
+  height: 20px;
+  -webkit-filter: invert(1);
+   filter: invert(1);
+}
+
+.btn-custom {
+  color: #ffffff;
+  background-color: #808282;
+  border-color: #808282;
+}
+
+.jumbo-list {
+  padding-left: 0px;
+}
+
+.jumbo-list-item {
+  padding: 10px;
+  min-width: 100px !important;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+footer {
   line-height:1;
   font-family:Arial, Helvetica, sans-serif;
   font-weight:400;
   transition-duration:1s;
   font-size: 16px;
+  background-color:#324a5e;
+  color:#ffffff;
+  height: 80px;
+  padding: 10px;
 }
 
-html, body {
-  height: 100%;
+a.laas_logo {
+  color:#ffffff;
+  margin: auto auto auto auto;
+  position:relative;
 }
 
-@keyframes appear {
-  0%   {opacity:0;}
-  100% {opacity:1;}
+@media (min-width: 768px) {
+  .container {
+    width: 760px;
+  }
+
+  .onto-teaser {
+    display: inline;
+  }
+
+  .navbar-nav {
+    float: left;
+    margin: 0;
+  }
+
+  .navbar {
+    border-radius: 0;
+  }
+
+  .navbar-nav > li > a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
 }
 
-button {
-  position: absolute;
-  box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.75);
-  border: 5px solid transparent;
-  background: #000000;
-  color: #F0F0F0;
-  border-radius: 70px;
-  padding: 15px 15;
-  overflow: hidden;
-  width: 140px;
-  height: 140px;
-  white-space: nowrap;
-  font-weight: bold;
-  margin-left: calc(90px + 50px - 70px );
-
-  opacity:0;
-  animation-name: appear;
-  animation-duration: 2s;
-  animation-delay: 2.5s;
-  animation-fill-mode: forwards;
-
-  transition:
-    box-shadow 0.3s,
-    border     1.0s,
-    margin-left 1.0s,
-    all        1.0s 0.5s;
+@media (min-width: 992px) {
+  .container {
+    width: 980px;
+  }
 }
 
-button > span {
-  transform: translateY(300px);
-  font-weight: normal;
-  opacity: 0;
-  transition:
-    opacity 0.1s,
-    transform 0.4s;
-}
-
-button:hover {
-  background: #d43617;
-  color: #0f0f0f;
-  width: 260px;
-  height: 260px;
-  border-radius: 130px;
-  border: 50px solid #a3a3a3;
-  box-shadow: 0px 0px 59px -20px rgba(0,0,0,0.75);
-  margin-left: calc(90px + 50px - 130px );
-  transition:
-    all        1.2s,
-    border     1.2s 0.5s,
-    margin-left 1.2s,
-    box-shadow 1.2s 0.5s;
-}
-
-button:hover > span {
-  display: inline-block;
-  transform: translateY(0);
-  opacity: 1;
-  transition:
-    opacity 0.1s 0.5s,
-    transform 0.4s 0.5s;
-}
-
-.header {
-  width: 100%;
-  height: 220px;
-}
-
-.main {
-  width: 100%;
-  height: auto;
-  display: flex;
-}
-
-.main-left, .main-right {
-  width: 280px;
-  height: auto;
-}
-
-.main-left > button, .main-right > button {
-  display:block;
-}
-
-.main-center {
-  width: calc(100% - 280px * 2);
-}
-
-@keyframes up-box {
-  0%   {height: 0%;}
-  100% {height: 100%;}
-}
-
-@keyframes middle-box {
-  from   {width: 0%;}
-  to {width: calc(100% - 180px);}
-}
-
-@keyframes bottom-box {
-  0%   {height: 0%;}
-  100% {height: calc(100% - 220px);}
-}
-
-/* The element to apply the animation to */
-.up-stripe {
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100px;
-  height: 0%;
-  background-color: #324a5e;
-  animation-name: up-box;
-  animation-duration: 0.5s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-out;
-}
-
-.middle-stripe {
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  bottom: 100px;
-  width: 0%;
-  height: 100px;
-  background-color: #324a5e;
-  animation-name: middle-box;
-  animation-duration: 1.2s;
-  animation-delay: 0.3s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-in;
-  text-align: center;
-  text-indent: -150px;
-}
-
-.page-title {
-  position: absolute;
-  padding-top: 25px;
-  width: 300px;
-  font-family:Bookman;
-  font-size: 50px;
-  color: white;
-
-  opacity:0;
-  animation-name: appear;
-  animation-duration: 2s;
-  animation-delay: 2.5s;
-  animation-fill-mode: forwards;
-}
-
-.right-side-stripe, .left-side-stripe {
-  position: absolute;
-  margin-left: 90px;
-  width: 100px;
-  height: 0%;
-  background-color: #324a5e;
-  animation-name: bottom-box;
-  animation-duration: 1s;
-  animation-delay: 1.5s;
-  animation-fill-mode: forwards;
-}
-
-.bl1 {
-  top: 300px;
-  transition:
-    top 1.0s,
-}
-.bl1:hover {
-  top: calc(300px - 130px + 70px);
-  transition:
-    top 1.2s,
-}
-
-.bl2 {
-  top: calc(300px + 280px);
-  transition:
-    top 1.0s,
-}
-.bl2:hover {
-  top: calc(300px + 280px - 130px + 70px);
-  transition:
-    top 1.2s,
-}
-
-.bl3 {
-  top: calc(300px + 280px * 2);
-  transition:
-    top 1.0s,
-}
-.bl3:hover {
-  top: calc(300px + 280px * 2 - 130px + 70px);
-  transition:
-    top 1.2s,
-}
-
-.main-content {
-  margin-top: 50px;
-}
-
-hr {
-  height: .25em;
-  padding: 0;
-  margin: 24px 0;
-  background-color: #a1a4a8;
-  border: 0;
+@media (min-width: 1200px) {
+  .container {
+    width: 1180px;
+  }
 }
