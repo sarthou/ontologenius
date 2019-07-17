@@ -120,7 +120,17 @@ body {
 
 .jumboopaque {
   padding: 20px;
-  background-color: rgba(240, 240, 240, 0.75);
+  background-color: rgba(240, 240, 240, 0.8);
+}
+
+.jumbo-list-item {
+  color: #202020;
+  text-decoration: none;
+}
+
+.jumbo-list-item:hover {
+  color: #000;
+  text-decoration: underline;
 }
 
 .github-icon {
