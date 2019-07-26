@@ -771,9 +771,12 @@ void ClassGraph::getOn(ClassBranch_t* class_branch, std::unordered_set<uint32_t>
     if(tmp_res.size() != 0)
       if(current_depth < (uint32_t)found_depth)
       {
-        res = tmp_res;
-        found_depth = current_depth;
-        return;
+        res.insert(tmp_res.begin(), res.end());
+        if(found_depth != -1)
+        {
+          found_depth = current_depth;
+          return;
+        }
       }
 
     current_depth++;
