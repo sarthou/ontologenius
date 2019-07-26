@@ -933,12 +933,28 @@ std::unordered_set<uint32_t> IndividualGraph::getSameIdAndClean(IndividualBranch
 std::unordered_set<std::string> IndividualGraph::select(std::unordered_set<std::string>& on, const std::string& class_selector)
 {
   std::unordered_set<std::string> res;
+  std::unordered_set<std::string> classes;
+
   for(const std::string& it : on)
   {
-    std::unordered_set<std::string> tmp = getUp(it);
-    if(tmp.find(class_selector) != tmp.end())
-      res.insert(it);
+    IndividualBranch_t* branch = container_.find(it);
+    if(branch!= nullptr)
+    {
+      std::unordered_set<std::string> tmp = getUp(branch);
+      if(tmp.find(class_selector) != tmp.end())
+        res.insert(it);
+    }
+    else
+      classes.insert(it);
   }
+
+  if(classes.size())
+  {
+    std::unordered_set<std::string> tmp_res = class_graph_->select(classes, class_selector);
+    if(tmp_res.size())
+      res.insert(tmp_res.begin(), tmp_res.end());
+  }
+
   return res;
 }
 

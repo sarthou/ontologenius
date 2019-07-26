@@ -410,7 +410,7 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
         set_res = onto_->class_graph_.select(set_res, select);
       else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
         set_res = onto_->object_property_graph_.select(set_res, select);
-      else if((req.action != "find") || (req.action != "findRegex") || (req.action != "findSub"))
+      else if((req.action != "find") || (req.action != "findRegex") || (req.action != "findSub") || (req.action != "getFrom") || (req.action != "getOn"))
         set_res = onto_->individual_graph_.select(set_res, select);
     }
 
