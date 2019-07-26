@@ -741,7 +741,7 @@ std::unordered_set<std::string> ClassGraph::getOn(const std::string& _class, con
   std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
   std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
 
-  int found_depth = -1;
+  int found_depth = -2;
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
@@ -753,6 +753,7 @@ std::unordered_set<std::string> ClassGraph::getOn(const std::string& _class, con
 
 void ClassGraph::getOn(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res, uint32_t current_depth, int& found_depth)
 {
+  //if found_depth == -1, this mean that we continue to seach without stopping at first result
   if(class_branch != nullptr)
   {
     std::unordered_set<std::string> tmp_res;
