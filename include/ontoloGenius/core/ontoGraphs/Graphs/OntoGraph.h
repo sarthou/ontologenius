@@ -243,11 +243,13 @@ void OntoGraph<B>::link()
   depth_ = 0;
 
   uint8_t nb_root_family = roots_.size();
-  for(uint8_t root_i = 0; root_i < roots_.size(); root_i++)
+  size_t root_i = 0;
+  for(auto& it : roots_)
   {
-    roots_[root_i]->family = 256/(nb_root_family+1) * root_i;
-    for(size_t i = 0; i < roots_[root_i]->childs_.size(); i++)
-      add_family(roots_[root_i]->childs_[i], roots_[root_i]->family);
+    it.second->family = 256/(nb_root_family+1) * root_i;
+    for(size_t i = 0; i < it.second->childs_.size(); i++)
+      add_family(it.second->childs_[i], it.second->family);
+    root_i++;
   }
 }
 

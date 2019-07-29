@@ -10,6 +10,8 @@ int main(int argc, char** argv)
 {
   ontologenius::Ontology onto;
 
+  //modify ontoGraph.h to have colors (link function in close one)
+
   onto.readFromUri("https://raw.githubusercontent.com/sarthou/ontologenius/master/files/attribute.owl");
   onto.readFromUri("https://raw.githubusercontent.com/sarthou/ontologenius/master/files/measure.owl");
   onto.readFromUri("https://raw.githubusercontent.com/sarthou/ontologenius/master/files/positionProperty.owl");

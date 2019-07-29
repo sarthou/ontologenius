@@ -114,7 +114,7 @@ void GraphDrawer::setRect(int layer, int nb_layer, int nb_index, node_t* node)
             ScalarHSV2BGR(node->family, 200, 255),
             -1, 8, 0);
   CvFont font;
-  cvInitFont(&font, CV_FONT_HERSHEY_COMPLEX, 0.8, 1.0, 0, 3);
+  cvInitFont(&font, CV_FONT_HERSHEY_COMPLEX, 1.1, 1.5, 0, 3);
   cvPutText(image, node->value.c_str(), cvPoint(x+5,y+MARKER_HEIGHT/2), &font,
             ScalarHSV2BGR(255, 255, 0));
 }
