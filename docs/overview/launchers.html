@@ -1,0 +1,216 @@
+<html lang="en_US">
+
+<head>
+  <title>Launchers | Ontologenius 0.2.2</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="index.html">
+              <img src="../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/utility">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontoloGenius/utility">C++ API headers</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -588px;">
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../Tutorials.html">Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="launchers.html"><b>Launchers</b></a></li>
+            <!--li class="level1"><a href="ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3><a href="../CppAPI.html">All C++ Classes</a></h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>See also</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="https://sarthou.github.io/ontologenius_query/" target="_blank">Ontologenius_query</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">Ontologenius launchers</h1>
+        <p>Ontologenius consists of three executables: the kernel, the REST module and a graphical interface (ontoloGUI).
+          While the first two are mandatory, the only purpose of the latter is to quickly see the effect of queries.</p>
+
+        <h2><i class="fas fa-angle-right"></i> Ontologenius core</h2>
+        <p>An ontologenius core need three parameters to be able to run:</p>
+        <ul>
+          <li><b>language</b>: the language used by ontologenius when dealing with names in natural language. It could be for example &quot;en&quot;.
+            This value can be modified during execution but must still be defined at launch.</li>
+          <li><b>intern_file</b>: the OWL file that will be used to store the ontology of all the concepts present in ontologenius when
+            you stop it. If the file does not exist, it will be automatically created. If the file path does not exist, it will NOT be
+            created. To don't use an internal file, you have to set this parameter to &quot;none&quot;.</li>
+          <li><b>files</b>: a set of OWL files that will be loaded at the launch of ontologenius. If intern_file is set and already
+            exists, these files will not be taken into account.</li>
+        </ul>
+
+        <div align="center">
+          <p>
+            <img src="../images/overview/inter_file.png " alt="parameters overview" height="120px"/>
+          </p>
+        </div>
+
+        <p>Let's see what this file system means first when we use ontologenius in single mode at first.</p>
+
+        <p>We consider the following parameters:</p>
+
+        <div class="code_block">
+          <div class="terminal_line">  &lt;arg name=&quot;language&quot; default=&quot;en&quot;/&gt;</div>
+          <div class="terminal_line">  &lt;arg name=&quot;intern_file&quot; default=&quot;$(find ontologenius)/file_intern/ontologenius.owl&quot;/&gt;</div>
+          <div class="terminal_line">  &lt;arg name=&quot;files&quot; default=&quot;</div>
+          <div class="terminal_line">    $(find ontologenius)/files/attribute.owl</div>
+          <div class="terminal_line">    $(find ontologenius)/files/measure.owl</div>
+          <div class="terminal_line">    $(find ontologenius)/files/property.owl</div>
+          <div class="terminal_line">    $(find ontologenius)/files/positionProperty.owl</div>
+          <div class="terminal_line">  &quot;/&gt;</div>
+          <div class="terminal_line">  &lt;node name=&quot;ontologenius_core&quot; pkg=&quot;ontologenius&quot; type=&quot;ontoloGenius&quot; output=&quot;screen&quot; args=&quot;$(arg language) $(arg intern_file) $(arg files)&quot;&gt; &lt;/node&gt;</div>
+        </div>
+
+        <p>When you start ontologenius for the first time with these parameters, you are in case a). This means that the internal
+          file does not exist at the moment or is empty. In this case ontologenius will load the four files listed in the
+          file parameter.</p>
+
+        <p>Once you stop ontologenius, the current knowledge will be saved in the internal file. So, when you run ontologenius again,
+          the internal file will exist and will not be empty this time. You will then be in case b) where the files listed will no
+          longer be taken into account and only the internal file will be loaded.</p>
+
+        <p>All the ontologies listed in the files parameter can be considered as the basic knowledge of your agent and the internal
+          file as his personal memory.</p>
+
+        <p>Now consider using ontologenius in multi mode with the same parameters. The only difference here is the executable used.</p>
+
+        <div class="code_block">
+          <div class="terminal_line">  &lt;arg name=&quot;language&quot; default=&quot;en&quot;/&gt;</div>
+          <div class="terminal_line">  &lt;arg name=&quot;intern_file&quot; default=&quot;$(find ontologenius)/file_intern/ontologenius.owl&quot;/&gt;</div>
+          <div class="terminal_line">  &lt;arg name=&quot;files&quot; default=&quot;</div>
+          <div class="terminal_line">    $(find ontologenius)/files/attribute.owl</div>
+          <div class="terminal_line">    $(find ontologenius)/files/measure.owl</div>
+          <div class="terminal_line">    $(find ontologenius)/files/property.owl</div>
+          <div class="terminal_line">    $(find ontologenius)/files/positionProperty.owl</div>
+          <div class="terminal_line">  &quot;/&gt;</div>
+          <div class="terminal_line">  &lt;node name=&quot;ontologenius_core&quot; pkg=&quot;ontologenius&quot; type=&quot;ontoloGenius_multi&quot; output=&quot;screen&quot; args=&quot;$(arg language) $(arg intern_file) $(arg files)&quot;&gt; &lt;/node&gt;</div>
+        </div>
+
+        <p>Since you will be able to manage multiple agents, you will have several internal files. Taking the above parameters and
+          creating two bob and max agents, ontologenius will concide two internal files: ontologenius_bob.owl and ontologenius_max.owl</p>
+        <p>For the rest of the mechanism, it will work as in single mode. This means that the files listed can be considered the common
+          ground of all agents. Every time a new agent is created, he will be charged with that common ground.</p>
+
+        <h2><i class="fas fa-angle-right"></i> Ontologenius REST</h2>
+
+        <p>The REST executable is actually just a python node that provides ontologenius with a way to access the Internet to download
+          ontologies, for example.</p>
+        <p>This node must always be started at the same time as the kernel, because it will wait for the REST service to start.</p>
+
+        <div class="code_block">
+          <div class="terminal_line">  &lt;node name=&quot;ontologenius_rest&quot; pkg=&quot;ontologenius&quot; type=&quot;REST.py&quot; output=&quot;screen&quot; &gt; &lt;/node&gt;</div>
+        </div>
+
+        <h2><i class="fas fa-angle-right"></i> OntoloGUI</h2>
+
+        <p>OntoloGUI is the ontologenius GUI. Its only purpose is to help you develop applications using ontologenius. It is not
+          necessarily necessary to launch it and is presented in more detail here.</p>
+
+        <div class="code_block">
+          <div class="terminal_line">  &lt;node name=&quot;ontologenius_gui&quot; pkg=&quot;ontologenius&quot; type=&quot;ontoloGUI&quot; output=&quot;screen&quot; &gt; &lt;/node&gt;</div>
+        </div>
+
+        <h2><i class="fas fa-angle-right"></i> Launch files</h2>
+
+        <p>Several launch files are already available to you and could be overload to change the default parameters.</p>
+
+        <ul>
+          <li><b>ontologenius_empty.launch</b> : ontologenius_core(single) & ontologenius_rest</li>
+          <li><b>ontologenius_full.launch</b> : ontologenius_core(single) & ontologenius_rest & ontologenius_gui</li>
+          <li><b>ontologenius_multi_empty.launch</b> : ontologenius_core(multi) & ontologenius_rest</li>
+          <li><b>ontologenius_multi_full.launch</b> : ontologenius_core(multi) & ontologenius_rest & ontologenius_gui</li>
+          <li><b>ontologenius_multi.launch</b> : ontologenius_core(multi) & ontologenius_rest</li>
+          <li><b>ontologenius.launch</b> : ontologenius_core(single) & ontologenius_rest</li>
+        </ul>
+
+        <p class="tip">All the internal files are setted to : $(find ontologenius)/file_intern/ontologenius.owl
+          <br>Empty launchers have no files to load.</p>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>
