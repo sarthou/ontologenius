@@ -137,6 +137,8 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
   me->setSteady_dictionary(object_vector.dictionary_);
   if(me->dictionary_.find("en") == me->dictionary_.end())
     me->dictionary_["en"].push_back(me->value());
+
+  mitigate(me);
 }
 
 void ClassGraph::add(std::vector<std::string>& disjoints)
@@ -1024,6 +1026,7 @@ void ClassGraph::addInheritage(std::string& class_base, std::string& class_inher
     inherited->setSteady_child(branch);
     branch->updated_ = true;
     inherited->updated_ = true;
+    mitigate(branch);
   }
 }
 

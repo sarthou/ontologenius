@@ -77,6 +77,10 @@ protected:
   void add_family(B* branch, uint8_t family);
   void amIA(B** me, std::map<std::string, B*>& vect, const std::string& value, bool erase = true);
   void isMyMother(B* me, const std::string& mother, std::map<std::string, B*>& vect, bool& find);
+
+  void mitigate(B* branch);
+  std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<B*>& vect);
+  void eraseFromVector(std::vector<B*>& vect, B* branch);
 };
 
 template <typename B>
@@ -507,6 +511,61 @@ std::unordered_set<std::string> OntoGraph<B>::findRegex(const std::string& regex
     res.insert(branch[i]->value());
 
   return res;
+}
+
+template <typename B>
+void OntoGraph<B>::mitigate(B* branch)
+{
+  std::vector<B*> childs = branch->childs_;
+  for(B* child : childs)
+  {
+    std::unordered_set<B*> up;
+    getUpPtr(child, up);
+    std::vector<B*> inter = intersection(up, childs);
+    if(inter.size() > 1)
+    {
+      eraseFromVector(child->mothers_, branch);
+      eraseFromVector(branch->childs_, child);
+    }
+  }
+
+  std::vector<B*> mothers = branch->mothers_;
+  for(B* mother : mothers)
+  {
+    std::unordered_set<B*> down;
+    getDownPtr(mother, down);
+    std::vector<B*> inter = intersection(down, mothers);
+    if(inter.size() > 1)
+    {
+      eraseFromVector(branch->mothers_, mother);
+      eraseFromVector(mother->childs_, branch);
+    }
+  }
+}
+
+template <typename B>
+std::vector<B*> OntoGraph<B>::intersection(const std::unordered_set<B*>& set, const std::vector<B*>& vect)
+{
+  std::vector<B*> res;
+  for(B* v : vect)
+  {
+    if(set.find(v) != set.end())
+      res.push_back(v);
+  }
+  return res;
+}
+
+template <typename B>
+void OntoGraph<B>::eraseFromVector(std::vector<B*>& vect, B* branch)
+{
+  for(size_t i = 0; i < vect.size(); i++)
+  {
+    if(vect[i] == branch)
+    {
+      vect.erase(vect.begin() + i);
+      break;
+    }
+  }
 }
 
 } // namespace ontologenius

@@ -223,6 +223,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     me->setSteady_chain(property_vectors.chains_[chain_i]);
   }
 
+  mitigate(me);
 }
 
 void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
