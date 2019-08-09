@@ -457,8 +457,8 @@ bool comparator(D* branch, const std::string& value, const std::string& lang)
   if(branch->dictionary_.find(lang) != branch->dictionary_.end())
     for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
     {
-      std::regex regex(".*" + branch->dictionary_[lang][i] + ".*");
-      if(std::regex_match(value, match, regex))
+      std::regex regex("\\b(" + branch->dictionary_[lang][i] + ")([^ ]*)");
+      if(std::regex_search(value, match, regex))
         return true;
     }
   return false;
