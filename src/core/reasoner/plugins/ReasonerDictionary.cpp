@@ -4,11 +4,6 @@
 
 namespace ontologenius {
 
-void ReasonerDictionary::preReason()
-{
-
-}
-
 void ReasonerDictionary::postReason()
 {
   size_t graph_size;
@@ -68,8 +63,12 @@ void ReasonerDictionary::split(ValuedNode* node)
       std::replace( tmp.begin(), tmp.end(), '_', ' ');
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         it.second.push_back(tmp);
+      std::replace( tmp.begin(), tmp.end(), '-', ' ');
+      if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
+        it.second.push_back(tmp);
     }
 
+    dic_size = it.second.size();
     for(i = 0; i < dic_size; i++)
     {
       std::string tmp = "";
