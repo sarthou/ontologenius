@@ -34,6 +34,7 @@ void ObjectPropertiesWriter::writeProperty(ObjectPropertyBranch_t* branch)
   writeChain(branch);
 
   writeDictionary(&branch->steady_);
+  writeMutedDictionary(&branch->steady_);
 
   tmp = "    </owl:ObjectProperty>\n\r\n\r\n\r\n\r";
   writeString(tmp);

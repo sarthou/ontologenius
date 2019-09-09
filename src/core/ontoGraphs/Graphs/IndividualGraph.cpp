@@ -154,6 +154,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   me->setSteady_dictionary(individual_vector.dictionary_);
   if(me->dictionary_.find("en") == me->dictionary_.end())
     me->dictionary_["en"].push_back(me->value());
+  me->setSteady_muted_dictionary(individual_vector.muted_dictionary_);
 
   individuals_.push_back(me);
 }
@@ -1016,6 +1017,30 @@ std::vector<std::string> IndividualGraph::getNames(const std::string& value)
   return res;
 }
 
+std::vector<std::string> IndividualGraph::getEveryNames(const std::string& value)
+{
+  std::vector<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+
+  IndividualBranch_t* branch = container_.find(value);
+  if(branch != nullptr)
+  {
+    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
+      res = branch->dictionary_[this->language_];
+    else
+      res.push_back(value);
+
+    if(branch->muted_dictionary_.find(this->language_) != branch->muted_dictionary_.end())
+    {
+      std::vector<std::string> muted = branch->muted_dictionary_[this->language_];
+      res.insert(res.end(), muted.begin(), muted.end());
+    }
+
+  }
+
+  return res;
+}
+
 std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
 {
   std::unordered_set<std::string> res;
@@ -1025,6 +1050,11 @@ std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
     if(individuals_[i]->dictionary_.find(language_) != individuals_[i]->dictionary_.end())
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_[language_].size(); dic_i++)
         if(individuals_[i]->dictionary_[language_][dic_i] == value)
+          res.insert(individuals_[i]->value());
+
+    if(individuals_[i]->muted_dictionary_.find(language_) != individuals_[i]->muted_dictionary_.end())
+      for(size_t dic_i = 0; dic_i < individuals_[i]->muted_dictionary_[language_].size(); dic_i++)
+        if(individuals_[i]->muted_dictionary_[language_][dic_i] == value)
           res.insert(individuals_[i]->value());
   }
   return res;
@@ -1044,6 +1074,14 @@ std::unordered_set<std::string> IndividualGraph::findSub(const std::string& valu
         if(std::regex_search(value, match, regex))
           res.insert(individuals_[i]->value());
       }
+
+    if(individuals_[i]->muted_dictionary_.find(language_) != individuals_[i]->muted_dictionary_.end())
+      for(size_t dic_i = 0; dic_i < individuals_[i]->muted_dictionary_[language_].size(); dic_i++)
+      {
+        std::regex regex("\\b(" + individuals_[i]->muted_dictionary_[language_][dic_i] + ")([^ ]*)");
+        if(std::regex_search(value, match, regex))
+          res.insert(individuals_[i]->value());
+      }
   }
   return res;
 }
@@ -1060,6 +1098,11 @@ std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& re
     if(individuals_[i]->dictionary_.find(language_) != individuals_[i]->dictionary_.end())
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_[language_].size(); dic_i++)
         if(std::regex_match(individuals_[i]->dictionary_[language_][dic_i], match, base_regex))
+          res.insert(individuals_[i]->value());
+
+    if(individuals_[i]->muted_dictionary_.find(language_) != individuals_[i]->muted_dictionary_.end())
+      for(size_t dic_i = 0; dic_i < individuals_[i]->muted_dictionary_[language_].size(); dic_i++)
+        if(std::regex_match(individuals_[i]->muted_dictionary_[language_][dic_i], match, base_regex))
           res.insert(individuals_[i]->value());
   }
   return res;
@@ -1523,6 +1566,20 @@ void IndividualGraph::removeLang(std::string& indiv, std::string& lang, std::str
     for(size_t i = 0; i < branch->steady_.dictionary_[lang].size();)
       if(branch->steady_.dictionary_[lang][i] == name)
         branch->steady_.dictionary_[lang].erase(branch->steady_.dictionary_[lang].begin() + i);
+  }
+
+  if(branch->muted_dictionary_.find(lang) != branch->muted_dictionary_.end())
+  {
+    for(size_t i = 0; i < branch->muted_dictionary_[lang].size();)
+      if(branch->muted_dictionary_[lang][i] == name)
+        branch->muted_dictionary_[lang].erase(branch->muted_dictionary_[lang].begin() + i);
+  }
+
+  if(branch->steady_.muted_dictionary_.find(lang) != branch->steady_.muted_dictionary_.end())
+  {
+    for(size_t i = 0; i < branch->steady_.muted_dictionary_[lang].size();)
+      if(branch->steady_.muted_dictionary_[lang][i] == name)
+        branch->steady_.muted_dictionary_[lang].erase(branch->steady_.muted_dictionary_[lang].begin() + i);
   }
 }
 

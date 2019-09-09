@@ -52,6 +52,7 @@ void ClassWriter::writeClass(ClassBranch_t* branch)
   writeDataPropertiesDeduced(branch);
 
   writeDictionary(&branch->steady_);
+  writeMutedDictionary(&branch->steady_);
 
   tmp = "    </owl:Class>\n\r\n\r\n\r\n\r";
   writeString(tmp);

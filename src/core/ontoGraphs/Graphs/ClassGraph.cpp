@@ -137,6 +137,7 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
   me->setSteady_dictionary(object_vector.dictionary_);
   if(me->dictionary_.find("en") == me->dictionary_.end())
     me->dictionary_["en"].push_back(me->value());
+  me->setSteady_muted_dictionary(object_vector.muted_dictionary_);
 
   mitigate(me);
 }
@@ -1236,6 +1237,20 @@ void ClassGraph::removeLang(std::string& indiv, std::string& lang, std::string& 
     for(size_t i = 0; i < branch->steady_.dictionary_[lang].size();)
       if(branch->steady_.dictionary_[lang][i] == name)
         branch->steady_.dictionary_[lang].erase(branch->steady_.dictionary_[lang].begin() + i);
+  }
+
+  if(branch->muted_dictionary_.find(lang) != branch->muted_dictionary_.end())
+  {
+    for(size_t i = 0; i < branch->muted_dictionary_[lang].size();)
+      if(branch->muted_dictionary_[lang][i] == name)
+        branch->muted_dictionary_[lang].erase(branch->muted_dictionary_[lang].begin() + i);
+  }
+
+  if(branch->steady_.muted_dictionary_.find(lang) != branch->steady_.muted_dictionary_.end())
+  {
+    for(size_t i = 0; i < branch->steady_.muted_dictionary_[lang].size();)
+      if(branch->steady_.muted_dictionary_[lang][i] == name)
+        branch->steady_.muted_dictionary_[lang].erase(branch->steady_.muted_dictionary_[lang].begin() + i);
   }
 }
 

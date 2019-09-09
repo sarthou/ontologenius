@@ -35,6 +35,7 @@ public:
   std::unordered_set<uint32_t> getUpIdSafe(const std::string& value, int depth = -1);
   std::string getName(const std::string& value);
   std::vector<std::string> getNames(const std::string& value);
+  std::vector<std::string> getEveryNames(const std::string& value);
   std::unordered_set<std::string> find(const std::string& value);
   std::unordered_set<std::string> findSub(const std::string& value);
   std::unordered_set<std::string> findRegex(const std::string& regex);
@@ -225,6 +226,30 @@ std::vector<std::string> OntoGraph<B>::getNames(const std::string& value)
       res = branch->dictionary_[this->language_];
     else
       res.push_back(value);
+  }
+
+  return res;
+}
+
+template <typename B>
+std::vector<std::string> OntoGraph<B>::getEveryNames(const std::string& value)
+{
+  std::vector<std::string> res;
+
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  B* branch = this->container_.find(value);
+  if(branch != nullptr)
+  {
+    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
+      res = branch->dictionary_[this->language_];
+    else
+      res.push_back(value);
+
+    if(branch->muted_dictionary_.find(this->language_) != branch->muted_dictionary_.end())
+    {
+      std::vector<std::string> muted = branch->muted_dictionary_[this->language_];
+      res.insert(res.end(), muted.begin(), muted.end());
+    }
   }
 
   return res;
@@ -446,6 +471,11 @@ bool fullComparator(D* branch, const std::string& value, const std::string& lang
     for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
       if(branch->dictionary_[lang][i] == value)
         return true;
+
+  if(branch->muted_dictionary_.find(lang) != branch->muted_dictionary_.end())
+    for(size_t i = 0; i < branch->muted_dictionary_[lang].size(); i++)
+      if(branch->muted_dictionary_[lang][i] == value)
+        return true;
   return false;
 }
 
@@ -461,6 +491,14 @@ bool comparator(D* branch, const std::string& value, const std::string& lang)
       if(std::regex_search(value, match, regex))
         return true;
     }
+
+  if(branch->muted_dictionary_.find(lang) != branch->muted_dictionary_.end())
+    for(size_t i = 0; i < branch->muted_dictionary_[lang].size(); i++)
+    {
+      std::regex regex("\\b(" + branch->muted_dictionary_[lang][i] + ")([^ ]*)");
+      if(std::regex_search(value, match, regex))
+        return true;
+    }
   return false;
 }
 
@@ -473,6 +511,11 @@ bool comparatorRegex(D* branch, const std::string& regex, const std::string& lan
   if(branch->dictionary_.find(lang) != branch->dictionary_.end())
     for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
       if(std::regex_match(branch->dictionary_[lang][i], match, base_regex))
+        return true;
+
+  if(branch->muted_dictionary_.find(lang) != branch->muted_dictionary_.end())
+    for(size_t i = 0; i < branch->muted_dictionary_[lang].size(); i++)
+      if(std::regex_match(branch->muted_dictionary_[lang][i], match, base_regex))
         return true;
   return false;
 }

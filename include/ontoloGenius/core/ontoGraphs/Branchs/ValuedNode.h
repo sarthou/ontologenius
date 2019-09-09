@@ -22,6 +22,7 @@ class ValuedNodeData
 {
 public:
   std::map<std::string, std::vector<std::string>> dictionary_;
+  std::map<std::string, std::vector<std::string>> muted_dictionary_;
 };
 
 class ValuedNode : public UpdatableNode, public ValuedNodeData

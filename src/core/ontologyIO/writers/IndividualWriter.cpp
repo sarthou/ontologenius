@@ -46,6 +46,7 @@ void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
   writeSameAs(branch);
 
   writeDictionary(&branch->steady_);
+  writeMutedDictionary(&branch->steady_);
 
   tmp = "    </owl:NamedIndividual>\n\r\n\r\n\r\n\r";
   writeString(tmp);

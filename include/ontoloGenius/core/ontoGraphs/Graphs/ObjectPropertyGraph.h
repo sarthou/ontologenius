@@ -24,6 +24,7 @@ struct ObjectPropertyVectors_t
    std::vector<std::vector<std::string>> chains_;
    Properties_t properties_;
    std::map<std::string, std::vector<std::string>> dictionary_;
+   std::map<std::string, std::vector<std::string>> muted_dictionary_;
 };
 
 //for friend

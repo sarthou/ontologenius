@@ -166,6 +166,8 @@ void OntologyReader::readClass(TiXmlElement* elem)
         push(object_vector.disjoints_, subElem, "-");
       else if(subElemName == "rdfs:label")
         pushLang(object_vector.dictionary_, subElem);
+      else if(subElemName == "onto:label")
+        pushLang(object_vector.muted_dictionary_, subElem);
       else
       {
         std::string ns = subElemName.substr(0,subElemName.find(":"));
@@ -236,6 +238,8 @@ void OntologyReader::readIndividual(TiXmlElement* elem)
           push(individual_vector.same_as_, subElem, "=");
         else if(subElemName == "rdfs:label")
           pushLang(individual_vector.dictionary_, subElem);
+        else if(subElemName == "onto:label")
+          pushLang(individual_vector.muted_dictionary_, subElem);
         else
         {
           std::string ns = subElemName.substr(0,subElemName.find(":"));
@@ -381,6 +385,8 @@ void OntologyReader::readObjectProperty(TiXmlElement* elem)
         push(propertyVectors.properties_, subElem, "*");
       else if(subElemName == "rdfs:label")
         pushLang(propertyVectors.dictionary_, subElem);
+      else if(subElemName == "onto:label")
+        pushLang(propertyVectors.muted_dictionary_, subElem);
       else if(subElemName == "owl:propertyChainAxiom")
       {
         std::vector<std::string> tmp;
@@ -417,6 +423,8 @@ void OntologyReader::readDataProperty(TiXmlElement* elem)
         push(propertyVectors.ranges_, subElem, "<");
       else if(subElemName == "rdfs:label")
         pushLang(propertyVectors.dictionary_, subElem);
+      else if(subElemName == "onto:label")
+        pushLang(propertyVectors.muted_dictionary_, subElem);
     }
   }
 

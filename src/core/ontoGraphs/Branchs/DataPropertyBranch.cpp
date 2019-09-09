@@ -36,6 +36,15 @@ void DataPropertyBranch_t::setFullSteady()
       tmp.push_back(it.second[i]);
     steady_.dictionary_[it.first] = tmp;
   }
+
+  steady_.muted_dictionary_.clear();
+  for(auto& it : muted_dictionary_)
+  {
+    std::vector<std::string> tmp;
+    for(size_t i = 0; i < it.second.size(); i++)
+      tmp.push_back(it.second[i]);
+    steady_.muted_dictionary_[it.first] = tmp;
+  }
 }
 
 void DataPropertyBranch_t::setSteady_disjoint(DataPropertyBranch_t* disjoint)
@@ -93,6 +102,15 @@ void DataPropertyBranch_t::setSteady_dictionary(std::string lang, std::string wo
     dictionary_[lang].push_back(word);
 }
 
+void DataPropertyBranch_t::setSteady_muted_dictionary(std::string lang, std::string word)
+{
+  if(find(steady_.muted_dictionary_[lang].begin(), steady_.muted_dictionary_[lang].end(), word) == steady_.muted_dictionary_[lang].end())
+    steady_.muted_dictionary_[lang].push_back(word);
+
+  if(find(muted_dictionary_[lang].begin(), muted_dictionary_[lang].end(), word) == muted_dictionary_[lang].end())
+    muted_dictionary_[lang].push_back(word);
+}
+
 void DataPropertyBranch_t::setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary)
 {
   for(auto it : dictionary)
@@ -113,6 +131,30 @@ void DataPropertyBranch_t::setSteady_dictionary(std::map<std::string, std::vecto
       for(const auto& name : it.second)
         if(find(dictionary_[it.first].begin(), dictionary_[it.first].end(), name) == dictionary_[it.first].end())
           dictionary_[it.first].push_back(name);
+    }
+  }
+}
+
+void DataPropertyBranch_t::setSteady_muted_dictionary(std::map<std::string, std::vector<std::string>> dictionary)
+{
+  for(auto it : dictionary)
+  {
+    if(steady_.muted_dictionary_.find(it.first) == steady_.muted_dictionary_.end())
+      steady_.muted_dictionary_[it.first] = it.second;
+    else
+    {
+      for(const auto& name : it.second)
+        if(find(steady_.muted_dictionary_[it.first].begin(), steady_.muted_dictionary_[it.first].end(), name) == steady_.muted_dictionary_[it.first].end())
+          steady_.muted_dictionary_[it.first].push_back(name);
+    }
+
+    if(muted_dictionary_.find(it.first) == muted_dictionary_.end())
+      muted_dictionary_[it.first] = it.second;
+    else
+    {
+      for(const auto& name : it.second)
+        if(find(muted_dictionary_[it.first].begin(), muted_dictionary_[it.first].end(), name) == muted_dictionary_[it.first].end())
+          muted_dictionary_[it.first].push_back(name);
     }
   }
 }

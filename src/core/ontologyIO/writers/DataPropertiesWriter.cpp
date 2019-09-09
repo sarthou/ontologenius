@@ -32,6 +32,7 @@ void DataPropertiesWriter::writeProperty(DataPropertyBranch_t* branch)
   writeDomain(branch);
 
   writeDictionary(&branch->steady_);
+  writeMutedDictionary(&branch->steady_);
 
   tmp = "    </owl:DatatypeProperty>\n\r\n\r\n\r\n\r";
   writeString(tmp);

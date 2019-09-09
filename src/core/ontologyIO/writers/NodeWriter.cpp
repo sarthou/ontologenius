@@ -23,6 +23,22 @@ void NodeWriter::writeDictionary(ValuedNodeData* node)
   }
 }
 
+void NodeWriter::writeMutedDictionary(ValuedNodeData* node)
+{
+  for(auto& it : node->muted_dictionary_)
+  {
+    for(size_t i = 0; i < it.second.size(); i++)
+    {
+      std::string tmp = "        <onto:label xml:lang=\"" +
+                        it.first +
+                        "\">" +
+                        it.second[i] +
+                        + "</onto:label>\n\r";
+      writeString(tmp);
+    }
+  }
+}
+
 void NodeWriter::writeString(std::string text)
 {
   if(file_ != NULL)

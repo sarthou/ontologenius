@@ -28,6 +28,7 @@ struct IndividualVectors_t
 
    std::vector<std::string> same_as_;
    std::map<std::string, std::vector<std::string>> dictionary_;
+   std::map<std::string, std::vector<std::string>> muted_dictionary_;
 };
 
 //for friend
@@ -79,6 +80,7 @@ public:
   std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& class_selector);
   std::string getName(const std::string& value);
   std::vector<std::string> getNames(const std::string& value);
+  std::vector<std::string> getEveryNames(const std::string& value);
   std::unordered_set<std::string> find(const std::string& value);
   std::unordered_set<std::string> findSub(const std::string& value);
   std::unordered_set<std::string> findRegex(const std::string& regex);
