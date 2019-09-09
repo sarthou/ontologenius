@@ -1554,33 +1554,10 @@ void IndividualGraph::removeLang(std::string& indiv, std::string& lang, std::str
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
   lang = lang.substr(1);
-  if(branch->dictionary_.find(lang) != branch->dictionary_.end())
-  {
-    for(size_t i = 0; i < branch->dictionary_[lang].size();)
-      if(branch->dictionary_[lang][i] == name)
-        branch->dictionary_[lang].erase(branch->dictionary_[lang].begin() + i);
-  }
-
-  if(branch->steady_.dictionary_.find(lang) != branch->steady_.dictionary_.end())
-  {
-    for(size_t i = 0; i < branch->steady_.dictionary_[lang].size();)
-      if(branch->steady_.dictionary_[lang][i] == name)
-        branch->steady_.dictionary_[lang].erase(branch->steady_.dictionary_[lang].begin() + i);
-  }
-
-  if(branch->muted_dictionary_.find(lang) != branch->muted_dictionary_.end())
-  {
-    for(size_t i = 0; i < branch->muted_dictionary_[lang].size();)
-      if(branch->muted_dictionary_[lang][i] == name)
-        branch->muted_dictionary_[lang].erase(branch->muted_dictionary_[lang].begin() + i);
-  }
-
-  if(branch->steady_.muted_dictionary_.find(lang) != branch->steady_.muted_dictionary_.end())
-  {
-    for(size_t i = 0; i < branch->steady_.muted_dictionary_[lang].size();)
-      if(branch->steady_.muted_dictionary_[lang][i] == name)
-        branch->steady_.muted_dictionary_[lang].erase(branch->steady_.muted_dictionary_[lang].begin() + i);
-  }
+  removeFromDictionary(branch->dictionary_, lang, name);
+  removeFromDictionary(branch->steady_.dictionary_, lang, name);
+  removeFromDictionary(branch->muted_dictionary_, lang, name);
+  removeFromDictionary(branch->steady_.muted_dictionary_, lang, name);
 }
 
 void IndividualGraph::removeInheritage(std::string& class_base, std::string& class_inherited)
@@ -1596,29 +1573,10 @@ void IndividualGraph::removeInheritage(std::string& class_base, std::string& cla
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
   std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
 
-  for(size_t i = 0; i < branch_base->steady_.is_a_.size();)
-    if(branch_base->steady_.is_a_[i] == branch_inherited)
-      branch_base->steady_.is_a_.erase(branch_base->steady_.is_a_.begin() + i);
-    else
-      i++;
-
-  for(size_t i = 0; i < branch_base->is_a_.size();)
-    if(branch_base->is_a_[i] == branch_inherited)
-      branch_base->is_a_.erase(branch_base->is_a_.begin() + i);
-    else
-      i++;
-
-  for(size_t i = 0; i < branch_inherited->steady_.individual_childs_.size();)
-    if(branch_inherited->steady_.individual_childs_[i] == branch_base)
-      branch_inherited->steady_.individual_childs_.erase(branch_inherited->steady_.individual_childs_.begin() + i);
-    else
-      i++;
-
-  for(size_t i = 0; i < branch_inherited->individual_childs_.size();)
-    if(branch_inherited->individual_childs_[i] == branch_base)
-      branch_inherited->individual_childs_.erase(branch_inherited->individual_childs_.begin() + i);
-    else
-      i++;
+  removeFromVect(branch_base->steady_.is_a_, branch_inherited);
+  removeFromVect(branch_base->is_a_, branch_inherited);
+  removeFromVect(branch_inherited->steady_.individual_childs_, branch_base);
+  removeFromVect(branch_inherited->individual_childs_, branch_base);
 
   branch_base->updated_ = true;
   branch_inherited->updated_ = true;

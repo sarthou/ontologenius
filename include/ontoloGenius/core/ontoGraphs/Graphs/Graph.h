@@ -39,6 +39,26 @@ public:
   mutable std::shared_timed_mutex mutex_;
   //use std::lock_guard<std::shared_timed_mutex> lock(Graph<B>::mutex_); to WRITE A DATA
   //use std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_); to READ A DATA
+
+  inline void removeFromDictionary(std::map<std::string, std::vector<std::string>>& dictionary, std::string& lang, std::string& word)
+  {
+    if(dictionary.find(lang) != dictionary.end())
+    {
+      for(size_t i = 0; i < dictionary[lang].size();)
+        if(dictionary[lang][i] == word)
+          dictionary[lang].erase(dictionary[lang].begin() + i);
+    }
+  }
+
+  template <class T>
+  inline void removeFromVect(std::vector<T>& vect, T value)
+  {
+    for(size_t i = 0; i < vect.size();)
+      if(vect[i] == value)
+        vect.erase(vect.begin() + i);
+      else
+        i++;
+  }
 };
 
 template <typename B>
