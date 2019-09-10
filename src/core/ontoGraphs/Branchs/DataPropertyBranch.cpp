@@ -49,10 +49,8 @@ void DataPropertyBranch_t::setFullSteady()
 
 void DataPropertyBranch_t::setSteady_disjoint(DataPropertyBranch_t* disjoint)
 {
-  if(std::find(steady_.disjoints_.begin(), steady_.disjoints_.end(), disjoint) == steady_.disjoints_.end())
-    steady_.disjoints_.push_back(disjoint);
-  if(std::find(disjoints_.begin(), disjoints_.end(), disjoint) == disjoints_.end())
-    disjoints_.push_back(disjoint);
+  conditionalPushBack(steady_.disjoints_, disjoint);
+  conditionalPushBack(disjoints_, disjoint);
 }
 
 void DataPropertyBranch_t::setSteady_properties(Properties_t properties)
@@ -63,10 +61,8 @@ void DataPropertyBranch_t::setSteady_properties(Properties_t properties)
 
 void DataPropertyBranch_t::setSteady_domain(ClassBranch_t* domain)
 {
-  if(std::find(steady_.domains_.begin(), steady_.domains_.end(), domain) == steady_.domains_.end())
-    steady_.domains_.push_back(domain);
-  if(std::find(domains_.begin(), domains_.end(), domain) == domains_.end())
-    domains_.push_back(domain);
+  conditionalPushBack(steady_.domains_, domain);
+  conditionalPushBack(domains_, domain);
 }
 
 void DataPropertyBranch_t::setSteady_range(std::string range)
@@ -79,36 +75,26 @@ void DataPropertyBranch_t::setSteady_range(std::string range)
 
 void DataPropertyBranch_t::setSteady_child(DataPropertyBranch_t* child)
 {
-  if(std::find(steady_.childs_.begin(), steady_.childs_.end(), child) == steady_.childs_.end())
-    steady_.childs_.push_back(child);
-  if(std::find(childs_.begin(), childs_.end(), child) == childs_.end())
-    childs_.push_back(child);
+  conditionalPushBack(steady_.childs_, child);
+  conditionalPushBack(childs_, child);
 }
 
 void DataPropertyBranch_t::setSteady_mother(DataPropertyBranch_t* mother)
 {
-  if(std::find(steady_.mothers_.begin(), steady_.mothers_.end(), mother) == steady_.mothers_.end())
-    steady_.mothers_.push_back(mother);
-  if(std::find(mothers_.begin(), mothers_.end(), mother) == mothers_.end())
-    mothers_.push_back(mother);
+  conditionalPushBack(steady_.mothers_, mother);
+  conditionalPushBack(mothers_, mother);
 }
 
 void DataPropertyBranch_t::setSteady_dictionary(std::string lang, std::string word)
 {
-  if(find(steady_.dictionary_[lang].begin(), steady_.dictionary_[lang].end(), word) == steady_.dictionary_[lang].end())
-    steady_.dictionary_[lang].push_back(word);
-
-  if(find(dictionary_[lang].begin(), dictionary_[lang].end(), word) == dictionary_[lang].end())
-    dictionary_[lang].push_back(word);
+  conditionalPushBack(steady_.dictionary_[lang], word);
+  conditionalPushBack(dictionary_[lang], word);
 }
 
 void DataPropertyBranch_t::setSteady_muted_dictionary(std::string lang, std::string word)
 {
-  if(find(steady_.muted_dictionary_[lang].begin(), steady_.muted_dictionary_[lang].end(), word) == steady_.muted_dictionary_[lang].end())
-    steady_.muted_dictionary_[lang].push_back(word);
-
-  if(find(muted_dictionary_[lang].begin(), muted_dictionary_[lang].end(), word) == muted_dictionary_[lang].end())
-    muted_dictionary_[lang].push_back(word);
+  conditionalPushBack(steady_.muted_dictionary_[lang], word);
+  conditionalPushBack(muted_dictionary_[lang], word);
 }
 
 void DataPropertyBranch_t::setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary)
@@ -120,8 +106,7 @@ void DataPropertyBranch_t::setSteady_dictionary(std::map<std::string, std::vecto
     else
     {
       for(const auto& name : it.second)
-        if(find(steady_.dictionary_[it.first].begin(), steady_.dictionary_[it.first].end(), name) == steady_.dictionary_[it.first].end())
-          steady_.dictionary_[it.first].push_back(name);
+        conditionalPushBack(steady_.dictionary_[it.first], name);
     }
 
     if(dictionary_.find(it.first) == dictionary_.end())
@@ -129,8 +114,7 @@ void DataPropertyBranch_t::setSteady_dictionary(std::map<std::string, std::vecto
     else
     {
       for(const auto& name : it.second)
-        if(find(dictionary_[it.first].begin(), dictionary_[it.first].end(), name) == dictionary_[it.first].end())
-          dictionary_[it.first].push_back(name);
+        conditionalPushBack(dictionary_[it.first], name);
     }
   }
 }
@@ -144,8 +128,7 @@ void DataPropertyBranch_t::setSteady_muted_dictionary(std::map<std::string, std:
     else
     {
       for(const auto& name : it.second)
-        if(find(steady_.muted_dictionary_[it.first].begin(), steady_.muted_dictionary_[it.first].end(), name) == steady_.muted_dictionary_[it.first].end())
-          steady_.muted_dictionary_[it.first].push_back(name);
+        conditionalPushBack(steady_.muted_dictionary_[it.first], name);
     }
 
     if(muted_dictionary_.find(it.first) == muted_dictionary_.end())
@@ -153,8 +136,7 @@ void DataPropertyBranch_t::setSteady_muted_dictionary(std::map<std::string, std:
     else
     {
       for(const auto& name : it.second)
-        if(find(muted_dictionary_[it.first].begin(), muted_dictionary_[it.first].end(), name) == muted_dictionary_[it.first].end())
-          muted_dictionary_[it.first].push_back(name);
+        conditionalPushBack(muted_dictionary_[it.first], name);
     }
   }
 }
