@@ -124,6 +124,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#isA">isA</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>base_class</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getName">getName</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getNames">getNames</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getEveryNames">getEveryNames</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#find">find</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findSub">findSub</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findRegex">findRegex</a></b>(const std::string&amp; <i>regex</i>)</td></tr>
@@ -162,11 +163,15 @@
           <p>Return true if the concept <i>name</i> is or inherite of the concept <i>base_class</i>. This function corresponds to checking if <i>class_base</i> is part of the result of the function getUp applies to the concept <i>name</i></p>
 
           <h3 class="fn" id="getName"><a name="getName"></a><span class="type">std::string</span> OntologyClient::<span class="name">getName</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Gives one of the label of the concept <i>name</i>.</p>
+          <p>Gives one of the label of the concept <i>name</i> that is not <a href="OntologyClient.html#mutedLabel">muted</a>.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
           <h3 class="fn" id="getNames"><a name="getNames"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">getNames</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Gives all the labels of the concept <i>name</i>.</p>
+          <p>Gives all the labels of the concept <i>name</i> excepted the <a href="OntologyClient.html#mutedLabel">muted</a> ones.</p>
+          <p>The result of this function depends on the setting of the working language.</p>
+
+          <h3 class="fn" id="getEveryNames"><a name="getEveryNames"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">getEveryNames</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Gives all the labels of the concept <i>name</i> even the <a href="OntologyClient.html#mutedLabel">muted</a> ones.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
           <h3 class="fn" id="find"><a name="find"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">find</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
@@ -184,6 +189,10 @@
           <h3 class="fn" id="exist"><a name="exist"></a><span class="type">bool</span> OntologyClient::<span class="name">exist</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Return true if the concept <i>name</i> exists in the subpart of the ontology managed by the client (i.e. class, individuals, object properties, data properties).</p>
 
+
+          <h2 id="mutedLabel">Muted labels</h2>
+          <p>Ontologenius introduces the concept of muted label. They are written &lt;onto:label&gt; in an OWL file.</p>
+          <p>A muted label will be useful for adding labels with errors. These labels will allow you to find the a concept with an error but will make sure you never use it in output (using getName).</p>
         </div>
       </div>
     </div>

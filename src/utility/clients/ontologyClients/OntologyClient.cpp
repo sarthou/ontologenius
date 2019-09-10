@@ -47,6 +47,15 @@ std::vector<std::string> OntologyClient::getNames(const std::string& name)
   return call(srv);
 }
 
+std::vector<std::string> OntologyClient::getEveryNames(const std::string& name)
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "getEveryNames";
+  srv.request.param = name;
+
+  return call(srv);
+}
+
 std::vector<std::string> OntologyClient::find(const std::string& name)
 {
   ontologenius::OntologeniusService srv;
