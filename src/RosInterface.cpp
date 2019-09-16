@@ -162,7 +162,11 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
     else if(req.action == "getDisjoint")
       set_res = onto_->class_graph_.getDisjoint(req.param);
     else if(req.action == "getName")
-      res.values.push_back(onto_->class_graph_.getName(req.param));
+    {
+      auto tmp = onto_->class_graph_.getName(req.param);
+      if(tmp != "")
+        res.values.push_back(tmp);
+    }
     else if(req.action == "getNames")
       res.values = onto_->class_graph_.getNames(req.param);
     else if(req.action == "getEveryNames")
@@ -248,7 +252,11 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
     else if(req.action == "getRange")
       set_res = onto_->object_property_graph_.getRange(req.param);
     else if(req.action == "getName")
-      res.values.push_back(onto_->object_property_graph_.getName(req.param));
+    {
+      auto tmp = onto_->object_property_graph_.getName(req.param);
+      if(tmp != "")
+        res.values.push_back(tmp);
+    }
     else if(req.action == "getNames")
       res.values = onto_->object_property_graph_.getNames(req.param);
     else if(req.action == "getEveryNames")
@@ -313,7 +321,11 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
     else if(req.action == "getRange")
       set2vector(onto_->data_property_graph_.getRange(req.param), res.values);
     else if(req.action == "getName")
-      res.values.push_back(onto_->data_property_graph_.getName(req.param));
+    {
+      auto tmp = onto_->data_property_graph_.getName(req.param);
+      if(tmp != "")
+        res.values.push_back(tmp);
+    }
     else if(req.action == "getNames")
       res.values = onto_->data_property_graph_.getNames(req.param);
     else if(req.action == "getEveryNames")
@@ -391,7 +403,11 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
     else if(req.action == "getWith")
       set_res = onto_->individual_graph_.getWith(req.param, level);
     else if(req.action == "getName")
-      res.values.push_back(onto_->individual_graph_.getName(req.param));
+    {
+      auto tmp = onto_->individual_graph_.getName(req.param);
+      if(tmp != "")
+        res.values.push_back(tmp);
+    }
     else if(req.action == "getNames")
       res.values = onto_->individual_graph_.getNames(req.param);
     else if(req.action == "getEveryNames")
