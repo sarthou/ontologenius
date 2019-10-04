@@ -617,6 +617,7 @@ param_t RosInterface::getParams(std::string& param)
   if(str_params.size())
     parameters.base = str_params[0];
 
+  bool option_found = false;
   for(size_t i = 1; i < str_params.size(); i++)
   {
     if((str_params[i] == "-d") || (str_params[i] == "--depth"))
@@ -626,14 +627,18 @@ param_t RosInterface::getParams(std::string& param)
       if(sscanf(str_params[i].c_str(), "%d", &tmp) != 1)
         tmp = -1;
       parameters.depth = tmp;
+      option_found = true;
     }
     else if((str_params[i] == "-s") || (str_params[i] == "--selector"))
     {
       i++;
       parameters.selector = str_params[i];
+      option_found = true;
     }
-    else
+    else if(option_found)
       std::cout << "[WARNING] unknow parameter \"" << str_params[i] << "\"" << std::endl;
+    else
+      parameters.base += " " + str_params[i];
   }
 
   return parameters;
