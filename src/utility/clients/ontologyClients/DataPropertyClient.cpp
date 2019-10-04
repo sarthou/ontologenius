@@ -7,7 +7,7 @@ std::vector<std::string> DataPropertyClient::getDown(const std::string& name, in
   srv.request.param = name;
 
   if(depth >= 0)
-    srv.request.param += " < " + std::to_string(depth);
+    srv.request.param += " -d " + std::to_string(depth);
 
   return call(srv);
 }

@@ -3,19 +3,13 @@
 std::vector<std::string> OntologyClient::getUp(const std::string& name, int depth, const std::string& selector)
 {
   ontologenius::OntologeniusService srv;
-  if(selector == "")
-  {
-    srv.request.action = "getUp";
-    srv.request.param = name;
-  }
-  else
-  {
-    srv.request.action = "select:getUp";
-    srv.request.param = selector + "=" + name;
-  }
+  srv.request.action = "getUp";
+  srv.request.param = name;
+  if(selector != "")
+    srv.request.param += " -s " + selector;
 
   if(depth >= 0)
-    srv.request.param += " < " + std::to_string(depth);
+    srv.request.param += " -d " + std::to_string(depth);
 
   return call(srv);
 }
