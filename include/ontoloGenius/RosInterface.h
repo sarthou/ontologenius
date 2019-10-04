@@ -18,6 +18,17 @@
 
 namespace ontologenius {
 
+struct param_t
+{
+  std::string base;
+  size_t depth;
+  std::string selector;
+
+  param_t(): depth(-1) {}
+
+  std::string operator()() { return base; }
+};
+
 class RosInterface
 {
 public:
@@ -63,8 +74,10 @@ private:
   void periodicReasoning();
 
   void removeUselessSpace(std::string& text);
+  bool split(const std::string &text, std::vector<std::string> &strs, const std::string& delim);
   void set2string(const std::unordered_set<std::string>& word_set, std::string& result);
   void set2vector(const std::unordered_set<std::string>& word_set, std::vector<std::string>& result);
+  param_t getParams(std::string& param);
   int getPropagationLevel(std::string& params);
   std::string getSelector(std::string& action, std::string& param);
 };

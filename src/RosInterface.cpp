@@ -146,67 +146,72 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
   else
   {
     reasoners_.runPreReasoners();
-
-    int level = getPropagationLevel(req.param);
-
     removeUselessSpace(req.action);
-    removeUselessSpace(req.param);
+    param_t params = getParams(req.param);
+
+    //Remove for V2.4
+    int level = getPropagationLevel(params.base);
+    if(level != -1)
+      params.depth = level;
+    std::string select = getSelector(req.action, params.base);
+    if(select != "")
+      params.selector = select;
+    // end remove for 2.4
 
     std::unordered_set<std::string> set_res;
-    std::string select = getSelector(req.action, req.param);
 
     if(req.action == "getDown")
-      set_res = onto_->class_graph_.getDown(req.param, level);
+      set_res = onto_->class_graph_.getDown(params(), params.depth);
     else if(req.action == "getUp")
-      set_res = onto_->class_graph_.getUp(req.param, level);
+      set_res = onto_->class_graph_.getUp(params(), params.depth);
     else if(req.action == "getDisjoint")
-      set_res = onto_->class_graph_.getDisjoint(req.param);
+      set_res = onto_->class_graph_.getDisjoint(params());
     else if(req.action == "getName")
-      res.values.push_back(onto_->class_graph_.getName(req.param));
+      res.values.push_back(onto_->class_graph_.getName(params()));
     else if(req.action == "getNames")
-      res.values = onto_->class_graph_.getNames(req.param);
+      res.values = onto_->class_graph_.getNames(params());
     else if(req.action == "getEveryNames")
-      res.values = onto_->class_graph_.getEveryNames(req.param);
+      res.values = onto_->class_graph_.getEveryNames(params());
     else if(req.action == "getRelationFrom")
-      set_res = onto_->class_graph_.getRelationFrom(req.param, level);
+      set_res = onto_->class_graph_.getRelationFrom(params(), params.depth);
     else if(req.action == "getRelatedFrom")
-      set_res = onto_->class_graph_.getRelatedFrom(req.param);
+      set_res = onto_->class_graph_.getRelatedFrom(params());
     else if(req.action == "getRelationOn")
-      set_res = onto_->class_graph_.getRelationOn(req.param, level);
+      set_res = onto_->class_graph_.getRelationOn(params(), params.depth);
     else if(req.action == "getRelatedOn")
-      set_res = onto_->class_graph_.getRelatedOn(req.param);
+      set_res = onto_->class_graph_.getRelatedOn(params());
     else if(req.action == "getRelationWith")
-      set_res = onto_->class_graph_.getRelationWith(req.param);
+      set_res = onto_->class_graph_.getRelationWith(params());
     else if(req.action == "getRelatedWith")
-      set_res = onto_->class_graph_.getRelatedWith(req.param);
+      set_res = onto_->class_graph_.getRelatedWith(params());
     else if(req.action == "getOn")
-      set_res = onto_->class_graph_.getOn(req.param);
+      set_res = onto_->class_graph_.getOn(params());
     else if(req.action == "getFrom")
-      set_res = onto_->class_graph_.getFrom(req.param);
+      set_res = onto_->class_graph_.getFrom(params());
     else if(req.action == "getWith")
-      set_res = onto_->class_graph_.getWith(req.param, level);
+      set_res = onto_->class_graph_.getWith(params(), params.depth);
     else if(req.action == "find")
-      set2vector(onto_->class_graph_.find(req.param), res.values);
+      set2vector(onto_->class_graph_.find(params()), res.values);
     else if(req.action == "findSub")
-      set2vector(onto_->class_graph_.findSub(req.param), res.values);
+      set2vector(onto_->class_graph_.findSub(params()), res.values);
     else if(req.action == "findRegex")
-      set2vector(onto_->class_graph_.findRegex(req.param), res.values);
+      set2vector(onto_->class_graph_.findRegex(params()), res.values);
     else if(req.action == "exist")
     {
-      if(onto_->class_graph_.touch(req.param))
-        res.values.push_back(req.param);
+      if(onto_->class_graph_.touch(params()))
+        res.values.push_back(params());
     }
     else
       res.code = UNKNOW_ACTION;
 
-    if(select != "")
+    if(params.selector != "")
     {
       if((req.action == "getUp") || (req.action == "getDown") ||
         (req.action == "getDisjoint") || (req.action == "getOn") ||
         (req.action == "getFrom"))
-        set_res = onto_->class_graph_.select(set_res, select);
+        set_res = onto_->class_graph_.select(set_res, params.selector);
       else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
-        set_res = onto_->object_property_graph_.select(set_res, select);
+        set_res = onto_->object_property_graph_.select(set_res, params.selector);
     }
 
     if(res.values.size() == 0)
@@ -226,54 +231,59 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
   else
   {
     reasoners_.runPreReasoners();
-
-    int level = getPropagationLevel(req.param);
-
     removeUselessSpace(req.action);
-    removeUselessSpace(req.param);
+    param_t params = getParams(req.param);
+
+    //Remove for V2.4
+    int level = getPropagationLevel(params.base);
+    if(level != -1)
+      params.depth = level;
+    std::string select = getSelector(req.action, params.base);
+    if(select != "")
+      params.selector = select;
+    // end remove for 2.4
 
     std::unordered_set<std::string> set_res;
-    std::string select = getSelector(req.action, req.param);
 
     if(req.action == "getDown")
-      set_res = onto_->object_property_graph_.getDown(req.param, level);
+      set_res = onto_->object_property_graph_.getDown(params(), params.depth);
     else if(req.action == "getUp")
-      set_res = onto_->object_property_graph_.getUp(req.param, level);
+      set_res = onto_->object_property_graph_.getUp(params(), params.depth);
     else if(req.action == "getDisjoint")
-      set_res = onto_->object_property_graph_.getDisjoint(req.param);
+      set_res = onto_->object_property_graph_.getDisjoint(params());
     else if(req.action == "getInverse")
-      set_res = onto_->object_property_graph_.getInverse(req.param);
+      set_res = onto_->object_property_graph_.getInverse(params());
     else if(req.action == "getDomain")
-      set_res = onto_->object_property_graph_.getDomain(req.param);
+      set_res = onto_->object_property_graph_.getDomain(params());
     else if(req.action == "getRange")
-      set_res = onto_->object_property_graph_.getRange(req.param);
+      set_res = onto_->object_property_graph_.getRange(params());
     else if(req.action == "getName")
-      res.values.push_back(onto_->object_property_graph_.getName(req.param));
+      res.values.push_back(onto_->object_property_graph_.getName(params()));
     else if(req.action == "getNames")
-      res.values = onto_->object_property_graph_.getNames(req.param);
+      res.values = onto_->object_property_graph_.getNames(params());
     else if(req.action == "getEveryNames")
-      res.values = onto_->object_property_graph_.getEveryNames(req.param);
+      res.values = onto_->object_property_graph_.getEveryNames(params());
     else if(req.action == "find")
-      set2vector(onto_->object_property_graph_.find(req.param), res.values);
+      set2vector(onto_->object_property_graph_.find(params()), res.values);
     else if(req.action == "findSub")
-      set2vector(onto_->object_property_graph_.findSub(req.param), res.values);
+      set2vector(onto_->object_property_graph_.findSub(params()), res.values);
     else if(req.action == "findRegex")
-      set2vector(onto_->object_property_graph_.findRegex(req.param), res.values);
+      set2vector(onto_->object_property_graph_.findRegex(params()), res.values);
     else if(req.action == "exist")
     {
-      if(onto_->object_property_graph_.touch(req.param))
-        res.values.push_back(req.param);
+      if(onto_->object_property_graph_.touch(params()))
+        res.values.push_back(params());
     }
     else
       res.code = UNKNOW_ACTION;
 
-    if(select != "")
+    if(params.selector != "")
     {
       if((req.action == "getUp") || (req.action == "getDown") ||
         (req.action == "getDisjoint") || (req.action == "getInverse"))
-        set_res = onto_->object_property_graph_.select(set_res, select);
+        set_res = onto_->object_property_graph_.select(set_res, params.selector);
       else if((req.action == "getDomain") || (req.action == "getRange"))
-        set_res = onto_->class_graph_.select(set_res, select);
+        set_res = onto_->class_graph_.select(set_res, params.selector);
     }
 
     if(res.values.size() == 0)
@@ -293,51 +303,56 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
   else
   {
     reasoners_.runPreReasoners();
-
-    int level = getPropagationLevel(req.param);
-
     removeUselessSpace(req.action);
-    removeUselessSpace(req.param);
+    param_t params = getParams(req.param);
+
+    //Remove for V2.4
+    int level = getPropagationLevel(params.base);
+    if(level != -1)
+      params.depth = level;
+    std::string select = getSelector(req.action, params.base);
+    if(select != "")
+      params.selector = select;
+    // end remove for 2.4
 
     std::unordered_set<std::string> set_res;
-    std::string select = getSelector(req.action, req.param);
 
     if(req.action == "getDown")
-      set_res = onto_->data_property_graph_.getDown(req.param, level);
+      set_res = onto_->data_property_graph_.getDown(params(), params.depth);
     else if(req.action == "getUp")
-      set_res = onto_->data_property_graph_.getUp(req.param, level);
+      set_res = onto_->data_property_graph_.getUp(params(), params.depth);
     else if(req.action == "getDisjoint")
-      set_res = onto_->data_property_graph_.getDisjoint(req.param);
+      set_res = onto_->data_property_graph_.getDisjoint(params());
     else if(req.action == "getDomain")
-      set_res = onto_->data_property_graph_.getDomain(req.param);
+      set_res = onto_->data_property_graph_.getDomain(params());
     else if(req.action == "getRange")
-      set2vector(onto_->data_property_graph_.getRange(req.param), res.values);
+      set2vector(onto_->data_property_graph_.getRange(params()), res.values);
     else if(req.action == "getName")
-      res.values.push_back(onto_->data_property_graph_.getName(req.param));
+      res.values.push_back(onto_->data_property_graph_.getName(params()));
     else if(req.action == "getNames")
-      res.values = onto_->data_property_graph_.getNames(req.param);
+      res.values = onto_->data_property_graph_.getNames(params());
     else if(req.action == "getEveryNames")
-      res.values = onto_->data_property_graph_.getEveryNames(req.param);
+      res.values = onto_->data_property_graph_.getEveryNames(params());
     else if(req.action == "find")
-      set2vector(onto_->data_property_graph_.find(req.param), res.values);
+      set2vector(onto_->data_property_graph_.find(params()), res.values);
     else if(req.action == "findSub")
-      set2vector(onto_->data_property_graph_.findSub(req.param), res.values);
+      set2vector(onto_->data_property_graph_.findSub(params()), res.values);
     else if(req.action == "findRegex")
-      set2vector(onto_->data_property_graph_.findRegex(req.param), res.values);
+      set2vector(onto_->data_property_graph_.findRegex(params()), res.values);
     else if(req.action == "exist")
     {
-      if(onto_->data_property_graph_.touch(req.param))
-        res.values.push_back(req.param);
+      if(onto_->data_property_graph_.touch(params()))
+        res.values.push_back(params());
     }
     else
       res.code = UNKNOW_ACTION;
 
-    if(select != "")
+    if(params.selector != "")
     {
       if((req.action == "getUp") || (req.action == "getDown") || (req.action == "getDisjoint"))
-        set_res = onto_->data_property_graph_.select(set_res, select);
+        set_res = onto_->data_property_graph_.select(set_res, params.selector);
       else if(req.action == "getDomain")
-        set_res = onto_->class_graph_.select(set_res, select);
+        set_res = onto_->class_graph_.select(set_res, params.selector);
     }
 
     if(res.values.size() == 0)
@@ -357,69 +372,74 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
   else
   {
     reasoners_.runPreReasoners();
-
-    int level = getPropagationLevel(req.param);
-
     removeUselessSpace(req.action);
-    removeUselessSpace(req.param);
+    param_t params = getParams(req.param);
+
+    //Remove for V2.4
+    int level = getPropagationLevel(params.base);
+    if(level != -1)
+      params.depth = level;
+    std::string select = getSelector(req.action, params.base);
+    if(select != "")
+      params.selector = select;
+    // end remove for 2.4
 
     std::unordered_set<std::string> set_res;
-    std::string select = getSelector(req.action, req.param);
 
     if(req.action == "getSame")
-      set_res = onto_->individual_graph_.getSame(req.param);
+      set_res = onto_->individual_graph_.getSame(params());
     if(req.action == "getDistincts")
-      set_res = onto_->individual_graph_.getDistincts(req.param);
+      set_res = onto_->individual_graph_.getDistincts(params());
     else if(req.action == "getRelationFrom")
-      set_res = onto_->individual_graph_.getRelationFrom(req.param, level);
+      set_res = onto_->individual_graph_.getRelationFrom(params(), params.depth);
     else if(req.action == "getRelatedFrom")
-      set_res = onto_->individual_graph_.getRelatedFrom(req.param);
+      set_res = onto_->individual_graph_.getRelatedFrom(params());
     else if(req.action == "getRelationOn")
-      set_res = onto_->individual_graph_.getRelationOn(req.param, level);
+      set_res = onto_->individual_graph_.getRelationOn(params(), params.depth);
     else if(req.action == "getRelatedOn")
-      set_res = onto_->individual_graph_.getRelatedOn(req.param);
+      set_res = onto_->individual_graph_.getRelatedOn(params());
     else if(req.action == "getRelationWith")
-      set_res = onto_->individual_graph_.getRelationWith(req.param);
+      set_res = onto_->individual_graph_.getRelationWith(params());
     else if(req.action == "getRelatedWith")
-      set_res = onto_->individual_graph_.getRelatedWith(req.param);
+      set_res = onto_->individual_graph_.getRelatedWith(params());
     else if(req.action == "getUp")
-      set_res = onto_->individual_graph_.getUp(req.param, level);
+      set_res = onto_->individual_graph_.getUp(params(), params.depth);
     else if(req.action == "getOn")
-      set_res = onto_->individual_graph_.getOn(req.param);
+      set_res = onto_->individual_graph_.getOn(params());
     else if(req.action == "getFrom")
-      set_res = onto_->individual_graph_.getFrom(req.param);
+      set_res = onto_->individual_graph_.getFrom(params());
     else if(req.action == "getWith")
-      set_res = onto_->individual_graph_.getWith(req.param, level);
+      set_res = onto_->individual_graph_.getWith(params(), params.depth);
     else if(req.action == "getName")
-      res.values.push_back(onto_->individual_graph_.getName(req.param));
+      res.values.push_back(onto_->individual_graph_.getName(params()));
     else if(req.action == "getNames")
-      res.values = onto_->individual_graph_.getNames(req.param);
+      res.values = onto_->individual_graph_.getNames(params());
     else if(req.action == "getEveryNames")
-      res.values = onto_->individual_graph_.getEveryNames(req.param);
+      res.values = onto_->individual_graph_.getEveryNames(params());
     else if(req.action == "find")
-      set_res = onto_->individual_graph_.find(req.param);
+      set_res = onto_->individual_graph_.find(params());
     else if(req.action == "findSub")
-      set_res = onto_->individual_graph_.findSub(req.param);
+      set_res = onto_->individual_graph_.findSub(params());
     else if(req.action == "findRegex")
-      set_res = onto_->individual_graph_.findRegex(req.param);
+      set_res = onto_->individual_graph_.findRegex(params());
     else if(req.action == "getType")
-      set_res = onto_->individual_graph_.getType(req.param);
+      set_res = onto_->individual_graph_.getType(params());
     else if(req.action == "exist")
     {
-      if(onto_->individual_graph_.touch(req.param))
-        res.values.push_back(req.param);
+      if(onto_->individual_graph_.touch(params()))
+        res.values.push_back(params());
     }
     else
       res.code = UNKNOW_ACTION;
 
-    if(select != "")
+    if(params.selector != "")
     {
       if(req.action == "getUp")
-        set_res = onto_->class_graph_.select(set_res, select);
+        set_res = onto_->class_graph_.select(set_res, params.selector);
       else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
-        set_res = onto_->object_property_graph_.select(set_res, select);
+        set_res = onto_->object_property_graph_.select(set_res, params.selector);
       else if((req.action != "find") || (req.action != "findRegex") || (req.action != "findSub") || (req.action != "getFrom") || (req.action != "getOn"))
-        set_res = onto_->individual_graph_.select(set_res, select);
+        set_res = onto_->individual_graph_.select(set_res, params.selector);
     }
 
     if(res.values.size() == 0)
@@ -542,6 +562,24 @@ void RosInterface::removeUselessSpace(std::string& text)
     text.erase(text.size() - 1,1);
 }
 
+bool RosInterface::split(const std::string &text, std::vector<std::string> &strs, const std::string& delim)
+{
+  std::string tmp_text = text;
+  while(tmp_text.find(delim) != std::string::npos)
+  {
+    size_t pos = tmp_text.find(delim);
+    std::string part = tmp_text.substr(0, pos);
+    tmp_text = tmp_text.substr(pos + delim.size(), tmp_text.size() - pos - delim.size());
+    if(part != "")
+      strs.push_back(part);
+  }
+  strs.push_back(tmp_text);
+  if(strs.size() > 1)
+    return true;
+  else
+    return false;
+}
+
 void RosInterface::set2string(const std::unordered_set<std::string>& word_set, std::string& result)
 {
   for(const std::string& it : word_set)
@@ -554,14 +592,43 @@ void RosInterface::set2vector(const std::unordered_set<std::string>& word_set, s
     result.push_back(it);
 }
 
+param_t RosInterface::getParams(std::string& param)
+{
+  param_t parameters;
+  std::vector<std::string> str_params;
+  split(param, str_params, " ");
+
+  if(str_params.size())
+    parameters.base = str_params[0];
+
+  for(size_t i = 1; i < str_params.size(); i++)
+  {
+    if((str_params[i] == "-d") || (str_params[i] == "--depth"))
+    {
+      i++;
+      int tmp = -1;
+      if(sscanf(str_params[i].c_str(), "%d", &tmp) != 1)
+        tmp = -1;
+      parameters.depth = tmp;
+    }
+    else if((str_params[i] == "-s") || (str_params[i] == "--selector"))
+    {
+      i++;
+      parameters.selector = str_params[i];
+    }
+  }
+
+  return parameters;
+}
+
 int RosInterface::getPropagationLevel(std::string& params)
 {
   size_t delimitater = params.find("<");
   if(delimitater != std::string::npos)
   {
+    std::cout << "[WARNING] Deprecated propagation level definition. Use -d option" << std::endl;
     std::string param = params.substr(0, delimitater);
     std::string level = params.substr(delimitater+1);
-    removeUselessSpace(level);
     params = param;
 
     int res;
@@ -577,6 +644,7 @@ std::string RosInterface::getSelector(std::string& action, std::string& param)
   std::string select = "";
   if(action.find("select:") == 0)
   {
+    std::cout << "[WARNING] Deprecated selector definition. Use -s option" << std::endl;
     action = action.substr(std::string("select:").size());
     size_t delimitater = param.find("=");
     if(delimitater != std::string::npos)
@@ -584,8 +652,6 @@ std::string RosInterface::getSelector(std::string& action, std::string& param)
       select = param.substr(0, delimitater);
       param = param.substr(delimitater+1);
 
-      removeUselessSpace(select);
-      removeUselessSpace(param);
     }
     removeUselessSpace(action);
   }
