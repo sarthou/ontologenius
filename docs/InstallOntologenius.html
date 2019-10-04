@@ -101,7 +101,14 @@
           <p>cd ~/catkin_ws/src/</br></br>git clone https://github.com/sarthou/ontologenius.git</br></br>cd ..</br></br>catkin_make</p>
         </div>
 
-        <p>You will need the requests package. Ontologenius uses it to make HTTP requests. You can install it in the catkin_ws:</p>
+        <p>You will need the requests package. Ontologenius uses it to make HTTP requests.</p>
+
+        <p>You can install it through pip:</p>
+        <div class="code_block">
+          <p>pip install requests --user</p>
+        </div>
+
+        <p>You can also install it from source in the catkin_ws:</p>
         <div class="code_block">
           <p>git clone https://github.com/kennethreitz/requests.git</br></br>export PYTHONPATH=~/catkin_ws/devel/lib/python2.7/site-packages:$PYTHONPATH</br></br>cd requests</br></br>python setup.py install --prefix=~/catkin_ws/devel</p>
         </div>
