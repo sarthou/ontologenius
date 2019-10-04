@@ -65,7 +65,7 @@ void ReasonerDictionary::split(ValuedNode* node)
       std::replace( tmp.begin(), tmp.end(), '_', ' ');
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         if(std::find(muted->begin(), muted->end(), tmp) == muted->end())
-          muted->push_back(tmp);
+          it.second.push_back(tmp);
       std::replace( tmp.begin(), tmp.end(), '-', ' ');
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         if(std::find(muted->begin(), muted->end(), tmp) == muted->end())
@@ -126,6 +126,26 @@ void ReasonerDictionary::replaceQuote(ValuedNode* node)
 {
   size_t i, dic_size = 0;
   for (auto& it : node->dictionary_)
+  {
+    std::vector<std::string>* muted = &node->muted_dictionary_[it.first];
+    dic_size = it.second.size();
+    for(i = 0; i < dic_size; i++)
+    {
+      std::string tmp = it.second[i];
+      tmp.erase(std::remove(tmp.begin(), tmp.end(), '\''), tmp.end());
+      if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
+        if (std::find(muted->begin(), muted->end(), tmp) == muted->end())
+          muted->push_back(tmp);
+
+      tmp = it.second[i];
+      std::replace( tmp.begin(), tmp.end(), '\'', ' ');
+      if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
+        if (std::find(muted->begin(), muted->end(), tmp) == muted->end())
+          muted->push_back(tmp);
+    }
+  }
+
+  for (auto& it : node->muted_dictionary_)
   {
     std::vector<std::string>* muted = &node->muted_dictionary_[it.first];
     dic_size = it.second.size();
