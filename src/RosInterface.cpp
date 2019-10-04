@@ -632,6 +632,8 @@ param_t RosInterface::getParams(std::string& param)
       i++;
       parameters.selector = str_params[i];
     }
+    else
+      std::cout << "[WARNING] unknow parameter \"" << str_params[i] << "\"" << std::endl;
   }
 
   return parameters;
