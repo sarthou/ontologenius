@@ -1,5 +1,6 @@
 #include "include/ontoloGenius/graphical/ontoloGUI/ontologui.h"
 #include "include/ontoloGenius/graphical/ontoloGUI/qpushbuttonextended.h"
+#include "include/ontoloGenius/graphical/ontoloGUI/QLineEditExtended.h"
 #include "ui_ontologui.h"
 
 #include "ontologenius/OntologeniusService.h"
@@ -44,6 +45,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Class_getOn, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
     QObject::connect(ui->Class_getWith, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
     QObject::connect(ui->Class_getWith, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
+    QObject::connect(ui->classParameter, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
+    QObject::connect(ui->classParameter, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
 
     QObject::connect(ui->ObjectProperty_getName, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
     QObject::connect(ui->ObjectProperty_getName, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
@@ -67,6 +70,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->ObjectProperty_getRange, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
     QObject::connect(ui->ObjectProperty_getUp, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
     QObject::connect(ui->ObjectProperty_getUp, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
+    QObject::connect(ui->objectPropertyParameter, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
+    QObject::connect(ui->objectPropertyParameter, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
 
     QObject::connect(ui->DataProperty_getName, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
     QObject::connect(ui->DataProperty_getName, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
@@ -88,6 +93,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->DataProperty_getRange, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
     QObject::connect(ui->DataProperty_getUp, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
     QObject::connect(ui->DataProperty_getUp, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
+    QObject::connect(ui->dataPropertyParameter, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
+    QObject::connect(ui->dataPropertyParameter, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
 
     QObject::connect(ui->Individual_getDistinct, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
     QObject::connect(ui->Individual_getDistinct, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
@@ -125,8 +132,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Individual_findSub, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
     QObject::connect(ui->Individual_getType, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
     QObject::connect(ui->Individual_getType, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-    QObject::connect(ui->Individual_select, SIGNAL(hoverEnter()),this, SLOT(IndividualCheckBoxhoverEnterSlot()));
-    QObject::connect(ui->Individual_select, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
+    QObject::connect(ui->individualParameter, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
+    QObject::connect(ui->individualParameter, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
 
     QObject::connect(ui->Class_getName, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
     QObject::connect(ui->Class_exist, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
@@ -346,10 +353,7 @@ void ontoloGUI::individualClickedSlot()
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
-  if(ui->Individual_select->checkState() == 0)
-    srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
-  else
-    srv.request.action = "select:" + ((QPushButtonExtended*)sender())->text().toStdString();
+  srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
   srv.request.param = ui->individualParameter->text().toStdString();
   QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->individualParameter->text();
   ui->IndividualDescription->setText(text);
