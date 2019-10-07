@@ -200,6 +200,8 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
       set2vector(onto_->class_graph_.findSub(params()), res.values);
     else if(req.action == "findRegex")
       set2vector(onto_->class_graph_.findRegex(params()), res.values);
+    else if(req.action == "findFuzzy")
+      set2vector(onto_->class_graph_.findFuzzy(params()), res.values);
     else if(req.action == "exist")
     {
       if(onto_->class_graph_.touch(params()))
@@ -277,6 +279,8 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
       set2vector(onto_->object_property_graph_.findSub(params()), res.values);
     else if(req.action == "findRegex")
       set2vector(onto_->object_property_graph_.findRegex(params()), res.values);
+    else if(req.action == "findFuzzy")
+      set2vector(onto_->object_property_graph_.findFuzzy(params()), res.values);
     else if(req.action == "exist")
     {
       if(onto_->object_property_graph_.touch(params()))
@@ -351,6 +355,8 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
       set2vector(onto_->data_property_graph_.findSub(params()), res.values);
     else if(req.action == "findRegex")
       set2vector(onto_->data_property_graph_.findRegex(params()), res.values);
+    else if(req.action == "findFuzzy")
+      set2vector(onto_->data_property_graph_.findFuzzy(params()), res.values);
     else if(req.action == "exist")
     {
       if(onto_->data_property_graph_.touch(params()))
@@ -438,6 +444,8 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
       set_res = onto_->individual_graph_.findSub(params());
     else if(req.action == "findRegex")
       set_res = onto_->individual_graph_.findRegex(params());
+    else if(req.action == "findFuzzy")
+      set_res = onto_->individual_graph_.findFuzzy(params());
     else if(req.action == "getType")
       set_res = onto_->individual_graph_.getType(params());
     else if(req.action == "exist")
@@ -454,7 +462,7 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
         set_res = onto_->class_graph_.select(set_res, params.selector);
       else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
         set_res = onto_->object_property_graph_.select(set_res, params.selector);
-      else if((req.action != "find") || (req.action != "findRegex") || (req.action != "findSub") || (req.action != "getFrom") || (req.action != "getOn"))
+      else if((req.action != "find") || (req.action != "findRegex") || (req.action != "findSub") || (req.action != "findFuzzy") || (req.action != "getFrom") || (req.action != "getOn"))
         set_res = onto_->individual_graph_.select(set_res, params.selector);
     }
 

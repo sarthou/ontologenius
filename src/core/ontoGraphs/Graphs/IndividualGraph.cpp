@@ -7,6 +7,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
+#include "ontoloGenius/core/Algorithms/LevenshteinDistance.h"
+
 namespace ontologenius {
 
 IndividualGraph::IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
@@ -1105,6 +1107,48 @@ std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& re
         if(std::regex_match(individuals_[i]->muted_dictionary_[language_][dic_i], match, base_regex))
           res.insert(individuals_[i]->value());
   }
+  return res;
+}
+
+std::unordered_set<std::string> IndividualGraph::findFuzzy(const std::string& value, double threshold)
+{
+  double lower_cost = 100000;
+  double tmp_cost = 100000;
+  std::unordered_set<std::string> res;
+
+  LevenshteinDistance dist;
+
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  for(auto branch : individuals_)
+  {
+    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
+      for(size_t i = 0; i < branch->dictionary_[this->language_].size(); i++)
+        if((tmp_cost = dist.get(branch->dictionary_[this->language_][i], value)) <= lower_cost)
+        {
+          if(tmp_cost != lower_cost)
+          {
+            lower_cost = tmp_cost;
+            res.clear();
+          }
+          res.insert(branch->dictionary_[this->language_][i]);
+        }
+
+    if(branch->muted_dictionary_.find(this->language_) != branch->muted_dictionary_.end())
+      for(size_t i = 0; i < branch->muted_dictionary_[this->language_].size(); i++)
+        if((tmp_cost = dist.get(branch->muted_dictionary_[this->language_][i], value)) <= lower_cost)
+        {
+          if(tmp_cost != lower_cost)
+          {
+            lower_cost = tmp_cost;
+            res.clear();
+          }
+          res.insert(branch->muted_dictionary_[this->language_][i]);
+        }
+  }
+
+  if(lower_cost > threshold)
+    res.clear();
+
   return res;
 }
 

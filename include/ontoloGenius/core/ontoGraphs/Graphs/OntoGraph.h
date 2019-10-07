@@ -12,6 +12,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/Branch.h"
 
+#include "ontoloGenius/core/Algorithms/LevenshteinDistance.h"
+
 /*
 This file use CRTP (curiously recurring template pattern)
 be really carreful of how you use it
@@ -39,6 +41,7 @@ public:
   std::unordered_set<std::string> find(const std::string& value);
   std::unordered_set<std::string> findSub(const std::string& value);
   std::unordered_set<std::string> findRegex(const std::string& regex);
+  std::unordered_set<std::string> findFuzzy(const std::string& value, double threshold = 0.5);
   bool touch(const std::string& value);
 
   void getDown(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
@@ -552,6 +555,49 @@ std::unordered_set<std::string> OntoGraph<B>::findRegex(const std::string& regex
   std::vector<B*> branch = this->container_.find(&comparatorRegex<B>, regex, this->language_);
   for(size_t i = 0; i < branch.size(); i++)
     res.insert(branch[i]->value());
+
+  return res;
+}
+
+template <typename B>
+std::unordered_set<std::string> OntoGraph<B>::findFuzzy(const std::string& value, double threshold)
+{
+  double lower_cost = 100000;
+  double tmp_cost = 100000;
+  std::unordered_set<std::string> res;
+
+  LevenshteinDistance dist;
+
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  for(auto branch : all_branchs_)
+  {
+    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
+      for(size_t i = 0; i < branch->dictionary_[this->language_].size(); i++)
+        if((tmp_cost = dist.get(branch->dictionary_[this->language_][i], value)) <= lower_cost)
+        {
+          if(tmp_cost != lower_cost)
+          {
+            lower_cost = tmp_cost;
+            res.clear();
+          }
+          res.insert(branch->dictionary_[this->language_][i]);
+        }
+
+    if(branch->muted_dictionary_.find(this->language_) != branch->muted_dictionary_.end())
+      for(size_t i = 0; i < branch->muted_dictionary_[this->language_].size(); i++)
+        if((tmp_cost = dist.get(branch->muted_dictionary_[this->language_][i], value)) <= lower_cost)
+        {
+          if(tmp_cost != lower_cost)
+          {
+            lower_cost = tmp_cost;
+            res.clear();
+          }
+          res.insert(branch->muted_dictionary_[this->language_][i]);
+        }
+  }
+
+  if(lower_cost > threshold)
+    res.clear();
 
   return res;
 }

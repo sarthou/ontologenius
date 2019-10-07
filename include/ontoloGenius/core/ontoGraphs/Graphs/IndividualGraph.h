@@ -84,6 +84,7 @@ public:
   std::unordered_set<std::string> find(const std::string& value);
   std::unordered_set<std::string> findSub(const std::string& value);
   std::unordered_set<std::string> findRegex(const std::string& regex);
+  std::unordered_set<std::string> findFuzzy(const std::string& value, double threshold = 0.5);
   bool touch(const std::string& value);
   std::unordered_set<std::string> getType(const std::string& class_selector);
 
