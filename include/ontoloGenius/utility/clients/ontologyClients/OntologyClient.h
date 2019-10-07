@@ -18,6 +18,7 @@ public:
   std::vector<std::string> find(const std::string& name);
   std::vector<std::string> findSub(const std::string& name);
   std::vector<std::string> findRegex(const std::string& regex);
+  std::vector<std::string> findFuzzy(const std::string& name, double threshold = 0.5);
   bool exist(const std::string& name);
 };
 

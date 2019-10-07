@@ -23,8 +23,9 @@ struct param_t
   std::string base;
   size_t depth;
   std::string selector;
+  double threshold;
 
-  param_t(): depth(-1) {}
+  param_t(): depth(-1), threshold(-1) {}
 
   std::string operator()() { return base; }
 };

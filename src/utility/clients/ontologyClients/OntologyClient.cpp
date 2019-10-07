@@ -80,6 +80,16 @@ std::vector<std::string> OntologyClient::findRegex(const std::string& regex)
   return call(srv);
 }
 
+std::vector<std::string> OntologyClient::findFuzzy(const std::string& name, double threshold)
+{
+  ontologenius::OntologeniusService srv;
+
+  srv.request.action = "findFuzzy";
+  srv.request.param = name + " -t " + std::to_string(threshold);
+
+  return call(srv);
+}
+
 bool OntologyClient::exist(const std::string& name)
 {
   ontologenius::OntologeniusService srv;

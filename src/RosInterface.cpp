@@ -201,7 +201,12 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
     else if(req.action == "findRegex")
       set2vector(onto_->class_graph_.findRegex(params()), res.values);
     else if(req.action == "findFuzzy")
-      set2vector(onto_->class_graph_.findFuzzy(params()), res.values);
+    {
+      if(params.threshold != -1)
+        set2vector(onto_->class_graph_.findFuzzy(params(), params.threshold), res.values);
+      else
+        set2vector(onto_->class_graph_.findFuzzy(params()), res.values);
+    }
     else if(req.action == "exist")
     {
       if(onto_->class_graph_.touch(params()))
@@ -280,7 +285,12 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
     else if(req.action == "findRegex")
       set2vector(onto_->object_property_graph_.findRegex(params()), res.values);
     else if(req.action == "findFuzzy")
-      set2vector(onto_->object_property_graph_.findFuzzy(params()), res.values);
+    {
+      if(params.threshold != -1)
+        set2vector(onto_->object_property_graph_.findFuzzy(params(), params.threshold), res.values);
+      else
+        set2vector(onto_->object_property_graph_.findFuzzy(params()), res.values);
+    }
     else if(req.action == "exist")
     {
       if(onto_->object_property_graph_.touch(params()))
@@ -356,7 +366,12 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
     else if(req.action == "findRegex")
       set2vector(onto_->data_property_graph_.findRegex(params()), res.values);
     else if(req.action == "findFuzzy")
-      set2vector(onto_->data_property_graph_.findFuzzy(params()), res.values);
+    {
+      if(params.threshold != -1)
+        set2vector(onto_->data_property_graph_.findFuzzy(params(), params.threshold), res.values);
+      else
+        set2vector(onto_->data_property_graph_.findFuzzy(params()), res.values);
+    }
     else if(req.action == "exist")
     {
       if(onto_->data_property_graph_.touch(params()))
@@ -445,7 +460,12 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
     else if(req.action == "findRegex")
       set_res = onto_->individual_graph_.findRegex(params());
     else if(req.action == "findFuzzy")
-      set_res = onto_->individual_graph_.findFuzzy(params());
+    {
+      if(params.threshold != -1)
+        set_res = onto_->individual_graph_.findFuzzy(params(), params.threshold);
+      else
+        set_res = onto_->individual_graph_.findFuzzy(params());
+    }
     else if(req.action == "getType")
       set_res = onto_->individual_graph_.getType(params());
     else if(req.action == "exist")
@@ -641,6 +661,15 @@ param_t RosInterface::getParams(std::string& param)
     {
       i++;
       parameters.selector = str_params[i];
+      option_found = true;
+    }
+    else if((str_params[i] == "-t") || (str_params[i] == "--threshold"))
+    {
+      i++;
+      float tmp = -1;
+      if(sscanf(str_params[i].c_str(), "%f", &tmp) != 1)
+        tmp = -1;
+      parameters.threshold = tmp;
       option_found = true;
     }
     else if(option_found)
