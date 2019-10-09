@@ -22,11 +22,11 @@ std::vector<std::string> IndividualClient::getFrom(const std::string& property, 
   return call(srv);
 }
 
-std::vector<std::string> IndividualClient::getWith(const std::string& indiv_1, const std::string& indiv_2, const std::string& selector, int depth)
+std::vector<std::string> IndividualClient::getWith(const std::string& indiv_from, const std::string& indiv_to, const std::string& selector, int depth)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "getWith";
-  srv.request.param = indiv_1 + ":" + indiv_2;
+  srv.request.param = indiv_from + ":" + indiv_to;
   if(selector != "")
     srv.request.param += " -s " + selector;
 
