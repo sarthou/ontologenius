@@ -17,7 +17,7 @@ void NodeWriter::writeDictionary(ValuedNodeData* node)
                         it.first +
                         "\">" +
                         it.second[i] +
-                        + "</rdfs:label>\n\r";
+                        + "</rdfs:label>\n";
       writeString(tmp);
     }
   }
@@ -33,7 +33,7 @@ void NodeWriter::writeMutedDictionary(ValuedNodeData* node)
                         it.first +
                         "\">" +
                         it.second[i] +
-                        + "</onto:label>\n\r";
+                        + "</onto:label>\n";
       writeString(tmp);
     }
   }
