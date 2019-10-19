@@ -4,11 +4,6 @@
 
 namespace ontologenius {
 
-void ReasonerDictionary::preReason()
-{
-
-}
-
 void ReasonerDictionary::postReason()
 {
   size_t graph_size;
@@ -61,13 +56,20 @@ void ReasonerDictionary::split(ValuedNode* node)
   size_t i, dic_size = 0;
   for(auto& it : node->dictionary_)
   {
+    std::vector<std::string>* muted = &node->muted_dictionary_[it.first];
+
     dic_size = it.second.size();
     for(i = 0; i < dic_size; i++)
     {
       std::string tmp = it.second[i];
       std::replace( tmp.begin(), tmp.end(), '_', ' ');
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
-        it.second.push_back(tmp);
+        if(std::find(muted->begin(), muted->end(), tmp) == muted->end())
+          it.second.push_back(tmp);
+      std::replace( tmp.begin(), tmp.end(), '-', ' ');
+      if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
+        if(std::find(muted->begin(), muted->end(), tmp) == muted->end())
+          muted->push_back(tmp);
     }
 
     for(i = 0; i < dic_size; i++)
@@ -82,7 +84,8 @@ void ReasonerDictionary::split(ValuedNode* node)
         tmp = tmp + it.second[i][char_i];
       }
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
-        it.second.push_back(tmp);
+        if(std::find(muted->begin(), muted->end(), tmp) == muted->end())
+          muted->push_back(tmp);
     }
   }
 }
@@ -90,7 +93,7 @@ void ReasonerDictionary::split(ValuedNode* node)
 void ReasonerDictionary::createLowerCase(ValuedNode* node)
 {
   size_t i, dic_size = 0;
-  for(auto& it : node->dictionary_)
+  for(auto& it : node->muted_dictionary_)
   {
     dic_size = it.second.size();
     for(i = 0; i < dic_size; i++)
@@ -99,7 +102,22 @@ void ReasonerDictionary::createLowerCase(ValuedNode* node)
       tmp.resize(it.second[i].size());
       std::transform(it.second[i].begin(), it.second[i].end(), tmp.begin(), ::tolower);
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
-        it.second.push_back(tmp);
+          it.second.push_back(tmp);
+    }
+  }
+
+  for(auto& it : node->dictionary_)
+  {
+    std::vector<std::string>* muted = &node->muted_dictionary_[it.first];
+    dic_size = it.second.size();
+    for(i = 0; i < dic_size; i++)
+    {
+      std::string tmp = "";
+      tmp.resize(it.second[i].size());
+      std::transform(it.second[i].begin(), it.second[i].end(), tmp.begin(), ::tolower);
+      if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
+        if (std::find(muted->begin(), muted->end(), tmp) == muted->end())
+          muted->push_back(tmp);
     }
   }
 }
@@ -109,18 +127,41 @@ void ReasonerDictionary::replaceQuote(ValuedNode* node)
   size_t i, dic_size = 0;
   for (auto& it : node->dictionary_)
   {
+    std::vector<std::string>* muted = &node->muted_dictionary_[it.first];
     dic_size = it.second.size();
     for(i = 0; i < dic_size; i++)
     {
       std::string tmp = it.second[i];
       tmp.erase(std::remove(tmp.begin(), tmp.end(), '\''), tmp.end());
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
-        it.second.push_back(tmp);
+        if (std::find(muted->begin(), muted->end(), tmp) == muted->end())
+          muted->push_back(tmp);
 
       tmp = it.second[i];
       std::replace( tmp.begin(), tmp.end(), '\'', ' ');
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
-        it.second.push_back(tmp);
+        if (std::find(muted->begin(), muted->end(), tmp) == muted->end())
+          muted->push_back(tmp);
+    }
+  }
+
+  for (auto& it : node->muted_dictionary_)
+  {
+    std::vector<std::string>* muted = &node->muted_dictionary_[it.first];
+    dic_size = it.second.size();
+    for(i = 0; i < dic_size; i++)
+    {
+      std::string tmp = it.second[i];
+      tmp.erase(std::remove(tmp.begin(), tmp.end(), '\''), tmp.end());
+      if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
+        if (std::find(muted->begin(), muted->end(), tmp) == muted->end())
+          muted->push_back(tmp);
+
+      tmp = it.second[i];
+      std::replace( tmp.begin(), tmp.end(), '\'', ' ');
+      if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
+        if (std::find(muted->begin(), muted->end(), tmp) == muted->end())
+          muted->push_back(tmp);
     }
   }
 }

@@ -135,6 +135,9 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   me->setSteady_dictionary(property_vectors.dictionary_);
   if(me->dictionary_.find("en") == me->dictionary_.end())
     me->dictionary_["en"].push_back(me->value());
+  me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
+
+  mitigate(me);
 }
 
 void DataPropertyGraph::add(std::vector<std::string>& disjoints)

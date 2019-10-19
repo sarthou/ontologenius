@@ -50,7 +50,9 @@ public:
   void setSteady_child(ObjectPropertyBranch_t* child);
   void setSteady_mother(ObjectPropertyBranch_t* mother);
   void setSteady_dictionary(std::string lang, std::string word);
+  void setSteady_muted_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
+  void setSteady_muted_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
 };
 
 } // namespace ontologenius

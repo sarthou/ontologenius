@@ -11,7 +11,6 @@ public:
   ReasonerDictionary() {}
   ~ReasonerDictionary() {}
 
-  virtual void preReason();
   virtual void postReason();
 
   virtual std::string getName();

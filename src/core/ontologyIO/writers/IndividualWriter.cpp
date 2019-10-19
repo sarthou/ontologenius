@@ -34,8 +34,8 @@ void IndividualWriter::writeGeneralAxioms(FILE* file)
 
 void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
 {
-  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\r\n\r\
-    <owl:NamedIndividual rdf:about=\"ontologenius#" + branch->value() + "\">\n\r";
+  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\n\
+    <owl:NamedIndividual rdf:about=\"ontologenius#" + branch->value() + "\">\n";
   writeString(tmp);
 
   writeType(branch);
@@ -46,8 +46,9 @@ void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
   writeSameAs(branch);
 
   writeDictionary(&branch->steady_);
+  writeMutedDictionary(&branch->steady_);
 
-  tmp = "    </owl:NamedIndividual>\n\r\n\r\n\r\n\r";
+  tmp = "    </owl:NamedIndividual>\n\n\n\n";
   writeString(tmp);
 }
 
@@ -57,7 +58,7 @@ void IndividualWriter::writeType(IndividualBranch_t* branch)
   {
     std::string tmp = "        <rdf:type rdf:resource=\"ontologenius#" +
                       branch->steady_.is_a_[i]->value()
-                      + "\"/>\n\r";
+                      + "\"/>\n";
     writeString(tmp);
   }
 }
@@ -70,7 +71,7 @@ void IndividualWriter::writeObjectProperties(IndividualBranch_t* branch)
                       branch->steady_.object_properties_name_[i]->value() +
                       " rdf:resource=\"ontologenius#" +
                       branch->steady_.object_properties_on_[i]->value() +
-                      "\"/>\n\r";
+                      "\"/>\n";
     writeString(tmp);
   }
 }
@@ -84,7 +85,7 @@ void IndividualWriter::writeObjectPropertiesDeduced(IndividualBranch_t* branch)
                         branch->object_properties_name_[i]->value() +
                         " rdf:resourceDeduced=\"ontologenius#" +
                         branch->object_properties_on_[i]->value() +
-                        "\"/>\n\r";
+                        "\"/>\n";
       writeString(tmp);
     }
 }
@@ -103,7 +104,7 @@ void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
                       branch->steady_.data_properties_data_[i].value_ +
                       "</ontologenius:" +
                       branch->steady_.data_properties_name_[i]->value() +
-                      ">\n\r";
+                      ">\n";
     writeString(tmp);
   }
 }
@@ -123,7 +124,7 @@ void IndividualWriter::writeDataPropertiesDeduced(IndividualBranch_t* branch)
                         branch->data_properties_data_[i].value_ +
                         "</ontologenius:" +
                         branch->data_properties_name_[i]->value() +
-                        ">\n\r";
+                        ">\n";
       writeString(tmp);
     }
 }
@@ -134,7 +135,7 @@ void IndividualWriter::writeSameAs(IndividualBranch_t* branch)
   {
     std::string tmp = "        <owl:sameAs rdf:resource=\"ontologenius#" +
                       branch->steady_.same_as_[i]->value()
-                      + "\"/>\n\r";
+                      + "\"/>\n";
     writeString(tmp);
   }
 }
@@ -143,10 +144,10 @@ void IndividualWriter::writeDistincts(std::vector<IndividualBranch_t*>& individu
 {
   std::vector<std::string> distincts_done;
 
-  std::string start = "    <rdf:Description>\n\r\
-        <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#AllDifferent\"/>\n\r";
+  std::string start = "    <rdf:Description>\n\
+        <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#AllDifferent\"/>\n";
 
-  std::string end = "    </rdf:Description>\n\r";
+  std::string end = "    </rdf:Description>\n";
 
   for(size_t i = 0; i < individuals.size(); i++)
   {
@@ -158,17 +159,17 @@ void IndividualWriter::writeDistincts(std::vector<IndividualBranch_t*>& individu
         std::vector<std::string> distincts_current;
         getDistincts(individuals[i], distincts_current);
 
-        tmp += "        <owl:distinctMembers rdf:parseType=\"Collection\">\n\r";
+        tmp += "        <owl:distinctMembers rdf:parseType=\"Collection\">\n";
 
         for(size_t j = 0; j < distincts_current.size(); j++)
         {
           distincts_done.push_back(distincts_current[j]);
           tmp += "             <rdf:Description rdf:about=\"ontologenius#" +
           distincts_current[j] +
-          "\"/>\n\r";
+          "\"/>\n";
         }
 
-        tmp += "        </owl:distinctMembers>\n\r";
+        tmp += "        </owl:distinctMembers>\n";
         writeString(start);
         writeString(tmp);
         writeString(end);

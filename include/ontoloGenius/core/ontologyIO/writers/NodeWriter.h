@@ -16,6 +16,7 @@ public:
   FILE* file_;
 
   void writeDictionary(ValuedNodeData* node);
+  void writeMutedDictionary(ValuedNodeData* node);
 
   void writeString(std::string text);
 };

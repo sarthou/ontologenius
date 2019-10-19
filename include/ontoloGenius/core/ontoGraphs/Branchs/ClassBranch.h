@@ -53,7 +53,9 @@ public:
   void setSteady_individual_child(IndividualBranch_t* child);
   void setSteady_mother(ClassBranch_t* mother);
   void setSteady_dictionary(std::string lang, std::string word);
+  void setSteady_muted_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
+  void setSteady_muted_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
   void setSteady_object_properties_name(ObjectPropertyBranch_t* object_properties_name);
   void setSteady_object_properties_on(ClassBranch_t* object_properties_on);
   void setSteady_data_properties_name(DataPropertyBranch_t* data_properties_name);

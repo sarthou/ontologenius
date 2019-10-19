@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>IndividualClient Class | Ontologenius 0.2.2</title>
+  <title>IndividualClient Class | Ontologenius 0.2.3</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="images/favicon.ico" rel="shortcut icon">
@@ -65,6 +65,16 @@
 
         <div class="contents">
           <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="overview/ontoloGUI.html">OntoloGUI</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
           <h3><a href="CppAPI.html">All C++ Classes</a></h3>
           <ul style="display: block;">
             <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
@@ -111,7 +121,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getDistincts">getDistincts</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getOn">getOn</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>selector</i> = "")</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getFrom">getFrom</a></b>(const std::string&amp; <i>property</i>, const std::string&amp; <i>name</i>, const std::string&amp; <i>selector</i> = "")</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getWith">getWith</a></b>(const std::string&amp; <i>name_1</i>, const std::string&amp; <i>name_2</i>, const std::string&amp; <i>selector</i> = "", int <i>depth</i> = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getWith">getWith</a></b>(const std::string&amp; <i>name_from</i>, const std::string&amp; <i>name_to</i>, const std::string&amp; <i>selector</i> = "", int <i>depth</i> = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelatedFrom">getRelatedFrom</a></b>(const std::string&amp; <i>property</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelatedOn">getRelatedOn</a></b>(const std::string&amp; <i>property</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelatedWith">getRelatedWith</a></b>(const std::string&amp; <i>name</i>)</td></tr>
@@ -125,7 +135,7 @@
         <a name="reimplemented-public-functions"></a>
         <h2 id="reimplemented-public-functions">Reimplemented Public Functions</h2>
         <ul>
-          <li class="fn">8 public functions inherited from <a href="OntologyClient.html#public-functions">OntologyClient</a></li>
+          <li class="fn">10 public functions inherited from <a href="OntologyClient.html#public-functions">OntologyClient</a></li>
           <li class="fn">2 public functions inherited from <a href="ClientBase.html#public-functions">ClientBase</a></li>
         </ul>
 
@@ -163,8 +173,8 @@
           <p>Gives all the individuals having the given property <i>property</i> and pointing to the individual <i>name</i>.</p>
           <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> class. The default value &quot;&quot; represents no restriction on result.</p>
 
-          <h3 class="fn" id="getWith"><a name="getWith"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getWith</span>(const <span class="type">std::string</span>&amp; <i>name_1</i>, const <span class="type">std::string</span>&amp; <i>name_2</i>, const <span class="type">std::string</span>&amp; <i>selector</i> = "", int <i>depth</i> = -1)</h3>
-          <p>Gives all the properties linking the two individuals <i>name_1</i> and <i>name_2</i>.</p>
+          <h3 class="fn" id="getWith"><a name="getWith"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getWith</span>(const <span class="type">std::string</span>&amp; <i>name_from</i>, const <span class="type">std::string</span>&amp; <i>name_to</i>, const <span class="type">std::string</span>&amp; <i>selector</i> = "", int <i>depth</i> = -1)</h3>
+          <p>Gives all the properties linking the individual <i>name_from</i> to the individual <i>name_to</i>.</p>
           <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> property. The default value &quot;&quot; represents no restriction on result.</p>
           <p>The optional <i>depth</i> parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
 

@@ -12,6 +12,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/Branch.h"
 
+#include "ontoloGenius/core/Algorithms/LevenshteinDistance.h"
+
 /*
 This file use CRTP (curiously recurring template pattern)
 be really carreful of how you use it
@@ -35,9 +37,11 @@ public:
   std::unordered_set<uint32_t> getUpIdSafe(const std::string& value, int depth = -1);
   std::string getName(const std::string& value);
   std::vector<std::string> getNames(const std::string& value);
+  std::vector<std::string> getEveryNames(const std::string& value);
   std::unordered_set<std::string> find(const std::string& value);
   std::unordered_set<std::string> findSub(const std::string& value);
   std::unordered_set<std::string> findRegex(const std::string& regex);
+  std::unordered_set<std::string> findFuzzy(const std::string& value, double threshold = 0.5);
   bool touch(const std::string& value);
 
   void getDown(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
@@ -77,6 +81,10 @@ protected:
   void add_family(B* branch, uint8_t family);
   void amIA(B** me, std::map<std::string, B*>& vect, const std::string& value, bool erase = true);
   void isMyMother(B* me, const std::string& mother, std::map<std::string, B*>& vect, bool& find);
+
+  void mitigate(B* branch);
+  std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<B*>& vect);
+  void eraseFromVector(std::vector<B*>& vect, B* branch);
 };
 
 template <typename B>
@@ -221,6 +229,30 @@ std::vector<std::string> OntoGraph<B>::getNames(const std::string& value)
       res = branch->dictionary_[this->language_];
     else
       res.push_back(value);
+  }
+
+  return res;
+}
+
+template <typename B>
+std::vector<std::string> OntoGraph<B>::getEveryNames(const std::string& value)
+{
+  std::vector<std::string> res;
+
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  B* branch = this->container_.find(value);
+  if(branch != nullptr)
+  {
+    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
+      res = branch->dictionary_[this->language_];
+    else
+      res.push_back(value);
+
+    if(branch->muted_dictionary_.find(this->language_) != branch->muted_dictionary_.end())
+    {
+      std::vector<std::string> muted = branch->muted_dictionary_[this->language_];
+      res.insert(res.end(), muted.begin(), muted.end());
+    }
   }
 
   return res;
@@ -442,6 +474,11 @@ bool fullComparator(D* branch, const std::string& value, const std::string& lang
     for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
       if(branch->dictionary_[lang][i] == value)
         return true;
+
+  if(branch->muted_dictionary_.find(lang) != branch->muted_dictionary_.end())
+    for(size_t i = 0; i < branch->muted_dictionary_[lang].size(); i++)
+      if(branch->muted_dictionary_[lang][i] == value)
+        return true;
   return false;
 }
 
@@ -453,8 +490,16 @@ bool comparator(D* branch, const std::string& value, const std::string& lang)
   if(branch->dictionary_.find(lang) != branch->dictionary_.end())
     for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
     {
-      std::regex regex(".*" + branch->dictionary_[lang][i] + ".*");
-      if(std::regex_match(value, match, regex))
+      std::regex regex("\\b(" + branch->dictionary_[lang][i] + ")([^ ]*)");
+      if(std::regex_search(value, match, regex))
+        return true;
+    }
+
+  if(branch->muted_dictionary_.find(lang) != branch->muted_dictionary_.end())
+    for(size_t i = 0; i < branch->muted_dictionary_[lang].size(); i++)
+    {
+      std::regex regex("\\b(" + branch->muted_dictionary_[lang][i] + ")([^ ]*)");
+      if(std::regex_search(value, match, regex))
         return true;
     }
   return false;
@@ -469,6 +514,11 @@ bool comparatorRegex(D* branch, const std::string& regex, const std::string& lan
   if(branch->dictionary_.find(lang) != branch->dictionary_.end())
     for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
       if(std::regex_match(branch->dictionary_[lang][i], match, base_regex))
+        return true;
+
+  if(branch->muted_dictionary_.find(lang) != branch->muted_dictionary_.end())
+    for(size_t i = 0; i < branch->muted_dictionary_[lang].size(); i++)
+      if(std::regex_match(branch->muted_dictionary_[lang][i], match, base_regex))
         return true;
   return false;
 }
@@ -507,6 +557,104 @@ std::unordered_set<std::string> OntoGraph<B>::findRegex(const std::string& regex
     res.insert(branch[i]->value());
 
   return res;
+}
+
+template <typename B>
+std::unordered_set<std::string> OntoGraph<B>::findFuzzy(const std::string& value, double threshold)
+{
+  double lower_cost = 100000;
+  double tmp_cost = 100000;
+  std::unordered_set<std::string> res;
+
+  LevenshteinDistance dist;
+
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  for(auto branch : all_branchs_)
+  {
+    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
+      for(size_t i = 0; i < branch->dictionary_[this->language_].size(); i++)
+        if((tmp_cost = dist.get(branch->dictionary_[this->language_][i], value)) <= lower_cost)
+        {
+          if(tmp_cost != lower_cost)
+          {
+            lower_cost = tmp_cost;
+            res.clear();
+          }
+          res.insert(branch->dictionary_[this->language_][i]);
+        }
+
+    if(branch->muted_dictionary_.find(this->language_) != branch->muted_dictionary_.end())
+      for(size_t i = 0; i < branch->muted_dictionary_[this->language_].size(); i++)
+        if((tmp_cost = dist.get(branch->muted_dictionary_[this->language_][i], value)) <= lower_cost)
+        {
+          if(tmp_cost != lower_cost)
+          {
+            lower_cost = tmp_cost;
+            res.clear();
+          }
+          res.insert(branch->muted_dictionary_[this->language_][i]);
+        }
+  }
+
+  if(lower_cost > threshold)
+    res.clear();
+
+  return res;
+}
+
+template <typename B>
+void OntoGraph<B>::mitigate(B* branch)
+{
+  std::vector<B*> childs = branch->childs_;
+  for(B* child : childs)
+  {
+    std::unordered_set<B*> up;
+    getUpPtr(child, up);
+    std::vector<B*> inter = intersection(up, childs);
+    if(inter.size() > 1)
+    {
+      eraseFromVector(child->mothers_, branch);
+      eraseFromVector(branch->childs_, child);
+    }
+  }
+
+  std::vector<B*> mothers = branch->mothers_;
+  for(B* mother : mothers)
+  {
+    std::unordered_set<B*> down;
+    getDownPtr(mother, down);
+    std::vector<B*> inter = intersection(down, mothers);
+    if(inter.size() > 1)
+    {
+      eraseFromVector(branch->mothers_, mother);
+      eraseFromVector(mother->childs_, branch);
+    }
+  }
+}
+
+template <typename B>
+std::vector<B*> OntoGraph<B>::intersection(const std::unordered_set<B*>& set, const std::vector<B*>& vect)
+{
+  std::vector<B*> res;
+  for(B* v : vect)
+  {
+    if(set.find(v) != set.end())
+      res.push_back(v);
+  }
+  return res;
+}
+
+template <typename B>
+void OntoGraph<B>::eraseFromVector(std::vector<B*>& vect, B* branch)
+{
+  for(size_t i = 0; i < vect.size(); i++)
+  {
+    if(vect[i] == branch)
+    {
+      vect.erase(vect.begin() + i);
+      break;
+    }
+  }
 }
 
 } // namespace ontologenius

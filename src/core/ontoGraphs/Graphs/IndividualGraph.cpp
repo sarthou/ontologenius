@@ -7,6 +7,8 @@
 #include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
+#include "ontoloGenius/core/Algorithms/LevenshteinDistance.h"
+
 namespace ontologenius {
 
 IndividualGraph::IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
@@ -154,6 +156,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   me->setSteady_dictionary(individual_vector.dictionary_);
   if(me->dictionary_.find("en") == me->dictionary_.end())
     me->dictionary_["en"].push_back(me->value());
+  me->setSteady_muted_dictionary(individual_vector.muted_dictionary_);
 
   individuals_.push_back(me);
 }
@@ -1016,6 +1019,30 @@ std::vector<std::string> IndividualGraph::getNames(const std::string& value)
   return res;
 }
 
+std::vector<std::string> IndividualGraph::getEveryNames(const std::string& value)
+{
+  std::vector<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+
+  IndividualBranch_t* branch = container_.find(value);
+  if(branch != nullptr)
+  {
+    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
+      res = branch->dictionary_[this->language_];
+    else
+      res.push_back(value);
+
+    if(branch->muted_dictionary_.find(this->language_) != branch->muted_dictionary_.end())
+    {
+      std::vector<std::string> muted = branch->muted_dictionary_[this->language_];
+      res.insert(res.end(), muted.begin(), muted.end());
+    }
+
+  }
+
+  return res;
+}
+
 std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
 {
   std::unordered_set<std::string> res;
@@ -1025,6 +1052,11 @@ std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
     if(individuals_[i]->dictionary_.find(language_) != individuals_[i]->dictionary_.end())
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_[language_].size(); dic_i++)
         if(individuals_[i]->dictionary_[language_][dic_i] == value)
+          res.insert(individuals_[i]->value());
+
+    if(individuals_[i]->muted_dictionary_.find(language_) != individuals_[i]->muted_dictionary_.end())
+      for(size_t dic_i = 0; dic_i < individuals_[i]->muted_dictionary_[language_].size(); dic_i++)
+        if(individuals_[i]->muted_dictionary_[language_][dic_i] == value)
           res.insert(individuals_[i]->value());
   }
   return res;
@@ -1040,8 +1072,16 @@ std::unordered_set<std::string> IndividualGraph::findSub(const std::string& valu
     if(individuals_[i]->dictionary_.find(language_) != individuals_[i]->dictionary_.end())
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_[language_].size(); dic_i++)
       {
-        std::regex regex(".*" + individuals_[i]->dictionary_[language_][dic_i] + ".*");
-        if(std::regex_match(value, match, regex))
+        std::regex regex("\\b(" + individuals_[i]->dictionary_[language_][dic_i] + ")([^ ]*)");
+        if(std::regex_search(value, match, regex))
+          res.insert(individuals_[i]->value());
+      }
+
+    if(individuals_[i]->muted_dictionary_.find(language_) != individuals_[i]->muted_dictionary_.end())
+      for(size_t dic_i = 0; dic_i < individuals_[i]->muted_dictionary_[language_].size(); dic_i++)
+      {
+        std::regex regex("\\b(" + individuals_[i]->muted_dictionary_[language_][dic_i] + ")([^ ]*)");
+        if(std::regex_search(value, match, regex))
           res.insert(individuals_[i]->value());
       }
   }
@@ -1061,7 +1101,54 @@ std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& re
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_[language_].size(); dic_i++)
         if(std::regex_match(individuals_[i]->dictionary_[language_][dic_i], match, base_regex))
           res.insert(individuals_[i]->value());
+
+    if(individuals_[i]->muted_dictionary_.find(language_) != individuals_[i]->muted_dictionary_.end())
+      for(size_t dic_i = 0; dic_i < individuals_[i]->muted_dictionary_[language_].size(); dic_i++)
+        if(std::regex_match(individuals_[i]->muted_dictionary_[language_][dic_i], match, base_regex))
+          res.insert(individuals_[i]->value());
   }
+  return res;
+}
+
+std::unordered_set<std::string> IndividualGraph::findFuzzy(const std::string& value, double threshold)
+{
+  double lower_cost = 100000;
+  double tmp_cost = 100000;
+  std::unordered_set<std::string> res;
+
+  LevenshteinDistance dist;
+
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  for(auto branch : individuals_)
+  {
+    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
+      for(size_t i = 0; i < branch->dictionary_[this->language_].size(); i++)
+        if((tmp_cost = dist.get(branch->dictionary_[this->language_][i], value)) <= lower_cost)
+        {
+          if(tmp_cost != lower_cost)
+          {
+            lower_cost = tmp_cost;
+            res.clear();
+          }
+          res.insert(branch->dictionary_[this->language_][i]);
+        }
+
+    if(branch->muted_dictionary_.find(this->language_) != branch->muted_dictionary_.end())
+      for(size_t i = 0; i < branch->muted_dictionary_[this->language_].size(); i++)
+        if((tmp_cost = dist.get(branch->muted_dictionary_[this->language_][i], value)) <= lower_cost)
+        {
+          if(tmp_cost != lower_cost)
+          {
+            lower_cost = tmp_cost;
+            res.clear();
+          }
+          res.insert(branch->muted_dictionary_[this->language_][i]);
+        }
+  }
+
+  if(lower_cost > threshold)
+    res.clear();
+
   return res;
 }
 
@@ -1511,19 +1598,10 @@ void IndividualGraph::removeLang(std::string& indiv, std::string& lang, std::str
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
   lang = lang.substr(1);
-  if(branch->dictionary_.find(lang) != branch->dictionary_.end())
-  {
-    for(size_t i = 0; i < branch->dictionary_[lang].size();)
-      if(branch->dictionary_[lang][i] == name)
-        branch->dictionary_[lang].erase(branch->dictionary_[lang].begin() + i);
-  }
-
-  if(branch->steady_.dictionary_.find(lang) != branch->steady_.dictionary_.end())
-  {
-    for(size_t i = 0; i < branch->steady_.dictionary_[lang].size();)
-      if(branch->steady_.dictionary_[lang][i] == name)
-        branch->steady_.dictionary_[lang].erase(branch->steady_.dictionary_[lang].begin() + i);
-  }
+  removeFromDictionary(branch->dictionary_, lang, name);
+  removeFromDictionary(branch->steady_.dictionary_, lang, name);
+  removeFromDictionary(branch->muted_dictionary_, lang, name);
+  removeFromDictionary(branch->steady_.muted_dictionary_, lang, name);
 }
 
 void IndividualGraph::removeInheritage(std::string& class_base, std::string& class_inherited)
@@ -1539,29 +1617,10 @@ void IndividualGraph::removeInheritage(std::string& class_base, std::string& cla
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
   std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
 
-  for(size_t i = 0; i < branch_base->steady_.is_a_.size();)
-    if(branch_base->steady_.is_a_[i] == branch_inherited)
-      branch_base->steady_.is_a_.erase(branch_base->steady_.is_a_.begin() + i);
-    else
-      i++;
-
-  for(size_t i = 0; i < branch_base->is_a_.size();)
-    if(branch_base->is_a_[i] == branch_inherited)
-      branch_base->is_a_.erase(branch_base->is_a_.begin() + i);
-    else
-      i++;
-
-  for(size_t i = 0; i < branch_inherited->steady_.individual_childs_.size();)
-    if(branch_inherited->steady_.individual_childs_[i] == branch_base)
-      branch_inherited->steady_.individual_childs_.erase(branch_inherited->steady_.individual_childs_.begin() + i);
-    else
-      i++;
-
-  for(size_t i = 0; i < branch_inherited->individual_childs_.size();)
-    if(branch_inherited->individual_childs_[i] == branch_base)
-      branch_inherited->individual_childs_.erase(branch_inherited->individual_childs_.begin() + i);
-    else
-      i++;
+  removeFromVect(branch_base->steady_.is_a_, branch_inherited);
+  removeFromVect(branch_base->is_a_, branch_inherited);
+  removeFromVect(branch_inherited->steady_.individual_childs_, branch_base);
+  removeFromVect(branch_inherited->individual_childs_, branch_base);
 
   branch_base->updated_ = true;
   branch_inherited->updated_ = true;

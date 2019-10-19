@@ -35,7 +35,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="classParameter"/>
+           <widget class="QLineEditExtended" name="classParameter">
+             <property name="whatsThis">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Enter your parameters here. &lt;br&gt; Use option -d or --depth to specify a research depth &lt;br&gt; Use -s or --selector to specify a selector &lt;br&gt;&lt;br&gt; Both options are not available for every query &lt;br&gt; A selector allows you to narrow the result so that you only have results inheriting from the selector &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -308,7 +312,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="objectPropertyParameter"/>
+           <widget class="QLineEditExtended" name="objectPropertyParameter">
+             <property name="whatsThis">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Enter your parameters here. &lt;br&gt; Use option -d or --depth to specify a research depth &lt;br&gt; Use -s or --selector to specify a selector &lt;br&gt;&lt;br&gt; Both options are not available for every query &lt;br&gt; A selector allows you to narrow the result so that you only have results inheriting from the selector &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -504,7 +512,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="dataPropertyParameter"/>
+           <widget class="QLineEditExtended" name="dataPropertyParameter">
+             <property name="whatsThis">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Enter your parameters here. &lt;br&gt; Use option -d or --depth to specify a research depth &lt;br&gt; Use -s or --selector to specify a selector &lt;br&gt;&lt;br&gt; Both options are not available for every query &lt;br&gt; A selector allows you to narrow the result so that you only have results inheriting from the selector &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -687,16 +699,10 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="individualParameter"/>
-          </item>
-          <item>
-           <widget class="QCheckBoxExtended" name="Individual_select">
-            <property name="whatsThis">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;select&lt;/span&gt;  is an option that allows you to make a first selection before returning the result. This option can be used with all previous functions. You select in the normal result of the function only the words of the same class/property as the given parameter. &lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/individual &amp;quot;{param: 'selector=your_word', action: 'select:your_function'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="text">
-             <string>Select</string>
-            </property>
+           <widget class="QLineEditExtended" name="individualParameter">
+             <property name="whatsThis">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Enter your parameters here. &lt;br&gt; Use option -d or --depth to specify a research depth &lt;br&gt; Use -s or --selector to specify a selector &lt;br&gt;&lt;br&gt; Both options are not available for every query &lt;br&gt; A selector allows you to narrow the result so that you only have results inheriting from the selector &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
            </widget>
           </item>
          </layout>
@@ -1435,6 +1441,11 @@ p, li { white-space: pre-wrap; }
    <class>QCheckBoxExtended</class>
    <extends>QCheckBox</extends>
    <header>include/ontoloGenius/graphical/ontoloGUI/QCheckBoxExtended.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QLineEditExtended</class>
+   <extends>QLineEdit</extends>
+   <header>include/ontoloGenius/graphical/ontoloGUI/QLineEditExtended.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

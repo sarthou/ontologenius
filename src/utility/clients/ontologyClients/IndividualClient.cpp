@@ -3,16 +3,10 @@
 std::vector<std::string> IndividualClient::getOn(const std::string& name, const std::string& property, const std::string& selector)
 {
   ontologenius::OntologeniusService srv;
-  if(selector == "")
-  {
-    srv.request.action = "getOn";
-    srv.request.param = name + ":" + property;
-  }
-  else
-  {
-    srv.request.action = "select:getOn";
-    srv.request.param = selector + "=" + name + ":" + property;
-  }
+  srv.request.action = "getOn";
+  srv.request.param = name + ":" + property;
+  if(selector != "")
+    srv.request.param += " -s " + selector;
 
   return call(srv);
 }
@@ -20,36 +14,24 @@ std::vector<std::string> IndividualClient::getOn(const std::string& name, const 
 std::vector<std::string> IndividualClient::getFrom(const std::string& property, const std::string& name, const std::string& selector)
 {
   ontologenius::OntologeniusService srv;
-  if(selector == "")
-  {
-    srv.request.action = "getFrom";
-    srv.request.param = name + ":" + property;
-  }
-  else
-  {
-    srv.request.action = "select:getFrom";
-    srv.request.param = selector + "=" + name + ":" + property;
-  }
+  srv.request.action = "getFrom";
+  srv.request.param = name + ":" + property;
+  if(selector != "")
+    srv.request.param += " -s " + selector;
 
   return call(srv);
 }
 
-std::vector<std::string> IndividualClient::getWith(const std::string& indiv_1, const std::string& indiv_2, const std::string& selector, int depth)
+std::vector<std::string> IndividualClient::getWith(const std::string& indiv_from, const std::string& indiv_to, const std::string& selector, int depth)
 {
   ontologenius::OntologeniusService srv;
-  if(selector == "")
-  {
-    srv.request.action = "getWith";
-    srv.request.param = indiv_1 + ":" + indiv_2;
-  }
-  else
-  {
-    srv.request.action = "select:getWith";
-    srv.request.param = selector + "=" + indiv_1 + ":" + indiv_2;
-  }
+  srv.request.action = "getWith";
+  srv.request.param = indiv_from + ":" + indiv_to;
+  if(selector != "")
+    srv.request.param += " -s " + selector;
 
   if(depth >= 0)
-    srv.request.param += " < " + std::to_string(depth);
+    srv.request.param += " -d " + std::to_string(depth);
 
   return call(srv);
 }
@@ -88,7 +70,7 @@ std::vector<std::string> IndividualClient::getRelationFrom(const std::string& na
   srv.request.param = name;
 
   if(depth >= 0)
-    srv.request.param += " < " + std::to_string(depth);
+    srv.request.param += " -d " + std::to_string(depth);
 
   return call(srv);
 }
@@ -100,7 +82,7 @@ std::vector<std::string> IndividualClient::getRelationOn(const std::string& name
   srv.request.param = name;
 
   if(depth >= 0)
-    srv.request.param += " < " + std::to_string(depth);
+    srv.request.param += " -d " + std::to_string(depth);
 
   return call(srv);
 }

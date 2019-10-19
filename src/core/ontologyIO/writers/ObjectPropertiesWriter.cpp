@@ -21,8 +21,8 @@ void ObjectPropertiesWriter::write(FILE* file)
 
 void ObjectPropertiesWriter::writeProperty(ObjectPropertyBranch_t* branch)
 {
-  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\r\n\r\
-    <owl:ObjectProperty rdf:about=\"ontologenius#" + branch->value() + "\">\n\r";
+  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\n\
+    <owl:ObjectProperty rdf:about=\"ontologenius#" + branch->value() + "\">\n";
   writeString(tmp);
 
   writeSubPropertyOf(branch);
@@ -34,8 +34,9 @@ void ObjectPropertiesWriter::writeProperty(ObjectPropertyBranch_t* branch)
   writeChain(branch);
 
   writeDictionary(&branch->steady_);
+  writeMutedDictionary(&branch->steady_);
 
-  tmp = "    </owl:ObjectProperty>\n\r\n\r\n\r\n\r";
+  tmp = "    </owl:ObjectProperty>\n\n\n\n";
   writeString(tmp);
 }
 
@@ -45,7 +46,7 @@ void ObjectPropertiesWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
   {
     std::string tmp = "        <rdfs:subPropertyOf rdf:resource=\"ontologenius#" +
                       branch->steady_.mothers_[i]->value()
-                      + "\"/>\n\r";
+                      + "\"/>\n";
     writeString(tmp);
   }
 }
@@ -56,7 +57,7 @@ void ObjectPropertiesWriter::writeInverseOf(ObjectPropertyBranch_t* branch)
   {
     std::string tmp = "        <owl:inverseOf rdf:resource=\"ontologenius#" +
                       branch->steady_.inverses_[i]->value()
-                      + "\"/>\n\r";
+                      + "\"/>\n";
     writeString(tmp);
   }
 }
@@ -67,7 +68,7 @@ void ObjectPropertiesWriter::writeRange(ObjectPropertyBranch_t* branch)
   {
     std::string tmp = "        <rdfs:range rdf:resource=\"ontologenius#" +
                       branch->steady_.ranges_[i]->value()
-                      + "\"/>\n\r";
+                      + "\"/>\n";
     writeString(tmp);
   }
 }
@@ -78,7 +79,7 @@ void ObjectPropertiesWriter::writeDomain(ObjectPropertyBranch_t* branch)
   {
     std::string tmp = "        <rdfs:domain rdf:resource=\"ontologenius#" +
                       branch->steady_.domains_[i]->value()
-                      + "\"/>\n\r";
+                      + "\"/>\n";
     writeString(tmp);
   }
 }
@@ -87,16 +88,16 @@ void ObjectPropertiesWriter::writeChain(ObjectPropertyBranch_t* branch)
 {
   for(size_t i = 0; i < branch->steady_.str_chains_.size(); i++)
   {
-    std::string tmp = "        <owl:propertyChainAxiom rdf:parseType=\"Collection\">\n\r";
+    std::string tmp = "        <owl:propertyChainAxiom rdf:parseType=\"Collection\">\n";
 
     for(size_t j = 0; j < branch->steady_.str_chains_[i].size(); j++)
     {
       tmp += "            <rdf:Description rdf:about=\"ontologenius#" +
               branch->steady_.str_chains_[i][j] +
-              "\"/>\n\r";
+              "\"/>\n";
     }
 
-    tmp += "        </owl:propertyChainAxiom>\n\r";
+    tmp += "        </owl:propertyChainAxiom>\n";
     writeString(tmp);
   }
 }

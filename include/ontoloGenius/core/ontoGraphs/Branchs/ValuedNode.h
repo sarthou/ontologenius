@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/WordTable.h"
 
@@ -22,6 +23,7 @@ class ValuedNodeData
 {
 public:
   std::map<std::string, std::vector<std::string>> dictionary_;
+  std::map<std::string, std::vector<std::string>> muted_dictionary_;
 };
 
 class ValuedNode : public UpdatableNode, public ValuedNodeData
@@ -33,6 +35,14 @@ public:
   std::string value() {return table_[index_]; }
 
   static WordTable table_;
+
+  template<typename C>
+  inline void conditionalPushBack(std::vector<C>& vect, const C& data)
+  {
+    if(std::find(vect.begin(), vect.end(), data) == vect.end())
+      vect.push_back(data);
+  }
+
 private:
 
   uint32_t index_;

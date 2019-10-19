@@ -37,8 +37,8 @@ void ClassWriter::writeGeneralAxioms(FILE* file)
 
 void ClassWriter::writeClass(ClassBranch_t* branch)
 {
-  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\r\n\r\
-    <owl:Class rdf:about=\"ontologenius#" + branch->value() + "\">\n\r";
+  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\n\
+    <owl:Class rdf:about=\"ontologenius#" + branch->value() + "\">\n";
   writeString(tmp);
 
   writeSubClassOf(branch);
@@ -52,8 +52,9 @@ void ClassWriter::writeClass(ClassBranch_t* branch)
   writeDataPropertiesDeduced(branch);
 
   writeDictionary(&branch->steady_);
+  writeMutedDictionary(&branch->steady_);
 
-  tmp = "    </owl:Class>\n\r\n\r\n\r\n\r";
+  tmp = "    </owl:Class>\n\n\n\n";
   writeString(tmp);
 }
 
@@ -63,7 +64,7 @@ void ClassWriter::writeSubClassOf(ClassBranch_t* branch)
   {
     std::string tmp = "        <rdfs:subClassOf rdf:resource=\"ontologenius#" +
                       branch->steady_.mothers_[i]->value()
-                      + "\"/>\n\r";
+                      + "\"/>\n";
     writeString(tmp);
   }
 }
@@ -75,7 +76,7 @@ void ClassWriter::writeDisjointWith(ClassBranch_t* branch)
     {
       std::string tmp = "        <owl:disjointWith rdf:resource=\"ontologenius#" +
                         branch->steady_.disjoints_[i]->value()
-                        + "\"/>\n\r";
+                        + "\"/>\n";
       writeString(tmp);
     }
 }
@@ -84,10 +85,10 @@ void ClassWriter::writeDisjointWith(std::vector<ClassBranch_t*>& classes)
 {
   std::vector<std::string> disjoint_done;
 
-  std::string start = "    <rdf:Description>\n\r\
-        <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#AllDisjointClasses\"/>\n\r";
+  std::string start = "    <rdf:Description>\n\
+        <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#AllDisjointClasses\"/>\n";
 
-  std::string end = "    </rdf:Description>\n\r";
+  std::string end = "    </rdf:Description>\n";
 
   for(size_t i = 0; i < classes.size(); i++)
   {
@@ -104,17 +105,17 @@ void ClassWriter::writeDisjointWith(std::vector<ClassBranch_t*>& classes)
 
         getDisjoints(classes[i], disjoints_current);
 
-        tmp += "        <owl:members rdf:parseType=\"Collection\">\n\r";
+        tmp += "        <owl:members rdf:parseType=\"Collection\">\n";
 
         for(size_t j = 0; j < disjoints_current.size(); j++)
         {
           disjoint_done.push_back(disjoints_current[j]);
           tmp += "             <rdf:Description rdf:about=\"ontologenius#" +
           disjoints_current[j] +
-          "\"/>\n\r";
+          "\"/>\n";
         }
 
-        tmp += "        </owl:members>\n\r";
+        tmp += "        </owl:members>\n";
         if(disjoints_current.size() != 0)
         {
           writeString(start);
@@ -159,7 +160,7 @@ void ClassWriter::writeObjectProperties(ClassBranch_t* branch)
                       branch->steady_.object_properties_name_[i]->value() +
                       " rdf:resource=\"ontologenius#" +
                       branch->steady_.object_properties_on_[i]->value() +
-                      "\"/>\n\r";
+                      "\"/>\n";
     writeString(tmp);
   }
 }
@@ -173,7 +174,7 @@ void ClassWriter::writeObjectPropertiesDeduced(ClassBranch_t* branch)
                         branch->object_properties_name_[i]->value() +
                         " rdf:resourceDeduced=\"ontologenius#" +
                         branch->object_properties_on_[i]->value() +
-                        "\"/>\n\r";
+                        "\"/>\n";
       writeString(tmp);
     }
 }
@@ -192,7 +193,7 @@ void ClassWriter::writeDataProperties(ClassBranch_t* branch)
                       branch->steady_.data_properties_data_[i].value_ +
                       "</ontologenius:" +
                       branch->steady_.data_properties_name_[i]->value() +
-                      ">\n\r";
+                      ">\n";
     writeString(tmp);
   }
 }
@@ -212,7 +213,7 @@ void ClassWriter::writeDataPropertiesDeduced(ClassBranch_t* branch)
                         branch->data_properties_data_[i].value_ +
                         "</ontologenius:" +
                         branch->data_properties_name_[i]->value() +
-                        ">\n\r";
+                        ">\n";
       writeString(tmp);
     }
 }
