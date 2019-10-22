@@ -460,6 +460,7 @@ void ontoloGUI::loadReasoners()
     ui->ResultArea->setText("");
 
     constructReasonersCheckBoxs();
+    updateReasonersCheckBoxs();
   }
 }
 
@@ -473,6 +474,38 @@ void ontoloGUI::constructReasonersCheckBoxs()
     QObject::connect(box, SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
     QObject::connect(box, SIGNAL(hoverEnter()),this, SLOT(ReasonerhoverEnterSlot()));
     QObject::connect(box, SIGNAL(hoverLeave()),this, SLOT(ReasonerhoverLeaveSlot()));
+  }
+}
+
+void ontoloGUI::updateReasonersCheckBoxs()
+{
+  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + ui->OntologyName->text().toStdString();
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
+
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "activeList";
+
+  if(!client.call(srv))
+    displayErrorInfo(service_name + " client call failed");
+  else
+  {
+    std::vector<std::string> active_reasoners = srv.response.values;
+    for(int i = 1; i < ui->ReasonerListLayout->count(); ++i)
+    {
+      QWidget* widget = ui->ReasonerListLayout->itemAt(i)->widget();
+      if(widget != nullptr)
+      {
+        Qt::CheckState checked = Qt::Unchecked;
+        for(size_t j = 0; j < active_reasoners.size(); j++)
+        {
+          if(((QCheckBoxExtended*)widget)->text().toStdString() == active_reasoners[j])
+            checked = Qt::Checked;
+        }
+        QObject::disconnect(((QCheckBoxExtended*)widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
+        ((QCheckBoxExtended*)widget)->setCheckState(checked);
+        QObject::connect(((QCheckBoxExtended*)widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
+      }
+    }
   }
 }
 

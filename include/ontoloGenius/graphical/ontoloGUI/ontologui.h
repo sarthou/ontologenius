@@ -33,6 +33,7 @@ private:
 
   void displayUnClosed();
   void constructReasonersCheckBoxs();
+  void updateReasonersCheckBoxs();
   size_t getReasonerIndex(QCheckBoxExtended* box);
   std::string getReasonerDescription(std::string box);
   void displayOntologiesList();
