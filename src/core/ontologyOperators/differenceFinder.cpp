@@ -51,8 +51,6 @@ std::vector<std::string> differenceFinder::compare(comparator_t& comp1, comparat
 {
   std::vector<std::string> res;
 
-  std::cout << comp1.concept_ << " : " << comp2.concept_ << std::endl;
-
   compareObjects(comp1, comp2, res);
   compareDatas(comp1, comp2, res);
   compareMothers(comp1, comp2, res);
