@@ -102,6 +102,19 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButtonExtended" name="Class_findFuzzy">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;findFuzzy&lt;/span&gt; will give you all the names of classes with the lowest edit distance with the label given in parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/individual &amp;quot;{param: 'cube', action: 'findFuzzy'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>findFuzzy</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButtonExtended" name="Class_findSub">
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
@@ -379,6 +392,19 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButtonExtended" name="ObjectProperty_findFuzzy">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;findFuzzy&lt;/span&gt; will give you all the names of object properties with the lowest edit distance with the label given in parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/individual &amp;quot;{param: 'cube', action: 'findFuzzy'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>findFuzzy</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButtonExtended" name="ObjectProperty_findSub">
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
@@ -579,6 +605,19 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButtonExtended" name="DataProperty_findFuzzy">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;findFuzzy&lt;/span&gt; will give you all the names of data properties with the lowest edit distance with the label given in parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/individual &amp;quot;{param: 'cube', action: 'findFuzzy'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>findFuzzy</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButtonExtended" name="DataProperty_findSub">
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
@@ -775,6 +814,19 @@
             </property>
             <property name="text">
              <string>find</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Individual_findFuzzy">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;findFuzzy&lt;/span&gt; will give you all the names of individuals with the lowest edit distance with the label given in parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/individual &amp;quot;{param: 'cube', action: 'findFuzzy'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>findFuzzy</string>
             </property>
            </widget>
           </item>
