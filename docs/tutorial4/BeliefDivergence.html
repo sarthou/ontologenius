@@ -245,6 +245,26 @@
           sense. This can be read as the fact that "ball_1 isIn container_1" is present in Sally's base and not in Anne's and that
           the fact that "ball_1 isIn container_2" is not present in Sally's base then that it is in Anne's.</p>
 
+        <p>Now kill the previous process and restart it. This time, you should have this:</p>
+        <div class="code_block">
+          <div class="terminal_line">for sally, ball_1 is in:</div>
+          <div class="terminal_line">- container_1</div>
+          <div class="terminal_line">for anne, ball_1 is in:</div>
+          <div class="terminal_line">- container_2</div>
+          <div class="terminal_line">The difference of belief regarding the ball_1 is:</div>
+          <div class="terminal_line">- [-]ball_1|isIn|container_2</div>
+          <div class="terminal_line">- [+]ball_1|isIn|container_1</div>
+        </div>
+
+        <p>You can see two things here. First, the ball was already in the second container for Anne at first. Secondly,
+          even though we added the fact that the bullet_1 is in the second container when it was already the case, the fact
+          only appears once.</p>
+
+        <p>If you open the $(find multiple_ontologies) folder, you should have two new files, multi_anne.owl and multi_sally.owl.
+          These two files are ontologenius internal files. Remember that the intern_file argument has been set to
+          $(find multiple_ontologies)/multi.owl. In fact, multi can simply be considered a namespace that will be used to create the
+          names of internal files.</p>
+
         <nav class="course-pagination">
           <a href="CreateMultipleOntologies.html" class="course-pagination__btn">
             <i class="fas fa-angle-left"></i>
