@@ -29,6 +29,7 @@ public:
 
   void add(std::string& regex);
   std::queue<feed_t> get();
+  size_t size() { return fifo_1.size() + fifo_2.size(); }
 
 private:
   std::regex base_regex;

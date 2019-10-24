@@ -126,6 +126,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeInheritage">removeInheritage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>on</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeLanguage">removeLanguage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>lang</i>, const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeConcept">removeConcept</a></b>(const std::string&amp; <i>from</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> size_t </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#getNumSubscribers">getNumSubscribers</a></b>()</td></tr>
             </tbody>
           </table>
         </div>
@@ -180,6 +181,9 @@
           <h3 class="fn" id="removeConcept"><a name="removeConcept"></a>FeederPublisher::<span class="name">removeConcept</span>(const <span class="type">std::string</span>&amp; <i>from</i>)</h3>
           <p>Removes the class or individual <i>from</i>.</p>
           <p>All inheritance, properties, and labels applied to <i>from</i> are also removed.</p>
+
+          <h3 class="fn" id="getNumSubscribers"><a name="getNumSubscribers"></a><span class="type">size_t</span> FeederPublisher::<span class="name">getNumSubscribers</span>()</h3>
+          <p>Returns the number of subscribers that are currently connected to the internal ROS publisher.</p>
 
         </div>
       </div>

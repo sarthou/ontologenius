@@ -23,6 +23,8 @@ public:
     return tmp;
   }
 
+  size_t size() { return feed_storage_.size(); }
+
 private:
   FeedStorage feed_storage_;
   Ontology* onto_;
