@@ -8,6 +8,14 @@ std::vector<std::string> ReasonerClient::list()
   return call(srv);
 }
 
+std::vector<std::string> ReasonerClient::activeList()
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "activeList";
+
+  return call(srv);
+}
+
 bool ReasonerClient::activate(const std::string& name)
 {
   ontologenius::OntologeniusService srv;

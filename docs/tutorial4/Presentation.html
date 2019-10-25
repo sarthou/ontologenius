@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Advanced knowledge exploration : Presentation of the problem</title>
+  <title>Manage multiple ontologies : Presentation of the problem</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -47,8 +47,8 @@
           <h3>Contents</h3>
           <ul style="display: block;">
             <li class="level1"><a href="Presentation.html"><b>1. Presentation of the problem</b></a></li>
-            <li class="level1"><a href="FindOurWay.html">2. Find our way</a></li>
-            <li class="level1"><a href="UnderstandOurEnvironment.html">3. Better understand our environment</a></li>
+            <li class="level1"><a href="CreateMultipleOntologies.html">2. Create multiple ontologies </a></li>
+            <li class="level1"><a href="BeliefDivergence.html">3. Detect divergence of belief </a></li>
           </ul>
         </div>
 
@@ -103,60 +103,72 @@
 
       <div class="context">
         <div class="toturial-header">
-          <h1 class="title">Advanced knowledge exploration</h1>
+          <h1 class="title">Manage multiple ontologies</h1>
           <a class="toturial-subheader">
             <div class="toturial-subheader__main-icon">
               <i class="fas fa-brain"></i>
             </div>
             <div class="toturial-subheader__title">
-              <h2 class="title">How to go home ?</h2>
+              <h2 class="title">Sally &amp; Anne test</h2>
             </div>
           </a>
         </div>
 
         <h1 class="title">Presentation of the problem</h1>
 
-        <p>This is the second tutorial! Now that we have seen what is an ontology manipulator,
-          the exploration of heritage and the management of the language and the passage in natural
-          language, we will now see the use of properties. We will only see the properties of objects
-          here but those of data differ only very little.</p>
+        <p>This is the fourth tutorial! You are now an expert in managing an ontology using
+          ontologenius and the ontology manipulator has no secrets for you.
+          Now that we can represent the knowledge of our artificial agent, we will try to
+          estimate and thus manage the knowledge of the other agents with whom we interact.
+          This corresponds to the process called theory of mind for human cognition.</p>
 
-        <p>The mini-project that we will do together to illustrate the use of the properties will consist
-          of a graph exploration.</p>
+        <p>The mini-project that we will do together to use the management of several
+          ontologies will consist in the simplest implementation of the test of Sally and Anne
+          which is used to illustrate the principle of the theory of mind.</p>
 
-        <img src="../images/tutorial/tutorial_2.png " alt="tutorial 2 map of the city" width="80%" class="center"/>
-
-        <p>Above, you have the map of the city where Bob lives. In this city we have two types of paths,
-          roads and pedestrian paths (there is therefore a heritage). A path can be linked to another path
-          via an intersection. To describe this, we said that an intersection is along a path that is to say
-          that a path has an intersection along it.</p>
-
-        <p>We have in this city three additional elements that are bob's house, his car as well as the pub of
-          the city. These elements are also located along a path.</p>
-
-        <p>Bob is currently in the pub and will have to go home. Having drunk too much, he goes back on foot.
-          The next day, Bob will get his car on foot and then take her home. When he is in the car, Bob will
-          no longer be allowed to use the pedestrian paths and will only have to take roads.</p>
-
-        <p>Our goal will therefore be to find the shortest paths in terms of the number of paths used,
-          for each trip.</p>
+        <p>Sally &amp; Anne test is used in developmental psychology to assess, in social cognition,
+          the ability of a child to understand that someone else has mental states different from
+          his own. To implement this test, we will create an Ontologenius instance to represent Sally’s
+          semantic knowledge and one for Anne’s. First of all, the two knowledge bases are loaded with a
+          common ground that is at least knowledge of the existence of two containers, a ball and
+          some geometric properties like ”is in”. First of all, Sally will put the ball in the first container
+          while Anne is present at time. After that, Anne will move the ball into the second container while Sally
+          is away. At the end, we will try to detect a divergence of belief between the two agents.</p>
 
         <h2>The ontology used</h2>
 
-        <p>In the ontology used, we have the two classes "pedestrian_path" and "road" inheriting from the
-          class "path". We also have the class "intersection" inheriting from the class "place".</p>
-        <p>The individuals "house", "pub" and "car" are of type "place". The individuals of types "intersection"
-          are notes "int_i", the "road" are notes "road_i" and the "pedestrian_path" are notes "pp_i".</p>
-        <p>The property "isAlong" is applied from one place to a path to signify that the place is along this
-          path.</p>
+        <p>The ontology used can be considered as the common ground of our two agents. It contains two containers,
+          a table and a ball. We also have in this ontology spatial relations as &quot;isIn&quot;, &quot;isOn&quot;
+          or &quot;hasOn&quot;.</p>
+
+        <p>To go directly to the heart of the tutorial, the ball is already in the first container. We will only
+          consider the second part of the test when Sally is away.</p>
 
         <h2>Before you start</h2>
 
-        <p>Before moving on, you can create a new package that we will call find_our_way. To be sure that your
-          new package will be well configured to use ontologenius, we advise you to follow this
-          <a target="_blank" rel="noopener noreferrer" href="../SetUp.html"><b>guide</b></a>. You can also
-          create the launch file as done in the previous tutorial. We will name this file with the same name
-          as the package and put the tutorial_2.owl file as an input file.</p>
+        <p>Before moving on, you can create a new package that we will call multiple_ontologies. To be sure
+          that your new package will be well configured to use ontologenius, we advise you to follow this
+          <a target="_blank" rel="noopener noreferrer" href="../SetUp.html"><b>guide</b></a>. To create the
+          launch file, set the "files" argument with the common ground ontology tutotial_4.owl, and then set
+          the "intern_file" argument to "$(find multiple_ontologies)/multi.owl".
+        </p>
+
+        <div class="code_block xml_code" style="counter-reset:code_line 0;">
+          <div class="code_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
+          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;multiple_ontologies&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;multiple_ontologies&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;multiple_ontologies&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+          <div class="code_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius_multi.launch&quot;</span>&gt;</div>
+          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find multiple_ontologies)/multi.owl&quot;</span>/&gt;</div>
+          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/tutorials/tutorial_4.owl&quot;</span>/&gt;</div>
+          <div class="code_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
+          <div class="code_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
+        </div>
+
+        <p>You can see here that we base our launch file on the file "ontologenius_multi.launch" this time.
+          This will launch an executable specifically dedicated to the management of several ontologies.</p>
+
+        <p>By specifying an internal file, ontologenius is allowed to save the ontology it contains in a file
+          when it is stopped and to reload it on its next start. In the case of managing multiple ontologies,
+          the name we give to this file is considered a namespace. We will see in detail what this means later in the tutorial.</p>
 
         <nav class="course-pagination">
           <a href="../Tutorials.html" class="course-pagination__btn">
@@ -164,8 +176,8 @@
             <span>Tutorials</span>
           </a>
           <span class="course-pagination__separator"></span>
-          <a href="FindOurWay.html" class="course-pagination__btn">
-            <span>Find our way</span>
+          <a href="CreateMultipleOntologies.html" class="course-pagination__btn">
+            <span>Create multiple ontologies </span>
             <i class="fas fa-angle-right"></i>
           </a>
         </nav>

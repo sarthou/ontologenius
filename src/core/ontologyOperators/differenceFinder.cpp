@@ -40,8 +40,7 @@ std::vector<std::string> differenceFinder::getDiff(Ontology* onto1, Ontology* on
       comp2 = toComparator(class_onto2);
   }
   else
-  {
-    comp1 = toComparator(indiv_onto1);
+  {    comp1 = toComparator(indiv_onto1);
     comp2 = toComparator(indiv_onto2);
   }
 
@@ -68,7 +67,7 @@ void differenceFinder::compareObjects(comparator_t& comp1, comparator_t& comp2, 
     for(size_t i = 0; i < comp1.object_properties_name_.size(); i++)
     {
       std::vector<size_t> found_indexs;
-      for(size_t j = 0; j < comp2.object_properties_name_.size(); i++)
+      for(size_t j = 0; j < comp2.object_properties_name_.size(); j++)
         if(comp1.object_properties_name_[i] == comp2.object_properties_name_[j])
         {
           found_indexs.push_back(j);

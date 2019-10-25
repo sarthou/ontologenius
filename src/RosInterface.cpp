@@ -504,6 +504,8 @@ bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &re
     res.code = reasoners_.deactivate(req.param);
   else if(req.action == "list")
     res.values = reasoners_.listVector();
+  else if(req.action == "activeList")
+    res.values = reasoners_.activeListVector();
   else if(req.action == "getDescription")
     res.values.push_back(reasoners_.getDescription(req.param));
   else

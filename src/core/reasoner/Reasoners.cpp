@@ -112,6 +112,16 @@ std::vector<std::string> Reasoners::listVector()
   return res;
 }
 
+std::vector<std::string> Reasoners::activeListVector()
+{
+  std::vector<std::string> res;
+  for(auto& it : active_reasoners_)
+  {
+    res.push_back(it.first);
+  }
+  return res;
+}
+
 int Reasoners::activate(std::string plugin)
 {
   if(reasoners_.find(plugin) != reasoners_.end())

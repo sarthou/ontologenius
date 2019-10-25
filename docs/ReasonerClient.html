@@ -40,7 +40,7 @@
     </div>
 
     <div class="content">
-      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -588px;">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -240px;">
         <div class="contents class-content">
           <div id="contents-toggle" class=""></div>
           <h3>Contents</h3>
@@ -119,6 +119,7 @@
             <tbody>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ReasonerClient.html#ReasonerClient">ReasonerClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ReasonerClient.html#list">list</a></b>()</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ReasonerClient.html#activeList">activeList</a></b>()</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ReasonerClient.html#activate">activate</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ReasonerClient.html#deactivate">deactivate</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ReasonerClient.html#getDescription">getDescription</a></b>(const std::string&amp; <i>name</i>)</td></tr>
@@ -149,6 +150,9 @@
 
           <h3 class="fn" id="list"><a name="list"></a><span class="type">std::vector&lt;std::string&gt;</span> ReasonerClient::<span class="name">list</span>()</h3>
           <p>Returns the name of the plugins available.</p>
+
+          <h3 class="fn" id="activeList"><a name="activeList"></a><span class="type">std::vector&lt;std::string&gt;</span> ReasonerClient::<span class="name">activeList</span>()</h3>
+          <p>Returns the name of the activated plugins.</p>
 
           <h3 class="fn" id="activate"><a name="activate"></a><span class="type">bool</span> ReasonerClient::<span class="name">activate</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Activate the plugin named <i>name</i>.</p>

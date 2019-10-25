@@ -61,6 +61,9 @@ public:
   void setSteady_muted_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
   void setSteady_muted_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
+
+  int ObjectPropertyExistSteady(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
+  int ObjectPropertyExist(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
 };
 
 class Triplet

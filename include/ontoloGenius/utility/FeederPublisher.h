@@ -25,6 +25,8 @@ public:
   void removeLanguage(const std::string& from, const std::string& lang, const std::string& name);
   void removeConcept(const std::string& from);
 
+  size_t getNumSubscribers() { return pub_.getNumSubscribers(); }
+
 private:
   ros::NodeHandle* n_;
   ros::Publisher pub_;

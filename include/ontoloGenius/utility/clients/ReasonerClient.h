@@ -11,6 +11,7 @@ public:
   }
 
   std::vector<std::string> list();
+  std::vector<std::string> activeList();
   bool activate(const std::string& name);
   bool deactivate(const std::string& name);
   std::string getDescription(const std::string& name);

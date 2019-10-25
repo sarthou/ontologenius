@@ -133,4 +133,36 @@ void IndividualBranch_t::setSteady_muted_dictionary(std::map<std::string, std::v
   }
 }
 
+int IndividualBranch_t::ObjectPropertyExistSteady(ObjectPropertyBranch_t* property, IndividualBranch_t* individual)
+{
+  int res = -1;
+  for(size_t i = 0; i < steady_.object_properties_name_.size(); i++)
+  {
+    if(steady_.object_properties_name_[i] == property)
+      if(steady_.object_properties_on_[i] == individual)
+      {
+        res = i;
+        break;
+      }
+  }
+
+  return res;
+}
+
+int IndividualBranch_t::ObjectPropertyExist(ObjectPropertyBranch_t* property, IndividualBranch_t* individual)
+{
+  int res = -1;
+  for(size_t i = 0; i < object_properties_name_.size(); i++)
+  {
+    if(object_properties_name_[i] == property)
+      if(object_properties_on_[i] == individual)
+      {
+        res = i;
+        break;
+      }
+  }
+
+  return res;
+}
+
 } // namespace ontologenius

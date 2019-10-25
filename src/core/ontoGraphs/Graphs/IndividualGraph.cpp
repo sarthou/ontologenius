@@ -1494,10 +1494,25 @@ bool IndividualGraph::addProperty(std::string& indiv_from, std::string& property
 
     if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
     {
-      branch_from->setSteady_object_properties_name(branch_prop);
-      branch_from->setSteady_object_properties_on(branch_on);
-      branch_from->object_properties_deduced_.push_back(false);
-      branch_from->object_properties_has_induced_.push_back(Triplet());
+      int index = -1;
+      index = branch_from->ObjectPropertyExistSteady(branch_prop, branch_on);
+      if(index == -1)
+      {
+        branch_from->steady_.object_properties_name_.push_back(branch_prop);
+        branch_from->steady_.object_properties_on_.push_back(branch_on);
+      }
+
+      index = branch_from->ObjectPropertyExist(branch_prop, branch_on);
+      if(index == -1)
+      {
+        branch_from->object_properties_name_.push_back(branch_prop);
+        branch_from->object_properties_on_.push_back(branch_on);
+        branch_from->object_properties_deduced_.push_back(false);
+        branch_from->object_properties_has_induced_.push_back(Triplet());
+      }
+      else
+        branch_from->object_properties_deduced_[index] = false;
+
       branch_from->updated_ = true;
       setObjectPropertiesUpdated(branch_from->object_properties_on_);
       return true;
@@ -1577,10 +1592,25 @@ bool IndividualGraph::addPropertyInvert(std::string& indiv_from, std::string& pr
 
     if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
     {
-      branch_from->setSteady_object_properties_name(branch_prop);
-      branch_from->setSteady_object_properties_on(branch_on);
-      branch_from->object_properties_deduced_.push_back(false);
-      branch_from->object_properties_has_induced_.push_back(Triplet());
+      int index = -1;
+      index = branch_from->ObjectPropertyExistSteady(branch_prop, branch_on);
+      if(index == -1)
+      {
+        branch_from->steady_.object_properties_name_.push_back(branch_prop);
+        branch_from->steady_.object_properties_on_.push_back(branch_on);
+      }
+
+      index = branch_from->ObjectPropertyExist(branch_prop, branch_on);
+      if(index == -1)
+      {
+        branch_from->object_properties_name_.push_back(branch_prop);
+        branch_from->object_properties_on_.push_back(branch_on);
+        branch_from->object_properties_deduced_.push_back(false);
+        branch_from->object_properties_has_induced_.push_back(Triplet());
+      }
+      else
+        branch_from->object_properties_deduced_[index] = false;
+
       branch_from->updated_ = true;
       setObjectPropertiesUpdated(branch_from->object_properties_on_);
       return true;
