@@ -49,9 +49,9 @@ public:
 
   void setFullSteady();
   void setSteady_disjoint(ClassBranch_t* disjoint);
-  void setSteady_child(ClassBranch_t* child);
+  void setSteady_child(const Single_t<ClassBranch_t*>& child);
   void setSteady_individual_child(IndividualBranch_t* child);
-  void setSteady_mother(ClassBranch_t* mother);
+  void setSteady_mother(const Single_t<ClassBranch_t*>& mother);
   void setSteady_dictionary(std::string lang, std::string word);
   void setSteady_muted_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);

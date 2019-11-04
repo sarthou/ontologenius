@@ -47,8 +47,8 @@ public:
   void setSteady_range(ClassBranch_t* range);
   void set_chain(std::vector<ObjectPropertyBranch_t*> chain);
   void setSteady_chain(std::vector<std::string> chain);
-  void setSteady_child(ObjectPropertyBranch_t* child);
-  void setSteady_mother(ObjectPropertyBranch_t* mother);
+  void setSteady_child(const Single_t<ObjectPropertyBranch_t*>& child);
+  void setSteady_mother(const Single_t<ObjectPropertyBranch_t*>& mother);
   void setSteady_dictionary(std::string lang, std::string word);
   void setSteady_muted_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);

@@ -84,6 +84,7 @@ protected:
 
   void mitigate(B* branch);
   std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<B*>& vect);
+  std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<Single_t<B*>>& vect);
   void eraseFromVector(std::vector<B*>& vect, B* branch);
 };
 
@@ -323,14 +324,14 @@ void OntoGraph<B>::isMyMother(B* me, const std::string& mother, std::map<std::st
   if(it != vect.end())
   {
     bool loop = false;
-    for(B* mothers : it->second->mothers_)
-      if(mothers == me)
+    for(auto mothers : it->second->mothers_)
+      if(mothers.elem == me)
         loop = true;
 
     if(loop == false)
     {
-      it->second->childs_.push_back(me);
-      me->setSteady_mother(it->second);
+      it->second->childs_.push_back(Single_t<B*>(me));
+      me->setSteady_mother(Single_t<B*>(it->second));
     }
 
     find = true;
@@ -346,8 +347,8 @@ void OntoGraph<B>::getDown(B* branch, std::unordered_set<std::string>& res, int 
     size_t size = branch->childs_.size();
     current_depth++;
     for(size_t i = 0; i < size; i++)
-      if(res.find(branch->childs_[i]->value()) == res.end())
-        getDown(branch->childs_[i], res, depth, current_depth);
+      if(res.find(branch->childs_[i].elem->value()) == res.end())
+        getDown(branch->childs_[i].elem, res, depth, current_depth);
   }
 
   res.insert(branch->value());
@@ -362,8 +363,8 @@ void OntoGraph<B>::getUp(B* branch, std::unordered_set<std::string>& res, int de
     size_t size = branch->mothers_.size();
     current_depth++;
     for(size_t i = 0; i < size; i++)
-      if(res.find(branch->mothers_[i]->value()) == res.end())
-        getUp(branch->mothers_[i], res, depth, current_depth);
+      if(res.find(branch->mothers_[i].elem->value()) == res.end())
+        getUp(branch->mothers_[i].elem, res, depth, current_depth);
   }
 
   res.insert(branch->value());
@@ -378,7 +379,7 @@ void OntoGraph<B>::getDownIdSafe(B* branch, std::unordered_set<uint32_t>& res, i
     size_t size = branch->childs_.size();
     current_depth++;
     for(size_t i = 0; i < size; i++)
-      getDownIdSafe(branch->childs_[i], res, depth, current_depth);
+      getDownIdSafe(branch->childs_[i].elem, res, depth, current_depth);
   }
 
   res.insert(branch->get());
@@ -393,7 +394,7 @@ void OntoGraph<B>::getUpIdSafe(B* branch, std::unordered_set<uint32_t>& res, int
     size_t size = branch->mothers_.size();
     current_depth++;
     for(size_t i = 0; i < size; i++)
-      getUpIdSafe(branch->mothers_[i], res, depth, current_depth);
+      getUpIdSafe(branch->mothers_[i].elem, res, depth, current_depth);
   }
 
   res.insert(branch->get());
@@ -416,9 +417,9 @@ void OntoGraph<B>::getDownPtr(B* branch, std::unordered_set<B*>& res, int depth,
     current_depth++;
     res.insert(branch);
 
-    for(B* it : branch->childs_)
-      if(res.find(it) == res.end())
-        getDownPtr(it, res, depth, current_depth);
+    for(auto it : branch->childs_)
+      if(res.find(it.elem) == res.end())
+        getDownPtr(it.elem, res, depth, current_depth);
   }
 }
 
@@ -427,9 +428,9 @@ void OntoGraph<B>::getDownPtr(B* branch, std::unordered_set<B*>& res)
 {
   res.insert(branch);
 
-  for(B* it : branch->childs_)
-    if(res.find(it) == res.end())
-      getDownPtr(it, res);
+  for(auto it : branch->childs_)
+    if(res.find(it.elem) == res.end())
+      getDownPtr(it.elem, res);
 }
 
 template <typename B>
@@ -451,8 +452,8 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res, int depth, u
 
     size_t size = branch->mothers_.size();
     for(size_t i = 0; i < size; i++)
-      if(res.find(branch->mothers_[i]) == res.end())
-        getUpPtr(branch->mothers_[i], res, depth, current_depth);
+      if(res.find(branch->mothers_[i].elem) == res.end())
+        getUpPtr(branch->mothers_[i].elem, res, depth, current_depth);
   }
 
 }
@@ -462,9 +463,9 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res)
 {
   res.insert(branch);
 
-  for(B* it : branch->mothers_)
-    if(res.find(it) == res.end())
-      getUpPtr(it, res);
+  for(auto it : branch->mothers_)
+    if(res.find(it.elem) == res.end())
+      getUpPtr(it.elem, res);
 }
 
 template <typename D>
@@ -605,29 +606,29 @@ std::unordered_set<std::string> OntoGraph<B>::findFuzzy(const std::string& value
 template <typename B>
 void OntoGraph<B>::mitigate(B* branch)
 {
-  std::vector<B*> childs = branch->childs_;
-  for(B* child : childs)
+  std::vector<Single_t<B*>> childs = branch->childs_;
+  for(Single_t<B*> child : childs)
   {
     std::unordered_set<B*> up;
-    getUpPtr(child, up);
+    getUpPtr(child.elem, up);
     std::vector<B*> inter = intersection(up, childs);
     if(inter.size() > 1)
     {
-      eraseFromVector(child->mothers_, branch);
-      eraseFromVector(branch->childs_, child);
+      this->removeFromElemVect(child.elem->mothers_, branch);
+      this->removeFromElemVect(branch->childs_, child.elem);
     }
   }
 
-  std::vector<B*> mothers = branch->mothers_;
-  for(B* mother : mothers)
+  std::vector<Single_t<B*>> mothers = branch->mothers_;
+  for(Single_t<B*> mother : mothers)
   {
     std::unordered_set<B*> down;
-    getDownPtr(mother, down);
+    getDownPtr(mother.elem, down);
     std::vector<B*> inter = intersection(down, mothers);
     if(inter.size() > 1)
     {
-      eraseFromVector(branch->mothers_, mother);
-      eraseFromVector(mother->childs_, branch);
+      this->removeFromElemVect(branch->mothers_, mother.elem);
+      this->removeFromElemVect(mother.elem->childs_, branch);
     }
   }
 }
@@ -640,6 +641,18 @@ std::vector<B*> OntoGraph<B>::intersection(const std::unordered_set<B*>& set, co
   {
     if(set.find(v) != set.end())
       res.push_back(v);
+  }
+  return res;
+}
+
+template <typename B>
+std::vector<B*> OntoGraph<B>::intersection(const std::unordered_set<B*>& set, const std::vector<Single_t<B*>>& vect)
+{
+  std::vector<B*> res;
+  for(Single_t<B*> v : vect)
+  {
+    if(set.find(v.elem) != set.end())
+      res.push_back(v.elem);
   }
   return res;
 }

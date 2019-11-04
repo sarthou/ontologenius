@@ -73,13 +73,13 @@ void DataPropertyBranch_t::setSteady_range(std::string range)
   ranges_.push_back(tmp);
 }
 
-void DataPropertyBranch_t::setSteady_child(DataPropertyBranch_t* child)
+void DataPropertyBranch_t::setSteady_child(const Single_t<DataPropertyBranch_t*>& child)
 {
   conditionalPushBack(steady_.childs_, child);
   conditionalPushBack(childs_, child);
 }
 
-void DataPropertyBranch_t::setSteady_mother(DataPropertyBranch_t* mother)
+void DataPropertyBranch_t::setSteady_mother(const Single_t<DataPropertyBranch_t*>& mother)
 {
   conditionalPushBack(steady_.mothers_, mother);
   conditionalPushBack(mothers_, mother);

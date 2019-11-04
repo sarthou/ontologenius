@@ -49,20 +49,20 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
       bool i_find_my_mother = false;
 
       //is a root my mother ?
-      isMyMother(me, object_vector.mothers_[mothers_i], roots_, i_find_my_mother);
+      isMyMother(me, object_vector.mothers_[mothers_i].elem, roots_, i_find_my_mother);
 
       //is a branch my mother ?
-      isMyMother(me, object_vector.mothers_[mothers_i], branchs_, i_find_my_mother);
+      isMyMother(me, object_vector.mothers_[mothers_i].elem, branchs_, i_find_my_mother);
 
       //is a tmp mother is mine ?
-      isMyMother(me, object_vector.mothers_[mothers_i], tmp_mothers_, i_find_my_mother);
+      isMyMother(me, object_vector.mothers_[mothers_i].elem, tmp_mothers_, i_find_my_mother);
 
       //I create my mother
       if(!i_find_my_mother)
       {
-        ClassBranch_t* my_mother = new struct ClassBranch_t(object_vector.mothers_[mothers_i]);
-        my_mother->setSteady_child(me);
-        me->setSteady_mother(my_mother);
+        ClassBranch_t* my_mother = new struct ClassBranch_t(object_vector.mothers_[mothers_i].elem);
+        my_mother->setSteady_child(Single_t<ClassBranch_t*>(me));
+        me->setSteady_mother(Single_t<ClassBranch_t*>(my_mother));
         tmp_mothers_[my_mother->value()] = my_mother;
       }
     }
@@ -918,7 +918,7 @@ void ClassGraph::deleteClass(ClassBranch_t* _class)
     {
       for(size_t i = 0; i < up->childs_.size();)
       {
-        if(up->childs_[i] == _class)
+        if(up->childs_[i].elem == _class)
           up->childs_.erase(up->childs_.begin() + i);
         else
           i++;
@@ -931,7 +931,7 @@ void ClassGraph::deleteClass(ClassBranch_t* _class)
     {
       for(size_t i = 0; i < down->mothers_.size();)
       {
-        if(down->mothers_[i] == _class)
+        if(down->mothers_[i].elem == _class)
           down->mothers_.erase(down->mothers_.begin() + i);
         else
           i++;
@@ -1023,8 +1023,8 @@ void ClassGraph::addInheritage(std::string& class_base, std::string& class_inher
         all_branchs_.push_back(inherited);
       }
     }
-    branch->setSteady_mother(inherited);
-    inherited->setSteady_child(branch);
+    branch->setSteady_mother(Single_t<ClassBranch_t*>(inherited));
+    inherited->setSteady_child(Single_t<ClassBranch_t*>(branch));
     branch->updated_ = true;
     inherited->updated_ = true;
     mitigate(branch);
@@ -1243,10 +1243,10 @@ void ClassGraph::removeInheritage(std::string& class_base, std::string& class_in
 
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
-  removeFromVect(branch_base->steady_.mothers_, branch_inherited);
-  removeFromVect(branch_base->mothers_, branch_inherited);
-  removeFromVect(branch_inherited->steady_.childs_, branch_base);
-  removeFromVect(branch_inherited->childs_, branch_base);
+  removeFromElemVect(branch_base->steady_.mothers_, branch_inherited);
+  removeFromElemVect(branch_base->mothers_, branch_inherited);
+  removeFromElemVect(branch_inherited->steady_.childs_, branch_base);
+  removeFromElemVect(branch_inherited->childs_, branch_base);
 
   branch_base->updated_ = true;
   branch_inherited->updated_ = true;

@@ -55,6 +55,8 @@ private:
 
   inline void push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
   inline void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole = "");
+  inline void push(std::vector<Single_t<std::string>>& vect, TiXmlElement* subElem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
+  inline void push(std::vector<Single_t<std::string>>& vect, const std::string& elem, const std::string& symbole = "");
   inline void push(std::vector<bool>& vect, bool elem, const std::string& symbole = "");
   void push(Properties_t& properties, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   void pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem);
@@ -87,6 +89,34 @@ void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem,
 void OntologyReader::push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole)
 {
   vect.push_back(elem);
+  if(symbole != "")
+    std::cout << "│   │   ├── " << symbole << elem << std::endl;
+}
+
+void OntologyReader::push(std::vector<Single_t<std::string>>& vect, TiXmlElement* subElem, const std::string& symbole, const std::string& attribute)
+{
+  const char* subAttr;
+  subAttr = subElem->Attribute(attribute.c_str());
+  if(subAttr != NULL)
+  {
+    vect.push_back(Single_t<std::string>(getName(std::string(subAttr))));
+    std::cout << "│   │   ├── " << symbole << getName(std::string(subAttr)) << std::endl;
+  }
+  else
+  {
+    for(TiXmlElement* subsubElem = subElem->FirstChildElement(); subsubElem != NULL; subsubElem = subsubElem->NextSiblingElement())
+    {
+      std::string name = subsubElem->Value();
+      if(name == "owl:Restriction")
+        readRestriction(subsubElem);
+    }
+
+  }
+}
+
+void OntologyReader::push(std::vector<Single_t<std::string>>& vect, const std::string& elem, const std::string& symbole)
+{
+  vect.push_back(Single_t<std::string>(elem));
   if(symbole != "")
     std::cout << "│   │   ├── " << symbole << elem << std::endl;
 }

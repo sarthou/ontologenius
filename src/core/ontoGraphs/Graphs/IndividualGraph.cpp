@@ -1203,12 +1203,18 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
   if(indiv != nullptr)
   {
     ClassBranch_t* class_branch = new ClassBranch_t(indiv->value());
-    class_branch->mothers_ = indiv->is_a_;
+    //class_branch->mothers_ = indiv->is_a_;
+    class_branch->mothers_.clear();
+    for(ClassBranch_t* it : indiv->is_a_)
+      class_branch->mothers_.push_back(Single_t<ClassBranch_t*>(it));
     class_branch->data_properties_name_ = indiv->data_properties_name_;
     class_branch->data_properties_data_ = indiv->data_properties_data_;
     class_branch->data_properties_deduced_ = indiv->data_properties_deduced_;
 
-    class_branch->steady_.mothers_ = indiv->steady_.is_a_;
+    //class_branch->steady_.mothers_ = indiv->steady_.is_a_;
+    class_branch->steady_.mothers_.clear();
+    for(ClassBranch_t* it : indiv->steady_.is_a_)
+      class_branch->steady_.mothers_.push_back(Single_t<ClassBranch_t*>(it));
     class_branch->steady_.data_properties_name_ = indiv->steady_.data_properties_name_;
     class_branch->steady_.data_properties_data_ = indiv->steady_.data_properties_data_;
 

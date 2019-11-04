@@ -16,7 +16,7 @@ namespace ontologenius {
 
 struct ObjectPropertyVectors_t
 {
-   std::vector<std::string> mothers_;
+   std::vector<Single_t<std::string>> mothers_;
    std::vector<std::string> disjoints_;
    std::vector<std::string> inverses_;
    std::vector<std::string> domains_;

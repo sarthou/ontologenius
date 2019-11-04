@@ -11,6 +11,7 @@
 #include "ontoloGenius/core/ontoGraphs/BranchContainer/BranchContainerDyn.h"
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/ValuedNode.h"
+#include "ontoloGenius/core/ontoGraphs/Branchs/Elements.h"
 
 namespace ontologenius {
 
@@ -55,6 +56,16 @@ public:
   {
     for(size_t i = 0; i < vect.size();)
       if(vect[i] == value)
+        vect.erase(vect.begin() + i);
+      else
+        i++;
+  }
+
+  template <class T>
+  inline void removeFromElemVect(std::vector<Single_t<T>>& vect, T value)
+  {
+    for(size_t i = 0; i < vect.size();)
+      if(vect[i].elem == value)
         vect.erase(vect.begin() + i);
       else
         i++;

@@ -12,7 +12,7 @@ OntologiesManipulator* onto_ptr;
 TEST(multi_tests, create)
 {
   ros::Rate wait(1);
-  ros::Rate wait2(0.4);
+  ros::Rate wait2(0.6);
   std::vector<std::string> res;
   bool res_bool = true;
   std::string test_word = "robot";

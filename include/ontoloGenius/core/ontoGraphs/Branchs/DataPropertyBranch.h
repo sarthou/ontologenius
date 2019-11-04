@@ -42,8 +42,8 @@ public:
   void setSteady_properties(Properties_t properties);
   void setSteady_domain(ClassBranch_t* domain);
   void setSteady_range(std::string range);
-  void setSteady_child(DataPropertyBranch_t* child);
-  void setSteady_mother(DataPropertyBranch_t* mother);
+  void setSteady_child(const Single_t<DataPropertyBranch_t*>& child);
+  void setSteady_mother(const Single_t<DataPropertyBranch_t*>& mother);
   void setSteady_dictionary(std::string lang, std::string word);
   void setSteady_muted_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
