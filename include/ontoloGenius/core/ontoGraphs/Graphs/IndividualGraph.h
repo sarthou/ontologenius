@@ -15,7 +15,7 @@ namespace ontologenius {
 
 struct IndividualVectors_t
 {
-   std::vector<std::string> is_a_;
+   std::vector<Single_t<std::string>> is_a_;
 
    std::vector<std::string> object_properties_name_;
    std::vector<std::string> object_properties_on_;

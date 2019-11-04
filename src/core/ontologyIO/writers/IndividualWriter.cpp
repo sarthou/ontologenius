@@ -57,7 +57,7 @@ void IndividualWriter::writeType(IndividualBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.is_a_.size(); i++)
   {
     std::string tmp = "        <rdf:type rdf:resource=\"ontologenius#" +
-                      branch->steady_.is_a_[i]->value()
+                      branch->steady_.is_a_[i].elem->value()
                       + "\"/>\n";
     writeString(tmp);
   }

@@ -18,7 +18,7 @@ template <typename T>
 class IndividualBranchData_t
 {
 public:
-  std::vector<ClassBranch_t*> is_a_;
+  std::vector<Single_t<ClassBranch_t*>> is_a_;
 
   std::vector<ObjectPropertyBranch_t*> object_properties_name_;
   std::vector<T*> object_properties_on_;
@@ -50,7 +50,7 @@ public:
   IndividualBranch_t(std::string value = "") : ValuedNode(value) {mark = false; }
 
   void setFullSteady();
-  void setSteady_is_a(ClassBranch_t* is_a);
+  void setSteady_is_a(const Single_t<ClassBranch_t*>& is_a);
   void setSteady_object_properties_name(ObjectPropertyBranch_t* object_properties_name);
   void setSteady_object_properties_on(IndividualBranch_t* object_properties_on);
   void setSteady_data_properties_name(DataPropertyBranch_t* data_properties_name);

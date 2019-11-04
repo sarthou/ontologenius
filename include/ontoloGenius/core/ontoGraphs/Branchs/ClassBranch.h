@@ -19,7 +19,7 @@ template <typename T>
 class ClassBranchData_t
 {
 public:
-  std::vector<IndividualBranch_t*> individual_childs_;
+  std::vector<Single_t<IndividualBranch_t*>> individual_childs_;
 
   std::vector<T*> disjoints_;
 
@@ -50,7 +50,7 @@ public:
   void setFullSteady();
   void setSteady_disjoint(ClassBranch_t* disjoint);
   void setSteady_child(const Single_t<ClassBranch_t*>& child);
-  void setSteady_individual_child(IndividualBranch_t* child);
+  void setSteady_individual_child(const Single_t<IndividualBranch_t*>& child);
   void setSteady_mother(const Single_t<ClassBranch_t*>& mother);
   void setSteady_dictionary(std::string lang, std::string word);
   void setSteady_muted_dictionary(std::string lang, std::string word);

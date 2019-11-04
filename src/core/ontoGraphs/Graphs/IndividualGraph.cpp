@@ -59,20 +59,20 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     bool i_find_my_is_a_ = false;
 
     //is a root my class ?
-    auto it = class_graph_->roots_.find(individual_vector.is_a_[is_a_i]);
+    auto it = class_graph_->roots_.find(individual_vector.is_a_[is_a_i].elem);
     if(it != class_graph_->roots_.end())
     {
-      me->setSteady_is_a(it->second);
-      it->second->setSteady_individual_child(me);
+      me->setSteady_is_a(Single_t<ClassBranch_t*>(it->second));
+      it->second->setSteady_individual_child(Single_t<IndividualBranch_t*>(me));
       i_find_my_is_a_ = true;
     }
 
     //is a branch my class ?
-    it = class_graph_->branchs_.find(individual_vector.is_a_[is_a_i]);
+    it = class_graph_->branchs_.find(individual_vector.is_a_[is_a_i].elem);
     if(it != class_graph_->branchs_.end())
     {
-      me->setSteady_is_a(it->second);
-      it->second->setSteady_individual_child(me);
+      me->setSteady_is_a(Single_t<ClassBranch_t*>(it->second));
+      it->second->setSteady_individual_child(Single_t<IndividualBranch_t*>(me));
       i_find_my_is_a_ = true;
     }
 
@@ -80,12 +80,12 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     if(!i_find_my_is_a_)
     {
       ObjectVectors_t empty_vectors;
-      class_graph_->add(individual_vector.is_a_[is_a_i], empty_vectors);
-      it = class_graph_->roots_.find(individual_vector.is_a_[is_a_i]);
+      class_graph_->add(individual_vector.is_a_[is_a_i].elem, empty_vectors);
+      it = class_graph_->roots_.find(individual_vector.is_a_[is_a_i].elem);
       if(it != class_graph_->roots_.end())
       {
-        me->setSteady_is_a(it->second);
-        it->second->setSteady_individual_child(me);
+        me->setSteady_is_a(Single_t<ClassBranch_t*>(it->second));
+        it->second->setSteady_individual_child(Single_t<IndividualBranch_t*>(me));
         i_find_my_is_a_ = true;
       }
     }
@@ -864,7 +864,7 @@ std::unordered_set<std::string> IndividualGraph::getUp(IndividualBranch_t* indiv
     cleanMarks(sames);
     for(IndividualBranch_t* it : sames)
       for(size_t i = 0; i < it->is_a_.size(); i++)
-        class_graph_->getUp(it->is_a_[i], res, depth, current_depth);
+        class_graph_->getUp(it->is_a_[i].elem, res, depth, current_depth);
   }
   return res;
 }
@@ -886,7 +886,7 @@ void IndividualGraph::getUpPtr(IndividualBranch_t* indiv, std::unordered_set<Cla
     cleanMarks(sames);
     for(IndividualBranch_t* it : sames)
       for(size_t i = 0; i < it->is_a_.size(); i++)
-        class_graph_->getUpPtr(it->is_a_[i], res, depth, current_depth);
+        class_graph_->getUpPtr(it->is_a_[i].elem, res, depth, current_depth);
   }
 }
 
@@ -1203,18 +1203,12 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
   if(indiv != nullptr)
   {
     ClassBranch_t* class_branch = new ClassBranch_t(indiv->value());
-    //class_branch->mothers_ = indiv->is_a_;
-    class_branch->mothers_.clear();
-    for(ClassBranch_t* it : indiv->is_a_)
-      class_branch->mothers_.push_back(Single_t<ClassBranch_t*>(it));
+    class_branch->mothers_ = std::move(indiv->is_a_);
     class_branch->data_properties_name_ = indiv->data_properties_name_;
     class_branch->data_properties_data_ = indiv->data_properties_data_;
     class_branch->data_properties_deduced_ = indiv->data_properties_deduced_;
 
-    //class_branch->steady_.mothers_ = indiv->steady_.is_a_;
-    class_branch->steady_.mothers_.clear();
-    for(ClassBranch_t* it : indiv->steady_.is_a_)
-      class_branch->steady_.mothers_.push_back(Single_t<ClassBranch_t*>(it));
+    class_branch->steady_.mothers_ = std::move(indiv->steady_.is_a_);
     class_branch->steady_.data_properties_name_ = indiv->steady_.data_properties_name_;
     class_branch->steady_.data_properties_data_ = indiv->steady_.data_properties_data_;
 
@@ -1653,10 +1647,10 @@ void IndividualGraph::removeInheritage(std::string& class_base, std::string& cla
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
   std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
 
-  removeFromVect(branch_base->steady_.is_a_, branch_inherited);
-  removeFromVect(branch_base->is_a_, branch_inherited);
-  removeFromVect(branch_inherited->steady_.individual_childs_, branch_base);
-  removeFromVect(branch_inherited->individual_childs_, branch_base);
+  removeFromElemVect(branch_base->steady_.is_a_, branch_inherited);
+  removeFromElemVect(branch_base->is_a_, branch_inherited);
+  removeFromElemVect(branch_inherited->steady_.individual_childs_, branch_base);
+  removeFromElemVect(branch_inherited->individual_childs_, branch_base);
 
   branch_base->updated_ = true;
   branch_inherited->updated_ = true;

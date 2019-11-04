@@ -28,7 +28,7 @@ TEST(multi_tests, create)
   (*onto_ptr)["paul"]->feeder.addInheritage("human", "agent");
   (*onto_ptr)["paul"]->feeder.addInheritage("robot", "agent");
   (*onto_ptr)["paul"]->feeder.addInheritage("pepper", "robot");
-  wait2.sleep();
+  wait.sleep();
 
   res = (*onto_ptr)["paul"]->classes.getUp(test_word);
   res_bool = ((res.size() == 2) &&

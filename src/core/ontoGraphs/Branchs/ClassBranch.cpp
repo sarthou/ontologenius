@@ -69,7 +69,7 @@ void ClassBranch_t::setSteady_child(const Single_t<ClassBranch_t*>& child)
   conditionalPushBack(childs_, child);
 }
 
-void ClassBranch_t::setSteady_individual_child(IndividualBranch_t* child)
+void ClassBranch_t::setSteady_individual_child(const Single_t<IndividualBranch_t*>& child)
 {
   conditionalPushBack(steady_.individual_childs_, child);
   conditionalPushBack(individual_childs_, child);

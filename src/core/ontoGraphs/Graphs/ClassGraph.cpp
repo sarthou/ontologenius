@@ -874,7 +874,7 @@ std::unordered_set<std::string> ClassGraph::getDownIndividual(ClassBranch_t* bra
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
   for(auto indiv : branch->individual_childs_)
-    res.insert(indiv->value());
+    res.insert(indiv.elem->value());
 
   return res;
 }
@@ -883,7 +883,7 @@ void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<std
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
   for(auto indiv : branch->individual_childs_)
-    res.insert(indiv->value());
+    res.insert(indiv.elem->value());
 }
 
 std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtrSafe(ClassBranch_t* branch)
@@ -892,7 +892,7 @@ std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtrSafe(Cla
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
   for(auto indiv : branch->individual_childs_)
-    res.insert(indiv);
+    res.insert(indiv.elem);
 
   return res;
 }
@@ -901,7 +901,7 @@ void ClassGraph::getDownIndividualPtrSafe(ClassBranch_t* branch, std::unordered_
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
   for(auto indiv : branch->individual_childs_)
-    res.insert(indiv);
+    res.insert(indiv.elem);
 }
 
 void ClassGraph::deleteClass(ClassBranch_t* _class)
@@ -938,12 +938,14 @@ void ClassGraph::deleteClass(ClassBranch_t* _class)
       }
     }
 
+    IndividualBranch_t* elem = nullptr;
     for(auto indiv : _class->individual_childs_)
     {
-      for(size_t i = 0; i < indiv->is_a_.size();)
+      elem = indiv.elem;
+      for(size_t i = 0; i < elem->is_a_.size();)
       {
-        if(indiv->is_a_[i] == _class)
-          indiv->is_a_.erase(indiv->is_a_.begin() + i);
+        if(elem->is_a_[i].elem == _class)
+          elem->is_a_.erase(elem->is_a_.begin() + i);
         else
           i++;
       }
