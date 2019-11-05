@@ -63,19 +63,19 @@ void ClassBranch_t::setSteady_disjoint(ClassBranch_t* disjoint)
   conditionalPushBack(disjoints_, disjoint);
 }
 
-void ClassBranch_t::setSteady_child(const Single_t<ClassBranch_t*>& child)
+void ClassBranch_t::setSteady_child(const ClassElement_t& child)
 {
   conditionalPushBack(steady_.childs_, child);
   conditionalPushBack(childs_, child);
 }
 
-void ClassBranch_t::setSteady_individual_child(const Single_t<IndividualBranch_t*>& child)
+void ClassBranch_t::setSteady_individual_child(const IndividualElement_t& child)
 {
   conditionalPushBack(steady_.individual_childs_, child);
   conditionalPushBack(individual_childs_, child);
 }
 
-void ClassBranch_t::setSteady_mother(const Single_t<ClassBranch_t*>& mother)
+void ClassBranch_t::setSteady_mother(const ClassElement_t& mother)
 {
   conditionalPushBack(steady_.mothers_, mother);
   conditionalPushBack(mothers_, mother);

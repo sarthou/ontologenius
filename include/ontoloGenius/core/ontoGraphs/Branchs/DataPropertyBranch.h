@@ -9,8 +9,11 @@
 
 namespace ontologenius {
 
-//for branch type usage
+// Classes predefinition
+class DataPropertyBranch_t;
 class ClassBranch_t;
+
+typedef Single_t<DataPropertyBranch_t*> DataPropertyElement_t;
 
 template <typename T>
 class DataPropertyBranchData_t : public PropertyBranchData_t<T>
@@ -20,8 +23,6 @@ public:
   std::vector<data_t> ranges_;
 };
 
-//for template usage
-class DataPropertyBranch_t;
 class DataPropertySteady_t :  public BranchSteady_t<DataPropertyBranch_t>,
                               public DataPropertyBranchData_t<DataPropertyBranch_t>
 {
@@ -42,8 +43,8 @@ public:
   void setSteady_properties(Properties_t properties);
   void setSteady_domain(ClassBranch_t* domain);
   void setSteady_range(std::string range);
-  void setSteady_child(const Single_t<DataPropertyBranch_t*>& child);
-  void setSteady_mother(const Single_t<DataPropertyBranch_t*>& mother);
+  void setSteady_child(const DataPropertyElement_t& child);
+  void setSteady_mother(const DataPropertyElement_t& mother);
   void setSteady_dictionary(std::string lang, std::string word);
   void setSteady_muted_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);

@@ -51,8 +51,8 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
       if(!i_find_my_mother)
       {
         ObjectPropertyBranch_t* my_mother = new struct ObjectPropertyBranch_t(property_vectors.mothers_[mothers_i].elem);
-        my_mother->childs_.push_back(Single_t<ObjectPropertyBranch_t*>(me));
-        me->setSteady_mother(Single_t<ObjectPropertyBranch_t*>(my_mother));
+        my_mother->childs_.push_back(ObjectPropertyElement_t(me));
+        me->setSteady_mother(ObjectPropertyElement_t(my_mother));
         tmp_mothers_[my_mother->value()] = my_mother;
       }
     }

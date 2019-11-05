@@ -61,8 +61,8 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
       if(!i_find_my_mother)
       {
         ClassBranch_t* my_mother = new struct ClassBranch_t(object_vector.mothers_[mothers_i].elem);
-        my_mother->setSteady_child(Single_t<ClassBranch_t*>(me));
-        me->setSteady_mother(Single_t<ClassBranch_t*>(my_mother));
+        my_mother->setSteady_child(ClassElement_t(me));
+        me->setSteady_mother(ClassElement_t(my_mother));
         tmp_mothers_[my_mother->value()] = my_mother;
       }
     }
@@ -1025,8 +1025,8 @@ void ClassGraph::addInheritage(std::string& class_base, std::string& class_inher
         all_branchs_.push_back(inherited);
       }
     }
-    branch->setSteady_mother(Single_t<ClassBranch_t*>(inherited));
-    inherited->setSteady_child(Single_t<ClassBranch_t*>(branch));
+    branch->setSteady_mother(ClassElement_t(inherited));
+    inherited->setSteady_child(ClassElement_t(branch));
     branch->updated_ = true;
     inherited->updated_ = true;
     mitigate(branch);

@@ -35,7 +35,7 @@ void IndividualBranch_t::setFullSteady()
     steady_.distinct_.push_back(distinct_[i]);
 }
 
-void IndividualBranch_t::setSteady_is_a(const Single_t<ClassBranch_t*>& is_a)
+void IndividualBranch_t::setSteady_is_a(const ClassElement_t& is_a)
 {
   conditionalPushBack(steady_.is_a_, is_a);
   conditionalPushBack(is_a_, is_a);

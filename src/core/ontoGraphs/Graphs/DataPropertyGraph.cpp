@@ -53,8 +53,8 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
       if(!i_find_my_mother)
       {
         DataPropertyBranch_t* my_mother = new struct DataPropertyBranch_t(property_vectors.mothers_[mothers_i].elem);
-        my_mother->childs_.push_back(Single_t<DataPropertyBranch_t*>(me));
-        me->setSteady_mother(Single_t<DataPropertyBranch_t*>(my_mother));
+        my_mother->childs_.push_back(DataPropertyElement_t(me));
+        me->setSteady_mother(DataPropertyElement_t(my_mother));
         tmp_mothers_[my_mother->value()] = my_mother;
       }
     }

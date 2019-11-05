@@ -100,13 +100,13 @@ void ObjectPropertyBranch_t::setSteady_chain(std::vector<std::string> chain)
   steady_.str_chains_.push_back(chain);
 }
 
-void ObjectPropertyBranch_t::setSteady_child(const Single_t<ObjectPropertyBranch_t*>& child)
+void ObjectPropertyBranch_t::setSteady_child(const ObjectPropertyElement_t& child)
 {
   conditionalPushBack(steady_.childs_, child);
   conditionalPushBack(childs_, child);
 }
 
-void ObjectPropertyBranch_t::setSteady_mother(const Single_t<ObjectPropertyBranch_t*>& mother)
+void ObjectPropertyBranch_t::setSteady_mother(const ObjectPropertyElement_t& mother)
 {
   conditionalPushBack(steady_.mothers_, mother);
   conditionalPushBack(mothers_, mother);

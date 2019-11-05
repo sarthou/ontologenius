@@ -10,16 +10,20 @@
 
 namespace ontologenius {
 
-//for branch type usage
+// Classes predefinition
 class ObjectPropertyBranch_t;
 class DataPropertyBranch_t;
 class IndividualBranch_t;
+class ClassBranch_t;
+
+typedef Single_t<IndividualBranch_t*> IndividualElement_t;
+typedef Single_t<ClassBranch_t*> ClassElement_t;
 
 template <typename T>
 class ClassBranchData_t
 {
 public:
-  std::vector<Single_t<IndividualBranch_t*>> individual_childs_;
+  std::vector<IndividualElement_t> individual_childs_;
 
   std::vector<T*> disjoints_;
 
@@ -32,8 +36,6 @@ public:
   std::vector<bool> data_properties_deduced_;
 };
 
-//for template usage
-class ClassBranch_t;
 class ClassSteady_t : public BranchSteady_t<ClassBranch_t>, public ClassBranchData_t<ClassBranch_t>
 {
 public:
@@ -49,9 +51,9 @@ public:
 
   void setFullSteady();
   void setSteady_disjoint(ClassBranch_t* disjoint);
-  void setSteady_child(const Single_t<ClassBranch_t*>& child);
-  void setSteady_individual_child(const Single_t<IndividualBranch_t*>& child);
-  void setSteady_mother(const Single_t<ClassBranch_t*>& mother);
+  void setSteady_child(const ClassElement_t& child);
+  void setSteady_individual_child(const IndividualElement_t& child);
+  void setSteady_mother(const ClassElement_t& mother);
   void setSteady_dictionary(std::string lang, std::string word);
   void setSteady_muted_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);

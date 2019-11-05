@@ -62,8 +62,8 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     auto it = class_graph_->roots_.find(individual_vector.is_a_[is_a_i].elem);
     if(it != class_graph_->roots_.end())
     {
-      me->setSteady_is_a(Single_t<ClassBranch_t*>(it->second));
-      it->second->setSteady_individual_child(Single_t<IndividualBranch_t*>(me));
+      me->setSteady_is_a(ClassElement_t(it->second));
+      it->second->setSteady_individual_child(IndividualElement_t(me));
       i_find_my_is_a_ = true;
     }
 
@@ -71,8 +71,8 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     it = class_graph_->branchs_.find(individual_vector.is_a_[is_a_i].elem);
     if(it != class_graph_->branchs_.end())
     {
-      me->setSteady_is_a(Single_t<ClassBranch_t*>(it->second));
-      it->second->setSteady_individual_child(Single_t<IndividualBranch_t*>(me));
+      me->setSteady_is_a(ClassElement_t(it->second));
+      it->second->setSteady_individual_child(IndividualElement_t(me));
       i_find_my_is_a_ = true;
     }
 
@@ -84,8 +84,8 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
       it = class_graph_->roots_.find(individual_vector.is_a_[is_a_i].elem);
       if(it != class_graph_->roots_.end())
       {
-        me->setSteady_is_a(Single_t<ClassBranch_t*>(it->second));
-        it->second->setSteady_individual_child(Single_t<IndividualBranch_t*>(me));
+        me->setSteady_is_a(ClassElement_t(it->second));
+        it->second->setSteady_individual_child(IndividualElement_t(me));
         i_find_my_is_a_ = true;
       }
     }

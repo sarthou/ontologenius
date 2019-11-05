@@ -70,7 +70,7 @@ private:
     return res;
   }
 
-  std::vector<std::string> toValued(std::vector<Single_t<ClassBranch_t*>> vect)
+  std::vector<std::string> toValued(std::vector<ClassElement_t> vect)
   {
     std::vector<std::string> res;
     for(auto it : vect)

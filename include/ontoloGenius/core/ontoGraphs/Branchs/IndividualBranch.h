@@ -12,13 +12,17 @@
 
 namespace ontologenius {
 
+// Classes predefinition
 class Triplet;
+class IndividualBranch_t;
+
+typedef Single_t<IndividualBranch_t*> IndividualElement_t;
 
 template <typename T>
 class IndividualBranchData_t
 {
 public:
-  std::vector<Single_t<ClassBranch_t*>> is_a_;
+  std::vector<ClassElement_t> is_a_;
 
   std::vector<ObjectPropertyBranch_t*> object_properties_name_;
   std::vector<T*> object_properties_on_;
@@ -33,8 +37,6 @@ public:
   std::vector<T*> distinct_;
 };
 
-//for template usage
-class IndividualBranch_t;
 class IndividualSteady_t : public ValuedNodeData, public IndividualBranchData_t<IndividualBranch_t>
 {
 public:
@@ -50,7 +52,7 @@ public:
   IndividualBranch_t(std::string value = "") : ValuedNode(value) {mark = false; }
 
   void setFullSteady();
-  void setSteady_is_a(const Single_t<ClassBranch_t*>& is_a);
+  void setSteady_is_a(const ClassElement_t& is_a);
   void setSteady_object_properties_name(ObjectPropertyBranch_t* object_properties_name);
   void setSteady_object_properties_on(IndividualBranch_t* object_properties_on);
   void setSteady_data_properties_name(DataPropertyBranch_t* data_properties_name);
