@@ -18,6 +18,7 @@ class ClassBranch_t;
 
 typedef Single_t<IndividualBranch_t*> IndividualElement_t;
 typedef Single_t<ClassBranch_t*> ClassElement_t;
+typedef Pair_t<ObjectPropertyBranch_t*, ClassBranch_t*> ObjectRelationElement_t;
 
 template <typename T>
 class ClassBranchData_t
@@ -27,9 +28,7 @@ public:
 
   std::vector<T*> disjoints_;
 
-  std::vector<ObjectPropertyBranch_t*> object_properties_name_;
-  std::vector<T*> object_properties_on_;
-  std::vector<bool> object_properties_deduced_;
+  std::vector<Pair_t<ObjectPropertyBranch_t*, T*>> object_relations_;
 
   std::vector<DataPropertyBranch_t*> data_properties_name_;
   std::vector<data_t> data_properties_data_;
@@ -58,8 +57,9 @@ public:
   void setSteady_muted_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
   void setSteady_muted_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
-  void setSteady_object_properties_name(ObjectPropertyBranch_t* object_properties_name);
-  void setSteady_object_properties_on(ClassBranch_t* object_properties_on);
+
+  void setSteady_objectRelation(const ObjectRelationElement_t& object_relation);
+
   void setSteady_data_properties_name(DataPropertyBranch_t* data_properties_name);
   void setSteady_data_properties_data(data_t data_properties_data);
 };

@@ -183,8 +183,10 @@ comparator_t differenceFinder::toComparator(ClassBranch_t* class_)
 {
   comparator_t comp;
   comp.concept_ = class_->value();
-  comp.object_properties_name_ = toValued(class_->object_properties_name_);
-  comp.object_properties_on_ = toValued(class_->object_properties_on_);
+
+  comp.object_properties_name_ = toValuedFirst(class_->object_relations_);
+  comp.object_properties_on_ = toValuedSecond(class_->object_relations_);
+
   comp.data_properties_name_ = toValued(class_->data_properties_name_);
   comp.data_properties_data_ = toValued(class_->data_properties_data_);
   comp.mothers_ = toValued(class_->mothers_);

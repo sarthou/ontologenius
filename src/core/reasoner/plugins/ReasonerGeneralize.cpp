@@ -37,8 +37,8 @@ void ReasonerGeneralize::periodicReason()
         for(size_t j = 0; j < down->data_properties_name_.size(); j++)
           data_counter.add(down->data_properties_name_[j], down->data_properties_data_[j].toString());
 
-        for(size_t j = 0; j < down->object_properties_name_.size(); j++)
-          object_counter.add(down->object_properties_name_[j], down->object_properties_on_[j]);
+        for(size_t j = 0; j < down->object_relations_.size(); j++)
+          object_counter.add(down->object_relations_[j].first, down->object_relations_[j].second);
       }
 
       for(auto down : indiv_down_set)
@@ -135,16 +135,16 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyB
 void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropertyBranch_t*> properties, std::vector<ClassBranch_t*> datas)
 {
   std::unordered_set<size_t> deduced_indexs;
-  for(size_t i = 0; i < me->object_properties_deduced_.size(); i++)
-    if(me->object_properties_deduced_[i] == true)
+  for(size_t i = 0; i < me->object_relations_.size(); i++)
+    if(me->object_relations_[i] < 0.51) // deduced = 0.5
       deduced_indexs.insert(i);
 
   for(size_t prop = 0; prop < properties.size(); prop++)
   {
     int index = -1;
-    for(size_t prop_i = 0; prop_i < me->steady_.object_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < me->steady_.object_relations_.size(); prop_i++)
     {
-      if(me->steady_.object_properties_name_[prop_i] == properties[prop])
+      if(me->steady_.object_relations_[prop_i].first == properties[prop])
       {
         //the property is already know
         index = prop_i;
@@ -154,23 +154,22 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropert
 
     if(index == -1)
     {
-      for(size_t prop_i = 0; prop_i < me->object_properties_name_.size(); prop_i++)
-        if(me->object_properties_name_[prop_i] == properties[prop])
+      for(size_t prop_i = 0; prop_i < me->object_relations_.size(); prop_i++)
+        if(me->object_relations_[prop_i].first == properties[prop])
         {
-          if(me->object_properties_on_[prop_i] != datas[prop])
-          notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
+          if(me->object_relations_[prop_i].second != datas[prop])
+            notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
+
           index = prop_i;
           deduced_indexs.erase(index);
-          me->object_properties_on_[prop_i] = datas[prop];
-          me->object_properties_deduced_[prop_i] = true;
+          me->object_relations_[prop_i].second = datas[prop];
+          me->object_relations_[prop_i].probability = 0.5;
         }
 
       if(index == -1)
       {
         notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
-        me->object_properties_name_.push_back(properties[prop]);
-        me->object_properties_on_.push_back(datas[prop]);
-        me->object_properties_deduced_.push_back(true);
+        me->object_relations_.push_back(ObjectRelationElement_t(properties[prop], datas[prop], 0.5));
       }
     }
   }
@@ -180,10 +179,8 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropert
     size_t deleted = 0;
     for(auto i : deduced_indexs)
     {
-      notifications_.push_back("[DELETE]" + me->value() + ">" + me->object_properties_name_[i- deleted]->value() + ":" + me->object_properties_on_[i- deleted]->value());
-      me->object_properties_name_.erase(me->object_properties_name_.begin() + i - deleted);
-      me->object_properties_on_.erase(me->object_properties_on_.begin() + i - deleted);
-      me->object_properties_deduced_.erase(me->object_properties_deduced_.begin() + i - deleted);
+      notifications_.push_back("[DELETE]" + me->value() + ">" + me->object_relations_[i- deleted].first->value() + ":" + me->object_relations_[i- deleted].second->value());
+      me->object_relations_.erase(me->object_relations_.begin() + i - deleted);
       deleted++;
     }
   }

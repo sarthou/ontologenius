@@ -57,12 +57,22 @@ private:
   inline void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole = "");
   inline void push(std::vector<Single_t<std::string>>& vect, TiXmlElement* subElem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
   inline void push(std::vector<Single_t<std::string>>& vect, const std::string& elem, const std::string& symbole = "");
+  inline void push(std::vector<Pair_t<std::string, std::string>>& vect, const Pair_t<std::string, std::string>& elem, const std::string& symbole1, const std::string& symbole2);
   inline void push(std::vector<bool>& vect, bool elem, const std::string& symbole = "");
   void push(Properties_t& properties, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   void pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem);
   inline std::string getName(const std::string& uri);
   inline std::string getAttribute(TiXmlElement* elem, const std::string& attribute);
   inline bool testAttribute(TiXmlElement* subElem, const std::string& attribute);
+
+  std::string toString(TiXmlElement* subElem, std::string attribute = "rdf:resource")
+  {
+    const char* subAttr;
+    subAttr = subElem->Attribute(attribute.c_str());
+    if(subAttr != NULL)
+      return getName(std::string(subAttr));
+    return "";
+  }
 };
 
 void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole, const std::string& attribute)
@@ -119,6 +129,16 @@ void OntologyReader::push(std::vector<Single_t<std::string>>& vect, const std::s
   vect.push_back(Single_t<std::string>(elem));
   if(symbole != "")
     std::cout << "│   │   ├── " << symbole << elem << std::endl;
+}
+
+void OntologyReader::push(std::vector<Pair_t<std::string, std::string>>& vect, const Pair_t<std::string, std::string>& elem, const std::string& symbole1, const std::string& symbole2)
+{
+  vect.push_back(elem);
+  if(symbole1 != "")
+    std::cout << "│   │   ├── " << symbole1 << elem.first << std::endl;
+
+  if(symbole2 != "")
+    std::cout << "│   │   ├── " << symbole2 << elem.second << std::endl;
 }
 
 void OntologyReader::push(std::vector<bool>& vect, bool elem, const std::string& symbole)

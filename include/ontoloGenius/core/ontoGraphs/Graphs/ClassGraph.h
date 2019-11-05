@@ -19,9 +19,7 @@ struct ObjectVectors_t
    std::map<std::string, std::vector<std::string>> dictionary_;
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
 
-   std::vector<std::string> object_properties_name_;
-   std::vector<std::string> object_properties_on_;
-   std::vector<bool> object_properties_deduced_;
+   std::vector<Pair_t<std::string, std::string>> object_relations_;
 
    std::vector<std::string> data_properties_name_;
    std::vector<std::string> data_properties_type_;
@@ -90,8 +88,7 @@ private:
   DataPropertyGraph* data_property_graph_;
   IndividualGraph* individual_graph_;
 
-  void addObjectPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
-  void addObjectPropertyOn(ClassBranch_t* me, std::string& name, bool deduced);
+  void addObjectProperty(ClassBranch_t* me, std::string& property, std::string& class_on, float probability);
   void addDataPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
   void addDataPropertyData(ClassBranch_t* me, data_t& data, bool deduced);
 
@@ -126,21 +123,15 @@ private:
     }
   }
 
-  void isMyObjectPropertiesOn(ClassBranch_t* me, const std::string& propertyOn, std::map<std::string, ClassBranch_t*>& vect, bool& find, bool deduced)
+  template<typename T>
+  void getInMap(T** ptr, const std::string& name, std::map<std::string, T*>& map)
   {
-    if(find)
+    if(*ptr != nullptr)
       return;
 
-    auto it = vect.find(propertyOn);
-    if(it != vect.end())
-    {
-      if(deduced == false)
-        me->setSteady_object_properties_on(it->second);
-      else
-        me->object_properties_on_.push_back(it->second);
-
-      find = true;
-    }
+    auto it = map.find(name);
+    if(it != map.end())
+      *ptr = it->second;
   }
 
   ClassBranch_t* findIntersection(std::unordered_set<ClassBranch_t*>& base, std::unordered_set<ClassBranch_t*>& comp)

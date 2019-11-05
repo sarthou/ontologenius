@@ -2,24 +2,25 @@
 #define ONTOLOGENIUS_ELEMENTS_H
 
 #include <vector>
+#include <iostream>
 
 namespace ontologenius {
 
 class ProbabilisticElement_t
 {
 public:
-  float propability;
+  float probability;
 
   bool operator>(float prob)
   {
-    if(propability > prob)
+    if(probability > prob)
       return true;
     return false;
   }
 
   bool operator<(float prob)
   {
-    if(propability < prob)
+    if(probability < prob)
       return true;
     return false;
   }
@@ -31,10 +32,10 @@ class Single_t : public ProbabilisticElement_t
 public:
   T elem;
 
-  Single_t(T elem, float propability = 1.0)
+  Single_t(T elem, float probability = 1.0)
   {
     this->elem = elem;
-    this->propability = propability;
+    this->probability = probability;
   }
 
   bool operator==(const Single_t& other)
@@ -52,11 +53,11 @@ public:
   T first;
   U second;
 
-  Pair_t(T first, U second, float propability = 1.0)
+  Pair_t(T first, U second, float probability = 1.0)
   {
     this->first = first;
     this->second = second;
-    this->propability = propability;
+    this->probability = probability;
   }
 
   bool operator==(const Pair_t& other)

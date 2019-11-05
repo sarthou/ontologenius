@@ -398,8 +398,8 @@ void IndividualGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordere
 {
   if(class_branch != nullptr)
   {
-    for(size_t i = 0; i < class_branch->object_properties_name_.size(); i++)
-      object_property_graph_->getUp(class_branch->object_properties_name_[i], res, depth);
+    for(size_t i = 0; i < class_branch->object_relations_.size(); i++)
+      object_property_graph_->getUp(class_branch->object_relations_[i].first, res, depth);
 
     for(size_t i = 0; i < class_branch->data_properties_name_.size(); i++)
       data_property_graph_->getUp(class_branch->data_properties_name_[i], res, depth);
@@ -600,12 +600,12 @@ bool IndividualGraph::getRelatedWith(ClassBranch_t* class_branch, const std::str
   bool res = false;
   if(class_branch != nullptr)
   {
-    for(size_t prop_i = 0; prop_i < class_branch->object_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < class_branch->object_relations_.size(); prop_i++)
     {
-      if(class_branch->object_properties_on_[prop_i]->value() == data)
-        if(took.find(class_branch->object_properties_name_[prop_i]->get()) == took.end())
+      if(class_branch->object_relations_[prop_i].second->value() == data)
+        if(took.find(class_branch->object_relations_[prop_i].first->get()) == took.end())
           res = true;
-      took.insert(class_branch->object_properties_name_[prop_i]->get());
+      took.insert(class_branch->object_relations_[prop_i].first->get());
     }
 
     for(size_t prop_i = 0; prop_i < class_branch->data_properties_name_.size(); prop_i++)
@@ -713,13 +713,13 @@ bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<ui
     bool found = false;
     bool defined = false;
 
-    for(size_t prop_i = 0; prop_i < class_branch->object_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < class_branch->object_relations_.size(); prop_i++)
       for (uint32_t id : object_properties)
-        if(class_branch->object_properties_name_[prop_i]->get() == id)
+        if(class_branch->object_relations_[prop_i].first->get() == id)
         {
           defined = true;
           for(uint32_t class_id : down_classes)
-            if(class_branch->object_properties_on_[prop_i]->get() == class_id)
+            if(class_branch->object_relations_[prop_i].second->get() == class_id)
             {
               found = true;
               break;
