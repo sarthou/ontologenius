@@ -17,9 +17,7 @@ struct IndividualVectors_t
 {
    std::vector<Single_t<std::string>> is_a_;
 
-   std::vector<std::string> object_properties_name_;
-   std::vector<std::string> object_properties_on_;
-   std::vector<bool> object_properties_deduced_;
+   std::vector<Pair_t<std::string, std::string>> object_relations_;
 
    std::vector<std::string> data_properties_name_;
    std::vector<std::string> data_properties_type_;
@@ -118,11 +116,19 @@ private:
 
   std::vector<IndividualBranch_t*> individuals_;
 
-  void addObjectPropertyName(IndividualBranch_t* me, std::string& name, bool deduced);
-  void addObjectPropertyOn(IndividualBranch_t* me, std::string& name, bool deduced);
+  IndividualBranch_t* getBranch(const std::string& name)
+  {
+    for(size_t indiv_i = 0; indiv_i < individuals_.size(); indiv_i++)
+      if(name == individuals_[indiv_i]->value())
+        return individuals_[indiv_i];
+    return nullptr;
+  }
+
+  void addObjectProperty(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
+
   void addDataPropertyName(IndividualBranch_t* me, std::string& name, bool deduced);
   void addDataPropertyData(IndividualBranch_t* me, data_t& data, bool deduced);
-  void setObjectPropertiesUpdated(std::vector<IndividualBranch_t*> branchs);
+  void setObjectPropertiesUpdated(std::vector<IndivObjectRelationElement_t>& relations);
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth = -1);
   bool getRelatedWith(ClassBranch_t* class_branch, const std::string& data, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& took);
   bool getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const std::string& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake);

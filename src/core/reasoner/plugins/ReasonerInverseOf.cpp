@@ -18,13 +18,13 @@ void ReasonerInverseOf::postReason()
   for(indiv_i = 0; indiv_i < indiv_size; indiv_i++)
     if(indiv[indiv_i]->updated_ == true)
     {
-      for(prop_i = 0; prop_i < indiv[indiv_i]->object_properties_name_.size(); prop_i++)
+      for(prop_i = 0; prop_i < indiv[indiv_i]->object_relations_.size(); prop_i++)
       {
-        for(inv_i = 0; inv_i < indiv[indiv_i]->object_properties_name_[prop_i]->inverses_.size(); inv_i++)
+        for(inv_i = 0; inv_i < indiv[indiv_i]->object_relations_[prop_i].first->inverses_.size(); inv_i++)
         {
-          IndividualBranch_t* sub_indiv = indiv[indiv_i]->object_properties_on_[prop_i];
+          IndividualBranch_t* sub_indiv = indiv[indiv_i]->object_relations_[prop_i].second;
           insetInverse(sub_indiv,
-                      indiv[indiv_i]->object_properties_name_[prop_i]->inverses_[inv_i],
+                      indiv[indiv_i]->object_relations_[prop_i].first->inverses_[inv_i],
                       indiv[indiv_i]);
         }
       }
@@ -33,17 +33,15 @@ void ReasonerInverseOf::postReason()
 
 void ReasonerInverseOf::insetInverse(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* inv_prop, IndividualBranch_t* inv_indiv)
 {
-  size_t properties_size = indiv_on->object_properties_name_.size();
+  size_t properties_size = indiv_on->object_relations_.size();
   for(size_t i = 0; i < properties_size; i++)
   {
-    if(indiv_on->object_properties_name_[i] == inv_prop)
-      if(indiv_on->object_properties_on_[i] == inv_indiv)
+    if(indiv_on->object_relations_[i].first == inv_prop)
+      if(indiv_on->object_relations_[i].second == inv_indiv)
         return;
   }
 
-  indiv_on->object_properties_name_.push_back(inv_prop);
-  indiv_on->object_properties_on_.push_back(inv_indiv);
-  indiv_on->object_properties_deduced_.push_back(false);
+  indiv_on->object_relations_.push_back(IndivObjectRelationElement_t(inv_prop, inv_indiv));
   indiv_on->object_properties_has_induced_.push_back(Triplet());
   indiv_on->nb_updates_++;
   nb_update_++;

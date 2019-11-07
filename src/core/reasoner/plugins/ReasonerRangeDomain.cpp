@@ -42,15 +42,15 @@ void ReasonerRangeDomain::postReasonIndividuals()
 
 void ReasonerRangeDomain::deduceRange(IndividualBranch_t* branch, std::string& prop)
 {
-  for(size_t i = 0; i < branch->object_properties_name_.size(); i++)
-    if(branch->object_properties_name_[i]->value() == prop)
+  for(size_t i = 0; i < branch->object_relations_.size(); i++)
+    if(branch->object_relations_[i].first->value() == prop)
       deduceObjRange(branch, i);
 }
 
 void ReasonerRangeDomain::deduceDomain(IndividualBranch_t* branch, std::string& prop)
 {
-  for(size_t i = 0; i < branch->object_properties_name_.size(); i++)
-    if(branch->object_properties_name_[i]->value() == prop)
+  for(size_t i = 0; i < branch->object_relations_.size(); i++)
+    if(branch->object_relations_[i].first->value() == prop)
       deduceObjDomain(branch, i);
 
   for(size_t i = 0; i < branch->data_properties_name_.size(); i++)
@@ -62,7 +62,7 @@ void ReasonerRangeDomain::deduceObjRange(IndividualBranch_t* branch, size_t inde
 {
   std::unordered_set<ClassBranch_t*> ranges;
   std::unordered_set<ObjectPropertyBranch_t*> props;
-  props.insert(branch->object_properties_name_[index]);
+  props.insert(branch->object_relations_[index].first);
   while(ranges.size() == 0)
   {
     for(auto prop : props)
@@ -87,13 +87,13 @@ void ReasonerRangeDomain::deduceObjRange(IndividualBranch_t* branch, size_t inde
   for(auto range : ranges)
   {
     std::unordered_set<ClassBranch_t*> up;
-    ontology_->individual_graph_.getUpPtr(branch->object_properties_on_[index], up);
+    ontology_->individual_graph_.getUpPtr(branch->object_relations_[index].second, up);
     if(up.find(range) == up.end())
     {
-      branch->object_properties_on_[index]->is_a_.push_back(range);
-      range->individual_childs_.push_back(branch->object_properties_on_[index]);
+      branch->object_relations_[index].second->is_a_.push_back(range);
+      range->individual_childs_.push_back(branch->object_relations_[index].second);
 
-      branch->object_properties_on_[index]->updated_ = true;
+      branch->object_relations_[index].second->updated_ = true;
       range->updated_ = true;
     }
   }
@@ -103,7 +103,7 @@ void ReasonerRangeDomain::deduceObjDomain(IndividualBranch_t* branch, size_t ind
 {
   std::unordered_set<ClassBranch_t*> domains;
   std::unordered_set<ObjectPropertyBranch_t*> props;
-  props.insert(branch->object_properties_name_[index]);
+  props.insert(branch->object_relations_[index].first);
   while(domains.size() == 0)
   {
     for(auto prop : props)

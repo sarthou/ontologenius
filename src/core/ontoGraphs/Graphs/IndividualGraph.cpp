@@ -94,17 +94,9 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   /**********************
   ** Object Property assertion
   **********************/
-  for(size_t property_i = 0; property_i < individual_vector.object_properties_name_.size(); property_i++)
+  for(size_t property_i = 0; property_i < individual_vector.object_relations_.size(); property_i++)
   {
-    bool deduced = individual_vector.object_properties_deduced_[property_i];
-
-    //Object Property assertion name
-    addObjectPropertyName(me, individual_vector.object_properties_name_[property_i], deduced);
-
-    //Object Property assertion on indiv
-    addObjectPropertyOn(me, individual_vector.object_properties_on_[property_i], deduced);
-
-    me->object_properties_deduced_.push_back(deduced);
+    addObjectProperty(me, individual_vector.object_relations_[property_i]);
     me->object_properties_has_induced_.push_back(Triplet());
   }
 
@@ -215,77 +207,30 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
 *
 *********/
 
-void IndividualGraph::addObjectPropertyName(IndividualBranch_t* me, std::string& name, bool deduced)
+void IndividualGraph::addObjectProperty(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation)
 {
-  bool i_find_my_properties = false;
-
-  //is a root my properties ?
-  auto it = object_property_graph_->roots_.find(name);
-  if(it != object_property_graph_->roots_.end())
-  {
-    if(deduced == false)
-      me->setSteady_object_properties_name(it->second);
-    else
-      me->object_properties_name_.push_back(it->second);
-    i_find_my_properties = true;
-  }
-
-  //is a branch my properties ?
-  if(!i_find_my_properties)
-  {
-    it = object_property_graph_->branchs_.find(name);
-    if(it != object_property_graph_->branchs_.end())
-    {
-      if(deduced == false)
-        me->setSteady_object_properties_name(it->second);
-      else
-        me->object_properties_name_.push_back(it->second);
-      i_find_my_properties = true;
-    }
-  }
-
-  //I create my properties
-  if(!i_find_my_properties)
+  ObjectPropertyBranch_t* property_branch = nullptr;
+  getInMap(&property_branch, relation.first, object_property_graph_->roots_);
+  getInMap(&property_branch, relation.first, object_property_graph_->branchs_);
+  getInMap(&property_branch, relation.first, object_property_graph_->tmp_mothers_);
+  if(property_branch == nullptr)
   {
     ObjectPropertyVectors_t empty_vectors;
-    object_property_graph_->add(name, empty_vectors);
-    it = object_property_graph_->roots_.find(name);
-    if(it != object_property_graph_->roots_.end())
-    {
-      if(deduced == false)
-        me->setSteady_object_properties_name(it->second);
-      else
-        me->object_properties_name_.push_back(it->second);
-      i_find_my_properties = true;
-    }
+    object_property_graph_->add(relation.first, empty_vectors);
+    getInMap(&property_branch, relation.first, object_property_graph_->roots_);
   }
-}
 
-void IndividualGraph::addObjectPropertyOn(IndividualBranch_t* me, std::string& name, bool deduced)
-{
-  bool i_find_my_properties_on = false;
-
-  //is a individual exist ?
-  for(size_t indiv_i = 0; indiv_i < individuals_.size(); indiv_i++)
-    if(name == individuals_[indiv_i]->value())
-    {
-      if(deduced == false)
-        me->setSteady_object_properties_on(individuals_[indiv_i]);
-      else
-        me->object_properties_on_.push_back(individuals_[indiv_i]);
-      i_find_my_properties_on = true;
-    }
-
-  //I create my individual
-  if(!i_find_my_properties_on)
+  IndividualBranch_t* indiv_branch = getBranch(relation.second);
+  if(indiv_branch == nullptr)
   {
-    IndividualBranch_t* tmp = new IndividualBranch_t(name);
-    individuals_.push_back(tmp);
-    if(deduced == false)
-      me->setSteady_object_properties_on(tmp);
-    else
-      me->object_properties_on_.push_back(tmp);
+    indiv_branch = new IndividualBranch_t(relation.second);
+    individuals_.push_back(indiv_branch);
   }
+
+  if(relation.probability != 1.0)
+    me->object_relations_.push_back(IndivObjectRelationElement_t(property_branch, indiv_branch, relation.probability));
+  else
+    me->setSteady_objectRelation(IndivObjectRelationElement_t(property_branch, indiv_branch, relation.probability));
 }
 
 void IndividualGraph::addDataPropertyName(IndividualBranch_t* me, std::string& name, bool deduced)
@@ -379,8 +324,8 @@ std::unordered_set<std::string> IndividualGraph::getRelationFrom(const std::stri
     cleanMarks(sames);
     for(IndividualBranch_t* it : sames)
     {
-      for(size_t i = 0; i < it->object_properties_name_.size(); i++)
-        object_property_graph_->getUp(it->object_properties_name_[i], res, depth);
+      for(size_t i = 0; i < it->object_relations_.size(); i++)
+        object_property_graph_->getUp(it->object_relations_[i].first, res, depth);
 
       for(size_t i = 0; i < it->data_properties_name_.size(); i++)
         data_property_graph_->getUp(it->data_properties_name_[i], res, depth);
@@ -418,9 +363,9 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(size_t i = 0; i < individuals_.size(); i++)
   {
-    for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < individuals_[i]->object_relations_.size(); prop_i++)
       for (uint32_t id : object_properties)
-        if(individuals_[i]->object_properties_name_[prop_i]->get() == id)
+        if(individuals_[i]->object_relations_[prop_i].first->get() == id)
         {
           std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
           res.insert(tmp.begin(), tmp.end());
@@ -456,9 +401,9 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
   std::unordered_set<uint32_t> same = getSameId(individual);
   for(uint32_t id : same)
     for(size_t i = 0; i < individuals_.size(); i++)
-      for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
-        if(individuals_[i]->object_properties_on_[prop_i]->get() == id)
-          object_property_graph_->getUp(individuals_[i]->object_properties_name_[prop_i], res, depth);
+      for(size_t prop_i = 0; prop_i < individuals_[i]->object_relations_.size(); prop_i++)
+        if(individuals_[i]->object_relations_[prop_i].second->get() == id)
+          object_property_graph_->getUp(individuals_[i]->object_relations_[prop_i].first, res, depth);
 
   if(res.size() == 0)
   {
@@ -482,11 +427,11 @@ std::unordered_set<std::string> IndividualGraph::getRelatedOn(const std::string&
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(size_t i = 0; i < individuals_.size(); i++)
   {
-    for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < individuals_[i]->object_relations_.size(); prop_i++)
       for (uint32_t id : object_properties)
-        if(individuals_[i]->object_properties_name_[prop_i]->get() == id)
+        if(individuals_[i]->object_relations_[prop_i].first->get() == id)
         {
-          std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]->object_properties_on_[prop_i]);
+          std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]->object_relations_[prop_i].second);
           res.insert(tmp.begin(), tmp.end());
         }
 
@@ -519,16 +464,16 @@ std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::stri
     cleanMarks(sames);
     for(IndividualBranch_t* it : sames)
     {
-      for(size_t i = 0; i < it->object_properties_on_.size(); i++)
+      for(size_t i = 0; i < it->object_relations_.size(); i++)
       {
         std::unordered_set<IndividualBranch_t*> sames_tmp;
-        getSame(it->object_properties_on_[i], sames_tmp);
+        getSame(it->object_relations_[i].second, sames_tmp);
         std::unordered_set<std::string> tmp = set2set(sames_tmp);
         res.insert(tmp.begin(), tmp.end());
 
-        properties[it->object_properties_name_[i]->value()] = tmp_res.size();
+        properties[it->object_relations_[i].first->value()] = tmp_res.size();
         depths.push_back(0);
-        tmp_res.push_back(it->object_properties_on_[i]->value());
+        tmp_res.push_back(it->object_relations_[i].second->value());
       }
       for(size_t i = 0; i < it->data_properties_data_.size(); i++)
       {
@@ -560,11 +505,11 @@ std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::strin
     bool found = false;
     std::unordered_set<uint32_t> took;
 
-    for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_on_.size(); prop_i++)
-      if(individuals_[i]->object_properties_on_[prop_i]->value() == individual)
+    for(size_t prop_i = 0; prop_i < individuals_[i]->object_relations_.size(); prop_i++)
+      if(individuals_[i]->object_relations_[prop_i].second->value() == individual)
       {
         found = true;
-        took.insert(individuals_[i]->object_properties_name_[prop_i]->get());
+        took.insert(individuals_[i]->object_relations_[prop_i].first->get());
       }
 
     for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
@@ -650,12 +595,12 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
     bool found = false;
     bool defined = false;
 
-    for(size_t prop_i = 0; prop_i < individuals_[i]->object_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < individuals_[i]->object_relations_.size(); prop_i++)
       for (uint32_t id : object_properties)
-        if(individuals_[i]->object_properties_name_[prop_i]->get() == id)
+        if(individuals_[i]->object_relations_[prop_i].first->get() == id)
         {
           defined = true;
-          if(individuals_[i]->object_properties_on_[prop_i]->value() == individual)
+          if(individuals_[i]->object_relations_[prop_i].second->value() == individual)
           {
             found = true;
             break;
@@ -779,11 +724,11 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& indivi
     std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
     std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
 
-    for(size_t prop_i = 0; prop_i < indiv->object_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < indiv->object_relations_.size(); prop_i++)
       for (uint32_t id : object_properties)
-        if(indiv->object_properties_name_[prop_i]->get() == id)
+        if(indiv->object_relations_[prop_i].first->get() == id)
         {
-          std::unordered_set<std::string> tmp = getSameAndClean(indiv->object_properties_on_[prop_i]);
+          std::unordered_set<std::string> tmp = getSameAndClean(indiv->object_relations_[prop_i].second);
           res.insert(tmp.begin(), tmp.end());
         }
 
@@ -826,9 +771,9 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
 
   if(indiv != nullptr)
   {
-    for(size_t indiv_i = 0; indiv_i < indiv->object_properties_on_.size(); indiv_i++)
-      if(indiv->object_properties_on_[indiv_i]->value() == second_individual)
-        object_property_graph_->getUp(indiv->object_properties_name_[indiv_i], res, depth);
+    for(size_t indiv_i = 0; indiv_i < indiv->object_relations_.size(); indiv_i++)
+      if(indiv->object_relations_[indiv_i].second->value() == second_individual)
+        object_property_graph_->getUp(indiv->object_relations_[indiv_i].first, res, depth);
 
     for(size_t indiv_i = 0; indiv_i < indiv->data_properties_data_.size(); indiv_i++)
       if(indiv->data_properties_data_[indiv_i].value_ == second_individual)
@@ -1279,24 +1224,18 @@ void IndividualGraph::deleteIndividual(IndividualBranch_t* indiv)
       if(individuals_[indiv_i] == indiv)
         indiv_index = indiv_i;
 
-      for(size_t i = 0; i < individuals_[indiv_i]->object_properties_on_.size();)
-        if(individuals_[indiv_i]->object_properties_on_[i] == indiv)
+      for(size_t i = 0; i < individuals_[indiv_i]->object_relations_.size();)
+        if(individuals_[indiv_i]->object_relations_[i].second == indiv)
         {
-          individuals_[indiv_i]->object_properties_on_.erase(individuals_[indiv_i]->object_properties_on_.begin() + i);
-          individuals_[indiv_i]->object_properties_name_.erase(individuals_[indiv_i]->object_properties_name_.begin() + i);
-          individuals_[indiv_i]->object_properties_deduced_.erase(individuals_[indiv_i]->object_properties_deduced_.begin() + i);
+          individuals_[indiv_i]->object_relations_.erase(individuals_[indiv_i]->object_relations_.begin() + i);
           individuals_[indiv_i]->object_properties_has_induced_.erase(individuals_[indiv_i]->object_properties_has_induced_.begin() + i);
         }
         else
           i++;
 
-      for(size_t i = 0; i < individuals_[indiv_i]->steady_.object_properties_on_.size();)
-        if(individuals_[indiv_i]->steady_.object_properties_on_[i] == indiv)
-        {
-          individuals_[indiv_i]->steady_.object_properties_on_.erase(individuals_[indiv_i]->steady_.object_properties_on_.begin() + i);
-          individuals_[indiv_i]->steady_.object_properties_name_.erase(individuals_[indiv_i]->steady_.object_properties_name_.begin() + i);
-          individuals_[indiv_i]->steady_.object_properties_deduced_.erase(individuals_[indiv_i]->steady_.object_properties_deduced_.begin() + i);
-        }
+      for(size_t i = 0; i < individuals_[indiv_i]->steady_.object_relations_.size();)
+        if(individuals_[indiv_i]->steady_.object_relations_[i].second == indiv)
+          individuals_[indiv_i]->steady_.object_relations_.erase(individuals_[indiv_i]->steady_.object_relations_.begin() + i);
         else
           i++;
     }
@@ -1354,24 +1293,18 @@ void IndividualGraph::redirectDeleteIndividual(IndividualBranch_t* indiv, ClassB
       if(individuals_[indiv_i] == indiv)
         indiv_index = indiv_i;
 
-      for(size_t i = 0; i < individuals_[indiv_i]->object_properties_on_.size();)
-        if(individuals_[indiv_i]->object_properties_on_[i] == indiv)
+      for(size_t i = 0; i < individuals_[indiv_i]->object_relations_.size();)
+        if(individuals_[indiv_i]->object_relations_[i].second == indiv)
         {
-          individuals_[indiv_i]->object_properties_on_.erase(individuals_[indiv_i]->object_properties_on_.begin() + i);
-          individuals_[indiv_i]->object_properties_name_.erase(individuals_[indiv_i]->object_properties_name_.begin() + i);
-          individuals_[indiv_i]->object_properties_deduced_.erase(individuals_[indiv_i]->object_properties_deduced_.begin() + i);
+          individuals_[indiv_i]->object_relations_.erase(individuals_[indiv_i]->object_relations_.begin() + i);
           individuals_[indiv_i]->object_properties_has_induced_.erase(individuals_[indiv_i]->object_properties_has_induced_.begin() + i);
         }
         else
           i++;
 
-      for(size_t i = 0; i < individuals_[indiv_i]->steady_.object_properties_on_.size();)
-        if(individuals_[indiv_i]->steady_.object_properties_on_[i] == indiv)
-        {
-          individuals_[indiv_i]->steady_.object_properties_on_.erase(individuals_[indiv_i]->steady_.object_properties_on_.begin() + i);
-          individuals_[indiv_i]->steady_.object_properties_name_.erase(individuals_[indiv_i]->steady_.object_properties_name_.begin() + i);
-          individuals_[indiv_i]->steady_.object_properties_deduced_.erase(individuals_[indiv_i]->steady_.object_properties_deduced_.begin() + i);
-        }
+      for(size_t i = 0; i < individuals_[indiv_i]->steady_.object_relations_.size();)
+        if(individuals_[indiv_i]->steady_.object_relations_[i].second == indiv)
+          individuals_[indiv_i]->steady_.object_relations_.erase(individuals_[indiv_i]->steady_.object_relations_.begin() + i);
         else
           i++;
     }
@@ -1503,24 +1436,19 @@ bool IndividualGraph::addProperty(std::string& indiv_from, std::string& property
       int index = -1;
       index = branch_from->ObjectPropertyExistSteady(branch_prop, branch_on);
       if(index == -1)
-      {
-        branch_from->steady_.object_properties_name_.push_back(branch_prop);
-        branch_from->steady_.object_properties_on_.push_back(branch_on);
-      }
+        branch_from->steady_.object_relations_.push_back(IndivObjectRelationElement_t(branch_prop, branch_on));
 
       index = branch_from->ObjectPropertyExist(branch_prop, branch_on);
       if(index == -1)
       {
-        branch_from->object_properties_name_.push_back(branch_prop);
-        branch_from->object_properties_on_.push_back(branch_on);
-        branch_from->object_properties_deduced_.push_back(false);
+        branch_from->object_relations_.push_back(IndivObjectRelationElement_t(branch_prop, branch_on));
         branch_from->object_properties_has_induced_.push_back(Triplet());
       }
       else
-        branch_from->object_properties_deduced_[index] = false;
+        branch_from->object_relations_[index].probability = 1.0;
 
       branch_from->updated_ = true;
-      setObjectPropertiesUpdated(branch_from->object_properties_on_);
+      setObjectPropertiesUpdated(branch_from->object_relations_);
       return true;
     }
     else
@@ -1601,24 +1529,19 @@ bool IndividualGraph::addPropertyInvert(std::string& indiv_from, std::string& pr
       int index = -1;
       index = branch_from->ObjectPropertyExistSteady(branch_prop, branch_on);
       if(index == -1)
-      {
-        branch_from->steady_.object_properties_name_.push_back(branch_prop);
-        branch_from->steady_.object_properties_on_.push_back(branch_on);
-      }
+        branch_from->steady_.object_relations_.push_back(IndivObjectRelationElement_t(branch_prop, branch_on));
 
       index = branch_from->ObjectPropertyExist(branch_prop, branch_on);
       if(index == -1)
       {
-        branch_from->object_properties_name_.push_back(branch_prop);
-        branch_from->object_properties_on_.push_back(branch_on);
-        branch_from->object_properties_deduced_.push_back(false);
+        branch_from->object_relations_.push_back(IndivObjectRelationElement_t(branch_prop, branch_on));
         branch_from->object_properties_has_induced_.push_back(Triplet());
       }
       else
-        branch_from->object_properties_deduced_[index] = false;
+        branch_from->object_relations_[index].probability = 1.0;
 
       branch_from->updated_ = true;
-      setObjectPropertiesUpdated(branch_from->object_properties_on_);
+      setObjectPropertiesUpdated(branch_from->object_relations_);
       return true;
     }
     else
@@ -1665,20 +1588,18 @@ void IndividualGraph::removeInheritage(std::string& class_base, std::string& cla
 bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on)
 {
   bool updated = false;
-  for(size_t i = 0; i < branch_from->object_properties_name_.size();)
+  for(size_t i = 0; i < branch_from->object_relations_.size();)
   {
-    if(branch_from->object_properties_name_[i] == property)
+    if(branch_from->object_relations_[i].first == property)
     {
-      if(branch_from->object_properties_on_[i] == branch_on)
+      if(branch_from->object_relations_[i].second == branch_on)
       {
-        removePropertyInverse(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
-        removePropertySymetric(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
-        removePropertyChain(branch_from, branch_from->object_properties_name_[i], branch_from->object_properties_on_[i]);
+        removePropertyInverse(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
+        removePropertySymetric(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
+        removePropertyChain(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
 
-        branch_from->object_properties_on_[i]->updated_ = true;
-        branch_from->object_properties_name_.erase(branch_from->object_properties_name_.begin() + i);
-        branch_from->object_properties_on_.erase(branch_from->object_properties_on_.begin() + i);
-        branch_from->object_properties_deduced_.erase(branch_from->object_properties_deduced_.begin() + i);
+        branch_from->object_relations_[i].second->updated_ = true;
+        branch_from->object_relations_.erase(branch_from->object_relations_.begin() + i);
         branch_from->object_properties_has_induced_.erase(branch_from->object_properties_has_induced_.begin() + i);
         updated = true;
       }
@@ -1689,15 +1610,14 @@ bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectProp
       i++;
   }
 
-  for(size_t i = 0; i < branch_from->steady_.object_properties_name_.size();)
+  for(size_t i = 0; i < branch_from->steady_.object_relations_.size();)
   {
-    if(branch_from->steady_.object_properties_name_[i] == property)
+    if(branch_from->steady_.object_relations_[i].first == property)
     {
-      if(branch_from->steady_.object_properties_on_[i] == branch_on)
+      if(branch_from->steady_.object_relations_[i].second == branch_on)
       {
-        branch_from->steady_.object_properties_on_[i]->updated_ = true;
-        branch_from->steady_.object_properties_name_.erase(branch_from->steady_.object_properties_name_.begin() + i);
-        branch_from->steady_.object_properties_on_.erase(branch_from->steady_.object_properties_on_.begin() + i);
+        branch_from->steady_.object_relations_[i].second->updated_ = true;
+        branch_from->steady_.object_relations_.erase(branch_from->steady_.object_relations_.begin() + i);
         updated = true;
       }
       else
@@ -1708,8 +1628,8 @@ bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectProp
   }
   if(updated == true)
   {
-    setObjectPropertiesUpdated(branch_from->steady_.object_properties_on_);
-    setObjectPropertiesUpdated(branch_from->object_properties_on_);
+    setObjectPropertiesUpdated(branch_from->steady_.object_relations_);
+    setObjectPropertiesUpdated(branch_from->object_relations_);
   }
 
   return true;
@@ -1776,33 +1696,28 @@ bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& prope
   return false;
 }
 
-void IndividualGraph::setObjectPropertiesUpdated(std::vector<IndividualBranch_t*> branchs)
+void IndividualGraph::setObjectPropertiesUpdated(std::vector<IndivObjectRelationElement_t>& relations)
 {
-  for(auto branch : branchs)
-    branch->updated_ = true;
+  for(auto relation : relations)
+    relation.second->updated_ = true;
 }
 
 void IndividualGraph::removePropertyInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
 {
   for(ObjectPropertyBranch_t* invert : property->inverses_)
   {
-    for(size_t i = 0; i < indiv_on->object_properties_name_.size(); i++)
-      if((indiv_on->object_properties_name_[i] == invert) &&
-        (indiv_on->object_properties_on_[i] == indiv_from))
+    for(size_t i = 0; i < indiv_on->object_relations_.size(); i++)
+      if((indiv_on->object_relations_[i].first == invert) &&
+        (indiv_on->object_relations_[i].second == indiv_from))
         {
-          indiv_on->object_properties_name_.erase(indiv_on->object_properties_name_.begin() + i);
-          indiv_on->object_properties_on_.erase(indiv_on->object_properties_on_.begin() + i);
-          indiv_on->object_properties_deduced_.erase(indiv_on->object_properties_deduced_.begin() + i);
+          indiv_on->object_relations_.erase(indiv_on->object_relations_.begin() + i);
           indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
         }
 
-    for(size_t i = 0; i < indiv_on->steady_.object_properties_name_.size(); i++)
-      if((indiv_on->steady_.object_properties_name_[i] == invert) &&
-        (indiv_on->steady_.object_properties_on_[i] == indiv_from))
-        {
-          indiv_on->steady_.object_properties_name_.erase(indiv_on->steady_.object_properties_name_.begin() + i);
-          indiv_on->steady_.object_properties_on_.erase(indiv_on->steady_.object_properties_on_.begin() + i);
-        }
+    for(size_t i = 0; i < indiv_on->steady_.object_relations_.size(); i++)
+      if((indiv_on->steady_.object_relations_[i].first == invert) &&
+        (indiv_on->steady_.object_relations_[i].second == indiv_from))
+          indiv_on->steady_.object_relations_.erase(indiv_on->steady_.object_relations_.begin() + i);
   }
 }
 
@@ -1810,23 +1725,18 @@ void IndividualGraph::removePropertySymetric(IndividualBranch_t* indiv_from, Obj
 {
   if(property->properties_.symetric_property_ == true)
   {
-    for(size_t i = 0; i < indiv_on->object_properties_name_.size(); i++)
-      if((indiv_on->object_properties_name_[i] == property) &&
-        (indiv_on->object_properties_on_[i] == indiv_from))
+    for(size_t i = 0; i < indiv_on->object_relations_.size(); i++)
+      if((indiv_on->object_relations_[i].first == property) &&
+        (indiv_on->object_relations_[i].second == indiv_from))
         {
-          indiv_on->object_properties_name_.erase(indiv_on->object_properties_name_.begin() + i);
-          indiv_on->object_properties_on_.erase(indiv_on->object_properties_on_.begin() + i);
-          indiv_on->object_properties_deduced_.erase(indiv_on->object_properties_deduced_.begin() + i);
+          indiv_on->object_relations_.erase(indiv_on->object_relations_.begin() + i);
           indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
         }
 
-    for(size_t i = 0; i < indiv_on->steady_.object_properties_name_.size(); i++)
-      if((indiv_on->steady_.object_properties_name_[i] == property) &&
-        (indiv_on->steady_.object_properties_on_[i] == indiv_from))
-        {
-          indiv_on->steady_.object_properties_name_.erase(indiv_on->steady_.object_properties_name_.begin() + i);
-          indiv_on->steady_.object_properties_on_.erase(indiv_on->steady_.object_properties_on_.begin() + i);
-        }
+    for(size_t i = 0; i < indiv_on->steady_.object_relations_.size(); i++)
+      if((indiv_on->steady_.object_relations_[i].first == property) &&
+        (indiv_on->steady_.object_relations_[i].second == indiv_from))
+          indiv_on->steady_.object_relations_.erase(indiv_on->steady_.object_relations_.begin() + i);
   }
 }
 
@@ -1839,9 +1749,9 @@ void IndividualGraph::removePropertyChain(IndividualBranch_t* indiv_from, Object
     {
       ObjectPropertyBranch_t* chained_property = property->chains_[k][property->chains_[k].size() - 1];
 
-      for(size_t i = 0; i < indiv_from->object_properties_name_.size(); i++)
-        if(indiv_from->object_properties_name_[i] == chained_property)
-          if(indiv_from->object_properties_on_[i] == indiv)
+      for(size_t i = 0; i < indiv_from->object_relations_.size(); i++)
+        if(indiv_from->object_relations_[i].first == chained_property)
+          if(indiv_from->object_relations_[i].second == indiv)
           {
             for(size_t induced = 0; induced < indiv_from->object_properties_has_induced_[i].from_.size(); induced++)
             {
@@ -1863,11 +1773,11 @@ std::vector<IndividualBranch_t*> IndividualGraph::resolveLink(std::vector<Object
   {
     if(index != chain.size() - 1)
     {
-      for(size_t i = 0; i < indiv_on->object_properties_name_.size(); i++)
+      for(size_t i = 0; i < indiv_on->object_relations_.size(); i++)
       {
-        if(indiv_on->object_properties_name_[i] == chain[index])
+        if(indiv_on->object_relations_[i].first == chain[index])
         {
-          std::vector<IndividualBranch_t*> tmp = resolveLink(chain, indiv_on->object_properties_on_[i], index + 1);
+          std::vector<IndividualBranch_t*> tmp = resolveLink(chain, indiv_on->object_relations_[i].second, index + 1);
           new_on.insert(new_on.end(), tmp.begin(), tmp.end());
         }
       }

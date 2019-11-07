@@ -238,17 +238,9 @@ void OntologyReader::readIndividual(TiXmlElement* elem)
           {
             std::string property = subElemName.substr(subElemName.find(":")+1);
             if(testAttribute(subElem, "rdf:resource"))
-            {
-              push(individual_vector.object_properties_name_, property, "$");
-              push(individual_vector.object_properties_on_, subElem, "^");
-              push(individual_vector.object_properties_deduced_, false);
-            }
+              push(individual_vector.object_relations_, Pair_t<std::string, std::string>(property, toString(subElem)), "$", "^");
             else if(testAttribute(subElem, "rdf:resourceDeduced"))
-            {
-              push(individual_vector.object_properties_name_, property, "$");
-              push(individual_vector.object_properties_on_, subElem, "^");
-              push(individual_vector.object_properties_deduced_, true);
-            }
+              push(individual_vector.object_relations_, Pair_t<std::string, std::string>(property, toString(subElem), 0.5), "$", "^");
             else if(testAttribute(subElem, "rdf:datatype"))
             {
               const char* value = subElem->GetText();

@@ -65,12 +65,12 @@ void IndividualWriter::writeType(IndividualBranch_t* branch)
 
 void IndividualWriter::writeObjectProperties(IndividualBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.object_properties_name_.size(); i++)
+  for(size_t i = 0; i < branch->steady_.object_relations_.size(); i++)
   {
     std::string tmp = "        <ontologenius:" +
-                      branch->steady_.object_properties_name_[i]->value() +
+                      branch->steady_.object_relations_[i].first->value() +
                       " rdf:resource=\"ontologenius#" +
-                      branch->steady_.object_properties_on_[i]->value() +
+                      branch->steady_.object_relations_[i].second->value() +
                       "\"/>\n";
     writeString(tmp);
   }
@@ -78,13 +78,13 @@ void IndividualWriter::writeObjectProperties(IndividualBranch_t* branch)
 
 void IndividualWriter::writeObjectPropertiesDeduced(IndividualBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->object_properties_name_.size(); i++)
-    if(branch->object_properties_deduced_[i] == true)
+  for(size_t i = 0; i < branch->object_relations_.size(); i++)
+    if(branch->object_relations_[i] < 0.51) // deduced 0.5
     {
       std::string tmp = "        <ontologenius:" +
-                        branch->object_properties_name_[i]->value() +
+                        branch->object_relations_[i].first->value() +
                         " rdf:resourceDeduced=\"ontologenius#" +
-                        branch->object_properties_on_[i]->value() +
+                        branch->object_relations_[i].second->value() +
                         "\"/>\n";
       writeString(tmp);
     }

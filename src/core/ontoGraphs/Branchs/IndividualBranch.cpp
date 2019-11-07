@@ -10,13 +10,9 @@ void IndividualBranch_t::setFullSteady()
   for(size_t i = 0; i < is_a_.size(); i++)
     steady_.is_a_.push_back(is_a_[i]);
 
-  steady_.object_properties_name_.clear();
-  for(size_t i = 0; i < object_properties_name_.size(); i++)
-    steady_.object_properties_name_.push_back(object_properties_name_[i]);
-
-  steady_.object_properties_on_.clear();
-  for(size_t i = 0; i < object_properties_on_.size(); i++)
-    steady_.object_properties_on_.push_back(object_properties_on_[i]);
+  steady_.object_relations_.clear();
+  for(size_t i = 0; i < object_relations_.size(); i++)
+    steady_.object_relations_.push_back(object_relations_[i]);
 
   steady_.data_properties_name_.clear();
   for(size_t i = 0; i < data_properties_name_.size(); i++)
@@ -41,16 +37,10 @@ void IndividualBranch_t::setSteady_is_a(const ClassElement_t& is_a)
   conditionalPushBack(is_a_, is_a);
 }
 
-void IndividualBranch_t::setSteady_object_properties_name(ObjectPropertyBranch_t* object_properties_name)
+void IndividualBranch_t::setSteady_objectRelation(const IndivObjectRelationElement_t& object_relation)
 {
-  steady_.object_properties_name_.push_back(object_properties_name);
-  object_properties_name_.push_back(object_properties_name);
-}
-
-void IndividualBranch_t::setSteady_object_properties_on(IndividualBranch_t* object_properties_on)
-{
-  steady_.object_properties_on_.push_back(object_properties_on);
-  object_properties_on_.push_back(object_properties_on);
+  steady_.object_relations_.push_back(object_relation);
+  object_relations_.push_back(object_relation);
 }
 
 void IndividualBranch_t::setSteady_data_properties_name(DataPropertyBranch_t* data_properties_name)
@@ -136,10 +126,10 @@ void IndividualBranch_t::setSteady_muted_dictionary(std::map<std::string, std::v
 int IndividualBranch_t::ObjectPropertyExistSteady(ObjectPropertyBranch_t* property, IndividualBranch_t* individual)
 {
   int res = -1;
-  for(size_t i = 0; i < steady_.object_properties_name_.size(); i++)
+  for(size_t i = 0; i < steady_.object_relations_.size(); i++)
   {
-    if(steady_.object_properties_name_[i] == property)
-      if(steady_.object_properties_on_[i] == individual)
+    if(steady_.object_relations_[i].first == property)
+      if(steady_.object_relations_[i].second == individual)
       {
         res = i;
         break;
@@ -152,10 +142,10 @@ int IndividualBranch_t::ObjectPropertyExistSteady(ObjectPropertyBranch_t* proper
 int IndividualBranch_t::ObjectPropertyExist(ObjectPropertyBranch_t* property, IndividualBranch_t* individual)
 {
   int res = -1;
-  for(size_t i = 0; i < object_properties_name_.size(); i++)
+  for(size_t i = 0; i < object_relations_.size(); i++)
   {
-    if(object_properties_name_[i] == property)
-      if(object_properties_on_[i] == individual)
+    if(object_relations_[i].first == property)
+      if(object_relations_[i].second == individual)
       {
         res = i;
         break;

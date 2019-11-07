@@ -17,12 +17,12 @@ void ReasonerChain::postReason()
   for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
     if(indiv[indiv_i]->updated_ == true)
     {
-      for(size_t prop_i = 0; prop_i < indiv[indiv_i]->object_properties_name_.size(); prop_i++)
+      for(size_t prop_i = 0; prop_i < indiv[indiv_i]->object_relations_.size(); prop_i++)
       {
-        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(indiv[indiv_i]->object_properties_name_[prop_i]);
+        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(indiv[indiv_i]->object_relations_[prop_i].first);
         for(ObjectPropertyBranch_t* it_prop : props)
           for(size_t chain_i = 0; chain_i < it_prop->chains_.size(); chain_i++)
-            resolveChain(it_prop, it_prop->chains_[chain_i], indiv[indiv_i]->object_properties_on_[prop_i], indiv[indiv_i]);
+            resolveChain(it_prop, it_prop->chains_[chain_i], indiv[indiv_i]->object_relations_[prop_i].second, indiv[indiv_i]);
       }
     }
 }
@@ -51,13 +51,11 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
     for(size_t i = 0; i < indivs_size; i++)
       if(!porpertyExist(on, chain[chain_size], indivs[i]))
       {
-        on->object_properties_name_.push_back(chain[chain_size]);
-        on->object_properties_on_.push_back(indivs[i]);
-        on->object_properties_deduced_.push_back(false);
+        on->object_relations_.push_back(IndivObjectRelationElement_t(chain[chain_size], indivs[i]));
         on->object_properties_has_induced_.push_back(Triplet());
         on->updated_ = true;
-        for(auto branch : on->object_properties_on_)
-          branch->updated_ = true;
+        for(auto relation : on->object_relations_)
+          relation.second->updated_ = true;
         on->nb_updates_++;
         nb_update_++;
 
@@ -67,9 +65,9 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
           for(size_t node_i = 0; node_i < nodes.size(); node_i++)
             for(size_t node_it = 0; node_it < nodes[node_i]->ons_.size(); node_it++)
             {
-              for(size_t prop_i = 0; prop_i < nodes[node_i]->froms_[node_it]->object_properties_name_.size(); prop_i++)
-                if(nodes[node_i]->froms_[node_it]->object_properties_name_[prop_i] == nodes[node_i]->props_[node_it])
-                  if(nodes[node_i]->froms_[node_it]->object_properties_on_[prop_i] == nodes[node_i]->ons_[node_it])
+              for(size_t prop_i = 0; prop_i < nodes[node_i]->froms_[node_it]->object_relations_.size(); prop_i++)
+                if(nodes[node_i]->froms_[node_it]->object_relations_[prop_i].first == nodes[node_i]->props_[node_it])
+                  if(nodes[node_i]->froms_[node_it]->object_relations_[prop_i].second == nodes[node_i]->ons_[node_it])
                     addInduced(nodes[node_i]->froms_[node_it], prop_i, on, chain[chain_size], indivs[i]);
             }
         }
@@ -90,13 +88,13 @@ void ReasonerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTre
     {
       tmp_on.clear();
       tmp_from.clear();
-      for(size_t prop_i = 0; prop_i < indiv->object_properties_name_.size(); prop_i++)
+      for(size_t prop_i = 0; prop_i < indiv->object_relations_.size(); prop_i++)
       {
-        if(chain_props.find(indiv->object_properties_name_[prop_i]->value()) != chain_props.end())
+        if(chain_props.find(indiv->object_relations_[prop_i].first->value()) != chain_props.end())
         {
-          tmp_on.push_back(indiv->object_properties_on_[prop_i]);
+          tmp_on.push_back(indiv->object_relations_[prop_i].second);
           tmp_from.push_back(indiv);
-          tmp_prop.push_back(indiv->object_properties_name_[prop_i]);
+          tmp_prop.push_back(indiv->object_relations_[prop_i].first);
         }
       }
       if(tmp_on.size() != 0)
@@ -113,11 +111,11 @@ void ReasonerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTre
 
 bool ReasonerChain::porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* chain_prop, IndividualBranch_t* chain_indiv)
 {
-  size_t properties_size = indiv_on->object_properties_name_.size();
+  size_t properties_size = indiv_on->object_relations_.size();
   for(size_t i = 0; i < properties_size; i++)
   {
-    if(indiv_on->object_properties_name_[i]->get() == chain_prop->get())
-      if(indiv_on->object_properties_on_[i]->get() == chain_indiv->get())
+    if(indiv_on->object_relations_[i].first->get() == chain_prop->get())
+      if(indiv_on->object_relations_[i].second->get() == chain_indiv->get())
         return true;
   }
   return false;

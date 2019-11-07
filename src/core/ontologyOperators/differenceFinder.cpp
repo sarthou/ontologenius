@@ -171,8 +171,8 @@ comparator_t differenceFinder::toComparator(IndividualBranch_t* indiv)
 {
   comparator_t comp;
   comp.concept_ = indiv->value();
-  comp.object_properties_name_ = toValued(indiv->object_properties_name_);
-  comp.object_properties_on_ = toValued(indiv->object_properties_on_);
+  comp.object_properties_name_ = toValuedFirst(indiv->object_relations_);
+  comp.object_properties_on_ = toValuedSecond(indiv->object_relations_);
   comp.data_properties_name_ = toValued(indiv->data_properties_name_);
   comp.data_properties_data_ = toValued(indiv->data_properties_data_);
   comp.mothers_ = toValued(indiv->is_a_);

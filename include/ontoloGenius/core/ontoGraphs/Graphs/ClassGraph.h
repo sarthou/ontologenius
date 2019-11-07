@@ -118,17 +118,6 @@ private:
     }
   }
 
-  template<typename T>
-  void getInMap(T** ptr, const std::string& name, std::map<std::string, T*>& map)
-  {
-    if(*ptr != nullptr)
-      return;
-
-    auto it = map.find(name);
-    if(it != map.end())
-      *ptr = it->second;
-  }
-
   ClassBranch_t* findIntersection(std::unordered_set<ClassBranch_t*>& base, std::unordered_set<ClassBranch_t*>& comp)
   {
     for (ClassBranch_t* it : comp)
