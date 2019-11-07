@@ -44,13 +44,9 @@ void ClassBranch_t::setFullSteady()
   for(size_t i = 0; i < object_relations_.size(); i++)
     steady_.object_relations_.push_back(object_relations_[i]);
 
-  steady_.data_properties_name_.clear();
-  for(size_t i = 0; i < data_properties_name_.size(); i++)
-    steady_.data_properties_name_.push_back(data_properties_name_[i]);
-
-  steady_.data_properties_data_.clear();
-  for(size_t i = 0; i < data_properties_data_.size(); i++)
-    steady_.data_properties_data_.push_back(data_properties_data_[i]);
+  steady_.data_relations_.clear();
+  for(size_t i = 0; i < data_relations_.size(); i++)
+    steady_.data_relations_.push_back(data_relations_[i]);
 }
 
 void ClassBranch_t::setSteady_disjoint(ClassBranch_t* disjoint)
@@ -133,22 +129,16 @@ void ClassBranch_t::setSteady_muted_dictionary(std::map<std::string, std::vector
   }
 }
 
-void ClassBranch_t::setSteady_objectRelation(const ObjectRelationElement_t& object_relation)
+void ClassBranch_t::setSteady_objectRelation(const ClassObjectRelationElement_t& object_relation)
 {
   steady_.object_relations_.push_back(object_relation);
   object_relations_.push_back(object_relation);
 }
 
-void ClassBranch_t::setSteady_data_properties_name(DataPropertyBranch_t* data_properties_name)
+void ClassBranch_t::setSteady_dataRelation(const ClassDataRelationElement_t& data_relation)
 {
-  steady_.data_properties_name_.push_back(data_properties_name);
-  data_properties_name_.push_back(data_properties_name);
-}
-
-void ClassBranch_t::setSteady_data_properties_data(data_t data_properties_data)
-{
-  steady_.data_properties_data_.push_back(data_properties_data);
-  data_properties_data_.push_back(data_properties_data);
+  steady_.data_relations_.push_back(data_relation);
+  data_relations_.push_back(data_relation);
 }
 
 } // namespace ontologenius

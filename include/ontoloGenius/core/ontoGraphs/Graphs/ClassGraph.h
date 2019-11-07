@@ -20,11 +20,7 @@ struct ObjectVectors_t
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
 
    std::vector<Pair_t<std::string, std::string>> object_relations_;
-
-   std::vector<std::string> data_properties_name_;
-   std::vector<std::string> data_properties_type_;
-   std::vector<std::string> data_properties_value_;
-   std::vector<bool> data_properties_deduced_;
+   std::vector<Pair_t<std::string, data_t>> data_relations_;
 };
 
 //for friend
@@ -88,9 +84,8 @@ private:
   DataPropertyGraph* data_property_graph_;
   IndividualGraph* individual_graph_;
 
-  void addObjectProperty(ClassBranch_t* me, std::string& property, std::string& class_on, float probability);
-  void addDataPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
-  void addDataPropertyData(ClassBranch_t* me, data_t& data, bool deduced);
+  void addObjectProperty(ClassBranch_t* me, Pair_t<std::string, std::string>& relation);
+  void addDataProperty(ClassBranch_t* me, Pair_t<std::string, data_t>& relation);
 
   void setSteadyObjectProperty(ClassBranch_t* branch_from, ObjectPropertyBranch_t* branch_prop, ClassBranch_t* branch_on);
   void setSteadyDataProperty(ClassBranch_t* branch_from, DataPropertyBranch_t* branch_prop, data_t data);

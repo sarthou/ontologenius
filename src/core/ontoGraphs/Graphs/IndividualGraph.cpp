@@ -401,8 +401,8 @@ void IndividualGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordere
     for(size_t i = 0; i < class_branch->object_relations_.size(); i++)
       object_property_graph_->getUp(class_branch->object_relations_[i].first, res, depth);
 
-    for(size_t i = 0; i < class_branch->data_properties_name_.size(); i++)
-      data_property_graph_->getUp(class_branch->data_properties_name_[i], res, depth);
+    for(size_t i = 0; i < class_branch->data_relations_.size(); i++)
+      data_property_graph_->getUp(class_branch->data_relations_[i].first, res, depth);
   }
 }
 
@@ -608,12 +608,12 @@ bool IndividualGraph::getRelatedWith(ClassBranch_t* class_branch, const std::str
       took.insert(class_branch->object_relations_[prop_i].first->get());
     }
 
-    for(size_t prop_i = 0; prop_i < class_branch->data_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < class_branch->data_relations_.size(); prop_i++)
     {
-      if(class_branch->data_properties_data_[prop_i].value_ == data)
-        if(took.find(class_branch->data_properties_name_[prop_i]->get()) == took.end())
+      if(class_branch->data_relations_[prop_i].second.value_ == data)
+        if(took.find(class_branch->data_relations_[prop_i].first->get()) == took.end())
           res = true;
-      took.insert(class_branch->data_properties_name_[prop_i]->get());
+      took.insert(class_branch->data_relations_[prop_i].first->get());
     }
 
     class_graph_->getUpPtr(class_branch, next_step, 1);
@@ -727,12 +727,12 @@ bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<ui
         }
 
     if(defined == false)
-      for(size_t prop_i = 0; prop_i < class_branch->data_properties_name_.size(); prop_i++)
+      for(size_t prop_i = 0; prop_i < class_branch->data_relations_.size(); prop_i++)
         for (uint32_t id : data_properties)
-          if(class_branch->data_properties_name_[prop_i]->get() == id)
+          if(class_branch->data_relations_[prop_i].first->get() == id)
           {
             defined = true;
-            if(class_branch->data_properties_data_[prop_i].value_ == data)
+            if(class_branch->data_relations_[prop_i].second.value_ == data)
             {
               found = true;
               break;
@@ -1204,13 +1204,19 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
   {
     ClassBranch_t* class_branch = new ClassBranch_t(indiv->value());
     class_branch->mothers_ = std::move(indiv->is_a_);
-    class_branch->data_properties_name_ = indiv->data_properties_name_;
-    class_branch->data_properties_data_ = indiv->data_properties_data_;
-    class_branch->data_properties_deduced_ = indiv->data_properties_deduced_;
+    class_branch->data_relations_.clear();
+    for(size_t i = 0; i < indiv->data_properties_name_.size(); i++)
+    {
+      if(indiv->data_properties_deduced_[i])
+        class_branch->data_relations_.push_back(ClassDataRelationElement_t(indiv->data_properties_name_[i],indiv->data_properties_data_[i], 0.5));
+      else
+        class_branch->data_relations_.push_back(ClassDataRelationElement_t(indiv->data_properties_name_[i],indiv->data_properties_data_[i]));
+    }
 
     class_branch->steady_.mothers_ = std::move(indiv->steady_.is_a_);
-    class_branch->steady_.data_properties_name_ = indiv->steady_.data_properties_name_;
-    class_branch->steady_.data_properties_data_ = indiv->steady_.data_properties_data_;
+    class_branch->steady_.data_relations_.clear();
+    for(size_t i = 0; i < indiv->steady_.data_properties_name_.size(); i++)
+      class_branch->steady_.data_relations_.push_back(ClassDataRelationElement_t(indiv->steady_.data_properties_name_[i],indiv->steady_.data_properties_data_[i]));
 
     class_graph_->container_.insert(class_branch);
     class_graph_->all_branchs_.push_back(class_branch);

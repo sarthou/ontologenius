@@ -58,6 +58,7 @@ private:
   inline void push(std::vector<Single_t<std::string>>& vect, TiXmlElement* subElem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
   inline void push(std::vector<Single_t<std::string>>& vect, const std::string& elem, const std::string& symbole = "");
   inline void push(std::vector<Pair_t<std::string, std::string>>& vect, const Pair_t<std::string, std::string>& elem, const std::string& symbole1, const std::string& symbole2);
+  inline void push(std::vector<Pair_t<std::string, data_t>>& vect, const Pair_t<std::string, data_t>& elem, const std::string& symbole1, const std::string& symbole2);
   inline void push(std::vector<bool>& vect, bool elem, const std::string& symbole = "");
   void push(Properties_t& properties, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   void pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem);
@@ -139,6 +140,16 @@ void OntologyReader::push(std::vector<Pair_t<std::string, std::string>>& vect, c
 
   if(symbole2 != "")
     std::cout << "│   │   ├── " << symbole2 << elem.second << std::endl;
+}
+
+void OntologyReader::push(std::vector<Pair_t<std::string, data_t>>& vect, const Pair_t<std::string, data_t>& elem, const std::string& symbole1, const std::string& symbole2)
+{
+  vect.push_back(elem);
+  if(symbole1 != "")
+    std::cout << "│   │   ├── " << symbole1 << elem.first << std::endl;
+
+  if(symbole2 != "")
+    std::cout << "│   │   ├── " << symbole2 << elem.second.toString() << std::endl;
 }
 
 void OntologyReader::push(std::vector<bool>& vect, bool elem, const std::string& symbole)

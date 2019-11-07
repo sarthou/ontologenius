@@ -93,7 +93,16 @@ private:
   {
     std::vector<std::string> res;
     for(auto it : vect)
-      res.push_back(it.first->value());
+      res.push_back(it.second->value());
+    return res;
+  }
+
+  template<typename T>
+  std::vector<std::string> toValuedSecond(std::vector<Pair_t<T, data_t>> vect)
+  {
+    std::vector<std::string> res;
+    for(auto it : vect)
+      res.push_back(it.second.toString());
     return res;
   }
 
