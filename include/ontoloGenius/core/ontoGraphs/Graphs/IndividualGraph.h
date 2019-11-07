@@ -18,11 +18,7 @@ struct IndividualVectors_t
    std::vector<Single_t<std::string>> is_a_;
 
    std::vector<Pair_t<std::string, std::string>> object_relations_;
-
-   std::vector<std::string> data_properties_name_;
-   std::vector<std::string> data_properties_type_;
-   std::vector<std::string> data_properties_value_;
-   std::vector<bool> data_properties_deduced_;
+   std::vector<Pair_t<std::string, data_t>> data_relations_;
 
    std::vector<std::string> same_as_;
    std::map<std::string, std::vector<std::string>> dictionary_;
@@ -125,10 +121,9 @@ private:
   }
 
   void addObjectProperty(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
-
-  void addDataPropertyName(IndividualBranch_t* me, std::string& name, bool deduced);
-  void addDataPropertyData(IndividualBranch_t* me, data_t& data, bool deduced);
+  void addDataProperty(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation);
   void setObjectPropertiesUpdated(std::vector<IndivObjectRelationElement_t>& relations);
+  
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth = -1);
   bool getRelatedWith(ClassBranch_t* class_branch, const std::string& data, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& took);
   bool getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const std::string& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake);

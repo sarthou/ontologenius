@@ -246,10 +246,10 @@ void OntologyReader::readIndividual(TiXmlElement* elem)
               const char* value = subElem->GetText();
               if(value != NULL)
               {
-                push(individual_vector.data_properties_name_, property, "+");
-                push(individual_vector.data_properties_value_, std::string(value), "^");
-                push(individual_vector.data_properties_type_, subElem, "#", "rdf:datatype");
-                push(individual_vector.data_properties_deduced_, false);
+                data_t data;
+                data.value_ = std::string(value);
+                data.type_ = toString(subElem, "rdf:datatype");
+                push(individual_vector.data_relations_, Pair_t<std::string, data_t>(property, data), "$", "^");
               }
             }
             else if(testAttribute(subElem, "rdf:datatypeDeduced"))
@@ -257,10 +257,10 @@ void OntologyReader::readIndividual(TiXmlElement* elem)
               const char* value = subElem->GetText();
               if(value != NULL)
               {
-                push(individual_vector.data_properties_name_, property, "+");
-                push(individual_vector.data_properties_value_, std::string(value), "^");
-                push(individual_vector.data_properties_type_, subElem, "#", "rdf:datatypeDeduced");
-                push(individual_vector.data_properties_deduced_, true);
+                data_t data;
+                data.value_ = std::string(value);
+                data.type_ = toString(subElem, "rdf:datatypeDeduced");
+                push(individual_vector.data_relations_, Pair_t<std::string, data_t>(property, data, 0.5), "$", "^");
               }
             }
           }

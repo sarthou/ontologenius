@@ -53,8 +53,8 @@ void ReasonerRangeDomain::deduceDomain(IndividualBranch_t* branch, std::string& 
     if(branch->object_relations_[i].first->value() == prop)
       deduceObjDomain(branch, i);
 
-  for(size_t i = 0; i < branch->data_properties_name_.size(); i++)
-    if(branch->data_properties_name_[i]->value() == prop)
+  for(size_t i = 0; i < branch->data_relations_.size(); i++)
+    if(branch->data_relations_[i].first->value() == prop)
       deduceDatDomain(branch, i);
 }
 
@@ -144,7 +144,7 @@ void ReasonerRangeDomain::deduceDatDomain(IndividualBranch_t* branch, size_t ind
 {
   std::unordered_set<ClassBranch_t*> domains;
   std::unordered_set<DataPropertyBranch_t*> props;
-  props.insert(branch->data_properties_name_[index]);
+  props.insert(branch->data_relations_[index].first);
   while(domains.size() == 0)
   {
     for(auto prop : props)

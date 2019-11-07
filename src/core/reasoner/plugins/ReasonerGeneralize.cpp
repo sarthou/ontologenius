@@ -43,8 +43,8 @@ void ReasonerGeneralize::periodicReason()
 
       for(auto down : indiv_down_set)
       {
-        for(size_t j = 0; j < down->data_properties_name_.size(); j++)
-          data_counter.add(down->data_properties_name_[j], down->data_properties_data_[j].toString());
+        for(size_t j = 0; j < down->data_relations_.size(); j++)
+          data_counter.add(down->data_relations_[j].first, down->data_relations_[j].second.toString());
       }
 
       lock_shared.unlock();

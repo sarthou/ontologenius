@@ -104,19 +104,8 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   ** Data Property assertion name
   **********************/
   //for all my properties
-  for(size_t property_i = 0; property_i < individual_vector.data_properties_name_.size(); property_i++)
-  {
-    bool deduced = individual_vector.data_properties_deduced_[property_i];
-
-    addDataPropertyName(me, individual_vector.data_properties_name_[property_i], deduced);
-
-    data_t data;
-    data.value_ = individual_vector.data_properties_value_[property_i];
-    data.type_ = individual_vector.data_properties_type_[property_i];
-    addDataPropertyData(me, data, deduced);
-
-    me->data_properties_deduced_.push_back(deduced);
-  }
+  for(size_t property_i = 0; property_i < individual_vector.data_relations_.size(); property_i++)
+    addDataProperty(me, individual_vector.data_relations_[property_i]);
 
   /**********************
   ** Same In Individual
@@ -233,58 +222,23 @@ void IndividualGraph::addObjectProperty(IndividualBranch_t* me, Pair_t<std::stri
     me->setSteady_objectRelation(IndivObjectRelationElement_t(property_branch, indiv_branch, relation.probability));
 }
 
-void IndividualGraph::addDataPropertyName(IndividualBranch_t* me, std::string& name, bool deduced)
+void IndividualGraph::addDataProperty(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation)
 {
-  bool i_find_my_properties = false;
-
-  //is a root my properties ?
-  auto it = data_property_graph_->roots_.find(name);
-  if(it != data_property_graph_->roots_.end())
-  {
-    if(deduced == false)
-      me->setSteady_data_properties_name(it->second);
-    else
-      me->data_properties_name_.push_back(it->second);
-    i_find_my_properties = true;
-  }
-
-  //is a branch my properties ?
-  if(!i_find_my_properties)
-  {
-    it = data_property_graph_->branchs_.find(name);
-    if(it != data_property_graph_->branchs_.end())
-    {
-      if(deduced == false)
-        me->setSteady_data_properties_name(it->second);
-      else
-        me->data_properties_name_.push_back(it->second);
-      i_find_my_properties = true;
-    }
-  }
-
-  //I create my properties
-  if(!i_find_my_properties)
+  DataPropertyBranch_t* property_branch = nullptr;
+  getInMap(&property_branch, relation.first, data_property_graph_->roots_);
+  getInMap(&property_branch, relation.first, data_property_graph_->branchs_);
+  getInMap(&property_branch, relation.first, data_property_graph_->tmp_mothers_);
+  if(property_branch == nullptr)
   {
     DataPropertyVectors_t empty_vectors;
-    data_property_graph_->add(name, empty_vectors);
-    it = data_property_graph_->roots_.find(name);
-    if(it != data_property_graph_->roots_.end())
-    {
-      if(deduced == false)
-        me->setSteady_data_properties_name(it->second);
-      else
-        me->data_properties_name_.push_back(it->second);
-      i_find_my_properties = true;
-    }
+    data_property_graph_->add(relation.first, empty_vectors);
+    getInMap(&property_branch, relation.first, data_property_graph_->roots_);
   }
-}
 
-void IndividualGraph::addDataPropertyData(IndividualBranch_t* me, data_t& data, bool deduced)
-{
-  if(deduced == false)
-    me->setSteady_data_properties_data(data);
+  if(relation.probability != 1.0)
+    me->data_relations_.push_back(IndivDataRelationElement_t(property_branch, relation.second, relation.probability));
   else
-    me->data_properties_data_.push_back(data);
+    me->setSteady_dataRelation(IndivDataRelationElement_t(property_branch, relation.second, relation.probability));
 }
 
 /*********
@@ -327,8 +281,8 @@ std::unordered_set<std::string> IndividualGraph::getRelationFrom(const std::stri
       for(size_t i = 0; i < it->object_relations_.size(); i++)
         object_property_graph_->getUp(it->object_relations_[i].first, res, depth);
 
-      for(size_t i = 0; i < it->data_properties_name_.size(); i++)
-        data_property_graph_->getUp(it->data_properties_name_[i], res, depth);
+      for(size_t i = 0; i < it->data_relations_.size(); i++)
+        data_property_graph_->getUp(it->data_relations_[i].first, res, depth);
 
       std::unordered_set<ClassBranch_t*> up_set;
       getUpPtr(it, up_set);
@@ -372,9 +326,9 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
           break;
         }
 
-    for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < individuals_[i]->data_relations_.size(); prop_i++)
       for (uint32_t id : data_properties)
-        if(individuals_[i]->data_properties_name_[prop_i]->get() == id)
+        if(individuals_[i]->data_relations_[prop_i].first->get() == id)
         {
           std::unordered_set<std::string> tmp = getSameAndClean(individuals_[i]);
           res.insert(tmp.begin(), tmp.end());
@@ -408,9 +362,9 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
   if(res.size() == 0)
   {
     for(size_t i = 0; i < individuals_.size(); i++)
-      for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
-        if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
-          data_property_graph_->getUp(individuals_[i]->data_properties_name_[prop_i], res, depth);
+      for(size_t prop_i = 0; prop_i < individuals_[i]->data_relations_.size(); prop_i++)
+        if(individuals_[i]->data_relations_[prop_i].second.value_ == individual)
+          data_property_graph_->getUp(individuals_[i]->data_relations_[prop_i].first, res, depth);
 
     class_graph_->getRelationOnDataProperties(individual, res, depth);
   }
@@ -435,10 +389,10 @@ std::unordered_set<std::string> IndividualGraph::getRelatedOn(const std::string&
           res.insert(tmp.begin(), tmp.end());
         }
 
-    for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < individuals_[i]->data_relations_.size(); prop_i++)
       for (uint32_t id : data_properties)
-        if(individuals_[i]->data_properties_name_[prop_i]->get() == id)
-          res.insert(individuals_[i]->data_properties_data_[prop_i].toString());
+        if(individuals_[i]->data_relations_[prop_i].first->get() == id)
+          res.insert(individuals_[i]->data_relations_[prop_i].second.toString());
   }
 
   class_graph_->getRelatedOnDataProperties(property, res);
@@ -475,13 +429,13 @@ std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::stri
         depths.push_back(0);
         tmp_res.push_back(it->object_relations_[i].second->value());
       }
-      for(size_t i = 0; i < it->data_properties_data_.size(); i++)
+      for(size_t i = 0; i < it->data_relations_.size(); i++)
       {
-        res.insert(it->data_properties_data_[i].toString());
+        res.insert(it->data_relations_[i].second.toString());
 
-        properties[it->data_properties_name_[i]->value()] = tmp_res.size();
+        properties[it->data_relations_[i].first->value()] = tmp_res.size();
         depths.push_back(0);
-        tmp_res.push_back(it->data_properties_data_[i].toString());
+        tmp_res.push_back(it->data_relations_[i].second.toString());
       }
     }
 
@@ -512,11 +466,11 @@ std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::strin
         took.insert(individuals_[i]->object_relations_[prop_i].first->get());
       }
 
-    for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_data_.size(); prop_i++)
-      if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
+    for(size_t prop_i = 0; prop_i < individuals_[i]->data_relations_.size(); prop_i++)
+      if(individuals_[i]->data_relations_[prop_i].second.value_ == individual)
       {
         found = true;
-        took.insert(individuals_[i]->data_properties_name_[prop_i]->get());
+        took.insert(individuals_[i]->data_relations_[prop_i].first->get());
       }
 
     std::unordered_set<ClassBranch_t*> up_set;
@@ -608,12 +562,12 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
         }
 
     if(defined == false)
-      for(size_t prop_i = 0; prop_i < individuals_[i]->data_properties_name_.size(); prop_i++)
+      for(size_t prop_i = 0; prop_i < individuals_[i]->data_relations_.size(); prop_i++)
         for (uint32_t id : data_properties)
-          if(individuals_[i]->data_properties_name_[prop_i]->get() == id)
+          if(individuals_[i]->data_relations_[prop_i].first->get() == id)
           {
             defined = true;
-            if(individuals_[i]->data_properties_data_[prop_i].value_ == individual)
+            if(individuals_[i]->data_relations_[prop_i].second.value_ == individual)
             {
               found = true;
               break;
@@ -732,10 +686,10 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& indivi
           res.insert(tmp.begin(), tmp.end());
         }
 
-    for(size_t prop_i = 0; prop_i < indiv->data_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < indiv->data_relations_.size(); prop_i++)
       for (uint32_t id : data_properties)
-        if(indiv->data_properties_name_[prop_i]->get() == id)
-          res.insert(indiv->data_properties_data_[prop_i].toString());
+        if(indiv->data_relations_[prop_i].first->get() == id)
+          res.insert(indiv->data_relations_[prop_i].second.toString());
 
     if(res.size() == 0)
     {
@@ -775,9 +729,9 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
       if(indiv->object_relations_[indiv_i].second->value() == second_individual)
         object_property_graph_->getUp(indiv->object_relations_[indiv_i].first, res, depth);
 
-    for(size_t indiv_i = 0; indiv_i < indiv->data_properties_data_.size(); indiv_i++)
-      if(indiv->data_properties_data_[indiv_i].value_ == second_individual)
-        data_property_graph_->getUp(indiv->data_properties_name_[indiv_i], res, depth);
+    for(size_t indiv_i = 0; indiv_i < indiv->data_relations_.size(); indiv_i++)
+      if(indiv->data_relations_[indiv_i].second.value_ == second_individual)
+        data_property_graph_->getUp(indiv->data_relations_[indiv_i].first, res, depth);
 
     int found_depth = -1;
     uint32_t current_depth = 0;
@@ -1150,18 +1104,13 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
     ClassBranch_t* class_branch = new ClassBranch_t(indiv->value());
     class_branch->mothers_ = std::move(indiv->is_a_);
     class_branch->data_relations_.clear();
-    for(size_t i = 0; i < indiv->data_properties_name_.size(); i++)
-    {
-      if(indiv->data_properties_deduced_[i])
-        class_branch->data_relations_.push_back(ClassDataRelationElement_t(indiv->data_properties_name_[i],indiv->data_properties_data_[i], 0.5));
-      else
-        class_branch->data_relations_.push_back(ClassDataRelationElement_t(indiv->data_properties_name_[i],indiv->data_properties_data_[i]));
-    }
+    for(size_t i = 0; i < indiv->data_relations_.size(); i++)
+      class_branch->data_relations_.push_back(ClassDataRelationElement_t(indiv->data_relations_[i].first,indiv->data_relations_[i].second, indiv->data_relations_[i].probability));
 
     class_branch->steady_.mothers_ = std::move(indiv->steady_.is_a_);
     class_branch->steady_.data_relations_.clear();
-    for(size_t i = 0; i < indiv->steady_.data_properties_name_.size(); i++)
-      class_branch->steady_.data_relations_.push_back(ClassDataRelationElement_t(indiv->steady_.data_properties_name_[i],indiv->steady_.data_properties_data_[i]));
+    for(size_t i = 0; i < indiv->steady_.data_relations_.size(); i++)
+      class_branch->steady_.data_relations_.push_back(ClassDataRelationElement_t(indiv->steady_.data_relations_[i].first,indiv->steady_.data_relations_[i].second,indiv->steady_.data_relations_[i].probability));
 
     class_graph_->container_.insert(class_branch);
     class_graph_->all_branchs_.push_back(class_branch);
@@ -1481,9 +1430,7 @@ bool IndividualGraph::addProperty(std::string& indiv_from, std::string& property
 
     if(checkRangeAndDomain(branch_from, branch_prop, data_branch))
     {
-      branch_from->setSteady_data_properties_name(branch_prop);
-      branch_from->setSteady_data_properties_data(data_branch);
-      branch_from->data_properties_deduced_.push_back(false);
+      branch_from->setSteady_dataRelation(IndivDataRelationElement_t(branch_prop,data_branch));
       branch_from->updated_ = true;
       return true;
     }
@@ -1656,17 +1603,13 @@ bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& prope
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
   {
-    for(size_t i = 0; i < branch_from->data_properties_name_.size();)
+    for(size_t i = 0; i < branch_from->data_relations_.size();)
     {
-      if(branch_from->data_properties_name_[i]->value() == property)
+      if(branch_from->data_relations_[i].first->value() == property)
       {
-        if((branch_from->data_properties_data_[i].type_ == type) &&
-          (branch_from->data_properties_data_[i].value_ == data))
-        {
-          branch_from->data_properties_name_.erase(branch_from->data_properties_name_.begin() + i);
-          branch_from->data_properties_data_.erase(branch_from->data_properties_data_.begin() + i);
-          branch_from->data_properties_deduced_.erase(branch_from->data_properties_deduced_.begin() + i);
-        }
+        if((branch_from->data_relations_[i].second.type_ == type) &&
+          (branch_from->data_relations_[i].second.value_ == data))
+          branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
         else
           i++;
       }
@@ -1674,16 +1617,13 @@ bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& prope
         i++;
     }
 
-    for(size_t i = 0; i < branch_from->steady_.data_properties_name_.size();)
+    for(size_t i = 0; i < branch_from->steady_.data_relations_.size();)
     {
-      if(branch_from->steady_.data_properties_name_[i]->value() == property)
+      if(branch_from->steady_.data_relations_[i].first->value() == property)
       {
-        if((branch_from->data_properties_data_[i].type_ == type) &&
-          (branch_from->data_properties_data_[i].value_ == data))
-        {
-          branch_from->steady_.data_properties_name_.erase(branch_from->steady_.data_properties_name_.begin() + i);
-          branch_from->steady_.data_properties_data_.erase(branch_from->steady_.data_properties_data_.begin() + i);
-        }
+        if((branch_from->data_relations_[i].second.type_ == type) &&
+          (branch_from->data_relations_[i].second.value_ == data))
+          branch_from->steady_.data_relations_.erase(branch_from->steady_.data_relations_.begin() + i);
         else
           i++;
       }
