@@ -57,10 +57,10 @@ void ClassChecker::checkObectPropertyDomain()
 
     std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
 
-    for(size_t prop_i = 0; prop_i < graph_vect_[i]->object_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < graph_vect_[i]->object_relations_.size(); prop_i++)
     {
       std::unordered_set<ObjectPropertyBranch_t*> prop_up;
-      class_graph_->object_property_graph_->getUpPtr(graph_vect_[i]->object_properties_name_[prop_i], prop_up);
+      class_graph_->object_property_graph_->getUpPtr(graph_vect_[i]->object_relations_[prop_i].first, prop_up);
       std::unordered_set<ClassBranch_t*> domain;
       for(auto prop : prop_up)
         class_graph_->object_property_graph_->getDomainPtr(prop, domain);
@@ -77,11 +77,11 @@ void ClassChecker::checkObectPropertyDomain()
 
           if(intersection == nullptr)
           {
-            graph_vect_[i]->flags_["domain"].push_back(graph_vect_[i]->object_properties_name_[prop_i]->value());
-            print_warning("'" + graph_vect_[i]->value() + "' is not in domain of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
+            graph_vect_[i]->flags_["domain"].push_back(graph_vect_[i]->object_relations_[prop_i].first->value());
+            print_warning("'" + graph_vect_[i]->value() + "' is not in domain of '" + graph_vect_[i]->object_relations_[prop_i].first->value() + "'");
           }
           else
-            print_error("'" + graph_vect_[i]->value() + "' can not be in domain of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
+            print_error("'" + graph_vect_[i]->value() + "' can not be in domain of '" + graph_vect_[i]->object_relations_[prop_i].first->value() + "'");
         }
       }
     }
@@ -92,14 +92,14 @@ void ClassChecker::checkObectPropertyRange()
 {
   for(size_t i = 0; i < graph_size; i++)
   {
-    for(size_t prop_i = 0; prop_i < graph_vect_[i]->object_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < graph_vect_[i]->object_relations_.size(); prop_i++)
     {
       std::unordered_set<ClassBranch_t*> up;
-      class_graph_->getUpPtr(graph_vect_[i]->object_properties_on_[prop_i], up);
+      class_graph_->getUpPtr(graph_vect_[i]->object_relations_[prop_i].second, up);
 
       std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
       std::unordered_set<ObjectPropertyBranch_t*> prop_up;
-      class_graph_->object_property_graph_->getUpPtr(graph_vect_[i]->object_properties_name_[prop_i], prop_up);
+      class_graph_->object_property_graph_->getUpPtr(graph_vect_[i]->object_relations_[prop_i].first, prop_up);
       std::unordered_set<ClassBranch_t*> range;
       for(auto prop : prop_up)
         class_graph_->object_property_graph_->getRangePtr(prop, range);
@@ -116,11 +116,11 @@ void ClassChecker::checkObectPropertyRange()
 
           if(intersection == nullptr)
           {
-            graph_vect_[i]->flags_["range"].push_back(graph_vect_[i]->object_properties_name_[prop_i]->value());
-            print_warning("'" + graph_vect_[i]->object_properties_on_[prop_i]->value() + "' is not in range of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
+            graph_vect_[i]->flags_["range"].push_back(graph_vect_[i]->object_relations_[prop_i].first->value());
+            print_warning("'" + graph_vect_[i]->object_relations_[prop_i].second->value() + "' is not in range of '" + graph_vect_[i]->object_relations_[prop_i].first->value() + "'");
           }
           else
-            print_error("'" + graph_vect_[i]->object_properties_on_[prop_i]->value() + "' can not be in range of '" + graph_vect_[i]->object_properties_name_[prop_i]->value() + "'");
+            print_error("'" + graph_vect_[i]->object_relations_[prop_i].second->value() + "' can not be in range of '" + graph_vect_[i]->object_relations_[prop_i].first->value() + "'");
         }
       }
     }
@@ -136,10 +136,10 @@ void ClassChecker::checkDataPropertyDomain()
 
     std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
 
-    for(size_t prop_i = 0; prop_i < graph_vect_[i]->data_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < graph_vect_[i]->data_relations_.size(); prop_i++)
     {
       std::unordered_set<DataPropertyBranch_t*> prop_up;
-      class_graph_->data_property_graph_->getUpPtr(graph_vect_[i]->data_properties_name_[prop_i], prop_up);
+      class_graph_->data_property_graph_->getUpPtr(graph_vect_[i]->data_relations_[prop_i].first, prop_up);
       std::unordered_set<ClassBranch_t*> domain;
       for(auto prop : prop_up)
         class_graph_->data_property_graph_->getDomainPtr(prop, domain);
@@ -156,11 +156,11 @@ void ClassChecker::checkDataPropertyDomain()
 
           if(intersection == nullptr)
           {
-            graph_vect_[i]->flags_["range"].push_back(graph_vect_[i]->data_properties_name_[prop_i]->value());
-            print_warning("'" + graph_vect_[i]->value() + "' is not in domain of '" + graph_vect_[i]->data_properties_name_[prop_i]->value() + "'");
+            graph_vect_[i]->flags_["range"].push_back(graph_vect_[i]->data_relations_[prop_i].first->value());
+            print_warning("'" + graph_vect_[i]->value() + "' is not in domain of '" + graph_vect_[i]->data_relations_[prop_i].first->value() + "'");
           }
           else
-            print_error("'" + graph_vect_[i]->value() + "' can not be in domain of '" + graph_vect_[i]->data_properties_name_[prop_i]->value() + "'");
+            print_error("'" + graph_vect_[i]->value() + "' can not be in domain of '" + graph_vect_[i]->data_relations_[prop_i].first->value() + "'");
         }
       }
     }
@@ -172,14 +172,14 @@ void ClassChecker::checkDataPropertyRange()
   std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
   for(size_t i = 0; i < graph_size; i++)
   {
-    for(size_t prop_i = 0; prop_i < graph_vect_[i]->data_properties_name_.size(); prop_i++)
+    for(size_t prop_i = 0; prop_i < graph_vect_[i]->data_relations_.size(); prop_i++)
     {
-      std::unordered_set<std::string> range = class_graph_->data_property_graph_->getRange(graph_vect_[i]->data_properties_name_[prop_i]->value());
+      std::unordered_set<std::string> range = class_graph_->data_property_graph_->getRange(graph_vect_[i]->data_relations_[prop_i].first->value());
       if(range.size() != 0)
       {
-        std::unordered_set<std::string>::iterator intersection = std::find(range.begin(), range.end(), graph_vect_[i]->data_properties_data_[prop_i].type_);
+        std::unordered_set<std::string>::iterator intersection = std::find(range.begin(), range.end(), graph_vect_[i]->data_relations_[prop_i].second.type_);
         if(intersection == range.end())
-          print_error("'" + graph_vect_[i]->data_properties_data_[prop_i].type_ + "' is not in range of '" + graph_vect_[i]->data_properties_name_[prop_i]->value() + "'");
+          print_error("'" + graph_vect_[i]->data_relations_[prop_i].second.type_ + "' is not in range of '" + graph_vect_[i]->data_relations_[prop_i].first->value() + "'");
       }
     }
   }

@@ -12,29 +12,29 @@
 
 namespace ontologenius {
 
+// Classes predefinition
 class Triplet;
+class IndividualBranch_t;
+
+typedef Single_t<IndividualBranch_t*> IndividualElement_t;
+typedef Pair_t<ObjectPropertyBranch_t*, IndividualBranch_t*> IndivObjectRelationElement_t;
+typedef Pair_t<DataPropertyBranch_t*, data_t> IndivDataRelationElement_t;
 
 template <typename T>
 class IndividualBranchData_t
 {
 public:
-  std::vector<ClassBranch_t*> is_a_;
+  std::vector<ClassElement_t> is_a_;
 
-  std::vector<ObjectPropertyBranch_t*> object_properties_name_;
-  std::vector<T*> object_properties_on_;
-  std::vector<bool> object_properties_deduced_;
+  std::vector<Pair_t<ObjectPropertyBranch_t*, T*>> object_relations_;
   std::vector<Triplet> object_properties_has_induced_;
 
-  std::vector<DataPropertyBranch_t*> data_properties_name_;
-  std::vector<data_t> data_properties_data_;
-  std::vector<bool> data_properties_deduced_;
+  std::vector<IndivDataRelationElement_t> data_relations_;
 
   std::vector<T*> same_as_;
   std::vector<T*> distinct_;
 };
 
-//for template usage
-class IndividualBranch_t;
 class IndividualSteady_t : public ValuedNodeData, public IndividualBranchData_t<IndividualBranch_t>
 {
 public:
@@ -50,11 +50,11 @@ public:
   IndividualBranch_t(std::string value = "") : ValuedNode(value) {mark = false; }
 
   void setFullSteady();
-  void setSteady_is_a(ClassBranch_t* is_a);
-  void setSteady_object_properties_name(ObjectPropertyBranch_t* object_properties_name);
-  void setSteady_object_properties_on(IndividualBranch_t* object_properties_on);
-  void setSteady_data_properties_name(DataPropertyBranch_t* data_properties_name);
-  void setSteady_data_properties_data(data_t data_properties_data);
+  void setSteady_is_a(const ClassElement_t& is_a);
+
+  void setSteady_objectRelation(const IndivObjectRelationElement_t& object_relation);
+  void setSteady_dataRelation(const IndivDataRelationElement_t& data_relation);
+
   void setSteady_same_as(IndividualBranch_t* same_as);
   void setSteady_distinct(IndividualBranch_t* distinct);
   void setSteady_dictionary(std::string lang, std::string word);

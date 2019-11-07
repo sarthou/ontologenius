@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "ontoloGenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontoloGenius/core/ontoGraphs/Branchs/ValuedNode.h"
 
 /*
@@ -17,8 +18,8 @@ template <typename B>
 class BranchData_t
 {
 public:
-  std::vector<B*> childs_;
-  std::vector<B*> mothers_;
+  std::vector<Single_t<B*>> childs_;
+  std::vector<Single_t<B*>> mothers_;
 };
 
 template <typename T>

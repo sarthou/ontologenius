@@ -14,19 +14,13 @@ namespace ontologenius {
 
 struct ObjectVectors_t
 {
-   std::vector<std::string> mothers_;
+   std::vector<Single_t<std::string>> mothers_;
    std::vector<std::string> disjoints_;
    std::map<std::string, std::vector<std::string>> dictionary_;
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
 
-   std::vector<std::string> object_properties_name_;
-   std::vector<std::string> object_properties_on_;
-   std::vector<bool> object_properties_deduced_;
-
-   std::vector<std::string> data_properties_name_;
-   std::vector<std::string> data_properties_type_;
-   std::vector<std::string> data_properties_value_;
-   std::vector<bool> data_properties_deduced_;
+   std::vector<Pair_t<std::string, std::string>> object_relations_;
+   std::vector<Pair_t<std::string, data_t>> data_relations_;
 };
 
 //for friend
@@ -90,10 +84,8 @@ private:
   DataPropertyGraph* data_property_graph_;
   IndividualGraph* individual_graph_;
 
-  void addObjectPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
-  void addObjectPropertyOn(ClassBranch_t* me, std::string& name, bool deduced);
-  void addDataPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
-  void addDataPropertyData(ClassBranch_t* me, data_t& data, bool deduced);
+  void addObjectProperty(ClassBranch_t* me, Pair_t<std::string, std::string>& relation);
+  void addDataProperty(ClassBranch_t* me, Pair_t<std::string, data_t>& relation);
 
   void setSteadyObjectProperty(ClassBranch_t* branch_from, ObjectPropertyBranch_t* branch_prop, ClassBranch_t* branch_on);
   void setSteadyDataProperty(ClassBranch_t* branch_from, DataPropertyBranch_t* branch_prop, data_t data);
@@ -122,23 +114,6 @@ private:
       me->setSteady_disjoint(it->second);
       if(all)
         it->second->disjoints_.push_back(me);
-      find = true;
-    }
-  }
-
-  void isMyObjectPropertiesOn(ClassBranch_t* me, const std::string& propertyOn, std::map<std::string, ClassBranch_t*>& vect, bool& find, bool deduced)
-  {
-    if(find)
-      return;
-
-    auto it = vect.find(propertyOn);
-    if(it != vect.end())
-    {
-      if(deduced == false)
-        me->setSteady_object_properties_on(it->second);
-      else
-        me->object_properties_on_.push_back(it->second);
-
       find = true;
     }
   }

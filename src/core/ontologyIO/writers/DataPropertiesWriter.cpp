@@ -43,7 +43,7 @@ void DataPropertiesWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.mothers_.size(); i++)
   {
     std::string tmp = "        <rdfs:subPropertyOf rdf:resource=\"ontologenius#" +
-                      branch->steady_.mothers_[i]->value()
+                      branch->steady_.mothers_[i].elem->value()
                       + "\"/>\n";
     writeString(tmp);
   }

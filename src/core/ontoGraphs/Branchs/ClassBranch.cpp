@@ -40,21 +40,13 @@ void ClassBranch_t::setFullSteady()
     steady_.muted_dictionary_[it.first] = tmp;
   }
 
-  steady_.object_properties_name_.clear();
-  for(size_t i = 0; i < object_properties_name_.size(); i++)
-    steady_.object_properties_name_.push_back(object_properties_name_[i]);
+  steady_.object_relations_.clear();
+  for(size_t i = 0; i < object_relations_.size(); i++)
+    steady_.object_relations_.push_back(object_relations_[i]);
 
-  steady_.object_properties_on_.clear();
-  for(size_t i = 0; i < object_properties_on_.size(); i++)
-    steady_.object_properties_on_.push_back(object_properties_on_[i]);
-
-  steady_.data_properties_name_.clear();
-  for(size_t i = 0; i < data_properties_name_.size(); i++)
-    steady_.data_properties_name_.push_back(data_properties_name_[i]);
-
-  steady_.data_properties_data_.clear();
-  for(size_t i = 0; i < data_properties_data_.size(); i++)
-    steady_.data_properties_data_.push_back(data_properties_data_[i]);
+  steady_.data_relations_.clear();
+  for(size_t i = 0; i < data_relations_.size(); i++)
+    steady_.data_relations_.push_back(data_relations_[i]);
 }
 
 void ClassBranch_t::setSteady_disjoint(ClassBranch_t* disjoint)
@@ -63,19 +55,19 @@ void ClassBranch_t::setSteady_disjoint(ClassBranch_t* disjoint)
   conditionalPushBack(disjoints_, disjoint);
 }
 
-void ClassBranch_t::setSteady_child(ClassBranch_t* child)
+void ClassBranch_t::setSteady_child(const ClassElement_t& child)
 {
   conditionalPushBack(steady_.childs_, child);
   conditionalPushBack(childs_, child);
 }
 
-void ClassBranch_t::setSteady_individual_child(IndividualBranch_t* child)
+void ClassBranch_t::setSteady_individual_child(const IndividualElement_t& child)
 {
   conditionalPushBack(steady_.individual_childs_, child);
   conditionalPushBack(individual_childs_, child);
 }
 
-void ClassBranch_t::setSteady_mother(ClassBranch_t* mother)
+void ClassBranch_t::setSteady_mother(const ClassElement_t& mother)
 {
   conditionalPushBack(steady_.mothers_, mother);
   conditionalPushBack(mothers_, mother);
@@ -137,28 +129,16 @@ void ClassBranch_t::setSteady_muted_dictionary(std::map<std::string, std::vector
   }
 }
 
-void ClassBranch_t::setSteady_object_properties_name(ObjectPropertyBranch_t* object_properties_name)
+void ClassBranch_t::setSteady_objectRelation(const ClassObjectRelationElement_t& object_relation)
 {
-  steady_.object_properties_name_.push_back(object_properties_name);
-  object_properties_name_.push_back(object_properties_name);
+  steady_.object_relations_.push_back(object_relation);
+  object_relations_.push_back(object_relation);
 }
 
-void ClassBranch_t::setSteady_object_properties_on(ClassBranch_t* object_properties_on)
+void ClassBranch_t::setSteady_dataRelation(const ClassDataRelationElement_t& data_relation)
 {
-  steady_.object_properties_on_.push_back(object_properties_on);
-  object_properties_on_.push_back(object_properties_on);
-}
-
-void ClassBranch_t::setSteady_data_properties_name(DataPropertyBranch_t* data_properties_name)
-{
-  steady_.data_properties_name_.push_back(data_properties_name);
-  data_properties_name_.push_back(data_properties_name);
-}
-
-void ClassBranch_t::setSteady_data_properties_data(data_t data_properties_data)
-{
-  steady_.data_properties_data_.push_back(data_properties_data);
-  data_properties_data_.push_back(data_properties_data);
+  steady_.data_relations_.push_back(data_relation);
+  data_relations_.push_back(data_relation);
 }
 
 } // namespace ontologenius

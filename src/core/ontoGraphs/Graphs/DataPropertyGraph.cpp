@@ -41,20 +41,20 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
       bool i_find_my_mother = false;
 
       //is a root my mother ?
-      isMyMother(me, property_vectors.mothers_[mothers_i], roots_, i_find_my_mother);
+      isMyMother(me, property_vectors.mothers_[mothers_i].elem, roots_, i_find_my_mother);
 
       //is a branch my mother ?
-      isMyMother(me, property_vectors.mothers_[mothers_i], branchs_, i_find_my_mother);
+      isMyMother(me, property_vectors.mothers_[mothers_i].elem, branchs_, i_find_my_mother);
 
       //is a tmp mother is mine ?
-      isMyMother(me, property_vectors.mothers_[mothers_i], tmp_mothers_, i_find_my_mother);
+      isMyMother(me, property_vectors.mothers_[mothers_i].elem, tmp_mothers_, i_find_my_mother);
 
       //I create my mother
       if(!i_find_my_mother)
       {
-        DataPropertyBranch_t* my_mother = new struct DataPropertyBranch_t(property_vectors.mothers_[mothers_i]);
-        my_mother->childs_.push_back(me);
-        me->setSteady_mother(my_mother);
+        DataPropertyBranch_t* my_mother = new struct DataPropertyBranch_t(property_vectors.mothers_[mothers_i].elem);
+        my_mother->childs_.push_back(DataPropertyElement_t(me));
+        me->setSteady_mother(DataPropertyElement_t(my_mother));
         tmp_mothers_[my_mother->value()] = my_mother;
       }
     }

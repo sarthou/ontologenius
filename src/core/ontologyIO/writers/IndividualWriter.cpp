@@ -57,7 +57,7 @@ void IndividualWriter::writeType(IndividualBranch_t* branch)
   for(size_t i = 0; i < branch->steady_.is_a_.size(); i++)
   {
     std::string tmp = "        <rdf:type rdf:resource=\"ontologenius#" +
-                      branch->steady_.is_a_[i]->value()
+                      branch->steady_.is_a_[i].elem->value()
                       + "\"/>\n";
     writeString(tmp);
   }
@@ -65,12 +65,12 @@ void IndividualWriter::writeType(IndividualBranch_t* branch)
 
 void IndividualWriter::writeObjectProperties(IndividualBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.object_properties_name_.size(); i++)
+  for(size_t i = 0; i < branch->steady_.object_relations_.size(); i++)
   {
     std::string tmp = "        <ontologenius:" +
-                      branch->steady_.object_properties_name_[i]->value() +
+                      branch->steady_.object_relations_[i].first->value() +
                       " rdf:resource=\"ontologenius#" +
-                      branch->steady_.object_properties_on_[i]->value() +
+                      branch->steady_.object_relations_[i].second->value() +
                       "\"/>\n";
     writeString(tmp);
   }
@@ -78,13 +78,13 @@ void IndividualWriter::writeObjectProperties(IndividualBranch_t* branch)
 
 void IndividualWriter::writeObjectPropertiesDeduced(IndividualBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->object_properties_name_.size(); i++)
-    if(branch->object_properties_deduced_[i] == true)
+  for(size_t i = 0; i < branch->object_relations_.size(); i++)
+    if(branch->object_relations_[i] < 0.51) // deduced 0.5
     {
       std::string tmp = "        <ontologenius:" +
-                        branch->object_properties_name_[i]->value() +
+                        branch->object_relations_[i].first->value() +
                         " rdf:resourceDeduced=\"ontologenius#" +
-                        branch->object_properties_on_[i]->value() +
+                        branch->object_relations_[i].second->value() +
                         "\"/>\n";
       writeString(tmp);
     }
@@ -92,18 +92,18 @@ void IndividualWriter::writeObjectPropertiesDeduced(IndividualBranch_t* branch)
 
 void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.data_properties_name_.size(); i++)
+  for(size_t i = 0; i < branch->steady_.data_relations_.size(); i++)
   {
     std::string tmp = "        <ontologenius:" +
-                      branch->steady_.data_properties_name_[i]->value() +
+                      branch->steady_.data_relations_[i].first->value() +
                       " rdf:datatype=\"" +
-                      branch->steady_.data_properties_data_[i].getNs() +
+                      branch->steady_.data_relations_[i].second.getNs() +
                       "#" +
-                      branch->steady_.data_properties_data_[i].type_ +
+                      branch->steady_.data_relations_[i].second.type_ +
                       "\">" +
-                      branch->steady_.data_properties_data_[i].value_ +
+                      branch->steady_.data_relations_[i].second.value_ +
                       "</ontologenius:" +
-                      branch->steady_.data_properties_name_[i]->value() +
+                      branch->steady_.data_relations_[i].first->value() +
                       ">\n";
     writeString(tmp);
   }
@@ -111,19 +111,19 @@ void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
 
 void IndividualWriter::writeDataPropertiesDeduced(IndividualBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->data_properties_name_.size(); i++)
-    if(branch->data_properties_deduced_[i] == true)
+  for(size_t i = 0; i < branch->data_relations_.size(); i++)
+    if(branch->data_relations_[i] < 0.51) // deduced = 0.5
     {
       std::string tmp = "        <ontologenius:" +
-                        branch->data_properties_name_[i]->value() +
+                        branch->data_relations_[i].first->value() +
                         " rdf:datatypeDeduced=\"" +
-                        branch->data_properties_data_[i].getNs() +
+                        branch->data_relations_[i].second.getNs() +
                         "#" +
-                        branch->data_properties_data_[i].type_ +
+                        branch->data_relations_[i].second.type_ +
                         "\">" +
-                        branch->data_properties_data_[i].value_ +
+                        branch->data_relations_[i].second.value_ +
                         "</ontologenius:" +
-                        branch->data_properties_name_[i]->value() +
+                        branch->data_relations_[i].first->value() +
                         ">\n";
       writeString(tmp);
     }
