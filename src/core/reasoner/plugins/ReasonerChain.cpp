@@ -17,12 +17,12 @@ void ReasonerChain::postReason()
   for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
     if(indiv[indiv_i]->updated_ == true)
     {
-      for(size_t prop_i = 0; prop_i < indiv[indiv_i]->object_relations_.size(); prop_i++)
+      for(IndivObjectRelationElement_t& relation : indiv[indiv_i]->object_relations_)
       {
-        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(indiv[indiv_i]->object_relations_[prop_i].first);
+        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(relation.first);
         for(ObjectPropertyBranch_t* it_prop : props)
           for(size_t chain_i = 0; chain_i < it_prop->chains_.size(); chain_i++)
-            resolveChain(it_prop, it_prop->chains_[chain_i], indiv[indiv_i]->object_relations_[prop_i].second, indiv[indiv_i]);
+            resolveChain(it_prop, it_prop->chains_[chain_i], relation.second, indiv[indiv_i]);
       }
     }
 }
@@ -88,13 +88,13 @@ void ReasonerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTre
     {
       tmp_on.clear();
       tmp_from.clear();
-      for(size_t prop_i = 0; prop_i < indiv->object_relations_.size(); prop_i++)
+      for(IndivObjectRelationElement_t& relation : indiv->object_relations_)
       {
-        if(chain_props.find(indiv->object_relations_[prop_i].first->value()) != chain_props.end())
+        if(chain_props.find(relation.first->value()) != chain_props.end())
         {
-          tmp_on.push_back(indiv->object_relations_[prop_i].second);
+          tmp_on.push_back(relation.second);
           tmp_from.push_back(indiv);
-          tmp_prop.push_back(indiv->object_relations_[prop_i].first);
+          tmp_prop.push_back(relation.first);
         }
       }
       if(tmp_on.size() != 0)

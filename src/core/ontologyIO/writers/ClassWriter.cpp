@@ -154,12 +154,12 @@ void ClassWriter::removeDifferents(std::vector<std::string>& disjoints_current, 
 
 void ClassWriter::writeObjectProperties(ClassBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.object_relations_.size(); i++)
+  for(ClassObjectRelationElement_t& relation : branch->steady_.object_relations_)
   {
     std::string tmp = "        <ontologenius:" +
-                      branch->steady_.object_relations_[i].first->value() +
+                      relation.first->value() +
                       " rdf:resource=\"ontologenius#" +
-                      branch->steady_.object_relations_[i].second->value() +
+                      relation.second->value() +
                       "\"/>\n";
     writeString(tmp);
   }
@@ -167,13 +167,13 @@ void ClassWriter::writeObjectProperties(ClassBranch_t* branch)
 
 void ClassWriter::writeObjectPropertiesDeduced(ClassBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->object_relations_.size(); i++)
-    if(branch->object_relations_[i] < 0.51) // deduced = 0.5
+  for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+    if(relation < 0.51) // deduced = 0.5
     {
       std::string tmp = "        <ontologenius:" +
-                        branch->object_relations_[i].first->value() +
+                        relation.first->value() +
                         " rdf:resourceDeduced=\"ontologenius#" +
-                        branch->object_relations_[i].second->value() +
+                        relation.second->value() +
                         "\"/>\n";
       writeString(tmp);
     }
@@ -181,18 +181,18 @@ void ClassWriter::writeObjectPropertiesDeduced(ClassBranch_t* branch)
 
 void ClassWriter::writeDataProperties(ClassBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.data_relations_.size(); i++)
+  for(ClassDataRelationElement_t& relation : branch->steady_.data_relations_)
   {
     std::string tmp = "        <ontologenius:" +
-                      branch->steady_.data_relations_[i].first->value() +
+                      relation.first->value() +
                       " rdf:datatype=\"" +
-                      branch->steady_.data_relations_[i].second.getNs() +
+                      relation.second.getNs() +
                       "#" +
-                      branch->steady_.data_relations_[i].second.type_ +
+                      relation.second.type_ +
                       "\">" +
-                      branch->steady_.data_relations_[i].second.value_ +
+                      relation.second.value_ +
                       "</ontologenius:" +
-                      branch->steady_.data_relations_[i].first->value() +
+                      relation.first->value() +
                       ">\n";
     writeString(tmp);
   }
@@ -200,19 +200,19 @@ void ClassWriter::writeDataProperties(ClassBranch_t* branch)
 
 void ClassWriter::writeDataPropertiesDeduced(ClassBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->data_relations_.size(); i++)
-    if(branch->data_relations_[i] < 0.51)
+  for(ClassDataRelationElement_t& relation : branch->data_relations_)
+    if(relation < 0.51)
     {
       std::string tmp = "        <ontologenius:" +
-                        branch->data_relations_[i].first->value() +
+                        relation.first->value() +
                         " rdf:datatypeDeduced=\"" +
-                        branch->data_relations_[i].second.getNs() +
+                        relation.second.getNs() +
                         "#" +
-                        branch->data_relations_[i].second.type_ +
+                        relation.second.type_ +
                         "\">" +
-                        branch->data_relations_[i].second.value_ +
+                        relation.second.value_ +
                         "</ontologenius:" +
-                        branch->data_relations_[i].first->value() +
+                        relation.first->value() +
                         ">\n";
       writeString(tmp);
     }

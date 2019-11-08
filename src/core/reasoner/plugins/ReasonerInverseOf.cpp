@@ -12,19 +12,19 @@ void ReasonerInverseOf::preReason()
 void ReasonerInverseOf::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-  size_t indiv_i, prop_i, inv_i = 0;
+  size_t indiv_i, inv_i = 0;
   std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
   size_t indiv_size = indiv.size();
   for(indiv_i = 0; indiv_i < indiv_size; indiv_i++)
     if(indiv[indiv_i]->updated_ == true)
     {
-      for(prop_i = 0; prop_i < indiv[indiv_i]->object_relations_.size(); prop_i++)
+      for(IndivObjectRelationElement_t& relation : indiv[indiv_i]->object_relations_)
       {
-        for(inv_i = 0; inv_i < indiv[indiv_i]->object_relations_[prop_i].first->inverses_.size(); inv_i++)
+        for(inv_i = 0; inv_i < relation.first->inverses_.size(); inv_i++)
         {
-          IndividualBranch_t* sub_indiv = indiv[indiv_i]->object_relations_[prop_i].second;
+          IndividualBranch_t* sub_indiv = relation.second;
           insetInverse(sub_indiv,
-                      indiv[indiv_i]->object_relations_[prop_i].first->inverses_[inv_i],
+                      relation.first->inverses_[inv_i],
                       indiv[indiv_i]);
         }
       }
