@@ -50,19 +50,18 @@ private:
   void readObjectProperty(TiXmlElement* elem);
   void readDataProperty(TiXmlElement* elem);
   void readCollection(std::vector<std::string>& vect, TiXmlElement* elem, std::string symbol, size_t level = 1);
-  void readRestriction(TiXmlElement* elem);
   std::string readSomeValuesFrom(TiXmlElement* elem);
 
   inline void push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
   inline void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole = "");
   inline void push(std::vector<Single_t<std::string>>& vect, TiXmlElement* subElem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
-  inline void push(std::vector<Single_t<std::string>>& vect, const std::string& elem, const std::string& symbole = "");
   inline void push(std::vector<Pair_t<std::string, std::string>>& vect, const Pair_t<std::string, std::string>& elem, const std::string& symbole1, const std::string& symbole2);
   inline void push(std::vector<Pair_t<std::string, data_t>>& vect, const Pair_t<std::string, data_t>& elem, const std::string& symbole1, const std::string& symbole2);
   inline void push(std::vector<bool>& vect, bool elem, const std::string& symbole = "");
   void push(Properties_t& properties, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
   void pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem);
   inline std::string getName(const std::string& uri);
+  inline float getProbability(TiXmlElement* elem);
   inline std::string getAttribute(TiXmlElement* elem, const std::string& attribute);
   inline bool testAttribute(TiXmlElement* subElem, const std::string& attribute);
 
@@ -78,22 +77,11 @@ private:
 
 void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole, const std::string& attribute)
 {
-  const char* subAttr;
-  subAttr = subElem->Attribute(attribute.c_str());
-  if(subAttr != NULL)
+  std::string data = getAttribute(subElem, attribute);
+  if(data != "")
   {
-    vect.push_back(getName(std::string(subAttr)));
-    std::cout << "│   │   ├── " << symbole << getName(std::string(subAttr)) << std::endl;
-  }
-  else
-  {
-    for(TiXmlElement* subsubElem = subElem->FirstChildElement(); subsubElem != NULL; subsubElem = subsubElem->NextSiblingElement())
-    {
-      std::string name = subsubElem->Value();
-      if(name == "owl:Restriction")
-        readRestriction(subsubElem);
-    }
-
+    vect.push_back(data);
+    std::cout << "│   │   ├── " << symbole << data << std::endl;
   }
 }
 
@@ -106,30 +94,12 @@ void OntologyReader::push(std::vector<std::string>& vect, const std::string& ele
 
 void OntologyReader::push(std::vector<Single_t<std::string>>& vect, TiXmlElement* subElem, const std::string& symbole, const std::string& attribute)
 {
-  const char* subAttr;
-  subAttr = subElem->Attribute(attribute.c_str());
-  if(subAttr != NULL)
+  std::string data = getAttribute(subElem, attribute);
+  if(data != "")
   {
-    vect.push_back(Single_t<std::string>(getName(std::string(subAttr))));
-    std::cout << "│   │   ├── " << symbole << getName(std::string(subAttr)) << std::endl;
+    vect.push_back(Single_t<std::string>(data, getProbability(subElem)));
+    std::cout << "│   │   ├── " << symbole << data << std::endl;
   }
-  else
-  {
-    for(TiXmlElement* subsubElem = subElem->FirstChildElement(); subsubElem != NULL; subsubElem = subsubElem->NextSiblingElement())
-    {
-      std::string name = subsubElem->Value();
-      if(name == "owl:Restriction")
-        readRestriction(subsubElem);
-    }
-
-  }
-}
-
-void OntologyReader::push(std::vector<Single_t<std::string>>& vect, const std::string& elem, const std::string& symbole)
-{
-  vect.push_back(Single_t<std::string>(elem));
-  if(symbole != "")
-    std::cout << "│   │   ├── " << symbole << elem << std::endl;
 }
 
 void OntologyReader::push(std::vector<Pair_t<std::string, std::string>>& vect, const Pair_t<std::string, std::string>& elem, const std::string& symbole1, const std::string& symbole2)
@@ -169,6 +139,18 @@ std::string OntologyReader::getName(const std::string& uri)
   size_t pos = uri.find("#");
   std::string result = uri.substr(pos+1);
   return result;
+}
+
+float OntologyReader::getProbability(TiXmlElement* elem)
+{
+  float proba = 1.0;
+
+  const char* subAttr;
+  subAttr = elem->Attribute("onto:probability");
+  if(subAttr != NULL)
+    proba = std::stof(std::string(subAttr));
+
+  return proba;
 }
 
 inline std::string OntologyReader::getAttribute(TiXmlElement* elem, const std::string& attribute)

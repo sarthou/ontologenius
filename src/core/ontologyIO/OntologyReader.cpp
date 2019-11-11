@@ -195,7 +195,7 @@ void OntologyReader::readClass(TiXmlElement* elem)
             {
               data_t data;
               data.value_ = std::string(value);
-              data.type_ = toString(subElem, "rdf:datatype");
+              data.type_ = toString(subElem, "rdf:datatypeDeduced");
               push(object_vector.data_relations_, Pair_t<std::string, data_t>(property, data, 0.5), "$", "^");
             }
           }
@@ -441,21 +441,6 @@ void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement
   }
 }
 
-void OntologyReader::readRestriction(TiXmlElement* elem)
-{
-  std::string on;
-  std::vector<std::string> restriction;
-
-  for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
-  {
-    std::string restriction_name = subElem->Value();
-    if(restriction_name == "owl:onProperty")
-      on = getAttribute(subElem, "rdf:resource");
-    else if(restriction_name == "owl:someValuesFrom")
-      restriction.push_back(readSomeValuesFrom(subElem));
-  }
-}
-
 std::string OntologyReader::readSomeValuesFrom(TiXmlElement* elem)
 {
   std::string value = getAttribute(elem, "rdf:resource");
@@ -504,7 +489,7 @@ void OntologyReader::pushLang(std::map<std::string, std::vector<std::string>>& d
   subAttr = subElem->Attribute("xml:lang");
   if(subAttr != NULL)
   {
-    std::string lang = getName(std::string(subAttr));
+    std::string lang = std::string(subAttr);
 
     const char* value;
     value = subElem->GetText();
