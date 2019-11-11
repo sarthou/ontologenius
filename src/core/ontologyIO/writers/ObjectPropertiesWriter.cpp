@@ -42,10 +42,13 @@ void ObjectPropertiesWriter::writeProperty(ObjectPropertyBranch_t* branch)
 
 void ObjectPropertiesWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.mothers_.size(); i++)
+  for(auto& mother : branch->steady_.mothers_)
   {
-    std::string tmp = "        <rdfs:subPropertyOf rdf:resource=\"ontologenius#" +
-                      branch->steady_.mothers_[i].elem->value()
+    std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
+    std::string tmp = "        <rdfs:subPropertyOf" +
+                      proba +
+                      " rdf:resource=\"ontologenius#" +
+                      mother.elem->value()
                       + "\"/>\n";
     writeString(tmp);
   }

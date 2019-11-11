@@ -60,10 +60,13 @@ void ClassWriter::writeClass(ClassBranch_t* branch)
 
 void ClassWriter::writeSubClassOf(ClassBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.mothers_.size(); i++)
+  for(auto& mother : branch->steady_.mothers_)
   {
-    std::string tmp = "        <rdfs:subClassOf rdf:resource=\"ontologenius#" +
-                      branch->steady_.mothers_[i].elem->value()
+    std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
+    std::string tmp = "        <rdfs:subClassOf" +
+                      proba +
+                      " rdf:resource=\"ontologenius#" +
+                      mother.elem->value()
                       + "\"/>\n";
     writeString(tmp);
   }
@@ -156,8 +159,10 @@ void ClassWriter::writeObjectProperties(ClassBranch_t* branch)
 {
   for(ClassObjectRelationElement_t& relation : branch->steady_.object_relations_)
   {
+    std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
     std::string tmp = "        <ontologenius:" +
                       relation.first->value() +
+                      proba +
                       " rdf:resource=\"ontologenius#" +
                       relation.second->value() +
                       "\"/>\n";
@@ -168,11 +173,13 @@ void ClassWriter::writeObjectProperties(ClassBranch_t* branch)
 void ClassWriter::writeObjectPropertiesDeduced(ClassBranch_t* branch)
 {
   for(ClassObjectRelationElement_t& relation : branch->object_relations_)
-    if(relation < 0.51) // deduced = 0.5
+    if(relation < 1.0) // deduced = 0.5
     {
+      std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
       std::string tmp = "        <ontologenius:" +
                         relation.first->value() +
-                        " rdf:resourceDeduced=\"ontologenius#" +
+                        proba +
+                        " rdf:resource=\"ontologenius#" +
                         relation.second->value() +
                         "\"/>\n";
       writeString(tmp);
@@ -183,8 +190,10 @@ void ClassWriter::writeDataProperties(ClassBranch_t* branch)
 {
   for(ClassDataRelationElement_t& relation : branch->steady_.data_relations_)
   {
+    std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
     std::string tmp = "        <ontologenius:" +
                       relation.first->value() +
+                      proba +
                       " rdf:datatype=\"" +
                       relation.second.getNs() +
                       "#" +
@@ -201,11 +210,13 @@ void ClassWriter::writeDataProperties(ClassBranch_t* branch)
 void ClassWriter::writeDataPropertiesDeduced(ClassBranch_t* branch)
 {
   for(ClassDataRelationElement_t& relation : branch->data_relations_)
-    if(relation < 0.51)
+    if(relation < 1.0)
     {
+      std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
       std::string tmp = "        <ontologenius:" +
                         relation.first->value() +
-                        " rdf:datatypeDeduced=\"" +
+                        proba +
+                        " rdf:datatype=\"" +
                         relation.second.getNs() +
                         "#" +
                         relation.second.type_ +
