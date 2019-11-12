@@ -380,7 +380,7 @@ void OntologyReader::readDataProperty(TiXmlElement* elem)
       else if(subElemName == "owl:disjointWith")
         push(propertyVectors.disjoints_, subElem, "-");
       else if(subElemName == "rdfs:domain")
-        push(propertyVectors.domains_, subElem, ">");
+        push(propertyVectors.domains_, subElem, probability, ">");
       else if(subElemName == "rdfs:range")
         push(propertyVectors.ranges_, subElem, "<");
       else if(subElemName == "rdfs:label")

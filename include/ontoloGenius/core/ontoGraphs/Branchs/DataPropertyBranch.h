@@ -14,12 +14,13 @@ class DataPropertyBranch_t;
 class ClassBranch_t;
 
 typedef Single_t<DataPropertyBranch_t*> DataPropertyElement_t;
+typedef Single_t<ClassBranch_t*> ClassElement_t;
 
 template <typename T>
 class DataPropertyBranchData_t : public PropertyBranchData_t<T>
 {
 public:
-  std::vector<ClassBranch_t*> domains_;
+  std::vector<ClassElement_t> domains_;
   std::vector<data_t> ranges_;
 };
 
@@ -41,7 +42,7 @@ public:
   void setFullSteady();
   void setSteady_disjoint(DataPropertyBranch_t* disjoint);
   void setSteady_properties(Properties_t properties);
-  void setSteady_domain(ClassBranch_t* domain);
+  void setSteady_domain(const ClassElement_t& domain);
   void setSteady_range(std::string range);
   void setSteady_child(const DataPropertyElement_t& child);
   void setSteady_mother(const DataPropertyElement_t& mother);

@@ -94,31 +94,23 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   ** Domains
   **********************/
   //for all my domains
-  for(size_t domains_i = 0; domains_i < property_vectors.domains_.size(); domains_i++)
+  for(auto& domain : property_vectors.domains_)
   {
-    bool i_find_my_domain = false;
-
-    //is a root my domain ?
-    isMyDomain(me, property_vectors.domains_[domains_i], class_graph_->roots_, i_find_my_domain);
-
-    //is a branch my domain ?
-    isMyDomain(me, property_vectors.domains_[domains_i], class_graph_->branchs_, i_find_my_domain);
-
-    //is a tmp mother is my domain ?
-    isMyDomain(me, property_vectors.domains_[domains_i], class_graph_->tmp_mothers_, i_find_my_domain);
+    ClassBranch_t* domain_branch = nullptr;
+    getInMap(&domain_branch, domain.elem, class_graph_->roots_);
+    getInMap(&domain_branch, domain.elem, class_graph_->branchs_);
+    getInMap(&domain_branch, domain.elem, class_graph_->tmp_mothers_);
 
     //I create my domain
-    if(!i_find_my_domain)
+    if(domain_branch == nullptr)
     {
       ObjectVectors_t empty_vectors;
-      class_graph_->add(property_vectors.domains_[domains_i], empty_vectors);
-      auto it = class_graph_->roots_.find(property_vectors.domains_[domains_i]);
+      class_graph_->add(domain.elem, empty_vectors);
+      auto it = class_graph_->roots_.find(domain.elem);
       if(it != class_graph_->roots_.end())
-      {
-        me->setSteady_domain(it->second);
-        i_find_my_domain = true;
-      }
+        domain_branch = it->second;
     }
+    me->setSteady_domain(domain_branch);
   }
 
   /**********************
@@ -214,8 +206,8 @@ std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& 
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
-    for(unsigned domain_i = 0; domain_i < branch->domains_.size(); domain_i++)
-      class_graph_->getDown(branch->domains_[domain_i], res);
+    for(auto& domain : branch->domains_)
+      class_graph_->getDown(domain.elem, res);
 
   return res;
 }
@@ -225,8 +217,8 @@ void DataPropertyGraph::getDomainPtr(DataPropertyBranch_t* branch, std::unordere
   std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
 
   if(branch != nullptr)
-    for(unsigned domain_i = 0; domain_i < branch->domains_.size(); domain_i++)
-      class_graph_->getDownPtr(branch->domains_[domain_i], res, depth);
+    for(auto& domain : branch->domains_)
+      class_graph_->getDownPtr(domain.elem, res, depth);
 }
 
 std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& value)

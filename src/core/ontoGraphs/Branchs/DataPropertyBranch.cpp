@@ -59,7 +59,7 @@ void DataPropertyBranch_t::setSteady_properties(Properties_t properties)
   properties_ = properties;
 }
 
-void DataPropertyBranch_t::setSteady_domain(ClassBranch_t* domain)
+void DataPropertyBranch_t::setSteady_domain(const ClassElement_t& domain)
 {
   conditionalPushBack(steady_.domains_, domain);
   conditionalPushBack(domains_, domain);
