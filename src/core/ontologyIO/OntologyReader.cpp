@@ -339,9 +339,9 @@ void OntologyReader::readObjectProperty(TiXmlElement* elem)
       else if(subElemName == "owl:inverseOf")
         push(propertyVectors.inverses_, subElem, "/");
       else if(subElemName == "rdfs:domain")
-        push(propertyVectors.domains_, subElem, ">");
+        push(propertyVectors.domains_, subElem, probability, ">");
       else if(subElemName == "rdfs:range")
-        push(propertyVectors.ranges_, subElem, "<");
+        push(propertyVectors.ranges_, subElem, probability, "<");
       else if(subElemName == "rdf:type")
         push(propertyVectors.properties_, subElem, "*");
       else if(subElemName == "rdfs:label")

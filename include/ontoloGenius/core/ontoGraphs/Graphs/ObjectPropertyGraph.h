@@ -19,8 +19,8 @@ struct ObjectPropertyVectors_t
    std::vector<Single_t<std::string>> mothers_;
    std::vector<std::string> disjoints_;
    std::vector<std::string> inverses_;
-   std::vector<std::string> domains_;
-   std::vector<std::string> ranges_;
+   std::vector<Single_t<std::string>> domains_;
+   std::vector<Single_t<std::string>> ranges_;
    std::vector<std::vector<std::string>> chains_;
    Properties_t properties_;
    std::map<std::string, std::vector<std::string>> dictionary_;
@@ -91,32 +91,6 @@ private:
       me->setSteady_inverse(it->second);
       if(all)
         it->second->inverses_.push_back(me);
-      find = true;
-    }
-  }
-
-  void isMyDomain(ObjectPropertyBranch_t* me, std::string& domain, std::map<std::string, ClassBranch_t*>& vect, bool& find)
-  {
-    if(find)
-      return;
-
-    auto it = vect.find(domain);
-    if(it != vect.end())
-    {
-      me->setSteady_domain(it->second);
-      find = true;
-    }
-  }
-
-  void isMyRange(ObjectPropertyBranch_t* me, std::string& range, std::map<std::string, ClassBranch_t*>& vect, bool& find)
-  {
-    if(find)
-      return;
-
-    auto it = vect.find(range);
-    if(it != vect.end())
-    {
-      me->setSteady_range(it->second);
       find = true;
     }
   }

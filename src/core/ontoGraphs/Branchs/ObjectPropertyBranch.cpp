@@ -78,13 +78,13 @@ void ObjectPropertyBranch_t::setSteady_inverse(ObjectPropertyBranch_t* inverse)
   conditionalPushBack(inverses_, inverse);
 }
 
-void ObjectPropertyBranch_t::setSteady_domain(ClassBranch_t* domain)
+void ObjectPropertyBranch_t::setSteady_domain(const ClassElement_t& domain)
 {
   conditionalPushBack(steady_.domains_, domain);
   conditionalPushBack(domains_, domain);
 }
 
-void ObjectPropertyBranch_t::setSteady_range(ClassBranch_t* range)
+void ObjectPropertyBranch_t::setSteady_range(const ClassElement_t& range)
 {
   conditionalPushBack(steady_.ranges_, range);
   conditionalPushBack(ranges_, range);

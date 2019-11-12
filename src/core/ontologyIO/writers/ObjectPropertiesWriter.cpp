@@ -67,10 +67,12 @@ void ObjectPropertiesWriter::writeInverseOf(ObjectPropertyBranch_t* branch)
 
 void ObjectPropertiesWriter::writeRange(ObjectPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.ranges_.size(); i++)
+  for(auto& range : branch->steady_.ranges_)
   {
-    std::string tmp = "        <rdfs:range rdf:resource=\"ontologenius#" +
-                      branch->steady_.ranges_[i]->value()
+    std::string tmp = "        <rdfs:range" +
+                      getProba(range) +
+                      " rdf:resource=\"ontologenius#" +
+                      range.elem->value()
                       + "\"/>\n";
     writeString(tmp);
   }
@@ -78,10 +80,12 @@ void ObjectPropertiesWriter::writeRange(ObjectPropertyBranch_t* branch)
 
 void ObjectPropertiesWriter::writeDomain(ObjectPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.domains_.size(); i++)
+  for(auto& domain : branch->steady_.domains_)
   {
-    std::string tmp = "        <rdfs:domain rdf:resource=\"ontologenius#" +
-                      branch->steady_.domains_[i]->value()
+    std::string tmp = "        <rdfs:domain" +
+                      getProba(domain) +
+                      " rdf:resource=\"ontologenius#" +
+                      domain.elem->value()
                       + "\"/>\n";
     writeString(tmp);
   }

@@ -13,14 +13,17 @@ class ObjectPropertyBranch_t;
 class ClassBranch_t;
 
 typedef Single_t<ObjectPropertyBranch_t*> ObjectPropertyElement_t;
+typedef Single_t<ClassBranch_t*> ClassElement_t;
 
 template <typename T>
 class ObjectPropertyBranchData_t : public PropertyBranchData_t<T>
 {
 public:
   std::vector<T*> inverses_;
-  std::vector<ClassBranch_t*> domains_;
-  std::vector<ClassBranch_t*> ranges_;
+
+  std::vector<ClassElement_t> domains_;
+  std::vector<ClassElement_t> ranges_;
+
   std::vector<std::vector<T*>> chains_;
   std::vector<std::vector<std::string>> str_chains_;
 };
@@ -44,8 +47,8 @@ public:
   void setSteady_disjoint(ObjectPropertyBranch_t* disjoint);
   void setSteady_properties(Properties_t properties);
   void setSteady_inverse(ObjectPropertyBranch_t* inverse);
-  void setSteady_domain(ClassBranch_t* domain);
-  void setSteady_range(ClassBranch_t* range);
+  void setSteady_domain(const ClassElement_t& domain);
+  void setSteady_range(const ClassElement_t& range);
   void set_chain(std::vector<ObjectPropertyBranch_t*> chain);
   void setSteady_chain(std::vector<std::string> chain);
   void setSteady_child(const ObjectPropertyElement_t& child);
