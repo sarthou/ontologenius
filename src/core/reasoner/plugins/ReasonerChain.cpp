@@ -17,12 +17,12 @@ void ReasonerChain::postReason()
   for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
     if(indiv[indiv_i]->updated_ == true)
     {
-      for(IndivObjectRelationElement_t& relation : indiv[indiv_i]->object_relations_)
+      for(size_t rel_i = 0; rel_i < indiv[indiv_i]->object_relations_.size(); rel_i++)
       {
-        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(relation.first);
+        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(indiv[indiv_i]->object_relations_[rel_i].first);
         for(ObjectPropertyBranch_t* it_prop : props)
           for(size_t chain_i = 0; chain_i < it_prop->chains_.size(); chain_i++)
-            resolveChain(it_prop, it_prop->chains_[chain_i], relation.second, indiv[indiv_i]);
+            resolveChain(it_prop, it_prop->chains_[chain_i], indiv[indiv_i]->object_relations_[rel_i].second, indiv[indiv_i]);
       }
     }
 }
