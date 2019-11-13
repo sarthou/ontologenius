@@ -87,9 +87,6 @@ private:
   void addObjectProperty(ClassBranch_t* me, Pair_t<std::string, std::string>& relation);
   void addDataProperty(ClassBranch_t* me, Pair_t<std::string, data_t>& relation);
 
-  void setSteadyObjectProperty(ClassBranch_t* branch_from, ObjectPropertyBranch_t* branch_prop, ClassBranch_t* branch_on);
-  void setSteadyDataProperty(ClassBranch_t* branch_from, DataPropertyBranch_t* branch_prop, data_t data);
-
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth);
   void getRelatedFrom(std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res);
   void getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth);
@@ -111,9 +108,9 @@ private:
     auto it = vect.find(disjoint);
     if(it != vect.end())
     {
-      me->setSteady_disjoint(it->second);
+      me->disjoints_.push_back(it->second);
       if(all)
-        it->second->disjoints_.push_back(me);
+        it->second->disjoints_.push_back(me); // TODO do not save
       find = true;
     }
   }

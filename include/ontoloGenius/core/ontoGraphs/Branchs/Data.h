@@ -28,6 +28,15 @@ struct data_t
     type_ = value.substr(0,value.find(":"));
     value_ = value.substr(value.find(":")+1);
   }
+
+  bool operator==(const data_t& other)
+  {
+    if((value_ == other.value_) &&
+      (type_ == other.type_))
+      return true;
+    else
+      return false;
+  }
 };
 
 } // namespace ontologenius

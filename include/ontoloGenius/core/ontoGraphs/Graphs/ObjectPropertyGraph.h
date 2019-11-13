@@ -73,9 +73,9 @@ private:
     auto it = vect.find(disjoint);
     if(it != vect.end())
     {
-      me->setSteady_disjoint(it->second);
+      me->disjoints_.push_back(it->second);
       if(all)
-        it->second->disjoints_.push_back(me);
+        it->second->disjoints_.push_back(me); // TODO do not save
       find = true;
     }
   }
@@ -88,9 +88,9 @@ private:
     auto it = vect.find(inverse);
     if(it != vect.end())
     {
-      me->setSteady_inverse(it->second);
+      me->inverses_.push_back(it->second);
       if(all)
-        it->second->inverses_.push_back(me);
+        it->second->inverses_.push_back(me); // TODO do not save
       find = true;
     }
   }

@@ -4,10 +4,9 @@
 #include <string>
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/Elements.h"
+#include "ontoloGenius/core/ontoGraphs/Branchs/ValuedNode.h"
 
 namespace ontologenius {
-
-class ValuedNodeData;
 
 class NodeWriter
 {
@@ -17,8 +16,8 @@ public:
 
   FILE* file_;
 
-  void writeDictionary(ValuedNodeData* node);
-  void writeMutedDictionary(ValuedNodeData* node);
+  void writeDictionary(ValuedNode* node);
+  void writeMutedDictionary(ValuedNode* node);
 
   void writeString(std::string text);
 

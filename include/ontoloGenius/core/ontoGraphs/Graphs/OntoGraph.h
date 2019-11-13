@@ -80,7 +80,6 @@ protected:
   void link();
   void add_family(B* branch, uint8_t family);
   void amIA(B** me, std::map<std::string, B*>& vect, const std::string& value, bool erase = true);
-  void isMyMother(B* me, const std::string& mother, std::map<std::string, B*>& vect, bool& find);
 
   void mitigate(B* branch);
   std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<B*>& vect);
@@ -184,20 +183,20 @@ std::string OntoGraph<B>::getName(const std::string& value)
   B* branch = this->container_.find(value);
   if(branch != nullptr)
   {
-    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
-      if(branch->dictionary_[this->language_].size())
+    if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
+      if(branch->dictionary_.spoken_[this->language_].size())
       {
         std::unordered_set<size_t> tested;
         std::random_device rd;
         std::mt19937 gen(rd());
 
-        size_t dic_size = branch->dictionary_[this->language_].size();
+        size_t dic_size = branch->dictionary_.spoken_[this->language_].size();
         std::uniform_int_distribution<> dis(0, dic_size - 1);
 
         while(tested.size() < dic_size)
         {
           size_t myIndex = dis(gen);
-          std::string word = branch->dictionary_[this->language_][myIndex];
+          std::string word = branch->dictionary_.spoken_[this->language_][myIndex];
           if(word.find("_") == std::string::npos)
           {
             res = word;
@@ -206,7 +205,7 @@ std::string OntoGraph<B>::getName(const std::string& value)
           tested.insert(myIndex);
         }
         if(res == "")
-          res = branch->dictionary_[this->language_][0];
+          res = branch->dictionary_.spoken_[this->language_][0];
       }
       else
         res = value;
@@ -226,8 +225,8 @@ std::vector<std::string> OntoGraph<B>::getNames(const std::string& value)
   B* branch = this->container_.find(value);
   if(branch != nullptr)
   {
-    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
-      res = branch->dictionary_[this->language_];
+    if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
+      res = branch->dictionary_.spoken_[this->language_];
     else
       res.push_back(value);
   }
@@ -244,14 +243,14 @@ std::vector<std::string> OntoGraph<B>::getEveryNames(const std::string& value)
   B* branch = this->container_.find(value);
   if(branch != nullptr)
   {
-    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
-      res = branch->dictionary_[this->language_];
+    if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
+      res = branch->dictionary_.spoken_[this->language_];
     else
       res.push_back(value);
 
-    if(branch->muted_dictionary_.find(this->language_) != branch->muted_dictionary_.end())
+    if(branch->dictionary_.muted_.find(this->language_) != branch->dictionary_.muted_.end())
     {
-      std::vector<std::string> muted = branch->muted_dictionary_[this->language_];
+      std::vector<std::string> muted = branch->dictionary_.muted_[this->language_];
       res.insert(res.end(), muted.begin(), muted.end());
     }
   }
@@ -311,30 +310,6 @@ void OntoGraph<B>::amIA(B** me, std::map<std::string, B*>& vect, const std::stri
       if(erase)
         vect.erase(it);
     }
-  }
-}
-
-template <typename B>
-void OntoGraph<B>::isMyMother(B* me, const std::string& mother, std::map<std::string, B*>& vect, bool& find)
-{
-  if(find)
-    return;
-
-  auto it = vect.find(mother);
-  if(it != vect.end())
-  {
-    bool loop = false;
-    for(auto mothers : it->second->mothers_)
-      if(mothers.elem == me)
-        loop = true;
-
-    if(loop == false)
-    {
-      it->second->childs_.push_back(Single_t<B*>(me));
-      me->setSteady_mother(Single_t<B*>(it->second));
-    }
-
-    find = true;
   }
 }
 
@@ -471,14 +446,14 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res)
 template <typename D>
 bool fullComparator(D* branch, const std::string& value, const std::string& lang)
 {
-  if(branch->dictionary_.find(lang) != branch->dictionary_.end())
-    for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
-      if(branch->dictionary_[lang][i] == value)
+  if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
+    for(size_t i = 0; i < branch->dictionary_.spoken_[lang].size(); i++)
+      if(branch->dictionary_.spoken_[lang][i] == value)
         return true;
 
-  if(branch->muted_dictionary_.find(lang) != branch->muted_dictionary_.end())
-    for(size_t i = 0; i < branch->muted_dictionary_[lang].size(); i++)
-      if(branch->muted_dictionary_[lang][i] == value)
+  if(branch->dictionary_.muted_.find(lang) != branch->dictionary_.muted_.end())
+    for(size_t i = 0; i < branch->dictionary_.muted_[lang].size(); i++)
+      if(branch->dictionary_.muted_[lang][i] == value)
         return true;
   return false;
 }
@@ -488,18 +463,18 @@ bool comparator(D* branch, const std::string& value, const std::string& lang)
 {
   std::smatch match;
 
-  if(branch->dictionary_.find(lang) != branch->dictionary_.end())
-    for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
+  if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
+    for(size_t i = 0; i < branch->dictionary_.spoken_[lang].size(); i++)
     {
-      std::regex regex("\\b(" + branch->dictionary_[lang][i] + ")([^ ]*)");
+      std::regex regex("\\b(" + branch->dictionary_.spoken_[lang][i] + ")([^ ]*)");
       if(std::regex_search(value, match, regex))
         return true;
     }
 
-  if(branch->muted_dictionary_.find(lang) != branch->muted_dictionary_.end())
-    for(size_t i = 0; i < branch->muted_dictionary_[lang].size(); i++)
+  if(branch->dictionary_.muted_.find(lang) != branch->dictionary_.muted_.end())
+    for(size_t i = 0; i < branch->dictionary_.muted_[lang].size(); i++)
     {
-      std::regex regex("\\b(" + branch->muted_dictionary_[lang][i] + ")([^ ]*)");
+      std::regex regex("\\b(" + branch->dictionary_.muted_[lang][i] + ")([^ ]*)");
       if(std::regex_search(value, match, regex))
         return true;
     }
@@ -512,14 +487,14 @@ bool comparatorRegex(D* branch, const std::string& regex, const std::string& lan
   std::regex base_regex(regex);
   std::smatch match;
 
-  if(branch->dictionary_.find(lang) != branch->dictionary_.end())
-    for(size_t i = 0; i < branch->dictionary_[lang].size(); i++)
-      if(std::regex_match(branch->dictionary_[lang][i], match, base_regex))
+  if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
+    for(size_t i = 0; i < branch->dictionary_.spoken_[lang].size(); i++)
+      if(std::regex_match(branch->dictionary_.spoken_[lang][i], match, base_regex))
         return true;
 
-  if(branch->muted_dictionary_.find(lang) != branch->muted_dictionary_.end())
-    for(size_t i = 0; i < branch->muted_dictionary_[lang].size(); i++)
-      if(std::regex_match(branch->muted_dictionary_[lang][i], match, base_regex))
+  if(branch->dictionary_.muted_.find(lang) != branch->dictionary_.muted_.end())
+    for(size_t i = 0; i < branch->dictionary_.muted_[lang].size(); i++)
+      if(std::regex_match(branch->dictionary_.muted_[lang][i], match, base_regex))
         return true;
   return false;
 }
@@ -572,28 +547,28 @@ std::unordered_set<std::string> OntoGraph<B>::findFuzzy(const std::string& value
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   for(auto branch : all_branchs_)
   {
-    if(branch->dictionary_.find(this->language_) != branch->dictionary_.end())
-      for(size_t i = 0; i < branch->dictionary_[this->language_].size(); i++)
-        if((tmp_cost = dist.get(branch->dictionary_[this->language_][i], value)) <= lower_cost)
+    if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
+      for(size_t i = 0; i < branch->dictionary_.spoken_[this->language_].size(); i++)
+        if((tmp_cost = dist.get(branch->dictionary_.spoken_[this->language_][i], value)) <= lower_cost)
         {
           if(tmp_cost != lower_cost)
           {
             lower_cost = tmp_cost;
             res.clear();
           }
-          res.insert(branch->dictionary_[this->language_][i]);
+          res.insert(branch->dictionary_.spoken_[this->language_][i]);
         }
 
-    if(branch->muted_dictionary_.find(this->language_) != branch->muted_dictionary_.end())
-      for(size_t i = 0; i < branch->muted_dictionary_[this->language_].size(); i++)
-        if((tmp_cost = dist.get(branch->muted_dictionary_[this->language_][i], value)) <= lower_cost)
+    if(branch->dictionary_.muted_.find(this->language_) != branch->dictionary_.muted_.end())
+      for(size_t i = 0; i < branch->dictionary_.muted_[this->language_].size(); i++)
+        if((tmp_cost = dist.get(branch->dictionary_.muted_[this->language_][i], value)) <= lower_cost)
         {
           if(tmp_cost != lower_cost)
           {
             lower_cost = tmp_cost;
             res.clear();
           }
-          res.insert(branch->muted_dictionary_[this->language_][i]);
+          res.insert(branch->dictionary_.muted_[this->language_][i]);
         }
   }
 

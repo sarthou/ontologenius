@@ -34,27 +34,20 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   else
   {
     //for all my mothers
-    for(size_t mothers_i = 0; mothers_i < property_vectors.mothers_.size(); mothers_i++)
+    for(auto& mother : property_vectors.mothers_)
     {
-      bool i_find_my_mother = false;
-
-      //is a root my mother ?
-      isMyMother(me, property_vectors.mothers_[mothers_i].elem, roots_, i_find_my_mother);
-
-      //is a branch my mother ?
-      isMyMother(me, property_vectors.mothers_[mothers_i].elem, branchs_, i_find_my_mother);
-
-      //is a tmp mother is mine ?
-      isMyMother(me, property_vectors.mothers_[mothers_i].elem, tmp_mothers_, i_find_my_mother);
-
-      //I create my mother
-      if(!i_find_my_mother)
+      ObjectPropertyBranch_t* mother_branch = nullptr;
+      getInMap(&mother_branch, mother.elem, roots_);
+      getInMap(&mother_branch, mother.elem, branchs_);
+      getInMap(&mother_branch, mother.elem, tmp_mothers_);
+      if(mother_branch == nullptr)
       {
-        ObjectPropertyBranch_t* my_mother = new struct ObjectPropertyBranch_t(property_vectors.mothers_[mothers_i].elem);
-        my_mother->childs_.push_back(ObjectPropertyElement_t(me));
-        me->setSteady_mother(ObjectPropertyElement_t(my_mother));
-        tmp_mothers_[my_mother->value()] = my_mother;
+        mother_branch = new struct ObjectPropertyBranch_t(mother.elem);
+        tmp_mothers_[mother_branch->value()] = mother_branch;
       }
+
+      conditionalPushBack(mother_branch->childs_, ObjectPropertyElement_t(me, mother.probability, true));
+      conditionalPushBack(me->mothers_, ObjectPropertyElement_t(mother_branch, mother.probability));
     }
 
     //but i am also a branch
@@ -82,8 +75,8 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     if(!i_find_my_disjoint)
     {
       ObjectPropertyBranch_t* my_disjoint = new struct ObjectPropertyBranch_t(property_vectors.disjoints_[disjoints_i]);
-      me->setSteady_disjoint(my_disjoint);
-      my_disjoint->disjoints_.push_back(me);
+      me->disjoints_.push_back(my_disjoint);
+      my_disjoint->disjoints_.push_back(me); // TODO do not save
       tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother
     }
   }
@@ -109,8 +102,8 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     if(!i_find_my_inverse)
     {
       ObjectPropertyBranch_t* my_inverse = new struct ObjectPropertyBranch_t(property_vectors.inverses_[inverses_i]);
-      me->setSteady_inverse(my_inverse);
-      my_inverse->inverses_.push_back(me);
+      me->inverses_.push_back(my_inverse);
+      my_inverse->inverses_.push_back(me); // TODO do not save
       tmp_mothers_[my_inverse->value()] = my_inverse; //I put my inverse as tmp_mother
     }
   }
@@ -131,11 +124,9 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     {
       ObjectVectors_t empty_vectors;
       class_graph_->add(domain.elem, empty_vectors);
-      auto it = class_graph_->roots_.find(domain.elem);
-      if(it != class_graph_->roots_.end())
-        domain_branch = it->second;
+      getInMap(&domain_branch, domain.elem, class_graph_->roots_);
     }
-    me->setSteady_domain(domain_branch);
+    conditionalPushBack(me->domains_, ClassElement_t(domain_branch, domain.probability));
   }
 
   /**********************
@@ -154,20 +145,18 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     {
       ObjectVectors_t empty_vectors;
       class_graph_->add(range.elem, empty_vectors);
-      auto it = class_graph_->roots_.find(range.elem);
-      if(it != class_graph_->roots_.end())
-        range_branch = it->second;
+      getInMap(&range_branch, range.elem, class_graph_->roots_);
     }
-    me->setSteady_range(range_branch);
+    conditionalPushBack(me->ranges_, ClassElement_t(range_branch, range.probability));
   }
 
   /**********************
   ** Language and properties
   **********************/
-  me->setSteady_properties(property_vectors.properties_);
+  me->properties_ = property_vectors.properties_;
   me->setSteady_dictionary(property_vectors.dictionary_);
-  if(me->dictionary_.find("en") == me->dictionary_.end())
-    me->dictionary_["en"].push_back(me->value());
+  if(me->dictionary_.spoken_.find("en") == me->dictionary_.spoken_.end())
+    me->dictionary_.spoken_["en"].push_back(me->value());
   me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
 
   /**********************
@@ -204,8 +193,8 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     }
 
     chain.push_back(me);
-    first->set_chain(chain);
-    me->setSteady_chain(property_vectors.chains_[chain_i]);
+    first->chains_.push_back(chain);
+    me->str_chains_.push_back(property_vectors.chains_[chain_i]);
   }
 
   mitigate(me);
@@ -256,7 +245,8 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
         if(!i_find_my_disjoint)
         {
           ObjectPropertyBranch_t* my_disjoint = new struct ObjectPropertyBranch_t(disjoints[disjoints_j]);
-          me->setSteady_disjoint(my_disjoint);
+          me->disjoints_.push_back(my_disjoint);
+          my_disjoint->disjoints_.push_back(me); // TODO do not save
           tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother
         }
       }
@@ -370,8 +360,8 @@ bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, std::string& relatio
     {
       ObjectPropertyBranch_t* tmp = create(data);
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      prop->setSteady_mother(tmp);
-      tmp->setSteady_child(prop);
+      conditionalPushBack(prop->mothers_, ObjectPropertyElement_t(tmp));
+      conditionalPushBack(tmp->childs_, ObjectPropertyElement_t(prop));
       prop->updated_ = true;
       tmp->updated_ = true;
     }
@@ -391,8 +381,8 @@ bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, std::string& r
     {
       ObjectPropertyBranch_t* tmp = create(data);
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      tmp->setSteady_mother(prop);
-      prop->setSteady_child(tmp);
+      conditionalPushBack(tmp->mothers_, ObjectPropertyElement_t(prop));
+      conditionalPushBack(prop->childs_, ObjectPropertyElement_t(tmp));
       prop->updated_ = true;
       tmp->updated_ = true;
     }

@@ -3,13 +3,11 @@
 #include <map>
 #include <vector>
 
-#include "ontoloGenius/core/ontoGraphs/Branchs/ValuedNode.h"
-
 namespace ontologenius {
 
-void NodeWriter::writeDictionary(ValuedNodeData* node)
+void NodeWriter::writeDictionary(ValuedNode* node)
 {
-  for(auto& it : node->dictionary_)
+  for(auto& it : node->steady_dictionary_.spoken_)
   {
     for(size_t i = 0; i < it.second.size(); i++)
     {
@@ -23,9 +21,9 @@ void NodeWriter::writeDictionary(ValuedNodeData* node)
   }
 }
 
-void NodeWriter::writeMutedDictionary(ValuedNodeData* node)
+void NodeWriter::writeMutedDictionary(ValuedNode* node)
 {
-  for(auto& it : node->muted_dictionary_)
+  for(auto& it : node->steady_dictionary_.muted_)
   {
     for(size_t i = 0; i < it.second.size(); i++)
     {

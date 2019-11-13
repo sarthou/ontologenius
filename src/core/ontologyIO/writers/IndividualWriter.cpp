@@ -40,13 +40,11 @@ void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
 
   writeType(branch);
   writeObjectProperties(branch);
-  writeObjectPropertiesDeduced(branch);
   writeDataProperties(branch);
-  writeDataPropertiesDeduced(branch);
   writeSameAs(branch);
 
-  writeDictionary(&branch->steady_);
-  writeMutedDictionary(&branch->steady_);
+  writeDictionary(branch);
+  writeMutedDictionary(branch);
 
   tmp = "    </owl:NamedIndividual>\n\n\n\n";
   writeString(tmp);
@@ -54,37 +52,23 @@ void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
 
 void IndividualWriter::writeType(IndividualBranch_t* branch)
 {
-  for(auto& mother : branch->steady_.is_a_)
-  {
-    std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
-    std::string tmp = "        <rdf:type" +
-                      proba +
-                      " rdf:resource=\"ontologenius#" +
-                      mother.elem->value()
-                      + "\"/>\n";
-    writeString(tmp);
-  }
+  for(auto& mother : branch->is_a_)
+    if(mother.infered == false)
+    {
+      std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
+      std::string tmp = "        <rdf:type" +
+                        proba +
+                        " rdf:resource=\"ontologenius#" +
+                        mother.elem->value()
+                        + "\"/>\n";
+      writeString(tmp);
+    }
 }
 
 void IndividualWriter::writeObjectProperties(IndividualBranch_t* branch)
 {
-  for(IndivObjectRelationElement_t& relation : branch->steady_.object_relations_)
-  {
-    std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
-    std::string tmp = "        <ontologenius:" +
-                      relation.first->value() +
-                      proba +
-                      " rdf:resource=\"ontologenius#" +
-                      relation.second->value() +
-                      "\"/>\n";
-    writeString(tmp);
-  }
-}
-
-void IndividualWriter::writeObjectPropertiesDeduced(IndividualBranch_t* branch)
-{
   for(IndivObjectRelationElement_t& relation : branch->object_relations_)
-    if(relation < 1.0) // deduced 0.5
+    if(relation.infered == false)
     {
       std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
       std::string tmp = "        <ontologenius:" +
@@ -99,29 +83,8 @@ void IndividualWriter::writeObjectPropertiesDeduced(IndividualBranch_t* branch)
 
 void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
 {
-  for(IndivDataRelationElement_t& relation : branch->steady_.data_relations_)
-  {
-    std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
-    std::string tmp = "        <ontologenius:" +
-                      relation.first->value() +
-                      proba +
-                      " rdf:datatype=\"" +
-                      relation.second.getNs() +
-                      "#" +
-                      relation.second.type_ +
-                      "\">" +
-                      relation.second.value_ +
-                      "</ontologenius:" +
-                      relation.first->value() +
-                      ">\n";
-    writeString(tmp);
-  }
-}
-
-void IndividualWriter::writeDataPropertiesDeduced(IndividualBranch_t* branch)
-{
   for(IndivDataRelationElement_t& relation : branch->data_relations_)
-    if(relation < 1.0) // deduced = 0.5
+    if(relation.infered == false)
     {
       std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
       std::string tmp = "        <ontologenius:" +
@@ -139,13 +102,12 @@ void IndividualWriter::writeDataPropertiesDeduced(IndividualBranch_t* branch)
       writeString(tmp);
     }
 }
-
 void IndividualWriter::writeSameAs(IndividualBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.same_as_.size(); i++)
+  for(size_t i = 0; i < branch->same_as_.size(); i++)
   {
     std::string tmp = "        <owl:sameAs rdf:resource=\"ontologenius#" +
-                      branch->steady_.same_as_[i]->value()
+                      branch->same_as_[i]->value()
                       + "\"/>\n";
     writeString(tmp);
   }

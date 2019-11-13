@@ -17,12 +17,12 @@ public:
 
 protected:
 
-  void writeDisjointWith(PropertyBranchData_t<T>* branch);
-  void writeProperties(PropertyBranchData_t<T>* branch);
+  void writeDisjointWith(PropertyBranch_t<T>* branch);
+  void writeProperties(PropertyBranch_t<T>* branch);
 };
 
 template <typename T>
-void PropertiesWriter<T>::writeDisjointWith(PropertyBranchData_t<T>* branch)
+void PropertiesWriter<T>::writeDisjointWith(PropertyBranch_t<T>* branch)
 {
   for(size_t i = 0; i < branch->disjoints_.size(); i++)
   {
@@ -34,7 +34,7 @@ void PropertiesWriter<T>::writeDisjointWith(PropertyBranchData_t<T>* branch)
 }
 
 template <typename T>
-void PropertiesWriter<T>::writeProperties(PropertyBranchData_t<T>* branch)
+void PropertiesWriter<T>::writeProperties(PropertyBranch_t<T>* branch)
 {
   std::string tmp;
   if(branch->properties_.functional_property_ == true)

@@ -28,7 +28,7 @@ struct Properties_t
 };
 
 template <typename B>
-class PropertyBranchData_t
+class PropertyBranch_t
 {
 public:
   std::vector<B*> disjoints_;

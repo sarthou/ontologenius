@@ -44,29 +44,21 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
     ** Class assertion
     **********************/
     //for all my mothers
-    for(size_t mothers_i = 0; mothers_i < object_vector.mothers_.size(); mothers_i++)
+    for(auto& mother : object_vector.mothers_)
     {
-      bool i_find_my_mother = false;
-
-      //is a root my mother ?
-      isMyMother(me, object_vector.mothers_[mothers_i].elem, roots_, i_find_my_mother);
-
-      //is a branch my mother ?
-      isMyMother(me, object_vector.mothers_[mothers_i].elem, branchs_, i_find_my_mother);
-
-      //is a tmp mother is mine ?
-      isMyMother(me, object_vector.mothers_[mothers_i].elem, tmp_mothers_, i_find_my_mother);
-
-      //I create my mother
-      if(!i_find_my_mother)
+      ClassBranch_t* mother_branch = nullptr;
+      getInMap(&mother_branch, mother.elem, roots_);
+      getInMap(&mother_branch, mother.elem, branchs_);
+      getInMap(&mother_branch, mother.elem, tmp_mothers_);
+      if(mother_branch == nullptr)
       {
-        ClassBranch_t* my_mother = new struct ClassBranch_t(object_vector.mothers_[mothers_i].elem);
-        my_mother->setSteady_child(ClassElement_t(me));
-        me->setSteady_mother(ClassElement_t(my_mother));
-        tmp_mothers_[my_mother->value()] = my_mother;
+        mother_branch = new struct ClassBranch_t(mother.elem);
+        tmp_mothers_[mother_branch->value()] = mother_branch;
       }
-    }
 
+      conditionalPushBack(mother_branch->childs_, ClassElement_t(me, mother.probability, true));
+      conditionalPushBack(me->mothers_, ClassElement_t(mother_branch, mother.probability));
+    }
     //but i am also a branch
     branchs_[me->value()] = me;
   }
@@ -92,8 +84,8 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
     if(!i_find_my_disjoint)
     {
       ClassBranch_t* my_disjoint = new struct ClassBranch_t(object_vector.disjoints_[disjoints_i]);
-      me->setSteady_disjoint(my_disjoint);
-      my_disjoint->disjoints_.push_back(me);
+      me->disjoints_.push_back(my_disjoint);
+      my_disjoint->disjoints_.push_back(me); // TODO do not save
       tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother
     }
   }
@@ -112,8 +104,8 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
     addDataProperty(me, data_relation);
 
   me->setSteady_dictionary(object_vector.dictionary_);
-  if(me->dictionary_.find("en") == me->dictionary_.end())
-    me->dictionary_["en"].push_back(me->value());
+  if(me->dictionary_.spoken_.find("en") == me->dictionary_.spoken_.end())
+    me->dictionary_.spoken_["en"].push_back(me->value());
   me->setSteady_muted_dictionary(object_vector.muted_dictionary_);
 
   mitigate(me);
@@ -164,7 +156,8 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
         if(!i_find_my_disjoint)
         {
           ClassBranch_t* my_disjoint = new struct ClassBranch_t(disjoints[disjoints_j]);
-          me->setSteady_disjoint(my_disjoint);
+          me->disjoints_.push_back(my_disjoint);
+          my_disjoint->disjoints_.push_back(me); // TODO do not save
           tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother
         }
       }
@@ -201,10 +194,7 @@ void ClassGraph::addObjectProperty(ClassBranch_t* me, Pair_t<std::string, std::s
     tmp_mothers_[class_branch->value()] = class_branch;
   }
 
-  if(relation.probability != 1.0)
-    me->object_relations_.push_back(ClassObjectRelationElement_t(property_branch, class_branch, relation.probability));
-  else
-    me->setSteady_objectRelation(ClassObjectRelationElement_t(property_branch, class_branch, relation.probability));
+  me->object_relations_.push_back(ClassObjectRelationElement_t(property_branch, class_branch, relation.probability));
 }
 
 void ClassGraph::addDataProperty(ClassBranch_t* me, Pair_t<std::string, data_t>& relation)
@@ -220,10 +210,7 @@ void ClassGraph::addDataProperty(ClassBranch_t* me, Pair_t<std::string, data_t>&
     getInMap(&property_branch, relation.first, data_property_graph_->roots_);
   }
 
-  if(relation.probability != 1.0) // deduced
-    me->data_relations_.push_back(ClassDataRelationElement_t(property_branch, relation.second, relation.probability));
-  else
-    me->setSteady_dataRelation(ClassDataRelationElement_t(property_branch, relation.second, relation.probability));
+  me->data_relations_.push_back(ClassDataRelationElement_t(property_branch, relation.second, relation.probability));
 }
 
 /*********
@@ -848,12 +835,6 @@ int ClassGraph::deletePropertiesOnClass(ClassBranch_t* _class, std::vector<Class
         vect[class_i]->object_relations_.erase(vect[class_i]->object_relations_.begin() + i);
       else
         i++;
-
-    for(size_t i = 0; i < vect[class_i]->steady_.object_relations_.size();)
-      if(vect[class_i]->steady_.object_relations_[i].second == _class)
-        vect[class_i]->steady_.object_relations_.erase(vect[class_i]->steady_.object_relations_.begin() + i);
-      else
-        i++;
   }
   return class_index;
 }
@@ -889,8 +870,8 @@ void ClassGraph::addInheritage(std::string& class_base, std::string& class_inher
         all_branchs_.push_back(inherited);
       }
     }
-    branch->setSteady_mother(ClassElement_t(inherited));
-    inherited->setSteady_child(ClassElement_t(branch));
+    conditionalPushBack(branch->mothers_, ClassElement_t(inherited));
+    conditionalPushBack(inherited->childs_, ClassElement_t(branch));
     branch->updated_ = true;
     inherited->updated_ = true;
     mitigate(branch);
@@ -930,7 +911,7 @@ bool ClassGraph::addProperty(std::string& class_from, std::string& property, std
 
     if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
     {
-      setSteadyObjectProperty(branch_from, branch_prop, branch_on);
+      conditionalPushBack(branch_from->object_relations_, ClassObjectRelationElement_t(branch_prop, branch_on));
       return true;
     }
     else
@@ -963,7 +944,7 @@ bool ClassGraph::addProperty(std::string& class_from, std::string& property, std
 
     if(checkRangeAndDomain(branch_from, branch_prop, data_branch))
     {
-      setSteadyDataProperty(branch_from, branch_prop, data_branch);
+      conditionalPushBack(branch_from->data_relations_, ClassDataRelationElement_t(branch_prop, data_branch));
       return true;
     }
     else
@@ -1005,67 +986,13 @@ bool ClassGraph::addPropertyInvert(std::string& class_from, std::string& propert
 
     if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
     {
-      setSteadyObjectProperty(branch_from, branch_prop, branch_on);
+      conditionalPushBack(branch_from->object_relations_, ClassObjectRelationElement_t(branch_prop, branch_on));
       return true;
     }
     else
       return false;
   }
   return false;
-}
-
-void ClassGraph::setSteadyObjectProperty(ClassBranch_t* branch_from, ObjectPropertyBranch_t* branch_prop, ClassBranch_t* branch_on)
-{
-  bool found = false;
-  for(ClassObjectRelationElement_t& relation : branch_from->steady_.object_relations_)
-    if(relation.first->get() == branch_prop->get())
-    {
-      relation.second = branch_on;
-      found = true;
-      break;
-    }
-
-  if(found == false)
-    branch_from->steady_.object_relations_.push_back(ClassObjectRelationElement_t(branch_prop, branch_on));
-
-  found = false;
-  for(ClassObjectRelationElement_t& relation : branch_from->object_relations_)
-    if(relation.first->get() == branch_prop->get())
-    {
-      relation.second = branch_on;
-      found = true;
-      break;
-    }
-
-  if(found == false)
-    branch_from->object_relations_.push_back(ClassObjectRelationElement_t(branch_prop, branch_on));
-}
-
-void ClassGraph::setSteadyDataProperty(ClassBranch_t* branch_from, DataPropertyBranch_t* branch_prop, data_t data)
-{
-  bool found = false;
-  for(ClassDataRelationElement_t& relation : branch_from->steady_.data_relations_)
-    if(relation.first->get() == branch_prop->get())
-    {
-      relation.second = data;
-      found = true;
-      break;
-    }
-
-  if(found == false)
-    branch_from->steady_.data_relations_.push_back(ClassDataRelationElement_t(branch_prop, data));
-
-  found = false;
-  for(ClassDataRelationElement_t& relation : branch_from->data_relations_)
-    if(relation.first->get() == branch_prop->get())
-    {
-      relation.second = data;
-      found = true;
-      break;
-    }
-
-  if(found == false)
-    branch_from->data_relations_.push_back(ClassDataRelationElement_t(branch_prop, data));
 }
 
 void ClassGraph::removeLang(std::string& indiv, std::string& lang, std::string& name)
@@ -1075,10 +1002,10 @@ void ClassGraph::removeLang(std::string& indiv, std::string& lang, std::string& 
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
   lang = lang.substr(1);
-  removeFromDictionary(branch->dictionary_, lang, name);
-  removeFromDictionary(branch->steady_.dictionary_, lang, name);
-  removeFromDictionary(branch->muted_dictionary_, lang, name);
-  removeFromDictionary(branch->steady_.muted_dictionary_, lang, name);
+  removeFromDictionary(branch->dictionary_.spoken_, lang, name);
+  removeFromDictionary(branch->dictionary_.muted_, lang, name);
+  removeFromDictionary(branch->steady_dictionary_.spoken_, lang, name);
+  removeFromDictionary(branch->steady_dictionary_.muted_, lang, name);
 }
 
 void ClassGraph::removeInheritage(std::string& class_base, std::string& class_inherited)
@@ -1093,9 +1020,7 @@ void ClassGraph::removeInheritage(std::string& class_base, std::string& class_in
 
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
-  removeFromElemVect(branch_base->steady_.mothers_, branch_inherited);
   removeFromElemVect(branch_base->mothers_, branch_inherited);
-  removeFromElemVect(branch_inherited->steady_.childs_, branch_base);
   removeFromElemVect(branch_inherited->childs_, branch_base);
 
   branch_base->updated_ = true;
@@ -1123,22 +1048,6 @@ bool ClassGraph::removeProperty(std::string& class_from, std::string& property, 
         i++;
     }
 
-    for(size_t i = 0; i < branch_from->steady_.object_relations_.size();)
-    {
-      if(branch_from->steady_.object_relations_[i].first->value() == property)
-      {
-        if(branch_from->steady_.object_relations_[i].second->value() == class_on)
-        {
-          branch_from->steady_.object_relations_[i].second->updated_ = true;
-          branch_from->steady_.object_relations_.erase(branch_from->steady_.object_relations_.begin() + i);
-        }
-        else
-          i++;
-      }
-      else
-        i++;
-    }
-
     return true;
   }
   return false;
@@ -1157,22 +1066,6 @@ bool ClassGraph::removeProperty(std::string& class_from, std::string& property, 
           (branch_from->data_relations_[i].second.value_ == data))
         {
           branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
-        }
-        else
-          i++;
-      }
-      else
-        i++;
-    }
-
-    for(size_t i = 0; i < branch_from->steady_.data_relations_.size();)
-    {
-      if(branch_from->steady_.data_relations_[i].first->value() == property)
-      {
-        if((branch_from->data_relations_[i].second.type_ == type) &&
-          (branch_from->data_relations_[i].second.value_ == data))
-        {
-          branch_from->steady_.data_relations_.erase(branch_from->steady_.data_relations_.begin() + i);
         }
         else
           i++;
