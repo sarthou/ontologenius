@@ -51,7 +51,7 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
     for(size_t i = 0; i < indivs_size; i++)
       if(!porpertyExist(on, chain[chain_size], indivs[i]))
       {
-        on->object_relations_.push_back(IndivObjectRelationElement_t(chain[chain_size], indivs[i]));
+        on->object_relations_.push_back(IndivObjectRelationElement_t(chain[chain_size], indivs[i], 1.0, true));
         on->object_properties_has_induced_.push_back(Triplet());
         on->updated_ = true;
         for(auto relation : on->object_relations_)
