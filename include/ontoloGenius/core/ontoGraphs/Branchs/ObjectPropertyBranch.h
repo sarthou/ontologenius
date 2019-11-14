@@ -19,7 +19,7 @@ class ObjectPropertyBranch_t :  public Branch_t<ObjectPropertyBranch_t>,
                                 public PropertyBranch_t<ObjectPropertyBranch_t>
 {
 public:
-  std::vector<ObjectPropertyBranch_t*> inverses_;
+  std::vector<ObjectPropertyElement_t> inverses_;
   std::vector<ClassElement_t> domains_;
   std::vector<ClassElement_t> ranges_;
   std::vector<std::vector<ObjectPropertyBranch_t*>> chains_;

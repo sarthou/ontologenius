@@ -1542,10 +1542,10 @@ void IndividualGraph::setObjectPropertiesUpdated(std::vector<IndivObjectRelation
 
 void IndividualGraph::removePropertyInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
 {
-  for(ObjectPropertyBranch_t* invert : property->inverses_)
+  for(auto& invert : property->inverses_)
   {
     for(size_t i = 0; i < indiv_on->object_relations_.size(); i++)
-      if((indiv_on->object_relations_[i].first == invert) &&
+      if((indiv_on->object_relations_[i].first == invert.elem) &&
         (indiv_on->object_relations_[i].second == indiv_from))
         {
           indiv_on->object_relations_.erase(indiv_on->object_relations_.begin() + i);

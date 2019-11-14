@@ -45,9 +45,8 @@ void ObjectPropertiesWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
   for(auto& mother : branch->mothers_)
     if(mother.infered == false)
     {
-      std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
       std::string tmp = "        <rdfs:subPropertyOf" +
-                        proba +
+                        getProba(mother) +
                         " rdf:resource=\"ontologenius#" +
                         mother.elem->value()
                         + "\"/>\n";
@@ -57,10 +56,12 @@ void ObjectPropertiesWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
 
 void ObjectPropertiesWriter::writeInverseOf(ObjectPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->inverses_.size(); i++)
+  for(auto& inverse : branch->inverses_)
   {
-    std::string tmp = "        <owl:inverseOf rdf:resource=\"ontologenius#" +
-                      branch->inverses_[i]->value()
+    std::string tmp = "        <owl:inverseOf" +
+                      getProba(inverse) +
+                      " rdf:resource=\"ontologenius#" +
+                      inverse.elem->value()
                       + "\"/>\n";
     writeString(tmp);
   }

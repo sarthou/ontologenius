@@ -43,9 +43,8 @@ void DataPropertiesWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
   for(auto& mother : branch->mothers_)
     if(mother.infered == false)
     {
-      std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
       std::string tmp = "        <rdfs:subPropertyOf" +
-                        proba +
+                        getProba(mother) +
                         " rdf:resource=\"ontologenius#" +
                         mother.elem->value()
                         + "\"/>\n";

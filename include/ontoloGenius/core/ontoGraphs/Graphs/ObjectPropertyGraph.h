@@ -18,7 +18,7 @@ struct ObjectPropertyVectors_t
 {
    std::vector<Single_t<std::string>> mothers_;
    std::vector<Single_t<std::string>> disjoints_;
-   std::vector<std::string> inverses_;
+   std::vector<Single_t<std::string>> inverses_;
    std::vector<Single_t<std::string>> domains_;
    std::vector<Single_t<std::string>> ranges_;
    std::vector<std::vector<std::string>> chains_;

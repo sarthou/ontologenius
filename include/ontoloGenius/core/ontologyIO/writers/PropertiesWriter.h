@@ -26,10 +26,9 @@ void PropertiesWriter<T>::writeDisjointWith(PropertyBranch_t<T>* branch)
 {
   for(auto& disjoint : branch->disjoints_)
   {
-    std::string proba = (disjoint < 1.0) ? " onto:probability=\"" + std::to_string(disjoint.probability) + "\"" : "";
     std::string tmp = "        <owl:disjointWith" +
-                      proba +
-                      "rdf:resource=\"ontologenius#" +
+                      getProba(disjoint) +
+                      " rdf:resource=\"ontologenius#" +
                       disjoint.elem->value()
                       + "\"/>\n\r";
     writeString(tmp);

@@ -79,27 +79,21 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   ** Inverses
   **********************/
   //for all my inverses
-  for(size_t inverses_i = 0; inverses_i < property_vectors.inverses_.size(); inverses_i++)
+  for(auto& inverse : property_vectors.inverses_)
   {
-    bool i_find_my_inverse = false;
+    ObjectPropertyBranch_t* inverse_branch = nullptr;
+    getInMap(&inverse_branch, inverse.elem, roots_);
+    getInMap(&inverse_branch, inverse.elem, branchs_);
+    getInMap(&inverse_branch, inverse.elem, tmp_mothers_);
 
-    //is a root my inverse ?
-    isMyInverse(me, property_vectors.inverses_[inverses_i], roots_, i_find_my_inverse);
-
-    //is a branch my inverse ?
-    isMyInverse(me, property_vectors.inverses_[inverses_i], branchs_, i_find_my_inverse);
-
-    //is a tmp mother is my inverse ?
-    isMyInverse(me, property_vectors.inverses_[inverses_i], tmp_mothers_, i_find_my_inverse);
-
-    //I create my inverse
-    if(!i_find_my_inverse)
+    //I create my disjoint
+    if(inverse_branch == nullptr)
     {
-      ObjectPropertyBranch_t* my_inverse = new struct ObjectPropertyBranch_t(property_vectors.inverses_[inverses_i]);
-      me->inverses_.push_back(my_inverse);
-      my_inverse->inverses_.push_back(me); // TODO do not save
-      tmp_mothers_[my_inverse->value()] = my_inverse; //I put my inverse as tmp_mother
+      inverse_branch = new struct ObjectPropertyBranch_t(inverse.elem);
+      tmp_mothers_[inverse_branch->value()] = inverse_branch; //I put my disjoint as tmp_mother
     }
+    conditionalPushBack(me->inverses_, ObjectPropertyElement_t(inverse_branch, inverse.probability));
+    conditionalPushBack(inverse_branch->inverses_, ObjectPropertyElement_t(me, inverse.probability, true));
   }
 
   /**********************
@@ -272,8 +266,8 @@ std::unordered_set<std::string> ObjectPropertyGraph::getInverse(const std::strin
 
   ObjectPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
-    for(unsigned inverse_i = 0; inverse_i < branch->inverses_.size(); inverse_i++)
-      getDown(branch->inverses_[inverse_i], res);
+    for(auto& inverse : branch->inverses_)
+      getDown(inverse.elem, res);
 
   return res;
 }
