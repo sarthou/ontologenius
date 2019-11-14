@@ -25,14 +25,15 @@ template <typename T>
 void PropertiesWriter<T>::writeDisjointWith(PropertyBranch_t<T>* branch)
 {
   for(auto& disjoint : branch->disjoints_)
-  {
-    std::string tmp = "        <owl:disjointWith" +
-                      getProba(disjoint) +
-                      " rdf:resource=\"ontologenius#" +
-                      disjoint.elem->value()
-                      + "\"/>\n\r";
-    writeString(tmp);
-  }
+    if(disjoint.infered == false)
+    {
+      std::string tmp = "        <owl:disjointWith" +
+                        getProba(disjoint) +
+                        " rdf:resource=\"ontologenius#" +
+                        disjoint.elem->value()
+                        + "\"/>\n\r";
+      writeString(tmp);
+    }
 }
 
 template <typename T>

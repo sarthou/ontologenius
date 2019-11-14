@@ -57,14 +57,15 @@ void ObjectPropertiesWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
 void ObjectPropertiesWriter::writeInverseOf(ObjectPropertyBranch_t* branch)
 {
   for(auto& inverse : branch->inverses_)
-  {
-    std::string tmp = "        <owl:inverseOf" +
-                      getProba(inverse) +
-                      " rdf:resource=\"ontologenius#" +
-                      inverse.elem->value()
-                      + "\"/>\n";
-    writeString(tmp);
-  }
+    if(inverse.infered == false)
+    {
+      std::string tmp = "        <owl:inverseOf" +
+                        getProba(inverse) +
+                        " rdf:resource=\"ontologenius#" +
+                        inverse.elem->value()
+                        + "\"/>\n";
+      writeString(tmp);
+    }
 }
 
 void ObjectPropertiesWriter::writeRange(ObjectPropertyBranch_t* branch)
