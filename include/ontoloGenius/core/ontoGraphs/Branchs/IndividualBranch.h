@@ -29,8 +29,8 @@ public:
   std::vector<IndivObjectRelationElement_t> object_relations_;
   std::vector<Triplet> object_properties_has_induced_;
   std::vector<IndivDataRelationElement_t> data_relations_;
-  std::vector<IndividualBranch_t*> same_as_;
-  std::vector<IndividualBranch_t*> distinct_;
+  std::vector<IndividualElement_t> same_as_;
+  std::vector<IndividualElement_t> distinct_;
 
   IndividualBranch_t(std::string value = "") : ValuedNode(value) {mark = false; }
 

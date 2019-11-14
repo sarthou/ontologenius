@@ -216,7 +216,7 @@ void OntologyReader::readIndividual(TiXmlElement* elem)
         if(subElemName == "rdf:type")
           push(individual_vector.is_a_, subElem, probability, "+");
         else if(subElemName == "owl:sameAs")
-          push(individual_vector.same_as_, subElem, "=");
+          push(individual_vector.same_as_, subElem, probability, "=");
         else if(subElemName == "rdfs:label")
           pushLang(individual_vector.dictionary_, subElem);
         else if(subElemName == "onto:label")

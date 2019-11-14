@@ -104,13 +104,14 @@ void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
 }
 void IndividualWriter::writeSameAs(IndividualBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->same_as_.size(); i++)
-  {
-    std::string tmp = "        <owl:sameAs rdf:resource=\"ontologenius#" +
-                      branch->same_as_[i]->value()
-                      + "\"/>\n";
-    writeString(tmp);
-  }
+  for(auto& same_as : branch->same_as_)
+    if(same_as.infered == false)
+    {
+      std::string tmp = "        <owl:sameAs rdf:resource=\"ontologenius#" +
+                        same_as.elem->value()
+                        + "\"/>\n";
+      writeString(tmp);
+    }
 }
 
 void IndividualWriter::writeDistincts(std::vector<IndividualBranch_t*>& individuals)
@@ -156,8 +157,8 @@ void IndividualWriter::getDistincts(IndividualBranch_t* individual, std::vector<
   if(std::find(distincts_current.begin(), distincts_current.end(), individual->value()) == distincts_current.end())
   {
     distincts_current.push_back(individual->value());
-    for(size_t i = 0; i < individual->distinct_.size(); i++)
-      getDistincts(individual->distinct_[i], distincts_current);
+    for(auto& distinct : individual->distinct_)
+      getDistincts(distinct.elem, distincts_current);
   }
 }
 

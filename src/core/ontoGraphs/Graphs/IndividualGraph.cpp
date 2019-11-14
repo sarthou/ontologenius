@@ -100,17 +100,17 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     for(size_t individual_i = 0; individual_i < individuals_.size(); individual_i++)
       if(individual_vector.same_as_[same_i] == individuals_[individual_i]->value())
       {
-        conditionalPushBack(me->same_as_, individuals_[individual_i]);
-        conditionalPushBack(individuals_[individual_i]->same_as_, me); // TODO do not save
+        conditionalPushBack(me->same_as_, IndividualElement_t(individuals_[individual_i]));
+        conditionalPushBack(individuals_[individual_i]->same_as_, IndividualElement_t(me, 1.0, true));
         i_find_my_same = true;
       }
 
     //I create my same
     if(!i_find_my_same)
     {
-      IndividualBranch_t* my_same = new struct IndividualBranch_t(individual_vector.same_as_[same_i]);
-      conditionalPushBack(me->same_as_, my_same);
-      conditionalPushBack(my_same->same_as_, me); // TODO do not save
+      IndividualBranch_t* my_same = new struct IndividualBranch_t(individual_vector.same_as_[same_i].elem);
+      conditionalPushBack(me->same_as_, IndividualElement_t(my_same));
+      conditionalPushBack(my_same->same_as_, IndividualElement_t(me, 1.0, true));
       individuals_.push_back(my_same);
     }
   }
@@ -155,7 +155,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
         for(size_t individual_i = 0; individual_i < individuals_.size(); individual_i++)
           if(distinct[distinct_j] == individuals_[individual_i]->value())
           {
-            conditionalPushBack(me->distinct_, individuals_[individual_i]);
+            conditionalPushBack(me->distinct_, IndividualElement_t(individuals_[individual_i]));
             i_find_my_distinct = true;
           }
 
@@ -163,7 +163,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
         if(!i_find_my_distinct)
         {
           IndividualBranch_t* my_distinct = new struct IndividualBranch_t(distinct[distinct_j]);
-          conditionalPushBack(me->distinct_, my_distinct);
+          conditionalPushBack(me->distinct_, IndividualElement_t(my_distinct));
           individuals_.push_back(my_distinct);
         }
       }
@@ -235,7 +235,7 @@ std::unordered_set<std::string> IndividualGraph::getDistincts(const std::string&
   if(indiv != nullptr)
     for(size_t i = 0; i < indiv->distinct_.size(); i++)
     {
-      std::unordered_set<std::string> tmp = getSameAndClean(indiv->distinct_[i]);
+      std::unordered_set<std::string> tmp = getSameAndClean(indiv->distinct_[i].elem);
       res.insert(tmp.begin(), tmp.end());
     }
   return res;
@@ -777,8 +777,8 @@ void IndividualGraph::getSame(IndividualBranch_t* individual, std::unordered_set
     res.insert(individual);
     individual->mark = true;
     for(size_t i = 0; i < individual->same_as_.size(); i++)
-      if(individual->same_as_[i]->mark == false)
-        getSame(individual->same_as_[i], res);
+      if(individual->same_as_[i].elem->mark == false)
+        getSame(individual->same_as_[i].elem, res);
   }
 }
 
