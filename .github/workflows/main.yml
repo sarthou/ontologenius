@@ -9,7 +9,6 @@ jobs:
     strategy:
       matrix:
         operating-system: [ubuntu-18.04, ubuntu-16.04]
-        distro: [kinetic, melodic]
         include: 
           - operating-system: ubuntu-18.04
             distro: melodic
@@ -24,7 +23,7 @@ jobs:
       # Set the python path manually to include /usr/-/python2.7/dist-packages
       # as this is where apt-get installs python packages.
       PYTHONPATH: $PYTHONPATH:/usr/lib/python2.7/dist-packages:/usr/local/lib/python2.7/dist-packages
-      ROS_DISTRO: melodic
+      ROS_DISTRO: ${{ matrix.distro }}
     steps:
       - uses: actions/checkout@v1
       - name: Install ROS
