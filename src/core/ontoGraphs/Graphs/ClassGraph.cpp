@@ -67,27 +67,20 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
   ** Disjoint assertion
   **********************/
   //for all my disjoints
-  for(size_t disjoints_i = 0; disjoints_i < object_vector.disjoints_.size(); disjoints_i++)
+  for(auto& disjoint : object_vector.disjoints_)
   {
-    bool i_find_my_disjoint = false;
-
-    //is a root my disjoint ?
-    isMyDisjoint(me, object_vector.disjoints_[disjoints_i], roots_, i_find_my_disjoint);
-
-    //is a branch my disjoint ?
-    isMyDisjoint(me, object_vector.disjoints_[disjoints_i], branchs_, i_find_my_disjoint);
-
-    //is a tmp mother is my disjoint ?
-    isMyDisjoint(me, object_vector.disjoints_[disjoints_i], tmp_mothers_, i_find_my_disjoint);
-
-    //I create my disjoint
-    if(!i_find_my_disjoint)
+    ClassBranch_t* disjoint_branch = nullptr;
+    getInMap(&disjoint_branch, disjoint.elem, roots_);
+    getInMap(&disjoint_branch, disjoint.elem, branchs_);
+    getInMap(&disjoint_branch, disjoint.elem, tmp_mothers_);
+    if(disjoint_branch == nullptr)
     {
-      ClassBranch_t* my_disjoint = new struct ClassBranch_t(object_vector.disjoints_[disjoints_i]);
-      me->disjoints_.push_back(my_disjoint);
-      my_disjoint->disjoints_.push_back(me); // TODO do not save
-      tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother
+      disjoint_branch = new struct ClassBranch_t(disjoint.elem);
+      tmp_mothers_[disjoint_branch->value()] = disjoint_branch;
     }
+
+    conditionalPushBack(me->disjoints_, ClassElement_t(disjoint_branch, disjoint.probability));
+    conditionalPushBack(disjoint_branch->disjoints_, ClassElement_t(me, disjoint.probability, true));
   }
 
   /**********************
@@ -226,16 +219,16 @@ std::unordered_set<std::string> ClassGraph::getDisjoint(const std::string& value
 
   ClassBranch_t* branch = container_.find(value);
   if(branch != nullptr)
-    for(size_t disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
-      getDown(branch->disjoints_[disjoint_i], res);
+    for(auto& disjoint : branch->disjoints_)
+      getDown(disjoint.elem, res);
 
   return res;
 }
 
 void ClassGraph::getDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res)
 {
-  for(ClassBranch_t* it : branch->disjoints_)
-    getDownPtr(it, res);
+  for(auto& disjoint : branch->disjoints_)
+    getDownPtr(disjoint.elem, res);
 }
 
 std::unordered_set<std::string> ClassGraph::select(std::unordered_set<std::string>& on, const std::string& class_selector)

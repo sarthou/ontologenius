@@ -25,8 +25,8 @@ class ClassBranch_t : public Branch_t<ClassBranch_t>
 {
 public:
   std::vector<IndividualElement_t> individual_childs_;
-  std::vector<ClassBranch_t*> disjoints_;
-  std::vector<Pair_t<ObjectPropertyBranch_t*, ClassBranch_t*>> object_relations_;
+  std::vector<ClassElement_t> disjoints_;
+  std::vector<ClassObjectRelationElement_t> object_relations_;
   std::vector<ClassDataRelationElement_t> data_relations_;
 
   ClassBranch_t(std::string value = "") : Branch_t(value) {};

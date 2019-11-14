@@ -164,7 +164,7 @@ void OntologyReader::readClass(TiXmlElement* elem)
       if(subElemName == "rdfs:subClassOf")
         push(object_vector.mothers_, subElem, probability, "+");
       else if(subElemName == "owl:disjointWith")
-        push(object_vector.disjoints_, subElem, "-");
+        push(object_vector.disjoints_, subElem, probability, "-");
       else if(subElemName == "rdfs:label")
         pushLang(object_vector.dictionary_, subElem);
       else if(subElemName == "onto:label")
