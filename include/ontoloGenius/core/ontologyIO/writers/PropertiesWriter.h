@@ -24,10 +24,13 @@ protected:
 template <typename T>
 void PropertiesWriter<T>::writeDisjointWith(PropertyBranch_t<T>* branch)
 {
-  for(size_t i = 0; i < branch->disjoints_.size(); i++)
+  for(auto& disjoint : branch->disjoints_)
   {
-    std::string tmp = "        <owl:disjointWith rdf:resource=\"ontologenius#" +
-                      branch->disjoints_[i]->value()
+    std::string proba = (disjoint < 1.0) ? " onto:probability=\"" + std::to_string(disjoint.probability) + "\"" : "";
+    std::string tmp = "        <owl:disjointWith" +
+                      proba +
+                      "rdf:resource=\"ontologenius#" +
+                      disjoint.elem->value()
                       + "\"/>\n\r";
     writeString(tmp);
   }

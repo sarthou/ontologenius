@@ -335,7 +335,7 @@ void OntologyReader::readObjectProperty(TiXmlElement* elem)
       if(subElemName == "rdfs:subPropertyOf")
         push(propertyVectors.mothers_, subElem, probability, "+");
       else if(subElemName == "owl:disjointWith")
-        push(propertyVectors.disjoints_, subElem, "-");
+        push(propertyVectors.disjoints_, subElem, probability, "-");
       else if(subElemName == "owl:inverseOf")
         push(propertyVectors.inverses_, subElem, "/");
       else if(subElemName == "rdfs:domain")
@@ -378,7 +378,7 @@ void OntologyReader::readDataProperty(TiXmlElement* elem)
       if(subElemName == "rdfs:subPropertyOf")
         push(propertyVectors.mothers_, subElem, probability, "+");
       else if(subElemName == "owl:disjointWith")
-        push(propertyVectors.disjoints_, subElem, "-");
+        push(propertyVectors.disjoints_, subElem, probability, "-");
       else if(subElemName == "rdfs:domain")
         push(propertyVectors.domains_, subElem, probability, ">");
       else if(subElemName == "rdfs:range")

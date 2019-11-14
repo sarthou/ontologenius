@@ -60,27 +60,21 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   ** Disjoints
   **********************/
   //for all my disjoints
-  for(size_t disjoints_i = 0; disjoints_i < property_vectors.disjoints_.size(); disjoints_i++)
+  for(auto& disjoint : property_vectors.disjoints_)
   {
-    bool i_find_my_disjoint = false;
-
-    //is a root my disjoint ?
-    isMyDisjoint(me, property_vectors.disjoints_[disjoints_i], roots_, i_find_my_disjoint);
-
-    //is a branch my disjoint ?
-    isMyDisjoint(me, property_vectors.disjoints_[disjoints_i], branchs_, i_find_my_disjoint);
-
-    //is a tmp mother is my disjoint ?
-    isMyDisjoint(me, property_vectors.disjoints_[disjoints_i], tmp_mothers_, i_find_my_disjoint);
+    DataPropertyBranch_t* disjoint_branch = nullptr;
+    getInMap(&disjoint_branch, disjoint.elem, roots_);
+    getInMap(&disjoint_branch, disjoint.elem, branchs_);
+    getInMap(&disjoint_branch, disjoint.elem, tmp_mothers_);
 
     //I create my disjoint
-    if(!i_find_my_disjoint)
+    if(disjoint_branch == nullptr)
     {
-      DataPropertyBranch_t* my_disjoint = new struct DataPropertyBranch_t(property_vectors.disjoints_[disjoints_i]);
-      me->disjoints_.push_back(my_disjoint);
-      my_disjoint->disjoints_.push_back(me); // TODO do not save
-      tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother
+      disjoint_branch = new struct DataPropertyBranch_t(disjoint.elem);
+      tmp_mothers_[disjoint_branch->value()] = disjoint_branch; //I put my disjoint as tmp_mother
     }
+    conditionalPushBack(me->disjoints_, DataPropertyElement_t(disjoint_branch, disjoint.probability));
+    conditionalPushBack(disjoint_branch->disjoints_, DataPropertyElement_t(me, disjoint.probability, true));
   }
 
   /**********************
@@ -157,25 +151,19 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
       //... excepted me
       if(disjoints_i != disjoints_j)
       {
-        bool i_find_my_disjoint = false;
-
-        //is a root my disjoint ?
-        isMyDisjoint(me, disjoints[disjoints_j], roots_, i_find_my_disjoint, false);
-
-        //is a branch my disjoint ?
-        isMyDisjoint(me, disjoints[disjoints_j], branchs_, i_find_my_disjoint, false);
-
-        //is a tmp mother is my disjoint ?
-        isMyDisjoint(me, disjoints[disjoints_j], tmp_mothers_, i_find_my_disjoint, false);
+        DataPropertyBranch_t* disjoint_branch = nullptr;
+        getInMap(&disjoint_branch, disjoints[disjoints_j], roots_);
+        getInMap(&disjoint_branch, disjoints[disjoints_j], branchs_);
+        getInMap(&disjoint_branch, disjoints[disjoints_j], tmp_mothers_);
 
         //I create my disjoint
-        if(!i_find_my_disjoint)
+        if(disjoint_branch == nullptr)
         {
-          DataPropertyBranch_t* my_disjoint = new struct DataPropertyBranch_t(disjoints[disjoints_j]);
-          conditionalPushBack(me->disjoints_, my_disjoint);
-          conditionalPushBack(my_disjoint->disjoints_, me); // TODO do not save
-          tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother
+          disjoint_branch = new struct DataPropertyBranch_t(disjoints[disjoints_j]);
+          tmp_mothers_[disjoint_branch->value()] = disjoint_branch; //I put my disjoint as tmp_mother
         }
+        conditionalPushBack(me->disjoints_, DataPropertyElement_t(disjoint_branch));
+        conditionalPushBack(disjoint_branch->disjoints_, DataPropertyElement_t(me, 1.0, true));
       }
     }
   }
@@ -189,8 +177,8 @@ std::unordered_set<std::string> DataPropertyGraph::getDisjoint(const std::string
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
-    for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
-      getDown(branch->disjoints_[disjoint_i], res);
+    for(auto& disjoint : branch->disjoints_)
+      getDown(disjoint.elem, res);
 
   return res;
 }

@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "ontoloGenius/core/ontoGraphs/Branchs/Branch.h"
+#include "ontoloGenius/core/ontoGraphs/Branchs/Elements.h"
 
 namespace ontologenius {
 
@@ -31,7 +32,7 @@ template <typename B>
 class PropertyBranch_t
 {
 public:
-  std::vector<B*> disjoints_;
+  std::vector<Single_t<B*>> disjoints_;
   Properties_t properties_;
 };
 
