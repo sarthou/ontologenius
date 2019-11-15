@@ -37,6 +37,7 @@ jobs:
             source /opt/ros/$ROS_DISTRO/setup.bash
             sudo rosdep init
             rosdep update --include-eol-distros  # Support EOL distros.
+            pip install requests --user
       - name: build
         run: |
           source /opt/ros/$ROS_DISTRO/setup.bash
