@@ -30,9 +30,10 @@ jobs:
         run: |
             sudo sh -c "echo \"deb http://packages.ros.org/ros/ubuntu $ROS_CI_DESKTOP main\" > /etc/apt/sources.list.d/ros-latest.list"
             sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-            sudo apt-get update -qq
-            sudo apt-get install dpkg
-            sudo apt-get install -y ros-$ROS_DISTRO-desktop qtbase5-dev qtdeclarative5-dev # ros-$ROS_DISTRO-qt-build
+            sudo apt update -qq
+            sudo apt install dpkg
+            sudo apt install -y ros-$ROS_DISTRO-desktop qtbase5-dev qtdeclarative5-dev
+            sudo apt install -y libcppunit-dev
             source /opt/ros/$ROS_DISTRO/setup.bash
             sudo rosdep init
             rosdep update --include-eol-distros  # Support EOL distros.
@@ -49,3 +50,8 @@ jobs:
           # echo "::warning `ls -l`"
           cd ..
           catkin_make
+      - name: rostest
+        run: |
+          cd ~/catkin_ws
+          source devel/setup.bash
+          catkin_make run_tests_ontologenius_rostest && catkin_make test
