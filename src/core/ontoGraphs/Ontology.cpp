@@ -28,6 +28,23 @@ Ontology::Ontology(std::string language) : class_graph_(&individual_graph_, &obj
   writer.setFileName("none");
 }
 
+Ontology::Ontology(const Ontology& other) : class_graph_(other.class_graph_, &individual_graph_, &object_property_graph_, &data_property_graph_),
+                                            object_property_graph_(other.object_property_graph_, &class_graph_),
+                                            data_property_graph_(other.data_property_graph_, &class_graph_),
+                                            individual_graph_(other.individual_graph_, &class_graph_, &object_property_graph_, &data_property_graph_),
+                                            reader((Ontology&)*this),
+                                            writer((Ontology&)*this)
+{
+  class_graph_.deepCopy(other.class_graph_);
+  object_property_graph_.deepCopy(other.object_property_graph_);
+  data_property_graph_.deepCopy(other.data_property_graph_);
+  individual_graph_.deepCopy(other.individual_graph_);
+
+  is_init_ = true;
+  is_preloaded_ = true;
+  writer.setFileName("none");
+}
+
 Ontology::~Ontology()
 {
   writer.write();

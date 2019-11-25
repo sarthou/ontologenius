@@ -18,6 +18,20 @@ IndividualGraph::IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* o
   data_property_graph_ = data_property_graph;
 }
 
+IndividualGraph::IndividualGraph(const IndividualGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
+{
+  class_graph_ = class_graph;
+  object_property_graph_ = object_property_graph;
+  data_property_graph_ = data_property_graph;
+
+  language_ = other.language_;
+
+  for(auto indiv : other.individuals_)
+    individuals_.push_back(new IndividualBranch_t(indiv->value()));
+
+  container_.load(individuals_);
+}
+
 IndividualGraph::~IndividualGraph()
 {
   for(size_t i = 0; i < individuals_.size(); i++)
@@ -43,6 +57,7 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
     {
       me = individuals_[i];
       individuals_.erase(individuals_.begin() + i);
+      // erase because will be pushed again at the end
       break;
     }
   }
@@ -1714,6 +1729,59 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataProperty
   }
 
   return true;
+}
+
+void IndividualGraph::deepCopy(const IndividualGraph& other)
+{
+  for(size_t i = 0; i < other.individuals_.size(); i++)
+    cpyBranch(individuals_[i], other.individuals_[i ]);
+}
+
+void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch)
+{
+  new_branch->mark = old_branch->mark;
+
+  new_branch->nb_updates_ = old_branch->nb_updates_;
+  new_branch->updated_ = old_branch->updated_;
+  new_branch->flags_ = old_branch->flags_;
+
+  new_branch->dictionary_ = old_branch->dictionary_;
+  new_branch->steady_dictionary_ = old_branch->steady_dictionary_;
+
+  for(const auto& is_a : old_branch->is_a_)
+    new_branch->is_a_.push_back(ClassElement_t(is_a, class_graph_->container_.find(is_a.elem->value())));
+
+  for(const auto& same : old_branch->same_as_)
+    new_branch->same_as_.push_back(IndividualElement_t(same, container_.find(same.elem->value())));
+
+  for(const auto& distinct : old_branch->distinct_)
+    new_branch->distinct_.push_back(IndividualElement_t(distinct, container_.find(distinct.elem->value())));
+
+  for(const auto& relation : old_branch->object_relations_)
+  {
+    auto prop = object_property_graph_->container_.find(relation.first->value());
+    auto on = container_.find(relation.second->value());
+    new_branch->object_relations_.push_back(IndivObjectRelationElement_t(relation, prop, on));
+  }
+
+  for(const auto& relation : old_branch->data_relations_)
+  {
+    auto prop = data_property_graph_->container_.find(relation.first->value());
+    auto data = relation.second;
+    new_branch->data_relations_.push_back(IndivDataRelationElement_t(relation, prop, data));
+  }
+
+  for(const auto& induced : old_branch->object_properties_has_induced_)
+  {
+    new_branch->object_properties_has_induced_.push_back(Triplet());
+    for(size_t i = 0; i < induced.from_.size(); i++)
+    {
+      auto from = container_.find(induced.from_[i]->value());
+      auto prop = object_property_graph_->container_.find(induced.prop_[i]->value());
+      auto on = container_.find(induced.on_[i]->value());
+      new_branch->object_properties_has_induced_.back().push(from, prop, on);
+    }
+  }
 }
 
 } // namespace ontologenius

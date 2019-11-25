@@ -281,6 +281,9 @@ target_link_libraries(ontoloGenius_ORO PRIVATE ontoloGenius_lib ontologenius_cor
 add_onto_executable(ontoloGenius_services_tester src/tests/service_tester.cpp)
 target_link_libraries(ontoloGenius_services_tester PRIVATE ontologenius_core_lib)
 
+add_onto_executable(ontoloGenius_cpy src/tests/copy.cpp)
+target_link_libraries(ontoloGenius_cpy PRIVATE ontologenius_core_lib)
+
 ##############################################################################
 # Qt Environment
 ##############################################################################

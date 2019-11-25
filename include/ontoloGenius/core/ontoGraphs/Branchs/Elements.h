@@ -40,6 +40,13 @@ public:
     this->infered = infered;
   }
 
+  Single_t(const Single_t& other, T elem)
+  {
+    this->elem = elem;
+    this->probability = other.probability;
+    this->infered = other.infered;
+  }
+
   bool operator==(const Single_t& other)
   {
     if(elem == other.elem)
@@ -61,6 +68,14 @@ public:
     this->second = second;
     this->probability = probability;
     this->infered = infered;
+  }
+
+  Pair_t(const Pair_t& other, T first, U second)
+  {
+    this->first = first;
+    this->second = second;
+    this->probability = other.probability;
+    this->infered = other.infered;
   }
 
   bool operator==(const Pair_t& other)

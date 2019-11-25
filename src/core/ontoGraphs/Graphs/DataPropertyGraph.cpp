@@ -6,6 +6,34 @@
 
 namespace ontologenius {
 
+DataPropertyGraph::DataPropertyGraph(ClassGraph* class_graph)
+{
+  class_graph_ = class_graph;
+}
+
+DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other, ClassGraph* class_graph)
+{
+  class_graph_ = class_graph;
+
+  language_ = other.language_;
+
+  for(const auto& root : other.roots_)
+  {
+    DataPropertyBranch_t* prop_branch = new DataPropertyBranch_t(root.first);
+    roots_[root.first] = prop_branch;
+    all_branchs_.push_back(prop_branch);
+  }
+
+  for(const auto& branch : other.branchs_)
+  {
+    DataPropertyBranch_t* prop_branch = new DataPropertyBranch_t(branch.first);
+    branchs_[branch.first] = prop_branch;
+    all_branchs_.push_back(prop_branch);
+  }
+
+  this->container_.load(all_branchs_);
+}
+
 void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_vectors)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
@@ -285,6 +313,44 @@ bool DataPropertyGraph::remove(DataPropertyBranch_t* prop, std::string& relation
   (void)relation;
   (void)data;
   return false;
+}
+
+void DataPropertyGraph::deepCopy(const DataPropertyGraph& other)
+{
+  for(const auto& root : other.roots_)
+    cpyBranch(root.second, roots_[root.first]);
+
+  for(const auto& branch : other.branchs_)
+    cpyBranch(branch.second, branchs_[branch.first]);
+}
+
+void DataPropertyGraph::cpyBranch(DataPropertyBranch_t* old_branch, DataPropertyBranch_t* new_branch)
+{
+  new_branch->family = old_branch->family;
+  new_branch->nb_mothers_ = old_branch->nb_mothers_;
+
+  new_branch->nb_updates_ = old_branch->nb_updates_;
+  new_branch->updated_ = old_branch->updated_;
+  new_branch->flags_ = old_branch->flags_;
+
+  new_branch->dictionary_ = old_branch->dictionary_;
+  new_branch->steady_dictionary_ = old_branch->steady_dictionary_;
+
+  for(const auto& child : old_branch->childs_)
+    new_branch->childs_.push_back(DataPropertyElement_t(child, container_.find(child.elem->value())));
+
+  for(const auto& mother : old_branch->mothers_)
+    new_branch->mothers_.push_back(DataPropertyElement_t(mother, container_.find(mother.elem->value())));
+
+  new_branch->ranges_ = old_branch->ranges_;
+
+  for(const auto& domain : old_branch->domains_)
+    new_branch->domains_.push_back(ClassElement_t(domain, class_graph_->container_.find(domain.elem->value())));
+
+  new_branch->properties_ = old_branch->properties_;
+
+  for(const auto& disjoint : old_branch->disjoints_)
+    new_branch->disjoints_.push_back(DataPropertyElement_t(disjoint, container_.find(disjoint.elem->value())));
 }
 
 } // namespace ontologenius
