@@ -81,6 +81,13 @@ public:
     if(it != map.end())
       *ptr = it->second;
   }
+
+  template<typename C>
+  inline void conditionalPushBack(std::vector<C>& vect, const C& data)
+  {
+    if(std::find(vect.begin(), vect.end(), data) == vect.end())
+      vect.push_back(data);
+  }
 };
 
 template <typename B>

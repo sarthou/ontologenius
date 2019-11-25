@@ -10,6 +10,7 @@ class ProbabilisticElement_t
 {
 public:
   float probability;
+  bool infered;
 
   bool operator>(float prob)
   {
@@ -32,10 +33,11 @@ class Single_t : public ProbabilisticElement_t
 public:
   T elem;
 
-  Single_t(T elem, float probability = 1.0)
+  Single_t(T elem, float probability = 1.0, bool infered = false)
   {
     this->elem = elem;
     this->probability = probability;
+    this->infered = infered;
   }
 
   bool operator==(const Single_t& other)
@@ -53,11 +55,12 @@ public:
   T first;
   U second;
 
-  Pair_t(T first, U second, float probability = 1.0)
+  Pair_t(T first, U second, float probability = 1.0, bool infered = false)
   {
     this->first = first;
     this->second = second;
     this->probability = probability;
+    this->infered = infered;
   }
 
   bool operator==(const Pair_t& other)

@@ -17,8 +17,8 @@ namespace ontologenius {
 struct DataPropertyVectors_t
 {
    std::vector<Single_t<std::string>> mothers_;
-   std::vector<std::string> disjoints_;
-   std::vector<std::string> domains_;
+   std::vector<Single_t<std::string>> disjoints_;
+   std::vector<Single_t<std::string>> domains_;
    std::vector<std::string> ranges_;
    Properties_t properties_;
    std::map<std::string, std::vector<std::string>> dictionary_;
@@ -67,22 +67,9 @@ private:
     auto it = vect.find(disjoint);
     if(it != vect.end())
     {
-      me->setSteady_disjoint(it->second);
+      me->disjoints_.push_back(it->second);
       if(all)
-        it->second->disjoints_.push_back(me);
-      find = true;
-    }
-  }
-
-  void isMyDomain(DataPropertyBranch_t* me, const std::string& domain, std::map<std::string, ClassBranch_t*>& vect, bool& find)
-  {
-    if(find)
-      return;
-
-    auto it = vect.find(domain);
-    if(it != vect.end())
-    {
-      me->setSteady_domain(it->second);
+        it->second->disjoints_.push_back(me); // TODO do not save
       find = true;
     }
   }

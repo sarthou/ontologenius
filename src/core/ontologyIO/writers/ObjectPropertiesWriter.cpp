@@ -26,15 +26,15 @@ void ObjectPropertiesWriter::writeProperty(ObjectPropertyBranch_t* branch)
   writeString(tmp);
 
   writeSubPropertyOf(branch);
-  writeDisjointWith(&branch->steady_);
+  writeDisjointWith(branch);
   writeInverseOf(branch);
-  writeProperties(&branch->steady_);
+  writeProperties(branch);
   writeRange(branch);
   writeDomain(branch);
   writeChain(branch);
 
-  writeDictionary(&branch->steady_);
-  writeMutedDictionary(&branch->steady_);
+  writeDictionary(branch);
+  writeMutedDictionary(branch);
 
   tmp = "    </owl:ObjectProperty>\n\n\n\n";
   writeString(tmp);
@@ -42,58 +42,70 @@ void ObjectPropertiesWriter::writeProperty(ObjectPropertyBranch_t* branch)
 
 void ObjectPropertiesWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.mothers_.size(); i++)
-  {
-    std::string tmp = "        <rdfs:subPropertyOf rdf:resource=\"ontologenius#" +
-                      branch->steady_.mothers_[i].elem->value()
-                      + "\"/>\n";
-    writeString(tmp);
-  }
+  for(auto& mother : branch->mothers_)
+    if(mother.infered == false)
+    {
+      std::string tmp = "        <rdfs:subPropertyOf" +
+                        getProba(mother) +
+                        " rdf:resource=\"ontologenius#" +
+                        mother.elem->value()
+                        + "\"/>\n";
+      writeString(tmp);
+    }
 }
 
 void ObjectPropertiesWriter::writeInverseOf(ObjectPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.inverses_.size(); i++)
-  {
-    std::string tmp = "        <owl:inverseOf rdf:resource=\"ontologenius#" +
-                      branch->steady_.inverses_[i]->value()
-                      + "\"/>\n";
-    writeString(tmp);
-  }
+  for(auto& inverse : branch->inverses_)
+    if(inverse.infered == false)
+    {
+      std::string tmp = "        <owl:inverseOf" +
+                        getProba(inverse) +
+                        " rdf:resource=\"ontologenius#" +
+                        inverse.elem->value()
+                        + "\"/>\n";
+      writeString(tmp);
+    }
 }
 
 void ObjectPropertiesWriter::writeRange(ObjectPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.ranges_.size(); i++)
-  {
-    std::string tmp = "        <rdfs:range rdf:resource=\"ontologenius#" +
-                      branch->steady_.ranges_[i]->value()
-                      + "\"/>\n";
-    writeString(tmp);
-  }
+  for(auto& range : branch->ranges_)
+    if(range.infered == false)
+    {
+      std::string tmp = "        <rdfs:range" +
+                        getProba(range) +
+                        " rdf:resource=\"ontologenius#" +
+                        range.elem->value()
+                        + "\"/>\n";
+      writeString(tmp);
+    }
 }
 
 void ObjectPropertiesWriter::writeDomain(ObjectPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.domains_.size(); i++)
-  {
-    std::string tmp = "        <rdfs:domain rdf:resource=\"ontologenius#" +
-                      branch->steady_.domains_[i]->value()
-                      + "\"/>\n";
-    writeString(tmp);
-  }
+  for(auto& domain : branch->domains_)
+    if(domain.infered == false)
+    {
+      std::string tmp = "        <rdfs:domain" +
+                        getProba(domain) +
+                        " rdf:resource=\"ontologenius#" +
+                        domain.elem->value()
+                        + "\"/>\n";
+      writeString(tmp);
+    }
 }
 
 void ObjectPropertiesWriter::writeChain(ObjectPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.str_chains_.size(); i++)
+  for(size_t i = 0; i < branch->str_chains_.size(); i++)
   {
     std::string tmp = "        <owl:propertyChainAxiom rdf:parseType=\"Collection\">\n";
 
-    for(size_t j = 0; j < branch->steady_.str_chains_[i].size(); j++)
+    for(size_t j = 0; j < branch->str_chains_[i].size(); j++)
     {
       tmp += "            <rdf:Description rdf:about=\"ontologenius#" +
-              branch->steady_.str_chains_[i][j] +
+              branch->str_chains_[i][j] +
               "\"/>\n";
     }
 

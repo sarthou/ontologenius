@@ -36,27 +36,20 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   else
   {
     //for all my mothers
-    for(size_t mothers_i = 0; mothers_i < property_vectors.mothers_.size(); mothers_i++)
+    for(auto& mother : property_vectors.mothers_)
     {
-      bool i_find_my_mother = false;
-
-      //is a root my mother ?
-      isMyMother(me, property_vectors.mothers_[mothers_i].elem, roots_, i_find_my_mother);
-
-      //is a branch my mother ?
-      isMyMother(me, property_vectors.mothers_[mothers_i].elem, branchs_, i_find_my_mother);
-
-      //is a tmp mother is mine ?
-      isMyMother(me, property_vectors.mothers_[mothers_i].elem, tmp_mothers_, i_find_my_mother);
-
-      //I create my mother
-      if(!i_find_my_mother)
+      DataPropertyBranch_t* mother_branch = nullptr;
+      getInMap(&mother_branch, mother.elem, roots_);
+      getInMap(&mother_branch, mother.elem, branchs_);
+      getInMap(&mother_branch, mother.elem, tmp_mothers_);
+      if(mother_branch == nullptr)
       {
-        DataPropertyBranch_t* my_mother = new struct DataPropertyBranch_t(property_vectors.mothers_[mothers_i].elem);
-        my_mother->childs_.push_back(DataPropertyElement_t(me));
-        me->setSteady_mother(DataPropertyElement_t(my_mother));
-        tmp_mothers_[my_mother->value()] = my_mother;
+        mother_branch = new struct DataPropertyBranch_t(mother.elem);
+        tmp_mothers_[mother_branch->value()] = mother_branch;
       }
+
+      conditionalPushBack(mother_branch->childs_, DataPropertyElement_t(me, mother.probability, true));
+      conditionalPushBack(me->mothers_, DataPropertyElement_t(mother_branch, mother.probability));
     }
 
     //but i am also a branch
@@ -67,58 +60,42 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   ** Disjoints
   **********************/
   //for all my disjoints
-  for(size_t disjoints_i = 0; disjoints_i < property_vectors.disjoints_.size(); disjoints_i++)
+  for(auto& disjoint : property_vectors.disjoints_)
   {
-    bool i_find_my_disjoint = false;
-
-    //is a root my disjoint ?
-    isMyDisjoint(me, property_vectors.disjoints_[disjoints_i], roots_, i_find_my_disjoint);
-
-    //is a branch my disjoint ?
-    isMyDisjoint(me, property_vectors.disjoints_[disjoints_i], branchs_, i_find_my_disjoint);
-
-    //is a tmp mother is my disjoint ?
-    isMyDisjoint(me, property_vectors.disjoints_[disjoints_i], tmp_mothers_, i_find_my_disjoint);
+    DataPropertyBranch_t* disjoint_branch = nullptr;
+    getInMap(&disjoint_branch, disjoint.elem, roots_);
+    getInMap(&disjoint_branch, disjoint.elem, branchs_);
+    getInMap(&disjoint_branch, disjoint.elem, tmp_mothers_);
 
     //I create my disjoint
-    if(!i_find_my_disjoint)
+    if(disjoint_branch == nullptr)
     {
-      DataPropertyBranch_t* my_disjoint = new struct DataPropertyBranch_t(property_vectors.disjoints_[disjoints_i]);
-      me->setSteady_disjoint(my_disjoint);
-      my_disjoint->disjoints_.push_back(me);
-      tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother
+      disjoint_branch = new struct DataPropertyBranch_t(disjoint.elem);
+      tmp_mothers_[disjoint_branch->value()] = disjoint_branch; //I put my disjoint as tmp_mother
     }
+    conditionalPushBack(me->disjoints_, DataPropertyElement_t(disjoint_branch, disjoint.probability));
+    conditionalPushBack(disjoint_branch->disjoints_, DataPropertyElement_t(me, disjoint.probability, true));
   }
 
   /**********************
   ** Domains
   **********************/
   //for all my domains
-  for(size_t domains_i = 0; domains_i < property_vectors.domains_.size(); domains_i++)
+  for(auto& domain : property_vectors.domains_)
   {
-    bool i_find_my_domain = false;
-
-    //is a root my domain ?
-    isMyDomain(me, property_vectors.domains_[domains_i], class_graph_->roots_, i_find_my_domain);
-
-    //is a branch my domain ?
-    isMyDomain(me, property_vectors.domains_[domains_i], class_graph_->branchs_, i_find_my_domain);
-
-    //is a tmp mother is my domain ?
-    isMyDomain(me, property_vectors.domains_[domains_i], class_graph_->tmp_mothers_, i_find_my_domain);
+    ClassBranch_t* domain_branch = nullptr;
+    getInMap(&domain_branch, domain.elem, class_graph_->roots_);
+    getInMap(&domain_branch, domain.elem, class_graph_->branchs_);
+    getInMap(&domain_branch, domain.elem, class_graph_->tmp_mothers_);
 
     //I create my domain
-    if(!i_find_my_domain)
+    if(domain_branch == nullptr)
     {
       ObjectVectors_t empty_vectors;
-      class_graph_->add(property_vectors.domains_[domains_i], empty_vectors);
-      auto it = class_graph_->roots_.find(property_vectors.domains_[domains_i]);
-      if(it != class_graph_->roots_.end())
-      {
-        me->setSteady_domain(it->second);
-        i_find_my_domain = true;
-      }
+      class_graph_->add(domain.elem, empty_vectors);
+      getInMap(&domain_branch, domain.elem, class_graph_->roots_);
     }
+    conditionalPushBack(me->domains_, ClassElement_t(domain_branch, domain.probability));
   }
 
   /**********************
@@ -126,15 +103,19 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   **********************/
   //for all my ranges
   for(size_t ranges_i = 0; ranges_i < property_vectors.ranges_.size(); ranges_i++)
-    me->setSteady_range(property_vectors.ranges_[ranges_i]);
+  {
+    data_t data;
+    data.set(property_vectors.ranges_[ranges_i]);
+    conditionalPushBack(me->ranges_, data); // FIXME
+  }
 
   /**********************
   ** Language and properties
   **********************/
-  me->setSteady_properties(property_vectors.properties_);
+  me->properties_ = property_vectors.properties_;
   me->setSteady_dictionary(property_vectors.dictionary_);
-  if(me->dictionary_.find("en") == me->dictionary_.end())
-    me->dictionary_["en"].push_back(me->value());
+  if(me->dictionary_.spoken_.find("en") == me->dictionary_.spoken_.end())
+    me->dictionary_.spoken_["en"].push_back(me->value());
   me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
 
   mitigate(me);
@@ -170,24 +151,19 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
       //... excepted me
       if(disjoints_i != disjoints_j)
       {
-        bool i_find_my_disjoint = false;
-
-        //is a root my disjoint ?
-        isMyDisjoint(me, disjoints[disjoints_j], roots_, i_find_my_disjoint, false);
-
-        //is a branch my disjoint ?
-        isMyDisjoint(me, disjoints[disjoints_j], branchs_, i_find_my_disjoint, false);
-
-        //is a tmp mother is my disjoint ?
-        isMyDisjoint(me, disjoints[disjoints_j], tmp_mothers_, i_find_my_disjoint, false);
+        DataPropertyBranch_t* disjoint_branch = nullptr;
+        getInMap(&disjoint_branch, disjoints[disjoints_j], roots_);
+        getInMap(&disjoint_branch, disjoints[disjoints_j], branchs_);
+        getInMap(&disjoint_branch, disjoints[disjoints_j], tmp_mothers_);
 
         //I create my disjoint
-        if(!i_find_my_disjoint)
+        if(disjoint_branch == nullptr)
         {
-          DataPropertyBranch_t* my_disjoint = new struct DataPropertyBranch_t(disjoints[disjoints_j]);
-          me->setSteady_disjoint(my_disjoint);
-          tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother
+          disjoint_branch = new struct DataPropertyBranch_t(disjoints[disjoints_j]);
+          tmp_mothers_[disjoint_branch->value()] = disjoint_branch; //I put my disjoint as tmp_mother
         }
+        conditionalPushBack(me->disjoints_, DataPropertyElement_t(disjoint_branch));
+        conditionalPushBack(disjoint_branch->disjoints_, DataPropertyElement_t(me, 1.0, true));
       }
     }
   }
@@ -201,8 +177,8 @@ std::unordered_set<std::string> DataPropertyGraph::getDisjoint(const std::string
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
-    for(unsigned disjoint_i = 0; disjoint_i < branch->disjoints_.size(); disjoint_i++)
-      getDown(branch->disjoints_[disjoint_i], res);
+    for(auto& disjoint : branch->disjoints_)
+      getDown(disjoint.elem, res);
 
   return res;
 }
@@ -214,8 +190,8 @@ std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& 
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
-    for(unsigned domain_i = 0; domain_i < branch->domains_.size(); domain_i++)
-      class_graph_->getDown(branch->domains_[domain_i], res);
+    for(auto& domain : branch->domains_)
+      class_graph_->getDown(domain.elem, res);
 
   return res;
 }
@@ -225,8 +201,8 @@ void DataPropertyGraph::getDomainPtr(DataPropertyBranch_t* branch, std::unordere
   std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
 
   if(branch != nullptr)
-    for(unsigned domain_i = 0; domain_i < branch->domains_.size(); domain_i++)
-      class_graph_->getDownPtr(branch->domains_[domain_i], res, depth);
+    for(auto& domain : branch->domains_)
+      class_graph_->getDownPtr(domain.elem, res, depth);
 }
 
 std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& value)
@@ -269,8 +245,8 @@ bool DataPropertyGraph::add(DataPropertyBranch_t* prop, std::string& relation, s
     {
       DataPropertyBranch_t* tmp = create(data);
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      prop->setSteady_mother(tmp);
-      tmp->setSteady_child(prop);
+      conditionalPushBack(prop->mothers_, DataPropertyElement_t(tmp));
+      conditionalPushBack(tmp->childs_, DataPropertyElement_t(prop));
       prop->updated_ = true;
       tmp->updated_ = true;
     }
@@ -290,8 +266,8 @@ bool DataPropertyGraph::addInvert(DataPropertyBranch_t* prop, std::string& relat
     {
       DataPropertyBranch_t* tmp = create(data);
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      tmp->setSteady_mother(prop);
-      prop->setSteady_child(tmp);
+      conditionalPushBack(tmp->mothers_, DataPropertyElement_t(prop));
+      conditionalPushBack(prop->childs_, DataPropertyElement_t(tmp));
       prop->updated_ = true;
       tmp->updated_ = true;
     }

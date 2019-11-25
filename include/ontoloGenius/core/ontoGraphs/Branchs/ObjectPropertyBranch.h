@@ -13,43 +13,20 @@ class ObjectPropertyBranch_t;
 class ClassBranch_t;
 
 typedef Single_t<ObjectPropertyBranch_t*> ObjectPropertyElement_t;
-
-template <typename T>
-class ObjectPropertyBranchData_t : public PropertyBranchData_t<T>
-{
-public:
-  std::vector<T*> inverses_;
-  std::vector<ClassBranch_t*> domains_;
-  std::vector<ClassBranch_t*> ranges_;
-  std::vector<std::vector<T*>> chains_;
-  std::vector<std::vector<std::string>> str_chains_;
-};
-
-class ObjectPropertySteady_t :  public BranchSteady_t<ObjectPropertyBranch_t>,
-                                public ObjectPropertyBranchData_t<ObjectPropertyBranch_t>
-{
-public:
-  ObjectPropertySteady_t() {}
-};
+typedef Single_t<ClassBranch_t*> ClassElement_t;
 
 class ObjectPropertyBranch_t :  public Branch_t<ObjectPropertyBranch_t>,
-                                public ObjectPropertyBranchData_t<ObjectPropertyBranch_t>
+                                public PropertyBranch_t<ObjectPropertyBranch_t>
 {
 public:
-  ObjectPropertySteady_t steady_;
+  std::vector<ObjectPropertyElement_t> inverses_;
+  std::vector<ClassElement_t> domains_;
+  std::vector<ClassElement_t> ranges_;
+  std::vector<std::vector<ObjectPropertyBranch_t*>> chains_;
+  std::vector<std::vector<std::string>> str_chains_;
 
   ObjectPropertyBranch_t(std::string value = "") : Branch_t(value) {};
 
-  void setFullSteady();
-  void setSteady_disjoint(ObjectPropertyBranch_t* disjoint);
-  void setSteady_properties(Properties_t properties);
-  void setSteady_inverse(ObjectPropertyBranch_t* inverse);
-  void setSteady_domain(ClassBranch_t* domain);
-  void setSteady_range(ClassBranch_t* range);
-  void set_chain(std::vector<ObjectPropertyBranch_t*> chain);
-  void setSteady_chain(std::vector<std::string> chain);
-  void setSteady_child(const ObjectPropertyElement_t& child);
-  void setSteady_mother(const ObjectPropertyElement_t& mother);
   void setSteady_dictionary(std::string lang, std::string word);
   void setSteady_muted_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);

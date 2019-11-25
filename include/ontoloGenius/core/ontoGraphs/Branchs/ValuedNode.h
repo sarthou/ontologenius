@@ -19,14 +19,14 @@ public:
   UpdatableNode() {updated_ = true; nb_updates_ = 0; }
 };
 
-class ValuedNodeData
+class Dictionary
 {
 public:
-  std::map<std::string, std::vector<std::string>> dictionary_;
-  std::map<std::string, std::vector<std::string>> muted_dictionary_;
+  std::map<std::string, std::vector<std::string>> spoken_;
+  std::map<std::string, std::vector<std::string>> muted_;
 };
 
-class ValuedNode : public UpdatableNode, public ValuedNodeData
+class ValuedNode : public UpdatableNode
 {
 public:
   ValuedNode(const std::string& value) : UpdatableNode() {index_ = table_.add(value); }
@@ -35,6 +35,9 @@ public:
   std::string value() {return table_[index_]; }
 
   static WordTable table_;
+
+  Dictionary dictionary_;
+  Dictionary steady_dictionary_;
 
   template<typename C>
   inline void conditionalPushBack(std::vector<C>& vect, const C& data)

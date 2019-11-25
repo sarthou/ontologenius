@@ -26,7 +26,7 @@ void ReasonerSymetric::postReason()
           ObjectPropertyBranch_t* sym_prop = indiv[indiv_i]->object_relations_[prop_i].first;
           if(!symetricExist(indiv[indiv_i], sym_prop, sym_indiv))
           {
-            sym_indiv->object_relations_.push_back(IndivObjectRelationElement_t(sym_prop, indiv[indiv_i]));
+            sym_indiv->object_relations_.push_back(IndivObjectRelationElement_t(sym_prop, indiv[indiv_i], 1.0, true));
             sym_indiv->object_properties_has_induced_.push_back(Triplet());
             sym_indiv->nb_updates_++;
             nb_update_++;

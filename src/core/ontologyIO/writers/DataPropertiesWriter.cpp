@@ -26,13 +26,13 @@ void DataPropertiesWriter::writeProperty(DataPropertyBranch_t* branch)
   writeString(tmp);
 
   writeSubPropertyOf(branch);
-  writeDisjointWith(&branch->steady_);
-  writeProperties(&branch->steady_);
+  writeDisjointWith(branch);
+  writeProperties(branch);
   writeRange(branch);
   writeDomain(branch);
 
-  writeDictionary(&branch->steady_);
-  writeMutedDictionary(&branch->steady_);
+  writeDictionary(branch);
+  writeMutedDictionary(branch);
 
   tmp = "    </owl:DatatypeProperty>\n\n\n\n";
   writeString(tmp);
@@ -40,23 +40,26 @@ void DataPropertiesWriter::writeProperty(DataPropertyBranch_t* branch)
 
 void DataPropertiesWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.mothers_.size(); i++)
-  {
-    std::string tmp = "        <rdfs:subPropertyOf rdf:resource=\"ontologenius#" +
-                      branch->steady_.mothers_[i].elem->value()
-                      + "\"/>\n";
-    writeString(tmp);
-  }
+  for(auto& mother : branch->mothers_)
+    if(mother.infered == false)
+    {
+      std::string tmp = "        <rdfs:subPropertyOf" +
+                        getProba(mother) +
+                        " rdf:resource=\"ontologenius#" +
+                        mother.elem->value()
+                        + "\"/>\n";
+      writeString(tmp);
+    }
 }
 
 void DataPropertiesWriter::writeRange(DataPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.ranges_.size(); i++)
+  for(size_t i = 0; i < branch->ranges_.size(); i++)
   {
     std::string tmp = "        <rdfs:range rdf:resource=\"" +
-                      branch->steady_.ranges_[i].getNs() +
+                      branch->ranges_[i].getNs() +
                       "#" +
-                      branch->steady_.ranges_[i].type_ +
+                      branch->ranges_[i].type_ +
                       + "\"/>\n";
     writeString(tmp);
   }
@@ -64,13 +67,16 @@ void DataPropertiesWriter::writeRange(DataPropertyBranch_t* branch)
 
 void DataPropertiesWriter::writeDomain(DataPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.domains_.size(); i++)
-  {
-    std::string tmp = "        <rdfs:domain rdf:resource=\"ontologenius#" +
-                      branch->steady_.domains_[i]->value()
-                      + "\"/>\n";
-    writeString(tmp);
-  }
+  for(auto& domain : branch->domains_)
+    if(domain.infered == false)
+    {
+      std::string tmp = "        <rdfs:domain" +
+                        getProba(domain) +
+                        " rdf:resource=\"ontologenius#" +
+                        domain.elem->value()
+                        + "\"/>\n";
+      writeString(tmp);
+    }
 }
 
 } // namespace ontologenius

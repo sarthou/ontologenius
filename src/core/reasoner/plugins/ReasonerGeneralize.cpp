@@ -81,38 +81,28 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyB
   for(size_t prop = 0; prop < properties.size(); prop++)
   {
     int index = -1;
-    for(size_t prop_i = 0; prop_i < me->steady_.data_relations_.size(); prop_i++)
-      if(me->steady_.data_relations_[prop_i].first == properties[prop])
+
+    for(size_t prop_i = 0; prop_i < me->data_relations_.size(); prop_i++)
+      if(me->data_relations_[prop_i].first == properties[prop])
       {
-        //the property is already know
+        data_t tmp;
+        tmp.set(datas[prop]);
+
+        if(me->data_relations_[prop_i].second.toString() != tmp.toString())
+          notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]);
+
         index = prop_i;
-        break;
+        deduced_indexs.erase(index);
+        me->data_relations_[prop_i].second = tmp;
+        me->data_relations_[prop_i].probability = 0.5;
       }
 
     if(index == -1)
     {
-      for(size_t prop_i = 0; prop_i < me->data_relations_.size(); prop_i++)
-        if(me->data_relations_[prop_i].first == properties[prop])
-        {
-          data_t tmp;
-          tmp.set(datas[prop]);
-
-          if(me->data_relations_[prop_i].second.toString() != tmp.toString())
-            notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]);
-
-          index = prop_i;
-          deduced_indexs.erase(index);
-          me->data_relations_[prop_i].second = tmp;
-          me->data_relations_[prop_i].probability = 0.5;
-        }
-
-      if(index == -1)
-      {
-        notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]);
-        data_t tmp;
-        tmp.set(datas[prop]);
-        me->data_relations_.push_back(ClassDataRelationElement_t(properties[prop], tmp, 0.5));
-      }
+      notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]);
+      data_t tmp;
+      tmp.set(datas[prop]);
+      me->data_relations_.push_back(ClassDataRelationElement_t(properties[prop], tmp, 0.5));
     }
   }
 
@@ -138,35 +128,23 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropert
   for(size_t prop = 0; prop < properties.size(); prop++)
   {
     int index = -1;
-    for(size_t prop_i = 0; prop_i < me->steady_.object_relations_.size(); prop_i++)
-    {
-      if(me->steady_.object_relations_[prop_i].first == properties[prop])
+    
+    for(size_t prop_i = 0; prop_i < me->object_relations_.size(); prop_i++)
+      if(me->object_relations_[prop_i].first == properties[prop])
       {
-        //the property is already know
+        if(me->object_relations_[prop_i].second != datas[prop])
+          notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
+
         index = prop_i;
-        break;
+        deduced_indexs.erase(index);
+        me->object_relations_[prop_i].second = datas[prop];
+        me->object_relations_[prop_i].probability = 0.5;
       }
-    }
 
     if(index == -1)
     {
-      for(size_t prop_i = 0; prop_i < me->object_relations_.size(); prop_i++)
-        if(me->object_relations_[prop_i].first == properties[prop])
-        {
-          if(me->object_relations_[prop_i].second != datas[prop])
-            notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
-
-          index = prop_i;
-          deduced_indexs.erase(index);
-          me->object_relations_[prop_i].second = datas[prop];
-          me->object_relations_[prop_i].probability = 0.5;
-        }
-
-      if(index == -1)
-      {
-        notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
-        me->object_relations_.push_back(ClassObjectRelationElement_t(properties[prop], datas[prop], 0.5));
-      }
+      notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
+      me->object_relations_.push_back(ClassObjectRelationElement_t(properties[prop], datas[prop], 0.5));
     }
   }
 
