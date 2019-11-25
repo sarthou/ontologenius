@@ -1734,7 +1734,7 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataProperty
 void IndividualGraph::deepCopy(const IndividualGraph& other)
 {
   for(size_t i = 0; i < other.individuals_.size(); i++)
-    cpyBranch(individuals_[i], other.individuals_[i ]);
+    cpyBranch(other.individuals_[i], individuals_[i]);
 }
 
 void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch)
