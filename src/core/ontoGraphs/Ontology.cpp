@@ -47,7 +47,7 @@ Ontology::Ontology(const Ontology& other) : class_graph_(other.class_graph_, &in
 
 Ontology::~Ontology()
 {
-  writer.write();
+  save();
 }
 
 int Ontology::close()
@@ -112,19 +112,19 @@ int Ontology::readFromUri(std::string uri)
   return reader.readFromUri(uri);
 }
 
-int Ontology::readFromFile(std::string fileName)
+int Ontology::readFromFile(std::string file_name)
 {
-  files_.push_back(fileName);
-  return reader.readFromFile(fileName);
+  files_.push_back(file_name);
+  return reader.readFromFile(file_name);
 }
 
-bool Ontology::preload(std::string fileName)
+bool Ontology::preload(std::string file_name)
 {
-  writer.setFileName(fileName);
-  if(fileName != "none")
+  writer.setFileName(file_name);
+  if(file_name != "none")
   {
-    if(reader.readFromFile(fileName) == NO_ERROR)
-      if(reader.readFromFile(fileName, true) == NO_ERROR)
+    if(reader.readFromFile(file_name) == NO_ERROR)
+      if(reader.readFromFile(file_name, true) == NO_ERROR)
         if(reader.empty() == false)
         {
           is_preloaded_ = true;
@@ -137,6 +137,18 @@ bool Ontology::preload(std::string fileName)
   std::cout << COLOR_ORANGE << "Nothing to preload :" << std::endl <<
             "ontoloGenius will consider your default files" << std::endl << COLOR_OFF << std::endl;
   return false;
+}
+
+void Ontology::save(const std::string& file_name)
+{
+  std::string tmp_name = writer.getFileName();
+
+  if(file_name != "")
+    writer.setFileName(file_name);
+
+  writer.write();
+
+  writer.setFileName(tmp_name);
 }
 
 bool Ontology::isInit(bool print)

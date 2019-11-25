@@ -137,6 +137,8 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
     res.code = onto_->readFromUri(req.param);
   else if(req.action == "fadd")
     res.code = onto_->readFromFile(req.param);
+  else if(req.action == "save")
+    onto_->save(req.param);
   else if(req.action == "close")
   {
     onto_->close();

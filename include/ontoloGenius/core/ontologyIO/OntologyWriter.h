@@ -20,6 +20,7 @@ public:
   ~OntologyWriter() {}
 
   void setFileName(std::string name) {file_name_ = name; }
+  std::string getFileName() { return file_name_; }
   void write(std::string file_name = "none");
 
 private:
