@@ -34,6 +34,7 @@ class RosInterface
 {
 public:
   RosInterface(ros::NodeHandle* n, std::string name = "");
+  RosInterface(RosInterface& other, ros::NodeHandle* n, std::string name = "");
   ~RosInterface();
 
   void init(std::string& lang, std::string intern_file, std::vector<std::string>& files);
@@ -41,6 +42,9 @@ public:
   void stop() {run_ = false; }
   inline bool isRunning() {return run_; }
   Ontology* getOntology() {return onto_; }
+
+  void lock();
+  void release();
 
 private:
   ros::NodeHandle* n_;

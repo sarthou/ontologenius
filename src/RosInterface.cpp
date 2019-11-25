@@ -8,11 +8,27 @@
 
 namespace ontologenius {
 
-RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : reasoners_(onto_), feeder_(onto_), run_(true),
-                                                                  pub_(n->advertise<std_msgs::String>("ontologenius/end", 1000))
+RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : run_(true),
+                                                                   pub_(n->advertise<std_msgs::String>("ontologenius/end", 1000))
 {
   n_ = n;
   onto_ = new Ontology();
+  reasoners_.link(onto_);
+  feeder_.link(onto_);
+
+  name_ = name;
+  feeder_end = true;
+}
+
+RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, std::string name) : run_(true),
+                                                                   pub_(n->advertise<std_msgs::String>("ontologenius/end", 1000))
+{
+  n_ = n;
+
+  other.lock();
+  onto_ = new Ontology(*other.onto_);
+  other.release();
+
   reasoners_.link(onto_);
   feeder_.link(onto_);
 
@@ -86,6 +102,17 @@ void RosInterface::run()
   feed_thread.join();
 }
 
+void RosInterface::lock()
+{
+  feeder_mutex_.lock();
+  reasoner_mutex_.lock();
+}
+
+void RosInterface::release()
+{
+  feeder_mutex_.unlock();
+  reasoner_mutex_.unlock();
+}
 
 /***************
 *
