@@ -43,8 +43,6 @@ public:
 
   void deepCopy(const IndividualGraph& other);
 
-  void linkGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
-
   void close();
   std::vector<IndividualBranch_t*> get() {return individuals_; }
 
