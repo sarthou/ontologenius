@@ -213,6 +213,7 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->RefreshButton, SIGNAL(clicked()),this, SLOT(displayOntologiesListSlot()));
     QObject::connect(ui->AddPushButton, SIGNAL(clicked()),this, SLOT(addOntologySlot()));
     QObject::connect(ui->DelPushButton, SIGNAL(clicked()),this, SLOT(deleteOntologySlot()));
+    QObject::connect(ui->SaveButton, SIGNAL(clicked()),this, SLOT(saveOntologySlot()));
     QObject::connect(ui->DiffPushButton, SIGNAL(clicked()),this, SLOT(differenceOntologySlot()));
 
     QObject::connect(ui->OntologyNameAddDel, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameAddDelChangedSlot(const QString&)));
@@ -671,6 +672,26 @@ void ontoloGUI::deleteOntologySlot()
     else
       ui->ResultArea->setText(QString::fromStdString(""));
     displayOntologiesList();
+  }
+}
+
+void ontoloGUI::saveOntologySlot()
+{
+  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/actions" : "ontologenius/actions/" + ui->OntologyName->text().toStdString();
+  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
+
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "save";
+  srv.request.param = ui->OntologSavePath->text().toStdString();
+
+  if(!client.call(srv))
+    displayErrorInfo("ontologenius/manage client call failed");
+  else
+  {
+    if(srv.response.code == 4)
+      ui->ResultArea->setText(QString::fromStdString(srv.request.param + " don't exist"));
+    else
+      ui->ResultArea->setText(QString::fromStdString(""));
   }
 }
 

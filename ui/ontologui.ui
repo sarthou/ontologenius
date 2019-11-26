@@ -1319,6 +1319,33 @@
             </widget>
            </item>
 
+           <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_29">
+
+               <item>
+                 <widget class="QPushButtonExtended" name="SaveButton">
+                   <property name="geometry">
+                    <rect>
+                     <width>20</width>
+                     <height>20</height>
+                    </rect>
+                   </property>
+                   <property name="icon">
+                    <iconset>
+                     <activeon>:/darkstyle/icon_save.png</activeon>
+                    </iconset>
+                   </property>
+                  </widget>
+               </item>
+
+               <item>
+                <widget class="QLineEdit" name="OntologSavePath">
+                 </widget>
+               </item>
+
+             </layout>
+           </item>
+
           <item>
             <widget class="QPushButtonExtended" name="RefreshButton">
               <property name="geometry">
