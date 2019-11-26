@@ -11,6 +11,7 @@ public:
   }
 
   bool close();
+  bool save(const std::string& path);
   bool setLang(const std::string& lang);
   std::string getLang();
   bool add(const std::string& uri);

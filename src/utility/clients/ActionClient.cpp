@@ -8,6 +8,15 @@ bool ActionClient::close()
   return callNR(srv);
 }
 
+bool ActionClient::save(const std::string& path)
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "save";
+  srv.request.param = path;
+
+  return callNR(srv);
+}
+
 bool ActionClient::setLang(const std::string& lang)
 {
   ontologenius::OntologeniusService srv;
