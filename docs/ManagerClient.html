@@ -121,6 +121,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#ManagerClient">ManagerClient</a></b>(ros::NodeHandle* <i>n</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#list">list</a></b>()</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#add">add</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#copy">copy</a></b>(const std::string&amp; <i>dest_name</i>, const std::string&amp; <i>src_name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#del">del</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#getDifference">getDifference</a></b>(const std::string&amp; <i>onto_1</i>, const std::string&amp; <i>onto_2</i>, const std::string&amp; <i>concept</i>)</td></tr>
             </tbody>
@@ -154,6 +155,10 @@
           <h3 class="fn" id="add"><a name="add"></a><span class="type">bool</span> ManagerClient::<span class="name">add</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Create an ontology instance named <i>name</i>.</p>
           <p>Returns false if the service call fails.</p>
+
+          <h3 class="fn" id="copy"><a name="copy"></a><span class="type">bool</span> ManagerClient::<span class="name">copy</span>(const <span class="type">std::string</span>&amp; <i>dest_name</i>, const <span class="type">std::string</span>&amp; <i>src_name</i>)</h3>
+          <p>Create a copy of the ontology ontology instance named <i>src_name</i> with the name <i>dest_name</i>.</p>
+          <p>Returns false if the service call fails or if the copy fails.</p>
 
           <h3 class="fn" id="del"><a name="del"></a><span class="type">bool</span> ManagerClient::<span class="name">del</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Delete the instance of the ontology named <i>name</i></p>

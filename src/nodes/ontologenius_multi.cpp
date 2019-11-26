@@ -111,6 +111,38 @@ bool managerHandle(ontologenius::OntologeniusService::Request &req,
       std::cout << req.param << " STARTED" << std::endl;
     }
   }
+  else if(req.action == "copy")
+  {
+    std::regex base_regex("(.*)=(.*)");
+    std::smatch base_match;
+    if (std::regex_match(req.param, base_match, base_regex))
+    {
+      if (base_match.size() == 3)
+      {
+        std::string base_name = base_match[2].str();
+        std::string copy_name = base_match[1].str();
+        auto it = interfaces_.find(base_name);
+        if(it == interfaces_.end()) // if interface to copy do not exist
+          res.code = NO_EFFECT;
+        else
+        {
+          it = interfaces_.find(copy_name);
+          if(it != interfaces_.end()) // if copy already exist
+            res.code = NO_EFFECT;
+          else
+          {
+            ontologenius::RosInterface* tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), n_, copy_name);
+            interfaces_[copy_name] = tmp;
+            tmp->init(language);
+            std::thread th(&ontologenius::RosInterface::run, tmp);
+            interfaces_threads_[copy_name] = std::move(th);
+
+            std::cout << copy_name << " STARTED" << std::endl;
+          }
+        }
+      }
+    }
+  }
   else if(req.action == "delete")
   {
     auto it = interfaces_.find(req.param);

@@ -41,24 +41,32 @@ RosInterface::~RosInterface()
   delete onto_;
 }
 
-void RosInterface::init(std::string& lang, std::string intern_file, std::vector<std::string>& files)
+void RosInterface::init(const std::string& lang, const std::string& intern_file, const std::vector<std::string>& files)
 {
   onto_->setLanguage(lang);
   std::string ontology_intern_file = intern_file;
+  std::string dedicated_intern_file = intern_file;
   if(name_ != "")
   {
-    size_t pose = intern_file.find(".owl");
+    size_t pose = dedicated_intern_file.find(".owl");
     if(pose != std::string::npos)
-      intern_file.insert(pose, "_" + name_);
+      dedicated_intern_file.insert(pose, "_" + name_);
   }
 
-  if(onto_->preload(intern_file) == false)
+  if(onto_->preload(dedicated_intern_file) == false)
     for(auto file : files)
       onto_->readFromFile(file);
 
   reasoners_.load();
   std::cout << "Plugins loaded : " << reasoners_.list() << std::endl;
+}
 
+void RosInterface::init(const std::string& lang)
+{
+  onto_->setLanguage(lang);
+
+  reasoners_.load();
+  std::cout << "Plugins loaded : " << reasoners_.list() << std::endl;
 }
 
 void RosInterface::run()

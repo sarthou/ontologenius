@@ -17,6 +17,15 @@ bool ManagerClient::add(const std::string& name)
   return callNR(srv);
 }
 
+bool ManagerClient::copy(const std::string& dest_name, const std::string& src_name)
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "copy";
+  srv.request.param = dest_name + "=" + src_name;
+
+  return callBool(srv);
+}
+
 bool ManagerClient::del(const std::string& name)
 {
   ontologenius::OntologeniusService srv;
