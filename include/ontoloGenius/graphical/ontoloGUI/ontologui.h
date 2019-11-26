@@ -67,6 +67,7 @@ public slots:
   void displayOntologiesListSlot();
   void addOntologySlot();
   void deleteOntologySlot();
+  void saveOntologySlot();
   void differenceOntologySlot();
   void OntologyNameAddDelChangedSlot(const QString&);
   void OntologyNameChangedSlot(const QString&);

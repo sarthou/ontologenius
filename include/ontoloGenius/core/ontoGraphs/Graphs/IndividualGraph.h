@@ -38,9 +38,10 @@ class IndividualGraph : public Graph<IndividualBranch_t>
   friend IndividualChecker;
 public:
   IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
+  IndividualGraph(const IndividualGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   ~IndividualGraph();
 
-  void linkGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
+  void deepCopy(const IndividualGraph& other);
 
   void close();
   std::vector<IndividualBranch_t*> get() {return individuals_; }
@@ -137,6 +138,8 @@ private:
 
   bool checkRangeAndDomain(IndividualBranch_t* from, ObjectPropertyBranch_t* prop, IndividualBranch_t* on);
   bool checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, data_t& data);
+
+  void cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch);
 };
 
 } // namespace ontologenius

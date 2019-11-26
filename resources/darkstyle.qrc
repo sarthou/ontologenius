@@ -5,6 +5,8 @@
         <file>darkstyle/icon_restore.png</file>
         <file>darkstyle/icon_refresh.png</file>
         <file alias="refresh">darkstyle/icon_refresh.png</file>
+        <file>darkstyle/icon_save.png</file>
+        <file alias="save">darkstyle/icon_save.png</file>
         <file>darkstyle/icon_undock.png</file>
         <file>darkstyle/icon_branch_closed.png</file>
         <file>darkstyle/icon_branch_end.png</file>

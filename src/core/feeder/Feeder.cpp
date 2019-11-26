@@ -8,6 +8,9 @@ namespace ontologenius {
 
 bool Feeder::run()
 {
+  if(onto_ == nullptr)
+    return false;
+    
   bool has_run = false;
   std::queue<feed_t> feeds = feed_storage_.get();
 

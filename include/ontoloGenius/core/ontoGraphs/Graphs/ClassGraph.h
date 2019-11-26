@@ -40,10 +40,13 @@ class ClassGraph : public OntoGraph<ClassBranch_t>
   friend ClassChecker;
 public:
   ClassGraph(IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
+  ClassGraph(const ClassGraph& other, IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   ~ClassGraph() {}
 
   void add(const std::string& value, ObjectVectors_t& object_vector);
   void add(std::vector<std::string>& disjoints);
+
+  void deepCopy(const ClassGraph& other);
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);
   void getDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res);
@@ -124,6 +127,8 @@ private:
     }
     return nullptr;
   }
+
+  void cpyBranch(ClassBranch_t* old_branch, ClassBranch_t* new_branch);
 };
 
 } // namespace ontologenius

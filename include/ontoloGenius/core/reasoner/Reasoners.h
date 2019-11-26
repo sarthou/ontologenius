@@ -14,7 +14,7 @@ namespace ontologenius {
 class Reasoners
 {
 public:
-  Reasoners(Ontology* onto);
+  Reasoners(Ontology* onto = nullptr);
   ~Reasoners();
 
   void link(Ontology* onto);

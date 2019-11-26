@@ -16,6 +16,31 @@ ClassGraph::ClassGraph(IndividualGraph* individual_graph, ObjectPropertyGraph* o
   data_property_graph_ = data_property_graph;
 }
 
+ClassGraph::ClassGraph(const ClassGraph& other, IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
+{
+  individual_graph_ = individual_graph;
+  object_property_graph_ = object_property_graph;
+  data_property_graph_ = data_property_graph;
+
+  language_ = other.language_;
+
+  for(const auto& root : other.roots_)
+  {
+    ClassBranch_t* class_branch = new ClassBranch_t(root.first);
+    roots_[root.first] = class_branch;
+    all_branchs_.push_back(class_branch);
+  }
+
+  for(const auto& branch : other.branchs_)
+  {
+    ClassBranch_t* class_branch = new ClassBranch_t(branch.first);
+    branchs_[branch.first] = class_branch;
+    all_branchs_.push_back(class_branch);
+  }
+
+  this->container_.load(all_branchs_);
+}
+
 void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
@@ -1170,6 +1195,54 @@ bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* 
   }
 
   return true;
+}
+
+void ClassGraph::deepCopy(const ClassGraph& other)
+{
+  for(const auto& root : other.roots_)
+    cpyBranch(root.second, roots_[root.first]);
+
+  for(const auto& branch : other.branchs_)
+    cpyBranch(branch.second, branchs_[branch.first]);
+}
+
+void ClassGraph::cpyBranch(ClassBranch_t* old_branch, ClassBranch_t* new_branch)
+{
+  new_branch->family = old_branch->family;
+  new_branch->nb_mothers_ = old_branch->nb_mothers_;
+
+  new_branch->nb_updates_ = old_branch->nb_updates_;
+  new_branch->updated_ = old_branch->updated_;
+  new_branch->flags_ = old_branch->flags_;
+
+  new_branch->dictionary_ = old_branch->dictionary_;
+  new_branch->steady_dictionary_ = old_branch->steady_dictionary_;
+
+  for(const auto& child : old_branch->childs_)
+    new_branch->childs_.push_back(ClassElement_t(child, container_.find(child.elem->value())));
+
+  for(const auto& mother : old_branch->mothers_)
+    new_branch->mothers_.push_back(ClassElement_t(mother, container_.find(mother.elem->value())));
+
+  for(const auto& disjoint : old_branch->disjoints_)
+    new_branch->disjoints_.push_back(ClassElement_t(disjoint, container_.find(disjoint.elem->value())));
+
+  for(const auto& indiv : old_branch->individual_childs_)
+    new_branch->individual_childs_.push_back(IndividualElement_t(indiv, individual_graph_->container_.find(indiv.elem->value())));
+
+  for(const auto& relation : old_branch->object_relations_)
+  {
+    auto prop = object_property_graph_->container_.find(relation.first->value());
+    auto on = container_.find(relation.second->value());
+    new_branch->object_relations_.push_back(ClassObjectRelationElement_t(relation, prop, on));
+  }
+
+  for(const auto& relation : old_branch->data_relations_)
+  {
+    auto prop = data_property_graph_->container_.find(relation.first->value());
+    auto data = relation.second;
+    new_branch->data_relations_.push_back(ClassDataRelationElement_t(relation, prop, data));
+  }
 }
 
 } // namespace ontologenius

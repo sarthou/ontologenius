@@ -40,10 +40,11 @@ class ObjectPropertyGraph : public OntoGraph<ObjectPropertyBranch_t>
   friend IndividualGraph;
   friend ClassGraph;
 public:
-  ObjectPropertyGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
+  ObjectPropertyGraph(ClassGraph* class_graph);
+  ObjectPropertyGraph(const ObjectPropertyGraph& other, ClassGraph* class_graph);
   ~ObjectPropertyGraph() {}
 
-  void linkGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
+  void deepCopy(const ObjectPropertyGraph& other);
 
   void add(std::string value, ObjectPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
@@ -104,6 +105,8 @@ private:
         *next = it->second;
     }
   }
+
+  void cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch);
 };
 
 } // namespace ontologenius

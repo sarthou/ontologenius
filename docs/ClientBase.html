@@ -130,6 +130,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#call">call</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callStr">callStr</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callNR">callNR</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callBool">callBool</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
             </tbody>
           </table
 
@@ -164,7 +165,11 @@
 
           <h3 class="fn" id="callNR"><a name="callNR"></a>inline <span class="type">bool</span> ClientBase::<span class="name">callNR</span>(<span class="type">ontologenius::OntologeniusService</span>&amp; <i>srv</i>)</h3>
           <p>Call the service setup in the constructor of ClientBase with the request <i>srv</i></p>
-          <p>Return false if the service call fails.</p>
+          <p>Returns false if the service call fails.</p>
+
+          <h3 class="fn" id="callBool"><a name="callBool"></a>inline <span class="type">bool</span> ClientBase::<span class="name">callBool</span>(<span class="type">ontologenius::OntologeniusService</span>&amp; <i>srv</i>)</h3>
+          <p>Call the service setup in the constructor of ClientBase with the request <i>srv</i></p>
+          <p>Returns false if the service call fails or the result code of the service is different from SUCCESS.</p>
 
         </div>
       </div>

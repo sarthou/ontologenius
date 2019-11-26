@@ -127,6 +127,32 @@ protected:
     }
   }
 
+  inline bool callBool(ontologenius::OntologeniusService& srv)
+  {
+    cpt++;
+
+    if(client.call(srv))
+      return (srv.response.code == 0);
+    else
+    {
+      if(verbose_)
+        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
+      client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + name_, true);
+      if(client.call(srv))
+      {
+        if(verbose_)
+          std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
+        return (srv.response.code == 0);
+      }
+      else
+      {
+        if(verbose_)
+          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        return false;
+      }
+    }
+  }
+
 private:
     std::string name_;
     ros::NodeHandle* n_;

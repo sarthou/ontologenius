@@ -15,13 +15,15 @@ class Ontology
 {
 public:
   Ontology(std::string language = "en");
+  Ontology(const Ontology& other);
   ~Ontology();
 
   int close();
 
   int readFromUri(std::string uri);
-  int readFromFile(std::string fileName);
-  bool preload(std::string fileName);
+  int readFromFile(std::string file_name);
+  bool preload(std::string file_name);
+  void save(const std::string& file_name = "");
 
   bool isInit(bool print = true);
   void setLanguage(std::string language);

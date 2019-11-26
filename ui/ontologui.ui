@@ -1074,7 +1074,7 @@
           <item >
            <widget class="QLabel" name="label_6">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1096,7 +1096,7 @@
              <item>
               <widget class="QPushButtonExtended" name="AddPushButton">
                <property name="text">
-                <string>ADD</string>
+                <string>ADD(name) / COPY(dest=src)</string>
                </property>
               </widget>
              </item>
@@ -1108,7 +1108,7 @@
              <item>
               <widget class="QPushButtonExtended" name="DelPushButton">
                <property name="text">
-                <string>DELETE</string>
+                <string>DELETE(name)</string>
                </property>
               </widget>
              </item>
@@ -1317,6 +1317,33 @@
               <enum>Qt::Horizontal</enum>
              </property>
             </widget>
+           </item>
+
+           <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_29">
+
+               <item>
+                 <widget class="QPushButtonExtended" name="SaveButton">
+                   <property name="geometry">
+                    <rect>
+                     <width>20</width>
+                     <height>20</height>
+                    </rect>
+                   </property>
+                   <property name="icon">
+                    <iconset>
+                     <activeon>:/darkstyle/icon_save.png</activeon>
+                    </iconset>
+                   </property>
+                  </widget>
+               </item>
+
+               <item>
+                <widget class="QLineEdit" name="OntologSavePath">
+                 </widget>
+               </item>
+
+             </layout>
            </item>
 
           <item>
