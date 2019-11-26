@@ -5,6 +5,8 @@
 
 #include "ontologenius/OntologeniusService.h"
 
+#include <regex>
+
 ontoloGUI::ontoloGUI(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ontoloGUI)
@@ -625,6 +627,16 @@ void ontoloGUI::addOntologySlot()
   ontologenius::OntologeniusService srv;
   srv.request.action = "add";
   srv.request.param = ui->OntologyNameAddDel->text().toStdString();
+
+  std::regex base_regex("(.*)=(.*)");
+  std::smatch base_match;
+  if (std::regex_match(srv.request.param, base_match, base_regex))
+  {
+    if (base_match.size() == 3)
+    {
+      srv.request.action = "copy";
+    }
+  }
 
   if(!client.call(srv))
     displayErrorInfo("ontologenius/manage client call failed");

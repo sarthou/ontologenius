@@ -1074,7 +1074,7 @@
           <item >
            <widget class="QLabel" name="label_6">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1096,7 +1096,7 @@
              <item>
               <widget class="QPushButtonExtended" name="AddPushButton">
                <property name="text">
-                <string>ADD</string>
+                <string>ADD(name) / COPY(dest=src)</string>
                </property>
               </widget>
              </item>
@@ -1108,7 +1108,7 @@
              <item>
               <widget class="QPushButtonExtended" name="DelPushButton">
                <property name="text">
-                <string>DELETE</string>
+                <string>DELETE(name)</string>
                </property>
               </widget>
              </item>
