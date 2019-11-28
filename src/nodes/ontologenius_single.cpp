@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 
 #include "ontoloGenius/RosInterface.h"
+#include "ontoloGenius/Parameters.h"
 
 #include "ontoloGenius/core/Computer.h"
 #include "ontoloGenius/interpreter/Parser.h"
@@ -16,17 +17,17 @@ int main(int argc, char** argv)
 
   ontologenius::RosInterface interface(&n);
 
-  std::string language = std::string(argv[1]);
-  std::cout << "language " << language << std::endl;
+  ontologenius::Parameters params;
+  params.insert(ontologenius::Parameter("language", {"-l", "--lang"}));
+  params.insert(ontologenius::Parameter("intern_file", {"-i", "--intern_file"}));
+  params.insert(ontologenius::Parameter("files", {}));
 
-  std::string intern_file = std::string(argv[2]);
-  std::cout << "intern_file " << intern_file << std::endl;
+  params.set(argc, argv);
+  params.display();
 
-  std::vector<std::string> files;
-  for(int i = 3; i < argc; i++)
-    files.push_back(std::string(argv[i]));
-
-  interface.init(language, intern_file, files);
+  interface.init(params.parameters_.at("language").getFirst(),
+                 params.parameters_.at("intern_file").getFirst(),
+                 params.parameters_.at("files").get());
   interface.run();
 
   ROS_DEBUG("KILL ontoloGenius");

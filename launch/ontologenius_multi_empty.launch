@@ -2,6 +2,6 @@
   <arg name="language" default="en"/>
   <arg name="intern_file" default="$(find ontologenius)/file_intern/ontologenius.owl"/>
   <arg name="files" default=""/>
-  <node name="ontologenius_core" pkg="ontologenius" type="ontoloGenius_multi" output="screen" args="$(arg language) $(arg intern_file) $(arg files)"> </node>
+  <node name="ontologenius_core" pkg="ontologenius" type="ontoloGenius_multi" output="screen" args="-l $(arg language) -i $(arg intern_file) $(arg files)"> </node>
   <node name="ontologenius_rest" pkg="ontologenius" type="REST.py" output="screen"> </node>
 </launch>
