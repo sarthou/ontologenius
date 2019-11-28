@@ -70,7 +70,7 @@ int OntologyReader::read(TiXmlElement* rdf, std::string& name)
 {
   if(rdf == NULL)
   {
-      std::cerr << "Failed to load file: No root element."<< std::endl;
+      std::cerr << "Failed to load file: " << name << std::endl << "\t- No root element."<< std::endl;
       return OTHER;
   }
   else
@@ -128,8 +128,8 @@ int OntologyReader::readIndividual(TiXmlElement* rdf, std::string& name)
 {
   if(rdf == NULL)
   {
-      std::cerr << "Failed to load file: No root element."<< std::endl;
-      return OTHER;
+    std::cerr << "Failed to load file: " << name << std::endl << "\t- No root element."<< std::endl;
+    return OTHER;
   }
   else
   {
