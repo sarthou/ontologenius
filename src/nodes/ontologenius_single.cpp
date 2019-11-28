@@ -18,8 +18,8 @@ int main(int argc, char** argv)
   ontologenius::RosInterface interface(&n);
 
   ontologenius::Parameters params;
-  params.insert(ontologenius::Parameter("language", {"-l", "--lang"}));
-  params.insert(ontologenius::Parameter("intern_file", {"-i", "--intern_file"}));
+  params.insert(ontologenius::Parameter("language", {"-l", "--lang"}, {"en"}));
+  params.insert(ontologenius::Parameter("intern_file", {"-i", "--intern_file"}, {"none"}));
   params.insert(ontologenius::Parameter("files", {}));
 
   params.set(argc, argv);

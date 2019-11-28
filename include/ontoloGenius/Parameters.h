@@ -15,11 +15,13 @@ public:
   std::string name_;
   std::vector<std::string> options_;
   std::vector<std::string> values_;
+  std::vector<std::string> default_values_;
 
-  Parameter(const std::string& name, const std::vector<std::string>& options)
+  Parameter(const std::string& name, const std::vector<std::string>& options, const std::vector<std::string>& default_values = {})
   {
     name_ = name;
     options_ = options;
+    default_values_ = default_values;
   }
 
   Parameter(const Parameter& other)
@@ -27,12 +29,26 @@ public:
     name_ = other.name_;
     options_ = other.options_;
     values_ = other.values_;
+    default_values_ = other.default_values_;
   }
 
   void insert(const std::string& value) { values_.push_back(value); }
 
-  std::string getFirst() { return (values_.size() ? values_[0] : ""); }
-  std::vector<std::string> get() { return values_; }
+  std::string getFirst()
+  {
+    if(values_.size() == 0)
+      return (default_values_.size() ? default_values_[0] : "");
+    else
+      return (values_.size() ? values_[0] : "");
+  }
+  
+  std::vector<std::string> get()
+  {
+    if(values_.size() == 0)
+      return default_values_;
+    else
+      return values_;
+  }
 
   bool testOption(const std::string& option)
   {
