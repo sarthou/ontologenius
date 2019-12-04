@@ -141,6 +141,12 @@ bool Ontology::preload(std::string file_name)
 
 void Ontology::save(const std::string& file_name)
 {
+  if(!is_init_)
+  {
+    Display::error("Can not save unclosed ontology");
+    return;
+  }
+
   std::string tmp_name = writer.getFileName();
 
   if(file_name != "")
