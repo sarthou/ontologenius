@@ -16,11 +16,11 @@ namespace ontologenius {
 
 struct ObjectPropertyVectors_t
 {
-   std::vector<std::string> mothers_;
-   std::vector<std::string> disjoints_;
-   std::vector<std::string> inverses_;
-   std::vector<std::string> domains_;
-   std::vector<std::string> ranges_;
+   std::vector<Single_t<std::string>> mothers_;
+   std::vector<Single_t<std::string>> disjoints_;
+   std::vector<Single_t<std::string>> inverses_;
+   std::vector<Single_t<std::string>> domains_;
+   std::vector<Single_t<std::string>> ranges_;
    std::vector<std::vector<std::string>> chains_;
    Properties_t properties_;
    std::map<std::string, std::vector<std::string>> dictionary_;
@@ -40,10 +40,11 @@ class ObjectPropertyGraph : public OntoGraph<ObjectPropertyBranch_t>
   friend IndividualGraph;
   friend ClassGraph;
 public:
-  ObjectPropertyGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
+  ObjectPropertyGraph(ClassGraph* class_graph);
+  ObjectPropertyGraph(const ObjectPropertyGraph& other, ClassGraph* class_graph);
   ~ObjectPropertyGraph() {}
 
-  void linkGraph(ClassGraph* class_graph) {class_graph_ = class_graph; }
+  void deepCopy(const ObjectPropertyGraph& other);
 
   void add(std::string value, ObjectPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
@@ -73,9 +74,9 @@ private:
     auto it = vect.find(disjoint);
     if(it != vect.end())
     {
-      me->setSteady_disjoint(it->second);
+      me->disjoints_.push_back(it->second);
       if(all)
-        it->second->disjoints_.push_back(me);
+        it->second->disjoints_.push_back(me); // TODO do not save
       find = true;
     }
   }
@@ -88,35 +89,9 @@ private:
     auto it = vect.find(inverse);
     if(it != vect.end())
     {
-      me->setSteady_inverse(it->second);
+      me->inverses_.push_back(it->second);
       if(all)
-        it->second->inverses_.push_back(me);
-      find = true;
-    }
-  }
-
-  void isMyDomain(ObjectPropertyBranch_t* me, std::string& domain, std::map<std::string, ClassBranch_t*>& vect, bool& find)
-  {
-    if(find)
-      return;
-
-    auto it = vect.find(domain);
-    if(it != vect.end())
-    {
-      me->setSteady_domain(it->second);
-      find = true;
-    }
-  }
-
-  void isMyRange(ObjectPropertyBranch_t* me, std::string& range, std::map<std::string, ClassBranch_t*>& vect, bool& find)
-  {
-    if(find)
-      return;
-
-    auto it = vect.find(range);
-    if(it != vect.end())
-    {
-      me->setSteady_range(it->second);
+        it->second->inverses_.push_back(me); // TODO do not save
       find = true;
     }
   }
@@ -130,6 +105,8 @@ private:
         *next = it->second;
     }
   }
+
+  void cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch);
 };
 
 } // namespace ontologenius

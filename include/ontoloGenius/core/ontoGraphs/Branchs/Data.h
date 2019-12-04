@@ -10,7 +10,7 @@ struct data_t
   std::string value_;
   std::string type_;
 
-  std::string getNs()
+  std::string getNs() const
   {
     if((type_ == "real") || (type_ == "rational"))
       return "http://www.w3.org/2002/07/owl";
@@ -22,11 +22,20 @@ struct data_t
       return "http://www.w3.org/2002/07/xsd"; //http://www.w3.org/2001/XMLSchema
   }
 
-  std::string toString() {return( type_ + ":" + value_); }
+  std::string toString() const {return( type_ + ":" + value_); }
   void set(std::string value)
   {
     type_ = value.substr(0,value.find(":"));
     value_ = value.substr(value.find(":")+1);
+  }
+
+  bool operator==(const data_t& other)
+  {
+    if((value_ == other.value_) &&
+      (type_ == other.type_))
+      return true;
+    else
+      return false;
   }
 };
 

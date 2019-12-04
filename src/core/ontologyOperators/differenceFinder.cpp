@@ -171,10 +171,10 @@ comparator_t differenceFinder::toComparator(IndividualBranch_t* indiv)
 {
   comparator_t comp;
   comp.concept_ = indiv->value();
-  comp.object_properties_name_ = toValued(indiv->object_properties_name_);
-  comp.object_properties_on_ = toValued(indiv->object_properties_on_);
-  comp.data_properties_name_ = toValued(indiv->data_properties_name_);
-  comp.data_properties_data_ = toValued(indiv->data_properties_data_);
+  comp.object_properties_name_ = toValuedFirst(indiv->object_relations_);
+  comp.object_properties_on_ = toValuedSecond(indiv->object_relations_);
+  comp.data_properties_name_ = toValuedFirst(indiv->data_relations_);
+  comp.data_properties_data_ = toValuedSecond(indiv->data_relations_);
   comp.mothers_ = toValued(indiv->is_a_);
   return comp;
 }
@@ -183,10 +183,12 @@ comparator_t differenceFinder::toComparator(ClassBranch_t* class_)
 {
   comparator_t comp;
   comp.concept_ = class_->value();
-  comp.object_properties_name_ = toValued(class_->object_properties_name_);
-  comp.object_properties_on_ = toValued(class_->object_properties_on_);
-  comp.data_properties_name_ = toValued(class_->data_properties_name_);
-  comp.data_properties_data_ = toValued(class_->data_properties_data_);
+
+  comp.object_properties_name_ = toValuedFirst(class_->object_relations_);
+  comp.object_properties_on_ = toValuedSecond(class_->object_relations_);
+
+  comp.data_properties_name_ = toValuedFirst(class_->data_relations_);
+  comp.data_properties_data_ = toValuedSecond(class_->data_relations_);
   comp.mothers_ = toValued(class_->mothers_);
   return comp;
 }

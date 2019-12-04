@@ -18,17 +18,15 @@ void ReasonerSymetric::postReason()
   for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
   {
     if(indiv[indiv_i]->updated_ == true)
-      for(prop_i = 0; prop_i < indiv[indiv_i]->object_properties_name_.size(); prop_i++)
+      for(prop_i = 0; prop_i < indiv[indiv_i]->object_relations_.size(); prop_i++)
       {
-        if(indiv[indiv_i]->object_properties_name_[prop_i]->properties_.symetric_property_ == true)
+        if(indiv[indiv_i]->object_relations_[prop_i].first->properties_.symetric_property_ == true)
         {
-          IndividualBranch_t* sym_indiv = indiv[indiv_i]->object_properties_on_[prop_i];
-          ObjectPropertyBranch_t* sym_prop = indiv[indiv_i]->object_properties_name_[prop_i];
+          IndividualBranch_t* sym_indiv = indiv[indiv_i]->object_relations_[prop_i].second;
+          ObjectPropertyBranch_t* sym_prop = indiv[indiv_i]->object_relations_[prop_i].first;
           if(!symetricExist(indiv[indiv_i], sym_prop, sym_indiv))
           {
-            sym_indiv->object_properties_name_.push_back(sym_prop);
-            sym_indiv->object_properties_on_.push_back(indiv[indiv_i]);
-            sym_indiv->object_properties_deduced_.push_back(false);
+            sym_indiv->object_relations_.push_back(IndivObjectRelationElement_t(sym_prop, indiv[indiv_i], 1.0, true));
             sym_indiv->object_properties_has_induced_.push_back(Triplet());
             sym_indiv->nb_updates_++;
             nb_update_++;
@@ -40,11 +38,11 @@ void ReasonerSymetric::postReason()
 
 bool ReasonerSymetric::symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv)
 {
-  size_t properties_size = sym_indiv->object_properties_name_.size();
+  size_t properties_size = sym_indiv->object_relations_.size();
   for(size_t i = 0; i < properties_size; i++)
   {
-    if(sym_indiv->object_properties_name_[i]->get() == sym_prop->get())
-      if(sym_indiv->object_properties_on_[i]->get() == indiv_on->get())
+    if(sym_indiv->object_relations_[i].first->get() == sym_prop->get())
+      if(sym_indiv->object_relations_[i].second->get() == indiv_on->get())
         return true;
   }
   return false;

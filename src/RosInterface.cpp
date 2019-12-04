@@ -5,14 +5,31 @@
 #include "ontoloGenius/RosInterface.h"
 
 #include "ontoloGenius/core/utility/error_code.h"
+#include "ontoloGenius/graphical/Display.h"
 
 namespace ontologenius {
 
-RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : reasoners_(onto_), feeder_(onto_), run_(true),
-                                                                  pub_(n->advertise<std_msgs::String>("ontologenius/end", 1000))
+RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : run_(true),
+                                                                   pub_(n->advertise<std_msgs::String>("ontologenius/end", 1000))
 {
   n_ = n;
   onto_ = new Ontology();
+  reasoners_.link(onto_);
+  feeder_.link(onto_);
+
+  name_ = name;
+  feeder_end = true;
+}
+
+RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, std::string name) : run_(true),
+                                                                   pub_(n->advertise<std_msgs::String>("ontologenius/end", 1000))
+{
+  n_ = n;
+
+  other.lock();
+  onto_ = new Ontology(*other.onto_);
+  other.release();
+
   reasoners_.link(onto_);
   feeder_.link(onto_);
 
@@ -25,24 +42,34 @@ RosInterface::~RosInterface()
   delete onto_;
 }
 
-void RosInterface::init(std::string& lang, std::string intern_file, std::vector<std::string>& files)
+void RosInterface::init(const std::string& lang, const std::string& intern_file, const std::vector<std::string>& files, const std::string& config_path)
 {
   onto_->setLanguage(lang);
   std::string ontology_intern_file = intern_file;
+  std::string dedicated_intern_file = intern_file;
   if(name_ != "")
   {
-    size_t pose = intern_file.find(".owl");
+    size_t pose = dedicated_intern_file.find(".owl");
     if(pose != std::string::npos)
-      intern_file.insert(pose, "_" + name_);
+      dedicated_intern_file.insert(pose, "_" + name_);
   }
 
-  if(onto_->preload(intern_file) == false)
+  if(onto_->preload(dedicated_intern_file) == false)
     for(auto file : files)
       onto_->readFromFile(file);
 
+  reasoners_.configure(config_path);
   reasoners_.load();
-  std::cout << "Plugins loaded : " << reasoners_.list() << std::endl;
+  Display::info("Plugins loaded : " + reasoners_.list());
+}
 
+void RosInterface::init(const std::string& lang, const std::string& config_path)
+{
+  onto_->setLanguage(lang);
+
+  reasoners_.configure(config_path);
+  reasoners_.load();
+  Display::info("Plugins loaded : " + reasoners_.list());
 }
 
 void RosInterface::run()
@@ -86,6 +113,17 @@ void RosInterface::run()
   feed_thread.join();
 }
 
+void RosInterface::lock()
+{
+  feeder_mutex_.lock();
+  reasoner_mutex_.lock();
+}
+
+void RosInterface::release()
+{
+  feeder_mutex_.unlock();
+  reasoner_mutex_.unlock();
+}
 
 /***************
 *
@@ -110,6 +148,8 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
     res.code = onto_->readFromUri(req.param);
   else if(req.action == "fadd")
     res.code = onto_->readFromFile(req.param);
+  else if(req.action == "save")
+    onto_->save(req.param);
   else if(req.action == "close")
   {
     onto_->close();

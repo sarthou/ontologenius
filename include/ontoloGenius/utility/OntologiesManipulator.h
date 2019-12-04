@@ -21,6 +21,7 @@ public:
   OntologyManipulator* get(const std::string& name);
 
   bool add(const std::string& name);
+  bool copy(const std::string& dest_name, const std::string& src_name);
   bool del(const std::string& name);
 
   void verbose(bool verbose) { ClientBase::verbose(verbose); }

@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "ontoloGenius/core/utility/error_code.h"
+#include "ontoloGenius/graphical/Display.h"
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 
 #include "ontoloGenius/core/utility/utility.h"
@@ -52,6 +53,13 @@ int OntologyReader::readFromFile(std::string& fileName, bool individual)
   std::string response = "";
   std::string tmp = "";
   std::ifstream f(fileName);
+
+  if(!f.is_open())
+  {
+    Display::error("Fail to open : " + fileName);
+    return -1;
+  }
+
   while(getline(f,tmp))
   {
     response += tmp;
@@ -70,8 +78,8 @@ int OntologyReader::read(TiXmlElement* rdf, std::string& name)
 {
   if(rdf == NULL)
   {
-      std::cerr << "Failed to load file: No root element."<< std::endl;
-      return OTHER;
+    Display::error("Failed to read file: " + name);
+    return OTHER;
   }
   else
   {
@@ -80,7 +88,7 @@ int OntologyReader::read(TiXmlElement* rdf, std::string& name)
     std::cout << "+ sub          | > domain  | @ language" << std::endl;
     std::cout << "- disjoint     | < range   | . chain axiom" << std::endl;
     std::cout << "/ inverse      | * type    | " << std::endl;
-    std::cout << "$ has property | ^ related | # data type" << std::endl;
+    std::cout << "$ has property | ^ related | " << std::endl;
     std::cout << "************************************" << std::endl;
 
     std::vector<TiXmlElement*> elem_classes, elem_descriptions, elem_obj_prop, elem_data_prop;
@@ -119,9 +127,8 @@ int OntologyReader::read(TiXmlElement* rdf, std::string& name)
 void OntologyReader::displayIndividualRules()
 {
   std::cout << "************************************" << std::endl;
-  std::cout << "+ has property | = same       | - distinct" << std::endl;
-  std::cout << "^ related      | # data type  | @ language" << std::endl;
-  std::cout << "$ has property |              |" << std::endl;
+  std::cout << "+ is a         | = same       | - distinct" << std::endl;
+  std::cout << "$ has property | ^ related    | @ language" << std::endl;
   std::cout << "************************************" << std::endl;
 }
 
@@ -129,8 +136,8 @@ int OntologyReader::readIndividual(TiXmlElement* rdf, std::string& name)
 {
   if(rdf == NULL)
   {
-      std::cerr << "Failed to load file: No root element."<< std::endl;
-      return OTHER;
+    Display::error("Failed to load file: " + name + "\n\t- No root element.");
+    return OTHER;
   }
   else
   {
@@ -160,10 +167,12 @@ void OntologyReader::readClass(TiXmlElement* elem)
     {
       std::string subElemName = subElem->Value();
 
+      float probability = getProbability(subElem);
+
       if(subElemName == "rdfs:subClassOf")
-        push(object_vector.mothers_, subElem, "+");
+        push(object_vector.mothers_, subElem, probability, "+");
       else if(subElemName == "owl:disjointWith")
-        push(object_vector.disjoints_, subElem, "-");
+        push(object_vector.disjoints_, subElem, probability, "-");
       else if(subElemName == "rdfs:label")
         pushLang(object_vector.dictionary_, subElem);
       else if(subElemName == "onto:label")
@@ -175,37 +184,16 @@ void OntologyReader::readClass(TiXmlElement* elem)
         {
           std::string property = subElemName.substr(subElemName.find(":")+1);
           if(testAttribute(subElem, "rdf:resource"))
-          {
-            push(object_vector.object_properties_name_, property, "$");
-            push(object_vector.object_properties_on_, subElem, "^");
-            push(object_vector.object_properties_deduced_, false);
-          }
-          else if(testAttribute(subElem, "rdf:resourceDeduced"))
-          {
-            push(object_vector.object_properties_name_, property, "$");
-            push(object_vector.object_properties_on_, subElem, "^");
-            push(object_vector.object_properties_deduced_, true);
-          }
+            push(object_vector.object_relations_, Pair_t<std::string, std::string>(property, toString(subElem), probability), "$", "^");
           else if(testAttribute(subElem, "rdf:datatype"))
           {
             const char* value = subElem->GetText();
             if(value != NULL)
             {
-              push(object_vector.data_properties_name_, property, "+");
-              push(object_vector.data_properties_value_, std::string(value), "^");
-              push(object_vector.data_properties_type_, subElem, "#", "rdf:datatype");
-              push(object_vector.data_properties_deduced_, false);
-            }
-          }
-          else if(testAttribute(subElem, "rdf:datatypeDeduced"))
-          {
-            const char* value = subElem->GetText();
-            if(value != NULL)
-            {
-              push(object_vector.data_properties_name_, property, "+");
-              push(object_vector.data_properties_value_, std::string(value), "^");
-              push(object_vector.data_properties_type_, subElem, "#", "rdf:datatypeDeduced");
-              push(object_vector.data_properties_deduced_, true);
+              data_t data;
+              data.value_ = std::string(value);
+              data.type_ = toString(subElem, "rdf:datatype");
+              push(object_vector.data_relations_, Pair_t<std::string, data_t>(property, data, probability), "$", "^");
             }
           }
         }
@@ -231,11 +219,12 @@ void OntologyReader::readIndividual(TiXmlElement* elem)
       for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
       {
         std::string subElemName = subElem->Value();
+        float probability = getProbability(subElem);
 
         if(subElemName == "rdf:type")
-          push(individual_vector.is_a_, subElem, "+");
+          push(individual_vector.is_a_, subElem, probability, "+");
         else if(subElemName == "owl:sameAs")
-          push(individual_vector.same_as_, subElem, "=");
+          push(individual_vector.same_as_, subElem, probability, "=");
         else if(subElemName == "rdfs:label")
           pushLang(individual_vector.dictionary_, subElem);
         else if(subElemName == "onto:label")
@@ -247,37 +236,16 @@ void OntologyReader::readIndividual(TiXmlElement* elem)
           {
             std::string property = subElemName.substr(subElemName.find(":")+1);
             if(testAttribute(subElem, "rdf:resource"))
-            {
-              push(individual_vector.object_properties_name_, property, "$");
-              push(individual_vector.object_properties_on_, subElem, "^");
-              push(individual_vector.object_properties_deduced_, false);
-            }
-            else if(testAttribute(subElem, "rdf:resourceDeduced"))
-            {
-              push(individual_vector.object_properties_name_, property, "$");
-              push(individual_vector.object_properties_on_, subElem, "^");
-              push(individual_vector.object_properties_deduced_, true);
-            }
+              push(individual_vector.object_relations_, Pair_t<std::string, std::string>(property, toString(subElem), probability), "$", "^");
             else if(testAttribute(subElem, "rdf:datatype"))
             {
               const char* value = subElem->GetText();
               if(value != NULL)
               {
-                push(individual_vector.data_properties_name_, property, "+");
-                push(individual_vector.data_properties_value_, std::string(value), "^");
-                push(individual_vector.data_properties_type_, subElem, "#", "rdf:datatype");
-                push(individual_vector.data_properties_deduced_, false);
-              }
-            }
-            else if(testAttribute(subElem, "rdf:datatypeDeduced"))
-            {
-              const char* value = subElem->GetText();
-              if(value != NULL)
-              {
-                push(individual_vector.data_properties_name_, property, "+");
-                push(individual_vector.data_properties_value_, std::string(value), "^");
-                push(individual_vector.data_properties_type_, subElem, "#", "rdf:datatypeDeduced");
-                push(individual_vector.data_properties_deduced_, true);
+                data_t data;
+                data.value_ = std::string(value);
+                data.type_ = toString(subElem, "rdf:datatype");
+                push(individual_vector.data_relations_, Pair_t<std::string, data_t>(property, data, probability), "$", "^");
               }
             }
           }
@@ -370,17 +338,18 @@ void OntologyReader::readObjectProperty(TiXmlElement* elem)
     for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
     {
       std::string subElemName = subElem->Value();
+      float probability = getProbability(subElem);
 
       if(subElemName == "rdfs:subPropertyOf")
-        push(propertyVectors.mothers_, subElem, "+");
+        push(propertyVectors.mothers_, subElem, probability, "+");
       else if(subElemName == "owl:disjointWith")
-        push(propertyVectors.disjoints_, subElem, "-");
+        push(propertyVectors.disjoints_, subElem, probability, "-");
       else if(subElemName == "owl:inverseOf")
-        push(propertyVectors.inverses_, subElem, "/");
+        push(propertyVectors.inverses_, subElem, probability, "/");
       else if(subElemName == "rdfs:domain")
-        push(propertyVectors.domains_, subElem, ">");
+        push(propertyVectors.domains_, subElem, probability, ">");
       else if(subElemName == "rdfs:range")
-        push(propertyVectors.ranges_, subElem, "<");
+        push(propertyVectors.ranges_, subElem, probability, "<");
       else if(subElemName == "rdf:type")
         push(propertyVectors.properties_, subElem, "*");
       else if(subElemName == "rdfs:label")
@@ -412,13 +381,14 @@ void OntologyReader::readDataProperty(TiXmlElement* elem)
     for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
     {
       std::string subElemName = subElem->Value();
+      float probability = getProbability(subElem);
 
       if(subElemName == "rdfs:subPropertyOf")
-        push(propertyVectors.mothers_, subElem, "+");
+        push(propertyVectors.mothers_, subElem, probability, "+");
       else if(subElemName == "owl:disjointWith")
-        push(propertyVectors.disjoints_, subElem, "-");
+        push(propertyVectors.disjoints_, subElem, probability, "-");
       else if(subElemName == "rdfs:domain")
-        push(propertyVectors.domains_, subElem, ">");
+        push(propertyVectors.domains_, subElem, probability, ">");
       else if(subElemName == "rdfs:range")
         push(propertyVectors.ranges_, subElem, "<");
       else if(subElemName == "rdfs:label")
@@ -455,21 +425,6 @@ void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement
         vect.push_back(getName(std::string(subAttr)));
       }
     }
-  }
-}
-
-void OntologyReader::readRestriction(TiXmlElement* elem)
-{
-  std::string on;
-  std::vector<std::string> restriction;
-
-  for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != NULL; subElem = subElem->NextSiblingElement())
-  {
-    std::string restriction_name = subElem->Value();
-    if(restriction_name == "owl:onProperty")
-      on = getAttribute(subElem, "rdf:resource");
-    else if(restriction_name == "owl:someValuesFrom")
-      restriction.push_back(readSomeValuesFrom(subElem));
   }
 }
 
@@ -521,7 +476,7 @@ void OntologyReader::pushLang(std::map<std::string, std::vector<std::string>>& d
   subAttr = subElem->Attribute("xml:lang");
   if(subAttr != NULL)
   {
-    std::string lang = getName(std::string(subAttr));
+    std::string lang = std::string(subAttr);
 
     const char* value;
     value = subElem->GetText();

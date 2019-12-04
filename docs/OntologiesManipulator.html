@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>OntologiesManipulator Class | Ontologenius 0.2.3</title>
+  <title>OntologiesManipulator Class | Ontologenius 0.2.4</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="images/favicon.ico" rel="shortcut icon">
@@ -68,6 +68,7 @@
           <ul style="display: block;">
             <li class="level1"><a href="overview/launchers.html">Launchers</a></li>
             <li class="level1"><a href="overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="overview/reasonersConfiguration.html">Reasoners configuration</a></li>
             <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
           </ul>
         </div>
@@ -132,6 +133,7 @@
           <table class="alignedsummary">
             <tbody>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#add">add</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#copy">copy</a></b>(const std::string&amp; <i>dest_name</i>, const std::string&amp; <i>dest_name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#del">del</a></b>(const std::string&amp; <i>name</i>)</td></tr>
             </tbody>
           </table>
@@ -167,7 +169,11 @@
 
           <h3 class="fn" id="add"><a name="add"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">add</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Creates a new instance of ontologyManipulator identified by the name <i>name</i>.</p>
-          <p>Returns false creating fails. Returns true even if the instance already exists.</p>
+          <p>Returns false if the creation fails. Returns true even if the instance already exists.</p>
+
+          <h3 class="fn" id="copy"><a name="copy"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">copy</span>(const <span class="type">std::string</span>&amp; <i>dest_name</i>, const <span class="type">std::string</span>&amp; <i>src_name</i>)</h3>
+          <p>Creates a new instance of ontologyManipulator identified by the name <i>dest_name</i> that manipulates a copy of the ontology handled by the ontologyManipulator <i>src_name</i>.</p>
+          <p>Returns false if the copy fails. Returns true even if the instance already exists.</p>
 
           <h3 class="fn" id="del"><a name="del"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">del</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Deletes the instance of ontologyManipulator identified by the name <i>name</i>.</p>

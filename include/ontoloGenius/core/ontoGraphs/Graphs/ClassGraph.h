@@ -14,19 +14,13 @@ namespace ontologenius {
 
 struct ObjectVectors_t
 {
-   std::vector<std::string> mothers_;
-   std::vector<std::string> disjoints_;
+   std::vector<Single_t<std::string>> mothers_;
+   std::vector<Single_t<std::string>> disjoints_;
    std::map<std::string, std::vector<std::string>> dictionary_;
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
 
-   std::vector<std::string> object_properties_name_;
-   std::vector<std::string> object_properties_on_;
-   std::vector<bool> object_properties_deduced_;
-
-   std::vector<std::string> data_properties_name_;
-   std::vector<std::string> data_properties_type_;
-   std::vector<std::string> data_properties_value_;
-   std::vector<bool> data_properties_deduced_;
+   std::vector<Pair_t<std::string, std::string>> object_relations_;
+   std::vector<Pair_t<std::string, data_t>> data_relations_;
 };
 
 //for friend
@@ -46,10 +40,13 @@ class ClassGraph : public OntoGraph<ClassBranch_t>
   friend ClassChecker;
 public:
   ClassGraph(IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
+  ClassGraph(const ClassGraph& other, IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   ~ClassGraph() {}
 
   void add(const std::string& value, ObjectVectors_t& object_vector);
   void add(std::vector<std::string>& disjoints);
+
+  void deepCopy(const ClassGraph& other);
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);
   void getDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res);
@@ -90,13 +87,8 @@ private:
   DataPropertyGraph* data_property_graph_;
   IndividualGraph* individual_graph_;
 
-  void addObjectPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
-  void addObjectPropertyOn(ClassBranch_t* me, std::string& name, bool deduced);
-  void addDataPropertyName(ClassBranch_t* me, std::string& name, bool deduced);
-  void addDataPropertyData(ClassBranch_t* me, data_t& data, bool deduced);
-
-  void setSteadyObjectProperty(ClassBranch_t* branch_from, ObjectPropertyBranch_t* branch_prop, ClassBranch_t* branch_on);
-  void setSteadyDataProperty(ClassBranch_t* branch_from, DataPropertyBranch_t* branch_prop, data_t data);
+  void addObjectProperty(ClassBranch_t* me, Pair_t<std::string, std::string>& relation);
+  void addDataProperty(ClassBranch_t* me, Pair_t<std::string, data_t>& relation);
 
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth);
   void getRelatedFrom(std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res);
@@ -119,26 +111,9 @@ private:
     auto it = vect.find(disjoint);
     if(it != vect.end())
     {
-      me->setSteady_disjoint(it->second);
+      me->disjoints_.push_back(it->second);
       if(all)
-        it->second->disjoints_.push_back(me);
-      find = true;
-    }
-  }
-
-  void isMyObjectPropertiesOn(ClassBranch_t* me, const std::string& propertyOn, std::map<std::string, ClassBranch_t*>& vect, bool& find, bool deduced)
-  {
-    if(find)
-      return;
-
-    auto it = vect.find(propertyOn);
-    if(it != vect.end())
-    {
-      if(deduced == false)
-        me->setSteady_object_properties_on(it->second);
-      else
-        me->object_properties_on_.push_back(it->second);
-
+        it->second->disjoints_.push_back(me); // TODO do not save
       find = true;
     }
   }
@@ -152,6 +127,8 @@ private:
     }
     return nullptr;
   }
+
+  void cpyBranch(ClassBranch_t* old_branch, ClassBranch_t* new_branch);
 };
 
 } // namespace ontologenius

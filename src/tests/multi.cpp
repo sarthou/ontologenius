@@ -12,7 +12,7 @@ OntologiesManipulator* onto_ptr;
 TEST(multi_tests, create)
 {
   ros::Rate wait(1);
-  ros::Rate wait2(0.4);
+  ros::Rate wait2(0.6);
   std::vector<std::string> res;
   bool res_bool = true;
   std::string test_word = "robot";
@@ -28,7 +28,7 @@ TEST(multi_tests, create)
   (*onto_ptr)["paul"]->feeder.addInheritage("human", "agent");
   (*onto_ptr)["paul"]->feeder.addInheritage("robot", "agent");
   (*onto_ptr)["paul"]->feeder.addInheritage("pepper", "robot");
-  wait2.sleep();
+  wait.sleep();
 
   res = (*onto_ptr)["paul"]->classes.getUp(test_word);
   res_bool = ((res.size() == 2) &&

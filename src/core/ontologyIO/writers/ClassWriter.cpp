@@ -46,13 +46,10 @@ void ClassWriter::writeClass(ClassBranch_t* branch)
   writeDisjointWith(branch);
 
   writeObjectProperties(branch);
-  writeObjectPropertiesDeduced(branch);
-
   writeDataProperties(branch);
-  writeDataPropertiesDeduced(branch);
 
-  writeDictionary(&branch->steady_);
-  writeMutedDictionary(&branch->steady_);
+  writeDictionary(branch);
+  writeMutedDictionary(branch);
 
   tmp = "    </owl:Class>\n\n\n\n";
   writeString(tmp);
@@ -60,25 +57,32 @@ void ClassWriter::writeClass(ClassBranch_t* branch)
 
 void ClassWriter::writeSubClassOf(ClassBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.mothers_.size(); i++)
-  {
-    std::string tmp = "        <rdfs:subClassOf rdf:resource=\"ontologenius#" +
-                      branch->steady_.mothers_[i]->value()
-                      + "\"/>\n";
-    writeString(tmp);
-  }
+  for(auto& mother : branch->mothers_)
+    if(mother.infered == false)
+    {
+      std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
+      std::string tmp = "        <rdfs:subClassOf" +
+                        proba +
+                        " rdf:resource=\"ontologenius#" +
+                        mother.elem->value()
+                        + "\"/>\n";
+      writeString(tmp);
+    }
 }
 
 void ClassWriter::writeDisjointWith(ClassBranch_t* branch)
 {
-  if(branch->steady_.disjoints_.size() < 2)
-    for(size_t i = 0; i < branch->steady_.disjoints_.size(); i++)
-    {
-      std::string tmp = "        <owl:disjointWith rdf:resource=\"ontologenius#" +
-                        branch->steady_.disjoints_[i]->value()
-                        + "\"/>\n";
-      writeString(tmp);
-    }
+  if(branch->disjoints_.size() < 2)
+    for(size_t i = 0; i < branch->disjoints_.size(); i++)
+      if(branch->disjoints_[i].infered == false)
+      {
+        std::string tmp = "        <owl:disjointWith" +
+                          getProba(branch->disjoints_[i]) +
+                          " rdf:resource=\"ontologenius#" +
+                          branch->disjoints_[i].elem->value()
+                          + "\"/>\n";
+        writeString(tmp);
+      }
 }
 
 void ClassWriter::writeDisjointWith(std::vector<ClassBranch_t*>& classes)
@@ -100,7 +104,8 @@ void ClassWriter::writeDisjointWith(std::vector<ClassBranch_t*>& classes)
         std::vector<std::string> disjoints_current;
 
         for(size_t j = 0; j < classes[i]->disjoints_.size(); j++)
-          disjoints_current.push_back(classes[i]->disjoints_[j]->value());
+          if(classes[i]->disjoints_[j].infered == false)
+            disjoints_current.push_back(classes[i]->disjoints_[j].elem->value());
         disjoints_current.push_back(classes[i]->value());
 
         getDisjoints(classes[i], disjoints_current);
@@ -132,9 +137,9 @@ void ClassWriter::getDisjoints(ClassBranch_t* class_branch, std::vector<std::str
   for(size_t i = 0; i < class_branch->disjoints_.size(); i++)
   {
     std::vector<std::string> disjoints_class;
-    for(size_t j = 0; j < class_branch->disjoints_[i]->disjoints_.size(); j++)
-      disjoints_class.push_back(class_branch->disjoints_[i]->disjoints_[j]->value());
-    disjoints_class.push_back(class_branch->disjoints_[i]->value());
+    for(size_t j = 0; j < class_branch->disjoints_[i].elem->disjoints_.size(); j++)
+      disjoints_class.push_back(class_branch->disjoints_[i].elem->disjoints_[j].elem->value());
+    disjoints_class.push_back(class_branch->disjoints_[i].elem->value());
     removeDifferents(disjoints_current, disjoints_class);
   }
 }
@@ -154,26 +159,15 @@ void ClassWriter::removeDifferents(std::vector<std::string>& disjoints_current, 
 
 void ClassWriter::writeObjectProperties(ClassBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.object_properties_name_.size(); i++)
-  {
-    std::string tmp = "        <ontologenius:" +
-                      branch->steady_.object_properties_name_[i]->value() +
-                      " rdf:resource=\"ontologenius#" +
-                      branch->steady_.object_properties_on_[i]->value() +
-                      "\"/>\n";
-    writeString(tmp);
-  }
-}
-
-void ClassWriter::writeObjectPropertiesDeduced(ClassBranch_t* branch)
-{
-  for(size_t i = 0; i < branch->object_properties_name_.size(); i++)
-    if(branch->object_properties_deduced_[i] == true)
+  for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+    if(relation.infered == false)
     {
+      std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
       std::string tmp = "        <ontologenius:" +
-                        branch->object_properties_name_[i]->value() +
-                        " rdf:resourceDeduced=\"ontologenius#" +
-                        branch->object_properties_on_[i]->value() +
+                        relation.first->value() +
+                        proba +
+                        " rdf:resource=\"ontologenius#" +
+                        relation.second->value() +
                         "\"/>\n";
       writeString(tmp);
     }
@@ -181,38 +175,21 @@ void ClassWriter::writeObjectPropertiesDeduced(ClassBranch_t* branch)
 
 void ClassWriter::writeDataProperties(ClassBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.data_properties_name_.size(); i++)
-  {
-    std::string tmp = "        <ontologenius:" +
-                      branch->steady_.data_properties_name_[i]->value() +
-                      " rdf:datatype=\"" +
-                      branch->steady_.data_properties_data_[i].getNs() +
-                      "#" +
-                      branch->steady_.data_properties_data_[i].type_ +
-                      "\">" +
-                      branch->steady_.data_properties_data_[i].value_ +
-                      "</ontologenius:" +
-                      branch->steady_.data_properties_name_[i]->value() +
-                      ">\n";
-    writeString(tmp);
-  }
-}
-
-void ClassWriter::writeDataPropertiesDeduced(ClassBranch_t* branch)
-{
-  for(size_t i = 0; i < branch->data_properties_name_.size(); i++)
-    if(branch->data_properties_deduced_[i] == true)
+  for(ClassDataRelationElement_t& relation : branch->data_relations_)
+    if(relation.infered == false)
     {
+      std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
       std::string tmp = "        <ontologenius:" +
-                        branch->data_properties_name_[i]->value() +
-                        " rdf:datatypeDeduced=\"" +
-                        branch->data_properties_data_[i].getNs() +
+                        relation.first->value() +
+                        proba +
+                        " rdf:datatype=\"" +
+                        relation.second.getNs() +
                         "#" +
-                        branch->data_properties_data_[i].type_ +
+                        relation.second.type_ +
                         "\">" +
-                        branch->data_properties_data_[i].value_ +
+                        relation.second.value_ +
                         "</ontologenius:" +
-                        branch->data_properties_name_[i]->value() +
+                        relation.first->value() +
                         ">\n";
       writeString(tmp);
     }

@@ -70,6 +70,42 @@ private:
     return res;
   }
 
+  template<typename T>
+  std::vector<std::string> toValued(std::vector<Single_t<T>> vect)
+  {
+    std::vector<std::string> res;
+    for(auto it : vect)
+      res.push_back(it.elem->value());
+    return res;
+  }
+
+  template<typename T, typename U>
+  std::vector<std::string> toValuedFirst(std::vector<Pair_t<T, U>> vect)
+  {
+    std::vector<std::string> res;
+    for(auto it : vect)
+      res.push_back(it.first->value());
+    return res;
+  }
+
+  template<typename T, typename U>
+  std::vector<std::string> toValuedSecond(std::vector<Pair_t<T, U>> vect)
+  {
+    std::vector<std::string> res;
+    for(auto it : vect)
+      res.push_back(it.second->value());
+    return res;
+  }
+
+  template<typename T>
+  std::vector<std::string> toValuedSecond(std::vector<Pair_t<T, data_t>> vect)
+  {
+    std::vector<std::string> res;
+    for(auto it : vect)
+      res.push_back(it.second.toString());
+    return res;
+  }
+
   std::vector<std::string> toValued(std::vector<data_t> vect)
   {
     std::vector<std::string> res;

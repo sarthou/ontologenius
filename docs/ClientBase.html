@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ClientBase Class | Ontologenius 0.2.3</title>
+  <title>ClientBase Class | Ontologenius 0.2.4</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="images/favicon.ico" rel="shortcut icon">
@@ -69,6 +69,7 @@
           <ul style="display: block;">
             <li class="level1"><a href="overview/launchers.html">Launchers</a></li>
             <li class="level1"><a href="overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="overview/reasonersConfiguration.html">Reasoners configuration</a></li>
             <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
           </ul>
         </div>
@@ -130,6 +131,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#call">call</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callStr">callStr</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callNR">callNR</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callBool">callBool</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
             </tbody>
           </table
 
@@ -164,7 +166,11 @@
 
           <h3 class="fn" id="callNR"><a name="callNR"></a>inline <span class="type">bool</span> ClientBase::<span class="name">callNR</span>(<span class="type">ontologenius::OntologeniusService</span>&amp; <i>srv</i>)</h3>
           <p>Call the service setup in the constructor of ClientBase with the request <i>srv</i></p>
-          <p>Return false if the service call fails.</p>
+          <p>Returns false if the service call fails.</p>
+
+          <h3 class="fn" id="callBool"><a name="callBool"></a>inline <span class="type">bool</span> ClientBase::<span class="name">callBool</span>(<span class="type">ontologenius::OntologeniusService</span>&amp; <i>srv</i>)</h3>
+          <p>Call the service setup in the constructor of ClientBase with the request <i>srv</i></p>
+          <p>Returns false if the service call fails or the result code of the service is different from SUCCESS.</p>
 
         </div>
       </div>

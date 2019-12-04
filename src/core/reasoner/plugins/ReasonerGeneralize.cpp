@@ -8,6 +8,18 @@ ReasonerGeneralize::ReasonerGeneralize()
 {
   current_id_ = 0;
   class_per_period_ = 25;
+
+  min_count_ = 2;
+  min_percent_ = 0.6;
+}
+
+void ReasonerGeneralize::setParameter(const std::string& name, const std::string& value)
+{
+  std::string::size_type sz;
+  if(name == "min_count")
+    min_count_ = std::stoi(value,&sz);
+  else if(name == "min_percent")
+    min_percent_ = std::stof(value,&sz);
 }
 
 void ReasonerGeneralize::periodicReason()
@@ -29,22 +41,22 @@ void ReasonerGeneralize::periodicReason()
       std::shared_lock<std::shared_timed_mutex> lock_indiv_shared(ontology_->individual_graph_.mutex_);
       std::shared_lock<std::shared_timed_mutex> lock_shared(ontology_->class_graph_.mutex_);
 
-      PropertiesCounter<DataPropertyBranch_t*, std::string> data_counter;
+      PropertiesCounter<DataPropertyBranch_t*, std::string> data_counter(min_count_, min_percent_);
       PropertiesCounter<ObjectPropertyBranch_t*, ClassBranch_t*> object_counter;
 
       for(auto down : down_set)
       {
-        for(size_t j = 0; j < down->data_properties_name_.size(); j++)
-          data_counter.add(down->data_properties_name_[j], down->data_properties_data_[j].toString());
+        for(size_t j = 0; j < down->data_relations_.size(); j++)
+          data_counter.add(down->data_relations_[j].first, down->data_relations_[j].second.toString());
 
-        for(size_t j = 0; j < down->object_properties_name_.size(); j++)
-          object_counter.add(down->object_properties_name_[j], down->object_properties_on_[j]);
+        for(size_t j = 0; j < down->object_relations_.size(); j++)
+          object_counter.add(down->object_relations_[j].first, down->object_relations_[j].second);
       }
 
       for(auto down : indiv_down_set)
       {
-        for(size_t j = 0; j < down->data_properties_name_.size(); j++)
-          data_counter.add(down->data_properties_name_[j], down->data_properties_data_[j].toString());
+        for(size_t j = 0; j < down->data_relations_.size(); j++)
+          data_counter.add(down->data_relations_[j].first, down->data_relations_[j].second.toString());
       }
 
       lock_shared.unlock();
@@ -74,47 +86,35 @@ void ReasonerGeneralize::periodicReason()
 void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyBranch_t*> properties, std::vector<std::string> datas)
 {
   std::unordered_set<size_t> deduced_indexs;
-  for(size_t i = 0; i < me->data_properties_deduced_.size(); i++)
-    if(me->data_properties_deduced_[i] == true)
+  for(size_t i = 0; i < me->data_relations_.size(); i++)
+    if(me->data_relations_[i] < 0.51) // deduced = 0.5
       deduced_indexs.insert(i);
 
   for(size_t prop = 0; prop < properties.size(); prop++)
   {
     int index = -1;
-    for(size_t prop_i = 0; prop_i < me->steady_.data_properties_name_.size(); prop_i++)
-      if(me->steady_.data_properties_name_[prop_i] == properties[prop])
+
+    for(size_t prop_i = 0; prop_i < me->data_relations_.size(); prop_i++)
+      if(me->data_relations_[prop_i].first == properties[prop])
       {
-        //the property is already know
+        data_t tmp;
+        tmp.set(datas[prop]);
+
+        if(me->data_relations_[prop_i].second.toString() != tmp.toString())
+          notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]);
+
         index = prop_i;
-        break;
+        deduced_indexs.erase(index);
+        me->data_relations_[prop_i].second = tmp;
+        me->data_relations_[prop_i].probability = 0.5;
       }
 
     if(index == -1)
     {
-      for(size_t prop_i = 0; prop_i < me->data_properties_name_.size(); prop_i++)
-        if(me->data_properties_name_[prop_i] == properties[prop])
-        {
-          data_t tmp;
-          tmp.set(datas[prop]);
-
-          if(me->data_properties_data_[prop_i].toString() != tmp.toString())
-            notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]);
-
-          index = prop_i;
-          deduced_indexs.erase(index);
-          me->data_properties_data_[prop_i] = tmp;
-          me->data_properties_deduced_[prop_i] = true;
-        }
-
-      if(index == -1)
-      {
-        notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]);
-        me->data_properties_name_.push_back(properties[prop]);
-        data_t tmp;
-        tmp.set(datas[prop]);
-        me->data_properties_data_.push_back(tmp);
-        me->data_properties_deduced_.push_back(true);
-      }
+      notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]);
+      data_t tmp;
+      tmp.set(datas[prop]);
+      me->data_relations_.push_back(ClassDataRelationElement_t(properties[prop], tmp, 0.5));
     }
   }
 
@@ -123,10 +123,8 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyB
     size_t deleted = 0;
     for(auto i : deduced_indexs)
     {
-      notifications_.push_back("[DELETE]" + me->value() + ">" + me->data_properties_name_[i- deleted]->value() + ":" + me->data_properties_data_[i- deleted].toString());
-      me->data_properties_name_.erase(me->data_properties_name_.begin() + i - deleted);
-      me->data_properties_data_.erase(me->data_properties_data_.begin() + i - deleted);
-      me->data_properties_deduced_.erase(me->data_properties_deduced_.begin() + i - deleted);
+      notifications_.push_back("[DELETE]" + me->value() + ">" + me->data_relations_[i- deleted].first->value() + ":" + me->data_relations_[i- deleted].second.toString());
+      me->data_relations_.erase(me->data_relations_.begin() + i - deleted);
       deleted++;
     }
   }
@@ -135,43 +133,30 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyB
 void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropertyBranch_t*> properties, std::vector<ClassBranch_t*> datas)
 {
   std::unordered_set<size_t> deduced_indexs;
-  for(size_t i = 0; i < me->object_properties_deduced_.size(); i++)
-    if(me->object_properties_deduced_[i] == true)
+  for(size_t i = 0; i < me->object_relations_.size(); i++)
+    if(me->object_relations_[i] < 0.51) // deduced = 0.5
       deduced_indexs.insert(i);
 
   for(size_t prop = 0; prop < properties.size(); prop++)
   {
     int index = -1;
-    for(size_t prop_i = 0; prop_i < me->steady_.object_properties_name_.size(); prop_i++)
-    {
-      if(me->steady_.object_properties_name_[prop_i] == properties[prop])
+
+    for(size_t prop_i = 0; prop_i < me->object_relations_.size(); prop_i++)
+      if(me->object_relations_[prop_i].first == properties[prop])
       {
-        //the property is already know
+        if(me->object_relations_[prop_i].second != datas[prop])
+          notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
+
         index = prop_i;
-        break;
+        deduced_indexs.erase(index);
+        me->object_relations_[prop_i].second = datas[prop];
+        me->object_relations_[prop_i].probability = 0.5;
       }
-    }
 
     if(index == -1)
     {
-      for(size_t prop_i = 0; prop_i < me->object_properties_name_.size(); prop_i++)
-        if(me->object_properties_name_[prop_i] == properties[prop])
-        {
-          if(me->object_properties_on_[prop_i] != datas[prop])
-          notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
-          index = prop_i;
-          deduced_indexs.erase(index);
-          me->object_properties_on_[prop_i] = datas[prop];
-          me->object_properties_deduced_[prop_i] = true;
-        }
-
-      if(index == -1)
-      {
-        notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
-        me->object_properties_name_.push_back(properties[prop]);
-        me->object_properties_on_.push_back(datas[prop]);
-        me->object_properties_deduced_.push_back(true);
-      }
+      notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
+      me->object_relations_.push_back(ClassObjectRelationElement_t(properties[prop], datas[prop], 0.5));
     }
   }
 
@@ -180,10 +165,8 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropert
     size_t deleted = 0;
     for(auto i : deduced_indexs)
     {
-      notifications_.push_back("[DELETE]" + me->value() + ">" + me->object_properties_name_[i- deleted]->value() + ":" + me->object_properties_on_[i- deleted]->value());
-      me->object_properties_name_.erase(me->object_properties_name_.begin() + i - deleted);
-      me->object_properties_on_.erase(me->object_properties_on_.begin() + i - deleted);
-      me->object_properties_deduced_.erase(me->object_properties_deduced_.begin() + i - deleted);
+      notifications_.push_back("[DELETE]" + me->value() + ">" + me->object_relations_[i- deleted].first->value() + ":" + me->object_relations_[i- deleted].second->value());
+      me->object_relations_.erase(me->object_relations_.begin() + i - deleted);
       deleted++;
     }
   }

@@ -40,13 +40,11 @@ void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
 
   writeType(branch);
   writeObjectProperties(branch);
-  writeObjectPropertiesDeduced(branch);
   writeDataProperties(branch);
-  writeDataPropertiesDeduced(branch);
   writeSameAs(branch);
 
-  writeDictionary(&branch->steady_);
-  writeMutedDictionary(&branch->steady_);
+  writeDictionary(branch);
+  writeMutedDictionary(branch);
 
   tmp = "    </owl:NamedIndividual>\n\n\n\n";
   writeString(tmp);
@@ -54,37 +52,30 @@ void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
 
 void IndividualWriter::writeType(IndividualBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.is_a_.size(); i++)
-  {
-    std::string tmp = "        <rdf:type rdf:resource=\"ontologenius#" +
-                      branch->steady_.is_a_[i]->value()
-                      + "\"/>\n";
-    writeString(tmp);
-  }
+  for(auto& mother : branch->is_a_)
+    if(mother.infered == false)
+    {
+      std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
+      std::string tmp = "        <rdf:type" +
+                        proba +
+                        " rdf:resource=\"ontologenius#" +
+                        mother.elem->value()
+                        + "\"/>\n";
+      writeString(tmp);
+    }
 }
 
 void IndividualWriter::writeObjectProperties(IndividualBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.object_properties_name_.size(); i++)
-  {
-    std::string tmp = "        <ontologenius:" +
-                      branch->steady_.object_properties_name_[i]->value() +
-                      " rdf:resource=\"ontologenius#" +
-                      branch->steady_.object_properties_on_[i]->value() +
-                      "\"/>\n";
-    writeString(tmp);
-  }
-}
-
-void IndividualWriter::writeObjectPropertiesDeduced(IndividualBranch_t* branch)
-{
-  for(size_t i = 0; i < branch->object_properties_name_.size(); i++)
-    if(branch->object_properties_deduced_[i] == true)
+  for(IndivObjectRelationElement_t& relation : branch->object_relations_)
+    if(relation.infered == false)
     {
+      std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
       std::string tmp = "        <ontologenius:" +
-                        branch->object_properties_name_[i]->value() +
-                        " rdf:resourceDeduced=\"ontologenius#" +
-                        branch->object_properties_on_[i]->value() +
+                        relation.first->value() +
+                        proba +
+                        " rdf:resource=\"ontologenius#" +
+                        relation.second->value() +
                         "\"/>\n";
       writeString(tmp);
     }
@@ -92,52 +83,35 @@ void IndividualWriter::writeObjectPropertiesDeduced(IndividualBranch_t* branch)
 
 void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.data_properties_name_.size(); i++)
-  {
-    std::string tmp = "        <ontologenius:" +
-                      branch->steady_.data_properties_name_[i]->value() +
-                      " rdf:datatype=\"" +
-                      branch->steady_.data_properties_data_[i].getNs() +
-                      "#" +
-                      branch->steady_.data_properties_data_[i].type_ +
-                      "\">" +
-                      branch->steady_.data_properties_data_[i].value_ +
-                      "</ontologenius:" +
-                      branch->steady_.data_properties_name_[i]->value() +
-                      ">\n";
-    writeString(tmp);
-  }
-}
-
-void IndividualWriter::writeDataPropertiesDeduced(IndividualBranch_t* branch)
-{
-  for(size_t i = 0; i < branch->data_properties_name_.size(); i++)
-    if(branch->data_properties_deduced_[i] == true)
+  for(IndivDataRelationElement_t& relation : branch->data_relations_)
+    if(relation.infered == false)
     {
+      std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
       std::string tmp = "        <ontologenius:" +
-                        branch->data_properties_name_[i]->value() +
-                        " rdf:datatypeDeduced=\"" +
-                        branch->data_properties_data_[i].getNs() +
+                        relation.first->value() +
+                        proba +
+                        " rdf:datatype=\"" +
+                        relation.second.getNs() +
                         "#" +
-                        branch->data_properties_data_[i].type_ +
+                        relation.second.type_ +
                         "\">" +
-                        branch->data_properties_data_[i].value_ +
+                        relation.second.value_ +
                         "</ontologenius:" +
-                        branch->data_properties_name_[i]->value() +
+                        relation.first->value() +
                         ">\n";
       writeString(tmp);
     }
 }
-
 void IndividualWriter::writeSameAs(IndividualBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->steady_.same_as_.size(); i++)
-  {
-    std::string tmp = "        <owl:sameAs rdf:resource=\"ontologenius#" +
-                      branch->steady_.same_as_[i]->value()
-                      + "\"/>\n";
-    writeString(tmp);
-  }
+  for(auto& same_as : branch->same_as_)
+    if(same_as.infered == false)
+    {
+      std::string tmp = "        <owl:sameAs rdf:resource=\"ontologenius#" +
+                        same_as.elem->value()
+                        + "\"/>\n";
+      writeString(tmp);
+    }
 }
 
 void IndividualWriter::writeDistincts(std::vector<IndividualBranch_t*>& individuals)
@@ -183,8 +157,8 @@ void IndividualWriter::getDistincts(IndividualBranch_t* individual, std::vector<
   if(std::find(distincts_current.begin(), distincts_current.end(), individual->value()) == distincts_current.end())
   {
     distincts_current.push_back(individual->value());
-    for(size_t i = 0; i < individual->distinct_.size(); i++)
-      getDistincts(individual->distinct_[i], distincts_current);
+    for(auto& distinct : individual->distinct_)
+      getDistincts(distinct.elem, distincts_current);
   }
 }
 

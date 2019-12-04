@@ -15,18 +15,12 @@ namespace ontologenius {
 
 struct IndividualVectors_t
 {
-   std::vector<std::string> is_a_;
+   std::vector<Single_t<std::string>> is_a_;
 
-   std::vector<std::string> object_properties_name_;
-   std::vector<std::string> object_properties_on_;
-   std::vector<bool> object_properties_deduced_;
+   std::vector<Pair_t<std::string, std::string>> object_relations_;
+   std::vector<Pair_t<std::string, data_t>> data_relations_;
 
-   std::vector<std::string> data_properties_name_;
-   std::vector<std::string> data_properties_type_;
-   std::vector<std::string> data_properties_value_;
-   std::vector<bool> data_properties_deduced_;
-
-   std::vector<std::string> same_as_;
+   std::vector<Single_t<std::string>> same_as_;
    std::map<std::string, std::vector<std::string>> dictionary_;
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
 };
@@ -44,9 +38,10 @@ class IndividualGraph : public Graph<IndividualBranch_t>
   friend IndividualChecker;
 public:
   IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
+  IndividualGraph(const IndividualGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   ~IndividualGraph();
 
-  void linkGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
+  void deepCopy(const IndividualGraph& other);
 
   void close();
   std::vector<IndividualBranch_t*> get() {return individuals_; }
@@ -118,11 +113,18 @@ private:
 
   std::vector<IndividualBranch_t*> individuals_;
 
-  void addObjectPropertyName(IndividualBranch_t* me, std::string& name, bool deduced);
-  void addObjectPropertyOn(IndividualBranch_t* me, std::string& name, bool deduced);
-  void addDataPropertyName(IndividualBranch_t* me, std::string& name, bool deduced);
-  void addDataPropertyData(IndividualBranch_t* me, data_t& data, bool deduced);
-  void setObjectPropertiesUpdated(std::vector<IndividualBranch_t*> branchs);
+  IndividualBranch_t* getBranch(const std::string& name)
+  {
+    for(size_t indiv_i = 0; indiv_i < individuals_.size(); indiv_i++)
+      if(name == individuals_[indiv_i]->value())
+        return individuals_[indiv_i];
+    return nullptr;
+  }
+
+  void addObjectProperty(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
+  void addDataProperty(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation);
+  void setObjectPropertiesUpdated(std::vector<IndivObjectRelationElement_t>& relations);
+
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth = -1);
   bool getRelatedWith(ClassBranch_t* class_branch, const std::string& data, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& took);
   bool getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const std::string& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake);
@@ -136,6 +138,8 @@ private:
 
   bool checkRangeAndDomain(IndividualBranch_t* from, ObjectPropertyBranch_t* prop, IndividualBranch_t* on);
   bool checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, data_t& data);
+
+  void cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch);
 };
 
 } // namespace ontologenius

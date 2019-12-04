@@ -142,6 +142,7 @@ add_onto_library(ontologenius_core_lib
   src/core/feeder/FeedStorage.cpp
   src/core/reasoner/plugins/ReasonerInterface.cpp
   src/core/reasoner/Reasoners.cpp
+  src/core/reasoner/ConfigReader.cpp
   src/core/Computer.cpp
 )
 target_link_libraries(ontologenius_core_lib
@@ -281,6 +282,9 @@ target_link_libraries(ontoloGenius_ORO PRIVATE ontoloGenius_lib ontologenius_cor
 add_onto_executable(ontoloGenius_services_tester src/tests/service_tester.cpp)
 target_link_libraries(ontoloGenius_services_tester PRIVATE ontologenius_core_lib)
 
+add_onto_executable(ontoloGenius_config_tester src/tests/config_reader_test.cpp)
+target_link_libraries(ontoloGenius_config_tester PRIVATE ontologenius_core_lib)
+
 ##############################################################################
 # Qt Environment
 ##############################################################################
@@ -384,4 +388,9 @@ if(CATKIN_ENABLE_TESTING)
   add_rostest_gtest(ontoloGenius_multi_tester test/multi.test src/tests/multi.cpp)
   target_include_directories(ontoloGenius_multi_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontoloGenius_multi_tester ontoloGenius_lib ${catkin_LIBRARIES})
+
+  add_rostest_gtest(ontoloGenius_cpy_test test/cpy.test src/tests/copy_test.cpp)
+  set_target_properties(ontoloGenius_cpy_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+  target_include_directories(ontoloGenius_cpy_test PRIVATE ${catkin_INCLUDE_DIRS})
+  target_link_libraries(ontoloGenius_cpy_test ontoloGenius_lib ${catkin_LIBRARIES})
 endif()

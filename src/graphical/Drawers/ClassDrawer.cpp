@@ -48,7 +48,7 @@ int ClassDrawer::createNode(ClassBranch_t* branch, node_t* mother)
     node->prev.push_back(mother);
     node->family = branch->family;
     for(unsigned long int i = 0; i < branch->childs_.size(); i++)
-      family += createNode(branch->childs_[i], node);
+      family += createNode(branch->childs_[i].elem, node);
 
     family = family / (branch->childs_.size() + 1);
   }
@@ -75,7 +75,7 @@ void ClassDrawer::init()
       int family = it.second->family;
 
       for(unsigned long int branch = 0; branch < it.second->childs_.size(); branch++)
-        family += createNode(it.second->childs_[branch], node);
+        family += createNode(it.second->childs_[branch].elem, node);
 
       family = family / (it.second->childs_.size() + 1);
       if(family == node->family)

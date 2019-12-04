@@ -1,0 +1,153 @@
+<html lang="en_US">
+
+<head>
+  <title>Reasoners configuration | Ontologenius 0.2.4</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../index.html">
+              <img src="../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/utility">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontoloGenius/utility">C++ API headers</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: 0px;">
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../Tutorials.html">Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="launchers.html">Launchers</a></li>
+            <li class="level1"><a href="ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="reasonersConfiguration.html"><b>Reasoners configuration</b></a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3><a href="../CppAPI.html">All C++ Classes</a></h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>See also</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="https://sarthou.github.io/ontologenius_query/" target="_blank">Ontologenius_query</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">Reasoners configuration</h1>
+
+        <p>Let's see how to configure the reasoners to choose the ones you want to use and customize their settings.</p>
+
+        <p>The configuration is describe in a YAML file. The content should be as follows:</p>
+
+        <div class="code_block">
+          <div class="terminal_line">flow:</div>
+          <div class="terminal_line">  - ReasonerChain</div>
+          <div class="terminal_line">  - ReasonerDictionary</div>
+          <div class="terminal_line">  - ReasonerGeneralize</div>
+          <div class="terminal_line">  - ReasonerInverseOf</div>
+          <div class="terminal_line">  - ReasonerRangeDomain</div>
+          <div class="terminal_line">  - ReasonerSymetric</div>
+          <div class="terminal_line">ReasonerGeneralize:</div>
+          <div class="terminal_line">  min_count : 2</div>
+          <div class="terminal_line">  min_percent : 0.7</div>
+          <div class="terminal_line"># AnOtherOne:</div>
+          <div class="terminal_line">#  param : value</div>
+          <div class="terminal_line">#  param : value</div>
+        </div>
+
+        <p>To pass your configuration file to ontologenius executable see the
+          <a href="launchers.html"><b>launcher page</b></a>.</p>
+
+        <h2><i class="fas fa-angle-right"></i> Flow</h2>
+
+        <p>The flow conrrespond to the reasoners that will be activated at the launch. Just list the reasoners names under the flow tag.</p>
+
+        <p>Reasoners not in the configuration file will still be loaded but will not be activated at launch.
+          This means that you will still be able to activate them at run time if you need them.</p>
+
+        <h2><i class="fas fa-angle-right"></i> Parameters</h2>
+
+        <p>Some reasoners have parameters that you can set. Just put the name of the reasoner as a tag and then
+          the name of the parameters and their values. Not all parameters need to be defined.</p>
+
+        <p>You can define the parameters of the undefined resonators in the flow.</p>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

@@ -7,7 +7,7 @@
 #include "ontoloGenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
 #include "ontoloGenius/core/ontoGraphs/Checkers/IndividualChecker.h"
 
-#include "ontoloGenius/core/utility/color.h"
+#include "ontoloGenius/graphical/Display.h"
 #include "ontoloGenius/core/utility/error_code.h"
 
 namespace ontologenius {
@@ -28,9 +28,26 @@ Ontology::Ontology(std::string language) : class_graph_(&individual_graph_, &obj
   writer.setFileName("none");
 }
 
+Ontology::Ontology(const Ontology& other) : class_graph_(other.class_graph_, &individual_graph_, &object_property_graph_, &data_property_graph_),
+                                            object_property_graph_(other.object_property_graph_, &class_graph_),
+                                            data_property_graph_(other.data_property_graph_, &class_graph_),
+                                            individual_graph_(other.individual_graph_, &class_graph_, &object_property_graph_, &data_property_graph_),
+                                            reader((Ontology&)*this),
+                                            writer((Ontology&)*this)
+{
+  class_graph_.deepCopy(other.class_graph_);
+  object_property_graph_.deepCopy(other.object_property_graph_);
+  data_property_graph_.deepCopy(other.data_property_graph_);
+  individual_graph_.deepCopy(other.individual_graph_);
+
+  is_init_ = true;
+  is_preloaded_ = true;
+  writer.setFileName("none");
+}
+
 Ontology::~Ontology()
 {
-  writer.write();
+  save();
 }
 
 int Ontology::close()
@@ -71,17 +88,17 @@ int Ontology::close()
     is_init_ = true;
   }
 
-  std::cout << std::endl << std::endl << "***************SUMMARY****************" << std::endl;
+  Display::info("\n***************SUMMARY****************");
   if(is_init_)
-    std::cout << "Ontology is closed :" << std::endl;
+    Display::info("Ontology is closed :");
   else
-    std::cout << "Ontology is not closed :" << std::endl;
+    Display::warning("Ontology is not closed :");
 
   class_checker.printStatus();
   object_property_checker.printStatus();
   data_property_checker.printStatus();
   individual_checker.printStatus();
-  std::cout << "**************************************" << std::endl;
+  Display::info("**************************************");
 
   if(err)
     return -1;
@@ -95,38 +112,56 @@ int Ontology::readFromUri(std::string uri)
   return reader.readFromUri(uri);
 }
 
-int Ontology::readFromFile(std::string fileName)
+int Ontology::readFromFile(std::string file_name)
 {
-  files_.push_back(fileName);
-  return reader.readFromFile(fileName);
+  files_.push_back(file_name);
+  return reader.readFromFile(file_name);
 }
 
-bool Ontology::preload(std::string fileName)
+bool Ontology::preload(std::string file_name)
 {
-  writer.setFileName(fileName);
-  if(fileName != "none")
+  writer.setFileName(file_name);
+  if(file_name != "none")
   {
-    if(reader.readFromFile(fileName) == NO_ERROR)
-      if(reader.readFromFile(fileName, true) == NO_ERROR)
+    if(reader.readFromFile(file_name) == NO_ERROR)
+      if(reader.readFromFile(file_name, true) == NO_ERROR)
         if(reader.empty() == false)
         {
           is_preloaded_ = true;
-          std::cout << COLOR_GREEN << "Ontology has been preloaded :" << std::endl <<
-                    "ontoloGenius will NOT consider your default files" << std::endl << COLOR_OFF << std::endl;
+          Display::success("Ontology has been preloaded :");
+          Display::success("ontoloGenius will NOT consider your default files");
           return true;
         }
   }
 
-  std::cout << COLOR_ORANGE << "Nothing to preload :" << std::endl <<
-            "ontoloGenius will consider your default files" << std::endl << COLOR_OFF << std::endl;
+  Display::warning("Nothing to preload :");
+  Display::warning("ontoloGenius will consider your default files");
   return false;
+}
+
+void Ontology::save(const std::string& file_name)
+{
+  if(!is_init_)
+  {
+    Display::error("Can not save unclosed ontology");
+    return;
+  }
+
+  std::string tmp_name = writer.getFileName();
+
+  if(file_name != "")
+    writer.setFileName(file_name);
+
+  writer.write();
+
+  writer.setFileName(tmp_name);
 }
 
 bool Ontology::isInit(bool print)
 {
   if(is_init_ == false)
     if(print == true)
-      std::cout << COLOR_RED << "Ontology is not closed" << COLOR_OFF << std::endl;
+      Display::error("Ontology is not closed");
   return is_init_;
 }
 

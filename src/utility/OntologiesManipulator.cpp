@@ -50,6 +50,23 @@ bool OntologiesManipulator::add(const std::string& name)
   }
 }
 
+bool OntologiesManipulator::copy(const std::string& dest_name, const std::string& src_name)
+{
+  if(manipulators_.find(dest_name) != manipulators_.end())
+    return true;
+  else
+  {
+    if(ManagerClient::copy(dest_name, src_name) == false)
+      return false;
+    else
+    {
+      OntologyManipulator* tmp = new OntologyManipulator(n_, dest_name);
+      manipulators_[dest_name] = tmp;
+      return true;
+    }
+  }
+}
+
 bool OntologiesManipulator::del(const std::string& name)
 {
   if(manipulators_.find(name) == manipulators_.end())

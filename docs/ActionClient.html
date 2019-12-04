@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ActionClient Class | Ontologenius 0.2.3</title>
+  <title>ActionClient Class | Ontologenius 0.2.4</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="images/favicon.ico" rel="shortcut icon">
@@ -69,6 +69,7 @@
           <ul style="display: block;">
             <li class="level1"><a href="overview/launchers.html">Launchers</a></li>
             <li class="level1"><a href="overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="overview/reasonersConfiguration.html">Reasoners configuration</a></li>
             <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
           </ul>
         </div>
@@ -120,6 +121,7 @@
             <tbody>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#ActionClient">ActionClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#close">close</a></b>()</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#save">save</a></b>(const std::string&amp; <i>path</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#setLang">setLang</a></b>(const std::string&amp; <i>lang</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#getLang">getLang</a></b>()</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#add">add</a></b>(const std::string&amp; <i>uri</i>)</td></tr>
@@ -151,6 +153,10 @@
 
           <h3 class="fn" id="close"><a name="close"></a><span class="type">bool</span> ActionClient::<span class="name">close</span>()</h3>
           <p>Link all the concepts loaded from files and the Internet. Before closing an ontology, exploration requests are not allowed.</p>
+          <p>Returns false if the service call fails.</p>
+
+          <h3 class="fn" id="save"><a name="save"></a><span class="type">bool</span> ActionClient::<span class="name">save</span>(const <span class="type">std::string</span>&amp; <i>path</i>)</h3>
+          <p>Saves the current ontology in the absolute <i>path</i> path. The <i>path</i> parameter must be of the form: my/path/to/ontology.owl</p>
           <p>Returns false if the service call fails.</p>
 
           <h3 class="fn" id="setLang"><a name="setLang"></a><span class="type">bool</span> ActionClient::<span class="name">setLang</span>(const <span class="type">std::string</span>&amp; <i>lang</i>)</h3>

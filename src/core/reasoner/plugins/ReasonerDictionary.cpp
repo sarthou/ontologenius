@@ -54,9 +54,9 @@ void ReasonerDictionary::updateDictionary(ValuedNode* node)
 void ReasonerDictionary::split(ValuedNode* node)
 {
   size_t i, dic_size = 0;
-  for(auto& it : node->dictionary_)
+  for(auto& it : node->dictionary_.spoken_)
   {
-    std::vector<std::string>* muted = &node->muted_dictionary_[it.first];
+    std::vector<std::string>* muted = &node->dictionary_.muted_[it.first];
 
     dic_size = it.second.size();
     for(i = 0; i < dic_size; i++)
@@ -93,7 +93,7 @@ void ReasonerDictionary::split(ValuedNode* node)
 void ReasonerDictionary::createLowerCase(ValuedNode* node)
 {
   size_t i, dic_size = 0;
-  for(auto& it : node->muted_dictionary_)
+  for(auto& it : node->dictionary_.muted_)
   {
     dic_size = it.second.size();
     for(i = 0; i < dic_size; i++)
@@ -106,9 +106,9 @@ void ReasonerDictionary::createLowerCase(ValuedNode* node)
     }
   }
 
-  for(auto& it : node->dictionary_)
+  for(auto& it : node->dictionary_.spoken_)
   {
-    std::vector<std::string>* muted = &node->muted_dictionary_[it.first];
+    std::vector<std::string>* muted = &node->dictionary_.muted_[it.first];
     dic_size = it.second.size();
     for(i = 0; i < dic_size; i++)
     {
@@ -125,9 +125,9 @@ void ReasonerDictionary::createLowerCase(ValuedNode* node)
 void ReasonerDictionary::replaceQuote(ValuedNode* node)
 {
   size_t i, dic_size = 0;
-  for (auto& it : node->dictionary_)
+  for (auto& it : node->dictionary_.spoken_)
   {
-    std::vector<std::string>* muted = &node->muted_dictionary_[it.first];
+    std::vector<std::string>* muted = &node->dictionary_.muted_[it.first];
     dic_size = it.second.size();
     for(i = 0; i < dic_size; i++)
     {
@@ -145,9 +145,9 @@ void ReasonerDictionary::replaceQuote(ValuedNode* node)
     }
   }
 
-  for (auto& it : node->muted_dictionary_)
+  for (auto& it : node->dictionary_.muted_)
   {
-    std::vector<std::string>* muted = &node->muted_dictionary_[it.first];
+    std::vector<std::string>* muted = &node->dictionary_.muted_[it.first];
     dic_size = it.second.size();
     for(i = 0; i < dic_size; i++)
     {

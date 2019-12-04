@@ -12,57 +12,33 @@
 
 namespace ontologenius {
 
+// Classes predefinition
 class Triplet;
-
-template <typename T>
-class IndividualBranchData_t
-{
-public:
-  std::vector<ClassBranch_t*> is_a_;
-
-  std::vector<ObjectPropertyBranch_t*> object_properties_name_;
-  std::vector<T*> object_properties_on_;
-  std::vector<bool> object_properties_deduced_;
-  std::vector<Triplet> object_properties_has_induced_;
-
-  std::vector<DataPropertyBranch_t*> data_properties_name_;
-  std::vector<data_t> data_properties_data_;
-  std::vector<bool> data_properties_deduced_;
-
-  std::vector<T*> same_as_;
-  std::vector<T*> distinct_;
-};
-
-//for template usage
 class IndividualBranch_t;
-class IndividualSteady_t : public ValuedNodeData, public IndividualBranchData_t<IndividualBranch_t>
-{
-public:
-  IndividualSteady_t() {}
-};
 
-class IndividualBranch_t : public ValuedNode, public IndividualBranchData_t<IndividualBranch_t>
+typedef Single_t<IndividualBranch_t*> IndividualElement_t;
+typedef Pair_t<ObjectPropertyBranch_t*, IndividualBranch_t*> IndivObjectRelationElement_t;
+typedef Pair_t<DataPropertyBranch_t*, data_t> IndivDataRelationElement_t;
+
+class IndividualBranch_t : public ValuedNode
 {
 public:
   bool mark;
-  IndividualSteady_t steady_;
+
+  std::vector<ClassElement_t> is_a_;
+  std::vector<IndivObjectRelationElement_t> object_relations_;
+  std::vector<Triplet> object_properties_has_induced_;
+  std::vector<IndivDataRelationElement_t> data_relations_;
+  std::vector<IndividualElement_t> same_as_;
+  std::vector<IndividualElement_t> distinct_;
 
   IndividualBranch_t(std::string value = "") : ValuedNode(value) {mark = false; }
 
-  void setFullSteady();
-  void setSteady_is_a(ClassBranch_t* is_a);
-  void setSteady_object_properties_name(ObjectPropertyBranch_t* object_properties_name);
-  void setSteady_object_properties_on(IndividualBranch_t* object_properties_on);
-  void setSteady_data_properties_name(DataPropertyBranch_t* data_properties_name);
-  void setSteady_data_properties_data(data_t data_properties_data);
-  void setSteady_same_as(IndividualBranch_t* same_as);
-  void setSteady_distinct(IndividualBranch_t* distinct);
   void setSteady_dictionary(std::string lang, std::string word);
   void setSteady_muted_dictionary(std::string lang, std::string word);
   void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
   void setSteady_muted_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
 
-  int ObjectPropertyExistSteady(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
   int ObjectPropertyExist(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
 };
 

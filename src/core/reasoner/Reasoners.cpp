@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "ontoloGenius/core/utility/color.h"
+#include "ontoloGenius/graphical/Display.h"
 
 namespace ontologenius {
 
@@ -60,6 +60,14 @@ void Reasoners::link(Ontology* onto)
     it.second->initialize(ontology_);
 }
 
+void Reasoners::configure(const std::string& config_path)
+{
+  if((config_path != "") && (config_path != "none"))
+  {
+    config_.read(config_path);
+  }
+}
+
 void Reasoners::load()
 {
   std::vector<std::string> reasoners = loader_.getDeclaredClasses();
@@ -86,6 +94,8 @@ void Reasoners::load()
   {
     std::cout << reasoners[i] << " registered" << std::endl;
   }
+
+  applyConfig();
 }
 
 std::string Reasoners::list()
@@ -129,17 +139,17 @@ int Reasoners::activate(std::string plugin)
     if(active_reasoners_.find(plugin) == active_reasoners_.end())
     {
       active_reasoners_[plugin] = reasoners_[plugin];
-      std::cout << COLOR_GREEN << plugin << " has been activated" << COLOR_OFF << std::endl;
+      Display::success(plugin + " has been activated");
       resetIndividualsUpdates();
       runPostReasoners();
     }
     else
-      std::cout << COLOR_ORANGE << plugin << " is already activated" << COLOR_OFF << std::endl;
+      Display::warning(plugin + " is already activated");
     return 0;
   }
   else
   {
-    std::cout << COLOR_RED << plugin << " does not exist" << COLOR_OFF << std::endl;
+    Display::error(plugin + " does not exist");
     return -1;
   }
 }
@@ -149,19 +159,19 @@ int Reasoners::deactivate(std::string plugin)
   if(active_reasoners_.find(plugin) != active_reasoners_.end())
   {
     active_reasoners_.erase(plugin);
-    std::cout << COLOR_GREEN << plugin << " has been deactivated" << COLOR_OFF << std::endl;
+    Display::success(plugin + " has been deactivated");
     return 0;
   }
   else
   {
     if(reasoners_.find(plugin) == reasoners_.end())
     {
-      std::cout << COLOR_RED << plugin << " does not exist" << COLOR_OFF << std::endl;
+      Display::error(plugin + " does not exist");
       return -1;
     }
     else
     {
-      std::cout << COLOR_ORANGE << plugin << " is already deactivated" << COLOR_OFF << std::endl;
+      Display::warning(plugin + " is already deactivated");
       return 0;
     }
   }
@@ -173,7 +183,7 @@ std::string Reasoners::getDescription(std::string& plugin)
     return reasoners_[plugin]->getDesciption();
   else
   {
-    std::cout << COLOR_RED << plugin << " does not exist" << COLOR_OFF << std::endl;
+    Display::error(plugin + " does not exist");
     return "";
   }
 }
@@ -236,6 +246,37 @@ void Reasoners::runPeriodicReasoners()
   }
 
   computeIndividualsUpdatesPeriodic();
+}
+
+void Reasoners::applyConfig()
+{
+  for(auto param : config_.config_)
+  {
+    if(param.first == "flow")
+    {
+      if(param.second.data)
+      {
+        active_reasoners_.clear();
+        for(auto elem : param.second.data.value())
+        {
+          if(reasoners_.find(elem) != reasoners_.end())
+            active_reasoners_[elem] = (reasoners_[elem]);
+          else
+            Display::warning("[CONFIG] no reasoner named " + elem + ". This reasoner will be ignored");
+        }
+      }
+    }
+    else if(reasoners_.find(param.first) != reasoners_.end())
+    {
+      for(auto elem : param.second.subelem.value())
+      {
+        if(elem.second.data && elem.second.data.value().size())
+          reasoners_[param.first]->setParameter(elem.first, elem.second.data.value()[0]);
+      }
+    }
+    else
+      Display::warning("[CONFIG] no reasoner named " + param.first + ". This parameter will be ignored");
+  }
 }
 
 void Reasoners::computeIndividualsUpdates()

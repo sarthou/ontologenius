@@ -7,6 +7,7 @@
 #include <pluginlib/class_loader.h>
 
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
+#include "ontoloGenius/core/reasoner/ConfigReader.h"
 #include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
 
 namespace ontologenius {
@@ -14,11 +15,12 @@ namespace ontologenius {
 class Reasoners
 {
 public:
-  Reasoners(Ontology* onto);
+  Reasoners(Ontology* onto = nullptr);
   ~Reasoners();
 
   void link(Ontology* onto);
 
+  void configure(const std::string& config_path);
   void load();
   std::string list();
   std::vector<std::string> listVector();
@@ -41,11 +43,14 @@ public:
 
 private:
   Ontology* ontology_;
+  ConfigReader config_;
   std::map<std::string, ReasonerInterface*> reasoners_;
   std::map<std::string, ReasonerInterface*> active_reasoners_;
   std::vector<std::string> notifications_;
 
   pluginlib::ClassLoader<ReasonerInterface> loader_;
+
+  void applyConfig();
 
   void computeIndividualsUpdates();
   void computeIndividualsUpdatesPeriodic();
