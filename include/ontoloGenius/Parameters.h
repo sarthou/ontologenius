@@ -41,7 +41,7 @@ public:
     else
       return (values_.size() ? values_[0] : "");
   }
-  
+
   std::vector<std::string> get()
   {
     if(values_.size() == 0)
@@ -61,8 +61,17 @@ public:
   void display()
   {
     std::cout << name_ << ":" << std::endl;
-    for(auto value : values_)
-      std::cout << "\t- " << value << std::endl;
+
+    if(values_.size())
+    {
+      for(auto value : values_)
+        std::cout << "\t- " << value << std::endl;
+    }
+    else
+    {
+      for(auto value : default_values_)
+        std::cout << "\t- " << value << std::endl;
+    }
   }
 };
 
