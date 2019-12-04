@@ -6,7 +6,7 @@
 #include <unordered_set>
 
 #include "ontoloGenius/core/ontoGraphs/Graphs/OntoGraph.h"
-#include "ontoloGenius/core/utility/color.h"
+#include "ontoloGenius/graphical/Display.h"
 
 namespace ontologenius {
 
@@ -34,13 +34,13 @@ protected:
 
   void print_error(std::string err)
   {
-    std::cout << COLOR_RED << err << COLOR_OFF << std::endl;
+    Display::error(err);
     nb_error_++;
   }
 
   void print_warning(std::string warn)
   {
-    std::cout << COLOR_ORANGE << warn << COLOR_OFF << std::endl;
+    Display::warning(warn);
     nb_warn_++;
   }
 
@@ -51,21 +51,21 @@ protected:
     if(is_analysed)
     {
       if(nb_error_)
-        std::cout << COLOR_RED << nb_error_ << " errors " << COLOR_OFF << std::endl;
+        Display::error(std::to_string(nb_error_) + " errors ");
 
       if(nb_warn_)
-        std::cout << COLOR_ORANGE << nb_warn_ << " warnings " << COLOR_OFF << std::endl;
+        Display::warning(std::to_string(nb_warn_) + " warnings ");
 
       if(nb_error_)
-        std::cout << COLOR_RED << "Failure of " << type << " analysis" << COLOR_OFF;
+        Display::error("Failure of " + type + " analysis", false);
       else
-        std::cout << COLOR_GREEN << "Succeed " << type << " analysis" << COLOR_OFF;
+        Display::success("Succeed " + type + " analysis", false);
 
       std::cout << " : " << nb << " " << types << " analyzed" << std::endl;
     }
     else
     {
-      std::cout << COLOR_RED << type << " not analysed " << COLOR_OFF;
+      Display::error(type + " not analysis", false);
       std::cout << " : " << nb << " " << types << " to analyze" << std::endl;
     }
   }

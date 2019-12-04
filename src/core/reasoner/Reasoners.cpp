@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "ontoloGenius/core/utility/color.h"
+#include "ontoloGenius/graphical/Display.h"
 
 namespace ontologenius {
 
@@ -139,17 +139,17 @@ int Reasoners::activate(std::string plugin)
     if(active_reasoners_.find(plugin) == active_reasoners_.end())
     {
       active_reasoners_[plugin] = reasoners_[plugin];
-      std::cout << COLOR_GREEN << plugin << " has been activated" << COLOR_OFF << std::endl;
+      Display::success(plugin + " has been activated");
       resetIndividualsUpdates();
       runPostReasoners();
     }
     else
-      std::cout << COLOR_ORANGE << plugin << " is already activated" << COLOR_OFF << std::endl;
+      Display::warning(plugin + " is already activated");
     return 0;
   }
   else
   {
-    std::cout << COLOR_RED << plugin << " does not exist" << COLOR_OFF << std::endl;
+    Display::error(plugin + " does not exist");
     return -1;
   }
 }
@@ -159,19 +159,19 @@ int Reasoners::deactivate(std::string plugin)
   if(active_reasoners_.find(plugin) != active_reasoners_.end())
   {
     active_reasoners_.erase(plugin);
-    std::cout << COLOR_GREEN << plugin << " has been deactivated" << COLOR_OFF << std::endl;
+    Display::success(plugin + " has been deactivated");
     return 0;
   }
   else
   {
     if(reasoners_.find(plugin) == reasoners_.end())
     {
-      std::cout << COLOR_RED << plugin << " does not exist" << COLOR_OFF << std::endl;
+      Display::error(plugin + " does not exist");
       return -1;
     }
     else
     {
-      std::cout << COLOR_ORANGE << plugin << " is already deactivated" << COLOR_OFF << std::endl;
+      Display::warning(plugin + " is already deactivated");
       return 0;
     }
   }
@@ -183,7 +183,7 @@ std::string Reasoners::getDescription(std::string& plugin)
     return reasoners_[plugin]->getDesciption();
   else
   {
-    std::cout << COLOR_RED << plugin << " does not exist" << COLOR_OFF << std::endl;
+    Display::error(plugin + " does not exist");
     return "";
   }
 }
@@ -262,7 +262,7 @@ void Reasoners::applyConfig()
           if(reasoners_.find(elem) != reasoners_.end())
             active_reasoners_[elem] = (reasoners_[elem]);
           else
-            std::cout << "[CONFIG] no reasoner named " << elem << ". This reasoner will be ignored" << std::endl;
+            Display::warning("[CONFIG] no reasoner named " + elem + ". This reasoner will be ignored");
         }
       }
     }
@@ -275,7 +275,7 @@ void Reasoners::applyConfig()
       }
     }
     else
-      std::cout << "[CONFIG] no reasoner named " << param.first << ". This parameter will be ignored" << std::endl;
+      Display::warning("[CONFIG] no reasoner named " + param.first + ". This parameter will be ignored");
   }
 }
 

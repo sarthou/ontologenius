@@ -6,6 +6,8 @@
 #include <string>
 #include <iostream>
 
+#include "ontoloGenius/graphical/Display.h"
+
 namespace ontologenius
 {
 
@@ -60,17 +62,17 @@ public:
 
   void display()
   {
-    std::cout << name_ << ":" << std::endl;
+    Display::info(name_ + ":");
 
     if(values_.size())
     {
       for(auto value : values_)
-        std::cout << "\t- " << value << std::endl;
+        Display::info("\t- " + value);
     }
     else
     {
       for(auto value : default_values_)
-        std::cout << "\t- " << value << std::endl;
+        Display::info("\t- " + value);
     }
   }
 };
@@ -106,7 +108,7 @@ public:
           }
 
         if(param_name == "")
-          std::cout << "unknow option " << std::string(argv[i]);
+          Display::warning("unknow option " + std::string(argv[i]));
         else
         {
           if(i+1 < (size_t)argc)
@@ -121,7 +123,7 @@ public:
         if(default_param_name_ != "")
           parameters_.at(default_param_name_).insert(std::string(argv[i]));
         else
-          std::cout << "No default parameter" <<std::endl;
+          Display::warning("No default parameter");
       }
     }
   }

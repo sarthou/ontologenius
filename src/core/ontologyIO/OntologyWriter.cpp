@@ -8,7 +8,7 @@
 #include "ontoloGenius/core/ontologyIO/writers/IndividualWriter.h"
 
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
-#include "ontoloGenius/core/utility/color.h"
+#include "ontoloGenius/graphical/Display.h"
 
 namespace ontologenius {
 
@@ -39,7 +39,8 @@ void OntologyWriter::write(std::string file_name)
   file_ = fopen(file_name_.c_str(), "w");
   if(file_ == NULL)
   {
-    std::cout << "Fail to open file " << file_name_ << std::endl;
+    Display::error("Fail to open file : ", false);
+    std::cout << file_name_ << std::endl;
     return;
   }
 
@@ -67,7 +68,8 @@ void OntologyWriter::write(std::string file_name)
 
   writeEnd();
 
-  std::cout << COLOR_GREEN << "ontology loaded in : " << COLOR_OFF << file_name_ << std::endl;
+  Display::success("ontology loaded in : ", false);
+  std::cout << file_name_ << std::endl;
 
   if(file_ != NULL)
     fclose(file_);

@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "ontoloGenius/core/utility/error_code.h"
+#include "ontoloGenius/graphical/Display.h"
 #include "ontoloGenius/core/ontoGraphs/Ontology.h"
 
 #include "ontoloGenius/core/utility/utility.h"
@@ -52,6 +53,13 @@ int OntologyReader::readFromFile(std::string& fileName, bool individual)
   std::string response = "";
   std::string tmp = "";
   std::ifstream f(fileName);
+
+  if(!f.is_open())
+  {
+    Display::error("Fail to open : " + fileName);
+    return -1;
+  }
+
   while(getline(f,tmp))
   {
     response += tmp;
@@ -70,8 +78,8 @@ int OntologyReader::read(TiXmlElement* rdf, std::string& name)
 {
   if(rdf == NULL)
   {
-      std::cerr << "Failed to load file: " << name << std::endl << "\t- No root element."<< std::endl;
-      return OTHER;
+    Display::error("Failed to read file: " + name);
+    return OTHER;
   }
   else
   {
@@ -128,7 +136,7 @@ int OntologyReader::readIndividual(TiXmlElement* rdf, std::string& name)
 {
   if(rdf == NULL)
   {
-    std::cerr << "Failed to load file: " << name << std::endl << "\t- No root element."<< std::endl;
+    Display::error("Failed to load file: " + name + "\n\t- No root element.");
     return OTHER;
   }
   else

@@ -5,6 +5,7 @@
 #include "ontoloGenius/RosInterface.h"
 
 #include "ontoloGenius/core/utility/error_code.h"
+#include "ontoloGenius/graphical/Display.h"
 
 namespace ontologenius {
 
@@ -59,7 +60,7 @@ void RosInterface::init(const std::string& lang, const std::string& intern_file,
 
   reasoners_.configure(config_path);
   reasoners_.load();
-  std::cout << "Plugins loaded : " << reasoners_.list() << std::endl;
+  Display::info("Plugins loaded : " + reasoners_.list());
 }
 
 void RosInterface::init(const std::string& lang, const std::string& config_path)
@@ -68,7 +69,7 @@ void RosInterface::init(const std::string& lang, const std::string& config_path)
 
   reasoners_.configure(config_path);
   reasoners_.load();
-  std::cout << "Plugins loaded : " << reasoners_.list() << std::endl;
+  Display::info("Plugins loaded : " + reasoners_.list());
 }
 
 void RosInterface::run()

@@ -7,7 +7,7 @@
 #include "ontoloGenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
 #include "ontoloGenius/core/ontoGraphs/Checkers/IndividualChecker.h"
 
-#include "ontoloGenius/core/utility/color.h"
+#include "ontoloGenius/graphical/Display.h"
 #include "ontoloGenius/core/utility/error_code.h"
 
 namespace ontologenius {
@@ -88,17 +88,17 @@ int Ontology::close()
     is_init_ = true;
   }
 
-  std::cout << std::endl << std::endl << "***************SUMMARY****************" << std::endl;
+  Display::info("\n***************SUMMARY****************");
   if(is_init_)
-    std::cout << "Ontology is closed :" << std::endl;
+    Display::info("Ontology is closed :");
   else
-    std::cout << "Ontology is not closed :" << std::endl;
+    Display::warning("Ontology is not closed :");
 
   class_checker.printStatus();
   object_property_checker.printStatus();
   data_property_checker.printStatus();
   individual_checker.printStatus();
-  std::cout << "**************************************" << std::endl;
+  Display::info("**************************************");
 
   if(err)
     return -1;
@@ -128,14 +128,14 @@ bool Ontology::preload(std::string file_name)
         if(reader.empty() == false)
         {
           is_preloaded_ = true;
-          std::cout << COLOR_GREEN << "Ontology has been preloaded :" << std::endl <<
-                    "ontoloGenius will NOT consider your default files" << std::endl << COLOR_OFF << std::endl;
+          Display::success("Ontology has been preloaded :");
+          Display::success("ontoloGenius will NOT consider your default files");
           return true;
         }
   }
 
-  std::cout << COLOR_ORANGE << "Nothing to preload :" << std::endl <<
-            "ontoloGenius will consider your default files" << std::endl << COLOR_OFF << std::endl;
+  Display::warning("Nothing to preload :");
+  Display::warning("ontoloGenius will consider your default files");
   return false;
 }
 
@@ -155,7 +155,7 @@ bool Ontology::isInit(bool print)
 {
   if(is_init_ == false)
     if(print == true)
-      std::cout << COLOR_RED << "Ontology is not closed" << COLOR_OFF << std::endl;
+      Display::error("Ontology is not closed");
   return is_init_;
 }
 
