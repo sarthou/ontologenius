@@ -155,6 +155,11 @@ a.laas_logo {
   margin-bottom:10px;
   line-height:1em
 }
+
+.content {
+  display: flex;
+}
+
 .content ol>li {
   list-style-type:decimal;
   margin-left:15px

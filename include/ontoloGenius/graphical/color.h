@@ -10,3 +10,6 @@
 #ifndef COLOR_GREEN
 #define COLOR_GREEN   "\x1B[1;92m"
 #endif
+#ifndef COLOR_BLUE
+#define COLOR_BLUE   "\x1B[1;96m"
+#endif 

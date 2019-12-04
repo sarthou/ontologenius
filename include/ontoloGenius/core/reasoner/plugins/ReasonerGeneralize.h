@@ -11,6 +11,8 @@ public:
   ReasonerGeneralize();
   ~ReasonerGeneralize() {}
 
+  virtual void setParameter(const std::string& name, const std::string& value);
+
   virtual void periodicReason();
 
   virtual std::string getName();
@@ -20,6 +22,9 @@ public:
 private:
   size_t current_id_;
   size_t class_per_period_;
+
+  size_t min_count_;
+  float min_percent_;
 
   void setDeduced(ClassBranch_t* me, std::vector<DataPropertyBranch_t*> properties, std::vector<std::string> datas);
   void setDeduced(ClassBranch_t* me, std::vector<ObjectPropertyBranch_t*> properties, std::vector<ClassBranch_t*> datas);
@@ -35,10 +40,10 @@ template <typename B, typename P>
 class PropertiesCounter
 {
 public:
-  PropertiesCounter()
+  PropertiesCounter(int min_count = 2, float min_percent = 0.75)
   {
-    min_count = 2;
-    min_percent = 0.75;
+    this->min_count = min_count;
+    this->min_percent = min_percent;
   }
 
   void add(B propertie, P data);

@@ -37,8 +37,8 @@ public:
   RosInterface(RosInterface& other, ros::NodeHandle* n, std::string name = "");
   ~RosInterface();
 
-  void init(const std::string& lang, const std::string& intern_file, const std::vector<std::string>& files);
-  void init(const std::string& lang);
+  void init(const std::string& lang, const std::string& intern_file, const std::vector<std::string>& files, const std::string& config_path);
+  void init(const std::string& lang, const std::string& config_path);
   void run();
   void stop() {run_ = false; }
   inline bool isRunning() {return run_; }

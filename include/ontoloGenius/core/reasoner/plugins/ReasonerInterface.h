@@ -13,6 +13,11 @@ public:
   virtual ~ReasonerInterface() {}
 
   virtual void initialize(Ontology* onto) {ontology_ = onto; }
+  virtual void setParameter(const std::string& name, const std::string& value)
+  {
+    (void)name;
+    (void)value;
+  }
 
   virtual void preReason() {}
   virtual void postReason() {}

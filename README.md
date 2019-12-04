@@ -1,5 +1,5 @@
 # <img src="docs/img/logo/ontologenius.png" width="150"> ontolo**G**enius
-[![Release][Release-Image]][Release-Url]  Matser : [![Build Status](https://gitlab.com/sarthou/ontologenius/badges/master/pipeline.svg)](https://gitlab.com/sarthou/ontologenius/commits/master) Dev : [![Build Status](https://gitlab.com/sarthou/ontologenius/badges/dev/pipeline.svg)](https://gitlab.com/sarthou/ontologenius/commits/dev)
+[![Release][Release-Image]][Release-Url]  Master : [![Build Status](https://gitlab.com/sarthou/ontologenius/badges/master/pipeline.svg)](https://gitlab.com/sarthou/ontologenius/commits/master) Dev : [![Build Status](https://gitlab.com/sarthou/ontologenius/badges/dev/pipeline.svg)](https://gitlab.com/sarthou/ontologenius/commits/dev)
 
 
 This repository is a ROS package to link, explore and interrogate ontologies.
@@ -43,28 +43,5 @@ On this launcher file, you will find an argument indicating the path to the onto
 
 You can add your own ontology files in the argument if you want them to be loaded at the beginning of the program.
 
-
-## Citation
-
-If you used `ontologenius` for your work, please cite it.
-
-```tex
-@misc{ontologenius,
-  author = {Sarthou, Guillaume},
-  title = {{ontologenius}},
-  organization = {LAAS-CNRS},
-  address = {Toulouse},
-  year = {2017 -- 2019},
-  howpublished = {\url{https://github.com/sarthou/ontologenius}}
-}
-```
-
-The result should look something similar to this (may depend on the bibliography style used):
-
-```
-G. Sarthou, “ontologenius,” https://github.com/sarthou/ontologenius,
-LAAS-CNRS, Toulouse, 2017 – 2019.
-```
-
 [Release-Url]: https://sarthou.github.io/ontologenius/
-[Release-image]: http://img.shields.io/badge/release-v0.2.3-1eb0fc.svg
+[Release-image]: http://img.shields.io/badge/release-v0.2.4-1eb0fc.svg

@@ -14,7 +14,7 @@ std::vector<std::string> OntologyClient::getUp(const std::string& name, int dept
   return call(srv);
 }
 
-bool OntologyClient::isA(std::string& name, const std::string& base_class)
+bool OntologyClient::isA(const std::string& name, const std::string& base_class)
 {
   std::vector<std::string> res = getUp(name, -1, base_class);
   if(res.size() == 0)

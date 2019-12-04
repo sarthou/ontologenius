@@ -5,6 +5,7 @@
 
 #include "ontoloGenius/RosInterface.h"
 #include "ontoloGenius/core/ontologyOperators/differenceFinder.h"
+#include "ontoloGenius/Parameters.h"
 #include "ontoloGenius/core/utility/error_code.h"
 
 void removeUselessSpace(std::string& text)
@@ -20,9 +21,7 @@ ros::NodeHandle* n_;
 std::map<std::string, ontologenius::RosInterface*> interfaces_;
 std::map<std::string, std::thread> interfaces_threads_;
 
-std::string language;
-std::string intern_file = "none";
-std::vector<std::string> files;
+ontologenius::Parameters params;
 
 bool deleteInterface(std::string name)
 {
@@ -104,7 +103,10 @@ bool managerHandle(ontologenius::OntologeniusService::Request &req,
     {
       ontologenius::RosInterface* tmp = new ontologenius::RosInterface(n_, req.param);
       interfaces_[req.param] = tmp;
-      tmp->init(language, intern_file, files);
+      tmp->init(params.parameters_.at("language").getFirst(),
+                params.parameters_.at("intern_file").getFirst(),
+                params.parameters_.at("files").get(),
+                params.parameters_.at("config").getFirst());
       std::thread th(&ontologenius::RosInterface::run, tmp);
       interfaces_threads_[req.param] = std::move(th);
 
@@ -133,7 +135,8 @@ bool managerHandle(ontologenius::OntologeniusService::Request &req,
           {
             ontologenius::RosInterface* tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), n_, copy_name);
             interfaces_[copy_name] = tmp;
-            tmp->init(language);
+            tmp->init(params.parameters_.at("language").getFirst(),
+                      params.parameters_.at("config").getFirst());
             std::thread th(&ontologenius::RosInterface::run, tmp);
             interfaces_threads_[copy_name] = std::move(th);
 
@@ -178,16 +181,15 @@ int main(int argc, char** argv)
   ros::NodeHandle n;
   n_ = &n;
 
+  params.insert(ontologenius::Parameter("language", {"-l", "--lang"}, {"en"}));
+  params.insert(ontologenius::Parameter("intern_file", {"-i", "--intern_file"}, {"none"}));
+  params.insert(ontologenius::Parameter("config", {"-c", "--config"}, {"none"}));
+  params.insert(ontologenius::Parameter("files", {}));
+
+  params.set(argc, argv);
+  params.display();
+
   ros::service::waitForService("ontologenius/rest", -1);
-
-  language = std::string(argv[1]);
-  std::cout << "language " << language << std::endl;
-
-  intern_file = std::string(argv[2]);
-  std::cout << "intern_file " << intern_file << std::endl;
-
-  for(int i = 3; i < argc; i++)
-    files.push_back(std::string(argv[i]));
 
   ros::ServiceServer service = n_->advertiseService("ontologenius/manage", managerHandle);
 
