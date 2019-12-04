@@ -60,6 +60,14 @@ void Reasoners::link(Ontology* onto)
     it.second->initialize(ontology_);
 }
 
+void Reasoners::configure(const std::string& config_path)
+{
+  if((config_path != "") && (config_path != "none"))
+  {
+    config_.read(config_path);
+  }
+}
+
 void Reasoners::load()
 {
   std::vector<std::string> reasoners = loader_.getDeclaredClasses();
@@ -86,6 +94,8 @@ void Reasoners::load()
   {
     std::cout << reasoners[i] << " registered" << std::endl;
   }
+
+  applyConfig();
 }
 
 std::string Reasoners::list()
@@ -236,6 +246,37 @@ void Reasoners::runPeriodicReasoners()
   }
 
   computeIndividualsUpdatesPeriodic();
+}
+
+void Reasoners::applyConfig()
+{
+  for(auto param : config_.config_)
+  {
+    if(param.first == "flow")
+    {
+      if(param.second.data)
+      {
+        active_reasoners_.clear();
+        for(auto elem : param.second.data.value())
+        {
+          if(reasoners_.find(elem) != reasoners_.end())
+            active_reasoners_[elem] = (reasoners_[elem]);
+          else
+            std::cout << "[CONFIG] no reasoner named " << elem << ". This reasoner will be ignored" << std::endl;
+        }
+      }
+    }
+    else if(reasoners_.find(param.first) != reasoners_.end())
+    {
+      for(auto elem : param.second.subelem.value())
+      {
+        if(elem.second.data && elem.second.data.value().size())
+          reasoners_[param.first]->setParameter(elem.first, elem.second.data.value()[0]);
+      }
+    }
+    else
+      std::cout << "[CONFIG] no reasoner named " << param.first << ". This parameter will be ignored" << std::endl;
+  }
 }
 
 void Reasoners::computeIndividualsUpdates()

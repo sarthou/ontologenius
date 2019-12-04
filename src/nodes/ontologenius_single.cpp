@@ -20,6 +20,7 @@ int main(int argc, char** argv)
   ontologenius::Parameters params;
   params.insert(ontologenius::Parameter("language", {"-l", "--lang"}, {"en"}));
   params.insert(ontologenius::Parameter("intern_file", {"-i", "--intern_file"}, {"none"}));
+  params.insert(ontologenius::Parameter("config", {"-c", "--config"}, {"none"}));
   params.insert(ontologenius::Parameter("files", {}));
 
   params.set(argc, argv);
@@ -27,7 +28,8 @@ int main(int argc, char** argv)
 
   interface.init(params.parameters_.at("language").getFirst(),
                  params.parameters_.at("intern_file").getFirst(),
-                 params.parameters_.at("files").get());
+                 params.parameters_.at("files").get(),
+                 params.parameters_.at("config").getFirst());
   interface.run();
 
   ROS_DEBUG("KILL ontoloGenius");

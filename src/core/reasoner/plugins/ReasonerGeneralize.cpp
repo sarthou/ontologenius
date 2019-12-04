@@ -8,6 +8,18 @@ ReasonerGeneralize::ReasonerGeneralize()
 {
   current_id_ = 0;
   class_per_period_ = 25;
+
+  min_count_ = 2;
+  min_percent_ = 0.6;
+}
+
+void ReasonerGeneralize::setParameter(const std::string& name, const std::string& value)
+{
+  std::string::size_type sz;
+  if(name == "min_count")
+    min_count_ = std::stoi(value,&sz);
+  else if(name == "min_percent")
+    min_percent_ = std::stof(value,&sz);
 }
 
 void ReasonerGeneralize::periodicReason()
@@ -29,7 +41,7 @@ void ReasonerGeneralize::periodicReason()
       std::shared_lock<std::shared_timed_mutex> lock_indiv_shared(ontology_->individual_graph_.mutex_);
       std::shared_lock<std::shared_timed_mutex> lock_shared(ontology_->class_graph_.mutex_);
 
-      PropertiesCounter<DataPropertyBranch_t*, std::string> data_counter;
+      PropertiesCounter<DataPropertyBranch_t*, std::string> data_counter(min_count_, min_percent_);
       PropertiesCounter<ObjectPropertyBranch_t*, ClassBranch_t*> object_counter;
 
       for(auto down : down_set)
@@ -128,7 +140,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropert
   for(size_t prop = 0; prop < properties.size(); prop++)
   {
     int index = -1;
-    
+
     for(size_t prop_i = 0; prop_i < me->object_relations_.size(); prop_i++)
       if(me->object_relations_[prop_i].first == properties[prop])
       {
