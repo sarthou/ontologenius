@@ -87,7 +87,7 @@ find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include include
+  INCLUDE_DIRS include include include/ontologenius/API
   LIBRARIES ontologenius_lib
   CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
