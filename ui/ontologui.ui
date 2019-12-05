@@ -1080,7 +1080,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>The ontology manager can only be used with the "ontoloGenius_multi" executable</string>
+             <string>The ontology manager can only be used with the "ontologenius_multi" executable</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>

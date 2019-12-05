@@ -233,7 +233,7 @@ void ontoloGUI::wait()
                   "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
                   "p, li { white-space: pre-wrap; }"
                   "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-                  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Wainting for </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">ontoloGenius</span></p></body></html>";
+                  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Wainting for </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">ontologenius</span></p></body></html>";
   ui->InfoArea->setHtml(html);
   //ros::service::waitForService("ontologenius/reasoner", -1);
 }
@@ -577,7 +577,7 @@ void ontoloGUI::displayOntologiesList()
             "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
             "p, li { white-space: pre-wrap; }"
             "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-            "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">ontoloGenius is not running in multi mode.</span></p></body></html>";
+            "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">ontologenius is not running in multi mode.</span></p></body></html>";
   }
   else
   {

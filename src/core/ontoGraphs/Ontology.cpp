@@ -129,13 +129,13 @@ bool Ontology::preload(std::string file_name)
         {
           is_preloaded_ = true;
           Display::success("Ontology has been preloaded :");
-          Display::success("ontoloGenius will NOT consider your default files");
+          Display::success("ontologenius will NOT consider your default files");
           return true;
         }
   }
 
   Display::warning("Nothing to preload :");
-  Display::warning("ontoloGenius will consider your default files");
+  Display::warning("ontologenius will consider your default files");
   return false;
 }
 

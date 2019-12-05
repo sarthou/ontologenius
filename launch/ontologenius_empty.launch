@@ -3,7 +3,7 @@
   <arg name="intern_file" default="$(find ontologenius)/file_intern/ontologenius.owl"/>
   <arg name="config_file" default="none"/>
   <arg name="files" default=""/>
-  <node name="ontologenius_core" pkg="ontologenius" type="ontoloGenius" output="screen" args="-l $(arg language) -c $(arg config_file) -i $(arg intern_file) $(arg files)"> </node>
+  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius" output="screen" args="-l $(arg language) -c $(arg config_file) -i $(arg intern_file) $(arg files)"> </node>
   <node name="ontologenius_rest" pkg="ontologenius" type="REST.py" output="screen"> </node>
   <!--node name="ontologenius_gui" pkg="ontologenius" type="ontoloGUI" output="screen"> </node-->
 </launch>

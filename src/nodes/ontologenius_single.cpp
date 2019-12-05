@@ -32,7 +32,7 @@ int main(int argc, char** argv)
                  params.parameters_.at("config").getFirst());
   interface.run();
 
-  ROS_DEBUG("KILL ontoloGenius");
+  ROS_DEBUG("KILL ontologenius");
 
   #ifdef USE_INTEPRETER
     std::string code = "";

@@ -2,7 +2,7 @@
 <package>
   <name>ontologenius</name>
   <version>0.2.4</version>
-  <description>The ontoloGenius package</description>
+  <description>The ontologenius package</description>
 
   <maintainer email="guillaume.sarthou@laas.fr">srth</maintainer>
 

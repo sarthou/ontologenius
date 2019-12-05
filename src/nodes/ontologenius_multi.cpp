@@ -202,7 +202,7 @@ int main(int argc, char** argv)
   for(size_t i = 0; i < interfaces_names.size(); i++)
     deleteInterface(interfaces_names[i]);
 
-  ROS_DEBUG("KILL ontoloGenius");
+  ROS_DEBUG("KILL ontologenius");
 
   return 0;
 }
