@@ -122,8 +122,6 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
     addDataProperty(me, data_relation);
 
   me->setSteady_dictionary(object_vector.dictionary_);
-  if(me->dictionary_.spoken_.find("en") == me->dictionary_.spoken_.end())
-    me->dictionary_.spoken_["en"].push_back(me->value());
   me->setSteady_muted_dictionary(object_vector.muted_dictionary_);
 
   mitigate(me);

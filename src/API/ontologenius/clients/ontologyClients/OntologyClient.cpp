@@ -23,12 +23,14 @@ bool OntologyClient::isA(const std::string& name, const std::string& base_class)
     return true;
 }
 
-std::string OntologyClient::getName(const std::string& name)
+std::string OntologyClient::getName(const std::string& name, bool take_id)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "getName";
   srv.request.param = name;
-
+  if(take_id == false)
+    srv.request.param += " -i false";
+    
   return callStr(srv);
 }
 

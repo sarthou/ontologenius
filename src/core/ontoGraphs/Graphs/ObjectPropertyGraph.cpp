@@ -171,8 +171,6 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   **********************/
   me->properties_ = property_vectors.properties_;
   me->setSteady_dictionary(property_vectors.dictionary_);
-  if(me->dictionary_.spoken_.find("en") == me->dictionary_.spoken_.end())
-    me->dictionary_.spoken_["en"].push_back(me->value());
   me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
 
   /**********************

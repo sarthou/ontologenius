@@ -208,7 +208,7 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
       set_res = onto_->class_graph_.getDisjoint(params());
     else if(req.action == "getName")
     {
-      auto tmp = onto_->class_graph_.getName(params());
+      auto tmp = onto_->class_graph_.getName(params(), params.take_id);
       if(tmp != "")
         res.values.push_back(tmp);
     }
@@ -310,7 +310,7 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
       set_res = onto_->object_property_graph_.getRange(params());
     else if(req.action == "getName")
     {
-      auto tmp = onto_->object_property_graph_.getName(params());
+      auto tmp = onto_->object_property_graph_.getName(params(), params.take_id);
       if(tmp != "")
         res.values.push_back(tmp);
     }
@@ -391,7 +391,7 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
       set2vector(onto_->data_property_graph_.getRange(params()), res.values);
     else if(req.action == "getName")
     {
-      auto tmp = onto_->data_property_graph_.getName(params());
+      auto tmp = onto_->data_property_graph_.getName(params(), params.take_id);
       if(tmp != "")
         res.values.push_back(tmp);
     }
@@ -485,7 +485,7 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
       set_res = onto_->individual_graph_.getWith(params(), params.depth);
     else if(req.action == "getName")
     {
-      auto tmp = onto_->individual_graph_.getName(params());
+      auto tmp = onto_->individual_graph_.getName(params(), params.take_id);
       if(tmp != "")
         res.values.push_back(tmp);
     }
@@ -712,6 +712,16 @@ param_t RosInterface::getParams(std::string& param)
       if(sscanf(str_params[i].c_str(), "%f", &tmp) != 1)
         tmp = -1;
       parameters.threshold = tmp;
+      option_found = true;
+    }
+    else if((str_params[i] == "-i") || (str_params[i] == "--take_id"))
+    {
+      i++;
+      bool tmp = false;
+      if(str_params[i] == "true")
+        tmp = true;
+
+      parameters.take_id = tmp;
       option_found = true;
     }
     else if(option_found)

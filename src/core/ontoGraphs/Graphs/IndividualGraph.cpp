@@ -131,8 +131,6 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   }
 
   me->setSteady_dictionary(individual_vector.dictionary_);
-  if(me->dictionary_.spoken_.find("en") == me->dictionary_.spoken_.end())
-    me->dictionary_.spoken_["en"].push_back(me->value());
   me->setSteady_muted_dictionary(individual_vector.muted_dictionary_);
 
   individuals_.push_back(me);
@@ -851,7 +849,7 @@ std::unordered_set<std::string> IndividualGraph::select(std::unordered_set<std::
   return res;
 }
 
-std::string IndividualGraph::getName(const std::string& value)
+std::string IndividualGraph::getName(const std::string& value, bool use_default)
 {
   std::string res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
@@ -860,6 +858,7 @@ std::string IndividualGraph::getName(const std::string& value)
   if(branch != nullptr)
   {
     if(branch->dictionary_.spoken_.find(language_) != branch->dictionary_.spoken_.end())
+    {
       if(branch->dictionary_.spoken_[language_].size())
       {
         std::unordered_set<size_t> tested;
@@ -883,9 +882,10 @@ std::string IndividualGraph::getName(const std::string& value)
         if(res == "")
           res = branch->dictionary_.spoken_[this->language_][0];
       }
-      else
+      else if(use_default)
         res = value;
-    else
+    }
+    else if(use_default)
       res = value;
   }
 

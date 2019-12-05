@@ -142,8 +142,6 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   **********************/
   me->properties_ = property_vectors.properties_;
   me->setSteady_dictionary(property_vectors.dictionary_);
-  if(me->dictionary_.spoken_.find("en") == me->dictionary_.spoken_.end())
-    me->dictionary_.spoken_["en"].push_back(me->value());
   me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
 
   mitigate(me);

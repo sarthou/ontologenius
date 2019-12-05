@@ -35,7 +35,7 @@ public:
   std::unordered_set<std::string> getUp(const std::string& value, int depth = -1);
   std::unordered_set<uint32_t> getDownIdSafe(const std::string& value, int depth = -1);
   std::unordered_set<uint32_t> getUpIdSafe(const std::string& value, int depth = -1);
-  std::string getName(const std::string& value);
+  std::string getName(const std::string& value, bool use_default = true);
   std::vector<std::string> getNames(const std::string& value);
   std::vector<std::string> getEveryNames(const std::string& value);
   std::unordered_set<std::string> find(const std::string& value);
@@ -175,7 +175,7 @@ std::unordered_set<uint32_t> OntoGraph<B>::getUpIdSafe(const std::string& value,
 
 
 template <typename B>
-std::string OntoGraph<B>::getName(const std::string& value)
+std::string OntoGraph<B>::getName(const std::string& value, bool use_default)
 {
   std::string res = "";
 
@@ -184,6 +184,7 @@ std::string OntoGraph<B>::getName(const std::string& value)
   if(branch != nullptr)
   {
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
+    {
       if(branch->dictionary_.spoken_[this->language_].size())
       {
         std::unordered_set<size_t> tested;
@@ -207,9 +208,10 @@ std::string OntoGraph<B>::getName(const std::string& value)
         if(res == "")
           res = branch->dictionary_.spoken_[this->language_][0];
       }
-      else
+      else if(use_default)
         res = value;
-    else
+    }
+    else if(use_default)
       res = value;
   }
 
