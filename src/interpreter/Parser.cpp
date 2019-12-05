@@ -1,8 +1,8 @@
-#include "ontoloGenius/interpreter/Parser.h"
+#include "ontologenius/interpreter/Parser.h"
 
 #include <iostream>
 
-#include "ontoloGenius/interpreter/Compiler.h"
+#include "ontologenius/interpreter/Compiler.h"
 
 namespace ontologenius {
 

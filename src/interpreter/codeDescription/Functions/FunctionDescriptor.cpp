@@ -1,4 +1,4 @@
-#include "ontoloGenius/interpreter/codeDescription/Functions/FunctionDescriptor.h"
+#include "ontologenius/interpreter/codeDescription/Functions/FunctionDescriptor.h"
 
 namespace ontologenius {
 

@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/feeder/FeedStorage.h"
+#include "ontologenius/core/feeder/FeedStorage.h"
 
 #include <iostream>
 

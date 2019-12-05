@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontologyIO/writers/NodeWriter.h"
+#include "ontologenius/core/ontologyIO/writers/NodeWriter.h"
 
 #include <map>
 #include <vector>

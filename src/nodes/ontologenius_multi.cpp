@@ -3,10 +3,10 @@
 
 #include <ros/ros.h>
 
-#include "ontoloGenius/RosInterface.h"
-#include "ontoloGenius/core/ontologyOperators/differenceFinder.h"
-#include "ontoloGenius/Parameters.h"
-#include "ontoloGenius/core/utility/error_code.h"
+#include "ontologenius/RosInterface.h"
+#include "ontologenius/core/ontologyOperators/differenceFinder.h"
+#include "ontologenius/Parameters.h"
+#include "ontologenius/core/utility/error_code.h"
 
 void removeUselessSpace(std::string& text)
 {

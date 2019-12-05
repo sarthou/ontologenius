@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/reasoner/plugins/ReasonerChain.h"
+#include "ontologenius/core/reasoner/plugins/ReasonerChain.h"
 
 #include <pluginlib/class_list_macros.h>
 

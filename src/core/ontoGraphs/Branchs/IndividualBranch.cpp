@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontoGraphs/Branchs/IndividualBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 
 #include <algorithm>
 

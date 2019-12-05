@@ -2,10 +2,10 @@
 
 #include <ros/callback_queue.h>
 
-#include "ontoloGenius/RosInterface.h"
+#include "ontologenius/RosInterface.h"
 
-#include "ontoloGenius/core/utility/error_code.h"
-#include "ontoloGenius/graphical/Display.h"
+#include "ontologenius/core/utility/error_code.h"
+#include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 

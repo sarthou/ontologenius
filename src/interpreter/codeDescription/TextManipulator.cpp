@@ -1,4 +1,4 @@
-#include "ontoloGenius/interpreter/codeDescription/TextManipulator.h"
+#include "ontologenius/interpreter/codeDescription/TextManipulator.h"
 
 namespace ontologenius {
 

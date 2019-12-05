@@ -1,12 +1,12 @@
-#include "ontoloGenius/interpreter/Compiler.h"
+#include "ontologenius/interpreter/Compiler.h"
 
 #include <iostream>
 
-#include "ontoloGenius/interpreter/codeDescription/Types/VariablesType.h"
-#include "ontoloGenius/interpreter/codeDescription/Functions/OntoFunctions.h"
-#include "ontoloGenius/interpreter/codeDescription/Functions/PropertyFunctions.h"
+#include "ontologenius/interpreter/codeDescription/Types/VariablesType.h"
+#include "ontologenius/interpreter/codeDescription/Functions/OntoFunctions.h"
+#include "ontologenius/interpreter/codeDescription/Functions/PropertyFunctions.h"
 
-#include "ontoloGenius/interpreter/codeDescription/TextManipulator.h"
+#include "ontologenius/interpreter/codeDescription/TextManipulator.h"
 
 #ifndef COLOR_OFF
 #define COLOR_OFF     "\x1B[0m"

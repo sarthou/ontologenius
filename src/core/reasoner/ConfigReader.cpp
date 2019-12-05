@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/reasoner/ConfigReader.h"
+#include "ontologenius/core/reasoner/ConfigReader.h"
 
 #include <iostream>
 #include <fstream>

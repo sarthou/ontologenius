@@ -1,8 +1,8 @@
-#include "ontoloGenius/core/feeder/Feeder.h"
+#include "ontologenius/core/feeder/Feeder.h"
 
 #include <iostream>
 
-#include "ontoloGenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/ontoGraphs/Ontology.h"
 
 namespace ontologenius {
 

@@ -1,4 +1,4 @@
-#include "ontoloGenius/interpreter/fileManagers/FileWriter.h"
+#include "ontologenius/interpreter/fileManagers/FileWriter.h"
 
 namespace ontologenius {
 

@@ -316,11 +316,11 @@ set( QT_SOURCES
     src/graphical/ontoloGUI/QCheckBoxExtended.cpp
     src/graphical/ontoloGUI/QLineEditExtended.cpp
 
-    include/ontoloGenius/graphical/ontoloGUI/ontologui.h
-    include/ontoloGenius/graphical/ontoloGUI/DarkStyle.h
-    include/ontoloGenius/graphical/ontoloGUI/qpushbuttonextended.h
-    include/ontoloGenius/graphical/ontoloGUI/QCheckBoxExtended.h
-    include/ontoloGenius/graphical/ontoloGUI/QLineEditExtended.h
+    include/ontologenius/graphical/ontoloGUI/ontologui.h
+    include/ontologenius/graphical/ontoloGUI/DarkStyle.h
+    include/ontologenius/graphical/ontoloGUI/qpushbuttonextended.h
+    include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h
+    include/ontologenius/graphical/ontoloGUI/QLineEditExtended.h
 )
 ##############################################################################
 # Binaries

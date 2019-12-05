@@ -1,10 +1,10 @@
-#include "ontoloGenius/core/ontologyIO/writers/ClassWriter.h"
+#include "ontologenius/core/ontologyIO/writers/ClassWriter.h"
 
 #include <algorithm>
 
-#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
-#include "ontoloGenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 
 
 namespace ontologenius {

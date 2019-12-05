@@ -1,8 +1,8 @@
-#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
 #include <iostream>
 
-#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
 namespace ontologenius {
 

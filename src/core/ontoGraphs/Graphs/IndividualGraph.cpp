@@ -1,13 +1,13 @@
-#include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
 #include <random>
 #include <algorithm>
 
-#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
-#include "ontoloGenius/core/Algorithms/LevenshteinDistance.h"
+#include "ontologenius/core/Algorithms/LevenshteinDistance.h"
 
 namespace ontologenius {
 
