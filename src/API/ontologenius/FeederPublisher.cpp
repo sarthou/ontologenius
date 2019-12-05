@@ -1,4 +1,4 @@
-#include "ontoloGenius/utility/FeederPublisher.h"
+#include "ontologenius/API/ontologenius/FeederPublisher.h"
 
 void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& on)
 {

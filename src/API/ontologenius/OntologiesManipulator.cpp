@@ -1,4 +1,4 @@
-#include "ontoloGenius/utility/OntologiesManipulator.h"
+#include "ontologenius/API/ontologenius/OntologiesManipulator.h"
 
 OntologiesManipulator::OntologiesManipulator(ros::NodeHandle* n) : ManagerClient(n)
 {

@@ -1,4 +1,4 @@
-#include "ontoloGenius/utility/OntologyManipulator.h"
+#include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
 OntologyManipulator::OntologyManipulator(ros::NodeHandle* n, const std::string& name) : individuals(n, name),
                                                                                         objectProperties(n, name),

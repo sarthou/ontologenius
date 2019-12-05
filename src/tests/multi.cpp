@@ -5,7 +5,7 @@
 
 #include <gtest/gtest.h>
 
-#include "ontoloGenius/utility/OntologiesManipulator.h"
+#include "ontologenius/API/ontologenius/OntologiesManipulator.h"
 
 OntologiesManipulator* onto_ptr;
 

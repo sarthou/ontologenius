@@ -1,4 +1,4 @@
-#include "ontoloGenius/utility/clients/ontologyClients/ObjectPropertyClient.h"
+#include "ontologenius/API/ontologenius/clients/ontologyClients/ObjectPropertyClient.h"
 
 std::vector<std::string> ObjectPropertyClient::getDown(const std::string& name, int depth)
 {

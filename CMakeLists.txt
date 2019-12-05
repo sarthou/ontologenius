@@ -203,18 +203,18 @@ target_link_libraries(ontologenius_interpreter_lib
 )
 
 add_onto_library(ontoloGenius_lib
-  src/utility/clients/ontologyClients/IndividualClient.cpp
-  src/utility/clients/ontologyClients/ObjectPropertyClient.cpp
-  src/utility/clients/ontologyClients/DataPropertyClient.cpp
-  src/utility/clients/ontologyClients/ClassClient.cpp
-  src/utility/clients/ontologyClients/OntologyClient.cpp
-  src/utility/clients/ReasonerClient.cpp
-  src/utility/clients/ActionClient.cpp
-  src/utility/clients/ManagerClient.cpp
-  src/utility/clients/ClientBase.cpp
-  src/utility/FeederPublisher.cpp
-  src/utility/OntologyManipulator.cpp
-  src/utility/OntologiesManipulator.cpp
+  src/API/ontologenius/clients/ontologyClients/IndividualClient.cpp
+  src/API/ontologenius/clients/ontologyClients/ObjectPropertyClient.cpp
+  src/API/ontologenius/clients/ontologyClients/DataPropertyClient.cpp
+  src/API/ontologenius/clients/ontologyClients/ClassClient.cpp
+  src/API/ontologenius/clients/ontologyClients/OntologyClient.cpp
+  src/API/ontologenius/clients/ReasonerClient.cpp
+  src/API/ontologenius/clients/ActionClient.cpp
+  src/API/ontologenius/clients/ManagerClient.cpp
+  src/API/ontologenius/clients/ClientBase.cpp
+  src/API/ontologenius/FeederPublisher.cpp
+  src/API/ontologenius/OntologyManipulator.cpp
+  src/API/ontologenius/OntologiesManipulator.cpp
 )
 target_link_libraries(ontoloGenius_lib
  PUBLIC

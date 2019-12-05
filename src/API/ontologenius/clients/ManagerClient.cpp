@@ -1,4 +1,4 @@
-#include "ontoloGenius/utility/clients/ManagerClient.h"
+#include "ontologenius/API/ontologenius/clients/ManagerClient.h"
 
 std::vector<std::string> ManagerClient::list()
 {

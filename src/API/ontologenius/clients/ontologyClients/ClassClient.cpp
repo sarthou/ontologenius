@@ -1,4 +1,4 @@
-#include "ontoloGenius/utility/clients/ontologyClients/ClassClient.h"
+#include "ontologenius/API/ontologenius/clients/ontologyClients/ClassClient.h"
 
 std::vector<std::string> ClassClient::getDown(const std::string& name, int depth)
 {

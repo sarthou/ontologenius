@@ -1,4 +1,4 @@
-#include "ontoloGenius/utility/clients/ReasonerClient.h"
+#include "ontologenius/API/ontologenius/clients/ReasonerClient.h"
 
 std::vector<std::string> ReasonerClient::list()
 {
