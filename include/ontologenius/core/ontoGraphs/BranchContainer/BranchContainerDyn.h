@@ -46,7 +46,7 @@ public:
   }
 
   virtual B* find(const std::string& word);
-  virtual std::vector<B*> find(bool (*comp)(B*, const std::string&, const std::string&), const std::string& word, const std::string& lang);
+  virtual std::vector<B*> find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default);
   virtual void load(std::vector<B*>& vect);
   virtual void insert(B* branch);
   virtual void erase(B* branch);
@@ -96,12 +96,12 @@ B* BranchContainerDyn<B>::find(const std::string& word)
 }
 
 template <typename B>
-std::vector<B*> BranchContainerDyn<B>::find(bool (*comp)(B*, const std::string&, const std::string&), const std::string& word, const std::string& lang)
+std::vector<B*> BranchContainerDyn<B>::find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default)
 {
   std::vector<B*> res;
 
   for(BranchNode_t<B>* node = nodes_; node->next != nullptr; node = node->next)
-    if(comp( node->next->branch, word, lang))
+    if(comp( node->next->branch, word, lang, use_default))
       res.push_back(node->next->branch);
 
   return res;

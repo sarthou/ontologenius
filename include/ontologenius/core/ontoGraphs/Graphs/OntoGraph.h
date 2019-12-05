@@ -38,10 +38,10 @@ public:
   std::string getName(const std::string& value, bool use_default = true);
   std::vector<std::string> getNames(const std::string& value);
   std::vector<std::string> getEveryNames(const std::string& value);
-  std::unordered_set<std::string> find(const std::string& value);
-  std::unordered_set<std::string> findSub(const std::string& value);
-  std::unordered_set<std::string> findRegex(const std::string& regex);
-  std::unordered_set<std::string> findFuzzy(const std::string& value, double threshold = 0.5);
+  std::unordered_set<std::string> find(const std::string& value, bool use_default = true);
+  std::unordered_set<std::string> findSub(const std::string& value, bool use_default = true);
+  std::unordered_set<std::string> findRegex(const std::string& regex, bool use_default = true);
+  std::unordered_set<std::string> findFuzzy(const std::string& value, bool use_default = true, double threshold = 0.5);
   bool touch(const std::string& value);
 
   void getDown(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
@@ -446,8 +446,12 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res)
 }
 
 template <typename D>
-bool fullComparator(D* branch, const std::string& value, const std::string& lang)
+bool fullComparator(D* branch, const std::string& value, const std::string& lang, bool use_default)
 {
+  if(use_default)
+    if(branch->value() == value)
+      return true;
+
   if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
     for(size_t i = 0; i < branch->dictionary_.spoken_[lang].size(); i++)
       if(branch->dictionary_.spoken_[lang][i] == value)
@@ -461,9 +465,16 @@ bool fullComparator(D* branch, const std::string& value, const std::string& lang
 }
 
 template <typename D>
-bool comparator(D* branch, const std::string& value, const std::string& lang)
+bool comparator(D* branch, const std::string& value, const std::string& lang, bool use_default)
 {
   std::smatch match;
+
+  if(use_default)
+  {
+    std::regex regex("\\b(" + branch->value() + ")([^ ]*)");
+    if(std::regex_search(value, match, regex))
+      return true;
+  }
 
   if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
     for(size_t i = 0; i < branch->dictionary_.spoken_[lang].size(); i++)
@@ -484,10 +495,17 @@ bool comparator(D* branch, const std::string& value, const std::string& lang)
 }
 
 template <typename D>
-bool comparatorRegex(D* branch, const std::string& regex, const std::string& lang)
+bool comparatorRegex(D* branch, const std::string& regex, const std::string& lang, bool use_default)
 {
   std::regex base_regex(regex);
   std::smatch match;
+
+  if(use_default)
+  {
+    std::string tmp = branch->value();
+    if(std::regex_match(tmp, match, base_regex))
+      return true;
+  }
 
   if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
     for(size_t i = 0; i < branch->dictionary_.spoken_[lang].size(); i++)
@@ -502,11 +520,11 @@ bool comparatorRegex(D* branch, const std::string& regex, const std::string& lan
 }
 
 template <typename B>
-std::unordered_set<std::string> OntoGraph<B>::find(const std::string& value)
+std::unordered_set<std::string> OntoGraph<B>::find(const std::string& value, bool use_default)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  std::vector<B*> branch = this->container_.find(&fullComparator<B>, value, this->language_);
+  std::vector<B*> branch = this->container_.find(&fullComparator<B>, value, this->language_, use_default);
   for(size_t i = 0; i < branch.size(); i++)
     res.insert(branch[i]->value());
 
@@ -514,11 +532,11 @@ std::unordered_set<std::string> OntoGraph<B>::find(const std::string& value)
 }
 
 template <typename B>
-std::unordered_set<std::string> OntoGraph<B>::findSub(const std::string& value)
+std::unordered_set<std::string> OntoGraph<B>::findSub(const std::string& value, bool use_default)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  std::vector<B*> branch = this->container_.find(&comparator<B>, value, this->language_);
+  std::vector<B*> branch = this->container_.find(&comparator<B>, value, this->language_, use_default);
   for(size_t i = 0; i < branch.size(); i++)
     res.insert(branch[i]->value());
 
@@ -526,11 +544,11 @@ std::unordered_set<std::string> OntoGraph<B>::findSub(const std::string& value)
 }
 
 template <typename B>
-std::unordered_set<std::string> OntoGraph<B>::findRegex(const std::string& regex)
+std::unordered_set<std::string> OntoGraph<B>::findRegex(const std::string& regex, bool use_default)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  std::vector<B*> branch = this->container_.find(&comparatorRegex<B>, regex, this->language_);
+  std::vector<B*> branch = this->container_.find(&comparatorRegex<B>, regex, this->language_, use_default);
   for(size_t i = 0; i < branch.size(); i++)
     res.insert(branch[i]->value());
 
@@ -538,7 +556,7 @@ std::unordered_set<std::string> OntoGraph<B>::findRegex(const std::string& regex
 }
 
 template <typename B>
-std::unordered_set<std::string> OntoGraph<B>::findFuzzy(const std::string& value, double threshold)
+std::unordered_set<std::string> OntoGraph<B>::findFuzzy(const std::string& value, bool use_default, double threshold)
 {
   double lower_cost = 100000;
   double tmp_cost = 100000;
@@ -549,6 +567,17 @@ std::unordered_set<std::string> OntoGraph<B>::findFuzzy(const std::string& value
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   for(auto branch : all_branchs_)
   {
+    if(use_default)
+      if((tmp_cost = dist.get(branch-> value(), value)) <= lower_cost)
+      {
+        if(tmp_cost != lower_cost)
+        {
+          lower_cost = tmp_cost;
+          res.clear();
+        }
+        res.insert(branch->value());
+      }
+
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
       for(size_t i = 0; i < branch->dictionary_.spoken_[this->language_].size(); i++)
         if((tmp_cost = dist.get(branch->dictionary_.spoken_[this->language_][i], value)) <= lower_cost)

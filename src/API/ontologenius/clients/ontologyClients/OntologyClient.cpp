@@ -30,7 +30,7 @@ std::string OntologyClient::getName(const std::string& name, bool take_id)
   srv.request.param = name;
   if(take_id == false)
     srv.request.param += " -i false";
-    
+
   return callStr(srv);
 }
 
@@ -52,42 +52,50 @@ std::vector<std::string> OntologyClient::getEveryNames(const std::string& name)
   return call(srv);
 }
 
-std::vector<std::string> OntologyClient::find(const std::string& name)
+std::vector<std::string> OntologyClient::find(const std::string& name, bool take_id)
 {
   ontologenius::OntologeniusService srv;
 
   srv.request.action = "find";
   srv.request.param = name;
+  if(take_id == false)
+    srv.request.param += " -i false";
 
   return call(srv);
 }
 
-std::vector<std::string> OntologyClient::findSub(const std::string& name)
+std::vector<std::string> OntologyClient::findSub(const std::string& name, bool take_id)
 {
   ontologenius::OntologeniusService srv;
 
   srv.request.action = "findSub";
   srv.request.param = name;
+  if(take_id == false)
+    srv.request.param += " -i false";
 
   return call(srv);
 }
 
-std::vector<std::string> OntologyClient::findRegex(const std::string& regex)
+std::vector<std::string> OntologyClient::findRegex(const std::string& regex, bool take_id)
 {
   ontologenius::OntologeniusService srv;
 
   srv.request.action = "findRegex";
   srv.request.param = regex;
+  if(take_id == false)
+    srv.request.param += " -i false";
 
   return call(srv);
 }
 
-std::vector<std::string> OntologyClient::findFuzzy(const std::string& name, double threshold)
+std::vector<std::string> OntologyClient::findFuzzy(const std::string& name, double threshold, bool take_id)
 {
   ontologenius::OntologeniusService srv;
 
   srv.request.action = "findFuzzy";
   srv.request.param = name + " -t " + std::to_string(threshold);
+  if(take_id == false)
+    srv.request.param += " -i false";
 
   return call(srv);
 }

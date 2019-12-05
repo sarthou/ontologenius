@@ -933,12 +933,16 @@ std::vector<std::string> IndividualGraph::getEveryNames(const std::string& value
   return res;
 }
 
-std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
+std::unordered_set<std::string> IndividualGraph::find(const std::string& value, bool use_default)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(size_t i = 0; i < individuals_.size(); i++)
   {
+    if(use_default)
+      if(individuals_[i]-> value() == value)
+        res.insert(individuals_[i]->value());
+
     if(individuals_[i]->dictionary_.spoken_.find(language_) != individuals_[i]->dictionary_.spoken_.end())
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_.spoken_[language_].size(); dic_i++)
         if(individuals_[i]->dictionary_.spoken_[language_][dic_i] == value)
@@ -952,13 +956,20 @@ std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
   return res;
 }
 
-std::unordered_set<std::string> IndividualGraph::findSub(const std::string& value)
+std::unordered_set<std::string> IndividualGraph::findSub(const std::string& value, bool use_default)
 {
   std::unordered_set<std::string> res;
   std::smatch match;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(size_t i = 0; i < individuals_.size(); i++)
   {
+    if(use_default)
+    {
+      std::regex regex("\\b(" + individuals_[i]-> value() + ")([^ ]*)");
+      if(std::regex_search(value, match, regex))
+        res.insert(individuals_[i]->value());
+    }
+
     if(individuals_[i]->dictionary_.spoken_.find(language_) != individuals_[i]->dictionary_.spoken_.end())
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_.spoken_[language_].size(); dic_i++)
       {
@@ -978,7 +989,7 @@ std::unordered_set<std::string> IndividualGraph::findSub(const std::string& valu
   return res;
 }
 
-std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& regex)
+std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& regex, bool use_default)
 {
   std::unordered_set<std::string> res;
   std::regex base_regex(regex);
@@ -987,6 +998,13 @@ std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& re
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(size_t i = 0; i < individuals_.size(); i++)
   {
+    if(use_default)
+    {
+      std::string tmp = individuals_[i]->value();
+      if(std::regex_match(tmp, match, base_regex))
+        res.insert(individuals_[i]->value());
+    }
+
     if(individuals_[i]->dictionary_.spoken_.find(language_) != individuals_[i]->dictionary_.spoken_.end())
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_.spoken_[language_].size(); dic_i++)
         if(std::regex_match(individuals_[i]->dictionary_.spoken_[language_][dic_i], match, base_regex))
@@ -1000,7 +1018,7 @@ std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& re
   return res;
 }
 
-std::unordered_set<std::string> IndividualGraph::findFuzzy(const std::string& value, double threshold)
+std::unordered_set<std::string> IndividualGraph::findFuzzy(const std::string& value, bool use_default, double threshold)
 {
   double lower_cost = 100000;
   double tmp_cost = 100000;
@@ -1011,6 +1029,17 @@ std::unordered_set<std::string> IndividualGraph::findFuzzy(const std::string& va
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(auto branch : individuals_)
   {
+    if(use_default)
+      if((tmp_cost = dist.get(branch-> value(), value)) <= lower_cost)
+      {
+        if(tmp_cost != lower_cost)
+        {
+          lower_cost = tmp_cost;
+          res.clear();
+        }
+        res.insert(branch->value());
+      }
+
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
       for(size_t i = 0; i < branch->dictionary_.spoken_[this->language_].size(); i++)
         if((tmp_cost = dist.get(branch->dictionary_.spoken_[this->language_][i], value)) <= lower_cost)

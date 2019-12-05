@@ -76,10 +76,10 @@ public:
   std::string getName(const std::string& value, bool use_default = true);
   std::vector<std::string> getNames(const std::string& value);
   std::vector<std::string> getEveryNames(const std::string& value);
-  std::unordered_set<std::string> find(const std::string& value);
-  std::unordered_set<std::string> findSub(const std::string& value);
-  std::unordered_set<std::string> findRegex(const std::string& regex);
-  std::unordered_set<std::string> findFuzzy(const std::string& value, double threshold = 0.5);
+  std::unordered_set<std::string> find(const std::string& value, bool use_default = true);
+  std::unordered_set<std::string> findSub(const std::string& value, bool use_default = true);
+  std::unordered_set<std::string> findRegex(const std::string& regex, bool use_default = true);
+  std::unordered_set<std::string> findFuzzy(const std::string& value, bool use_default = true, double threshold = 0.5);
   bool touch(const std::string& value);
   std::unordered_set<std::string> getType(const std::string& class_selector);
 

@@ -15,10 +15,10 @@ public:
   std::string getName(const std::string& name, bool take_id = true);
   std::vector<std::string> getNames(const std::string& name);
   std::vector<std::string> getEveryNames(const std::string& name);
-  std::vector<std::string> find(const std::string& name);
-  std::vector<std::string> findSub(const std::string& name);
-  std::vector<std::string> findRegex(const std::string& regex);
-  std::vector<std::string> findFuzzy(const std::string& name, double threshold = 0.5);
+  std::vector<std::string> find(const std::string& name, bool take_id = true);
+  std::vector<std::string> findSub(const std::string& name, bool take_id = true);
+  std::vector<std::string> findRegex(const std::string& regex, bool take_id = true);
+  std::vector<std::string> findFuzzy(const std::string& name, double threshold = 0.5, bool take_id = true);
   bool exist(const std::string& name);
 };
 
