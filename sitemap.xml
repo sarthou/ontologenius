@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://sarthou.github.io/ontologenius/index.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/InstallOntologenius.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/Tutorials.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/CppAPI.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/Publications.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/Download.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/SetUp.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/overview/launchers.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/overview/ontoloGUI.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/overview/reasonersConfiguration.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/ActionClient.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/ClassClient.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/ClientBase.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/DataPropertyClient.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/FeederPublisher.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/IndividualClient.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/ManagerClient.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/ObjectPropertyClient.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/OntologiesManipulator.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/OntologyClient.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/OntologyManipulator.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/ReasonerClient.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial1/settingUpTheProgram.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial1/LaunchTheProgram.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial1/FindTheIntruder.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial1/MostRelevantIntruder.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial1/ManageTheMultilingual.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial2/Presentation.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial2/FindOurWay.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial2/UnderstandOurEnvironment.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial3/Presentation.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial3/InsertNewKnowledge.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial3/MakeItProactive.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial4/Presentation.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial4/CreateMultipleOntologies.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/tutorial4/BeliefDivergence.html</loc>
+  <lastmod>2019-12-04T17:07:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+</urlset>
