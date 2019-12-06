@@ -8,8 +8,10 @@ namespace ontologenius {
 class ReasonerDictionary : public ReasonerInterface
 {
 public:
-  ReasonerDictionary() {}
+  ReasonerDictionary() { use_id_ = false; }
   ~ReasonerDictionary() {}
+
+  void setParameter(const std::string& name, const std::string& value);
 
   virtual void postReason();
 
@@ -18,8 +20,11 @@ public:
 
   virtual bool defaultAvtive() {return true;}
 private:
+  bool use_id_;
+
   void updateDictionary(ValuedNode* node);
 
+  void setId(ValuedNode* node);
   void split(ValuedNode* node);
   void createLowerCase(ValuedNode* node);
   void replaceQuote(ValuedNode* node);

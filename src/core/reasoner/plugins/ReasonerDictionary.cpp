@@ -4,6 +4,12 @@
 
 namespace ontologenius {
 
+void ReasonerDictionary::setParameter(const std::string& name, const std::string& value)
+{
+  if(name == "use_id")
+    use_id_ = (value == "true");
+}
+
 void ReasonerDictionary::postReason()
 {
   size_t graph_size;
@@ -44,11 +50,19 @@ void ReasonerDictionary::updateDictionary(ValuedNode* node)
 {
   if (node->flags_.find("dico") == node->flags_.end())
   {
+    if(use_id_)
+      setId(node);
     split(node);
     createLowerCase(node);
     replaceQuote(node);
     node->flags_["dico"].push_back("true");
   }
+}
+
+void ReasonerDictionary::setId(ValuedNode* node)
+{
+  if(node->dictionary_.spoken_["en"].size() == 0)
+    node->dictionary_.spoken_["en"] = std::vector<std::string>(1, node->value());
 }
 
 void ReasonerDictionary::split(ValuedNode* node)

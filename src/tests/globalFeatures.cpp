@@ -69,7 +69,7 @@ TEST(global_tests, language)
   EXPECT_TRUE(onto_ptr->actions.setLang("fr"));
 
   res = onto_ptr->classes.find(test_word);
-  EXPECT_FALSE((res.size() == 1) && (res[0] == "affair"));
+  EXPECT_TRUE((res.size() == 1) && (res[0] == "affair"));
 
   test_word = "affaire";
   res = onto_ptr->classes.find(test_word);
