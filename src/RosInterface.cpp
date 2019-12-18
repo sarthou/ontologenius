@@ -488,6 +488,10 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
       set_res = onto_->individual_graph_.getFrom(params());
     else if(req.action == "getWith")
       set_res = onto_->individual_graph_.getWith(params(), params.depth);
+    else if(req.action == "getDomainOf")
+      set_res = onto_->individual_graph_.getDomainOf(params(), params.depth);
+    else if(req.action == "getRangeOf")
+      set_res = onto_->individual_graph_.getRangeOf(params(), params.depth);
     else if(req.action == "getName")
     {
       auto tmp = onto_->individual_graph_.getName(params(), params.take_id);
@@ -525,7 +529,8 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
     {
       if(req.action == "getUp")
         set_res = onto_->class_graph_.select(set_res, params.selector);
-      else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
+      else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith") ||
+              (req.action == "getDomainOf") || (req.action == "getRangeOf"))
         set_res = onto_->object_property_graph_.select(set_res, params.selector);
       else if((req.action != "find") || (req.action != "findRegex") || (req.action != "findSub") || (req.action != "findFuzzy") || (req.action != "getFrom") || (req.action != "getOn"))
         set_res = onto_->individual_graph_.select(set_res, params.selector);

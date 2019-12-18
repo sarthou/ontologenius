@@ -96,6 +96,36 @@ std::vector<std::string> IndividualClient::getRelationWith(const std::string& na
   return call(srv);
 }
 
+std::vector<std::string> IndividualClient::getDomainOf(const std::string& name, const std::string& selector, int depth)
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "getDomainOf";
+  srv.request.param = name;
+
+  if(selector != "")
+    srv.request.param += " -s " + selector;
+
+  if(depth >= 0)
+    srv.request.param += " -d " + std::to_string(depth);
+
+  return call(srv);
+}
+
+std::vector<std::string> IndividualClient::getRangeOf(const std::string& name, const std::string& selector, int depth)
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "getRangeOf";
+  srv.request.param = name;
+
+  if(selector != "")
+    srv.request.param += " -s " + selector;
+
+  if(depth >= 0)
+    srv.request.param += " -d " + std::to_string(depth);
+
+  return call(srv);
+}
+
 std::vector<std::string> IndividualClient::getType(const std::string& name)
 {
   ontologenius::OntologeniusService srv;

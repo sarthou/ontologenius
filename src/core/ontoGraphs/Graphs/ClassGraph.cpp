@@ -706,12 +706,23 @@ std::unordered_set<std::string> ClassGraph::getWith(const std::string& first_cla
 
 std::unordered_set<std::string> ClassGraph::getDomainOf(const std::string& _class, int depth)
 {
+  ClassBranch_t* branch = container_.find(_class);
+  return std::move(getDomainOf(branch, depth));
+}
+
+std::unordered_set<std::string> ClassGraph::getRangeOf(const std::string& _class, int depth)
+{
+  ClassBranch_t* branch = container_.find(_class);
+  return std::move(getRangeOf(branch, depth));
+}
+
+std::unordered_set<std::string> ClassGraph::getDomainOf(ClassBranch_t* branch, int depth)
+{
   std::unordered_set<std::string> res;
 
-  ClassBranch_t* class_ptr = container_.find(_class);
-  if(class_ptr != nullptr)
+  if(branch != nullptr)
   {
-    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_ptr, depth);
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(branch, depth);
     for(auto& prop : object_property_graph_->all_branchs_)
     {
       for(auto& dom : prop->domains_)
@@ -723,14 +734,13 @@ std::unordered_set<std::string> ClassGraph::getDomainOf(const std::string& _clas
   return res;
 }
 
-std::unordered_set<std::string> ClassGraph::getRangeOf(const std::string& _class, int depth)
+std::unordered_set<std::string> ClassGraph::getRangeOf(ClassBranch_t* branch, int depth)
 {
   std::unordered_set<std::string> res;
 
-  ClassBranch_t* class_ptr = container_.find(_class);
-  if(class_ptr != nullptr)
+  if(branch != nullptr)
   {
-    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_ptr, depth);
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(branch, depth);
     for(auto& prop : object_property_graph_->all_branchs_)
     {
       for(auto& range : prop->ranges_)

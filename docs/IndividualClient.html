@@ -129,6 +129,8 @@
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationFrom">getRelationFrom</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationOn">getRelationOn</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationWith">getRelationWith</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getDomainOf">getDomainOf</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>selector</i> = "", int <i>depth</i> = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRangeOf">getRangeOf</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>selector</i> = "", int <i>depth</i> = -1)</td></tr>
             </tbody>
           </table>
         </div>
@@ -174,7 +176,7 @@
           <p>Gives all the individuals having the given property <i>property</i> and pointing to the individual <i>name</i>.</p>
           <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> class. The default value &quot;&quot; represents no restriction on result.</p>
 
-          <h3 class="fn" id="getWith"><a name="getWith"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getWith</span>(const <span class="type">std::string</span>&amp; <i>name_from</i>, const <span class="type">std::string</span>&amp; <i>name_to</i>, const <span class="type">std::string</span>&amp; <i>selector</i> = "", int <i>depth</i> = -1)</h3>
+          <h3 class="fn" id="getWith"><a name="getWith"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getWith</span>(const <span class="type">std::string</span>&amp; <i>name_from</i>, const <span class="type">std::string</span>&amp; <i>name_to</i>, const <span class="type">std::string</span>&amp; <i>selector</i> = "", <span class="type">int</span> <i>depth</i> = -1)</h3>
           <p>Gives all the properties linking the individual <i>name_from</i> to the individual <i>name_to</i>.</p>
           <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> property. The default value &quot;&quot; represents no restriction on result.</p>
           <p>The optional <i>depth</i> parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
@@ -188,16 +190,26 @@
           <h3 class="fn" id="getRelatedWith"><a name="getRelatedWith"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getRelatedWith</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Gives all the individuals having a property pointing to the individual <i>name</i>.</p>
 
-          <h3 class="fn" id="getRelationFrom"><a name="getRelationFrom"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getRelationFrom</span>(const <span class="type">std::string</span>&amp; <i>name</i>, int <i>depth</i> = -1)</h3>
+          <h3 class="fn" id="getRelationFrom"><a name="getRelationFrom"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getRelationFrom</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">int</span> <i>depth</i> = -1)</h3>
           <p>Gives all the properties applied to the individual <i>name</i>.</p>
           <p>The optional <i>depth</i> parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
 
-          <h3 class="fn" id="getRelationOn"><a name="getRelationOn"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getRelationOn</span>(const <span class="type">std::string</span>&amp; <i>name</i>, int <i>depth</i> = -1)</h3>
+          <h3 class="fn" id="getRelationOn"><a name="getRelationOn"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getRelationOn</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">int</span> <i>depth</i> = -1)</h3>
           <p>Gives all the properties going to the individual <i>name</i>.</p>
           <p>The optional <i>depth</i> parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
 
           <h3 class="fn" id="getRelationWith"><a name="getRelationWith"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getRelationWith</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Gives all the individuals pointed by a property applied to the individual <i>name</i>.</p>
+
+          <h3 class="fn" id="getDomainOf"><a name="getDomainOf"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getDomainOf</span>(const <span class="type">std::string</span>&amp; <i>name</i>, const <span class="type">std::string</span>&amp; <i>selector</i> = "", <span class="type">int</span> <i>depth</i> = -1)</h3>
+          <p>Gives all the properties for which the individual <i>name</i> is part of the domain.</p>
+          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> property. The default value &quot;&quot; represents no restriction on result.</p>
+          <p>The optional <i>depth</i> parameter can be set to limit tree propagation of the individual to a specific value. The default value -1 represents no propagation limitation.</p>
+
+          <h3 class="fn" id="getRangeOf"><a name="getRangeOf"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getRangeOf</span>(const <span class="type">std::string</span>&amp; <i>name</i>, const <span class="type">std::string</span>&amp; <i>selector</i> = "", <span class="type">int</span> <i>depth</i> = -1)</h3>
+          <p>Gives all the properties for which the individual <i>name</i> is part of the range.</p>
+          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> property. The default value &quot;&quot; represents no restriction on result.</p>
+          <p>The optional <i>depth</i> parameter can be set to limit tree propagation of the individual to a specific value. The default value -1 represents no propagation limitation.</p>
 
         </div>
       </div>

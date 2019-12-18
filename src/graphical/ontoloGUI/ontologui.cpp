@@ -132,6 +132,10 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Individual_getFrom, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
     QObject::connect(ui->Individual_getWith, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
     QObject::connect(ui->Individual_getWith, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
+    QObject::connect(ui->Individual_getDomainOf, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
+    QObject::connect(ui->Individual_getDomainOf, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
+    QObject::connect(ui->Individual_getRangeOf, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
+    QObject::connect(ui->Individual_getRangeOf, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
     QObject::connect(ui->Individual_getName, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
     QObject::connect(ui->Individual_getName, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
     QObject::connect(ui->Individual_exist, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
@@ -207,6 +211,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Individual_getOn, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_getFrom, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_getWith, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
+    QObject::connect(ui->Individual_getDomainOf, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
+    QObject::connect(ui->Individual_getRangeOf, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_getName, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_exist, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_findRegex, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));

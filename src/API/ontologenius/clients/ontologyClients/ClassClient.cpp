@@ -137,7 +137,7 @@ std::vector<std::string> ClassClient::getRangeOf(const std::string& name, const 
   ontologenius::OntologeniusService srv;
   srv.request.action = "getRangeOf";
   srv.request.param = name;
-  
+
   if(selector != "")
     srv.request.param += " -s " + selector;
 

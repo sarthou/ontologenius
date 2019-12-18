@@ -70,6 +70,8 @@ public:
   std::unordered_set<std::string> getOn(const std::string& individual, const std::string& property);
   std::unordered_set<std::string> getWith(const std::string& param, int depth = -1);
   std::unordered_set<std::string> getWith(const std::string& first_individual, const std::string& second_individual, int depth = -1);
+  std::unordered_set<std::string> getDomainOf(const std::string& individual, int depth = -1);
+  std::unordered_set<std::string> getRangeOf(const std::string& individual, int depth = -1);
   std::unordered_set<std::string> getUp(IndividualBranch_t* indiv, int depth = -1, unsigned int current_depth = 0);
   std::unordered_set<std::string> getUp(const std::string& individual, int depth = -1);            //C3
   std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& class_selector);

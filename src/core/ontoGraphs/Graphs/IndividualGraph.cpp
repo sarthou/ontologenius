@@ -741,6 +741,42 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
   return res;
 }
 
+std::unordered_set<std::string> IndividualGraph::getDomainOf(const std::string& individual, int depth)
+{
+  IndividualBranch_t* branch = container_.find(individual);
+  std::unordered_set<ClassBranch_t*> classes;
+  getUpPtr(branch, classes, 1);
+
+  std::unordered_set<std::string> res;
+  std::unordered_set<std::string> tmp;
+
+  for(auto c : classes)
+  {
+    tmp = class_graph_->getDomainOf(c, depth);
+    res.insert(tmp.begin(), tmp.end());
+  }
+
+  return res;
+}
+
+std::unordered_set<std::string> IndividualGraph::getRangeOf(const std::string& individual, int depth)
+{
+  IndividualBranch_t* branch = container_.find(individual);
+  std::unordered_set<ClassBranch_t*> classes;
+  getUpPtr(branch, classes, 1);
+
+  std::unordered_set<std::string> res;
+  std::unordered_set<std::string> tmp;
+
+  for(auto c : classes)
+  {
+    tmp = class_graph_->getRangeOf(c, depth);
+    res.insert(tmp.begin(), tmp.end());
+  }
+
+  return res;
+}
+
 std::unordered_set<std::string> IndividualGraph::getUp(IndividualBranch_t* indiv, int depth, unsigned int current_depth)
 {
   current_depth++;
