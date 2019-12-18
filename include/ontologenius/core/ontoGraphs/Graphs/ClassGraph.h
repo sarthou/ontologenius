@@ -64,6 +64,8 @@ public:
   std::unordered_set<std::string> getOn(const std::string& _class, const std::string& property);
   std::unordered_set<std::string> getWith(const std::string& param, int depth = -1);
   std::unordered_set<std::string> getWith(const std::string& first_class, const std::string& second_class, int depth = -1);
+  std::unordered_set<std::string> getDomainOf(const std::string& _class, int depth = -1);
+  std::unordered_set<std::string> getRangeOf(const std::string& _class, int depth = -1);
 
   std::unordered_set<std::string> getDownIndividual(ClassBranch_t* branch);
   void getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res);

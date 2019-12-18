@@ -704,6 +704,44 @@ std::unordered_set<std::string> ClassGraph::getWith(const std::string& first_cla
   return res;
 }
 
+std::unordered_set<std::string> ClassGraph::getDomainOf(const std::string& _class, int depth)
+{
+  std::unordered_set<std::string> res;
+
+  ClassBranch_t* class_ptr = container_.find(_class);
+  if(class_ptr != nullptr)
+  {
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_ptr, depth);
+    for(auto& prop : object_property_graph_->all_branchs_)
+    {
+      for(auto& dom : prop->domains_)
+        if(std::find(up_set.begin(), up_set.end(), dom.elem) != up_set.end())
+          res.insert(prop->value());
+    }
+  }
+
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getRangeOf(const std::string& _class, int depth)
+{
+  std::unordered_set<std::string> res;
+
+  ClassBranch_t* class_ptr = container_.find(_class);
+  if(class_ptr != nullptr)
+  {
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_ptr, depth);
+    for(auto& prop : object_property_graph_->all_branchs_)
+    {
+      for(auto& range : prop->ranges_)
+        if(std::find(up_set.begin(), up_set.end(), range.elem) != up_set.end())
+          res.insert(prop->value());
+    }
+  }
+
+  return res;
+}
+
 void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step)
 {
   if(first_class != nullptr)

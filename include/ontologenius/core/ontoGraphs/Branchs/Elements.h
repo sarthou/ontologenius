@@ -53,6 +53,13 @@ public:
       return true;
     return false;
   }
+
+  bool operator==(const T& other)
+  {
+    if(elem == other)
+      return true;
+    return false;
+  }
 };
 
 template <typename T, typename U>

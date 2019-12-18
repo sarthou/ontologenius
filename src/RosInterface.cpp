@@ -234,6 +234,10 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
       set_res = onto_->class_graph_.getFrom(params());
     else if(req.action == "getWith")
       set_res = onto_->class_graph_.getWith(params(), params.depth);
+    else if(req.action == "getDomainOf")
+      set_res = onto_->class_graph_.getDomainOf(params(), params.depth);
+    else if(req.action == "getRangeOf")
+      set_res = onto_->class_graph_.getRangeOf(params(), params.depth);
     else if(req.action == "find")
       set2vector(onto_->class_graph_.find(params(), params.take_id), res.values);
     else if(req.action == "findSub")
@@ -261,7 +265,8 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
         (req.action == "getDisjoint") || (req.action == "getOn") ||
         (req.action == "getFrom"))
         set_res = onto_->class_graph_.select(set_res, params.selector);
-      else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith"))
+      else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith") ||
+              (req.action == "getDomainOf") || (req.action == "getRangeOf"))
         set_res = onto_->object_property_graph_.select(set_res, params.selector);
     }
 

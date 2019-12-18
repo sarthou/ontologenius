@@ -25,6 +25,9 @@ public:
   std::vector<std::string> getRelationOn(const std::string& name, int depth = -1);
   std::vector<std::string> getRelationWith(const std::string& name);
 
+  std::vector<std::string> getDomainOf(const std::string& name, const std::string& selector = "", int depth = -1);
+  std::vector<std::string> getRangeOf(const std::string& name, const std::string& selector = "", int depth = -1);
+
 private:
 
 };
