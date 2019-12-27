@@ -707,13 +707,13 @@ std::unordered_set<std::string> ClassGraph::getWith(const std::string& first_cla
 std::unordered_set<std::string> ClassGraph::getDomainOf(const std::string& _class, int depth)
 {
   ClassBranch_t* branch = container_.find(_class);
-  return std::move(getDomainOf(branch, depth));
+  return getDomainOf(branch, depth);
 }
 
 std::unordered_set<std::string> ClassGraph::getRangeOf(const std::string& _class, int depth)
 {
   ClassBranch_t* branch = container_.find(_class);
-  return std::move(getRangeOf(branch, depth));
+  return getRangeOf(branch, depth);
 }
 
 std::unordered_set<std::string> ClassGraph::getDomainOf(ClassBranch_t* branch, int depth)
