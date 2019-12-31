@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <set>
 
 #include "ontologenius/core/ontologyIO/writers/NodeWriter.h"
 
@@ -27,8 +28,8 @@ private:
   void writeSubClassOf(ClassBranch_t* branch);
   void writeDisjointWith(ClassBranch_t* branch);
   void writeDisjointWith(std::vector<ClassBranch_t*>& classes);
-  void getDisjoints(ClassBranch_t* class_branch, std::vector<std::string>& disjoints_current);
-  void removeDifferents(std::vector<std::string>& disjoints_current, std::vector<std::string>& disjoints_class);
+  void getDisjointsSets(ClassBranch_t* base, std::set<std::set<ClassBranch_t*>>& res);
+  void getDisjointsSets(ClassBranch_t* last, const std::set<ClassBranch_t*>& base_set, std::set<ClassBranch_t*> restriction_set, std::set<std::set<ClassBranch_t*>>& res);
   void writeObjectProperties(ClassBranch_t* branch);
   void writeDataProperties(ClassBranch_t* branch);
 };

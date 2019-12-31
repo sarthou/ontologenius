@@ -87,74 +87,87 @@ void ClassWriter::writeDisjointWith(ClassBranch_t* branch)
 
 void ClassWriter::writeDisjointWith(std::vector<ClassBranch_t*>& classes)
 {
-  std::vector<std::string> disjoint_done;
-
   std::string start = "    <rdf:Description>\n\
         <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#AllDisjointClasses\"/>\n";
 
   std::string end = "    </rdf:Description>\n";
 
+  std::vector<std::set<std::string>> disjoints_sets;
+  std::set<std::set<ClassBranch_t*>> disjoints_vects;
+
   for(size_t i = 0; i < classes.size(); i++)
   {
     if(classes[i]->disjoints_.size() > 1)
+      getDisjointsSets(classes[i], disjoints_vects);
+  }
+
+  for(auto& disjoints_set : disjoints_vects)
+  {
+    std::string tmp;
+    tmp += "        <owl:members rdf:parseType=\"Collection\">\n";
+
+    for(auto& disj : disjoints_set)
     {
-      if(std::find(disjoint_done.begin(), disjoint_done.end(), classes[i]->value()) == disjoint_done.end())
-      {
-        std::string tmp;
-        std::vector<std::string> disjoints_current;
+      tmp += "             <rdf:Description rdf:about=\"ontologenius#" +
+      disj->value() +
+      "\"/>\n";
+    }
 
-        for(size_t j = 0; j < classes[i]->disjoints_.size(); j++)
-          if(classes[i]->disjoints_[j].infered == false)
-            disjoints_current.push_back(classes[i]->disjoints_[j].elem->value());
-        disjoints_current.push_back(classes[i]->value());
-
-        getDisjoints(classes[i], disjoints_current);
-
-        tmp += "        <owl:members rdf:parseType=\"Collection\">\n";
-
-        for(size_t j = 0; j < disjoints_current.size(); j++)
-        {
-          disjoint_done.push_back(disjoints_current[j]);
-          tmp += "             <rdf:Description rdf:about=\"ontologenius#" +
-          disjoints_current[j] +
-          "\"/>\n";
-        }
-
-        tmp += "        </owl:members>\n";
-        if(disjoints_current.size() != 0)
-        {
-          writeString(start);
-          writeString(tmp);
-          writeString(end);
-        }
-      }
+    tmp += "        </owl:members>\n";
+    if(disjoints_set.size() > 0)
+    {
+      writeString(start);
+      writeString(tmp);
+      writeString(end);
     }
   }
 }
 
-void ClassWriter::getDisjoints(ClassBranch_t* class_branch, std::vector<std::string>& disjoints_current)
+void ClassWriter::getDisjointsSets(ClassBranch_t* base, std::set<std::set<ClassBranch_t*>>& res)
 {
-  for(size_t i = 0; i < class_branch->disjoints_.size(); i++)
+  std::set<ClassBranch_t*> restriction_set;
+
+  for(auto& disjoint : base->disjoints_)
+    restriction_set.insert(disjoint.elem);
+  restriction_set.insert(base);
+
+  for(auto& disjoint : base->disjoints_)
   {
-    std::vector<std::string> disjoints_class;
-    for(size_t j = 0; j < class_branch->disjoints_[i].elem->disjoints_.size(); j++)
-      disjoints_class.push_back(class_branch->disjoints_[i].elem->disjoints_[j].elem->value());
-    disjoints_class.push_back(class_branch->disjoints_[i].elem->value());
-    removeDifferents(disjoints_current, disjoints_class);
+    std::set<ClassBranch_t*> base_set;
+    base_set.insert(base);
+    base_set.insert(disjoint.elem);
+    getDisjointsSets(disjoint.elem, base_set, restriction_set, res);
   }
 }
 
-void ClassWriter::removeDifferents(std::vector<std::string>& disjoints_current, std::vector<std::string>& disjoints_class)
+void ClassWriter::getDisjointsSets(ClassBranch_t* last, const std::set<ClassBranch_t*>& base_set, std::set<ClassBranch_t*> restriction_set, std::set<std::set<ClassBranch_t*>>& res)
 {
-  std::vector<std::string> sames;
-  for(size_t word = 0; word < disjoints_current.size(); word++)
+  std::set<ClassBranch_t*> local_disjoints;
+  for(auto& disjoint : last->disjoints_)
+    local_disjoints.insert(disjoint.elem);
+  std::vector<ClassBranch_t*> new_restriction_vect;
+  std::set_intersection(restriction_set.begin(), restriction_set.end(), local_disjoints.begin(), local_disjoints.end(), std::back_inserter(new_restriction_vect));
+  std::set<ClassBranch_t*> new_restriction_set;
+  for(auto& it : new_restriction_vect)
+    new_restriction_set.insert(it);
+
+  bool leaf = true;
+  for(auto& disjoint : last->disjoints_)
   {
-    std::vector<std::string>::iterator it = find(disjoints_class.begin(), disjoints_class.end(), disjoints_current[word]);
-    if(it != disjoints_class.end())
-      sames.push_back(disjoints_current[word]);
+    if(std::find(restriction_set.begin(), restriction_set.end(), disjoint.elem) != restriction_set.end())
+    {
+      if(std::find(base_set.begin(), base_set.end(), disjoint.elem) == base_set.end())
+      {
+        std::set<ClassBranch_t*> new_set = base_set;
+        new_set.insert(disjoint.elem);
+        getDisjointsSets(disjoint.elem, new_set, new_restriction_set, res);
+        leaf = false;
+      }
+    }
   }
 
-  disjoints_current = sames;
+  if(leaf)
+    res.insert(base_set);
 }
 
 void ClassWriter::writeObjectProperties(ClassBranch_t* branch)
