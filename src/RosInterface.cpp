@@ -597,6 +597,8 @@ void RosInterface::feedThread()
       for(auto notif : notifications)
       {
         std::cout << notif << std::endl;
+        if(name_ != "")
+          notif = "[" + name_ + "]" + notif;
         msg.data = notif;
         feeder_publisher.publish(msg);
       }

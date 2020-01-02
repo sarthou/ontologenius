@@ -3,6 +3,8 @@
 #include "include/ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
 #include "ui_ontologui.h"
 
+#include <QScrollBar>
+
 #include "ontologenius/OntologeniusService.h"
 #include "std_msgs/String.h"
 
@@ -236,6 +238,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->OntologyName, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameChangedSlot(const QString&)));
     QObject::connect(ui->OntologyName, SIGNAL(editingFinished()),this, SLOT(nameEditingFinishedSlot()));
     QObject::connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(currentTabChangedSlot(int)));
+
+    QObject::connect( this, SIGNAL( feederSetHtmlSignal(QString) ), ui->FeederInfo, SLOT( setHtml(QString) ) );
 }
 
 ontoloGUI::~ontoloGUI()
@@ -247,6 +251,7 @@ void ontoloGUI::init(ros::NodeHandle* n)
 {
   n_ = n;
   publishers_["_"] = n_->advertise<std_msgs::String>("ontologenius/insert", 1000);
+  feeder_notifications_subs_["_"] = n_->subscribe("ontologenius/feeder_notifications", 1000, &ontoloGUI::feederCallback, this);
 }
 
 void ontoloGUI::wait()
@@ -660,6 +665,9 @@ void ontoloGUI::addOntologySlot()
       srv.request.action = "copy";
       if(publishers_.find(base_match[1].str()) == publishers_.end())
         publishers_[base_match[1].str()] = n_->advertise<std_msgs::String>("ontologenius/insert/" + base_match[1].str(), 1000);
+
+      if(feeder_notifications_subs_.find(base_match[1].str()) == feeder_notifications_subs_.end())
+        feeder_notifications_subs_[base_match[1].str()] = n_->subscribe("ontologenius/feeder_notifications", 1000, &ontoloGUI::feederCallback, this);
     }
   }
 
@@ -758,6 +766,21 @@ void ontoloGUI::OntologyNameChangedSlot(const QString& text)
 {
   if(ui->OntologyNameAddDel->text() != text)
     ui->OntologyNameAddDel->setText(text);
+}
+
+void ontoloGUI::feederCallback(const std_msgs::String& msg)
+{
+  feeder_notifications_ += "<p>-" + msg.data + "</p>";
+
+  std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+          "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+          "p, li { white-space: pre-wrap; }"
+          "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+          "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + feeder_notifications_ + "<br></span></p></body></html>";
+
+  ui->FeederInfo->moveCursor(QTextCursor::End);
+  feederSetHtmlSignal(QString::fromStdString(html));
+  ui->FeederInfo->ensureCursorVisible();
 }
 
 void ontoloGUI::feederAddSlot()

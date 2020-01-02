@@ -3,10 +3,13 @@
 
 #include <QMainWindow>
 #include "include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
+#include <QTextCursor>
 
 #include <ros/ros.h>
 #include <vector>
 #include <string>
+
+#include "std_msgs/String.h"
 
 namespace Ui {
 class ontoloGUI;
@@ -28,7 +31,11 @@ public:
 private:
   Ui::ontoloGUI *ui;
   ros::NodeHandle* n_;
+
   std::map<std::string, ros::Publisher> publishers_;
+  std::map<std::string, ros::Subscriber> feeder_notifications_subs_;
+  std::string feeder_notifications_;
+
   std::vector<std::string> reasoners_names_;
   std::vector<std::string> reasoners_description_;
 
@@ -73,8 +80,12 @@ public slots:
   void OntologyNameAddDelChangedSlot(const QString&);
   void OntologyNameChangedSlot(const QString&);
 
+  void feederCallback(const std_msgs::String& msg);
   void feederAddSlot();
   void feederDelSlot();
+
+signals:
+  void feederSetHtmlSignal(QString);
 };
 
 #endif // ONTOLOGUI_H

@@ -2,8 +2,20 @@
 #include "include/ontologenius/graphical/ontoloGUI/DarkStyle.h"
 #include <QApplication>
 
+#include <thread>
+
 #include <ros/ros.h>
 #include <ros/package.h>
+
+void spinThread(bool* run)
+{
+  ros::Rate r(100);
+  while(*run == true)
+  {
+    ros::spinOnce();
+    r.sleep();
+  }
+}
 
 int main(int argc, char *argv[])
 {
@@ -22,6 +34,7 @@ int main(int argc, char *argv[])
     ros::init(argc, argv, "ontoloGUI");
 
     ros::NodeHandle n;
+    bool run = true;
 
     w.init(&n);
     w.wait();
@@ -29,5 +42,12 @@ int main(int argc, char *argv[])
     w.start();
     w.loadReasoners();
 
-    return a.exec();
+    std::thread spin_thread(spinThread,&run);
+
+    auto a_exec = a.exec();
+
+    run = false;
+    spin_thread.join();
+
+    return a_exec;
 }
