@@ -19,6 +19,7 @@ public:
   void addLanguage(const std::string& from, const std::string& lang, const std::string& name);
   void addConcept(const std::string& from);
 
+  void removeProperty(const std::string& from, const std::string& property);
   void removeProperty(const std::string& from, const std::string& property, const std::string& on);
   void removeProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value);
   void removeInheritage(const std::string& from, const std::string& on);

@@ -122,8 +122,9 @@
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addInheritage">addInheritage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>on</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addLanguage">addLanguage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>lang</i>, const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addConcept">addConcept</a></b>(const std::string&amp; <i>from</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty">removeProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>on</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty">removeProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>type</i>, const std::string&amp; <i>value</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty0">removeProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty1">removeProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>on</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty2">removeProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>type</i>, const std::string&amp; <i>value</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeInheritage">removeInheritage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>on</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeLanguage">removeLanguage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>lang</i>, const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeConcept">removeConcept</a></b>(const std::string&amp; <i>from</i>)</td></tr>
@@ -165,11 +166,15 @@
           <h3 class="fn" id="addConcept"><a name="addConcept"></a>FeederPublisher::<span class="name">addConcept</span>(const <span class="type">std::string</span>&amp; <i>from</i>)</h3>
           <p>Adds the class or individual <i>from</i>.</p>
 
-          <h3 class="fn" id="removeProperty"><a name="removeProperty"></a>FeederPublisher::<span class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>on</i>)</h3>
+          <h3 class="fn" id="removeProperty0"><a name="removeProperty0"></a>FeederPublisher::<span class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>)</h3>
+          <p>Removes the fact that <i>from</i> is linked to any object by the property <i>property</i>.</p>
+          <p>After this action, knowledge of the property is not removed.</p>
+
+          <h3 class="fn" id="removeProperty1"><a name="removeProperty1"></a>FeederPublisher::<span class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>on</i>)</h3>
           <p>Removes the fact that <i>from</i> is linked with <i>on</i> by the property <i>property</i>.</p>
           <p>After this action, knowledge of the property is not removed.</p>
 
-          <h3 class="fn" id="removeProperty"><a name="removeProperty"></a>FeederPublisher::<span class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>type</i>, const <span class="type">std::string</span>&amp; <i>value</i>)</h3>
+          <h3 class="fn" id="removeProperty2"><a name="removeProperty2"></a>FeederPublisher::<span class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>type</i>, const <span class="type">std::string</span>&amp; <i>value</i>)</h3>
           <p>Removes the fact that <i>from</i> is linked to the data <i>value</i> of type <i>type</i> by the property <i>property</i>.</p>
           <p>After this action, knowledge of the property is not removed.</p>
 

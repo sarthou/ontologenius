@@ -30,6 +30,14 @@ void FeederPublisher::addConcept(const std::string& from)
   publish(msg);
 }
 
+void FeederPublisher::removeProperty(const std::string& from, const std::string& property)
+{
+  std::string msg = "[del]" + from + "|" + property + "|_";
+  publish(msg);
+  msg += ":_";
+  publish(msg);
+}
+
 void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& on)
 {
   std::string msg = "[del]" + from + "|" + property + "|" + on;
