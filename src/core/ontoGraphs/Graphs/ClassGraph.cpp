@@ -697,7 +697,7 @@ std::unordered_set<std::string> ClassGraph::getWith(const std::string& first_cla
     for(auto up : up_set)
       getWith(up, second_class, res, doNotTake, current_depth, found_depth, depth, next_step);
 
-    up_set = next_step;
+    up_set = std::move(next_step);
     current_depth++;
   }
 
@@ -780,7 +780,7 @@ void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_c
     if(tmp_res.size() != 0)
       if(current_depth < (uint32_t)found_depth)
       {
-        res = tmp_res;
+        res = std::move(tmp_res);
         found_depth = current_depth;
         return;
       }
