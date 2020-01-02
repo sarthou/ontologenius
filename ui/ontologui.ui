@@ -1111,6 +1111,163 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="FeederTab">
+       <attribute name="title">
+        <string>Feeder</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_32">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_33">
+
+               <item >
+                <widget class="QLabel" name="label_17">
+                  <property name="minimumSize">
+                   <size>
+                    <width>75</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>75</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Subject : </string>
+                 </property>
+                </widget>
+               </item>
+
+               <item>
+                <widget class="QLineEdit" name="FeederSubject">
+                 </widget>
+               </item>
+
+             </layout>
+           </item>
+
+           <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_34">
+
+               <item >
+                <widget class="QLabel" name="label_18">
+                  <property name="minimumSize">
+                   <size>
+                    <width>75</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>75</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Property : </string>
+                 </property>
+                </widget>
+               </item>
+
+               <item>
+                <widget class="QLineEdit" name="FeederProperty">
+                 </widget>
+               </item>
+
+             </layout>
+           </item>
+
+           <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_35">
+
+               <item >
+                <widget class="QLabel" name="label_19">
+                  <property name="minimumSize">
+                   <size>
+                    <width>75</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>75</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Object : </string>
+                 </property>
+                </widget>
+               </item>
+
+               <item>
+                <widget class="QLineEdit" name="FeederObject">
+                 </widget>
+               </item>
+
+             </layout>
+           </item>
+
+           <item>
+            <widget class="QPushButtonExtended" name="FeederAddButton">
+             <property name="text">
+              <string>ADD</string>
+             </property>
+            </widget>
+           </item>
+
+           <item>
+            <widget class="QPushButtonExtended" name="FeederDelButton">
+             <property name="text">
+              <string>REMOVE</string>
+             </property>
+            </widget>
+           </item>
+
+         </layout>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="FeederInfo">
+          <property name="maximumSize">
+           <size>
+            <width>350</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="cursorWidth">
+           <number>1</number>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::NoTextInteraction</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="ManagerTab">
        <attribute name="title">
         <string>Manager</string>
@@ -1466,7 +1623,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="CloseButton">
+         <widget class="QPushButtonExtended" name="CloseButton">
           <property name="maximumSize">
            <size>
             <width>200</width>

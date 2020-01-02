@@ -4,6 +4,7 @@
 #include "ui_ontologui.h"
 
 #include "ontologenius/OntologeniusService.h"
+#include "std_msgs/String.h"
 
 #include <regex>
 
@@ -228,6 +229,9 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->SaveButton, SIGNAL(clicked()),this, SLOT(saveOntologySlot()));
     QObject::connect(ui->DiffPushButton, SIGNAL(clicked()),this, SLOT(differenceOntologySlot()));
 
+    QObject::connect(ui->FeederAddButton, SIGNAL(clicked()),this, SLOT(feederAddSlot()));
+    QObject::connect(ui->FeederDelButton, SIGNAL(clicked()),this, SLOT(feederDelSlot()));
+
     QObject::connect(ui->OntologyNameAddDel, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameAddDelChangedSlot(const QString&)));
     QObject::connect(ui->OntologyName, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameChangedSlot(const QString&)));
     QObject::connect(ui->OntologyName, SIGNAL(editingFinished()),this, SLOT(nameEditingFinishedSlot()));
@@ -237,6 +241,12 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
 ontoloGUI::~ontoloGUI()
 {
     delete ui;
+}
+
+void ontoloGUI::init(ros::NodeHandle* n)
+{
+  n_ = n;
+  publishers_["_"] = n_->advertise<std_msgs::String>("ontologenius/insert", 1000);
 }
 
 void ontoloGUI::wait()
@@ -648,6 +658,8 @@ void ontoloGUI::addOntologySlot()
     if (base_match.size() == 3)
     {
       srv.request.action = "copy";
+      if(publishers_.find(base_match[1].str()) == publishers_.end())
+        publishers_[base_match[1].str()] = n_->advertise<std_msgs::String>("ontologenius/insert/" + base_match[1].str(), 1000);
     }
   }
 
@@ -746,4 +758,24 @@ void ontoloGUI::OntologyNameChangedSlot(const QString& text)
 {
   if(ui->OntologyNameAddDel->text() != text)
     ui->OntologyNameAddDel->setText(text);
+}
+
+void ontoloGUI::feederAddSlot()
+{
+  std_msgs::String msg;
+  msg.data = "[ADD]" + ui->FeederSubject->text().toStdString() + "|" + ui->FeederProperty->text().toStdString() + "|" + ui->FeederObject->text().toStdString();
+  std::string onto_ns = ui->OntologyName->text().toStdString();
+  if(onto_ns == "")
+    onto_ns = "_";
+  publishers_[onto_ns].publish(msg);
+}
+
+void ontoloGUI::feederDelSlot()
+{
+  std_msgs::String msg;
+  msg.data = "[DEL]" + ui->FeederSubject->text().toStdString() + "|" + ui->FeederProperty->text().toStdString() + "|" + ui->FeederObject->text().toStdString();
+  std::string onto_ns = ui->OntologyName->text().toStdString();
+  if(onto_ns == "")
+    onto_ns = "_";
+  publishers_[onto_ns].publish(msg);
 }

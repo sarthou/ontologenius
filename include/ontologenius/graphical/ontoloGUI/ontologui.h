@@ -20,7 +20,7 @@ public:
   explicit ontoloGUI(QWidget *parent = 0);
   ~ontoloGUI();
 
-  void init(ros::NodeHandle* n) {n_ = n; }
+  void init(ros::NodeHandle* n);
   void wait();
   void start();
   void loadReasoners();
@@ -28,6 +28,7 @@ public:
 private:
   Ui::ontoloGUI *ui;
   ros::NodeHandle* n_;
+  std::map<std::string, ros::Publisher> publishers_;
   std::vector<std::string> reasoners_names_;
   std::vector<std::string> reasoners_description_;
 
@@ -71,6 +72,9 @@ public slots:
   void differenceOntologySlot();
   void OntologyNameAddDelChangedSlot(const QString&);
   void OntologyNameChangedSlot(const QString&);
+
+  void feederAddSlot();
+  void feederDelSlot();
 };
 
 #endif // ONTOLOGUI_H

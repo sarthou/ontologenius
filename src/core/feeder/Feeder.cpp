@@ -10,7 +10,7 @@ bool Feeder::run()
 {
   if(onto_ == nullptr)
     return false;
-    
+
   bool has_run = false;
   std::queue<feed_t> feeds = feed_storage_.get();
 
@@ -34,7 +34,7 @@ bool Feeder::run()
     }
     else if(feed.on_ != "")
     {
-      if((feed.prop_ == "+") || (feed.prop_ == "rdfs:subClassOf"))
+      if((feed.prop_ == "+") || (feed.prop_ == "rdfs:subClassOf") || (feed.prop_ == "isA"))
         addInheritage(feed);
       //if((feed.prop_ == "<-") || (feed.prop_ == "owl:inverseOf"))
         //addInverseOf(feed);
