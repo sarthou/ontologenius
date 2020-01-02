@@ -1100,7 +1100,7 @@ bool ClassGraph::removeProperty(std::string& class_from, std::string& property, 
     {
       if(branch_from->object_relations_[i].first->value() == property)
       {
-        if(branch_from->object_relations_[i].second->value() == class_on)
+        if((class_on == "_") || (branch_from->object_relations_[i].second->value() == class_on))
         {
           branch_from->object_relations_[i].second->updated_ = true;
           branch_from->object_relations_.erase(branch_from->object_relations_.begin() + i);
@@ -1126,8 +1126,8 @@ bool ClassGraph::removeProperty(std::string& class_from, std::string& property, 
     {
       if(branch_from->data_relations_[i].first->value() == property)
       {
-        if((branch_from->data_relations_[i].second.type_ == type) &&
-          (branch_from->data_relations_[i].second.value_ == data))
+        if(( (type == "_") || (branch_from->data_relations_[i].second.type_ == type)) &&
+          ((data == "_") || (branch_from->data_relations_[i].second.value_ == data)))
         {
           branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
         }

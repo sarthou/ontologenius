@@ -1549,7 +1549,7 @@ bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectProp
   {
     if(branch_from->object_relations_[i].first == property)
     {
-      if(branch_from->object_relations_[i].second == branch_on)
+      if((branch_on == nullptr) || (branch_from->object_relations_[i].second == branch_on))
       {
         removePropertyInverse(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
         removePropertySymetric(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
@@ -1569,7 +1569,7 @@ bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectProp
   if(updated == true)
     setObjectPropertiesUpdated(branch_from->object_relations_);
 
-  return true;
+  return updated;
 }
 
 bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& property, std::string& indiv_on)
@@ -1577,12 +1577,21 @@ bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& prope
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
   {
-    IndividualBranch_t* branch_on = findBranch(indiv_on);
-    if(branch_on != nullptr)
+    if(indiv_on != "_")
+    {
+      IndividualBranch_t* branch_on = findBranch(indiv_on);
+      if(branch_on != nullptr)
+      {
+        ObjectPropertyBranch_t* branch_property = object_property_graph_->findBranch(property);
+        if(branch_property != nullptr)
+          return removeProperty(branch_from, branch_property, branch_on);
+      }
+    }
+    else
     {
       ObjectPropertyBranch_t* branch_property = object_property_graph_->findBranch(property);
       if(branch_property != nullptr)
-        removeProperty(branch_from, branch_property, branch_on);
+        return removeProperty(branch_from, branch_property, nullptr);
     }
   }
   return false;
@@ -1597,8 +1606,8 @@ bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& prope
     {
       if(branch_from->data_relations_[i].first->value() == property)
       {
-        if((branch_from->data_relations_[i].second.type_ == type) &&
-          (branch_from->data_relations_[i].second.value_ == data))
+        if(((type == "_") || (branch_from->data_relations_[i].second.type_ == type)) &&
+          ((data == "_") || (branch_from->data_relations_[i].second.value_ == data)))
           branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
         else
           i++;
