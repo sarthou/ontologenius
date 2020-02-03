@@ -1,4 +1,4 @@
-#include "ontoloGenius/graphical/Drawers/DataPropertyDrawer.h"
+#include "ontologenius/graphical/Drawers/DataPropertyDrawer.h"
 
 #include <iostream>
 

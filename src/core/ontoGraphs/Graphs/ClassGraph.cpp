@@ -1,11 +1,11 @@
-#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
 #include <iostream>
 #include <algorithm>
 
-#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
 namespace ontologenius {
 
@@ -122,8 +122,6 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
     addDataProperty(me, data_relation);
 
   me->setSteady_dictionary(object_vector.dictionary_);
-  if(me->dictionary_.spoken_.find("en") == me->dictionary_.spoken_.end())
-    me->dictionary_.spoken_["en"].push_back(me->value());
   me->setSteady_muted_dictionary(object_vector.muted_dictionary_);
 
   mitigate(me);
@@ -699,8 +697,56 @@ std::unordered_set<std::string> ClassGraph::getWith(const std::string& first_cla
     for(auto up : up_set)
       getWith(up, second_class, res, doNotTake, current_depth, found_depth, depth, next_step);
 
-    up_set = next_step;
+    up_set = std::move(next_step);
     current_depth++;
+  }
+
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getDomainOf(const std::string& _class, int depth)
+{
+  ClassBranch_t* branch = container_.find(_class);
+  return getDomainOf(branch, depth);
+}
+
+std::unordered_set<std::string> ClassGraph::getRangeOf(const std::string& _class, int depth)
+{
+  ClassBranch_t* branch = container_.find(_class);
+  return getRangeOf(branch, depth);
+}
+
+std::unordered_set<std::string> ClassGraph::getDomainOf(ClassBranch_t* branch, int depth)
+{
+  std::unordered_set<std::string> res;
+
+  if(branch != nullptr)
+  {
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(branch, depth);
+    for(auto& prop : object_property_graph_->all_branchs_)
+    {
+      for(auto& dom : prop->domains_)
+        if(std::find(up_set.begin(), up_set.end(), dom.elem) != up_set.end())
+          res.insert(prop->value());
+    }
+  }
+
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getRangeOf(ClassBranch_t* branch, int depth)
+{
+  std::unordered_set<std::string> res;
+
+  if(branch != nullptr)
+  {
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(branch, depth);
+    for(auto& prop : object_property_graph_->all_branchs_)
+    {
+      for(auto& range : prop->ranges_)
+        if(std::find(up_set.begin(), up_set.end(), range.elem) != up_set.end())
+          res.insert(prop->value());
+    }
   }
 
   return res;
@@ -734,7 +780,7 @@ void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_c
     if(tmp_res.size() != 0)
       if(current_depth < (uint32_t)found_depth)
       {
-        res = tmp_res;
+        res = std::move(tmp_res);
         found_depth = current_depth;
         return;
       }
@@ -1054,7 +1100,7 @@ bool ClassGraph::removeProperty(std::string& class_from, std::string& property, 
     {
       if(branch_from->object_relations_[i].first->value() == property)
       {
-        if(branch_from->object_relations_[i].second->value() == class_on)
+        if((class_on == "_") || (branch_from->object_relations_[i].second->value() == class_on))
         {
           branch_from->object_relations_[i].second->updated_ = true;
           branch_from->object_relations_.erase(branch_from->object_relations_.begin() + i);
@@ -1080,8 +1126,8 @@ bool ClassGraph::removeProperty(std::string& class_from, std::string& property, 
     {
       if(branch_from->data_relations_[i].first->value() == property)
       {
-        if((branch_from->data_relations_[i].second.type_ == type) &&
-          (branch_from->data_relations_[i].second.value_ == data))
+        if(( (type == "_") || (branch_from->data_relations_[i].second.type_ == type)) &&
+          ((data == "_") || (branch_from->data_relations_[i].second.value_ == data)))
         {
           branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
         }

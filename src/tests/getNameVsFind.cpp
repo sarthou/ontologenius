@@ -8,7 +8,7 @@
 
 #include <ros/ros.h>
 
-#include "ontoloGenius/utility/OntologyManipulator.h"
+#include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
 class FileReader
 {

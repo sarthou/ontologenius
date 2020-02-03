@@ -1,4 +1,4 @@
-# ontoloGenius architecture
+# ontologenius architecture
 
 In the source and include folder, you will find several folders each containing part of the project. This architecture file is intended to make you understand the overall architecture of the project by presenting the various sub-architecture.
 

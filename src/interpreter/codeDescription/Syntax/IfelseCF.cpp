@@ -1,7 +1,7 @@
-#include "ontoloGenius/interpreter/codeDescription/Syntax/IfelseCF.h"
+#include "ontologenius/interpreter/codeDescription/Syntax/IfelseCF.h"
 
-#include "ontoloGenius/interpreter/codeDescription/Code.h"
-#include "ontoloGenius/interpreter/Error.h"
+#include "ontologenius/interpreter/codeDescription/Code.h"
+#include "ontologenius/interpreter/Error.h"
 
 namespace ontologenius {
 

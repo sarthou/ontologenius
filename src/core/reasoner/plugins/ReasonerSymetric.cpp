@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/reasoner/plugins/ReasonerSymetric.h"
+#include "ontologenius/core/reasoner/plugins/ReasonerSymetric.h"
 
 #include <pluginlib/class_list_macros.h>
 

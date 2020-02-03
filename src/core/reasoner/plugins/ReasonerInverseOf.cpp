@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/reasoner/plugins/ReasonerInverseOf.h"
+#include "ontologenius/core/reasoner/plugins/ReasonerInverseOf.h"
 
 #include <pluginlib/class_list_macros.h>
 

@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/ontoGraphs/Ontology.h"
 
 #include <chrono>
 #include <ros/package.h>

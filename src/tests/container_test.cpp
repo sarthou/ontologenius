@@ -7,9 +7,9 @@
 
 #include <ros/ros.h>
 
-#include "ontoloGenius/core/ontoGraphs/Branchs/ValuedNode.h"
-#include "ontoloGenius/core/ontoGraphs/BranchContainer/BranchContainerDyn.h"
-#include "ontoloGenius/core/ontoGraphs/BranchContainer/BranchContainerMap.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
+#include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerDyn.h"
+#include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerMap.h"
 
 class FileReader
 {

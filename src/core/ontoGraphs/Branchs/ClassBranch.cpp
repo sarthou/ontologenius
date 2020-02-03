@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
 #include <algorithm>
 

@@ -1,4 +1,4 @@
-#include "include/ontoloGenius/graphical/ontoloGUI/QCheckBoxExtended.h"
+#include "include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
 
 #include <QWidget>
 #include <QEvent>

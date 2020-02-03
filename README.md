@@ -12,7 +12,7 @@ This repository is a ROS package to link, explore and interrogate ontologies.
 
 [**2. Create ontology**](https://github.com/sarthou/ontologenius/wiki/Create-ontology)
 
-[**3. Launch ontoloGenius**](https://github.com/sarthou/ontologenius/wiki/Launch-ontoloGenius)
+[**3. Launch ontologenius**](https://github.com/sarthou/ontologenius/wiki/Launch-ontoloGenius)
 
 [**4. Load ontology**](https://github.com/sarthou/ontologenius/wiki/Load-ontology)
 
@@ -25,7 +25,7 @@ This repository is a ROS package to link, explore and interrogate ontologies.
 
 [**7. Reason**](https://github.com/sarthou/ontologenius/wiki/Reason)
 
-[**8. Program with ontoloGenius**](https://github.com/sarthou/ontologenius/wiki/Program-with-ontoloGenius)
+[**8. Program with ontologenius**](https://github.com/sarthou/ontologenius/wiki/Program-with-ontoloGenius)
 
 [**9. OntoloGUI**](https://github.com/sarthou/ontologenius/wiki/ontoloGUI)
 
@@ -44,4 +44,4 @@ On this launcher file, you will find an argument indicating the path to the onto
 You can add your own ontology files in the argument if you want them to be loaded at the beginning of the program.
 
 [Release-Url]: https://sarthou.github.io/ontologenius/
-[Release-image]: http://img.shields.io/badge/release-v0.2.4-1eb0fc.svg
+[Release-image]: http://img.shields.io/badge/release-v0.3.0-1eb0fc.svg

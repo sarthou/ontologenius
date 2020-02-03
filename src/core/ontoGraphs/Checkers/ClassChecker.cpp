@@ -1,9 +1,9 @@
-#include "ontoloGenius/core/ontoGraphs/Checkers/ClassChecker.h"
+#include "ontologenius/core/ontoGraphs/Checkers/ClassChecker.h"
 
 #include <algorithm>
 
-#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
 namespace ontologenius {
 

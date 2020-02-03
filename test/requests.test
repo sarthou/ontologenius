@@ -3,5 +3,5 @@
     <arg name="intern_file" default="none"/>
   </include>
   <arg name='TESTDURATION' value='10' />
-  <test pkg="ontologenius" type="ontoloGenius_requests_tester" test-name="ontoloGenius_requests_tester" time-limit="$(arg TESTDURATION)" retry="0" />
+  <test pkg="ontologenius" type="ontologenius_requests_tester" test-name="ontologenius_requests_tester" time-limit="$(arg TESTDURATION)" retry="0" />
 </launch>

@@ -4,5 +4,5 @@
     <arg name="files" default=""/>
   </include>
   <arg name='TESTDURATION' value='50' />
-  <test pkg="ontologenius" type="ontoloGenius_multi_tester" test-name="ontoloGenius_multi_tester" time-limit="$(arg TESTDURATION)" retry="0" />
+  <test pkg="ontologenius" type="ontologenius_multi_tester" test-name="ontologenius_multi_tester" time-limit="$(arg TESTDURATION)" retry="0" />
 </launch>

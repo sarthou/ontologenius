@@ -1,13 +1,13 @@
-#include "ontoloGenius/core/ontoGraphs/Graphs/IndividualGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
 #include <random>
 #include <algorithm>
 
-#include "ontoloGenius/core/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
-#include "ontoloGenius/core/Algorithms/LevenshteinDistance.h"
+#include "ontologenius/core/Algorithms/LevenshteinDistance.h"
 
 namespace ontologenius {
 
@@ -131,8 +131,6 @@ void IndividualGraph::add(std::string value, IndividualVectors_t& individual_vec
   }
 
   me->setSteady_dictionary(individual_vector.dictionary_);
-  if(me->dictionary_.spoken_.find("en") == me->dictionary_.spoken_.end())
-    me->dictionary_.spoken_["en"].push_back(me->value());
   me->setSteady_muted_dictionary(individual_vector.muted_dictionary_);
 
   individuals_.push_back(me);
@@ -743,6 +741,40 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
   return res;
 }
 
+std::unordered_set<std::string> IndividualGraph::getDomainOf(const std::string& individual, int depth)
+{
+  IndividualBranch_t* branch = container_.find(individual);
+  std::unordered_set<ClassBranch_t*> classes;
+  getUpPtr(branch, classes, 1);
+
+  std::unordered_set<std::string> res;
+
+  for(auto c : classes)
+  {
+    std::unordered_set<std::string> tmp = class_graph_->getDomainOf(c, depth);
+    res.insert(tmp.begin(), tmp.end());
+  }
+
+  return res;
+}
+
+std::unordered_set<std::string> IndividualGraph::getRangeOf(const std::string& individual, int depth)
+{
+  IndividualBranch_t* branch = container_.find(individual);
+  std::unordered_set<ClassBranch_t*> classes;
+  getUpPtr(branch, classes, 1);
+
+  std::unordered_set<std::string> res;
+
+  for(auto c : classes)
+  {
+    std::unordered_set<std::string> tmp = class_graph_->getRangeOf(c, depth);
+    res.insert(tmp.begin(), tmp.end());
+  }
+
+  return res;
+}
+
 std::unordered_set<std::string> IndividualGraph::getUp(IndividualBranch_t* indiv, int depth, unsigned int current_depth)
 {
   current_depth++;
@@ -851,7 +883,7 @@ std::unordered_set<std::string> IndividualGraph::select(std::unordered_set<std::
   return res;
 }
 
-std::string IndividualGraph::getName(const std::string& value)
+std::string IndividualGraph::getName(const std::string& value, bool use_default)
 {
   std::string res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
@@ -860,6 +892,7 @@ std::string IndividualGraph::getName(const std::string& value)
   if(branch != nullptr)
   {
     if(branch->dictionary_.spoken_.find(language_) != branch->dictionary_.spoken_.end())
+    {
       if(branch->dictionary_.spoken_[language_].size())
       {
         std::unordered_set<size_t> tested;
@@ -883,9 +916,10 @@ std::string IndividualGraph::getName(const std::string& value)
         if(res == "")
           res = branch->dictionary_.spoken_[this->language_][0];
       }
-      else
+      else if(use_default)
         res = value;
-    else
+    }
+    else if(use_default)
       res = value;
   }
 
@@ -933,12 +967,16 @@ std::vector<std::string> IndividualGraph::getEveryNames(const std::string& value
   return res;
 }
 
-std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
+std::unordered_set<std::string> IndividualGraph::find(const std::string& value, bool use_default)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(size_t i = 0; i < individuals_.size(); i++)
   {
+    if(use_default)
+      if(individuals_[i]-> value() == value)
+        res.insert(individuals_[i]->value());
+
     if(individuals_[i]->dictionary_.spoken_.find(language_) != individuals_[i]->dictionary_.spoken_.end())
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_.spoken_[language_].size(); dic_i++)
         if(individuals_[i]->dictionary_.spoken_[language_][dic_i] == value)
@@ -952,13 +990,20 @@ std::unordered_set<std::string> IndividualGraph::find(const std::string& value)
   return res;
 }
 
-std::unordered_set<std::string> IndividualGraph::findSub(const std::string& value)
+std::unordered_set<std::string> IndividualGraph::findSub(const std::string& value, bool use_default)
 {
   std::unordered_set<std::string> res;
   std::smatch match;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(size_t i = 0; i < individuals_.size(); i++)
   {
+    if(use_default)
+    {
+      std::regex regex("\\b(" + individuals_[i]-> value() + ")([^ ]*)");
+      if(std::regex_search(value, match, regex))
+        res.insert(individuals_[i]->value());
+    }
+
     if(individuals_[i]->dictionary_.spoken_.find(language_) != individuals_[i]->dictionary_.spoken_.end())
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_.spoken_[language_].size(); dic_i++)
       {
@@ -978,7 +1023,7 @@ std::unordered_set<std::string> IndividualGraph::findSub(const std::string& valu
   return res;
 }
 
-std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& regex)
+std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& regex, bool use_default)
 {
   std::unordered_set<std::string> res;
   std::regex base_regex(regex);
@@ -987,6 +1032,13 @@ std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& re
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(size_t i = 0; i < individuals_.size(); i++)
   {
+    if(use_default)
+    {
+      std::string tmp = individuals_[i]->value();
+      if(std::regex_match(tmp, match, base_regex))
+        res.insert(individuals_[i]->value());
+    }
+
     if(individuals_[i]->dictionary_.spoken_.find(language_) != individuals_[i]->dictionary_.spoken_.end())
       for(size_t dic_i = 0; dic_i < individuals_[i]->dictionary_.spoken_[language_].size(); dic_i++)
         if(std::regex_match(individuals_[i]->dictionary_.spoken_[language_][dic_i], match, base_regex))
@@ -1000,7 +1052,7 @@ std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& re
   return res;
 }
 
-std::unordered_set<std::string> IndividualGraph::findFuzzy(const std::string& value, double threshold)
+std::unordered_set<std::string> IndividualGraph::findFuzzy(const std::string& value, bool use_default, double threshold)
 {
   double lower_cost = 100000;
   double tmp_cost = 100000;
@@ -1011,6 +1063,17 @@ std::unordered_set<std::string> IndividualGraph::findFuzzy(const std::string& va
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(auto branch : individuals_)
   {
+    if(use_default)
+      if((tmp_cost = dist.get(branch-> value(), value)) <= lower_cost)
+      {
+        if(tmp_cost != lower_cost)
+        {
+          lower_cost = tmp_cost;
+          res.clear();
+        }
+        res.insert(branch->value());
+      }
+
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
       for(size_t i = 0; i < branch->dictionary_.spoken_[this->language_].size(); i++)
         if((tmp_cost = dist.get(branch->dictionary_.spoken_[this->language_][i], value)) <= lower_cost)
@@ -1486,7 +1549,7 @@ bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectProp
   {
     if(branch_from->object_relations_[i].first == property)
     {
-      if(branch_from->object_relations_[i].second == branch_on)
+      if((branch_on == nullptr) || (branch_from->object_relations_[i].second == branch_on))
       {
         removePropertyInverse(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
         removePropertySymetric(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
@@ -1506,7 +1569,7 @@ bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectProp
   if(updated == true)
     setObjectPropertiesUpdated(branch_from->object_relations_);
 
-  return true;
+  return updated;
 }
 
 bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& property, std::string& indiv_on)
@@ -1514,12 +1577,21 @@ bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& prope
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
   {
-    IndividualBranch_t* branch_on = findBranch(indiv_on);
-    if(branch_on != nullptr)
+    if(indiv_on != "_")
+    {
+      IndividualBranch_t* branch_on = findBranch(indiv_on);
+      if(branch_on != nullptr)
+      {
+        ObjectPropertyBranch_t* branch_property = object_property_graph_->findBranch(property);
+        if(branch_property != nullptr)
+          return removeProperty(branch_from, branch_property, branch_on);
+      }
+    }
+    else
     {
       ObjectPropertyBranch_t* branch_property = object_property_graph_->findBranch(property);
       if(branch_property != nullptr)
-        removeProperty(branch_from, branch_property, branch_on);
+        return removeProperty(branch_from, branch_property, nullptr);
     }
   }
   return false;
@@ -1534,8 +1606,8 @@ bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& prope
     {
       if(branch_from->data_relations_[i].first->value() == property)
       {
-        if((branch_from->data_relations_[i].second.type_ == type) &&
-          (branch_from->data_relations_[i].second.value_ == data))
+        if(((type == "_") || (branch_from->data_relations_[i].second.type_ == type)) &&
+          ((data == "_") || (branch_from->data_relations_[i].second.value_ == data)))
           branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
         else
           i++;

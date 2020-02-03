@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 
-#include "ontoloGenius/utility/OntologyManipulator.h"
+#include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
 OntologyManipulator* onto_ptr;
 
@@ -69,7 +69,7 @@ TEST(global_tests, language)
   EXPECT_TRUE(onto_ptr->actions.setLang("fr"));
 
   res = onto_ptr->classes.find(test_word);
-  EXPECT_FALSE((res.size() == 1) && (res[0] == "affair"));
+  EXPECT_TRUE((res.size() == 1) && (res[0] == "affair"));
 
   test_word = "affaire";
   res = onto_ptr->classes.find(test_word);

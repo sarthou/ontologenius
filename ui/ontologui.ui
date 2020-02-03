@@ -293,6 +293,30 @@
          </layout>
         </item>
         <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_30">
+          <item>
+           <widget class="QPushButtonExtended" name="Class_getDomainOf">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getDomainOf&lt;/span&gt; will give you all the properties for which the class given in the parameter is part of the domain.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &quot;{param: 'woman', action: 'getDomainOf'}&quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt; lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getDomainOf</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Class_getRangeOf">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getRangeOf&lt;/span&gt; will give you all the properties for which the class given in the parameter is part of the range.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'human', action: 'getRangeOf'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getRangeOf</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
          <widget class="QTextEdit" name="ClassDescription">
           <property name="verticalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -1009,6 +1033,30 @@
          </layout>
         </item>
         <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_31">
+          <item>
+           <widget class="QPushButtonExtended" name="Individual_getDomainOf">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getDomainOf&lt;/span&gt; will give you all the properties for which the individual given in the parameter is part of the domain.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/individual &quot;{param: 'alice', action: 'getDomainOf'}&quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt; lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getDomainOf</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Individual_getRangeOf">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getRangeOf&lt;/span&gt; will give you all the properties for which the individual given in the parameter is part of the range.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/individual &amp;quot;{param: 'bob', action: 'getRangeOf'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;p&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>getRangeOf</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
          <widget class="QTextEdit" name="IndividualDescription">
           <property name="readOnly">
            <bool>true</bool>
@@ -1063,6 +1111,163 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="FeederTab">
+       <attribute name="title">
+        <string>Feeder</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_32">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_33">
+
+               <item >
+                <widget class="QLabel" name="label_17">
+                  <property name="minimumSize">
+                   <size>
+                    <width>75</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>75</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Subject : </string>
+                 </property>
+                </widget>
+               </item>
+
+               <item>
+                <widget class="QLineEdit" name="FeederSubject">
+                 </widget>
+               </item>
+
+             </layout>
+           </item>
+
+           <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_34">
+
+               <item >
+                <widget class="QLabel" name="label_18">
+                  <property name="minimumSize">
+                   <size>
+                    <width>75</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>75</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Property : </string>
+                 </property>
+                </widget>
+               </item>
+
+               <item>
+                <widget class="QLineEdit" name="FeederProperty">
+                 </widget>
+               </item>
+
+             </layout>
+           </item>
+
+           <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_35">
+
+               <item >
+                <widget class="QLabel" name="label_19">
+                  <property name="minimumSize">
+                   <size>
+                    <width>75</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>75</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Object : </string>
+                 </property>
+                </widget>
+               </item>
+
+               <item>
+                <widget class="QLineEdit" name="FeederObject">
+                 </widget>
+               </item>
+
+             </layout>
+           </item>
+
+           <item>
+            <widget class="QPushButtonExtended" name="FeederAddButton">
+             <property name="text">
+              <string>ADD</string>
+             </property>
+            </widget>
+           </item>
+
+           <item>
+            <widget class="QPushButtonExtended" name="FeederDelButton">
+             <property name="text">
+              <string>REMOVE</string>
+             </property>
+            </widget>
+           </item>
+
+         </layout>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="FeederInfo">
+          <property name="maximumSize">
+           <size>
+            <width>350</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="cursorWidth">
+           <number>1</number>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::NoTextInteraction</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="ManagerTab">
        <attribute name="title">
         <string>Manager</string>
@@ -1080,7 +1285,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>The ontology manager can only be used with the "ontoloGenius_multi" executable</string>
+             <string>The ontology manager can only be used with the "ontologenius_multi" executable</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -1418,7 +1623,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="CloseButton">
+         <widget class="QPushButtonExtended" name="CloseButton">
           <property name="maximumSize">
            <size>
             <width>200</width>
@@ -1514,17 +1719,17 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>QPushButtonExtended</class>
    <extends>QPushButton</extends>
-   <header>include/ontoloGenius/graphical/ontoloGUI/qpushbuttonextended.h</header>
+   <header>include/ontologenius/graphical/ontoloGUI/qpushbuttonextended.h</header>
   </customwidget>
   <customwidget>
    <class>QCheckBoxExtended</class>
    <extends>QCheckBox</extends>
-   <header>include/ontoloGenius/graphical/ontoloGUI/QCheckBoxExtended.h</header>
+   <header>include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h</header>
   </customwidget>
   <customwidget>
    <class>QLineEditExtended</class>
    <extends>QLineEdit</extends>
-   <header>include/ontoloGenius/graphical/ontoloGUI/QLineEditExtended.h</header>
+   <header>include/ontologenius/graphical/ontoloGUI/QLineEditExtended.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

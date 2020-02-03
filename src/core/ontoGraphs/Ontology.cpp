@@ -1,14 +1,14 @@
-#include "ontoloGenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/ontoGraphs/Ontology.h"
 
 #include <iostream>
 
-#include "ontoloGenius/core/ontoGraphs/Checkers/ClassChecker.h"
-#include "ontoloGenius/core/ontoGraphs/Checkers/ObjectPropertyChecker.h"
-#include "ontoloGenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
-#include "ontoloGenius/core/ontoGraphs/Checkers/IndividualChecker.h"
+#include "ontologenius/core/ontoGraphs/Checkers/ClassChecker.h"
+#include "ontologenius/core/ontoGraphs/Checkers/ObjectPropertyChecker.h"
+#include "ontologenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
+#include "ontologenius/core/ontoGraphs/Checkers/IndividualChecker.h"
 
-#include "ontoloGenius/graphical/Display.h"
-#include "ontoloGenius/core/utility/error_code.h"
+#include "ontologenius/graphical/Display.h"
+#include "ontologenius/core/utility/error_code.h"
 
 namespace ontologenius {
 
@@ -129,13 +129,13 @@ bool Ontology::preload(std::string file_name)
         {
           is_preloaded_ = true;
           Display::success("Ontology has been preloaded :");
-          Display::success("ontoloGenius will NOT consider your default files");
+          Display::success("ontologenius will NOT consider your default files");
           return true;
         }
   }
 
   Display::warning("Nothing to preload :");
-  Display::warning("ontoloGenius will consider your default files");
+  Display::warning("ontologenius will consider your default files");
   return false;
 }
 

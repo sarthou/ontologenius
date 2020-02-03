@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>OntoloGUI | Ontologenius 0.2.4</title>
+  <title>OntoloGUI | Ontologenius 0.3.0</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -33,8 +33,8 @@
 
     <div class="navigationbar">
       <ul class="sub-navigation">
-        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/utility">C++ API sources</a></li>
-        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontoloGenius/utility">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
         <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
       </ul>
       <h1>Ontologenius Documentation</h1>
@@ -117,15 +117,16 @@
         <ul>
           <li><b>1</b>: These four panels show all the exploration functions of each type.</li>
           <li><b>2</b>: This panel lists the available reasoners and allows you to activate or deactivate them.</li>
-          <li><b>3</b>: This panel allows you to manage several ontologenius processes when you use the "ontologenius multi" executable.</li>
-          <li><b>4</b>: This text box tells you whether the interface is connected to ontologenius or not. If this is not the case,
+          <li><b>3</b>: This panel allows you to insert and remove knowledge.</li>
+          <li><b>4</b>: This panel allows you to manage several ontologenius processes when you use the "ontologenius multi" executable.</li>
+          <li><b>5</b>: This text box tells you whether the interface is connected to ontologenius or not. If this is not the case,
             it indicates the origin of the problem. This panel is updated only when you perform an action. It will be noted as
             disconnected when you launch it. Just perform an action (panel change for example) to see if ontologenius is detected.</li>
-          <li><b>5</b>: This button allows you to close the ontology. The closure of the ontology corresponds to the start of the
+          <li><b>6</b>: This button allows you to close the ontology. The closure of the ontology corresponds to the start of the
             analysis of the ontology. Until this action is performed, you will not be able to send any requests.</li>
-          <li><b>6</b>: This text box is only used if you are working with the "ontologenius multi" executable. The name you need to
+          <li><b>7</b>: This text box is only used if you are working with the "ontologenius multi" executable. The name you need to
             write here is the identifier of the ontologenius process you want to work on.</li>
-          <li><b>7</b>: This text box displays the result of your queries. The results are returned as vectors, so each line corresponds
+          <li><b>8</b>: This text box displays the result of your queries. The results are returned as vectors, so each line corresponds
             to an element of the returned vector.</li>
         </ul>
 
@@ -161,6 +162,24 @@
           <li><b>1</b>: Here you have the list of all reasoners detected. You can activate them with the checkbox on the left.
             By hovering over a checkbox, a brief description of the reasoner will be displayed.</li>
           <li><b>2</b>: This text box displays additional information based on the element on which your pointer is located.</li>
+        </ul>
+
+        <h2><i class="fas fa-angle-right"></i> Feeder</h2>
+
+        <p>We describe here the elements related to the panels "Feeder".</p>
+
+        <div align="center">
+          <p>
+            <img src="../images/ontoloGUI/feeder_noted.png " alt="parameters overview" height="450px"/>
+          </p>
+        </div>
+
+        <ul>
+          <li><b>1</b>: Here you can enter the subject, property and subject of the triplet you wish to manipulate. You can fill in
+            only the subject to insert a new (individual) concept. Use the isA property to insert or delete an inheritance.
+            The object can be filled with the character '_' to specify ALL, when you want to remove all relations R from concept C.</li>
+          <li><b>2</b>: These buttons sends the fact corresponding to the upper fields.</li>
+          <li><b>3</b>: This text area displays error notifications from the feeder process.</li>
         </ul>
 
         <h2><i class="fas fa-angle-right"></i> Multi process manager</h2>

@@ -1,4 +1,4 @@
-#include "include/ontoloGenius/graphical/ontoloGUI/QLineEditExtended.h"
+#include "include/ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
 
 #include <QWidget>
 #include <QEvent>

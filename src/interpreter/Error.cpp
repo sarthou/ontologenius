@@ -1,4 +1,4 @@
-#include "ontoloGenius/interpreter/Error.h"
+#include "ontologenius/interpreter/Error.h"
 
 #include <iostream>
 

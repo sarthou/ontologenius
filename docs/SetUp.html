@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Set up | Ontologenius 0.2.4</title>
+  <title>Set up | Ontologenius 0.3.0</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="images/favicon.ico" rel="shortcut icon">
@@ -33,8 +33,8 @@
 
     <div class="navigationbar">
       <ul class="sub-navigation">
-        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/utility">C++ API sources</a></li>
-        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontoloGenius/utility">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
         <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
       </ul>
       <h1>Ontologenius Documentation</h1>
@@ -141,7 +141,7 @@
         </div>
         <p>The package.xml do not need to be modified. For the CMakeLists.txt, we will required a minimal version (optional) and include ontologenius API.</p>
         <div class="code_block">
-          <div class="terminal_line">find_package(ontologenius 0.2.4 REQUIRED)</div>
+          <div class="terminal_line">find_package(ontologenius 0.3.0 REQUIRED)</div>
           <div class="terminal_line">...</div>
           <div class="terminal_line">catkin_package(</div>
           <div class="terminal_line">#  INCLUDE_DIRS include</div>
@@ -152,7 +152,7 @@
           <div class="terminal_line">...</div>
           <div class="terminal_line"># include</div>
           <div class="terminal_line">  ${catkin_INCLUDE_DIRS}</div>
-          <div class="terminal_line">  ${ontoloGenius_INCLUDE_DIRS}</div>
+          <div class="terminal_line">  ${ontologenius_INCLUDE_DIRS}</div>
           <div class="terminal_line">)</div>
           <div class="terminal_line">...</div>
         </div>

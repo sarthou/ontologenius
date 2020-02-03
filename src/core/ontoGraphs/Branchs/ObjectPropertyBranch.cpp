@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 
 #include <algorithm>
 

@@ -1,9 +1,9 @@
-#include "ontoloGenius/core/reasoner/Reasoners.h"
+#include "ontologenius/core/reasoner/Reasoners.h"
 
 #include <iostream>
 #include <vector>
 
-#include "ontoloGenius/graphical/Display.h"
+#include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 

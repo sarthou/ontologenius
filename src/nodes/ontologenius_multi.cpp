@@ -3,10 +3,10 @@
 
 #include <ros/ros.h>
 
-#include "ontoloGenius/RosInterface.h"
-#include "ontoloGenius/core/ontologyOperators/differenceFinder.h"
-#include "ontoloGenius/Parameters.h"
-#include "ontoloGenius/core/utility/error_code.h"
+#include "ontologenius/RosInterface.h"
+#include "ontologenius/core/ontologyOperators/differenceFinder.h"
+#include "ontologenius/Parameters.h"
+#include "ontologenius/core/utility/error_code.h"
 
 void removeUselessSpace(std::string& text)
 {
@@ -202,7 +202,7 @@ int main(int argc, char** argv)
   for(size_t i = 0; i < interfaces_names.size(); i++)
     deleteInterface(interfaces_names[i]);
 
-  ROS_DEBUG("KILL ontoloGenius");
+  ROS_DEBUG("KILL ontologenius");
 
   return 0;
 }

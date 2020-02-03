@@ -1,12 +1,12 @@
-#include "ontoloGenius/core/ontologyIO/OntologyReader.h"
+#include "ontologenius/core/ontologyIO/OntologyReader.h"
 
 #include <fstream>
 
-#include "ontoloGenius/core/utility/error_code.h"
-#include "ontoloGenius/graphical/Display.h"
-#include "ontoloGenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/utility/error_code.h"
+#include "ontologenius/graphical/Display.h"
+#include "ontologenius/core/ontoGraphs/Ontology.h"
 
-#include "ontoloGenius/core/utility/utility.h"
+#include "ontologenius/core/utility/utility.h"
 
 namespace ontologenius {
 

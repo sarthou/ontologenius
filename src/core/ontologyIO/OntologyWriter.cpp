@@ -1,14 +1,14 @@
-#include "ontoloGenius/core/ontologyIO/OntologyWriter.h"
+#include "ontologenius/core/ontologyIO/OntologyWriter.h"
 
 #include <iostream>
 
-#include "ontoloGenius/core/ontologyIO/writers/ClassWriter.h"
-#include "ontoloGenius/core/ontologyIO/writers/ObjectPropertiesWriter.h"
-#include "ontoloGenius/core/ontologyIO/writers/DataPropertiesWriter.h"
-#include "ontoloGenius/core/ontologyIO/writers/IndividualWriter.h"
+#include "ontologenius/core/ontologyIO/writers/ClassWriter.h"
+#include "ontologenius/core/ontologyIO/writers/ObjectPropertiesWriter.h"
+#include "ontologenius/core/ontologyIO/writers/DataPropertiesWriter.h"
+#include "ontologenius/core/ontologyIO/writers/IndividualWriter.h"
 
-#include "ontoloGenius/core/ontoGraphs/Ontology.h"
-#include "ontoloGenius/graphical/Display.h"
+#include "ontologenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 

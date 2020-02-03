@@ -1,4 +1,4 @@
-#include "include/ontoloGenius/graphical/ontoloGUI/qpushbuttonextended.h"
+#include "include/ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
 
 #include <QWidget>
 #include <QEvent>
