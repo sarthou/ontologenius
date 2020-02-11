@@ -2,6 +2,7 @@
 #define ONTOLOGENIUS_BRANCHCONTAINERMAP_H
 
 #include <map>
+#include <unordered_map>
 
 #include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerBase.h"
 
@@ -21,7 +22,7 @@ public:
   virtual void insert(B* branch);
   virtual void erase(B* branch);
 private:
-  std::map<std::string, B*> nodes_;
+  std::unordered_map<std::string, B*> nodes_;
 };
 
 template <typename B>
@@ -38,7 +39,7 @@ BranchContainerMap<B>::BranchContainerMap(const BranchContainerMap& base)
 template <typename B>
 B* BranchContainerMap<B>::find(const std::string& word)
 {
-  typename std::map<std::string, B*>::iterator it = nodes_.find(word);
+  typename std::unordered_map<std::string, B*>::iterator it = nodes_.find(word);
   if(it == nodes_.end())
     return nullptr;
   else
