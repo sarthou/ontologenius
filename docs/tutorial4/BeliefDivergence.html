@@ -123,21 +123,11 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
           <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
           <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;atomic&gt;</span></div>
           <div class="code_line"><br></div>
           <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologiesManipulator.h&quot;</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line">std::<span class="cpp_type">atomic</span>&lt;<span class="cpp_type">bool</span>&gt; end_;</div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="cpp_type">void</span> Callback(<span class="cpp_op">const</span> std_msgs::<span class="cpp_type">String</span>::ConstPtr<span class="cpp_op">&amp;</span> msg)</div>
-          <div class="code_line">{</div>
-          <div class="code_line">  (<span class="cpp_type">void</span>)msg;</div>
-          <div class="code_line">  end_ <span class="cpp_op">=</span> <span class="cpp_value">true</span>;</div>
-          <div class="code_line">}</div>
-          <div class="code_line"><br></div>
           <div class="code_line"><span class="cpp_type">int</span> main(<span class="cpp_type">int</span> argc, <span class="cpp_type">char</span><span class="cpp_op">**</span> argv)</div>
           <div class="code_line">{</div>
-          <div class="code_line">  end_ <span class="cpp_op">=</span> <span class="cpp_value">false</span>;</div>
           <div class="code_line">  ros::init(argc, argv, <span class="cpp_string">&quot;multiple_ontologies&quot;</span>);</div>
           <div class="code_line">  ros::<span class="cpp_type">NodeHandle</span> n;</div>
           <div class="code_line"><br></div>
@@ -161,20 +151,13 @@
           <div class="code_line">  <span class="cpp_op">for</span>(std::<span class="cpp_type">string</span> in : result)</div>
           <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;- &quot;</span> <span class="cpp_op">&lt;&lt;</span> in <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  ros::<span class="cpp_type">Subscriber</span> sub <span class="cpp_op">=</span> n.subscribe(<span class="cpp_string">&quot;ontologenius/end&quot;</span>, <span class="cpp_value">1000</span>, Callback);</div>
-          <div class="code_line"><br></div>
           <div class="code_line">  <span class="cpp_op">while</span>(onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.getNumSubscribers() <span class="cpp_op">==</span> 0)</div>
           <div class="code_line">    <span class="cpp_op">continue</span>;</div>
           <div class="code_line"><br></div>
           <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.removeProperty(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
           <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.addProperty(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  ros::<span class="cpp_type">Rate</span> rate(<span class="cpp_value">100</span>);</div>
-          <div class="code_line">  <span class="cpp_op">while</span>((end_ <span class="cpp_op">==</span> <span class="cpp_value">false</span>) <span class="cpp_op">&amp;&amp;</span> (ros::ok()))</div>
-          <div class="code_line">  {</div>
-          <div class="code_line">    ros::spinOnce();</div>
-          <div class="code_line">    rate.sleep();</div>
-          <div class="code_line">  }</div>
+          <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit(500);</div>
           <div class="code_line"><br></div>
           <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; differences <span class="cpp_op">=</span> onto.getDifference(<span class="cpp_string">&quot;sally&quot;</span>, <span class="cpp_string">&quot;anne&quot;</span>, <span class="cpp_string">&quot;ball_1&quot;</span>);</div>
           <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;The difference of belief regarding the ball_1 is:&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
@@ -185,26 +168,9 @@
           <div class="code_line">}</div>
         </div>
 
-        <p>First of all some small tricks.</p>
+        <p>First of all a small trick.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 40;">
-          <div class="code_line">  ros::<span class="cpp_type">Subscriber</span> sub <span class="cpp_op">=</span> n.subscribe(<span class="cpp_string">&quot;ontologenius/end&quot;</span>, <span class="cpp_value">1000</span>, Callback);</div>
-        </div>
-
-        <div class="code_block cpp_code" style="counter-reset:code_line 48;">
-          <div class="code_line">  ros::<span class="cpp_type">Rate</span> rate(<span class="cpp_value">100</span>);</div>
-          <div class="code_line">  <span class="cpp_op">while</span>((end_ <span class="cpp_op">==</span> <span class="cpp_value">false</span>) <span class="cpp_op">&amp;&amp;</span> (ros::ok()))</div>
-          <div class="code_line">  {</div>
-          <div class="code_line">    ros::spinOnce();</div>
-          <div class="code_line">    rate.sleep();</div>
-          <div class="code_line">  }</div>
-        </div>
-
-        <p>Because here we query directly ontologenius after some modifications without any delay, these modifications may not have
-          been taken into account. We subscribe to the topic that will publish a message when all changes have been taken into account.
-          In normal usage, you do not have to do it, but in this case, our program will be too fast for the changes to be effective.</p>
-
-        <div class="code_block cpp_code" style="counter-reset:code_line 42;">
+        <div class="code_block cpp_code" style="counter-reset:code_line 30;">
           <div class="code_line">  <span class="cpp_op">while</span>(onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.getNumSubscribers() <span class="cpp_op">==</span> 0)</div>
           <div class="code_line">    <span class="cpp_op">continue</span>;</div>
         </div>
@@ -213,7 +179,7 @@
           our program is a bit too fast, this connection may not be effective immediately. To avoid this problem, you can use
           the previous lines to make sure that our feeder is connected to at least one listener.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 45;">
+        <div class="code_block cpp_code" style="counter-reset:code_line 33;">
           <div class="code_line">   onto<span class="cpp_op">[</span><span class="cpp_string">&quot;anne&quot;</span><span class="cpp_op">]</span><span class="cpp_op">-&gt;</span>feeder.removeProperty(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
           <div class="code_line">   onto<span class="cpp_op">[</span><span class="cpp_string">&quot;anne&quot;</span><span class="cpp_op">]</span><span class="cpp_op">-&gt;</span>feeder.addProperty(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
         </div>
@@ -221,7 +187,13 @@
         <p>Here are really the two lines that represent the fact that Anne removes the ball from the first container and puts it
           in the second container. You see here that these changes are applied only to Anne.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 55;">
+        <div class="code_block cpp_code" style="counter-reset:code_line 36;">
+          <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit(500);</div>
+        </div>
+
+        <p>With the commit function, we will wait until the previous changes are applied. For security reasons, we set a timeout of 500 ms.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 38;">
           <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; differences <span class="cpp_op">=</span> onto.getDifference(<span class="cpp_string">&quot;sally&quot;</span>, <span class="cpp_string">&quot;anne&quot;</span>, <span class="cpp_string">&quot;ball_1&quot;</span>);</div>
           <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;The difference of belief regarding the ball_1 is:&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
           <div class="code_line">  <span class="cpp_op">for</span>(std::<span class="cpp_type">string</span> diff <span class="cpp_op">:</span> differences)</div>
