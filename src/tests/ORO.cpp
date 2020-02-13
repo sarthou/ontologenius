@@ -23,6 +23,9 @@ void insertWords(size_t nb)
     onto_ptr->feeder.addProperty("individual" + std::to_string(i), "isOn", "apple");
     wait.sleep();
   }
+
+  if(!onto_ptr->feeder.commit())
+    std::cout << "too long" << std::endl;
 }
 
 double R1()
@@ -113,11 +116,11 @@ int main(int argc, char** argv)
 
     insertWords(nb_words[i]);
 
-    while(end_ == false)
+    /*while(end_ == false)
     {
       ros::spinOnce();
       fast.sleep();
-    }
+    }*/
 
     std::vector<double> tmp;
     tmp.push_back(R1());
