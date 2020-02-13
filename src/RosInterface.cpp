@@ -10,7 +10,7 @@
 namespace ontologenius {
 
 RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : run_(true),
-                                                                   pub_(n->advertise<std_msgs::String>("ontologenius/end", 1000))
+                                                                   pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, 1000))
 {
   n_ = n;
   onto_ = new Ontology();
@@ -22,7 +22,7 @@ RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : run_(true),
 }
 
 RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, std::string name) : run_(true),
-                                                                   pub_(n->advertise<std_msgs::String>("ontologenius/end", 1000))
+                                                                   pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, 1000))
 {
   n_ = n;
 

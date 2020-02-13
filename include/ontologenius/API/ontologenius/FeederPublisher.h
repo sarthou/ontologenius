@@ -1,6 +1,8 @@
 #ifndef ONTOLOGENIUS_FEEDERPUBLISHER_H
 #define ONTOLOGENIUS_FEEDERPUBLISHER_H
 
+#include <atomic>
+
 #include <ros/ros.h>
 #include "std_msgs/String.h"
 
@@ -11,6 +13,16 @@ public:
                   pub_(n->advertise<std_msgs::String>((name == "") ? "ontologenius/insert" : "ontologenius/insert/" + name, 1000))
   {
     n_ = n;
+    name_ = name;
+  }
+
+  FeederPublisher(FeederPublisher& other)
+  {
+    n_ = other.n_;
+    name_ = other.name_;
+    commit_sub_ = other.commit_sub_;
+    commit_sub_ = other.commit_sub_;
+    commited_ = false;
   }
 
   void addProperty(const std::string& from, const std::string& property, const std::string& on);
@@ -28,11 +40,18 @@ public:
 
   size_t getNumSubscribers() { return pub_.getNumSubscribers(); }
 
+  bool commit(int32_t timeout = -1);
+
 private:
   ros::NodeHandle* n_;
+  std::string name_;
   ros::Publisher pub_;
+  ros::Subscriber commit_sub_;
+  std::atomic<bool> commited_;
 
   void publish(std::string& str);
+
+  void commitCallback(const std_msgs::String::ConstPtr& msg);
 };
 
 #endif // ONTOLOGENIUS_FEEDERPUBLISHER_H
