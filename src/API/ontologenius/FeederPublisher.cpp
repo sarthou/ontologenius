@@ -11,7 +11,7 @@ void FeederPublisher::addProperty(const std::string& from, const std::string& pr
 
 void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value)
 {
-  std::string msg = "[add]" + from + "|" + property + "|" + type + ":" + value;
+  std::string msg = "[add]" + from + "|" + property + "|" + type + "#" + value;
   publish(msg);
 }
 
@@ -49,7 +49,7 @@ void FeederPublisher::removeProperty(const std::string& from, const std::string&
 
 void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value)
 {
-  std::string msg = "[del]" + from + "|" + property + "|" + type + ":" + value;
+  std::string msg = "[del]" + from + "|" + property + "|" + type + "#" + value;
   publish(msg);
 }
 

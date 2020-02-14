@@ -357,9 +357,12 @@ std::unordered_set<std::string> ClassGraph::getRelationOn(const std::string& _cl
 
 void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth)
 {
+  data_t data_img;
+  data_img.set(_class);
+
   for(size_t i = 0; i < all_branchs_.size(); i++)
     for(ClassDataRelationElement_t& relation : all_branchs_[i]->data_relations_)
-      if(relation.second.value_ == _class)
+      if(relation.second == data_img)
         data_property_graph_->getUp(relation.first, res, depth);
 }
 
@@ -476,6 +479,9 @@ std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _c
   std::unordered_set<uint32_t> doNotTake;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
+  data_t data_img;
+  data_img.set(_class);
+
   for(size_t i = 0; i < all_branchs_.size(); i++)
   {
     for(ClassObjectRelationElement_t& relation : all_branchs_[i]->object_relations_)
@@ -483,8 +489,8 @@ std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _c
         objectGetRelatedWith(all_branchs_[i], relation.first->value(), _class, res, doNotTake);
 
     for(ClassDataRelationElement_t& relation : all_branchs_[i]->data_relations_)
-      if(relation.second.value_ == _class)
-        dataGetRelatedWith(all_branchs_[i], relation.first->value(), _class, res, doNotTake);
+      if(relation.second == data_img)
+        dataGetRelatedWith(all_branchs_[i], relation.first->value(), data_img, res, doNotTake);
   }
 
   for(auto i : doNotTake)
@@ -494,7 +500,7 @@ std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _c
   return res;
 }
 
-void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const std::string& _class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake)
+void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const data_t& data, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake)
 {
   if(doNotTake.find(class_branch->get()) != doNotTake.end())
     return;
@@ -511,14 +517,14 @@ void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::stri
 
         for(ClassDataRelationElement_t& relation : down->data_relations_)
           if(relation.first->value() == property)
-            if(relation.second.value_ != _class)
+            if(relation.second != data)
             {
               found = true;
               getDownIdSafe(down, doNotTake);
             }
 
         if(found == false)
-          dataGetRelatedWith(down, property, _class, res, doNotTake);
+          dataGetRelatedWith(down, property, data, res, doNotTake);
       }
   }
 }
@@ -576,6 +582,9 @@ std::unordered_set<std::string> ClassGraph::getFrom(const std::string& _class, c
   std::unordered_set<uint32_t> doNotTake;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
+  data_t data_img;
+  data_img.set(_class);
+
   for(size_t i = 0; i < all_branchs_.size(); i++)
   {
     for(ClassObjectRelationElement_t& relation : all_branchs_[i]->object_relations_)
@@ -586,10 +595,10 @@ std::unordered_set<std::string> ClassGraph::getFrom(const std::string& _class, c
               objectGetRelatedWith(all_branchs_[i], relation.first->value(), ValuedNode::table_[class_id], res, doNotTake);
 
     for(ClassDataRelationElement_t& relation : all_branchs_[i]->data_relations_)
-      if(relation.second.value_ == _class)
+      if(relation.second == data_img)
         for (uint32_t id : data_properties)
           if(relation.first->get() == id)
-            dataGetRelatedWith(all_branchs_[i], relation.first->value(), _class, res, doNotTake);
+            dataGetRelatedWith(all_branchs_[i], relation.first->value(), data_img, res, doNotTake);
   }
 
   for(auto i : doNotTake)
@@ -759,6 +768,9 @@ void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_c
     std::unordered_set<std::string> tmp_res;
     std::unordered_set<uint32_t> doNotTake_tmp;
 
+    data_t data_img;
+    data_img.set(second_class);
+
     for(ClassObjectRelationElement_t& relation : first_class->object_relations_)
     {
       doNotTake_tmp.insert(relation.first->get());
@@ -770,7 +782,7 @@ void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_c
     for(ClassDataRelationElement_t& relation : first_class->data_relations_)
     {
       doNotTake_tmp.insert(relation.first->get());
-      if(relation.second.value_ == second_class)
+      if(relation.second == data_img)
         if(doNotTake.find(relation.first->get()) == doNotTake.end())
           data_property_graph_->getUp(relation.first, tmp_res, depth_prop);
     }

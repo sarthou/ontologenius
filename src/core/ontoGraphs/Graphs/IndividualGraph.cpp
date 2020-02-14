@@ -343,9 +343,12 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
 
   if(res.size() == 0)
   {
+    data_t data_img;
+    data_img.set(individual);
+
     for(size_t i = 0; i < individuals_.size(); i++)
       for(IndivDataRelationElement_t& relation : individuals_[i]->data_relations_)
-        if(relation.second.value_ == individual)
+        if(relation.second == data_img)
           data_property_graph_->getUp(relation.first, res, depth);
 
     class_graph_->getRelationOnDataProperties(individual, res, depth);
@@ -434,6 +437,9 @@ std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::strin
   std::unordered_set<std::string> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
 
+  data_t data_img;
+  data_img.set(individual);
+
   for(size_t i = 0; i < individuals_.size(); i++)
   {
     bool found = false;
@@ -447,11 +453,13 @@ std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::strin
       }
 
     for(IndivDataRelationElement_t& relation : individuals_[i]->data_relations_)
-      if(relation.second.value_ == individual)
+    {
+      if(relation.second == data_img)
       {
         found = true;
         took.insert(relation.first->get());
       }
+    }
 
     std::unordered_set<ClassBranch_t*> up_set;
     getUpPtr(individuals_[i], up_set, 1);
@@ -522,6 +530,8 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
 
   IndividualBranch_t* indiv = container_.find(individual);
+  data_t data_img;
+  data_img.set(individual);
 
   for(size_t i = 0; i < individuals_.size(); i++)
   {
@@ -549,7 +559,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
           if(relation.first->get() == id)
           {
             defined = true;
-            if(relation.second.value_ == individual)
+            if(relation.second == data_img)
             {
               found = true;
               break;
@@ -568,7 +578,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
       {
         std::unordered_set<ClassBranch_t*> next_step;
         for(auto up : up_set)
-          found = found || getFrom(up, object_properties, data_properties, individual, down_classes, next_step, doNotTake);
+          found = found || getFrom(up, object_properties, data_properties, data_img, down_classes, next_step, doNotTake);
 
         up_set = next_step;
       }
@@ -581,7 +591,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
   return res;
 }
 
-bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const std::string& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake)
+bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const data_t& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake)
 {
   if(class_branch != nullptr)
   {
@@ -610,7 +620,7 @@ bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<ui
           if(relation.first->get() == id)
           {
             defined = true;
-            if(relation.second.value_ == data)
+            if(relation.second == data)
             {
               found = true;
               break;
@@ -695,6 +705,8 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
   std::unordered_set<std::string> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   IndividualBranch_t* indiv = container_.find(first_individual);
+  data_t data_img;
+  data_img.set(second_individual);
 
   if(indiv != nullptr)
   {
@@ -703,7 +715,7 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
         object_property_graph_->getUp(relation.first, res, depth);
 
     for(IndivDataRelationElement_t& relation : indiv->data_relations_)
-      if(relation.second.value_ == second_individual)
+      if(relation.second == data_img)
         data_property_graph_->getUp(relation.first, res, depth);
 
     int found_depth = -1;

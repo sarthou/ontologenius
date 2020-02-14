@@ -22,17 +22,30 @@ struct data_t
       return "http://www.w3.org/2002/07/xsd"; //http://www.w3.org/2001/XMLSchema
   }
 
-  std::string toString() const {return( type_ + ":" + value_); }
+  std::string toString() const {return( type_ + "#" + value_); }
   void set(std::string value)
   {
-    type_ = value.substr(0,value.find(":"));
-    value_ = value.substr(value.find(":")+1);
+    auto pose = value.find("#");
+    if(pose != std::string::npos)
+    {
+      type_ = value.substr(0,pose);
+      value_ = value.substr(pose+1);
+    }
   }
 
   bool operator==(const data_t& other)
   {
     if((value_ == other.value_) &&
       (type_ == other.type_))
+      return true;
+    else
+      return false;
+  }
+
+  bool operator!=(const data_t& other)
+  {
+    if((value_ != other.value_) ||
+      (type_ != other.type_))
       return true;
     else
       return false;
