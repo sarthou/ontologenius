@@ -492,9 +492,12 @@ bool IndividualGraph::getRelatedWith(ClassBranch_t* class_branch, const std::str
       took.insert(relation.first->get());
     }
 
+    data_t data_img;
+    data_img.set(data);
+
     for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
     {
-      if(relation.second.value_ == data)
+      if(relation.second == data_img)
         if(took.find(relation.first->get()) == took.end())
           res = true;
       took.insert(relation.first->get());

@@ -172,7 +172,7 @@ void Feeder::classIndividualLangage(feed_t& feed)
 
 void Feeder::applyProperty(feed_t& feed)
 {
-  size_t pose = feed.on_.find(":");
+  size_t pose = feed.on_.find("#");
   std::string type = "";
   std::string data = "";
   bool data_property = false;

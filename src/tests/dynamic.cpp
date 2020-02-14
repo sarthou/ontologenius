@@ -43,7 +43,7 @@ TEST(dynamic_tests, insert)
 
   res = onto_ptr->classes.getOn("woman", "hasLeg");
   res_bool = ((res.size() == 1) &&
-              (find(res.begin(), res.end(), "int:2") != res.end()));
+              (find(res.begin(), res.end(), "int#2") != res.end()));
   EXPECT_TRUE(res_bool);
 
   onto_ptr->feeder.removeProperty("alice", "hasLeg", "int", "2");
