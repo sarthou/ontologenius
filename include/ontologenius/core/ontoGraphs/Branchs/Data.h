@@ -2,6 +2,7 @@
 #define ONTOLOGENIUS_DATA_H
 
 #include <string>
+#include <functional>
 
 namespace ontologenius {
 
@@ -9,6 +10,9 @@ struct data_t
 {
   std::string value_;
   std::string type_;
+  size_t hash_;
+
+  data_t() { hash_ = 0; }
 
   std::string getNs() const
   {
@@ -30,25 +34,28 @@ struct data_t
     {
       type_ = value.substr(0,pose);
       value_ = value.substr(pose+1);
+      hash_ = std::hash<std::string>{}(value);
     }
   }
 
   bool operator==(const data_t& other)
   {
-    if((value_ == other.value_) &&
-      (type_ == other.type_))
-      return true;
-    else
-      return false;
+    if(hash_ == 0)
+      hash_ = std::hash<std::string>{}(type_ + "#" + value_);
+    if(other.hash_ == 0)
+      hash_ = std::hash<std::string>{}(other.type_ + "#" + other.value_);
+
+    return hash_ == other.hash_;
   }
 
   bool operator!=(const data_t& other)
   {
-    if((value_ != other.value_) ||
-      (type_ != other.type_))
-      return true;
-    else
-      return false;
+    if(hash_ == 0)
+      hash_ = std::hash<std::string>{}(type_ + "#" + value_);
+    if(other.hash_ == 0)
+      hash_ = std::hash<std::string>{}(other.type_ + "#" + other.value_);
+
+    return hash_ != other.hash_;
   }
 };
 
