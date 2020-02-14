@@ -343,8 +343,7 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
 
   if(res.size() == 0)
   {
-    data_t data_img;
-    data_img.set(individual);
+    data_t data_img(individual);
 
     for(size_t i = 0; i < individuals_.size(); i++)
       for(IndivDataRelationElement_t& relation : individuals_[i]->data_relations_)
@@ -437,8 +436,7 @@ std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::strin
   std::unordered_set<std::string> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
 
-  data_t data_img;
-  data_img.set(individual);
+  data_t data_img(individual);
 
   for(size_t i = 0; i < individuals_.size(); i++)
   {
@@ -492,8 +490,7 @@ bool IndividualGraph::getRelatedWith(ClassBranch_t* class_branch, const std::str
       took.insert(relation.first->get());
     }
 
-    data_t data_img;
-    data_img.set(data);
+    data_t data_img(data);
 
     for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
     {
@@ -533,8 +530,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
 
   IndividualBranch_t* indiv = container_.find(individual);
-  data_t data_img;
-  data_img.set(individual);
+  data_t data_img(individual);
 
   for(size_t i = 0; i < individuals_.size(); i++)
   {
@@ -708,8 +704,7 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
   std::unordered_set<std::string> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   IndividualBranch_t* indiv = container_.find(first_individual);
-  data_t data_img;
-  data_img.set(second_individual);
+  data_t data_img(second_individual);
 
   if(indiv != nullptr)
   {
@@ -1431,9 +1426,7 @@ bool IndividualGraph::addProperty(std::string& indiv_from, std::string& property
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
   {
-    data_t data_branch;
-    data_branch.value_ = data;
-    data_branch.type_ = type;
+    data_t data_branch(type, data);
 
     DataPropertyBranch_t* branch_prop = data_property_graph_->findBranch(property);
     if(branch_prop == nullptr)

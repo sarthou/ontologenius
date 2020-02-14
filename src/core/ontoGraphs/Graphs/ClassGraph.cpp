@@ -357,8 +357,7 @@ std::unordered_set<std::string> ClassGraph::getRelationOn(const std::string& _cl
 
 void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth)
 {
-  data_t data_img;
-  data_img.set(_class);
+  data_t data_img(_class);
 
   for(size_t i = 0; i < all_branchs_.size(); i++)
     for(ClassDataRelationElement_t& relation : all_branchs_[i]->data_relations_)
@@ -479,8 +478,7 @@ std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _c
   std::unordered_set<uint32_t> doNotTake;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
-  data_t data_img;
-  data_img.set(_class);
+  data_t data_img(_class);
 
   for(size_t i = 0; i < all_branchs_.size(); i++)
   {
@@ -582,8 +580,7 @@ std::unordered_set<std::string> ClassGraph::getFrom(const std::string& _class, c
   std::unordered_set<uint32_t> doNotTake;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
-  data_t data_img;
-  data_img.set(_class);
+  data_t data_img(_class);
 
   for(size_t i = 0; i < all_branchs_.size(); i++)
   {
@@ -768,8 +765,7 @@ void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_c
     std::unordered_set<std::string> tmp_res;
     std::unordered_set<uint32_t> doNotTake_tmp;
 
-    data_t data_img;
-    data_img.set(second_class);
+    data_t data_img(second_class);
 
     for(ClassObjectRelationElement_t& relation : first_class->object_relations_)
     {
@@ -1001,9 +997,7 @@ bool ClassGraph::addProperty(std::string& class_from, std::string& property, std
   ClassBranch_t* branch_from = findBranch(class_from);
   if(branch_from != nullptr)
   {
-    data_t data_branch;
-    data_branch.value_ = data;
-    data_branch.type_ = type;
+    data_t data_branch(type, data);
 
     DataPropertyBranch_t* branch_prop = data_property_graph_->findBranch(property);
     if(branch_prop == nullptr)

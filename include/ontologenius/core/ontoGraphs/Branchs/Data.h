@@ -12,6 +12,17 @@ struct data_t
   std::string type_;
   size_t hash_;
 
+  data_t(const std::string& type, const std::string& value)
+  {
+    value_ = value;
+    type_ = type;
+  }
+
+  data_t(const std::string& value)
+  {
+    set(value);
+  }
+
   data_t() {}
 
   std::string getNs() const
