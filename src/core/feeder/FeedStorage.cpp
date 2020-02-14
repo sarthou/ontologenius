@@ -24,6 +24,8 @@ void FeedStorage::add(std::string& regex)
         feed.action_ = action_add;
       else if(action == "del")
         feed.action_ = action_del;
+      else if(action == "nop")
+        feed.action_ = action_nop;
       else
       {
         std::cout << "data do not match" << std::endl;
@@ -44,6 +46,8 @@ void FeedStorage::add(std::string& regex)
         feed.action_ = action_add;
       else if(action == "del")
         feed.action_ = action_del;
+      else if(action == "nop")
+        feed.action_ = action_nop;
       else
       {
         std::cout << "data do not match" << std::endl;
@@ -52,6 +56,8 @@ void FeedStorage::add(std::string& regex)
       feed.from_ = base_match[2].str();
     }
   }
+  else if(regex == "[nop]")
+    feed.action_ = action_nop;
   else
   {
     std::cout << "data do not match" << std::endl;

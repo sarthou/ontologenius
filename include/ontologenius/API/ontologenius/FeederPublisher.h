@@ -49,7 +49,8 @@ private:
   ros::Subscriber commit_sub_;
   std::atomic<bool> commited_;
 
-  void publish(std::string& str);
+  void sendNop();
+  void publish(const std::string& str);
 
   void commitCallback(const std_msgs::String::ConstPtr& msg);
 };

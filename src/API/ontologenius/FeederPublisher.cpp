@@ -78,6 +78,7 @@ bool FeederPublisher::commit(int32_t timeout)
 
   std::chrono::time_point<std::chrono::system_clock> start;
   start = std::chrono::system_clock::now();
+  sendNop();
 
   while((!commited_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()-start).count()) < (unsigned int)timeout)
   {
@@ -92,7 +93,12 @@ bool FeederPublisher::commit(int32_t timeout)
     return false;
 }
 
-void FeederPublisher::publish(std::string& str)
+void FeederPublisher::sendNop()
+{
+  publish("[nop]nop|");
+}
+
+void FeederPublisher::publish(const std::string& str)
 {
   std_msgs::String msg;
   msg.data = str;
