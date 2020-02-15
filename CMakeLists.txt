@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(ontologenius)
 
+include(cmake/ClangTidy.cmake)
+
 function(add_onto_library TARGET)
     if(NOT TARGET)
         message(FATAL_ERROR "Expected the target name as first argument")
