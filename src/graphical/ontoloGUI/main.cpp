@@ -3,6 +3,7 @@
 #include <QApplication>
 
 #include <thread>
+#include <signal.h>
 
 #include <ros/ros.h>
 #include <ros/package.h>
@@ -44,6 +45,7 @@ int main(int argc, char *argv[])
 
     std::thread spin_thread(spinThread,&run);
 
+    signal(SIGINT, SIG_DFL);
     auto a_exec = a.exec();
 
     run = false;
