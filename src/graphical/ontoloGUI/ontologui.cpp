@@ -670,6 +670,14 @@ void ontoloGUI::addOntologySlot()
         feeder_notifications_subs_[base_match[1].str()] = n_->subscribe("ontologenius/feeder_notifications", 1000, &ontoloGUI::feederCallback, this);
     }
   }
+  else
+  {
+    if(publishers_.find(srv.request.param) == publishers_.end())
+      publishers_[srv.request.param] = n_->advertise<std_msgs::String>("ontologenius/insert/" + srv.request.param, 1000);
+
+    if(feeder_notifications_subs_.find(srv.request.param) == feeder_notifications_subs_.end())
+      feeder_notifications_subs_[srv.request.param] = n_->subscribe("ontologenius/feeder_notifications", 1000, &ontoloGUI::feederCallback, this);
+  }
 
   if(!client.call(srv))
     displayErrorInfo("ontologenius/manage client call failed");

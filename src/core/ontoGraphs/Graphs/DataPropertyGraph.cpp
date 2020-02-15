@@ -132,8 +132,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   //for all my ranges
   for(size_t ranges_i = 0; ranges_i < property_vectors.ranges_.size(); ranges_i++)
   {
-    data_t data;
-    data.set(property_vectors.ranges_[ranges_i]);
+    data_t data(property_vectors.ranges_[ranges_i]);
     conditionalPushBack(me->ranges_, data); // FIXME
   }
 

@@ -196,15 +196,20 @@ void Reasoners::runPreReasoners()
   {
     for(auto& it : active_reasoners_)
     {
-      it.second->preReason();
-      std::vector<std::string> notif = it.second->getNotifications();
-      notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+      if(it.second)
+      {
+        it.second->preReason();
+        std::vector<std::string> notif = it.second->getNotifications();
+        if(notif.size())
+          notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+      }
     }
-
-    computeIndividualsUpdates();
 
     nb_updates = ReasonerInterface::getNbUpdates();
     ReasonerInterface::resetNbUpdates();
+
+    if(nb_updates != 0)
+      computeIndividualsUpdates();
   }
   while(nb_updates!= 0);
 }
@@ -224,11 +229,11 @@ void Reasoners::runPostReasoners()
         notifications_.insert(notifications_.end(), notif.begin(), notif.end());
       }
     }
-
-    computeIndividualsUpdates();
-
     nb_updates = ReasonerInterface::getNbUpdates();
     ReasonerInterface::resetNbUpdates();
+
+    if(nb_updates != 0)
+      computeIndividualsUpdates();
   }
   while(nb_updates!= 0);
 }

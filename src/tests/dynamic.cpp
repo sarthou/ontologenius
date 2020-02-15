@@ -20,7 +20,7 @@ TEST(dynamic_tests, insert)
   onto_ptr->feeder.addInheritage("human", "agent");
   onto_ptr->feeder.addInheritage("robot", "agent");
   onto_ptr->feeder.addInheritage("pepper", "robot");
-  wait.sleep();
+  onto_ptr->feeder.commit(500);
 
   res = onto_ptr->classes.getUp(test_word);
   res_bool = ((res.size() == 2) &&
@@ -39,15 +39,15 @@ TEST(dynamic_tests, insert)
   onto_ptr->feeder.addInheritage("laura", "woman");
   onto_ptr->feeder.addProperty("laura", "hasLeg", "int", "2");
   onto_ptr->feeder.addProperty("alice", "hasLeg", "int", "2");
-  wait.sleep();
+  onto_ptr->feeder.commit(500);
 
   res = onto_ptr->classes.getOn("woman", "hasLeg");
   res_bool = ((res.size() == 1) &&
-              (find(res.begin(), res.end(), "int:2") != res.end()));
+              (find(res.begin(), res.end(), "int#2") != res.end()));
   EXPECT_TRUE(res_bool);
 
   onto_ptr->feeder.removeProperty("alice", "hasLeg", "int", "2");
-  wait.sleep();
+  onto_ptr->feeder.commit(500);
 
   res = onto_ptr->classes.getOn("woman", "hasLeg");
   res_bool = (res.size() == 0);

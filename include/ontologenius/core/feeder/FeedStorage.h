@@ -11,7 +11,8 @@ namespace ontologenius {
 enum action_t
 {
   action_add,
-  action_del
+  action_del,
+  action_nop
 };
 
 struct feed_t

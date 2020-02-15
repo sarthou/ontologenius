@@ -2,6 +2,7 @@
 #define ONTOLOGENIUS_DATA_H
 
 #include <string>
+#include <functional>
 
 namespace ontologenius {
 
@@ -9,6 +10,20 @@ struct data_t
 {
   std::string value_;
   std::string type_;
+  size_t hash_;
+
+  data_t(const std::string& type, const std::string& value)
+  {
+    value_ = value;
+    type_ = type;
+  }
+
+  data_t(const std::string& value)
+  {
+    set(value);
+  }
+
+  data_t() {}
 
   std::string getNs() const
   {
@@ -22,20 +37,21 @@ struct data_t
       return "http://www.w3.org/2002/07/xsd"; //http://www.w3.org/2001/XMLSchema
   }
 
-  std::string toString() const {return( type_ + ":" + value_); }
+  std::string toString() const {return( type_ + "#" + value_); }
   void set(std::string value)
   {
-    type_ = value.substr(0,value.find(":"));
-    value_ = value.substr(value.find(":")+1);
+    type_ = value.substr(0,value.find("#"));
+    value_ = value.substr(value.find("#")+1);
   }
 
   bool operator==(const data_t& other)
   {
-    if((value_ == other.value_) &&
-      (type_ == other.type_))
-      return true;
-    else
-      return false;
+    return ((type_ == other.type_) && (value_ == other.value_));
+  }
+
+  bool operator!=(const data_t& other)
+  {
+    return ((type_ != other.type_) || (value_ != other.value_));
   }
 };
 
