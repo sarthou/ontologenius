@@ -46,7 +46,7 @@ public:
 
   void deepCopy(const ObjectPropertyGraph& other);
 
-  void add(std::string value, ObjectPropertyVectors_t& property_vectors);
+  void add(const std::string& value, ObjectPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);

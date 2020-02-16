@@ -1,7 +1,7 @@
 #include "ontologenius/core/ontologyIO/writers/IndividualWriter.h"
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
@@ -14,8 +14,8 @@ void IndividualWriter::write(FILE* file)
   std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
 
   std::vector<IndividualBranch_t*> individuals = individual_graph_->get();
-  for(size_t i = 0; i < individuals.size(); i++)
-    writeIndividual(individuals[i]);
+  for(auto& individual : individuals)
+    writeIndividual(individual);
 
   file_ = nullptr;
 }
@@ -123,23 +123,23 @@ void IndividualWriter::writeDistincts(std::vector<IndividualBranch_t*>& individu
 
   std::string end = "    </rdf:Description>\n";
 
-  for(size_t i = 0; i < individuals.size(); i++)
+  for(auto& individual : individuals)
   {
-    if(individuals[i]->distinct_.size() != 0)
+    if(individual->distinct_.size() != 0)
     {
-      if(std::find(distincts_done.begin(), distincts_done.end(), individuals[i]->value()) == distincts_done.end())
+      if(std::find(distincts_done.begin(), distincts_done.end(), individual->value()) == distincts_done.end())
       {
         std::string tmp;
         std::vector<std::string> distincts_current;
-        getDistincts(individuals[i], distincts_current);
+        getDistincts(individual, distincts_current);
 
         tmp += "        <owl:distinctMembers rdf:parseType=\"Collection\">\n";
 
-        for(size_t j = 0; j < distincts_current.size(); j++)
+        for(const auto& distinct : distincts_current)
         {
-          distincts_done.push_back(distincts_current[j]);
+          distincts_done.push_back(distinct);
           tmp += "             <rdf:Description rdf:about=\"ontologenius#" +
-          distincts_current[j] +
+          distinct +
           "\"/>\n";
         }
 

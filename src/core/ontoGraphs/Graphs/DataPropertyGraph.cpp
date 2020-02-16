@@ -72,7 +72,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
       getInMap(&mother_branch, mother.elem, tmp_mothers_);
       if(mother_branch == nullptr)
       {
-        mother_branch = new struct DataPropertyBranch_t(mother.elem);
+        mother_branch = new DataPropertyBranch_t(mother.elem);
         tmp_mothers_[mother_branch->value()] = mother_branch;
       }
 
@@ -98,7 +98,7 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
     //I create my disjoint
     if(disjoint_branch == nullptr)
     {
-      disjoint_branch = new struct DataPropertyBranch_t(disjoint.elem);
+      disjoint_branch = new DataPropertyBranch_t(disjoint.elem);
       tmp_mothers_[disjoint_branch->value()] = disjoint_branch; //I put my disjoint as tmp_mother
     }
     conditionalPushBack(me->disjoints_, DataPropertyElement_t(disjoint_branch, disjoint.probability));
@@ -166,7 +166,7 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
     // I don't exist ? so I will be a tmp_mother
     if(me == nullptr)
     {
-      me = new struct DataPropertyBranch_t(disjoints[disjoints_i]);
+      me = new DataPropertyBranch_t(disjoints[disjoints_i]);
       tmp_mothers_[me->value()] = me;
     }
 
@@ -184,7 +184,7 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
         //I create my disjoint
         if(disjoint_branch == nullptr)
         {
-          disjoint_branch = new struct DataPropertyBranch_t(disjoints[disjoints_j]);
+          disjoint_branch = new DataPropertyBranch_t(disjoints[disjoints_j]);
           tmp_mothers_[disjoint_branch->value()] = disjoint_branch; //I put my disjoint as tmp_mother
         }
         conditionalPushBack(me->disjoints_, DataPropertyElement_t(disjoint_branch));
@@ -237,8 +237,8 @@ std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& v
 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
-    for(unsigned range_i = 0; range_i < branch->ranges_.size(); range_i++)
-      res.insert(branch->ranges_[range_i].type_);
+    for(auto& range : branch->ranges_)
+      res.insert(range.type_);
 
   return res;
 }
@@ -334,20 +334,20 @@ void DataPropertyGraph::cpyBranch(DataPropertyBranch_t* old_branch, DataProperty
   new_branch->steady_dictionary_ = old_branch->steady_dictionary_;
 
   for(const auto& child : old_branch->childs_)
-    new_branch->childs_.push_back(DataPropertyElement_t(child, container_.find(child.elem->value())));
+    new_branch->childs_.emplace_back(DataPropertyElement_t(child, container_.find(child.elem->value())));
 
   for(const auto& mother : old_branch->mothers_)
-    new_branch->mothers_.push_back(DataPropertyElement_t(mother, container_.find(mother.elem->value())));
+    new_branch->mothers_.emplace_back(DataPropertyElement_t(mother, container_.find(mother.elem->value())));
 
   new_branch->ranges_ = old_branch->ranges_;
 
   for(const auto& domain : old_branch->domains_)
-    new_branch->domains_.push_back(ClassElement_t(domain, class_graph_->container_.find(domain.elem->value())));
+    new_branch->domains_.emplace_back(domain, class_graph_->container_.find(domain.elem->value()));
 
   new_branch->properties_ = old_branch->properties_;
 
   for(const auto& disjoint : old_branch->disjoints_)
-    new_branch->disjoints_.push_back(DataPropertyElement_t(disjoint, container_.find(disjoint.elem->value())));
+    new_branch->disjoints_.emplace_back(disjoint, container_.find(disjoint.elem->value()));
 }
 
 } // namespace ontologenius

@@ -277,7 +277,7 @@ void ontoloGUI::start()
 
 void ontoloGUI::ClasshoverEnterSlot()
 {
-  ui->ClassDescription->setText(((QPushButtonExtended*)sender())->whatsThis());
+  ui->ClassDescription->setText(dynamic_cast<QPushButtonExtended *>(sender())->whatsThis());
 }
 
 void ontoloGUI::ClasshoverLeaveSlot()
@@ -287,7 +287,7 @@ void ontoloGUI::ClasshoverLeaveSlot()
 
 void ontoloGUI::objectPropertyhoverEnterSlot()
 {
-  ui->ObjectPropertyDescription->setText(((QPushButtonExtended*)sender())->whatsThis());
+  ui->ObjectPropertyDescription->setText(dynamic_cast<QPushButtonExtended *>(sender())->whatsThis());
 }
 
 void ontoloGUI::objectPropertyhoverLeaveSlot()
@@ -297,7 +297,7 @@ void ontoloGUI::objectPropertyhoverLeaveSlot()
 
 void ontoloGUI::dataPropertyhoverEnterSlot()
 {
-  ui->DataPropertyDescription->setText(((QPushButtonExtended*)sender())->whatsThis());
+  ui->DataPropertyDescription->setText(dynamic_cast<QPushButtonExtended *>(sender())->whatsThis());
 }
 
 void ontoloGUI::dataPropertyhoverLeaveSlot()
@@ -307,12 +307,12 @@ void ontoloGUI::dataPropertyhoverLeaveSlot()
 
 void ontoloGUI::IndividualCheckBoxhoverEnterSlot()
 {
-  ui->IndividualDescription->setText(((QCheckBoxExtended*)sender())->whatsThis());
+  ui->IndividualDescription->setText(dynamic_cast<QCheckBoxExtended*>(sender())->whatsThis());
 }
 
 void ontoloGUI::IndividualhoverEnterSlot()
 {
-  ui->IndividualDescription->setText(((QPushButtonExtended*)sender())->whatsThis());
+  ui->IndividualDescription->setText(dynamic_cast<QPushButtonExtended *>(sender())->whatsThis());
 }
 
 void ontoloGUI::IndividualhoverLeaveSlot()
@@ -326,9 +326,9 @@ void ontoloGUI::classClickedSlot()
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
-  srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
+  srv.request.action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
   srv.request.param = ui->classParameter->text().toStdString();
-  QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->classParameter->text();
+  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->classParameter->text();
   ui->ClassDescription->setText(text);
 
   if(!client.call(srv))
@@ -349,9 +349,9 @@ void ontoloGUI::objectPropertyClickedSlot()
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
-  srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
+  srv.request.action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
   srv.request.param = ui->objectPropertyParameter->text().toStdString();
-  QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->objectPropertyParameter->text();
+  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->objectPropertyParameter->text();
   ui->ObjectPropertyDescription->setText(text);
 
   if(!client.call(srv))
@@ -372,9 +372,9 @@ void ontoloGUI::dataPropertyClickedSlot()
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
-  srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
+  srv.request.action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
   srv.request.param = ui->dataPropertyParameter->text().toStdString();
-  QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->dataPropertyParameter->text();
+  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->dataPropertyParameter->text();
   ui->DataPropertyDescription->setText(text);
 
   if(!client.call(srv))
@@ -395,9 +395,9 @@ void ontoloGUI::individualClickedSlot()
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
-  srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
+  srv.request.action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
   srv.request.param = ui->individualParameter->text().toStdString();
-  QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->individualParameter->text();
+  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->individualParameter->text();
   ui->IndividualDescription->setText(text);
 
   if(!client.call(srv))
@@ -441,11 +441,11 @@ void ontoloGUI::ReasonerClickedSlot(int)
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
-  if(((QCheckBoxExtended*)sender())->isChecked())
+  if(dynamic_cast<QCheckBoxExtended*>(sender())->isChecked())
     srv.request.action = "activate";
   else
     srv.request.action = "deactivate";
-  srv.request.param = ((QCheckBoxExtended*)sender())->text().toStdString();
+  srv.request.param = dynamic_cast<QCheckBoxExtended*>(sender())->text().toStdString();
 
   if(!client.call(srv))
     displayErrorInfo(service_name + " client call failed");
@@ -459,7 +459,7 @@ void ontoloGUI::ReasonerClickedSlot(int)
 
 void ontoloGUI::ReasonerhoverEnterSlot()
 {
-  size_t index = getReasonerIndex((QCheckBoxExtended*)sender());
+  size_t index = getReasonerIndex(dynamic_cast<QCheckBoxExtended*>(sender()));
   ui->ReasonerDescription->setText(QString::fromStdString(reasoners_description_[index]));
 }
 
@@ -540,12 +540,12 @@ void ontoloGUI::updateReasonersCheckBoxs()
         Qt::CheckState checked = Qt::Unchecked;
         for(size_t j = 0; j < active_reasoners.size(); j++)
         {
-          if(((QCheckBoxExtended*)widget)->text().toStdString() == active_reasoners[j])
+          if(dynamic_cast<QCheckBoxExtended*>(widget)->text().toStdString() == active_reasoners[j])
             checked = Qt::Checked;
         }
-        QObject::disconnect(((QCheckBoxExtended*)widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
-        ((QCheckBoxExtended*)widget)->setCheckState(checked);
-        QObject::connect(((QCheckBoxExtended*)widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
+        QObject::disconnect(dynamic_cast<QCheckBoxExtended*>(widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
+        dynamic_cast<QCheckBoxExtended*>(widget)->setCheckState(checked);
+        QObject::connect(dynamic_cast<QCheckBoxExtended*>(widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
       }
     }
   }
@@ -627,16 +627,16 @@ void ontoloGUI::displayOntologiesListSlot()
 std::string ontoloGUI::vector2string(std::vector<std::string> vect)
 {
   std::string res;
-  for(size_t i = 0; i < vect.size(); i++)
-    res += vect[i] + "\n";
+  for(const auto& v : vect)
+    res += v + "\n";
   return res;
 }
 
 std::string ontoloGUI::vector2html(std::vector<std::string> vect)
 {
   std::string res;
-  for(size_t i = 0; i < vect.size(); i++)
-    res += " - " + vect[i] + "<br>";
+  for(const auto& v : vect)
+    res += " - " + v + "<br>";
   return res;
 }
 

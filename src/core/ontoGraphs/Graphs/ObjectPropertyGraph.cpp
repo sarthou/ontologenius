@@ -19,14 +19,14 @@ ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, Class
 
   for(const auto& root : other.roots_)
   {
-    ObjectPropertyBranch_t* prop_branch = new ObjectPropertyBranch_t(root.first);
+    auto prop_branch = new ObjectPropertyBranch_t(root.first);
     roots_[root.first] = prop_branch;
     all_branchs_.push_back(prop_branch);
   }
 
   for(const auto& branch : other.branchs_)
   {
-    ObjectPropertyBranch_t* prop_branch = new ObjectPropertyBranch_t(branch.first);
+    auto prop_branch = new ObjectPropertyBranch_t(branch.first);
     branchs_[branch.first] = prop_branch;
     all_branchs_.push_back(prop_branch);
   }
@@ -34,7 +34,7 @@ ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, Class
   this->container_.load(all_branchs_);
 }
 
-void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& property_vectors)
+void ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
   /**********************
@@ -70,7 +70,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
       getInMap(&mother_branch, mother.elem, tmp_mothers_);
       if(mother_branch == nullptr)
       {
-        mother_branch = new struct ObjectPropertyBranch_t(mother.elem);
+        mother_branch = new ObjectPropertyBranch_t(mother.elem);
         tmp_mothers_[mother_branch->value()] = mother_branch;
       }
 
@@ -96,7 +96,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     //I create my disjoint
     if(disjoint_branch == nullptr)
     {
-      disjoint_branch = new struct ObjectPropertyBranch_t(disjoint.elem);
+      disjoint_branch = new ObjectPropertyBranch_t(disjoint.elem);
       tmp_mothers_[disjoint_branch->value()] = disjoint_branch; //I put my disjoint as tmp_mother
     }
     conditionalPushBack(me->disjoints_, ObjectPropertyElement_t(disjoint_branch, disjoint.probability));
@@ -117,7 +117,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
     //I create my disjoint
     if(inverse_branch == nullptr)
     {
-      inverse_branch = new struct ObjectPropertyBranch_t(inverse.elem);
+      inverse_branch = new ObjectPropertyBranch_t(inverse.elem);
       tmp_mothers_[inverse_branch->value()] = inverse_branch; //I put my disjoint as tmp_mother
     }
     conditionalPushBack(me->inverses_, ObjectPropertyElement_t(inverse_branch, inverse.probability));
@@ -176,27 +176,27 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
   /**********************
   ** Chain axiom
   **********************/
-  for(size_t chain_i = 0; chain_i < property_vectors.chains_.size(); chain_i++)
+  for(auto& chain_i : property_vectors.chains_)
   {
     std::vector<ObjectPropertyBranch_t*> chain;
     ObjectPropertyBranch_t* first = nullptr;
 
-    for(size_t i = 0; i < property_vectors.chains_[chain_i].size(); i++)
+    for(size_t i = 0; i < chain_i.size(); i++)
     {
       ObjectPropertyBranch_t* next = nullptr;
 
       //is a root my next ?
-      getNextChainLink(&next, property_vectors.chains_[chain_i][i], roots_);
+      getNextChainLink(&next, chain_i[i], roots_);
 
       //is a branch my next ?
-      getNextChainLink(&next, property_vectors.chains_[chain_i][i], branchs_);
+      getNextChainLink(&next, chain_i[i], branchs_);
 
       //is a tmp mother is my next ?
-      getNextChainLink(&next, property_vectors.chains_[chain_i][i], tmp_mothers_);
+      getNextChainLink(&next, chain_i[i], tmp_mothers_);
 
       if(next == nullptr)
       {
-        next = new struct ObjectPropertyBranch_t(property_vectors.chains_[chain_i][i]);
+        next = new ObjectPropertyBranch_t(chain_i[i]);
         tmp_mothers_[next->value()] = next;
       }
 
@@ -208,7 +208,7 @@ void ObjectPropertyGraph::add(std::string value, ObjectPropertyVectors_t& proper
 
     chain.push_back(me);
     first->chains_.push_back(chain);
-    me->str_chains_.push_back(property_vectors.chains_[chain_i]);
+    me->str_chains_.push_back(chain_i);
   }
 
   mitigate(me);
@@ -234,7 +234,7 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
     // I don't exist ? so I will be a tmp_mother
     if(me == nullptr)
     {
-      me = new struct ObjectPropertyBranch_t(disjoints[disjoints_i]);
+      me = new ObjectPropertyBranch_t(disjoints[disjoints_i]);
       tmp_mothers_[me->value()] = me;
     }
 
@@ -252,7 +252,7 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
         //I create my disjoint
         if(disjoint_branch == nullptr)
         {
-          disjoint_branch = new struct ObjectPropertyBranch_t(disjoints[disjoints_j]);
+          disjoint_branch = new ObjectPropertyBranch_t(disjoints[disjoints_j]);
           tmp_mothers_[disjoint_branch->value()] = disjoint_branch; //I put my disjoint as tmp_mother
         }
         conditionalPushBack(me->disjoints_, ObjectPropertyElement_t(disjoint_branch));
@@ -432,28 +432,28 @@ void ObjectPropertyGraph::cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPr
   new_branch->steady_dictionary_ = old_branch->steady_dictionary_;
 
   for(const auto& child : old_branch->childs_)
-    new_branch->childs_.push_back(ObjectPropertyElement_t(child, container_.find(child.elem->value())));
+    new_branch->childs_.emplace_back(ObjectPropertyElement_t(child, container_.find(child.elem->value())));
 
   for(const auto& mother : old_branch->mothers_)
-    new_branch->mothers_.push_back(ObjectPropertyElement_t(mother, container_.find(mother.elem->value())));
+    new_branch->mothers_.emplace_back(ObjectPropertyElement_t(mother, container_.find(mother.elem->value())));
 
   for(const auto& range : old_branch->ranges_)
-    new_branch->ranges_.push_back(ClassElement_t(range, class_graph_->container_.find(range.elem->value())));
+    new_branch->ranges_.emplace_back(range, class_graph_->container_.find(range.elem->value()));
 
   for(const auto& domain : old_branch->domains_)
-    new_branch->domains_.push_back(ClassElement_t(domain, class_graph_->container_.find(domain.elem->value())));
+    new_branch->domains_.emplace_back(domain, class_graph_->container_.find(domain.elem->value()));
 
   new_branch->properties_ = old_branch->properties_;
 
   for(const auto& disjoint : old_branch->disjoints_)
-    new_branch->disjoints_.push_back(ObjectPropertyElement_t(disjoint, container_.find(disjoint.elem->value())));
+    new_branch->disjoints_.emplace_back(disjoint, container_.find(disjoint.elem->value()));
 
   for(const auto& inverse : old_branch->inverses_)
-    new_branch->inverses_.push_back(ObjectPropertyElement_t(inverse, container_.find(inverse.elem->value())));
+    new_branch->inverses_.emplace_back(inverse, container_.find(inverse.elem->value()));
 
   for(const auto& chain : old_branch->chains_)
   {
-    std::vector<ObjectPropertyBranch_t*> tmp;
+    std::vector<ObjectPropertyBranch_t*> tmp(chain.size());
     for(const auto& link : chain)
       tmp.push_back(container_.find(link->value()));
     new_branch->chains_.push_back(tmp);
