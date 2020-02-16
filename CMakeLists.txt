@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.5)
 project(ontologenius)
 
+option(WITH_CLANG_TIDY "Enable clang-tidy static analysis during build" OFF)
+
+if(WITH_CLANG_TIDY)
+    include(cmake/ClangTidy.cmake)
+endif()
+
 function(add_onto_library TARGET)
     if(NOT TARGET)
         message(FATAL_ERROR "Expected the target name as first argument")
