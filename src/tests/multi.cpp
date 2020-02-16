@@ -12,7 +12,6 @@ OntologiesManipulator* onto_ptr;
 TEST(multi_tests, create)
 {
   ros::Rate wait(1);
-  ros::Rate wait2(0.6);
   std::vector<std::string> res;
   bool res_bool = true;
   std::string test_word = "robot";
@@ -28,7 +27,7 @@ TEST(multi_tests, create)
   (*onto_ptr)["paul"]->feeder.addInheritage("human", "agent");
   (*onto_ptr)["paul"]->feeder.addInheritage("robot", "agent");
   (*onto_ptr)["paul"]->feeder.addInheritage("pepper", "robot");
-  wait.sleep();
+  (*onto_ptr)["paul"]->feeder.commit(500);
 
   res = (*onto_ptr)["paul"]->classes.getUp(test_word);
   res_bool = ((res.size() == 2) &&
@@ -47,7 +46,6 @@ TEST(multi_tests, create)
 TEST(multi_tests, differences)
 {
   ros::Rate wait(1);
-  ros::Rate wait2(0.4);
   std::vector<std::string> res;
   bool res_bool = true;
 
@@ -64,7 +62,7 @@ TEST(multi_tests, differences)
   (*onto_ptr)["paul"]->feeder.addInheritage("human", "agent");
   (*onto_ptr)["paul"]->feeder.addInheritage("robot", "agent");
   (*onto_ptr)["paul"]->feeder.addInheritage("pepper", "robot");
-
+  (*onto_ptr)["paul"]->feeder.commit(500);
 
   (*onto_ptr)["bob"]->feeder.addConcept("human");
   (*onto_ptr)["bob"]->feeder.addInheritage("man", "human");
@@ -72,7 +70,7 @@ TEST(multi_tests, differences)
   (*onto_ptr)["bob"]->feeder.addInheritage("human", "agent");
   (*onto_ptr)["bob"]->feeder.addInheritage("robot", "agent");
   (*onto_ptr)["bob"]->feeder.addInheritage("pepper", "human");
-  wait2.sleep();
+  (*onto_ptr)["bob"]->feeder.commit(500);
 
   res = onto_ptr->getDifference("paul", "bob", "pepper");
   res_bool = ((res.size() == 2) &&
