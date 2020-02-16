@@ -7,8 +7,7 @@ find_program(
 if(CLANG_TIDY_EXE)
     set(CMAKE_CXX_CLANG_TIDY
         ${CLANG_TIDY_EXE}
-        --checks=*,-abseil*,-android*,-fuchsia*,-modernize-use-trailing-return-type*,-zircon*,-objc*,-mpi*,-openmp*,
-            -google-readability*,-readability*,-hicpp-braces*
+        --checks=*,-abseil*,-android*,-fuchsia*,-modernize-use-trailing-return-type*,-zircon*,-objc*,-mpi*,-openmp*,-google-readability*,-readability*,-hicpp-braces*
     )
 else()
     message(WARNING "No executable for clang-tidy found. Building without clang-tidy.")
