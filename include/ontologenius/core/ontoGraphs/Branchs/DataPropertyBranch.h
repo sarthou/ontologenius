@@ -23,12 +23,12 @@ public:
   std::vector<ClassElement_t> domains_;
   std::vector<data_t> ranges_;
 
-  DataPropertyBranch_t(std::string value = "") : Branch_t(value) {};
+  DataPropertyBranch_t(const std::string& value = "") : Branch_t(value) {};
 
-  void setSteady_dictionary(std::string lang, std::string word);
-  void setSteady_muted_dictionary(std::string lang, std::string word);
-  void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
-  void setSteady_muted_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
+  void setSteady_dictionary(const std::string& lang, const std::string& word);
+  void setSteady_muted_dictionary(const std::string& lang, const std::string& word);
+  void setSteady_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
+  void setSteady_muted_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
 };
 
 } // namespace ontologenius

@@ -25,12 +25,12 @@ public:
   std::vector<std::vector<ObjectPropertyBranch_t*>> chains_;
   std::vector<std::vector<std::string>> str_chains_;
 
-  ObjectPropertyBranch_t(std::string value = "") : Branch_t(value) {};
+  ObjectPropertyBranch_t(const std::string& value = "") : Branch_t(value) {};
 
-  void setSteady_dictionary(std::string lang, std::string word);
-  void setSteady_muted_dictionary(std::string lang, std::string word);
-  void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
-  void setSteady_muted_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
+  void setSteady_dictionary(const std::string& lang, const std::string& word);
+  void setSteady_muted_dictionary(const std::string& lang, const std::string& word);
+  void setSteady_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
+  void setSteady_muted_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
 };
 
 } // namespace ontologenius

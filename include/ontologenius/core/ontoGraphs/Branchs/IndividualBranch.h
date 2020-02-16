@@ -32,12 +32,12 @@ public:
   std::vector<IndividualElement_t> same_as_;
   std::vector<IndividualElement_t> distinct_;
 
-  IndividualBranch_t(std::string value = "") : ValuedNode(value) {mark = false; }
+  IndividualBranch_t(const std::string& value = "") : ValuedNode(value) {mark = false; }
 
-  void setSteady_dictionary(std::string lang, std::string word);
-  void setSteady_muted_dictionary(std::string lang, std::string word);
-  void setSteady_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
-  void setSteady_muted_dictionary(std::map<std::string, std::vector<std::string>> dictionary);
+  void setSteady_dictionary(const std::string& lang, const std::string& word);
+  void setSteady_muted_dictionary(const std::string& lang, const std::string& word);
+  void setSteady_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
+  void setSteady_muted_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
 
   int ObjectPropertyExist(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
 };
