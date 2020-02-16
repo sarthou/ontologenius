@@ -3,12 +3,12 @@
 #include <iostream>
 
 #include "ontologenius/core/ontoGraphs/Checkers/ClassChecker.h"
-#include "ontologenius/core/ontoGraphs/Checkers/ObjectPropertyChecker.h"
 #include "ontologenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
 #include "ontologenius/core/ontoGraphs/Checkers/IndividualChecker.h"
+#include "ontologenius/core/ontoGraphs/Checkers/ObjectPropertyChecker.h"
 
-#include "ontologenius/graphical/Display.h"
 #include "ontologenius/core/utility/error_code.h"
+#include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 
@@ -72,12 +72,12 @@ int Ontology::close()
   {
     reader.displayIndividualRules();
 
-    for(size_t i = 0; i < uri_.size(); i++)
-      reader.readFromUri(uri_[i], true);
+    for(auto& uri : uri_)
+      reader.readFromUri(uri, true);
     uri_.clear();
 
-    for(size_t i = 0; i < files_.size(); i++)
-      reader.readFromFile(files_[i], true);
+    for(auto& file : files_)
+      reader.readFromFile(file, true);
     files_.clear();
 
     individual_graph_.close();
@@ -106,19 +106,19 @@ int Ontology::close()
     return 0;
 }
 
-int Ontology::readFromUri(std::string uri)
+int Ontology::readFromUri(const std::string& uri)
 {
   uri_.push_back(uri);
   return reader.readFromUri(uri);
 }
 
-int Ontology::readFromFile(std::string file_name)
+int Ontology::readFromFile(const std::string& file_name)
 {
   files_.push_back(file_name);
   return reader.readFromFile(file_name);
 }
 
-bool Ontology::preload(std::string file_name)
+bool Ontology::preload(const std::string& file_name)
 {
   writer.setFileName(file_name);
   if(file_name != "none")
@@ -165,7 +165,7 @@ bool Ontology::isInit(bool print)
   return is_init_;
 }
 
-void Ontology::setLanguage(std::string language)
+void Ontology::setLanguage(const std::string& language)
 {
   class_graph_.setLanguage(language);
   object_property_graph_.setLanguage(language);

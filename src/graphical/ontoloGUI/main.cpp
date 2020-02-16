@@ -1,12 +1,13 @@
-#include "include/ontologenius/graphical/ontoloGUI/ontologui.h"
 #include "include/ontologenius/graphical/ontoloGUI/DarkStyle.h"
+#include "include/ontologenius/graphical/ontoloGUI/ontologui.h"
+
 #include <QApplication>
 
 #include <thread>
 #include <signal.h>
 
-#include <ros/ros.h>
 #include <ros/package.h>
+#include <ros/ros.h>
 
 void spinThread(bool* run)
 {

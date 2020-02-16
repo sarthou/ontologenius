@@ -13,8 +13,8 @@ void DataPropertiesWriter::write(FILE* file)
   std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
 
   std::vector<DataPropertyBranch_t*> properties = property_graph_->get();
-  for(size_t i = 0; i < properties.size(); i++)
-    writeProperty(properties[i]);
+  for(auto property : properties)
+    writeProperty(property);
 
   file_ = nullptr;
 }
@@ -54,12 +54,12 @@ void DataPropertiesWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
 
 void DataPropertiesWriter::writeRange(DataPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->ranges_.size(); i++)
+  for(auto range : branch->ranges_)
   {
     std::string tmp = "        <rdfs:range rdf:resource=\"" +
-                      branch->ranges_[i].getNs() +
+                      range.getNs() +
                       "#" +
-                      branch->ranges_[i].type_ +
+                      range.type_ +
                       + "\"/>\n";
     writeString(tmp);
   }

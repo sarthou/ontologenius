@@ -24,7 +24,7 @@ void DataPropertyChecker::checkDisjoint()
     std::unordered_set<std::string> up = property_graph_->getUp(graph_vect_[i]->value());
     std::unordered_set<std::string> disjoint;
 
-    for (std::string it : up)
+    for (const std::string& it : up)
     {
       std::unordered_set<std::string> tmp = property_graph_->getDisjoint(it);
       disjoint.insert(tmp.begin(), tmp.end());

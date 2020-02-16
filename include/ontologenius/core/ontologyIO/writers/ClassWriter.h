@@ -29,7 +29,7 @@ private:
   void writeDisjointWith(ClassBranch_t* branch);
   void writeDisjointWith(std::vector<ClassBranch_t*>& classes);
   void getDisjointsSets(ClassBranch_t* base, std::set<std::set<ClassBranch_t*>>& res);
-  void getDisjointsSets(ClassBranch_t* last, const std::set<ClassBranch_t*>& base_set, std::set<ClassBranch_t*> restriction_set, std::set<std::set<ClassBranch_t*>>& res);
+  void getDisjointsSets(ClassBranch_t* last, const std::set<ClassBranch_t*>& base_set, const std::set<ClassBranch_t*>& restriction_set, std::set<std::set<ClassBranch_t*>>& res);
   void writeObjectProperties(ClassBranch_t* branch);
   void writeDataProperties(ClassBranch_t* branch);
 };

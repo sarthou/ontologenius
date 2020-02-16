@@ -19,7 +19,7 @@ public:
   void writeDictionary(ValuedNode* node);
   void writeMutedDictionary(ValuedNode* node);
 
-  void writeString(std::string text);
+  void writeString(const std::string& text);
 
   template<typename T>
   std::string getProba(Single_t<T>& element)

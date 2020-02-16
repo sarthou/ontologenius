@@ -13,8 +13,8 @@ void ObjectPropertiesWriter::write(FILE* file)
   std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
 
   std::vector<ObjectPropertyBranch_t*> properties = property_graph_->get();
-  for(size_t i = 0; i < properties.size(); i++)
-    writeProperty(properties[i]);
+  for(auto& property : properties)
+    writeProperty(property);
 
   file_ = nullptr;
 }
@@ -98,14 +98,14 @@ void ObjectPropertiesWriter::writeDomain(ObjectPropertyBranch_t* branch)
 
 void ObjectPropertiesWriter::writeChain(ObjectPropertyBranch_t* branch)
 {
-  for(size_t i = 0; i < branch->str_chains_.size(); i++)
+  for(auto& chain : branch->str_chains_)
   {
     std::string tmp = "        <owl:propertyChainAxiom rdf:parseType=\"Collection\">\n";
 
-    for(size_t j = 0; j < branch->str_chains_[i].size(); j++)
+    for(size_t j = 0; j < chain.size(); j++)
     {
       tmp += "            <rdf:Description rdf:about=\"ontologenius#" +
-              branch->str_chains_[i][j] +
+              chain[j] +
               "\"/>\n";
     }
 

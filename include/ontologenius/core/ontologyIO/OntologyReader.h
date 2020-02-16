@@ -26,8 +26,8 @@ public:
   OntologyReader(Ontology& onto);
   ~OntologyReader() {}
 
-  int readFromUri(std::string& uri, bool individual = false);
-  int readFromFile(std::string& fileName, bool individual = false);
+  int readFromUri(const std::string& uri, bool individual = false);
+  int readFromFile(const std::string& fileName, bool individual = false);
 
   void displayIndividualRules();
   bool empty() {return (elemLoaded == 0); }
@@ -40,8 +40,8 @@ private:
 
   int elemLoaded;
 
-  int read(TiXmlElement* rdf, std::string& name);
-  int readIndividual(TiXmlElement* rdf, std::string& name);
+  int read(TiXmlElement* rdf, const std::string& name);
+  int readIndividual(TiXmlElement* rdf, const std::string& name);
 
   void readClass(TiXmlElement* elem);
   void readIndividual(TiXmlElement* elem);
@@ -58,7 +58,7 @@ private:
   inline void push(std::vector<Pair_t<std::string, std::string>>& vect, const Pair_t<std::string, std::string>& elem, const std::string& symbole1, const std::string& symbole2);
   inline void push(std::vector<Pair_t<std::string, data_t>>& vect, const Pair_t<std::string, data_t>& elem, const std::string& symbole1, const std::string& symbole2);
   inline void push(std::vector<bool>& vect, bool elem, const std::string& symbole = "");
-  void push(Properties_t& properties, TiXmlElement* subElem, std::string symbole = "", std::string attribute = "rdf:resource");
+  void push(Properties_t& properties, TiXmlElement* subElem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
   void pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem);
   inline std::string getName(const std::string& uri);
   inline float getProbability(TiXmlElement* elem);

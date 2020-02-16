@@ -3,9 +3,9 @@
 #include <iostream>
 
 #include "ontologenius/core/ontologyIO/writers/ClassWriter.h"
-#include "ontologenius/core/ontologyIO/writers/ObjectPropertiesWriter.h"
 #include "ontologenius/core/ontologyIO/writers/DataPropertiesWriter.h"
 #include "ontologenius/core/ontologyIO/writers/IndividualWriter.h"
+#include "ontologenius/core/ontologyIO/writers/ObjectPropertiesWriter.h"
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/graphical/Display.h"
@@ -28,7 +28,7 @@ OntologyWriter::OntologyWriter(Ontology& onto)
   data_property_graph_ = &onto.data_property_graph_;
 }
 
-void OntologyWriter::write(std::string file_name)
+void OntologyWriter::write(const std::string& file_name)
 {
   if(file_name != "none")
     file_name_ = file_name;
@@ -71,7 +71,7 @@ void OntologyWriter::write(std::string file_name)
   Display::success("ontology loaded in : ", false);
   std::cout << file_name_ << std::endl;
 
-  if(file_ != NULL)
+  if(file_ != nullptr)
     fclose(file_);
 }
 
@@ -95,7 +95,7 @@ void OntologyWriter::writeEnd()
   writeString(tmp);
 }
 
-void OntologyWriter::writeBanner(std::string name)
+void OntologyWriter::writeBanner(const std::string& name)
 {
   std::string tmp = "    <!--\n\
     ///////////////////////////////////////////////////////////////////////////////////////\n\
@@ -107,9 +107,9 @@ void OntologyWriter::writeBanner(std::string name)
   writeString(tmp);
 }
 
-void OntologyWriter::writeString(std::string text)
+void OntologyWriter::writeString(const std::string& text)
 {
-  if(file_ != NULL)
+  if(file_ != nullptr)
     fwrite(text.c_str(), sizeof(char), text.size(), file_);
 }
 

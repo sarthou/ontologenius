@@ -19,9 +19,9 @@ public:
   OntologyWriter(Ontology& onto);
   ~OntologyWriter() {}
 
-  void setFileName(std::string name) {file_name_ = name; }
+  void setFileName(const std::string& name) {file_name_ = name; }
   std::string getFileName() { return file_name_; }
-  void write(std::string file_name = "none");
+  void write(const std::string& file_name = "none");
 
 private:
   ClassGraph* class_graph_;
@@ -34,8 +34,8 @@ private:
 
   void writeStart();
   void writeEnd();
-  void writeBanner(std::string name);
-  void writeString(std::string text);
+  void writeBanner(const std::string& name);
+  void writeString(const std::string& text);
 };
 
 } // namespace ontologenius

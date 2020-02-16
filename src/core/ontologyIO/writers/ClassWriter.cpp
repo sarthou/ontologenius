@@ -3,9 +3,8 @@
 #include <algorithm>
 
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
-
+#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 
 namespace ontologenius {
 
@@ -16,8 +15,8 @@ void ClassWriter::write(FILE* file)
   std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
 
   std::vector<ClassBranch_t*> classes = class_graph_->get();
-  for(size_t i = 0; i < classes.size(); i++)
-    writeClass(classes[i]);
+  for(auto& classe : classes)
+    writeClass(classe);
 
   file_ = nullptr;
 }
@@ -73,13 +72,13 @@ void ClassWriter::writeSubClassOf(ClassBranch_t* branch)
 void ClassWriter::writeDisjointWith(ClassBranch_t* branch)
 {
   if(branch->disjoints_.size() < 2)
-    for(size_t i = 0; i < branch->disjoints_.size(); i++)
-      if(branch->disjoints_[i].infered == false)
+    for(auto& disjoint : branch->disjoints_)
+      if(disjoint.infered == false)
       {
         std::string tmp = "        <owl:disjointWith" +
-                          getProba(branch->disjoints_[i]) +
+                          getProba(disjoint) +
                           " rdf:resource=\"ontologenius#" +
-                          branch->disjoints_[i].elem->value()
+                          disjoint.elem->value()
                           + "\"/>\n";
         writeString(tmp);
       }
@@ -95,10 +94,10 @@ void ClassWriter::writeDisjointWith(std::vector<ClassBranch_t*>& classes)
   std::vector<std::set<std::string>> disjoints_sets;
   std::set<std::set<ClassBranch_t*>> disjoints_vects;
 
-  for(size_t i = 0; i < classes.size(); i++)
+  for(auto& classe : classes)
   {
-    if(classes[i]->disjoints_.size() > 1)
-      getDisjointsSets(classes[i], disjoints_vects);
+    if(classe->disjoints_.size() > 1)
+      getDisjointsSets(classe, disjoints_vects);
   }
 
   for(auto& disjoints_set : disjoints_vects)
@@ -140,7 +139,7 @@ void ClassWriter::getDisjointsSets(ClassBranch_t* base, std::set<std::set<ClassB
   }
 }
 
-void ClassWriter::getDisjointsSets(ClassBranch_t* last, const std::set<ClassBranch_t*>& base_set, std::set<ClassBranch_t*> restriction_set, std::set<std::set<ClassBranch_t*>>& res)
+void ClassWriter::getDisjointsSets(ClassBranch_t* last, const std::set<ClassBranch_t*>& base_set, const std::set<ClassBranch_t*>& restriction_set, std::set<std::set<ClassBranch_t*>>& res)
 {
   std::set<ClassBranch_t*> local_disjoints;
   for(auto& disjoint : last->disjoints_)
@@ -154,9 +153,9 @@ void ClassWriter::getDisjointsSets(ClassBranch_t* last, const std::set<ClassBran
   bool leaf = true;
   for(auto& disjoint : last->disjoints_)
   {
-    if(std::find(restriction_set.begin(), restriction_set.end(), disjoint.elem) != restriction_set.end())
+    if(restriction_set.find(disjoint.elem) != restriction_set.end())
     {
-      if(std::find(base_set.begin(), base_set.end(), disjoint.elem) == base_set.end())
+      if(base_set.find(disjoint.elem) == base_set.end())
       {
         std::set<ClassBranch_t*> new_set = base_set;
         new_set.insert(disjoint.elem);

@@ -3,8 +3,8 @@
 #include <algorithm>
 
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 
 namespace ontologenius {
 
@@ -36,7 +36,7 @@ void IndividualChecker::checkSame()
     std::unordered_set<std::string> same = individual_graph_->getSame(graph_vect_[i]->value());
     std::unordered_set<std::string> distinct;
 
-    for (std::string it : same)
+    for (const std::string& it : same)
     {
       std::unordered_set<std::string> tmp = individual_graph_->getDistincts(it);
       distinct.insert(tmp.begin(), tmp.end());
@@ -198,7 +198,7 @@ void IndividualChecker::checkDataPropertyRange()
       std::unordered_set<std::string> range = individual_graph_->data_property_graph_->getRange(relation.first->value());
       if(range.size() != 0)
       {
-        std::unordered_set<std::string>::iterator intersection = std::find(range.begin(), range.end(), relation.second.type_);
+        auto intersection = range.find(relation.second.type_);
         if(intersection == range.end())
           print_error("'" + relation.second.type_ + "' is not in range of '" + relation.first->value() + "'");
       }

@@ -20,13 +20,13 @@ public:
 
   int close();
 
-  int readFromUri(std::string uri);
-  int readFromFile(std::string file_name);
-  bool preload(std::string file_name);
+  int readFromUri(const std::string& uri);
+  int readFromFile(const std::string& file_name);
+  bool preload(const std::string& file_name);
   void save(const std::string& file_name = "");
 
   bool isInit(bool print = true);
-  void setLanguage(std::string language);
+  void setLanguage(const std::string& language);
   std::string getLanguage();
 
   ClassGraph class_graph_;
