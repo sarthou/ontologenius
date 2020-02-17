@@ -178,25 +178,28 @@ void ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t&
   **********************/
   for(auto& chain_i : property_vectors.chains_)
   {
+    if(chain_i.size() == 0)
+      continue;
+
     std::vector<ObjectPropertyBranch_t*> chain;
     ObjectPropertyBranch_t* first = nullptr;
 
-    for(size_t i = 0; i < chain_i.size(); i++)
+    for(auto& link : chain_i)
     {
       ObjectPropertyBranch_t* next = nullptr;
 
       //is a root my next ?
-      getNextChainLink(&next, chain_i[i], roots_);
+      getNextChainLink(&next, link, roots_);
 
       //is a branch my next ?
-      getNextChainLink(&next, chain_i[i], branchs_);
+      getNextChainLink(&next, link, branchs_);
 
       //is a tmp mother is my next ?
-      getNextChainLink(&next, chain_i[i], tmp_mothers_);
+      getNextChainLink(&next, link, tmp_mothers_);
 
       if(next == nullptr)
       {
-        next = new ObjectPropertyBranch_t(chain_i[i]);
+        next = new ObjectPropertyBranch_t(link);
         tmp_mothers_[next->value()] = next;
       }
 

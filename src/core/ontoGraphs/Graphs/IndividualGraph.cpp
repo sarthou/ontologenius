@@ -34,8 +34,8 @@ IndividualGraph::IndividualGraph(const IndividualGraph& other, ClassGraph* class
 
 IndividualGraph::~IndividualGraph()
 {
-  for(size_t i = 0; i < individuals_.size(); i++)
-    delete individuals_[i];
+  for(auto& individual : individuals_)
+    delete individual;
 
   individuals_.clear();
 }
@@ -123,7 +123,7 @@ void IndividualGraph::add(const std::string& value, IndividualVectors_t& individ
     //I create my same
     if(!i_find_my_same)
     {
-      IndividualBranch_t* my_same = new IndividualBranch_t(same_as.elem);
+      auto my_same = new IndividualBranch_t(same_as.elem);
       conditionalPushBack(me->same_as_, IndividualElement_t(my_same));
       conditionalPushBack(my_same->same_as_, IndividualElement_t(me, 1.0, true));
       individuals_.push_back(my_same);
@@ -557,7 +557,6 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
         for (uint32_t id : data_properties)
           if(relation.first->get() == id)
           {
-            defined = true;
             if(relation.second == data_img)
             {
               found = true;

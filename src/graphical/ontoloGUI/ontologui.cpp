@@ -1,6 +1,6 @@
 #include "include/ontologenius/graphical/ontoloGUI/ontologui.h"
-#include "include/ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
 #include "include/ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
+#include "include/ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
 #include "ui_ontologui.h"
 
 #include <QScrollBar>
@@ -481,7 +481,7 @@ void ontoloGUI::displayUnClosed()
 void ontoloGUI::loadReasoners()
 {
   QLayoutItem *item;
-  while ((item = ui->ReasonerListLayout->takeAt(1)) != 0)
+  while ((item = ui->ReasonerListLayout->takeAt(1)) != nullptr)
   {
     delete item->widget();
     delete item;
@@ -508,10 +508,10 @@ void ontoloGUI::loadReasoners()
 
 void ontoloGUI::constructReasonersCheckBoxs()
 {
-  for(size_t i = 0; i < reasoners_names_.size(); i++)
+  for(const auto& reasoners_name : reasoners_names_)
   {
-    reasoners_description_.push_back(getReasonerDescription(reasoners_names_[i]));
-    QCheckBoxExtended* box = new QCheckBoxExtended(QString::fromStdString(reasoners_names_[i]), this);
+    reasoners_description_.push_back(getReasonerDescription(reasoners_name));
+    auto box = new QCheckBoxExtended(QString::fromStdString(reasoners_name), this);
     ui->ReasonerListLayout->addWidget(box);
     QObject::connect(box, SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
     QObject::connect(box, SIGNAL(hoverEnter()),this, SLOT(ReasonerhoverEnterSlot()));
@@ -538,9 +538,9 @@ void ontoloGUI::updateReasonersCheckBoxs()
       if(widget != nullptr)
       {
         Qt::CheckState checked = Qt::Unchecked;
-        for(size_t j = 0; j < active_reasoners.size(); j++)
+        for(const auto& active_reasoner : active_reasoners)
         {
-          if(dynamic_cast<QCheckBoxExtended*>(widget)->text().toStdString() == active_reasoners[j])
+          if(dynamic_cast<QCheckBoxExtended*>(widget)->text().toStdString() == active_reasoner)
             checked = Qt::Checked;
         }
         QObject::disconnect(dynamic_cast<QCheckBoxExtended*>(widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
@@ -570,7 +570,7 @@ std::string ontoloGUI::getReasonerDescription(std::string box)
 
   ontologenius::OntologeniusService srv;
   srv.request.action = "getDescription";
-  srv.request.param = box;
+  srv.request.param = std::move(box);
 
   if(!client.call(srv))
     displayErrorInfo(service_name + " client call failed");
@@ -580,7 +580,7 @@ std::string ontoloGUI::getReasonerDescription(std::string box)
   return "";
 }
 
-void ontoloGUI::displayErrorInfo(std::string text)
+void ontoloGUI::displayErrorInfo(const std::string& text)
 {
   std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
                   "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
@@ -624,7 +624,7 @@ void ontoloGUI::displayOntologiesListSlot()
   displayOntologiesList();
 }
 
-std::string ontoloGUI::vector2string(std::vector<std::string> vect)
+std::string ontoloGUI::vector2string(const std::vector<std::string>& vect)
 {
   std::string res;
   for(const auto& v : vect)
@@ -632,7 +632,7 @@ std::string ontoloGUI::vector2string(std::vector<std::string> vect)
   return res;
 }
 
-std::string ontoloGUI::vector2html(std::vector<std::string> vect)
+std::string ontoloGUI::vector2html(const std::vector<std::string>& vect)
 {
   std::string res;
   for(const auto& v : vect)

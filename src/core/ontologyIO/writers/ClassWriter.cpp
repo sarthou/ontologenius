@@ -2,9 +2,9 @@
 
 #include <algorithm>
 
-#include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
 namespace ontologenius {
 

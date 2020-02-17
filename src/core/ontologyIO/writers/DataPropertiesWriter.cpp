@@ -54,7 +54,7 @@ void DataPropertiesWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
 
 void DataPropertiesWriter::writeRange(DataPropertyBranch_t* branch)
 {
-  for(auto range : branch->ranges_)
+  for(auto& range : branch->ranges_)
   {
     std::string tmp = "        <rdfs:range rdf:resource=\"" +
                       range.getNs() +

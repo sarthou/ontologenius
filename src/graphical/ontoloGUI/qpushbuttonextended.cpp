@@ -1,8 +1,8 @@
 #include "include/ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
 
-#include <QWidget>
 #include <QEvent>
 #include <QHoverEvent>
+#include <QWidget>
 
 QPushButtonExtended::QPushButtonExtended(QWidget *parent) : QPushButton(parent)
 {
@@ -10,7 +10,7 @@ QPushButtonExtended::QPushButtonExtended(QWidget *parent) : QPushButton(parent)
     setAttribute(Qt::WA_Hover);
 }
 
-void QPushButtonExtended::hoverEnter(QHoverEvent *event)
+void QPushButtonExtended::hoverEnter(QHoverEvent* /*event*/)
 {
     QFont font = this->font();
     font.setBold(true);
@@ -19,7 +19,7 @@ void QPushButtonExtended::hoverEnter(QHoverEvent *event)
     hoverEnter();
 }
 
-void QPushButtonExtended::hoverLeave(QHoverEvent *event)
+void QPushButtonExtended::hoverLeave(QHoverEvent* /*event*/)
 {
     QFont font = this->font();
     font.setBold(false);
@@ -28,7 +28,7 @@ void QPushButtonExtended::hoverLeave(QHoverEvent *event)
     hoverLeave();
 }
 
-void QPushButtonExtended::hoverMove(QHoverEvent *event)
+void QPushButtonExtended::hoverMove(QHoverEvent* /*event*/)
 {
     QFont font = this->font();
     font.setBold(true);
@@ -41,19 +41,19 @@ bool QPushButtonExtended::event(QEvent *event)
     switch(event->type())
     {
     case QEvent::HoverEnter:
-        hoverEnter(static_cast<QHoverEvent*>(event));
+        hoverEnter(dynamic_cast<QHoverEvent*>(event));
         return true;
         break;
     case QEvent::HoverLeave:
-        hoverLeave(static_cast<QHoverEvent*>(event));
+        hoverLeave(dynamic_cast<QHoverEvent*>(event));
         return true;
         break;
     case QEvent::HoverMove:
-        hoverMove(static_cast<QHoverEvent*>(event));
+        hoverMove(dynamic_cast<QHoverEvent*>(event));
         return true;
         break;
     default:
         break;
     }
-    return QWidget::event(event);
+    return QPushButton::event(event);
 }

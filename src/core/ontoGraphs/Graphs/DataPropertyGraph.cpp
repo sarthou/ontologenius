@@ -19,14 +19,14 @@ DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other, ClassGraph*
 
   for(const auto& root : other.roots_)
   {
-    DataPropertyBranch_t* prop_branch = new DataPropertyBranch_t(root.first);
+    auto prop_branch = new DataPropertyBranch_t(root.first);
     roots_[root.first] = prop_branch;
     all_branchs_.push_back(prop_branch);
   }
 
   for(const auto& branch : other.branchs_)
   {
-    DataPropertyBranch_t* prop_branch = new DataPropertyBranch_t(branch.first);
+    auto prop_branch = new DataPropertyBranch_t(branch.first);
     branchs_[branch.first] = prop_branch;
     all_branchs_.push_back(prop_branch);
   }
@@ -34,7 +34,7 @@ DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other, ClassGraph*
   this->container_.load(all_branchs_);
 }
 
-void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_vectors)
+void DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& property_vectors)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
   /**********************
@@ -130,9 +130,9 @@ void DataPropertyGraph::add(std::string value, DataPropertyVectors_t& property_v
   ** Ranges
   **********************/
   //for all my ranges
-  for(size_t ranges_i = 0; ranges_i < property_vectors.ranges_.size(); ranges_i++)
+  for(const auto& range : property_vectors.ranges_)
   {
-    data_t data(property_vectors.ranges_[ranges_i]);
+    data_t data(range);
     conditionalPushBack(me->ranges_, data); // FIXME
   }
 

@@ -2,11 +2,10 @@
 
 #include <fstream>
 
-#include "ontologenius/core/utility/error_code.h"
-#include "ontologenius/graphical/Display.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
-
+#include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/core/utility/utility.h"
+#include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 
@@ -188,7 +187,7 @@ void OntologyReader::readClass(TiXmlElement* elem)
           else if(testAttribute(subElem, "rdf:datatype"))
           {
             const char* value = subElem->GetText();
-            if(value != NULL)
+            if(value != nullptr)
             {
               data_t data;
               data.value_ = std::string(value);
@@ -240,7 +239,7 @@ void OntologyReader::readIndividual(TiXmlElement* elem)
             else if(testAttribute(subElem, "rdf:datatype"))
             {
               const char* value = subElem->GetText();
-              if(value != NULL)
+              if(value != nullptr)
               {
                 data_t data;
                 data.value_ = std::string(value);
@@ -402,7 +401,7 @@ void OntologyReader::readDataProperty(TiXmlElement* elem)
   elemLoaded++;
 }
 
-void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement* elem, std::string symbol, size_t level)
+void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement* elem, const std::string& symbol, size_t level)
 {
   for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != nullptr; subElem = subElem->NextSiblingElement())
   {

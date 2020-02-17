@@ -37,7 +37,7 @@ void OntologyWriter::write(const std::string& file_name)
     return;
 
   file_ = fopen(file_name_.c_str(), "w");
-  if(file_ == NULL)
+  if(file_ == nullptr)
   {
     Display::error("Fail to open file : ", false);
     std::cout << file_name_ << std::endl;

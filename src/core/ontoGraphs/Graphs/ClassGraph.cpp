@@ -26,14 +26,14 @@ ClassGraph::ClassGraph(const ClassGraph& other, IndividualGraph* individual_grap
 
   for(const auto& root : other.roots_)
   {
-    ClassBranch_t* class_branch = new ClassBranch_t(root.first);
+    auto class_branch = new ClassBranch_t(root.first);
     roots_[root.first] = class_branch;
     all_branchs_.push_back(class_branch);
   }
 
   for(const auto& branch : other.branchs_)
   {
-    ClassBranch_t* class_branch = new ClassBranch_t(branch.first);
+    auto class_branch = new ClassBranch_t(branch.first);
     branchs_[branch.first] = class_branch;
     all_branchs_.push_back(class_branch);
   }
@@ -171,7 +171,7 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
         //I create my disjoint
         if(!i_find_my_disjoint)
         {
-          ClassBranch_t* my_disjoint = new ClassBranch_t(disjoints[disjoints_j]);
+          auto my_disjoint = new ClassBranch_t(disjoints[disjoints_j]);
           me->disjoints_.emplace_back(my_disjoint);
           my_disjoint->disjoints_.emplace_back(me); // TODO do not save
           tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother

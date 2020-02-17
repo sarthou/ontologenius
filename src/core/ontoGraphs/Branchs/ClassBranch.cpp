@@ -18,7 +18,7 @@ void ClassBranch_t::setSteady_muted_dictionary(const std::string& lang, const st
 
 void ClassBranch_t::setSteady_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary)
 {
-  for(auto it : dictionary)
+  for(const auto& it : dictionary)
   {
     if(dictionary_.spoken_.find(it.first) == dictionary_.spoken_.end())
       dictionary_.spoken_[it.first] = it.second;
@@ -40,7 +40,7 @@ void ClassBranch_t::setSteady_dictionary(const std::map<std::string, std::vector
 
 void ClassBranch_t::setSteady_muted_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary)
 {
-  for(auto it : dictionary)
+  for(const auto& it : dictionary)
   {
     if(dictionary_.muted_.find(it.first) == dictionary_.muted_.end())
       dictionary_.muted_[it.first] = it.second;

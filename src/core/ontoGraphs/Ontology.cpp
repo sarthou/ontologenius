@@ -12,12 +12,12 @@
 
 namespace ontologenius {
 
-Ontology::Ontology(std::string language) : class_graph_(&individual_graph_, &object_property_graph_, &data_property_graph_),
-                                           object_property_graph_(&class_graph_),
-                                           data_property_graph_(&class_graph_),
-                                           individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
-                                           reader((Ontology&)*this),
-                                           writer((Ontology&)*this)
+Ontology::Ontology(const std::string& language) : class_graph_(&individual_graph_, &object_property_graph_, &data_property_graph_),
+                                                  object_property_graph_(&class_graph_),
+                                                  data_property_graph_(&class_graph_),
+                                                  individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
+                                                  reader((Ontology&)*this),
+                                                  writer((Ontology&)*this)
 {
   is_init_ = false;
   is_preloaded_ = false;

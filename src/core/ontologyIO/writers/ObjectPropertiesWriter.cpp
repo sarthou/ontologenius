@@ -102,10 +102,10 @@ void ObjectPropertiesWriter::writeChain(ObjectPropertyBranch_t* branch)
   {
     std::string tmp = "        <owl:propertyChainAxiom rdf:parseType=\"Collection\">\n";
 
-    for(size_t j = 0; j < chain.size(); j++)
+    for(auto& link : chain)
     {
       tmp += "            <rdf:Description rdf:about=\"ontologenius#" +
-              chain[j] +
+              link +
               "\"/>\n";
     }
 

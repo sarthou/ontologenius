@@ -45,10 +45,10 @@ private:
   size_t getReasonerIndex(QCheckBoxExtended* box);
   std::string getReasonerDescription(std::string box);
   void displayOntologiesList();
-  void displayErrorInfo(std::string text);
+  void displayErrorInfo(const std::string& text);
 
-  std::string vector2string(std::vector<std::string> vect);
-  std::string vector2html(std::vector<std::string> vect);
+  std::string vector2string(const std::vector<std::string>& vect);
+  std::string vector2html(const std::vector<std::string>& vect);
 
 public slots:
   void ClasshoverEnterSlot();
