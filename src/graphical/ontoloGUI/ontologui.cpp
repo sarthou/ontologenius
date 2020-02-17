@@ -277,7 +277,7 @@ void ontoloGUI::start()
 
 void ontoloGUI::ClasshoverEnterSlot()
 {
-  ui->ClassDescription->setText(dynamic_cast<QPushButtonExtended *>(sender())->whatsThis());
+  ui->ClassDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
 void ontoloGUI::ClasshoverLeaveSlot()
@@ -287,7 +287,7 @@ void ontoloGUI::ClasshoverLeaveSlot()
 
 void ontoloGUI::objectPropertyhoverEnterSlot()
 {
-  ui->ObjectPropertyDescription->setText(dynamic_cast<QPushButtonExtended *>(sender())->whatsThis());
+  ui->ObjectPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
 void ontoloGUI::objectPropertyhoverLeaveSlot()
@@ -297,7 +297,7 @@ void ontoloGUI::objectPropertyhoverLeaveSlot()
 
 void ontoloGUI::dataPropertyhoverEnterSlot()
 {
-  ui->DataPropertyDescription->setText(dynamic_cast<QPushButtonExtended *>(sender())->whatsThis());
+  ui->DataPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
 void ontoloGUI::dataPropertyhoverLeaveSlot()
@@ -312,7 +312,7 @@ void ontoloGUI::IndividualCheckBoxhoverEnterSlot()
 
 void ontoloGUI::IndividualhoverEnterSlot()
 {
-  ui->IndividualDescription->setText(dynamic_cast<QPushButtonExtended *>(sender())->whatsThis());
+  ui->IndividualDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
 void ontoloGUI::IndividualhoverLeaveSlot()
