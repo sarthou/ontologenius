@@ -1545,25 +1545,34 @@ void IndividualGraph::removeInheritage(std::string& class_base, std::string& cla
 bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on)
 {
   bool updated = false;
+  bool applied = false;
+  std::unordered_set<ObjectPropertyBranch_t*> down_properties;
+  object_property_graph_->getDownPtr(property, down_properties);
+
   for(size_t i = 0; i < branch_from->object_relations_.size();)
   {
-    if(branch_from->object_relations_[i].first == property)
+    applied = false;
+    for(auto down : down_properties)
     {
-      if((branch_on == nullptr) || (branch_from->object_relations_[i].second == branch_on))
+      if(branch_from->object_relations_[i].first == down)
       {
-        removePropertyInverse(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
-        removePropertySymetric(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
-        removePropertyChain(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
+        if((branch_on == nullptr) || (branch_from->object_relations_[i].second == branch_on))
+        {
+          removePropertyInverse(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
+          removePropertySymetric(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
+          removePropertyChain(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
 
-        branch_from->object_relations_[i].second->updated_ = true;
-        branch_from->object_relations_.erase(branch_from->object_relations_.begin() + i);
-        branch_from->object_properties_has_induced_.erase(branch_from->object_properties_has_induced_.begin() + i);
-        updated = true;
+          branch_from->object_relations_[i].second->updated_ = true;
+          branch_from->object_relations_.erase(branch_from->object_relations_.begin() + i);
+          branch_from->object_properties_has_induced_.erase(branch_from->object_properties_has_induced_.begin() + i);
+          updated = true;
+          applied = true;
+          break;
+        }
       }
-      else
-        i++;
     }
-    else
+
+    if(applied == false)
       i++;
   }
   if(updated == true)
