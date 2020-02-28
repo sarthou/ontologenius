@@ -15,7 +15,7 @@ public:
 
   std::vector<std::string> getOn(const std::string& name, const std::string& property, const std::string& selector = "");
   std::vector<std::string> getFrom(const std::string& property, const std::string& name, const std::string& selector = "");
-  std::vector<std::string> getWith(const std::string& indiv_1, const std::string& indiv_2, const std::string& selector = "", int depth = -1);
+  std::vector<std::string> getWith(const std::string& class_from, const std::string& class_to, const std::string& selector = "", int depth = -1);
 
   std::vector<std::string> getRelatedFrom(const std::string& property);
   std::vector<std::string> getRelatedOn(const std::string& property);

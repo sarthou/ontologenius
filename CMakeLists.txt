@@ -58,6 +58,8 @@ find_package(OpenCV REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport)
 
+# Install python scripts using distutils
+catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -362,6 +364,10 @@ install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   FILES_MATCHING PATTERN "*.h"
   PATTERN ".svn" EXCLUDE
+)
+
+install(PROGRAMS scripts/API/my_node.py
+  DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
 )
 
 ##############################

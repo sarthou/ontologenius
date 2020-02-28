@@ -21,7 +21,6 @@ public:
     n_ = other.n_;
     name_ = other.name_;
     commit_sub_ = other.commit_sub_;
-    commit_sub_ = other.commit_sub_;
     commited_ = false;
   }
 
