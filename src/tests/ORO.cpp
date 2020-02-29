@@ -100,7 +100,7 @@ int main(int argc, char** argv)
 
   onto.verbose(true);
 
-  std::vector<size_t> nb_words = {100, 500, 1000, 5000, 10000, 50000, 100000, 450000};
+  std::vector<size_t> nb_words = {100, 500, 1000, 5000};//, 10000, 50000, 100000, 450000};
   std::vector<std::vector<double> > res;
   ros::Rate wait(0.2);
   ros::Rate fast(100);
@@ -115,12 +115,6 @@ int main(int argc, char** argv)
     end_ = false;
 
     insertWords(nb_words[i]);
-
-    /*while(end_ == false)
-    {
-      ros::spinOnce();
-      fast.sleep();
-    }*/
 
     std::vector<double> tmp;
     tmp.push_back(R1());

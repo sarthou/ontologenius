@@ -77,7 +77,7 @@ void RosInterface::run()
   std::string service_name;
 
   service_name = (name_ == "") ? "ontologenius/insert" : "ontologenius/insert/" + name_;
-  ros::Subscriber knowledge_subscriber = n_->subscribe(service_name, 1000, &RosInterface::knowledgeCallback, this);
+  ros::Subscriber knowledge_subscriber = n_->subscribe(service_name, 10000, &RosInterface::knowledgeCallback, this);
 
   // Start up ROS service with callbacks
   service_name = (name_ == "") ? "ontologenius/actions" : "ontologenius/actions/" + name_;

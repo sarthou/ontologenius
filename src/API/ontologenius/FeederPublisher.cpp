@@ -74,7 +74,6 @@ void FeederPublisher::removeConcept(const std::string& from)
 bool FeederPublisher::commit(int32_t timeout)
 {
   commited_ = false;
-  commit_sub_ = n_->subscribe(name_ == "" ? "ontologenius/end" : "ontologenius/end/" + name_, 1000, &FeederPublisher::commitCallback, this);
 
   std::chrono::time_point<std::chrono::system_clock> start;
   start = std::chrono::system_clock::now();
@@ -86,7 +85,6 @@ bool FeederPublisher::commit(int32_t timeout)
     usleep(1);
   }
 
-  commit_sub_.shutdown();
   if(commited_)
     return true;
   else

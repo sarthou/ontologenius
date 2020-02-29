@@ -14,6 +14,7 @@ public:
   {
     n_ = n;
     name_ = name;
+    commit_sub_ = n_->subscribe(name_ == "" ? "ontologenius/end" : "ontologenius/end/" + name_, 1000, &FeederPublisher::commitCallback, this);
   }
 
   FeederPublisher(FeederPublisher& other)
@@ -38,6 +39,12 @@ public:
   void removeConcept(const std::string& from);
 
   size_t getNumSubscribers() { return pub_.getNumSubscribers(); }
+  void waitConnected()
+  {
+    ros::Rate loop_rate(100);
+    while(ros::ok() && (getNumSubscribers() == 0))
+      loop_rate.sleep();
+  }
 
   bool commit(int32_t timeout = -1);
 
