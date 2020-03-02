@@ -1,9 +1,10 @@
 import rospy
 
 from .clients import *
+from .FeederPublisher import FeederPublisher
 
 class OntologyManipulator:
-    def __init__(self, name):
+    def __init__(self, name = ''):
         self._name = name
         self.individuals = IndividualClient(name)
         self.objectProperties = ObjectPropertyClient(name)
@@ -11,6 +12,7 @@ class OntologyManipulator:
         self.classes = ClassClient(name)
         self.actions = ActionClient(name)
         self.reasoners = ReasonerClient(name)
+        self.feeder = FeederPublisher(name)
 
         service_name = "ontologenius/reasoner"
         if name != '':
