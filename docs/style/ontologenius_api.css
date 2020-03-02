@@ -537,7 +537,7 @@ p.tip {
 .course-part-summary__main-icon i {
  margin-top: 3px
 }
-.toturial-subheader__main-icon {
+.tutorial-subheader__main-icon {
  width:66px;
  height:66px;
  text-align:center;
@@ -577,7 +577,7 @@ p.tip {
  vertical-align:middle;
  padding-left:5px
 }
-.toturial-subheader__title,.toturial-subheader__main-icon {
+.toturial-subheader__title,.tutorial-subheader__main-icon {
  display:table-cell
 }
 .tutorial-part-summary_list {
