@@ -70,7 +70,7 @@ class FeederPublisher:
         while not rospy.is_shutdown() and self.getNumSubscribers() == 0:
             rate.sleep()
 
-    def commit(self, timeout = 10000000):
+    def commit(self, timeout = 100000000):
         self._commited = False
 
         start_time = datetime.now()

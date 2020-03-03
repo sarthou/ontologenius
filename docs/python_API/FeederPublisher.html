@@ -1,0 +1,237 @@
+<html lang="en_US">
+
+<head>
+  <title>FeederPublisher Class | Ontologenius 0.3.0</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../index.html">
+              <img src="../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius API Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -240px;">
+        <div class="contents class-content">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="#methods">Methods</a></li>
+            <li class="level1"><a href="#details">Detailed Description</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../cpp_Tutorials/Tutorials.html">Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="../overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="../overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../cpp_API/CppAPI.html">
+              All C++ Classes
+            </a>
+          </h3>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="FeederPublisher.html"><b>FeederPublisher</b></a></li>
+            <li class="level1"><a href="IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>See also</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="https://sarthou.github.io/ontologenius_query/" target="_blank">Ontologenius_query</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">FeederPublisher Class</h1>
+        <p>The FeederPublisher class provides an abstraction for ontologenius feeder topic. <a href="#details">More...</a></p>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="methods"></a>
+        <h2 id="methods">Methods</h2>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#__init__">__init__</a></b>(self, name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addProperty">addProperty</a></b>(self, concept_from, property, concept_on)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addProperty">addProperty</a></b>(self, concept_from, concept_property, type, data)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addInheritage">addInheritage</a></b>(self, concept_from, concept_on)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addLanguage">addLanguage</a></b>(self, concept_from, lang, name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addConcept">addConcept</a></b>(self, concept_from)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty0">removeProperty</a></b>(self, concept_from, property)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty1">removeProperty</a></b>(self, concept_from, property, concept_on)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty2">removeProperty</a></b>(self, concept_from, property, type, data)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeInheritage">removeInheritage</a></b>(self, concept_from, concept_on)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeLanguage">removeLanguage</a></b>(self, concept_from, lang, name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeConcept">removeConcept</a></b>(self, concept_from)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#getNumSubscribers">getNumSubscribers</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#waitConnected">waitConnected</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit">commit</a></b>(self, timeout = 100000000)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="details"></a>
+        <div class="descr">
+          <h2 id="details">Detailed Description</h2>
+          <p>The FeederPublisher class provides an abstraction ontologenius feeder(insert) ROS topic.</p>
+          <p>Working in a closed world can be interesting, but with ontologenius, you can also choose to work in an open world by adding and modifying the agent's knowledge base during its operation.
+            The feeder publisher is used to insert and delete knowledge dynamically.
+            The feeding process is asynchronous and therefore does not guarantee any response time.
+            It still provides a function to synchronize if you have applications where you have to query the ontology right after having modified it.</p>
+        </div>
+
+        <div class="func">
+          <h2>Methods Documentation</h2>
+
+          <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self, name)</h3>
+          <p>Constructs an FeederPublisher.</p>
+          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, <i>name</i>(str) should be defined as ''.</p>
+
+          <h3 class="fn" id="addProperty"><a name="addProperty"></a><span class="name">addProperty</span>(self, concept_from, property, concept_on)</h3>
+          <p>Adds the fact that <i>concept_from</i>(str) is linked with <i>concept_on</i>(str) by the property <i>property</i>(str).</p>
+          <p>At least <i>concept_from</i> or <i>concept_on</i> must be already known to the system. If one of them is unknown, it will be automatically created. The property can be unknow before calling this function.</p>
+
+          <h3 class="fn" id="addProperty"><a name="addProperty"></a><span class="name">addProperty</span>(self, concept_from, concept_property, type, data)</h3>
+          <p>Adds the fact that <i>concept_from</i>(str) is linked to the data <i>data</i>(str) of type <i>type</i>(str) by the property <i>property</i>(str).</p>
+          <p><i>concept_from</i> must be already known to the system. The property can be unknow before calling this function.</p>
+
+          <h3 class="fn" id="addInheritage"><a name="addInheritage"></a><span class="name">addInheritage</span>(self, concept_from, concept_on)</h3>
+          <p>Adds the inheratage : <i>concept_from</i>(str) is a <i>concept_on</i>(str). <i>concept_from</i> and <i>concept_on</i> could by a class, an individual or a property.</p>
+          <p>At least <i>concept_from</i> or <i>concept_on</i> must be already known to the system. If one of them is unknown, it will be automatically created.</p>
+
+          <h3 class="fn" id="addLanguage"><a name="addLanguage"></a><span class="name">addLanguage</span>(self, concept_from, lang, name)</h3>
+          <p>Adds the label <i>name</i>(str) in the language <i>lang</i>(str) the class, individual or property <i>concept_from</i>(str).</p>
+          <p><i>concept_from</i> must be already known to the system.</p>
+
+          <h3 class="fn" id="addConcept"><a name="addConcept"></a><span class="name">addConcept</span>(self, concept_from)</h3>
+          <p>Adds the class or individual <i>concept_from</i>(str).</p>
+
+          <h3 class="fn" id="removeProperty0"><a name="removeProperty0"></a><span class="name">removeProperty</span>(self, concept_from, property)</h3>
+          <p>Removes the fact that <i>concept_from</i>(str) is linked to any object by the property <i>property</i>(str).</p>
+          <p>After this action, knowledge of the property is not removed.</p>
+
+          <h3 class="fn" id="removeProperty1"><a name="removeProperty1"></a><span class="name">removeProperty</span>(self, concept_from, property, concept_on)</h3>
+          <p>Removes the fact that <i>concept_from</i>(str) is linked with <i>concept_on</i>(str) by the property <i>property</i>(str).</p>
+          <p>After this action, knowledge of the property is not removed.</p>
+
+          <h3 class="fn" id="removeProperty2"><a name="removeProperty2"></a><span class="name">removeProperty</span>(self, concept_from, property, type, data)</h3>
+          <p>Removes the fact that <i>concept_from</i>(str) is linked to the data <i>data</i>(str) of type <i>type</i>(str) by the property <i>property</i>(str).</p>
+          <p>After this action, knowledge of the property is not removed.</p>
+
+          <h3 class="fn" id="removeInheritage"><a name="removeInheritage"></a><span class="name">removeInheritage</span>(self, concept_from, concept_on)</h3>
+          <p>Removes the inheratage : <i>concept_from</i>(str) is a <i>concept_on</i>(str). <i>concept_from</i> and <i>concept_on</i> could by a class, an individual or a property.</p>
+
+          <h3 class="fn" id="removeLanguage"><a name="removeLanguage"></a><span class="name">removeLanguage</span>(self, concept_from, lang, name)</h3>
+          <p>Removes the label <i>name</i>(str) in the language <i>lang</i>(str) the class, individual or property <i>concept_from</i>(str).</p>
+
+          <h3 class="fn" id="removeConcept"><a name="removeConcept"></a><span class="name">removeConcept</span>(self, concept_from)</h3>
+          <p>Removes the class or individual <i>concept_from</i>(str).</p>
+          <p>All inheritance, properties, and labels applied to <i>concept_from</i> are also removed.</p>
+
+          <h3 class="fn" id="getNumSubscribers"><a name="getNumSubscribers"></a><span class="name">getNumSubscribers</span>(self)</h3>
+          <p>Returns the number of subscribers (int) that are currently connected to the internal ROS publisher.</p>
+
+          <h3 class="fn" id="waitConnected"><a name="waitConnected"></a><span class="name">waitConnected</span>(self)</h3>
+          <p>Blocks while no subscribers are currently connected to the internal ROS publisher.</p>
+
+          <h3 class="fn" id="commit"><a name="commit"></a><span class="name">commit</span>(self, timeout = 100000000)</h3>
+          <p>Waits until all changes have been applied.</p>
+          <p>The default parameter <i>timeout</i>(int) is the expiration time in milliseconds. The default value is of 100 seconds.</p>
+          <p>Returns False if the function returns on a timeout.</p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

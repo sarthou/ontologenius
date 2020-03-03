@@ -1,0 +1,227 @@
+<html lang="en_US">
+
+<head>
+  <title>OntologyManipulator Class | Ontologenius 0.3.0</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../index.html">
+              <img src="../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius API Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -240px;">
+        <div class="contents class-content">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="#public-attributes">Attributes</a></li>
+            <li class="level1"><a href="#methods">Methods</a></li>
+            <li class="level1"><a href="#details">Detailed Description</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../cpp_Tutorials/Tutorials.html">Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="../overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="../overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../cpp_API/CppAPI.html">
+              All C++ Classes
+            </a>
+          </h3>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="OntologyManipulator.html"><b>OntologyManipulator</b></a></li>
+            <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>See also</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="https://sarthou.github.io/ontologenius_query/" target="_blank">Ontologenius_query</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">OntologyManipulator Class</h1>
+        <p>The OntologyManipulator class is an object with instances of all classes needed to manipulate an ontology.<a href="#details">More...</a></p>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="public-attributes"></a>
+        <h2 id="public-attributes">Attributes</h2>
+        <div class="table">
+          <ul>
+            <li class="fn"><b><a href="OntologyManipulator.html#individuals">individuals</a></b> : IndividualClient</li>
+            <li class="fn"><b><a href="OntologyManipulator.html#objectProperties">objectProperties</a></b> : ObjectPropertyClient</li>
+            <li class="fn"><b><a href="OntologyManipulator.html#dataProperties">dataProperties</a></b> : DataPropertyClient</li>
+            <li class="fn"><b><a href="OntologyManipulator.html#classes">classes</a></b> : ClassClient</li>
+            <li class="fn"><b><a href="OntologyManipulator.html#actions">actions</a></b> : ActionClient</li>
+            <li class="fn"><b><a href="OntologyManipulator.html#actions">reasoners</a></b> : ReasonerClient</li>
+            <li class="fn"><b><a href="OntologyManipulator.html#actions">feeder</a></b> : FeederPublisher</li>
+          </ul>
+        </div>
+
+        <a name="methods"></a>
+        <h2 id="methods">Methods</h2>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#__init__">__init__</a></b>(self, name = '')</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#close">close</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#nb">nb</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#resetNb">resetNb</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#setVerbose">setVerbose</a></b>(self, verbose)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="details"></a>
+        <div class="descr">
+          <h2 id="details">Detailed Description</h2>
+          <p>The OntologyManipulator class is just an object to access all API ROS abstraction classes so that you can query and manage ontologenius.</p>
+        </div>
+
+        <p><b>See also </b><a href="OntologiesManipulator.html">OntologiesManipulator</a>.</p>
+
+        <div class="attr">
+          <h2>Attributes Documentation</h2>
+
+          <h3 class="fn" id="individuals"><a name="individuals"></a><span class="name">individuals</span> : <span class="type"><a href="IndividualClient.html">IndividualClient</a></span></h3>
+          <p>ROS service client to query ontologenius about individuals.</p>
+
+          <h3 class="fn" id="objectProperties"><a name="objectProperties"></a><span class="name">objectProperties</span> : <span class="type"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></span></h3>
+          <p>ROS service client to query ontologenius about object properties.</p>
+
+          <h3 class="fn" id="dataProperties"><a name="dataProperties"></a><span class="name">dataProperties</span> : <span class="type"><a href="DataPropertyClient.html">DataPropertyClient</a></span></h3>
+          <p>ROS service client to query ontologenius about data properties.</p>
+
+          <h3 class="fn" id="classes"><a name="classes"></a><span class="name">classes</span> : <span class="type"><a href="ClassClient.html">ClassClient</a></span></h3>
+          <p>ROS service client to query ontologenius about classes.</p>
+
+          <h3 class="fn" id="actions"><a name="actions"></a><span class="name">actions</span> : <span class="type"><a href="ActionClient.html">ActionClient</a></span></h3>
+          <p>ROS service client to manage the ontology instance.</p>
+
+          <h3 class="fn" id="reasoners"><a name="reasoners"></a><span class="name">reasoners</span> : <span class="type"><a href="ReasonerClient.html">ReasonerClient</a></span></h3>
+          <p>ROS service client to manage reasonners plugins.</p>
+
+          <h3 class="fn" id="feeder"><a name="feeder"></a><span class="name">feeder</span> : <span class="type"><a href="FeederPublisher.html">FeederPublisher</a></span></h3>
+          <p>ROS Publisher to insert and delete knowledge dynamically.</p>
+
+        </div>
+
+        <div class="func">
+          <h2>Methods Documentation</h2>
+
+          <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self, name = '')</h3>
+          <p>Constructs an ontology manipulator with.</p>
+          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, do not specify the ontology name <i>name</i>.</p>
+
+          <h3 class="fn" id="nb"><a name="nb"></a><span class="name">nb</span>(self)</h3>
+          <p>Gives the total number (int) of service calls from all ROS clients instances since the last reset.</p>
+
+          <h3 class="fn" id="resetNb"><a name="resetNb"></a><span class="name">resetNb</span>(self)</h3>
+          <p>Reset Call Counter for all instances of ROS clients.</p>
+
+          <h3 class="fn" id="close"><a name="close"></a><span class="name">close</span>(self)</h3>
+          <p>Same as the ActionClient closing function. Link all the concepts loaded from files and the Internet. Before closing an ontology, exploration requests are not allowed.</p>
+          <p>Returns False if the service call fails.</p>
+
+          <h3 class="fn" id="verbose"><a name="setVerbose"></a><span class="name">setVerbose</span>(self, verbose)</h3>
+          <p>If verbose is set to True, the clients will post messages about the failure to call the services and about their restoration.</p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

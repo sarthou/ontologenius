@@ -46,9 +46,7 @@
           <div id="contents-toggle" class=""></div>
           <h3>Contents</h3>
           <ul style="display: block;">
-            <li class="level1"><a href="#public-functions">Public Functions</a></li>
-            <li class="level1"><a href="#reimplemented-public-functions">Reimplemented Public Functions</a></li>
-            <li class="level1"><a href="#protected-functions">Protected Functions</a></li>
+            <li class="level1"><a href="#methods">Methods</a></li>
             <li class="level1"><a href="#details">Detailed Description</a></li>
           </ul>
         </div>
@@ -78,9 +76,15 @@
         <div class="contents">
           <div id="contents-toggle" class=""></div>
           <h3>
-            <i class="fas fa-angle-down"></i>
-            <a href="CppAPI.html">
+            <i class="fas fa-angle-right"></i>
+            <a href="../cpp_API/CppAPI.html">
               All C++ Classes
+            </a>
+          </h3>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="PythonAPI.html">
+              All Python Classes
             </a>
           </h3>
           <ul style="display: block;">
@@ -97,13 +101,6 @@
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
           </ul>
-          </br>
-          <h3>
-            <i class="fas fa-angle-right"></i>
-            <a href="../python_API/PythonAPI.html">
-              All Python Classes
-            </a>
-          </h3>
         </div>
 
         <div class="contents">
@@ -120,31 +117,23 @@
         <p>The ClientBase class provides a common ROS service abstraction. <a href="#details">More...</a></p>
         <div class="table">
           <table class="alignedsummary">
-          <tbody><tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clients/ClientBase.h&quot;</span>
+          <tbody><tr><td class="memItemLeft rightAlign topAlign"> Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span>
           </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <a href="OntologyClient.html">OntologyClient</a>, <a href="ActionClient.html">ActionClient</a>, <a href="ManagerClient.html">ManagerClient</a>, <a href="ReasonerClient.html">ReasonerClient</a></td></tr></tbody></table>
         </div>
 
-        <a name="public-functions"></a>
-        <h2 id="public-functions">Public Functions</h2>
+        <a name="methods"></a>
+        <h2 id="methods">Methods</h2>
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#ClientBase">ClientBase</a></b>(ros::NodeHandle* <i>n</i>, std::string <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> size_t </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#nb">nb</a></b>()</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#resetNb">resetNb</a></b>()</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <a name="protected-functions"></a>
-        <h2 id="protected-functions">Protected Functions</h2>
-        <div class="table">
-          <table class="alignedsummary">
-            <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#call">call</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callStr">callStr</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callNR">callNR</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callBool">callBool</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#__init__">__init__</a></b>(self, name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#nb">nb</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#resetNb">resetNb</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#setVerbose">setVerbose</a></b>(self, verbose)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#call">call</a></b>(self, action, param)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callStr">callStr</a></b>(self, action, param)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callNR">callNR</a></b>(self, action, param)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callBool">callBool</a></b>(self, action, param)</td></tr>
             </tbody>
           </table>
         </div>
@@ -157,34 +146,35 @@
         </div>
 
         <div class="func">
-          <h2>Public Function Documentation</h2>
+          <h2>Methods Documentation</h2>
 
-          <h3 class="fn" id="ClientBase"><a name="ClientBase"></a>ClientBase::<span class="name">ClientBase</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Constructs a ROS client linked to the service <i>name</i> with a pointer to a NodeHandle <i>n</i>.</p>
+          <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self, name)</h3>
+          <p>Constructs a ROS client linked to the service <i>name</i>(str).</p>
 
-          <h3 class="fn" id="nb"><a name="nb"></a><span class="type">size_t</span> ClientBase::<span class="name">nb</span>()</h3>
-          <p>Gives the total number of service calls from all ClientBase instances since the last reset.</p>
+          <h3 class="fn" id="nb"><a name="nb"></a><span class="name">nb</span>(self)</h3>
+          <p>Gives the total number (int) of service calls from all ClientBase instances since the last reset.</p>
 
-          <h3 class="fn" id="resetNb"><a name="resetNb"></a><span class="type"></span> ClientBase::<span class="name">resetNb</span>()</h3>
+          <h3 class="fn" id="resetNb"><a name="resetNb"></a><span class="name">resetNb</span>(self)</h3>
           <p>Reset Call Counter for all instances of ClientBase.</p>
 
-          <h2>Protected Function Documentation</h2>
+          <h3 class="fn" id="setVerbose"><a name="setVerbose"></a><span class="name">setVerbose</span>(self, verbose)</h3>
+          <p>If <i>verbose</i>(bool) is set to True, the clients will post messages about the failure to call the services and about their restoration.</p>
 
-          <h3 class="fn" id="call"><a name="call"></a>inline <span class="type">std::vector&lt;std::string&gt;</span> ClientBase::<span class="name">call</span>(<span class="type">ontologenius::OntologeniusService</span>&amp; <i>srv</i>)</h3>
-          <p>Call the service setup in the constructor of ClientBase with the request <i>srv</i></p>
-          <p>If the service call fails, the first element of the returned vector is &quot;ERR:SERVICE_FAIL&quot;.</p>
+          <h3 class="fn" id="call"><a name="call"></a><span class="name">call</span>(self, action, param)</h3>
+          <p>Call the service setup in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str) and return all the results (str[]).</p>
+          <p>If the service call fails, the function return None</p>
 
-          <h3 class="fn" id="callStr"><a name="callStr"></a>inline <span class="type">std::string</span> ClientBase::<span class="name">callStr</span>(<span class="type">ontologenius::OntologeniusService</span>&amp; <i>srv</i>)</h3>
-          <p>Call the service setup in the constructor of ClientBase with the request <i>srv</i></p>
-          <p>If the service call fails, the returned value is &quot;ERR:SERVICE_FAIL&quot;.</p>
+          <h3 class="fn" id="callStr"><a name="callStr"></a><span class="name">callStr</span>(self, action, param)</h3>
+          <p>Call the service setup in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str) and return all the first result (str).</p>
+          <p>If the service call fails, the function return None</p>
 
-          <h3 class="fn" id="callNR"><a name="callNR"></a>inline <span class="type">bool</span> ClientBase::<span class="name">callNR</span>(<span class="type">ontologenius::OntologeniusService</span>&amp; <i>srv</i>)</h3>
-          <p>Call the service setup in the constructor of ClientBase with the request <i>srv</i></p>
-          <p>Returns false if the service call fails.</p>
+          <h3 class="fn" id="callNR"><a name="callNR"></a><span class="name">callNR</span>(self, action, param)</h3>
+          <p>Call the service setup in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str).</p>
+          <p>If the service call fails, the function return False</p>
 
-          <h3 class="fn" id="callBool"><a name="callBool"></a>inline <span class="type">bool</span> ClientBase::<span class="name">callBool</span>(<span class="type">ontologenius::OntologeniusService</span>&amp; <i>srv</i>)</h3>
-          <p>Call the service setup in the constructor of ClientBase with the request <i>srv</i></p>
-          <p>Returns false if the service call fails or the result code of the service is different from SUCCESS.</p>
+          <h3 class="fn" id="callBool"><a name="callBool"></a><span class="name">callBool</span>(self, action, param)</h3>
+          <p>Call the service setup in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str).</p>
+          <p>Returns False if the service call fails or the result code of the service is different from SUCCESS.</p>
 
         </div>
       </div>

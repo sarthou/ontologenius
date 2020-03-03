@@ -46,8 +46,8 @@
           <div id="contents-toggle" class=""></div>
           <h3>Contents</h3>
           <ul style="display: block;">
-            <li class="level1"><a href="#public-functions">Public Functions</a></li>
-            <li class="level1"><a href="#reimplemented-public-functions">Reimplemented Public Functions</a></li>
+            <li class="level1"><a href="#methods">Methods</a></li>
+            <li class="level1"><a href="#reimplemented-methods">Reimplemented Methods</a></li>
             <li class="level1"><a href="#details">Detailed Description</a></li>
           </ul>
         </div>
@@ -77,9 +77,15 @@
         <div class="contents">
           <div id="contents-toggle" class=""></div>
           <h3>
-            <i class="fas fa-angle-down"></i>
-            <a href="CppAPI.html">
+            <i class="fas fa-angle-right"></i>
+            <a href="../cpp_API/CppAPI.html">
               All C++ Classes
+            </a>
+          </h3>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="/PythonAPI.html">
+              All Python Classes
             </a>
           </h3>
           <ul style="display: block;">
@@ -96,13 +102,6 @@
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
           </ul>
-          </br>
-          <h3>
-            <i class="fas fa-angle-right"></i>
-            <a href="../python_API/PythonAPI.html">
-              All Python Classes
-            </a>
-          </h3>
         </div>
 
         <div class="contents">
@@ -120,33 +119,33 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clients/ActionClient.h&quot;</span>
+              <tr><td class="memItemLeft rightAlign topAlign"> Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span>
               </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="ClientBase.html">ClientBase</a></td></tr>
             </tbody>
           </table>
         </div>
 
-        <a name="public-functions"></a>
-        <h2 id="public-functions">Public Functions</h2>
+        <a name="methods"></a>
+        <h2 id="methods">Methods</h2>
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#ActionClient">ActionClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#close">close</a></b>()</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#save">save</a></b>(const std::string&amp; <i>path</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#setLang">setLang</a></b>(const std::string&amp; <i>lang</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#getLang">getLang</a></b>()</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#add">add</a></b>(const std::string&amp; <i>uri</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#fadd">fadd</a></b>(const std::string&amp; <i>file</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#reset">reset</a></b>()</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#__init__">__init__</a></b>(self, name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#close">close</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#save">save</a></b>(self, path)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#setLang">setLang</a></b>(self, lang)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#getLang">getLang</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#add">add</a></b>(self, uri)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#fadd">fadd</a></b>(self, file)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#reset">reset</a></b>(self)</td></tr>
             </tbody>
           </table>
         </div>
 
-        <a name="reimplemented-public-functions"></a>
-        <h2 id="reimplemented-public-functions">Reimplemented Public Functions</h2>
+        <a name="reimplemented-methods"></a>
+        <h2 id="reimplemented-methods">Reimplemented Methods</h2>
         <ul>
-          <li class="fn">2 public functions inherited from <a href="ClientBase.html#public-functions">ClientBase</a></li>
+          <li class="fn">2 methods inherited from <a href="ClientBase.html#methods">ClientBase</a></li>
         </ul>
 
         <a name="details"></a>
@@ -157,39 +156,39 @@
         </div>
 
         <div class="func">
-          <h2>Public Function Documentation</h2>
+          <h2>Methods Documentation</h2>
 
-          <h3 class="fn" id="ActionClient"><a name="ActionClient"></a>ActionClient::<span class="name">ActionClient</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Constructs an action client with a pointer to a NodeHandle <i>n</i>.</p>
-          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
+          <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self, name)</h3>
+          <p>Constructs an action client.</p>
+          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, <i>name</i>(str) should be defined as ''.</p>
 
-          <h3 class="fn" id="close"><a name="close"></a><span class="type">bool</span> ActionClient::<span class="name">close</span>()</h3>
+          <h3 class="fn" id="close"><a name="close"></a><span class="name">close</span>(self)</h3>
           <p>Link all the concepts loaded from files and the Internet. Before closing an ontology, exploration requests are not allowed.</p>
-          <p>Returns false if the service call fails.</p>
+          <p>Returns False if the service call fails.</p>
 
-          <h3 class="fn" id="save"><a name="save"></a><span class="type">bool</span> ActionClient::<span class="name">save</span>(const <span class="type">std::string</span>&amp; <i>path</i>)</h3>
-          <p>Saves the current ontology in the absolute <i>path</i> path. The <i>path</i> parameter must be of the form: my/path/to/ontology.owl</p>
-          <p>Returns false if the service call fails.</p>
+          <h3 class="fn" id="save"><a name="save"></a><span class="name">save</span>(self, path)</h3>
+          <p>Saves the current ontology in the absolute <i>path</i>(str) path. The <i>path</i>(str) parameter must be of the form: my/path/to/ontology.owl</p>
+          <p>Returns False if the service call fails.</p>
 
-          <h3 class="fn" id="setLang"><a name="setLang"></a><span class="type">bool</span> ActionClient::<span class="name">setLang</span>(const <span class="type">std::string</span>&amp; <i>lang</i>)</h3>
-          <p>Sets the language of work <i>lang</i>.</p>
-          <p>Returns false if the service call fails.</p>
+          <h3 class="fn" id="setLang"><a name="setLang"></a><span class="name">setLang</span>(self, lang)</h3>
+          <p>Sets the language of work <i>lang</i>(str).</p>
+          <p>Returns False if the service call fails.</p>
 
-          <h3 class="fn" id="getLang"><a name="getLang"></a><span class="type">std::string</span> ActionClient::<span class="name">getLang</span>()</h3>
-          <p>Return the working language.</p>
+          <h3 class="fn" id="getLang"><a name="getLang"></a><span class="name">getLang</span>(self)</h3>
+          <p>Return the working language (str).</p>
 
-          <h3 class="fn" id="add"><a name="add"></a><span class="type">bool</span> ActionClient::<span class="name">add</span>(const <span class="type">std::string</span>&amp; <i>uri</i>)</h3>
-          <p>Load an ontology file (.owl) stored at <i>uri</i> from the internet. The Close function should be called after all the desired files have been loaded.</p>
-          <p>Returns false if the service call fails.</p>
+          <h3 class="fn" id="add"><a name="add"></a><span class="name">add</span>(self, uri)</h3>
+          <p>Load an ontology file (.owl) stored at <i>uri</i>(str) from the internet. The Close function should be called after all the desired files have been loaded.</p>
+          <p>Returns False if the service call fails.</p>
 
-          <h3 class="fn" id="fadd"><a name="fadd"></a><span class="type">bool</span> ActionClient::<span class="name">fadd</span>(const <span class="type">std::string</span>&amp; <i>file</i>)</h3>
-          <p>Load an ontology file (.owl) stored at <i>file</i> from the your local computer. The Close function should be called after all the desired files have been loaded.</p>
-          <p>Returns false if the service call fails.</p>
+          <h3 class="fn" id="fadd"><a name="fadd"></a><span class="name">fadd</span>(self, file)</h3>
+          <p>Load an ontology file (.owl) stored at <i>file</i>(str) from the your local computer. The Close function should be called after all the desired files have been loaded.</p>
+          <p>Returns False if the service call fails.</p>
 
 
-          <h3 class="fn" id="reset"><a name="reset"></a><span class="type">bool</span> ActionClient::<span class="name">reset</span>()</h3>
+          <h3 class="fn" id="reset"><a name="reset"></a><span class="name">reset</span>(self)</h3>
           <p>Unload all the knowledge previously loaded or learned.</p>
-          <p>Returns false if the service call fails.</p>
+          <p>Returns False if the service call fails.</p>
 
         </div>
       </div>

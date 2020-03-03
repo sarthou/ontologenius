@@ -40,5 +40,11 @@ class OntologiesManipulator(ManagerClient):
                 del self.manipulators[name]
                 return True
 
-    def setVerbose(self, verose):
+    def get(self, name):
+        if name not in self.manipulators:
+            return None
+        else:
+            return self.manipulators[name]
+
+    def setVerbose(self, verbose):
         ClientBase.setVerbose(verbose)

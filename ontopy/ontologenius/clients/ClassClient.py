@@ -78,12 +78,3 @@ class ClassClient(OntologyClient):
         if depth >= 0:
             param += " -d " + str(depth)
         return self.call("getRangeOf", param)
-
-    def getType(self, name):
-        return self.call("getType", name)
-
-    def getSame(self, name):
-        return self.call("getSame", name)
-
-    def getDistincts(self, name):
-        return self.call("getDistincts", name)

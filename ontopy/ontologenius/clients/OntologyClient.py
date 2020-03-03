@@ -7,7 +7,7 @@ class OntologyClient(ClientBase):
     def __init__(self, name):
         ClientBase.__init__(self, name)
 
-    def getUp(self, name, depth = -1, selector = ""):
+    def getUp(self, name, depth = -1, selector = ''):
         param = name
         if selector != '':
             param += " -s " + selector
@@ -52,8 +52,8 @@ class OntologyClient(ClientBase):
             param += " -i false"
         return self.call("findRegex", param)
 
-    def findFuzzy(self, name, take_id = True):
-        param = name
+    def findFuzzy(self, name, threshold = 0.5, take_id = True):
+        param = name + ' -t ' + str(threshold);
         if take_id == False:
             param += " -i false"
         return self.call("findFuzzy", param)
