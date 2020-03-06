@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Use inheritance for my first program (cpp) : Manage the multilingual</title>
+  <title>Use inheritance for my first program (python) : Manage the multilingual</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
@@ -62,8 +62,8 @@
             <li class="level1"><a href="../../Download.html">Download</a></li>
             <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
-            <li class="level1"><a href="../Tutorials.html">Cpp Tutorials</a></li>
-            <li class="level1"><a href="../../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
+            <li class="level1"><a href="../../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../Tutorials.html">Python Tutorials</a></li>
           </ul>
         </div>
 
@@ -81,32 +81,31 @@
         <div class="contents">
           <div id="contents-toggle" class=""></div>
           <h3>
-            <i class="fas fa-angle-down"></i>
+            <i class="fas fa-angle-right"></i>
             <a href="../../cpp_API/CppAPI.html">
               All C++ Classes
             </a>
           </h3>
-          <ul style="display: block;">
-            <li class="level1"><a href="../../cpp_API/ActionClient.html">ActionClient</a></li>
-            <li class="level1"><a href="../../cpp_API/ClassClient.html">ClassClient</a></li>
-            <li class="level1"><a href="../../cpp_API/ClientBase.html">ClientBase</a></li>
-            <li class="level1"><a href="../../cpp_API/DataPropertyClient.html">DataPropertyClient</a></li>
-            <li class="level1"><a href="../../cpp_API/FeederPublisher.html">FeederPublisher</a></li>
-            <li class="level1"><a href="../../cpp_API/IndividualClient.html">IndividualClient</a></li>
-            <li class="level1"><a href="../../cpp_API/ManagerClient.html">ManagerClient</a></li>
-            <li class="level1"><a href="../../cpp_API/ObjectPropertyClient.html">ObjectPropertyClient</a></li>
-            <li class="level1"><a href="../../cpp_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
-            <li class="level1"><a href="../../cpp_API/OntologyClient.html">OntologyClient</a></li>
-            <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
-            <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
-          </ul>
-          </br>
           <h3>
-            <i class="fas fa-angle-right"></i>
+            <i class="fas fa-angle-down"></i>
             <a href="../../python_API/PythonAPI.html">
               All Python Classes
             </a>
           </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../python_API/ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../../python_API/ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../../python_API/ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../../python_API/DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../../python_API/FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../../python_API/IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../../python_API/ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../../python_API/ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../../python_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../../python_API/OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../../python_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../python_API/ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
         </div>
 
         <div class="contents">
@@ -120,7 +119,7 @@
 
       <div class="context">
         <div class="toturial-header">
-          <h1 class="title">Use inheritance for my first program (cpp)</h1>
+          <h1 class="title">Use inheritance for my first program (python)</h1>
           <a class="toturial-subheader">
             <div class="tutorial-subheader__main-icon">
               <i class="fas fa-brain"></i>
@@ -162,31 +161,30 @@
         <p>The find function is used to retrieve all concepts of a given type whose name in natural language is
           the word passed in parameter. In this way if several words are said (and therefore are written) in
           the same way we will be able to recover them all. In this tutorial, this case is not present in
-          order not to add complexity. That's why we will each time recover the first cell of the vector.</p>
+          order not to add complexity. That's why we will each time recover the first element of the list.</p>
 
         <p>We will therefore modify our callback function to realize the natural language transition
           to identifier.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="cpp_type">void</span> wordCallback(const std_msgs::<span class="cpp_type">String</span><span class="cpp_op">&</span> msg)</div>
-          <div class="code_line">{</div>
-          <div class="code_line">    <span class="cpp_op">if</span>(msg.data <span class="cpp_op">==</span> <span class="cpp_string">&quot;start&quot;</span>)</div>
-          <div class="code_line">        start_ <span class="cpp_op">=</span> <span class="cpp_value">true</span>;</div>
-          <div class="code_line">    <span class="cpp_op">else</span></div>
-          <div class="code_line">    {</div>
-          <div class="code_line">      std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; ids <span class="cpp_op">=</span> onto_-&gt;individuals.find(msg.data);</div>
-          <div class="code_line">      <span class="cpp_op">if</span>(ids.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
-          <div class="code_line">        say(<span class="cpp_string">&quot;this word is unknown&quot;</span>);</div>
-          <div class="code_line">      <span class="cpp_op">else</span> <span class="cpp_op">if</span>(std::find(names_.begin(), names_.end(), ids[<span class="cpp_value">0</span>]) <span class="cpp_op">==</span> names_.end())</div>
-          <div class="code_line">        names_.push_back(ids[<span class="cpp_value">0</span>]);</div>
-          <div class="code_line">    }</div>
-          <div class="code_line">}</div>
+          <div class="code_line"><span class="py_op">def</span> <span class="py_function">wordCallback</span> (msg):</div>
+          <div class="code_line">    <span class="py_op">global</span> _start</div>
+          <div class="code_line">    <span class="py_op">global</span> _names</div>
+          <div class="code_line"></div>
+          <div class="code_line">    <span class="py_op">if</span> msg.data == <span class="py_string">'start'</span>:</div>
+          <div class="code_line">        _start = <span class="py_value">True</span></div>
+          <div class="code_line">    <span class="py_op">elif</span> <span class="py_op">not</span> msg.data <span class="py_op">in</span> _names:</div>
+          <div class="code_line">        ids = _onto.individuals.find(msg.data)</div>
+          <div class="code_line">        <span class="py_op">if</span> len(ids) == <span class="py_value">0</span>:</div>
+          <div class="code_line">            say(<span class="py_string">'this word is unknown'</span> )</div>
+          <div class="code_line">        <span class="py_op">else</span>:</div>
+          <div class="code_line">            _names.insert(<span class="py_value">1</span>, ids[<span class="py_value">0</span>])</div>
         </div>
 
         <p>The find function is applied to individuals because we want individuals to input.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 6;">
-          <div class="code_line">      std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; ids <span class="cpp_op">=</span> onto_-&gt;individuals.find(msg.data);</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 7;">
+          <div class="code_line">        ids = _onto.individuals.find(msg.data)</div>
         </div>
 
         <p>We can test our program again with the words : "green cup", "blue cup" and "green book". We thus
@@ -205,9 +203,9 @@
         <p>The only thing we have to change is the display line as follows:</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">    say(<span class="cpp_string">&quot;the intruder is &quot;</span> <span class="cpp_op">+</span> onto.individuals.getName(intruders[i].name_)</div>
-          <div class="code_line">        <span class="cpp_op">+</span> <span class="cpp_string">&quot; because it is the only one that is not: &quot;</span> <span class="cpp_op">+</span></div>
-          <div class="code_line">        onto.classes.getName(intruders[i].why_));</div>
+          <div class="code_line">    say(<span class="py_string">'the intruder is '</span> + _onto.individuals.getName(intruder[<span class="py_value">0</span>]) + \</div>
+          <div class="code_line">    <span class="py_string">' because it is the only one that is not: '</span> + \</div>
+          <div class="code_line">    _onto.classes.getName(intruder[<span class="py_value">1</span>]));</div>
         </div>
 
         <p>The result of our program becomes:</p>
@@ -224,7 +222,7 @@
 
         <div class="code_block xml_code" style="counter-reset:code_line 0;">
           <div class="code_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;intruder.py&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
           <div class="code_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius.launch&quot;</span>&gt;</div>
           <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;fr&quot;</span>/&gt;</div>
           <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;none&quot;</span>/&gt;</div>
@@ -237,7 +235,7 @@
            "tasse verte", "tasse bleu" et "livre vert".</p>
         <p>The result of our program is:</p>
         <div class="code_block">
-          <div class="terminal_line">[SAY]on green_cup blue_cup green_book</div>
+          <div class="terminal_line">[SAY]on tasse verte tasse bleu livre vert</div>
           <div class="terminal_line">[SAY]the intruder is livre vert because it is the only one that is not: tasse</div>
           <div class="terminal_line">[SAY]the intruder is tasse bleu because it is the only one that is not: vert</div>
           <div class="terminal_line">[SAY]Let's play!</div>
@@ -251,18 +249,18 @@
         <p>To go further, you can add the ability to change the working language with the setLang() function.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">onto.actions.setLang(<span class="cpp_string">&quot;en&quot;</span>);</div>
+          <div class="code_line">_onto.actions.setLang(<span class="py_string">'en'</span>)</div>
         </div>
 
         <p>You can also change the display texts according to the language used by retrieving the
           language currently used with the getLang() function.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">std::<span class="cpp_type">string</span> lang <span class="cpp_op">=</span> onto.actions.getLang();</div>
+          <div class="code_line">lang = _onto.actions.getLang()</div>
         </div>
 
         <p>To obtain the identifier of a word in natural language, we used the function find, but ontologenius provides other functions to obtain an identifier from natural language.
-            You can try the functions proposed by class <a href="../../cpp_API/OntologyClient.html">OntologyClient</a>.</p>
+            You can try the functions proposed by class <a href="../../python_API/OntologyClient.html">OntologyClient</a>.</p>
 
         <nav class="course-pagination">
           <a href="MostRelevantIntruder.html" class="course-pagination__btn">

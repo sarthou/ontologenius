@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Use inheritance for my first program (cpp) : Launch The Program </title>
+  <title>Use inheritance for my first program (python) : Launch The Program </title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
@@ -38,7 +38,7 @@
         <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
         <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
       </ul>
-      <h1>Ontologenius Cpp Documentation</h1>
+      <h1>Ontologenius Python Documentation</h1>
     </div>
 
     <div class="content">
@@ -62,8 +62,8 @@
             <li class="level1"><a href="../../Download.html">Download</a></li>
             <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
-            <li class="level1"><a href="../Tutorials.html">Cpp Tutorials</a></li>
-            <li class="level1"><a href="../../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
+            <li class="level1"><a href="../../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../Tutorials.html">Python Tutorials</a></li>
           </ul>
         </div>
 
@@ -81,32 +81,31 @@
         <div class="contents">
           <div id="contents-toggle" class=""></div>
           <h3>
-            <i class="fas fa-angle-down"></i>
+            <i class="fas fa-angle-right"></i>
             <a href="../../cpp_API/CppAPI.html">
               All C++ Classes
             </a>
           </h3>
-          <ul style="display: block;">
-            <li class="level1"><a href="../../cpp_API/ActionClient.html">ActionClient</a></li>
-            <li class="level1"><a href="../../cpp_API/ClassClient.html">ClassClient</a></li>
-            <li class="level1"><a href="../../cpp_API/ClientBase.html">ClientBase</a></li>
-            <li class="level1"><a href="../../cpp_API/DataPropertyClient.html">DataPropertyClient</a></li>
-            <li class="level1"><a href="../../cpp_API/FeederPublisher.html">FeederPublisher</a></li>
-            <li class="level1"><a href="../../cpp_API/IndividualClient.html">IndividualClient</a></li>
-            <li class="level1"><a href="../../cpp_API/ManagerClient.html">ManagerClient</a></li>
-            <li class="level1"><a href="../../cpp_API/ObjectPropertyClient.html">ObjectPropertyClient</a></li>
-            <li class="level1"><a href="../../cpp_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
-            <li class="level1"><a href="../../cpp_API/OntologyClient.html">OntologyClient</a></li>
-            <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
-            <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
-          </ul>
-          </br>
           <h3>
-            <i class="fas fa-angle-right"></i>
+            <i class="fas fa-angle-down"></i>
             <a href="../../python_API/PythonAPI.html">
               All Python Classes
             </a>
           </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../python_API/ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../../python_API/ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../../python_API/ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../../python_API/DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../../python_API/FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../../python_API/IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../../python_API/ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../../python_API/ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../../python_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../../python_API/OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../../python_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../python_API/ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
         </div>
 
         <div class="contents">
@@ -120,7 +119,7 @@
 
       <div class="context">
         <div class="toturial-header">
-          <h1 class="title">Use inheritance for my first program (cpp)</h1>
+          <h1 class="title">Use inheritance for my first program (pyhton)</h1>
           <a class="toturial-subheader">
             <div class="tutorial-subheader__main-icon">
               <i class="fas fa-brain"></i>
@@ -143,7 +142,7 @@
         </div>
         <p>terminal 2:</p>
         <div class="code_block">
-          <div class="terminal_line">rosrun intruder intruder</div>
+          <div class="terminal_line">rosrun intruder intruder.py</div>
         </div>
 
         <p>However, ontologenius has three launch parameters and by doing so we take the default
@@ -181,7 +180,7 @@
 
         <div class="code_block xml_code" style="counter-reset:code_line 0;">
           <div class="code_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;intruder.py&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
           <div class="code_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius.launch&quot;</span>&gt;</div>
           <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;none&quot;</span>/&gt;</div>
           <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/tutorials/tutorial_1.owl&quot;</span>/&gt;</div>
