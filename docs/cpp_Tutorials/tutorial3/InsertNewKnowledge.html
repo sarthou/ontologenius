@@ -307,7 +307,7 @@
           working on is of individual type or class type. The simplest way is to look at whether we have had
           an answer on the individuals and to test on the classes otherwise.</p>
 
-        <p>If we got an answer, it will be in the form "type: value".</p>
+        <p>If we got an answer, it will be in the form "type#value".</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 61;">
           <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getUp( singular(match[<span class="cpp_value">3</span>].str()), <span class="cpp_value">1</span>);</div>
@@ -322,7 +322,7 @@
           parameter to 1, we ask to have only direct inheritances.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 76;">
-          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getUp( singular(match[<span class="cpp_value">2</span>].str()) );</div>
+          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getUp( singular(match[<span class="cpp_value">2</span>].str()));</div>
           <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
           <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getUp( singular(match[<span class="cpp_value">2</span>].str()) );</div>
           <div class="code_line">    <span class="cpp_op">if</span>(std::find(res.begin(), res.end(), singular(match[<span class="cpp_value">4</span>].str()) ) <span class="cpp_op">!=</span> res.end())</div>
@@ -416,7 +416,7 @@
           it has deduced by itself that all birds can not fly. To excuse it for this mistake, it must be
           said that we did not help it.</p>
 
-        <p>The basic principle is that ontologenius realizes a generalization if 75% of the individuals
+        <p>The basic principle is that ontologenius realizes a generalization if 60% of the individuals
           inheriting from the same classes have the same property and that from two individuals.</p>
 
         <p>Trying to remove this property with the call of the removeProperty function would have no effect
@@ -434,31 +434,27 @@
           long-term memory principle as well as the usefulness of the internal file. When stopping ontologenius,
            it stored all its knowledge in the internal file that it reloaded at restart.</p>
 
-       <p>We will now teach it the principle of a parrot that is a bird capable of flying and ask it again if
+       <p>We will now teach it the principle of a parrot amd a dove that are a birds capable of flying and ask it again if
          the birds can fly.</p>
 
         <div class="code_block">
           <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a parrot is a bird'&quot;</div>
           <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a parrot can fly'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a dove is a bird'&quot;</div>
+          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a dove can fly'&quot;</div>
           <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
         </div>
 
-        <p>You had to suspect that the 75% condition is no longer true and our program finds itself in
+        <p>You had to suspect that the 60% condition is no longer true and our program finds itself in
           the inability to know whether birds can fly or not.</p>
 
-        <p>Let's learn it five new birds that can all fly to reach the threshold of 75%.</p>
+        <p>Let's learn it five new birds that can all fly to reach the threshold of 60%.</p>
 
         <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a dove is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a dove can fly'&quot;</div>
           <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a heron is a bird'&quot;</div>
           <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a heron can fly'&quot;</div>
           <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a gull is a bird'&quot;</div>
           <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a gull can fly'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a eagle is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a eagle can fly'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a albatross is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a albatross can fly'&quot;</div>
         </div>
 
         <p>By asking it one last time if the birds can fly you should finally have a good answer from it and

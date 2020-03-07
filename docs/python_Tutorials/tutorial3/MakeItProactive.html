@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Feed and generalize (cpp) : Make our agent proactive</title>
+  <title>Feed and generalize (python) : Make our agent proactive</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
@@ -38,7 +38,7 @@
         <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
         <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
       </ul>
-      <h1>Ontologenius Cpp Documentation</h1>
+      <h1>Ontologenius Python Documentation</h1>
     </div>
 
     <div class="content">
@@ -60,8 +60,8 @@
             <li class="level1"><a href="../../Download.html">Download</a></li>
             <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
-            <li class="level1"><a href="../Tutorials.html">Cpp Tutorials</a></li>
-            <li class="level1"><a href="../../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
+            <li class="level1"><a href="../../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../Tutorials.html">Python Tutorials</a></li>
           </ul>
         </div>
 
@@ -79,32 +79,31 @@
         <div class="contents">
           <div id="contents-toggle" class=""></div>
           <h3>
-            <i class="fas fa-angle-down"></i>
+            <i class="fas fa-angle-right"></i>
             <a href="../../cpp_API/CppAPI.html">
               All C++ Classes
             </a>
           </h3>
-          <ul style="display: block;">
-            <li class="level1"><a href="../../cpp_API/ActionClient.html">ActionClient</a></li>
-            <li class="level1"><a href="../../cpp_API/ClassClient.html">ClassClient</a></li>
-            <li class="level1"><a href="../../cpp_API/ClientBase.html">ClientBase</a></li>
-            <li class="level1"><a href="../../cpp_API/DataPropertyClient.html">DataPropertyClient</a></li>
-            <li class="level1"><a href="../../cpp_API/FeederPublisher.html">FeederPublisher</a></li>
-            <li class="level1"><a href="../../cpp_API/IndividualClient.html">IndividualClient</a></li>
-            <li class="level1"><a href="../../cpp_API/ManagerClient.html">ManagerClient</a></li>
-            <li class="level1"><a href="../../cpp_API/ObjectPropertyClient.html">ObjectPropertyClient</a></li>
-            <li class="level1"><a href="../../cpp_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
-            <li class="level1"><a href="../../cpp_API/OntologyClient.html">OntologyClient</a></li>
-            <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
-            <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
-          </ul>
-          </br>
           <h3>
-            <i class="fas fa-angle-right"></i>
+            <i class="fas fa-angle-down"></i>
             <a href="../../python_API/PythonAPI.html">
               All Python Classes
             </a>
           </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../python_API/ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../../python_API/ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../../python_API/ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../../python_API/DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../../python_API/FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../../python_API/IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../../python_API/ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../../python_API/ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../../python_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../../python_API/OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../../python_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../python_API/ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
         </div>
 
         <div class="contents">
@@ -118,7 +117,7 @@
 
       <div class="context">
         <div class="toturial-header">
-          <h1 class="title">Feed and generalize (cpp)</h1>
+          <h1 class="title">Feed and generalize (python)</h1>
           <a class="toturial-subheader">
             <div class="tutorial-subheader__main-icon">
               <i class="fas fa-brain"></i>
@@ -137,33 +136,25 @@
         <p>So we will use the topic 'ontologenius/reasoner_notifications' which is a topic ontologenius
           publishes when he realize some reasoning including the generalization.</p>
 
-        <p>The messages published on this topic are always in the form: &quot;[NEW]concept>property:type#value
-          &quot;. So we will use a regex to extract the information easily as below:</p>
-
-        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">std::<span class="cpp_type">regex</span> proactive(<span class="cpp_string">&quot;\\[NEW\\](\\w+)>can_(\\w+):bool#(\\w+)&quot;</span>);</div>
-        </div>
+        <p>The messages published on this topic are in our case in the form: &quot;[NEW]concept>property:type#value
+          &quot;. So we will use again a regex to extract the information easily.</p>
 
         <p>Here is the callback function:</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="cpp_type">void</span> proactiveCallback(<span class="cpp_op">const</span> std_msgs::<span class="cpp_type">String</span>::ConstPtr<span class="cpp_op">&</span> msg)</div>
-          <div class="code_line">{</div>
-          <div class="code_line">  std::<span class="cpp_type">smatch</span> match;</div>
-          <div class="code_line">  <span class="cpp_op">if</span>(std::regex_match(msg<span class="cpp_op">-&gt;</span>data, match, proactive))</div>
-          <div class="code_line">  {</div>
-          <div class="code_line">    <span class="cpp_op">if</span>(match[<span class="cpp_value">3</span>].str() <span class="cpp_op">==</span> <span class="cpp_string">&quot;true&quot;</span>)</div>
-          <div class="code_line">      std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;I think that a &quot;</span> <span class="cpp_op">&lt;&lt;</span> match[<span class="cpp_value">1</span>].str() <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot; can &quot;</span> <span class="cpp_op">&lt;&lt;</span> match[<span class="cpp_value">2</span>].str() <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line">    <span class="cpp_op">else</span></div>
-          <div class="code_line">      std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;I think that a &quot;</span> <span class="cpp_op">&lt;&lt;</span> match[<span class="cpp_value">1</span>].str() <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot; can not &quot;</span> <span class="cpp_op">&lt;&lt;</span> match[<span class="cpp_value">2</span>].str() <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line">  }</div>
-          <div class="code_line">}</div>
+          <div class="code_line"><span class="py_op">def</span> <span class="py_function">proactiveCallback</span>(msg):</div>
+          <div class="code_line">    match = re.search(r<span class="py_string">"^\[NEW\](\w+)>can_(\w+):bool#(\w+)$"</span>, msg.data)</div>
+          <div class="code_line">    <span class="py_op">if</span> match != <span class="py_value">None</span>:</div>
+          <div class="code_line">        <span class="py_op">if</span> match.group(<span class="py_value">3</span>) == <span class="py_string">'True'</span>:</div>
+          <div class="code_line">            <span class="py_op">print</span> <span class="py_string">'I think that a '</span> + match.group(<span class="py_value">1</span>) + <span class="py_string">' can '</span> + match.group(<span class="py_value">2</span>)</div>
+          <div class="code_line">        <span class="py_op">else</span>:</div>
+          <div class="code_line">            <span class="py_op">print</span> <span class="py_string">'I think that a '</span> + match.group(<span class="py_value">1</span>) + <span class="py_string">' can not '</span> + match.group(<span class="py_value">2</span>)</div>
         </div>
 
         <p>And finally, the new ros subscriber to put in the main function:</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">ros::<span class="cpp_type">Subscriber</span> proactive_sub <span class="cpp_op">=</span> n.subscribe(<span class="cpp_string">&quot;ontologenius/reasoner_notifications&quot;</span>, <span class="cpp_value">1000</span> , proactiveCallback);</div>
+          <div class="code_line">    rospy.Subscriber(<span class="py_string">'ontologenius/reasoner_notifications'</span>, String, proactiveCallback)</div>
         </div>
 
         <p>You can now delete the internal file and learn again to your program that birds can fly
