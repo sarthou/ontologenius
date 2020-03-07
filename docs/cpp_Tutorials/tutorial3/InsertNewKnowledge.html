@@ -214,7 +214,7 @@
           <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getOn(singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span> <span class="cpp_op">+</span> match[<span class="cpp_value">3</span>].str());</div>
           <div class="code_line"><br></div>
           <div class="code_line">    <span class="cpp_op">if</span>(res.size())</div>
-          <div class="code_line">      response <span class="cpp_op">=</span> (res[<span class="cpp_value">0</span>] <span class="cpp_op">==</span> <span class="cpp_string">&quot;bool:true&quot;</span>) ? <span class="cpp_string">&quot;yes&quot;</span> : <span class="cpp_string">&quot;no&quot;</span>;</div>
+          <div class="code_line">      response <span class="cpp_op">=</span> (res[<span class="cpp_value">0</span>] <span class="cpp_op">==</span> <span class="cpp_string">&quot;bool#true&quot;</span>) ? <span class="cpp_string">&quot;yes&quot;</span> : <span class="cpp_string">&quot;no&quot;</span>;</div>
           <div class="code_line">    <span class="cpp_op">else</span></div>
           <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;I do not know&quot;</span>;</div>
           <div class="code_line">  }</div>
@@ -229,7 +229,7 @@
           <div class="code_line">    <span class="cpp_op">else</span></div>
           <div class="code_line">    {</div>
           <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;it is a : &quot;</span>;</div>
-          <div class="code_line">      for(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> res.size(); i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> res.size(); i<span class="cpp_op">++</span>)</div>
           <div class="code_line">        response <span class="cpp_op">+=</span> res[i] <span class="cpp_op">+</span> <span class="cpp_string">&quot; &quot;</span>;</div>
           <div class="code_line">    }</div>
           <div class="code_line">  }</div>
@@ -296,7 +296,7 @@
           <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getOn(singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span> <span class="cpp_op">+</span> match[<span class="cpp_value">3</span>].str());</div>
           <div class="code_line"><br></div>
           <div class="code_line">    <span class="cpp_op">if</span>(res.size())</div>
-          <div class="code_line">      response <span class="cpp_op">=</span> (res[<span class="cpp_value">0</span>] <span class="cpp_op">==</span> <span class="cpp_string">&quot;bool:true&quot;</span>) ? <span class="cpp_string">&quot;yes&quot;</span> : <span class="cpp_string">&quot;no&quot;</span>;</div>
+          <div class="code_line">      response <span class="cpp_op">=</span> (res[<span class="cpp_value">0</span>] <span class="cpp_op">==</span> <span class="cpp_string">&quot;bool#true&quot;</span>) ? <span class="cpp_string">&quot;yes&quot;</span> : <span class="cpp_string">&quot;no&quot;</span>;</div>
           <div class="code_line">    <span class="cpp_op">else</span></div>
           <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;I do not know&quot;</span>;</div>
         </div>

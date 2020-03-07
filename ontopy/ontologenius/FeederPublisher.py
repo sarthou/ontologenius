@@ -22,7 +22,7 @@ class FeederPublisher:
         msg = '[add]' + concept_from + '|' + property + '|' + concept_on
         self._publish(msg)
 
-    def addProperty(self, concept_from, concept_property, type, data):
+    def addProperty(self, concept_from, property, type, data):
         msg = '[add]' + concept_from + '|' + property + '|' + type + '#' + data
         self._publish(msg)
 

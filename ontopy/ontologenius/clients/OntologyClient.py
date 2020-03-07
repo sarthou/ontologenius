@@ -12,7 +12,7 @@ class OntologyClient(ClientBase):
         if selector != '':
             param += " -s " + selector
         if depth >= 0:
-            param += " -s " + str(depth)
+            param += " -d " + str(depth)
         return self.call("getUp", param)
 
     def isA(self, name, base_class):
