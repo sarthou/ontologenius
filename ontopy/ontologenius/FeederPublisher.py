@@ -18,11 +18,11 @@ class FeederPublisher:
         self._commit_sub = rospy.Subscriber(sub_topic_name, String, self.commitCallback)
         self._commited = False
 
-    def addProperty(self, concept_from, property, concept_on):
+    def addObjectProperty(self, concept_from, property, concept_on):
         msg = '[add]' + concept_from + '|' + property + '|' + concept_on
         self._publish(msg)
 
-    def addProperty(self, concept_from, property, type, data):
+    def addDataProperty(self, concept_from, property, type, data):
         msg = '[add]' + concept_from + '|' + property + '|' + type + '#' + data
         self._publish(msg)
 
@@ -42,11 +42,11 @@ class FeederPublisher:
         msg = '[del]' + concept_from + '|' + property + '|_'
         self._publish(msg)
 
-    def removeProperty(self, concept_from, property, concept_on):
+    def removeObjectProperty(self, concept_from, property, concept_on):
         msg = '[del]' + concept_from + '|' + property + '|' + concept_on
         self._publish(msg)
 
-    def removeProperty(self, concept_from, property, type, data):
+    def removeDataProperty(self, concept_from, property, type, data):
         msg = '[del]' + concept_from + '|' + property + '|' + type + '#' + data
         self._publish(msg)
 

@@ -14,10 +14,10 @@ class ManagerClient(ClientBase):
         return self.callNR("add", name)
 
     def copy(self, dest_name, src_name):
-        return self.callNR("copy", dest_name + "=" + src_name)
+        return self.callBool("copy", dest_name + "=" + src_name)
 
     def delete(self, name):
-        return self.callStr("delete", name)
+        return self.callNR("delete", name)
 
     def getDifference(self, onto1, onto2, concept):
-        return self.callNR("difference", onto1 + "|" + onto2 + "|" + concept)
+        return self.call("difference", onto1 + "|" + onto2 + "|" + concept)

@@ -3,18 +3,22 @@ import rospy
 from .clients import *
 from .OntologyManipulator import OntologyManipulator
 
-class OntologiesManipulator(ManagerClient):
+class OntologiesManipulator(ManagerClient, object):
     def __init__(self):
+        ManagerClient.__init__(self)
         self.manipulators = {}
 
     def waitInit(self, timeout = -1):
-        rospy.wait_for_service("ontologenius/manage", timeout)
+        if timeout != -1:
+            rospy.wait_for_service('ontologenius/manage', timeout)
+        else:
+            rospy.wait_for_service('ontologenius/manage')
 
     def add(self, name):
         if name in self.manipulators:
             return True
         else:
-            if ManagerClient.add(name) == False:
+            if super(OntologiesManipulator, self).add(name) == False:
                 return False
             else:
                 self.manipulators[name] = OntologyManipulator(name)
@@ -24,7 +28,7 @@ class OntologiesManipulator(ManagerClient):
         if dest_name in self.manipulators:
             return True
         else:
-            if ManagerClient.copy(dest_name, src_name) == False:
+            if super(OntologiesManipulator, self).copy(dest_name, src_name) == False:
                 return False
             else:
                 self.manipulators[dest_name] = OntologyManipulator(dest_name)
@@ -34,7 +38,7 @@ class OntologiesManipulator(ManagerClient):
         if name not in self.manipulators:
             return True
         else:
-            if ManagerClient.delete(name) == False:
+            if super(OntologiesManipulator, self).delete(name) == False:
                 return False
             else:
                 del self.manipulators[name]

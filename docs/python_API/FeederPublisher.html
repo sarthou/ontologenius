@@ -131,14 +131,14 @@
           <table class="alignedsummary">
             <tbody>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#__init__">__init__</a></b>(self, name)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addProperty">addProperty</a></b>(self, concept_from, property, concept_on)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addProperty">addProperty</a></b>(self, concept_from, concept_property, type, data)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addObjectProperty">addObjectProperty</a></b>(self, concept_from, property, concept_on)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addDataProperty">addDataProperty</a></b>(self, concept_from, concept_property, type, data)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addInheritage">addInheritage</a></b>(self, concept_from, concept_on)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addLanguage">addLanguage</a></b>(self, concept_from, lang, name)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addConcept">addConcept</a></b>(self, concept_from)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty0">removeProperty</a></b>(self, concept_from, property)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty1">removeProperty</a></b>(self, concept_from, property, concept_on)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty2">removeProperty</a></b>(self, concept_from, property, type, data)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty">removeProperty</a></b>(self, concept_from, property)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeObjectProperty">removeObjectProperty</a></b>(self, concept_from, property, concept_on)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeDataProperty">removeDataProperty</a></b>(self, concept_from, property, type, data)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeInheritage">removeInheritage</a></b>(self, concept_from, concept_on)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeLanguage">removeLanguage</a></b>(self, concept_from, lang, name)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeConcept">removeConcept</a></b>(self, concept_from)</td></tr>
@@ -166,11 +166,11 @@
           <p>Constructs an FeederPublisher.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, <i>name</i>(str) should be defined as ''.</p>
 
-          <h3 class="fn" id="addProperty"><a name="addProperty"></a><span class="name">addProperty</span>(self, concept_from, property, concept_on)</h3>
+          <h3 class="fn" id="addObjectProperty"><a name="addObjectProperty"></a><span class="name">addObjectProperty</span>(self, concept_from, property, concept_on)</h3>
           <p>Adds the fact that <i>concept_from</i>(str) is linked with <i>concept_on</i>(str) by the property <i>property</i>(str).</p>
           <p>At least <i>concept_from</i> or <i>concept_on</i> must be already known to the system. If one of them is unknown, it will be automatically created. The property can be unknow before calling this function.</p>
 
-          <h3 class="fn" id="addProperty"><a name="addProperty"></a><span class="name">addProperty</span>(self, concept_from, concept_property, type, data)</h3>
+          <h3 class="fn" id="addDataProperty"><a name="addDataProperty"></a><span class="name">addDataProperty</span>(self, concept_from, concept_property, type, data)</h3>
           <p>Adds the fact that <i>concept_from</i>(str) is linked to the data <i>data</i>(str) of type <i>type</i>(str) by the property <i>property</i>(str).</p>
           <p><i>concept_from</i> must be already known to the system. The property can be unknow before calling this function.</p>
 
@@ -185,15 +185,15 @@
           <h3 class="fn" id="addConcept"><a name="addConcept"></a><span class="name">addConcept</span>(self, concept_from)</h3>
           <p>Adds the class or individual <i>concept_from</i>(str).</p>
 
-          <h3 class="fn" id="removeProperty0"><a name="removeProperty0"></a><span class="name">removeProperty</span>(self, concept_from, property)</h3>
+          <h3 class="fn" id="removeProperty"><a name="removeProperty"></a><span class="name">removeProperty</span>(self, concept_from, property)</h3>
           <p>Removes the fact that <i>concept_from</i>(str) is linked to any object by the property <i>property</i>(str).</p>
           <p>After this action, knowledge of the property is not removed.</p>
 
-          <h3 class="fn" id="removeProperty1"><a name="removeProperty1"></a><span class="name">removeProperty</span>(self, concept_from, property, concept_on)</h3>
+          <h3 class="fn" id="removeObjectProperty"><a name="removeObjectProperty"></a><span class="name">removeObjectProperty</span>(self, concept_from, property, concept_on)</h3>
           <p>Removes the fact that <i>concept_from</i>(str) is linked with <i>concept_on</i>(str) by the property <i>property</i>(str).</p>
           <p>After this action, knowledge of the property is not removed.</p>
 
-          <h3 class="fn" id="removeProperty2"><a name="removeProperty2"></a><span class="name">removeProperty</span>(self, concept_from, property, type, data)</h3>
+          <h3 class="fn" id="removeDataProperty"><a name="removeDataProperty"></a><span class="name">removeDataProperty</span>(self, concept_from, property, type, data)</h3>
           <p>Removes the fact that <i>concept_from</i>(str) is linked to the data <i>data</i>(str) of type <i>type</i>(str) by the property <i>property</i>(str).</p>
           <p>After this action, knowledge of the property is not removed.</p>
 
