@@ -12,6 +12,8 @@ enum action_t
 {
   action_add,
   action_del,
+  action_commit,
+  action_checkout,
   action_nop
 };
 

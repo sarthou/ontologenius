@@ -46,6 +46,10 @@ void FeedStorage::add(std::string& regex)
         feed.action_ = action_add;
       else if(action == "del")
         feed.action_ = action_del;
+      else if(action == "commit")
+        feed.action_ = action_commit;
+      else if(action == "checkout")
+        feed.action_ = action_checkout;
       else if(action == "nop")
         feed.action_ = action_nop;
       else
