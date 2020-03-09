@@ -148,6 +148,7 @@ target_link_libraries(ontologenius_ontoGraphs_lib
 add_onto_library(ontologenius_core_lib
   src/core/feeder/Feeder.cpp
   src/core/feeder/FeedStorage.cpp
+  src/core/feeder/Versionor.cpp
   src/core/reasoner/plugins/ReasonerInterface.cpp
   src/core/reasoner/Reasoners.cpp
   src/core/reasoner/ConfigReader.cpp
