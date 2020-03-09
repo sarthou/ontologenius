@@ -1,0 +1,234 @@
+<html lang="en_US">
+
+<head>
+  <title>Manage multiple ontologies (python) : Create multiple ontologies</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../images/favicon.ico" rel="shortcut icon">
+  <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../../index.html">
+              <img src="../../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Python Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: 0px;">
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="Presentation.html">1. Presentation of the problem</a></li>
+            <li class="level1"><a href="CreateMultipleOntologies.html"><b>2. Create multiple ontologies</b></a></li>
+            <li class="level1"><a href="BeliefDivergence.html">3. Detect divergence of belief </a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../Download.html">Download</a></li>
+            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../Tutorials.html">Python Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="../../overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="../../overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../../cpp_API/CppAPI.html">
+              All C++ Classes
+            </a>
+          </h3>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="../../python_API/PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../python_API/ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../../python_API/ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../../python_API/ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../../python_API/DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../../python_API/FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../../python_API/IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../../python_API/ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../../python_API/ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../../python_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../../python_API/OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../../python_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../python_API/ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>See also</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="https://sarthou.github.io/ontologenius_query/" target="_blank">Ontologenius_query</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <div class="toturial-header">
+          <h1 class="title">Manage multiple ontologies (python)</h1>
+          <a class="toturial-subheader">
+            <div class="tutorial-subheader__main-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="toturial-subheader__title">
+              <h2 class="title">Sally &amp; Anne test</h2>
+            </div>
+          </a>
+        </div>
+
+        <h1 class="title">Create multiple ontologies</h1>
+
+        <p>We will first write a program that will create an ontology for Anne and an ontology for Sally.</p>
+
+        <p>Create a main file and paste the following inside it:</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+          <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
+          <div class="code_line"></div>
+          <div class="code_line"><span class="py_op">import</span> rospy</div>
+          <div class="code_line"></div>
+          <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologiesManipulator</div>
+          <div class="code_line"></div>
+          <div class="code_line"><span class="py_op">if</span> __name__ == <span class="py_string">'__main__'</span>:</div>
+          <div class="code_line">    rospy.init_node(<span class="py_string">'multiple_ontologies'</span>)</div>
+          <div class="code_line"></div>
+          <div class="code_line">    onto = OntologiesManipulator()</div>
+          <div class="code_line">    onto.waitInit()</div>
+          <div class="code_line"></div>
+          <div class="code_line">    onto.add(<span class="py_string">'sally'</span>)</div>
+          <div class="code_line">    onto.add(<span class="py_string">'anne'</span>)</div>
+          <div class="code_line"></div>
+          <div class="code_line">    onto.get(<span class="py_string">'sally'</span>).close()</div>
+          <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).close()</div>
+          <div class="code_line"></div>
+          <div class="code_line">    result = onto.get(<span class="py_string">'sally'</span>).individuals.getOn(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
+          <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'for sally, ball_1 is in : '</span> + str(result)</div>
+          <div class="code_line"></div>
+          <div class="code_line">    result = onto.get(<span class="py_string">'anne'</span>).individuals.getOn(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
+          <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'for anne, ball_1 is in : '</span> + str(result)</div>
+        </div>
+
+        <p>Now, let's break the code down.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 4;">
+          <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologiesManipulator</div>
+        </div>
+
+        <p>In previous tutorials, we imported the OntologyManipulator object. This time, we need to handle several
+          ontologies and that's why we import the OntologiesManipulator object this time. This object allows us to
+          dynamically create a OntologyManipulator per agent.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 19;">
+          <div class="code_line">    onto = OntologiesManipulator()</div>
+          <div class="code_line">    onto.waitInit()</div>
+        </div>
+
+        <p>We start by creating a OntologiesManipulator in the same way that we previously created a OntologyManipulator.
+          This time, we simply call waitInit to make sure that all ROS services have been created before starting.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 12;">
+          <div class="code_line">    onto.add(<span class="py_string">'sally'</span>)</div>
+          <div class="code_line">    onto.add(<span class="py_string">'anne'</span>)</div>
+        </div>
+
+        <p>We create here two ontologies, one for Sally and one for Anne. For the rest of the program,
+          we will use these identifiers to get the specific ontology we want to work on.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 15;">
+          <div class="code_line">    onto.get(<span class="py_string">'sally'</span>).close()</div>
+          <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).close()</div>
+        </div>
+
+        <p>As usual, we must close the ontology before exploring it. Here we use the get function that returns an OntologyManipulator
+          object for a specific instance.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 18;">
+          <div class="code_line">    result = onto.get(<span class="py_string">'sally'</span>).individuals.getOn(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
+        </div>
+
+        <p>From there, you can use ontologenius as usual.</p>
+
+        <p>Launch the program. You should have the result that the ball is in the first container for Sally and Anne.</p>
+
+        <nav class="course-pagination">
+          <a href="Presentation.html" class="course-pagination__btn">
+            <i class="fas fa-angle-left"></i>
+            <span>Presentation of the problem</span>
+          </a>
+          <span class="course-pagination__separator"></span>
+          <a href="BeliefDivergence.html" class="course-pagination__btn">
+            <span>Detect divergence of belief</span>
+            <i class="fas fa-angle-right"></i>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

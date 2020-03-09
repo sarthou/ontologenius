@@ -188,11 +188,11 @@
           <div class="code_line">    match = re.search(r<span class="py_string">"^(a\s)?(\w+)\scan\s(not\s)?(\w+)$"</span>, text)</div>
           <div class="code_line">    <span class="py_op">if</span> match != <span class="py_value">None</span>:</div>
           <div class="code_line">        <span class="py_op">if</span> match.group(<span class="py_value">3</span>) == <span class="py_value">None</span>:</div>
-          <div class="code_line">            _onto.feeder.removeProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
-          <div class="code_line">            _onto.feeder.addProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
+          <div class="code_line">            _onto.feeder.removeDataProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
+          <div class="code_line">            _onto.feeder.addDataProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
           <div class="code_line">        <span class="py_op">else</span>:</div>
-          <div class="code_line">            _onto.feeder.removeProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
-          <div class="code_line">            _onto.feeder.addProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
+          <div class="code_line">            _onto.feeder.removeDataProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
+          <div class="code_line">            _onto.feeder.addDataProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
           <div class="code_line">        <span class="py_op">return</span> <span class="py_string">'ok'</span></div>
           <div class="code_line">    <span class="py_op">else</span>:</div>
           <div class="code_line">        <span class="py_op">return</span> <span class="py_value">None</span></div>
@@ -285,8 +285,8 @@
 
          <div class="code_block cpp_code" style="counter-reset:code_line 30;">
            <div class="code_line">        <span class="py_op">if</span> match.group(<span class="py_value">3</span>) == <span class="py_value">None</span>:</div>
-           <div class="code_line">            _onto.feeder.removeProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
-           <div class="code_line">            _onto.feeder.addProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
+           <div class="code_line">            _onto.feeder.removeDataProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
+           <div class="code_line">            _onto.feeder.addDataProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
         </div>
 
         <p>The third match must contain "not" if the sentence is in its negative form and None if it is
@@ -431,7 +431,7 @@
         <p>The basic principle is that ontologenius realizes a generalization if 60% of the individuals
           inheriting from the same classes have the same property and that from two individuals.</p>
 
-        <p>Trying to remove this property with the call of the removeProperty function would have no effect
+        <p>Trying to remove this property with the call of the removeDataProperty function would have no effect
           since it would be deduced again. To make this property accurate, it should be explicitly told that
           birds can fly but we will not do that.</p>
 
