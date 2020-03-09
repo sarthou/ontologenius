@@ -4,6 +4,8 @@
 
 This repository is a ROS package to link, explore and interrogate ontologies.
 
+For more information on using ontologenius, visit our website : https://sarthou.github.io/ontologenius/
+
 ***
 
 [**Wiki homepage**](https://github.com/sarthou/ontologenius/wiki#-ontologenius)
