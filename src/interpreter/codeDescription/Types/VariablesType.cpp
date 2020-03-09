@@ -1,4 +1,4 @@
-#include "ontoloGenius/interpreter/codeDescription/Types/VariablesType.h"
+#include "ontologenius/interpreter/codeDescription/Types/VariablesType.h"
 
 namespace ontologenius {
 

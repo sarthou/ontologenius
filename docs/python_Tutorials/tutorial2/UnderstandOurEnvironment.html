@@ -1,0 +1,241 @@
+<html lang="en_US">
+
+<head>
+  <title>Advanced knowledge exploration (python) : Better understand our environment</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../images/favicon.ico" rel="shortcut icon">
+  <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../../index.html">
+              <img src="../../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Python Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: 0px;">
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="Presentation.html">1. Presentation of the problem</a></li>
+            <li class="level1"><a href="FindOurWay.html">2. Find our way</a></li>
+            <li class="level1"><a href="UnderstandOurEnvironment.html"><b>3. Better understand our environment</b></a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../Download.html">Download</a></li>
+            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../Tutorials.html">Python Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="../../overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="../../overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../../cpp_API/CppAPI.html">
+              All C++ Classes
+            </a>
+          </h3>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="../../python_API/PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../python_API/ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../../python_API/ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../../python_API/ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../../python_API/DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../../python_API/FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../../python_API/IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../../python_API/ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../../python_API/ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../../python_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../../python_API/OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../../python_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../python_API/ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>See also</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="https://sarthou.github.io/ontologenius_query/" target="_blank">Ontologenius_query</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <div class="toturial-header">
+          <h1 class="title">Advanced knowledge exploration (python)</h1>
+          <a class="toturial-subheader">
+            <div class="tutorial-subheader__main-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="toturial-subheader__title">
+              <h2 class="title">How to go home ?</h2>
+            </div>
+          </a>
+        </div>
+
+        <h1 class="title">Better understand our environment</h1>
+
+        <p>Bob arrives well at home but he rolls on the pedestrian paths with his car ...</p>
+
+        <p>To settle this, we could use inheritance seen in the previous tutorial to check the type
+          of path but you must already imagine the complexity that it will generate.</p>
+
+        <p>Instead of doing this, we will use the third parameter of the getOn and getFrom functions which
+          is in fact optional. This third parameter is what we will call a selector. If it is set, the
+          functions will only return the individuals inheriting the selector.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+          <div class="code_line"><span class="py_op">def</span> <span class="py_function">findRoutes</span>(path_from, path_to, selector):</div>
+        </div>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 16;">
+          <div class="code_line">                paths = _onto.individuals.getOn(intersection, <span class="py_string">'isAlong'</span>, selector)</div>
+        </div>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 33;">
+          <div class="code_line"><span class="py_op">def</span> <span class="py_function">find</span>(place_from, place_to, selector):</div>
+        </div>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 38;">
+          <div class="code_line">    paths_from = _onto.individuals.getOn(place_from, <span class="py_string">'isAlong'</span>, selector)</div>
+          <div class="code_line">    paths_to = _onto.individuals.getFrom(<span class="py_string">'hasAlong'</span>, place_to, selector)</div>
+        </div>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 43;">
+          <div class="code_line">            routes = findRoutes(path_from, path_to, selector)</div>
+        </div>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 73;">
+          <div class="code_line">    route = find(<span class="py_string">'pub'</span>, <span class="py_string">'house'</span>, <span class="py_string">'path'</span>)</div>
+          <div class="code_line">    displayRoute(route)</div>
+          <div class="code_line"></div>
+          <div class="code_line">    route = find(<span class="py_string">'house'</span>, <span class="py_string">'car'</span>, <span class="py_string">'path'</span>)</div>
+          <div class="code_line">    displayRoute(route)</div>
+          <div class="code_line"></div>
+          <div class="code_line">    route = find(<span class="py_string">'car'</span>, <span class="py_string">'house'</span>, <span class="py_string">'road'</span>)</div>
+          <div class="code_line">    displayRoute(route)</div>
+        </div>
+
+        <p>Well we have already finished. It would be almost too simple ...</p>
+        <p>Launch the program. You should have the following result:</p>
+        <div class="code_block">
+          <div class="terminal_line">Route:</div>
+          <div class="terminal_line">- road_2</div>
+          <div class="terminal_line">- int_7</div>
+          <div class="terminal_line">- pp_4</div>
+          <div class="terminal_line">- int_12</div>
+          <div class="terminal_line">- road_3</div>
+          <div class="terminal_line">Route:</div>
+          <div class="terminal_line">- road_3</div>
+          <div class="terminal_line">- int_11</div>
+          <div class="terminal_line">- pp_3</div>
+          <div class="terminal_line">- int_10</div>
+          <div class="terminal_line">- road_4</div>
+          <div class="terminal_line">Route:</div>
+          <div class="terminal_line">- road_4</div>
+          <div class="terminal_line">- int_5</div>
+          <div class="terminal_line">- road_2</div>
+          <div class="terminal_line">- int_6</div>
+          <div class="terminal_line">- road_5</div>
+          <div class="terminal_line">- int_3</div>
+          <div class="terminal_line">- road_1</div>
+          <div class="terminal_line">- int_4</div>
+          <div class="terminal_line">- road_6</div>
+          <div class="terminal_line">- int_13</div>
+          <div class="terminal_line">- road_3</div>
+        </div>
+        <p>This time it's good, Bob stopped driving on pedestrian paths.</p>
+
+        <h2>Go further</h2>
+
+        <p>We have seen here that properties applied to individuals but properties can also be applied to
+          the general concepts of classes. Moreover, we have only seen two properties exploration functions
+          while there are many more. To go further, I advise you to go take a look at the documentation of
+          the API that presents all of these functions : <a href="../../python_API/IndividualClient.html"><b>IndividualClient</b></a>
+         and <a href="../../python_API/ClassClient.html"><b>ClassClient</b></a>.</p>
+
+        <nav class="course-pagination">
+          <a href="FindOurWay.html" class="course-pagination__btn">
+            <i class="fas fa-angle-left"></i>
+            <span>Find our way</span>
+          </a>
+          <span class="course-pagination__separator"></span>
+          <a href="../tutorial3/Presentation.html" class="course-pagination__btn">
+            <span>Next tutorial : Feed and generalize</span>
+            <i class="fas fa-angle-right"></i>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

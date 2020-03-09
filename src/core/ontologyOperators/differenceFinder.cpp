@@ -1,6 +1,6 @@
-#include "ontoloGenius/core/ontologyOperators/differenceFinder.h"
+#include "ontologenius/core/ontologyOperators/differenceFinder.h"
 
-#include "ontoloGenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/ontoGraphs/Ontology.h"
 
 namespace ontologenius {
 

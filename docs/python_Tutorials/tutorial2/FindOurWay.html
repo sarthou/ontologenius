@@ -1,0 +1,386 @@
+<html lang="en_US">
+
+<head>
+  <title>Advanced knowledge exploration (python) : Find our way</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../images/favicon.ico" rel="shortcut icon">
+  <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../../index.html">
+              <img src="../../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Python Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: 0px;">
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="Presentation.html">1. Presentation of the problem</a></li>
+            <li class="level1"><a href="FindOurWay.html"><b>2. Find our way</b></a></li>
+            <li class="level1"><a href="UnderstandOurEnvironment.html">3. Better understand our environment</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../Download.html">Download</a></li>
+            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../Tutorials.html">Python Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="../../overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="../../overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../../cpp_API/CppAPI.html">
+              All C++ Classes
+            </a>
+          </h3>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="../../python_API/PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../python_API/ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../../python_API/ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../../python_API/ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../../python_API/DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../../python_API/FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../../python_API/IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../../python_API/ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../../python_API/ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../../python_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../../python_API/OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../../python_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../python_API/ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>See also</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="https://sarthou.github.io/ontologenius_query/" target="_blank">Ontologenius_query</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <div class="toturial-header">
+          <h1 class="title">Advanced knowledge exploration (python)</h1>
+          <a class="toturial-subheader">
+            <div class="tutorial-subheader__main-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="toturial-subheader__title">
+              <h2 class="title">How to go home ?</h2>
+            </div>
+          </a>
+        </div>
+
+        <h1 class="title">Find our way</h1>
+
+        <p>Before starting, here is the body of our program with a function that will allow us to display routes.
+          A routes will be represented by a list of strings.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+          <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
+          <div class="code_line"></div>
+          <div class="code_line"><span class="py_op">import</span> rospy</div>
+          <div class="code_line"></div>
+          <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologyManipulator</div>
+          <div class="code_line"></div>
+          <div class="code_line">_onto = <span class="py_value">None</span></div>
+          <div class="code_line"></div>
+          <div class="code_line"><span class="py_op">def</span> <span class="py_function">displayRoute</span>(route):</div>
+          <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'Route:'</span></div>
+          <div class="code_line">    <span class="py_op">for</span> point <span class="py_op">in</span> route:</div>
+          <div class="code_line">        <span class="py_op">print</span> <span class="py_string">'- '</span> + point</div>
+          <div class="code_line"></div>
+          <div class="code_line"><span class="py_op">if</span> __name__ == <span class="py_string">'__main__'</span>:</div>
+          <div class="code_line">    <span class="py_op">global</span> _onto</div>
+          <div class="code_line"></div>
+          <div class="code_line">    rospy.init_node(<span class="py_string">'find_our_way'</span>)</div>
+          <div class="code_line"></div>
+          <div class="code_line">    _onto = OntologyManipulator()</div>
+          <div class="code_line">    _onto.close()</div>
+          <div class="code_line"></div>
+          <div class="code_line">    <span class="py_comment">#</span></div>
+          <div class="code_line">    <span class="py_comment"># We will find the route here</span></div>
+          <div class="code_line">    <span class="py_comment">#</span></div>
+        </div>
+
+        <p class="tip">We can notice the presence of the ontology manipulator object.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+          <div class="code_line"><span class="py_op">def</span> <span class="py_function">findRoutes</span>(path_from, path_to):</div>
+          <div class="code_line">    <span class="py_op">global</span> _onto</div>
+          <div class="code_line">    routes = []</div>
+          <div class="code_line">    routes.insert(<span class="py_value">0</span>, [path_from])</div>
+          <div class="code_line"></div>
+          <div class="code_line">    found = <span class="py_value">False</span></div>
+          <div class="code_line">    <span class="py_op">if</span> path_from == path_to:</div>
+          <div class="code_line">        found = <span class="py_value">True</span></div>
+          <div class="code_line"></div>
+          <div class="code_line">    <span class="py_op">while</span> <span class="py_op">not</span> found:</div>
+          <div class="code_line">        tmp_routes = []</div>
+          <div class="code_line">        <span class="py_op">for</span> route <span class="py_op">in</span> routes:</div>
+          <div class="code_line">            size = len(route) - <span class="py_value">1</span></div>
+          <div class="code_line">            intersections = _onto.individuals.getFrom(<span class="py_string">'isAlong'</span>, route[size])</div>
+          <div class="code_line"></div>
+          <div class="code_line">            <span class="py_op">for</span> intersection <span class="py_op">in</span> intersections:</div>
+          <div class="code_line">                paths = _onto.individuals.getOn(intersection, <span class="py_string">'isAlong'</span>)</div>
+          <div class="code_line"></div>
+          <div class="code_line">                <span class="py_comment"># erase paths already present in the current route</span></div>
+          <div class="code_line">                paths = [path <span class="py_op">for</span> path <span class="py_op">in</span> paths <span class="py_op">if</span> <span class="py_op">not</span> path <span class="py_op">in</span> route]</div>
+          <div class="code_line"></div>
+          <div class="code_line">                <span class="py_op">for</span> path <span class="py_op">in</span> paths:</div>
+          <div class="code_line">                    tmp = list(route)</div>
+          <div class="code_line">                    tmp.insert(len(tmp), intersection)</div>
+          <div class="code_line">                    tmp.insert(len(tmp), path)</div>
+          <div class="code_line">                    tmp_routes.insert(len(tmp_routes), tmp)</div>
+          <div class="code_line">                    <span class="py_op">if</span> path == path_to:</div>
+          <div class="code_line">                        found = <span class="py_value">True</span></div>
+          <div class="code_line"></div>
+          <div class="code_line">        routes = list(tmp_routes)</div>
+          <div class="code_line"></div>
+          <div class="code_line">    <span class="py_op">return</span> routes</div>
+        </div>
+
+        <p>Well, it's just a breadth-first search but it's still not obvious. We will analyze this together
+          because two lines are particularly interesting.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+          <div class="code_line"><span class="py_op">def</span> <span class="py_function">findRoutes</span>(path_from, path_to):</div>
+        </div>
+        <p>Let's start with the beginning. This function was used to search for routes linking "path_from" to "path_to".</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 2;">
+          <div class="code_line">    routes = []</div>
+        </div>
+        <p>"routes" represents a list of routes since a route is itself a list of string.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 3;">
+          <div class="code_line">    routes.insert(<span class="py_value">0</span>, [path_from])</div>
+        </div>
+        <p>We initialize our list of routes with a route only composed of the start path.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 10;">
+          <div class="code_line">        tmp_routes = []</div>
+          <div class="code_line">        <span class="py_op">for</span> route <span class="py_op">in</span> routes:</div>
+        </div>
+        <p>Since we use a breadth-first search, we browse the set of current routes at each itteration and we
+          rank the routes found at the current iteration in the variable tmp_routes.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 13;">
+          <div class="code_line">            intersections = _onto.individuals.getFrom(<span class="py_string">'isAlong'</span>, route[size])</div>
+        </div>
+        <p><b>IMPORTANT :</b></p>
+        <p>We can represent the use of a property like this : <span class="color_red">individual_1</span>
+          <span class="color_green">property</span> <span class="color_blue">individual_2</span><br>
+        In the case of our paths, it comes down to this : <span class="color_red">intersection_i</span>
+        <span class="color_green">isAlong</span> <span class="color_blue">path_j</span></p>
+
+        <p>The getFrom function returns all the <span class="color_red">red individuals</span> who apply the
+          <span class="color_green">green property</span> to the <span class="color_blue">blue individual</span>.<br>
+        That means in our case that we are going to have <span class="color_red">all of the individuals</span>
+        <span class="color_green">along</span> the path <span class="color_blue">routes[route_i][size]</span>.
+        However, that means that we are going to have the intersections as well as the other elements, but that
+        is not a big deal at the moment.</p>
+
+        <p>Notice how with a single line we are able to retrieve accurate information from our knowledge base.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 15;">
+          <div class="code_line">            <span class="py_op">for</span> intersection <span class="py_op">in</span> intersections:</div>
+        </div>
+        <p>We are now going through all of our intersections to see where they can lead us.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 16;">
+          <div class="code_line">                paths = _onto.individuals.getOn(intersection, <span class="py_string">'isAlong'</span>)</div>
+        </div>
+        <p><b>IMPORTANT :</b></p>
+        <p>Let's take again the fact that : <span class="color_red">intersection_i</span>
+        <span class="color_green">isAlong</span> <span class="color_blue">path_j</span></p>
+        <p>The getOn function will make it possible to achieve the inverse of the getFrom function.
+           We will retrieve the set of <span class="color_blue">blue individuals</span> that are connected to
+           the <span class="color_red">red individual</span> by the <span class="color_green">green property</span>.
+           In our case, we are going to have all the <span class="color_blue">paths</span> for which the
+           intersection <span class="color_red">intersections[int_i]</span> <span class="color_green">is along</span>.
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 21;">
+          <div class="code_line">                <span class="py_op">for</span> path <span class="py_op">in</span> paths:</div>
+        </div>
+        <p>For all paths not already present in the current route, we create a new route which is the current route plus the
+          intersection leading to the new path as well as the new path.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 29;">
+          <div class="code_line">        routes = list(tmp_routes)</div>
+        </div>
+        <p>At the end of the current iteration, the new routes of work become the current one.</p>
+
+        <h2>Find a route from one place to another</h2>
+
+        <p>The preceding function can find paths from one path to another except that we want a single
+          path from one place to another. The following algorithm is doing this. We will analyze it
+          quickly together.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 33;">
+          <div class="code_line"><span class="py_op">def</span> <span class="py_function">find</span>(place_from, place_to):</div>
+          <div class="code_line">    <span class="py_op">global</span> _onto</div>
+          <div class="code_line">    res_route = []</div>
+          <div class="code_line">    min_size = <span class="py_value">100</span></div>
+          <div class="code_line"></div>
+          <div class="code_line">    paths_from = _onto.individuals.getOn(place_from, <span class="py_string">'isAlong'</span>)</div>
+          <div class="code_line">    paths_to = _onto.individuals.getFrom(<span class="py_string">'hasAlong'</span>, place_to)</div>
+          <div class="code_line"></div>
+          <div class="code_line">    <span class="py_op">for</span> path_from <span class="py_op">in</span> paths_from:</div>
+          <div class="code_line">        <span class="py_op">for</span> path_to <span class="py_op">in</span> paths_to:</div>
+          <div class="code_line">            routes = findRoutes(path_from, path_to)</div>
+          <div class="code_line">            <span class="py_op">for</span> route <span class="py_op">in</span> routes:</div>
+          <div class="code_line">                <span class="py_op">if</span> route[len(route) - <span class="py_value">1</span>] == path_to:</div>
+          <div class="code_line">                    <span class="py_op">if</span> len(route) < min_size:</div>
+          <div class="code_line">                        min_size = len(route)</div>
+          <div class="code_line">                        res_route = route</div>
+          <div class="code_line"></div>
+          <div class="code_line">    <span class="py_op">return</span> res_route</div>
+        </div>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 35;">
+          <div class="code_line">    res_route = []</div>
+          <div class="code_line">    min_size = <span class="py_value">100</span></div>
+        </div>
+        <p>"res_route" is going to be our final route and "min_size" will allow us to find the road with the
+          least steps.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 38;">
+          <div class="code_line">    paths_from = _onto.individuals.getOn(place_from, <span class="py_string">'isAlong'</span>)</div>
+          <div class="code_line">    paths_to = _onto.individuals.getFrom(<span class="py_string">'hasAlong'</span>, place_to)</div>
+        </div>
+        <p>Now that you know the getOn and getFrom functions, you should understand what we are doing here.
+        In fact, these two lines do exactly the same thing but in two different places (from and to).
+        Indeed, hasAlong is the inverse property of isAlong or getOn is the inverse function of getFrom,
+        so these two lines return to the same.</p>
+        <p>For each one of the places from and to we recover the paths of which they are along.</p>
+
+        <p>In the rest of the algorithm, we perform a search from the start path to the end path and only
+          take the paths that actually lead to the end path and have a size smaller than the last shortest
+          route found.</p>
+
+        <h2>Update main function</h2>
+
+        <p>We can finally add the following lines in our main function to realize the path search for the
+          three bob's ittineraries.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 73;">
+          <div class="code_line">    route = find(<span class="py_string">'pub'</span>, <span class="py_string">'house'</span>)</div>
+          <div class="code_line">    displayRoute(route)</div>
+          <div class="code_line"></div>
+          <div class="code_line">    route = find(<span class="py_string">'house'</span>, <span class="py_string">'car'</span>)</div>
+          <div class="code_line">    displayRoute(route)</div>
+          <div class="code_line"></div>
+          <div class="code_line">    route = find(<span class="py_string">'car'</span>, <span class="py_string">'house'</span>)</div>
+          <div class="code_line">    displayRoute(route)</div>
+        </div>
+
+        <p>Launch the program. You should have the following result:</p>
+        <div class="code_block">
+          <div class="terminal_line">Route:</div>
+          <div class="terminal_line">- road_2</div>
+          <div class="terminal_line">- int_7</div>
+          <div class="terminal_line">- pp_4</div>
+          <div class="terminal_line">- int_12</div>
+          <div class="terminal_line">- road_3</div>
+          <div class="terminal_line">Route:</div>
+          <div class="terminal_line">- road_3</div>
+          <div class="terminal_line">- int_11</div>
+          <div class="terminal_line">- pp_3</div>
+          <div class="terminal_line">- int_10</div>
+          <div class="terminal_line">- road_4</div>
+          <div class="terminal_line">Route:</div>
+          <div class="terminal_line">- road_4</div>
+          <div class="terminal_line">- int_10</div>
+          <div class="terminal_line">- pp_3</div>
+          <div class="terminal_line">- int_11</div>
+          <div class="terminal_line">- road_3</div>
+        </div>
+
+        <nav class="course-pagination">
+          <a href="Presentation.html" class="course-pagination__btn">
+            <i class="fas fa-angle-left"></i>
+            <span>Presentation of the problem</span>
+          </a>
+          <span class="course-pagination__separator"></span>
+          <a href="UnderstandOurEnvironment.html" class="course-pagination__btn">
+            <span>Better understand our environment</span>
+            <i class="fas fa-angle-right"></i>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

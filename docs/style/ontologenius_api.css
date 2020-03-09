@@ -443,19 +443,22 @@ table.alignedsummary,table.propsummary {
 .cpp_code, .xml_code {
   border-radius: 5px;
 }
-.cpp_include, .cpp_return, .cpp_op, .xml_tag {
+.cpp_include, .cpp_return, .cpp_op, .xml_tag, .py_op {
   color:#fe4481;
 }
 .cpp_included, .color_purple {
   color:#ae81ff;
 }
-.cpp_type {
+.cpp_type, .py_function {
   color:#66d9ef;
 }
-.cpp_string, .cpp_value, .xml_param, .color_brown {
-  color:#e6db74;
+.cpp_string, .py_string, .color_brown {
+  color:#bde674;
 }
-.cpp_comment {
+.cpp_value, .py_value, .xml_param {
+  color:#ecbd62;
+}
+.cpp_comment, .py_comment {
   color:#918e7b;
 }
 .xml_string {
@@ -537,7 +540,7 @@ p.tip {
 .course-part-summary__main-icon i {
  margin-top: 3px
 }
-.toturial-subheader__main-icon {
+.tutorial-subheader__main-icon {
  width:66px;
  height:66px;
  text-align:center;
@@ -577,7 +580,7 @@ p.tip {
  vertical-align:middle;
  padding-left:5px
 }
-.toturial-subheader__title,.toturial-subheader__main-icon {
+.toturial-subheader__title,.tutorial-subheader__main-icon {
  display:table-cell
 }
 .tutorial-part-summary_list {

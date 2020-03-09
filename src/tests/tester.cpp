@@ -5,8 +5,8 @@
 
 #include <ros/ros.h>
 
-#include "ontoloGenius/core/ontoGraphs/Ontology.h"
-#include "ontoloGenius/core/reasoner/Reasoners.h"
+#include "ontologenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/reasoner/Reasoners.h"
 
 using namespace std::chrono;
 

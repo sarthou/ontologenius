@@ -1,9 +1,9 @@
-#include "ontoloGenius/core/ontoGraphs/Checkers/ClassChecker.h"
+#include "ontologenius/core/ontoGraphs/Checkers/ClassChecker.h"
 
 #include <algorithm>
 
-#include "ontoloGenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
-#include "ontoloGenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 
 namespace ontologenius {
 
@@ -176,7 +176,7 @@ void ClassChecker::checkDataPropertyRange()
       std::unordered_set<std::string> range = class_graph_->data_property_graph_->getRange(relation.first->value());
       if(range.size() != 0)
       {
-        std::unordered_set<std::string>::iterator intersection = std::find(range.begin(), range.end(), relation.second.type_);
+        auto intersection = range.find(relation.second.type_);
         if(intersection == range.end())
           print_error("'" + relation.second.type_ + "' is not in range of '" + relation.first->value() + "'");
       }

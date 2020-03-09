@@ -1,4 +1,4 @@
-#include "ontoloGenius/interpreter/codeDescription/Types/StringType.h"
+#include "ontologenius/interpreter/codeDescription/Types/StringType.h"
 
 namespace ontologenius {
 

@@ -1,4 +1,4 @@
-#include "ontoloGenius/interpreter/codeDescription/Namespace.h"
+#include "ontologenius/interpreter/codeDescription/Namespace.h"
 
 namespace ontologenius {
 

@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontoGraphs/Branchs/ValuedNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 
 namespace ontologenius {
 

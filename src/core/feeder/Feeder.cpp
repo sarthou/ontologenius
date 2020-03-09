@@ -1,8 +1,8 @@
-#include "ontoloGenius/core/feeder/Feeder.h"
+#include "ontologenius/core/feeder/Feeder.h"
 
 #include <iostream>
 
-#include "ontoloGenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/ontoGraphs/Ontology.h"
 
 namespace ontologenius {
 
@@ -10,7 +10,7 @@ bool Feeder::run()
 {
   if(onto_ == nullptr)
     return false;
-    
+
   bool has_run = false;
   std::queue<feed_t> feeds = feed_storage_.get();
 
@@ -22,8 +22,10 @@ bool Feeder::run()
 
     if(feed.action_ == action_add)
       current_str_feed_ = "[add] " + feed.from_ + " | " + feed.prop_ + " | " + feed.on_;
-    else
+    else if(feed.action_ == action_del)
       current_str_feed_ = "[del] " + feed.from_ + " | " + feed.prop_ + " | " + feed.on_;
+    else
+      continue;
 
     if(feed.prop_ == "")
     {
@@ -34,7 +36,7 @@ bool Feeder::run()
     }
     else if(feed.on_ != "")
     {
-      if((feed.prop_ == "+") || (feed.prop_ == "rdfs:subClassOf"))
+      if((feed.prop_ == "+") || (feed.prop_ == "rdfs:subClassOf") || (feed.prop_ == "isA"))
         addInheritage(feed);
       //if((feed.prop_ == "<-") || (feed.prop_ == "owl:inverseOf"))
         //addInverseOf(feed);
@@ -172,7 +174,7 @@ void Feeder::classIndividualLangage(feed_t& feed)
 
 void Feeder::applyProperty(feed_t& feed)
 {
-  size_t pose = feed.on_.find(":");
+  size_t pose = feed.on_.find("#");
   std::string type = "";
   std::string data = "";
   bool data_property = false;

@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/reasoner/plugins/ReasonerInterface.h"
+#include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 
 //make compiler happy !!!
 

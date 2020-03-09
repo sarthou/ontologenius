@@ -1,4 +1,4 @@
-#include "ontoloGenius/interpreter/codeDescription/Syntax/Operators.h"
+#include "ontologenius/interpreter/codeDescription/Syntax/Operators.h"
 
 #include <iostream>
 

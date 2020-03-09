@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 
-#include "ontoloGenius/utility/OntologyManipulator.h"
+#include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
 OntologyManipulator* onto_ptr;
 
@@ -82,12 +82,12 @@ TEST(global_tests, class_getRelationOn)
                           (find(res.begin(), res.end(), "hasMother") != res.end()) &&
                           (find(res.begin(), res.end(), "hasParent") != res.end()));
 
-  test_word = "2";
+  test_word = "integer#2";
   res = onto_ptr->classes.getRelationOn(test_word);
   res_bool = res_bool && ((res.size() == 1) &&
                           (find(res.begin(), res.end(), "hasLeg") != res.end()));
 
-  test_word = "0";
+  test_word = "integer#0";
   res = onto_ptr->classes.getRelationOn(test_word);
   res_bool = res_bool && ((res.size() == 1) &&
                           (find(res.begin(), res.end(), "hasLeg") != res.end()));
@@ -107,8 +107,8 @@ TEST(global_tests, class_getRelatedOn)
 
   res = onto_ptr->classes.getRelatedOn(test_word);
   res_bool = res_bool && ((res.size() == 2) &&
-                          (find(res.begin(), res.end(), "integer:0") != res.end()) &&
-                          (find(res.begin(), res.end(), "integer:2") != res.end()));
+                          (find(res.begin(), res.end(), "integer#0") != res.end()) &&
+                          (find(res.begin(), res.end(), "integer#2") != res.end()));
 
   test_word = "hasMother";
   res = onto_ptr->classes.getRelatedOn(test_word);
@@ -141,21 +141,21 @@ TEST(global_tests, class_getRelationWith)
 
   res = onto_ptr->classes.getRelationWith(test_word);
   res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), "integer:2") != res.end()) &&
+                          (find(res.begin(), res.end(), "integer#2") != res.end()) &&
                           (find(res.begin(), res.end(), "man") != res.end()) &&
                           (find(res.begin(), res.end(), "woman") != res.end()));
 
   test_word = "child";
   res = onto_ptr->classes.getRelationWith(test_word);
   res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), "integer:2") != res.end()) &&
+                          (find(res.begin(), res.end(), "integer#2") != res.end()) &&
                           (find(res.begin(), res.end(), "man") != res.end()) &&
                           (find(res.begin(), res.end(), "woman") != res.end()));
 
   test_word = "man";
   res = onto_ptr->classes.getRelationWith(test_word);
   res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), "integer:0") != res.end()) &&
+                          (find(res.begin(), res.end(), "integer#0") != res.end()) &&
                           (find(res.begin(), res.end(), "man") != res.end()) &&
                           (find(res.begin(), res.end(), "woman") != res.end()));
 
@@ -187,14 +187,14 @@ TEST(global_tests, class_getRelatedWith)
                           (find(res.begin(), res.end(), "human") != res.end()) &&
                           (find(res.begin(), res.end(), "woman") != res.end()));
 
-  test_word = "2";
+  test_word = "integer#2";
   res = onto_ptr->classes.getRelatedWith(test_word);
   res_bool = res_bool && ((res.size() == 3) &&
                           (find(res.begin(), res.end(), "child") != res.end()) &&
                           (find(res.begin(), res.end(), "human") != res.end()) &&
                           (find(res.begin(), res.end(), "woman") != res.end()));
 
-  test_word = "0";
+  test_word = "integer#0";
   res = onto_ptr->classes.getRelatedWith(test_word);
   res_bool = res_bool && ((res.size() == 1) &&
                           (find(res.begin(), res.end(), "man") != res.end()));
@@ -231,7 +231,7 @@ TEST(global_tests, class_getFrom)
               (find(res.begin(), res.end(), "woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = "2";
+  test_word = "integer#2";
   test_word2 = "hasLeg";
   res = onto_ptr->classes.getFrom(test_word2, test_word);
   res_bool = ((res.size() == 3) &&
@@ -240,7 +240,7 @@ TEST(global_tests, class_getFrom)
               (find(res.begin(), res.end(), "woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = "0";
+  test_word = "integer#0";
   test_word2 = "hasLeg";
   res = onto_ptr->classes.getFrom(test_word2, test_word);
   res_bool = ((res.size() == 1) &&
@@ -263,14 +263,14 @@ TEST(global_tests, class_getOn)
 
   res = onto_ptr->classes.getOn(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
-             (find(res.begin(), res.end(), "integer:0") != res.end()));
+             (find(res.begin(), res.end(), "integer#0") != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = "child";
   test_word2 = "hasLeg";
   res = onto_ptr->classes.getOn(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
-             (find(res.begin(), res.end(), "integer:2") != res.end()));
+             (find(res.begin(), res.end(), "integer#2") != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = "woman";
@@ -322,13 +322,13 @@ TEST(global_tests, class_getWith)
                           (find(res.begin(), res.end(), "hasParent") != res.end()));
 
   test_word = "child";
-  test_word2 = "2";
+  test_word2 = "integer#2";
   res = onto_ptr->classes.getWith(test_word, test_word2);
   res_bool = res_bool && ((res.size() == 1) &&
                           (find(res.begin(), res.end(), "hasLeg") != res.end()));
 
   test_word = "man";
-  test_word2 = "0";
+  test_word2 = "integer#0";
   res = onto_ptr->classes.getWith(test_word, test_word2);
   res_bool = res_bool && ((res.size() == 1) &&
                           (find(res.begin(), res.end(), "hasLeg") != res.end()));
@@ -339,7 +339,7 @@ TEST(global_tests, class_getWith)
   res_bool = res_bool && (res.size() == 0);
 
   test_word = "man";
-  test_word2 = "2";
+  test_word2 = "integer#2";
   res = onto_ptr->classes.getWith(test_word, test_word2);
   res_bool = res_bool && (res.size() == 0);
 
@@ -440,12 +440,12 @@ TEST(global_tests, individual_getRelationOn)
                           (find(res.begin(), res.end(), "isUnder") != res.end()) &&
                           (find(res.begin(), res.end(), "isPositioned") != res.end()));
 
-  test_word = "2";
+  test_word = "integer#2";
   res = onto_ptr->individuals.getRelationOn(test_word);
   res_bool = res_bool && ((res.size() == 1) &&
                           (find(res.begin(), res.end(), "hasLeg") != res.end()));
 
-  test_word = "0";
+  test_word = "integer#0";
   res = onto_ptr->individuals.getRelationOn(test_word);
   res_bool = res_bool && ((res.size() == 1) &&
                           (find(res.begin(), res.end(), "hasLeg") != res.end()));
@@ -465,8 +465,8 @@ TEST(global_tests, individual_getRelatedOn)
 
   res = onto_ptr->individuals.getRelatedOn(test_word);
   res_bool = res_bool && ((res.size() == 2) &&
-                          (find(res.begin(), res.end(), "integer:0") != res.end()) &&
-                          (find(res.begin(), res.end(), "integer:2") != res.end()));
+                          (find(res.begin(), res.end(), "integer#0") != res.end()) &&
+                          (find(res.begin(), res.end(), "integer#2") != res.end()));
 
   test_word = "hasMother";
   res = onto_ptr->individuals.getRelatedOn(test_word);
@@ -500,28 +500,28 @@ TEST(global_tests, individual_getRelationWith)
 
   res = onto_ptr->individuals.getRelationWith(test_word);
   res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), "integer:2") != res.end()) &&
+                          (find(res.begin(), res.end(), "integer#2") != res.end()) &&
                           (find(res.begin(), res.end(), "man") != res.end()) &&
                           (find(res.begin(), res.end(), "woman") != res.end()));
 
   test_word = "kevin";
   res = onto_ptr->individuals.getRelationWith(test_word);
   res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), "integer:0") != res.end()) &&
+                          (find(res.begin(), res.end(), "integer#0") != res.end()) &&
                           (find(res.begin(), res.end(), "bob") != res.end()) &&
                           (find(res.begin(), res.end(), "alice") != res.end()));
 
   test_word = "bob";
   res = onto_ptr->individuals.getRelationWith(test_word);
   res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), "integer:0") != res.end()) &&
+                          (find(res.begin(), res.end(), "integer#0") != res.end()) &&
                           (find(res.begin(), res.end(), "man") != res.end()) &&
                           (find(res.begin(), res.end(), "woman") != res.end()));
 
   test_word = "cube1";
   res = onto_ptr->individuals.getRelationWith(test_word);
   res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), "integer:236") != res.end()) &&
+                          (find(res.begin(), res.end(), "integer#236") != res.end()) &&
                           (find(res.begin(), res.end(), "big_box") != res.end()) &&
                           (find(res.begin(), res.end(), "blueCube") != res.end()));
 
@@ -547,12 +547,12 @@ TEST(global_tests, individual_getRelatedWith)
                           (find(res.begin(), res.end(), "alice") != res.end()) &&
                           (find(res.begin(), res.end(), "bob") != res.end()));
 
-  test_word = "2";
+  test_word = "integer#2";
   res = onto_ptr->individuals.getRelatedWith(test_word);
   res_bool = res_bool && ((res.size() == 1) &&
                           (find(res.begin(), res.end(), "alice") != res.end()));
 
-  test_word = "0";
+  test_word = "integer#0";
   res = onto_ptr->individuals.getRelatedWith(test_word);
   res_bool = res_bool && ((res.size() == 2) &&
                           (find(res.begin(), res.end(), "kevin") != res.end()) &&
@@ -597,7 +597,7 @@ TEST(global_tests, individual_getFrom)
               (find(res.begin(), res.end(), "bob") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = "0";
+  test_word = "integer#0";
   test_word2 = "hasLeg";
   res = onto_ptr->individuals.getFrom(test_word2, test_word);
   res_bool = ((res.size() == 2) &&
@@ -605,7 +605,7 @@ TEST(global_tests, individual_getFrom)
               (find(res.begin(), res.end(), "bob") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = "2";
+  test_word = "integer#2";
   test_word2 = "hasLeg";
   res = onto_ptr->individuals.getFrom(test_word2, test_word);
   res_bool = ((res.size() == 1) &&
@@ -628,14 +628,14 @@ TEST(global_tests, individual_getOn)
 
   res = onto_ptr->individuals.getOn(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
-             (find(res.begin(), res.end(), "integer:0") != res.end()));
+             (find(res.begin(), res.end(), "integer#0") != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = "kevin";
   test_word2 = "hasLeg";
   res = onto_ptr->individuals.getOn(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
-             (find(res.begin(), res.end(), "integer:0") != res.end()));
+             (find(res.begin(), res.end(), "integer#0") != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = "alice";
@@ -697,14 +697,14 @@ TEST(global_tests, individual_getWith)
   EXPECT_TRUE(res_bool);
 
   test_word = "alice";
-  test_word2 = "2";
+  test_word2 = "integer#2";
   res = onto_ptr->individuals.getWith(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
               (find(res.begin(), res.end(), "hasLeg") != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = "bob";
-  test_word2 = "0";
+  test_word2 = "integer#0";
   res = onto_ptr->individuals.getWith(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
               (find(res.begin(), res.end(), "hasLeg") != res.end()));
@@ -717,7 +717,7 @@ TEST(global_tests, individual_getWith)
   EXPECT_TRUE(res_bool);
 
   test_word = "bob";
-  test_word2 = "2";
+  test_word2 = "integer#2";
   res = onto_ptr->individuals.getWith(test_word, test_word2);
   res_bool = (res.size() == 0);
   EXPECT_TRUE(res_bool);

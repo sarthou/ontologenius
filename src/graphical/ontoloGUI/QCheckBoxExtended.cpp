@@ -1,8 +1,8 @@
-#include "include/ontoloGenius/graphical/ontoloGUI/QCheckBoxExtended.h"
+#include "include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
 
-#include <QWidget>
 #include <QEvent>
 #include <QHoverEvent>
+#include <QWidget>
 
 QCheckBoxExtended::QCheckBoxExtended(QWidget *parent) : QCheckBox(parent)
 {
@@ -16,7 +16,7 @@ QCheckBoxExtended::QCheckBoxExtended(const QString& text, QWidget *parent) : QCh
     setAttribute(Qt::WA_Hover);
 }
 
-void QCheckBoxExtended::hoverEnter(QHoverEvent *event)
+void QCheckBoxExtended::hoverEnter(QHoverEvent* /*event*/)
 {
     QFont font = this->font();
     font.setBold(true);
@@ -25,7 +25,7 @@ void QCheckBoxExtended::hoverEnter(QHoverEvent *event)
     hoverEnter();
 }
 
-void QCheckBoxExtended::hoverLeave(QHoverEvent *event)
+void QCheckBoxExtended::hoverLeave(QHoverEvent* /*event*/)
 {
     QFont font = this->font();
     font.setBold(false);
@@ -34,7 +34,7 @@ void QCheckBoxExtended::hoverLeave(QHoverEvent *event)
     hoverLeave();
 }
 
-void QCheckBoxExtended::hoverMove(QHoverEvent *event)
+void QCheckBoxExtended::hoverMove(QHoverEvent* /*event*/)
 {
     QFont font = this->font();
     font.setBold(true);
@@ -42,24 +42,24 @@ void QCheckBoxExtended::hoverMove(QHoverEvent *event)
     repaint();
 }
 
-bool QCheckBoxExtended::event(QEvent *event)
+bool QCheckBoxExtended::event(QEvent* event)
 {
     switch(event->type())
     {
     case QEvent::HoverEnter:
-        hoverEnter(static_cast<QHoverEvent*>(event));
+        hoverEnter(dynamic_cast<QHoverEvent*>(event));
         return true;
         break;
     case QEvent::HoverLeave:
-        hoverLeave(static_cast<QHoverEvent*>(event));
+        hoverLeave(dynamic_cast<QHoverEvent*>(event));
         return true;
         break;
     case QEvent::HoverMove:
-        hoverMove(static_cast<QHoverEvent*>(event));
+        hoverMove(dynamic_cast<QHoverEvent*>(event));
         return true;
         break;
     default:
         break;
     }
-    return QWidget::event(event);
+    return QCheckBox::event(event);
 }

@@ -1,4 +1,4 @@
-#include "ontoloGenius/interpreter/codeDescription/Functions/PropertyFunctions.h"
+#include "ontologenius/interpreter/codeDescription/Functions/PropertyFunctions.h"
 
 namespace ontologenius {
 

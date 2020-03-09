@@ -1,0 +1,284 @@
+<html lang="en_US">
+
+<head>
+  <title>Manage multiple ontologies (cpp) : Detect divergence of belief</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../images/favicon.ico" rel="shortcut icon">
+  <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../../index.html">
+              <img src="../../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Cpp Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: 0px;">
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="Presentation.html">1. Presentation of the problem</a></li>
+            <li class="level1"><a href="CreateMultipleOntologies.html">2. Create multiple ontologies</a></li>
+            <li class="level1"><a href="BeliefDivergence.html"><b>3. Detect divergence of belief</b></a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../Download.html">Download</a></li>
+            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="../../overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="../../overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="../../cpp_API/CppAPI.html">
+              All C++ Classes
+            </a>
+          </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../cpp_API/ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../../cpp_API/DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../../cpp_API/FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../../cpp_API/IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+          </br>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../../python_API/PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>See also</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="https://sarthou.github.io/ontologenius_query/" target="_blank">Ontologenius_query</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <div class="toturial-header">
+          <h1 class="title">Manage multiple ontologies (cpp)</h1>
+          <a class="toturial-subheader">
+            <div class="tutorial-subheader__main-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="toturial-subheader__title">
+              <h2 class="title">Sally &amp; Anne test</h2>
+            </div>
+          </a>
+        </div>
+
+        <h1 class="title">Detect divergence of belief</h1>
+
+        <p>We now consider that Sally is absent and Anne moves the ball from Container 1 to Container 2.
+          Replace the previous code by this new one.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
+          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
+          <div class="code_line"><br></div>
+          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologiesManipulator.h&quot;</span></div>
+          <div class="code_line"><br></div>
+          <div class="code_line"><span class="cpp_type">int</span> main(<span class="cpp_type">int</span> argc, <span class="cpp_type">char</span><span class="cpp_op">**</span> argv)</div>
+          <div class="code_line">{</div>
+          <div class="code_line">  ros::init(argc, argv, <span class="cpp_string">&quot;multiple_ontologies&quot;</span>);</div>
+          <div class="code_line">  ros::<span class="cpp_type">NodeHandle</span> n;</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  <span class="cpp_type">OntologiesManipulator</span> onto(<span class="cpp_op">&amp;</span>n);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  onto.waitInit();</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  onto.add(<span class="cpp_string">&quot;sally&quot;</span>);</div>
+          <div class="code_line">  onto.add(<span class="cpp_string">&quot;anne&quot;</span>);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  onto[<span class="cpp_string">&quot;sally&quot;</span>]<span class="cpp_op">-&gt;</span>close();</div>
+          <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>close();</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; result <span class="cpp_op">=</span> onto[<span class="cpp_string">&quot;sally&quot;</span>]<span class="cpp_op">-&gt;</span>individuals.getOn(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
+          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;for sally, ball_1 is in:&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(std::<span class="cpp_type">string</span> in : result)</div>
+          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;- &quot;</span> <span class="cpp_op">&lt;&lt;</span> in <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  result = onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>individuals.getOn(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
+          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;for anne, ball_1 is in:&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(std::<span class="cpp_type">string</span> in : result)</div>
+          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;- &quot;</span> <span class="cpp_op">&lt;&lt;</span> in <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  <span class="cpp_op">while</span>(onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.getNumSubscribers() <span class="cpp_op">==</span> 0)</div>
+          <div class="code_line">    <span class="cpp_op">continue</span>;</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.removeProperty(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
+          <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.addProperty(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit(500);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; differences <span class="cpp_op">=</span> onto.getDifference(<span class="cpp_string">&quot;sally&quot;</span>, <span class="cpp_string">&quot;anne&quot;</span>, <span class="cpp_string">&quot;ball_1&quot;</span>);</div>
+          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;The difference of belief regarding the ball_1 is:&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(std::<span class="cpp_type">string</span> diff : differences)</div>
+          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;- &quot;</span> <span class="cpp_op">&lt;&lt;</span> diff <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  <span class="cpp_return">return</span> <span class="cpp_value">0</span>;</div>
+          <div class="code_line">}</div>
+        </div>
+
+        <p>First of all a small trick.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 30;">
+          <div class="code_line">  <span class="cpp_op">while</span>(onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.getNumSubscribers() <span class="cpp_op">==</span> 0)</div>
+          <div class="code_line">    <span class="cpp_op">continue</span>;</div>
+        </div>
+
+        <p>If you know ROS, you should know that subscribers may take a few moments to connect to listeners. Because, again,
+          our program is a bit too fast, this connection may not be effective immediately. To avoid this problem, you can use
+          the previous lines to make sure that our feeder is connected to at least one listener.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 33;">
+          <div class="code_line">   onto<span class="cpp_op">[</span><span class="cpp_string">&quot;anne&quot;</span><span class="cpp_op">]</span><span class="cpp_op">-&gt;</span>feeder.removeProperty(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
+          <div class="code_line">   onto<span class="cpp_op">[</span><span class="cpp_string">&quot;anne&quot;</span><span class="cpp_op">]</span><span class="cpp_op">-&gt;</span>feeder.addProperty(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
+        </div>
+
+        <p>Here are really the two lines that represent the fact that Anne removes the ball from the first container and puts it
+          in the second container. You see here that these changes are applied only to Anne.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 36;">
+          <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit(500);</div>
+        </div>
+
+        <p>With the commit function, we will wait until the previous changes are applied. For security reasons, we set a timeout of 500 ms.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 38;">
+          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; differences <span class="cpp_op">=</span> onto.getDifference(<span class="cpp_string">&quot;sally&quot;</span>, <span class="cpp_string">&quot;anne&quot;</span>, <span class="cpp_string">&quot;ball_1&quot;</span>);</div>
+          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;The difference of belief regarding the ball_1 is:&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(std::<span class="cpp_type">string</span> diff <span class="cpp_op">:</span> differences)</div>
+          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;- &quot;</span> <span class="cpp_op">&lt;&lt;</span> diff <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+        </div>
+
+        <p>The OntologiesManipulator object directly provide functionality to get all the belief divergence between two ontologies about a specific concept.</p>
+
+        <p>Compile this code and run it with the launcher created previously. You should have this result at the end:</p>
+
+        <div class="code_block">
+          <div class="terminal_line">for sally, ball_1 is in:</div>
+          <div class="terminal_line">- container_1</div>
+          <div class="terminal_line">for anne, ball_1 is in:</div>
+          <div class="terminal_line">- container_1</div>
+          <div class="terminal_line">The difference of belief regarding the ball_1 is:</div>
+          <div class="terminal_line">- [-]ball_1|isIn|container_2</div>
+          <div class="terminal_line">- [+]ball_1|isIn|container_1</div>
+        </div>
+
+        <p>You can see from this display that the result of the getDifference function is really a difference, as in the mathematical
+          sense. This can be read as the fact that "ball_1 isIn container_1" is present in Sally's base and not in Anne's and that
+          the fact that "ball_1 isIn container_2" is not present in Sally's base then that it is in Anne's.</p>
+
+        <p>Now kill the previous process and restart it. This time, you should have this:</p>
+        <div class="code_block">
+          <div class="terminal_line">for sally, ball_1 is in:</div>
+          <div class="terminal_line">- container_1</div>
+          <div class="terminal_line">for anne, ball_1 is in:</div>
+          <div class="terminal_line">- container_2</div>
+          <div class="terminal_line">The difference of belief regarding the ball_1 is:</div>
+          <div class="terminal_line">- [-]ball_1|isIn|container_2</div>
+          <div class="terminal_line">- [+]ball_1|isIn|container_1</div>
+        </div>
+
+        <p>You can see two things here. First, the ball was already in the second container for Anne at first. Secondly,
+          even though we added the fact that the ball_1 is in the second container when it was already the case, the fact
+          only appears once.</p>
+
+        <p>If you open the $(find multiple_ontologies) folder, you should have two new files, multi_anne.owl and multi_sally.owl.
+          These two files are ontologenius internal files. Remember that the intern_file argument has been set to
+          $(find multiple_ontologies)/multi.owl. In fact, multi can simply be considered a namespace that will be used to create the
+          names of internal files.</p>
+
+        <nav class="course-pagination">
+          <a href="CreateMultipleOntologies.html" class="course-pagination__btn">
+            <i class="fas fa-angle-left"></i>
+            <span>Create multiple ontologies</span>
+          </a>
+          <span class="course-pagination__separator"></span>
+          <a href="../Tutorials.html" class="course-pagination__btn">
+            <span>Tutorials</span>
+            <i class="fas fa-angle-right"></i>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

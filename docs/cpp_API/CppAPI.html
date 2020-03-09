@@ -1,0 +1,155 @@
+<html lang="en_US">
+
+<head>
+  <title>C++ API (cpp) | Ontologenius 0.2.5</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../index.html">
+              <img src="../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Cpp API Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: 0px;">
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="../overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="../overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="CppAPI.html">
+              <b>All C++ Classes</b>
+            </a>
+          </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+          </br>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../python_API/PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>See also</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="https://sarthou.github.io/ontologenius_query/" target="_blank">Ontologenius_query</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">All C++ Classes</h1>
+
+        <h3><a href="ActionClient.html"><b>ActionClient</b></a></h3>
+        <p>The ActionClient class provides a common ROS service abstraction for ontologenius action service.</p>
+        <h3><a href="ClassClient.html"><b>ClassClient</b></a></h3>
+        <p>The ClassClient class provides a ROS service abstraction for classes exploration.</p>
+        <h3><a href="ClientBase.html"><b>ClientBase</b></a></h3>
+        <p>The ClientBase class provides a common ROS service abstraction.</p>
+        <h3><a href="DataPropertyClient.html"><b>DataPropertyClient</b></a></h3>
+        <p>The DataPropertyClient class provides a ROS service abstraction for data properties exploration.</p>
+        <h3><a href="FeederPublisher.html"><b>FeederPublisher</b></a></h3>
+        <p>The FeederPublisher class provides an abstraction for ontologenius feeder topic. </p>
+        <h3><a href="IndividualClient.html"><b>IndividualClient</b></a></h3>
+        <p>The IndividualClient class provides a ROS service abstraction for individuals exploration. </p>
+        <h3><a href="ManagerClient.html"><b>ManagerClient</b></a></h3>
+        <p>The ManagerClient class provides an abstraction for ontologenius manage service.</p>
+        <h3><a href="ObjectPropertyClient.html"><b>ObjectPropertyClient</b></a></h3>
+        <p>The ObjectPropertyClient class provides a ROS service abstraction for object properties exploration.</p>
+        <h3><a href="OntologiesManipulator.html"><b>OntologiesManipulator</b></a></h3>
+        <p>The OntologiesManipulator class is an interface to manage several instance of OntologyManipulator in a multi-ontology usage.</p>
+        <h3><a href="OntologyClient.html"><b>OntologyClient</b></a></h3>
+        <p>The OntologyClient class provides a common ROS service abstraction for all exploration service. </p>
+        <h3><a href="OntologyManipulator.html"><b>OntologyManipulator</b></a></h3>
+        <p>The OntologyManipulator class is an object with instances of all classes needed to manipulate an ontology.</p>
+        <h3><a href="ReasonerClient.html"><b>ReasonerClient</b></a></h3>
+        <p>The ReasonerClient class provides an abstraction for ontologenius reasoner service. </p>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

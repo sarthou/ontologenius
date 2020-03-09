@@ -1,10 +1,10 @@
 #include <ros/ros.h>
 
-#include "ontoloGenius/RosInterface.h"
-#include "ontoloGenius/Parameters.h"
+#include "ontologenius/RosInterface.h"
+#include "ontologenius/Parameters.h"
 
-#include "ontoloGenius/core/Computer.h"
-#include "ontoloGenius/interpreter/Parser.h"
+#include "ontologenius/core/Computer.h"
+#include "ontologenius/interpreter/Parser.h"
 //#define USE_INTEPRETER
 
 int main(int argc, char** argv)
@@ -32,7 +32,7 @@ int main(int argc, char** argv)
                  params.parameters_.at("config").getFirst());
   interface.run();
 
-  ROS_DEBUG("KILL ontoloGenius");
+  ROS_DEBUG("KILL ontologenius");
 
   #ifdef USE_INTEPRETER
     std::string code = "";

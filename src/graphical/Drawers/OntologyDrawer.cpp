@@ -1,4 +1,4 @@
-#include "ontoloGenius/graphical/Drawers/OntologyDrawer.h"
+#include "ontologenius/graphical/Drawers/OntologyDrawer.h"
 
 namespace ontologenius {
 

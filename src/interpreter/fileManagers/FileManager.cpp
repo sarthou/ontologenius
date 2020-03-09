@@ -1,4 +1,4 @@
-#include "ontoloGenius/interpreter/fileManagers/FileManager.h"
+#include "ontologenius/interpreter/fileManagers/FileManager.h"
 
 #include <iostream>
 

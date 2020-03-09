@@ -1,8 +1,8 @@
-#include "include/ontoloGenius/graphical/ontoloGUI/QLineEditExtended.h"
+#include "include/ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
 
-#include <QWidget>
 #include <QEvent>
 #include <QHoverEvent>
+#include <QWidget>
 
 QLineEditExtended::QLineEditExtended(QWidget *parent) : QLineEdit(parent)
 {
@@ -10,17 +10,17 @@ QLineEditExtended::QLineEditExtended(QWidget *parent) : QLineEdit(parent)
     setAttribute(Qt::WA_Hover);
 }
 
-void QLineEditExtended::hoverEnter(QHoverEvent *event)
+void QLineEditExtended::hoverEnter(QHoverEvent* /*event*/)
 {
     hoverEnter();
 }
 
-void QLineEditExtended::hoverLeave(QHoverEvent *event)
+void QLineEditExtended::hoverLeave(QHoverEvent* /*event*/)
 {
     hoverLeave();
 }
 
-void QLineEditExtended::hoverMove(QHoverEvent *event)
+void QLineEditExtended::hoverMove(QHoverEvent* /*event*/)
 {
 }
 
@@ -29,19 +29,19 @@ bool QLineEditExtended::event(QEvent *event)
     switch(event->type())
     {
     case QEvent::HoverEnter:
-        hoverEnter(static_cast<QHoverEvent*>(event));
+        hoverEnter(dynamic_cast<QHoverEvent*>(event));
         return true;
         break;
     case QEvent::HoverLeave:
-        hoverLeave(static_cast<QHoverEvent*>(event));
+        hoverLeave(dynamic_cast<QHoverEvent*>(event));
         return true;
         break;
     case QEvent::HoverMove:
-        hoverMove(static_cast<QHoverEvent*>(event));
+        hoverMove(dynamic_cast<QHoverEvent*>(event));
         return true;
         break;
     default:
         break;
     }
-    return QWidget::event(event);
+    return QLineEdit::event(event);
 }

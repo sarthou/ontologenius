@@ -1,9 +1,12 @@
-#include "include/ontoloGenius/graphical/ontoloGUI/ontologui.h"
-#include "include/ontoloGenius/graphical/ontoloGUI/qpushbuttonextended.h"
-#include "include/ontoloGenius/graphical/ontoloGUI/QLineEditExtended.h"
+#include "include/ontologenius/graphical/ontoloGUI/ontologui.h"
+#include "include/ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
+#include "include/ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
 #include "ui_ontologui.h"
 
+#include <QScrollBar>
+
 #include "ontologenius/OntologeniusService.h"
+#include "std_msgs/String.h"
 
 #include <regex>
 
@@ -49,6 +52,10 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Class_getOn, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
     QObject::connect(ui->Class_getWith, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
     QObject::connect(ui->Class_getWith, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
+    QObject::connect(ui->Class_getDomainOf, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
+    QObject::connect(ui->Class_getDomainOf, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
+    QObject::connect(ui->Class_getRangeOf, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
+    QObject::connect(ui->Class_getRangeOf, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
     QObject::connect(ui->classParameter, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
     QObject::connect(ui->classParameter, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
 
@@ -128,6 +135,10 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Individual_getFrom, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
     QObject::connect(ui->Individual_getWith, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
     QObject::connect(ui->Individual_getWith, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
+    QObject::connect(ui->Individual_getDomainOf, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
+    QObject::connect(ui->Individual_getDomainOf, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
+    QObject::connect(ui->Individual_getRangeOf, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
+    QObject::connect(ui->Individual_getRangeOf, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
     QObject::connect(ui->Individual_getName, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
     QObject::connect(ui->Individual_getName, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
     QObject::connect(ui->Individual_exist, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
@@ -163,6 +174,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Class_getFrom, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
     QObject::connect(ui->Class_getOn, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
     QObject::connect(ui->Class_getWith, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
+    QObject::connect(ui->Class_getDomainOf, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
+    QObject::connect(ui->Class_getRangeOf, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
 
     QObject::connect(ui->ObjectProperty_getName, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
     QObject::connect(ui->ObjectProperty_exist, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
@@ -201,6 +214,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->Individual_getOn, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_getFrom, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_getWith, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
+    QObject::connect(ui->Individual_getDomainOf, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
+    QObject::connect(ui->Individual_getRangeOf, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_getName, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_exist, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
     QObject::connect(ui->Individual_findRegex, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
@@ -216,15 +231,27 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->SaveButton, SIGNAL(clicked()),this, SLOT(saveOntologySlot()));
     QObject::connect(ui->DiffPushButton, SIGNAL(clicked()),this, SLOT(differenceOntologySlot()));
 
+    QObject::connect(ui->FeederAddButton, SIGNAL(clicked()),this, SLOT(feederAddSlot()));
+    QObject::connect(ui->FeederDelButton, SIGNAL(clicked()),this, SLOT(feederDelSlot()));
+
     QObject::connect(ui->OntologyNameAddDel, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameAddDelChangedSlot(const QString&)));
     QObject::connect(ui->OntologyName, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameChangedSlot(const QString&)));
     QObject::connect(ui->OntologyName, SIGNAL(editingFinished()),this, SLOT(nameEditingFinishedSlot()));
     QObject::connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(currentTabChangedSlot(int)));
+
+    QObject::connect( this, SIGNAL( feederSetHtmlSignal(QString) ), ui->FeederInfo, SLOT( setHtml(QString) ) );
 }
 
 ontoloGUI::~ontoloGUI()
 {
     delete ui;
+}
+
+void ontoloGUI::init(ros::NodeHandle* n)
+{
+  n_ = n;
+  publishers_["_"] = n_->advertise<std_msgs::String>("ontologenius/insert", 1000);
+  feeder_notifications_subs_["_"] = n_->subscribe("ontologenius/feeder_notifications", 1000, &ontoloGUI::feederCallback, this);
 }
 
 void ontoloGUI::wait()
@@ -233,7 +260,7 @@ void ontoloGUI::wait()
                   "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
                   "p, li { white-space: pre-wrap; }"
                   "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-                  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Wainting for </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">ontoloGenius</span></p></body></html>";
+                  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Wainting for </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">ontologenius</span></p></body></html>";
   ui->InfoArea->setHtml(html);
   //ros::service::waitForService("ontologenius/reasoner", -1);
 }
@@ -250,7 +277,7 @@ void ontoloGUI::start()
 
 void ontoloGUI::ClasshoverEnterSlot()
 {
-  ui->ClassDescription->setText(((QPushButtonExtended*)sender())->whatsThis());
+  ui->ClassDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
 void ontoloGUI::ClasshoverLeaveSlot()
@@ -260,7 +287,7 @@ void ontoloGUI::ClasshoverLeaveSlot()
 
 void ontoloGUI::objectPropertyhoverEnterSlot()
 {
-  ui->ObjectPropertyDescription->setText(((QPushButtonExtended*)sender())->whatsThis());
+  ui->ObjectPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
 void ontoloGUI::objectPropertyhoverLeaveSlot()
@@ -270,7 +297,7 @@ void ontoloGUI::objectPropertyhoverLeaveSlot()
 
 void ontoloGUI::dataPropertyhoverEnterSlot()
 {
-  ui->DataPropertyDescription->setText(((QPushButtonExtended*)sender())->whatsThis());
+  ui->DataPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
 void ontoloGUI::dataPropertyhoverLeaveSlot()
@@ -280,12 +307,12 @@ void ontoloGUI::dataPropertyhoverLeaveSlot()
 
 void ontoloGUI::IndividualCheckBoxhoverEnterSlot()
 {
-  ui->IndividualDescription->setText(((QCheckBoxExtended*)sender())->whatsThis());
+  ui->IndividualDescription->setText(dynamic_cast<QCheckBoxExtended*>(sender())->whatsThis());
 }
 
 void ontoloGUI::IndividualhoverEnterSlot()
 {
-  ui->IndividualDescription->setText(((QPushButtonExtended*)sender())->whatsThis());
+  ui->IndividualDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
 void ontoloGUI::IndividualhoverLeaveSlot()
@@ -299,9 +326,9 @@ void ontoloGUI::classClickedSlot()
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
-  srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
+  srv.request.action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
   srv.request.param = ui->classParameter->text().toStdString();
-  QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->classParameter->text();
+  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->classParameter->text();
   ui->ClassDescription->setText(text);
 
   if(!client.call(srv))
@@ -322,9 +349,9 @@ void ontoloGUI::objectPropertyClickedSlot()
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
-  srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
+  srv.request.action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
   srv.request.param = ui->objectPropertyParameter->text().toStdString();
-  QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->objectPropertyParameter->text();
+  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->objectPropertyParameter->text();
   ui->ObjectPropertyDescription->setText(text);
 
   if(!client.call(srv))
@@ -345,9 +372,9 @@ void ontoloGUI::dataPropertyClickedSlot()
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
-  srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
+  srv.request.action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
   srv.request.param = ui->dataPropertyParameter->text().toStdString();
-  QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->dataPropertyParameter->text();
+  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->dataPropertyParameter->text();
   ui->DataPropertyDescription->setText(text);
 
   if(!client.call(srv))
@@ -368,9 +395,9 @@ void ontoloGUI::individualClickedSlot()
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
-  srv.request.action = ((QPushButtonExtended*)sender())->text().toStdString();
+  srv.request.action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
   srv.request.param = ui->individualParameter->text().toStdString();
-  QString text = ((QPushButtonExtended*)sender())->text() + " : " + ui->individualParameter->text();
+  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->individualParameter->text();
   ui->IndividualDescription->setText(text);
 
   if(!client.call(srv))
@@ -414,11 +441,11 @@ void ontoloGUI::ReasonerClickedSlot(int)
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
   ontologenius::OntologeniusService srv;
-  if(((QCheckBoxExtended*)sender())->isChecked())
+  if(dynamic_cast<QCheckBoxExtended*>(sender())->isChecked())
     srv.request.action = "activate";
   else
     srv.request.action = "deactivate";
-  srv.request.param = ((QCheckBoxExtended*)sender())->text().toStdString();
+  srv.request.param = dynamic_cast<QCheckBoxExtended*>(sender())->text().toStdString();
 
   if(!client.call(srv))
     displayErrorInfo(service_name + " client call failed");
@@ -432,7 +459,7 @@ void ontoloGUI::ReasonerClickedSlot(int)
 
 void ontoloGUI::ReasonerhoverEnterSlot()
 {
-  size_t index = getReasonerIndex((QCheckBoxExtended*)sender());
+  size_t index = getReasonerIndex(dynamic_cast<QCheckBoxExtended*>(sender()));
   ui->ReasonerDescription->setText(QString::fromStdString(reasoners_description_[index]));
 }
 
@@ -454,7 +481,7 @@ void ontoloGUI::displayUnClosed()
 void ontoloGUI::loadReasoners()
 {
   QLayoutItem *item;
-  while ((item = ui->ReasonerListLayout->takeAt(1)) != 0)
+  while ((item = ui->ReasonerListLayout->takeAt(1)) != nullptr)
   {
     delete item->widget();
     delete item;
@@ -481,10 +508,10 @@ void ontoloGUI::loadReasoners()
 
 void ontoloGUI::constructReasonersCheckBoxs()
 {
-  for(size_t i = 0; i < reasoners_names_.size(); i++)
+  for(const auto& reasoners_name : reasoners_names_)
   {
-    reasoners_description_.push_back(getReasonerDescription(reasoners_names_[i]));
-    QCheckBoxExtended* box = new QCheckBoxExtended(QString::fromStdString(reasoners_names_[i]), this);
+    reasoners_description_.push_back(getReasonerDescription(reasoners_name));
+    auto box = new QCheckBoxExtended(QString::fromStdString(reasoners_name), this);
     ui->ReasonerListLayout->addWidget(box);
     QObject::connect(box, SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
     QObject::connect(box, SIGNAL(hoverEnter()),this, SLOT(ReasonerhoverEnterSlot()));
@@ -511,14 +538,14 @@ void ontoloGUI::updateReasonersCheckBoxs()
       if(widget != nullptr)
       {
         Qt::CheckState checked = Qt::Unchecked;
-        for(size_t j = 0; j < active_reasoners.size(); j++)
+        for(const auto& active_reasoner : active_reasoners)
         {
-          if(((QCheckBoxExtended*)widget)->text().toStdString() == active_reasoners[j])
+          if(dynamic_cast<QCheckBoxExtended*>(widget)->text().toStdString() == active_reasoner)
             checked = Qt::Checked;
         }
-        QObject::disconnect(((QCheckBoxExtended*)widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
-        ((QCheckBoxExtended*)widget)->setCheckState(checked);
-        QObject::connect(((QCheckBoxExtended*)widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
+        QObject::disconnect(dynamic_cast<QCheckBoxExtended*>(widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
+        dynamic_cast<QCheckBoxExtended*>(widget)->setCheckState(checked);
+        QObject::connect(dynamic_cast<QCheckBoxExtended*>(widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
       }
     }
   }
@@ -543,7 +570,7 @@ std::string ontoloGUI::getReasonerDescription(std::string box)
 
   ontologenius::OntologeniusService srv;
   srv.request.action = "getDescription";
-  srv.request.param = box;
+  srv.request.param = std::move(box);
 
   if(!client.call(srv))
     displayErrorInfo(service_name + " client call failed");
@@ -553,7 +580,7 @@ std::string ontoloGUI::getReasonerDescription(std::string box)
   return "";
 }
 
-void ontoloGUI::displayErrorInfo(std::string text)
+void ontoloGUI::displayErrorInfo(const std::string& text)
 {
   std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
                   "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
@@ -577,7 +604,7 @@ void ontoloGUI::displayOntologiesList()
             "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
             "p, li { white-space: pre-wrap; }"
             "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-            "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">ontoloGenius is not running in multi mode.</span></p></body></html>";
+            "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">ontologenius is not running in multi mode.</span></p></body></html>";
   }
   else
   {
@@ -597,19 +624,19 @@ void ontoloGUI::displayOntologiesListSlot()
   displayOntologiesList();
 }
 
-std::string ontoloGUI::vector2string(std::vector<std::string> vect)
+std::string ontoloGUI::vector2string(const std::vector<std::string>& vect)
 {
   std::string res;
-  for(size_t i = 0; i < vect.size(); i++)
-    res += vect[i] + "\n";
+  for(const auto& v : vect)
+    res += v + "\n";
   return res;
 }
 
-std::string ontoloGUI::vector2html(std::vector<std::string> vect)
+std::string ontoloGUI::vector2html(const std::vector<std::string>& vect)
 {
   std::string res;
-  for(size_t i = 0; i < vect.size(); i++)
-    res += " - " + vect[i] + "<br>";
+  for(const auto& v : vect)
+    res += " - " + v + "<br>";
   return res;
 }
 
@@ -636,7 +663,20 @@ void ontoloGUI::addOntologySlot()
     if (base_match.size() == 3)
     {
       srv.request.action = "copy";
+      if(publishers_.find(base_match[1].str()) == publishers_.end())
+        publishers_[base_match[1].str()] = n_->advertise<std_msgs::String>("ontologenius/insert/" + base_match[1].str(), 1000);
+
+      if(feeder_notifications_subs_.find(base_match[1].str()) == feeder_notifications_subs_.end())
+        feeder_notifications_subs_[base_match[1].str()] = n_->subscribe("ontologenius/feeder_notifications", 1000, &ontoloGUI::feederCallback, this);
     }
+  }
+  else
+  {
+    if(publishers_.find(srv.request.param) == publishers_.end())
+      publishers_[srv.request.param] = n_->advertise<std_msgs::String>("ontologenius/insert/" + srv.request.param, 1000);
+
+    if(feeder_notifications_subs_.find(srv.request.param) == feeder_notifications_subs_.end())
+      feeder_notifications_subs_[srv.request.param] = n_->subscribe("ontologenius/feeder_notifications", 1000, &ontoloGUI::feederCallback, this);
   }
 
   if(!client.call(srv))
@@ -734,4 +774,39 @@ void ontoloGUI::OntologyNameChangedSlot(const QString& text)
 {
   if(ui->OntologyNameAddDel->text() != text)
     ui->OntologyNameAddDel->setText(text);
+}
+
+void ontoloGUI::feederCallback(const std_msgs::String& msg)
+{
+  feeder_notifications_ += "<p>-" + msg.data + "</p>";
+
+  std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+          "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+          "p, li { white-space: pre-wrap; }"
+          "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+          "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + feeder_notifications_ + "<br></span></p></body></html>";
+
+  ui->FeederInfo->moveCursor(QTextCursor::End);
+  feederSetHtmlSignal(QString::fromStdString(html));
+  ui->FeederInfo->ensureCursorVisible();
+}
+
+void ontoloGUI::feederAddSlot()
+{
+  std_msgs::String msg;
+  msg.data = "[ADD]" + ui->FeederSubject->text().toStdString() + "|" + ui->FeederProperty->text().toStdString() + "|" + ui->FeederObject->text().toStdString();
+  std::string onto_ns = ui->OntologyName->text().toStdString();
+  if(onto_ns == "")
+    onto_ns = "_";
+  publishers_[onto_ns].publish(msg);
+}
+
+void ontoloGUI::feederDelSlot()
+{
+  std_msgs::String msg;
+  msg.data = "[DEL]" + ui->FeederSubject->text().toStdString() + "|" + ui->FeederProperty->text().toStdString() + "|" + ui->FeederObject->text().toStdString();
+  std::string onto_ns = ui->OntologyName->text().toStdString();
+  if(onto_ns == "")
+    onto_ns = "_";
+  publishers_[onto_ns].publish(msg);
 }

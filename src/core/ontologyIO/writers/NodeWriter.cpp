@@ -1,4 +1,4 @@
-#include "ontoloGenius/core/ontologyIO/writers/NodeWriter.h"
+#include "ontologenius/core/ontologyIO/writers/NodeWriter.h"
 
 #include <map>
 #include <vector>
@@ -37,9 +37,9 @@ void NodeWriter::writeMutedDictionary(ValuedNode* node)
   }
 }
 
-void NodeWriter::writeString(std::string text)
+void NodeWriter::writeString(const std::string& text)
 {
-  if(file_ != NULL)
+  if(file_ != nullptr)
     fwrite(text.c_str(), sizeof(char), text.size(), file_);
 }
 

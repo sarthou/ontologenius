@@ -1,0 +1,205 @@
+<html lang="en_US">
+
+<head>
+  <title>ManagerClient Class (python) | Ontologenius 0.2.5</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../index.html">
+              <img src="../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Python API Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -240px;">
+        <div class="contents class-content">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="#methods">Methods</a></li>
+            <li class="level1"><a href="#reimplemented-methods">Reimplemented Methods</a></li>
+            <li class="level1"><a href="#details">Detailed Description</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="../overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="../overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../cpp_API/CppAPI.html">
+              All C++ Classes
+            </a>
+          </h3>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="ManagerClient.html"><b>ManagerClient</b></a></li>
+            <li class="level1"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>See also</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="https://sarthou.github.io/ontologenius_query/" target="_blank">Ontologenius_query</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">ManagerClient Class</h1>
+        <p>The ManagerClient class provides an abstraction for ontologenius manage service. <a href="#details">More...</a></p>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span>
+              </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="ClientBase.html">ClientBase</a></td></tr>
+              </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <a href="OntologiesManipulator.html">OntologiesManipulator</a></td></tr></tbody></table>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="methods"></a>
+        <h2 id="methods">Methods</h2>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#__init__">__init__</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#list">list</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#add">add</a></b>(self, name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#copy">copy</a></b>(self, dest_name, src_name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#del">delete</a></b>(self, name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#getDifference">getDifference</a></b>(self, onto_1, onto_2, concept)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="reimplemented-methods"></a>
+        <h2 id="reimplemented-methods">Reimplemented Methods</h2>
+        <ul>
+          <li class="fn">2 methods inherited from <a href="ClientBase.html#methods">ClientBase</a></li>
+        </ul>
+
+        <a name="details"></a>
+        <div class="descr">
+          <h2 id="details">Detailed Description</h2>
+          <p>The ManagerClient class provides an abstraction ontologenius manage ROS services.</p>
+          <p>The manager client is used to manage ontology instances in multi-ontology usage. This makes it possible to start new ontologies or to stop old ones, but also to study the differences of knowledge between several instances. With the manager client, it is easy to develop software using theory of mind. </p>
+          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with the service based on. The persistent connection ensure a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+        </div>
+
+        <div class="func">
+          <h2>Methods Documentation</h2>
+
+          <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self)</h3>
+          <p>Constructs an manager client.</p>
+          <p>Can only be used in a multi-ontology mode.</p>
+
+          <h3 class="fn" id="list"><a name="list"></a><span class="name">list</span>(self)</h3>
+          <p>Returns the name of the intanced ontologies (str[]).</p>
+
+          <h3 class="fn" id="add"><a name="add"></a><span class="name">add</span>(self, name)</h3>
+          <p>Create an ontology instance named <i>name</i>(str).</p>
+          <p>Returns False if the service call fails.</p>
+
+          <h3 class="fn" id="copy"><a name="copy"></a><span class="name">copy</span>(self, dest_name, src_name)</h3>
+          <p>Create a copy of the ontology ontology instance named <i>src_name</i>(str) with the name <i>dest_name</i>(str).</p>
+          <p>Returns False if the service call fails or if the copy fails.</p>
+
+          <h3 class="fn" id="del"><a name="del"></a><span class="name">delete</span>(self, name)</h3>
+          <p>Delete the instance of the ontology named <i>name</i>(str)</p>
+          <p>Returns False if the service call fails.</p>
+
+          <h3 class="fn" id="getDifference"><a name="getDifference"></a><span class="name">getDifference</span>(self, onto_1, onto_2, concept)</h3>
+          <p>Return the difference of knowlege between <i>onto_1</i>(str) and <i>onto_2</i>(str) regarding the concept (class or individual) <i>concept</i>(str).</p>
+          <p>The elements of the returned vector are formated as : <b>[+]concept_from|property|concept_on</b> OR <b>[-]concept_from|property|concept_on</b>. An element is positive if it is present in <i>onto_1</i> and not in <i>onto_2</i> and negative in reverse.</p>
+          <p>The difference in inheritance knowledge between concepts is returned with the property <b>isA</b>.</p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

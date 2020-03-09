@@ -1,23 +1,23 @@
-#include "ontoloGenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/ontoGraphs/Ontology.h"
 
 #include <iostream>
 
-#include "ontoloGenius/core/ontoGraphs/Checkers/ClassChecker.h"
-#include "ontoloGenius/core/ontoGraphs/Checkers/ObjectPropertyChecker.h"
-#include "ontoloGenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
-#include "ontoloGenius/core/ontoGraphs/Checkers/IndividualChecker.h"
+#include "ontologenius/core/ontoGraphs/Checkers/ClassChecker.h"
+#include "ontologenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
+#include "ontologenius/core/ontoGraphs/Checkers/IndividualChecker.h"
+#include "ontologenius/core/ontoGraphs/Checkers/ObjectPropertyChecker.h"
 
-#include "ontoloGenius/graphical/Display.h"
-#include "ontoloGenius/core/utility/error_code.h"
+#include "ontologenius/core/utility/error_code.h"
+#include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 
-Ontology::Ontology(std::string language) : class_graph_(&individual_graph_, &object_property_graph_, &data_property_graph_),
-                                           object_property_graph_(&class_graph_),
-                                           data_property_graph_(&class_graph_),
-                                           individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
-                                           reader((Ontology&)*this),
-                                           writer((Ontology&)*this)
+Ontology::Ontology(const std::string& language) : class_graph_(&individual_graph_, &object_property_graph_, &data_property_graph_),
+                                                  object_property_graph_(&class_graph_),
+                                                  data_property_graph_(&class_graph_),
+                                                  individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
+                                                  reader((Ontology&)*this),
+                                                  writer((Ontology&)*this)
 {
   is_init_ = false;
   is_preloaded_ = false;
@@ -72,12 +72,12 @@ int Ontology::close()
   {
     reader.displayIndividualRules();
 
-    for(size_t i = 0; i < uri_.size(); i++)
-      reader.readFromUri(uri_[i], true);
+    for(auto& uri : uri_)
+      reader.readFromUri(uri, true);
     uri_.clear();
 
-    for(size_t i = 0; i < files_.size(); i++)
-      reader.readFromFile(files_[i], true);
+    for(auto& file : files_)
+      reader.readFromFile(file, true);
     files_.clear();
 
     individual_graph_.close();
@@ -106,19 +106,19 @@ int Ontology::close()
     return 0;
 }
 
-int Ontology::readFromUri(std::string uri)
+int Ontology::readFromUri(const std::string& uri)
 {
   uri_.push_back(uri);
   return reader.readFromUri(uri);
 }
 
-int Ontology::readFromFile(std::string file_name)
+int Ontology::readFromFile(const std::string& file_name)
 {
   files_.push_back(file_name);
   return reader.readFromFile(file_name);
 }
 
-bool Ontology::preload(std::string file_name)
+bool Ontology::preload(const std::string& file_name)
 {
   writer.setFileName(file_name);
   if(file_name != "none")
@@ -129,13 +129,13 @@ bool Ontology::preload(std::string file_name)
         {
           is_preloaded_ = true;
           Display::success("Ontology has been preloaded :");
-          Display::success("ontoloGenius will NOT consider your default files");
+          Display::success("ontologenius will NOT consider your default files");
           return true;
         }
   }
 
   Display::warning("Nothing to preload :");
-  Display::warning("ontoloGenius will consider your default files");
+  Display::warning("ontologenius will consider your default files");
   return false;
 }
 
@@ -165,7 +165,7 @@ bool Ontology::isInit(bool print)
   return is_init_;
 }
 
-void Ontology::setLanguage(std::string language)
+void Ontology::setLanguage(const std::string& language)
 {
   class_graph_.setLanguage(language);
   object_property_graph_.setLanguage(language);
