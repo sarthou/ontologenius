@@ -1172,7 +1172,7 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
   return nullptr;
 }
 
-void IndividualGraph::createIndividual(std::string& name)
+void IndividualGraph::createIndividual(const std::string& name)
 {
   IndividualBranch_t* indiv = findBranch(name);
   if(indiv == nullptr)
@@ -1279,19 +1279,19 @@ void IndividualGraph::redirectDeleteIndividual(IndividualBranch_t* indiv, ClassB
   }
 }
 
-void IndividualGraph::addLang(std::string& indiv, std::string& lang, std::string& name)
+void IndividualGraph::addLang(const std::string& indiv, const std::string& lang, const std::string& name)
 {
   IndividualBranch_t* branch = findBranch(indiv);
   if(branch != nullptr)
   {
-    lang = lang.substr(1);
+    auto lang_id = lang.substr(1);
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-    branch->setSteady_dictionary(lang, name);
+    branch->setSteady_dictionary(lang_id, name);
     branch->updated_ = true;
   }
 }
 
-void IndividualGraph::addInheritage(std::string& indiv, std::string& class_inherited)
+void IndividualGraph::addInheritage(const std::string& indiv, const std::string& class_inherited)
 {
   IndividualBranch_t* branch = findBranch(indiv);
   if(branch != nullptr)
@@ -1318,7 +1318,7 @@ void IndividualGraph::addInheritage(std::string& indiv, std::string& class_inher
   }
 }
 
-void IndividualGraph::addInheritageInvert(std::string& indiv, std::string& class_inherited)
+void IndividualGraph::addInheritageInvert(const std::string& indiv, const std::string& class_inherited)
 {
   ClassBranch_t* inherited = class_graph_->findBranch(class_inherited);
   if(inherited != nullptr)
@@ -1340,7 +1340,7 @@ void IndividualGraph::addInheritageInvert(std::string& indiv, std::string& class
   }
 }
 
-void IndividualGraph::addInheritageInvertUpgrade(std::string& indiv, std::string& class_inherited)
+void IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited)
 {
   IndividualBranch_t* tmp = findBranch(class_inherited);
   if(tmp != nullptr)
@@ -1363,7 +1363,7 @@ void IndividualGraph::addInheritageInvertUpgrade(std::string& indiv, std::string
   }
 }
 
-bool IndividualGraph::addProperty(std::string& indiv_from, std::string& property, std::string& indiv_on)
+bool IndividualGraph::addProperty(const std::string& indiv_from, const std::string& property, const std::string& indiv_on)
 {
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
@@ -1420,7 +1420,7 @@ bool IndividualGraph::addProperty(std::string& indiv_from, std::string& property
   return false;
 }
 
-bool IndividualGraph::addProperty(std::string& indiv_from, std::string& property, std::string& type, std::string& data)
+bool IndividualGraph::addProperty(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data)
 {
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
@@ -1452,7 +1452,7 @@ bool IndividualGraph::addProperty(std::string& indiv_from, std::string& property
   return false;
 }
 
-bool IndividualGraph::addPropertyInvert(std::string& indiv_from, std::string& property, std::string& indiv_on)
+bool IndividualGraph::addPropertyInvert(const std::string& indiv_from, const std::string& property, const std::string& indiv_on)
 {
   IndividualBranch_t* branch_on = findBranch(indiv_on);
   if(branch_on != nullptr)
@@ -1509,20 +1509,20 @@ bool IndividualGraph::addPropertyInvert(std::string& indiv_from, std::string& pr
   return false;
 }
 
-void IndividualGraph::removeLang(std::string& indiv, std::string& lang, std::string& name)
+void IndividualGraph::removeLang(const std::string& indiv, const std::string& lang, const std::string& name)
 {
   IndividualBranch_t* branch = findBranch(indiv);
 
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
-  lang = lang.substr(1);
-  removeFromDictionary(branch->dictionary_.spoken_, lang, name);
-  removeFromDictionary(branch->dictionary_.muted_, lang, name);
-  removeFromDictionary(branch->steady_dictionary_.spoken_, lang, name);
-  removeFromDictionary(branch->steady_dictionary_.muted_, lang, name);
+  auto lang_id = lang.substr(1);
+  removeFromDictionary(branch->dictionary_.spoken_, lang_id, name);
+  removeFromDictionary(branch->dictionary_.muted_, lang_id, name);
+  removeFromDictionary(branch->steady_dictionary_.spoken_, lang_id, name);
+  removeFromDictionary(branch->steady_dictionary_.muted_, lang_id, name);
 }
 
-void IndividualGraph::removeInheritage(std::string& class_base, std::string& class_inherited)
+void IndividualGraph::removeInheritage(const std::string& class_base, const std::string& class_inherited)
 {
   IndividualBranch_t* branch_base = findBranch(class_base);
   ClassBranch_t* branch_inherited = class_graph_->findBranch(class_inherited);
@@ -1551,18 +1551,19 @@ bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectProp
 
   for(size_t i = 0; i < branch_from->object_relations_.size();)
   {
+    auto object_relation = branch_from->object_relations_[i];
     applied = false;
-    for(auto down : down_properties)
+    for(auto& down : down_properties)
     {
-      if(branch_from->object_relations_[i].first == down)
+      if(object_relation.first == down)
       {
-        if((branch_on == nullptr) || (branch_from->object_relations_[i].second == branch_on))
+        if((branch_on == nullptr) || (object_relation.second == branch_on))
         {
-          removePropertyInverse(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
-          removePropertySymetric(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
-          removePropertyChain(branch_from, branch_from->object_relations_[i].first, branch_from->object_relations_[i].second);
+          removePropertyInverse(branch_from, object_relation.first, object_relation.second);
+          removePropertySymetric(branch_from, object_relation.first, object_relation.second);
+          removePropertyChain(branch_from, object_relation.first, object_relation.second);
 
-          branch_from->object_relations_[i].second->updated_ = true;
+          object_relation.second->updated_ = true;
           branch_from->object_relations_.erase(branch_from->object_relations_.begin() + i);
           branch_from->object_properties_has_induced_.erase(branch_from->object_properties_has_induced_.begin() + i);
           updated = true;
@@ -1581,7 +1582,7 @@ bool IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectProp
   return updated;
 }
 
-bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& property, std::string& indiv_on)
+bool IndividualGraph::removeProperty(const std::string& indiv_from, const std::string& property, const std::string& indiv_on)
 {
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
@@ -1606,7 +1607,7 @@ bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& prope
   return false;
 }
 
-bool IndividualGraph::removeProperty(std::string& indiv_from, std::string& property, std::string& type, std::string& data)
+bool IndividualGraph::removeProperty(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data)
 {
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)

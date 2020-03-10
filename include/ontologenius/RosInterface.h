@@ -57,6 +57,7 @@ private:
   std::string name_;
   std::atomic<bool> run_;
   bool feeder_end;
+  size_t feeder_rate_;
   ros::Publisher pub_;
 
   std::mutex feeder_mutex_;

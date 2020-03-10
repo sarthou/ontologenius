@@ -5,7 +5,10 @@
 
 #include "ontologenius/API/ontologenius/OntologiesManipulator.h"
 
+#include <chrono>
 #include <iostream>
+
+using namespace std::chrono;
 
 OntologiesManipulator* onto_ptr;
 
@@ -36,9 +39,18 @@ int main(int argc, char** argv)
   std::string commit2 = onto["cpy"]->feeder.commit();
 
   onto["cpy"]->feeder.addProperty("pasta", "isIn", "bob");
+  for(size_t i = 0; i < 12; i++)
+    onto["cpy"]->feeder.addProperty("pasta", "isIn", "bob" + std::to_string(i));
   std::string commit3 = onto["cpy"]->feeder.commit();
 
+  high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
   onto["cpy"]->feeder.checkout(commit1);
+
+  high_resolution_clock::time_point t2 = high_resolution_clock::now();
+  auto time_span = duration_cast<std::chrono::milliseconds>(t2 - t1);
+
+  std::cout << "  " << time_span.count() << " ms for checkout " << std::endl;
 
   onto["cpy"]->feeder.addProperty("bob", "eat", "burger");
   std::string commit4 = onto["cpy"]->feeder.commit();

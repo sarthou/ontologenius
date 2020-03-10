@@ -41,7 +41,7 @@ public:
   //use std::lock_guard<std::shared_timed_mutex> lock(Graph<B>::mutex_); to WRITE A DATA
   //use std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_); to READ A DATA
 
-  inline void removeFromDictionary(std::map<std::string, std::vector<std::string>>& dictionary, std::string& lang, std::string& word)
+  inline void removeFromDictionary(std::map<std::string, std::vector<std::string>>& dictionary, const std::string& lang, const std::string& word)
   {
     if(dictionary.find(lang) != dictionary.end())
     {

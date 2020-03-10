@@ -60,6 +60,8 @@ void RosInterface::init(const std::string& lang, const std::string& intern_file,
   reasoners_.configure(config_path);
   reasoners_.load();
   Display::info("Plugins loaded : " + reasoners_.list());
+
+  feeder_rate_ = 20;
 }
 
 void RosInterface::init(const std::string& lang, const std::string& config_path)
@@ -71,6 +73,7 @@ void RosInterface::init(const std::string& lang, const std::string& config_path)
   Display::info("Plugins loaded : " + reasoners_.list());
 
   feeder_.activateVersionning(true);
+  feeder_rate_ = 1000;
 }
 
 void RosInterface::run()
@@ -578,7 +581,7 @@ void RosInterface::feedThread()
   std::string publisher_name = (name_ == "") ? "ontologenius/feeder_notifications" : "ontologenius/feeder_notifications/" + name_;
   ros::Publisher feeder_publisher = n_->advertise<std_msgs::String>(publisher_name, 1000);
 
-  ros::Rate wait(10);
+  ros::Rate wait(feeder_rate_);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
   {
     wait.sleep();
