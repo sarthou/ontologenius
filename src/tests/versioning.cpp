@@ -1,58 +1,58 @@
-#include "ontologenius/core/feeder/Versionor.h"
+#include <ros/ros.h>
+#include <ros/package.h>
+
+#include <gtest/gtest.h>
+
+#include "ontologenius/API/ontologenius/OntologiesManipulator.h"
 
 #include <iostream>
 
-using namespace ontologenius;
+OntologiesManipulator* onto_ptr;
 
-feed_t creatFeed(const std::string& data)
+int main(int argc, char** argv)
 {
-  feed_t feed;
-  feed.action_ = action_add;
-  feed.from_ = data;
+  ros::init(argc, argv, "ontologenius_dynamic_tester");
 
-  return feed;
-}
+  ros::NodeHandle n;
+  OntologiesManipulator onto(&n);
+  onto_ptr = &onto;
+  onto.waitInit();
 
-int main()
-{
-  Versionor version(nullptr);
+  onto.add("robot");
+  onto["robot"]->close();
 
-  version.insert(creatFeed("a"));
-  version.insert(creatFeed("b"));
-  version.commit("1");
+  ros::Rate wait(1);
+  wait.sleep();
 
-  version.insert(creatFeed("c"));
-  version.insert(creatFeed("d"));
-  version.commit("2");
+  onto.copy("cpy", "robot");
 
-  std::cout << "checkout 1" << std::endl;
-  version.checkout("1");
+  onto["cpy"]->feeder.waitConnected();
 
-  version.insert(creatFeed("e"));
-  version.commit("3");
+  onto["cpy"]->feeder.addConcept("bob");
+  onto["cpy"]->feeder.addInheritage("bob", "human");
+  std::string commit1 = onto["cpy"]->feeder.commit();
 
-  std::cout << "checkout 2" << std::endl;
-  version.checkout("2");
+  onto["cpy"]->feeder.addProperty("bob", "eat", "pasta");
+  std::string commit2 = onto["cpy"]->feeder.commit();
 
-  version.insert(creatFeed("f"));
-  version.commit("4");
+  onto["cpy"]->feeder.addProperty("pasta", "isIn", "bob");
+  std::string commit3 = onto["cpy"]->feeder.commit();
 
-  std::cout << "checkout 3" << std::endl;
-  version.checkout("3");
+  onto["cpy"]->feeder.checkout(commit1);
 
-  version.insert(creatFeed("g"));
-  version.insert(creatFeed("h"));
-  version.commit("5");
+  onto["cpy"]->feeder.addProperty("bob", "eat", "burger");
+  std::string commit4 = onto["cpy"]->feeder.commit();
 
-  std::cout << "checkout 0" << std::endl;
-  version.checkout("0");
+  onto["cpy"]->feeder.addProperty("burger", "isIn", "bob");
+  std::string commit5 = onto["cpy"]->feeder.commit();
 
-  version.insert(creatFeed("i"));
-  version.insert(creatFeed("j"));
-  version.commit("6");
+  onto["cpy"]->feeder.checkout(commit3);
 
-  version.print();
-  version.exportToXml("");
+  onto["cpy"]->feeder.addProperty("bob", "isHungry", "bool", "false");
+  std::string commit6 = onto["cpy"]->feeder.commit();
+
+  onto["cpy"]->actions.exportToXml("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/save.xml");
+
 
   return 0;
 }

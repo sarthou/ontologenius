@@ -23,6 +23,9 @@ struct feed_t
   std::string from_;
   std::string prop_;
   std::string on_;
+  bool checkout_;
+
+  feed_t() { checkout_ = false; }
 };
 
 class FeedStorage

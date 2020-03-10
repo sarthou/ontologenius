@@ -144,7 +144,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeLanguage">removeLanguage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>lang</i>, const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeConcept">removeConcept</a></b>(const std::string&amp; <i>from</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> size_t </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#getNumSubscribers">getNumSubscribers</a></b>()</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit">commit</a></b>(int32_t <i>timeout</i> = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#waitUpdate">waitUpdate</a></b>(int32_t <i>timeout</i> = -1)</td></tr>
             </tbody>
           </table>
         </div>
@@ -210,7 +210,7 @@
           <h3 class="fn" id="getNumSubscribers"><a name="getNumSubscribers"></a><span class="type">size_t</span> FeederPublisher::<span class="name">getNumSubscribers</span>()</h3>
           <p>Returns the number of subscribers that are currently connected to the internal ROS publisher.</p>
 
-          <h3 class="fn" id="commit"><a name="commit"></a><span class="type">bool</span> FeederPublisher::<span class="name">commit</span>(<span class="type">int32_t</span>&amp; <i>timeout</i> = -1)</h3>
+          <h3 class="fn" id="waitUpdate"><a name="waitUpdate"></a><span class="type">bool</span> FeederPublisher::<span class="name">waitUpdate</span>(<span class="type">int32_t</span>&amp; <i>timeout</i> = -1)</h3>
           <p>Waits until all changes have been applied.</p>
           <p>The default parameter <i>timeout</i> is the expiration time in milliseconds. The default value -1 represents an infinite wait.</p>
           <p>Returns false if the function returns on a timeout.</p>

@@ -27,10 +27,13 @@ Versionor::~Versionor()
       delete it.second;
 }
 
-void Versionor::insert(const feed_t& data)
+void Versionor::insert(feed_t data)
 {
   if(activated_)
+  {
+    data.checkout_ = true;
     current_node_->insert(data);
+  }
 }
 
 bool Versionor::commit(const std::string& id)

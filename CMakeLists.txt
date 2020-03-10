@@ -296,7 +296,7 @@ add_onto_executable(ontologenius_config_tester src/tests/config_reader_test.cpp)
 target_link_libraries(ontologenius_config_tester PRIVATE ontologenius_core_lib)
 
 add_onto_executable(ontologenius_versioning src/tests/versioning.cpp)
-target_link_libraries(ontologenius_versioning PRIVATE ontologenius_core_lib)
+target_link_libraries(ontologenius_versioning PRIVATE ontologenius_lib)
 
 ##############################################################################
 # Qt Environment

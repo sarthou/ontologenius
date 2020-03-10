@@ -44,7 +44,8 @@ bool Feeder::run()
       continue;
     }
 
-    versionor_.insert(feed);
+    if(!feed.checkout_)
+      versionor_.insert(feed);
 
     if(feed.prop_ == "")
     {

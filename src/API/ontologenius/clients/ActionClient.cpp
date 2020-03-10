@@ -17,6 +17,15 @@ bool ActionClient::save(const std::string& path)
   return callNR(srv);
 }
 
+bool ActionClient::exportToXml(const std::string& path)
+{
+  ontologenius::OntologeniusService srv;
+  srv.request.action = "export";
+  srv.request.param = path;
+
+  return callNR(srv);
+}
+
 bool ActionClient::setLang(const std::string& lang)
 {
   ontologenius::OntologeniusService srv;

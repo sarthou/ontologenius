@@ -24,7 +24,7 @@ void insertWords(size_t nb)
     wait.sleep();
   }
 
-  if(!onto_ptr->feeder.commit())
+  if(!onto_ptr->feeder.waitUpdate())
     std::cout << "too long" << std::endl;
 }
 

@@ -71,21 +71,66 @@ void FeederPublisher::removeConcept(const std::string& from)
   publish(msg);
 }
 
-bool FeederPublisher::commit(int32_t timeout)
+bool FeederPublisher::waitUpdate(int32_t timeout)
 {
-  commited_ = false;
+  updated_ = false;
 
   std::chrono::time_point<std::chrono::system_clock> start;
   start = std::chrono::system_clock::now();
   sendNop();
 
-  while((!commited_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()-start).count()) < (unsigned int)timeout)
+  while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()-start).count()) < (unsigned int)timeout)
   {
     ros::spinOnce();
     usleep(1);
   }
 
-  if(commited_)
+  if(updated_)
+    return true;
+  else
+    return false;
+}
+
+std::string FeederPublisher::commit(int32_t timeout)
+{
+  std::string msg = "[commit]" + std::to_string(commit_nb_) + "|";
+  commit_nb_++;
+
+  updated_ = false;
+
+  std::chrono::time_point<std::chrono::system_clock> start;
+  start = std::chrono::system_clock::now();
+  publish(msg);
+
+  while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()-start).count()) < (unsigned int)timeout)
+  {
+    ros::spinOnce();
+    usleep(1);
+  }
+
+  if(updated_)
+    return std::to_string(commit_nb_ - 1);
+  else
+    return "";
+}
+
+bool FeederPublisher::checkout(const std::string& commit_name, int32_t timeout)
+{
+  std::string msg = "[checkout]" + commit_name + "|";
+
+  updated_ = false;
+
+  std::chrono::time_point<std::chrono::system_clock> start;
+  start = std::chrono::system_clock::now();
+  publish(msg);
+
+  while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()-start).count()) < (unsigned int)timeout)
+  {
+    ros::spinOnce();
+    usleep(1);
+  }
+
+  if(updated_)
     return true;
   else
     return false;
@@ -106,5 +151,5 @@ void FeederPublisher::publish(const std::string& str)
 void FeederPublisher::commitCallback(const std_msgs::String::ConstPtr& msg)
 {
   if(msg->data == "end")
-    commited_ = true;
+    updated_ = true;
 }

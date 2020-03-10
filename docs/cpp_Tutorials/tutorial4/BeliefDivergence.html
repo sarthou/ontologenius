@@ -171,7 +171,7 @@
           <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.removeProperty(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
           <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.addProperty(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit(500);</div>
+          <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.waitUpdate(500);</div>
           <div class="code_line"><br></div>
           <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; differences <span class="cpp_op">=</span> onto.getDifference(<span class="cpp_string">&quot;sally&quot;</span>, <span class="cpp_string">&quot;anne&quot;</span>, <span class="cpp_string">&quot;ball_1&quot;</span>);</div>
           <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;The difference of belief regarding the ball_1 is:&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
@@ -202,10 +202,10 @@
           in the second container. You see here that these changes are applied only to Anne.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 36;">
-          <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit(500);</div>
+          <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.waitUpdate(500);</div>
         </div>
 
-        <p>With the commit function, we will wait until the previous changes are applied. For security reasons, we set a timeout of 500 ms.</p>
+        <p>With the waitUpdate function, we will wait until the previous changes are applied. For security reasons, we set a timeout of 500 ms.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 38;">
           <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; differences <span class="cpp_op">=</span> onto.getDifference(<span class="cpp_string">&quot;sally&quot;</span>, <span class="cpp_string">&quot;anne&quot;</span>, <span class="cpp_string">&quot;ball_1&quot;</span>);</div>
