@@ -149,6 +149,7 @@ add_onto_library(ontologenius_core_lib
   src/core/feeder/Feeder.cpp
   src/core/feeder/FeedStorage.cpp
   src/core/feeder/Versionor.cpp
+  src/core/feeder/Version_node.cpp
   src/core/reasoner/plugins/ReasonerInterface.cpp
   src/core/reasoner/Reasoners.cpp
   src/core/reasoner/ConfigReader.cpp
@@ -293,6 +294,9 @@ target_link_libraries(ontologenius_services_tester PRIVATE ontologenius_core_lib
 
 add_onto_executable(ontologenius_config_tester src/tests/config_reader_test.cpp)
 target_link_libraries(ontologenius_config_tester PRIVATE ontologenius_core_lib)
+
+add_onto_executable(ontologenius_versioning src/tests/versioning.cpp)
+target_link_libraries(ontologenius_versioning PRIVATE ontologenius_core_lib)
 
 ##############################################################################
 # Qt Environment

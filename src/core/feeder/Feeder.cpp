@@ -6,6 +6,11 @@
 
 namespace ontologenius {
 
+Feeder::Feeder(Ontology* onto) : versionor_(&feed_storage_)
+{
+  onto_ = onto;
+}
+
 bool Feeder::run()
 {
   if(onto_ == nullptr)
@@ -25,7 +30,21 @@ bool Feeder::run()
     else if(feed.action_ == action_del)
       current_str_feed_ = "[del] " + feed.from_ + " | " + feed.prop_ + " | " + feed.on_;
     else
+    {
+      if(feed.action_ == action_commit)
+      {
+        if(!versionor_.commit(feed.from_))
+          notifications_.push_back("[FAIL][commit]" + feed.from_);
+      }
+      else if(feed.action_ == action_checkout)
+      {
+        if(!versionor_.checkout(feed.from_))
+          notifications_.push_back("[FAIL][checkout]" + feed.from_);
+      }
       continue;
+    }
+
+    versionor_.insert(feed);
 
     if(feed.prop_ == "")
     {

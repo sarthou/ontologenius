@@ -45,7 +45,6 @@ RosInterface::~RosInterface()
 void RosInterface::init(const std::string& lang, const std::string& intern_file, const std::vector<std::string>& files, const std::string& config_path)
 {
   onto_->setLanguage(lang);
-  std::string ontology_intern_file = intern_file;
   std::string dedicated_intern_file = intern_file;
   if(name_ != "")
   {
@@ -70,6 +69,8 @@ void RosInterface::init(const std::string& lang, const std::string& config_path)
   reasoners_.configure(config_path);
   reasoners_.load();
   Display::info("Plugins loaded : " + reasoners_.list());
+
+  feeder_.activateVersionning(true);
 }
 
 void RosInterface::run()
@@ -150,6 +151,8 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
     res.code = onto_->readFromFile(req.param);
   else if(req.action == "save")
     onto_->save(req.param);
+  else if(req.action == "export")
+    feeder_.exportToXml(req.param);
   else if(req.action == "close")
   {
     onto_->close();

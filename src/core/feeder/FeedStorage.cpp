@@ -76,6 +76,22 @@ void FeedStorage::add(std::string& regex)
   mutex_.unlock();
 }
 
+void FeedStorage::add(std::vector<feed_t>& datas)
+{
+  mutex_.lock();
+  if(queue_choice_ == true)
+  {
+    for(auto& data : datas)
+      fifo_1.push(data);
+  }
+  else
+  {
+    for(auto& data : datas)
+      fifo_2.push(data);
+  }
+  mutex_.unlock();
+}
+
 std::queue<feed_t> FeedStorage::get()
 {
   std::queue<feed_t> tmp;
