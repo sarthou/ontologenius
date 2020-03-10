@@ -163,7 +163,7 @@
           <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).feeder.removeObjectProperty(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_1'</span>)</div>
           <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).feeder.addObjectProperty(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_2'</span>)</div>
           <div class="code_line"></div>
-          <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).feeder.commit(<span class="py_value">500</span>)</div>
+          <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).feeder.waitUpdate(<span class="py_value">500</span>)</div>
           <div class="code_line"></div>
           <div class="code_line">    differences = onto.getDifference(<span class="py_string">'sally'</span>, <span class="py_string">'anne'</span>, <span class="py_string">'ball_1'</span>)</div>
           <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'The difference of belief regarding the ball_1 is:'</span></div>
@@ -190,10 +190,10 @@
           in the second container. You see here that these changes are applied only to Anne.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 29;">
-          <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).feeder.commit(<span class="py_value">500</span>)</div>
+          <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).feeder.waitUpdate(<span class="py_value">500</span>)</div>
         </div>
 
-        <p>With the commit function, we will wait until the previous changes are applied. For security reasons, we set a timeout of 500 ms.</p>
+        <p>With the waitUpdate function, we will wait until the previous changes are applied. For security reasons, we set a timeout of 500 ms.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 31;">
           <div class="code_line">    differences = onto.getDifference(<span class="py_string">'sally'</span>, <span class="py_string">'anne'</span>, <span class="py_string">'ball_1'</span>)</div>

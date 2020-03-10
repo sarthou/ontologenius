@@ -2,6 +2,7 @@ import rospy
 from std_msgs.msg import String
 
 import time
+import random
 from datetime import datetime
 
 class FeederPublisher:
@@ -16,7 +17,9 @@ class FeederPublisher:
         if self._name != '':
             sub_topic_name += '/' + self._name
         self._commit_sub = rospy.Subscriber(sub_topic_name, String, self.commitCallback)
-        self._commited = False
+        self._updated = False
+        random.seed()
+        self._commit_nb = random.randint(1, 100000)
 
     def addObjectProperty(self, concept_from, property, concept_on):
         msg = '[add]' + concept_from + '|' + property + '|' + concept_on
@@ -70,16 +73,46 @@ class FeederPublisher:
         while not rospy.is_shutdown() and self.getNumSubscribers() == 0:
             rate.sleep()
 
-    def commit(self, timeout = 100000000):
-        self._commited = False
+    def waitUpdate(self, timeout = 100000000):
+        self._updated = False
 
         start_time = datetime.now()
         self._sendNop()
 
-        while not rospy.is_shutdown() and not self._commited and (self.millis_interval(start_time, datetime.now()) < timeout) :
+        while not rospy.is_shutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
             time.sleep(.001)
 
-        if self._commited == True:
+        if self._updated == True:
+            return True
+        else:
+            return False
+
+    def commit(self, timeout = 100000000):
+        self._updated = False
+        msg = '[commit]' + str(self._commit_nb) + '|'
+        self._commit_nb = self._commit_nb + 1
+
+        start_time = datetime.now()
+        self._publish(msg)
+
+        while not rospy.is_shutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
+            time.sleep(.001)
+
+        if self._updated == True:
+            return str(self._commit_nb - 1)
+        else:
+            return ''
+
+    def checkout(self, commit_name, timeout = 100000000):
+        self._updated = False
+
+        start_time = datetime.now()
+        self._publish('[checkout]' + commit_name + '|')
+
+        while not rospy.is_shutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
+            time.sleep(.001)
+
+        if self._updated == True:
             return True
         else:
             return False
@@ -92,7 +125,7 @@ class FeederPublisher:
 
     def commitCallback(self, data):
         if data.data == 'end':
-            self._commited = True
+            self._updated = True
 
     def millis_interval(self, start, end):
         diff = end - start
