@@ -30,6 +30,19 @@ std::vector<feed_t> Version_node::getDatasInvert()
   return datas;
 }
 
+void Version_node::appendDatasDirect(std::vector<feed_t>& datas)
+{
+  datas.insert(datas.end(), datas_.begin(), datas_.end());
+}
+
+void Version_node::appendDatasInvert(std::vector<feed_t>& datas)
+{
+  std::vector<feed_t> tmp_datas = datas_;
+  for(auto& data : tmp_datas)
+    data.action_ = (data.action_ == action_add) ? action_del : action_add;
+  datas.insert(datas.end(), tmp_datas.rbegin(), tmp_datas.rend());
+}
+
 void Version_node::unlinkFromPrev()
 {
   if(prev_ != nullptr)

@@ -73,7 +73,7 @@ void RosInterface::init(const std::string& lang, const std::string& config_path)
   Display::info("Plugins loaded : " + reasoners_.list());
 
   feeder_.activateVersionning(true);
-  feeder_rate_ = 1000;
+  feeder_rate_ = 4000;
 }
 
 void RosInterface::run()

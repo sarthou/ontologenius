@@ -48,9 +48,9 @@ int main(int argc, char** argv)
   onto["cpy"]->feeder.checkout(commit1);
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
-  auto time_span = duration_cast<std::chrono::milliseconds>(t2 - t1);
+  auto time_span = duration_cast<std::chrono::microseconds>(t2 - t1);
 
-  std::cout << "  " << time_span.count() << " ms for checkout " << std::endl;
+  std::cout << "  " << time_span.count() << " us for checkout " << std::endl;
 
   onto["cpy"]->feeder.addProperty("bob", "eat", "burger");
   std::string commit4 = onto["cpy"]->feeder.commit();
@@ -64,7 +64,6 @@ int main(int argc, char** argv)
   std::string commit6 = onto["cpy"]->feeder.commit();
 
   onto["cpy"]->actions.exportToXml("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/save.xml");
-
 
   return 0;
 }

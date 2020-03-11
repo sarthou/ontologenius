@@ -27,6 +27,9 @@ public:
   std::vector<feed_t> getDatasDirect();
   std::vector<feed_t> getDatasInvert();
 
+  void appendDatasDirect(std::vector<feed_t>& datas);
+  void appendDatasInvert(std::vector<feed_t>& datas);
+
   void unlinkFromPrev();
 
   void print(int level = 0);

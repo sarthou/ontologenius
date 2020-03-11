@@ -86,8 +86,7 @@ bool Versionor::checkout(const std::string& id)
   {
     if(current_prev == pivot)
       break;
-    std::vector<feed_t> tmp_data = current_prev->getDatasInvert();
-    datas.insert(datas.end(), tmp_data.begin(), tmp_data.end());
+    current_prev->appendDatasInvert(datas);
   }
 
   bool found_pivot = false;
@@ -101,10 +100,7 @@ bool Versionor::checkout(const std::string& id)
     else if(found_pivot == false)
       continue;
     else
-    {
-      std::vector<feed_t> tmp_data = goal_prev->getDatasDirect();
-      datas.insert(datas.end(), tmp_data.begin(), tmp_data.end());
-    }
+      goal_prev->appendDatasDirect(datas);
   }
 
   if(current_node_->defined() == false)

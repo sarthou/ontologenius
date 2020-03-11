@@ -208,8 +208,6 @@ void Feeder::applyProperty(feed_t& feed)
 
   if(feed.action_ == action_add)
   {
-    ClassBranch_t* class_branch = nullptr;
-    IndividualBranch_t* indiv_branch = nullptr;
     if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
     {
       if(data_property == true)
