@@ -1,7 +1,7 @@
 #include "ontologenius/graphical/versioning/TreeReader.h"
 #include "ontologenius/graphical/versioning/TreeDrawer.h"
 
-std::string getFineName(const std::string& xml_path)
+std::string getFileName(const std::string& xml_path)
 {
   std::string png_path = xml_path;
 
@@ -61,7 +61,7 @@ int main(int argc, char** argv)
   std::cout << "height = " << ontologenius::commit_t::global_height << std::endl;
 
   ontologenius::TreeDrawer drawer;
-  drawer.draw(getFineName(path), commit, commit_only);
+  drawer.draw(getFileName(path), commit, commit_only);
 
   if(commit_only == false)
     std::cout << "--> You can get only the commit graph with the option -c <--" << std::endl;
