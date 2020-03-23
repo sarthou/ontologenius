@@ -14,6 +14,7 @@ public:
   commit_t(const std::string& id);
   ~commit_t();
 
+  void setOrderId(size_t order);
   void insertData(const std::string& data);
   void insertNext(commit_t* next);
 
@@ -22,7 +23,8 @@ public:
 
   std::vector<std::string> datas_;
   std::vector<commit_t*> nexts_;
-  int id_;
+  std::string id_;
+  int order_;
 };
 
 class TreeReader

@@ -9,7 +9,8 @@ size_t commit_t::global_height = 0;
 
 commit_t::commit_t(const std::string& id)
 {
-  id_ = std::stoi(id);
+  id_ = id;
+  order_ = -1;
   global_height++;
 }
 
@@ -17,6 +18,11 @@ commit_t::~commit_t()
 {
   for(auto& next : nexts_)
     delete next;
+}
+
+void commit_t::setOrderId(size_t order)
+{
+  order_ = order;
 }
 
 void commit_t::insertData(const std::string& data)
@@ -94,6 +100,16 @@ commit_t* TreeReader::readNode(TiXmlElement* elem, commit_t* prev)
         }
         else if(elem_value == "Node")
           readNode(sub_elem, current);
+        else if(elem_value == "Order")
+        {
+          const char* value;
+          value = sub_elem->GetText();
+          if(value != nullptr)
+          {
+            size_t order = std::stoi(std::string(value));
+            current->setOrderId(order);
+          }
+        }
       }
 
       if(prev != nullptr)

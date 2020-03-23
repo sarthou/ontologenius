@@ -2,18 +2,24 @@
 
 namespace ontologenius {
 
+size_t Version_node::global_order_id_ = 0;
+
 Version_node::Version_node(Version_node* prev)
 {
   prev_ = prev;
   if(prev_ != nullptr)
     prev_->addNext(this);
   id_ = "";
+  order_id_ = global_order_id_;
+  global_order_id_++;
 }
 
 Version_node::Version_node(const std::string& id)
 {
   id_ = id;
   prev_ = nullptr;
+  order_id_ = global_order_id_;
+  global_order_id_++;
 }
 
 std::vector<feed_t> Version_node::getDatasDirect()
@@ -66,6 +72,7 @@ std::string Version_node::toXml(int level)
 {
   std::string xml;
   xml += getSpaces(level) + "<Node id=\"" + id_ + "\">\n";
+  xml += getSpaces(level + 1) + orderIdToXml() + "\n";
   for(auto& data : datas_)
     xml += getSpaces(level + 1) + dataToXml(data) + "\n";
   for(auto& next : nexts_)
@@ -89,6 +96,12 @@ std::string Version_node::dataToXml(feed_t data)
                     "</Data>";
   return xml;
 
+}
+
+std::string Version_node::orderIdToXml()
+{
+  std::string xml = "<Order>" + std::to_string(order_id_) + "</Order>";
+  return xml;
 }
 
 } // namespace ontologenius

@@ -93,9 +93,18 @@ bool FeederPublisher::waitUpdate(int32_t timeout)
 
 std::string FeederPublisher::commit(int32_t timeout)
 {
-  std::string msg = "[commit]" + std::to_string(commit_nb_) + "|";
+  std::string commit_name = std::to_string(commit_nb_);
   commit_nb_++;
 
+  if(commit(commit_name, timeout))
+    return commit_name;
+  else
+    return "";
+}
+
+bool FeederPublisher::commit(const std::string& commit_name, int32_t timeout)
+{
+  std::string msg = "[commit]" + commit_name + "|";
   updated_ = false;
 
   std::chrono::time_point<std::chrono::system_clock> start;
@@ -109,9 +118,9 @@ std::string FeederPublisher::commit(int32_t timeout)
   }
 
   if(updated_)
-    return std::to_string(commit_nb_ - 1);
+    return true;
   else
-    return "";
+    return false;
 }
 
 bool FeederPublisher::checkout(const std::string& commit_name, int32_t timeout)

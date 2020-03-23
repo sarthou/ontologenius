@@ -59,7 +59,7 @@ Node_t* TreeDrawer::createNode(commit_t* commit, bool commit_only)
   Node_t* first_node = nullptr;
   Node_t* current_node = first_node;
 
-  size_t local_row = getCorrectedRow(commit->id_);
+  size_t local_row = getCorrectedRow(commit->order_);
   if(commit_only == false)
     shiftRows(local_row, commit->datas_.size() + 1);
   else
@@ -96,9 +96,9 @@ Node_t* TreeDrawer::createNode(commit_t* commit, bool commit_only)
   Node_t::current_row++;
 
   commit_node->is_data_ = false;
-  commit_node->text_ = "commit : " + std::to_string(commit->id_);
+  commit_node->text_ = "commit : " + commit->id_;
   nodes_.push_back(commit_node);
-  commit_nodes_[commit->id_] = commit_node;
+  commit_nodes_[commit->order_] = commit_node;
 
   if(current_node != nullptr)
   {

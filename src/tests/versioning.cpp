@@ -41,7 +41,7 @@ int main(int argc, char** argv)
   onto["cpy"]->feeder.addProperty("pasta", "isIn", "bob");
   for(size_t i = 0; i < 12; i++)
     onto["cpy"]->feeder.addProperty("pasta", "isIn", "bob" + std::to_string(i));
-  std::string commit3 = onto["cpy"]->feeder.commit();
+  onto["cpy"]->feeder.commit("after_pasta");
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
@@ -58,7 +58,7 @@ int main(int argc, char** argv)
   onto["cpy"]->feeder.addProperty("burger", "isIn", "bob");
   std::string commit5 = onto["cpy"]->feeder.commit();
 
-  onto["cpy"]->feeder.checkout(commit3);
+  onto["cpy"]->feeder.checkout("after_pasta");
 
   onto["cpy"]->feeder.addProperty("bob", "isHungry", "bool", "false");
   std::string commit6 = onto["cpy"]->feeder.commit();

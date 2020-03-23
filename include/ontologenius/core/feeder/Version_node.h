@@ -37,6 +37,9 @@ public:
 
 private:
   std::string id_;
+  size_t order_id_;
+  static size_t global_order_id_;
+
   Version_node* prev_;
   std::vector<Version_node*> nexts_;
 
@@ -44,6 +47,7 @@ private:
 
   std::string getSpaces(int nb, const std::string& symbol = "  ");
   std::string dataToXml(feed_t data);
+  std::string orderIdToXml();
 };
 
 } // namespace ontologenius

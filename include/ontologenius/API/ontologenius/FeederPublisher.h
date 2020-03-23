@@ -53,6 +53,7 @@ public:
 
   bool waitUpdate(int32_t timeout = -1);
   std::string commit(int32_t timeout = -1);
+  bool commit(const std::string& commit_name, int32_t timeout = -1);
   bool checkout(const std::string& commit_name, int32_t timeout = -1);
 
 private:

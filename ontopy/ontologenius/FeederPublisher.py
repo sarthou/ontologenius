@@ -88,9 +88,17 @@ class FeederPublisher:
             return False
 
     def commit(self, timeout = 100000000):
-        self._updated = False
-        msg = '[commit]' + str(self._commit_nb) + '|'
+        commit_name = str(self._commit_nb)
         self._commit_nb = self._commit_nb + 1
+
+        if self.commit(commit_name, timeout):
+            return commit_name
+        else:
+            return ''
+
+    def commit(self, commit_name, timeout = 100000000):
+        self._updated = False
+        msg = '[commit]' + commit_name + '|'
 
         start_time = datetime.now()
         self._publish(msg)
@@ -99,9 +107,9 @@ class FeederPublisher:
             time.sleep(.001)
 
         if self._updated == True:
-            return str(self._commit_nb - 1)
+            return True
         else:
-            return ''
+            return False
 
     def checkout(self, commit_name, timeout = 100000000):
         self._updated = False
