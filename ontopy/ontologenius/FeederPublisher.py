@@ -87,7 +87,7 @@ class FeederPublisher:
         else:
             return False
 
-    def commit(self, timeout = 100000000):
+    def commitAuto(self, timeout = 100000000):
         commit_name = str(self._commit_nb)
         self._commit_nb = self._commit_nb + 1
 

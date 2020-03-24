@@ -145,7 +145,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#getNumSubscribers">getNumSubscribers</a></b>(self)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#waitConnected">waitConnected</a></b>(self)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#waitUpdate">waitUpdate</a></b>(self, timeout = 100000000)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit">commit</a></b>(self, timeout = 100000000)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit">commitAuto</a></b>(self, timeout = 100000000)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit2">commit</a></b>(self, commit_name, timeout = 100000000)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#checkout">checkout</a></b>(self, commit_name, timeout = 100000000)</td></tr>
             </tbody>
@@ -221,7 +221,7 @@
           <p>The default parameter <i>timeout</i>(int) is the expiration time in milliseconds. The default value is of 100 seconds.</p>
           <p>Returns False if the function returns on a timeout.</p>
 
-          <h3 class="fn" id="commit"><a name="commit"></a><span class="name">commit</span>(self, timeout = 100000000)</h3>
+          <h3 class="fn" id="commit"><a name="commit"></a><span class="name">commitAuto</span>(self, timeout = 100000000)</h3>
           <p>Saves all the modifications from the previous commit and waits until all changes have been applied.</p>
           <p>The default parameter <i>timeout</i>(int) is the expiration time in milliseconds. The default value is of 100 seconds.</p>
           <p>Returns the commit id (str) and an empty string if the function returns on a timeout.</p>

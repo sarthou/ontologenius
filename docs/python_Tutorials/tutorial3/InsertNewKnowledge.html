@@ -135,17 +135,17 @@
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
           <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">import</span> re</div>
           <div class="code_line"><span class="py_op">import</span> time</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">import</span> rospy</div>
           <div class="code_line"><span class="py_op">from</span> std_msgs.msg <span class="py_op">import</span> String</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologyManipulator</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">_onto = <span class="py_value">None</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">def</span> <span class="py_function">singular</span>(word):</div>
           <div class="code_line">    <span class="py_op">if</span> word[len(word) - <span class="py_value">1</span> ] == <span class="py_string">'s'</span>:</div>
           <div class="code_line">        word = word[<span class="py_value">0</span> : len(word) - <span class="py_value">1</span>]</div>
@@ -182,7 +182,7 @@
           <div class="code_line">        <span class="py_op">return</span> <span class="py_string">'ok'</span></div>
           <div class="code_line">    <span class="py_op">else</span>:</div>
           <div class="code_line">        <span class="py_op">return</span> <span class="py_value">None</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">def</span> <span class="py_function">testProperty</span>(text):</div>
           <div class="code_line">    <span class="py_op">global</span> _onto</div>
           <div class="code_line">    match = re.search(r<span class="py_string">"^(a\s)?(\w+)\scan\s(not\s)?(\w+)$"</span>, text)</div>
@@ -196,7 +196,7 @@
           <div class="code_line">        <span class="py_op">return</span> <span class="py_string">'ok'</span></div>
           <div class="code_line">    <span class="py_op">else</span>:</div>
           <div class="code_line">        <span class="py_op">return</span> <span class="py_value">None</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">def</span> <span class="py_function">testQuestion</span>(text):</div>
           <div class="code_line">    <span class="py_op">global</span> _onto</div>
           <div class="code_line">    match = re.search(r<span class="py_string">"^can\s(a\s)?(\w+)\s(\w+)\s?\?$"</span>, text)</div>
@@ -204,7 +204,7 @@
           <div class="code_line">        res = _onto.individuals.getOn(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">3</span>)))</div>
           <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
           <div class="code_line">            res = _onto.classes.getOn(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">3</span>)))</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">        <span class="py_op">if</span> len(res) != <span class="py_value">0</span>:</div>
           <div class="code_line">            <span class="py_op">if</span> res[<span class="py_value">0</span>] == <span class="py_string">'bool#True'</span>:</div>
           <div class="code_line">                <span class="py_op">return</span> <span class="py_string">'yes'</span></div>
@@ -214,7 +214,7 @@
           <div class="code_line">            <span class="py_op">return</span> <span class="py_string">'I do not know'</span></div>
           <div class="code_line">    <span class="py_op">else</span>:</div>
           <div class="code_line">        <span class="py_op">return</span> <span class="py_value">None</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">def</span> <span class="py_function">testWhatIs</span>(text):</div>
           <div class="code_line">    <span class="py_op">global</span> _onto</div>
           <div class="code_line">    match = re.search(r<span class="py_string">"^what\s(is|are)\s(a\s)?(\w+)\s?\?$"</span>, text)</div>
@@ -222,15 +222,15 @@
           <div class="code_line">        res = _onto.individuals.getUp(singular(match.group(<span class="py_value">3</span>)), <span class="py_value">1</span>)</div>
           <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
           <div class="code_line">            res = _onto.classes.getUp(singular(match.group(<span class="py_value">3</span>)), <span class="py_value">1</span>)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
           <div class="code_line">            <span class="py_op">return</span> <span class="py_string">'I do not know'</span></div>
           <div class="code_line">        <span class="py_op">else</span>:</div>
           <div class="code_line">            <span class="py_op">return</span> <span class="py_string">'It is a : '</span> + str(res)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    <span class="py_op">else</span>:</div>
           <div class="code_line">        <span class="py_op">return</span> <span class="py_value">None</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">def</span> <span class="py_function">testIsItA</span>(text):</div>
           <div class="code_line">    <span class="py_op">global</span> _onto</div>
           <div class="code_line">    match = re.search(r<span class="py_string">"^(is\sa|are)\s(\w+)\s(is\sa\s|is\san\s|a\s|an\s)?(\w+)\s?\?$"</span>, text)</div>
@@ -238,18 +238,18 @@
           <div class="code_line">        res = _onto.individuals.getUp(singular(match.group(<span class="py_value">2</span>)), selector = singular(match.group(<span class="py_value">4</span>)))</div>
           <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
           <div class="code_line">            res = _onto.classes.getUp(singular(match.group(<span class="py_value">2</span>)), selector = singular(match.group(<span class="py_value">4</span>)))</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
           <div class="code_line">            <span class="py_op">return</span> <span class="py_string">'no'</span></div>
           <div class="code_line">        <span class="py_op">else</span>:</div>
           <div class="code_line">            <span class="py_op">return</span> <span class="py_string">'yes'</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    <span class="py_op">else</span>:</div>
           <div class="code_line">        <span class="py_op">return</span> <span class="py_value">None</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">def</span> <span class="py_function">inputCallback</span>(msg):</div>
           <div class="code_line">    <span class="py_op">print</span> msg.data</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    response = testIsA(msg.data)</div>
           <div class="code_line">    <span class="py_op">if</span> response == <span class="py_value">None</span>:</div>
           <div class="code_line">        response = testProperty(msg.data)</div>
@@ -261,7 +261,7 @@
           <div class="code_line">                    response = testIsItA(msg.data)</div>
           <div class="code_line">                    <span class="py_op">if</span> response == <span class="py_value">None</span>:</div>
           <div class="code_line">                        response = <span class="py_string">'I do not understand'</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    <span class="py_op">if</span> response != <span class="py_string">''</span>:</div>
           <div class="code_line">        <span class="py_op">print</span> <span class="py_string">'=> '</span> + response</div>
         </div>
@@ -309,7 +309,7 @@
           <div class="code_line">        res = _onto.individuals.getOn(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">3</span>)))</div>
           <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
           <div class="code_line">            res = _onto.classes.getOn(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">3</span>)))</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">        <span class="py_op">if</span> len(res) != <span class="py_value">0</span>:</div>
           <div class="code_line">            <span class="py_op">if</span> res[<span class="py_value">0</span>] == <span class="py_string">'bool#True'</span>:</div>
           <div class="code_line">                <span class="py_op">return</span> <span class="py_string">'yes'</span></div>
@@ -356,17 +356,17 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 108;">
           <div class="code_line"><span class="py_op">if</span> __name__ == <span class="py_string">'__main__'</span>:</div>
           <div class="code_line">    <span class="py_op">global</span> _onto</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    rospy.init_node(<span class="py_string">'feed_and_generalize'</span>)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    _onto = OntologyManipulator()</div>
           <div class="code_line">    _onto.close()</div>
           <div class="code_line">    time.sleep(<span class="py_value">1</span>)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    _onto.feeder.addConcept(<span class="py_string">'bird'</span>)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    rospy.Subscriber(<span class="py_string">'feed_and_generalize/in'</span>, String, inputCallback)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    rospy.spin()</div>
         </div>
 

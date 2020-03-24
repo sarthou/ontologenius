@@ -136,26 +136,26 @@
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
           <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">import</span> rospy</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologiesManipulator</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">if</span> __name__ == <span class="py_string">'__main__'</span>:</div>
           <div class="code_line">    rospy.init_node(<span class="py_string">'multiple_ontologies'</span>)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    onto = OntologiesManipulator()</div>
           <div class="code_line">    onto.waitInit()</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    onto.add(<span class="py_string">'sally'</span>)</div>
           <div class="code_line">    onto.add(<span class="py_string">'anne'</span>)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    onto.get(<span class="py_string">'sally'</span>).close()</div>
           <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).close()</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    result = onto.get(<span class="py_string">'sally'</span>).individuals.getOn(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
           <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'for sally, ball_1 is in : '</span> + str(result)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    result = onto.get(<span class="py_string">'anne'</span>).individuals.getOn(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
           <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'for anne, ball_1 is in : '</span> + str(result)</div>
         </div>

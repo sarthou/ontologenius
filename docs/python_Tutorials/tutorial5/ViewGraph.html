@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Use inheritance for my first program (python) : Find the most relevant intruder</title>
+  <title>Explore possible futures (python) : View graph</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
@@ -42,16 +42,14 @@
     </div>
 
     <div class="content">
-      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -270px;">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: 0px;">
         <div class="contents">
           <div id="contents-toggle" class=""></div>
           <h3>Contents</h3>
           <ul style="display: block;">
-            <li class="level1"><a href="settingUpTheProgram.html">1. Setting up the program</a></li>
-            <li class="level1"><a href="LaunchTheProgram.html">2. Launch the program</a></li>
-            <li class="level1"><a href="FindTheIntruder.html">3. Find the intruder</a></li>
-            <li class="level1"><a href="MostRelevantIntruder.html"><b>4. Find the most relevant intruder</b></a></li>
-            <li class="level1"><a href="ManageTheMultilingual.html">5. Manage the multilingual</a></li>
+            <li class="level1"><a href="Presentation.html">1. Presentation</a></li>
+            <li class="level1"><a href="MoveThroughTheAlternatives.html">2. Move through the alternatives </a></li>
+            <li class="level1"><a href="ViewGraph.html"><b>3. View graph </b></a></li>
           </ul>
         </div>
 
@@ -119,92 +117,53 @@
 
       <div class="context">
         <div class="toturial-header">
-          <h1 class="title">Use inheritance for my first program (python)</h1>
+          <h1 class="title">Explore possible futures (python)</h1>
           <a class="toturial-subheader">
             <div class="tutorial-subheader__main-icon">
               <i class="fas fa-brain"></i>
             </div>
             <div class="toturial-subheader__title">
-              <h2 class="title">Who is the intruder ?</h2>
+              <h2 class="title">Commit and checkout</h2>
             </div>
           </a>
         </div>
 
-        <h1 class="title">Find the most revelant intruder</h1>
+        <h1 class="title">View graph</h1>
 
-        <p>Our program works pretty well but let's question it with the words: pr2, kevin et bob</p>
-        <p>You should have this:</p>
+        <p>Well, it was interesting but it is a bit difficult to imagine how we got around. To have a better understanding,
+          nothing better than a graphic! We will simply add the following line just before deleting the copied instance.
+          Change the path of course...</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 53;">
+          <div class="code_line">    onto.get(<span class="py_string">'cpy'</span>).actions.export(<span class="py_string">'/path/to/save.xml'</span>)</div>
+        </div>
+
+        <p>Restart the program. This time, an xml file should be created. You can open it
+          if you want, but that's not the goal.</p>
+
+        <p>Instead, we will execute the following command line by changing the path of the xml file.</p>
+
         <div class="code_block">
-          <div class="terminal_line">[SAY]on pr2 kevin bob</div>
-          <div class="terminal_line">[SAY]the intruder is pr2 because it is the only one that is not: human</div>
-          <div class="terminal_line">[SAY]the intruder is pr2 because it is the only one that is not: man</div>
-          <div class="terminal_line">[SAY]Let's play!</div>
+          <div class="terminal_line">rosrun ontologenius ontologenius_draw /path/tosave.xml</div>
         </div>
 
-        <p>We can represent this part of the ontology as follow:</p>
-        <img src="../../images/tutorial/inheritance2.png " alt="tutorial 2 map of the city" width="30%" class="center"/>
+        <p>It creates an image in the same location and with the same name as the xml file. You should have this:</p>
 
+        <img src="../../images/tutorial/save_data.png " alt="Graph with data" height="600px"/>
 
-        <p>The result is not false but only one of these two answers would be enough given that one
-          induces the other. We will use ontologenius to try to give only the most relevant answer
-          in such cases.</p>
+        <p>If you only want to see the commits and not the data, you can add -c at the end of the command. You should have this:</p>
 
-        <p>To do this we will use a new function: getDown</p>
-        <p>As you can imagine, the getDown function is the exact opposite of the getUp function,
-          that is to say that it returns the concepts inheriting from the one passed in parameter
-          of the function.</p>
-        <p>We will use this function on classes because no concept can inherit an individual but
-          especially because our goal is to find the reasons (which are classes) that overlap.</p>
+        <img src="../../images/tutorial/save_commit.png " alt="Graph with data" height="300px"/>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">refine</span>(intruders):</div>
-          <div class="code_line">    refine_intruders = []</div>
-          <div class="code_line">    <span class="py_op">for</span> i <span class="py_op">in</span> range(len(intruders)):</div>
-          <div class="code_line">        down = _onto.classes.getDown(intruders[i][<span class="py_value">1</span>])</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">        is_most_relevant = <span class="py_value">True</span></div>
-          <div class="code_line">        <span class="py_op">for</span> j <span class="py_op">in</span> range(len(intruders)):</div>
-          <div class="code_line">            <span class="py_op">if</span> i != j <span class="py_op">and</span> intruders[i][<span class="py_value">0</span>] == intruders[j][<span class="py_value">0</span>]:</div>
-          <div class="code_line">                <span class="py_op">if</span> intruders[j][<span class="py_value">1</span>] <span class="py_op">in</span> down:</div>
-          <div class="code_line">                    is_most_relevant = <span class="py_value">False</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line">        <span class="py_op">if</span> is_most_relevant:</div>
-          <div class="code_line">            refine_intruders.insert(<span class="py_value">1</span>, intruders[i])</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    <span class="py_op">return</span> refine_intruders</div>
-        </div>
-
-        <p>So we notice that we are going to look for the object classes of the ontology manipulator instead of the object individuals.</p>
-        <div class="code_block cpp_code" style="counter-reset:code_line 3;">
-          <div class="code_line">        down = _onto.classes.getDown(intruders[i][<span class="py_value">1</span>])</div>
-        </div>
-        <p class="tip">The getUp function is available for individuals, classes, and properties while the
-          getDown function is only available for classes and properties.</p>
-
-        <p>We can call our refining function in our main function just after the function to find intruders</p>
-        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">         intruders = find_intruder(_names, inheritances)</div>
-          <div class="code_line">         intruders = refine(intruders)</div>
-        </div>
-
-        <p>Re-interrogating our program with the words pr2, kevin and bob, we now have the following result:</p>
-        <div class="code_block">
-          <div class="terminal_line">[SAY]on pr2 kevin bob</div>
-          <div class="terminal_line">[SAY]the intruder is pr2 because it is the only one that is not: man</div>
-          <div class="terminal_line">[SAY]Let's play!</div>
-        </div>
-
-        <p>If you want this to be the concept "human" that explains the intruder, you just have to modify the
-          algorithm above using the getUp function rather than the getDown function. It is your turn !</p>
 
         <nav class="course-pagination">
-          <a href="FindTheIntruder.html" class="course-pagination__btn">
+          <a href="MoveThroughTheAlternatives.html" class="course-pagination__btn">
             <i class="fas fa-angle-left"></i>
-            <span>Find the intruder</span>
+            <span>Move through the alternatives</span>
           </a>
           <span class="course-pagination__separator"></span>
-          <a href="ManageTheMultilingual.html" class="course-pagination__btn">
-            <span>Manage the multilingual</span>
+          <a href="../Tutorials.html" class="course-pagination__btn">
+            <span>Tutorials</span>
             <i class="fas fa-angle-right"></i>
           </a>
         </nav>

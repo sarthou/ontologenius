@@ -135,36 +135,36 @@
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
           <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">import</span> rospy</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologiesManipulator</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">if</span> __name__ == <span class="py_string">'__main__'</span>:</div>
           <div class="code_line">    rospy.init_node(<span class="py_string">'multiple_ontologies'</span>)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    onto = OntologiesManipulator()</div>
           <div class="code_line">    onto.waitInit()</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    onto.add(<span class="py_string">'sally'</span>)</div>
           <div class="code_line">    onto.add(<span class="py_string">'anne'</span>)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    onto.get(<span class="py_string">'sally'</span>).close()</div>
           <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).close()</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    result = onto.get(<span class="py_string">'sally'</span>).individuals.getOn(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
           <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'for sally, ball_1 is in : '</span> + str(result)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    result = onto.get(<span class="py_string">'anne'</span>).individuals.getOn(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
           <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'for anne, ball_1 is in : '</span> + str(result)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).feeder.waitConnected()</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).feeder.removeObjectProperty(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_1'</span>)</div>
           <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).feeder.addObjectProperty(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_2'</span>)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    onto.get(<span class="py_string">'anne'</span>).feeder.waitUpdate(<span class="py_value">500</span>)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    differences = onto.getDifference(<span class="py_string">'sally'</span>, <span class="py_string">'anne'</span>, <span class="py_string">'ball_1'</span>)</div>
           <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'The difference of belief regarding the ball_1 is:'</span></div>
           <div class="code_line">    <span class="py_op">for</span> diff <span class="py_op">in</span> differences:</div>
@@ -242,8 +242,8 @@
             <span>Create multiple ontologies</span>
           </a>
           <span class="course-pagination__separator"></span>
-          <a href="../Tutorials.html" class="course-pagination__btn">
-            <span>Tutorials</span>
+          <a href="../tutorial5/Presentation.html" class="course-pagination__btn">
+            <span>Next tutorial: Explore possible futures</span>
             <i class="fas fa-angle-right"></i>
           </a>
         </nav>
