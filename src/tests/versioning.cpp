@@ -1,16 +1,11 @@
-#include <ros/ros.h>
-#include <ros/package.h>
+#include <iostream>
+#include <chrono>
 
-#include <gtest/gtest.h>
+#include <ros/ros.h>
 
 #include "ontologenius/API/ontologenius/OntologiesManipulator.h"
 
-#include <chrono>
-#include <iostream>
-
 using namespace std::chrono;
-
-OntologiesManipulator* onto_ptr;
 
 int main(int argc, char** argv)
 {
@@ -18,52 +13,56 @@ int main(int argc, char** argv)
 
   ros::NodeHandle n;
   OntologiesManipulator onto(&n);
-  onto_ptr = &onto;
   onto.waitInit();
 
-  onto.add("robot");
-  onto["robot"]->close();
+  onto.add("bob");
+  onto["bob"]->close();
 
-  ros::Rate wait(1);
-  wait.sleep();
-
-  onto.copy("cpy", "robot");
+  onto.copy("cpy", "bob");
 
   onto["cpy"]->feeder.waitConnected();
 
   onto["cpy"]->feeder.addConcept("bob");
   onto["cpy"]->feeder.addInheritage("bob", "human");
-  std::string commit1 = onto["cpy"]->feeder.commit();
+  std::string first_commit = onto["cpy"]->feeder.commit();
 
   onto["cpy"]->feeder.addProperty("bob", "eat", "pasta");
-  std::string commit2 = onto["cpy"]->feeder.commit();
-
   onto["cpy"]->feeder.addProperty("pasta", "isIn", "bob");
-  for(size_t i = 0; i < 12; i++)
-    onto["cpy"]->feeder.addProperty("pasta", "isIn", "bob" + std::to_string(i));
   onto["cpy"]->feeder.commit("after_pasta");
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
-  onto["cpy"]->feeder.checkout(commit1);
-
+  onto["cpy"]->feeder.checkout(first_commit);
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   auto time_span = duration_cast<std::chrono::microseconds>(t2 - t1);
-
   std::cout << "  " << time_span.count() << " us for checkout " << std::endl;
 
   onto["cpy"]->feeder.addProperty("bob", "eat", "burger");
-  std::string commit4 = onto["cpy"]->feeder.commit();
-
   onto["cpy"]->feeder.addProperty("burger", "isIn", "bob");
-  std::string commit5 = onto["cpy"]->feeder.commit();
+  onto["cpy"]->feeder.commit("after_burger");
 
   onto["cpy"]->feeder.checkout("after_pasta");
+  onto["cpy"]->feeder.addProperty("bob", "isHungry", "bool", "true");
+  std::string hungry_commit = onto["cpy"]->feeder.commit();
 
+  onto["cpy"]->feeder.checkout("after_pasta");
   onto["cpy"]->feeder.addProperty("bob", "isHungry", "bool", "false");
-  std::string commit6 = onto["cpy"]->feeder.commit();
+  onto["cpy"]->feeder.commit();
+
+  onto["cpy"]->feeder.checkout(hungry_commit);
+  std::vector<std::string> hungry_state = onto["cpy"]->individuals.getOn("bob", "isHungry");
+  std::cout << "-> test hungry on cpy" << std::endl;
+  for(auto state : hungry_state)
+    std::cout << "bob isHungry " << state << std::endl;
+
+  hungry_state = onto["bob"]->individuals.getOn("bob", "isHungry");
+  std::cout << "-> test hungry on bob" << std::endl;
+  for(auto state : hungry_state)
+    std::cout << "bob isHungry " << state << std::endl;
 
   onto["cpy"]->actions.exportToXml("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/save.xml");
+  onto.del("cpy");
+
+  ros::spinOnce();
 
   return 0;
 }
