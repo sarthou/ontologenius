@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>571</width>
-    <height>585</height>
+    <width>680</width>
+    <height>680</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1241,6 +1241,41 @@
             <widget class="QPushButtonExtended" name="FeederDelButton">
              <property name="text">
               <string>REMOVE</string>
+             </property>
+            </widget>
+           </item>
+
+           <item>
+            <widget class="Line" name="line4">
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="lineWidth">
+              <number>100</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+
+           <item>
+            <widget class="QLineEdit" name="FeederCommitName">
+             </widget>
+           </item>
+
+           <item>
+            <widget class="QPushButtonExtended" name="FeederCommitButton">
+             <property name="text">
+              <string>Commit</string>
+             </property>
+            </widget>
+           </item>
+
+           <item>
+            <widget class="QPushButtonExtended" name="FeederCheckoutButton">
+             <property name="text">
+              <string>Checkout</string>
              </property>
             </widget>
            </item>

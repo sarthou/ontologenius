@@ -233,6 +233,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
 
     QObject::connect(ui->FeederAddButton, SIGNAL(clicked()),this, SLOT(feederAddSlot()));
     QObject::connect(ui->FeederDelButton, SIGNAL(clicked()),this, SLOT(feederDelSlot()));
+    QObject::connect(ui->FeederCommitButton, SIGNAL(clicked()),this, SLOT(feederCommitSlot()));
+    QObject::connect(ui->FeederCheckoutButton, SIGNAL(clicked()),this, SLOT(feederCheckoutSlot()));
 
     QObject::connect(ui->OntologyNameAddDel, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameAddDelChangedSlot(const QString&)));
     QObject::connect(ui->OntologyName, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameChangedSlot(const QString&)));
@@ -782,7 +784,7 @@ void ontoloGUI::feederCallback(const std_msgs::String& msg)
 
   std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
           "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-          "p, li { white-space: pre-wrap; }"
+          "p, li { whicommitte-space: pre-wrap; }"
           "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
           "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + feeder_notifications_ + "<br></span></p></body></html>";
 
@@ -798,6 +800,7 @@ void ontoloGUI::feederAddSlot()
   std::string onto_ns = ui->OntologyName->text().toStdString();
   if(onto_ns == "")
     onto_ns = "_";
+  createPublisher(onto_ns);
   publishers_[onto_ns].publish(msg);
 }
 
@@ -808,5 +811,38 @@ void ontoloGUI::feederDelSlot()
   std::string onto_ns = ui->OntologyName->text().toStdString();
   if(onto_ns == "")
     onto_ns = "_";
+  createPublisher(onto_ns);
   publishers_[onto_ns].publish(msg);
+}
+
+void ontoloGUI::feederCommitSlot()
+{
+  std_msgs::String msg;
+  msg.data = "[commit]" + ui->FeederCommitName->text().toStdString() + "|";
+  std::string onto_ns = ui->OntologyName->text().toStdString();
+  if(onto_ns == "")
+    onto_ns = "_";
+  createPublisher(onto_ns);
+  publishers_[onto_ns].publish(msg);
+}
+
+void ontoloGUI::feederCheckoutSlot()
+{
+  std_msgs::String msg;
+  msg.data = "[checkout]" + ui->FeederCommitName->text().toStdString() + "|";
+  std::string onto_ns = ui->OntologyName->text().toStdString();
+  if(onto_ns == "")
+    onto_ns = "_";
+  createPublisher(onto_ns);
+  publishers_[onto_ns].publish(msg);
+}
+
+void ontoloGUI::createPublisher(const std::string& onto_ns)
+{
+  if(publishers_.find(onto_ns) == publishers_.end())
+  {
+    publishers_[onto_ns] = n_->advertise<std_msgs::String>("ontologenius/insert/" + onto_ns, 1000);
+    while(ros::ok() && (publishers_[onto_ns].getNumSubscribers() == 0))
+      ros::spinOnce();
+  }
 }
