@@ -69,6 +69,7 @@ catkin_python_setup()
  add_message_files(
    FILES
    HTTP_headers.msg
+   StampedString.msg
  )
 
 ## Generate services in the 'srv' folder

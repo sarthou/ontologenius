@@ -6,69 +6,69 @@
 void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& on)
 {
   std::string msg = "[add]" + from + "|" + property + "|" + on;
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
 }
 
 void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value)
 {
   std::string msg = "[add]" + from + "|" + property + "|" + type + "#" + value;
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
 }
 
 void FeederPublisher::addInheritage(const std::string& from, const std::string& on)
 {
   std::string msg = "[add]" + from + "|+|" + on;
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
 }
 
 void FeederPublisher::addLanguage(const std::string& from, const std::string& lang, const std::string& name)
 {
   std::string msg = "[add]" + from + "|@" + lang + "|" + name;
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
 }
 
 void FeederPublisher::addConcept(const std::string& from)
 {
   std::string msg = "[add]" + from + "|";
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
 }
 
 void FeederPublisher::removeProperty(const std::string& from, const std::string& property)
 {
   std::string msg = "[del]" + from + "|" + property + "|_";
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
   msg += ":_";
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
 }
 
 void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& on)
 {
   std::string msg = "[del]" + from + "|" + property + "|" + on;
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
 }
 
 void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value)
 {
   std::string msg = "[del]" + from + "|" + property + "|" + type + "#" + value;
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
 }
 
 void FeederPublisher::removeInheritage(const std::string& from, const std::string& on)
 {
   std::string msg = "[del]" + from + "|+|" + on;
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
 }
 
 void FeederPublisher::removeLanguage(const std::string& from, const std::string& lang, const std::string& name)
 {
   std::string msg = "[del]" + from + "|@" + lang + "|" + name;
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
 }
 
 void FeederPublisher::removeConcept(const std::string& from)
 {
   std::string msg = "[del]" + from + "|";
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
 }
 
 bool FeederPublisher::waitUpdate(int32_t timeout)
@@ -109,7 +109,7 @@ bool FeederPublisher::commit(const std::string& commit_name, int32_t timeout)
 
   std::chrono::time_point<std::chrono::system_clock> start;
   start = std::chrono::system_clock::now();
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
 
   while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()-start).count()) < (unsigned int)timeout)
   {
@@ -131,7 +131,7 @@ bool FeederPublisher::checkout(const std::string& commit_name, int32_t timeout)
 
   std::chrono::time_point<std::chrono::system_clock> start;
   start = std::chrono::system_clock::now();
-  publish(msg);
+  publishStamped(msg, ros::Time::now());
 
   while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()-start).count()) < (unsigned int)timeout)
   {
@@ -147,7 +147,7 @@ bool FeederPublisher::checkout(const std::string& commit_name, int32_t timeout)
 
 void FeederPublisher::sendNop()
 {
-  publish("[nop]nop|");
+  publishStamped("[nop]nop|", ros::Time::now());
 }
 
 void FeederPublisher::publish(const std::string& str)
@@ -155,6 +155,14 @@ void FeederPublisher::publish(const std::string& str)
   std_msgs::String msg;
   msg.data = str;
   pub_.publish(msg);
+}
+
+void FeederPublisher::publishStamped(const std::string& str, const ros::Time& stamp)
+{
+  ontologenius::StampedString msg;
+  msg.data = str;
+  msg.stamp = stamp;
+  stamped_pub_.publish(msg);
 }
 
 void FeederPublisher::commitCallback(const std_msgs::String::ConstPtr& msg)

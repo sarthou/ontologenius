@@ -10,6 +10,7 @@
 #include <ros/ros.h>
 #include "std_msgs/String.h"
 
+#include "ontologenius/StampedString.h"
 #include "ontologenius/OntologeniusService.h"
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
@@ -64,6 +65,7 @@ private:
   std::mutex reasoner_mutex_;
 
   void knowledgeCallback(const std_msgs::String::ConstPtr& msg);
+  void stampedKnowledgeCallback(const ontologenius::StampedString::ConstPtr& msg);
 
   bool actionsHandle(ontologenius::OntologeniusService::Request &req,
                      ontologenius::OntologeniusService::Response &res);

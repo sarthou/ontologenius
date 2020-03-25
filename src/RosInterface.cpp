@@ -83,6 +83,9 @@ void RosInterface::run()
   service_name = (name_ == "") ? "ontologenius/insert" : "ontologenius/insert/" + name_;
   ros::Subscriber knowledge_subscriber = n_->subscribe(service_name, 10000, &RosInterface::knowledgeCallback, this);
 
+  service_name = (name_ == "") ? "ontologenius/insert_stamped" : "ontologenius/insert_stamped/" + name_;
+  ros::Subscriber stamped_knowledge_subscriber = n_->subscribe(service_name, 10000, &RosInterface::stampedKnowledgeCallback, this);
+
   // Start up ROS service with callbacks
   service_name = (name_ == "") ? "ontologenius/actions" : "ontologenius/actions/" + name_;
   ros::ServiceServer service = n_->advertiseService(service_name, &RosInterface::actionsHandle, this);
@@ -136,6 +139,11 @@ void RosInterface::release()
 ****************/
 
 void RosInterface::knowledgeCallback(const std_msgs::String::ConstPtr& msg)
+{
+  feeder_.store(msg->data);
+}
+
+void RosInterface::stampedKnowledgeCallback(const ontologenius::StampedString::ConstPtr& msg)
 {
   feeder_.store(msg->data);
 }
