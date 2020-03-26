@@ -9,7 +9,7 @@
 
 namespace ontologenius {
 
-RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : run_(true),
+RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) : run_(true),
                                                                    pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, 1000))
 {
   n_ = n;
@@ -21,7 +21,7 @@ RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : run_(true),
   feeder_end = true;
 }
 
-RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, std::string name) : run_(true),
+RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::string& name) : run_(true),
                                                                    pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, 1000))
 {
   n_ = n;
@@ -54,7 +54,7 @@ void RosInterface::init(const std::string& lang, const std::string& intern_file,
   }
 
   if(onto_->preload(dedicated_intern_file) == false)
-    for(auto file : files)
+    for(auto& file : files)
       onto_->readFromFile(file);
 
   reasoners_.configure(config_path);
@@ -78,38 +78,28 @@ void RosInterface::init(const std::string& lang, const std::string& config_path)
 
 void RosInterface::run()
 {
-  std::string service_name;
+  ros::Subscriber knowledge_subscriber = n_->subscribe(getTopicName("insert"), 10000, &RosInterface::knowledgeCallback, this);
 
-  service_name = (name_ == "") ? "ontologenius/insert" : "ontologenius/insert/" + name_;
-  ros::Subscriber knowledge_subscriber = n_->subscribe(service_name, 10000, &RosInterface::knowledgeCallback, this);
-
-  service_name = (name_ == "") ? "ontologenius/insert_stamped" : "ontologenius/insert_stamped/" + name_;
-  ros::Subscriber stamped_knowledge_subscriber = n_->subscribe(service_name, 10000, &RosInterface::stampedKnowledgeCallback, this);
+  ros::Subscriber stamped_knowledge_subscriber = n_->subscribe(getTopicName("insert_stamped"), 10000, &RosInterface::stampedKnowledgeCallback, this);
 
   // Start up ROS service with callbacks
-  service_name = (name_ == "") ? "ontologenius/actions" : "ontologenius/actions/" + name_;
-  ros::ServiceServer service = n_->advertiseService(service_name, &RosInterface::actionsHandle, this);
+  ros::ServiceServer service = n_->advertiseService(getTopicName("actions"), &RosInterface::actionsHandle, this);
 
-  service_name = (name_ == "") ? "ontologenius/class" : "ontologenius/class/" + name_;
-  ros::ServiceServer service_class = n_->advertiseService(service_name, &RosInterface::classHandle, this);
+  ros::ServiceServer service_class = n_->advertiseService(getTopicName("class"), &RosInterface::classHandle, this);
 
-  service_name = (name_ == "") ? "ontologenius/object_property" : "ontologenius/object_property/" + name_;
-  ros::ServiceServer service_object_property = n_->advertiseService(service_name, &RosInterface::objectPropertyHandle, this);
+  ros::ServiceServer service_object_property = n_->advertiseService(getTopicName("object_property"), &RosInterface::objectPropertyHandle, this);
 
-  service_name = (name_ == "") ? "ontologenius/data_property" : "ontologenius/data_property/" + name_;
-  ros::ServiceServer service_data_property = n_->advertiseService(service_name, &RosInterface::dataPropertyHandle, this);
+  ros::ServiceServer service_data_property = n_->advertiseService(getTopicName("data_property"), &RosInterface::dataPropertyHandle, this);
 
-  service_name = (name_ == "") ? "ontologenius/individual" : "ontologenius/individual/" + name_;
-  ros::ServiceServer service_individual = n_->advertiseService(service_name, &RosInterface::individualHandle, this);
+  ros::ServiceServer service_individual = n_->advertiseService(getTopicName("individual"), &RosInterface::individualHandle, this);
 
-  service_name = (name_ == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + name_;
-  ros::ServiceServer service_reasoner = n_->advertiseService(service_name, &RosInterface::reasonerHandle, this);
+  ros::ServiceServer service_reasoner = n_->advertiseService(getTopicName("reasoner"), &RosInterface::reasonerHandle, this);
 
 
   std::thread feed_thread(&RosInterface::feedThread, this);
   std::thread periodic_reasoning_thread(&RosInterface::periodicReasoning, this);
 
-  ROS_DEBUG("%s ontologenius ready", name_.c_str());
+  Display::info(name_ + " is ready");
 
   while (ros::ok() && isRunning())
   {
@@ -648,7 +638,7 @@ void RosInterface::periodicReasoning()
 
     std_msgs::String msg;
     std::vector<std::string> notifications = reasoners_.getNotifications();
-    for(auto notif : notifications)
+    for(auto& notif : notifications)
     {
       std::cout << notif << std::endl;
       msg.data = notif;
@@ -761,7 +751,7 @@ param_t RosInterface::getParams(std::string& param)
 
 int RosInterface::getPropagationLevel(std::string& params)
 {
-  size_t delimitater = params.find("<");
+  size_t delimitater = params.find('<');
   if(delimitater != std::string::npos)
   {
     std::cout << "[WARNING] Deprecated propagation level definition. Use -d option" << std::endl;
@@ -784,7 +774,7 @@ std::string RosInterface::getSelector(std::string& action, std::string& param)
   {
     std::cout << "[WARNING] Deprecated selector definition. Use -s option" << std::endl;
     action = action.substr(std::string("select:").size());
-    size_t delimitater = param.find("=");
+    size_t delimitater = param.find('=');
     if(delimitater != std::string::npos)
     {
       select = param.substr(0, delimitater);

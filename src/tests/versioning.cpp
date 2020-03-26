@@ -1,5 +1,5 @@
-#include <iostream>
 #include <chrono>
+#include <iostream>
 
 #include <ros/ros.h>
 
@@ -51,12 +51,12 @@ int main(int argc, char** argv)
   onto["cpy"]->feeder.checkout(hungry_commit);
   std::vector<std::string> hungry_state = onto["cpy"]->individuals.getOn("bob", "isHungry");
   std::cout << "-> test hungry on cpy" << std::endl;
-  for(auto state : hungry_state)
+  for(auto& state : hungry_state)
     std::cout << "bob isHungry " << state << std::endl;
 
   hungry_state = onto["bob"]->individuals.getOn("bob", "isHungry");
   std::cout << "-> test hungry on bob" << std::endl;
-  for(auto state : hungry_state)
+  for(auto& state : hungry_state)
     std::cout << "bob isHungry " << state << std::endl;
 
   onto["cpy"]->actions.exportToXml("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/save.xml");

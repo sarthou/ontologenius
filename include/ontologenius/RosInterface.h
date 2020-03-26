@@ -35,8 +35,8 @@ struct param_t
 class RosInterface
 {
 public:
-  RosInterface(ros::NodeHandle* n, std::string name = "");
-  RosInterface(RosInterface& other, ros::NodeHandle* n, std::string name = "");
+  RosInterface(ros::NodeHandle* n, const std::string& name = "");
+  RosInterface(RosInterface& other, ros::NodeHandle* n, const std::string& name = "");
   ~RosInterface();
 
   void init(const std::string& lang, const std::string& intern_file, const std::vector<std::string>& files, const std::string& config_path);
@@ -90,6 +90,11 @@ private:
   param_t getParams(std::string& param);
   int getPropagationLevel(std::string& params);
   std::string getSelector(std::string& action, std::string& param);
+
+  std::string getTopicName(const std::string topic_name)
+  {
+    return (name_ == "") ? "ontologenius/" + topic_name : "ontologenius/" + topic_name + "/" + name_;
+  }
 };
 
 } // namespace ontologenius

@@ -1,11 +1,11 @@
-#include <thread>
 #include <regex>
+#include <thread>
 
 #include <ros/ros.h>
 
+#include "ontologenius/Parameters.h"
 #include "ontologenius/RosInterface.h"
 #include "ontologenius/core/ontologyOperators/differenceFinder.h"
-#include "ontologenius/Parameters.h"
 #include "ontologenius/core/utility/error_code.h"
 
 void removeUselessSpace(std::string& text)
@@ -23,7 +23,7 @@ std::map<std::string, std::thread> interfaces_threads_;
 
 ontologenius::Parameters params;
 
-bool deleteInterface(std::string name)
+bool deleteInterface(const std::string& name)
 {
   interfaces_[name]->stop();
   try
@@ -43,7 +43,7 @@ bool deleteInterface(std::string name)
   return true;
 }
 
-std::vector<std::string> getDiff(std::string& param, int& res_code)
+std::vector<std::string> getDiff(const std::string& param, int* res_code)
 {
   std::vector<std::string> res;
 
@@ -59,7 +59,7 @@ std::vector<std::string> getDiff(std::string& param, int& res_code)
       auto it = interfaces_.find(onto1);
       if(it == interfaces_.end())
       {
-        res_code = NO_EFFECT;
+        *res_code = NO_EFFECT;
         return res;
       }
       else
@@ -70,7 +70,7 @@ std::vector<std::string> getDiff(std::string& param, int& res_code)
       it = interfaces_.find(onto2);
       if(it == interfaces_.end())
       {
-        res_code = NO_EFFECT;
+        *res_code = NO_EFFECT;
         return res;
       }
       else
@@ -81,13 +81,13 @@ std::vector<std::string> getDiff(std::string& param, int& res_code)
     }
   }
   else
-    res_code = UNKNOW_ACTION;
+    *res_code = UNKNOW_ACTION;
 
   return res;
 }
 
-bool managerHandle(ontologenius::OntologeniusService::Request &req,
-                   ontologenius::OntologeniusService::Response &res)
+bool managerHandle(ontologenius::OntologeniusService::Request& req,
+                   ontologenius::OntologeniusService::Response& res)
 {
   res.code = 0;
 
@@ -101,7 +101,7 @@ bool managerHandle(ontologenius::OntologeniusService::Request &req,
       res.code = NO_EFFECT;
     else
     {
-      ontologenius::RosInterface* tmp = new ontologenius::RosInterface(n_, req.param);
+      auto tmp = new ontologenius::RosInterface(n_, req.param);
       interfaces_[req.param] = tmp;
       tmp->init(params.parameters_.at("language").getFirst(),
                 params.parameters_.at("intern_file").getFirst(),
@@ -133,7 +133,7 @@ bool managerHandle(ontologenius::OntologeniusService::Request &req,
             res.code = NO_EFFECT;
           else
           {
-            ontologenius::RosInterface* tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), n_, copy_name);
+            auto tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), n_, copy_name);
             interfaces_[copy_name] = tmp;
             tmp->init(params.parameters_.at("language").getFirst(),
                       params.parameters_.at("config").getFirst());
@@ -159,13 +159,13 @@ bool managerHandle(ontologenius::OntologeniusService::Request &req,
   }
   else if(req.action == "list")
   {
-    for(auto it : interfaces_)
+    for(auto& it : interfaces_)
       res.values.push_back(it.first);
   }
   else if(req.action == "difference")
   {
     int code = 0;
-    res.values = getDiff(req.param, code);
+    res.values = getDiff(req.param, &code);
     res.code = code;
   }
   else
@@ -196,13 +196,11 @@ int main(int argc, char** argv)
   ros::spin();
 
   std::vector<std::string> interfaces_names;
-  for(auto intreface : interfaces_)
+  for(auto& intreface : interfaces_)
     interfaces_names.push_back(intreface.first);
 
-  for(size_t i = 0; i < interfaces_names.size(); i++)
-    deleteInterface(interfaces_names[i]);
-
-  ROS_DEBUG("KILL ontologenius");
+  for(auto& interfaces_name : interfaces_names)
+    deleteInterface(interfaces_name);
 
   return 0;
 }
