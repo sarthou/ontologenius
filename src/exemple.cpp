@@ -24,7 +24,5 @@ int main(int argc, char** argv)
   drawer.draw("ontologenius_exemple");
 }
 
-  ROS_DEBUG("Drawing done");
-
   return 0;
 }

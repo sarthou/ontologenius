@@ -41,8 +41,8 @@ void ReasonerInverseOf::insertInverse(IndividualBranch_t* indiv_on, ObjectProper
         return;
   }
 
-  indiv_on->object_relations_.push_back(IndivObjectRelationElement_t(inv_prop, inv_indiv, 1.0, true));
-  indiv_on->object_properties_has_induced_.push_back(Triplet());
+  indiv_on->object_relations_.emplace_back(inv_prop, inv_indiv, 1.0, true);
+  indiv_on->object_properties_has_induced_.emplace_back();
   indiv_on->nb_updates_++;
   nb_update_++;
 }

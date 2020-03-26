@@ -18,7 +18,7 @@ public:
   ~OntologyDrawer() {}
 
   void setOntology(Ontology* ontology);
-  void draw(std::string name);
+  void draw(const std::string& name);
 
 private:
   ClassDrawer class_drawer_;

@@ -4,8 +4,8 @@
 
 namespace ontologenius {
 
-FeedStorage::FeedStorage() : base_regex("^\\[(\\w+)\\](.*)\\|(.*)\\|(.*)$"),
-                             simple_regex("^\\[(\\w+)\\](.*)\\|$")
+FeedStorage::FeedStorage() : base_regex(R"(^\[(\w+)\](.*)\|(.*)\|(.*)$)"),
+                             simple_regex(R"(^\[(\w+)\](.*)\|$)")
 {
   queue_choice_ = true;
 }

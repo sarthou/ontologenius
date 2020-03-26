@@ -1,9 +1,9 @@
-#include <iostream>
 #include <chrono>
-#include <stdlib.h>
-#include <time.h>
-#include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
 #include <string>
+#include <vector>
 
 #include <ros/ros.h>
 
@@ -34,10 +34,10 @@ double tester(std::vector<std::string>& actions, const std::string& service)
   for(size_t i = 0; i < NB_PER_SERVICE; i++)
   {
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
-    for(size_t j = 0; j < actions.size(); j++)
+    for(auto& action : actions)
     {
       ontologenius::OntologeniusService srv;
-      srv.request.action = actions[j];
+      srv.request.action = action;
       srv.request.param = "this_is_a_test";
 
       if(!client.call(srv))

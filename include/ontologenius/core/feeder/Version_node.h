@@ -46,7 +46,7 @@ private:
   std::vector<feed_t> datas_;
 
   std::string getSpaces(int nb, const std::string& symbol = "  ");
-  std::string dataToXml(feed_t data);
+  std::string dataToXml(const feed_t& data);
   std::string orderIdToXml();
 };
 

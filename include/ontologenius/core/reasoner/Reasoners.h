@@ -26,8 +26,8 @@ public:
   std::vector<std::string> listVector();
   std::vector<std::string> activeListVector();
 
-  int activate(std::string plugin);
-  int deactivate(std::string plugin);
+  int activate(const std::string& plugin);
+  int deactivate(const std::string& plugin);
   std::string getDescription(std::string& plugin);
 
   void runPreReasoners();

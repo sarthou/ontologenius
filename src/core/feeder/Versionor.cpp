@@ -10,7 +10,7 @@ namespace ontologenius {
 Versionor::Versionor(FeedStorage* storage)
 {
   storage_ = storage;
-  Version_node* first_node = new Version_node("0");
+  auto first_node = new Version_node("0");
   current_node_ = new Version_node(first_node);
   nodes_[first_node->getId()] = first_node;
   activated_ = false;

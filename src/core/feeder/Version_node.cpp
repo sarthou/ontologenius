@@ -89,7 +89,7 @@ std::string Version_node::getSpaces(int nb, const std::string& symbol)
   return res;
 }
 
-std::string Version_node::dataToXml(feed_t data)
+std::string Version_node::dataToXml(const feed_t& data)
 {
   std::string xml = "<Data action=\"" + std::string((data.action_ == action_add) ? "add" : "del") +
                     "\">" + data.from_ + "|" + data.prop_ + "|" + data.on_ +

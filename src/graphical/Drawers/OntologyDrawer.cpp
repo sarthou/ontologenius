@@ -22,7 +22,7 @@ void OntologyDrawer::setOntology(Ontology* ontology)
   }
 }
 
-void OntologyDrawer::draw(std::string name)
+void OntologyDrawer::draw(const std::string& name)
 {
   class_drawer_.putInLayers();
   class_drawer_.draw(name + "_class.png");

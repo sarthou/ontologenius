@@ -29,7 +29,7 @@ void ReasonerChain::postReason()
 
 void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<ObjectPropertyBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on)
 {
-  chainNode_t* indivs_node = new chainNode_t;
+  auto indivs_node = new chainNode_t;
   indivs_node->ons_.push_back(indiv);
   indivs_node->froms_.push_back(on);
   indivs_node->props_.push_back(prop);
@@ -51,8 +51,8 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
     for(size_t i = 0; i < indivs_size; i++)
       if(!porpertyExist(on, chain[chain_size], indivs[i]))
       {
-        on->object_relations_.push_back(IndivObjectRelationElement_t(chain[chain_size], indivs[i], 1.0, true));
-        on->object_properties_has_induced_.push_back(Triplet());
+        on->object_relations_.emplace_back(chain[chain_size], indivs[i], 1.0, true);
+        on->object_properties_has_induced_.emplace_back();
         on->updated_ = true;
         for(auto relation : on->object_relations_)
           relation.second->updated_ = true;
@@ -62,13 +62,13 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
         for(size_t link_i = 0; link_i < chain.size(); link_i++)
         {
           std::vector<chainNode_t*> nodes = tree.getNodes(link_i);
-          for(size_t node_i = 0; node_i < nodes.size(); node_i++)
-            for(size_t node_it = 0; node_it < nodes[node_i]->ons_.size(); node_it++)
+          for(auto& node : nodes)
+            for(size_t node_it = 0; node_it < node->ons_.size(); node_it++)
             {
-              for(size_t prop_i = 0; prop_i < nodes[node_i]->froms_[node_it]->object_relations_.size(); prop_i++)
-                if(nodes[node_i]->froms_[node_it]->object_relations_[prop_i].first == nodes[node_i]->props_[node_it])
-                  if(nodes[node_i]->froms_[node_it]->object_relations_[prop_i].second == nodes[node_i]->ons_[node_it])
-                    addInduced(nodes[node_i]->froms_[node_it], prop_i, on, chain[chain_size], indivs[i]);
+              for(size_t prop_i = 0; prop_i < node->froms_[node_it]->object_relations_.size(); prop_i++)
+                if(node->froms_[node_it]->object_relations_[prop_i].first == node->props_[node_it])
+                  if(node->froms_[node_it]->object_relations_[prop_i].second == node->ons_[node_it])
+                    addInduced(node->froms_[node_it], prop_i, on, chain[chain_size], indivs[i]);
             }
         }
       }
@@ -99,7 +99,7 @@ void ReasonerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTre
       }
       if(tmp_on.size() != 0)
       {
-        chainNode_t* indivs = new chainNode_t;
+        auto indivs = new chainNode_t;
         indivs->ons_ = tmp_on;
         indivs->froms_ = tmp_from;
         indivs->props_ = tmp_prop;

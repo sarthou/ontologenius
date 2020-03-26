@@ -29,13 +29,11 @@ Reasoners::~Reasoners()
     }
     catch(class_loader::LibraryUnloadException& ex)
     {
-      std::cout << "class_loader::LibraryUnloadException on " << it.first << " : " << std::string(ex.what()) << std::endl;
-      ROS_ERROR("The plugin %s failed to unload for some reason. Error: %s", it.first.c_str(), ex.what());
+      Display::error("class_loader::LibraryUnloadException on " + it.first + " : " + std::string(ex.what()));
     }
     catch(pluginlib::LibraryUnloadException& ex)
     {
-      std::cout << "pluginlib::LibraryUnloadException on " << it.first << " : " << std::string(ex.what()) << std::endl;
-      ROS_ERROR("The plugin %s failed to unload for some reason. Error: %s", it.first.c_str(), ex.what());
+      Display::error("pluginlib::LibraryUnloadException on " + it.first + " : " + std::string(ex.what()));
     }
     catch(...)
     {
@@ -74,25 +72,25 @@ void Reasoners::load()
 
   try
   {
-    for(size_t i = 0; i < reasoners.size(); i++)
+    for(auto& reasoner : reasoners)
     {
-      loader_.loadLibraryForClass(reasoners[i]);
-      ReasonerInterface* tmp = loader_.createUnmanagedInstance(reasoners[i]);
+      loader_.loadLibraryForClass(reasoner);
+      ReasonerInterface* tmp = loader_.createUnmanagedInstance(reasoner);
       tmp->initialize(ontology_);
-      reasoners_[reasoners[i]] = tmp;
+      reasoners_[reasoner] = tmp;
       if(tmp->defaultAvtive())
-        active_reasoners_[reasoners[i]] = tmp;
+        active_reasoners_[reasoner] = tmp;
     }
   }
   catch(pluginlib::PluginlibException& ex)
   {
-    ROS_ERROR("The plugin failed to load for some reason. Error: %s", ex.what());
+    Display::error("The plugin failed to load for some reason. Error: " + std::string(ex.what()));
   }
 
   reasoners = loader_.getRegisteredLibraries();
-  for(size_t i = 0; i < reasoners.size(); i++)
+  for(auto& reasoner : reasoners)
   {
-    std::cout << reasoners[i] << " registered" << std::endl;
+    std::cout << reasoner << " registered" << std::endl;
   }
 
   applyConfig();
@@ -132,7 +130,7 @@ std::vector<std::string> Reasoners::activeListVector()
   return res;
 }
 
-int Reasoners::activate(std::string plugin)
+int Reasoners::activate(const std::string& plugin)
 {
   if(reasoners_.find(plugin) != reasoners_.end())
   {
@@ -154,7 +152,7 @@ int Reasoners::activate(std::string plugin)
   }
 }
 
-int Reasoners::deactivate(std::string plugin)
+int Reasoners::deactivate(const std::string& plugin)
 {
   if(active_reasoners_.find(plugin) != active_reasoners_.end())
   {
@@ -262,7 +260,7 @@ void Reasoners::applyConfig()
       if(param.second.data)
       {
         active_reasoners_.clear();
-        for(auto elem : param.second.data.value())
+        for(auto& elem : param.second.data.value())
         {
           if(reasoners_.find(elem) != reasoners_.end())
             active_reasoners_[elem] = (reasoners_[elem]);
