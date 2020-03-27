@@ -40,8 +40,6 @@ struct node_t
 class GraphDrawer
 {
 public:
-  GraphDrawer();
-  ~GraphDrawer() {}
 
   void draw(std::string file_name);
 

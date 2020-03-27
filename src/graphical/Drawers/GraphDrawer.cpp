@@ -9,8 +9,6 @@
 
 namespace ontologenius {
 
-GraphDrawer::GraphDrawer(){}
-
 void GraphDrawer::putLayer(int layer)
 {
   int pos = 0;

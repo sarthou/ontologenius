@@ -154,7 +154,7 @@ add_onto_library(ontologenius_core_lib
   src/core/reasoner/plugins/ReasonerInterface.cpp
   src/core/reasoner/Reasoners.cpp
   src/core/reasoner/ConfigReader.cpp
-  src/core/Computer.cpp
+#  src/core/Computer.cpp
 )
 target_link_libraries(ontologenius_core_lib
  PUBLIC

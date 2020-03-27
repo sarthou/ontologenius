@@ -43,8 +43,7 @@ bool OntologiesManipulator::add(const std::string& name)
       return false;
     else
     {
-      auto tmp = new OntologyManipulator(n_, name);
-      manipulators_[name] = tmp;
+      manipulators_[name] = new OntologyManipulator(n_, name);
       return true;
     }
   }

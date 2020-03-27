@@ -81,7 +81,7 @@ commit_t* TreeReader::readNode(TiXmlElement* elem, commit_t* prev)
     std::string id = getAttribute(elem, "id");
     if(id != "")
     {
-      commit_t* current = new commit_t(id);
+      auto current = new commit_t(id);
       std::cout << "create commit " << id << std::endl;
       for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
       {
@@ -127,7 +127,7 @@ std::string TreeReader::getAttribute(TiXmlElement* sub_elem, const std::string& 
 {
   const char* subAttr;
   subAttr = sub_elem->Attribute(attribute.c_str());
-  if(subAttr != NULL)
+  if(subAttr != nullptr)
     return std::string(subAttr);
   return "";
 }

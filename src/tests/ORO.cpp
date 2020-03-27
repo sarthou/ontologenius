@@ -49,7 +49,7 @@ double R2()
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
   std::vector<std::string> res;
-  std::vector<std::string> plants = onto_ptr->individuals.getType("Plant");
+  const std::vector<std::string> plants = onto_ptr->individuals.getType("Plant");
   for(auto& plant : plants)
   {
     std::vector<std::string> none = onto_ptr->individuals.getFrom("isAt", plant);

@@ -10,6 +10,8 @@
 
 #include <regex>
 
+#define QUEU_SIZE 1000
+
 ontoloGUI::ontoloGUI(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ontoloGUI)
@@ -252,8 +254,8 @@ ontoloGUI::~ontoloGUI()
 void ontoloGUI::init(ros::NodeHandle* n)
 {
   n_ = n;
-  publishers_["_"] = n_->advertise<std_msgs::String>("ontologenius/insert", 1000);
-  feeder_notifications_subs_["_"] = n_->subscribe("ontologenius/feeder_notifications", 1000, &ontoloGUI::feederCallback, this);
+  publishers_["_"] = n_->advertise<std_msgs::String>("ontologenius/insert", QUEU_SIZE);
+  feeder_notifications_subs_["_"] = n_->subscribe("ontologenius/feeder_notifications", QUEU_SIZE, &ontoloGUI::feederCallback, this);
 }
 
 void ontoloGUI::wait()
@@ -666,19 +668,19 @@ void ontoloGUI::addOntologySlot()
     {
       srv.request.action = "copy";
       if(publishers_.find(base_match[1].str()) == publishers_.end())
-        publishers_[base_match[1].str()] = n_->advertise<std_msgs::String>("ontologenius/insert/" + base_match[1].str(), 1000);
+        publishers_[base_match[1].str()] = n_->advertise<std_msgs::String>("ontologenius/insert/" + base_match[1].str(), QUEU_SIZE);
 
       if(feeder_notifications_subs_.find(base_match[1].str()) == feeder_notifications_subs_.end())
-        feeder_notifications_subs_[base_match[1].str()] = n_->subscribe("ontologenius/feeder_notifications", 1000, &ontoloGUI::feederCallback, this);
+        feeder_notifications_subs_[base_match[1].str()] = n_->subscribe("ontologenius/feeder_notifications", QUEU_SIZE, &ontoloGUI::feederCallback, this);
     }
   }
   else
   {
     if(publishers_.find(srv.request.param) == publishers_.end())
-      publishers_[srv.request.param] = n_->advertise<std_msgs::String>("ontologenius/insert/" + srv.request.param, 1000);
+      publishers_[srv.request.param] = n_->advertise<std_msgs::String>("ontologenius/insert/" + srv.request.param, QUEU_SIZE);
 
     if(feeder_notifications_subs_.find(srv.request.param) == feeder_notifications_subs_.end())
-      feeder_notifications_subs_[srv.request.param] = n_->subscribe("ontologenius/feeder_notifications", 1000, &ontoloGUI::feederCallback, this);
+      feeder_notifications_subs_[srv.request.param] = n_->subscribe("ontologenius/feeder_notifications", QUEU_SIZE, &ontoloGUI::feederCallback, this);
   }
 
   if(!client.call(srv))
@@ -841,7 +843,7 @@ void ontoloGUI::createPublisher(const std::string& onto_ns)
 {
   if(publishers_.find(onto_ns) == publishers_.end())
   {
-    publishers_[onto_ns] = n_->advertise<std_msgs::String>("ontologenius/insert/" + onto_ns, 1000);
+    publishers_[onto_ns] = n_->advertise<std_msgs::String>("ontologenius/insert/" + onto_ns, QUEU_SIZE);
     while(ros::ok() && (publishers_[onto_ns].getNumSubscribers() == 0))
       ros::spinOnce();
   }

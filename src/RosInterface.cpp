@@ -7,10 +7,13 @@
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
 
+#define PUB_QUEU_SIZE 1000
+#define SUB_QUEU_SIZE 10000
+
 namespace ontologenius {
 
 RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) : run_(true),
-                                                                   pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, 1000))
+                                                                   pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, PUB_QUEU_SIZE))
 {
   n_ = n;
   onto_ = new Ontology();
@@ -22,7 +25,7 @@ RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) : run_(t
 }
 
 RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::string& name) : run_(true),
-                                                                   pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, 1000))
+                                                                   pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, PUB_QUEU_SIZE))
 {
   n_ = n;
 
@@ -78,9 +81,9 @@ void RosInterface::init(const std::string& lang, const std::string& config_path)
 
 void RosInterface::run()
 {
-  ros::Subscriber knowledge_subscriber = n_->subscribe(getTopicName("insert"), 10000, &RosInterface::knowledgeCallback, this);
+  ros::Subscriber knowledge_subscriber = n_->subscribe(getTopicName("insert"), PUB_QUEU_SIZE, &RosInterface::knowledgeCallback, this);
 
-  ros::Subscriber stamped_knowledge_subscriber = n_->subscribe(getTopicName("insert_stamped"), 10000, &RosInterface::stampedKnowledgeCallback, this);
+  ros::Subscriber stamped_knowledge_subscriber = n_->subscribe(getTopicName("insert_stamped"), PUB_QUEU_SIZE, &RosInterface::stampedKnowledgeCallback, this);
 
   // Start up ROS service with callbacks
   ros::ServiceServer service = n_->advertiseService(getTopicName("actions"), &RosInterface::actionsHandle, this);
@@ -577,7 +580,7 @@ bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &re
 void RosInterface::feedThread()
 {
   std::string publisher_name = (name_ == "") ? "ontologenius/feeder_notifications" : "ontologenius/feeder_notifications/" + name_;
-  ros::Publisher feeder_publisher = n_->advertise<std_msgs::String>(publisher_name, 1000);
+  ros::Publisher feeder_publisher = n_->advertise<std_msgs::String>(publisher_name, PUB_QUEU_SIZE);
 
   ros::Rate wait(feeder_rate_);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
@@ -622,7 +625,7 @@ void RosInterface::feedThread()
 void RosInterface::periodicReasoning()
 {
   std::string publisher_name = (name_ == "") ? "ontologenius/reasoner_notifications" : "ontologenius/reasoner_notifications/" + name_;
-  ros::Publisher reasoner_publisher = n_->advertise<std_msgs::String>(publisher_name, 1000);
+  ros::Publisher reasoner_publisher = n_->advertise<std_msgs::String>(publisher_name, PUB_QUEU_SIZE);
 
   ros::Rate wait(10);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
