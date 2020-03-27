@@ -3,72 +3,72 @@
 #include <chrono>
 #include <unistd.h>
 
-void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& on)
+void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& on, const ros::Time& stamp)
 {
   std::string msg = "[add]" + from + "|" + property + "|" + on;
-  publishStamped(msg, ros::Time::now());
+  publishStamped(msg, stamp);
 }
 
-void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value)
+void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ros::Time& stamp)
 {
   std::string msg = "[add]" + from + "|" + property + "|" + type + "#" + value;
-  publishStamped(msg, ros::Time::now());
+  publishStamped(msg, stamp);
 }
 
-void FeederPublisher::addInheritage(const std::string& from, const std::string& on)
+void FeederPublisher::addInheritage(const std::string& from, const std::string& on, const ros::Time& stamp)
 {
   std::string msg = "[add]" + from + "|+|" + on;
-  publishStamped(msg, ros::Time::now());
+  publishStamped(msg, stamp);
 }
 
-void FeederPublisher::addLanguage(const std::string& from, const std::string& lang, const std::string& name)
+void FeederPublisher::addLanguage(const std::string& from, const std::string& lang, const std::string& name, const ros::Time& stamp)
 {
   std::string msg = "[add]" + from + "|@" + lang + "|" + name;
-  publishStamped(msg, ros::Time::now());
+  publishStamped(msg, stamp);
 }
 
-void FeederPublisher::addConcept(const std::string& from)
+void FeederPublisher::addConcept(const std::string& from, const ros::Time& stamp)
 {
   std::string msg = "[add]" + from + "|";
-  publishStamped(msg, ros::Time::now());
+  publishStamped(msg, stamp);
 }
 
-void FeederPublisher::removeProperty(const std::string& from, const std::string& property)
+void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const ros::Time& stamp)
 {
   std::string msg = "[del]" + from + "|" + property + "|_";
   publishStamped(msg, ros::Time::now());
   msg += ":_";
-  publishStamped(msg, ros::Time::now());
+  publishStamped(msg, stamp);
 }
 
-void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& on)
+void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& on, const ros::Time& stamp)
 {
   std::string msg = "[del]" + from + "|" + property + "|" + on;
-  publishStamped(msg, ros::Time::now());
+  publishStamped(msg, stamp);
 }
 
-void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value)
+void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ros::Time& stamp)
 {
   std::string msg = "[del]" + from + "|" + property + "|" + type + "#" + value;
-  publishStamped(msg, ros::Time::now());
+  publishStamped(msg, stamp);
 }
 
-void FeederPublisher::removeInheritage(const std::string& from, const std::string& on)
+void FeederPublisher::removeInheritage(const std::string& from, const std::string& on, const ros::Time& stamp)
 {
   std::string msg = "[del]" + from + "|+|" + on;
-  publishStamped(msg, ros::Time::now());
+  publishStamped(msg, stamp);
 }
 
-void FeederPublisher::removeLanguage(const std::string& from, const std::string& lang, const std::string& name)
+void FeederPublisher::removeLanguage(const std::string& from, const std::string& lang, const std::string& name, const ros::Time& stamp)
 {
   std::string msg = "[del]" + from + "|@" + lang + "|" + name;
-  publishStamped(msg, ros::Time::now());
+  publishStamped(msg, stamp);
 }
 
-void FeederPublisher::removeConcept(const std::string& from)
+void FeederPublisher::removeConcept(const std::string& from, const ros::Time& stamp)
 {
   std::string msg = "[del]" + from + "|";
-  publishStamped(msg, ros::Time::now());
+  publishStamped(msg, stamp);
 }
 
 bool FeederPublisher::waitUpdate(int32_t timeout)

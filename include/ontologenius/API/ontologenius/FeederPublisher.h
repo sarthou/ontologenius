@@ -34,18 +34,18 @@ public:
     updated_ = false;
   }
 
-  void addProperty(const std::string& from, const std::string& property, const std::string& on);
-  void addProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value);
-  void addInheritage(const std::string& from, const std::string& on);
-  void addLanguage(const std::string& from, const std::string& lang, const std::string& name);
-  void addConcept(const std::string& from);
+  void addProperty(const std::string& from, const std::string& property, const std::string& on, const ros::Time& stamp = ros::Time::now());
+  void addProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ros::Time& stamp = ros::Time::now());
+  void addInheritage(const std::string& from, const std::string& on, const ros::Time& stamp = ros::Time::now());
+  void addLanguage(const std::string& from, const std::string& lang, const std::string& name, const ros::Time& stamp = ros::Time::now());
+  void addConcept(const std::string& from, const ros::Time& stamp = ros::Time::now());
 
-  void removeProperty(const std::string& from, const std::string& property);
-  void removeProperty(const std::string& from, const std::string& property, const std::string& on);
-  void removeProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value);
-  void removeInheritage(const std::string& from, const std::string& on);
-  void removeLanguage(const std::string& from, const std::string& lang, const std::string& name);
-  void removeConcept(const std::string& from);
+  void removeProperty(const std::string& from, const std::string& property, const ros::Time& stamp = ros::Time::now());
+  void removeProperty(const std::string& from, const std::string& property, const std::string& on, const ros::Time& stamp = ros::Time::now());
+  void removeProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ros::Time& stamp = ros::Time::now());
+  void removeInheritage(const std::string& from, const std::string& on, const ros::Time& stamp = ros::Time::now());
+  void removeLanguage(const std::string& from, const std::string& lang, const std::string& name, const ros::Time& stamp = ros::Time::now());
+  void removeConcept(const std::string& from, const ros::Time& stamp = ros::Time::now());
 
   size_t getNumSubscribers() { return stamped_pub_.getNumSubscribers(); }
   void waitConnected()

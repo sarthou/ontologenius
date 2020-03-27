@@ -26,49 +26,71 @@ class FeederPublisher:
         random.seed()
         self._commit_nb = random.randint(1, 100000)
 
-    def addObjectProperty(self, concept_from, property, concept_on):
+    def addObjectProperty(self, concept_from, property, concept_on, stamp = None):
         msg = '[add]' + concept_from + '|' + property + '|' + concept_on
-        self._publish_stamped(msg, rospy.get_rostime())
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def addDataProperty(self, concept_from, property, type, data):
+    def addDataProperty(self, concept_from, property, type, data, stamp = None):
         msg = '[add]' + concept_from + '|' + property + '|' + type + '#' + data
-        self._publish_stamped(msg, rospy.get_rostime())
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def addInheritage(self, concept_from, concept_on):
+    def addInheritage(self, concept_from, concept_on, stamp = None):
         msg = '[add]' + concept_from + '|+|' + concept_on
-        self._publish_stamped(msg, rospy.get_rostime())
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def addLanguage(self, concept_from, lang, name):
+    def addLanguage(self, concept_from, lang, name, stamp = None):
         msg = '[add]' + concept_from + '|@' + lang + '|' + name
-        self._publish_stamped(msg, rospy.get_rostime())
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def addConcept(self, concept_from):
+    def addConcept(self, concept_from, stamp = None):
         msg = '[add]' + concept_from + '|'
-        self._publish_stamped(msg, rospy.get_rostime())
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def removeProperty(self, concept_from, property):
+    def removeProperty(self, concept_from, property, stamp = None):
         msg = '[del]' + concept_from + '|' + property + '|_'
-        self._publish_stamped(msg, rospy.get_rostime())
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def removeObjectProperty(self, concept_from, property, concept_on):
+    def removeObjectProperty(self, concept_from, property, concept_on, stamp = None):
         msg = '[del]' + concept_from + '|' + property + '|' + concept_on
-        self._publish_stamped(msg, rospy.get_rostime())
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def removeDataProperty(self, concept_from, property, type, data):
+    def removeDataProperty(self, concept_from, property, type, data, stamp = None):
         msg = '[del]' + concept_from + '|' + property + '|' + type + '#' + data
-        self._publish_stamped(msg, rospy.get_rostime())
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def removeInheritage(self, concept_from, concept_on):
+    def removeInheritage(self, concept_from, concept_on, stamp = None):
         msg = '[del]' + concept_from + '|+|' + concept_on
-        self._publish_stamped(msg, rospy.get_rostime())
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def removeLanguage(self, concept_from, lang, name):
+    def removeLanguage(self, concept_from, lang, name, stamp = None):
         msg = '[add]' + concept_from + '|@' + lang + '|' + name
-        self._publish_stamped(msg, rospy.get_rostime())
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def removeConcept(self, concept_from):
+    def removeConcept(self, concept_from, stamp = None):
         msg = '[del]' + concept_from + '|'
-        self._publish_stamped(msg, rospy.get_rostime())
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
     def getNumSubscribers(self):
         return self._pub.get_num_connections()
