@@ -125,6 +125,12 @@ void RosInterface::release()
   reasoner_mutex_.unlock();
 }
 
+void RosInterface::close()
+{
+  onto_->close();
+  reasoners_.runPostReasoners();
+}
+
 /***************
 *
 * Callbacks
@@ -158,10 +164,7 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
   else if(req.action == "export")
     feeder_.exportToXml(req.param);
   else if(req.action == "close")
-  {
-    onto_->close();
-    reasoners_.runPostReasoners();
-  }
+    close();
   else if(req.action == "reset")
   {
     feeder_mutex_.lock();

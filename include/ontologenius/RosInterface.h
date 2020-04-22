@@ -43,6 +43,7 @@ public:
   void init(const std::string& lang, const std::string& config_path);
   void run();
   void stop() {run_ = false; }
+  void close();
   inline bool isRunning() {return run_; }
   Ontology* getOntology() {return onto_; }
 
