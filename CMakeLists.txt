@@ -70,6 +70,7 @@ catkin_python_setup()
    FILES
    HTTP_headers.msg
    StampedString.msg
+   OntologeniusSparqlResponse.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -78,6 +79,7 @@ catkin_python_setup()
   REST.srv
   standard_service.srv
   OntologeniusService.srv
+  OntologeniusSparqlService.srv
  )
 
 ## Generate added messages and services with any dependencies listed here
@@ -225,6 +227,7 @@ add_onto_library(ontologenius_lib
   src/API/ontologenius/clients/ActionClient.cpp
   src/API/ontologenius/clients/ManagerClient.cpp
   src/API/ontologenius/clients/ClientBase.cpp
+  src/API/ontologenius/clients/SparqlClient.cpp
   src/API/ontologenius/FeederPublisher.cpp
   src/API/ontologenius/OntologyManipulator.cpp
   src/API/ontologenius/OntologiesManipulator.cpp
@@ -259,6 +262,7 @@ target_link_libraries(ontologenius_reasoner_plugin
 add_onto_library(ontologenius_interface
   src/RosInterface.cpp
   src/core/ontologyOperators/differenceFinder.cpp
+  src/core/ontologyOperators/Sparql.cpp
 )
 target_link_libraries(ontologenius_interface
  PUBLIC

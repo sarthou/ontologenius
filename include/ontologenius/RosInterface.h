@@ -12,10 +12,12 @@
 
 #include "ontologenius/StampedString.h"
 #include "ontologenius/OntologeniusService.h"
+#include "ontologenius/OntologeniusSparqlService.h"
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/reasoner/Reasoners.h"
 #include "ontologenius/core/feeder/Feeder.h"
+#include "ontologenius/core/ontologyOperators/Sparql.h"
 
 namespace ontologenius {
 
@@ -55,6 +57,7 @@ private:
   Ontology* onto_;
   Reasoners reasoners_;
   Feeder feeder_;
+  Sparql sparql_;
 
   std::string name_;
   std::atomic<bool> run_;
@@ -80,6 +83,8 @@ private:
                         ontologenius::OntologeniusService::Response &res);
   bool reasonerHandle(ontologenius::OntologeniusService::Request &req,
                     ontologenius::OntologeniusService::Response &res);
+  bool sparqlHandle(ontologenius::OntologeniusSparqlService::Request &req,
+                  ontologenius::OntologeniusSparqlService::Response &res);
 
   void feedThread();
   void periodicReasoning();

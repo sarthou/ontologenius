@@ -10,6 +10,7 @@
 #include "ontologenius/API/ontologenius/clients/ontologyClients/ObjectPropertyClient.h"
 #include "ontologenius/API/ontologenius/clients/ontologyClients/DataPropertyClient.h"
 #include "ontologenius/API/ontologenius/clients/ontologyClients/ClassClient.h"
+#include "ontologenius/API/ontologenius/clients/SparqlClient.h"
 #include "ontologenius/API/ontologenius/clients/ActionClient.h"
 #include "ontologenius/API/ontologenius/clients/ReasonerClient.h"
 #include "ontologenius/API/ontologenius/FeederPublisher.h"
@@ -35,6 +36,7 @@ public:
   ActionClient actions;
   ReasonerClient reasoners;
   FeederPublisher feeder;
+  SparqlClient sparql;
 
 private:
   ros::NodeHandle* n_;

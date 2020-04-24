@@ -1,0 +1,4 @@
+string query
+---
+OntologeniusSparqlResponse[] results
+string error

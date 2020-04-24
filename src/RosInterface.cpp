@@ -19,6 +19,7 @@ RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) : run_(t
   onto_ = new Ontology();
   reasoners_.link(onto_);
   feeder_.link(onto_);
+  sparql_.link(onto_);
 
   name_ = name;
   feeder_end = true;
@@ -35,6 +36,7 @@ RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::s
 
   reasoners_.link(onto_);
   feeder_.link(onto_);
+  sparql_.link(onto_);
 
   name_ = name;
   feeder_end = true;
@@ -97,6 +99,8 @@ void RosInterface::run()
   ros::ServiceServer service_individual = n_->advertiseService(getTopicName("individual"), &RosInterface::individualHandle, this);
 
   ros::ServiceServer service_reasoner = n_->advertiseService(getTopicName("reasoner"), &RosInterface::reasonerHandle, this);
+
+  ros::ServiceServer service_sparql = n_->advertiseService(getTopicName("sparql"), &RosInterface::sparqlHandle, this);
 
 
   std::thread feed_thread(&RosInterface::feedThread, this);
@@ -173,6 +177,7 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
     onto_ = new Ontology();
     reasoners_.link(onto_);
     feeder_.link(onto_);
+    sparql_.link(onto_);
     feeder_mutex_.unlock();
     reasoner_mutex_.unlock();
   }
@@ -570,6 +575,27 @@ bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &re
     res.values.push_back(reasoners_.getDescription(req.param));
   else
     res.code = UNKNOW_ACTION;
+
+  return true;
+}
+
+bool RosInterface::sparqlHandle(ontologenius::OntologeniusSparqlService::Request &req,
+                                ontologenius::OntologeniusSparqlService::Response &res)
+{
+  std::vector<std::map<std::string, std::string>> results = sparql_.run(req.query);
+
+  for(auto& result : results)
+  {
+    ontologenius::OntologeniusSparqlResponse tmp;
+    for(auto& r : result)
+    {
+      tmp.names.push_back(r.first);
+      tmp.values.push_back(r.second);
+    }
+    res.results.push_back(tmp);
+  }
+
+  res.error = sparql_.getError();
 
   return true;
 }

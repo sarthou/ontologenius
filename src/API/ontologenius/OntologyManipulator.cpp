@@ -6,7 +6,8 @@ OntologyManipulator::OntologyManipulator(ros::NodeHandle* n, const std::string& 
                                                                                         classes(n, name),
                                                                                         actions(n, name),
                                                                                         reasoners(n, name),
-                                                                                        feeder(n, name)
+                                                                                        feeder(n, name),
+                                                                                        sparql(n, name)
 {
   n_ = n;
   name_ = name;
@@ -20,7 +21,8 @@ OntologyManipulator::OntologyManipulator(OntologyManipulator& other): individual
                                                                       classes(other.n_, other.name_),
                                                                       actions(other.n_, other.name_),
                                                                       reasoners(other.n_, other.name_),
-                                                                      feeder(other.n_, other.name_)
+                                                                      feeder(other.n_, other.name_),
+                                                                      sparql(other.n_, other.name_)
 {
   n_ = other.n_;
   name_ = other.name_;
@@ -34,7 +36,8 @@ OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): individua
                                                                       classes(other.n_, other.name_),
                                                                       actions(other.n_, other.name_),
                                                                       reasoners(other.n_, other.name_),
-                                                                      feeder(other.n_, other.name_)
+                                                                      feeder(other.n_, other.name_),
+                                                                      sparql(other.n_, other.name_)
 {
   n_ = other.n_;
   name_ = other.name_;
