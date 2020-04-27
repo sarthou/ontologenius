@@ -48,7 +48,6 @@ private:
    resource_t getResource(const std::string& resource);
    std::string toString(const triplet_t& triplet);
 
-   std::vector<std::string> split(const std::string& str, const std::string& delim);
    void removeUselessSpace(std::string& text);
 };
 

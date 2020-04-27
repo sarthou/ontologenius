@@ -90,7 +90,6 @@ private:
   void periodicReasoning();
 
   void removeUselessSpace(std::string& text);
-  bool split(const std::string &text, std::vector<std::string> &strs, const std::string& delim);
   void set2string(const std::unordered_set<std::string>& word_set, std::string& result);
   void set2vector(const std::unordered_set<std::string>& word_set, std::vector<std::string>& result);
   param_t getParams(std::string& param);

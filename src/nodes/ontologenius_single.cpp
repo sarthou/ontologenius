@@ -1,6 +1,6 @@
 #include <ros/ros.h>
 
-#include "ontologenius/Parameters.h"
+#include "ontologenius/utils/Parameters.h"
 #include "ontologenius/RosInterface.h"
 
 int main(int argc, char** argv)

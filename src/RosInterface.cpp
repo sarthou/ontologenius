@@ -4,6 +4,7 @@
 
 #include "ontologenius/RosInterface.h"
 
+#include "ontologenius/utils/String.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
 
@@ -101,7 +102,6 @@ void RosInterface::run()
   ros::ServiceServer service_reasoner = n_->advertiseService(getTopicName("reasoner"), &RosInterface::reasonerHandle, this);
 
   ros::ServiceServer service_sparql = n_->advertiseService(getTopicName("sparql"), &RosInterface::sparqlHandle, this);
-
 
   std::thread feed_thread(&RosInterface::feedThread, this);
   std::thread periodic_reasoning_thread(&RosInterface::periodicReasoning, this);
@@ -696,24 +696,6 @@ void RosInterface::removeUselessSpace(std::string& text)
     text.erase(text.size() - 1,1);
 }
 
-bool RosInterface::split(const std::string &text, std::vector<std::string> &strs, const std::string& delim)
-{
-  std::string tmp_text = text;
-  while(tmp_text.find(delim) != std::string::npos)
-  {
-    size_t pos = tmp_text.find(delim);
-    std::string part = tmp_text.substr(0, pos);
-    tmp_text = tmp_text.substr(pos + delim.size(), tmp_text.size() - pos - delim.size());
-    if(part != "")
-      strs.push_back(part);
-  }
-  strs.push_back(tmp_text);
-  if(strs.size() > 1)
-    return true;
-  else
-    return false;
-}
-
 void RosInterface::set2string(const std::unordered_set<std::string>& word_set, std::string& result)
 {
   for(const std::string& it : word_set)
@@ -729,8 +711,7 @@ void RosInterface::set2vector(const std::unordered_set<std::string>& word_set, s
 param_t RosInterface::getParams(std::string& param)
 {
   param_t parameters;
-  std::vector<std::string> str_params;
-  split(param, str_params, " ");
+  std::vector<std::string> str_params = split(param, " ");
 
   if(str_params.size())
     parameters.base = str_params[0];
