@@ -139,7 +139,7 @@ void DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& pro
   /**********************
   ** Language and properties
   **********************/
-  me->properties_ = property_vectors.properties_;
+  me->properties_.apply(property_vectors.properties_);
   me->setSteady_dictionary(property_vectors.dictionary_);
   me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
 

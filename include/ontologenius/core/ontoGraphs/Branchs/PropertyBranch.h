@@ -26,6 +26,17 @@ struct Properties_t
                     antisymetric_property_(false),
                     reflexive_property_(false),
                     irreflexive_property_(false) {};
+
+    void apply(const Properties_t& other)
+    {
+      functional_property_ = functional_property_ || other.functional_property_;
+      inverse_functional_property_ = inverse_functional_property_ || other.inverse_functional_property_;
+      transitive_property_ = transitive_property_ || other.transitive_property_;
+      symetric_property_ = symetric_property_ || other.symetric_property_;
+      antisymetric_property_ = antisymetric_property_ || other.antisymetric_property_;
+      reflexive_property_ = reflexive_property_ || other.reflexive_property_;
+      irreflexive_property_ = irreflexive_property_ || other.irreflexive_property_;
+    }
 };
 
 template <typename B>
