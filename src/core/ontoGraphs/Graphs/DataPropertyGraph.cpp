@@ -196,7 +196,6 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
 
 bool DataPropertyGraph::addAnnotation(const std::string& value, DataPropertyVectors_t& property_vectors)
 {
-  std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
   /**********************
   ** Mothers
   **********************/
@@ -238,7 +237,7 @@ bool DataPropertyGraph::addAnnotation(const std::string& value, DataPropertyVect
         if(range_branch != nullptr)
           break;
       }
-      if(range_branch == nullptr)
+      if((range_branch == nullptr) && (property_vectors.ranges_.size()))
       {
         add(value, property_vectors);
         return true;
