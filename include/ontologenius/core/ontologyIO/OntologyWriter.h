@@ -28,6 +28,7 @@ private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
   IndividualGraph* individual_graph_;
+  std::string ns_;
 
   std::string file_name_;
   FILE* file_;

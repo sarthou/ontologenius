@@ -8,6 +8,12 @@
 
 namespace ontologenius {
 
+ClassWriter::ClassWriter(ClassGraph* class_graph, const std::string& ns)
+{
+  class_graph_ = class_graph;
+  ns_ = ns;
+}
+
 void ClassWriter::write(FILE* file)
 {
   file_ = file;
@@ -36,8 +42,8 @@ void ClassWriter::writeGeneralAxioms(FILE* file)
 
 void ClassWriter::writeClass(ClassBranch_t* branch)
 {
-  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\n\
-    <owl:Class rdf:about=\"ontologenius#" + branch->value() + "\">\n";
+  std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
+    <owl:Class rdf:about=\"" + ns_ + "#" + branch->value() + "\">\n";
   writeString(tmp);
 
   writeSubClassOf(branch);
@@ -62,7 +68,7 @@ void ClassWriter::writeSubClassOf(ClassBranch_t* branch)
       std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
       std::string tmp = "        <rdfs:subClassOf" +
                         proba +
-                        " rdf:resource=\"ontologenius#" +
+                        " rdf:resource=\"" + ns_ + "#" +
                         mother.elem->value()
                         + "\"/>\n";
       writeString(tmp);
@@ -77,7 +83,7 @@ void ClassWriter::writeDisjointWith(ClassBranch_t* branch)
       {
         std::string tmp = "        <owl:disjointWith" +
                           getProba(disjoint) +
-                          " rdf:resource=\"ontologenius#" +
+                          " rdf:resource=\"" + ns_ + "#" +
                           disjoint.elem->value()
                           + "\"/>\n";
         writeString(tmp);
@@ -107,7 +113,7 @@ void ClassWriter::writeDisjointWith(std::vector<ClassBranch_t*>& classes)
 
     for(auto& disj : disjoints_set)
     {
-      tmp += "             <rdf:Description rdf:about=\"ontologenius#" +
+      tmp += "             <rdf:Description rdf:about=\"" + ns_ + "#" +
       disj->value() +
       "\"/>\n";
     }
@@ -175,10 +181,10 @@ void ClassWriter::writeObjectProperties(ClassBranch_t* branch)
     if(relation.infered == false)
     {
       std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
-      std::string tmp = "        <ontologenius:" +
+      std::string tmp = "        <" +
                         relation.first->value() +
                         proba +
-                        " rdf:resource=\"ontologenius#" +
+                        " rdf:resource=\"" + ns_ + "#" +
                         relation.second->value() +
                         "\"/>\n";
       writeString(tmp);
@@ -191,7 +197,7 @@ void ClassWriter::writeDataProperties(ClassBranch_t* branch)
     if(relation.infered == false)
     {
       std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
-      std::string tmp = "        <ontologenius:" +
+      std::string tmp = "        <:" +
                         relation.first->value() +
                         proba +
                         " rdf:datatype=\"" +
@@ -200,7 +206,7 @@ void ClassWriter::writeDataProperties(ClassBranch_t* branch)
                         relation.second.type_ +
                         "\">" +
                         relation.second.value_ +
-                        "</ontologenius:" +
+                        "</" +
                         relation.first->value() +
                         ">\n";
       writeString(tmp);

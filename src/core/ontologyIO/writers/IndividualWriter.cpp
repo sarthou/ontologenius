@@ -7,6 +7,12 @@
 
 namespace ontologenius {
 
+IndividualWriter::IndividualWriter(IndividualGraph* individual_graph, const std::string& ns)
+{
+  individual_graph_ = individual_graph;
+  ns_ = ns;
+}
+
 void IndividualWriter::write(FILE* file)
 {
   file_ = file;
@@ -34,8 +40,8 @@ void IndividualWriter::writeGeneralAxioms(FILE* file)
 
 void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
 {
-  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\n\
-    <owl:NamedIndividual rdf:about=\"ontologenius#" + branch->value() + "\">\n";
+  std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
+    <owl:NamedIndividual rdf:about=\"" + ns_ + "#" + branch->value() + "\">\n";
   writeString(tmp);
 
   writeType(branch);
@@ -58,7 +64,7 @@ void IndividualWriter::writeType(IndividualBranch_t* branch)
       std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
       std::string tmp = "        <rdf:type" +
                         proba +
-                        " rdf:resource=\"ontologenius#" +
+                        " rdf:resource=\"" + ns_ + "#" +
                         mother.elem->value()
                         + "\"/>\n";
       writeString(tmp);
@@ -71,10 +77,10 @@ void IndividualWriter::writeObjectProperties(IndividualBranch_t* branch)
     if(relation.infered == false)
     {
       std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
-      std::string tmp = "        <ontologenius:" +
+      std::string tmp = "        <" +
                         relation.first->value() +
                         proba +
-                        " rdf:resource=\"ontologenius#" +
+                        " rdf:resource=\"" + ns_ + "#" +
                         relation.second->value() +
                         "\"/>\n";
       writeString(tmp);
@@ -87,7 +93,7 @@ void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
     if(relation.infered == false)
     {
       std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
-      std::string tmp = "        <ontologenius:" +
+      std::string tmp = "        <" +
                         relation.first->value() +
                         proba +
                         " rdf:datatype=\"" +
@@ -96,7 +102,7 @@ void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
                         relation.second.type_ +
                         "\">" +
                         relation.second.value_ +
-                        "</ontologenius:" +
+                        "</" +
                         relation.first->value() +
                         ">\n";
       writeString(tmp);
@@ -107,7 +113,7 @@ void IndividualWriter::writeSameAs(IndividualBranch_t* branch)
   for(auto& same_as : branch->same_as_)
     if(same_as.infered == false)
     {
-      std::string tmp = "        <owl:sameAs rdf:resource=\"ontologenius#" +
+      std::string tmp = "        <owl:sameAs rdf:resource=\"" + ns_ + "#" +
                         same_as.elem->value()
                         + "\"/>\n";
       writeString(tmp);
@@ -138,7 +144,7 @@ void IndividualWriter::writeDistincts(std::vector<IndividualBranch_t*>& individu
         for(const auto& distinct : distincts_current)
         {
           distincts_done.push_back(distinct);
-          tmp += "             <rdf:Description rdf:about=\"ontologenius#" +
+          tmp += "             <rdf:Description rdf:about=\"" + ns_ + "#" +
           distinct +
           "\"/>\n";
         }

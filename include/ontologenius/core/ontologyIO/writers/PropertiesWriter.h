@@ -29,7 +29,7 @@ void PropertiesWriter<T>::writeDisjointWith(PropertyBranch_t<T>* branch)
     {
       std::string tmp = "        <owl:disjointWith" +
                         getProba(disjoint) +
-                        " rdf:resource=\"ontologenius#" +
+                        " rdf:resource=\"" + ns_ + "#" +
                         disjoint.elem->value()
                         + "\"/>\n\r";
       writeString(tmp);

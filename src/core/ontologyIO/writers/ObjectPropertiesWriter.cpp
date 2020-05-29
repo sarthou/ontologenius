@@ -6,6 +6,12 @@
 
 namespace ontologenius {
 
+ObjectPropertiesWriter::ObjectPropertiesWriter(ObjectPropertyGraph* property_graph, const std::string& ns)
+{
+  property_graph_ = property_graph;
+  ns_ = ns;
+}
+
 void ObjectPropertiesWriter::write(FILE* file)
 {
   file_ = file;
@@ -21,8 +27,8 @@ void ObjectPropertiesWriter::write(FILE* file)
 
 void ObjectPropertiesWriter::writeProperty(ObjectPropertyBranch_t* branch)
 {
-  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\n\
-    <owl:ObjectProperty rdf:about=\"ontologenius#" + branch->value() + "\">\n";
+  std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
+    <owl:ObjectProperty rdf:about=\"" + ns_ + "#" + branch->value() + "\">\n";
   writeString(tmp);
 
   writeSubPropertyOf(branch);
@@ -47,7 +53,7 @@ void ObjectPropertiesWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
     {
       std::string tmp = "        <rdfs:subPropertyOf" +
                         getProba(mother) +
-                        " rdf:resource=\"ontologenius#" +
+                        " rdf:resource=\"" + ns_ + "#" +
                         mother.elem->value()
                         + "\"/>\n";
       writeString(tmp);
@@ -61,7 +67,7 @@ void ObjectPropertiesWriter::writeInverseOf(ObjectPropertyBranch_t* branch)
     {
       std::string tmp = "        <owl:inverseOf" +
                         getProba(inverse) +
-                        " rdf:resource=\"ontologenius#" +
+                        " rdf:resource=\"" + ns_ + "#" +
                         inverse.elem->value()
                         + "\"/>\n";
       writeString(tmp);
@@ -75,7 +81,7 @@ void ObjectPropertiesWriter::writeRange(ObjectPropertyBranch_t* branch)
     {
       std::string tmp = "        <rdfs:range" +
                         getProba(range) +
-                        " rdf:resource=\"ontologenius#" +
+                        " rdf:resource=\"" + ns_ + "#" +
                         range.elem->value()
                         + "\"/>\n";
       writeString(tmp);
@@ -89,7 +95,7 @@ void ObjectPropertiesWriter::writeDomain(ObjectPropertyBranch_t* branch)
     {
       std::string tmp = "        <rdfs:domain" +
                         getProba(domain) +
-                        " rdf:resource=\"ontologenius#" +
+                        " rdf:resource=\"" + ns_ + "#" +
                         domain.elem->value()
                         + "\"/>\n";
       writeString(tmp);
@@ -104,7 +110,7 @@ void ObjectPropertiesWriter::writeChain(ObjectPropertyBranch_t* branch)
 
     for(auto& link : chain)
     {
-      tmp += "            <rdf:Description rdf:about=\"ontologenius#" +
+      tmp += "            <rdf:Description rdf:about=\"" + ns_ + "#" +
               link +
               "\"/>\n";
     }

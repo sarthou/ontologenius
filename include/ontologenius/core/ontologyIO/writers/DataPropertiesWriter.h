@@ -13,7 +13,7 @@ class DataPropertyBranch_t;
 class DataPropertiesWriter : public PropertiesWriter<DataPropertyBranch_t>
 {
 public:
-  DataPropertiesWriter(DataPropertyGraph* property_graph) {property_graph_ = property_graph; };
+  DataPropertiesWriter(DataPropertyGraph* property_graph, const std::string& ns);
   ~DataPropertiesWriter() {};
 
   void write(FILE* file);

@@ -15,6 +15,7 @@ public:
   ~NodeWriter() {};
 
   FILE* file_;
+  std::string ns_;
 
   void writeDictionary(ValuedNode* node);
   void writeMutedDictionary(ValuedNode* node);
