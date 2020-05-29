@@ -334,6 +334,7 @@ void OntologyReader::readObjectProperty(TiXmlElement* elem)
 {
   std::string node_name = "";
   ObjectPropertyVectors_t propertyVectors;
+  propertyVectors.annotation_usage_ = false;
   const char* attr = elem->Attribute("rdf:about");
   if(attr != nullptr)
   {
@@ -377,6 +378,7 @@ void OntologyReader::readDataProperty(TiXmlElement* elem)
 {
   std::string node_name = "";
   DataPropertyVectors_t propertyVectors;
+  propertyVectors.annotation_usage_ = false;
   const char* attr = elem->Attribute("rdf:about");
   if(attr != nullptr)
   {
@@ -410,6 +412,7 @@ void OntologyReader::readAnnotationProperty(TiXmlElement* elem)
 {
   std::string node_name = "";
   DataPropertyVectors_t propertyVectors; // we use a DataPropertyVectors_t that is sufficient to represent an annotation property
+  propertyVectors.annotation_usage_ = true;
   std::vector<Single_t<std::string>> ranges_;
   const char* attr = elem->Attribute("rdf:about");
   if(attr != nullptr)
@@ -449,6 +452,7 @@ void OntologyReader::readAnnotationProperty(TiXmlElement* elem)
     object_property_vector.ranges_ = ranges_;
     object_property_vector.dictionary_ = propertyVectors.dictionary_;
     object_property_vector.muted_dictionary_ = propertyVectors.muted_dictionary_;
+    object_property_vector.annotation_usage_ = true;
 
     object_property_graph_->add(node_name, object_property_vector);
     // if no data property is found, the annotatitation will be setted as an object property by default

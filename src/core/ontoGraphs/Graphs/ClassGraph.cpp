@@ -199,6 +199,7 @@ void ClassGraph::addObjectProperty(ClassBranch_t* me, Pair_t<std::string, std::s
     object_property_graph_->add(relation.first, empty_vectors);
     getInMap(&property_branch, relation.first, object_property_graph_->roots_);
   }
+  property_branch->annotation_usage_ = true;
 
   ClassBranch_t* class_branch = nullptr;
   getInMap(&class_branch, relation.second, roots_);
@@ -225,6 +226,7 @@ void ClassGraph::addDataProperty(ClassBranch_t* me, Pair_t<std::string, data_t>&
     data_property_graph_->add(relation.first, empty_vectors);
     getInMap(&property_branch, relation.first, data_property_graph_->roots_);
   }
+  property_branch->annotation_usage_ = true;
 
   me->data_relations_.emplace_back(property_branch, relation.second, relation.probability);
 }

@@ -115,6 +115,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyB
       data_t tmp;
       tmp.set(datas[prop]);
       me->data_relations_.emplace_back(properties[prop], tmp, 0.5);
+      properties[prop]->annotation_usage_ = true;
     }
   }
 

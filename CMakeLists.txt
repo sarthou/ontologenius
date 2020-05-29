@@ -137,6 +137,7 @@ add_onto_library(ontologenius_ontoGraphs_lib
   src/core/ontologyIO/writers/ClassWriter.cpp
   src/core/ontologyIO/writers/ObjectPropertiesWriter.cpp
   src/core/ontologyIO/writers/DataPropertiesWriter.cpp
+  src/core/ontologyIO/writers/AnnotationWriter.cpp
   src/core/ontologyIO/writers/IndividualWriter.cpp
 )
 target_include_directories(ontologenius_ontoGraphs_lib

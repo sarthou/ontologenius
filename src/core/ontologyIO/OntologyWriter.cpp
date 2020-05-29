@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "ontologenius/core/ontologyIO/writers/AnnotationWriter.h"
 #include "ontologenius/core/ontologyIO/writers/ClassWriter.h"
 #include "ontologenius/core/ontologyIO/writers/DataPropertiesWriter.h"
 #include "ontologenius/core/ontologyIO/writers/IndividualWriter.h"
@@ -47,6 +48,10 @@ void OntologyWriter::write(const std::string& file_name)
   ns_ = "urn:absolute:ontologenius";
 
   writeStart();
+
+  writeBanner("Annotations Properties");
+  AnnotationWriter annotations(object_property_graph_, data_property_graph_, ns_);
+  annotations.write(file_);
 
   writeBanner("Classes");
   ClassWriter classes(class_graph_, ns_);

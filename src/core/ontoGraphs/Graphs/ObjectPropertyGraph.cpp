@@ -170,6 +170,7 @@ void ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t&
   ** Language and properties
   **********************/
   me->properties_.apply(property_vectors.properties_);
+  me->annotation_usage_ = me->annotation_usage_ || property_vectors.annotation_usage_;
   me->setSteady_dictionary(property_vectors.dictionary_);
   me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
 

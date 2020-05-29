@@ -45,6 +45,9 @@ class PropertyBranch_t
 public:
   std::vector<Single_t<B*>> disjoints_;
   Properties_t properties_;
+  bool annotation_usage_;
+
+  PropertyBranch_t() : annotation_usage_(false) {}
 };
 
 } // namespace ontologenius
