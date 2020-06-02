@@ -46,6 +46,7 @@ private:
   void modifyObjectPropertyInheritance(feed_t& feed);
   void modifyObjectPropertyInheritanceInvert(feed_t& feed);
   void classIndividualIsA(feed_t& feed);
+  void addInverseOf(feed_t& feed);
 
   void classIndividualLangage(feed_t& feed);
   void applyProperty(feed_t& feed);

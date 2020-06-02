@@ -33,6 +33,12 @@ void FeederPublisher::addConcept(const std::string& from, const ros::Time& stamp
   publishStamped(msg, stamp);
 }
 
+void FeederPublisher::addInverseOf(const std::string& property, const std::string& inverse_property, const ros::Time& stamp)
+{
+  std::string msg = "[add]" + property + "|<-|" + inverse_property;
+  publishStamped(msg, stamp);
+}
+
 void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const ros::Time& stamp)
 {
   std::string msg = "[del]" + from + "|" + property + "|_";
@@ -68,6 +74,12 @@ void FeederPublisher::removeLanguage(const std::string& from, const std::string&
 void FeederPublisher::removeConcept(const std::string& from, const ros::Time& stamp)
 {
   std::string msg = "[del]" + from + "|";
+  publishStamped(msg, stamp);
+}
+
+void FeederPublisher::removeInverseOf(const std::string& property, const std::string& inverse_property, const ros::Time& stamp)
+{
+  std::string msg = "[del]" + property + "|<-|" + inverse_property;
   publishStamped(msg, stamp);
 }
 

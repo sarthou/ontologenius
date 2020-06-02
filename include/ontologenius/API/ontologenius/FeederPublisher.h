@@ -39,6 +39,7 @@ public:
   void addInheritage(const std::string& from, const std::string& on, const ros::Time& stamp = ros::Time::now());
   void addLanguage(const std::string& from, const std::string& lang, const std::string& name, const ros::Time& stamp = ros::Time::now());
   void addConcept(const std::string& from, const ros::Time& stamp = ros::Time::now());
+  void addInverseOf(const std::string& property, const std::string& inverse_property, const ros::Time& stamp = ros::Time::now());
 
   void removeProperty(const std::string& from, const std::string& property, const ros::Time& stamp = ros::Time::now());
   void removeProperty(const std::string& from, const std::string& property, const std::string& on, const ros::Time& stamp = ros::Time::now());
@@ -46,6 +47,7 @@ public:
   void removeInheritage(const std::string& from, const std::string& on, const ros::Time& stamp = ros::Time::now());
   void removeLanguage(const std::string& from, const std::string& lang, const std::string& name, const ros::Time& stamp = ros::Time::now());
   void removeConcept(const std::string& from, const ros::Time& stamp = ros::Time::now());
+  void removeInverseOf(const std::string& property, const std::string& inverse_property, const ros::Time& stamp = ros::Time::now());
 
   size_t getNumSubscribers() { return stamped_pub_.getNumSubscribers(); }
   void waitConnected()

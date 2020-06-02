@@ -58,8 +58,8 @@ bool Feeder::run()
     {
       if((feed.prop_ == "+") || (feed.prop_ == "rdfs:subClassOf") || (feed.prop_ == "isA"))
         addInheritage(feed);
-      //if((feed.prop_ == "<-") || (feed.prop_ == "owl:inverseOf"))
-        //addInverseOf(feed);
+      else if((feed.prop_ == "<-") || (feed.prop_ == "owl:inverseOf"))
+        addInverseOf(feed);
       else if(feed.prop_[0] == '@')
         classIndividualLangage(feed);
       else
@@ -167,6 +167,20 @@ void Feeder::classIndividualIsA(feed_t& feed)
       onto_->individual_graph_.removeInheritage(feed.from_, feed.on_);
     else
       notifications_.push_back("[FAIL][unknown inherited item in the requested inheritance]" + current_str_feed_);
+  }
+}
+
+void Feeder::addInverseOf(feed_t& feed)
+{
+  if(feed.action_ == action_add)
+  {
+    if(!onto_->object_property_graph_.addInverseOf(feed.from_, feed.on_))
+      notifications_.push_back("[FAIL][no known items in the request]" + current_str_feed_);
+  }
+  else if(feed.action_ == action_del)
+  {
+    if(!onto_->object_property_graph_.removeInverseOf(feed.from_, feed.on_))
+      notifications_.push_back("[FAIL][unknown item in the request]" + current_str_feed_);
   }
 }
 
