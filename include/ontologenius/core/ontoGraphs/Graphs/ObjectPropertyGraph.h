@@ -64,6 +64,9 @@ public:
   bool addInvert(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
   bool remove(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
 
+  bool addInverseOf(const std::string& from, const std::string& on);
+  bool removeInverseOf(const std::string& from, const std::string& on);
+
 private:
   ClassGraph* class_graph_;
 

@@ -370,8 +370,16 @@ bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, std::string& relatio
     }
     else if((relation == "+") || (relation == "isA"))
     {
-      ObjectPropertyBranch_t* tmp = create(data);
+
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+      ObjectPropertyBranch_t* tmp = container_.find(data);
+      if(tmp == nullptr)
+      {
+        tmp = new ObjectPropertyBranch_t(data);
+        roots_[data] = tmp;
+        branchs_[data] = tmp;
+        container_.insert(tmp);
+      }
       conditionalPushBack(prop->mothers_, ObjectPropertyElement_t(tmp));
       conditionalPushBack(tmp->childs_, ObjectPropertyElement_t(prop));
       prop->updated_ = true;
@@ -391,8 +399,16 @@ bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, std::string& r
   {
     if((relation == "+") || (relation == "isA"))
     {
-      ObjectPropertyBranch_t* tmp = create(data);
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+      ObjectPropertyBranch_t* tmp = container_.find(data);
+      if(tmp == nullptr)
+      {
+        tmp = new ObjectPropertyBranch_t(data);
+        roots_[data] = tmp;
+        all_branchs_.push_back(tmp);
+        container_.insert(tmp);
+      }
+
       conditionalPushBack(tmp->mothers_, ObjectPropertyElement_t(prop));
       conditionalPushBack(prop->childs_, ObjectPropertyElement_t(tmp));
       prop->updated_ = true;
@@ -412,6 +428,66 @@ bool ObjectPropertyGraph::remove(ObjectPropertyBranch_t* prop, std::string& rela
   (void)relation;
   (void)data;
   return false;
+}
+
+bool ObjectPropertyGraph::addInverseOf(const std::string& from, const std::string& on)
+{
+  std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+  ObjectPropertyBranch_t* from_branch = container_.find(from);
+  ObjectPropertyBranch_t* on_branch = container_.find(on);
+  if((from_branch == nullptr) && (on_branch == nullptr))
+    return false;
+  else
+  {
+    if(from_branch == nullptr)
+    {
+      from_branch = new ObjectPropertyBranch_t(from);
+      roots_[from] = from_branch;
+      all_branchs_.push_back(from_branch);
+      container_.insert(from_branch);
+    }
+    else if(on_branch == nullptr)
+    {
+      on_branch = new ObjectPropertyBranch_t(on);
+      roots_[on] = on_branch;
+      all_branchs_.push_back(on_branch);
+      container_.insert(on_branch);
+    }
+  }
+
+  conditionalPushBack(from_branch->inverses_, ObjectPropertyElement_t(on_branch, 1.0));
+  conditionalPushBack(on_branch->inverses_, ObjectPropertyElement_t(from_branch, 1.0, true));
+  return true;
+}
+
+bool ObjectPropertyGraph::removeInverseOf(const std::string& from, const std::string& on)
+{
+  ObjectPropertyBranch_t* from_branch = container_.find(from);
+  if(from_branch == nullptr)
+    return false;
+
+  ObjectPropertyBranch_t* on_branch = container_.find(on);
+  if(on_branch == nullptr)
+    return false;
+
+  for(size_t i = 0; i < from_branch->inverses_.size(); i++)
+  {
+    if(from_branch->inverses_[i].elem == on_branch)
+    {
+      from_branch->inverses_.erase(from_branch->inverses_.begin() + i);
+      break;
+    }
+  }
+
+  for(size_t i = 0; i < on_branch->inverses_.size(); i++)
+  {
+    if(on_branch->inverses_[i].elem == from_branch)
+    {
+      on_branch->inverses_.erase(on_branch->inverses_.begin() + i);
+      break;
+    }
+  }
+  return true;
 }
 
 void ObjectPropertyGraph::deepCopy(const ObjectPropertyGraph& other)
