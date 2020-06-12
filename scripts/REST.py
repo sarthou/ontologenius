@@ -163,7 +163,7 @@ def http_resquest():
     rospy.init_node('ontologenius_rest', anonymous=True)
 
     rospy.Service('ontologenius/rest', REST, handle_http)
-    print "[ INFO] ready to make http request"
+    print("[ INFO] ready to make http request")
     rospy.spin()
 
 if __name__ == "__main__":
