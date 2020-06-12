@@ -44,7 +44,7 @@
 .noetic_before_template : &noetic_before_definition
   before_script:
   - source /opt/ros/noetic/setup.bash
-  - apt-get update -qq && apt-get install -y libcppunit-1.14-0 libcppunit-dev libtinyxml-dev
+  - apt-get update -qq && apt-get install -y libcppunit-1.15-0 libcppunit-dev libtinyxml-dev
 
 
 stages:
