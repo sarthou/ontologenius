@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdint.h>
 
+#include <opencv2/imgcodecs/imgcodecs_c.h>
 #include <opencv2/highgui/highgui_c.h>
 
 namespace ontologenius {
@@ -57,7 +58,7 @@ protected:
   bool updateOneMarker(int layer);
   bool testEnd();
 
-  cv::Scalar ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V);
+  CvScalar ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V);
 };
 
 } // namespace ontologenius

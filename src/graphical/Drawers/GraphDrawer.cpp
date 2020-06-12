@@ -140,12 +140,12 @@ bool GraphDrawer::exist(std::string value)
   return false;
 }
 
-cv::Scalar GraphDrawer::ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V)
+CvScalar GraphDrawer::ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V)
 {
     cv::Mat rgb;
     cv::Mat hsv(1,1, CV_8UC3, cv::Scalar(H,S,V));
     cvtColor(hsv, rgb, CV_HSV2BGR);
-    return cv::Scalar(rgb.data[0], rgb.data[1], rgb.data[2]);
+    return CvScalar(rgb.data[0], rgb.data[1], rgb.data[2]);
 }
 
 } // namespace ontologenius
