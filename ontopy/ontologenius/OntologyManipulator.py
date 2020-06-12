@@ -14,7 +14,7 @@ class OntologyManipulator:
         self.reasoners = ReasonerClient(name)
         self.feeder = FeederPublisher(name)
 
-        service_name = "ontologenius/reasoner"
+        service_name = "ontologenius/sparql"
         if name != '':
             service_name+= "/" + name
         rospy.wait_for_service(service_name)

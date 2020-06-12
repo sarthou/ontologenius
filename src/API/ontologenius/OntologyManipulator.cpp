@@ -11,7 +11,7 @@ OntologyManipulator::OntologyManipulator(ros::NodeHandle* n, const std::string& 
 {
   n_ = n;
   name_ = name;
-  std::string servive_name = (name == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + name;
+  std::string servive_name = (name == "") ? "ontologenius/reasoner" : "ontologenius/sparql/" + name;
   ros::service::waitForService(servive_name);
 }
 
@@ -26,7 +26,7 @@ OntologyManipulator::OntologyManipulator(OntologyManipulator& other): individual
 {
   n_ = other.n_;
   name_ = other.name_;
-  std::string servive_name = (name_ == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + name_;
+  std::string servive_name = (name_ == "") ? "ontologenius/reasoner" : "ontologenius/sparql/" + name_;
   ros::service::waitForService(servive_name);
 }
 
@@ -41,6 +41,6 @@ OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): individua
 {
   n_ = other.n_;
   name_ = other.name_;
-  std::string servive_name = (name_ == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + name_;
+  std::string servive_name = (name_ == "") ? "ontologenius/reasoner" : "ontologenius/sparql/" + name_;
   ros::service::waitForService(servive_name);
 }
