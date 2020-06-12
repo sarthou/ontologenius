@@ -48,9 +48,9 @@ jobs:
             rosdep update --include-eol-distros  # Support EOL distros.
             if [ $ROS_DISTRO != noetic ]
             then
-                    pip3 install requests --user
-            else
                     pip install requests --user
+            else
+                    pip3 install requests --user
             fi
 
       - name: build

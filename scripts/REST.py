@@ -46,7 +46,7 @@ def delete_resource(url, headers):
     :return: None
     """
     try:
-    response_code = None
+        response_code = None
         rospy.loginfo("[REST.delete_resource()] DELETE " + url)
 
         req = requests.delete(url, headers=headers, timeout=8)
