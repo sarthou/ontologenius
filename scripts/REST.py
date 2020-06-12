@@ -26,7 +26,7 @@ def get_resource(url, headers):
         if req.status_code == requests.codes.ok:
             response = req.text
 
-	    response_code = req.status_code
+        response_code = req.status_code
         return response_code, response
 
     except requests.exceptions.ConnectionError as err:

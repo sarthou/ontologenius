@@ -3,6 +3,6 @@
     <arg name="intern_file" default="none"/>
     <arg name="config_file" default="$(find ontologenius)/files/config_example.yaml"/>
   </include>
-  <arg name='TESTDURATION' value='10' />
+  <arg name='TESTDURATION' value='60' />
   <test pkg="ontologenius" type="ontologenius_global_tester" test-name="ontologenius_global_tester" time-limit="$(arg TESTDURATION)" retry="0" />
 </launch>
