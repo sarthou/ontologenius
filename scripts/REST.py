@@ -54,7 +54,7 @@ def delete_resource(url, headers):
         if req.status_code != requests.codes.ok:
             req.raise_for_status()
 
-	response_code = req.status_code
+        response_code = req.status_code
         return response_code, None
 
     except requests.exceptions.ConnectionError as err:
