@@ -24,7 +24,7 @@ jobs:
       ROS_PARALLEL_JOBS: '-j8 -l6'
       # Set the python path manually to include /usr/-/python2.7/dist-packages
       # as this is where apt-get installs python packages.
-      PYTHONPATH: $PYTHONPATH:/usr/lib/python2.7/dist-packages:/usr/local/lib/python2.7/dist-packages
+      PYTHONPATH: $PYTHONPATH:/usr/lib/python2.7/dist-packages:/usr/local/lib/python2.7/dist-packages:/usr/lib/python3.8/dist-packages:/usr/local/lib/python3.8/dist-packages
       ROS_DISTRO: ${{ matrix.distro }}
     steps:
       - uses: actions/checkout@v1
@@ -46,7 +46,13 @@ jobs:
             source /opt/ros/$ROS_DISTRO/setup.bash
             sudo rosdep init
             rosdep update --include-eol-distros  # Support EOL distros.
-            pip install requests --user
+            if [ $ROS_DISTRO != noetic ]
+            then
+                    pip3 install requests --user
+            else
+                    pip install requests --user
+            fi
+
       - name: build
         run: |
           source /opt/ros/$ROS_DISTRO/setup.bash
