@@ -3,6 +3,6 @@
     <arg name="intern_file" default="none"/>
     <arg name="files" default=""/>
   </include>
-  <arg name='TESTDURATION' value='60' />
+  <arg name='TESTDURATION' value='120' />
   <test pkg="ontologenius" type="ontologenius_multi_tester" test-name="ontologenius_multi_tester" time-limit="$(arg TESTDURATION)" retry="0" />
 </launch>

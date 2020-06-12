@@ -2,6 +2,6 @@
   <include file="$(find ontologenius)/launch/ontologenius.launch">
     <arg name="intern_file" default="none"/>
   </include>
-  <arg name='TESTDURATION' value='60' />
+  <arg name='TESTDURATION' value='120' />
   <test pkg="ontologenius" type="ontologenius_propertiesInheritage_tester" test-name="ontologenius_propertiesInheritage_tester" time-limit="$(arg TESTDURATION)" retry="0" />
 </launch>

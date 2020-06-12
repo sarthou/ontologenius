@@ -46,7 +46,7 @@ def delete_resource(url, headers):
     :return: None
     """
     try:
-	response_code = None
+    response_code = None
         rospy.loginfo("[REST.delete_resource()] DELETE " + url)
 
         req = requests.delete(url, headers=headers, timeout=8)
@@ -128,43 +128,43 @@ def put_in_resource(url, header, payload=None):
     return response_code, ""
 
 def handle_http(req):
-	"""
-	Generic interface for http request
-	:param req:
-	:return: (int, string) Response code of the HTTP request, Response body
-	"""
-	response = None
-	response_code = None
-	URL = req.URL
-	names = req.headers.names.split(' ')
-	values = req.headers.values.split(' ')
-	headers = {}
-	i = 0
+    """
+    Generic interface for http request
+    :param req:
+    :return: (int, string) Response code of the HTTP request, Response body
+    """
+    response = None
+    response_code = None
+    URL = req.URL
+    names = req.headers.names.split(' ')
+    values = req.headers.values.split(' ')
+    headers = {}
+    i = 0
 
-	while i < len(names):
-		headers.update({names[i]: values[i]})
-		i = i + 1
+    while i < len(names):
+        headers.update({names[i]: values[i]})
+        i = i + 1
 
-	if req.method == "GET":
-		response_code, response = get_resource(URL, headers)
-	elif req.method == "DELETE":
-		response_code, response = delete_resource(URL, headers)
-	elif req.method == "POST":
-		response_code, response = post_resource(URL, headers, req.body)
-	elif req.method == "PUT":
-		response_code, response = put_in_resource(URL, headers, req.body)
+    if req.method == "GET":
+        response_code, response = get_resource(URL, headers)
+    elif req.method == "DELETE":
+        response_code, response = delete_resource(URL, headers)
+    elif req.method == "POST":
+        response_code, response = post_resource(URL, headers, req.body)
+    elif req.method == "PUT":
+        response_code, response = put_in_resource(URL, headers, req.body)
 
-	if response_code != requests.codes.ok:
-		return( None, -1)
-	if response_code == requests.codes.ok:
-		return(response, 0)
+    if response_code != requests.codes.ok:
+        return( None, -1)
+    if response_code == requests.codes.ok:
+        return(response, 0)
 
 def http_resquest():
-	rospy.init_node('ontologenius_rest', anonymous=True)
+    rospy.init_node('ontologenius_rest', anonymous=True)
 
-	rospy.Service('ontologenius/rest', REST, handle_http)
-	print "[ INFO] ready to make http request"
-	rospy.spin()
+    rospy.Service('ontologenius/rest', REST, handle_http)
+    print "[ INFO] ready to make http request"
+    rospy.spin()
 
 if __name__ == "__main__":
-	http_resquest()
+    http_resquest()
