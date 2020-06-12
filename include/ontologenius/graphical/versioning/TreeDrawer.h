@@ -3,7 +3,6 @@
 
 #include "ontologenius/graphical/versioning/TreeReader.h"
 
-#include <highgui.h>
 #include <opencv2/highgui/highgui_c.h>
 
 #include <map>
