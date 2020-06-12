@@ -84,12 +84,12 @@ run-build-melodic:
 
 run-test-noetic:
   stage: test
-  image: ros:noetic-perception-bionic
+  image: ros:noetic-perception-focal
   <<: *noetic_before_definition
   <<: *test_script_definition
 
 run-build-noetic:
-  image: ros:noetic-perception-bionic
+  image: ros:noetic-perception-focal
   stage: build
   <<: *noetic_before_definition
   <<: *build_script_definition
