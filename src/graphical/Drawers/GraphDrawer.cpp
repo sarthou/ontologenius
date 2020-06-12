@@ -1,6 +1,8 @@
 #include "ontologenius/graphical/Drawers/GraphDrawer.h"
 
 #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/core/core_c.h>
+#include <iostream>
 
 #define MARKER_WIDTH      350
 #define MIN_WIDTH_SPACE   50
@@ -92,7 +94,7 @@ void GraphDrawer::draw(std::string file_name)
     file_name = "ontology.png";
 
   if((height != 1) && (width != 1))
-    cvSaveImage(file_name.c_str(), image);
+    cv::imwrite(file_name.c_str(), cv::cvarrToMat(image));
 }
 
 void GraphDrawer::setRect(int layer, int nb_layer, int nb_index, node_t* node)

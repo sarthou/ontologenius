@@ -44,7 +44,7 @@ void TreeDrawer::draw(const std::string& file_name, commit_t* root, bool commit_
     std::cout << "Save image " << file_name << std::endl;
 
     if((height != 1) && (width != 1))
-      cvSaveImage(file_name.c_str(), image_);
+      cv::imwrite(file_name.c_str(), cv::cvarrToMat(image_));
   }
 
   if(image_ != nullptr)
@@ -129,12 +129,12 @@ void TreeDrawer::drawNode(Node_t* node)
   size_t x = SPACE / 2 + node->column_ * SPACE;
   size_t y = SPACE / 2 + node->row_ * SPACE;
 
-  auto color_1 = cv::Scalar(89, 26, 16);
-  auto color_2 = cv::Scalar(149,86,86);
+  auto color_1 = cvScalar(89, 26, 16);
+  auto color_2 = cvScalar(149,86,86);
   if(node->is_data_ == false)
   {
-    color_1 = cv::Scalar(32, 20, 122);
-    color_2 = cv::Scalar(114,102,204);
+    color_1 = cvScalar(32, 20, 122);
+    color_2 = cvScalar(114,102,204);
   }
 
   cvCircle(image_, cvPoint(x,y), NODE_RADIUS, color_1, -1, CV_AA, 0);
@@ -146,9 +146,9 @@ void TreeDrawer::drawNodeText(Node_t* node)
   size_t width_base = (Node_t::current_column + 1) * SPACE;
   size_t y = SPACE / 2 + node->row_ * SPACE;
 
-  auto color = cv::Scalar(89, 26, 16);
+  auto color = cvScalar(89, 26, 16);
   if(node->is_data_ == false)
-    color = cv::Scalar(32, 20, 122);
+    color = cvScalar(32, 20, 122);
 
   CvFont font;
   cvInitFont(&font, CV_FONT_HERSHEY_COMPLEX, 1, 1, 0, 2);
@@ -168,7 +168,7 @@ void TreeDrawer::drawLink(Node_t* node_from, Node_t* node_to)
   {
     cvLine(image_, cvPoint(x_from, y_from+NODE_RADIUS/2),
                    cvPoint(x_to, y_to-NODE_RADIUS/2),
-                   cv::Scalar(50,50,50), 2);
+                   cvScalar(50,50,50), 2);
   }
   else
   {
@@ -177,22 +177,22 @@ void TreeDrawer::drawLink(Node_t* node_from, Node_t* node_to)
     if(length > 0)
       cvLine(image_, cvPoint(x_from + EDGE_RADIUS, y_from + SPACE/2),
                      cvPoint(x_to - EDGE_RADIUS, y_from + SPACE/2),
-                     cv::Scalar(50,50,50), 2);
+                     cvScalar(50,50,50), 2);
     drawElipseBottom(x_to, y_from+SPACE/2);
     cvLine(image_, cvPoint(x_to, y_from+SPACE/2 + EDGE_RADIUS),
                    cvPoint(x_to, y_to-NODE_RADIUS/2),
-                   cv::Scalar(50,50,50), 2);
+                   cvScalar(50,50,50), 2);
   }
 }
 
 void TreeDrawer::drawElipseRight(size_t x, size_t y)
 {
-  cvEllipse(image_, cvPoint(x+EDGE_RADIUS,y-EDGE_RADIUS), cvSize(EDGE_RADIUS, EDGE_RADIUS), 180, 0, -90, cv::Scalar(50,50,50), 2);
+  cvEllipse(image_, cvPoint(x+EDGE_RADIUS,y-EDGE_RADIUS), cvSize(EDGE_RADIUS, EDGE_RADIUS), 180, 0, -90, cvScalar(50,50,50), 2);
 }
 
 void TreeDrawer::drawElipseBottom(size_t x, size_t y)
 {
-  cvEllipse(image_, cvPoint(x-EDGE_RADIUS,y+EDGE_RADIUS), cvSize(EDGE_RADIUS, EDGE_RADIUS), -90, 0, 90, cv::Scalar(50,50,50), 2);
+  cvEllipse(image_, cvPoint(x-EDGE_RADIUS,y+EDGE_RADIUS), cvSize(EDGE_RADIUS, EDGE_RADIUS), -90, 0, 90, cvScalar(50,50,50), 2);
 }
 
 void TreeDrawer::drawDelim()
@@ -201,7 +201,7 @@ void TreeDrawer::drawDelim()
   size_t height = (Node_t::current_row + 1) * SPACE;
   cvLine(image_, cvPoint(width, 0),
                  cvPoint(width, height),
-                 cv::Scalar(50,50,50), 3);
+                 cvScalar(50,50,50), 3);
 }
 
 size_t TreeDrawer::getCorrectedRow(int id)

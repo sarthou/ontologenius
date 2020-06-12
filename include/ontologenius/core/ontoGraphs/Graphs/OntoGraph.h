@@ -282,7 +282,7 @@ void OntoGraph<B>::link()
   {
     it.second->family = 256/(nb_root_family+1) * root_i;
     for(size_t i = 0; i < it.second->childs_.size(); i++)
-      add_family(it.second->childs_[i], it.second->family);
+      add_family(it.second->childs_[i].elem, it.second->family);
     root_i++;
   }
 }
@@ -295,7 +295,7 @@ void OntoGraph<B>::add_family(B* branch, uint8_t family)
   {
     depth_++;
     if(depth_ < 20)
-      add_family(branch->childs_[i], family/branch->nb_mothers_);
+      add_family(branch->childs_[i].elem, family/branch->nb_mothers_);
     depth_--;
   }
 }
