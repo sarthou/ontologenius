@@ -14,7 +14,7 @@ namespace ontologenius
   {
     if(onto_ == nullptr)
     {
-      error_ = "can not create an ontology manipulator";
+      error_ = "ontology is undefined";
       return std::vector<std::map<std::string, std::string>>();
     }
 
@@ -80,74 +80,84 @@ namespace ontologenius
   {
     if(triplet.predicat.variable)
       error_ = "predicat can not be a variable in: " + toString(triplet);
-    else if(triplet.subject.variable && !triplet.object.variable && (triplet.predicat.name == "isA"))
+    else if(triplet.predicat.name == "isA")
     {
-      var_name = triplet.subject.name;
-      if(accu.find(var_name) != accu.end())
-        values = getType(triplet, accu.at(var_name));
-      else
-        values = getType(triplet);
-    }
-    else if(!triplet.subject.variable && triplet.object.variable && (triplet.predicat.name == "isA"))
-    {
-      var_name = triplet.object.name;
-      if(accu.find(var_name) != accu.end())
-        values = getUp(triplet, accu.at(var_name));
-      else
-        values = getUp(triplet);
-    }
-    else if(triplet.subject.variable && triplet.object.variable && (triplet.predicat.name == "isA"))
-    {
-      var_name = triplet.subject.name;
-      if(accu.find(var_name) != accu.end())
+      if(triplet.subject.variable && !triplet.object.variable)
       {
-        triplet.subject.name = accu.at(triplet.subject.name);
+        var_name = triplet.subject.name;
+        if(accu.find(var_name) != accu.end())
+          values = getType(triplet, accu.at(var_name));
+        else
+          values = getType(triplet);
+      }
+      else if(!triplet.subject.variable && triplet.object.variable)
+      {
         var_name = triplet.object.name;
         if(accu.find(var_name) != accu.end())
           values = getUp(triplet, accu.at(var_name));
         else
           values = getUp(triplet);
       }
-      else if(accu.find(triplet.object.name) != accu.end())
+      else if(triplet.subject.variable && triplet.object.variable)
       {
-        triplet.object.name = accu.at(triplet.object.name);
-        values = getType(triplet);
+        var_name = triplet.subject.name;
+        if(accu.find(var_name) != accu.end())
+        {
+          triplet.subject.name = accu.at(triplet.subject.name);
+          var_name = triplet.object.name;
+          if(accu.find(var_name) != accu.end())
+            values = getUp(triplet, accu.at(var_name));
+          else
+            values = getUp(triplet);
+        }
+        else if(accu.find(triplet.object.name) != accu.end())
+        {
+          triplet.object.name = accu.at(triplet.object.name);
+          values = getType(triplet);
+        }
+        else
+          error_ = "can not resolve query : " + toString(triplet);
       }
       else
         error_ = "can not resolve query : " + toString(triplet);
     }
-    else if(triplet.subject.variable && !triplet.object.variable && (triplet.predicat.name == "hasLabel"))
+    else if(triplet.predicat.name == "hasLabel")
     {
-      var_name = triplet.subject.name;
-      if(accu.find(var_name) != accu.end())
-        values = find(triplet, accu.at(var_name));
-      else
-        values = find(triplet);
-    }
-    else if(!triplet.subject.variable && triplet.object.variable && (triplet.predicat.name == "hasLabel"))
-    {
-      var_name = triplet.object.name;
-      if(accu.find(var_name) != accu.end())
-        values = getName(triplet, accu.at(var_name));
-      else
-        values = getName(triplet);
-    }
-    else if(triplet.subject.variable && triplet.object.variable && (triplet.predicat.name == "hasLabel"))
-    {
-      var_name = triplet.subject.name;
-      if(accu.find(var_name) != accu.end())
+      if(triplet.subject.variable && !triplet.object.variable)
       {
-        triplet.subject.name = accu.at(triplet.subject.name);
+        var_name = triplet.subject.name;
+        if(accu.find(var_name) != accu.end())
+          values = find(triplet, accu.at(var_name));
+        else
+          values = find(triplet);
+      }
+      else if(!triplet.subject.variable && triplet.object.variable)
+      {
         var_name = triplet.object.name;
         if(accu.find(var_name) != accu.end())
           values = getName(triplet, accu.at(var_name));
         else
           values = getName(triplet);
       }
-      else if(accu.find(triplet.object.name) != accu.end())
+      else if(triplet.subject.variable && triplet.object.variable)
       {
-        triplet.object.name = accu.at(triplet.object.name);
-        values = find(triplet);
+        var_name = triplet.subject.name;
+        if(accu.find(var_name) != accu.end())
+        {
+          triplet.subject.name = accu.at(triplet.subject.name);
+          var_name = triplet.object.name;
+          if(accu.find(var_name) != accu.end())
+            values = getName(triplet, accu.at(var_name));
+          else
+            values = getName(triplet);
+        }
+        else if(accu.find(triplet.object.name) != accu.end())
+        {
+          triplet.object.name = accu.at(triplet.object.name);
+          values = find(triplet);
+        }
+        else
+          error_ = "can not resolve query : " + toString(triplet);
       }
       else
         error_ = "can not resolve query : " + toString(triplet);
