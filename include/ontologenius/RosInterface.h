@@ -46,8 +46,9 @@ public:
   void run();
   void stop() {run_ = false; }
   void close();
-  inline bool isRunning() {return run_; }
-  Ontology* getOntology() {return onto_; }
+  inline bool isRunning() { return run_; }
+  Ontology* getOntology() { return onto_; }
+  Sparql* getSparqlInterface() { return &sparql_; }
 
   void lock();
   void release();
