@@ -29,9 +29,6 @@ private:
   std::vector<std::vector<bool>> notL;
   std::vector<std::vector<std::string>> R;
   std::vector<std::vector<bool>> notR;
-
-  bool split(const std::string &txt, std::vector<std::string> &strs, char ch);
-  bool split(const std::string &txt, std::vector<std::string> &strs, std::string delim);
 };
 
 } // namespace ontologenius

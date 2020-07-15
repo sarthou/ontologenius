@@ -135,26 +135,26 @@
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
           <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">import</span> rospy</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologyManipulator</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">_onto = <span class="py_value">None</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">def</span> <span class="py_function">displayRoute</span>(route):</div>
           <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'Route:'</span></div>
           <div class="code_line">    <span class="py_op">for</span> point <span class="py_op">in</span> route:</div>
           <div class="code_line">        <span class="py_op">print</span> <span class="py_string">'- '</span> + point</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">if</span> __name__ == <span class="py_string">'__main__'</span>:</div>
           <div class="code_line">    <span class="py_op">global</span> _onto</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    rospy.init_node(<span class="py_string">'find_our_way'</span>)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    _onto = OntologyManipulator()</div>
           <div class="code_line">    _onto.close()</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    <span class="py_comment">#</span></div>
           <div class="code_line">    <span class="py_comment"># We will find the route here</span></div>
           <div class="code_line">    <span class="py_comment">#</span></div>
@@ -167,23 +167,23 @@
           <div class="code_line">    <span class="py_op">global</span> _onto</div>
           <div class="code_line">    routes = []</div>
           <div class="code_line">    routes.insert(<span class="py_value">0</span>, [path_from])</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    found = <span class="py_value">False</span></div>
           <div class="code_line">    <span class="py_op">if</span> path_from == path_to:</div>
           <div class="code_line">        found = <span class="py_value">True</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    <span class="py_op">while</span> <span class="py_op">not</span> found:</div>
           <div class="code_line">        tmp_routes = []</div>
           <div class="code_line">        <span class="py_op">for</span> route <span class="py_op">in</span> routes:</div>
           <div class="code_line">            size = len(route) - <span class="py_value">1</span></div>
           <div class="code_line">            intersections = _onto.individuals.getFrom(<span class="py_string">'isAlong'</span>, route[size])</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">            <span class="py_op">for</span> intersection <span class="py_op">in</span> intersections:</div>
           <div class="code_line">                paths = _onto.individuals.getOn(intersection, <span class="py_string">'isAlong'</span>)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">                <span class="py_comment"># erase paths already present in the current route</span></div>
           <div class="code_line">                paths = [path <span class="py_op">for</span> path <span class="py_op">in</span> paths <span class="py_op">if</span> <span class="py_op">not</span> path <span class="py_op">in</span> route]</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">                <span class="py_op">for</span> path <span class="py_op">in</span> paths:</div>
           <div class="code_line">                    tmp = list(route)</div>
           <div class="code_line">                    tmp.insert(len(tmp), intersection)</div>
@@ -191,9 +191,9 @@
           <div class="code_line">                    tmp_routes.insert(len(tmp_routes), tmp)</div>
           <div class="code_line">                    <span class="py_op">if</span> path == path_to:</div>
           <div class="code_line">                        found = <span class="py_value">True</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">        routes = list(tmp_routes)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    <span class="py_op">return</span> routes</div>
         </div>
 
@@ -279,10 +279,10 @@
           <div class="code_line">    <span class="py_op">global</span> _onto</div>
           <div class="code_line">    res_route = []</div>
           <div class="code_line">    min_size = <span class="py_value">100</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    paths_from = _onto.individuals.getOn(place_from, <span class="py_string">'isAlong'</span>)</div>
           <div class="code_line">    paths_to = _onto.individuals.getFrom(<span class="py_string">'hasAlong'</span>, place_to)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    <span class="py_op">for</span> path_from <span class="py_op">in</span> paths_from:</div>
           <div class="code_line">        <span class="py_op">for</span> path_to <span class="py_op">in</span> paths_to:</div>
           <div class="code_line">            routes = findRoutes(path_from, path_to)</div>
@@ -291,7 +291,7 @@
           <div class="code_line">                    <span class="py_op">if</span> len(route) < min_size:</div>
           <div class="code_line">                        min_size = len(route)</div>
           <div class="code_line">                        res_route = route</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    <span class="py_op">return</span> res_route</div>
         </div>
 
@@ -324,10 +324,10 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 73;">
           <div class="code_line">    route = find(<span class="py_string">'pub'</span>, <span class="py_string">'house'</span>)</div>
           <div class="code_line">    displayRoute(route)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    route = find(<span class="py_string">'house'</span>, <span class="py_string">'car'</span>)</div>
           <div class="code_line">    displayRoute(route)</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    route = find(<span class="py_string">'car'</span>, <span class="py_string">'house'</span>)</div>
           <div class="code_line">    displayRoute(route)</div>
         </div>

@@ -161,16 +161,16 @@
           <div class="code_line">    refine_intruders = []</div>
           <div class="code_line">    <span class="py_op">for</span> i <span class="py_op">in</span> range(len(intruders)):</div>
           <div class="code_line">        down = _onto.classes.getDown(intruders[i][<span class="py_value">1</span>])</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">        is_most_relevant = <span class="py_value">True</span></div>
           <div class="code_line">        <span class="py_op">for</span> j <span class="py_op">in</span> range(len(intruders)):</div>
           <div class="code_line">            <span class="py_op">if</span> i != j <span class="py_op">and</span> intruders[i][<span class="py_value">0</span>] == intruders[j][<span class="py_value">0</span>]:</div>
           <div class="code_line">                <span class="py_op">if</span> intruders[j][<span class="py_value">1</span>] <span class="py_op">in</span> down:</div>
           <div class="code_line">                    is_most_relevant = <span class="py_value">False</span></div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">        <span class="py_op">if</span> is_most_relevant:</div>
           <div class="code_line">            refine_intruders.insert(<span class="py_value">1</span>, intruders[i])</div>
-          <div class="code_line"></div>
+          <div class="code_line"><br></div>
           <div class="code_line">    <span class="py_op">return</span> refine_intruders</div>
         </div>
 

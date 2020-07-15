@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>FeederPublisher Class (python) | Ontologenius 0.2.5</title>
+  <title>FeederPublisher Class (python) | Ontologenius 0.2.6</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -131,20 +131,23 @@
           <table class="alignedsummary">
             <tbody>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#__init__">__init__</a></b>(self, name)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addObjectProperty">addObjectProperty</a></b>(self, concept_from, property, concept_on)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addDataProperty">addDataProperty</a></b>(self, concept_from, concept_property, type, data)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addInheritage">addInheritage</a></b>(self, concept_from, concept_on)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addLanguage">addLanguage</a></b>(self, concept_from, lang, name)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addConcept">addConcept</a></b>(self, concept_from)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty">removeProperty</a></b>(self, concept_from, property)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeObjectProperty">removeObjectProperty</a></b>(self, concept_from, property, concept_on)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeDataProperty">removeDataProperty</a></b>(self, concept_from, property, type, data)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeInheritage">removeInheritage</a></b>(self, concept_from, concept_on)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeLanguage">removeLanguage</a></b>(self, concept_from, lang, name)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeConcept">removeConcept</a></b>(self, concept_from)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addObjectProperty">addObjectProperty</a></b>(self, concept_from, property, concept_on, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addDataProperty">addDataProperty</a></b>(self, concept_from, concept_property, type, data, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addInheritage">addInheritage</a></b>(self, concept_from, concept_on, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addLanguage">addLanguage</a></b>(self, concept_from, lang, name, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addConcept">addConcept</a></b>(self, concept_from, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty">removeProperty</a></b>(self, concept_from, property, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeObjectProperty">removeObjectProperty</a></b>(self, concept_from, property, concept_on, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeDataProperty">removeDataProperty</a></b>(self, concept_from, property, type, data, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeInheritage">removeInheritage</a></b>(self, concept_from, concept_on, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeLanguage">removeLanguage</a></b>(self, concept_from, lang, name, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeConcept">removeConcept</a></b>(self, concept_from, stamp = None)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#getNumSubscribers">getNumSubscribers</a></b>(self)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#waitConnected">waitConnected</a></b>(self)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit">commit</a></b>(self, timeout = 100000000)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#waitUpdate">waitUpdate</a></b>(self, timeout = 100000000)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit">commitAuto</a></b>(self, timeout = 100000000)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit2">commit</a></b>(self, commit_name, timeout = 100000000)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#checkout">checkout</a></b>(self, commit_name, timeout = 100000000)</td></tr>
             </tbody>
           </table>
         </div>
@@ -156,7 +159,8 @@
           <p>Working in a closed world can be interesting, but with ontologenius, you can also choose to work in an open world by adding and modifying the agent's knowledge base during its operation.
             The feeder publisher is used to insert and delete knowledge dynamically.
             The feeding process is asynchronous and therefore does not guarantee any response time.
-            It still provides a function to synchronize if you have applications where you have to query the ontology right after having modified it.</p>
+            It still provides functions to synchronize if you have applications where you have to query the ontology right after having modified it.</p>
+          <p>All modifications can be time stamped for advanced uses using the replublication mechanism.</p>
         </div>
 
         <div class="func">
@@ -166,46 +170,57 @@
           <p>Constructs an FeederPublisher.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, <i>name</i>(str) should be defined as ''.</p>
 
-          <h3 class="fn" id="addObjectProperty"><a name="addObjectProperty"></a><span class="name">addObjectProperty</span>(self, concept_from, property, concept_on)</h3>
+          <h3 class="fn" id="addObjectProperty"><a name="addObjectProperty"></a><span class="name">addObjectProperty</span>(self, concept_from, property, concept_on, stamp = None)</h3>
           <p>Adds the fact that <i>concept_from</i>(str) is linked with <i>concept_on</i>(str) by the property <i>property</i>(str).</p>
           <p>At least <i>concept_from</i> or <i>concept_on</i> must be already known to the system. If one of them is unknown, it will be automatically created. The property can be unknow before calling this function.</p>
+          <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="addDataProperty"><a name="addDataProperty"></a><span class="name">addDataProperty</span>(self, concept_from, concept_property, type, data)</h3>
+          <h3 class="fn" id="addDataProperty"><a name="addDataProperty"></a><span class="name">addDataProperty</span>(self, concept_from, concept_property, type, data, stamp = None)</h3>
           <p>Adds the fact that <i>concept_from</i>(str) is linked to the data <i>data</i>(str) of type <i>type</i>(str) by the property <i>property</i>(str).</p>
           <p><i>concept_from</i> must be already known to the system. The property can be unknow before calling this function.</p>
+          <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="addInheritage"><a name="addInheritage"></a><span class="name">addInheritage</span>(self, concept_from, concept_on)</h3>
+          <h3 class="fn" id="addInheritage"><a name="addInheritage"></a><span class="name">addInheritage</span>(self, concept_from, concept_on, stamp = None)</h3>
           <p>Adds the inheratage : <i>concept_from</i>(str) is a <i>concept_on</i>(str). <i>concept_from</i> and <i>concept_on</i> could by a class, an individual or a property.</p>
           <p>At least <i>concept_from</i> or <i>concept_on</i> must be already known to the system. If one of them is unknown, it will be automatically created.</p>
+          <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="addLanguage"><a name="addLanguage"></a><span class="name">addLanguage</span>(self, concept_from, lang, name)</h3>
+          <h3 class="fn" id="addLanguage"><a name="addLanguage"></a><span class="name">addLanguage</span>(self, concept_from, lang, name, stamp = None)</h3>
           <p>Adds the label <i>name</i>(str) in the language <i>lang</i>(str) the class, individual or property <i>concept_from</i>(str).</p>
           <p><i>concept_from</i> must be already known to the system.</p>
+          <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="addConcept"><a name="addConcept"></a><span class="name">addConcept</span>(self, concept_from)</h3>
+          <h3 class="fn" id="addConcept"><a name="addConcept"></a><span class="name">addConcept</span>(self, concept_from, stamp = None)</h3>
           <p>Adds the class or individual <i>concept_from</i>(str).</p>
+          <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="removeProperty"><a name="removeProperty"></a><span class="name">removeProperty</span>(self, concept_from, property)</h3>
+          <h3 class="fn" id="removeProperty"><a name="removeProperty"></a><span class="name">removeProperty</span>(self, concept_from, property, stamp = None)</h3>
           <p>Removes the fact that <i>concept_from</i>(str) is linked to any object by the property <i>property</i>(str).</p>
           <p>After this action, knowledge of the property is not removed.</p>
+          <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="removeObjectProperty"><a name="removeObjectProperty"></a><span class="name">removeObjectProperty</span>(self, concept_from, property, concept_on)</h3>
+          <h3 class="fn" id="removeObjectProperty"><a name="removeObjectProperty"></a><span class="name">removeObjectProperty</span>(self, concept_from, property, concept_on, stamp = None)</h3>
           <p>Removes the fact that <i>concept_from</i>(str) is linked with <i>concept_on</i>(str) by the property <i>property</i>(str).</p>
           <p>After this action, knowledge of the property is not removed.</p>
+          <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="removeDataProperty"><a name="removeDataProperty"></a><span class="name">removeDataProperty</span>(self, concept_from, property, type, data)</h3>
+          <h3 class="fn" id="removeDataProperty"><a name="removeDataProperty"></a><span class="name">removeDataProperty</span>(self, concept_from, property, type, data, stamp = None)</h3>
           <p>Removes the fact that <i>concept_from</i>(str) is linked to the data <i>data</i>(str) of type <i>type</i>(str) by the property <i>property</i>(str).</p>
           <p>After this action, knowledge of the property is not removed.</p>
+          <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="removeInheritage"><a name="removeInheritage"></a><span class="name">removeInheritage</span>(self, concept_from, concept_on)</h3>
+          <h3 class="fn" id="removeInheritage"><a name="removeInheritage"></a><span class="name">removeInheritage</span>(self, concept_from, concept_on, stamp = None)</h3>
           <p>Removes the inheratage : <i>concept_from</i>(str) is a <i>concept_on</i>(str). <i>concept_from</i> and <i>concept_on</i> could by a class, an individual or a property.</p>
+          <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="removeLanguage"><a name="removeLanguage"></a><span class="name">removeLanguage</span>(self, concept_from, lang, name)</h3>
+          <h3 class="fn" id="removeLanguage"><a name="removeLanguage"></a><span class="name">removeLanguage</span>(self, concept_from, lang, name, stamp = None)</h3>
           <p>Removes the label <i>name</i>(str) in the language <i>lang</i>(str) the class, individual or property <i>concept_from</i>(str).</p>
+          <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="removeConcept"><a name="removeConcept"></a><span class="name">removeConcept</span>(self, concept_from)</h3>
+          <h3 class="fn" id="removeConcept"><a name="removeConcept"></a><span class="name">removeConcept</span>(self, concept_from, stamp = None)</h3>
           <p>Removes the class or individual <i>concept_from</i>(str).</p>
           <p>All inheritance, properties, and labels applied to <i>concept_from</i> are also removed.</p>
+          <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
           <h3 class="fn" id="getNumSubscribers"><a name="getNumSubscribers"></a><span class="name">getNumSubscribers</span>(self)</h3>
           <p>Returns the number of subscribers (int) that are currently connected to the internal ROS publisher.</p>
@@ -213,10 +228,28 @@
           <h3 class="fn" id="waitConnected"><a name="waitConnected"></a><span class="name">waitConnected</span>(self)</h3>
           <p>Blocks while no subscribers are currently connected to the internal ROS publisher.</p>
 
-          <h3 class="fn" id="commit"><a name="commit"></a><span class="name">commit</span>(self, timeout = 100000000)</h3>
+          <h3 class="fn" id="waitUpdate"><a name="waitUpdate"></a><span class="name">waitUpdate</span>(self, timeout = 100000000)</h3>
           <p>Waits until all changes have been applied.</p>
           <p>The default parameter <i>timeout</i>(int) is the expiration time in milliseconds. The default value is of 100 seconds.</p>
           <p>Returns False if the function returns on a timeout.</p>
+
+          <h3 class="fn" id="commit"><a name="commit"></a><span class="name">commitAuto</span>(self, timeout = 100000000)</h3>
+          <p>Saves all the modifications from the previous commit and waits until all changes have been applied.</p>
+          <p>The default parameter <i>timeout</i>(int) is the expiration time in milliseconds. The default value is of 100 seconds.</p>
+          <p>Returns the commit id (str) and an empty string if the function returns on a timeout.</p>
+          <p>This function can only be used on a copied ontology.</p>
+
+          <h3 class="fn" id="commit2"><a name="commit2"></a><span class="name">commit</span>(self, commit_name, timeout = 100000000)</h3>
+          p>Saves all the modifications from the previous commit with a specific id <i>commit_name</i> (str) and waits until all changes have been applied.</p>
+          <p>The default parameter <i>timeout</i>(int) is the expiration time in milliseconds. The default value is of 100 seconds.</p>
+          <p>Returns False if the function returns on a timeout.</p>
+          <p>This function can only be used on a copied ontology.</p>
+
+          <h3 class="fn" id="checkout"><a name="checkout"></a><span class="name">checkout</span>(self, commit_name, timeout = 100000000)</h3>
+          <p>Apply the necessary changes to return to the specified <i>commit_name</i> (str) and waits until all changes have been applied.</p>
+          <p>The default parameter <i>timeout</i>(int) is the expiration time in milliseconds. The default value is of 100 seconds.</p>
+          <p>Returns False if the function returns on a timeout.</p>
+          <p>This function can only be used on a copied ontology.</p>
 
         </div>
       </div>

@@ -4,8 +4,8 @@
 
 namespace ontologenius {
 
-FeedStorage::FeedStorage() : base_regex("^\\[(\\w+)\\](.*)\\|(.*)\\|(.*)$"),
-                             simple_regex("^\\[(\\w+)\\](.*)\\|$")
+FeedStorage::FeedStorage() : base_regex(R"(^\[(\w+)\](.*)\|(.*)\|(.*)$)"),
+                             simple_regex(R"(^\[(\w+)\](.*)\|$)")
 {
   queue_choice_ = true;
 }
@@ -46,6 +46,10 @@ void FeedStorage::add(std::string& regex)
         feed.action_ = action_add;
       else if(action == "del")
         feed.action_ = action_del;
+      else if(action == "commit")
+        feed.action_ = action_commit;
+      else if(action == "checkout")
+        feed.action_ = action_checkout;
       else if(action == "nop")
         feed.action_ = action_nop;
       else
@@ -69,6 +73,22 @@ void FeedStorage::add(std::string& regex)
     fifo_1.push(feed);
   else
     fifo_2.push(feed);
+  mutex_.unlock();
+}
+
+void FeedStorage::add(std::vector<feed_t>& datas)
+{
+  mutex_.lock();
+  if(queue_choice_ == true)
+  {
+    for(auto& data : datas)
+      fifo_1.push(data);
+  }
+  else
+  {
+    for(auto& data : datas)
+      fifo_2.push(data);
+  }
   mutex_.unlock();
 }
 

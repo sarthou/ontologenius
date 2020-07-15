@@ -23,6 +23,7 @@ struct DataPropertyVectors_t
    Properties_t properties_;
    std::map<std::string, std::vector<std::string>> dictionary_;
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
+   bool annotation_usage_;
 };
 
 //for friend
@@ -46,6 +47,7 @@ public:
 
   void add(const std::string& value, DataPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
+  bool addAnnotation(const std::string& value, DataPropertyVectors_t& property_vectors);
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);
   std::unordered_set<std::string> getDomain(const std::string& value);

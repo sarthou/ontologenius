@@ -1,6 +1,6 @@
 #include <chrono>
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
+#include <cstdlib>     /* srand, rand */
+#include <ctime>       /* time */
 #include <unordered_set>
 
 #include <ros/ros.h>
@@ -10,7 +10,7 @@
 
 using namespace std::chrono;
 
-std::string set2string(std::unordered_set<std::string> word_set)
+std::string set2string(const std::unordered_set<std::string>& word_set)
 {
   std::string result = "";
   for(const std::string& it : word_set)
@@ -83,12 +83,12 @@ std::vector<std::string> generate_sequence(ontologenius::ClassGraph& onto)
   return vect10000;
 }
 
-double testOne(std::vector<std::string>& seq, ontologenius::Ontology& onto)
+double testOne(const std::vector<std::string>& seq, ontologenius::Ontology& onto)
 {
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-  for(size_t i = 0; i < seq.size(); i++)
-    std::unordered_set<std::string> out = onto.class_graph_.getUp(seq[i]);
+  for(auto& s : seq)
+    std::unordered_set<std::string> out = onto.class_graph_.getUp(s);
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
@@ -147,8 +147,6 @@ int main(int argc, char** argv)
   std::cout << "mean = " << total/((float)epoch) << " per sequence of " << seq.size() << std::endl;
   std::cout << "mean = " << total/((float)epoch)/seq.size() << " per request" << std::endl;
   std::cout << "It took me " << read_time << " seconds to read" << std::endl;*/
-
-  ROS_DEBUG("Test done");
 
   return 0;
 }

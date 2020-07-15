@@ -2,6 +2,7 @@
 #define ONTOLOGENIUS_FEEDER_H
 
 #include "ontologenius/core/feeder/FeedStorage.h"
+#include "ontologenius/core/feeder/Versionor.h"
 
 namespace ontologenius {
 
@@ -10,7 +11,7 @@ class Ontology;
 class Feeder
 {
 public:
-  Feeder(Ontology* onto = nullptr) {onto_ = onto; }
+  Feeder(Ontology* onto = nullptr);
 
   void store(std::string feed) { feed_storage_.add(feed); }
   bool run();
@@ -23,10 +24,14 @@ public:
     return tmp;
   }
 
+  void activateVersionning(bool activated) { versionor_.activate(activated); }
+  void exportToXml(const std::string& path) { versionor_.exportToXml(path); }
+
   size_t size() { return feed_storage_.size(); }
 
 private:
   FeedStorage feed_storage_;
+  Versionor versionor_;
   Ontology* onto_;
 
   std::vector<std::string> notifications_;
@@ -41,6 +46,7 @@ private:
   void modifyObjectPropertyInheritance(feed_t& feed);
   void modifyObjectPropertyInheritanceInvert(feed_t& feed);
   void classIndividualIsA(feed_t& feed);
+  void addInverseOf(feed_t& feed);
 
   void classIndividualLangage(feed_t& feed);
   void applyProperty(feed_t& feed);

@@ -139,7 +139,8 @@ void DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& pro
   /**********************
   ** Language and properties
   **********************/
-  me->properties_ = property_vectors.properties_;
+  me->properties_.apply(property_vectors.properties_);
+  me->annotation_usage_ = me->annotation_usage_ || property_vectors.annotation_usage_;
   me->setSteady_dictionary(property_vectors.dictionary_);
   me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
 
@@ -194,6 +195,64 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
   }
 }
 
+bool DataPropertyGraph::addAnnotation(const std::string& value, DataPropertyVectors_t& property_vectors)
+{
+  /**********************
+  ** Mothers
+  **********************/
+  DataPropertyBranch_t* me = nullptr;
+  //am I a created mother ?
+  amIA(&me, tmp_mothers_, value);
+
+  //am I a created branch ?
+  amIA(&me, branchs_, value);
+
+  //am I a created root ?
+  amIA(&me, roots_, value);
+
+  //am I created ?
+  if(me == nullptr)
+  {
+    DataPropertyBranch_t* mother_branch = nullptr;
+    for(auto& mother : property_vectors.mothers_)
+    {
+      getInMap(&mother_branch, mother.elem, roots_);
+      getInMap(&mother_branch, mother.elem, branchs_);
+      getInMap(&mother_branch, mother.elem, tmp_mothers_);
+      if(mother_branch != nullptr)
+        break;
+    }
+    if(mother_branch != nullptr)
+    {
+      add(value, property_vectors);
+      return true;
+    }
+    else
+    {
+      ClassBranch_t* range_branch = nullptr;
+      for(auto& range : property_vectors.ranges_)
+      {
+        getInMap(&range_branch, range, class_graph_->roots_);
+        getInMap(&range_branch, range, class_graph_->branchs_);
+        getInMap(&range_branch, range, class_graph_->tmp_mothers_);
+        if(range_branch != nullptr)
+          break;
+      }
+      if((range_branch == nullptr) && (property_vectors.ranges_.size()))
+      {
+        add(value, property_vectors);
+        return true;
+      }
+      else
+        return false;
+    }
+  }
+  else
+  {
+    add(value, property_vectors);
+    return true;
+  }
+}
 
 std::unordered_set<std::string> DataPropertyGraph::getDisjoint(const std::string& value)
 {

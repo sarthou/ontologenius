@@ -5,8 +5,7 @@
 #include <vector>
 #include <stdint.h>
 
-#include <cv.h>
-#include <highgui.h>
+#include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui/highgui_c.h>
 
 namespace ontologenius {
@@ -40,8 +39,6 @@ struct node_t
 class GraphDrawer
 {
 public:
-  GraphDrawer();
-  ~GraphDrawer() {}
 
   void draw(std::string file_name);
 
@@ -61,7 +58,7 @@ protected:
   bool updateOneMarker(int layer);
   bool testEnd();
 
-  cv::Scalar ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V);
+  CvScalar ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V);
 };
 
 } // namespace ontologenius

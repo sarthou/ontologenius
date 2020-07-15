@@ -83,6 +83,9 @@ public slots:
   void feederCallback(const std_msgs::String& msg);
   void feederAddSlot();
   void feederDelSlot();
+  void feederCommitSlot();
+  void feederCheckoutSlot();
+  void createPublisher(const std::string& onto_ns);
 
 signals:
   void feederSetHtmlSignal(QString);

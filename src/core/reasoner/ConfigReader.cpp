@@ -1,7 +1,7 @@
 #include "ontologenius/core/reasoner/ConfigReader.h"
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <regex>
 
 namespace ontologenius
@@ -12,8 +12,8 @@ bool ConfigReader::read(const std::string& path)
   std::ifstream config_file(path);
   if(config_file.is_open())
   {
-    std::regex element_regex("^\\s*([^\\s]*)\\s*:\\s*([^\\n]*)\\s*$");
-    std::regex list_regex("^\\s*-\\s*(.*)\\s*$");
+    std::regex element_regex(R"(^\s*([^\s]*)\s*:\s*([^\n]*)\s*$)");
+    std::regex list_regex(R"(^\s*-\s*(.*)\s*$)");
     std::smatch match;
 
     std::string line;
@@ -60,13 +60,13 @@ void ConfigReader::display()
 
 void ConfigReader::display(std::map<std::string, ConfigElement>& config, size_t nb)
 {
-  for(auto c : config)
+  for(auto& c : config)
   {
     displayTab(nb);
     std::cout << c.first << " : " << std::endl;
     if(c.second.data)
     {
-      for(auto d : c.second.data.value())
+      for(auto& d : c.second.data.value())
       {
         displayTab(nb+1);
         std::cout << "- " << d  << std::endl;
@@ -85,7 +85,7 @@ void ConfigReader::displayTab(size_t nb)
 
 void ConfigReader::removeComment(std::string& line)
 {
-  size_t pose = line.find("#");
+  size_t pose = line.find('#');
   if(pose != std::string::npos)
     line = line.substr(0, pose);
 }

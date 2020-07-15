@@ -25,6 +25,7 @@ struct ObjectPropertyVectors_t
    Properties_t properties_;
    std::map<std::string, std::vector<std::string>> dictionary_;
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
+   bool annotation_usage_;
 };
 
 //for friend
@@ -62,6 +63,9 @@ public:
   bool add(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
   bool addInvert(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
   bool remove(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
+
+  bool addInverseOf(const std::string& from, const std::string& on);
+  bool removeInverseOf(const std::string& from, const std::string& on);
 
 private:
   ClassGraph* class_graph_;

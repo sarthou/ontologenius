@@ -1,10 +1,10 @@
-#include <chrono>
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
-#include <unordered_set>
-#include <stdio.h>
-#include <math.h>
 #include <atomic>
+#include <chrono>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>     /* srand, rand */
+#include <ctime>
+#include <unordered_set>
 
 #include <ros/ros.h>
 
@@ -13,7 +13,6 @@
 using namespace std::chrono;
 
 OntologyManipulator* onto_ptr;
-std::atomic<bool> end_;
 
 void insertWords(size_t nb)
 {
@@ -24,7 +23,7 @@ void insertWords(size_t nb)
     wait.sleep();
   }
 
-  if(!onto_ptr->feeder.commit())
+  if(!onto_ptr->feeder.waitUpdate(10000))
     std::cout << "too long" << std::endl;
 }
 
@@ -50,10 +49,10 @@ double R2()
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
   std::vector<std::string> res;
-  std::vector<std::string> plant = onto_ptr->individuals.getType("Plant");
-  for(size_t i = 0; i < plant.size(); i++)
+  const std::vector<std::string> plants = onto_ptr->individuals.getType("Plant");
+  for(auto& plant : plants)
   {
-    std::vector<std::string> none = onto_ptr->individuals.getFrom("isAt", plant[i]);
+    std::vector<std::string> none = onto_ptr->individuals.getFrom("isAt", plant);
     res.insert(res.end(), none.begin(), none.end());
   }
 
@@ -82,12 +81,6 @@ double R3()
   return time_span.count()*1000;
 }
 
-void chatterCallback(const std_msgs::String::ConstPtr& msg)
-{
-  (void)msg;
-  end_ = true;
-}
-
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius_ORO_tester");
@@ -96,25 +89,21 @@ int main(int argc, char** argv)
   OntologyManipulator onto(&n);
   onto_ptr = &onto;
 
-  ros::Subscriber sub = n.subscribe("ontologenius/end", 1000, chatterCallback);
-
   onto.verbose(true);
 
   std::vector<size_t> nb_words = {100, 500, 1000, 5000, 10000, 50000, 100000, 450000};
   std::vector<std::vector<double> > res;
   ros::Rate wait(0.2);
-  ros::Rate fast(100);
 
-  for(size_t i = 0; i < nb_words.size(); i++)
+  for(auto& nb_word : nb_words)
   {
     onto.actions.reset();
     onto.actions.fadd("/home/gsarthou/openrobots/share/ontologies/testsuite.owl");
     onto.close();
 
     wait.sleep();
-    end_ = false;
 
-    insertWords(nb_words[i]);
+    insertWords(nb_word);
 
     std::vector<double> tmp;
     tmp.push_back(R1());
@@ -122,8 +111,8 @@ int main(int argc, char** argv)
     tmp.push_back(R3());
 
     std::cout << "*********" << std::endl;
-    for(size_t j = 0; j < tmp.size(); j++)
-      std::cout << tmp[j] << std::endl;
+    for(auto& result : tmp)
+      std::cout << result << std::endl;
     res.push_back(tmp);
   }
 
@@ -135,8 +124,6 @@ int main(int argc, char** argv)
       std::cout << res[j][i] << ";";
     std::cout << std::endl;
   }
-
-  ROS_DEBUG("test done");
 
   return 0;
 }

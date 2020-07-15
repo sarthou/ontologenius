@@ -14,7 +14,7 @@ class IndividualBranch_t;
 class IndividualWriter : public NodeWriter
 {
 public:
-  IndividualWriter(IndividualGraph* individual_graph) {individual_graph_ = individual_graph; };
+  IndividualWriter(IndividualGraph* individual_graph, const std::string& ns);
   ~IndividualWriter() {};
 
   void write(FILE* file);

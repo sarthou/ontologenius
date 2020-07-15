@@ -7,7 +7,7 @@ OntologiesManipulator::OntologiesManipulator(ros::NodeHandle* n) : ManagerClient
 
 OntologiesManipulator::~OntologiesManipulator()
 {
-  for(auto manipulator : manipulators_)
+  for(auto& manipulator : manipulators_)
     if(manipulator.second != nullptr)
       delete manipulator.second;
 }
@@ -43,8 +43,7 @@ bool OntologiesManipulator::add(const std::string& name)
       return false;
     else
     {
-      OntologyManipulator* tmp = new OntologyManipulator(n_, name);
-      manipulators_[name] = tmp;
+      manipulators_[name] = new OntologyManipulator(n_, name);
       return true;
     }
   }
@@ -60,7 +59,7 @@ bool OntologiesManipulator::copy(const std::string& dest_name, const std::string
       return false;
     else
     {
-      OntologyManipulator* tmp = new OntologyManipulator(n_, dest_name);
+      auto tmp = new OntologyManipulator(n_, dest_name);
       manipulators_[dest_name] = tmp;
       return true;
     }

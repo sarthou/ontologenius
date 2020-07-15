@@ -27,7 +27,7 @@ TEST(multi_tests, create)
   (*onto_ptr)["paul"]->feeder.addInheritage("human", "agent");
   (*onto_ptr)["paul"]->feeder.addInheritage("robot", "agent");
   (*onto_ptr)["paul"]->feeder.addInheritage("pepper", "robot");
-  (*onto_ptr)["paul"]->feeder.commit(500);
+  (*onto_ptr)["paul"]->feeder.waitUpdate(500);
 
   res = (*onto_ptr)["paul"]->classes.getUp(test_word);
   res_bool = ((res.size() == 2) &&
@@ -62,7 +62,7 @@ TEST(multi_tests, differences)
   (*onto_ptr)["paul"]->feeder.addInheritage("human", "agent");
   (*onto_ptr)["paul"]->feeder.addInheritage("robot", "agent");
   (*onto_ptr)["paul"]->feeder.addInheritage("pepper", "robot");
-  (*onto_ptr)["paul"]->feeder.commit(500);
+  (*onto_ptr)["paul"]->feeder.waitUpdate(500);
 
   (*onto_ptr)["bob"]->feeder.addConcept("human");
   (*onto_ptr)["bob"]->feeder.addInheritage("man", "human");
@@ -70,7 +70,7 @@ TEST(multi_tests, differences)
   (*onto_ptr)["bob"]->feeder.addInheritage("human", "agent");
   (*onto_ptr)["bob"]->feeder.addInheritage("robot", "agent");
   (*onto_ptr)["bob"]->feeder.addInheritage("pepper", "human");
-  (*onto_ptr)["bob"]->feeder.commit(500);
+  (*onto_ptr)["bob"]->feeder.waitUpdate(500);
 
   res = onto_ptr->getDifference("paul", "bob", "pepper");
   res_bool = ((res.size() == 2) &&

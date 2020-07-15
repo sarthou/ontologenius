@@ -8,7 +8,7 @@
     - cd ..
     - catkin_make
 
-.test_script_template : &test_script_definition
+.test_script_template : &test_script_definition_py2
   script:
     - mkdir -p ~/ros_ws/src
     - cd ~/ros_ws
@@ -20,6 +20,24 @@
     - export PYTHONPATH=~/ros_ws/devel/lib/python2.7/site-packages:$PYTHONPATH
     - cd requests
     - python setup.py install --prefix=~/ros_ws/devel
+    - cd ../..
+    - source devel/setup.bash
+    - catkin_make
+    - source devel/setup.bash
+    - catkin_make run_tests_ontologenius_rostest && catkin_make test
+
+.test_script_template : &test_script_definition_py3
+  script:
+    - mkdir -p ~/ros_ws/src
+    - cd ~/ros_ws
+    - catkin_make
+    - cd src
+    - cp -r /builds/$GITLAB_USER_LOGIN/ontologenius .
+    - git clone https://github.com/kennethreitz/requests.git
+    - mkdir -p ~/ros_ws/devel/lib/python3.8/site-packages
+    - export PYTHONPATH=~/ros_ws/devel/lib/python3.8/site-packages:$PYTHONPATH
+    - cd requests
+    - python3 setup.py install --prefix=~/ros_ws/devel
     - cd ../..
     - source devel/setup.bash
     - catkin_make
@@ -41,6 +59,11 @@
   - source /opt/ros/melodic/setup.bash
   - apt-get update -qq && apt-get install -y libcppunit-1.14-0 libcppunit-dev libtinyxml-dev
 
+.noetic_before_template : &noetic_before_definition
+  before_script:
+  - source /opt/ros/noetic/setup.bash
+  - apt-get update -qq && apt-get install -y libcppunit-1.15-0 libcppunit-dev libtinyxml-dev git-all
+
 
 stages:
   - build
@@ -56,13 +79,20 @@ run-test-kinetic:
   stage: test
   image: ros:kinetic-perception-xenial
   <<: *kinetic_before_definition
-  <<: *test_script_definition
+  <<: *test_script_definition_py2
+
+run-build-lunar:
+  image: ros:lunar-perception-xenial
+  stage: build
+  allow_failure : true
+  <<: *lunar_before_definition
+  <<: *build_script_definition
 
 run-test-melodic:
   stage: test
   image: ros:melodic-perception-bionic
   <<: *melodic_before_definition
-  <<: *test_script_definition
+  <<: *test_script_definition_py2
 
 run-build-melodic:
   image: ros:melodic-perception-bionic
@@ -70,9 +100,14 @@ run-build-melodic:
   <<: *melodic_before_definition
   <<: *build_script_definition
 
-run-build-lunar:
-  image: ros:lunar-perception-xenial
+run-test-noetic:
+  stage: test
+  image: ros:noetic-perception-focal
+  <<: *noetic_before_definition
+  <<: *test_script_definition_py3
+
+run-build-noetic:
+  image: ros:noetic-perception-focal
   stage: build
-  allow_failure : true
-  <<: *lunar_before_definition
+  <<: *noetic_before_definition
   <<: *build_script_definition

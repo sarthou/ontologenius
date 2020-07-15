@@ -6,6 +6,11 @@
 
 namespace ontologenius {
 
+Feeder::Feeder(Ontology* onto) : versionor_(&feed_storage_)
+{
+  onto_ = onto;
+}
+
 bool Feeder::run()
 {
   if(onto_ == nullptr)
@@ -25,7 +30,22 @@ bool Feeder::run()
     else if(feed.action_ == action_del)
       current_str_feed_ = "[del] " + feed.from_ + " | " + feed.prop_ + " | " + feed.on_;
     else
+    {
+      if(feed.action_ == action_commit)
+      {
+        if(!versionor_.commit(feed.from_))
+          notifications_.push_back("[FAIL][commit]" + feed.from_);
+      }
+      else if(feed.action_ == action_checkout)
+      {
+        if(!versionor_.checkout(feed.from_))
+          notifications_.push_back("[FAIL][checkout]" + feed.from_);
+      }
       continue;
+    }
+
+    if(!feed.checkout_)
+      versionor_.insert(feed);
 
     if(feed.prop_ == "")
     {
@@ -38,8 +58,8 @@ bool Feeder::run()
     {
       if((feed.prop_ == "+") || (feed.prop_ == "rdfs:subClassOf") || (feed.prop_ == "isA"))
         addInheritage(feed);
-      //if((feed.prop_ == "<-") || (feed.prop_ == "owl:inverseOf"))
-        //addInverseOf(feed);
+      else if((feed.prop_ == "<-") || (feed.prop_ == "owl:inverseOf"))
+        addInverseOf(feed);
       else if(feed.prop_[0] == '@')
         classIndividualLangage(feed);
       else
@@ -150,6 +170,20 @@ void Feeder::classIndividualIsA(feed_t& feed)
   }
 }
 
+void Feeder::addInverseOf(feed_t& feed)
+{
+  if(feed.action_ == action_add)
+  {
+    if(!onto_->object_property_graph_.addInverseOf(feed.from_, feed.on_))
+      notifications_.push_back("[FAIL][no known items in the request]" + current_str_feed_);
+  }
+  else if(feed.action_ == action_del)
+  {
+    if(!onto_->object_property_graph_.removeInverseOf(feed.from_, feed.on_))
+      notifications_.push_back("[FAIL][unknown item in the request]" + current_str_feed_);
+  }
+}
+
 void Feeder::classIndividualLangage(feed_t& feed)
 {
   if(feed.action_ == action_add)
@@ -174,7 +208,7 @@ void Feeder::classIndividualLangage(feed_t& feed)
 
 void Feeder::applyProperty(feed_t& feed)
 {
-  size_t pose = feed.on_.find("#");
+  size_t pose = feed.on_.find('#');
   std::string type = "";
   std::string data = "";
   bool data_property = false;
@@ -188,19 +222,19 @@ void Feeder::applyProperty(feed_t& feed)
 
   if(feed.action_ == action_add)
   {
-    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
-    {
-      if(data_property == true)
-        onto_->class_graph_.addProperty(feed.from_, feed.prop_, type, data);
-      else
-        onto_->class_graph_.addProperty(feed.from_, feed.prop_, feed.on_);
-    }
-    else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+    if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
     {
       if(data_property == true)
         onto_->individual_graph_.addProperty(feed.from_, feed.prop_, type, data);
       else
         onto_->individual_graph_.addProperty(feed.from_, feed.prop_, feed.on_);
+    }
+    else if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+    {
+      if(data_property == true)
+        onto_->class_graph_.addProperty(feed.from_, feed.prop_, type, data);
+      else
+        onto_->class_graph_.addProperty(feed.from_, feed.prop_, feed.on_);
     }
     else if(onto_->class_graph_.findBranch(feed.on_) != nullptr)
       onto_->class_graph_.addPropertyInvert(feed.from_, feed.prop_, feed.on_);

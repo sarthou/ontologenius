@@ -1,34 +1,34 @@
 #include <chrono>
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
+#include <cmath>
+#include <cstdlib>     /* srand, rand */
+#include <ctime>       /* time */
+#include <cstdio>
 #include <unordered_set>
-#include <stdio.h>
-#include <math.h>
 
 #include <ros/ros.h>
 
-#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 #include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerDyn.h"
 #include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerMap.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 
 class FileReader
 {
 public:
-  FileReader(std::string path)
+  FileReader(const std::string& path)
   {
     len = cpt = 0;
-    file_ = NULL;
+    file_ = nullptr;
     init(path, "r");
   }
   ~FileReader()
   {
-    if(file_ != NULL)
+    if(file_ != nullptr)
       fclose(file_);
   }
 
   std::string readLine()
   {
-    char * line = NULL;
+    char * line = nullptr;
     if(getline(&line, &len, file_) != -1)
     {
         cpt++;
@@ -43,21 +43,21 @@ private:
   size_t len;
   size_t cpt;
 
-  void init(std::string file_name, std::string option)
+  void init(const std::string& file_name, const std::string& option)
   {
     file_ = fopen(file_name.c_str(), option.c_str());
-    if(file_ == NULL)
+    if(file_ == nullptr)
       std::cout << "Fail to open file " << file_name << " with option '" << option << "'" << std::endl;
   }
 
-  void reset(std::string file_name)
+  void reset(const std::string& file_name)
   {
     file_ = fopen(file_name.c_str(), "w");
-    if(file_ == NULL)
+    if(file_ == nullptr)
       std::cout << "Fail to reset file " << file_name << std::endl;
     else
       fclose(file_);
-    file_ = NULL;
+    file_ = nullptr;
   }
 
   FILE* file_;
@@ -86,13 +86,13 @@ void readFullWords()
   std::cout << reader.getNbLine() << std::endl;
 }
 
-double findAll(ontologenius::BranchContainerBase<ontologenius::ValuedNode>* container, std::vector<ontologenius::ValuedNode*> words)
+double findAll(ontologenius::BranchContainerBase<ontologenius::ValuedNode>* container, const std::vector<ontologenius::ValuedNode*>& words)
 {
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-  for(size_t i = 0; i < words.size(); i++)
+  for(auto word : words)
   {
-    ontologenius::ValuedNode* none = container->find(words[i]->value());
+    ontologenius::ValuedNode* none = container->find(word->value());
     (void)none;
   }
 
@@ -101,7 +101,7 @@ double findAll(ontologenius::BranchContainerBase<ontologenius::ValuedNode>* cont
   return time_span.count() / words.size();
 }
 
-double findAllNTime(ontologenius::BranchContainerBase<ontologenius::ValuedNode>* container, std::vector<ontologenius::ValuedNode*> words, size_t n)
+double findAllNTime(ontologenius::BranchContainerBase<ontologenius::ValuedNode>* container, const std::vector<ontologenius::ValuedNode*>& words, size_t n)
 {
   double sum = 0;
   for(size_t i = 0; i < n; i++)
@@ -177,8 +177,8 @@ int main(int argc, char** argv)
     std::cout << log2(size) << " : " << size << std::endl;
   }
 
-  for(size_t i = 0; i < full_words.size(); i++)
-    delete full_words[i];
+  for(auto& full_word : full_words)
+    delete full_word;
 
   ROS_DEBUG("test done");
 

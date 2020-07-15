@@ -4,25 +4,30 @@
 
 #include "ontologenius/RosInterface.h"
 
+#include "ontologenius/utils/String.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
 
+#define PUB_QUEU_SIZE 1000
+#define SUB_QUEU_SIZE 10000
+
 namespace ontologenius {
 
-RosInterface::RosInterface(ros::NodeHandle* n, std::string name) : run_(true),
-                                                                   pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, 1000))
+RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) : run_(true),
+                                                                   pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, PUB_QUEU_SIZE))
 {
   n_ = n;
   onto_ = new Ontology();
   reasoners_.link(onto_);
   feeder_.link(onto_);
+  sparql_.link(onto_);
 
   name_ = name;
   feeder_end = true;
 }
 
-RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, std::string name) : run_(true),
-                                                                   pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, 1000))
+RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::string& name) : run_(true),
+                                                                   pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, PUB_QUEU_SIZE))
 {
   n_ = n;
 
@@ -32,6 +37,7 @@ RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, std::string 
 
   reasoners_.link(onto_);
   feeder_.link(onto_);
+  sparql_.link(onto_);
 
   name_ = name;
   feeder_end = true;
@@ -45,7 +51,6 @@ RosInterface::~RosInterface()
 void RosInterface::init(const std::string& lang, const std::string& intern_file, const std::vector<std::string>& files, const std::string& config_path)
 {
   onto_->setLanguage(lang);
-  std::string ontology_intern_file = intern_file;
   std::string dedicated_intern_file = intern_file;
   if(name_ != "")
   {
@@ -55,12 +60,14 @@ void RosInterface::init(const std::string& lang, const std::string& intern_file,
   }
 
   if(onto_->preload(dedicated_intern_file) == false)
-    for(auto file : files)
+    for(auto& file : files)
       onto_->readFromFile(file);
 
   reasoners_.configure(config_path);
   reasoners_.load();
   Display::info("Plugins loaded : " + reasoners_.list());
+
+  feeder_rate_ = 20;
 }
 
 void RosInterface::init(const std::string& lang, const std::string& config_path)
@@ -70,39 +77,36 @@ void RosInterface::init(const std::string& lang, const std::string& config_path)
   reasoners_.configure(config_path);
   reasoners_.load();
   Display::info("Plugins loaded : " + reasoners_.list());
+
+  feeder_.activateVersionning(true);
+  feeder_rate_ = 4000;
 }
 
 void RosInterface::run()
 {
-  std::string service_name;
+  ros::Subscriber knowledge_subscriber = n_->subscribe(getTopicName("insert"), PUB_QUEU_SIZE, &RosInterface::knowledgeCallback, this);
 
-  service_name = (name_ == "") ? "ontologenius/insert" : "ontologenius/insert/" + name_;
-  ros::Subscriber knowledge_subscriber = n_->subscribe(service_name, 10000, &RosInterface::knowledgeCallback, this);
+  ros::Subscriber stamped_knowledge_subscriber = n_->subscribe(getTopicName("insert_stamped"), PUB_QUEU_SIZE, &RosInterface::stampedKnowledgeCallback, this);
 
   // Start up ROS service with callbacks
-  service_name = (name_ == "") ? "ontologenius/actions" : "ontologenius/actions/" + name_;
-  ros::ServiceServer service = n_->advertiseService(service_name, &RosInterface::actionsHandle, this);
+  ros::ServiceServer service = n_->advertiseService(getTopicName("actions"), &RosInterface::actionsHandle, this);
 
-  service_name = (name_ == "") ? "ontologenius/class" : "ontologenius/class/" + name_;
-  ros::ServiceServer service_class = n_->advertiseService(service_name, &RosInterface::classHandle, this);
+  ros::ServiceServer service_class = n_->advertiseService(getTopicName("class"), &RosInterface::classHandle, this);
 
-  service_name = (name_ == "") ? "ontologenius/object_property" : "ontologenius/object_property/" + name_;
-  ros::ServiceServer service_object_property = n_->advertiseService(service_name, &RosInterface::objectPropertyHandle, this);
+  ros::ServiceServer service_object_property = n_->advertiseService(getTopicName("object_property"), &RosInterface::objectPropertyHandle, this);
 
-  service_name = (name_ == "") ? "ontologenius/data_property" : "ontologenius/data_property/" + name_;
-  ros::ServiceServer service_data_property = n_->advertiseService(service_name, &RosInterface::dataPropertyHandle, this);
+  ros::ServiceServer service_data_property = n_->advertiseService(getTopicName("data_property"), &RosInterface::dataPropertyHandle, this);
 
-  service_name = (name_ == "") ? "ontologenius/individual" : "ontologenius/individual/" + name_;
-  ros::ServiceServer service_individual = n_->advertiseService(service_name, &RosInterface::individualHandle, this);
+  ros::ServiceServer service_individual = n_->advertiseService(getTopicName("individual"), &RosInterface::individualHandle, this);
 
-  service_name = (name_ == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + name_;
-  ros::ServiceServer service_reasoner = n_->advertiseService(service_name, &RosInterface::reasonerHandle, this);
-
+  ros::ServiceServer service_reasoner = n_->advertiseService(getTopicName("reasoner"), &RosInterface::reasonerHandle, this);
 
   std::thread feed_thread(&RosInterface::feedThread, this);
   std::thread periodic_reasoning_thread(&RosInterface::periodicReasoning, this);
 
-  ROS_DEBUG("%s ontologenius ready", name_.c_str());
+  ros::ServiceServer service_sparql = n_->advertiseService(getTopicName("sparql"), &RosInterface::sparqlHandle, this);
+
+  Display::info(name_ + " is ready");
 
   while (ros::ok() && isRunning())
   {
@@ -125,6 +129,12 @@ void RosInterface::release()
   reasoner_mutex_.unlock();
 }
 
+void RosInterface::close()
+{
+  onto_->close();
+  reasoners_.runPostReasoners();
+}
+
 /***************
 *
 * Callbacks
@@ -132,6 +142,11 @@ void RosInterface::release()
 ****************/
 
 void RosInterface::knowledgeCallback(const std_msgs::String::ConstPtr& msg)
+{
+  feeder_.store(msg->data);
+}
+
+void RosInterface::stampedKnowledgeCallback(const ontologenius::StampedString::ConstPtr& msg)
 {
   feeder_.store(msg->data);
 }
@@ -150,11 +165,10 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
     res.code = onto_->readFromFile(req.param);
   else if(req.action == "save")
     onto_->save(req.param);
+  else if(req.action == "export")
+    feeder_.exportToXml(req.param);
   else if(req.action == "close")
-  {
-    onto_->close();
-    reasoners_.runPostReasoners();
-  }
+    close();
   else if(req.action == "reset")
   {
     feeder_mutex_.lock();
@@ -163,6 +177,7 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
     onto_ = new Ontology();
     reasoners_.link(onto_);
     feeder_.link(onto_);
+    sparql_.link(onto_);
     feeder_mutex_.unlock();
     reasoner_mutex_.unlock();
   }
@@ -564,6 +579,27 @@ bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &re
   return true;
 }
 
+bool RosInterface::sparqlHandle(ontologenius::OntologeniusSparqlService::Request &req,
+                                ontologenius::OntologeniusSparqlService::Response &res)
+{
+  std::vector<std::map<std::string, std::string>> results = sparql_.run(req.query);
+
+  for(auto& result : results)
+  {
+    ontologenius::OntologeniusSparqlResponse tmp;
+    for(auto& r : result)
+    {
+      tmp.names.push_back(r.first);
+      tmp.values.push_back(r.second);
+    }
+    res.results.push_back(tmp);
+  }
+
+  res.error = sparql_.getError();
+
+  return true;
+}
+
 /***************
 *
 * Threads
@@ -573,9 +609,9 @@ bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &re
 void RosInterface::feedThread()
 {
   std::string publisher_name = (name_ == "") ? "ontologenius/feeder_notifications" : "ontologenius/feeder_notifications/" + name_;
-  ros::Publisher feeder_publisher = n_->advertise<std_msgs::String>(publisher_name, 1000);
+  ros::Publisher feeder_publisher = n_->advertise<std_msgs::String>(publisher_name, PUB_QUEU_SIZE);
 
-  ros::Rate wait(10);
+  ros::Rate wait(feeder_rate_);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
   {
     wait.sleep();
@@ -618,7 +654,7 @@ void RosInterface::feedThread()
 void RosInterface::periodicReasoning()
 {
   std::string publisher_name = (name_ == "") ? "ontologenius/reasoner_notifications" : "ontologenius/reasoner_notifications/" + name_;
-  ros::Publisher reasoner_publisher = n_->advertise<std_msgs::String>(publisher_name, 1000);
+  ros::Publisher reasoner_publisher = n_->advertise<std_msgs::String>(publisher_name, PUB_QUEU_SIZE);
 
   ros::Rate wait(10);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
@@ -634,7 +670,7 @@ void RosInterface::periodicReasoning()
 
     std_msgs::String msg;
     std::vector<std::string> notifications = reasoners_.getNotifications();
-    for(auto notif : notifications)
+    for(auto& notif : notifications)
     {
       std::cout << notif << std::endl;
       msg.data = notif;
@@ -660,24 +696,6 @@ void RosInterface::removeUselessSpace(std::string& text)
     text.erase(text.size() - 1,1);
 }
 
-bool RosInterface::split(const std::string &text, std::vector<std::string> &strs, const std::string& delim)
-{
-  std::string tmp_text = text;
-  while(tmp_text.find(delim) != std::string::npos)
-  {
-    size_t pos = tmp_text.find(delim);
-    std::string part = tmp_text.substr(0, pos);
-    tmp_text = tmp_text.substr(pos + delim.size(), tmp_text.size() - pos - delim.size());
-    if(part != "")
-      strs.push_back(part);
-  }
-  strs.push_back(tmp_text);
-  if(strs.size() > 1)
-    return true;
-  else
-    return false;
-}
-
 void RosInterface::set2string(const std::unordered_set<std::string>& word_set, std::string& result)
 {
   for(const std::string& it : word_set)
@@ -693,8 +711,7 @@ void RosInterface::set2vector(const std::unordered_set<std::string>& word_set, s
 param_t RosInterface::getParams(std::string& param)
 {
   param_t parameters;
-  std::vector<std::string> str_params;
-  split(param, str_params, " ");
+  std::vector<std::string> str_params = split(param, " ");
 
   if(str_params.size())
     parameters.base = str_params[0];
@@ -747,7 +764,7 @@ param_t RosInterface::getParams(std::string& param)
 
 int RosInterface::getPropagationLevel(std::string& params)
 {
-  size_t delimitater = params.find("<");
+  size_t delimitater = params.find('<');
   if(delimitater != std::string::npos)
   {
     std::cout << "[WARNING] Deprecated propagation level definition. Use -d option" << std::endl;
@@ -770,7 +787,7 @@ std::string RosInterface::getSelector(std::string& action, std::string& param)
   {
     std::cout << "[WARNING] Deprecated selector definition. Use -s option" << std::endl;
     action = action.substr(std::string("select:").size());
-    size_t delimitater = param.find("=");
+    size_t delimitater = param.find('=');
     if(delimitater != std::string::npos)
     {
       select = param.substr(0, delimitater);

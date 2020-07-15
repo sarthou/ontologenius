@@ -88,8 +88,8 @@ void DataPropertyDrawer::init()
     for(size_t i = 0; i < middle; i++)
       roots_nodes.push_back(single[i]);
 
-    for(size_t i = 0; i < couple.size(); i++)
-      roots_nodes.push_back(couple[i]);
+    for(auto& c : couple)
+      roots_nodes.push_back(c);
 
     for(size_t i = middle; i < single.size(); i++)
       roots_nodes.push_back(single[i]);

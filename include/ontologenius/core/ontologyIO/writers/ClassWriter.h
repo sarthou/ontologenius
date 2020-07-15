@@ -15,7 +15,7 @@ class ClassBranch_t;
 class ClassWriter : private NodeWriter
 {
 public:
-  ClassWriter(ClassGraph* class_graph) {class_graph_ = class_graph; };
+  ClassWriter(ClassGraph* class_graph, const std::string& ns);
   ~ClassWriter() {};
 
   void write(FILE* file);

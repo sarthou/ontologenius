@@ -1,7 +1,9 @@
 import rospy
 from std_msgs.msg import String
+from ontologenius.msg import StampedString
 
 import time
+import random
 from datetime import datetime
 
 class FeederPublisher:
@@ -12,55 +14,83 @@ class FeederPublisher:
         if self._name != '':
             pub_topic_name += '/' + self._name
         self._pub = rospy.Publisher(pub_topic_name, String, queue_size=1000)
+        pub_topic_name = 'ontologenius/insert_stamped'
+        if self._name != '':
+            pub_topic_name += '/' + self._name
+        self._stamped_pub = rospy.Publisher(pub_topic_name, StampedString, queue_size=1000)
         sub_topic_name = 'ontologenius/end'
         if self._name != '':
             sub_topic_name += '/' + self._name
         self._commit_sub = rospy.Subscriber(sub_topic_name, String, self.commitCallback)
-        self._commited = False
+        self._updated = False
+        random.seed()
+        self._commit_nb = random.randint(1, 100000)
 
-    def addObjectProperty(self, concept_from, property, concept_on):
+    def addObjectProperty(self, concept_from, property, concept_on, stamp = None):
         msg = '[add]' + concept_from + '|' + property + '|' + concept_on
-        self._publish(msg)
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def addDataProperty(self, concept_from, property, type, data):
+    def addDataProperty(self, concept_from, property, type, data, stamp = None):
         msg = '[add]' + concept_from + '|' + property + '|' + type + '#' + data
-        self._publish(msg)
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def addInheritage(self, concept_from, concept_on):
+    def addInheritage(self, concept_from, concept_on, stamp = None):
         msg = '[add]' + concept_from + '|+|' + concept_on
-        self._publish(msg)
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def addLanguage(self, concept_from, lang, name):
+    def addLanguage(self, concept_from, lang, name, stamp = None):
         msg = '[add]' + concept_from + '|@' + lang + '|' + name
-        self._publish(msg)
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def addConcept(self, concept_from):
+    def addConcept(self, concept_from, stamp = None):
         msg = '[add]' + concept_from + '|'
-        self._publish(msg)
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def removeProperty(self, concept_from, property):
+    def removeProperty(self, concept_from, property, stamp = None):
         msg = '[del]' + concept_from + '|' + property + '|_'
-        self._publish(msg)
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def removeObjectProperty(self, concept_from, property, concept_on):
+    def removeObjectProperty(self, concept_from, property, concept_on, stamp = None):
         msg = '[del]' + concept_from + '|' + property + '|' + concept_on
-        self._publish(msg)
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def removeDataProperty(self, concept_from, property, type, data):
+    def removeDataProperty(self, concept_from, property, type, data, stamp = None):
         msg = '[del]' + concept_from + '|' + property + '|' + type + '#' + data
-        self._publish(msg)
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def removeInheritage(self, concept_from, concept_on):
+    def removeInheritage(self, concept_from, concept_on, stamp = None):
         msg = '[del]' + concept_from + '|+|' + concept_on
-        self._publish(msg)
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def removeLanguage(self, concept_from, lang, name):
+    def removeLanguage(self, concept_from, lang, name, stamp = None):
         msg = '[add]' + concept_from + '|@' + lang + '|' + name
-        self._publish(msg)
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
-    def removeConcept(self, concept_from):
+    def removeConcept(self, concept_from, stamp = None):
         msg = '[del]' + concept_from + '|'
-        self._publish(msg)
+        if stamp == None:
+            stamp = rospy.get_rostime()
+        self._publish_stamped(msg, stamp)
 
     def getNumSubscribers(self):
         return self._pub.get_num_connections()
@@ -70,29 +100,70 @@ class FeederPublisher:
         while not rospy.is_shutdown() and self.getNumSubscribers() == 0:
             rate.sleep()
 
-    def commit(self, timeout = 100000000):
-        self._commited = False
+    def waitUpdate(self, timeout = 100000000):
+        self._updated = False
 
         start_time = datetime.now()
         self._sendNop()
 
-        while not rospy.is_shutdown() and not self._commited and (self.millis_interval(start_time, datetime.now()) < timeout) :
+        while not rospy.is_shutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
             time.sleep(.001)
 
-        if self._commited == True:
+        if self._updated == True:
+            return True
+        else:
+            return False
+
+    def commitAuto(self, timeout = 100000000):
+        commit_name = str(self._commit_nb)
+        self._commit_nb = self._commit_nb + 1
+
+        if self.commit(commit_name, timeout):
+            return commit_name
+        else:
+            return ''
+
+    def commit(self, commit_name, timeout = 100000000):
+        self._updated = False
+        msg = '[commit]' + commit_name + '|'
+
+        start_time = datetime.now()
+        self._publish_stamped(msg, rospy.get_rostime())
+
+        while not rospy.is_shutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
+            time.sleep(.001)
+
+        if self._updated == True:
+            return True
+        else:
+            return False
+
+    def checkout(self, commit_name, timeout = 100000000):
+        self._updated = False
+
+        start_time = datetime.now()
+        self._publish_stamped('[checkout]' + commit_name + '|', rospy.get_rostime())
+
+        while not rospy.is_shutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
+            time.sleep(.001)
+
+        if self._updated == True:
             return True
         else:
             return False
 
     def _sendNop(self):
-        self._publish('[nop]nop|')
+        self._publish_stamped('[nop]nop|', rospy.get_rostime())
 
     def _publish(self, data):
         self._pub.publish(data)
 
+    def _publish_stamped(self, data, stamp):
+        self._stamped_pub.publish(data, stamp)
+
     def commitCallback(self, data):
         if data.data == 'end':
-            self._commited = True
+            self._updated = True
 
     def millis_interval(self, start, end):
         diff = end - start

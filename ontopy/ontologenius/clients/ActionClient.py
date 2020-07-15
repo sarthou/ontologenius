@@ -16,6 +16,9 @@ class ActionClient(ClientBase):
     def save(self, path):
         return self.callNR("save", path)
 
+    def export(self, path):
+        return self.callNR("export", path)
+
     def setLang(self, lang):
         return self.callNR("setLang", lang)
 

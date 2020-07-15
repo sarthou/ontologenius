@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>FeederPublisher Class (cpp) | Ontologenius 0.2.5</title>
+  <title>FeederPublisher Class (cpp) | Ontologenius 0.2.6</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -132,19 +132,23 @@
           <table class="alignedsummary">
             <tbody>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#FeederPublisher">FeederPublisher</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addProperty">addProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>on</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addProperty">addProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>type</i>, const std::string&amp; <i>value</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addInheritage">addInheritage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>on</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addLanguage">addLanguage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>lang</i>, const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addConcept">addConcept</a></b>(const std::string&amp; <i>from</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty0">removeProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty1">removeProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>on</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty2">removeProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>type</i>, const std::string&amp; <i>value</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeInheritage">removeInheritage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>on</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeLanguage">removeLanguage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>lang</i>, const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeConcept">removeConcept</a></b>(const std::string&amp; <i>from</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addProperty">addProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>on</i>, const ros::Time&amp; <i>stamp</i> = ros::Time::now())</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addProperty">addProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>type</i>, const std::string&amp; <i>value</i>, const ros::Time&amp; <i>stamp</i> = ros::Time::now())</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addInheritage">addInheritage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>on</i>, const ros::Time&amp; <i>stamp</i> = ros::Time::now())</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addLanguage">addLanguage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>lang</i>, const std::string&amp; <i>name</i>, const ros::Time&amp; <i>stamp</i> = ros::Time::now())</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addConcept">addConcept</a></b>(const std::string&amp; <i>from</i>, const ros::Time&amp; <i>stamp</i> = ros::Time::now())</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty0">removeProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const ros::Time&amp; <i>stamp</i> = ros::Time::now())</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty1">removeProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>on</i>, const ros::Time&amp; <i>stamp</i> = ros::Time::now())</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty2">removeProperty</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>type</i>, const std::string&amp; <i>value</i>, const ros::Time&amp; <i>stamp</i> = ros::Time::now())</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeInheritage">removeInheritage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>on</i>, const ros::Time&amp; <i>stamp</i> = ros::Time::now())</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeLanguage">removeLanguage</a></b>(const std::string&amp; <i>from</i>, const std::string&amp; <i>lang</i>, const std::string&amp; <i>name</i>, const ros::Time&amp; <i>stamp</i> = ros::Time::now())</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeConcept">removeConcept</a></b>(const std::string&amp; <i>from</i>, const ros::Time&amp; <i>stamp</i> = ros::Time::now())</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> size_t </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#getNumSubscribers">getNumSubscribers</a></b>()</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit">commit</a></b>(int32_t <i>timeout</i> = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#waitConnected">waitConnected</a></b>()</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#waitUpdate">waitUpdate</a></b>(int32_t <i>timeout</i> = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit">commit</a></b>(int32_t <i>timeout</i> = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit2">commit</a></b>(const std::string&amp; <i>commit_name</i>, int32_t <i>timeout</i> = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#checkout">checkout</a></b>(const std::string&amp; <i>commit_name</i>, int32_t <i>timeout</i> = -1)</td></tr>
             </tbody>
           </table>
         </div>
@@ -153,10 +157,12 @@
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
           <p>The FeederPublisher class provides an abstraction ontologenius feeder(insert) ROS topic.</p>
-          <p>Working in a closed world can be interesting, but with ontologenius, you can also choose to work in an open world by adding and modifying the agent's knowledge base during its operation.
+          <p>Working in a closed world can be interesting, but with ontologenius, you can also choose to work in an open world by adding and modifying
+            the agent's knowledge base during its operation.
             The feeder publisher is used to insert and delete knowledge dynamically.
             The feeding process is asynchronous and therefore does not guarantee any response time.
-            It still provides a function to synchronize if you have applications where you have to query the ontology right after having modified it.</p>
+            It still provides functions to synchronize if you have applications where you have to query the ontology right after having modified it.</p>
+          <p>All modifications can be time stamped for advanced uses using the replublication mechanism.</p>
         </div>
 
         <div class="func">
@@ -166,54 +172,86 @@
           <p>Constructs an FeederPublisher with a pointer to a NodeHandle <i>n</i>.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
 
-          <h3 class="fn" id="addProperty"><a name="addProperty"></a>FeederPublisher::<span class="name">addProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>on</i>)</h3>
+          <h3 class="fn" id="addProperty"><a name="addProperty"></a>FeederPublisher::<span class="name">addProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>on</i>, const <span class="type">ros::Time</span>&amp; <i>stamp</i> = ros::Time::now())</h3>
           <p>Adds the fact that <i>from</i> is linked with <i>on</i> by the property <i>property</i>.</p>
           <p>At least <i>from</i> or <i>on</i> must be already known to the system. If one of them is unknown, it will be automatically created. The property can be unknow before calling this function.</p>
+          <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="addProperty"><a name="addProperty"></a>FeederPublisher::<span class="name">addProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>type</i>, const <span class="type">std::string</span>&amp; <i>value</i>)</h3>
+          <h3 class="fn" id="addProperty"><a name="addProperty"></a>FeederPublisher::<span class="name">addProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>type</i>, const <span class="type">std::string</span>&amp; <i>value</i>, const <span class="type">ros::Time</span>&amp; <i>stamp</i> = ros::Time::now())</h3>
           <p>Adds the fact that <i>from</i> is linked to the data <i>value</i> of type <i>type</i> by the property <i>property</i>.</p>
           <p><i>from</i> must be already known to the system. The property can be unknow before calling this function.</p>
+          <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="addInheritage"><a name="addInheritage"></a>FeederPublisher::<span class="name">addInheritage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>on</i>)</h3>
+          <h3 class="fn" id="addInheritage"><a name="addInheritage"></a>FeederPublisher::<span class="name">addInheritage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>on</i>, const <span class="type">ros::Time</span>&amp; <i>stamp</i> = ros::Time::now())</h3>
           <p>Adds the inheratage : <i>from</i> is a <i>on</i>. <i>from</i> and <i>on</i> could by a class, an individual or a property.</p>
           <p>At least <i>from</i> or <i>on</i> must be already known to the system. If one of them is unknown, it will be automatically created.</p>
+          <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="addLanguage"><a name="addLanguage"></a>FeederPublisher::<span class="name">addLanguage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>lang</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <h3 class="fn" id="addLanguage"><a name="addLanguage"></a>FeederPublisher::<span class="name">addLanguage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>lang</i>, const <span class="type">std::string</span>&amp; <i>name</i>, const <span class="type">ros::Time</span>&amp; <i>stamp</i> = ros::Time::now())</h3>
           <p>Adds the label <i>name</i> in the language <i>lang</i> the class, individual or property <i>from</i>.</p>
           <p><i>from</i> must be already known to the system.</p>
+          <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="addConcept"><a name="addConcept"></a>FeederPublisher::<span class="name">addConcept</span>(const <span class="type">std::string</span>&amp; <i>from</i>)</h3>
+          <h3 class="fn" id="addConcept"><a name="addConcept"></a>FeederPublisher::<span class="name">addConcept</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">ros::Time</span>&amp; <i>stamp</i> = ros::Time::now())</h3>
           <p>Adds the class or individual <i>from</i>.</p>
+          <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="removeProperty0"><a name="removeProperty0"></a>FeederPublisher::<span class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>)</h3>
+          <h3 class="fn" id="removeProperty0"><a name="removeProperty0"></a>FeederPublisher::<span class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">ros::Time</span>&amp; <i>stamp</i> = ros::Time::now())</h3>
           <p>Removes the fact that <i>from</i> is linked to any object by the property <i>property</i>.</p>
           <p>After this action, knowledge of the property is not removed.</p>
+          <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="removeProperty1"><a name="removeProperty1"></a>FeederPublisher::<span class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>on</i>)</h3>
+          <h3 class="fn" id="removeProperty1"><a name="removeProperty1"></a>FeederPublisher::<span class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>on</i>, const <span class="type">ros::Time</span>&amp; <i>stamp</i> = ros::Time::now())</h3>
           <p>Removes the fact that <i>from</i> is linked with <i>on</i> by the property <i>property</i>.</p>
           <p>After this action, knowledge of the property is not removed.</p>
+          <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="removeProperty2"><a name="removeProperty2"></a>FeederPublisher::<span class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>type</i>, const <span class="type">std::string</span>&amp; <i>value</i>)</h3>
+          <h3 class="fn" id="removeProperty2"><a name="removeProperty2"></a>FeederPublisher::<span class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>type</i>, const <span class="type">std::string</span>&amp; <i>value</i>, const <span class="type">ros::Time</span>&amp; <i>stamp</i> = ros::Time::now())</h3>
           <p>Removes the fact that <i>from</i> is linked to the data <i>value</i> of type <i>type</i> by the property <i>property</i>.</p>
           <p>After this action, knowledge of the property is not removed.</p>
+          <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="removeInheritage"><a name="removeInheritage"></a>FeederPublisher::<span class="name">removeInheritage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>on</i>)</h3>
+          <h3 class="fn" id="removeInheritage"><a name="removeInheritage"></a>FeederPublisher::<span class="name">removeInheritage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>on</i>, const <span class="type">ros::Time</span>&amp; <i>stamp</i> = ros::Time::now())</h3>
           <p>Removes the inheratage : <i>from</i> is a <i>on</i>. <i>from</i> and <i>on</i> could by a class, an individual or a property.</p>
+          <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="removeLanguage"><a name="removeLanguage"></a>FeederPublisher::<span class="name">removeLanguage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>lang</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <h3 class="fn" id="removeLanguage"><a name="removeLanguage"></a>FeederPublisher::<span class="name">removeLanguage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">std::string</span>&amp; <i>lang</i>, const <span class="type">std::string</span>&amp; <i>name</i>, const <span class="type">ros::Time</span>&amp; <i>stamp</i> = ros::Time::now())</h3>
           <p>Removes the label <i>name</i> in the language <i>lang</i> the class, individual or property <i>from</i>.</p>
+          <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="removeConcept"><a name="removeConcept"></a>FeederPublisher::<span class="name">removeConcept</span>(const <span class="type">std::string</span>&amp; <i>from</i>)</h3>
+          <h3 class="fn" id="removeConcept"><a name="removeConcept"></a>FeederPublisher::<span class="name">removeConcept</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span class="type">ros::Time</span>&amp; <i>stamp</i> = ros::Time::now())</h3>
           <p>Removes the class or individual <i>from</i>.</p>
           <p>All inheritance, properties, and labels applied to <i>from</i> are also removed.</p>
+          <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.</p>
 
           <h3 class="fn" id="getNumSubscribers"><a name="getNumSubscribers"></a><span class="type">size_t</span> FeederPublisher::<span class="name">getNumSubscribers</span>()</h3>
           <p>Returns the number of subscribers that are currently connected to the internal ROS publisher.</p>
 
-          <h3 class="fn" id="commit"><a name="commit"></a><span class="type">bool</span> FeederPublisher::<span class="name">commit</span>(<span class="type">int32_t</span>&amp; <i>timeout</i> = -1)</h3>
+          <h3 class="fn" id="waitConnected"><a name="waitConnected"></a> FeederPublisher::<span class="name">waitConnected</span>()</h3>
+          <p>Blocks while no subscribers are currently connected to the internal ROS publisher.</p>
+
+          <h3 class="fn" id="waitUpdate"><a name="waitUpdate"></a><span class="type">bool</span> FeederPublisher::<span class="name">waitUpdate</span>(<span class="type">int32_t</span> <i>timeout</i> = -1)</h3>
           <p>Waits until all changes have been applied.</p>
           <p>The default parameter <i>timeout</i> is the expiration time in milliseconds. The default value -1 represents an infinite wait.</p>
           <p>Returns false if the function returns on a timeout.</p>
+
+          <h3 class="fn" id="commit"><a name="commit"></a><span class="type">std::string</span> FeederPublisher::<span class="name">commit</span>(<span class="type">int32_t</span> <i>timeout</i> = -1)</h3>
+          <p>Saves all the modifications from the previous commit and waits until all changes have been applied.</p>
+          <p>The default parameter <i>timeout</i> is the expiration time in milliseconds. The default value -1 represents an infinite wait.</p>
+          <p>Returns the commit id and an empty string if the function returns on a timeout.</p>
+          <p>This function can only be used on a copied ontology.</p>
+
+          <h3 class="fn" id="commit2"><a name="commit2"></a><span class="type">bool</span> FeederPublisher::<span class="name">commit</span>(const <span class="type">std::string</span>&amp; <i>commit_name</i>, <span class="type">int32_t</span> <i>timeout</i> = -1)</h3>
+          <p>Saves all the modifications from the previous commit with a specific id <i>commit_name</i> and waits until all changes have been applied.</p>
+          <p>The default parameter <i>timeout</i> is the expiration time in milliseconds. The default value -1 represents an infinite wait.</p>
+          <p>Returns false if the function returns on a timeout.</p>
+          <p>This function can only be used on a copied ontology.</p>
+
+          <h3 class="fn" id="checkout"><a name="checkout"></a><span class="type">bool</span> FeederPublisher::<span class="name">checkout</span>(const <span class="type">std::string</span>&amp; <i>commit_name</i>, <span class="type">int32_t</span> <i>timeout</i> = -1)</h3>
+          <p>Apply the necessary changes to return to the specified <i>commit_name</i> and waits until all changes have been applied.</p>
+          <p>The default parameter <i>timeout</i> is the expiration time in milliseconds. The default value -1 represents an infinite wait.</p>
+          <p>Returns false if the function returns on a timeout.</p>
+          <p>This function can only be used on a copied ontology.</p>
 
         </div>
       </div>

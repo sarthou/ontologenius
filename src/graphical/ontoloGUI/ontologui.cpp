@@ -10,6 +10,8 @@
 
 #include <regex>
 
+#define QUEU_SIZE 1000
+
 ontoloGUI::ontoloGUI(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ontoloGUI)
@@ -233,6 +235,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
 
     QObject::connect(ui->FeederAddButton, SIGNAL(clicked()),this, SLOT(feederAddSlot()));
     QObject::connect(ui->FeederDelButton, SIGNAL(clicked()),this, SLOT(feederDelSlot()));
+    QObject::connect(ui->FeederCommitButton, SIGNAL(clicked()),this, SLOT(feederCommitSlot()));
+    QObject::connect(ui->FeederCheckoutButton, SIGNAL(clicked()),this, SLOT(feederCheckoutSlot()));
 
     QObject::connect(ui->OntologyNameAddDel, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameAddDelChangedSlot(const QString&)));
     QObject::connect(ui->OntologyName, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameChangedSlot(const QString&)));
@@ -250,8 +254,8 @@ ontoloGUI::~ontoloGUI()
 void ontoloGUI::init(ros::NodeHandle* n)
 {
   n_ = n;
-  publishers_["_"] = n_->advertise<std_msgs::String>("ontologenius/insert", 1000);
-  feeder_notifications_subs_["_"] = n_->subscribe("ontologenius/feeder_notifications", 1000, &ontoloGUI::feederCallback, this);
+  publishers_["_"] = n_->advertise<std_msgs::String>("ontologenius/insert", QUEU_SIZE);
+  feeder_notifications_subs_["_"] = n_->subscribe("ontologenius/feeder_notifications", QUEU_SIZE, &ontoloGUI::feederCallback, this);
 }
 
 void ontoloGUI::wait()
@@ -664,19 +668,19 @@ void ontoloGUI::addOntologySlot()
     {
       srv.request.action = "copy";
       if(publishers_.find(base_match[1].str()) == publishers_.end())
-        publishers_[base_match[1].str()] = n_->advertise<std_msgs::String>("ontologenius/insert/" + base_match[1].str(), 1000);
+        publishers_[base_match[1].str()] = n_->advertise<std_msgs::String>("ontologenius/insert/" + base_match[1].str(), QUEU_SIZE);
 
       if(feeder_notifications_subs_.find(base_match[1].str()) == feeder_notifications_subs_.end())
-        feeder_notifications_subs_[base_match[1].str()] = n_->subscribe("ontologenius/feeder_notifications", 1000, &ontoloGUI::feederCallback, this);
+        feeder_notifications_subs_[base_match[1].str()] = n_->subscribe("ontologenius/feeder_notifications", QUEU_SIZE, &ontoloGUI::feederCallback, this);
     }
   }
   else
   {
     if(publishers_.find(srv.request.param) == publishers_.end())
-      publishers_[srv.request.param] = n_->advertise<std_msgs::String>("ontologenius/insert/" + srv.request.param, 1000);
+      publishers_[srv.request.param] = n_->advertise<std_msgs::String>("ontologenius/insert/" + srv.request.param, QUEU_SIZE);
 
     if(feeder_notifications_subs_.find(srv.request.param) == feeder_notifications_subs_.end())
-      feeder_notifications_subs_[srv.request.param] = n_->subscribe("ontologenius/feeder_notifications", 1000, &ontoloGUI::feederCallback, this);
+      feeder_notifications_subs_[srv.request.param] = n_->subscribe("ontologenius/feeder_notifications", QUEU_SIZE, &ontoloGUI::feederCallback, this);
   }
 
   if(!client.call(srv))
@@ -782,7 +786,7 @@ void ontoloGUI::feederCallback(const std_msgs::String& msg)
 
   std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
           "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-          "p, li { white-space: pre-wrap; }"
+          "p, li { whicommitte-space: pre-wrap; }"
           "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
           "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + feeder_notifications_ + "<br></span></p></body></html>";
 
@@ -798,6 +802,7 @@ void ontoloGUI::feederAddSlot()
   std::string onto_ns = ui->OntologyName->text().toStdString();
   if(onto_ns == "")
     onto_ns = "_";
+  createPublisher(onto_ns);
   publishers_[onto_ns].publish(msg);
 }
 
@@ -808,5 +813,38 @@ void ontoloGUI::feederDelSlot()
   std::string onto_ns = ui->OntologyName->text().toStdString();
   if(onto_ns == "")
     onto_ns = "_";
+  createPublisher(onto_ns);
   publishers_[onto_ns].publish(msg);
+}
+
+void ontoloGUI::feederCommitSlot()
+{
+  std_msgs::String msg;
+  msg.data = "[commit]" + ui->FeederCommitName->text().toStdString() + "|";
+  std::string onto_ns = ui->OntologyName->text().toStdString();
+  if(onto_ns == "")
+    onto_ns = "_";
+  createPublisher(onto_ns);
+  publishers_[onto_ns].publish(msg);
+}
+
+void ontoloGUI::feederCheckoutSlot()
+{
+  std_msgs::String msg;
+  msg.data = "[checkout]" + ui->FeederCommitName->text().toStdString() + "|";
+  std::string onto_ns = ui->OntologyName->text().toStdString();
+  if(onto_ns == "")
+    onto_ns = "_";
+  createPublisher(onto_ns);
+  publishers_[onto_ns].publish(msg);
+}
+
+void ontoloGUI::createPublisher(const std::string& onto_ns)
+{
+  if(publishers_.find(onto_ns) == publishers_.end())
+  {
+    publishers_[onto_ns] = n_->advertise<std_msgs::String>("ontologenius/insert/" + onto_ns, QUEU_SIZE);
+    while(ros::ok() && (publishers_[onto_ns].getNumSubscribers() == 0))
+      ros::spinOnce();
+  }
 }

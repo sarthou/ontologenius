@@ -90,7 +90,7 @@ int OntologyReader::read(TiXmlElement* rdf, const std::string& name)
     std::cout << "$ has property | ^ related | " << std::endl;
     std::cout << "************************************" << std::endl;
 
-    std::vector<TiXmlElement*> elem_classes, elem_descriptions, elem_obj_prop, elem_data_prop;
+    std::vector<TiXmlElement*> elem_classes, elem_descriptions, elem_obj_prop, elem_data_prop, elem_annotation_prop;
     std::string elemName;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != nullptr; elem = elem->NextSiblingElement())
     {
@@ -103,6 +103,8 @@ int OntologyReader::read(TiXmlElement* rdf, const std::string& name)
         elem_obj_prop.push_back(elem);
       else if(elemName == "owl:DatatypeProperty")
         elem_data_prop.push_back(elem);
+      else if(elemName == "owl:AnnotationProperty")
+        elem_annotation_prop.push_back(elem);
     }
 
     std::cout << "├── Class" << std::endl;
@@ -117,6 +119,9 @@ int OntologyReader::read(TiXmlElement* rdf, const std::string& name)
     std::cout << "├── Data property" << std::endl;
     for(TiXmlElement* elem : elem_data_prop)
       readDataProperty(elem);
+    std::cout << "├── Annotation property" << std::endl;
+    for(TiXmlElement* elem : elem_annotation_prop)
+      readAnnotationProperty(elem);
 
     std::cout << "└── "<< elemLoaded << " readed ! " << std::endl;
     return NO_ERROR;
@@ -329,6 +334,7 @@ void OntologyReader::readObjectProperty(TiXmlElement* elem)
 {
   std::string node_name = "";
   ObjectPropertyVectors_t propertyVectors;
+  propertyVectors.annotation_usage_ = false;
   const char* attr = elem->Attribute("rdf:about");
   if(attr != nullptr)
   {
@@ -372,6 +378,7 @@ void OntologyReader::readDataProperty(TiXmlElement* elem)
 {
   std::string node_name = "";
   DataPropertyVectors_t propertyVectors;
+  propertyVectors.annotation_usage_ = false;
   const char* attr = elem->Attribute("rdf:about");
   if(attr != nullptr)
   {
@@ -398,6 +405,59 @@ void OntologyReader::readDataProperty(TiXmlElement* elem)
   }
 
   data_property_graph_->add(node_name, propertyVectors);
+  elemLoaded++;
+}
+
+void OntologyReader::readAnnotationProperty(TiXmlElement* elem)
+{
+  std::string node_name = "";
+  DataPropertyVectors_t propertyVectors; // we use a DataPropertyVectors_t that is sufficient to represent an annotation property
+  propertyVectors.annotation_usage_ = true;
+  std::vector<Single_t<std::string>> ranges_;
+  const char* attr = elem->Attribute("rdf:about");
+  if(attr != nullptr)
+  {
+    node_name = getName(std::string(attr));
+    std::cout << "│   ├──" << node_name << std::endl;
+    for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != nullptr; subElem = subElem->NextSiblingElement())
+    {
+      std::string subElemName = subElem->Value();
+      float probability = getProbability(subElem);
+
+      if(subElemName == "rdfs:subPropertyOf")
+        push(propertyVectors.mothers_, subElem, probability, "+");
+      else if(subElemName == "owl:disjointWith")
+        push(propertyVectors.disjoints_, subElem, probability, "-");
+      else if(subElemName == "rdfs:domain")
+        push(propertyVectors.domains_, subElem, probability, ">");
+      else if(subElemName == "rdfs:range")
+      {
+        push(propertyVectors.ranges_, subElem, "<");
+        push(ranges_, subElem, probability);
+      }
+      else if(subElemName == "rdfs:label")
+        pushLang(propertyVectors.dictionary_, subElem);
+      else if(subElemName == "onto:label")
+        pushLang(propertyVectors.muted_dictionary_, subElem);
+    }
+  }
+
+  // data_property_graph_ will return false id no data property is found with this name
+  if(data_property_graph_->addAnnotation(node_name, propertyVectors) == false)
+  {
+    ObjectPropertyVectors_t object_property_vector;
+    object_property_vector.mothers_ = propertyVectors.mothers_;
+    object_property_vector.disjoints_ = propertyVectors.disjoints_;
+    object_property_vector.domains_ = propertyVectors.domains_;
+    object_property_vector.ranges_ = ranges_;
+    object_property_vector.dictionary_ = propertyVectors.dictionary_;
+    object_property_vector.muted_dictionary_ = propertyVectors.muted_dictionary_;
+    object_property_vector.annotation_usage_ = true;
+
+    object_property_graph_->add(node_name, object_property_vector);
+    // if no data property is found, the annotatitation will be setted as an object property by default
+  }
+
   elemLoaded++;
 }
 

@@ -6,6 +6,12 @@
 
 namespace ontologenius {
 
+DataPropertiesWriter::DataPropertiesWriter(DataPropertyGraph* property_graph, const std::string& ns)
+{
+  property_graph_ = property_graph;
+  ns_ = ns;
+}
+
 void DataPropertiesWriter::write(FILE* file)
 {
   file_ = file;
@@ -21,8 +27,8 @@ void DataPropertiesWriter::write(FILE* file)
 
 void DataPropertiesWriter::writeProperty(DataPropertyBranch_t* branch)
 {
-  std::string tmp = "    <!-- ontologenius#" + branch->value() + " -->\n\n\
-    <owl:DatatypeProperty rdf:about=\"ontologenius#" + branch->value() + "\">\n";
+  std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
+    <owl:DatatypeProperty rdf:about=\"" + ns_ + "#" + branch->value() + "\">\n";
   writeString(tmp);
 
   writeSubPropertyOf(branch);
@@ -45,7 +51,7 @@ void DataPropertiesWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
     {
       std::string tmp = "        <rdfs:subPropertyOf" +
                         getProba(mother) +
-                        " rdf:resource=\"ontologenius#" +
+                        " rdf:resource=\"" + ns_ + "#" +
                         mother.elem->value()
                         + "\"/>\n";
       writeString(tmp);
@@ -72,7 +78,7 @@ void DataPropertiesWriter::writeDomain(DataPropertyBranch_t* branch)
     {
       std::string tmp = "        <rdfs:domain" +
                         getProba(domain) +
-                        " rdf:resource=\"ontologenius#" +
+                        " rdf:resource=\"" + ns_ + "#" +
                         domain.elem->value()
                         + "\"/>\n";
       writeString(tmp);

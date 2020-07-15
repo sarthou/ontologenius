@@ -69,6 +69,8 @@ catkin_python_setup()
  add_message_files(
    FILES
    HTTP_headers.msg
+   StampedString.msg
+   OntologeniusSparqlResponse.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -77,6 +79,7 @@ catkin_python_setup()
   REST.srv
   standard_service.srv
   OntologeniusService.srv
+  OntologeniusSparqlService.srv
  )
 
 ## Generate added messages and services with any dependencies listed here
@@ -99,7 +102,7 @@ catkin_package(
   LIBRARIES ontologenius_lib
   CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
-  DEPENDS TinyXML
+  DEPENDS TinyXML OpenCV
 )
 
 ###########
@@ -134,6 +137,7 @@ add_onto_library(ontologenius_ontoGraphs_lib
   src/core/ontologyIO/writers/ClassWriter.cpp
   src/core/ontologyIO/writers/ObjectPropertiesWriter.cpp
   src/core/ontologyIO/writers/DataPropertiesWriter.cpp
+  src/core/ontologyIO/writers/AnnotationWriter.cpp
   src/core/ontologyIO/writers/IndividualWriter.cpp
 )
 target_include_directories(ontologenius_ontoGraphs_lib
@@ -148,10 +152,12 @@ target_link_libraries(ontologenius_ontoGraphs_lib
 add_onto_library(ontologenius_core_lib
   src/core/feeder/Feeder.cpp
   src/core/feeder/FeedStorage.cpp
+  src/core/feeder/Versionor.cpp
+  src/core/feeder/Version_node.cpp
   src/core/reasoner/plugins/ReasonerInterface.cpp
   src/core/reasoner/Reasoners.cpp
   src/core/reasoner/ConfigReader.cpp
-  src/core/Computer.cpp
+#  src/core/Computer.cpp
 )
 target_link_libraries(ontologenius_core_lib
  PUBLIC
@@ -168,7 +174,9 @@ add_onto_library(ontologenius_drawer_lib
   src/graphical/Drawers/ObjectPropertyDrawer.cpp
   src/graphical/Drawers/DataPropertyDrawer.cpp
   src/graphical/Drawers/OntologyDrawer.cpp
-)
+  src/graphical/versioning/TreeReader.cpp
+  src/graphical/versioning/TreeDrawer.cpp
+  )
 target_include_directories(ontologenius_drawer_lib
 PUBLIC
  ${OpenCV_INCLUDE_DIRS}
@@ -183,32 +191,32 @@ target_link_libraries(ontologenius_drawer_lib
 ## INTERPRETER
 ##############################
 
-add_onto_library(ontologenius_codeDescription_lib
-  src/interpreter/codeDescription/Types/VariablesType.cpp
-  src/interpreter/codeDescription/Types/StringType.cpp
-  src/interpreter/codeDescription/Functions/FunctionDescriptor.cpp
-  src/interpreter/codeDescription/Functions/FunctionContainer.cpp
-  src/interpreter/codeDescription/Functions/OntoFunctions.cpp
-  src/interpreter/codeDescription/Functions/PropertyFunctions.cpp
-  src/interpreter/codeDescription/TextManipulator.cpp
-  src/interpreter/codeDescription/Code.cpp
-  src/interpreter/codeDescription/Namespace.cpp
-  src/interpreter/codeDescription/Syntax/Operators.cpp
-  src/interpreter/codeDescription/Syntax/IfelseCF.cpp
-  src/interpreter/fileManagers/FileManager.cpp
-  src/interpreter/fileManagers/FileWriter.cpp
-)
+#add_onto_library(ontologenius_codeDescription_lib
+#  src/interpreter/codeDescription/Types/VariablesType.cpp
+#  src/interpreter/codeDescription/Types/StringType.cpp
+#  src/interpreter/codeDescription/Functions/FunctionDescriptor.cpp
+#  src/interpreter/codeDescription/Functions/FunctionContainer.cpp
+#  src/interpreter/codeDescription/Functions/OntoFunctions.cpp
+#  src/interpreter/codeDescription/Functions/PropertyFunctions.cpp
+#  src/interpreter/codeDescription/TextManipulator.cpp
+#  src/interpreter/codeDescription/Code.cpp
+#  src/interpreter/codeDescription/Namespace.cpp
+#  src/interpreter/codeDescription/Syntax/Operators.cpp
+#  src/interpreter/codeDescription/Syntax/IfelseCF.cpp
+#  src/interpreter/fileManagers/FileManager.cpp
+#  src/interpreter/fileManagers/FileWriter.cpp
+#)
 
-add_onto_library(ontologenius_interpreter_lib
-  src/interpreter/Parser.cpp
-  src/interpreter/Error.cpp
-  src/interpreter/Compiler.cpp
-)
-target_link_libraries(ontologenius_interpreter_lib
- PUBLIC
-  ontologenius_codeDescription_lib
-  ontologenius_ontoGraphs_lib
-)
+#add_onto_library(ontologenius_interpreter_lib
+#  src/interpreter/Parser.cpp
+#  src/interpreter/Error.cpp
+#  src/interpreter/Compiler.cpp
+#)
+#target_link_libraries(ontologenius_interpreter_lib
+# PUBLIC
+#  ontologenius_codeDescription_lib
+#  ontologenius_ontoGraphs_lib
+#)
 
 add_onto_library(ontologenius_lib
   src/API/ontologenius/clients/ontologyClients/IndividualClient.cpp
@@ -220,13 +228,14 @@ add_onto_library(ontologenius_lib
   src/API/ontologenius/clients/ActionClient.cpp
   src/API/ontologenius/clients/ManagerClient.cpp
   src/API/ontologenius/clients/ClientBase.cpp
+  src/API/ontologenius/clients/SparqlClient.cpp
   src/API/ontologenius/FeederPublisher.cpp
   src/API/ontologenius/OntologyManipulator.cpp
   src/API/ontologenius/OntologiesManipulator.cpp
 )
 target_link_libraries(ontologenius_lib
  PUBLIC
-  ontologenius_interpreter_lib
+#  ontologenius_interpreter_lib
   ontologenius_core_lib
 )
 
@@ -254,6 +263,7 @@ target_link_libraries(ontologenius_reasoner_plugin
 add_onto_library(ontologenius_interface
   src/RosInterface.cpp
   src/core/ontologyOperators/differenceFinder.cpp
+  src/core/ontologyOperators/Sparql.cpp
 )
 target_link_libraries(ontologenius_interface
  PUBLIC
@@ -267,13 +277,16 @@ target_link_libraries(ontologenius_interface
 ##############################
 
 add_onto_executable(ontologenius src/nodes/ontologenius_single.cpp)
-target_link_libraries(ontologenius PRIVATE ontologenius_interpreter_lib ontologenius_interface)
+target_link_libraries(ontologenius PRIVATE ontologenius_interface)
 
 add_onto_executable(ontologenius_multi src/nodes/ontologenius_multi.cpp)
 target_link_libraries(ontologenius_multi PRIVATE ontologenius_interface)
 
 add_onto_executable(ontologenius_exemple src/exemple.cpp )
 target_link_libraries(ontologenius_exemple PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
+
+add_onto_executable(ontologenius_draw src/graphical/versioning/main.cpp )
+target_link_libraries(ontologenius_draw PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
 
 add_onto_executable(ontologenius_tester src/tests/tester.cpp)
 target_link_libraries(ontologenius_tester PRIVATE ontologenius_core_lib)
@@ -292,6 +305,9 @@ target_link_libraries(ontologenius_services_tester PRIVATE ontologenius_core_lib
 
 add_onto_executable(ontologenius_config_tester src/tests/config_reader_test.cpp)
 target_link_libraries(ontologenius_config_tester PRIVATE ontologenius_core_lib)
+
+add_onto_executable(ontologenius_versioning src/tests/versioning.cpp)
+target_link_libraries(ontologenius_versioning PRIVATE ontologenius_lib)
 
 ##############################################################################
 # Qt Environment

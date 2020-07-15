@@ -11,9 +11,7 @@ namespace ontologenius {
 class WordTable
 {
 public:
-  WordTable() {}
-  ~WordTable() {}
-
+  
   inline uint32_t add(const std::string& value)
   {
     table_.push_back(value);

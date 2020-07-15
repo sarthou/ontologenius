@@ -3,7 +3,7 @@
 
 #include <QApplication>
 
-#include <signal.h>
+#include <csignal>
 #include <thread>
 
 #include <ros/package.h>

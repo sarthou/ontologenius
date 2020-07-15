@@ -12,6 +12,8 @@ enum action_t
 {
   action_add,
   action_del,
+  action_commit,
+  action_checkout,
   action_nop
 };
 
@@ -21,6 +23,9 @@ struct feed_t
   std::string from_;
   std::string prop_;
   std::string on_;
+  bool checkout_;
+
+  feed_t() { checkout_ = false; }
 };
 
 class FeedStorage
@@ -29,6 +34,7 @@ public:
   FeedStorage();
 
   void add(std::string& regex);
+  void add(std::vector<feed_t>& datas);
   std::queue<feed_t> get();
   size_t size() { return fifo_1.size() + fifo_2.size(); }
 

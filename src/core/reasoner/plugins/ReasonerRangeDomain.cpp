@@ -90,8 +90,8 @@ void ReasonerRangeDomain::deduceObjRange(IndividualBranch_t* branch, size_t inde
     ontology_->individual_graph_.getUpPtr(branch->object_relations_[index].second, up);
     if(up.find(range) == up.end())
     {
-      branch->object_relations_[index].second->is_a_.push_back(ClassElement_t(range, 1.0, true));
-      range->individual_childs_.push_back(IndividualElement_t(branch->object_relations_[index].second, 1.0, true));
+      branch->object_relations_[index].second->is_a_.emplace_back(range, 1.0, true);
+      range->individual_childs_.emplace_back(branch->object_relations_[index].second, 1.0, true);
 
       branch->object_relations_[index].second->updated_ = true;
       range->updated_ = true;
@@ -131,8 +131,8 @@ void ReasonerRangeDomain::deduceObjDomain(IndividualBranch_t* branch, size_t ind
     ontology_->individual_graph_.getUpPtr(branch, up);
     if(up.find(domain) == up.end())
     {
-      branch->is_a_.push_back(ClassElement_t(domain, 1.0, true));
-      domain->individual_childs_.push_back(IndividualElement_t(branch, 1.0, true));
+      branch->is_a_.emplace_back(domain, 1.0, true);
+      domain->individual_childs_.emplace_back(branch, 1.0, true);
 
       branch->updated_ = true;
       domain->updated_ = true;
@@ -172,8 +172,8 @@ void ReasonerRangeDomain::deduceDatDomain(IndividualBranch_t* branch, size_t ind
     ontology_->individual_graph_.getUpPtr(branch, up);
     if(up.find(domain) == up.end())
     {
-      branch->is_a_.push_back(ClassElement_t(domain, 1.0, true));
-      domain->individual_childs_.push_back(IndividualElement_t(branch, 1.0, true));
+      branch->is_a_.emplace_back(domain, 1.0, true);
+      domain->individual_childs_.emplace_back(branch, 1.0, true);
 
       branch->updated_ = true;
       domain->updated_ = true;
@@ -262,8 +262,8 @@ void ReasonerRangeDomain::deduceObjRange(ClassBranch_t* branch, size_t index)
     ontology_->class_graph_.getUpPtr(branch->object_relations_[index].second, up);
     if(up.find(range) == up.end())
     {
-      branch->object_relations_[index].second->mothers_.push_back(ClassElement_t(range, 1.0, true));
-      range->childs_.push_back(ClassElement_t(branch->object_relations_[index].second, 1.0, true));
+      branch->object_relations_[index].second->mothers_.emplace_back(range, 1.0, true);
+      range->childs_.emplace_back(branch->object_relations_[index].second, 1.0, true);
 
       branch->object_relations_[index].second->updated_ = true;
       range->updated_ = true;
@@ -303,8 +303,8 @@ void ReasonerRangeDomain::deduceObjDomain(ClassBranch_t* branch, size_t index)
     ontology_->class_graph_.getUpPtr(branch, up);
     if(up.find(domain) == up.end())
     {
-      branch->mothers_.push_back(ClassElement_t(domain, 1.0, true));
-      domain->childs_.push_back(ClassElement_t(branch, 1.0, true));
+      branch->mothers_.emplace_back(domain, 1.0, true);
+      domain->childs_.emplace_back(branch, 1.0, true);
 
       branch->updated_ = true;
       domain->updated_ = true;
@@ -344,8 +344,8 @@ void ReasonerRangeDomain::deduceDatDomain(ClassBranch_t* branch, size_t index)
     ontology_->class_graph_.getUpPtr(branch, up);
     if(up.find(domain) == up.end())
     {
-      branch->mothers_.push_back(ClassElement_t(domain, 1.0, true));
-      domain->childs_.push_back(ClassElement_t(branch, 1.0, true));
+      branch->mothers_.emplace_back(domain, 1.0, true);
+      domain->childs_.emplace_back(branch, 1.0, true);
 
       branch->updated_ = true;
       domain->updated_ = true;

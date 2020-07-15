@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "ontologenius/core/ontologyIO/writers/AnnotationWriter.h"
 #include "ontologenius/core/ontologyIO/writers/ClassWriter.h"
 #include "ontologenius/core/ontologyIO/writers/DataPropertiesWriter.h"
 #include "ontologenius/core/ontologyIO/writers/IndividualWriter.h"
@@ -44,22 +45,28 @@ void OntologyWriter::write(const std::string& file_name)
     return;
   }
 
+  ns_ = "urn:absolute:ontologenius";
+
   writeStart();
 
+  writeBanner("Annotations Properties");
+  AnnotationWriter annotations(object_property_graph_, data_property_graph_, ns_);
+  annotations.write(file_);
+
   writeBanner("Classes");
-  ClassWriter classes(class_graph_);
+  ClassWriter classes(class_graph_, ns_);
   classes.write(file_);
 
   writeBanner("Object Properties");
-  ObjectPropertiesWriter object_properties(object_property_graph_);
+  ObjectPropertiesWriter object_properties(object_property_graph_, ns_);
   object_properties.write(file_);
 
   writeBanner("Data properties");
-  DataPropertiesWriter data_properties(data_property_graph_);
+  DataPropertiesWriter data_properties(data_property_graph_, ns_);
   data_properties.write(file_);
 
   writeBanner("Individuals");
-  IndividualWriter individuals(individual_graph_);
+  IndividualWriter individuals(individual_graph_, ns_);
   individuals.write(file_);
 
   writeBanner("General axioms");
@@ -78,13 +85,14 @@ void OntologyWriter::write(const std::string& file_name)
 void OntologyWriter::writeStart()
 {
   std::string tmp = "<?xml version=\"1.0\"?> \n\
-<rdf:RDF xmlns=\"ontologenius#\" \n\
-     xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" \n\
-     xmlns:owl=\"http://www.w3.org/2002/07/owl#\" \n\
-     xmlns:xml=\"http://www.w3.org/XML/1998/namespace\" \n\
-     xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" \n\
-     xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"> \n\
-    <owl:Ontology rdf:about=\"ontologenius\"/>\n\n\n\n";
+<rdf:RDF xmlns=\"" + ns_ + "#\" \n\
+     xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n\
+     xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n\
+     xmlns:xml=\"http://www.w3.org/XML/1998/namespace\"\n\
+     xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n\
+     xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n\
+     xmlns:onto=\"ontologenius#\">\n\
+    <owl:Ontology rdf:about=\"" + ns_ + "\"/>\n\n\n\n";
   writeString(tmp);
 }
 

@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ActionClient Class (python) | Ontologenius 0.2.5</title>
+  <title>ActionClient Class (python) | Ontologenius 0.2.6</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -135,6 +135,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#__init__">__init__</a></b>(self, name)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#close">close</a></b>(self)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#save">save</a></b>(self, path)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#export">export</a></b>(self, path)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#setLang">setLang</a></b>(self, lang)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#getLang">getLang</a></b>(self)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#add">add</a></b>(self, uri)</td></tr>
@@ -170,6 +171,11 @@
 
           <h3 class="fn" id="save"><a name="save"></a><span class="name">save</span>(self, path)</h3>
           <p>Saves the current ontology in the absolute <i>path</i>(str) path. The <i>path</i>(str) parameter must be of the form: my/path/to/ontology.owl</p>
+          <p>Returns False if the service call fails.</p>
+
+          <h3 class="fn" id="export"><a name="export"></a><span class="name">export</span>(self, path)</h3>
+          <p>Exports the current modification tree in the absolute <i>path</i>(str) path. The <i>path</i>(str) parameter must be of the form: my/path/to/file.xml</p>
+          <p>This function has no effect on non copied ontologies.</p>
           <p>Returns False if the service call fails.</p>
 
           <h3 class="fn" id="setLang"><a name="setLang"></a><span class="name">setLang</span>(self, lang)</h3>

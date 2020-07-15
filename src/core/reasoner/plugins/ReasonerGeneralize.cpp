@@ -46,17 +46,17 @@ void ReasonerGeneralize::periodicReason()
 
       for(auto down : down_set)
       {
-        for(size_t j = 0; j < down->data_relations_.size(); j++)
-          data_counter.add(down->data_relations_[j].first, down->data_relations_[j].second.toString());
+        for(auto& data_relation : down->data_relations_)
+          data_counter.add(data_relation.first, data_relation.second.toString());
 
-        for(size_t j = 0; j < down->object_relations_.size(); j++)
-          object_counter.add(down->object_relations_[j].first, down->object_relations_[j].second);
+        for(auto& object_relation : down->object_relations_)
+          object_counter.add(object_relation.first, object_relation.second);
       }
 
       for(auto down : indiv_down_set)
       {
-        for(size_t j = 0; j < down->data_relations_.size(); j++)
-          data_counter.add(down->data_relations_[j].first, down->data_relations_[j].second.toString());
+        for(auto& data_relation : down->data_relations_)
+          data_counter.add(data_relation.first, data_relation.second.toString());
       }
 
       lock_shared.unlock();
@@ -114,7 +114,8 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyB
       notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]);
       data_t tmp;
       tmp.set(datas[prop]);
-      me->data_relations_.push_back(ClassDataRelationElement_t(properties[prop], tmp, 0.5));
+      me->data_relations_.emplace_back(properties[prop], tmp, 0.5);
+      properties[prop]->annotation_usage_ = true;
     }
   }
 
@@ -156,7 +157,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropert
     if(index == -1)
     {
       notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
-      me->object_relations_.push_back(ClassObjectRelationElement_t(properties[prop], datas[prop], 0.5));
+      me->object_relations_.emplace_back(properties[prop], datas[prop], 0.5);
     }
   }
 

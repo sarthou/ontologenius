@@ -49,6 +49,7 @@ private:
   void readIndividualDescription(TiXmlElement* elem);
   void readObjectProperty(TiXmlElement* elem);
   void readDataProperty(TiXmlElement* elem);
+  void readAnnotationProperty(TiXmlElement* elem);
   void readCollection(std::vector<std::string>& vect, TiXmlElement* elem, const std::string& symbol, size_t level = 1);
   std::string readSomeValuesFrom(TiXmlElement* elem);
 

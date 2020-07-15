@@ -1,0 +1,248 @@
+<html lang="en_US">
+
+<head>
+  <title>Explore possible futures (cpp) : Presentation</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../images/favicon.ico" rel="shortcut icon">
+  <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../../index.html">
+              <img src="../../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Cpp Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: 0px;">
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="Presentation.html"><b>1. Presentation</b></a></li>
+            <li class="level1"><a href="MoveThroughTheAlternatives.html">2. Move through the alternatives </a></li>
+            <li class="level1"><a href="ViewGraph.html">3. View graph </a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../Download.html">Download</a></li>
+            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="../../overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="../../overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="../../cpp_API/CppAPI.html">
+              All C++ Classes
+            </a>
+          </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../cpp_API/ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../../cpp_API/DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../../cpp_API/FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../../cpp_API/IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
+          </ul>
+          </br>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../../python_API/PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>See also</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="https://sarthou.github.io/ontologenius_query/" target="_blank">Ontologenius_query</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <div class="toturial-header">
+          <h1 class="title">Explore possible futures (cpp)</h1>
+          <a class="toturial-subheader">
+            <div class="tutorial-subheader__main-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="toturial-subheader__title">
+              <h2 class="title">Commit and checkout</h2>
+            </div>
+          </a>
+        </div>
+
+        <h1 class="title">Presentation</h1>
+
+        <p>This is the fifth tutorial! In the previous tutorial, we saw how to manage several instances of ontologenius,
+          each representing a specific agent. However, each of these instances represents only an agent's knowledge base at
+          the present time. When planning, we may need to estimate a possible future state of a knowledge base in order
+          to execute algorithms on it. Of course, one cannot simply modify the current knowledge base of an agent at the
+          risk of breaking it and being disturbed by updates coming from the current situation. In this tutorial, we will
+          see how to effectively manage estimated knowledge bases.</p>
+
+        <p>Since this process is very specific and must be used in a global architecture, we will not do any mini-project
+          which could be too complex to set up. We will simply create an executable that will generate several possible
+          future states and try to understand together the best practices to do so.</p>
+
+        <div class="text_block" style="margin-bottom:40px;">
+          <img src="../../images/tutorial/tutorial_5_sol1.png " alt="new instance creation" height="200px" style="margin-right:20px; vertical-align:middle"/>
+          <span>
+            Based on what we saw in the previous tutorials, the only way to have instances for future knowledge base
+            estimates would be to ... create new instances. I hope you see how bad this solution is. When we create a
+            new instance, it loads the common ground but we don't want common ground but a copy of an actual instance.
+            In addition, by proceeding like this, if we have specified an internal file, each of these instances will
+            be saved when it is killed and depending on whether there is a backup of a previous execution or not, the
+            new instance will start with this previous file or with the common ground.
+            <br/>
+            At this point you should see that with such management it will be unmanageable. Fortunately, if we do a
+            tutorial on it it is that we have a way to do better.
+          </span>
+        </div>
+
+        <div class="text_block" style="margin-bottom:40px;">
+          <span>
+            The first feature offered by ontologenius is deep copying. It is simply a complete copy of an existing instance
+            which then becomes independent. With this copy, we start from an existing point and we can make our modifications
+            from this point. In addition, even if an internal file is set, a copy will never be saved automatically when killed.
+            <br/>
+            We have now solved the main problems identified above and we can also imagine interweaving as illustrated opposite to
+            create two new states from one.
+            <br/>
+            However, a deep copy is not a trivial process and it takes a little time to execute. Although this time can be negligible
+            if we make only one copy, if we imagine a planning problem with a hundred states it can greatly affect the general
+            performance of the planning all this for very often a low number of changes between each copy. In addition, if you
+            try to create a hundred ontologenius instances, your computer will say "NO" at some point ... With my personal tests
+            I manage to create only 83 at the same time.
+          </span>
+          <img src="../../images/tutorial/tutorial_5_sol2.png " alt="new instance creation" height="160px" style="margin-left:20px; vertical-align:middle"/>
+        </div>
+
+        <div class="text_block">
+          <img src="../../images/tutorial/tutorial_5_sol3.png " alt="new instance creation" height="100px" style="margin-right:20px; vertical-align:middle"/>
+          <span>
+            The second feature offered by ontologenius is a kind of versioning system on copied instances. Much like git, you can
+            make changes to a copied instance and then commit those changes with a commit name. Then you can continue to make
+            changes or go to a specific commit using its name. With this feature, you can represent multiple states of a
+            knowledge base in a single instance.
+          </span>
+        </div>
+
+        <h2>The ontology used</h2>
+
+        <p>For this tutorial, we will not use existing ontology. We will create it dynamically to better observe the effects of our modifications.</p>
+
+        <h2>Before you start</h2>
+
+        <p>Before moving on, you can create a new package that we will call explore_futures. To be sure
+          that your new package will be well configured to use ontologenius, we advise you to follow this
+          <a target="_blank" rel="noopener noreferrer" href="../../SetUp.html"><b>guide</b></a>. To create the
+          launch file, leave the "files" argument empty, and then set
+          the "intern_file" argument to "$(find explore_futures)/futures.owl".
+        </p>
+
+        <div class="code_block xml_code" style="counter-reset:code_line 0;">
+          <div class="code_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
+          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+          <div class="code_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius_multi.launch&quot;</span>&gt;</div>
+          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find explore_futures)/futures.owl&quot;</span>/&gt;</div>
+          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
+          <div class="code_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
+          <div class="code_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
+        </div>
+
+        <p>You can see here that we base our launch file on the file "ontologenius_multi.launch" once again.
+          Because we are going to create a separate instance of ontologenius that will represent the knowledge
+          base for future estimates, we must be able to manage multiple instances.</p>
+
+        <p>By specifying an internal file, ontologenius is allowed to save the ontology it contains in a file
+          when it is stopped and to reload it on its next start. We will see more precisely the effect of this
+          internal file on our estimates.</p>
+
+        <nav class="course-pagination">
+          <a href="../Tutorials.html" class="course-pagination__btn">
+            <i class="fas fa-angle-left"></i>
+            <span>Tutorials</span>
+          </a>
+          <span class="course-pagination__separator"></span>
+          <a href="MoveThroughTheAlternatives.html" class="course-pagination__btn">
+            <span>Move through the alternatives </span>
+            <i class="fas fa-angle-right"></i>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

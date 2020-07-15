@@ -234,6 +234,16 @@ a.laas_logo {
   top:0;
   left:0
 }
+.text_block span{
+  line-height:1.25em;
+  margin-bottom:1.5em;
+  color:#404244;
+  margin-top:auto;
+  margin-bottom:auto;
+}
+.text_block {
+  display:flex;
+}
 #sidebar-toggle,#contents-toggle {
   width:24px;
   height:14px;

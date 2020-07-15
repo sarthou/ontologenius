@@ -1,6 +1,8 @@
 #include "ontologenius/graphical/Drawers/GraphDrawer.h"
 
 #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/core/core_c.h>
+#include <iostream>
 
 #define MARKER_WIDTH      350
 #define MIN_WIDTH_SPACE   50
@@ -8,8 +10,6 @@
 #define MIN_HEIGHT_SPACE  1000
 
 namespace ontologenius {
-
-GraphDrawer::GraphDrawer(){}
 
 void GraphDrawer::putLayer(int layer)
 {
@@ -19,19 +19,19 @@ void GraphDrawer::putLayer(int layer)
   {
     had_update = updateOneMarker(layer);
 
-    for(unsigned long int i = 0; i < branchs_nodes.size(); i++)
+    for(auto& branchs_node : branchs_nodes)
     {
       bool previous_done = true;
-      for(unsigned long int pre = 0; pre < branchs_nodes[i]->prev.size(); pre++)
-        if(branchs_nodes[i]->prev[pre]->marker == false)
+      for(auto& prev : branchs_node->prev)
+        if(prev->marker == false)
           previous_done = false;
 
-      if(previous_done && (branchs_nodes[i]->layer == -1))
+      if(previous_done && (branchs_node->layer == -1))
       {
-        branchs_nodes[i]->layer = layer+1;
-        branchs_nodes[i]->pos = pos;
+        branchs_node->layer = layer+1;
+        branchs_node->pos = pos;
         pos++;
-        layer_nodes[layer].push_back(branchs_nodes[i]);
+        layer_nodes[layer].push_back(branchs_node);
       }
     } // end for
   } // end while
@@ -39,18 +39,18 @@ void GraphDrawer::putLayer(int layer)
 
 bool GraphDrawer::updateOneMarker(int layer)
 {
-  for(unsigned long int i = 0; i < roots_nodes.size(); i++)
-    if((roots_nodes[i]->layer == layer) && (roots_nodes[i]->marker == false))
+  for(auto& roots_node : roots_nodes)
+    if((roots_node->layer == layer) && (roots_node->marker == false))
     {
-      roots_nodes[i]->marker = true;
+      roots_node->marker = true;
       return true;
     }
 
-  for(unsigned long int layer_i = 0; layer_i < layer_nodes.size(); layer_i++)
-    for(unsigned long int i = 0; i < layer_nodes[layer_i].size(); i++)
-      if((layer_nodes[layer_i][i]->layer == layer) && (layer_nodes[layer_i][i]->marker == false))
+  for(auto& layer_i : layer_nodes)
+    for(auto& layer_node: layer_i)
+      if((layer_node->layer == layer) && (layer_node->marker == false))
       {
-        layer_nodes[layer_i][i]->marker = true;
+        layer_node->marker = true;
         return true;
       }
 
@@ -61,8 +61,8 @@ bool GraphDrawer::testEnd()
 {
   bool end = true;
 
-  for(unsigned long int i = 0; i < branchs_nodes.size(); i++)
-    if(branchs_nodes[i]->marker == false)
+  for(auto& branchs_node : branchs_nodes)
+    if(branchs_node->marker == false)
       end = false;
 
   return end;
@@ -70,23 +70,23 @@ bool GraphDrawer::testEnd()
 
 void GraphDrawer::draw(std::string file_name)
 {
-  unsigned long int height = (layer_nodes.size())*(MARKER_HEIGHT + MIN_HEIGHT_SPACE) + 1;
+  size_t height = (layer_nodes.size())*(MARKER_HEIGHT + MIN_HEIGHT_SPACE) + 1;
 
-  unsigned long int width = roots_nodes.size();
-  for(unsigned long int i  = 0; i < layer_nodes.size(); i++)
-      if(layer_nodes[i].size() > width)
-        width = layer_nodes[i].size();
+  size_t width = roots_nodes.size();
+  for(auto& layer_node : layer_nodes)
+      if(layer_node.size() > width)
+        width = layer_node.size();
   width = width*(MARKER_WIDTH + MIN_WIDTH_SPACE) + 1;
 
   image = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
   cvSet(image, cvScalar(255,255,255));
 
-  for(unsigned long int i = 0; i < roots_nodes.size(); i++)
-    setRect(0, layer_nodes.size() + 1, roots_nodes.size(), roots_nodes[i]);
+  for(auto& roots_node : roots_nodes)
+    setRect(0, layer_nodes.size() + 1, roots_nodes.size(), roots_node);
 
-  for(unsigned long int layer = 0; layer < layer_nodes.size(); layer++)
-    for(unsigned long int i = 0; i < layer_nodes[layer].size(); i++)
-    setRect(layer+1, layer_nodes.size() + 1, layer_nodes[layer].size(), layer_nodes[layer][i]);
+  for(size_t layer = 0; layer < layer_nodes.size(); layer++)
+    for(auto& layer_node : layer_nodes[layer])
+      setRect(layer+1, layer_nodes.size() + 1, layer_nodes[layer].size(), layer_node);
 
   link();
 
@@ -94,7 +94,7 @@ void GraphDrawer::draw(std::string file_name)
     file_name = "ontology.png";
 
   if((height != 1) && (width != 1))
-    cvSaveImage(file_name.c_str(), image);
+    cv::imwrite(file_name.c_str(), cv::cvarrToMat(image));
 }
 
 void GraphDrawer::setRect(int layer, int nb_layer, int nb_index, node_t* node)
@@ -121,9 +121,9 @@ void GraphDrawer::setRect(int layer, int nb_layer, int nb_index, node_t* node)
 
 void GraphDrawer::link()
 {
-  for(unsigned long int layer = 0; layer < layer_nodes.size(); layer++)
-    for(unsigned long int i = 0; i < layer_nodes[layer].size(); i++)
-      for(unsigned long int pre = 0; pre < layer_nodes[layer][i]->prev.size(); pre++)
+  for(size_t layer = 0; layer < layer_nodes.size(); layer++)
+    for(size_t i = 0; i < layer_nodes[layer].size(); i++)
+      for(size_t pre = 0; pre < layer_nodes[layer][i]->prev.size(); pre++)
       {
         cvLine(image, cvPoint(layer_nodes[layer][i]->rect.x_middle_top(),
                               layer_nodes[layer][i]->rect.y_middle_top()),
@@ -135,19 +135,19 @@ void GraphDrawer::link()
 
 bool GraphDrawer::exist(std::string value)
 {
-  for(unsigned long int i = 0; i < branchs_nodes.size(); i++)
+  for(size_t i = 0; i < branchs_nodes.size(); i++)
     if(branchs_nodes[i]->value == value)
       return true;
 
   return false;
 }
 
-cv::Scalar GraphDrawer::ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V)
+CvScalar GraphDrawer::ScalarHSV2BGR(uint8_t H, uint8_t S, uint8_t V)
 {
     cv::Mat rgb;
     cv::Mat hsv(1,1, CV_8UC3, cv::Scalar(H,S,V));
     cvtColor(hsv, rgb, CV_HSV2BGR);
-    return cv::Scalar(rgb.data[0], rgb.data[1], rgb.data[2]);
+    return cvScalar(rgb.data[0], rgb.data[1], rgb.data[2]);
 }
 
 } // namespace ontologenius

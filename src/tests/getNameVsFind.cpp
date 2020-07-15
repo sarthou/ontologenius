@@ -1,10 +1,10 @@
-#include <chrono>
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
-#include <unordered_set>
-#include <stdio.h>
-#include <math.h>
 #include <atomic>
+#include <chrono>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>     /* srand, rand */
+#include <ctime>
+#include <unordered_set>
 
 #include <ros/ros.h>
 
@@ -13,21 +13,21 @@
 class FileReader
 {
 public:
-  FileReader(std::string path)
+  FileReader(const std::string& path)
   {
     len = cpt = 0;
-    file_ = NULL;
+    file_ = nullptr;
     init(path, "r");
   }
   ~FileReader()
   {
-    if(file_ != NULL)
+    if(file_ != nullptr)
       fclose(file_);
   }
 
   std::string readLine()
   {
-    char * line = NULL;
+    char * line = nullptr;
     if(getline(&line, &len, file_) != -1)
     {
         cpt++;
@@ -42,21 +42,21 @@ private:
   size_t len;
   size_t cpt;
 
-  void init(std::string file_name, std::string option)
+  void init(const std::string& file_name, const std::string& option)
   {
     file_ = fopen(file_name.c_str(), option.c_str());
-    if(file_ == NULL)
+    if(file_ == nullptr)
       std::cout << "Fail to open file " << file_name << " with option '" << option << "'" << std::endl;
   }
 
-  void reset(std::string file_name)
+  void reset(const std::string& file_name)
   {
     file_ = fopen(file_name.c_str(), "w");
-    if(file_ == NULL)
+    if(file_ == nullptr)
       std::cout << "Fail to reset file " << file_name << std::endl;
     else
       fclose(file_);
-    file_ = NULL;
+    file_ = nullptr;
   }
 
   FILE* file_;
@@ -65,14 +65,6 @@ private:
 using namespace std::chrono;
 
 OntologyManipulator* onto_ptr;
-std::atomic<bool> end_;
-
-void chatterCallback(const std_msgs::String::ConstPtr& msg)
-{
-  (void)msg;
-  end_ = true;
-  std::cout << "end" << std::endl;
-}
 
 std::vector<std::string> readNbWords(size_t nb)
 {
@@ -101,29 +93,29 @@ std::vector<std::string> readNbWords(size_t nb)
   return res;
 }
 
-void insertWords(std::vector<std::string>& words, bool individual)
+void insertWords(const std::vector<std::string>& words, bool individual)
 {
   ros::Rate wait(10000);
   if(individual == false)
   {
     onto_ptr->feeder.addConcept("tmp");
-    for(size_t i = 0; i < words.size(); i++)
+    for(auto& word : words)
     {
-      onto_ptr->feeder.addInheritage("tmp", words[i]);
-      onto_ptr->feeder.addLanguage(words[i], "en", words[i]);
+      onto_ptr->feeder.addInheritage("tmp", word);
+      onto_ptr->feeder.addLanguage(word, "en", word);
       wait.sleep();
     }
   }
   else
-    for(size_t i = 0; i < words.size(); i++)
+    for(auto& word : words)
     {
-      onto_ptr->feeder.addConcept(words[i]);
+      onto_ptr->feeder.addConcept(word);
       wait.sleep();
     }
 
 }
 
-double find(std::vector<std::string>& words, bool individual)
+double find(const std::vector<std::string>& words, bool individual)
 {
   size_t syn = 0;
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -131,42 +123,42 @@ double find(std::vector<std::string>& words, bool individual)
   if(individual == false)
   {
     for(size_t j = 0; j < 3; j++)
-      for(size_t i = 0; i < words.size(); i++)
+      for(auto& word : words)
       {
-        std::vector<std::string> none = onto_ptr->classes.find(words[i]);
+        std::vector<std::string> none = onto_ptr->classes.find(word);
         syn += none.size();
       }
   }
   else
   {
     for(size_t j = 0; j < 3; j++)
-      for(size_t i = 0; i < words.size(); i++)
+      for(auto& word : words)
       {
-        std::vector<std::string> none = onto_ptr->individuals.find(words[i]);
+        std::vector<std::string> none = onto_ptr->individuals.find(word);
         syn += none.size();
       }
   }
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-  return time_span.count() * 1000 /1;
+  return time_span.count() * 1000;
 }
 
-double getName(std::vector<std::string>& words, bool individual)
+double getName(const std::vector<std::string>& words, bool individual)
 {
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
   if(individual == false)
   {
     for(size_t j = 0; j < 1; j++)
-      for(size_t i = 0; i < words.size(); i++)
-        onto_ptr->classes.getName(words[i]);
+      for(auto& word : words)
+        onto_ptr->classes.getName(word);
   }
   else
   {
     for(size_t j = 0; j < 1; j++)
-      for(size_t i = 0; i < words.size(); i++)
-        onto_ptr->individuals.getName(words[i]);
+      for(auto& word : words)
+        onto_ptr->individuals.getName(word);
   }
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
@@ -175,21 +167,21 @@ double getName(std::vector<std::string>& words, bool individual)
   return time_span.count() * 1000 / 1;
 }
 
-double getNames(std::vector<std::string>& words, bool individual)
+double getNames(const std::vector<std::string>& words, bool individual)
 {
   double nb = 0;
 
   if(individual == false)
   {
     for(size_t j = 0; j < 1; j++)
-      for(size_t i = 0; i < words.size(); i++)
-        nb += onto_ptr->classes.getNames(words[i]).size();
+      for(auto& word : words)
+        nb += onto_ptr->classes.getNames(word).size();
   }
   else
   {
     for(size_t j = 0; j < 1; j++)
-      for(size_t i = 0; i < words.size(); i++)
-        nb += onto_ptr->individuals.getNames(words[i]).size();
+      for(auto& word : words)
+        nb += onto_ptr->individuals.getNames(word).size();
   }
 
   return nb/words.size();
@@ -206,8 +198,6 @@ int main(int argc, char** argv)
   ros::Rate wait(1);
   ros::Rate fast(100);
 
-  ros::Subscriber sub = n.subscribe("ontologenius/end", 1000, chatterCallback);
-
   onto.verbose(true);
 
   onto.actions.reset();
@@ -217,22 +207,17 @@ int main(int argc, char** argv)
   std::vector<size_t> nb_words = {100, 500, 1000, 5000, 10000, 50000, 100000, 450000};
   std::vector<double> finds, gettedNames;
 
-  for(size_t i = 0; i < nb_words.size(); i++)
+  for(auto& nb_word : nb_words)
   {
-    end_ = false;
     std::cout << "will insert" << std::endl;
-    std::vector<std::string> words = readNbWords(nb_words[i]);
+    std::vector<std::string> words = readNbWords(nb_word);
     insertWords(words, false);
 
     std::cout << "wait" << std::endl;
-    while(end_ == false)
-    {
-      ros::spinOnce();
-      fast.sleep();
-    }
+    onto.feeder.waitUpdate(10000);
 
-    finds.push_back(find(words, false) / nb_words[i]);
-    gettedNames.push_back(getName(words, false) / nb_words[i]);
+    finds.push_back(find(words, false) / nb_word);
+    gettedNames.push_back(getName(words, false) / nb_word);
 
     onto.actions.reset();
     onto.close();
@@ -242,29 +227,21 @@ int main(int argc, char** argv)
     for(size_t j = 0; j < finds.size(); j++)
       std::cout << nb_words[j] << ";";
     std::cout << std::endl;
-    for(size_t j = 0; j < finds.size(); j++)
-      std::cout << finds[j] << ";";
+    for(auto& find_time : finds)
+      std::cout << find_time << ";";
     std::cout << std::endl;
-    for(size_t j = 0; j < finds.size(); j++)
-      std::cout << gettedNames[j] << ";";
+    for(auto& get_name_time : gettedNames)
+      std::cout << get_name_time << ";";
     std::cout << std::endl;
     std::cout << "*********" << std::endl;
   }
 
   std::vector<std::string> words = readNbWords(450000);
   insertWords(words, false);
-
   std::cout << "wait" << std::endl;
-  while(end_ == false)
-  {
-    ros::spinOnce();
-    fast.sleep();
-  }
+  onto.feeder.waitUpdate(10000);
 
   std::cout << "mean words = " << getNames(words, false) << std::endl;
-
-
-  ROS_DEBUG("test done");
 
   return 0;
 }

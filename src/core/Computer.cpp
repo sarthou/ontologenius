@@ -1,5 +1,7 @@
 #include "ontologenius/core/Computer.h"
 
+#include "ontologenius/utils/String.cpp"
+
 #include <iostream>
 #include <sstream>
 #include <chrono>
@@ -15,28 +17,25 @@ bool Computer::compute(std::string equation, ClassGraph& onto)
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
   bool invert = false;
-  std::vector<std::string> LR;
-  split(equation, LR, "!=");
+  std::vector<std::string> LR = split(equation, "!=");
   if(LR.size() > 1)
     invert = true;
   else
   {
     LR.clear();
-    split(equation, LR, "==");
+    LR = split(equation, "==");
   }
   if(LR.size() == 2)
   {
-    std::vector<std::string> tmp;
-    split(LR[0], tmp, '|');
+    std::vector<std::string> tmp = split(LR[0], '|');
     L.resize(tmp.size());
     notL.resize(tmp.size());
     for(size_t i = 0; i < tmp.size(); i++)
     {
-      split(tmp[i], L[i], '_');
+      L[i] = split(tmp[i], '_');
       for(size_t j = 0; j < L[i].size(); j++)
       {
-        std::vector<std::string> word;
-        split(L[i][j], word, '-');
+        std::vector<std::string> word = split(L[i][j], '-');
         L[i][j] = word[0];
         notL[i].resize(L[i].size(), false);
         if(L[i][j][0] == '!')
@@ -47,16 +46,15 @@ bool Computer::compute(std::string equation, ClassGraph& onto)
       }
     }
     tmp.clear();
-    split(LR[1], tmp, '|');
+    tmp = split(LR[1], '|');
     R.resize(tmp.size());
     notR.resize(tmp.size());
     for(size_t i = 0; i < tmp.size(); i++)
     {
-      split(tmp[i], R[i], '_');
+      R[i] = split(tmp[i], '_');
       for(size_t j = 0; j < R[i].size(); j++)
       {
-        std::vector<std::string> word;
-        split(R[i][j], word, '-');
+        std::vector<std::string> word = split(R[i][j], '-');
         R[i][j] = word[0];
         notR[i].resize(R[i].size(), false);
         if(R[i][j][0] == '!')
@@ -163,36 +161,6 @@ bool Computer::compute(std::string equation, ClassGraph& onto)
 
   cout << "FALSE !!!!!" << endl;
   return false;
-}
-
-bool Computer::split(const std::string &txt, std::vector<std::string> &strs, char ch)
-{
-  istringstream iss(txt.c_str());
-  std::string s;
-  while(getline(iss, s, ch))
-    strs.push_back(s);
-  if(strs.size() > 1)
-    return true;
-  else
-    return false;
-}
-
-bool Computer::split(const std::string &txt, std::vector<std::string> &strs, std::string delim)
-{
-  std::string text = txt;
-  while(text.find(delim) != std::string::npos)
-  {
-    cout << text << endl;
-    size_t pos = text.find(delim);
-    std::string part = text.substr(0, pos);
-    text = text.substr(pos + delim.size(), text.size() - pos - delim.size());
-    strs.push_back(part);
-  }
-  strs.push_back(text);
-  if(strs.size() > 1)
-    return true;
-  else
-    return false;
 }
 
 } // namespace ontologenius
