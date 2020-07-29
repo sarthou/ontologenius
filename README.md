@@ -46,4 +46,4 @@ On this launcher file, you will find an argument indicating the path to the onto
 You can add your own ontology files in the argument if you want them to be loaded at the beginning of the program.
 
 [Release-Url]: https://sarthou.github.io/ontologenius/
-[Release-image]: http://img.shields.io/badge/release-v0.2.5-1eb0fc.svg
+[Release-image]: http://img.shields.io/badge/release-v0.2.6-1eb0fc.svg

@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://sarthou.github.io/ontologenius/index.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/InstallOntologenius.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/Tutorials.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/Tutorials.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_API/CppAPI.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_API/PythonAPI.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/Publications.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/Download.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/SetUp.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/overview/launchers.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/overview/ontoloGUI.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/overview/reasonersConfiguration.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_API/ActionClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_API/ClassClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_API/ClientBase.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_API/DataPropertyClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_API/FeederPublisher.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_API/IndividualClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_API/ManagerClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_API/ObjectPropertyClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_API/OntologiesManipulator.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_API/OntologyClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_API/OntologyManipulator.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_API/ReasonerClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial1/settingUpTheProgram.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial1/LaunchTheProgram.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial1/FindTheIntruder.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial1/MostRelevantIntruder.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial1/ManageTheMultilingual.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial2/Presentation.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial2/FindOurWay.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial2/UnderstandOurEnvironment.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial3/Presentation.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial3/InsertNewKnowledge.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial3/MakeItProactive.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial4/Presentation.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial4/CreateMultipleOntologies.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/cpp_Tutorials/tutorial4/BeliefDivergence.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_API/ActionClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_API/ClassClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_API/ClientBase.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_API/DataPropertyClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_API/FeederPublisher.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_API/IndividualClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_API/ManagerClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_API/ObjectPropertyClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_API/OntologiesManipulator.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_API/OntologyClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_API/OntologyManipulator.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_API/ReasonerClient.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial1/settingUpTheProgram.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial1/LaunchTheProgram.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial1/FindTheIntruder.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial1/MostRelevantIntruder.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial1/ManageTheMultilingual.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial2/Presentation.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial2/FindOurWay.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial2/UnderstandOurEnvironment.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial3/Presentation.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial3/InsertNewKnowledge.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial3/MakeItProactive.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial4/Presentation.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial4/CreateMultipleOntologies.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://sarthou.github.io/ontologenius/python_Tutorials/tutorial4/BeliefDivergence.html</loc>
+  <lastmod>2020-03-09T09:42:38+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+</urlset>
