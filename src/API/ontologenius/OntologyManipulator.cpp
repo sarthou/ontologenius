@@ -15,7 +15,7 @@ OntologyManipulator::OntologyManipulator(ros::NodeHandle* n, const std::string& 
   ros::service::waitForService(servive_name);
 }
 
-OntologyManipulator::OntologyManipulator(OntologyManipulator& other): individuals(other.n_, other.name_),
+OntologyManipulator::OntologyManipulator(const OntologyManipulator& other): individuals(other.n_, other.name_),
                                                                       objectProperties(other.n_, other.name_),
                                                                       dataProperties(other.n_, other.name_),
                                                                       classes(other.n_, other.name_),

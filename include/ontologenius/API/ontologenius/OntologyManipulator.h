@@ -19,7 +19,7 @@ class OntologyManipulator
 {
 public:
   OntologyManipulator(ros::NodeHandle* n, const std::string& name = "");
-  OntologyManipulator(OntologyManipulator& other);
+  OntologyManipulator(const OntologyManipulator& other);
   OntologyManipulator(OntologyManipulator&& other);
   ~OntologyManipulator() {}
 
