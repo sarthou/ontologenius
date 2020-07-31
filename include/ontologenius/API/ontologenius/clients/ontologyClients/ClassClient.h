@@ -10,7 +10,7 @@ public:
   {
   }
 
-  std::vector<std::string> getDown(const std::string& name, int depth = -1);
+  std::vector<std::string> getDown(const std::string& name, int depth = -1, const std::string& selector = "");
   std::vector<std::string> getDisjoint(const std::string& name);
 
   std::vector<std::string> getOn(const std::string& name, const std::string& property, const std::string& selector = "");
