@@ -21,6 +21,7 @@ TEST(multi_tests, create)
   (*onto_ptr)["paul"]->close();
 
   wait.sleep();
+  (*onto_ptr)["paul"]->feeder.waitConnected();
   (*onto_ptr)["paul"]->feeder.addConcept("human");
   (*onto_ptr)["paul"]->feeder.addInheritage("man", "human");
   (*onto_ptr)["paul"]->feeder.addInheritage("woman", "human");
@@ -56,6 +57,7 @@ TEST(multi_tests, differences)
   (*onto_ptr)["bob"]->close();
 
   wait.sleep();
+  (*onto_ptr)["paul"]->feeder.waitConnected();
   (*onto_ptr)["paul"]->feeder.addConcept("human");
   (*onto_ptr)["paul"]->feeder.addInheritage("man", "human");
   (*onto_ptr)["paul"]->feeder.addInheritage("woman", "human");
@@ -64,6 +66,7 @@ TEST(multi_tests, differences)
   (*onto_ptr)["paul"]->feeder.addInheritage("pepper", "robot");
   (*onto_ptr)["paul"]->feeder.waitUpdate(500);
 
+  (*onto_ptr)["bob"]->feeder.waitConnected();
   (*onto_ptr)["bob"]->feeder.addConcept("human");
   (*onto_ptr)["bob"]->feeder.addInheritage("man", "human");
   (*onto_ptr)["bob"]->feeder.addInheritage("woman", "human");

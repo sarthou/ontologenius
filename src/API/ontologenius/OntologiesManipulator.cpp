@@ -43,6 +43,7 @@ bool OntologiesManipulator::add(const std::string& name)
       return false;
     else
     {
+      ros::service::waitForService("ontologenius/sparql/" + name);
       manipulators_[name] = new OntologyManipulator(n_, name);
       return true;
     }

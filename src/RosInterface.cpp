@@ -647,7 +647,8 @@ void RosInterface::feedThread()
       pub_.publish(msg);
     }
     feeder_mutex_.unlock();
-    wait.sleep();
+    if(ros::ok() && (run_ == true))
+      wait.sleep();
   }
 }
 
@@ -677,7 +678,8 @@ void RosInterface::periodicReasoning()
       reasoner_publisher.publish(msg);
     }
     reasoner_mutex_.unlock();
-    r.sleep();
+    if(ros::ok() && (run_ == true))
+      r.sleep();
   }
 }
 

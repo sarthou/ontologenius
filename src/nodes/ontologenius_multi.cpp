@@ -30,8 +30,9 @@ bool deleteInterface(const std::string& name)
   {
     interfaces_threads_[name].join();
   }
-  catch(...)
+  catch(std::runtime_error& ex)
   {
+    std::cout << "catch error when join the thread : " << ex.what() << std::endl;
     return false;
   }
 
