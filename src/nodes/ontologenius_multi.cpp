@@ -26,6 +26,7 @@ ontologenius::Parameters params;
 bool deleteInterface(const std::string& name)
 {
   interfaces_[name]->stop();
+  usleep(1000);
   try
   {
     interfaces_threads_[name].join();

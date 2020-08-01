@@ -61,7 +61,7 @@ private:
   Sparql sparql_;
 
   std::string name_;
-  std::atomic<bool> run_;
+  std::atomic<bool> run_; // used to kill the process
   bool feeder_end;
   size_t feeder_rate_;
   ros::Publisher pub_;
