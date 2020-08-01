@@ -8,6 +8,8 @@
 #include "ontologenius/core/ontologyOperators/differenceFinder.h"
 #include "ontologenius/core/utility/error_code.h"
 
+#include "ontologenius/graphical/Display.h"
+
 void removeUselessSpace(std::string& text)
 {
   while((text[0] == ' ') && (text.size() != 0))
@@ -33,8 +35,9 @@ bool deleteInterface(const std::string& name)
   }
   catch(std::runtime_error& ex)
   {
-    std::cout << "catch error when join the thread : " << ex.what() << std::endl;
-    return false;
+    ontologenius::Display::error("Catch error when joining the interface thread : " + std::string(ex.what()));
+    ontologenius::Display::warning("The thread will be detached");
+    interfaces_threads_[name].detach();
   }
 
   interfaces_threads_.erase(name);
