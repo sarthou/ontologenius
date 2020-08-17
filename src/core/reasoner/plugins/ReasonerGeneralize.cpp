@@ -64,15 +64,11 @@ void ReasonerGeneralize::periodicReason()
       std::lock_guard<std::shared_timed_mutex> lock_indiv(ontology_->individual_graph_.mutex_);
       std::lock_guard<std::shared_timed_mutex> lock(ontology_->class_graph_.mutex_);
 
-      std::vector<DataPropertyBranch_t*> data_properties;
-      std::vector<std::string> data_datas;
-      data_counter.get(data_properties, data_datas);
-      setDeduced(classes[current_id_], data_properties, data_datas);
+      auto data_properties = data_counter.get();
+      setDeduced(classes[current_id_], data_properties);
 
-      std::vector<ObjectPropertyBranch_t*> object_properties;
-      std::vector<ClassBranch_t*> object_datas;
-      object_counter.get(object_properties, object_datas);
-      setDeduced(classes[current_id_], object_properties, object_datas);
+      auto object_properties = object_counter.get();
+      setDeduced(classes[current_id_], object_properties);
 
       current_id_++;
       if(current_id_ >= classes.size())
@@ -83,39 +79,43 @@ void ReasonerGeneralize::periodicReason()
   }
 }
 
-void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyBranch_t*> properties, std::vector<std::string> datas)
+void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<DataPropertyBranch_t*, std::string, float>> properties)
 {
   std::unordered_set<size_t> deduced_indexs;
   for(size_t i = 0; i < me->data_relations_.size(); i++)
-    if(me->data_relations_[i] < 0.51) // deduced = 0.5
+    if(me->data_relations_[i] < 1.0)
       deduced_indexs.insert(i);
 
-  for(size_t prop = 0; prop < properties.size(); prop++)
+  for(auto property : properties)
   {
     int index = -1;
 
     for(size_t prop_i = 0; prop_i < me->data_relations_.size(); prop_i++)
-      if(me->data_relations_[prop_i].first == properties[prop])
+      if(me->data_relations_[prop_i].first == std::get<0>(property))
       {
         data_t tmp;
-        tmp.set(datas[prop]);
-
-        if(me->data_relations_[prop_i].second.toString() != tmp.toString())
-          notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]);
+        tmp.set(std::get<1>(property));
 
         index = prop_i;
         deduced_indexs.erase(index);
-        me->data_relations_[prop_i].second = tmp;
-        me->data_relations_[prop_i].probability = 0.5;
+
+        if(me->data_relations_[prop_i].probability < 1.0)
+        {
+          if(me->data_relations_[prop_i].second.toString() != tmp.toString())
+            notifications_.push_back("[CHANGE]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property));
+
+          me->data_relations_[prop_i].second = tmp;
+          me->data_relations_[prop_i].probability = std::get<2>(property) - 0.01;
+        }
       }
 
     if(index == -1)
     {
-      notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]);
+      notifications_.push_back("[NEW]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property));
       data_t tmp;
-      tmp.set(datas[prop]);
-      me->data_relations_.emplace_back(properties[prop], tmp, 0.5);
-      properties[prop]->annotation_usage_ = true;
+      tmp.set(std::get<1>(property));
+      me->data_relations_.emplace_back(std::get<0>(property), tmp, std::get<2>(property) - 0.01);
+      std::get<0>(property)->annotation_usage_ = true;
     }
   }
 
@@ -131,33 +131,36 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<DataPropertyB
   }
 }
 
-void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<ObjectPropertyBranch_t*> properties, std::vector<ClassBranch_t*> datas)
+void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<ObjectPropertyBranch_t*, ClassBranch_t*, float>> properties)
 {
   std::unordered_set<size_t> deduced_indexs;
   for(size_t i = 0; i < me->object_relations_.size(); i++)
-    if(me->object_relations_[i] < 0.51) // deduced = 0.5
+    if(me->object_relations_[i] < 1.0)
       deduced_indexs.insert(i);
 
-  for(size_t prop = 0; prop < properties.size(); prop++)
+  for(auto property : properties)
   {
     int index = -1;
 
     for(size_t prop_i = 0; prop_i < me->object_relations_.size(); prop_i++)
-      if(me->object_relations_[prop_i].first == properties[prop])
+      if(me->object_relations_[prop_i].first == std::get<0>(property))
       {
-        if(me->object_relations_[prop_i].second != datas[prop])
-          notifications_.push_back("[CHANGE]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
-
         index = prop_i;
         deduced_indexs.erase(index);
-        me->object_relations_[prop_i].second = datas[prop];
-        me->object_relations_[prop_i].probability = 0.5;
+        if(me->object_relations_[prop_i].probability < 1.0)
+        {
+          if(me->object_relations_[prop_i].second != std::get<1>(property))
+            notifications_.push_back("[CHANGE]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)->value());
+
+          me->object_relations_[prop_i].second = std::get<1>(property);
+          me->object_relations_[prop_i].probability = std::get<2>(property) - 0.01;
+        }
       }
 
     if(index == -1)
     {
-      notifications_.push_back("[NEW]" + me->value() + ">" + properties[prop]->value() + ":" + datas[prop]->value());
-      me->object_relations_.emplace_back(properties[prop], datas[prop], 0.5);
+      notifications_.push_back("[NEW]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)->value());
+      me->object_relations_.emplace_back(std::get<0>(property), std::get<1>(property), std::get<2>(property) - 0.01);
     }
   }
 
