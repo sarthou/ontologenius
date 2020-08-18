@@ -13,7 +13,7 @@ class Feeder
 public:
   Feeder(Ontology* onto = nullptr);
 
-  void store(std::string feed) { feed_storage_.add(feed); }
+  void store(const std::string& feed) { feed_storage_.add(feed); }
   bool run();
   void link(Ontology* onto) {onto_ = onto; }
 

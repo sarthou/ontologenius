@@ -13,8 +13,10 @@
 
 namespace ontologenius {
 
-RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) : run_(true),
-                                                                   pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, PUB_QUEU_SIZE))
+RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) :
+                                                                   feeder_echo_(getTopicName("insert_echo", name)),
+                                                                   run_(true),
+                                                                   feeder_end_pub_(n->advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE))
 {
   n_ = n;
   onto_ = new Ontology();
@@ -26,8 +28,10 @@ RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) : run_(t
   feeder_end = true;
 }
 
-RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::string& name) : run_(true),
-                                                                   pub_(n->advertise<std_msgs::String>(name == "" ? "ontologenius/end" : "ontologenius/end/" + name, PUB_QUEU_SIZE))
+RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::string& name) :
+                                                                   feeder_echo_(getTopicName("insert_echo", name)),
+                                                                   run_(true),
+                                                                   feeder_end_pub_(n->advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE))
 {
   n_ = n;
 
@@ -144,11 +148,13 @@ void RosInterface::close()
 void RosInterface::knowledgeCallback(const std_msgs::String::ConstPtr& msg)
 {
   feeder_.store(msg->data);
+  feeder_echo_.add(msg->data);
 }
 
 void RosInterface::stampedKnowledgeCallback(const ontologenius::StampedString::ConstPtr& msg)
 {
   feeder_.store(msg->data);
+  feeder_echo_.add(msg->data, msg->stamp);
 }
 
 bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req,
@@ -608,9 +614,13 @@ void RosInterface::feedThread()
     {
       feeder_end = true;
       msg.data = "end";
-      pub_.publish(msg);
+      feeder_end_pub_.publish(msg);
     }
     feeder_mutex_.unlock();
+
+    if(run == true)
+      feeder_echo_.publish();
+      
     if(ros::ok() && (run_ == true))
       wait.sleep();
   }
