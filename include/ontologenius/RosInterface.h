@@ -94,8 +94,6 @@ private:
   void set2string(const std::unordered_set<std::string>& word_set, std::string& result);
   void set2vector(const std::unordered_set<std::string>& word_set, std::vector<std::string>& result);
   param_t getParams(std::string& param);
-  int getPropagationLevel(std::string& params);
-  std::string getSelector(std::string& action, std::string& param);
 
   std::string getTopicName(const std::string topic_name)
   {

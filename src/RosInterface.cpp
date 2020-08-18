@@ -204,15 +204,6 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
 
-    //Remove for V2.4
-    int level = getPropagationLevel(params.base);
-    if(level != -1)
-      params.depth = level;
-    std::string select = getSelector(req.action, params.base);
-    if(select != "")
-      params.selector = select;
-    // end remove for 2.4
-
     std::unordered_set<std::string> set_res;
 
     if(req.action == "getDown")
@@ -305,15 +296,6 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
 
-    //Remove for V2.4
-    int level = getPropagationLevel(params.base);
-    if(level != -1)
-      params.depth = level;
-    std::string select = getSelector(req.action, params.base);
-    if(select != "")
-      params.selector = select;
-    // end remove for 2.4
-
     std::unordered_set<std::string> set_res;
 
     if(req.action == "getDown")
@@ -388,15 +370,6 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
 
-    //Remove for V2.4
-    int level = getPropagationLevel(params.base);
-    if(level != -1)
-      params.depth = level;
-    std::string select = getSelector(req.action, params.base);
-    if(select != "")
-      params.selector = select;
-    // end remove for 2.4
-
     std::unordered_set<std::string> set_res;
 
     if(req.action == "getDown")
@@ -467,15 +440,6 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
     reasoners_.runPreReasoners();
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
-
-    //Remove for V2.4
-    int level = getPropagationLevel(params.base);
-    if(level != -1)
-      params.depth = level;
-    std::string select = getSelector(req.action, params.base);
-    if(select != "")
-      params.selector = select;
-    // end remove for 2.4
 
     std::unordered_set<std::string> set_res;
 
@@ -762,43 +726,6 @@ param_t RosInterface::getParams(std::string& param)
   }
 
   return parameters;
-}
-
-int RosInterface::getPropagationLevel(std::string& params)
-{
-  size_t delimitater = params.find('<');
-  if(delimitater != std::string::npos)
-  {
-    std::cout << "[WARNING] Deprecated propagation level definition. Use -d option" << std::endl;
-    std::string param = params.substr(0, delimitater);
-    std::string level = params.substr(delimitater+1);
-    params = param;
-
-    int res;
-    if(sscanf(level.c_str(), "%d", &res) != 1)
-      res = -1;
-    return res;
-  }
-  return -1;
-}
-
-std::string RosInterface::getSelector(std::string& action, std::string& param)
-{
-  std::string select = "";
-  if(action.find("select:") == 0)
-  {
-    std::cout << "[WARNING] Deprecated selector definition. Use -s option" << std::endl;
-    action = action.substr(std::string("select:").size());
-    size_t delimitater = param.find('=');
-    if(delimitater != std::string::npos)
-    {
-      select = param.substr(0, delimitater);
-      param = param.substr(delimitater+1);
-
-    }
-    removeUselessSpace(action);
-  }
-  return select;
 }
 
 } // namespace ontologenius
