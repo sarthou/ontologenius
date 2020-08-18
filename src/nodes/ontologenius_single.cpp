@@ -9,8 +9,6 @@ int main(int argc, char** argv)
 
   ros::NodeHandle n;
 
-  ros::service::waitForService("ontologenius/rest", -1);
-
   ontologenius::RosInterface interface(&n);
 
   ontologenius::Parameters params;

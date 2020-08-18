@@ -93,9 +93,9 @@ private:
   void removeUselessSpace(std::string& text);
   void set2string(const std::unordered_set<std::string>& word_set, std::string& result);
   void set2vector(const std::unordered_set<std::string>& word_set, std::vector<std::string>& result);
-  param_t getParams(std::string& param);
+  param_t getParams(const std::string& param);
 
-  std::string getTopicName(const std::string topic_name)
+  std::string getTopicName(const std::string& topic_name)
   {
     return (name_ == "") ? "ontologenius/" + topic_name : "ontologenius/" + topic_name + "/" + name_;
   }

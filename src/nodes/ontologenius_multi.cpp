@@ -186,8 +186,6 @@ int main(int argc, char** argv)
   ros::NodeHandle n;
   n_ = &n;
 
-  ros::service::waitForService("ontologenius/rest", -1);
-
   params.insert(ontologenius::Parameter("language", {"-l", "--lang"}, {"en"}));
   params.insert(ontologenius::Parameter("intern_file", {"-i", "--intern_file"}, {"none"}));
   params.insert(ontologenius::Parameter("config", {"-c", "--config"}, {"none"}));

@@ -125,8 +125,8 @@ void RosInterface::lock()
 
 void RosInterface::release()
 {
-  feeder_mutex_.unlock();
   reasoner_mutex_.unlock();
+  feeder_mutex_.unlock();
 }
 
 void RosInterface::close()
@@ -160,7 +160,10 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
   removeUselessSpace(req.param);
 
   if(req.action == "add")
+  {
+    ros::service::waitForService("ontologenius/rest", -1);
     res.code = onto_->readFromUri(req.param);
+  }
   else if(req.action == "fadd")
     res.code = onto_->readFromFile(req.param);
   else if(req.action == "save")
@@ -171,15 +174,13 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
     close();
   else if(req.action == "reset")
   {
-    feeder_mutex_.lock();
-    reasoner_mutex_.lock();
+    lock();
     delete onto_;
     onto_ = new Ontology();
     reasoners_.link(onto_);
     feeder_.link(onto_);
     sparql_.link(onto_);
-    feeder_mutex_.unlock();
-    reasoner_mutex_.unlock();
+    release();
   }
   else if(req.action == "setLang")
     onto_->setLanguage(req.param);
@@ -445,7 +446,7 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
 
     if(req.action == "getSame")
       set_res = onto_->individual_graph_.getSame(params());
-    if(req.action == "getDistincts")
+    else if(req.action == "getDistincts")
       set_res = onto_->individual_graph_.getDistincts(params());
     else if(req.action == "getRelationFrom")
       set_res = onto_->individual_graph_.getRelationFrom(params(), params.depth);
@@ -511,7 +512,8 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
       else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith") ||
               (req.action == "getDomainOf") || (req.action == "getRangeOf"))
         set_res = onto_->object_property_graph_.select(set_res, params.selector);
-      else if((req.action != "find") || (req.action != "findRegex") || (req.action != "findSub") || (req.action != "findFuzzy") || (req.action != "getFrom") || (req.action != "getOn"))
+      else if((req.action != "find") || (req.action != "findRegex") || (req.action != "findSub") ||
+              (req.action != "findFuzzy") || (req.action != "getFrom") || (req.action != "getOn"))
         set_res = onto_->individual_graph_.select(set_res, params.selector);
     }
 
@@ -572,8 +574,7 @@ bool RosInterface::sparqlHandle(ontologenius::OntologeniusSparqlService::Request
 
 void RosInterface::feedThread()
 {
-  std::string publisher_name = (name_ == "") ? "ontologenius/feeder_notifications" : "ontologenius/feeder_notifications/" + name_;
-  ros::Publisher feeder_publisher = n_->advertise<std_msgs::String>(publisher_name, PUB_QUEU_SIZE);
+  ros::Publisher feeder_publisher = n_->advertise<std_msgs::String>(getTopicName("feeder_notifications"), PUB_QUEU_SIZE);
 
   ros::Rate wait(feeder_rate_);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
@@ -581,6 +582,7 @@ void RosInterface::feedThread()
     wait.sleep();
   }
 
+  std_msgs::String msg;
   while(ros::ok() && (run_ == true))
   {
     feeder_mutex_.lock();
@@ -592,7 +594,6 @@ void RosInterface::feedThread()
 
       reasoners_.runPostReasoners();
 
-      std_msgs::String msg;
       std::vector<std::string> notifications = feeder_.getNotifications();
       for(auto notif : notifications)
       {
@@ -606,7 +607,6 @@ void RosInterface::feedThread()
     else if(feeder_end == false)
     {
       feeder_end = true;
-      std_msgs::String msg;
       msg.data = "end";
       pub_.publish(msg);
     }
@@ -618,8 +618,7 @@ void RosInterface::feedThread()
 
 void RosInterface::periodicReasoning()
 {
-  std::string publisher_name = (name_ == "") ? "ontologenius/reasoner_notifications" : "ontologenius/reasoner_notifications/" + name_;
-  ros::Publisher reasoner_publisher = n_->advertise<std_msgs::String>(publisher_name, PUB_QUEU_SIZE);
+  ros::Publisher reasoner_publisher = n_->advertise<std_msgs::String>(getTopicName("reasoner_notifications"), PUB_QUEU_SIZE);
 
   ros::Rate wait(10);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
@@ -628,12 +627,12 @@ void RosInterface::periodicReasoning()
   }
 
   ros::Rate r(100);
+  std_msgs::String msg;
   while(ros::ok() && (run_ == true))
   {
     reasoner_mutex_.lock();
     reasoners_.runPeriodicReasoners();
 
-    std_msgs::String msg;
     std::vector<std::string> notifications = reasoners_.getNotifications();
     for(auto& notif : notifications)
     {
@@ -674,7 +673,7 @@ void RosInterface::set2vector(const std::unordered_set<std::string>& word_set, s
     result.push_back(it);
 }
 
-param_t RosInterface::getParams(std::string& param)
+param_t RosInterface::getParams(const std::string& param)
 {
   param_t parameters;
   std::vector<std::string> str_params = split(param, " ");
@@ -720,7 +719,7 @@ param_t RosInterface::getParams(std::string& param)
       option_found = true;
     }
     else if(option_found)
-      std::cout << "[WARNING] unknow parameter \"" << str_params[i] << "\"" << std::endl;
+      Display::warning("[WARNING] unknow parameter \"" + str_params[i] + "\"");
     else
       parameters.base += " " + str_params[i];
   }
