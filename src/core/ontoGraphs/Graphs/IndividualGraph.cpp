@@ -1681,7 +1681,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
 std::vector<std::pair<std::string, std::string>> IndividualGraph::removePropertyChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
 {
   std::vector<std::pair<std::string, std::string>> explanations;
-  
+
   for(size_t i = 0; i < indiv_from->object_relations_.size(); i++)
   {
     if(indiv_from->object_relations_[i].first == property &&
@@ -1693,6 +1693,11 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
                                             indiv_from->object_properties_has_induced_[i].prop_[induced]->value() + "|" +
                                             indiv_from->object_properties_has_induced_[i].on_[induced]->value(),
                                    "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
+
+        auto tmp = removeProperty(indiv_from->object_properties_has_induced_[i].from_[induced],
+                                  indiv_from->object_properties_has_induced_[i].prop_[induced],
+                                  indiv_from->object_properties_has_induced_[i].on_[induced]);
+        explanations.insert(explanations.end(), tmp.begin(), tmp.end());
       }
     }
   }
