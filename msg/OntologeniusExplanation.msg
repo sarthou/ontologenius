@@ -1,0 +1,2 @@
+string fact
+string cause

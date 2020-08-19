@@ -41,6 +41,14 @@ public:
     pose = 0;
   }
 
+  std::string toString()
+  {
+    std::string res;
+    for(size_t i = 0; i < ons_.size(); i++)
+      res += froms_[i]->value() + "|" + props_[i]->value() + "|" + ons_[i]->value() + (i != 0 ? ";" : "");
+    return res;
+  }
+
   std::vector<IndividualBranch_t*> ons_;
   std::vector<IndividualBranch_t*> froms_;
   std::vector<ObjectPropertyBranch_t*> props_;
@@ -66,6 +74,13 @@ public:
     std::vector<chainNode_t*> res;
     if(begin != nullptr)
       res = getNodes(begin, index, 0);
+    return res;
+  }
+  std::vector<chainNode_t*> getChainTo(IndividualBranch_t* indiv)
+  {
+    std::vector<chainNode_t*> res;
+    if(begin != nullptr)
+      res = getChainTo(begin, indiv);
     return res;
   }
   size_t size() {return size_; }
@@ -124,6 +139,28 @@ private:
         {
           tmp = getNodes(next, index, current + 1);
           res.insert(res.end(), tmp.begin(), tmp.end());
+        }
+      }
+    }
+    return res;
+  }
+  std::vector<chainNode_t*> getChainTo(chainNode_t* node, IndividualBranch_t* indiv)
+  {
+    std::vector<chainNode_t*> res;
+    if(std::find(node->ons_.begin(), node->ons_.end(), indiv) != node->ons_.end())
+      res.push_back(node);
+    else
+    {
+      for(auto next : node->nexts)
+      {
+        if(next != nullptr)
+        {
+          res = getChainTo(next, indiv);
+          if(res.size())
+          {
+            res.push_back(node);
+            return res;
+          }
         }
       }
     }

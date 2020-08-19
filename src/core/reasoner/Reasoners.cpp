@@ -197,9 +197,10 @@ void Reasoners::runPreReasoners()
       if(it.second)
       {
         it.second->preReason();
-        std::vector<std::string> notif = it.second->getNotifications();
-        if(notif.size())
-          notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+        auto notif = it.second->getNotifications();
+        notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+        auto explanations = it.second->getExplanations();
+        explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
       }
     }
 
@@ -223,8 +224,10 @@ void Reasoners::runPostReasoners()
       if(it.second != nullptr)
       {
         it.second->postReason();
-        std::vector<std::string> notif = it.second->getNotifications();
+        auto notif = it.second->getNotifications();
         notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+        auto explanations = it.second->getExplanations();
+        explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
       }
     }
     nb_updates = ReasonerInterface::getNbUpdates();
@@ -243,8 +246,10 @@ void Reasoners::runPeriodicReasoners()
     if(it.second != nullptr)
     {
       it.second->periodicReason();
-      std::vector<std::string> notif = it.second->getNotifications();
+      auto notif = it.second->getNotifications();
       notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+      auto explanations = it.second->getExplanations();
+      explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
     }
   }
 

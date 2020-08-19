@@ -2,6 +2,8 @@
 
 #include <ros/callback_queue.h>
 
+#include "ontologenius/OntologeniusExplanation.h"
+
 #include "ontologenius/RosInterface.h"
 
 #include "ontologenius/utils/String.h"
@@ -603,7 +605,7 @@ void RosInterface::feedThread()
       std::vector<std::string> notifications = feeder_.getNotifications();
       for(auto notif : notifications)
       {
-        std::cout << notif << std::endl;
+        Display::error(notif);
         if(name_ != "")
           notif = "[" + name_ + "]" + notif;
         msg.data = notif;
@@ -620,7 +622,7 @@ void RosInterface::feedThread()
 
     if(run == true)
       feeder_echo_.publish();
-      
+
     if(ros::ok() && (run_ == true))
       wait.sleep();
   }
@@ -628,7 +630,8 @@ void RosInterface::feedThread()
 
 void RosInterface::periodicReasoning()
 {
-  ros::Publisher reasoner_publisher = n_->advertise<std_msgs::String>(getTopicName("reasoner_notifications"), PUB_QUEU_SIZE);
+  ros::Publisher reasoner_publisher = n_->advertise<std_msgs::String>(getTopicName("reasoner/notifications"), PUB_QUEU_SIZE);
+  ros::Publisher reasoners_explanations_pub_ = n_->advertise<ontologenius::OntologeniusExplanation>(getTopicName("reasoner/explanations"), PUB_QUEU_SIZE);
 
   ros::Rate wait(10);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
@@ -636,8 +639,11 @@ void RosInterface::periodicReasoning()
     wait.sleep();
   }
 
+  reasoners_.getExplanations(); // flush explanation of initialization
+
   ros::Rate r(100);
   std_msgs::String msg;
+  ontologenius::OntologeniusExplanation expl_msg;
   while(ros::ok() && (run_ == true))
   {
     reasoner_mutex_.lock();
@@ -650,6 +656,15 @@ void RosInterface::periodicReasoning()
       msg.data = notif;
       reasoner_publisher.publish(msg);
     }
+
+    auto explanations = reasoners_.getExplanations();
+    for(auto& explanation : explanations)
+    {
+      expl_msg.fact = explanation.first;
+      expl_msg.cause = explanation.second;
+      reasoners_explanations_pub_.publish(expl_msg);
+    }
+
     reasoner_mutex_.unlock();
     if(ros::ok() && (run_ == true))
       r.sleep();

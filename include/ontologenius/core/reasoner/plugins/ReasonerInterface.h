@@ -33,8 +33,15 @@ public:
 
   std::vector<std::string> getNotifications()
   {
-    std::vector<std::string> tmp = notifications_;
+    auto tmp = std::move(notifications_);
     notifications_.clear();
+    return tmp;
+  }
+
+  std::vector<std::pair<std::string, std::string>> getExplanations()
+  {
+    auto tmp = std::move(explanations_);
+    explanations_.clear();
     return tmp;
   }
 protected:
@@ -43,6 +50,7 @@ protected:
   Ontology* ontology_;
 
   std::vector<std::string> notifications_;
+  std::vector<std::pair<std::string, std::string>> explanations_;
 
   static size_t nb_update_;
 };

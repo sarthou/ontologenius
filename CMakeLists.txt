@@ -71,6 +71,7 @@ catkin_python_setup()
    HTTP_headers.msg
    StampedString.msg
    OntologeniusSparqlResponse.msg
+   OntologeniusExplanation.msg
  )
 
 ## Generate services in the 'srv' folder

@@ -56,6 +56,16 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
         on->updated_ = true;
         for(auto relation : on->object_relations_)
           relation.second->updated_ = true;
+        std::string explanation_reference;
+        auto link_chain = tree.getChainTo(indivs[i]);
+        for(auto& lc : link_chain)
+        {
+          if(explanation_reference != "") explanation_reference += ";";
+          explanation_reference += lc->toString();
+        }
+        explanations_.emplace_back("[ADD]" + on->value() + "|" + chain[chain_size]->value() + "|" + indivs[i]->value(),
+                                   "[ADD]" + explanation_reference);
+
         on->nb_updates_++;
         nb_update_++;
 
