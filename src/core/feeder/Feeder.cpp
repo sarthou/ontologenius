@@ -257,7 +257,11 @@ void Feeder::applyProperty(feed_t& feed)
       if(data_property == true)
         onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, type, data);
       else
-        onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
+      {
+        auto tmp = onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
+        explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+      }
+
     }
     else
       notifications_.push_back("[FAIL][unknown concept to remove property]" + current_str_feed_);

@@ -98,13 +98,15 @@ public:
   bool addPropertyInvert(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
   void removeLang(const std::string& indiv, const std::string& lang, const std::string& name);
   void removeInheritage(const std::string& indiv, const std::string& class_inherited);
-  bool removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on);
-  bool removeProperty(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
+  // removing a relation using an object property has to generate an "explanation" if it remove other relations
+  std::vector<std::pair<std::string, std::string>> removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on);
+  std::vector<std::pair<std::string, std::string>> removeProperty(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
   bool removeProperty(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
-  void removePropertyInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
-  void removePropertySymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
-  void removePropertyChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  std::vector<std::pair<std::string, std::string>> removePropertyInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  std::vector<std::pair<std::string, std::string>> removePropertySymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  std::vector<std::pair<std::string, std::string>> removePropertyChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
   std::vector<IndividualBranch_t*> resolveLink(std::vector<ObjectPropertyBranch_t*>& chain, IndividualBranch_t* indiv_on, size_t index);
+  std::vector<std::vector<ObjectPropertyBranch_t*>> getChains(ObjectPropertyBranch_t* base_property);
 
   void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, unsigned int current_depth = 0);
 

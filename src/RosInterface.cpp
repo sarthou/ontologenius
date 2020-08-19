@@ -16,7 +16,7 @@
 namespace ontologenius {
 
 RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) :
-                                                                   feeder_echo_(getTopicName("insert_echo", name)),
+                                                                   feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
                                                                    run_(true),
                                                                    feeder_end_pub_(n->advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE))
 {
@@ -31,7 +31,7 @@ RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) :
 }
 
 RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::string& name) :
-                                                                   feeder_echo_(getTopicName("insert_echo", name)),
+                                                                   feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
                                                                    run_(true),
                                                                    feeder_end_pub_(n->advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE))
 {
@@ -611,6 +611,9 @@ void RosInterface::feedThread()
         msg.data = notif;
         feeder_publisher.publish(msg);
       }
+
+      auto explanations = feeder_.getExplanations();
+      feeder_echo_.add(explanations);
     }
     else if(feeder_end == false)
     {
@@ -630,8 +633,8 @@ void RosInterface::feedThread()
 
 void RosInterface::periodicReasoning()
 {
-  ros::Publisher reasoner_publisher = n_->advertise<std_msgs::String>(getTopicName("reasoner/notifications"), PUB_QUEU_SIZE);
-  ros::Publisher reasoners_explanations_pub_ = n_->advertise<ontologenius::OntologeniusExplanation>(getTopicName("reasoner/explanations"), PUB_QUEU_SIZE);
+  ros::Publisher reasoner_publisher = n_->advertise<std_msgs::String>(getTopicName("reasoner_notifications", name_), PUB_QUEU_SIZE);
+  ros::Publisher explanations_pub = n_->advertise<ontologenius::OntologeniusExplanation>(getTopicName("insert_explanations", name_), PUB_QUEU_SIZE);
 
   ros::Rate wait(10);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
@@ -639,7 +642,7 @@ void RosInterface::periodicReasoning()
     wait.sleep();
   }
 
-  reasoners_.getExplanations(); // flush explanation of initialization
+  reasoners_.getExplanations(); // flush explanations of initialization
 
   ros::Rate r(100);
   std_msgs::String msg;
@@ -662,7 +665,7 @@ void RosInterface::periodicReasoning()
     {
       expl_msg.fact = explanation.first;
       expl_msg.cause = explanation.second;
-      reasoners_explanations_pub_.publish(expl_msg);
+      explanations_pub.publish(expl_msg);
     }
 
     reasoner_mutex_.unlock();

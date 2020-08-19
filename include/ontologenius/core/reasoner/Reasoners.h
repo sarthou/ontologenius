@@ -54,6 +54,7 @@ private:
   std::map<std::string, ReasonerInterface*> reasoners_;
   std::map<std::string, ReasonerInterface*> active_reasoners_;
   std::vector<std::string> notifications_;
+  // Here the explanations are about relations added through FOL
   std::vector<std::pair<std::string, std::string>> explanations_;
 
   pluginlib::ClassLoader<ReasonerInterface> loader_;
