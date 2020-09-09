@@ -497,6 +497,12 @@ void ObjectPropertyGraph::deepCopy(const ObjectPropertyGraph& other)
 
   for(const auto& branch : other.branchs_)
     cpyBranch(branch.second, branchs_[branch.first]);
+
+  for(const auto& root : other.roots_)
+    cpyChainOfBranch(root.second, roots_[root.first]);
+
+  for(const auto& branch : other.branchs_)
+    cpyChainOfBranch(branch.second, branchs_[branch.first]);
 }
 
 void ObjectPropertyGraph::cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch)
@@ -531,15 +537,18 @@ void ObjectPropertyGraph::cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPr
   for(const auto& inverse : old_branch->inverses_)
     new_branch->inverses_.emplace_back(inverse, container_.find(inverse.elem->value()));
 
+  new_branch->str_chains_ = old_branch->str_chains_;
+}
+
+void ObjectPropertyGraph::cpyChainOfBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch)
+{
   for(const auto& chain : old_branch->chains_)
   {
-    std::vector<ObjectPropertyBranch_t*> tmp(chain.size());
+    std::vector<ObjectPropertyBranch_t*> tmp;
     for(const auto& link : chain)
       tmp.push_back(container_.find(link->value()));
     new_branch->chains_.push_back(tmp);
   }
-
-  new_branch->str_chains_ = old_branch->str_chains_;
 }
 
 } // namespace ontologenius
