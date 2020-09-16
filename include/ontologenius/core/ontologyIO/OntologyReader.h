@@ -82,7 +82,8 @@ void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem,
   if(data != "")
   {
     vect.push_back(data);
-    std::cout << "│   │   ├── " << symbole << data << std::endl;
+    if(symbole != "")
+      std::cout << "│   │   ├── " << symbole << data << std::endl;
   }
 }
 
@@ -99,7 +100,8 @@ void OntologyReader::push(std::vector<Single_t<std::string>>& vect, TiXmlElement
   if(data != "")
   {
     vect.push_back(Single_t<std::string>(data, probability));
-    std::cout << "│   │   ├── " << symbole << data << std::endl;
+    if(symbole != "")
+      std::cout << "│   │   ├── " << symbole << data << std::endl;
   }
 }
 
