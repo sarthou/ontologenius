@@ -13,6 +13,7 @@ class OntologyManipulator:
         self.actions = ActionClient(name)
         self.reasoners = ReasonerClient(name)
         self.feeder = FeederPublisher(name)
+        self.sparql = SparqlClient(name)
 
         service_name = "ontologenius/sparql"
         if name != '':
