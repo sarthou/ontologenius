@@ -33,17 +33,36 @@ void ClassChecker::checkDisjoint()
     std::unordered_set<ClassBranch_t*> up;
     class_graph_->getUpPtr(branch, up);
 
-    std::unordered_set<ClassBranch_t*> disjoints;
-
+    ClassBranch_t* intersection = nullptr;
+    ClassBranch_t* disjoint_with = nullptr;
     for(ClassBranch_t* it : up)
     {
+      std::unordered_set<ClassBranch_t*> disjoints;
       for(auto& disjoint : it->disjoints_)
-        class_graph_->getDownPtr(disjoint.elem, disjoints);
+        disjoints.insert(disjoint.elem);
+
+      ClassBranch_t* tmp_intersection = findIntersection(up, disjoints);
+      if(tmp_intersection != nullptr)
+      {
+        intersection = tmp_intersection;
+        std::unordered_set<ClassBranch_t*> intersect_disjoints;
+        for(auto& disj : intersection->disjoints_)
+          intersect_disjoints.insert(disj.elem);
+        disjoint_with = findIntersection(up, intersect_disjoints);
+        if(disjoint_with != nullptr)
+          break;
+      }
     }
 
-    ClassBranch_t* intersection = findIntersection(up, disjoints);
     if(intersection != nullptr)
-      print_error("'" + branch->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
+    {
+      if(disjoint_with != nullptr)
+        print_error("'" + branch->value() + "' can't be a '" + intersection->value() + "' and a '"
+        + disjoint_with->value() + "' because of disjonction between classes '"
+        + intersection->value() + "' and '" + disjoint_with->value() + "'");
+      else
+        print_error("'" + branch->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
+    }
   }
 }
 
