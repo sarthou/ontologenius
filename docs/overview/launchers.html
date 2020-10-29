@@ -171,7 +171,7 @@
 
         <p>The REST executable is actually just a python node that provides ontologenius with a way to access the Internet to download
           ontologies, for example.</p>
-        <p>This node must always be started at the same time as the kernel, because it will wait for the REST service to start.</p>
+        <p>This node does not need to be started if you do not want to load ontologies from the Internet.</p>
 
         <div class="code_block">
           <div class="terminal_line">  &lt;node name=&quot;ontologenius_rest&quot; pkg=&quot;ontologenius&quot; type=&quot;REST.py&quot; output=&quot;screen&quot; &gt; &lt;/node&gt;</div>
