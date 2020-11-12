@@ -83,6 +83,7 @@ public:
   std::map<std::string, Parameter> parameters_;
 private:
   std::string default_param_name_;
+  std::string process_name_;
 
 public:
 
@@ -95,6 +96,13 @@ public:
 
   void set(int argc, char** argv)
   {
+    process_name_ = std::string(argv[0]);
+    size_t pose;
+    while ((pose = process_name_.find("/")) != std::string::npos) {
+      process_name_ = process_name_.substr(pose+1);
+    }
+    process_name_ = " " + process_name_ + " ";
+    
     for(size_t i = 1; i < (size_t)argc; i++)
     {
       if(argv[i][0] == '-')
@@ -130,8 +138,14 @@ public:
 
   void display()
   {
+    std::string delim = "****************";
+    std::string delim_gap;
+    for(size_t i = 0; i < process_name_.size(); i++)
+      delim_gap += "*";
+    Display::info(delim + process_name_ + delim);
     for(auto param : parameters_)
       param.second.display();
+    Display::info(delim + delim_gap + delim);
   }
 };
 
