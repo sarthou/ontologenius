@@ -13,6 +13,8 @@ size_t IndividualChecker::check()
   graph_size = graph_vect_.size();
   checkSame();
 
+  checkDisjoint();
+
   checkReflexive();
 
   checkObectPropertyDomain();
@@ -45,6 +47,46 @@ void IndividualChecker::checkSame()
     std::string intersection = findIntersection(same, distinct);
     if(intersection != "")
       print_error("'" + graph_vect_[i]->value() + "' can't be same and distinct with '" + intersection + "'");
+  }
+}
+
+void IndividualChecker::checkDisjoint()
+{
+  for(IndividualBranch_t* indiv : graph_vect_)
+  {
+    std::unordered_set<ClassBranch_t*> up;
+    individual_graph_->getUpPtr(indiv, up);
+
+    ClassBranch_t* intersection = nullptr;
+    ClassBranch_t* disjoint_with = nullptr;
+    for(ClassBranch_t* it : up)
+    {
+      std::unordered_set<ClassBranch_t*> disjoints;
+      for(auto& disjoint : it->disjoints_)
+        disjoints.insert(disjoint.elem);
+
+      ClassBranch_t* tmp_intersection = findIntersection(up, disjoints);
+      if(tmp_intersection != nullptr)
+      {
+        intersection = tmp_intersection;
+        std::unordered_set<ClassBranch_t*> intersect_disjoints;
+        for(auto& disj : intersection->disjoints_)
+          intersect_disjoints.insert(disj.elem);
+        disjoint_with = findIntersection(up, intersect_disjoints);
+        if(disjoint_with != nullptr)
+          break;
+      }
+    }
+
+    if(intersection != nullptr)
+    {
+      if(disjoint_with != nullptr)
+        print_error("'" + indiv->value() + "' can't be a '" + intersection->value() + "' and a '"
+        + disjoint_with->value() + "' because of disjonction between classes '"
+        + intersection->value() + "' and '" + disjoint_with->value() + "'");
+      else
+        print_error("'" + indiv->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
+    }
   }
 }
 
