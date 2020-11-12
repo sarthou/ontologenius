@@ -94,6 +94,11 @@ public:
       default_param_name_ = param.name_;
   }
 
+  Parameter at(const std::string& parameter)
+  {
+    return parameters_.at(parameter);
+  }
+
   void set(int argc, char** argv)
   {
     process_name_ = std::string(argv[0]);
@@ -102,7 +107,7 @@ public:
       process_name_ = process_name_.substr(pose+1);
     }
     process_name_ = " " + process_name_ + " ";
-    
+
     for(size_t i = 1; i < (size_t)argc; i++)
     {
       if(argv[i][0] == '-')

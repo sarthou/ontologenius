@@ -54,6 +54,8 @@ public:
   void lock();
   void release();
 
+  void setDisplay(bool display);
+
 private:
   ros::NodeHandle* n_;
   Ontology* onto_;
@@ -70,6 +72,8 @@ private:
 
   std::mutex feeder_mutex_;
   std::mutex reasoner_mutex_;
+
+  bool display_;
 
   void knowledgeCallback(const std_msgs::String::ConstPtr& msg);
   void stampedKnowledgeCallback(const ontologenius::StampedString::ConstPtr& msg);

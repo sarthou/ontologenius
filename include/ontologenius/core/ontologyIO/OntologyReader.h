@@ -29,6 +29,7 @@ public:
   int readFromUri(const std::string& uri, bool individual = false);
   int readFromFile(const std::string& fileName, bool individual = false);
 
+  void setDisplay(bool display) { display_ = display; }
   void displayIndividualRules();
   bool empty() {return (elemLoaded == 0); }
 
@@ -39,6 +40,7 @@ private:
   IndividualGraph* individual_graph_;
 
   int elemLoaded;
+  bool display_;
 
   int read(TiXmlElement* rdf, const std::string& name);
   int readIndividual(TiXmlElement* rdf, const std::string& name);
@@ -82,7 +84,7 @@ void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem,
   if(data != "")
   {
     vect.push_back(data);
-    if(symbole != "")
+    if(symbole != "" && display_)
       std::cout << "│   │   ├── " << symbole << data << std::endl;
   }
 }
@@ -90,14 +92,14 @@ void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem,
 void OntologyReader::push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole)
 {
   vect.push_back(elem);
-  if(symbole != "")
+  if(symbole != "" && display_)
     std::cout << "│   │   ├── " << symbole << elem << std::endl;
 }
 
 void OntologyReader::push(std::vector<Single_t<std::string>>& vect, TiXmlElement* subElem, float probability, const std::string& symbole, const std::string& attribute)
 {
   std::string data = getAttribute(subElem, attribute);
-  if(data != "")
+  if(data != "" && display_)
   {
     vect.push_back(Single_t<std::string>(data, probability));
     if(symbole != "")
@@ -108,27 +110,27 @@ void OntologyReader::push(std::vector<Single_t<std::string>>& vect, TiXmlElement
 void OntologyReader::push(std::vector<Pair_t<std::string, std::string>>& vect, const Pair_t<std::string, std::string>& elem, const std::string& symbole1, const std::string& symbole2)
 {
   vect.push_back(elem);
-  if(symbole1 != "")
+  if(symbole1 != "" && display_)
     std::cout << "│   │   ├── " << symbole1 << elem.first << std::endl;
 
-  if(symbole2 != "")
+  if(symbole2 != "" && display_)
     std::cout << "│   │   ├── " << symbole2 << elem.second << std::endl;
 }
 
 void OntologyReader::push(std::vector<Pair_t<std::string, data_t>>& vect, const Pair_t<std::string, data_t>& elem, const std::string& symbole1, const std::string& symbole2)
 {
   vect.push_back(elem);
-  if(symbole1 != "")
+  if(symbole1 != "" && display_)
     std::cout << "│   │   ├── " << symbole1 << elem.first << std::endl;
 
-  if(symbole2 != "")
+  if(symbole2 != "" && display_)
     std::cout << "│   │   ├── " << symbole2 << elem.second.toString() << std::endl;
 }
 
 void OntologyReader::push(std::vector<bool>& vect, bool elem, const std::string& symbole)
 {
   vect.push_back(elem);
-  if(symbole != "")
+  if(symbole != "" && display_)
   {
     if(elem == true)
       std::cout << "│   │   ├── " << symbole << " true" << std::endl;

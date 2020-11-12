@@ -2,6 +2,7 @@
   <arg name="language" default="en"/>
   <arg name="intern_file" default="$(find ontologenius)/file_intern/ontologenius.owl"/>
   <arg name="config_file" default="none"/>
+  <arg name="display" default="true"/>
   <arg name="files" default="
   $(find ontologenius)/files/attribute.owl
   $(find ontologenius)/files/measure.owl
@@ -9,6 +10,6 @@
   $(find ontologenius)/files/positionProperty.owl
   $(find ontologenius)/files/testIndividuals.owl
   "/>
-  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius" output="screen" args="-l $(arg language) -c $(arg config_file) -i $(arg intern_file) $(arg files)"> </node>
+  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius" output="screen" args="-l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) $(arg files)"> </node>
   <node name="ontologenius_rest" pkg="ontologenius" type="REST.py" output="screen"> </node>
 </launch>

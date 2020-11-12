@@ -128,8 +128,8 @@ bool Ontology::preload(const std::string& file_name)
         if(reader.empty() == false)
         {
           is_preloaded_ = true;
-          Display::success("Ontology has been preloaded :");
-          Display::success("ontologenius will NOT consider your default files");
+          Display::success("Ontology has been preloaded");
+          Display::success("Ontologenius will NOT consider your default files");
           return true;
         }
   }
