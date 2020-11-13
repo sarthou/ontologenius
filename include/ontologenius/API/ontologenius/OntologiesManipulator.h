@@ -11,13 +11,8 @@
 
 class OntologiesManipulator : public ManagerClient
 {
-private:
-  ros::NodeHandle n_; // do not move this line below
-  std::map<std::string, OntologyManipulator*> manipulators_;
-
 public:
   OntologiesManipulator(ros::NodeHandle* n);
-  OntologiesManipulator();
   ~OntologiesManipulator();
 
   void waitInit(int32_t timeout = -1);
@@ -30,6 +25,10 @@ public:
   bool del(const std::string& name);
 
   void verbose(bool verbose) { ClientBase::verbose(verbose); }
+
+private:
+  ros::NodeHandle* n_; // do not move this line below
+  std::map<std::string, OntologyManipulator*> manipulators_;
 };
 
 #endif // ONTOLOGENIUS_ONTOLOGIESMANIPULATOR_H

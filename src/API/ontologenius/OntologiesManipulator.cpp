@@ -1,14 +1,9 @@
 #include "ontologenius/API/ontologenius/OntologiesManipulator.h"
-#include "ontologenius/graphical/Display.h"
 
-OntologiesManipulator::OntologiesManipulator(ros::NodeHandle* n) : ManagerClient(&n_)
+OntologiesManipulator::OntologiesManipulator(ros::NodeHandle* n) : ManagerClient(n)
 {
-  (void)n;
-  ontologenius::Display::warning("OntologiesManipulator(ros::NodeHandle* n) is deprecated. Use OntologiesManipulator() instead.");
+  n_ = n;
 }
-
-OntologiesManipulator::OntologiesManipulator() : ManagerClient(&n_)
-{}
 
 OntologiesManipulator::~OntologiesManipulator()
 {
