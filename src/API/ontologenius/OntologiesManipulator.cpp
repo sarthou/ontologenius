@@ -1,9 +1,14 @@
 #include "ontologenius/API/ontologenius/OntologiesManipulator.h"
+#include "ontologenius/graphical/Display.h"
 
-OntologiesManipulator::OntologiesManipulator(ros::NodeHandle* n) : ManagerClient(n)
+OntologiesManipulator::OntologiesManipulator(ros::NodeHandle* n) : ManagerClient(&n_)
 {
-  n_ = n;
+  (void)n;
+  ontologenius::Display::warning("OntologiesManipulator(ros::NodeHandle* n) is deprecated. Use OntologiesManipulator() instead.");
 }
+
+OntologiesManipulator::OntologiesManipulator() : ManagerClient(&n_)
+{}
 
 OntologiesManipulator::~OntologiesManipulator()
 {
@@ -44,7 +49,7 @@ bool OntologiesManipulator::add(const std::string& name)
     else
     {
       ros::service::waitForService("ontologenius/sparql/" + name);
-      manipulators_[name] = new OntologyManipulator(n_, name);
+      manipulators_[name] = new OntologyManipulator(name);
       return true;
     }
   }
@@ -60,7 +65,7 @@ bool OntologiesManipulator::copy(const std::string& dest_name, const std::string
       return false;
     else
     {
-      auto tmp = new OntologyManipulator(n_, dest_name);
+      auto tmp = new OntologyManipulator(dest_name);
       manipulators_[dest_name] = tmp;
       return true;
     }

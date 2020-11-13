@@ -17,8 +17,13 @@
 
 class OntologyManipulator
 {
+private:
+  ros::NodeHandle n_; // do not move this line below
+  std::string name_;
+
 public:
   OntologyManipulator(ros::NodeHandle* n, const std::string& name = "");
+  OntologyManipulator(const std::string& name = "");
   OntologyManipulator(const OntologyManipulator& other);
   OntologyManipulator(OntologyManipulator&& other);
   ~OntologyManipulator() {}
@@ -37,10 +42,6 @@ public:
   ReasonerClient reasoners;
   FeederPublisher feeder;
   SparqlClient sparql;
-
-private:
-  ros::NodeHandle* n_;
-  std::string name_;
 };
 
 #endif // ONTOLOGENIUS_ONTOLOGYMANIPULATOR_H

@@ -1,46 +1,60 @@
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
+#include "ontologenius/graphical/Display.h"
 
-OntologyManipulator::OntologyManipulator(ros::NodeHandle* n, const std::string& name) : individuals(n, name),
-                                                                                        objectProperties(n, name),
-                                                                                        dataProperties(n, name),
-                                                                                        classes(n, name),
-                                                                                        actions(n, name),
-                                                                                        reasoners(n, name),
-                                                                                        feeder(n, name),
-                                                                                        sparql(n, name)
+OntologyManipulator::OntologyManipulator(ros::NodeHandle* n, const std::string& name) : individuals(&n_, name),
+                                                                                        objectProperties(&n_, name),
+                                                                                        dataProperties(&n_, name),
+                                                                                        classes(&n_, name),
+                                                                                        actions(&n_, name),
+                                                                                        reasoners(&n_, name),
+                                                                                        feeder(&n_, name),
+                                                                                        sparql(&n_, name)
 {
-  n_ = n;
+  (void)n;
+  ontologenius::Display::warning("OntologyManipulator(ros::NodeHandle* n, const std::string& name) is deprecated. Use OntologyManipulator(const std::string& name) instead.");
   name_ = name;
-  std::string servive_name = (name == "") ? "ontologenius/reasoner" : "ontologenius/sparql/" + name;
+  std::string servive_name = (name == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name;
   ros::service::waitForService(servive_name);
 }
 
-OntologyManipulator::OntologyManipulator(const OntologyManipulator& other): individuals(other.n_, other.name_),
-                                                                      objectProperties(other.n_, other.name_),
-                                                                      dataProperties(other.n_, other.name_),
-                                                                      classes(other.n_, other.name_),
-                                                                      actions(other.n_, other.name_),
-                                                                      reasoners(other.n_, other.name_),
-                                                                      feeder(other.n_, other.name_),
-                                                                      sparql(other.n_, other.name_)
+OntologyManipulator::OntologyManipulator(const std::string& name) : individuals(&n_, name),
+                                                                    objectProperties(&n_, name),
+                                                                    dataProperties(&n_, name),
+                                                                    classes(&n_, name),
+                                                                    actions(&n_, name),
+                                                                    reasoners(&n_, name),
+                                                                    feeder(&n_, name),
+                                                                    sparql(&n_, name)
 {
-  n_ = other.n_;
-  name_ = other.name_;
-  std::string servive_name = (name_ == "") ? "ontologenius/reasoner" : "ontologenius/sparql/" + name_;
+  name_ = name;
+  std::string servive_name = (name == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name;
   ros::service::waitForService(servive_name);
 }
 
-OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): individuals(other.n_, other.name_),
-                                                                      objectProperties(other.n_, other.name_),
-                                                                      dataProperties(other.n_, other.name_),
-                                                                      classes(other.n_, other.name_),
-                                                                      actions(other.n_, other.name_),
-                                                                      reasoners(other.n_, other.name_),
-                                                                      feeder(other.n_, other.name_),
-                                                                      sparql(other.n_, other.name_)
+OntologyManipulator::OntologyManipulator(const OntologyManipulator& other): individuals(&n_, other.name_),
+                                                                      objectProperties(&n_, other.name_),
+                                                                      dataProperties(&n_, other.name_),
+                                                                      classes(&n_, other.name_),
+                                                                      actions(&n_, other.name_),
+                                                                      reasoners(&n_, other.name_),
+                                                                      feeder(&n_, other.name_),
+                                                                      sparql(&n_, other.name_)
 {
-  n_ = other.n_;
   name_ = other.name_;
-  std::string servive_name = (name_ == "") ? "ontologenius/reasoner" : "ontologenius/sparql/" + name_;
+  std::string servive_name = (name_ == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name_;
+  ros::service::waitForService(servive_name);
+}
+
+OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): individuals(&n_, other.name_),
+                                                                      objectProperties(&n_, other.name_),
+                                                                      dataProperties(&n_, other.name_),
+                                                                      classes(&n_, other.name_),
+                                                                      actions(&n_, other.name_),
+                                                                      reasoners(&n_, other.name_),
+                                                                      feeder(&n_, other.name_),
+                                                                      sparql(&n_, other.name_)
+{
+  name_ = other.name_;
+  std::string servive_name = (name_ == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name_;
   ros::service::waitForService(servive_name);
 }

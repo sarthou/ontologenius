@@ -13,6 +13,7 @@ class OntologiesManipulator : public ManagerClient
 {
 public:
   OntologiesManipulator(ros::NodeHandle* n);
+  OntologiesManipulator();
   ~OntologiesManipulator();
 
   void waitInit(int32_t timeout = -1);
@@ -27,7 +28,7 @@ public:
   void verbose(bool verbose) { ClientBase::verbose(verbose); }
 
 private:
-  ros::NodeHandle* n_;
+  ros::NodeHandle n_;
   std::map<std::string, OntologyManipulator*> manipulators_;
 
 };

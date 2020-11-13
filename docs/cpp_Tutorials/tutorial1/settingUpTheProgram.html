@@ -268,7 +268,7 @@
           <div class="code_line">  ros::init(argc, argv, <span class="cpp_string">&quot;intruder&quot;</span>);</div>
           <div class="code_line"><br></div>
           <div class="code_line">  ros::<span class="cpp_type">NodeHandle</span> n;</div>
-          <div class="code_line">  <span class="cpp_type">OntologyManipulator</span> onto(<span class="cpp_op">&</span>n);</div>
+          <div class="code_line">  <span class="cpp_type">OntologyManipulator</span> onto;</div>
           <div class="code_line">  onto_ <span class="cpp_op">= &</span>onto;</div>
           <div class="code_line"><br></div>
           <div class="code_line">  onto.close();</div>
@@ -311,13 +311,12 @@
         <p>Initialize ROS and Create a handle to this process' node.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 38;">
-          <div class="code_line">  <span class="cpp_type">OntologyManipulator</span> onto(<span class="cpp_op">&</span>n);</div>
+          <div class="code_line">  <span class="cpp_type">OntologyManipulator</span> onto;</div>
           <div class="code_line">  onto_ <span class="cpp_op">= &</span>onto;</div>
         </div>
         <p>We finally come back to using ontologenius! We create here our first manipulator ontology,
            what a great day ... This manipulator is unique to fully enjoy the benefits of connected
-           services. The minipulator is initialized with a NodeHandle on which the set of ontologenius
-            services will be deployed.</p>
+           services.</p>
         <p>We do not forget to initialize the pointer on the manipulator by providing the address.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 41;">
