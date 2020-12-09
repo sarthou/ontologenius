@@ -94,7 +94,6 @@ std::vector<std::string> getDiff(const std::string& param, int* res_code)
 bool managerHandle(ontologenius::OntologeniusService::Request& req,
                    ontologenius::OntologeniusService::Response& res)
 {
-  std::cout << "managerHandle" << std::endl;
   res.code = 0;
 
   removeUselessSpace(req.action);
@@ -202,7 +201,6 @@ int main(int argc, char** argv)
 
   ros::ServiceServer service = n_->advertiseService("ontologenius/manage", managerHandle);
 
-  std::cout << "start to spin" << std::endl;
   ros::spin();
 
   std::vector<std::string> interfaces_names;
