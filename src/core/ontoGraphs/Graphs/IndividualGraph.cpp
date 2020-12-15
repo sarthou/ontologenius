@@ -1542,6 +1542,43 @@ void IndividualGraph::removeInheritage(const std::string& class_base, const std:
   branch_inherited->updated_ = true;
 }
 
+bool IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& indiv_2)
+{
+  IndividualBranch_t* branch_1 = findBranch(indiv_1);
+  IndividualBranch_t* branch_2 = findBranch(indiv_2);
+
+  if((branch_1 == nullptr) && (branch_2 == nullptr))
+    return false;
+
+  std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+
+  if(branch_1 == nullptr)
+    branch_1 = new IndividualBranch_t(indiv_1);
+  else if(branch_2 == nullptr)
+    branch_2 = new IndividualBranch_t(indiv_2);
+
+  conditionalPushBack(branch_1->same_as_, IndividualElement_t(branch_2));
+  conditionalPushBack(branch_2->same_as_, IndividualElement_t(branch_1));
+
+  return true;
+}
+
+bool IndividualGraph::removeSameAs(const std::string& indiv_1, const std::string& indiv_2)
+{
+  IndividualBranch_t* branch_1 = findBranch(indiv_1);
+  IndividualBranch_t* branch_2 = findBranch(indiv_2);
+
+  if((branch_1 == nullptr) || (branch_2 == nullptr))
+    return false;
+
+  std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+
+  removeFromVect(branch_1->same_as_, IndividualElement_t(branch_2));
+  removeFromVect(branch_2->same_as_, IndividualElement_t(branch_1));
+
+  return true;
+}
+
 std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on)
 {
   std::vector<std::pair<std::string, std::string>> explanations;

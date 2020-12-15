@@ -98,6 +98,8 @@ public:
   bool addPropertyInvert(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
   void removeLang(const std::string& indiv, const std::string& lang, const std::string& name);
   void removeInheritage(const std::string& indiv, const std::string& class_inherited);
+  bool addSameAs(const std::string& indiv_1, const std::string& indiv_2);
+  bool removeSameAs(const std::string& indiv_1, const std::string& indiv_2);
   // removing a relation using an object property has to generate an "explanation" if it remove other relations
   std::vector<std::pair<std::string, std::string>> removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on);
   std::vector<std::pair<std::string, std::string>> removeProperty(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
