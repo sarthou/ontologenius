@@ -604,6 +604,10 @@ void RosInterface::feedThread()
     wait.sleep();
   }
 
+  feeder_.store("[add]myself|");
+  if(name_ != "")
+    feeder_.store("[add]myself|=|" + name_);
+
   std_msgs::String msg;
   while(ros::ok() && (run_ == true))
   {
