@@ -86,7 +86,7 @@ public:
   std::unordered_set<std::string> getType(const std::string& class_selector);
 
   ClassBranch_t* upgradeToBranch(IndividualBranch_t* indiv);
-  void createIndividual(const std::string& name);
+  IndividualBranch_t* createIndividual(const std::string& name);
   void deleteIndividual(IndividualBranch_t* indiv);
   void redirectDeleteIndividual(IndividualBranch_t* indiv, ClassBranch_t* _class);
   void addLang(const std::string& indiv, const std::string& lang, const std::string& name);
