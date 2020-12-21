@@ -1,4 +1,4 @@
-# <img src="docs/img/logo/ontologenius.png" width="150"> ontolo**G**enius
+# <img src="docs/img/logo/ontologenius.png" width="150"> ontologenius
 [![Release][Release-Image]][Release-Url]  Master : [![Build Status](https://gitlab.com/sarthou/ontologenius/badges/master/pipeline.svg)](https://gitlab.com/sarthou/ontologenius/commits/master) Dev : [![Build Status](https://gitlab.com/sarthou/ontologenius/badges/dev/pipeline.svg)](https://gitlab.com/sarthou/ontologenius/commits/dev)
 
 
@@ -6,6 +6,7 @@ This repository is a ROS package to link, explore and interrogate ontologies.
 
 For more information on using ontologenius, visit our website : https://sarthou.github.io/ontologenius/
 
+<!--
 ***
 
 [**Wiki homepage**](https://github.com/sarthou/ontologenius/wiki#-ontologenius)
@@ -30,14 +31,15 @@ For more information on using ontologenius, visit our website : https://sarthou.
 [**8. Program with ontologenius**](https://github.com/sarthou/ontologenius/wiki/Program-with-ontoloGenius)
 
 [**9. OntoloGUI**](https://github.com/sarthou/ontologenius/wiki/ontoloGUI)
+-->
 
 ***
 
 ## Run the package
 
-A *.launch* file is available to run the package:
+Several *.launch* files are available to run the package, you can do a first try with:
 ```sh
-$ roslaunch ontologenius ontologenius.launch
+$ roslaunch ontologenius ontologenius_full.launch
 ```
 
 On this launcher file, you will find an argument indicating the path to the ontology files.
