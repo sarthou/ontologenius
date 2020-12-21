@@ -639,10 +639,11 @@ void RosInterface::feedThread()
       msg.data = "end";
       feeder_end_pub_.publish(msg);
     }
-    feeder_mutex_.unlock();
 
     if(run == true)
       feeder_echo_.publish();
+
+    feeder_mutex_.unlock();
 
     if(ros::ok() && (run_ == true))
       wait.sleep();
