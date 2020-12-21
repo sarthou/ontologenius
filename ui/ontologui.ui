@@ -1623,9 +1623,6 @@
           <property name="cursorWidth">
            <number>1</number>
           </property>
-          <property name="textInteractionFlags">
-           <set>Qt::NoTextInteraction</set>
-          </property>
          </widget>
         </item>
        </layout>
