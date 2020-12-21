@@ -18,10 +18,12 @@ namespace ontologenius {
 RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) :
                                                                    feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
                                                                    run_(true),
-                                                                   feeder_end_pub_(n->advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE))
+                                                                   feeder_end_pub_(n->advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),
+                                                                   display_(true)
 {
   n_ = n;
   onto_ = new Ontology();
+  onto_->setDisplay(display_);
   reasoners_.link(onto_);
   feeder_.link(onto_);
   sparql_.link(onto_);
@@ -33,12 +35,14 @@ RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) :
 RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::string& name) :
                                                                    feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
                                                                    run_(true),
-                                                                   feeder_end_pub_(n->advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE))
+                                                                   feeder_end_pub_(n->advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),
+                                                                   display_(true)
 {
   n_ = n;
 
   other.lock();
   onto_ = new Ontology(*other.onto_);
+  onto_->setDisplay(display_);
   other.release();
 
   reasoners_.link(onto_);
@@ -112,7 +116,10 @@ void RosInterface::run()
 
   ros::ServiceServer service_sparql = n_->advertiseService(getTopicName("sparql"), &RosInterface::sparqlHandle, this);
 
-  Display::info(name_ + " is ready");
+  if(name_ != "")
+    Display::info(name_ + " is ready");
+  else
+    Display::info("Ontologenius is ready");
 
   while (ros::ok() && isRunning())
   {
@@ -139,6 +146,12 @@ void RosInterface::close()
 {
   onto_->close();
   reasoners_.runPostReasoners();
+}
+
+void RosInterface::setDisplay(bool display)
+{
+  display_ = display;
+  onto_->setDisplay(display_);
 }
 
 /***************
@@ -185,6 +198,7 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
     lock();
     delete onto_;
     onto_ = new Ontology();
+    onto_->setDisplay(display_);
     reasoners_.link(onto_);
     feeder_.link(onto_);
     sparql_.link(onto_);
@@ -590,6 +604,10 @@ void RosInterface::feedThread()
     wait.sleep();
   }
 
+  feeder_.store("[add]myself|");
+  if(name_ != "")
+    feeder_.store("[add]myself|=|" + name_);
+
   std_msgs::String msg;
   while(ros::ok() && (run_ == true))
   {
@@ -621,10 +639,11 @@ void RosInterface::feedThread()
       msg.data = "end";
       feeder_end_pub_.publish(msg);
     }
-    feeder_mutex_.unlock();
 
     if(run == true)
       feeder_echo_.publish();
+
+    feeder_mutex_.unlock();
 
     if(ros::ok() && (run_ == true))
       wait.sleep();

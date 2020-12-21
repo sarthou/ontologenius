@@ -62,6 +62,8 @@ bool Feeder::run()
         addInverseOf(feed);
       else if(feed.prop_[0] == '@')
         classIndividualLangage(feed);
+      else if((feed.prop_ == "=") || (feed.prop_ == "owl:sameAs") || (feed.prop_ == "sameAs"))
+        addSameAs(feed);
       else
         applyProperty(feed);
     }
@@ -180,6 +182,20 @@ void Feeder::addInverseOf(feed_t& feed)
   else if(feed.action_ == action_del)
   {
     if(!onto_->object_property_graph_.removeInverseOf(feed.from_, feed.on_))
+      notifications_.push_back("[FAIL][unknown item in the request]" + current_str_feed_);
+  }
+}
+
+void Feeder::addSameAs(feed_t& feed)
+{
+  if(feed.action_ == action_add)
+  {
+    if(!onto_->individual_graph_.addSameAs(feed.from_, feed.on_))
+      notifications_.push_back("[FAIL][no known items in the request]" + current_str_feed_);
+  }
+  else if(feed.action_ == action_del)
+  {
+    if(!onto_->individual_graph_.removeSameAs(feed.from_, feed.on_))
       notifications_.push_back("[FAIL][unknown item in the request]" + current_str_feed_);
   }
 }

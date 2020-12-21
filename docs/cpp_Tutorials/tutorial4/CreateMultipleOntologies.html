@@ -174,13 +174,13 @@
           dynamically create a OntologyManipulator per agent.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 10;">
-          <div class="code_line">  <span class="cpp_type">OntologiesManipulator</span> onto(<span class="cpp_op">&</span>n);</div>
+          <div class="code_line">  <span class="cpp_type">OntologiesManipulator</span> onto;</div>
           <div class="code_line"><br></div>
           <div class="code_line">  onto.waitInit();</div>
         </div>
 
-        <p>We start by creating a OntologiesManipulator in the same way that we previously created a OntologyManipulator.
-          This time, we simply call waitInit to make sure that all ROS services have been created before starting.</p>
+        <p>We start by creating a OntologiesManipulator. At the difference of the OntologyManipulator, this one need a pointer to our NodeHandle.
+          In addition, we simply call waitInit to make sure that all ROS services have been connected before starting.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 14;">
           <div class="code_line">  onto.add(<span class="cpp_string">&quot;sally&quot;</span>);</div>

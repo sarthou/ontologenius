@@ -108,10 +108,12 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
     {
       auto tmp = new ontologenius::RosInterface(n_, req.param);
       interfaces_[req.param] = tmp;
+      tmp->setDisplay(params.at("display").getFirst() == "true");
       tmp->init(params.parameters_.at("language").getFirst(),
                 params.parameters_.at("intern_file").getFirst(),
                 params.parameters_.at("files").get(),
                 params.parameters_.at("config").getFirst());
+
       std::thread th(&ontologenius::RosInterface::run, tmp);
       interfaces_threads_[req.param] = std::move(th);
 
@@ -140,8 +142,10 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
           {
             auto tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), n_, copy_name);
             interfaces_[copy_name] = tmp;
+            tmp->setDisplay(params.at("display").getFirst() == "true");
             tmp->init(params.parameters_.at("language").getFirst(),
                       params.parameters_.at("config").getFirst());
+
             std::thread th(&ontologenius::RosInterface::run, tmp);
             interfaces_threads_[copy_name] = std::move(th);
 
@@ -189,6 +193,7 @@ int main(int argc, char** argv)
   params.insert(ontologenius::Parameter("language", {"-l", "--lang"}, {"en"}));
   params.insert(ontologenius::Parameter("intern_file", {"-i", "--intern_file"}, {"none"}));
   params.insert(ontologenius::Parameter("config", {"-c", "--config"}, {"none"}));
+  params.insert(ontologenius::Parameter("display", {"-d", "--display"}, {"true"}));
   params.insert(ontologenius::Parameter("files", {}));
 
   params.set(argc, argv);

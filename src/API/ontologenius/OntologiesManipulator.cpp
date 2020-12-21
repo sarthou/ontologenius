@@ -44,7 +44,7 @@ bool OntologiesManipulator::add(const std::string& name)
     else
     {
       ros::service::waitForService("ontologenius/sparql/" + name);
-      manipulators_[name] = new OntologyManipulator(n_, name);
+      manipulators_[name] = new OntologyManipulator(name);
       return true;
     }
   }
@@ -60,7 +60,7 @@ bool OntologiesManipulator::copy(const std::string& dest_name, const std::string
       return false;
     else
     {
-      auto tmp = new OntologyManipulator(n_, dest_name);
+      auto tmp = new OntologyManipulator(dest_name);
       manipulators_[dest_name] = tmp;
       return true;
     }
