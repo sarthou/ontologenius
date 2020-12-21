@@ -100,7 +100,7 @@ catkin_python_setup()
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include include include/ontologenius/API
-  LIBRARIES ontologenius_lib
+  LIBRARIES ontologenius_lib ontologenius_interface
   CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
   DEPENDS TinyXML OpenCV
