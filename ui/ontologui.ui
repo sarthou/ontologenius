@@ -1559,6 +1559,11 @@
             </widget>
            </item>
 
+           <item >
+            <widget class="QLabel" name="label_20">
+            </widget>
+           </item>
+
            <item>
              <layout class="QHBoxLayout" name="horizontalLayout_29">
 
@@ -1617,9 +1622,6 @@
           </property>
           <property name="cursorWidth">
            <number>1</number>
-          </property>
-          <property name="textInteractionFlags">
-           <set>Qt::NoTextInteraction</set>
           </property>
          </widget>
         </item>
@@ -1729,25 +1731,6 @@ p, li { white-space: pre-wrap; }
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>571</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
-  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

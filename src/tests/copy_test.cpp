@@ -10,6 +10,7 @@ using namespace std::chrono;
 TEST(cpy_tests, reset)
 {
   ontologenius::Ontology onto1;
+  onto1.setDisplay(false);
 
   std::string path_base = ros::package::getPath("ontologenius");
   std::string path = path_base + "/files/attribute.owl";
@@ -22,6 +23,7 @@ TEST(cpy_tests, reset)
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
   ontologenius::Ontology onto2 = onto1;
+  onto2.setDisplay(false);
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double, std::milli> time_span = duration_cast<duration<double, std::milli>>(t2 - t1);
   std::cout << "copy done in " << time_span.count() << " ms" << std::endl;

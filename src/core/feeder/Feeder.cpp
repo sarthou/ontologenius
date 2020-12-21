@@ -62,6 +62,8 @@ bool Feeder::run()
         addInverseOf(feed);
       else if(feed.prop_[0] == '@')
         classIndividualLangage(feed);
+      else if((feed.prop_ == "=") || (feed.prop_ == "owl:sameAs") || (feed.prop_ == "sameAs"))
+        addSameAs(feed);
       else
         applyProperty(feed);
     }
@@ -184,6 +186,20 @@ void Feeder::addInverseOf(feed_t& feed)
   }
 }
 
+void Feeder::addSameAs(feed_t& feed)
+{
+  if(feed.action_ == action_add)
+  {
+    if(!onto_->individual_graph_.addSameAs(feed.from_, feed.on_))
+      notifications_.push_back("[FAIL][no known items in the request]" + current_str_feed_);
+  }
+  else if(feed.action_ == action_del)
+  {
+    if(!onto_->individual_graph_.removeSameAs(feed.from_, feed.on_))
+      notifications_.push_back("[FAIL][unknown item in the request]" + current_str_feed_);
+  }
+}
+
 void Feeder::classIndividualLangage(feed_t& feed)
 {
   if(feed.action_ == action_add)
@@ -257,7 +273,11 @@ void Feeder::applyProperty(feed_t& feed)
       if(data_property == true)
         onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, type, data);
       else
-        onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
+      {
+        auto tmp = onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
+        explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+      }
+
     }
     else
       notifications_.push_back("[FAIL][unknown concept to remove property]" + current_str_feed_);

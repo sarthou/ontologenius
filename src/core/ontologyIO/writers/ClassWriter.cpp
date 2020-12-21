@@ -197,7 +197,7 @@ void ClassWriter::writeDataProperties(ClassBranch_t* branch)
     if(relation.infered == false)
     {
       std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
-      std::string tmp = "        <:" +
+      std::string tmp = "        <" +
                         relation.first->value() +
                         proba +
                         " rdf:datatype=\"" +

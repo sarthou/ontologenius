@@ -70,4 +70,4 @@ jobs:
         run: |
           cd ~/catkin_ws
           source devel/setup.bash
-          catkin_make run_tests_ontologenius_rostest && catkin_make test
+          catkin_make run_tests_ontologenius_rostest -j1 && catkin_make test -j1

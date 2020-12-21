@@ -33,7 +33,7 @@ class FeedStorage
 public:
   FeedStorage();
 
-  void add(std::string& regex);
+  void add(const std::string& regex);
   void add(std::vector<feed_t>& datas);
   std::queue<feed_t> get();
   size_t size() { return fifo_1.size() + fifo_2.size(); }

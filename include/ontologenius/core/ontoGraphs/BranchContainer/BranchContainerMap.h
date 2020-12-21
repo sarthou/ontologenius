@@ -52,8 +52,15 @@ std::vector<B*> BranchContainerMap<B>::find(bool (*comp)(B*, const std::string&,
   std::vector<B*> res;
 
   for(auto& it : nodes_)
-    if(comp(it.second, word, lang, use_default))
-      res.push_back(it.second);
+  {
+    try {
+      if(comp(it.second, word, lang, use_default))
+        res.push_back(it.second);
+    } catch(...) {
+      return res;
+    }
+  }
+
   return res;
 }
 

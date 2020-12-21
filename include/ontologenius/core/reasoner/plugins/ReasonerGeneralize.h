@@ -3,6 +3,8 @@
 
 #include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 
+#include <tuple>
+
 namespace ontologenius {
 
 class ReasonerGeneralize : public ReasonerInterface
@@ -26,8 +28,8 @@ private:
   size_t min_count_;
   float min_percent_;
 
-  void setDeduced(ClassBranch_t* me, std::vector<DataPropertyBranch_t*> properties, std::vector<std::string> datas);
-  void setDeduced(ClassBranch_t* me, std::vector<ObjectPropertyBranch_t*> properties, std::vector<ClassBranch_t*> datas);
+  void setDeduced(ClassBranch_t* me, std::vector<std::tuple<DataPropertyBranch_t*, std::string, float>> properties);
+  void setDeduced(ClassBranch_t* me, std::vector<std::tuple<ObjectPropertyBranch_t*, ClassBranch_t*, float>> properties);
 };
 
 /***********
@@ -47,7 +49,7 @@ public:
   }
 
   void add(B propertie, P data);
-  void get(std::vector<B>& properties, std::vector<P>& datas);
+  std::vector<std::tuple<B, P, float>> get();
 
 private:
   std::vector<B> properties_;
@@ -94,8 +96,9 @@ void PropertiesCounter<B,P>::add(B propertie, P data)
 }
 
 template <typename B, typename P>
-void PropertiesCounter<B,P>::get(std::vector<B>& properties, std::vector<P>& datas)
+std::vector<std::tuple<B, P, float>> PropertiesCounter<B,P>::get()
 {
+  std::vector<std::tuple<B, P, float>> res;
   if(properties_.size() > 0)
   {
     std::vector<B> properties_set;
@@ -132,12 +135,11 @@ void PropertiesCounter<B,P>::get(std::vector<B>& properties, std::vector<P>& dat
       for(size_t j = 0; j < index_set[i].size(); j++)
         if(counts_[index_set[i][j]] >= min_count)
           if(counts_[index_set[i][j]] / (double)counts_set[i] >= min_percent)
-          {
-            properties.push_back(properties_set[i]);
-            datas.push_back(datas_[index_set[i][j]]);
-          }
+            res.emplace_back(properties_set[i], datas_[index_set[i][j]], counts_[index_set[i][j]] / (double)counts_set[i]);
     }
   }
+
+  return res;
 }
 
 } // namespace ontologenius

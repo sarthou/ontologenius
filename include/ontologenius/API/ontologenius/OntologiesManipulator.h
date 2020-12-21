@@ -27,9 +27,8 @@ public:
   void verbose(bool verbose) { ClientBase::verbose(verbose); }
 
 private:
-  ros::NodeHandle* n_;
+  ros::NodeHandle* n_; // do not move this line below
   std::map<std::string, OntologyManipulator*> manipulators_;
-
 };
 
 #endif // ONTOLOGENIUS_ONTOLOGIESMANIPULATOR_H

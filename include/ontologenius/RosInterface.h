@@ -17,6 +17,7 @@
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/reasoner/Reasoners.h"
 #include "ontologenius/core/feeder/Feeder.h"
+#include "ontologenius/core/feeder/FeederEcho.h"
 #include "ontologenius/core/ontologyOperators/Sparql.h"
 
 namespace ontologenius {
@@ -53,21 +54,26 @@ public:
   void lock();
   void release();
 
+  void setDisplay(bool display);
+
 private:
   ros::NodeHandle* n_;
   Ontology* onto_;
   Reasoners reasoners_;
   Feeder feeder_;
+  FeederEcho feeder_echo_;
   Sparql sparql_;
 
   std::string name_;
-  std::atomic<bool> run_;
+  std::atomic<bool> run_; // used to kill the process
   bool feeder_end;
   size_t feeder_rate_;
-  ros::Publisher pub_;
+  ros::Publisher feeder_end_pub_;
 
   std::mutex feeder_mutex_;
   std::mutex reasoner_mutex_;
+
+  bool display_;
 
   void knowledgeCallback(const std_msgs::String::ConstPtr& msg);
   void stampedKnowledgeCallback(const ontologenius::StampedString::ConstPtr& msg);
@@ -93,13 +99,16 @@ private:
   void removeUselessSpace(std::string& text);
   void set2string(const std::unordered_set<std::string>& word_set, std::string& result);
   void set2vector(const std::unordered_set<std::string>& word_set, std::vector<std::string>& result);
-  param_t getParams(std::string& param);
-  int getPropagationLevel(std::string& params);
-  std::string getSelector(std::string& action, std::string& param);
+  param_t getParams(const std::string& param);
 
-  std::string getTopicName(const std::string topic_name)
+  std::string getTopicName(const std::string& topic_name)
   {
-    return (name_ == "") ? "ontologenius/" + topic_name : "ontologenius/" + topic_name + "/" + name_;
+    return getTopicName(topic_name, name_);
+  }
+
+  std::string getTopicName(const std::string& topic_name, const std::string& onto_name)
+  {
+    return (onto_name == "") ? "ontologenius/" + topic_name : "ontologenius/" + topic_name + "/" + onto_name;
   }
 };
 

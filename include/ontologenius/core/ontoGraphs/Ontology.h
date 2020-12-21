@@ -29,6 +29,8 @@ public:
   void setLanguage(const std::string& language);
   std::string getLanguage();
 
+  void setDisplay(bool display) { reader.setDisplay(display); }
+
   ClassGraph class_graph_;
   ObjectPropertyGraph object_property_graph_;
   DataPropertyGraph data_property_graph_;

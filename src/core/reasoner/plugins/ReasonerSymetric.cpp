@@ -29,6 +29,8 @@ void ReasonerSymetric::postReason()
             sym_indiv->object_relations_.emplace_back(sym_prop, indiv[indiv_i], 1.0, true);
             sym_indiv->object_properties_has_induced_.emplace_back();
             sym_indiv->nb_updates_++;
+            explanations_.emplace_back("[ADD]" + sym_indiv->value() + "|" + sym_prop->value() + "|" + indiv[indiv_i]->value(),
+                                       "[ADD]" + indiv[indiv_i]->value() + "|" + sym_prop->value() + "|" + sym_indiv->value());
             nb_update_++;
           }
         }

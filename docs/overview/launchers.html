@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Launchers | Ontologenius 0.2.6</title>
+  <title>Launchers | Ontologenius 0.2.7</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -80,14 +80,6 @@
               All Python Classes
             </a>
           </h3>
-        </div>
-
-        <div class="contents">
-          <div id="contents-toggle" class=""></div>
-          <h3>See also</h3>
-          <ul style="display: block;">
-            <li class="level1"><a href="https://sarthou.github.io/ontologenius_query/" target="_blank">Ontologenius_query</a></li>
-          </ul>
         </div>
       </div>
 
@@ -171,7 +163,7 @@
 
         <p>The REST executable is actually just a python node that provides ontologenius with a way to access the Internet to download
           ontologies, for example.</p>
-        <p>This node must always be started at the same time as the kernel, because it will wait for the REST service to start.</p>
+        <p>This node does not need to be started if you do not want to load ontologies from the Internet.</p>
 
         <div class="code_block">
           <div class="terminal_line">  &lt;node name=&quot;ontologenius_rest&quot; pkg=&quot;ontologenius&quot; type=&quot;REST.py&quot; output=&quot;screen&quot; &gt; &lt;/node&gt;</div>

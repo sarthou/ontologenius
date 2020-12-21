@@ -82,13 +82,16 @@ int OntologyReader::read(TiXmlElement* rdf, const std::string& name)
   }
   else
   {
-    std::cout << name << std::endl;
-    std::cout << "************************************" << std::endl;
-    std::cout << "+ sub          | > domain  | @ language" << std::endl;
-    std::cout << "- disjoint     | < range   | . chain axiom" << std::endl;
-    std::cout << "/ inverse      | * type    | " << std::endl;
-    std::cout << "$ has property | ^ related | " << std::endl;
-    std::cout << "************************************" << std::endl;
+    if(display_)
+    {
+      std::cout << name << std::endl;
+      std::cout << "************************************" << std::endl;
+      std::cout << "+ sub          | > domain  | @ language" << std::endl;
+      std::cout << "- disjoint     | < range   | . chain axiom" << std::endl;
+      std::cout << "/ inverse      | * type    | " << std::endl;
+      std::cout << "$ has property | ^ related | " << std::endl;
+      std::cout << "************************************" << std::endl;
+    }
 
     std::vector<TiXmlElement*> elem_classes, elem_descriptions, elem_obj_prop, elem_data_prop, elem_annotation_prop;
     std::string elemName;
@@ -107,33 +110,41 @@ int OntologyReader::read(TiXmlElement* rdf, const std::string& name)
         elem_annotation_prop.push_back(elem);
     }
 
-    std::cout << "├── Class" << std::endl;
+    if(display_)
+      std::cout << "├── Class" << std::endl;
     for(TiXmlElement* elem : elem_classes)
       readClass(elem);
-    std::cout << "├── Description" << std::endl;
+    if(display_)
+      std::cout << "├── Description" << std::endl;
     for(TiXmlElement* elem : elem_descriptions)
       readDescription(elem);
-    std::cout << "├── Object property" << std::endl;
+    if(display_)
+      std::cout << "├── Object property" << std::endl;
     for(TiXmlElement* elem : elem_obj_prop)
       readObjectProperty(elem);
-    std::cout << "├── Data property" << std::endl;
+    if(display_)
+      std::cout << "├── Data property" << std::endl;
     for(TiXmlElement* elem : elem_data_prop)
       readDataProperty(elem);
-    std::cout << "├── Annotation property" << std::endl;
+    if(display_)
+      std::cout << "├── Annotation property" << std::endl;
     for(TiXmlElement* elem : elem_annotation_prop)
       readAnnotationProperty(elem);
-
-    std::cout << "└── "<< elemLoaded << " readed ! " << std::endl;
+    if(display_)
+      std::cout << "└── "<< elemLoaded << " readed ! " << std::endl;
     return NO_ERROR;
   }
 }
 
 void OntologyReader::displayIndividualRules()
 {
-  std::cout << "************************************" << std::endl;
-  std::cout << "+ is a         | = same       | - distinct" << std::endl;
-  std::cout << "$ has property | ^ related    | @ language" << std::endl;
-  std::cout << "************************************" << std::endl;
+  if(display_)
+  {
+    std::cout << "************************************" << std::endl;
+    std::cout << "+ is a         | = same       | - distinct" << std::endl;
+    std::cout << "$ has property | ^ related    | @ language" << std::endl;
+    std::cout << "************************************" << std::endl;
+  }
 }
 
 int OntologyReader::readIndividual(TiXmlElement* rdf, const std::string& name)
@@ -145,15 +156,19 @@ int OntologyReader::readIndividual(TiXmlElement* rdf, const std::string& name)
   }
   else
   {
-    std::cout << name << std::endl;
-    std::cout << "├── Individuals" << std::endl;
+    if(display_)
+    {
+      std::cout << name << std::endl;
+      std::cout << "├── Individuals" << std::endl;
+    }
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != nullptr; elem = elem->NextSiblingElement())
       readIndividual(elem);
-    std::cout << "├── Description" << std::endl;
+    if(display_)
+      std::cout << "├── Description" << std::endl;
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != nullptr; elem = elem->NextSiblingElement())
       readIndividualDescription(elem);
-
-    std::cout << "└── "<< elemLoaded << " readed ! " << std::endl;
+    if(display_)
+      std::cout << "└── "<< elemLoaded << " readed ! " << std::endl;
     return NO_ERROR;
   }
 }
@@ -166,7 +181,8 @@ void OntologyReader::readClass(TiXmlElement* elem)
   if(attr != nullptr)
   {
     node_name = getName(std::string(attr));
-    std::cout << "│   ├──" << node_name << std::endl;
+    if(display_)
+      std::cout << "│   ├──" << node_name << std::endl;
     for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != nullptr; subElem = subElem->NextSiblingElement())
     {
       std::string subElemName = subElem->Value();
@@ -219,7 +235,8 @@ void OntologyReader::readIndividual(TiXmlElement* elem)
     if(attr != nullptr)
     {
       node_name = getName(std::string(attr));
-      std::cout << "│   ├──" << node_name << std::endl;
+      if(display_)
+        std::cout << "│   ├──" << node_name << std::endl;
       for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != nullptr; subElem = subElem->NextSiblingElement())
       {
         std::string subElemName = subElem->Value();
@@ -339,7 +356,8 @@ void OntologyReader::readObjectProperty(TiXmlElement* elem)
   if(attr != nullptr)
   {
     node_name = getName(std::string(attr));
-    std::cout << "│   ├──" << node_name << std::endl;
+    if(display_)
+      std::cout << "│   ├──" << node_name << std::endl;
     for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != nullptr; subElem = subElem->NextSiblingElement())
     {
       std::string subElemName = subElem->Value();
@@ -383,7 +401,8 @@ void OntologyReader::readDataProperty(TiXmlElement* elem)
   if(attr != nullptr)
   {
     node_name = getName(std::string(attr));
-    std::cout << "│   ├──" << node_name << std::endl;
+    if(display_)
+      std::cout << "│   ├──" << node_name << std::endl;
     for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != nullptr; subElem = subElem->NextSiblingElement())
     {
       std::string subElemName = subElem->Value();
@@ -418,7 +437,8 @@ void OntologyReader::readAnnotationProperty(TiXmlElement* elem)
   if(attr != nullptr)
   {
     node_name = getName(std::string(attr));
-    std::cout << "│   ├──" << node_name << std::endl;
+    if(display_)
+      std::cout << "│   ├──" << node_name << std::endl;
     for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != nullptr; subElem = subElem->NextSiblingElement())
     {
       std::string subElemName = subElem->Value();
@@ -472,15 +492,18 @@ void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement
       subAttr = subElem->Attribute("rdf:about");
       if(subAttr != nullptr)
       {
-        for(size_t i = 0; i < level; i++)
-          std::cout << "│   ";
-        if(subElem == elem->FirstChildElement())
-          std::cout << "├───┬── " << symbol;
-        else if(subElem->NextSiblingElement() == nullptr)
-          std::cout << "│   └── " << symbol;
-        else
-          std::cout << "│   ├── " << symbol;
-        std::cout << getName(std::string(subAttr)) << std::endl;
+        if(display_)
+        {
+          for(size_t i = 0; i < level; i++)
+            std::cout << "│   ";
+          if(subElem == elem->FirstChildElement())
+            std::cout << "├───┬── " << symbol;
+          else if(subElem->NextSiblingElement() == nullptr)
+            std::cout << "│   └── " << symbol;
+          else
+            std::cout << "│   ├── " << symbol;
+          std::cout << getName(std::string(subAttr)) << std::endl;
+        }
         vect.push_back(getName(std::string(subAttr)));
       }
     }
@@ -494,7 +517,7 @@ std::string OntologyReader::readSomeValuesFrom(TiXmlElement* elem)
     for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != nullptr; subElem = subElem->NextSiblingElement())
     {
       std::string restriction_name = subElem->Value();
-      if(restriction_name == "rdfs:Datatype")
+      if(restriction_name == "rdfs:Datatype" && display_)
         std::cout << restriction_name << std::endl;
     }
   return value;
@@ -524,7 +547,7 @@ void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, const
     else
       property = "";
 
-    if(property != "")
+    if(property != "" && display_)
       std::cout << "│   │   ├── " << symbole << property << std::endl;
   }
 }
@@ -543,7 +566,7 @@ void OntologyReader::pushLang(std::map<std::string, std::vector<std::string>>& d
     {
       dictionary[lang].push_back(std::string(value));
 
-      if((lang != "") && (std::string(value) != ""))
+      if((lang != "") && (std::string(value) != "") && display_)
         std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang][dictionary[lang].size() - 1] << std::endl;
     }
   }

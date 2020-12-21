@@ -24,7 +24,7 @@
     - source devel/setup.bash
     - catkin_make
     - source devel/setup.bash
-    - catkin_make run_tests_ontologenius_rostest && catkin_make test
+    - catkin_make run_tests_ontologenius_rostest -j1 && catkin_make test -j1
 
 .test_script_template : &test_script_definition_py3
   script:
@@ -42,7 +42,7 @@
     - source devel/setup.bash
     - catkin_make
     - source devel/setup.bash
-    - catkin_make run_tests_ontologenius_rostest && catkin_make test
+    - catkin_make run_tests_ontologenius_rostest -j1 && catkin_make test -j1
 
 .kinetic_before_template : &kinetic_before_definition
   before_script:

@@ -56,6 +56,16 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
         on->updated_ = true;
         for(auto relation : on->object_relations_)
           relation.second->updated_ = true;
+        std::string explanation_reference;
+        auto link_chain = tree.getChainTo(indivs[i]);
+        for(auto& lc : link_chain)
+        {
+          if(explanation_reference != "") explanation_reference += ";";
+          explanation_reference += lc->toString();
+        }
+        explanations_.emplace_back("[ADD]" + on->value() + "|" + chain[chain_size]->value() + "|" + indivs[i]->value(),
+                                   "[ADD]" + explanation_reference);
+
         on->nb_updates_++;
         nb_update_++;
 
@@ -66,9 +76,19 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
             for(size_t node_it = 0; node_it < node->ons_.size(); node_it++)
             {
               for(size_t prop_i = 0; prop_i < node->froms_[node_it]->object_relations_.size(); prop_i++)
-                if(node->froms_[node_it]->object_relations_[prop_i].first == node->props_[node_it])
-                  if(node->froms_[node_it]->object_relations_[prop_i].second == node->ons_[node_it])
-                    addInduced(node->froms_[node_it], prop_i, on, chain[chain_size], indivs[i]);
+              {
+                std::unordered_set<ObjectPropertyBranch_t*> prop_down;
+                ontology_->object_property_graph_.getDownPtr(node->props_[node_it], prop_down);
+                for(auto& down : prop_down)
+                {
+                  if(node->froms_[node_it]->object_relations_[prop_i].first == down)
+                    if(node->froms_[node_it]->object_relations_[prop_i].second == node->ons_[node_it])
+                    {
+                      addInduced(node->froms_[node_it], prop_i, on, chain[chain_size], indivs[i]);
+                      break;
+                    }
+                }
+              }
             }
         }
       }

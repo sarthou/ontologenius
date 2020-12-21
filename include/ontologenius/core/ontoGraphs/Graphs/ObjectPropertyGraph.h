@@ -111,6 +111,7 @@ private:
   }
 
   void cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch);
+  void cpyChainOfBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch);
 };
 
 } // namespace ontologenius

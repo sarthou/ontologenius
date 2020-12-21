@@ -1,13 +1,15 @@
 #include "ontologenius/API/ontologenius/clients/ontologyClients/ClassClient.h"
 
-std::vector<std::string> ClassClient::getDown(const std::string& name, int depth)
+std::vector<std::string> ClassClient::getDown(const std::string& name, int depth, const std::string& selector)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "getDown";
   srv.request.param = name;
 
   if(depth >= 0)
-    srv.request.param += " < " + std::to_string(depth);
+    srv.request.param += " -d " + std::to_string(depth);
+  if(selector != "")
+    srv.request.param += " -s " + selector;
 
   return call(srv);
 }

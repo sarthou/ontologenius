@@ -18,6 +18,7 @@ private:
   IndividualGraph* individual_graph_;
 
   void checkSame();
+  void checkDisjoint();
   void checkReflexive();
   void checkObectPropertyDomain();
   void checkObectPropertyRange();

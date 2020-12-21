@@ -13,14 +13,21 @@ class Feeder
 public:
   Feeder(Ontology* onto = nullptr);
 
-  void store(std::string feed) { feed_storage_.add(feed); }
+  void store(const std::string& feed) { feed_storage_.add(feed); }
   bool run();
   void link(Ontology* onto) {onto_ = onto; }
 
   std::vector<std::string> getNotifications()
   {
-    std::vector<std::string> tmp = notifications_;
+    auto tmp = std::move(notifications_);
     notifications_.clear();
+    return tmp;
+  }
+
+  std::vector<std::pair<std::string, std::string>> getExplanations()
+  {
+    auto tmp = std::move(explanations_);
+    explanations_.clear();
     return tmp;
   }
 
@@ -34,7 +41,10 @@ private:
   Versionor versionor_;
   Ontology* onto_;
 
+  // Here the notifications are about miss formed queries
   std::vector<std::string> notifications_;
+  // Here the explanations are about relations removed because of FOL
+  std::vector<std::pair<std::string, std::string>> explanations_;
   std::string current_str_feed_;
 
   void addDelClass(action_t& action, std::string& name);
@@ -47,6 +57,7 @@ private:
   void modifyObjectPropertyInheritanceInvert(feed_t& feed);
   void classIndividualIsA(feed_t& feed);
   void addInverseOf(feed_t& feed);
+  void addSameAs(feed_t& feed);
 
   void classIndividualLangage(feed_t& feed);
   void applyProperty(feed_t& feed);

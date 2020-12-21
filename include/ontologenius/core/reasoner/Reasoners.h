@@ -36,7 +36,14 @@ public:
 
   std::vector<std::string> getNotifications()
   {
-    std::vector<std::string> tmp = notifications_;
+    auto tmp = std::move(notifications_);
+    notifications_.clear();
+    return tmp;
+  }
+
+  std::vector<std::pair<std::string, std::string>> getExplanations()
+  {
+    auto tmp = std::move(explanations_);
     notifications_.clear();
     return tmp;
   }
@@ -47,6 +54,8 @@ private:
   std::map<std::string, ReasonerInterface*> reasoners_;
   std::map<std::string, ReasonerInterface*> active_reasoners_;
   std::vector<std::string> notifications_;
+  // Here the explanations are about relations added through FOL
+  std::vector<std::pair<std::string, std::string>> explanations_;
 
   pluginlib::ClassLoader<ReasonerInterface> loader_;
 
