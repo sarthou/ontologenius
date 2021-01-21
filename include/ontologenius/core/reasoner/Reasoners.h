@@ -44,7 +44,7 @@ public:
   std::vector<std::pair<std::string, std::string>> getExplanations()
   {
     auto tmp = std::move(explanations_);
-    notifications_.clear();
+    explanations_.clear();
     return tmp;
   }
 
