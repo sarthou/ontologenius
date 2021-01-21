@@ -223,7 +223,9 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
     res.code = UNINIT;
   else
   {
+    reasoner_mutex_.lock();
     reasoners_.runPreReasoners();
+    reasoner_mutex_.unlock();
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
 
@@ -315,7 +317,9 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
     res.code = UNINIT;
   else
   {
+    reasoner_mutex_.lock();
     reasoners_.runPreReasoners();
+    reasoner_mutex_.unlock();
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
 
@@ -389,7 +393,9 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
     res.code = UNINIT;
   else
   {
+    reasoner_mutex_.lock();
     reasoners_.runPreReasoners();
+    reasoner_mutex_.unlock();
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
 
@@ -460,7 +466,9 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
     res.code = UNINIT;
   else
   {
+    reasoner_mutex_.lock();
     reasoners_.runPreReasoners();
+    reasoner_mutex_.unlock();
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
 
@@ -551,6 +559,7 @@ bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &re
 {
   res.code = 0;
 
+  reasoner_mutex_.lock();
   if(req.action == "activate")
     res.code = reasoners_.activate(req.param);
   else if(req.action == "deactivate")
@@ -563,6 +572,7 @@ bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &re
     res.values.push_back(reasoners_.getDescription(req.param));
   else
     res.code = UNKNOW_ACTION;
+  reasoner_mutex_.unlock();
 
   return true;
 }
@@ -618,7 +628,9 @@ void RosInterface::feedThread()
       if(feeder_end == true)
         feeder_end = false;
 
+      reasoner_mutex_.lock();
       reasoners_.runPostReasoners();
+      reasoner_mutex_.unlock();
 
       std::vector<std::string> notifications = feeder_.getNotifications();
       for(auto notif : notifications)
@@ -661,7 +673,9 @@ void RosInterface::periodicReasoning()
     wait.sleep();
   }
 
+  reasoner_mutex_.lock();
   reasoners_.getExplanations(); // flush explanations of initialization
+  reasoner_mutex_.unlock();
 
   ros::Rate r(100);
   std_msgs::String msg;
