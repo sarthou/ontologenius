@@ -1,6 +1,12 @@
 #include <regex>
 #include <thread>
 
+#include <stdio.h>
+#include <execinfo.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 #include <ros/ros.h>
 
 #include "ontologenius/utils/Parameters.h"
@@ -9,6 +15,18 @@
 #include "ontologenius/core/utility/error_code.h"
 
 #include "ontologenius/graphical/Display.h"
+
+void handler(int sig)
+{
+  void *array[10];
+  size_t size;
+
+  size = backtrace(array, 10);
+
+  fprintf(stderr, "Error: signal %d:\n", sig);
+  backtrace_symbols_fd(array, size, STDERR_FILENO);
+  exit(1);
+}
 
 void removeUselessSpace(std::string& text)
 {
@@ -185,6 +203,7 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
 
 int main(int argc, char** argv)
 {
+  signal(SIGSEGV, handler);
   ros::init(argc, argv, "ontologenius_multi");
 
   ros::NodeHandle n;
