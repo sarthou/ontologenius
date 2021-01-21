@@ -771,7 +771,8 @@ void ontoloGUI::differenceOntologySlot()
 void ontoloGUI::OntologyNameAddDelChangedSlot(const QString& text)
 {
   if(ui->OntologyName->text() != text)
-    ui->OntologyName->setText(text);
+    if(text.toStdString().find("=") == std::string::npos)
+      ui->OntologyName->setText(text);
 }
 
 void ontoloGUI::OntologyNameChangedSlot(const QString& text)
