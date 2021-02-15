@@ -9,9 +9,12 @@ namespace ontologenius {
 
 Versionor::Versionor(FeedStorage* storage)
 {
+  order_ = 0;
   storage_ = storage;
-  auto first_node = new Version_node("0");
-  current_node_ = new Version_node(first_node);
+  auto first_node = new Version_node(order_, "0");
+  order_++;
+  current_node_ = new Version_node(order_, first_node);
+  order_++;
   nodes_[first_node->getId()] = first_node;
   activated_ = false;
 }
@@ -48,7 +51,8 @@ bool Versionor::commit(const std::string& id)
 
   Version_node* old_node = current_node_;
   old_node->setId(id);
-  current_node_ = new Version_node(old_node);
+  current_node_ = new Version_node(order_, old_node);
+  order_++;
   nodes_[old_node->getId()] = old_node;
   return true;
 }
@@ -110,7 +114,8 @@ bool Versionor::checkout(const std::string& id)
     current_node_ = nullptr;
   }
 
-  current_node_ = new Version_node(node_it->second);
+  current_node_ = new Version_node(order_, node_it->second);
+  order_++;
   if(storage_ != nullptr)
     storage_->add(datas);
 
