@@ -55,6 +55,7 @@ RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::s
 
 RosInterface::~RosInterface()
 {
+  lock();
   delete onto_;
 }
 
@@ -623,7 +624,7 @@ void RosInterface::feedThread()
   {
     feeder_mutex_.lock();
     bool run = feeder_.run();
-    if(run == true)
+    if((run == true) && (run_ == true))
     {
       if(feeder_end == true)
         feeder_end = false;
@@ -652,7 +653,7 @@ void RosInterface::feedThread()
       feeder_end_pub_.publish(msg);
     }
 
-    if(run == true)
+    if((run == true) && (run_ == true))
       feeder_echo_.publish();
 
     feeder_mutex_.unlock();
