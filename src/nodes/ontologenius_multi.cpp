@@ -53,7 +53,7 @@ bool deleteInterface(const std::string& name)
   }
   catch(std::runtime_error& ex)
   {
-    ontologenius::Display::error("Catch error when joining the interface thread : " + std::string(ex.what()));
+    ontologenius::Display::error("An error was caught while joining the interface thread : " + std::string(ex.what()));
     ontologenius::Display::warning("The thread will be detached");
     interfaces_threads_[name].detach();
   }
@@ -62,7 +62,7 @@ bool deleteInterface(const std::string& name)
   delete interfaces_[name];
   interfaces_.erase(name);
 
-  std::cout << name << " STOPED" << std::endl;
+  std::cout << name << " STOPPED" << std::endl;
   return true;
 }
 
