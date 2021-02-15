@@ -153,21 +153,29 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
           res.code = NO_EFFECT;
         else
         {
-          it = interfaces_.find(copy_name);
-          if(it != interfaces_.end()) // if copy already exist
-            res.code = NO_EFFECT;
+          auto base_onto = it->second->getOntology();
+          if(base_onto == nullptr)
+            ontologenius::Display::error("You are trying to copy a malformed ontology");
+          else if(!base_onto->isInit())
+            ontologenius::Display::error("You are trying to copy an unclosed ontology ");
           else
           {
-            auto tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), n_, copy_name);
-            interfaces_[copy_name] = tmp;
-            tmp->setDisplay(params.at("display").getFirst() == "true");
-            tmp->init(params.parameters_.at("language").getFirst(),
-                      params.parameters_.at("config").getFirst());
+            it = interfaces_.find(copy_name);
+            if(it != interfaces_.end()) // if copy already exist
+              res.code = NO_EFFECT;
+            else
+            {
+              auto tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), n_, copy_name);
+              interfaces_[copy_name] = tmp;
+              tmp->setDisplay(params.at("display").getFirst() == "true");
+              tmp->init(params.parameters_.at("language").getFirst(),
+                        params.parameters_.at("config").getFirst());
 
-            std::thread th(&ontologenius::RosInterface::run, tmp);
-            interfaces_threads_[copy_name] = std::move(th);
+              std::thread th(&ontologenius::RosInterface::run, tmp);
+              interfaces_threads_[copy_name] = std::move(th);
 
-            std::cout << copy_name << " STARTED" << std::endl;
+              std::cout << copy_name << " STARTED" << std::endl;
+            }
           }
         }
       }
