@@ -147,7 +147,7 @@
           <div class="code_line">  <span class="cpp_return">return</span> inheritances;</div>
           <div class="code_line">}</div>
         </div>
-        <p>This function therefore applies the getUp method to each word found in the "words" vector and
+        <p>This function, therefore, applies the getUp method to each word found in the "words" vector and
           it returns a vector for which each cell corresponds to the vector returned by getUp.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 5;">
@@ -199,7 +199,7 @@
         <h2>Delete the same</h2>
 
         <p>We will now create a function that will simply remove classes from which all words inherit.
-          If we look at the previous example, we can see that alice bob and kevin all inherit active and
+          If we look at the previous example, we can see that Alice, Bob, and Kevin all inherit active and
           human classes. That is to say that the agent and human classes can not allow us to determine
           the intruder and that we can therefore remove them from our reasoning.
           We will not analyze this code together because it is not the center of this tutorial.</p>
@@ -240,7 +240,7 @@
           <div class="code_line">  deleteTheSame(inheritances);</div>
         </div>
 
-        <p>Compile this and run the program, then in an other terminal re-query the programs on the words:
+        <p>Compile this and run the program, then in another terminal re-query the programs on the words:
           bob alice and kevin.</p>
         <p>This time, you should have this:</p>
         <div class="code_block">
@@ -253,7 +253,6 @@
 
         <h2>Find the intruder</h2>
 
-        <p>You guess where we come from?</p>
         <p>Now that we have removed the classes from which all individuals inherit, we are not going
           to look for the individual who is the only one to inherit from a class but rather the class
           of which all but one inherit.</p>
@@ -270,18 +269,18 @@
           <div class="code_line">};</div>
         </div>
 
-        <p>We will finally code algorithms to find intruders. Indeed, in function it is sometimes
+        <p>We will finally code algorithms to find intruders. Indeed, in the function, it is sometimes
           possible to find several intruders for different reasons.</p>
         <p>Once again, we will not analyze the following algorithm because it does not use ontologenius directly.</p>
         <p>To still be able to analyze it for yourself, here are some key elements:</p>
         <ul>
-          <li>We go through all the words of each heritage vector. For each of these words we seek to
+          <li>We go through all the words of each heritage vector. For each of these words, we seek to
             know if it exists in all other vectors except one.</li>
           <li>The intruder_index variable represents the index of the vector in which the search word
             does not exist. This variable is set to -1 as long as we have not found or found more than
             one vector that does not have the word.</li>
-          <li>In the case where we found an intruder, we add it to our intruder vector only if it does
-            not already exist with the same reason.</li>
+          <li>In the case where we found an intruder, we add it to our intruder vector, only if it does
+            not already exist for the same reason.</li>
         </ul>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
@@ -340,7 +339,7 @@
           <div class="code_line">    say(<span class="cpp_string">&quot;the intruder is &quot;</span> <span class="cpp_op">+</span> intruders[i].name_ <span class="cpp_op">+</span> <span class="cpp_string">&quot; because it is the only one that is not: &quot;</span> <span class="cpp_op">+</span> intruders[i].why_);</div>
         </div>
 
-        <p>Compile this and run the program, then in an other terminal re-query the programs on the words:
+        <p>Compile this and run the program, then in another terminal re-query the programs on the words:
           bob alice and kevin.</p>
         <p>This time, you should have this:</p>
         <div class="code_block">
@@ -349,9 +348,9 @@
           <div class="terminal_line">[SAY]Let's play!</div>
         </div>
 
-        <p>IT WORKS !</p>
-        <p>Now is the time to have a little fun. Test for example with the words banana, lemon, apple
-          and carrot or only with the words banana, lemon and carrot.</p>
+        <p>IT WORKS!</p>
+        <p>Now is the time to have a little fun. Test for example with the words banana, lemon, apple,
+          and carrot or only with the words banana, lemon, and carrot.</p>
         <p>You should have this:</p>
         <div class="code_block">
           <div class="terminal_line">[SAY]on banana lemon apple carrot</div>
