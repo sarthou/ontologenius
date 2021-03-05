@@ -126,12 +126,12 @@
 
         <p>This is the fifth tutorial! In the previous tutorial, we saw how to manage several instances of ontologenius,
           each representing a specific agent. However, each of these instances represents only an agent's knowledge base at
-          the present time. When planning, we may need to estimate a possible future state of a knowledge base in order
+          present. When planning, we may need to estimate a possible future state of a knowledge base
           to execute algorithms on it. Of course, one cannot simply modify the current knowledge base of an agent at the
           risk of breaking it and being disturbed by updates coming from the current situation. In this tutorial, we will
           see how to effectively manage estimated knowledge bases.</p>
 
-        <p>Since this process is very specific and must be used in a global architecture, we will not do any mini-project
+        <p>Since this process is very specific and must be used in global architecture, we will not do any mini-project
           which could be too complex to set up. We will simply create an executable that will generate several possible
           future states and try to understand together the best practices to do so.</p>
 
@@ -141,11 +141,11 @@
             Based on what we saw in the previous tutorials, the only way to have instances for future knowledge base
             estimates would be to ... create new instances. I hope you see how bad this solution is. When we create a
             new instance, it loads the common ground but we don't want common ground but a copy of an actual instance.
-            In addition, by proceeding like this, if we have specified an internal file, each of these instances will
-            be saved when it is killed and depending on whether there is a backup of a previous execution or not, the
+            Also, by proceeding like this, if we have specified an internal file, each of these instances will
+            be saved when it is killed, and depending on whether there is a backup of a previous execution or not, the
             new instance will start with this previous file or with the common ground.
             <br/>
-            At this point you should see that with such management it will be unmanageable. Fortunately, if we do a
+            At this point, you should see that with such management it will be unmanageable. Fortunately, if we do a
             tutorial on it it is that we have a way to do better.
           </span>
         </div>
@@ -154,15 +154,15 @@
           <span>
             The first feature offered by ontologenius is deep copying. It is simply a complete copy of an existing instance
             which then becomes independent. With this copy, we start from an existing point and we can make our modifications
-            from this point. In addition, even if an internal file is set, a copy will never be saved automatically when killed.
+            from this point. Besides, even if an internal file is set, a copy will never be saved automatically when killed.
             <br/>
             We have now solved the main problems identified above and we can also imagine interweaving as illustrated opposite to
             create two new states from one.
             <br/>
             However, a deep copy is not a trivial process and it takes a little time to execute. Although this time can be negligible
             if we make only one copy, if we imagine a planning problem with a hundred states it can greatly affect the general
-            performance of the planning all this for very often a low number of changes between each copy. In addition, if you
-            try to create a hundred ontologenius instances, your computer will say "NO" at some point ... With my personal tests
+            performance of the planning all this for very often a low number of changes between each copy. Also, if you
+            try to create a hundred ontologenius instances, your computer will say "NO" at some point ... With my tests,
             I manage to create only 83 at the same time.
           </span>
           <img src="../../images/tutorial/tutorial_5_sol2.png " alt="new instance creation" height="160px" style="margin-left:20px; vertical-align:middle"/>
