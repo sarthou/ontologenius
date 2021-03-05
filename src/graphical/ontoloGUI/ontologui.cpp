@@ -238,8 +238,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->FeederCommitButton, SIGNAL(clicked()),this, SLOT(feederCommitSlot()));
     QObject::connect(ui->FeederCheckoutButton, SIGNAL(clicked()),this, SLOT(feederCheckoutSlot()));
 
-    QObject::connect(ui->OntologyNameAddDel, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameAddDelChangedSlot(const QString&)));
-    QObject::connect(ui->OntologyName, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameChangedSlot(const QString&)));
+    QObject::connect(ui->OntologyNameAddDel, SIGNAL(textEdited(const QString&)), this, SLOT(OntologyNameAddDelChangedSlot(const QString&)));
+    QObject::connect(ui->OntologyName, SIGNAL(textEdited(const QString&)), this, SLOT(OntologyNameChangedSlot(const QString&)));
     QObject::connect(ui->OntologyName, SIGNAL(editingFinished()),this, SLOT(nameEditingFinishedSlot()));
     QObject::connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(currentTabChangedSlot(int)));
 
@@ -831,8 +831,13 @@ void ontoloGUI::differenceOntologySlot()
 void ontoloGUI::OntologyNameAddDelChangedSlot(const QString& text)
 {
   if(ui->OntologyName->text() != text)
-    if(text.toStdString().find("=") == std::string::npos)
+  {
+    size_t equal_pose = text.toStdString().find("=");
+    if(equal_pose != std::string::npos)
+      ui->OntologyName->setText(text.mid(0, equal_pose));
+    else
       ui->OntologyName->setText(text);
+  }
 }
 
 void ontoloGUI::OntologyNameChangedSlot(const QString& text)
