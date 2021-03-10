@@ -127,10 +127,10 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
       auto tmp = new ontologenius::RosInterface(n_, req.param);
       interfaces_[req.param] = tmp;
       tmp->setDisplay(params.at("display").getFirst() == "true");
-      tmp->init(params.parameters_.at("language").getFirst(),
-                params.parameters_.at("intern_file").getFirst(),
-                params.parameters_.at("files").get(),
-                params.parameters_.at("config").getFirst());
+      tmp->init(params.at("language").getFirst(),
+                params.at("intern_file").getFirst(),
+                params.at("files").get(),
+                params.at("config").getFirst());
 
       std::thread th(&ontologenius::RosInterface::run, tmp);
       interfaces_threads_[req.param] = std::move(th);
@@ -168,8 +168,8 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
               auto tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), n_, copy_name);
               interfaces_[copy_name] = tmp;
               tmp->setDisplay(params.at("display").getFirst() == "true");
-              tmp->init(params.parameters_.at("language").getFirst(),
-                        params.parameters_.at("config").getFirst());
+              tmp->init(params.at("language").getFirst(),
+                        params.at("config").getFirst());
 
               std::thread th(&ontologenius::RosInterface::run, tmp);
               interfaces_threads_[copy_name] = std::move(th);

@@ -79,9 +79,8 @@ public:
 
 class Parameters
 {
-public:
-  std::map<std::string, Parameter> parameters_;
 private:
+  std::map<std::string, Parameter> parameters_;
   std::string default_param_name_;
   std::string process_name_;
 
