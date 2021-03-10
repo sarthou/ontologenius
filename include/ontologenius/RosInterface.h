@@ -88,16 +88,26 @@ public:
   void setDisplay(bool display);
 
 private:
+  /// @brief The ROS node handle. Its name is never used
   ros::NodeHandle* n_;
+  /// @brief The graph representing the ontology
   Ontology* onto_;
+  /// @brief The reasoners pool. Reasoners are automatically load as plugins
   Reasoners reasoners_;
+  /// @brief Analyses incoming statements and manage the versioning system
   Feeder feeder_;
+  /// @brief Republishs the incoming statement and the deduced once
   FeederEcho feeder_echo_;
+  /// @brief Resolves SPARQL queries.
   Sparql sparql_;
 
+  /// @brief The ontology instance name
   std::string name_;
+  /// @brief This varible is set to true when the interface is started and should be set to false to stop it
   std::atomic<bool> run_;
+  /// @brief The rate (in Hz) at which the feeder thread run. Can not be modified while the process is running
   size_t feeder_rate_;
+  /// @brief The ROS publisher used to notify the user that no more incoming statement have to be analysed
   ros::Publisher feeder_end_pub_;
 
   /// @brief The mutex protecting the object feeder_
@@ -105,27 +115,39 @@ private:
   /// @brief The mutex protecting the object reasoners_
   std::mutex reasoner_mutex_;
 
+  /// @brief The variable used to display or not debug information. Can be changed at run time
   bool display_;
 
+  /// @brief The ROS topic callback receiving statements not stamped
   void knowledgeCallback(const std_msgs::String::ConstPtr& msg);
+  /// @brief The ROS topic callback receiving stamped statements
   void stampedKnowledgeCallback(const ontologenius::StampedString::ConstPtr& msg);
 
+  /// @brief The ROS service callback in charge of general operations on the ontology
   bool actionsHandle(ontologenius::OntologeniusService::Request &req,
                      ontologenius::OntologeniusService::Response &res);
+  /// @brief The ROS service callback in charge of the exploration on classes
   bool classHandle(ontologenius::OntologeniusService::Request &req,
                    ontologenius::OntologeniusService::Response &res);
+  /// @brief The ROS service callback in charge of the exploration on object properties
   bool objectPropertyHandle(ontologenius::OntologeniusService::Request &req,
                             ontologenius::OntologeniusService::Response &res);
+  /// @brief The ROS service callback in charge of the exploration on data properties
   bool dataPropertyHandle(ontologenius::OntologeniusService::Request &req,
                           ontologenius::OntologeniusService::Response &res);
+  /// @brief The ROS service callback in charge of the exploration on individuals
   bool individualHandle(ontologenius::OntologeniusService::Request  &req,
                         ontologenius::OntologeniusService::Response &res);
+  /// @brief The ROS service callback in charge of the reasoners
   bool reasonerHandle(ontologenius::OntologeniusService::Request &req,
                     ontologenius::OntologeniusService::Response &res);
+  /// @brief The ROS service callback in charge of the SPARQL queries
   bool sparqlHandle(ontologenius::OntologeniusSparqlService::Request &req,
                   ontologenius::OntologeniusSparqlService::Response &res);
 
+  /// @brief The thread that periodically manages the update of the ontology with the incoming instructions 
   void feedThread();
+  /// @brief The thread that run the periodic reasoners
   void periodicReasoning();
 
   /// @brief Removes usless spaces at the begin and end of a string
@@ -150,7 +172,7 @@ private:
 
   /// @brief Gets a topic name related corresponding to a given instance name
   /// @param topic_name is the name of the topic you want to create
-  /// @param onto_name is the name of the ontology to topic should be related to
+  /// @param onto_name is the name of the ontology to which the topic should be related to
   std::string getTopicName(const std::string& topic_name, const std::string& onto_name)
   {
     return (onto_name == "") ? "ontologenius/" + topic_name : "ontologenius/" + topic_name + "/" + onto_name;
