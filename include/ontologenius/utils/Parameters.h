@@ -86,6 +86,8 @@ private:
 
 public:
 
+  /// @brief Register a new parameter model in the parameter set
+  /// @param param is the parameter object to insert
   void insert(const Parameter& param)
   {
     parameters_.insert(std::pair<std::string, Parameter>(param.name_,param));
@@ -93,11 +95,17 @@ public:
       default_param_name_ = param.name_;
   }
 
+  /// @brief Returns the parameter object related to the name provided in argument
+  /// @param parameter is the name of the parameter to get
+  /// @return A copy of the parameter object
   Parameter at(const std::string& parameter)
   {
     return parameters_.at(parameter);
   }
 
+  /// @brief Sets/Reads the values of the parameters
+  /// @param argc the number of strings pointed to by argv
+  /// @param argv is the array of arguments
   void set(int argc, char** argv)
   {
     process_name_ = std::string(argv[0]);
@@ -140,6 +148,7 @@ public:
     }
   }
 
+  /// @brief Displays the parameters names and setted values
   void display()
   {
     std::string delim = "****************";
