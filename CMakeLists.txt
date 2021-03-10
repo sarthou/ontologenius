@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 project(ontologenius)
 
 option(WITH_CLANG_TIDY "Enable clang-tidy static analysis during build" OFF)
