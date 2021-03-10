@@ -6,33 +6,6 @@ This repository is a ROS package to link, explore and interrogate ontologies.
 
 For more information on using ontologenius, visit our website : https://sarthou.github.io/ontologenius/
 
-<!--
-***
-
-[**Wiki homepage**](https://github.com/sarthou/ontologenius/wiki#-ontologenius)
-
-[**1. Installation**](https://github.com/sarthou/ontologenius/wiki/Installation#installation)
-
-[**2. Create ontology**](https://github.com/sarthou/ontologenius/wiki/Create-ontology)
-
-[**3. Launch ontologenius**](https://github.com/sarthou/ontologenius/wiki/Launch-ontoloGenius)
-
-[**4. Load ontology**](https://github.com/sarthou/ontologenius/wiki/Load-ontology)
-
-[**5. Feed ontology**](https://github.com/sarthou/ontologenius/wiki/Feed-ontology)
-
-[**6. Exploration**](https://github.com/sarthou/ontologenius/wiki/Exploration)
- - [**6.1. Classes exploration**](https://github.com/sarthou/ontologenius/wiki/Classes-exploration)
- - [**6.2. Properties exploration**](https://github.com/sarthou/ontologenius/wiki/Properties-exploration)
- - [**6.3. Individuals exploration**](https://github.com/sarthou/ontologenius/wiki/Individuals-exploration)
-
-[**7. Reason**](https://github.com/sarthou/ontologenius/wiki/Reason)
-
-[**8. Program with ontologenius**](https://github.com/sarthou/ontologenius/wiki/Program-with-ontoloGenius)
-
-[**9. OntoloGUI**](https://github.com/sarthou/ontologenius/wiki/ontoloGUI)
--->
-
 ***
 
 ## Run the package
