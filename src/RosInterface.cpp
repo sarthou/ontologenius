@@ -29,7 +29,6 @@ RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) :
   sparql_.link(onto_);
 
   name_ = name;
-  feeder_end = true;
 }
 
 RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::string& name) :
@@ -50,7 +49,6 @@ RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::s
   sparql_.link(onto_);
 
   name_ = name;
-  feeder_end = true;
 }
 
 RosInterface::~RosInterface()
@@ -608,6 +606,7 @@ bool RosInterface::sparqlHandle(ontologenius::OntologeniusSparqlService::Request
 void RosInterface::feedThread()
 {
   ros::Publisher feeder_publisher = n_->advertise<std_msgs::String>(getTopicName("feeder_notifications"), PUB_QUEU_SIZE);
+  bool feeder_end = true;
 
   ros::Rate wait(feeder_rate_);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
