@@ -125,7 +125,7 @@
         <h1 class="title">Find our way</h1>
 
         <p>Before starting, here is the body of our program with a function that will allow us to display routes.
-          A routes will be represented by a vector of strings.</p>
+          Routes will be represented by a vector of strings.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
           <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
@@ -245,10 +245,10 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 18;">
           <div class="code_line">      std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; intersections <span class="cpp_op">=</span> onto_-&gt;individuals.getFrom(<span class="cpp_string">&quot;isAlong&quot;</span>, routes[route_i][size]);</div>
         </div>
-        <p><b>IMPORTANT :</b></p>
-        <p>We can represent the use of a property like this : <span class="color_red">individual_1</span>
+        <p><b>IMPORTANT:</b></p>
+        <p>We can represent the use of a property like this: <span class="color_red">individual_1</span>
           <span class="color_green">property</span> <span class="color_blue">individual_2</span><br>
-        In the case of our paths, it comes down to this : <span class="color_red">intersection_i</span>
+        In the case of our paths, it comes down to this: <span class="color_red">intersection_i</span>
         <span class="color_green">isAlong</span> <span class="color_blue">path_j</span></p>
 
         <p>The getFrom function returns all the <span class="color_red">red individuals</span> who apply the
@@ -268,8 +268,8 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 18;">
           <div class="code_line">        std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; paths <span class="cpp_op">=</span> onto_-&gt;individuals.getOn(intersections[int_i], <span class="cpp_string">&quot;isAlong&quot;</span>);</div>
         </div>
-        <p><b>IMPORTANT :</b></p>
-        <p>Let's take again the fact that : <span class="color_red">intersection_i</span>
+        <p><b>IMPORTANT:</b></p>
+        <p>Let's take again the fact that: <span class="color_red">intersection_i</span>
         <span class="color_green">isAlong</span> <span class="color_blue">path_j</span></p>
         <p>The getOn function will make it possible to achieve the inverse of the getFrom function.
            We will retrieve the set of <span class="color_blue">blue individuals</span> that are connected to
@@ -286,7 +286,7 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 42;">
           <div class="code_line">    routes.swap(tmp_routes);</div>
         </div>
-        <p>At the end of the current iteration, the new routes of work become the current one.</p>
+        <p>At the end of the current iteration, the new routes of work become the current ones.</p>
 
         <h2>Find a route from one place to another</h2>
 
@@ -342,10 +342,10 @@
           take the paths that actually lead to the end path and have a size smaller than the last shortest
           route found.</p>
 
-        <h2>Update main function</h2>
+        <h2>Update the main function</h2>
 
         <p>We can finally add the following lines in our main function to realize the path search for the
-          three bob's ittineraries.</p>
+          three bob's itineraries.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 73;">
           <div class="code_line">std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; route;</div>

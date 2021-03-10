@@ -29,7 +29,6 @@ RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) :
   sparql_.link(onto_);
 
   name_ = name;
-  feeder_end = true;
 }
 
 RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::string& name) :
@@ -50,11 +49,11 @@ RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::s
   sparql_.link(onto_);
 
   name_ = name;
-  feeder_end = true;
 }
 
 RosInterface::~RosInterface()
 {
+  lock();
   delete onto_;
 }
 
@@ -223,7 +222,9 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
     res.code = UNINIT;
   else
   {
+    reasoner_mutex_.lock();
     reasoners_.runPreReasoners();
+    reasoner_mutex_.unlock();
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
 
@@ -315,7 +316,9 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
     res.code = UNINIT;
   else
   {
+    reasoner_mutex_.lock();
     reasoners_.runPreReasoners();
+    reasoner_mutex_.unlock();
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
 
@@ -389,7 +392,9 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
     res.code = UNINIT;
   else
   {
+    reasoner_mutex_.lock();
     reasoners_.runPreReasoners();
+    reasoner_mutex_.unlock();
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
 
@@ -460,7 +465,9 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
     res.code = UNINIT;
   else
   {
+    reasoner_mutex_.lock();
     reasoners_.runPreReasoners();
+    reasoner_mutex_.unlock();
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
 
@@ -551,6 +558,7 @@ bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &re
 {
   res.code = 0;
 
+  reasoner_mutex_.lock();
   if(req.action == "activate")
     res.code = reasoners_.activate(req.param);
   else if(req.action == "deactivate")
@@ -563,6 +571,7 @@ bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &re
     res.values.push_back(reasoners_.getDescription(req.param));
   else
     res.code = UNKNOW_ACTION;
+  reasoner_mutex_.unlock();
 
   return true;
 }
@@ -597,6 +606,7 @@ bool RosInterface::sparqlHandle(ontologenius::OntologeniusSparqlService::Request
 void RosInterface::feedThread()
 {
   ros::Publisher feeder_publisher = n_->advertise<std_msgs::String>(getTopicName("feeder_notifications"), PUB_QUEU_SIZE);
+  bool feeder_end = true;
 
   ros::Rate wait(feeder_rate_);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
@@ -613,12 +623,14 @@ void RosInterface::feedThread()
   {
     feeder_mutex_.lock();
     bool run = feeder_.run();
-    if(run == true)
+    if((run == true) && (run_ == true))
     {
       if(feeder_end == true)
         feeder_end = false;
 
+      reasoner_mutex_.lock();
       reasoners_.runPostReasoners();
+      reasoner_mutex_.unlock();
 
       std::vector<std::string> notifications = feeder_.getNotifications();
       for(auto notif : notifications)
@@ -640,7 +652,7 @@ void RosInterface::feedThread()
       feeder_end_pub_.publish(msg);
     }
 
-    if(run == true)
+    if((run == true) && (run_ == true))
       feeder_echo_.publish();
 
     feeder_mutex_.unlock();
@@ -661,7 +673,9 @@ void RosInterface::periodicReasoning()
     wait.sleep();
   }
 
+  reasoner_mutex_.lock();
   reasoners_.getExplanations(); // flush explanations of initialization
+  reasoner_mutex_.unlock();
 
   ros::Rate r(100);
   std_msgs::String msg;

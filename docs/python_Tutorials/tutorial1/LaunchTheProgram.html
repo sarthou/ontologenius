@@ -128,7 +128,7 @@
         <p>Perfect, we now have an early program that, while not doing much, is functional.
           It is therefore time for us to launch our program as well as ontologenius.
           One way that will seem obvious to us will be to launch our two programs
-          idependament like this:</p>
+          independently like this:</p>
         <p>terminal 1:</p>
         <div class="code_block">
           <div class="terminal_line">roslaunch ontologenius ontologenius.launch</div>
@@ -141,7 +141,7 @@
         <p>However, ontologenius has three launch parameters and by doing so we take the default
           parameters that are not necessarily the ones we need. Let's detail the parameters available:</p>
         <ul>
-          <li class="fn"><b><i>language</i></b>: That's what we call the working language. In fact, ontologenius
+          <li class="fn"><b><i>language</i></b>: That's what we call the working language. Ontologenius
             makes it possible to link natural language words to computer identifiers and vice versa.
             It is precisely the natural language part that will be impacted by this language parameter.
             We will see in detail its effect and its uses at the end of this tutorial.</li>
@@ -168,7 +168,7 @@
         <p>For our application, we do not need the GUI so we will ontologenius.launch or ontologenius_empty.launch.
           Indeed, we can use one or the other because we will in all cases redefine our own parameters.</p>
 
-        <p>Let's create our own launch file that will launch our application as well as ontologenius with
+        <p>Let's create our launch file that will launch our application as well as ontologenius with
           our parameters:</p>
 
         <div class="code_block xml_code" style="counter-reset:code_line 0;">
@@ -186,7 +186,7 @@
         <p>We can see that we used the <i>ontologenius.launch</i> file by redefining the internal file
           to not use it and putting the ontological file of this tutorial as an input file.</p>
 
-        <p class="tip">The ontolgy is given here, but you can also create your own ontology with <a href="https://protege.stanford.edu/" target="_blank">protégé</a>. Just think about exporting your ontology in XML / RDF format.</p>
+        <p class="tip">The ontology is given here, but you can also create your own ontology with <a href="https://protege.stanford.edu/" target="_blank">protégé</a>. Just think about exporting your ontology in XML / RDF format.</p>
 
         <p>I believe we are ready to launch our program:</p>
         <div class="code_block">
@@ -194,10 +194,10 @@
         </div>
 
         <p>If all went well, you should have at the bottom of your terminal a section of which summarizes
-          the number of classes, individuals and property that were loaded from the input file. As a result
-          of this you should find the &quot;Let's play&quot; that we have code together. This summary is
+          the number of classes, individuals, and property that were loaded from the input file. As a result
+          of this, you should find the &quot;Let's play&quot; that we have code together. This summary is
           generated following the closure of the ontology. It is there to let you know what ontologenius
-          has taken into account. In addition, if you scroll a little upwards, you can observe the complete
+          has taken into account. Also, if you scroll a little upwards, you can observe the complete
           arborescence of those read by ontologenius.</p>
 
         <p>So let's check if our topic works well with the following publications:</p>

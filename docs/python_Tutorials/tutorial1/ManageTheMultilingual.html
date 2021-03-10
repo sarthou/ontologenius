@@ -129,7 +129,7 @@
           if we were manipulating identifiers or words in natural language. But if we want
           to be able to work with different languages, we will have to make the link between
           a word and its computer identifier.</p>
-        <p>So you can test the program with the following words : "green cup", "blue cup" and "green book".</p>
+        <p>So you can test the program with the following words: "green cup", "blue cup" and "green book".</p>
         <p>You have the following result which shows that no intruder has been found.</p>
         <div class="code_block">
           <div class="terminal_line">[SAY]on green cup blue cup green book</div>
@@ -147,17 +147,17 @@
           Multilingual translation can not be done simply by changing the language of work.</p>
 
         <p>To make the transition from natural language to identifiers and vice versa, we will use the two new
-          functions : find() and getName()</p>
+          functions: find() and getName()</p>
 
         <h2>find</h2>
 
         <p>The find function is used to retrieve all concepts of a given type whose name in natural language is
-          the word passed in parameter. In this way if several words are said (and therefore are written) in
+          the word passed in the parameter. In this way, if several words are said (and therefore are written) in
           the same way we will be able to recover them all. In this tutorial, this case is not present in
           order not to add complexity. That's why we will each time recover the first element of the list.</p>
 
         <p>We will therefore modify our callback function to realize the natural language transition
-          to identifier.</p>
+          to identifiers.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
           <div class="code_line"><span class="py_op">def</span> <span class="py_function">wordCallback</span> (msg):</div>
@@ -209,7 +209,7 @@
           <div class="terminal_line">[SAY]Let's play!</div>
         </div>
 
-        <h2>Multilingial</h2>
+        <h2>Multilingual</h2>
 
         <p>We will now modify our launch file to put the working language in french.</p>
 

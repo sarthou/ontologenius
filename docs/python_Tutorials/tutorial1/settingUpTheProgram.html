@@ -130,7 +130,7 @@
           Ontologenoius in a simple way. We will also see how to launch ontologenius by configuring it according
           to our needs.</p>
 
-        <p>To illustrate the different objectives of this tutorial, we will develop a mini-games that will
+        <p>To illustrate the different objectives of this tutorial, we will develop a mini-game that will
           consist of finding the intruder among a list of words. However, finding only the intruder is a
           much too simple problem. That's why we will also try to find the reason why one word is the intruder
           among the others.</p>
@@ -139,7 +139,7 @@
           algorithmic part. Before that, I invite you to create a new package that we will call &quot;intruder&quot;
           and which will contain only one source file that we will name &quot;intruder.py&quot; in the scripts folder. To be sure that your
           new package will be well configured to use ontologenius, we advise you to follow this <a target="_blank" rel="noopener noreferrer" href="../../SetUp.html"><b>guide</b></a>.
-          Do not forget to make it executable whith:</p>
+          Do not forget to make it executable with:</p>
 
         <div class="code_block">
             <div class="terminal_line">chmod +x intruder.py</div>
@@ -184,7 +184,7 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 2;">
           <div class="code_line"><span class="py_op">import</span> rospy</div>
         </div>
-        <p>rospy is a convenience package that import the most common
+        <p>rospy is a convenience package that imports the most common
           public pieces of the ROS system.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 3;">
@@ -197,7 +197,7 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 5;">
           <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologyManipulator</div>
         </div>
-        <p>This imports what we call an ontology manipulator. In fact, this class is just an object to access
+        <p>This imports what we call an ontology manipulator. This class is just an object to access
           all API ROS abstraction classes so that you can query and manage ontologenius. You can find the
           documentation for this object on the left panel.</p>
 
@@ -205,13 +205,13 @@
           <div class="code_line">_onto = <span class="py_value">None</span></div>
         </div>
         <p>As explained above, the ontology manipulator contains several objects to abstract ROS services.
-          The set of services work in connected mode which allows to greatly save in execution time but
-          which makes the program less robust. For the lack of robust, each ontologenius client takes care
-          of everything for you by implementing recovery macanisms. As for the connected mode, this means
+          The set of services work in a connected mode which allows to greatly save in execution time but
+          which makes the program less robust. For the lack of robustness, each ontologenius client takes care
+          of everything for you by implementing recovery mechanisms. As for the connected mode, this means
           that the connection is established at the creation of the object and is broken only at its destruction.
           So we understand that it is better to avoid creating several ontology manipulators but it is better to
-          create a single instance for our entire program. or convenience, we create here a global variable which
-          will be our ontologyManipulator but in a more common use we suggest you define it in a class.</p>
+          create a single instance for our entire program. For convenience, we create here a global variable which
+          will be our ontologyManipulator but in more common use we suggest you define it in a class.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 8;">
           <div class="code_line">_names = []</div>
@@ -227,7 +227,7 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 11;">
           <div class="code_line"><span class="py_op">def</span> <span class="py_function">say</span>(text):</div>
         </div>
-        <p>Here, the say function is actually just an on-screen display, but you can customize it to use a TTS
+        <p>Here, the say function is just an on-screen display, but you can customize it to use a TTS
            for example.</p>
 
          <div class="code_block cpp_code" style="counter-reset:code_line 14;">
@@ -246,7 +246,7 @@
            To add security, line 27 verifies that the word is not already present in the _names list to
            avoid duplicates.</p>
 
-        <p><br><br>We have everything we need to start writing a main function to retrieve the list of words
+        <p><br><br>We have everything we need to start writing the main function to retrieve the list of words
           to work on and start the reasoning although we do not have it yet.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 29;">
@@ -305,7 +305,7 @@
           <div class="code_line">  _onto.actions.add(<span class="py_string">'http://path/to/my/file.owl'</span>);</div>
           <div class="code_line">  _onto.close();</div>
         </div>
-        <p>For the moment, we are going to concider that the ontological file we are
+        <p>For the moment, we are going to consider that the ontological file we are
           going to work on is provided in the ontologenius launcher. We will configure
           it in the next part of the tutorial. It is also possible to load files directly
           from the program (as above) but in doing so it makes our code less reusable.</p>
@@ -313,7 +313,7 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 38;">
           <div class="code_line">    rospy.Subscriber("intruder/input", String, wordCallback)</div>
         </div>
-        <p>We initialise our subsriber to the topic 'intruder/input'. We also
+        <p>We initialise our subscriber to the topic 'intruder/input'. We also
           link this topic to our callback function.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 40;">
@@ -332,7 +332,7 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 46;">
           <div class="code_line">        <span class="py_op">while</span> (<span class="py_op">not</span> rospy.is_shutdown()) <span class="py_op">and</span> (_start == <span class="py_value">False</span>):</div>
         </div>
-        <p>We only wait the synchronisation... </p>
+        <p>We only wait for the synchronisation... </p>
         <p class="tip">rate.sleep() avoids unnecessary use of the processor.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 49;">
@@ -351,7 +351,7 @@
         <div class="code_block">
           <div class="terminal_line">catkin_make</div>
         </div>
-        <p class="tip">Do not forget that this command must be done in your catkin wokspace</p>
+        <p class="tip">Do not forget that this command must be done in your catkin workspace</p>
 
 
         <nav class="course-pagination">

@@ -26,6 +26,7 @@ public:
 private:
   bool activated_;
   FeedStorage* storage_;
+  size_t order_;
 
   std::unordered_map<std::string, Version_node*> nodes_;
   Version_node* current_node_;

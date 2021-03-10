@@ -26,6 +26,9 @@ class FeederPublisher:
         random.seed()
         self._commit_nb = random.randint(1, 100000)
 
+    def __del__(self):
+        self._commit_sub.unregister()
+
     def addObjectProperty(self, concept_from, property, concept_on, stamp = None):
         msg = '[add]' + concept_from + '|' + property + '|' + concept_on
         if stamp == None:
@@ -95,9 +98,12 @@ class FeederPublisher:
     def getNumSubscribers(self):
         return self._pub.get_num_connections()
 
+    def getNumPublishers(self):
+        return self._commit_sub.get_num_connections()
+
     def waitConnected(self):
         rate = rospy.Rate(100)
-        while not rospy.is_shutdown() and self.getNumSubscribers() == 0:
+        while not rospy.is_shutdown() and self.getNumSubscribers() == 0 and self.getNumPublishers() == 0:
             rate.sleep()
 
     def waitUpdate(self, timeout = 100000000):

@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 project(ontologenius)
 
 option(WITH_CLANG_TIDY "Enable clang-tidy static analysis during build" OFF)
@@ -100,7 +101,7 @@ catkin_python_setup()
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include include include/ontologenius/API
-  LIBRARIES ontologenius_lib
+  LIBRARIES ontologenius_lib ontologenius_interface
   CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
   DEPENDS TinyXML OpenCV

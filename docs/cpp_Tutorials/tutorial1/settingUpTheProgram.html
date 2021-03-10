@@ -217,9 +217,9 @@
           <div class="code_line"><span class="cpp_type">OntologyManipulator</span><span class="cpp_op">*</span> onto_;</div>
         </div>
         <p>As explained above, the ontology manipulator contains several objects to abstract ROS services.
-          The set of services work in connecte mode which allows to greatly save in execution time but
-          which makes the program less robust. For the lack of robust, each ontologenius client takes care
-          of everything for you by implementing recovery macanisms. As for the connected mode, this means
+          The set of services work in a connected mode which allows to greatly save in execution time but
+          which makes the program less robust. For the lack of robustness, each ontologenius client takes care
+          of everything for you by implementing recovery mechanisms. As for the connected mode, this means
           that the connection is established at the creation of the object and is broken only at its destruction.
           So we understand that it is better to avoid creating several ontology manipulators but it is better to
           create a single instance for our entire program. This pointer is used to collect the address of this
@@ -259,7 +259,7 @@
            To add security, line 30 verifies that the word is not already present in the names_ vector to
            avoid duplicates.</p>
 
-        <p><br><br>We have everything we need to start writing a main function to retrieve the list of words
+        <p><br><br>We have everything we need to start writing the main function to retrieve the list of words
           to work on and start the reasoning although we do not have it yet.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 33;">
@@ -331,7 +331,7 @@
           <div class="code_line">  onto.actions.add(<span class="cpp_string">&quot;http://path/to/my/file.owl&quot;</span>);</div>
           <div class="code_line">  onto.close();</div>
         </div>
-        <p>For the moment, we are going to concider that the ontological file we are
+        <p>For the moment, we are going to consider that the ontological file we are
           going to work on is provided in the ontologenius launcher. We will configure
           it in the next part of the tutorial. It is also possible to load files directly
           from the program (as above) but in doing so it makes our code less reusable.</p>
@@ -339,7 +339,7 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 43;">
           <div class="code_line">  ros::<span class="cpp_type">Subscriber</span> sub <span class="cpp_op">=</span> n.subscribe(<span class="cpp_string">&quot;intruder/input&quot;</span>, 1, wordCallback);</div>
         </div>
-        <p>We initialise our subsriber to the topic &quot;intruder/input&quot;. We also
+        <p>We initialise our subscriber to the topic &quot;intruder/input&quot;. We also
           link this topic to our callback function.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 46;">
@@ -358,7 +358,7 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 52;">
           <div class="code_line">    <span class="cpp_op">while</span>((start_ <span class="cpp_op">==</span> <span class="cpp_value">false</span>) <span class="cpp_op">&&</span> ros::ok())</div>
         </div>
-        <p>We only wait the synchronisation... </p>
+        <p>We only wait for the synchronisation... </p>
         <p class="tip">ros::spinOnce() is there to allow us to receive messages via the subject and r.sleep()
           avoids unnecessary use of the processor.</p>
 
@@ -377,7 +377,7 @@
         <div class="code_block">
           <div class="terminal_line">catkin_make</div>
         </div>
-        <p class="tip">Do not forget that this command must be done in your catkin wokspace</p>
+        <p class="tip">Do not forget that this command must be done in your catkin workspace</p>
 
 
         <nav class="course-pagination">

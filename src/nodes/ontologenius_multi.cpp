@@ -1,6 +1,12 @@
 #include <regex>
 #include <thread>
 
+#include <stdio.h>
+#include <execinfo.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 #include <ros/ros.h>
 
 #include "ontologenius/utils/Parameters.h"
@@ -9,6 +15,18 @@
 #include "ontologenius/core/utility/error_code.h"
 
 #include "ontologenius/graphical/Display.h"
+
+void handler(int sig)
+{
+  void *array[10];
+  size_t size;
+
+  size = backtrace(array, 10);
+
+  fprintf(stderr, "Error: signal %d:\n", sig);
+  backtrace_symbols_fd(array, size, STDERR_FILENO);
+  exit(1);
+}
 
 void removeUselessSpace(std::string& text)
 {
@@ -35,7 +53,7 @@ bool deleteInterface(const std::string& name)
   }
   catch(std::runtime_error& ex)
   {
-    ontologenius::Display::error("Catch error when joining the interface thread : " + std::string(ex.what()));
+    ontologenius::Display::error("An error was caught while joining the interface thread : " + std::string(ex.what()));
     ontologenius::Display::warning("The thread will be detached");
     interfaces_threads_[name].detach();
   }
@@ -44,7 +62,7 @@ bool deleteInterface(const std::string& name)
   delete interfaces_[name];
   interfaces_.erase(name);
 
-  std::cout << name << " STOPED" << std::endl;
+  std::cout << name << " STOPPED" << std::endl;
   return true;
 }
 
@@ -109,10 +127,10 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
       auto tmp = new ontologenius::RosInterface(n_, req.param);
       interfaces_[req.param] = tmp;
       tmp->setDisplay(params.at("display").getFirst() == "true");
-      tmp->init(params.parameters_.at("language").getFirst(),
-                params.parameters_.at("intern_file").getFirst(),
-                params.parameters_.at("files").get(),
-                params.parameters_.at("config").getFirst());
+      tmp->init(params.at("language").getFirst(),
+                params.at("intern_file").getFirst(),
+                params.at("files").get(),
+                params.at("config").getFirst());
 
       std::thread th(&ontologenius::RosInterface::run, tmp);
       interfaces_threads_[req.param] = std::move(th);
@@ -135,21 +153,29 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
           res.code = NO_EFFECT;
         else
         {
-          it = interfaces_.find(copy_name);
-          if(it != interfaces_.end()) // if copy already exist
-            res.code = NO_EFFECT;
+          auto base_onto = it->second->getOntology();
+          if(base_onto == nullptr)
+            ontologenius::Display::error("You are trying to copy a malformed ontology");
+          else if(!base_onto->isInit())
+            ontologenius::Display::error("You are trying to copy an unclosed ontology ");
           else
           {
-            auto tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), n_, copy_name);
-            interfaces_[copy_name] = tmp;
-            tmp->setDisplay(params.at("display").getFirst() == "true");
-            tmp->init(params.parameters_.at("language").getFirst(),
-                      params.parameters_.at("config").getFirst());
+            it = interfaces_.find(copy_name);
+            if(it != interfaces_.end()) // if copy already exist
+              res.code = NO_EFFECT;
+            else
+            {
+              auto tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), n_, copy_name);
+              interfaces_[copy_name] = tmp;
+              tmp->setDisplay(params.at("display").getFirst() == "true");
+              tmp->init(params.at("language").getFirst(),
+                        params.at("config").getFirst());
 
-            std::thread th(&ontologenius::RosInterface::run, tmp);
-            interfaces_threads_[copy_name] = std::move(th);
+              std::thread th(&ontologenius::RosInterface::run, tmp);
+              interfaces_threads_[copy_name] = std::move(th);
 
-            std::cout << copy_name << " STARTED" << std::endl;
+              std::cout << copy_name << " STARTED" << std::endl;
+            }
           }
         }
       }
@@ -185,6 +211,7 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
 
 int main(int argc, char** argv)
 {
+  signal(SIGSEGV, handler);
   ros::init(argc, argv, "ontologenius_multi");
 
   ros::NodeHandle n;

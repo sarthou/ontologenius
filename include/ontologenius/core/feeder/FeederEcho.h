@@ -1,6 +1,8 @@
 #ifndef ONTOLOGENIUS_FEEDERECHO_H
 #define ONTOLOGENIUS_FEEDERECHO_H
 
+#include <mutex>
+
 #include <ros/ros.h>
 #include "ontologenius/StampedString.h"
 #include "ontologenius/OntologeniusExplanation.h"
@@ -14,18 +16,30 @@ public:
                                                                              feeder_expl_pub_(n_.advertise<ontologenius::OntologeniusExplanation>(expl_topic, 1000))
   {}
 
+  ~FeederEcho()
+  {
+    mut_.lock();
+    echo_messages.clear();
+    expl_messages.clear();
+  }
+
   void add(const std::string& data, const ros::Time& stamp = ros::Time::now())
   {
+    mut_.lock();
     echo_messages.emplace_back(data, stamp);
+    mut_.unlock();
   }
 
   void add(const std::vector<std::pair<std::string, std::string>>& explanations)
   {
+    mut_.lock();
     expl_messages.insert(expl_messages.end(), explanations.begin(), explanations.end());
+    mut_.unlock();
   }
 
   void publish()
   {
+    mut_.lock();
     ontologenius::StampedString ros_msg;
     for(auto& message : echo_messages)
     {
@@ -43,9 +57,11 @@ public:
       feeder_expl_pub_.publish(ros_expl_msg);
     }
     expl_messages.clear();
+    mut_.unlock();
   }
 
 private:
+  std::mutex mut_;
   ros::NodeHandle n_;
   ros::Publisher feeder_echo_pub_;
   ros::Publisher feeder_expl_pub_;
