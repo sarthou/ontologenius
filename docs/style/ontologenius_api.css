@@ -356,7 +356,7 @@ a.laas_logo {
   background-color:#fff;
   padding: 25px 35px 20px 30px;
   box-sizing:border-box;
-  margin-bottom:20px;
+  margin-bottom:130px;
 }
 .context ul,.context ol {
   margin-bottom:1.5em
@@ -480,13 +480,13 @@ table.alignedsummary,table.propsummary {
   color:#a7fc99;
 }
 .color_blue {
-  color:#0000ff;
+  color:#2e2ea3;
 }
 .color_red {
-  color:#ff0000;
+  color:#b82929;
 }
 .color_green {
-  color:#00aa00;
+  color:#307e30;
 }
 p.tip {
   border-left: .25em solid #dfe2e5;
