@@ -146,25 +146,25 @@
           <h2 id="details">Detailed Description</h2>
           <p>The ManagerClient class provides an abstraction ontologenius manage ROS services.</p>
           <p>The manager client is used to manage ontology instances in multi-ontology usage. This makes it possible to start new ontologies or to stop old ones, but also to study the differences of knowledge between several instances. With the manager client, it is easy to develop software using theory of mind. </p>
-          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with the service based on. The persistent connection ensure a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with the service based on. The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
         </div>
 
         <div class="func">
           <h2>Methods Documentation</h2>
 
           <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self)</h3>
-          <p>Constructs an manager client.</p>
+          <p>Constructs a manager client.</p>
           <p>Can only be used in a multi-ontology mode.</p>
 
           <h3 class="fn" id="list"><a name="list"></a><span class="name">list</span>(self)</h3>
-          <p>Returns the name of the intanced ontologies (str[]).</p>
+          <p>Returns the name of the instantiated ontologies (str[]).</p>
 
           <h3 class="fn" id="add"><a name="add"></a><span class="name">add</span>(self, name)</h3>
           <p>Create an ontology instance named <i>name</i>(str).</p>
           <p>Returns False if the service call fails.</p>
 
           <h3 class="fn" id="copy"><a name="copy"></a><span class="name">copy</span>(self, dest_name, src_name)</h3>
-          <p>Create a copy of the ontology ontology instance named <i>src_name</i>(str) with the name <i>dest_name</i>(str).</p>
+          <p>Create a copy of the ontology instance named <i>src_name</i>(str) with the name <i>dest_name</i>(str).</p>
           <p>Returns False if the service call fails or if the copy fails.</p>
 
           <h3 class="fn" id="del"><a name="del"></a><span class="name">delete</span>(self, name)</h3>
@@ -172,7 +172,7 @@
           <p>Returns False if the service call fails.</p>
 
           <h3 class="fn" id="getDifference"><a name="getDifference"></a><span class="name">getDifference</span>(self, onto_1, onto_2, concept)</h3>
-          <p>Return the difference of knowlege between <i>onto_1</i>(str) and <i>onto_2</i>(str) regarding the concept (class or individual) <i>concept</i>(str).</p>
+          <p>Returns the difference of knowledge between <i>onto_1</i>(str) and <i>onto_2</i>(str) regarding the concept (class or individual) <i>concept</i>(str).</p>
           <p>The elements of the returned vector are formated as : <b>[+]concept_from|property|concept_on</b> OR <b>[-]concept_from|property|concept_on</b>. An element is positive if it is present in <i>onto_1</i> and not in <i>onto_2</i> and negative in reverse.</p>
           <p>The difference in inheritance knowledge between concepts is returned with the property <b>isA</b>.</p>
 
