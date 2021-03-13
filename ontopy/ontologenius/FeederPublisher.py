@@ -7,8 +7,20 @@ import random
 from datetime import datetime
 
 class FeederPublisher:
+    """The FeederPublisher class provides an abstraction ontologenius feeder(insert) ROS topic.
+       Working in a closed world can be interesting, but with ontologenius, you can also choose to 
+       work in an open world by adding and modifying the agent's knowledge base during its operation.
+       The feeder publisher is used to insert and delete knowledge dynamically.
+       The feeding process is asynchronous and therefore does not guarantee any response time.
+       It still provides functions to synchronize if you have applications where you have to query the ontology right after having modified it.
+       All modifications can be time-stamped for advanced uses using the republication mechanism.
+    """
 
     def __init__(self, name):
+        """Constructs a FeederPublisher.
+           Can be used in a multi-ontology mode by specifying the name of the ontology name(str).
+           For classic use, name(str) should be defined as ''.
+        """
         self._name = name
         pub_topic_name = 'ontologenius/insert'
         if self._name != '':
@@ -30,83 +42,132 @@ class FeederPublisher:
         self._commit_sub.unregister()
 
     def addObjectProperty(self, concept_from, property, concept_on, stamp = None):
+        """Adds the fact that concept_from(str) is linked with concept_on(str) by the property property(str).
+           At least concept_from or concept_on must be already known to the system.
+           If one of them is unknown, it will be automatically created. The property can be unknown before calling this function.
+           If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
+        """
         msg = '[add]' + concept_from + '|' + property + '|' + concept_on
         if stamp == None:
             stamp = rospy.get_rostime()
         self._publish_stamped(msg, stamp)
 
     def addDataProperty(self, concept_from, property, type, data, stamp = None):
+        """Adds the fact that concept_from(str) is linked to the data data(str) of type type(str) by the property property(str).
+           concept_from must be already known to the system. The property can be unknown before calling this function.
+           If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
+        """
         msg = '[add]' + concept_from + '|' + property + '|' + type + '#' + data
         if stamp == None:
             stamp = rospy.get_rostime()
         self._publish_stamped(msg, stamp)
 
     def addInheritage(self, concept_from, concept_on, stamp = None):
+        """Adds the inheratage : concept_from(str) is a concept_on(str). concept_from and concept_on could by a class, an individual or a property.
+           At least concept_from or concept_on must be already known to the system. If one of them is unknown, it will be automatically created.
+           If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
+        """
         msg = '[add]' + concept_from + '|+|' + concept_on
         if stamp == None:
             stamp = rospy.get_rostime()
         self._publish_stamped(msg, stamp)
 
     def addLanguage(self, concept_from, lang, name, stamp = None):
+        """Adds the label name(str) in the language lang(str) the class, individual, or property concept_from(str).
+           concept_from must be already known to the system.
+           If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
+        """
         msg = '[add]' + concept_from + '|@' + lang + '|' + name
         if stamp == None:
             stamp = rospy.get_rostime()
         self._publish_stamped(msg, stamp)
 
     def addConcept(self, concept_from, stamp = None):
+        """Adds the class or individual concept_from(str).
+           If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
+        """
         msg = '[add]' + concept_from + '|'
         if stamp == None:
             stamp = rospy.get_rostime()
         self._publish_stamped(msg, stamp)
 
     def removeProperty(self, concept_from, property, stamp = None):
+        """Removes the fact that concept_from(str) is linked to any object by the property property(str).
+           After this action, knowledge of the property is not removed.
+           If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
+        """
         msg = '[del]' + concept_from + '|' + property + '|_'
         if stamp == None:
             stamp = rospy.get_rostime()
         self._publish_stamped(msg, stamp)
 
     def removeObjectProperty(self, concept_from, property, concept_on, stamp = None):
+        """Removes the fact that concept_from(str) is linked with concept_on(str) by the property property(str).
+           After this action, knowledge of the property is not removed.
+           If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
+        """
         msg = '[del]' + concept_from + '|' + property + '|' + concept_on
         if stamp == None:
             stamp = rospy.get_rostime()
         self._publish_stamped(msg, stamp)
 
     def removeDataProperty(self, concept_from, property, type, data, stamp = None):
+        """Removes the fact that concept_from(str) is linked to the data data(str) of type type(str) by the property property(str).
+           After this action, knowledge of the property is not removed.
+           If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
+        """
         msg = '[del]' + concept_from + '|' + property + '|' + type + '#' + data
         if stamp == None:
             stamp = rospy.get_rostime()
         self._publish_stamped(msg, stamp)
 
     def removeInheritage(self, concept_from, concept_on, stamp = None):
+        """Removes the inheratage : concept_from(str) is a concept_on(str).
+        concept_from and concept_on could by a class, an individual or a property.
+           If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
+        """
         msg = '[del]' + concept_from + '|+|' + concept_on
         if stamp == None:
             stamp = rospy.get_rostime()
         self._publish_stamped(msg, stamp)
 
     def removeLanguage(self, concept_from, lang, name, stamp = None):
+        """Removes the label name(str) in the language lang(str) the class, individual, or property concept_from(str).
+           If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
+        """
         msg = '[add]' + concept_from + '|@' + lang + '|' + name
         if stamp == None:
             stamp = rospy.get_rostime()
         self._publish_stamped(msg, stamp)
 
     def removeConcept(self, concept_from, stamp = None):
+        """Removes the class or individual concept_from(str).
+           All inheritance, properties, and labels applied to concept_from are also removed.
+           If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
+        """
         msg = '[del]' + concept_from + '|'
         if stamp == None:
             stamp = rospy.get_rostime()
         self._publish_stamped(msg, stamp)
 
     def getNumSubscribers(self):
+        """Returns the number of subscribers (int) that are currently connected to the internal ROS publisher."""
         return self._pub.get_num_connections()
 
     def getNumPublishers(self):
         return self._commit_sub.get_num_connections()
 
     def waitConnected(self):
+        """Blocks while no subscribers are currently connected to the internal ROS publisher."""
         rate = rospy.Rate(100)
         while not rospy.is_shutdown() and self.getNumSubscribers() == 0 and self.getNumPublishers() == 0:
             rate.sleep()
 
     def waitUpdate(self, timeout = 100000000):
+        """Waits until all changes have been applied.
+           The default parameter timeout(int) is the expiration time in milliseconds. The default value is of 100 seconds.
+           Returns False if the function returns on a timeout.
+        """
         self._updated = False
 
         start_time = datetime.now()
@@ -121,6 +182,11 @@ class FeederPublisher:
             return False
 
     def commitAuto(self, timeout = 100000000):
+        """Saves all the modifications from the previous commit and waits until all changes have been applied.
+           The default parameter timeout(int) is the expiration time in milliseconds. The default value is of 100 seconds.
+           Returns the commit id (str) and an empty string if the function returns on a timeout.
+           This function can only be used on a copied ontology.
+        """
         commit_name = str(self._commit_nb)
         self._commit_nb = self._commit_nb + 1
 
@@ -130,6 +196,11 @@ class FeederPublisher:
             return ''
 
     def commit(self, commit_name, timeout = 100000000):
+        """Saves all the modifications from the previous commit with a specific id commit_name (str) and waits until all changes have been applied.
+           The default parameter timeout(int) is the expiration time in milliseconds. The default value is of 100 seconds.
+           Returns False if the function returns on a timeout.
+           This function can only be used on a copied ontology.
+        """
         self._updated = False
         msg = '[commit]' + commit_name + '|'
 
@@ -145,6 +216,11 @@ class FeederPublisher:
             return False
 
     def checkout(self, commit_name, timeout = 100000000):
+        """Apply the necessary changes to return to the specified commit_name (str) and waits until all changes have been applied.
+           The default parameter timeout(int) is the expiration time in milliseconds. The default value is of 100 seconds.
+           Returns False if the function returns on a timeout.
+           This function can only be used on a copied ontology.
+        """
         self._updated = False
 
         start_time = datetime.now()
