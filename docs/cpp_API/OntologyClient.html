@@ -151,8 +151,8 @@
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
           <p>The OntologyClient class provides an abstraction common to all ontologenius exploration ROS services.</p>
-          <p>The OntologyClient implement the functions common to every ontologenius exploration.</p>
-          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with the service based on. The persistent connection ensure a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>The OntologyClient implements the functions common to every ontologenius exploration.</p>
+          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with the service based on. The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
         </div>
 
         <p><b>See also </b><a href="IndividualClient.html">IndividualClient</a>, <a href="ClassClient.html">ClassClient</a>, <a href="DataPropertyClient.html">DataPropertyClient</a> and <a href="ObjectPropertyClient.html">ObjectPropertyClient</a>.</p>
@@ -161,15 +161,15 @@
           <h2>Public Function Documentation</h2>
 
           <h3 class="fn" id="OntologyClient"><a name="OntologyClient"></a>OntologyClient::<span class="name">OntologyClient</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Constructs a ontology client linked to the service ontologenius/<i>name</i> with a pointer to a NodeHandle <i>n</i>.</p>
+          <p>Constructs an ontology client linked to the service ontologenius/<i>name</i> with a pointer to a NodeHandle <i>n</i>.</p>
 
           <h3 class="fn" id="getUp"><a name="getUp"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">getUp</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">int</span> <i>depth</i> = -1, const <span class="type">std::string</span>&amp; <i>selector</i> = &quot;&quot;)</h3>
           <p>Gives all concepts below the one given in the parameter: <i>name</i>.</p>
           <p>The optional <i>depth</i> parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
-          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> concept. The default value &quot;&quot; represents no restriction on result.</p>
+          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> concept. The default value &quot;&quot; represents no restriction on the result.</p>
 
           <h3 class="fn" id="isA"><a name="isA"></a><span class="type">bool</span> OntologyClient::<span class="name">isA</span>(const <span class="type">std::string</span>&amp; <i>name</i>, const <span class="type">std::string</span>&amp; <i>base_class</i>)</h3>
-          <p>Return true if the concept <i>name</i> is or inherite of the concept <i>base_class</i>. This function corresponds to checking if <i>class_base</i> is part of the result of the function getUp applies to the concept <i>name</i></p>
+          <p>Return true if the concept <i>name</i> is or inherits of the concept <i>base_class</i>. This function corresponds to checking if <i>class_base</i> is part of the result of the function getUp applies to the concept <i>name</i></p>
 
           <h3 class="fn" id="getName"><a name="getName"></a><span class="type">std::string</span> OntologyClient::<span class="name">getName</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">bool</span> <i>take_id</i> = true)</h3>
           <p>Gives one of the label of the concept <i>name</i> that is not <a href="OntologyClient.html#mutedLabel">muted</a>.</p>
@@ -211,7 +211,7 @@
 
           <h2 id="mutedLabel">Muted labels</h2>
           <p>Ontologenius introduces the concept of muted label. They are written &lt;onto:label&gt; in an OWL file.</p>
-          <p>A muted label will be useful for adding labels with errors. These labels will allow you to find the a concept with an error but will make sure you never use it in output (using getName).</p>
+          <p>A muted label will be useful for adding labels with errors. These labels will allow you to find a concept with an error but will make sure you never use it in output (using getName).</p>
         </div>
       </div>
     </div>

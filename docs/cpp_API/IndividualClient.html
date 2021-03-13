@@ -152,8 +152,8 @@
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
           <p>The IndividualClient class provides an abstraction of ontologenius individuals ROS service.</p>
-          <p>The ontologenius individuals service allow the exploration of individuals cotained by ontologenius core.</p>
-          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with ontologenius/individual service. The persistent connection ensure a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>The ontologenius individuals' service allows the exploration of individuals contained by ontologenius core.</p>
+          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with ontologenius/individual service. The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
         </div>
 
         <p><b>See also </b><a href="ClassClient.html">ClassClient</a>, <a href="DataPropertyClient.html">DataPropertyClient</a> and <a href="ObjectPropertyClient.html">ObjectPropertyClient</a>.</p>
@@ -176,15 +176,15 @@
 
           <h3 class="fn" id="getOn"><a name="getOn"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getOn</span>(const <span class="type">std::string</span>&amp; <i>name</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>selector</i> = "")</h3>
           <p>Gives all the individuals pointed by the property <i>property</i> and applied to the individual <i>name</i>.</p>
-          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> class. The default value &quot;&quot; represents no restriction on result.</p>
+          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> class. The default value &quot;&quot; represents no restriction on the result.</p>
 
           <h3 class="fn" id="getFrom"><a name="getFrom"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getFrom</span>(const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>name</i>, const <span class="type">std::string</span>&amp; <i>selector</i> = "")</h3>
           <p>Gives all the individuals having the given property <i>property</i> and pointing to the individual <i>name</i>.</p>
-          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> class. The default value &quot;&quot; represents no restriction on result.</p>
+          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> class. The default value &quot;&quot; represents no restriction on the result.</p>
 
           <h3 class="fn" id="getWith"><a name="getWith"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getWith</span>(const <span class="type">std::string</span>&amp; <i>name_from</i>, const <span class="type">std::string</span>&amp; <i>name_to</i>, const <span class="type">std::string</span>&amp; <i>selector</i> = "", <span class="type">int</span> <i>depth</i> = -1)</h3>
           <p>Gives all the properties linking the individual <i>name_from</i> to the individual <i>name_to</i>.</p>
-          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> property. The default value &quot;&quot; represents no restriction on result.</p>
+          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> property. The default value &quot;&quot; represents no restriction on the result.</p>
           <p>The optional <i>depth</i> parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
 
           <h3 class="fn" id="getRelatedFrom"><a name="getRelatedFrom"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getRelatedFrom</span>(const <span class="type">std::string</span>&amp; <i>property</i>)</h3>
@@ -209,12 +209,12 @@
 
           <h3 class="fn" id="getDomainOf"><a name="getDomainOf"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getDomainOf</span>(const <span class="type">std::string</span>&amp; <i>name</i>, const <span class="type">std::string</span>&amp; <i>selector</i> = "", <span class="type">int</span> <i>depth</i> = -1)</h3>
           <p>Gives all the properties for which the individual <i>name</i> is part of the domain.</p>
-          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> property. The default value &quot;&quot; represents no restriction on result.</p>
+          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> property. The default value &quot;&quot; represents no restriction on the result.</p>
           <p>The optional <i>depth</i> parameter can be set to limit tree propagation of the individual to a specific value. The default value -1 represents no propagation limitation.</p>
 
           <h3 class="fn" id="getRangeOf"><a name="getRangeOf"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getRangeOf</span>(const <span class="type">std::string</span>&amp; <i>name</i>, const <span class="type">std::string</span>&amp; <i>selector</i> = "", <span class="type">int</span> <i>depth</i> = -1)</h3>
           <p>Gives all the properties for which the individual <i>name</i> is part of the range.</p>
-          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> property. The default value &quot;&quot; represents no restriction on result.</p>
+          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> property. The default value &quot;&quot; represents no restriction on the result.</p>
           <p>The optional <i>depth</i> parameter can be set to limit tree propagation of the individual to a specific value. The default value -1 represents no propagation limitation.</p>
 
         </div>
