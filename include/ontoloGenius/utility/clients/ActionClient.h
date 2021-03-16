@@ -1,6 +1,0 @@
-#ifndef ONTOLOGENIUS_DEPRECATED_ACTIONCLIENT_H
-#define ONTOLOGENIUS_DEPRECATED_ACTIONCLIENT_H
-
-#include "ontologenius/API/ontologenius/clients/ActionClient.h"
-
-#endif // ONTOLOGENIUS_DEPRECATED_ACTIONCLIENT_H

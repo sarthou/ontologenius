@@ -1,6 +1,0 @@
-#ifndef ONTOLOGENIUS_DEPRECATED_CLIENTBASE_H
-#define ONTOLOGENIUS_DEPRECATED_CLIENTBASE_H
-
-#include "ontologenius/API/ontologenius/clients/ClientBase.h"
-
-#endif // ONTOLOGENIUS_DEPRECATED_CLIENTBASE_H

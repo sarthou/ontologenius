@@ -1,6 +1,0 @@
-#ifndef ONTOLOGENIUS_DEPRECATED_DATAPROPERTYCLIENT_H
-#define ONTOLOGENIUS_DEPRECATED_DATAPROPERTYCLIENT_H
-
-#include "ontologenius/API/ontologenius/clients/ontologyClients/DataPropertyClient.h"
-
-#endif // ONTOLOGENIUS_DEPRECATED_DATAPROPERTYCLIENT_H
