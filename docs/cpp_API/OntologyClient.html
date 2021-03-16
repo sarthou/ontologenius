@@ -169,7 +169,7 @@
           <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> concept. The default value &quot;&quot; represents no restriction on the result.</p>
 
           <h3 class="fn" id="isA"><a name="isA"></a><span class="type">bool</span> OntologyClient::<span class="name">isA</span>(const <span class="type">std::string</span>&amp; <i>name</i>, const <span class="type">std::string</span>&amp; <i>base_class</i>)</h3>
-          <p>Return true if the concept <i>name</i> is or inherits of the concept <i>base_class</i>. This function corresponds to checking if <i>class_base</i> is part of the result of the function getUp applies to the concept <i>name</i></p>
+          <p>Returns true if the concept <i>name</i> is or inherits of the concept <i>base_class</i>. This function corresponds to checking if <i>class_base</i> is part of the result of the function getUp applies to the concept <i>name</i></p>
 
           <h3 class="fn" id="getName"><a name="getName"></a><span class="type">std::string</span> OntologyClient::<span class="name">getName</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">bool</span> <i>take_id</i> = true)</h3>
           <p>Gives one of the label of the concept <i>name</i> that is not <a href="OntologyClient.html#mutedLabel">muted</a>.</p>
@@ -195,18 +195,18 @@
           <p>The result of this function depends on the setting of the working language.</p>
 
           <h3 class="fn" id="findRegex"><a name="findRegex"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">findRegex</span>(const <span class="type">std::string</span>&amp; <i>regex</i>, <span class="type">bool</span> <i>take_id</i> = true)</h3>
-          <p>Give all concepts with a label matching the regular expression <i>regex</i>.</p>
+          <p>Gives all concepts with a label matching the regular expression <i>regex</i>.</p>
           <p>The default <i>take_id</i> argument can be set to false if you do not want to consider the concept identifier as a possible default name.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
           <h3 class="fn" id="findFuzzy"><a name="findFuzzy"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">findFuzzy</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">double</span> <i>threshold</i> = 0.5, <span class="type">bool</span> <i>take_id</i> = true)</h3>
-          <p>Give all the names of concepts with the lowest edit distance with parameter <i>name</i>.</p>
+          <p>Gives all the names of concepts with the lowest edit distance with parameter <i>name</i>.</p>
           <p>The default <i>take_id</i> argument can be set to false if you do not want to consider the concept identifier as a possible default name.</p>
           <p>The result of this function depends on the setting of the working language and does not correspond to the concept identifiers but to other labels known by ontologenius.</p>
           <p>The minimum editing distance can be set with the <i>threshold</i> parameter. This value corresponds to the number of changes to be made to pass from one word to another divided by the length of the comparison word.</p>
 
           <h3 class="fn" id="exist"><a name="exist"></a><span class="type">bool</span> OntologyClient::<span class="name">exist</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Return true if the concept <i>name</i> exists in the subpart of the ontology managed by the client (i.e. class, individuals, object properties, data properties).</p>
+          <p>Returns true if the concept <i>name</i> exists in the subpart of the ontology managed by the client (i.e. class, individuals, object properties, data properties).</p>
 
 
           <h2 id="mutedLabel">Muted labels</h2>

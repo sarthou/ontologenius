@@ -123,7 +123,7 @@
           <table class="alignedsummary">
             <tbody>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#ClassClient">ClassClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getDown">getDown</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getDown">getDown</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1, const std::string&amp; <i>selector</i> = "")</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getDisjoint">getDisjoint</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getOn">getOn</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>selector</i> = "")</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getFrom">getFrom</a></b>(const std::string&amp; <i>property</i>, const std::string&amp; <i>name</i>, const std::string&amp; <i>selector</i> = "")</td></tr>
@@ -164,9 +164,10 @@
           <p>Constructs a class client with a pointer to a NodeHandle <i>n</i>.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
 
-          <h3 class="fn" id="getDown"><a name="getDown"></a><span class="type">std::vector&lt;std::string&gt;</span> ClassClient::<span class="name">getDown</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">int</span> <i>depth</i> = -1)</h3>
+          <h3 class="fn" id="getDown"><a name="getDown"></a><span class="type">std::vector&lt;std::string&gt;</span> ClassClient::<span class="name">getDown</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">int</span> <i>depth</i> = -1, const <span class="type">std::string</span>&amp; <i>selector</i> = "")</h3>
           <p>Gives all classes below the one given in the parameter: <i>name</i>.</p>
           <p>The optional <i>depth</i> parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
+          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> class. The default value &quot;&quot; represents no restriction on the result.</p>
 
           <h3 class="fn" id="getDisjoint"><a name="getDisjoint"></a><span class="type">std::vector&lt;std::string&gt;</span> ClassClient::<span class="name">getDisjoint</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Gives all the disjoint classes of the one given in the parameter: <i>name</i>.</p>
