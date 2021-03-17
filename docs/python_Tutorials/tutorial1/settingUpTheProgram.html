@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -284,12 +283,12 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 33;">
           <div class="code_line">    rospy.init_node(<span class="py_string">'intruder'</span> )</div>
         </div>
-        <p>Initialize ROS node.</p>
+        <p>Initialize a ROS node. This node is not mandatory to use Ontologenius in python but we need it for the ROS subscriber we create after.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 35;">
           <div class="code_line">    _onto = OntologyManipulator()</div>
         </div>
-        <p>We finally come back to using ontologenius! We create here our first manipulator ontology,
+        <p>We finally come back to using ontologenius! We create here our first ontology manipulator,
            what a great day ... This manipulator is unique to fully enjoy the benefits of connected
            services.</p>
 

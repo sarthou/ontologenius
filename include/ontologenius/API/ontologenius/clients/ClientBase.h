@@ -21,22 +21,34 @@
 #define COLOR_GREEN   "\x1B[1;92m"
 #endif
 
+/// @brief The ClientBase class provides an abstraction for any ROS services.
+/// This class ensure a persistent connection with the service based on.
+/// The persistent connection ensures a minimal response time.
+/// A reconnection logic is implemented in the event that the persistent connection fails. 
 class ClientBase
 {
 public:
+  /// @brief Constructs a ROS client.
+  /// @param n is an initialized ROS node handle.
+  /// @param name is the name of the ontologenius service
   ClientBase(ros::NodeHandle* n, std::string name) : client(n->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + name, true))
   {
     n_ = n;
     name_ = name;
   }
 
+  /// @brief Gives the total number of service calls from all ClientBase instances since the last reset.
   size_t nb() {return cpt;}
+  /// @brief Reset Call Counter for all instances of ClientBase.
   void resetNb() {cpt = 0;}
   static void verbose(bool verbose) { verbose_ = verbose; }
 
 protected:
   ros::ServiceClient client;
 
+  /// @brief Calls the service set up in the constructor of ClientBase.
+  /// @param srv is the request.
+  /// @return Returns a list of string. If the service call fails, the first element of the returned vector is "ERR:SERVICE_FAIL".
   inline std::vector<std::string> call(ontologenius::OntologeniusService& srv)
   {
     std::vector<std::string> res;
@@ -65,6 +77,9 @@ protected:
     }
   }
 
+  /// @brief Calls the service set up in the constructor of ClientBase.
+  /// @param srv is the request.
+  /// @return Returns a single string. If the service call fails, the returned value is "ERR:SERVICE_FAIL".
   inline std::string callStr(ontologenius::OntologeniusService& srv)
   {
     std::string res = "";
@@ -101,6 +116,9 @@ protected:
     }
   }
 
+  /// @brief Calls the service set up in the constructor of ClientBase.
+  /// @param srv is the request.
+  /// @return Returns false if the service call fails.
   inline bool callNR(ontologenius::OntologeniusService& srv)
   {
     cpt++;
@@ -127,6 +145,9 @@ protected:
     }
   }
 
+  /// @brief Calls the service set up in the constructor of ClientBase.
+  /// @param srv is the request.
+  /// @return Returns false if the service call fails or the result code of the service is different from SUCCESS.
   inline bool callBool(ontologenius::OntologeniusService& srv)
   {
     cpt++;

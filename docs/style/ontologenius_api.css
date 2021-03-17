@@ -63,12 +63,12 @@ a.laas_logo {
 }
 
 #navbar {
-  position:relative;
   top:0;
   left:0;
   z-index:100;
   background:#fff;
-  width:100%
+  width:100%;
+  height: 90px
 }
 #navbar.fixed {
   box-shadow:0px 0px 8px rgba(0,0,0,0.23)
@@ -88,11 +88,12 @@ a.laas_logo {
   text-align:right;
 }
 #navbar #header-buttons #header-ul li.header-item {
-  border-right:solid #e3e3e4 1px;
+  /*border-right:solid #e3e3e4 1px;*/
   padding-right:30px;
   padding-left:30px;
   display:inline-block;
-  vertical-align:middle
+  vertical-align:middle;
+  margin-top: 25px;
 }
 #navbar #header-buttons #header-ul li.header-item > a:hover {
   opacity: .5
@@ -101,8 +102,6 @@ a.laas_logo {
   opacity:1;
 }
 #header-buttons #header-ul > li.header-item > a.header-link {
-  line-height:90px;
-  height:90px;
   color:#090e21;
   font-size:16px;
 }
@@ -356,7 +355,7 @@ a.laas_logo {
   background-color:#fff;
   padding: 25px 35px 20px 30px;
   box-sizing:border-box;
-  margin-bottom:20px;
+  margin-bottom:130px;
 }
 .context ul,.context ol {
   margin-bottom:1.5em
@@ -480,13 +479,13 @@ table.alignedsummary,table.propsummary {
   color:#a7fc99;
 }
 .color_blue {
-  color:#0000ff;
+  color:#2e2ea3;
 }
 .color_red {
-  color:#ff0000;
+  color:#b82929;
 }
 .color_green {
-  color:#00aa00;
+  color:#307e30;
 }
 p.tip {
   border-left: .25em solid #dfe2e5;

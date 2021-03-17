@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>OntologiesManipulator Class (python) | Ontologenius 0.2.7</title>
+  <title>OntologiesManipulator Class (python) | Ontologenius 0.2.8</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -151,7 +150,7 @@
         <a name="details"></a>
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
-          <p>The OntologiesManipulator class allows to create and delete ontologies instances dynamically. It's usage is strongly recommanded for multi-ontology usage and ensure a good thread management.</p>
+          <p>The OntologiesManipulator class allows to create and delete ontologies instances dynamically. Its usage is strongly recommended for multi-ontology usage and ensures good thread management.</p>
           <p>This class allows you to set up the theory of mind quickly in a software application.</p>
         </div>
 
@@ -159,15 +158,15 @@
           <h2>Methods Documentation</h2>
 
           <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self)</h3>
-          <p>Constructs a manipulator for several instance of ontologies.</p>
+          <p>Constructs a manipulator for several instances of ontologies.</p>
 
           <h3 class="fn" id="waitInit"><a name="waitInit"></a><span class="name">waitInit</span>(self, timeout = -1)</h3>
           <p>Wait for ontologenius services to be advertised and available for. Blocks until it is.</p>
           <p><i>timeout</i>(int) is the amount of time to wait for before timing out. If timeout is -1 (default), waits until the node is shutdown.</p>
 
           <h3 class="fn" id="get"><a name="get"></a><span class="name">get</span>(self, name)</h3>
-          <p>Return a <a href="OntologyManipulator.html">OntologyManipulator</a> object instance named <i>name</i>(str).</p>
-          <p>Return None if no OntologyManipulator instance is named <i>name</i>.</p>
+          <p>Returns an <a href="OntologyManipulator.html">OntologyManipulator</a> object instance named <i>name</i>(str).</p>
+          <p>Returns None if no OntologyManipulator instance is named <i>name</i>.</p>
 
           <h3 class="fn" id="add"><a name="add"></a><span class="name">add</span>(self, name)</h3>
           <p>Creates a new instance of ontologyManipulator identified by the name <i>name</i>(str).</p>
@@ -179,7 +178,7 @@
 
           <h3 class="fn" id="del"><a name="del"></a><span class="name">delete</span>(self, name)</h3>
           <p>Deletes the instance of ontologyManipulator identified by the name <i>name</i>(str).</p>
-          <p>Returns False deletation fails. Returns True even if the instance do not exists.</p>
+          <p>Returns False deletion fails. Returns True even if the instance does not exist.</p>
 
           <h3 class="fn" id="setVerbose"><a name="setVerbose"></a><span class="name">setVerbose</span>(self, verbose)</h3>
           <p>If verbose is set to True, the clients will post messages about the failure to call the services and about their restoration.</p>

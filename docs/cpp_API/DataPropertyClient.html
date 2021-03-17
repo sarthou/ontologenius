@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>DataPropertyClient Class (cpp) | Ontologenius 0.2.7</title>
+  <title>DataPropertyClient Class (cpp) | Ontologenius 0.2.8</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -143,8 +142,8 @@
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
           <p>The DataPropertyClient class provides an abstraction of ontologenius data properties ROS service.</p>
-          <p>The ontologenius data properties service allow the exploration of data properties cotained by ontologenius core.</p>
-          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with ontologenius/data_property service. The persistent connection ensure a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>The ontologenius data properties service allows the exploration of data properties contained by ontologenius core.</p>
+          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with ontologenius/data_property service. The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
         </div>
 
         <p><b>See also </b><a href="IndividualClient.html">IndividualClient</a>, <a href="ClassClient.html">ClassClient</a> and <a href="ObjectPropertyClient.html">ObjectPropertyClient</a>.</p>
@@ -153,7 +152,7 @@
           <h2>Public Function Documentation</h2>
 
           <h3 class="fn" id="DataPropertyClient"><a name="DataPropertyClient"></a>DataPropertyClient::<span class="name">DataPropertyClient</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Constructs a class client with a pointer to a NodeHandle <i>n</i>.</p>
+          <p>Constructs a data property client with a pointer to a NodeHandle <i>n</i>.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
 
           <h3 class="fn" id="getDown"><a name="getDown"></a><span class="type">std::vector&lt;std::string&gt;</span> DataPropertyClient::<span class="name">getDown</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">int</span> <i>depth</i> = -1)</h3>
@@ -164,7 +163,7 @@
           <p>Gives all the disjoint properties of the property <i>name</i>.</p>
 
           <h3 class="fn" id="getDomain"><a name="getDomain"></a><span class="type">std::vector&lt;std::string&gt;</span> DataPropertyClient::<span class="name">getDomain</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Gives all the domains classes of the property <i>name</i>.</p>
+          <p>Gives all the domain classes of the property <i>name</i>.</p>
 
           <h3 class="fn" id="getRange"><a name="getRange"></a><span class="type">std::vector&lt;std::string&gt;</span> DataPropertyClient::<span class="name">getRange</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Gives all the ranges types of the property <i>name</i>.</p>

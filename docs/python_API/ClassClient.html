@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ClassClient Class (python) | Ontologenius 0.2.7</title>
+  <title>ClassClient Class (python) | Ontologenius 0.2.8</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -151,8 +150,8 @@
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
           <p>The ClassClient class provides an abstraction of ontologenius classes ROS service.</p>
-          <p>The ontologenius classes service allow the exploration of classes cotained by ontologenius core.</p>
-          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with ontologenius/class service. The persistent connection ensure a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>The ontologenius classes service allows the exploration of classes contained by ontologenius core.</p>
+          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with ontologenius/class service. The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
         </div>
 
         <p><b>See also </b><a href="IndividualClient.html">IndividualClient</a>, <a href="DataPropertyClient.html">DataPropertyClient</a> and <a href="ObjectPropertyClient.html">ObjectPropertyClient</a>.</p>
@@ -173,15 +172,15 @@
 
           <h3 class="fn" id="getOn"><a name="getOn"></a><span class="name">getOn</span>(self, name, property, selector = '')</h3>
           <p>Gives all the classes (str[]) pointed by the property <i>property</i>(str) and applied to the class <i>name</i>(str).</p>
-          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) class. The default value '' represents no restriction on result.</p>
+          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) class. The default value '' represents no restriction on the result.</p>
 
           <h3 class="fn" id="getFrom"><a name="getFrom"></a><span class="name">getFrom</span>(self, property, name, selector = '')</h3>
           <p>Gives all the classes (str[]) having the given property <i>property</i>(str) and pointing to the class <i>name</i>(str).</p>
-          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) class. The default value '' represents no restriction on result.</p>
+          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) class. The default value '' represents no restriction on the result.</p>
 
           <h3 class="fn" id="getWith"><a name="getWith"></a><span class="name">getWith</span>(self, class_from, class_to, selector = '', depth = -1)</h3>
           <p>Gives all the properties (str[]) linking the two classes <i>class_from</i>(str) and <i>class_to</i>(str).</p>
-          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) property. The default value '' represents no restriction on result.</p>
+          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) property. The default value '' represents no restriction on the result.</p>
           <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
 
           <h3 class="fn" id="getRelatedFrom"><a name="getRelatedFrom"></a><span class="name">getRelatedFrom</span>(self, property)</h3>
@@ -206,12 +205,12 @@
 
           <h3 class="fn" id="getDomainOf"><a name="getDomainOf"></a><span class="name">getDomainOf</span>(self, name, selector = '', depth = -1)</h3>
           <p>Gives all the properties (str[]) for which the class <i>name</i>(str) is part of the domain.</p>
-          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) property. The default value '' represents no restriction on result.</p>
+          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) property. The default value '' represents no restriction on the result.</p>
           <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation of the class to a specific value. The default value -1 represents no propagation limitation.</p>
 
           <h3 class="fn" id="getRangeOf"><a name="getRangeOf"></a><span class="name">getRangeOf</span>(self, name, selector = '', depth = -1)</h3>
           <p>Gives all the properties (str[]) for which the class <i>name</i>(str) is part of the range.</p>
-          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) property. The default value '' represents no restriction on result.</p>
+          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) property. The default value '' represents no restriction on the result.</p>
           <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation of the class to a specific value. The default value -1 represents no propagation limitation.</p>
 
         </div>

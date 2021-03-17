@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>FeederPublisher Class (python) | Ontologenius 0.2.7</title>
+  <title>FeederPublisher Class (python) | Ontologenius 0.2.8</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -153,24 +152,24 @@
             The feeder publisher is used to insert and delete knowledge dynamically.
             The feeding process is asynchronous and therefore does not guarantee any response time.
             It still provides functions to synchronize if you have applications where you have to query the ontology right after having modified it.</p>
-          <p>All modifications can be time stamped for advanced uses using the replublication mechanism.</p>
+          <p>All modifications can be time-stamped for advanced uses using the republication mechanism.</p>
         </div>
 
         <div class="func">
           <h2>Methods Documentation</h2>
 
           <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self, name)</h3>
-          <p>Constructs an FeederPublisher.</p>
+          <p>Constructs a FeederPublisher.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, <i>name</i>(str) should be defined as ''.</p>
 
           <h3 class="fn" id="addObjectProperty"><a name="addObjectProperty"></a><span class="name">addObjectProperty</span>(self, concept_from, property, concept_on, stamp = None)</h3>
           <p>Adds the fact that <i>concept_from</i>(str) is linked with <i>concept_on</i>(str) by the property <i>property</i>(str).</p>
-          <p>At least <i>concept_from</i> or <i>concept_on</i> must be already known to the system. If one of them is unknown, it will be automatically created. The property can be unknow before calling this function.</p>
+          <p>At least <i>concept_from</i> or <i>concept_on</i> must be already known to the system. If one of them is unknown, it will be automatically created. The property can be unknown before calling this function.</p>
           <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
           <h3 class="fn" id="addDataProperty"><a name="addDataProperty"></a><span class="name">addDataProperty</span>(self, concept_from, concept_property, type, data, stamp = None)</h3>
           <p>Adds the fact that <i>concept_from</i>(str) is linked to the data <i>data</i>(str) of type <i>type</i>(str) by the property <i>property</i>(str).</p>
-          <p><i>concept_from</i> must be already known to the system. The property can be unknow before calling this function.</p>
+          <p><i>concept_from</i> must be already known to the system. The property can be unknown before calling this function.</p>
           <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
           <h3 class="fn" id="addInheritage"><a name="addInheritage"></a><span class="name">addInheritage</span>(self, concept_from, concept_on, stamp = None)</h3>
@@ -179,7 +178,7 @@
           <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
           <h3 class="fn" id="addLanguage"><a name="addLanguage"></a><span class="name">addLanguage</span>(self, concept_from, lang, name, stamp = None)</h3>
-          <p>Adds the label <i>name</i>(str) in the language <i>lang</i>(str) the class, individual or property <i>concept_from</i>(str).</p>
+          <p>Adds the label <i>name</i>(str) in the language <i>lang</i>(str) the class, individual, or property <i>concept_from</i>(str).</p>
           <p><i>concept_from</i> must be already known to the system.</p>
           <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
@@ -207,7 +206,7 @@
           <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
           <h3 class="fn" id="removeLanguage"><a name="removeLanguage"></a><span class="name">removeLanguage</span>(self, concept_from, lang, name, stamp = None)</h3>
-          <p>Removes the label <i>name</i>(str) in the language <i>lang</i>(str) the class, individual or property <i>concept_from</i>(str).</p>
+          <p>Removes the label <i>name</i>(str) in the language <i>lang</i>(str) the class, individual, or property <i>concept_from</i>(str).</p>
           <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
           <h3 class="fn" id="removeConcept"><a name="removeConcept"></a><span class="name">removeConcept</span>(self, concept_from, stamp = None)</h3>
@@ -233,7 +232,7 @@
           <p>This function can only be used on a copied ontology.</p>
 
           <h3 class="fn" id="commit2"><a name="commit2"></a><span class="name">commit</span>(self, commit_name, timeout = 100000000)</h3>
-          p>Saves all the modifications from the previous commit with a specific id <i>commit_name</i> (str) and waits until all changes have been applied.</p>
+          <p>Saves all the modifications from the previous commit with a specific id <i>commit_name</i> (str) and waits until all changes have been applied.</p>
           <p>The default parameter <i>timeout</i>(int) is the expiration time in milliseconds. The default value is of 100 seconds.</p>
           <p>Returns False if the function returns on a timeout.</p>
           <p>This function can only be used on a copied ontology.</p>
