@@ -37,6 +37,12 @@ body {
   font-size: 16px;
   background-color:#e3e3e4;
   color:#404244;
+
+
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 footer {
@@ -50,7 +56,6 @@ footer {
   height: 80px;
   padding: 10px;
 
-  position: fixed;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -355,7 +360,7 @@ a.laas_logo {
   background-color:#fff;
   padding: 25px 35px 20px 30px;
   box-sizing:border-box;
-  margin-bottom:130px;
+  margin-bottom:50px;
 }
 .context ul,.context ol {
   margin-bottom:1.5em
