@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ReasonerClient Class (python) | Ontologenius 0.2.7</title>
+  <title>ReasonerClient Class (python) | Ontologenius 0.2.8</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -146,14 +145,14 @@
           <h2 id="details">Detailed Description</h2>
           <p>The ReasonerClient class provides an abstraction ontologenius reasoner ROS services.</p>
           <p>The reasoner client is used to manage reasoner plugins for an ontology instance. This makes it possible to activate or deactivate plugins.</p>
-          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with the service based on. The persistent connection ensure a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with the service based on. The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
         </div>
 
         <div class="func">
           <h2>Methods Documentation</h2>
 
           <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self, name)</h3>
-          <p>Constructs an manager client.</p>
+          <p>Constructs a manager client.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
 
           <h3 class="fn" id="list"><a name="list"></a><span class="name">list</span>(self)</h3>
@@ -171,7 +170,7 @@
           <p>Returns False if the service call fails.</p>
 
           <h3 class="fn" id="getDescription"><a name="getDescription"></a><span class="name">getDescription</span>(self, name)</h3>
-          <p>Return the description (str) of the plugin named <i>name</i>.</p>
+          <p>Returns the description (str) of the plugin named <i>name</i>.</p>
 
         </div>
       </div>

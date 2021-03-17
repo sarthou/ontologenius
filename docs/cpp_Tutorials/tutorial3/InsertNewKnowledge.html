@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -125,7 +124,7 @@
         <h1 class="title">Insert new knowledge</h1>
 
         <p>Before starting, here are some included, an ontology manipulator pointer, a small function that
-          removes the s of the plural of a word when it is present and especially some regular expressions
+          removes the s of the plural of a word when it is present, and especially some regular expressions
           that I will explain to you.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
@@ -169,10 +168,10 @@
           or 'birds' and the fourth 'man', 'bird' or 'animals'.</p>
 
         <ul>
-          <li>The property regexp will accepts sentences of type : "a bird can fly" and "a bird can not swim"</li>
-          <li>The question regexp will accepts sentences of type : "can a bird fly ?"</li>
-          <li>The what_is regexp will accepts sentences of type : "what are kiwis ?" and "what is a bird ?"</li>
-          <li>The is_it_a regexp will accepts sentences of type : "is a kiwi a bird ?" and "are birds animals ?"</li>
+          <li>The property regexp will accept sentences of type: "a bird can fly" and "a bird can not swim"</li>
+          <li>The question regexp will accept sentences of type: "can a bird fly ?"</li>
+          <li>The what_is regexp will accept sentences of type: "what are kiwis ?" and "what is a bird ?"</li>
+          <li>The is_it_a regexp will accept sentences of type: "is a kiwi a bird ?" and "are birds animals ?"</li>
         </ul>
 
         <p>We will now write the callback function of a ROS topic that will determine the type of sentence and
@@ -269,10 +268,10 @@
 
         <p>The third match must contain "not" if the sentence is in its negative form and nothing if it is
           in its positive form.</p>
-        <p>If the sentence is in its positive form, we remove the data property "can_verb" with the booleene value
+        <p>If the sentence is in its positive form, we remove the data property "can_verb" with the boolean value
           false and add it with the value true. Although it seems strange, ontologenius allows an individual to own
           the same property with different values. To be sure that this does not happen here because it does not
-          make sense with booleens, we remove the value false before adding true. This is no problem removing a
+          make sense with booleans, we remove the value false before adding true. This is no problem removing a
           property that does not exist on an individual, it will have no effect. However, if we add to it the
           knowledge that a bird can not swim and that later we tell him who finally a bird can swim, we will be
           sure that the first knowledge will be removed.</p>
@@ -325,7 +324,7 @@
           nothing more simple, we will recover all the heritage tree and we look if the concept of
           inheritance suposse is present in.</p>
 
-        <p>Finally, we can write our main function which creates the ontology manipulator, close the ontology
+        <p>Finally, we can write our main function which creates the ontology manipulator, close the ontology,
           and subscribes to the topic "feed_and_generalize/in".</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 89;">
@@ -351,8 +350,8 @@
           <div class="code_line">}</div>
         </div>
 
-        <p>Before moving on, note that we add the concept "bird" before commncer. This is because to
-          build ontology, ontologenius must always know at least one concept. For example, if we want to
+        <p>Before moving on, note that we add the concept "bird" before all. This is because to
+          build an ontology, ontologenius must always know at least one concept. For example, if we want to
           add the fact that a bird is an animal, ontologenius must know either bird or animal and will
           automatically create the second if it does not exist yet.</p>
 
@@ -381,7 +380,7 @@
 
         <p>It should answer you (in the terminal where the program is launched) that a kiwi is a bird and
           it can not fly. You should also have that a kiwi is not an animal (since it does not even know what
-          an animal is) and that it does not know if a bird can fly (since it was not nothing says about it).</p>
+          an animal is) and that it does not know if a bird can fly (since nothing has been said about it).</p>
 
         <p>We can explain to it that a bird is an animal and ask it again if a kiwi is an animal:</p>
 
@@ -393,7 +392,7 @@
         <p>It is obvious but now our program responds to us that a kiwi is an animal as a kiwi is a bird and a
           bird is an animal.</p>
 
-        <p>So let's learn it the concept of a penguin who is a bird that can not fly and then ask it again if
+        <p>So let's learn the concept of a penguin who is a bird that can not fly and then ask it again if
           a bird can fly:</p>
 
         <div class="code_block">
@@ -406,7 +405,7 @@
           above all, that we have never told it!</p>
 
         <p>This is in fact due to the generalization mechanism. Since all the birds it knows can not fly,
-          it has deduced by itself that all birds can not fly. To excuse it for this mistake, it must be
+          it has deduced by itself that all birds can not fly. To excuse this mistake, it must be
           said that we did not help it.</p>
 
         <p>The basic principle is that ontologenius realizes a generalization if 60% of the individuals
@@ -416,18 +415,18 @@
           since it would be deduced again. To make this property accurate, it should be explicitly told that
           birds can fly but we will not do that.</p>
 
-        <p>Before continuing, kill ontologenius and so your program then restart it and ask it again if the
+        <p>Before continuing, kill ontologenius and so your program then restarts it and ask it again if the
           birds can fly.</p>
 
         <div class="code_block">
           <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
         </div>
 
-        <p>It should answer you again no. Yet you have stopped ontologenius .... This is where we understand its
+        <p>It should answer you again no. Yet you have stopped ontologenius... This is where we understand its
           long-term memory principle as well as the usefulness of the internal file. When stopping ontologenius,
-           it stored all its knowledge in the internal file that it reloaded at restart.</p>
+           it stored all its knowledge in the internal file that is reloaded at the restart.</p>
 
-       <p>We will now teach it the principle of a parrot amd a dove that are a birds capable of flying and ask it again if
+       <p>We will now teach it the principle of a parrot and a dove that are birds capable of flying and ask it again if
          the birds can fly.</p>
 
         <div class="code_block">
@@ -441,7 +440,7 @@
         <p>You had to suspect that the 60% condition is no longer true and our program finds itself in
           the inability to know whether birds can fly or not.</p>
 
-        <p>Let's learn it five new birds that can all fly to reach the threshold of 60%.</p>
+        <p>Let's learn five new birds that can all fly to reach the threshold of 60%.</p>
 
         <div class="code_block">
           <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a heron is a bird'&quot;</div>

@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -123,9 +122,9 @@
           </a>
         </div>
 
-        <h1 class="title">Find the most revelant intruder</h1>
+        <h1 class="title">Find the most relevant intruder</h1>
 
-        <p>Our program works pretty well but let's question it with the words: pr2, kevin et bob</p>
+        <p>Our program works pretty well but let's question it with the words: pr2, kevin, and bob</p>
         <p>You should have this:</p>
         <div class="code_block">
           <div class="terminal_line">[SAY]on pr2 kevin bob</div>
@@ -144,7 +143,7 @@
 
         <p>To do this we will use a new function: getDown</p>
         <p>As you can imagine, the getDown function is the exact opposite of the getUp function,
-          that is to say that it returns the concepts inheriting from the one passed in parameter
+          that is to say, that it returns the concepts inheriting from the one passed in the parameters
           of the function.</p>
         <p>We will use this function on classes because no concept can inherit an individual but
           especially because our goal is to find the reasons (which are classes) that overlap.</p>
@@ -180,7 +179,7 @@
           <div class="code_line">         intruders = refine(intruders)</div>
         </div>
 
-        <p>Re-interrogating our program with the words pr2, kevin and bob, we now have the following result:</p>
+        <p>Re-interrogating our program with the words pr2, kevin, and bob, we now have the following result:</p>
         <div class="code_block">
           <div class="terminal_line">[SAY]on pr2 kevin bob</div>
           <div class="terminal_line">[SAY]the intruder is pr2 because it is the only one that is not: man</div>
@@ -188,7 +187,7 @@
         </div>
 
         <p>If you want this to be the concept "human" that explains the intruder, you just have to modify the
-          algorithm above using the getUp function rather than the getDown function. It is your turn !</p>
+          algorithm above using the getUp function rather than the getDown function. It is your turn!</p>
 
         <nav class="course-pagination">
           <a href="FindTheIntruder.html" class="course-pagination__btn">

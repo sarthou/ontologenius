@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ManagerClient Class (cpp) | Ontologenius 0.2.7</title>
+  <title>ManagerClient Class (cpp) | Ontologenius 0.2.8</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -148,33 +147,33 @@
           <h2 id="details">Detailed Description</h2>
           <p>The ManagerClient class provides an abstraction ontologenius manage ROS services.</p>
           <p>The manager client is used to manage ontology instances in multi-ontology usage. This makes it possible to start new ontologies or to stop old ones, but also to study the differences of knowledge between several instances. With the manager client, it is easy to develop software using theory of mind. </p>
-          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with the service based on. The persistent connection ensure a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with the service based on. The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
         </div>
 
         <div class="func">
           <h2>Public Function Documentation</h2>
 
           <h3 class="fn" id="ManagerClient"><a name="ManagerClient"></a>ManagerClient::<span class="name">ManagerClient</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>)</h3>
-          <p>Constructs an manager client with a pointer to a NodeHandle <i>n</i>.</p>
+          <p>Constructs a manager client with a pointer to a NodeHandle <i>n</i>.</p>
           <p>Can only be used in a multi-ontology mode.</p>
 
           <h3 class="fn" id="list"><a name="list"></a><span class="type">std::vector&lt;std::string&gt;</span> ManagerClient::<span class="name">list</span>()</h3>
-          <p>Returns the name of the intanced ontologies.</p>
+          <p>Returns the name of the instantiated ontologies.</p>
 
           <h3 class="fn" id="add"><a name="add"></a><span class="type">bool</span> ManagerClient::<span class="name">add</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Create an ontology instance named <i>name</i>.</p>
+          <p>Creates an ontology instance named <i>name</i>.</p>
           <p>Returns false if the service call fails.</p>
 
           <h3 class="fn" id="copy"><a name="copy"></a><span class="type">bool</span> ManagerClient::<span class="name">copy</span>(const <span class="type">std::string</span>&amp; <i>dest_name</i>, const <span class="type">std::string</span>&amp; <i>src_name</i>)</h3>
-          <p>Create a copy of the ontology ontology instance named <i>src_name</i> with the name <i>dest_name</i>.</p>
+          <p>Creates a copy of the ontology instance named <i>src_name</i> with the name <i>dest_name</i>.</p>
           <p>Returns false if the service call fails or if the copy fails.</p>
 
           <h3 class="fn" id="del"><a name="del"></a><span class="type">bool</span> ManagerClient::<span class="name">del</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Delete the instance of the ontology named <i>name</i></p>
+          <p>Deletes the instance of the ontology named <i>name</i></p>
           <p>Returns false if the service call fails.</p>
 
           <h3 class="fn" id="getDifference"><a name="getDifference"></a><span class="type">std::vector&lt;std::string&gt;</span> ManagerClient::<span class="name">getDifference</span>(const <span class="type">std::string</span>&amp; <i>onto_1</i>, const <span class="type">std::string</span>&amp; <i>onto_2</i>, const <span class="type">std::string</span>&amp; <i>concept</i>)</h3>
-          <p>Return the difference of knowlege between <i>onto_1</i> and <i>onto_2</i> regarding the concept (class or individual) <i>concept</i>.</p>
+          <p>Returns the difference of knowledge between <i>onto_1</i> and <i>onto_2</i> regarding the concept (class or individual) <i>concept</i>.</p>
           <p>The elements of the returned vector are formated as : <b>[+]concept_from|property|concept_on</b> OR <b>[-]concept_from|property|concept_on</b>. An element is positive if it is present in <i>onto_1</i> and not in <i>onto_2</i> and negative in reverse.</p>
           <p>The difference in inheritance knowledge between concepts is returned with the property <b>isA</b>.</p>
 

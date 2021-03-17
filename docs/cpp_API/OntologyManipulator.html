@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>OntologyManipulator Class (cpp) | Ontologenius 0.2.7</title>
+  <title>OntologyManipulator Class (cpp) | Ontologenius 0.2.8</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -129,8 +128,9 @@
             <li class="fn"><b><a href="OntologyManipulator.html#dataProperties">dataProperties</a></b> : DataPropertyClient</li>
             <li class="fn"><b><a href="OntologyManipulator.html#classes">classes</a></b> : ClassClient</li>
             <li class="fn"><b><a href="OntologyManipulator.html#actions">actions</a></b> : ActionClient</li>
-            <li class="fn"><b><a href="OntologyManipulator.html#actions">reasoners</a></b> : ReasonerClient</li>
-            <li class="fn"><b><a href="OntologyManipulator.html#actions">feeder</a></b> : FeederPublisher</li>
+            <li class="fn"><b><a href="OntologyManipulator.html#reasoners">reasoners</a></b> : ReasonerClient</li>
+            <li class="fn"><b><a href="OntologyManipulator.html#feeder">feeder</a></b> : FeederPublisher</li>
+            <li class="fn"><b><a href="OntologyManipulator.html#sparql">sparql</a></b> : SparqlClient</li>
           </ul>
         </div>
 
@@ -176,11 +176,13 @@
           <p>ROS service client to manage the ontology instance.</p>
 
           <h3 class="fn" id="reasoners"><a name="reasoners"></a><span class="name">reasoners</span> : <span class="type"><a href="ReasonerClient.html">ReasonerClient</a></span></h3>
-          <p>ROS service client to manage reasonners plugins.</p>
+          <p>ROS service client to manage reasoners plugins.</p>
 
           <h3 class="fn" id="feeder"><a name="feeder"></a><span class="name">feeder</span> : <span class="type"><a href="FeederPublisher.html">FeederPublisher</a></span></h3>
           <p>ROS Publisher to insert and delete knowledge dynamically.</p>
 
+          <h3 class="fn" id="sparql"><a name="sparql"></a><span class="name">sparql</span> : <span class="type"><a href="SparqlClient.html">SparqlClient</a></span></h3>
+          <p>ROS service client to make SPARQL queries.</p>
         </div>
 
         <div class="func">

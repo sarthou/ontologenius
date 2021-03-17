@@ -238,8 +238,8 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->FeederCommitButton, SIGNAL(clicked()),this, SLOT(feederCommitSlot()));
     QObject::connect(ui->FeederCheckoutButton, SIGNAL(clicked()),this, SLOT(feederCheckoutSlot()));
 
-    QObject::connect(ui->OntologyNameAddDel, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameAddDelChangedSlot(const QString&)));
-    QObject::connect(ui->OntologyName, SIGNAL(textChanged(const QString&)), this, SLOT(OntologyNameChangedSlot(const QString&)));
+    QObject::connect(ui->OntologyNameAddDel, SIGNAL(textEdited(const QString&)), this, SLOT(OntologyNameAddDelChangedSlot(const QString&)));
+    QObject::connect(ui->OntologyName, SIGNAL(textEdited(const QString&)), this, SLOT(OntologyNameChangedSlot(const QString&)));
     QObject::connect(ui->OntologyName, SIGNAL(editingFinished()),this, SLOT(nameEditingFinishedSlot()));
     QObject::connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(currentTabChangedSlot(int)));
 
@@ -326,6 +326,12 @@ void ontoloGUI::IndividualhoverLeaveSlot()
 
 void ontoloGUI::classClickedSlot()
 {
+  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  {
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    return;
+  }
+
   std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/class" : "ontologenius/class/" + ui->OntologyName->text().toStdString();
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
@@ -349,6 +355,12 @@ void ontoloGUI::classClickedSlot()
 
 void ontoloGUI::objectPropertyClickedSlot()
 {
+  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  {
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    return;
+  }
+
   std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/object_property" : "ontologenius/object_property/" + ui->OntologyName->text().toStdString();
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
@@ -372,6 +384,12 @@ void ontoloGUI::objectPropertyClickedSlot()
 
 void ontoloGUI::dataPropertyClickedSlot()
 {
+  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  {
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    return;
+  }
+
   std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/data_property" : "ontologenius/data_property/" + ui->OntologyName->text().toStdString();
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
@@ -395,6 +413,12 @@ void ontoloGUI::dataPropertyClickedSlot()
 
 void ontoloGUI::individualClickedSlot()
 {
+  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  {
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    return;
+  }
+
   std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/individual" : "ontologenius/individual/" + ui->OntologyName->text().toStdString();
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
@@ -418,6 +442,12 @@ void ontoloGUI::individualClickedSlot()
 
 void ontoloGUI::closeOntologySlot()
 {
+  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  {
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    return;
+  }
+
   std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/actions" : "ontologenius/actions/" + ui->OntologyName->text().toStdString();
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
@@ -441,6 +471,12 @@ void ontoloGUI::nameEditingFinishedSlot()
 
 void ontoloGUI::ReasonerClickedSlot(int)
 {
+  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  {
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    return;
+  }
+
   std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + ui->OntologyName->text().toStdString();
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
@@ -484,6 +520,12 @@ void ontoloGUI::displayUnClosed()
 
 void ontoloGUI::loadReasoners()
 {
+  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  {
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    return;
+  }
+
   QLayoutItem *item;
   while ((item = ui->ReasonerListLayout->takeAt(1)) != nullptr)
   {
@@ -525,6 +567,12 @@ void ontoloGUI::constructReasonersCheckBoxs()
 
 void ontoloGUI::updateReasonersCheckBoxs()
 {
+  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  {
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    return;
+  }
+
   std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + ui->OntologyName->text().toStdString();
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
@@ -569,6 +617,12 @@ size_t ontoloGUI::getReasonerIndex(QCheckBoxExtended* box)
 
 std::string ontoloGUI::getReasonerDescription(std::string box)
 {
+  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  {
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    return "";
+  }
+
   std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + ui->OntologyName->text().toStdString();
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
@@ -721,6 +775,12 @@ void ontoloGUI::deleteOntologySlot()
 
 void ontoloGUI::saveOntologySlot()
 {
+  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  {
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    return;
+  }
+
   std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/actions" : "ontologenius/actions/" + ui->OntologyName->text().toStdString();
   ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
 
@@ -771,7 +831,13 @@ void ontoloGUI::differenceOntologySlot()
 void ontoloGUI::OntologyNameAddDelChangedSlot(const QString& text)
 {
   if(ui->OntologyName->text() != text)
-    ui->OntologyName->setText(text);
+  {
+    size_t equal_pose = text.toStdString().find("=");
+    if(equal_pose != std::string::npos)
+      ui->OntologyName->setText(text.mid(0, equal_pose));
+    else
+      ui->OntologyName->setText(text);
+  }
 }
 
 void ontoloGUI::OntologyNameChangedSlot(const QString& text)

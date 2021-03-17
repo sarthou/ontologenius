@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Reasoners configuration | Ontologenius 0.2.7</title>
+  <title>Reasoners configuration | Ontologenius 0.2.8</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -88,7 +87,7 @@
 
         <p>Let's see how to configure the reasoners to choose the ones you want to use and customize their settings.</p>
 
-        <p>The configuration is describe in a YAML file. The content should be as follows:</p>
+        <p>The configuration is described in a YAML file. The content should be as follows:</p>
 
         <div class="code_block">
           <div class="terminal_line">flow:</div>
@@ -111,14 +110,14 @@
 
         <h2><i class="fas fa-angle-right"></i> Flow</h2>
 
-        <p>The flow conrrespond to the reasoners that will be activated at the launch. Just list the reasoners names under the flow tag.</p>
+        <p>The flow corresponds to the reasoners that will be activated at the launch. Just list the reasoners' names under the flow tag.</p>
 
         <p>Reasoners not in the configuration file will still be loaded but will not be activated at launch.
           This means that you will still be able to activate them at run time if you need them.</p>
 
         <h2><i class="fas fa-angle-right"></i> Parameters</h2>
 
-        <p>Some reasoners have parameters that you can set. Just put the name of the reasoner as a tag and then
+        <p>Some reasoners have parameters that you can set. Just put the name of the reasoner as a tag and then 
           the name of the parameters and their values. Not all parameters need to be defined.</p>
 
         <p>You can define the parameters of the undefined resonators in the flow.</p>

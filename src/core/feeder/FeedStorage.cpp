@@ -98,17 +98,17 @@ std::queue<feed_t> FeedStorage::get()
   mutex_.lock();
   if(queue_choice_ == true)
   {
-    while(!fifo_2.empty())
-      fifo_2.pop();
+    fifo_2 = std::queue<feed_t>();
     queue_choice_ = false;
-    tmp = fifo_1;
+    tmp = std::move(fifo_1);
+    fifo_1 = std::queue<feed_t>();
   }
   else
   {
-    while(!fifo_1.empty())
-      fifo_1.pop();
+    fifo_1 = std::queue<feed_t>();
     queue_choice_ = true;
-    tmp = fifo_2;
+    tmp = std::move(fifo_2);
+    fifo_2 = std::queue<feed_t>();
   }
   mutex_.unlock();
   return tmp;

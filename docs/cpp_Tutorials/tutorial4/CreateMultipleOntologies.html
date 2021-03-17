@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -171,7 +170,7 @@
 
         <p>In previous tutorials, we included the OntologyManipulator header. This time, we need to handle several
           ontologies and that's why we include the OntologiesManipulator header this time. This object allows us to
-          dynamically create a OntologyManipulator per agent.</p>
+          dynamically create an OntologyManipulator per agent.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 10;">
           <div class="code_line">  <span class="cpp_type">OntologiesManipulator</span> onto;</div>
@@ -179,7 +178,7 @@
           <div class="code_line">  onto.waitInit();</div>
         </div>
 
-        <p>We start by creating a OntologiesManipulator. At the difference of the OntologyManipulator, this one need a pointer to our NodeHandle.
+        <p>We start by creating an OntologiesManipulator. At the difference of the OntologyManipulator, this one needs a pointer to our NodeHandle.
           In addition, we simply call waitInit to make sure that all ROS services have been connected before starting.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 14;">

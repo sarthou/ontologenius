@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ActionClient Class (cpp) | Ontologenius 0.2.7</title>
+  <title>ActionClient Class (cpp) | Ontologenius 0.2.8</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -149,7 +148,7 @@
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
           <p>The ActionClient class provides an abstraction ontologenius action ROS services.</p>
-          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with the service based on. The persistent connection ensure a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with the service based on. The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
         </div>
 
         <div class="func">
@@ -160,7 +159,7 @@
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
 
           <h3 class="fn" id="close"><a name="close"></a><span class="type">bool</span> ActionClient::<span class="name">close</span>()</h3>
-          <p>Link all the concepts loaded from files and the Internet. Before closing an ontology, exploration requests are not allowed.</p>
+          <p>Links all the concepts loaded from files and the Internet. Before closing an ontology, exploration requests are not allowed.</p>
           <p>Returns false if the service call fails.</p>
 
           <h3 class="fn" id="save"><a name="save"></a><span class="type">bool</span> ActionClient::<span class="name">save</span>(const <span class="type">std::string</span>&amp; <i>path</i>)</h3>
@@ -177,19 +176,19 @@
           <p>Returns false if the service call fails.</p>
 
           <h3 class="fn" id="getLang"><a name="getLang"></a><span class="type">std::string</span> ActionClient::<span class="name">getLang</span>()</h3>
-          <p>Return the working language.</p>
+          <p>Returns the working language.</p>
 
           <h3 class="fn" id="add"><a name="add"></a><span class="type">bool</span> ActionClient::<span class="name">add</span>(const <span class="type">std::string</span>&amp; <i>uri</i>)</h3>
-          <p>Load an ontology file (.owl) stored at <i>uri</i> from the internet. The Close function should be called after all the desired files have been loaded.</p>
+          <p>Loads an ontology file (.owl) stored at <i>uri</i> from the internet. The Close function should be called after all the desired files have been loaded.</p>
           <p>Returns false if the service call fails.</p>
 
           <h3 class="fn" id="fadd"><a name="fadd"></a><span class="type">bool</span> ActionClient::<span class="name">fadd</span>(const <span class="type">std::string</span>&amp; <i>file</i>)</h3>
-          <p>Load an ontology file (.owl) stored at <i>file</i> from the your local computer. The Close function should be called after all the desired files have been loaded.</p>
+          <p>Loads an ontology file (.owl) stored at <i>file</i> from the your local computer. The Close function should be called after all the desired files have been loaded.</p>
           <p>Returns false if the service call fails.</p>
 
 
           <h3 class="fn" id="reset"><a name="reset"></a><span class="type">bool</span> ActionClient::<span class="name">reset</span>()</h3>
-          <p>Unload all the knowledge previously loaded or learned.</p>
+          <p>Unloads all the knowledge previously loaded or learned.</p>
           <p>Returns false if the service call fails.</p>
 
         </div>

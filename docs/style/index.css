@@ -276,6 +276,11 @@ footer {
   color:#ffffff;
   height: 80px;
   padding: 10px;
+
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
 }
 
 a.laas_logo {

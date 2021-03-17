@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -161,14 +160,14 @@
 
         <p>In previous tutorials, we imported the OntologyManipulator object. This time, we need to handle several
           ontologies and that's why we import the OntologiesManipulator object this time. This object allows us to
-          dynamically create a OntologyManipulator per agent.</p>
+          dynamically create an OntologyManipulator per agent.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 19;">
           <div class="code_line">    onto = OntologiesManipulator()</div>
           <div class="code_line">    onto.waitInit()</div>
         </div>
 
-        <p>We start by creating a OntologiesManipulator in the same way that we previously created a OntologyManipulator.
+        <p>We start by creating an OntologiesManipulator in the same way that we previously created an OntologyManipulator.
           This time, we simply call waitInit to make sure that all ROS services have been created before starting.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 12;">

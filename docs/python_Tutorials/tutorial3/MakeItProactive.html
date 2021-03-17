@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -123,11 +122,11 @@
 
         <h1 class="title">Make our agent proactive</h1>
 
-        <p>In the previous part, our program has realized its generalizations without telling us and the
+        <p>In the previous part, our program has realized its generalizations without telling us, and the
           only way for us to realize this was to ask the right questions at the right time.</p>
 
         <p>So we will use the topic 'ontologenius/reasoner_notifications' which is a topic ontologenius
-          publishes when he realize some reasoning including the generalization.</p>
+          publishes when it realizes some reasoning including the generalization.</p>
 
         <p>The messages published on this topic are in our case in the form: &quot;[NEW]concept>property:type#value
           &quot;. So we will use again a regex to extract the information easily.</p>

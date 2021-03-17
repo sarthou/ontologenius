@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -130,7 +129,7 @@
           if we were manipulating identifiers or words in natural language. But if we want
           to be able to work with different languages, we will have to make the link between
           a word and its computer identifier.</p>
-        <p>So you can test the program with the following words : "green cup", "blue cup" and "green book".</p>
+        <p>So you can test the program with the following words: "green cup", "blue cup" and "green book".</p>
         <p>You have the following result which shows that no intruder has been found.</p>
         <div class="code_block">
           <div class="terminal_line">[SAY]on green cup blue cup green book</div>
@@ -148,17 +147,17 @@
           Multilingual translation can not be done simply by changing the language of work.</p>
 
         <p>To make the transition from natural language to identifiers and vice versa, we will use the two new
-          functions : find() and getName()</p>
+          functions: find() and getName()</p>
 
         <h2>find</h2>
 
         <p>The find function is used to retrieve all concepts of a given type whose name in natural language is
-          the word passed in parameter. In this way if several words are said (and therefore are written) in
+          the word passed in parameter. In this way, if several words are said (and therefore are written) in
           the same way we will be able to recover them all. In this tutorial, this case is not present in
           order not to add complexity. That's why we will each time recover the first cell of the vector.</p>
 
         <p>We will therefore modify our callback function to realize the natural language transition
-          to identifier.</p>
+          to an identifier.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
           <div class="code_line"><span class="cpp_type">void</span> wordCallback(const std_msgs::<span class="cpp_type">String</span><span class="cpp_op">&</span> msg)</div>
@@ -182,7 +181,7 @@
           <div class="code_line">      std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; ids <span class="cpp_op">=</span> onto_-&gt;individuals.find(msg.data);</div>
         </div>
 
-        <p>We can test our program again with the words : "green cup", "blue cup" and "green book". We thus
+        <p>We can test our program again with the words: "green cup", "blue cup" and "green book". We thus
           obtain the same exit as with the old use of the identifiers:</p>
         <div class="code_block">
           <div class="terminal_line">[SAY]on green_cup blue_cup green_book</div>
@@ -211,7 +210,7 @@
           <div class="terminal_line">[SAY]Let's play!</div>
         </div>
 
-        <h2>Multilingial</h2>
+        <h2>Multilingual</h2>
 
         <p>We will now modify our launch file to put the working language in french.</p>
 
@@ -264,7 +263,7 @@
           </a>
           <span class="course-pagination__separator"></span>
           <a href="../tutorial2/Presentation.html" class="course-pagination__btn">
-            <span>Next tutorial : Advanced knowledge exploration</span>
+            <span>Next tutorial: Advanced knowledge exploration</span>
             <i class="fas fa-angle-right"></i>
           </a>
         </nav>

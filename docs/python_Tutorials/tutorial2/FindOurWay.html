@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -124,7 +123,7 @@
         <h1 class="title">Find our way</h1>
 
         <p>Before starting, here is the body of our program with a function that will allow us to display routes.
-          A routes will be represented by a list of strings.</p>
+          Routes will be represented by a list of strings.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
           <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
@@ -201,7 +200,7 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 2;">
           <div class="code_line">    routes = []</div>
         </div>
-        <p>"routes" represents a list of routes since a route is itself a list of string.</p>
+        <p>"routes" represents a list of routes since a route is itself a list of strings.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 3;">
           <div class="code_line">    routes.insert(<span class="py_value">0</span>, [path_from])</div>
@@ -212,16 +211,16 @@
           <div class="code_line">        tmp_routes = []</div>
           <div class="code_line">        <span class="py_op">for</span> route <span class="py_op">in</span> routes:</div>
         </div>
-        <p>Since we use a breadth-first search, we browse the set of current routes at each itteration and we
+        <p>Since we use a breadth-first search, we browse the set of current routes at each iteration and we
           rank the routes found at the current iteration in the variable tmp_routes.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 13;">
           <div class="code_line">            intersections = _onto.individuals.getFrom(<span class="py_string">'isAlong'</span>, route[size])</div>
         </div>
         <p><b>IMPORTANT :</b></p>
-        <p>We can represent the use of a property like this : <span class="color_red">individual_1</span>
+        <p>We can represent the use of a property like this: <span class="color_red">individual_1</span>
           <span class="color_green">property</span> <span class="color_blue">individual_2</span><br>
-        In the case of our paths, it comes down to this : <span class="color_red">intersection_i</span>
+        In the case of our paths, it comes down to this: <span class="color_red">intersection_i</span>
         <span class="color_green">isAlong</span> <span class="color_blue">path_j</span></p>
 
         <p>The getFrom function returns all the <span class="color_red">red individuals</span> who apply the
@@ -231,7 +230,7 @@
         However, that means that we are going to have the intersections as well as the other elements, but that
         is not a big deal at the moment.</p>
 
-        <p>Notice how with a single line we are able to retrieve accurate information from our knowledge base.</p>
+        <p>Notice how with a single line we can retrieve accurate information from our knowledge base.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 15;">
           <div class="code_line">            <span class="py_op">for</span> intersection <span class="py_op">in</span> intersections:</div>
@@ -242,7 +241,7 @@
           <div class="code_line">                paths = _onto.individuals.getOn(intersection, <span class="py_string">'isAlong'</span>)</div>
         </div>
         <p><b>IMPORTANT :</b></p>
-        <p>Let's take again the fact that : <span class="color_red">intersection_i</span>
+        <p>Let's take again the fact that: <span class="color_red">intersection_i</span>
         <span class="color_green">isAlong</span> <span class="color_blue">path_j</span></p>
         <p>The getOn function will make it possible to achieve the inverse of the getFrom function.
            We will retrieve the set of <span class="color_blue">blue individuals</span> that are connected to
@@ -259,7 +258,7 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 29;">
           <div class="code_line">        routes = list(tmp_routes)</div>
         </div>
-        <p>At the end of the current iteration, the new routes of work become the current one.</p>
+        <p>At the end of the current iteration, the new routes of work become the current ones.</p>
 
         <h2>Find a route from one place to another</h2>
 
@@ -300,7 +299,7 @@
           <div class="code_line">    paths_to = _onto.individuals.getFrom(<span class="py_string">'hasAlong'</span>, place_to)</div>
         </div>
         <p>Now that you know the getOn and getFrom functions, you should understand what we are doing here.
-        In fact, these two lines do exactly the same thing but in two different places (from and to).
+        These two lines do exactly the same thing but in two different places (from and to).
         Indeed, hasAlong is the inverse property of isAlong or getOn is the inverse function of getFrom,
         so these two lines return to the same.</p>
         <p>For each one of the places from and to we recover the paths of which they are along.</p>
@@ -309,10 +308,10 @@
           take the paths that actually lead to the end path and have a size smaller than the last shortest
           route found.</p>
 
-        <h2>Update main function</h2>
+        <h2>Update the main function</h2>
 
         <p>We can finally add the following lines in our main function to realize the path search for the
-          three bob's ittineraries.</p>
+          three bob's itineraries.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 73;">
           <div class="code_line">    route = find(<span class="py_string">'pub'</span>, <span class="py_string">'house'</span>)</div>

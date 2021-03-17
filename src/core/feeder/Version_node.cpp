@@ -4,22 +4,20 @@ namespace ontologenius {
 
 size_t Version_node::global_order_id_ = 0;
 
-Version_node::Version_node(Version_node* prev)
+Version_node::Version_node(size_t order, Version_node* prev)
 {
   prev_ = prev;
   if(prev_ != nullptr)
     prev_->addNext(this);
   id_ = "";
-  order_id_ = global_order_id_;
-  global_order_id_++;
+  order_id_ = order;
 }
 
-Version_node::Version_node(const std::string& id)
+Version_node::Version_node(size_t order, const std::string& id)
 {
   id_ = id;
   prev_ = nullptr;
-  order_id_ = global_order_id_;
-  global_order_id_++;
+  order_id_ = order;
 }
 
 std::vector<feed_t> Version_node::getDatasDirect()

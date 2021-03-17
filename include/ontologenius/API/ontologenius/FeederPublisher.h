@@ -8,9 +8,19 @@
 #include "std_msgs/String.h"
 #include "ontologenius/StampedString.h"
 
+/// @brief The FeederPublisher class provides an abstraction ontologenius feeder(insert) ROS topic.
+/// Working in a closed world can be interesting, but with ontologenius, you can also choose to work in an open world by adding and modifying the agent's knowledge base during its operation.
+/// The feeder publisher is used to insert and delete knowledge dynamically.
+/// The feeding process is asynchronous and therefore does not guarantee any response time.
+/// It still provides functions to synchronize if you have applications where you have to query the ontology right after having modified it.
+/// All modifications can be time-stamped for advanced uses using the republication mechanism.
 class FeederPublisher
 {
 public:
+  /// @brief Constructs a FeederPublisher.
+  /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
+  /// @param n is an initialized ROS node handle.
+  /// @param name is the instance to be connected to. For classic use, name should be defined as "".
   FeederPublisher(ros::NodeHandle* n, const std::string& name) :
                   pub_(n->advertise<std_msgs::String>((name == "") ? "ontologenius/insert" : "ontologenius/insert/" + name, 1000)),
                   stamped_pub_(n->advertise<ontologenius::StampedString>((name == "") ? "ontologenius/insert_stamped" : "ontologenius/insert_stamped/" + name, 1000))
@@ -34,22 +44,105 @@ public:
     updated_ = false;
   }
 
+  /// @brief Adds the fact that "from" is linked with "on" by the property "property".
+  /// At least "from" or "on" must be already known to the system. If one of them is unknown, it will be automatically created.
+  /// The property can be unknown before calling this function.
+  /// @param from is the subject of the triplet to add.
+  /// @param property is the predicat of the triplet to add.
+  /// @param on is the object of the triplet to add.
+  /// @param stamp is the time at which the added relation become true. 
+  /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void addProperty(const std::string& from, const std::string& property, const std::string& on, const ros::Time& stamp = ros::Time::now());
+  /// @brief Adds the fact that "from" is linked to the data "value" of type "type" by the property "property".
+  /// At least "from" must be already known to the system.
+  /// The property can be unknown before calling this function.
+  /// @param from is the subject of the triplet to add.
+  /// @param property is the predicat of the triplet to add.
+  /// @param type is triplet object type.
+  /// @param value is the value of the triplet object.
+  /// @param stamp is the time at which the added relation become true. 
+  /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void addProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ros::Time& stamp = ros::Time::now());
+  /// @brief Adds the inheratage: "from" is a "on". "from" and "on" could by a class, an individual or a property.
+  /// At least from or on must be already known to the system. If one of them is unknown, it will be automatically created.
+  /// @param from is the parent concept. It could by a class, an individual or a property.
+  /// @param on is the child concept. It could by a class, an individual or a property.
+  /// @param stamp is the time at which the added relation become true. 
+  /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void addInheritage(const std::string& from, const std::string& on, const ros::Time& stamp = ros::Time::now());
+  /// @brief Adds the label "name" in the language "lang" to the class, individual, or property "from".
+  /// "from" must be already known to the system.
+  /// @param from is the concept (individual, class, property) to which add a name in natural language.
+  /// @param lang is the language indentifier (en, fr, de, ...).
+  /// @param name is the concept name in natural language.
+  /// @param stamp is the time at which the added relation become true. 
+  /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void addLanguage(const std::string& from, const std::string& lang, const std::string& name, const ros::Time& stamp = ros::Time::now());
+  /// @brief Adds a class or individual.
+  /// @param from the individual or class to add.
+  /// @param stamp is the time at which the added relation become true. 
+  /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void addConcept(const std::string& from, const ros::Time& stamp = ros::Time::now());
+  /// @brief Adds an object property inverse axiom.
+  /// @param property is the object property for which its inverse is define.
+  /// @param inverse_property is the inverse property of the previous object property.
+  /// @param stamp is the time at which the added relation become true. 
+  /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void addInverseOf(const std::string& property, const std::string& inverse_property, const ros::Time& stamp = ros::Time::now());
 
+  /// @brief Removes the fact that "from" is linked to any object by the property "property".
+  /// After this action, knowledge of the property is not removed.
+  /// @param from is the subject of the triplet to remove.
+  /// @param property is the predicat of the triplet to remove.
+  /// @param stamp is the time at which the added relation become false. 
+  /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void removeProperty(const std::string& from, const std::string& property, const ros::Time& stamp = ros::Time::now());
+  /// @brief Removes the fact that "from" is linked with "on" by the property "property".
+  /// After this action, knowledge of the property is not removed.
+  /// @param from is the subject of the triplet to remove.
+  /// @param property is the predicat of the triplet to remove.
+  /// @param on is the object of the triplet to remove.
+  /// @param stamp is the time at which the added relation become false. 
+  /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void removeProperty(const std::string& from, const std::string& property, const std::string& on, const ros::Time& stamp = ros::Time::now());
+  /// @brief Removes the fact that "from" is linked to the data "value" of type "type" by the property "property".
+  /// After this action, knowledge of the property is not removed.
+  /// @param from is the subject of the triplet to remove.
+  /// @param property is the predicat of the triplet to remove.
+  /// @param type is triplet object type.
+  /// @param value is the value of the triplet object.
+  /// @param stamp is the time at which the added relation become false. 
+  /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void removeProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ros::Time& stamp = ros::Time::now());
+  /// @brief Removes the inheratage: "from" is a "on". "from" and "on" could by a class, an individual or a property.
+  /// @param from is the parent concept. It could by a class, an individual or a property.
+  /// @param on is the child concept. It could by a class, an individual or a property.
+  /// @param stamp is the time at which the added relation become false. 
+  /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void removeInheritage(const std::string& from, const std::string& on, const ros::Time& stamp = ros::Time::now());
+  /// @brief Removes the label "name" in the language "lang" to the class, individual, or property "from".
+  /// @param from is the concept (individual, class, property) to which remove a name in natural language.
+  /// @param lang is the language indentifier (en, fr, de, ...).
+  /// @param name is the concept name in natural language.
+  /// @param stamp is the time at which the added relation become false. 
+  /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void removeLanguage(const std::string& from, const std::string& lang, const std::string& name, const ros::Time& stamp = ros::Time::now());
+  /// @brief Removes a class or individual.
+  /// All inheritance, properties, and labels applied to "from" are also removed
+  /// @param from the individual or class to remove.
+  /// @param stamp is the time at which the added relation become false. 
+  /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void removeConcept(const std::string& from, const ros::Time& stamp = ros::Time::now());
+  /// @brief Removes an object property inverse axiom.
+  /// @param property is the object property for which its inverse has to be removed.
+  /// @param inverse_property is the inverse property of the previous object property.
+  /// @param stamp is the time at which the added relation become false. 
+  /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void removeInverseOf(const std::string& property, const std::string& inverse_property, const ros::Time& stamp = ros::Time::now());
 
+  /// @brief Returns the number of subscribers that are currently connected to the internal ROS publisher.
   size_t getNumSubscribers() { return stamped_pub_.getNumSubscribers(); }
+  /// @brief Blocks while no subscribers are currently connected to the internal ROS publisher.
   void waitConnected()
   {
     ros::Rate loop_rate(100);
@@ -57,9 +150,26 @@ public:
       loop_rate.sleep();
   }
 
+  /// @brief Waits until all changes have been applied.
+  /// @param timeout is the expiration time in milliseconds. The default value -1 represents an infinite wait.
+  /// @return Returns false if the function returns on a timeout.
   bool waitUpdate(int32_t timeout = -1);
+  /// @brief Saves all the modifications from the previous commit and waits until all changes have been applied.
+  /// This function can only be used on a copied ontology.
+  /// @param timeout is the expiration time in milliseconds. The default value -1 represents an infinite wait.
+  /// @return Returns the commit id and an empty string if the function returns on a timeout.
   std::string commit(int32_t timeout = -1);
+  /// @brief Saves all the modifications from the previous commit with a specific id commit_name and waits until all changes have been applied.
+  /// This function can only be used on a copied ontology.
+  /// @param commit_name is the identifier of the commit.
+  /// @param timeout is the expiration time in milliseconds. The default value -1 represents an infinite wait.
+  /// @return Returns false if the function returns on a timeout.
   bool commit(const std::string& commit_name, int32_t timeout = -1);
+  /// @brief Apply the necessary changes to return to the specified commit_name and waits until all changes have been applied.
+  /// This function can only be used on a copied ontology.
+  /// @param commit_name is the identifier of the commit to checkout.
+  /// @param timeout is the expiration time in milliseconds. The default value -1 represents an infinite wait.
+  /// @return Returns false if the function returns on a timeout.
   bool checkout(const std::string& commit_name, int32_t timeout = -1);
 
 private:

@@ -1,6 +1,0 @@
-#ifndef ONTOLOGENIUS_DEPRECATED_INDIVIDUALCLIENT_H
-#define ONTOLOGENIUS_DEPRECATED_INDIVIDUALCLIENT_H
-
-#include "ontologenius/API/ontologenius/clients/ontologyClients/IndividualClient.h"
-
-#endif // ONTOLOGENIUS_DEPRECATED_INDIVIDUALCLIENT_H

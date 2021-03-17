@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>OntologiesManipulator Class (cpp) | Ontologenius 0.2.7</title>
+  <title>OntologiesManipulator Class (cpp) | Ontologenius 0.2.8</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -153,7 +152,7 @@
         <a name="details"></a>
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
-          <p>The OntologiesManipulator class allows to create and delete ontologies instances dynamically. It's usage is strongly recommanded for multi-ontology usage and ensure a good thread management.</p>
+          <p>The OntologiesManipulator class allows to create and delete ontologies instances dynamically. Its usage is strongly recommended for multi-ontology usage and ensures good thread management.</p>
           <p>This class allows you to set up the theory of mind quickly in a software application.</p>
         </div>
 
@@ -169,12 +168,12 @@
           <p><i>timeout</i> is the amount of time to wait for before timing out. If timeout is -1 (default), waits until the node is shutdown.</p>
 
           <h3 class="fn" id="operator"><a name="operator"></a><span class="type"><a href="OntologyManipulator.html">OntologyManipulator</a></span>* OntologiesManipulator::<span class="name">operator[]</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Return a pointer on the OntologyManipulator instance named <i>name</i>.</p>
-          <p>Return nullptr if no OntologyManipulator instance is named <i>name</i>.</p>
+          <p>Returns a pointer on the OntologyManipulator instance named <i>name</i>.</p>
+          <p>Returns nullptr if no OntologyManipulator instance is named <i>name</i>.</p>
 
           <h3 class="fn" id="get"><a name="get"></a><span class="type"><a href="OntologyManipulator.html">OntologyManipulator</a></span>* OntologiesManipulator::<span class="name">get</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Return a pointer on the OntologyManipulator instance named <i>name</i>.</p>
-          <p>Return nullptr if no OntologyManipulator instance is named <i>name</i>.</p>
+          <p>Returns a pointer on the OntologyManipulator instance named <i>name</i>.</p>
+          <p>Returns nullptr if no OntologyManipulator instance is named <i>name</i>.</p>
 
           <h3 class="fn" id="add"><a name="add"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">add</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Creates a new instance of ontologyManipulator identified by the name <i>name</i>.</p>
@@ -186,7 +185,7 @@
 
           <h3 class="fn" id="del"><a name="del"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">del</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Deletes the instance of ontologyManipulator identified by the name <i>name</i>.</p>
-          <p>Returns false deletation fails. Returns true even if the instance do not exists.</p>
+          <p>Returns false deletion fails. Returns true even if the instance does not exist.</p>
 
           <h3 class="fn" id="verbose"><a name="verbose"></a><span class="type"></span> OntologyManipulator::<span class="name">verbose</span>(<span class="type">bool</span> verbose)</h3>
           <p>If verbose is set to true, the clients will post messages about the failure to call the services and about their restoration.</p>

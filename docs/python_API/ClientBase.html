@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ClientBase Class (python) | Ontologenius 0.2.7</title>
+  <title>ClientBase Class (python) | Ontologenius 0.2.8</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -137,7 +136,7 @@
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
           <p>The ClientBase class provides an abstraction for any ROS services.</p>
-          <p>This class ensure a persistent connection with the service based on. The persistent connection ensure a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>This class ensures a persistent connection with the service based on. The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
         </div>
 
         <div class="func">
@@ -156,19 +155,19 @@
           <p>If <i>verbose</i>(bool) is set to True, the clients will post messages about the failure to call the services and about their restoration.</p>
 
           <h3 class="fn" id="call"><a name="call"></a><span class="name">call</span>(self, action, param)</h3>
-          <p>Call the service setup in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str) and return all the results (str[]).</p>
-          <p>If the service call fails, the function return None</p>
+          <p>Call the service set up in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str) and returns all the results (str[]).</p>
+          <p>If the service call fails, the function returns None</p>
 
           <h3 class="fn" id="callStr"><a name="callStr"></a><span class="name">callStr</span>(self, action, param)</h3>
-          <p>Call the service setup in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str) and return all the first result (str).</p>
-          <p>If the service call fails, the function return None</p>
+          <p>Call the service set up in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str) and returns all the first result (str).</p>
+          <p>If the service call fails, the function returns None</p>
 
           <h3 class="fn" id="callNR"><a name="callNR"></a><span class="name">callNR</span>(self, action, param)</h3>
-          <p>Call the service setup in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str).</p>
-          <p>If the service call fails, the function return False</p>
+          <p>Call the service set up in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str).</p>
+          <p>If the service call fails, the function returns False</p>
 
           <h3 class="fn" id="callBool"><a name="callBool"></a><span class="name">callBool</span>(self, action, param)</h3>
-          <p>Call the service setup in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str).</p>
+          <p>Call the service set up in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str).</p>
           <p>Returns False if the service call fails or the result code of the service is different from SUCCESS.</p>
 
         </div>

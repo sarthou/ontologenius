@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Set up | Ontologenius 0.2.7</title>
+  <title>Set up | Ontologenius 0.2.8</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="images/favicon.ico" rel="shortcut icon">
@@ -17,7 +17,6 @@
           <div class="navbar-header">
             <div id="header-buttons">
                 <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius/wiki" tabindex="0">Wiki</a></li>
                     <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
                 </ul>
             </div>
@@ -89,10 +88,8 @@
         <div class="code_block">
           <div class="terminal_line">cd ~/catkin_ws/src</div>
           <div class="terminal_line"><br></div>
-          <div class="terminal_line">catkin_create_pkg my_pkg roscpp ontologenius</div>
+          <div class="terminal_line">catkin_create_pkg my_pkg roscpp rospy ontologenius</div>
         </div>
-
-        <p class="tip">For the moment, the API only exist for the C ++ language.</p>
 
         <p>The package.xml in format 2 should look like this:</p>
         <div class="code_block">
@@ -100,10 +97,13 @@
           <div class="terminal_line">  ...</div>
           <div class="terminal_line">  &lt;buildtool_depend&gt;catkin&lt;/buildtool_depend&gt;</div>
           <div class="terminal_line">  &lt;build_depend&gt;ontologenius&lt;/build_depend&gt;</div>
+          <div class="terminal_line">  &lt;build_depend&gt;rospy&lt;/build_depend&gt;</div>
           <div class="terminal_line">  &lt;build_depend&gt;roscpp&lt;/build_depend&gt;</div>
           <div class="terminal_line">  &lt;build_export_depend&gt;ontologenius&lt;/build_export_depend&gt;</div>
+          <div class="terminal_line">  &lt;build_export_depend&gt;rospy&lt;/build_export_depend&gt;</div>
           <div class="terminal_line">  &lt;build_export_depend&gt;roscpp&lt;/build_export_depend&gt;</div>
           <div class="terminal_line">  &lt;exec_depend&gt;ontologenius&lt;/exec_depend&gt;</div>
+          <div class="terminal_line">  &lt;exec_depend&gt;rospy&lt;/exec_depend&gt;</div>
           <div class="terminal_line">  &lt;exec_depend&gt;roscpp&lt;/exec_depend&gt;</div>
           <div class="terminal_line">  ...</div>
           <div class="terminal_line">&lt;/package&gt;</div>
@@ -114,13 +114,14 @@
           <div class="terminal_line">...</div>
           <div class="terminal_line">find_package(catkin REQUIRED COMPONENTS</div>
           <div class="terminal_line">  ontologenius</div>
+          <div class="terminal_line">  rospy</div>
           <div class="terminal_line">  roscpp</div>
           <div class="terminal_line">)</div>
           <div class="terminal_line">...</div>
           <div class="terminal_line">catkin_package(</div>
           <div class="terminal_line">#  INCLUDE_DIRS include</div>
           <div class="terminal_line">#  LIBRARIES my_pkg</div>
-          <div class="terminal_line">#  CATKIN_DEPENDS ontologenius roscpp</div>
+          <div class="terminal_line">#  CATKIN_DEPENDS ontologenius rospy roscpp</div>
           <div class="terminal_line">#  DEPENDS system_lib</div>
           <div class="terminal_line">)</div>
           <div class="terminal_line">...</div>
@@ -129,9 +130,9 @@
           <div class="terminal_line">)</div>
           <div class="terminal_line">...</div>
         </div>
-        <p>The package.xml do not need to be modified. For the CMakeLists.txt, we will required a minimal version (optional) and include ontologenius API.</p>
+        <p>The package.xml does not need to be modified. For the CMakeLists.txt, we will require a minimal version (optional) and include ontologenius API.</p>
         <div class="code_block">
-          <div class="terminal_line">find_package(ontologenius 0.2.7 REQUIRED)</div>
+          <div class="terminal_line">find_package(ontologenius 0.2.8 REQUIRED)</div>
           <div class="terminal_line">...</div>
           <div class="terminal_line">catkin_package(</div>
           <div class="terminal_line">#  INCLUDE_DIRS include</div>
@@ -150,7 +151,7 @@
         <h2>Create your executable</h2>
         <p>Now we can create our executable that will use ontologenius. Create your main file that we call main.cpp.</p>
         <p>In this part, we will not write our program but we will only configure the CMakeLists.txt file to compile our file by linking it to ontologenius.
-        To do this, simply add the following two lines:</p>
+        To do this, simply add the following lines if you use the C++ API:</p>
         <div class="code_block">
           <div class="terminal_line">add_executable(my_exe src/main.cpp)</div>
           <div class="terminal_line">target_link_libraries(my_exe ${catkin_LIBRARIES})</div>
@@ -158,7 +159,7 @@
         </div>
 
         <p>You are now ready to write your program!</p>
-        <p>To see how to use ontologenius with its C ++ API, continue with the tutorial.</p>
+        <p>To see how to use ontologenius with its C++ or Python API, continue with the tutorial.</p>
 
         <nav class="course-pagination">
           <a href="InstallOntologenius.html" class="course-pagination__btn">
@@ -167,7 +168,7 @@
           </a>
           <span class="course-pagination__separator"></span>
           <a href="cpp_Tutorials/Tutorials.html" class="course-pagination__btn">
-            <span>Tutorials</span>
+            <span>C++ Tutorials</span>
             <i class="fas fa-angle-right"></i>
           </a>
         </nav>
