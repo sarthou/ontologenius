@@ -1162,6 +1162,8 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
     class_branch->data_relations_.clear();
     for(auto& data_relation : indiv->data_relations_)
       class_branch->data_relations_.emplace_back(data_relation.first,data_relation.second, data_relation.probability);
+    class_branch->dictionary_ = std::move(indiv->dictionary_);
+    class_branch->steady_dictionary_ = std::move(indiv->steady_dictionary_);
 
     class_graph_->container_.insert(class_branch);
     class_graph_->all_branchs_.push_back(class_branch);
