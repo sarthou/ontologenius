@@ -531,6 +531,11 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
       if(onto_->individual_graph_.touch(params()))
         res.values.push_back(params());
     }
+    else if(req.action == "relationExists")
+    {
+      if(onto_->individual_graph_.relationExists(params()))
+        res.values.push_back(params());
+    }
     else
       res.code = UNKNOW_ACTION;
 

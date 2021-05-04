@@ -1135,6 +1135,68 @@ std::unordered_set<std::string> IndividualGraph::getType(const std::string& clas
   return res;
 }
 
+bool IndividualGraph::relationExists(const std::string& param)
+{
+  std::unordered_set<std::string> res;
+  std::string subject;
+  std::string property;
+  std::string object;
+  size_t pose = param.find(':');
+  if(pose != std::string::npos)
+  {
+    subject = param.substr(0, pose);
+    property = param.substr(pose+1);
+    pose = property.find(':');
+    if(pose != std::string::npos)
+    {
+      object = property.substr(pose+1);
+      property = property.substr(0, pose);
+      return relationExists(subject, property, object);
+    }
+    else
+      return false;
+  }
+  return false;
+}
+
+bool IndividualGraph::relationExists(const std::string& subject, const std::string& property, const std::string& object)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  IndividualBranch_t* subject_branch = container_.find(subject);
+  if(subject_branch == nullptr)
+    return false;
+
+  std::unordered_set<IndividualBranch_t*> sames;
+  getSame(subject_branch, sames);
+  cleanMarks(sames);
+  for(IndividualBranch_t* it : sames)
+  {
+    for(IndivObjectRelationElement_t& relation : it->object_relations_)
+    {
+      if(relation.first->value() != property)
+        continue;
+      else
+      {
+        std::unordered_set<IndividualBranch_t*> sames_tmp;
+        getSame(relation.second, sames_tmp);
+        for(auto same : sames_tmp)
+          if(same->value() == object)
+            return true;
+      }
+    }
+
+    for(IndivDataRelationElement_t& relation : it->data_relations_)
+    {
+      if(relation.first->value() != property)
+        continue;
+      else if(relation.second.toString() == object)
+        return true;
+    }
+  }
+
+  return false;
+}
+
 void IndividualGraph::cleanMarks(std::unordered_set<IndividualBranch_t*>& indSet)
 {
   for(IndividualBranch_t* it : indSet)
