@@ -34,20 +34,24 @@ std::string OntologyClient::getName(const std::string& name, bool take_id)
   return callStr(srv);
 }
 
-std::vector<std::string> OntologyClient::getNames(const std::string& name)
+std::vector<std::string> OntologyClient::getNames(const std::string& name, bool take_id)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "getNames";
   srv.request.param = name;
+  if(take_id == false)
+    srv.request.param += " -i false";
 
   return call(srv);
 }
 
-std::vector<std::string> OntologyClient::getEveryNames(const std::string& name)
+std::vector<std::string> OntologyClient::getEveryNames(const std::string& name, bool take_id)
 {
   ontologenius::OntologeniusService srv;
   srv.request.action = "getEveryNames";
   srv.request.param = name;
+  if(take_id == false)
+    srv.request.param += " -i false";
 
   return call(srv);
 }

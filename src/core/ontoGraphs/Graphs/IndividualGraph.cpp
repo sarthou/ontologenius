@@ -929,7 +929,7 @@ std::string IndividualGraph::getName(const std::string& value, bool use_default)
   return res;
 }
 
-std::vector<std::string> IndividualGraph::getNames(const std::string& value)
+std::vector<std::string> IndividualGraph::getNames(const std::string& value, bool use_default)
 {
   std::vector<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
@@ -939,14 +939,14 @@ std::vector<std::string> IndividualGraph::getNames(const std::string& value)
   {
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
       res = branch->dictionary_.spoken_[this->language_];
-    else
+    else if(use_default)
       res.push_back(value);
   }
 
   return res;
 }
 
-std::vector<std::string> IndividualGraph::getEveryNames(const std::string& value)
+std::vector<std::string> IndividualGraph::getEveryNames(const std::string& value, bool use_default)
 {
   std::vector<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
@@ -956,7 +956,7 @@ std::vector<std::string> IndividualGraph::getEveryNames(const std::string& value
   {
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
       res = branch->dictionary_.spoken_[this->language_];
-    else
+    else if(use_default)
       res.push_back(value);
 
     if(branch->dictionary_.muted_.find(this->language_) != branch->dictionary_.muted_.end())

@@ -243,9 +243,9 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
         res.values.push_back(tmp);
     }
     else if(req.action == "getNames")
-      res.values = onto_->class_graph_.getNames(params());
+      res.values = onto_->class_graph_.getNames(params(), params.take_id);
     else if(req.action == "getEveryNames")
-      res.values = onto_->class_graph_.getEveryNames(params());
+      res.values = onto_->class_graph_.getEveryNames(params(), params.take_id);
     else if(req.action == "getRelationFrom")
       set_res = onto_->class_graph_.getRelationFrom(params(), params.depth);
     else if(req.action == "getRelatedFrom")
@@ -343,9 +343,9 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
         res.values.push_back(tmp);
     }
     else if(req.action == "getNames")
-      res.values = onto_->object_property_graph_.getNames(params());
+      res.values = onto_->object_property_graph_.getNames(params(), params.take_id);
     else if(req.action == "getEveryNames")
-      res.values = onto_->object_property_graph_.getEveryNames(params());
+      res.values = onto_->object_property_graph_.getEveryNames(params(), params.take_id);
     else if(req.action == "find")
       set2vector(onto_->object_property_graph_.find(params(), params.take_id), res.values);
     else if(req.action == "findSub")
@@ -417,9 +417,9 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
         res.values.push_back(tmp);
     }
     else if(req.action == "getNames")
-      res.values = onto_->data_property_graph_.getNames(params());
+      res.values = onto_->data_property_graph_.getNames(params(), params.take_id);
     else if(req.action == "getEveryNames")
-      res.values = onto_->data_property_graph_.getEveryNames(params());
+      res.values = onto_->data_property_graph_.getEveryNames(params(), params.take_id);
     else if(req.action == "find")
       set2vector(onto_->data_property_graph_.find(params(), params.take_id), res.values);
     else if(req.action == "findSub")
@@ -508,9 +508,9 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
         res.values.push_back(tmp);
     }
     else if(req.action == "getNames")
-      res.values = onto_->individual_graph_.getNames(params());
+      res.values = onto_->individual_graph_.getNames(params(), params.take_id);
     else if(req.action == "getEveryNames")
-      res.values = onto_->individual_graph_.getEveryNames(params());
+      res.values = onto_->individual_graph_.getEveryNames(params(), params.take_id);
     else if(req.action == "find")
       set_res = onto_->individual_graph_.find(params(), params.take_id);
     else if(req.action == "findSub")

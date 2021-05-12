@@ -36,8 +36,8 @@ public:
   std::unordered_set<uint32_t> getDownIdSafe(const std::string& value, int depth = -1);
   std::unordered_set<uint32_t> getUpIdSafe(const std::string& value, int depth = -1);
   std::string getName(const std::string& value, bool use_default = true);
-  std::vector<std::string> getNames(const std::string& value);
-  std::vector<std::string> getEveryNames(const std::string& value);
+  std::vector<std::string> getNames(const std::string& value, bool use_default = true);
+  std::vector<std::string> getEveryNames(const std::string& value, bool use_default = true);
   std::unordered_set<std::string> find(const std::string& value, bool use_default = true);
   std::unordered_set<std::string> findSub(const std::string& value, bool use_default = true);
   std::unordered_set<std::string> findRegex(const std::string& regex, bool use_default = true);
@@ -219,7 +219,7 @@ std::string OntoGraph<B>::getName(const std::string& value, bool use_default)
 }
 
 template <typename B>
-std::vector<std::string> OntoGraph<B>::getNames(const std::string& value)
+std::vector<std::string> OntoGraph<B>::getNames(const std::string& value, bool use_default)
 {
   std::vector<std::string> res;
 
@@ -229,7 +229,7 @@ std::vector<std::string> OntoGraph<B>::getNames(const std::string& value)
   {
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
       res = branch->dictionary_.spoken_[this->language_];
-    else
+    else if(use_default)
       res.push_back(value);
   }
 
@@ -237,7 +237,7 @@ std::vector<std::string> OntoGraph<B>::getNames(const std::string& value)
 }
 
 template <typename B>
-std::vector<std::string> OntoGraph<B>::getEveryNames(const std::string& value)
+std::vector<std::string> OntoGraph<B>::getEveryNames(const std::string& value, bool use_default)
 {
   std::vector<std::string> res;
 
@@ -247,7 +247,7 @@ std::vector<std::string> OntoGraph<B>::getEveryNames(const std::string& value)
   {
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
       res = branch->dictionary_.spoken_[this->language_];
-    else
+    else if(use_default)
       res.push_back(value);
 
     if(branch->dictionary_.muted_.find(this->language_) != branch->dictionary_.muted_.end())
