@@ -11,11 +11,12 @@ class Ontology;
 class Feeder
 {
 public:
-  Feeder(Ontology* onto = nullptr);
+  Feeder(Ontology* onto = nullptr, bool versioning = false);
 
   void store(const std::string& feed) { feed_storage_.add(feed); }
   bool run();
   void link(Ontology* onto) {onto_ = onto; }
+  void setVersioning(bool do_versioning) { do_versioning_ = do_versioning; }
 
   std::vector<std::string> getNotifications()
   {
@@ -40,6 +41,7 @@ private:
   FeedStorage feed_storage_;
   Versionor versionor_;
   Ontology* onto_;
+  bool do_versioning_;
 
   // Here the notifications are about miss formed queries
   std::vector<std::string> notifications_;

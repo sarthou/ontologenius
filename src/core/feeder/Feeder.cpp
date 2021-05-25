@@ -6,9 +6,10 @@
 
 namespace ontologenius {
 
-Feeder::Feeder(Ontology* onto) : versionor_(&feed_storage_)
+Feeder::Feeder(Ontology* onto, bool versioning) : versionor_(&feed_storage_)
 {
   onto_ = onto;
+  do_versioning_ = versioning;
 }
 
 bool Feeder::run()
@@ -44,7 +45,7 @@ bool Feeder::run()
       continue;
     }
 
-    if(!feed.checkout_)
+    if(do_versioning_ && !feed.checkout_)
       versionor_.insert(feed);
 
     if(feed.prop_ == "")
