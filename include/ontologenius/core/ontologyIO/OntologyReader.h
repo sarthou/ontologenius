@@ -76,6 +76,8 @@ private:
       return getName(std::string(subAttr));
     return "";
   }
+
+  void removeDocType(std::string& txt);
 };
 
 void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole, const std::string& attribute)
