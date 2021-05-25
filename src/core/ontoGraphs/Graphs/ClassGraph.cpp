@@ -952,9 +952,9 @@ void ClassGraph::addInheritage(std::string& class_base, std::string& class_inher
   }
 }
 
-bool ClassGraph::addProperty(std::string& class_from, std::string& property, std::string& class_on)
+bool ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& property, const std::string& class_on)
 {
-  ClassBranch_t* branch_from = findBranch(class_from);
+  ClassBranch_t* branch_from = class_from;
   if(branch_from != nullptr)
   {
     ClassBranch_t* branch_on = findBranch(class_on);
@@ -994,9 +994,9 @@ bool ClassGraph::addProperty(std::string& class_from, std::string& property, std
   return false;
 }
 
-bool ClassGraph::addProperty(std::string& class_from, std::string& property, std::string& type, std::string& data)
+bool ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& property, const std::string& type, const std::string& data)
 {
-  ClassBranch_t* branch_from = findBranch(class_from);
+  ClassBranch_t* branch_from = class_from;
   if(branch_from != nullptr)
   {
     data_t data_branch(type, data);
@@ -1025,9 +1025,9 @@ bool ClassGraph::addProperty(std::string& class_from, std::string& property, std
   return false;
 }
 
-bool ClassGraph::addPropertyInvert(std::string& class_from, std::string& property, std::string& class_on)
+bool ClassGraph::addPropertyInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on)
 {
-  ClassBranch_t* branch_on = findBranch(class_on);
+  ClassBranch_t* branch_on = class_on;
   if(branch_on != nullptr)
   {
     ClassBranch_t* branch_from = findBranch(class_from);

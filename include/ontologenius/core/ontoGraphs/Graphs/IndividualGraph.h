@@ -95,9 +95,9 @@ public:
   void addInheritage(const std::string& indiv, const std::string& class_inherited);
   void addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
   void addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
-  bool addProperty(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
-  bool addProperty(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
-  bool addPropertyInvert(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
+  bool addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on);
+  bool addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data);
+  bool addPropertyInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);
   void removeLang(const std::string& indiv, const std::string& lang, const std::string& name);
   void removeInheritage(const std::string& indiv, const std::string& class_inherited);
   bool addSameAs(const std::string& indiv_1, const std::string& indiv_2);

@@ -1416,9 +1416,9 @@ void IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const
   }
 }
 
-bool IndividualGraph::addProperty(const std::string& indiv_from, const std::string& property, const std::string& indiv_on)
+bool IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on)
 {
-  IndividualBranch_t* branch_from = findBranch(indiv_from);
+  IndividualBranch_t* branch_from = indiv_from;
   if(branch_from != nullptr)
   {
     IndividualBranch_t* branch_on = findBranch(indiv_on);
@@ -1471,9 +1471,9 @@ bool IndividualGraph::addProperty(const std::string& indiv_from, const std::stri
   return false;
 }
 
-bool IndividualGraph::addProperty(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data)
+bool IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data)
 {
-  IndividualBranch_t* branch_from = findBranch(indiv_from);
+  IndividualBranch_t* branch_from = indiv_from;
   if(branch_from != nullptr)
   {
     data_t data_branch(type, data);
@@ -1503,9 +1503,9 @@ bool IndividualGraph::addProperty(const std::string& indiv_from, const std::stri
   return false;
 }
 
-bool IndividualGraph::addPropertyInvert(const std::string& indiv_from, const std::string& property, const std::string& indiv_on)
+bool IndividualGraph::addPropertyInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on)
 {
-  IndividualBranch_t* branch_on = findBranch(indiv_on);
+  IndividualBranch_t* branch_on = indiv_on;
   if(branch_on != nullptr)
   {
     IndividualBranch_t* branch_from = findBranch(indiv_from);
@@ -1723,7 +1723,7 @@ bool IndividualGraph::removeProperty(const std::string& indiv_from, const std::s
 
 void IndividualGraph::setObjectPropertiesUpdated(std::vector<IndivObjectRelationElement_t>& relations)
 {
-  for(auto relation : relations)
+  for(auto& relation : relations)
     relation.second->updated_ = true;
 }
 
@@ -1842,9 +1842,6 @@ std::vector<std::vector<ObjectPropertyBranch_t*>> IndividualGraph::getChains(Obj
 
 bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectPropertyBranch_t* prop, IndividualBranch_t* on)
 {
-  std::unordered_set<ClassBranch_t*> up_from;
-  getUpPtr(from, up_from);
-
   std::unordered_set<ObjectPropertyBranch_t*> prop_up;
   object_property_graph_->getUpPtr(prop, prop_up);
 
@@ -1855,6 +1852,9 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
 
   if(domain.size() != 0)
   {
+    std::unordered_set<ClassBranch_t*> up_from;
+    getUpPtr(from, up_from);
+
     ClassBranch_t* intersection = class_graph_->findIntersection(up_from, domain);
     if(intersection == nullptr)
     {
@@ -1871,15 +1871,15 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
   }
 
   //RANGE
-  std::unordered_set<ClassBranch_t*> up_on;
-  getUpPtr(on, up_on);
-
   std::unordered_set<ClassBranch_t*> range;
   for(auto prop : prop_up)
     object_property_graph_->getRangePtr(prop, range);
 
   if(range.size() != 0)
   {
+    std::unordered_set<ClassBranch_t*> up_on;
+    getUpPtr(on, up_on);
+
     ClassBranch_t* intersection = class_graph_->findIntersection(up_on, range);
     if(intersection == nullptr)
     {
@@ -1900,9 +1900,6 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
 
 bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, data_t& data)
 {
-  std::unordered_set<ClassBranch_t*> up_from;
-  getUpPtr(from, up_from);
-
   std::unordered_set<DataPropertyBranch_t*> prop_up;
   data_property_graph_->getUpPtr(prop, prop_up);
 
@@ -1913,6 +1910,9 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataProperty
 
   if(domain.size() != 0)
   {
+    std::unordered_set<ClassBranch_t*> up_from;
+    getUpPtr(from, up_from);
+
     ClassBranch_t* intersection = class_graph_->findIntersection(up_from, domain);
     if(intersection == nullptr)
     {

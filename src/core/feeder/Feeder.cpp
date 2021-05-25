@@ -44,7 +44,7 @@ bool Feeder::run()
       }
       continue;
     }
-
+    
     if(do_versioning_ && !feed.checkout_)
       versionor_.insert(feed);
 
@@ -237,26 +237,29 @@ void Feeder::applyProperty(feed_t& feed)
     data_property = true;
   }
 
+  IndividualBranch_t* indiv_branch = nullptr;
+  ClassBranch_t* class_branch = nullptr;
+
   if(feed.action_ == action_add)
   {
-    if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+    if((indiv_branch = onto_->individual_graph_.findBranch(feed.from_)) != nullptr)
     {
       if(data_property == true)
-        onto_->individual_graph_.addProperty(feed.from_, feed.prop_, type, data);
+        onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, type, data);
       else
-        onto_->individual_graph_.addProperty(feed.from_, feed.prop_, feed.on_);
+        onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, feed.on_);
     }
-    else if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+    else if((class_branch = onto_->class_graph_.findBranch(feed.from_)) != nullptr)
     {
       if(data_property == true)
-        onto_->class_graph_.addProperty(feed.from_, feed.prop_, type, data);
+        onto_->class_graph_.addProperty(class_branch, feed.prop_, type, data);
       else
-        onto_->class_graph_.addProperty(feed.from_, feed.prop_, feed.on_);
+        onto_->class_graph_.addProperty(class_branch, feed.prop_, feed.on_);
     }
-    else if(onto_->class_graph_.findBranch(feed.on_) != nullptr)
-      onto_->class_graph_.addPropertyInvert(feed.from_, feed.prop_, feed.on_);
-    else if(onto_->individual_graph_.findBranch(feed.on_) != nullptr)
-      onto_->individual_graph_.addPropertyInvert(feed.from_, feed.prop_, feed.on_);
+    else if((class_branch = onto_->class_graph_.findBranch(feed.on_)) != nullptr)
+      onto_->class_graph_.addPropertyInvert(feed.from_, feed.prop_, class_branch);
+    else if((indiv_branch = onto_->individual_graph_.findBranch(feed.on_)) != nullptr)
+      onto_->individual_graph_.addPropertyInvert(feed.from_, feed.prop_, indiv_branch);
     else
       notifications_.push_back("[FAIL][unknown concept to apply property]" + current_str_feed_);
   }
