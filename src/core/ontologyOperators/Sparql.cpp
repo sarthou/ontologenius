@@ -21,8 +21,14 @@ namespace ontologenius
     std::smatch match;
     if (std::regex_match(query, match, sparql_pattern_))
     {
-      std::vector<std::string> vars_to_return = split(match[2].str(), " ");
-      auto res = resolve(getTriplets(match[5].str(), "."));
+      std::string vars = match[2].str();
+      removeChar(vars, {'\n', '\r'});
+      std::vector<std::string> vars_to_return = split(vars, " ");
+
+      std::string pattern = match[5].str();
+      removeChar(pattern, {'\n', '\r'});
+
+      auto res = resolve(getTriplets(pattern, "."));
       filter(res, vars_to_return, match[1].str() != "");
       return res;
     }
@@ -350,6 +356,12 @@ namespace ontologenius
 
     while((text[text.size() - 1] == ' ') && (text.size() != 0))
       text.erase(text.size() - 1,1);
+  }
+
+  void Sparql::removeChar(std::string& text, const std::vector<char>& delim)
+  {
+    for(auto c : delim)
+      text.erase(remove(text.begin(), text.end(), c), text.end());
   }
 
   void Sparql::filter(std::vector<std::map<std::string, std::string>>& res, const std::vector<std::string>& vars, bool distinct)

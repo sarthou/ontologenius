@@ -53,6 +53,7 @@ private:
   std::string toString(const triplet_t& triplet);
 
   void removeUselessSpace(std::string& text);
+  void removeChar(std::string& text, const std::vector<char>& delim);
 
   void filter(std::vector<std::map<std::string, std::string>>& res, const std::vector<std::string>& vars, bool distinct);
   void removeDuplicate(std::vector<std::map<std::string, std::string>>& vect);
