@@ -147,6 +147,16 @@
 
           <h2>Query Examples</h2>
 
+          <p>The general structure is always the same:</p>
+          <div class="code_block">
+            <p>SELECT * // or ?x to get specific variables</p>
+            <p>WHERE {</p>
+            <p>   // pattern</p>
+            <p>}</p>
+          </div>
+          <p>You can also add the DISTINCT keyword just after the SELECT to ensure unique results.
+              The following blocks are examples of possible patterns.</p>
+
         <div class="code_block">
           <p>Bedroom isA ?type</p>
         </div>
@@ -184,7 +194,7 @@
         <p>Give all the individuals for which the individual 'Table1' is in it.</p>
 
         <div class="code_block">
-          <p>?object isA Table, ?object isIn ?room</p>
+          <p>?object isA Table. ?object isIn ?room</p>
         </div>
         <div class="code_block">
           <p>results: </p>
