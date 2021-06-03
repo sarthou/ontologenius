@@ -3,6 +3,8 @@
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 
+#include <regex>
+
 namespace ontologenius
 {
 
@@ -31,24 +33,29 @@ public:
   std::string getError() { return error_; }
 
 private:
-   ontologenius::Ontology* onto_;
-   std::string error_;
+  ontologenius::Ontology* onto_;
+  std::string error_;
+  std::regex sparql_pattern_;
 
-   std::vector<std::map<std::string, std::string>> resolve(std::vector<triplet_t> query, const std::map<std::string, std::string>& accu = {});
-   void resolveSubQuery(triplet_t triplet, const std::map<std::string, std::string>& accu, std::string& var_name, std::unordered_set<std::string>& values);
+  std::vector<std::map<std::string, std::string>> resolve(std::vector<triplet_t> query, const std::map<std::string, std::string>& accu = {});
+  void resolveSubQuery(triplet_t triplet, const std::map<std::string, std::string>& accu, std::string& var_name, std::unordered_set<std::string>& values);
 
-   std::unordered_set<std::string> getOn(const triplet_t& triplet, const std::string& selector = "");
-   std::unordered_set<std::string> getFrom(const triplet_t& triplet, const std::string& selector = "");
-   std::unordered_set<std::string> getUp(const triplet_t& triplet, const std::string& selector = "");
-   std::unordered_set<std::string> getType(const triplet_t& triplet, const std::string& selector = "");
-   std::unordered_set<std::string> find(const triplet_t& triplet, const std::string& selector = "");
-   std::unordered_set<std::string> getName(const triplet_t& triplet, const std::string& selector = "");
+  std::unordered_set<std::string> getOn(const triplet_t& triplet, const std::string& selector = "");
+  std::unordered_set<std::string> getFrom(const triplet_t& triplet, const std::string& selector = "");
+  std::unordered_set<std::string> getUp(const triplet_t& triplet, const std::string& selector = "");
+  std::unordered_set<std::string> getType(const triplet_t& triplet, const std::string& selector = "");
+  std::unordered_set<std::string> find(const triplet_t& triplet, const std::string& selector = "");
+  std::unordered_set<std::string> getName(const triplet_t& triplet, const std::string& selector = "");
 
-   triplet_t getTriplet(const std::string& subquery);
-   resource_t getResource(const std::string& resource);
-   std::string toString(const triplet_t& triplet);
+  std::vector<triplet_t> getTriplets(const std::string& query, const std::string& delim);
+  triplet_t getTriplet(const std::string& subquery);
+  resource_t getResource(const std::string& resource);
+  std::string toString(const triplet_t& triplet);
 
-   void removeUselessSpace(std::string& text);
+  void removeUselessSpace(std::string& text);
+
+  void filter(std::vector<std::map<std::string, std::string>>& res, const std::vector<std::string>& vars, bool distinct);
+  void removeDuplicate(std::vector<std::map<std::string, std::string>>& vect);
 };
 
 } // namespace ontologenius

@@ -4,7 +4,7 @@
 
 namespace ontologenius
 {
-  Sparql::Sparql()
+  Sparql::Sparql() : sparql_pattern_("SELECT\\s*(DISTINCT)?\\s*([^\n]+)([\\s\n]*)WHERE([\\s\n]*)\\{([^\\}]*)\\}")
   {
     onto_ = nullptr;
     error_ = "";
@@ -18,12 +18,18 @@ namespace ontologenius
       return std::vector<std::map<std::string, std::string>>();
     }
 
-    std::vector<std::string> sub_queries = split(query, ",");
-    std::vector<triplet_t> sub_queries_triplet;
-    for(auto& q : sub_queries)
-      sub_queries_triplet.push_back(getTriplet(q));
-
-    return resolve(sub_queries_triplet);
+    std::smatch match;
+    if (std::regex_match(query, match, sparql_pattern_))
+    {
+      std::vector<std::string> vars_to_return = split(match[2].str(), " ");
+      auto res = resolve(getTriplets(match[5].str(), "."));
+      filter(res, vars_to_return, match[1].str() != "");
+      return res;
+    }
+    else
+    {
+      return resolve(getTriplets(query, ","));
+    }    
   }
 
   std::vector<std::map<std::string, std::string>> Sparql::resolve(std::vector<triplet_t> query, const std::map<std::string, std::string>& accu)
@@ -276,6 +282,16 @@ namespace ontologenius
       return std::unordered_set<std::string>();
   }
 
+  std::vector<triplet_t> Sparql::getTriplets(const std::string& query, const std::string& delim)
+  {
+    std::vector<std::string> sub_queries = split(query, delim);
+    std::vector<triplet_t> sub_queries_triplet;
+    for(auto& q : sub_queries)
+      sub_queries_triplet.push_back(getTriplet(q));
+
+    return sub_queries_triplet;
+  }
+
   triplet_t Sparql::getTriplet(const std::string& subquery)
   {
     std::vector<std::string> resources = split(subquery, " ");
@@ -334,6 +350,35 @@ namespace ontologenius
 
     while((text[text.size() - 1] == ' ') && (text.size() != 0))
       text.erase(text.size() - 1,1);
+  }
+
+  void Sparql::filter(std::vector<std::map<std::string, std::string>>& res, const std::vector<std::string>& vars, bool distinct)
+  {
+    if(vars.size())
+    {
+      if(vars[0] == "*")
+        return;
+
+      for(auto& sub_res : res)
+      {
+        for (std::map<std::string, std::string>::const_iterator itr = sub_res.cbegin() ; itr != sub_res.cend() ; )
+          itr = (std::find(vars.begin(), vars.end(), "?" + itr->first) == vars.end()) ? sub_res.erase(itr) : std::next(itr);
+      }
+
+      if(distinct)
+        removeDuplicate(res);
+    }
+  }
+
+  void Sparql::removeDuplicate(std::vector<std::map<std::string, std::string>>& vect)
+  {
+    std::sort(vect.begin(), vect.end());
+    auto equalLambda = [](const std::map<std::string, std::string>& lm, const std::map<std::string, std::string>& rm)
+    {
+      return lm.size() == rm.size() && std::equal(lm.begin(), lm.end(), rm.begin());
+    };
+
+    vect.erase(unique(vect.begin(), vect.end(), equalLambda), vect.end());
   }
 
 } // namespace ontologenius
