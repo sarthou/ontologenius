@@ -39,22 +39,22 @@
 .kinetic_before_template : &kinetic_before_definition
   before_script:
   - source /opt/ros/kinetic/setup.bash
-  - apt-get update -qq && apt-get install -y libcppunit-1.13-0v5 libcppunit-dev
+  - apt-get update -qq && apt-get install -y libcppunit-1.13-0v5 libcppunit-dev python-rosdep
 
 .lunar_before_template : &lunar_before_definition
   before_script:
   - source /opt/ros/lunar/setup.bash
-  - apt-get update -qq && apt-get install -y libcppunit-1.13-0v5 libcppunit-dev libtinyxml-dev
+  - apt-get update -qq && apt-get install -y libcppunit-1.13-0v5 libcppunit-dev libtinyxml-dev python-rosdep
 
 .melodic_before_template : &melodic_before_definition
   before_script:
   - source /opt/ros/melodic/setup.bash
-  - apt-get update -qq && apt-get install -y libcppunit-1.14-0 libcppunit-dev libtinyxml-dev
+  - apt-get update -qq && apt-get install -y libcppunit-1.14-0 libcppunit-dev libtinyxml-dev python-rosdep
 
 .noetic_before_template : &noetic_before_definition
   before_script:
   - source /opt/ros/noetic/setup.bash
-  - apt-get update -qq && apt-get install -y libcppunit-1.15-0 libcppunit-dev libtinyxml-dev git-all
+  - apt-get update -qq && apt-get install -y libcppunit-1.15-0 libcppunit-dev libtinyxml-dev git-all python3-rosdep
 
 
 stages:
