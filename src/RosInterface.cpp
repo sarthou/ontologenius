@@ -46,6 +46,7 @@ RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::s
 
   reasoners_.link(onto_);
   feeder_.link(onto_);
+  feeder_.setVersioning(true);
   sparql_.link(onto_);
 
   name_ = name;
