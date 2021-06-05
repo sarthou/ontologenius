@@ -634,10 +634,6 @@ void RosInterface::feedThread()
       if(feeder_end == true)
         feeder_end = false;
 
-      reasoner_mutex_.lock();
-      reasoners_.runPostReasoners();
-      reasoner_mutex_.unlock();
-
       std::vector<std::string> notifications = feeder_.getNotifications();
       for(auto notif : notifications)
       {
@@ -653,6 +649,10 @@ void RosInterface::feedThread()
     }
     else if(feeder_end == false)
     {
+      reasoner_mutex_.lock();
+      reasoners_.runPostReasoners();
+      reasoner_mutex_.unlock();
+
       feeder_end = true;
       msg.data = "end";
       feeder_end_pub_.publish(msg);
@@ -663,7 +663,7 @@ void RosInterface::feedThread()
 
     feeder_mutex_.unlock();
 
-    if(ros::ok() && (run_ == true))
+    if(ros::ok() && (run_ == true) && (run == false))
       wait.sleep();
   }
 }
