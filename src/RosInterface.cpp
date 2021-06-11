@@ -10,10 +10,6 @@
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
 
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/syscall.h>
-
 #define PUB_QUEU_SIZE 1000
 #define SUB_QUEU_SIZE 10000
 
@@ -98,8 +94,6 @@ void RosInterface::init(const std::string& lang, const std::string& config_path)
 
 void RosInterface::run()
 {
-
-  std::cout << "RUn has tip " << syscall(SYS_gettid) << std::endl;
   ros::Subscriber knowledge_subscriber = n_->subscribe(getTopicName("insert"), PUB_QUEU_SIZE, &RosInterface::knowledgeCallback, this);
 
   ros::Subscriber stamped_knowledge_subscriber = n_->subscribe(getTopicName("insert_stamped"), PUB_QUEU_SIZE, &RosInterface::stampedKnowledgeCallback, this);
@@ -617,7 +611,6 @@ bool RosInterface::sparqlHandle(ontologenius::OntologeniusSparqlService::Request
 
 void RosInterface::feedThread()
 {
-  std::cout << "Feed has tip " << syscall(SYS_gettid) << std::endl;
   ros::Publisher feeder_publisher = n_->advertise<std_msgs::String>(getTopicName("feeder_notifications"), PUB_QUEU_SIZE);
   bool feeder_end = true;
 
@@ -677,7 +670,6 @@ void RosInterface::feedThread()
 
 void RosInterface::periodicReasoning()
 {
-  std::cout << "Periodic has tip " << syscall(SYS_gettid) << std::endl;
   ros::Publisher reasoner_publisher = n_->advertise<std_msgs::String>(getTopicName("reasoner_notifications", name_), PUB_QUEU_SIZE);
   ros::Publisher explanations_pub = n_->advertise<ontologenius::OntologeniusExplanation>(getTopicName("insert_explanations", name_), PUB_QUEU_SIZE);
 
