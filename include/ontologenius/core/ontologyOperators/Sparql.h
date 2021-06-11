@@ -2,24 +2,25 @@
 #define ONTOLOGENIUS_SPARQL_H
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/ontologyOperators/SparqlUtils.h"
 
 #include <regex>
 
 namespace ontologenius
 {
 
-struct resource_t
+enum SparqlOperator_e
 {
-  std::string name;
-  bool variable;
-  bool regex;
+  sparql_none,
+  sparql_not_exists
 };
 
-struct triplet_t
+struct SparqlBlock_t
 {
-  resource_t subject;
-  resource_t predicat;
-  resource_t object;
+  std::string raw;
+  SparqlOperator_e op;
+  std::vector<std::map<std::string, std::string>> res;
+  std::vector<SparqlBlock_t> sub_blocks;
 };
 
 class Sparql
@@ -36,8 +37,10 @@ private:
   ontologenius::Ontology* onto_;
   std::string error_;
   std::regex sparql_pattern_;
+  std::map<std::string, SparqlOperator_e> operators_;
 
-  std::vector<std::map<std::string, std::string>> resolve(std::vector<triplet_t> query, const std::map<std::string, std::string>& accu = {});
+  std::vector<std::map<std::string, std::string>> resolve(std::vector<triplet_t> query, SparqlOperator_e op = sparql_none, const std::vector<std::map<std::string, std::string>>& prev_res = {});
+  std::vector<std::map<std::string, std::string>> resolve(std::vector<triplet_t> query, const std::map<std::string, std::string>& accu);
   void resolveSubQuery(triplet_t triplet, const std::map<std::string, std::string>& accu, std::string& var_name, std::unordered_set<std::string>& values);
 
   std::unordered_set<std::string> getOn(const triplet_t& triplet, const std::string& selector = "");
@@ -47,16 +50,12 @@ private:
   std::unordered_set<std::string> find(const triplet_t& triplet, const std::string& selector = "");
   std::unordered_set<std::string> getName(const triplet_t& triplet, const std::string& selector = "");
 
+  std::string getPattern(const std::string& text);
+  std::vector<SparqlBlock_t> getBlocks(std::string query);
   std::vector<triplet_t> getTriplets(const std::string& query, const std::string& delim);
-  triplet_t getTriplet(const std::string& subquery);
-  resource_t getResource(const std::string& resource);
-  std::string toString(const triplet_t& triplet);
 
-  void removeUselessSpace(std::string& text);
-  void removeChar(std::string& text, const std::vector<char>& delim);
-
-  void filter(std::vector<std::map<std::string, std::string>>& res, const std::vector<std::string>& vars, bool distinct);
-  void removeDuplicate(std::vector<std::map<std::string, std::string>>& vect);
+  void mergeNoOp(const std::map<std::string, std::string>& base, std::vector<std::map<std::string, std::string>>& res);
+  void mergeNotExists(const std::map<std::string, std::string>& base, std::vector<std::map<std::string, std::string>>& res);
 };
 
 } // namespace ontologenius

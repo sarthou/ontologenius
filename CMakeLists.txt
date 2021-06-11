@@ -266,6 +266,7 @@ add_onto_library(ontologenius_interface
   src/RosInterface.cpp
   src/core/ontologyOperators/differenceFinder.cpp
   src/core/ontologyOperators/Sparql.cpp
+  src/core/ontologyOperators/SparqlUtils.cpp
 )
 target_link_libraries(ontologenius_interface
  PUBLIC
