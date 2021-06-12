@@ -662,15 +662,20 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& indivi
     std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
     std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
 
-    for(IndivObjectRelationElement_t& relation : indiv->object_relations_)
-      for (uint32_t id : object_properties)
-        if(relation.first->get() == id)
-          getSameAndClean(relation.second, res);
+    std::unordered_set<IndividualBranch_t*> sames;
+    getSame(indiv, sames);
+    for(auto same_indiv : sames)
+    {
+      for(IndivObjectRelationElement_t& relation : same_indiv->object_relations_)
+        for (uint32_t id : object_properties)
+          if(relation.first->get() == id)
+            getSameAndClean(relation.second, res);
 
-    for(IndivDataRelationElement_t& relation : indiv->data_relations_)
-      for (uint32_t id : data_properties)
-        if(relation.first->get() == id)
-          res.insert(relation.second.toString());
+      for(IndivDataRelationElement_t& relation : same_indiv->data_relations_)
+        for (uint32_t id : data_properties)
+          if(relation.first->get() == id)
+            res.insert(relation.second.toString());
+    }
 
     if(res.size() == 0)
     {
