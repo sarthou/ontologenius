@@ -1271,6 +1271,8 @@ void IndividualGraph::deleteIndividual(IndividualBranch_t* indiv)
       }
     }
 
+    // TODO: We should think to delete same_as relations
+
     //erase properties applied to indiv
     size_t indiv_index = 0;
     for(size_t indiv_i = 0; indiv_i < individuals_.size(); indiv_i++)
@@ -1943,6 +1945,25 @@ void IndividualGraph::deepCopy(const IndividualGraph& other)
 {
   for(size_t i = 0; i < other.individuals_.size(); i++)
     cpyBranch(other.individuals_[i], individuals_[i]);
+
+  auto myself = container_.find("myself");
+  if(myself != nullptr)
+  {
+    std::unordered_set<IndividualBranch_t*> same_as;
+    getSame(myself, same_as);
+    for(auto me : same_as)
+    {
+      auto it = std::remove_if (me->same_as_.begin(), me->same_as_.end(), [myself](IndividualElement_t elem)
+      {
+          if(elem.elem == myself) 
+            return true;
+          else
+            return false;
+      });
+      me->same_as_.erase(it, me->same_as_.end());
+    }
+    myself->same_as_.clear();
+  }
 }
 
 void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch)
