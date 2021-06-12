@@ -1,6 +1,7 @@
 #ifndef ONTOLOGENIUS_GRAPH_H
 #define ONTOLOGENIUS_GRAPH_H
 
+#include <exception>
 #include <string>
 #include <vector>
 #include <map>
@@ -14,6 +15,14 @@
 #include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 
 namespace ontologenius {
+
+struct GraphException : public std::exception {
+  std::string msg_;
+  GraphException(const std::string& msg) : msg_(msg) {}
+  const char * what () const throw () {
+    return msg_.c_str();
+  }
+};
 
 template <typename B>
 class Graph

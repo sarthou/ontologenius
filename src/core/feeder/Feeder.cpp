@@ -240,28 +240,28 @@ void Feeder::applyProperty(feed_t& feed)
   IndividualBranch_t* indiv_branch = nullptr;
   ClassBranch_t* class_branch = nullptr;
 
-  bool success = true;
+  try {
 
   if(feed.action_ == action_add)
   {
     if((indiv_branch = onto_->individual_graph_.findBranch(feed.from_)) != nullptr)
     {
       if(data_property == true)
-        success = onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, type, data);
+          onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, type, data);
       else
-        success = onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, feed.on_);
+          onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, feed.on_);
     }
     else if((class_branch = onto_->class_graph_.findBranch(feed.from_)) != nullptr)
     {
       if(data_property == true)
-        success = onto_->class_graph_.addProperty(class_branch, feed.prop_, type, data);
+          onto_->class_graph_.addProperty(class_branch, feed.prop_, type, data);
       else
-        success = onto_->class_graph_.addProperty(class_branch, feed.prop_, feed.on_);
+          onto_->class_graph_.addProperty(class_branch, feed.prop_, feed.on_);
     }
     else if((class_branch = onto_->class_graph_.findBranch(feed.on_)) != nullptr)
-      success = onto_->class_graph_.addPropertyInvert(feed.from_, feed.prop_, class_branch);
+        onto_->class_graph_.addPropertyInvert(feed.from_, feed.prop_, class_branch);
     else if((indiv_branch = onto_->individual_graph_.findBranch(feed.on_)) != nullptr)
-      success = onto_->individual_graph_.addPropertyInvert(feed.from_, feed.prop_, indiv_branch);
+        onto_->individual_graph_.addPropertyInvert(feed.from_, feed.prop_, indiv_branch);
     else
       notifications_.push_back("[FAIL][unknown concept to apply property]" + current_str_feed_);
   }
@@ -270,14 +270,14 @@ void Feeder::applyProperty(feed_t& feed)
     if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
     {
       if(data_property == true)
-        success = onto_->class_graph_.removeProperty(feed.from_, feed.prop_, type, data);
+          onto_->class_graph_.removeProperty(feed.from_, feed.prop_, type, data);
       else
-        success = onto_->class_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
+          onto_->class_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
     }
     else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
     {
       if(data_property == true)
-        success = onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, type, data);
+          onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, type, data);
       else
       {
         auto tmp = onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
@@ -290,9 +290,11 @@ void Feeder::applyProperty(feed_t& feed)
   }
   else
     notifications_.push_back("[FAIL][unknown action]" + current_str_feed_);
-
-  if(success == false)
-    notifications_.push_back("[FAIL][Inconsistency prevented]" + current_str_feed_);
+  }
+  catch(GraphException& e)
+  {
+    notifications_.push_back("[FAIL][" + std::string(e.what()) + "]" + current_str_feed_);
+  }
 }
 
 } // namespace ontologenius

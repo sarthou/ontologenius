@@ -78,13 +78,13 @@ public:
   int deletePropertiesOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect);
   void addLang(std::string& _class, std::string& lang, std::string& name);
   void addInheritage(std::string& class_base, std::string& class_inherited);
-  bool addProperty(ClassBranch_t*, const std::string& property, const std::string& class_on);
-  bool addProperty(ClassBranch_t*, const std::string& property, const std::string& type, const std::string& data);
-  bool addPropertyInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on);
+  void addProperty(ClassBranch_t*, const std::string& property, const std::string& class_on);
+  void addProperty(ClassBranch_t*, const std::string& property, const std::string& type, const std::string& data);
+  void addPropertyInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on);
   void removeLang(std::string& indiv, std::string& lang, std::string& name);
   void removeInheritage(std::string& class_base, std::string& class_inherited);
-  bool removeProperty(std::string& class_from, std::string& property, std::string& class_on);
-  bool removeProperty(std::string& class_from, std::string& property, std::string& type, std::string& data);
+  void removeProperty(std::string& class_from, std::string& property, std::string& class_on);
+  void removeProperty(std::string& class_from, std::string& property, std::string& type, std::string& data);
 
 private:
   ObjectPropertyGraph* object_property_graph_;

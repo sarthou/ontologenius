@@ -1423,7 +1423,7 @@ void IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const
   }
 }
 
-bool IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on)
+void IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on)
 {
   IndividualBranch_t* branch_from = indiv_from;
   if(branch_from != nullptr)
@@ -1433,7 +1433,7 @@ bool IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::str
     {
       ClassBranch_t* test = class_graph_->findBranch(indiv_on);
       if(test != nullptr)
-        return false; // TODO ERR
+        throw GraphException("object entity does not exists");
 
       branch_on = createIndividual(indiv_on);
     }
@@ -1444,7 +1444,7 @@ bool IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::str
     {
       DataPropertyBranch_t* test = data_property_graph_->findBranch(property);
       if(test != nullptr)
-        return false; // TODO ERR
+        throw GraphException(property + " is a data property");
 
       std::lock_guard<std::shared_timed_mutex> lock_property(object_property_graph_->mutex_);
       branch_prop = new ObjectPropertyBranch_t(property);
@@ -1470,15 +1470,15 @@ bool IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::str
 
       branch_from->updated_ = true;
       setObjectPropertiesUpdated(branch_from->object_relations_);
-      return true;
     }
     else
-      return false;
+      throw GraphException("Inconsistency prevented regarding the range or domain of the property");
   }
-  return false;
+  else
+    throw GraphException("The individual to apply the relation does not exist");
 }
 
-bool IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data)
+void IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data)
 {
   IndividualBranch_t* branch_from = indiv_from;
   if(branch_from != nullptr)
@@ -1490,7 +1490,7 @@ bool IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::str
     {
       ObjectPropertyBranch_t* test = object_property_graph_->findBranch(property);
       if(test != nullptr)
-        return false; // TODO ERR
+        throw GraphException(property + " is an object property");
 
       std::lock_guard<std::shared_timed_mutex> lock_property(data_property_graph_->mutex_);
       branch_prop = new DataPropertyBranch_t(property);
@@ -1502,15 +1502,15 @@ bool IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::str
     {
       conditionalPushBack(branch_from->data_relations_, IndivDataRelationElement_t(branch_prop,data_branch));
       branch_from->updated_ = true;
-      return true;
     }
     else
-      return false;
+      throw GraphException("Inconsistency prevented regarding the range or domain of the property");
   }
-  return false;
+  else
+    throw GraphException("The individual to apply the relation does not exist");
 }
 
-bool IndividualGraph::addPropertyInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on)
+void IndividualGraph::addPropertyInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on)
 {
   IndividualBranch_t* branch_on = indiv_on;
   if(branch_on != nullptr)
@@ -1520,7 +1520,7 @@ bool IndividualGraph::addPropertyInvert(const std::string& indiv_from, const std
     {
       ClassBranch_t* test = class_graph_->findBranch(indiv_from);
       if(test != nullptr)
-        return false; // TODO ERR
+        throw GraphException("The individual to apply the relation does not exist");
 
       branch_from = createIndividual(indiv_from);
     }
@@ -1531,7 +1531,7 @@ bool IndividualGraph::addPropertyInvert(const std::string& indiv_from, const std
     {
       DataPropertyBranch_t* test = data_property_graph_->findBranch(property);
       if(test != nullptr)
-        return false; // TODO ERR
+        throw GraphException(property + " is a data property");
 
       std::lock_guard<std::shared_timed_mutex> lock_property(object_property_graph_->mutex_);
       branch_prop = new ObjectPropertyBranch_t(property);
@@ -1557,12 +1557,12 @@ bool IndividualGraph::addPropertyInvert(const std::string& indiv_from, const std
 
       branch_from->updated_ = true;
       setObjectPropertiesUpdated(branch_from->object_relations_);
-      return true;
     }
     else
-      return false;
+      throw GraphException("Inconsistency prevented regarding the range or domain of the property");
   }
-  return false;
+  else
+    throw GraphException("Object entity does not exists");
 }
 
 void IndividualGraph::removeLang(const std::string& indiv, const std::string& lang, const std::string& name)
@@ -1701,10 +1701,13 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
         return removeProperty(branch_from, branch_property, nullptr);
     }
   }
+  else
+    throw GraphException("The subject entity does not exist");
+
   return std::vector<std::pair<std::string, std::string>>();
 }
 
-bool IndividualGraph::removeProperty(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data)
+void IndividualGraph::removeProperty(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data)
 {
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
@@ -1722,10 +1725,9 @@ bool IndividualGraph::removeProperty(const std::string& indiv_from, const std::s
       else
         i++;
     }
-
-    return true;
   }
-  return false;
+  else
+    throw GraphException("The subject entity does not exist");
 }
 
 void IndividualGraph::setObjectPropertiesUpdated(std::vector<IndivObjectRelationElement_t>& relations)
