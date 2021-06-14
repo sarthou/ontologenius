@@ -242,54 +242,54 @@ void Feeder::applyProperty(feed_t& feed)
 
   try {
 
-  if(feed.action_ == action_add)
-  {
-    if((indiv_branch = onto_->individual_graph_.findBranch(feed.from_)) != nullptr)
+    if(feed.action_ == action_add)
     {
-      if(data_property == true)
-          onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, type, data);
-      else
-          onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, feed.on_);
-    }
-    else if((class_branch = onto_->class_graph_.findBranch(feed.from_)) != nullptr)
-    {
-      if(data_property == true)
-          onto_->class_graph_.addProperty(class_branch, feed.prop_, type, data);
-      else
-          onto_->class_graph_.addProperty(class_branch, feed.prop_, feed.on_);
-    }
-    else if((class_branch = onto_->class_graph_.findBranch(feed.on_)) != nullptr)
-        onto_->class_graph_.addPropertyInvert(feed.from_, feed.prop_, class_branch);
-    else if((indiv_branch = onto_->individual_graph_.findBranch(feed.on_)) != nullptr)
-        onto_->individual_graph_.addPropertyInvert(feed.from_, feed.prop_, indiv_branch);
-    else
-      notifications_.push_back("[FAIL][unknown concept to apply property]" + current_str_feed_);
-  }
-  else if(feed.action_ == action_del)
-  {
-    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
-    {
-      if(data_property == true)
-          onto_->class_graph_.removeProperty(feed.from_, feed.prop_, type, data);
-      else
-          onto_->class_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
-    }
-    else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
-    {
-      if(data_property == true)
-          onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, type, data);
-      else
+      if((indiv_branch = onto_->individual_graph_.findBranch(feed.from_)) != nullptr)
       {
-        auto tmp = onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
-        explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+        if(data_property == true)
+          onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, type, data);
+        else
+          onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, feed.on_);
       }
+      else if((class_branch = onto_->class_graph_.findBranch(feed.from_)) != nullptr)
+      {
+        if(data_property == true)
+          onto_->class_graph_.addProperty(class_branch, feed.prop_, type, data);
+        else
+          onto_->class_graph_.addProperty(class_branch, feed.prop_, feed.on_);
+      }
+      else if((class_branch = onto_->class_graph_.findBranch(feed.on_)) != nullptr)
+        onto_->class_graph_.addPropertyInvert(feed.from_, feed.prop_, class_branch);
+      else if((indiv_branch = onto_->individual_graph_.findBranch(feed.on_)) != nullptr)
+        onto_->individual_graph_.addPropertyInvert(feed.from_, feed.prop_, indiv_branch);
+      else
+        notifications_.push_back("[FAIL][unknown concept to apply property]" + current_str_feed_);
+    }
+    else if(feed.action_ == action_del)
+    {
+      if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+      {
+        if(data_property == true)
+          onto_->class_graph_.removeProperty(feed.from_, feed.prop_, type, data);
+        else
+          onto_->class_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
+      }
+      else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+      {
+        if(data_property == true)
+          onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, type, data);
+        else
+        {
+          auto tmp = onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
+          explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+        }
 
+      }
+      else
+        notifications_.push_back("[FAIL][unknown concept to remove property]" + current_str_feed_);
     }
     else
-      notifications_.push_back("[FAIL][unknown concept to remove property]" + current_str_feed_);
-  }
-  else
-    notifications_.push_back("[FAIL][unknown action]" + current_str_feed_);
+      notifications_.push_back("[FAIL][unknown action]" + current_str_feed_);
   }
   catch(GraphException& e)
   {
