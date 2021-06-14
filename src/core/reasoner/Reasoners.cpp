@@ -207,8 +207,8 @@ void Reasoners::runPreReasoners()
     nb_updates = ReasonerInterface::getNbUpdates();
     ReasonerInterface::resetNbUpdates();
 
-    if(nb_updates != 0)
-      computeIndividualsUpdates();
+    computeClassesUpdates();
+    computeIndividualsUpdates();
   }
   while(nb_updates!= 0);
 }
@@ -233,8 +233,8 @@ void Reasoners::runPostReasoners()
     nb_updates = ReasonerInterface::getNbUpdates();
     ReasonerInterface::resetNbUpdates();
 
-    if(nb_updates != 0)
-      computeIndividualsUpdates();
+    computeClassesUpdates();
+    computeIndividualsUpdates();
   }
   while(nb_updates!= 0);
 }
@@ -289,39 +289,48 @@ void Reasoners::applyConfig()
 
 void Reasoners::computeIndividualsUpdates()
 {
-  std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
-  size_t indiv_size = indiv.size();
-  for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
-    if(indiv[indiv_i]->nb_updates_ == 0)
-      indiv[indiv_i]->updated_ = false;
+  std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
+  for(auto& indiv : indivs)
+    if(indiv->nb_updates_ == 0)
+      indiv->updated_ = false;
     else
     {
-      indiv[indiv_i]->nb_updates_ = 0;
-      indiv[indiv_i]->updated_ = true;
+      indiv->nb_updates_ = 0;
+      indiv->updated_ = true;
+    }
+}
+
+void Reasoners::computeClassesUpdates()
+{
+  std::vector<ClassBranch_t*> classes = ontology_->class_graph_.get();
+  for(auto& c : classes)
+    if(c->nb_updates_ == 0)
+      c->updated_ = false;
+    else
+    {
+      c->nb_updates_ = 0;
+      c->updated_ = true;
     }
 }
 
 void Reasoners::computeIndividualsUpdatesPeriodic()
 {
-  std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.getSafe();
-  size_t indiv_size = indiv.size();
-  for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
-    if(indiv[indiv_i]->nb_updates_ != 0)
+  std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.getSafe();
+  for(auto& indiv : indivs)
+    if(indiv->nb_updates_ != 0)
     {
-      indiv[indiv_i]->nb_updates_ = 0;
-      indiv[indiv_i]->updated_ = true;
+      indiv->nb_updates_ = 0;
+      indiv->updated_ = true;
     }
 }
 
-
 void Reasoners::resetIndividualsUpdates()
 {
-  std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
-  size_t indiv_size = indiv.size();
-  for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
+  std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
+  for(auto& indiv : indivs)
   {
-    indiv[indiv_i]->nb_updates_ = 0;
-    indiv[indiv_i]->updated_ = true;
+    indiv->nb_updates_ = 0;
+    indiv->updated_ = true;
   }
 }
 

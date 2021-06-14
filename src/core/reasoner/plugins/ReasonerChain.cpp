@@ -12,17 +12,16 @@ void ReasonerChain::preReason()
 void ReasonerChain::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-  std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
-  size_t indiv_size = indiv.size();
-  for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
-    if(indiv[indiv_i]->updated_ == true)
+  std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
+  for(auto indiv : indivs)
+    if(indiv->updated_ == true)
     {
-      for(size_t rel_i = 0; rel_i < indiv[indiv_i]->object_relations_.size(); rel_i++)
+      for(auto& relation : indiv->object_relations_)
       {
-        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(indiv[indiv_i]->object_relations_[rel_i].first);
+        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(relation.first);
         for(ObjectPropertyBranch_t* it_prop : props)
-          for(size_t chain_i = 0; chain_i < it_prop->chains_.size(); chain_i++)
-            resolveChain(it_prop, it_prop->chains_[chain_i], indiv[indiv_i]->object_relations_[rel_i].second, indiv[indiv_i]);
+          for(auto& chain : it_prop->chains_)
+            resolveChain(it_prop, chain, relation.second, indiv);
       }
     }
 }
