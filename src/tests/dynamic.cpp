@@ -14,6 +14,8 @@ TEST(dynamic_tests, insert)
   bool res_bool = true;
   std::string test_word = "robot";
 
+  onto_ptr->reasoners.activate("ReasonerGeneralize");
+
   onto_ptr->feeder.addConcept("human");
   onto_ptr->feeder.addInheritage("man", "human");
   onto_ptr->feeder.addInheritage("woman", "human");
