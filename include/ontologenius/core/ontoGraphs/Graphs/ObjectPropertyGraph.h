@@ -26,6 +26,8 @@ struct ObjectPropertyVectors_t
    std::map<std::string, std::vector<std::string>> dictionary_;
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
    bool annotation_usage_;
+
+   ObjectPropertyVectors_t() : annotation_usage_(false) {}
 };
 
 //for friend
@@ -47,6 +49,7 @@ public:
 
   void deepCopy(const ObjectPropertyGraph& other);
 
+  ObjectPropertyBranch_t* newDefaultBranch(const std::string& name);
   void add(const std::string& value, ObjectPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 

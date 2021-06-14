@@ -34,6 +34,15 @@ DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other, ClassGraph*
   this->container_.load(all_branchs_);
 }
 
+DataPropertyBranch_t* DataPropertyGraph::newDefaultBranch(const std::string& name)
+{
+  auto branch = new DataPropertyBranch_t(name);
+  roots_[name] = branch;
+  all_branchs_.push_back(branch);
+  container_.insert(branch);
+  return branch;
+}
+
 void DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& property_vectors)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);

@@ -34,6 +34,15 @@ ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, Class
   this->container_.load(all_branchs_);
 }
 
+ObjectPropertyBranch_t* ObjectPropertyGraph::newDefaultBranch(const std::string& name)
+{
+  auto branch = new ObjectPropertyBranch_t(name);
+  roots_[name] = branch;
+  all_branchs_.push_back(branch);
+  container_.insert(branch);
+  return branch;
+}
+
 void ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
@@ -374,12 +383,8 @@ bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, std::string& relatio
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
       ObjectPropertyBranch_t* tmp = container_.find(data);
       if(tmp == nullptr)
-      {
-        tmp = new ObjectPropertyBranch_t(data);
-        roots_[data] = tmp;
-        branchs_[data] = tmp;
-        container_.insert(tmp);
-      }
+        tmp = newDefaultBranch(data);
+
       conditionalPushBack(prop->mothers_, ObjectPropertyElement_t(tmp));
       conditionalPushBack(tmp->childs_, ObjectPropertyElement_t(prop));
       prop->updated_ = true;
@@ -402,12 +407,7 @@ bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, std::string& r
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
       ObjectPropertyBranch_t* tmp = container_.find(data);
       if(tmp == nullptr)
-      {
-        tmp = new ObjectPropertyBranch_t(data);
-        roots_[data] = tmp;
-        all_branchs_.push_back(tmp);
-        container_.insert(tmp);
-      }
+        tmp = newDefaultBranch(data);
 
       conditionalPushBack(tmp->mothers_, ObjectPropertyElement_t(prop));
       conditionalPushBack(prop->childs_, ObjectPropertyElement_t(tmp));
@@ -440,19 +440,9 @@ bool ObjectPropertyGraph::addInverseOf(const std::string& from, const std::strin
   else
   {
     if(from_branch == nullptr)
-    {
-      from_branch = new ObjectPropertyBranch_t(from);
-      roots_[from] = from_branch;
-      all_branchs_.push_back(from_branch);
-      container_.insert(from_branch);
-    }
+      from_branch = newDefaultBranch(from);
     else if(on_branch == nullptr)
-    {
-      on_branch = new ObjectPropertyBranch_t(on);
-      roots_[on] = on_branch;
-      all_branchs_.push_back(on_branch);
-      container_.insert(on_branch);
-    }
+      on_branch = newDefaultBranch(on);
   }
 
   conditionalPushBack(from_branch->inverses_, ObjectPropertyElement_t(on_branch, 1.0));

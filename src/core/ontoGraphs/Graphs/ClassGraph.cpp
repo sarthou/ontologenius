@@ -978,9 +978,7 @@ void ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& prope
         throw GraphException(property + " is a data property");
 
       std::lock_guard<std::shared_timed_mutex> lock_property(object_property_graph_->mutex_);
-      branch_prop = new ObjectPropertyBranch_t(property);
-      object_property_graph_->container_.insert(branch_prop);
-      object_property_graph_->all_branchs_.push_back(branch_prop);
+      branch_prop = object_property_graph_->newDefaultBranch(property);
     }
 
     if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
@@ -1007,9 +1005,7 @@ void ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& prope
         throw GraphException(property + " is an object property");
 
       std::lock_guard<std::shared_timed_mutex> lock_property(data_property_graph_->mutex_);
-      branch_prop = new DataPropertyBranch_t(property);
-      data_property_graph_->container_.insert(branch_prop);
-      data_property_graph_->all_branchs_.push_back(branch_prop);
+      branch_prop = data_property_graph_->newDefaultBranch(property);
     }
 
     if(checkRangeAndDomain(branch_from, branch_prop, data_branch))
@@ -1047,9 +1043,7 @@ void ClassGraph::addPropertyInvert(const std::string& class_from, const std::str
         throw GraphException(property + " is a data property");
 
       std::lock_guard<std::shared_timed_mutex> lock_property(object_property_graph_->mutex_);
-      branch_prop = new ObjectPropertyBranch_t(property);
-      object_property_graph_->container_.insert(branch_prop);
-      object_property_graph_->all_branchs_.push_back(branch_prop);
+      branch_prop = object_property_graph_->newDefaultBranch(property);
     }
 
     if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
