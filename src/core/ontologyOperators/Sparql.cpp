@@ -1,6 +1,7 @@
 #include "ontologenius/core/ontologyOperators/Sparql.h"
 
 #include "ontologenius/utils/String.h"
+#include "ontologenius/graphical/Display.h"
 
 namespace ontologenius
 {
@@ -50,7 +51,14 @@ namespace ontologenius
     }
     else
     {
-      return resolve(getTriplets(query, ","));
+      auto triplets = getTriplets(query, ",");
+      if(triplets.size())
+        return resolve(triplets);
+      else
+      {
+        Display::error("The query is malformed");
+        return {};
+      }
     }    
   }
 
