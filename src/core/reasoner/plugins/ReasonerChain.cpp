@@ -16,12 +16,14 @@ void ReasonerChain::postReason()
   for(auto indiv : indivs)
     if(indiv->updated_ == true)
     {
-      for(auto& relation : indiv->object_relations_)
+      // Do not use a for each loop style.
+      // The vector object_relations_ is modified by resolveChain
+      for(size_t rel_i = 0; rel_i < indiv->object_relations_.size(); rel_i++)
       {
-        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(relation.first);
+        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(indiv->object_relations_[rel_i].first);
         for(ObjectPropertyBranch_t* it_prop : props)
           for(auto& chain : it_prop->chains_)
-            resolveChain(it_prop, chain, relation.second, indiv);
+            resolveChain(it_prop, chain, indiv->object_relations_[rel_i].second, indiv);
       }
     }
 }
