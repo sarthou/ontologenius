@@ -806,7 +806,7 @@ std::unordered_set<std::string> ClassGraph::getDownIndividual(ClassBranch_t* bra
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
-  for(auto indiv : branch->individual_childs_)
+  for(auto& indiv : branch->individual_childs_)
     res.insert(indiv.elem->value());
 
   return res;
@@ -815,7 +815,7 @@ std::unordered_set<std::string> ClassGraph::getDownIndividual(ClassBranch_t* bra
 void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-  for(auto indiv : branch->individual_childs_)
+  for(auto& indiv : branch->individual_childs_)
     res.insert(indiv.elem->value());
 }
 
@@ -824,7 +824,7 @@ std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtrSafe(Cla
   std::unordered_set<IndividualBranch_t*> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
-  for(auto indiv : branch->individual_childs_)
+  for(auto& indiv : branch->individual_childs_)
     res.insert(indiv.elem);
 
   return res;
@@ -833,7 +833,7 @@ std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtrSafe(Cla
 void ClassGraph::getDownIndividualPtrSafe(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-  for(auto indiv : branch->individual_childs_)
+  for(auto& indiv : branch->individual_childs_)
     res.insert(indiv.elem);
 }
 
@@ -872,7 +872,7 @@ void ClassGraph::deleteClass(ClassBranch_t* _class)
     }
 
     IndividualBranch_t* elem = nullptr;
-    for(auto indiv : _class->individual_childs_)
+    for(auto& indiv : _class->individual_childs_)
     {
       elem = indiv.elem;
       for(size_t i = 0; i < elem->is_a_.size();)
@@ -1258,13 +1258,13 @@ void ClassGraph::cpyBranch(ClassBranch_t* old_branch, ClassBranch_t* new_branch)
   new_branch->steady_dictionary_ = old_branch->steady_dictionary_;
 
   for(const auto& child : old_branch->childs_)
-    new_branch->childs_.emplace_back(ClassElement_t(child, container_.find(child.elem->value())));
+    new_branch->childs_.emplace_back(child, container_.find(child.elem->value()));
 
   for(const auto& mother : old_branch->mothers_)
-    new_branch->mothers_.emplace_back(ClassElement_t(mother, container_.find(mother.elem->value())));
+    new_branch->mothers_.emplace_back(mother, container_.find(mother.elem->value()));
 
   for(const auto& disjoint : old_branch->disjoints_)
-    new_branch->disjoints_.emplace_back(ClassElement_t(disjoint, container_.find(disjoint.elem->value())));
+    new_branch->disjoints_.emplace_back(disjoint, container_.find(disjoint.elem->value()));
 
   for(const auto& indiv : old_branch->individual_childs_)
     new_branch->individual_childs_.emplace_back(indiv, individual_graph_->container_.find(indiv.elem->value()));
@@ -1273,14 +1273,14 @@ void ClassGraph::cpyBranch(ClassBranch_t* old_branch, ClassBranch_t* new_branch)
   {
     auto prop = object_property_graph_->container_.find(relation.first->value());
     auto on = container_.find(relation.second->value());
-    new_branch->object_relations_.emplace_back(ClassObjectRelationElement_t(relation, prop, on));
+    new_branch->object_relations_.emplace_back(relation, prop, on);
   }
 
   for(const auto& relation : old_branch->data_relations_)
   {
     auto prop = data_property_graph_->container_.find(relation.first->value());
     auto data = relation.second;
-    new_branch->data_relations_.emplace_back(ClassDataRelationElement_t(relation, prop, data));
+    new_branch->data_relations_.emplace_back(relation, prop, data);
   }
 }
 

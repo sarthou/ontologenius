@@ -90,8 +90,8 @@ protected:
 template <typename B>
 OntoGraph<B>::~OntoGraph()
 {
-  for(size_t i = 0; i < all_branchs_.size(); i++)
-    delete all_branchs_[i];
+  for(auto& branch : all_branchs_)
+    delete branch;
 
   branchs_.clear();
   roots_.clear();
@@ -394,7 +394,7 @@ void OntoGraph<B>::getDownPtr(B* branch, std::unordered_set<B*>& res, int depth,
     current_depth++;
     res.insert(branch);
 
-    for(auto it : branch->childs_)
+    for(auto& it : branch->childs_)
       if(res.find(it.elem) == res.end())
         getDownPtr(it.elem, res, depth, current_depth);
   }
@@ -405,7 +405,7 @@ void OntoGraph<B>::getDownPtr(B* branch, std::unordered_set<B*>& res)
 {
   res.insert(branch);
 
-  for(auto it : branch->childs_)
+  for(auto& it : branch->childs_)
     if(res.find(it.elem) == res.end())
       getDownPtr(it.elem, res);
 }
@@ -440,7 +440,7 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res)
 {
   res.insert(branch);
 
-  for(auto it : branch->mothers_)
+  for(auto& it : branch->mothers_)
     if(res.find(it.elem) == res.end())
       getUpPtr(it.elem, res);
 }
@@ -536,9 +536,9 @@ std::unordered_set<std::string> OntoGraph<B>::findSub(const std::string& value, 
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  std::vector<B*> branch = this->container_.find(&comparator<B>, value, this->language_, use_default);
-  for(size_t i = 0; i < branch.size(); i++)
-    res.insert(branch[i]->value());
+  std::vector<B*> branchs = this->container_.find(&comparator<B>, value, this->language_, use_default);
+  for(auto branch : branchs)
+    res.insert(branch->value());
 
   return res;
 }
@@ -548,9 +548,9 @@ std::unordered_set<std::string> OntoGraph<B>::findRegex(const std::string& regex
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  std::vector<B*> branch = this->container_.find(&comparatorRegex<B>, regex, this->language_, use_default);
-  for(size_t i = 0; i < branch.size(); i++)
-    res.insert(branch[i]->value());
+  std::vector<B*> branchs = this->container_.find(&comparatorRegex<B>, regex, this->language_, use_default);
+  for(auto branch : branchs)
+    res.insert(branch->value());
 
   return res;
 }
@@ -613,7 +613,7 @@ template <typename B>
 void OntoGraph<B>::mitigate(B* branch)
 {
   std::vector<Single_t<B*>> childs = branch->childs_;
-  for(Single_t<B*> child : childs)
+  for(Single_t<B*>& child : childs)
   {
     std::unordered_set<B*> up;
     getUpPtr(child.elem, up);
@@ -626,7 +626,7 @@ void OntoGraph<B>::mitigate(B* branch)
   }
 
   std::vector<Single_t<B*>> mothers = branch->mothers_;
-  for(Single_t<B*> mother : mothers)
+  for(Single_t<B*>& mother : mothers)
   {
     std::unordered_set<B*> down;
     getDownPtr(mother.elem, down);
@@ -655,7 +655,7 @@ template <typename B>
 std::vector<B*> OntoGraph<B>::intersection(const std::unordered_set<B*>& set, const std::vector<Single_t<B*>>& vect)
 {
   std::vector<B*> res;
-  for(Single_t<B*> v : vect)
+  for(const Single_t<B*>& v : vect)
   {
     if(set.find(v.elem) != set.end())
       res.push_back(v.elem);

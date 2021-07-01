@@ -61,7 +61,7 @@ public:
   }
 
   template <class T>
-  inline void removeFromVect(std::vector<T>& vect, T value)
+  inline void removeFromVect(std::vector<T>& vect, const T& value)
   {
     for(size_t i = 0; i < vect.size();)
       if(vect[i] == value)
@@ -71,7 +71,7 @@ public:
   }
 
   template <class T>
-  inline void removeFromElemVect(std::vector<Single_t<T>>& vect, T value)
+  inline void removeFromElemVect(std::vector<Single_t<T>>& vect, const T& value)
   {
     for(size_t i = 0; i < vect.size();)
       if(vect[i].elem == value)

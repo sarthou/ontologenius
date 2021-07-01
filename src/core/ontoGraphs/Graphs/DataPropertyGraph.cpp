@@ -402,10 +402,10 @@ void DataPropertyGraph::cpyBranch(DataPropertyBranch_t* old_branch, DataProperty
   new_branch->steady_dictionary_ = old_branch->steady_dictionary_;
 
   for(const auto& child : old_branch->childs_)
-    new_branch->childs_.emplace_back(DataPropertyElement_t(child, container_.find(child.elem->value())));
+    new_branch->childs_.emplace_back(child, container_.find(child.elem->value()));
 
   for(const auto& mother : old_branch->mothers_)
-    new_branch->mothers_.emplace_back(DataPropertyElement_t(mother, container_.find(mother.elem->value())));
+    new_branch->mothers_.emplace_back(mother, container_.find(mother.elem->value()));
 
   new_branch->ranges_ = old_branch->ranges_;
 

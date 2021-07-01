@@ -1834,7 +1834,7 @@ std::vector<std::vector<ObjectPropertyBranch_t*>> IndividualGraph::getChains(Obj
   std::vector<std::vector<ObjectPropertyBranch_t*>> chains;
   chains.insert(chains.end(), base_property->chains_.begin(), base_property->chains_.end());
 
-  for(auto mother : base_property->mothers_)
+  for(auto& mother : base_property->mothers_)
   {
     auto tmp = getChains(mother.elem);
     chains.insert(chains.end(), tmp.begin(), tmp.end());
@@ -1954,7 +1954,7 @@ void IndividualGraph::deepCopy(const IndividualGraph& other)
     getSame(myself, same_as);
     for(auto me : same_as)
     {
-      auto it = std::remove_if (me->same_as_.begin(), me->same_as_.end(), [myself](IndividualElement_t elem)
+      auto it = std::remove_if (me->same_as_.begin(), me->same_as_.end(), [myself](IndividualElement_t& elem)
       {
           if(elem.elem == myself) 
             return true;
@@ -1982,23 +1982,23 @@ void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch
     new_branch->is_a_.emplace_back(is_a, class_graph_->container_.find(is_a.elem->value()));
 
   for(const auto& same : old_branch->same_as_)
-    new_branch->same_as_.emplace_back(IndividualElement_t(same, container_.find(same.elem->value())));
+    new_branch->same_as_.emplace_back(same, container_.find(same.elem->value()));
 
   for(const auto& distinct : old_branch->distinct_)
-    new_branch->distinct_.emplace_back(IndividualElement_t(distinct, container_.find(distinct.elem->value())));
+    new_branch->distinct_.emplace_back(distinct, container_.find(distinct.elem->value()));
 
   for(const auto& relation : old_branch->object_relations_)
   {
     auto prop = object_property_graph_->container_.find(relation.first->value());
     auto on = container_.find(relation.second->value());
-    new_branch->object_relations_.emplace_back(IndivObjectRelationElement_t(relation, prop, on));
+    new_branch->object_relations_.emplace_back(relation, prop, on);
   }
 
   for(const auto& relation : old_branch->data_relations_)
   {
     auto prop = data_property_graph_->container_.find(relation.first->value());
     auto data = relation.second;
-    new_branch->data_relations_.emplace_back(IndivDataRelationElement_t(relation, prop, data));
+    new_branch->data_relations_.emplace_back(relation, prop, data);
   }
 
   for(const auto& induced : old_branch->object_properties_has_induced_)
