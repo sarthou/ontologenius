@@ -7,6 +7,7 @@ option(WITH_CLANG_TIDY "Enable clang-tidy static analysis during build" OFF)
 if(WITH_CLANG_TIDY)
     include(cmake/ClangTidy.cmake)
 endif()
+include(cmake/Sanitizers.cmake)
 
 function(add_onto_library TARGET)
     if(NOT TARGET)
@@ -21,6 +22,7 @@ function(add_onto_library TARGET)
     target_link_libraries(${TARGET} PRIVATE ${catkin_LIBRARIES})
     set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
     target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
+    target_enable_sanitizers(${TARGET})
 endfunction(add_onto_library)
 
 function(add_onto_executable TARGET)
@@ -36,6 +38,7 @@ function(add_onto_executable TARGET)
     target_link_libraries(${TARGET} PRIVATE ${catkin_LIBRARIES})
     set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
     target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
+    target_enable_sanitizers(${TARGET})
 endfunction(add_onto_executable)
 
 
