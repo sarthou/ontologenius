@@ -2,7 +2,7 @@
 
 ## Instructions
 
-* ensure ontologenius in located in a path like *catkin_ws/src/ontologenius/*
+* ensure ontologenius is located in a path like *catkin_ws/src/ontologenius/*
 * go into *ontologenius/.docker* folder
 * run ```./docker-run.sh catkin_make```
 
