@@ -1,4 +1,8 @@
-cmake_minimum_required(VERSION 3.13)
+function(join VALUES GLUE OUTPUT)
+  string (REGEX REPLACE "([^\\]|^);" "\\1${GLUE}" _TMP_STR "${VALUES}")
+  string (REGEX REPLACE "[\\](.)" "\\1" _TMP_STR "${_TMP_STR}") #fixes escaping
+  set (${OUTPUT} "${_TMP_STR}" PARENT_SCOPE)
+endfunction()
 
 function(target_enable_sanitizers TARGET_NAME)
 
@@ -22,7 +26,7 @@ function(target_enable_sanitizers TARGET_NAME)
         endif()
     endforeach()
 
-    list(JOIN SANITIZERS "," LIST_OF_SANITIZERS)
+    join("${SANITIZERS}" "," LIST_OF_SANITIZERS)
 
     if(LIST_OF_SANITIZERS)
         if(NOT "${LIST_OF_SANITIZERS}" STREQUAL "")
