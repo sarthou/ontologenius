@@ -8,6 +8,7 @@
 #include <mutex>
 
 #include <ros/ros.h>
+#include <ros/callback_queue.h>
 #include "std_msgs/String.h"
 
 #include "ontologenius/StampedString.h"
@@ -39,14 +40,12 @@ class RosInterface
 {
 public:
   /// @brief The RosInterface constructor
-  /// @param n is a pointer to a ROS node handle. The name of the node does not matter
   /// @param name is the name of the created ontology instance. Two instances can not have the same name
-  RosInterface(ros::NodeHandle* n, const std::string& name = "");
+  RosInterface(const std::string& name = "");
   /// @brief The RosInterface copy constructor
   /// @param other is the interface to copy
-  /// @param n is a pointer to a ROS node handle. The name of the node does not matter
   /// @param name is the name of the created ontology instance. Two instances can not have the same name
-  RosInterface(RosInterface& other, ros::NodeHandle* n, const std::string& name = "");
+  RosInterface(RosInterface& other, const std::string& name = "");
   /// @brief The RosInterface destructor
   ~RosInterface();
 
@@ -63,7 +62,7 @@ public:
   /// @brief Starts the interface. This function is blocking. You will thus stay in until you stop the process with the stop function or kill the process
   void run();
   /// @brief Stops the interface.
-  void stop() {run_ = false; }
+  void stop();
 
   /// @brief Closes the ontology to make it explorable. This is not mandatory to close it in this way. It is better to let the user do it by himself
   void close();
@@ -89,7 +88,9 @@ public:
 
 private:
   /// @brief The ROS node handle. Its name is never used
-  ros::NodeHandle* n_;
+  ros::NodeHandle n_;
+  /// @brief The ROS callback queue dedicated to the given interface
+  ros::CallbackQueue callback_queue_;
   /// @brief The graph representing the ontology
   Ontology* onto_;
   /// @brief The reasoners pool. Reasoners are automatically load as plugins

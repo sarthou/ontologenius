@@ -15,13 +15,12 @@
 
 namespace ontologenius {
 
-RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) :
-                                                                   feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
-                                                                   run_(true),
-                                                                   feeder_end_pub_(n->advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),
-                                                                   display_(true)
+RosInterface::RosInterface(const std::string& name) :
+                                                  feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
+                                                  run_(true),
+                                                  feeder_end_pub_(n_.advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),
+                                                  display_(true)
 {
-  n_ = n;
   onto_ = new Ontology();
   onto_->setDisplay(display_);
   reasoners_.link(onto_);
@@ -29,16 +28,15 @@ RosInterface::RosInterface(ros::NodeHandle* n, const std::string& name) :
   sparql_.link(onto_);
 
   name_ = name;
+  n_.setCallbackQueue(&callback_queue_);
 }
 
-RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::string& name) :
-                                                                   feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
-                                                                   run_(true),
-                                                                   feeder_end_pub_(n->advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),
-                                                                   display_(true)
+RosInterface::RosInterface(RosInterface& other, const std::string& name) :
+                                                feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
+                                                run_(true),
+                                                feeder_end_pub_(n_.advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),
+                                                display_(true)
 {
-  n_ = n;
-
   other.lock();
   onto_ = new Ontology(*other.onto_);
   onto_->setDisplay(display_);
@@ -50,6 +48,7 @@ RosInterface::RosInterface(RosInterface& other, ros::NodeHandle* n, const std::s
   sparql_.link(onto_);
 
   name_ = name;
+  n_.setCallbackQueue(&callback_queue_);
 }
 
 RosInterface::~RosInterface()
@@ -94,27 +93,27 @@ void RosInterface::init(const std::string& lang, const std::string& config_path)
 
 void RosInterface::run()
 {
-  ros::Subscriber knowledge_subscriber = n_->subscribe(getTopicName("insert"), PUB_QUEU_SIZE, &RosInterface::knowledgeCallback, this);
+  ros::Subscriber knowledge_subscriber = n_.subscribe(getTopicName("insert"), PUB_QUEU_SIZE, &RosInterface::knowledgeCallback, this);
 
-  ros::Subscriber stamped_knowledge_subscriber = n_->subscribe(getTopicName("insert_stamped"), PUB_QUEU_SIZE, &RosInterface::stampedKnowledgeCallback, this);
+  ros::Subscriber stamped_knowledge_subscriber = n_.subscribe(getTopicName("insert_stamped"), PUB_QUEU_SIZE, &RosInterface::stampedKnowledgeCallback, this);
 
   // Start up ROS service with callbacks
-  ros::ServiceServer service = n_->advertiseService(getTopicName("actions"), &RosInterface::actionsHandle, this);
+  ros::ServiceServer service = n_.advertiseService(getTopicName("actions"), &RosInterface::actionsHandle, this);
 
-  ros::ServiceServer service_class = n_->advertiseService(getTopicName("class"), &RosInterface::classHandle, this);
+  ros::ServiceServer service_class = n_.advertiseService(getTopicName("class"), &RosInterface::classHandle, this);
 
-  ros::ServiceServer service_object_property = n_->advertiseService(getTopicName("object_property"), &RosInterface::objectPropertyHandle, this);
+  ros::ServiceServer service_object_property = n_.advertiseService(getTopicName("object_property"), &RosInterface::objectPropertyHandle, this);
 
-  ros::ServiceServer service_data_property = n_->advertiseService(getTopicName("data_property"), &RosInterface::dataPropertyHandle, this);
+  ros::ServiceServer service_data_property = n_.advertiseService(getTopicName("data_property"), &RosInterface::dataPropertyHandle, this);
 
-  ros::ServiceServer service_individual = n_->advertiseService(getTopicName("individual"), &RosInterface::individualHandle, this);
+  ros::ServiceServer service_individual = n_.advertiseService(getTopicName("individual"), &RosInterface::individualHandle, this);
 
-  ros::ServiceServer service_reasoner = n_->advertiseService(getTopicName("reasoner"), &RosInterface::reasonerHandle, this);
+  ros::ServiceServer service_reasoner = n_.advertiseService(getTopicName("reasoner"), &RosInterface::reasonerHandle, this);
 
   std::thread feed_thread(&RosInterface::feedThread, this);
   std::thread periodic_reasoning_thread(&RosInterface::periodicReasoning, this);
 
-  ros::ServiceServer service_sparql = n_->advertiseService(getTopicName("sparql"), &RosInterface::sparqlHandle, this);
+  ros::ServiceServer service_sparql = n_.advertiseService(getTopicName("sparql"), &RosInterface::sparqlHandle, this);
 
   if(name_ != "")
     Display::info(name_ + " is ready");
@@ -123,11 +122,18 @@ void RosInterface::run()
 
   while (ros::ok() && isRunning())
   {
-    ros::getGlobalCallbackQueue()->callAvailable(ros::WallDuration(0.1));
+    callback_queue_.callAvailable(ros::WallDuration(0.1));
   }
 
   periodic_reasoning_thread.join();
   feed_thread.join();
+}
+
+void RosInterface::stop()
+{
+  run_ = false;
+  callback_queue_.disable();
+  callback_queue_.clear();
 }
 
 void RosInterface::lock()
@@ -611,7 +617,7 @@ bool RosInterface::sparqlHandle(ontologenius::OntologeniusSparqlService::Request
 
 void RosInterface::feedThread()
 {
-  ros::Publisher feeder_publisher = n_->advertise<std_msgs::String>(getTopicName("feeder_notifications"), PUB_QUEU_SIZE);
+  ros::Publisher feeder_publisher = n_.advertise<std_msgs::String>(getTopicName("feeder_notifications"), PUB_QUEU_SIZE);
   bool feeder_end = true;
 
   ros::Rate wait(feeder_rate_);
@@ -670,8 +676,8 @@ void RosInterface::feedThread()
 
 void RosInterface::periodicReasoning()
 {
-  ros::Publisher reasoner_publisher = n_->advertise<std_msgs::String>(getTopicName("reasoner_notifications", name_), PUB_QUEU_SIZE);
-  ros::Publisher explanations_pub = n_->advertise<ontologenius::OntologeniusExplanation>(getTopicName("insert_explanations", name_), PUB_QUEU_SIZE);
+  ros::Publisher reasoner_publisher = n_.advertise<std_msgs::String>(getTopicName("reasoner_notifications", name_), PUB_QUEU_SIZE);
+  ros::Publisher explanations_pub = n_.advertise<ontologenius::OntologeniusExplanation>(getTopicName("insert_explanations", name_), PUB_QUEU_SIZE);
 
   ros::Rate wait(10);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
