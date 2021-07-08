@@ -31,7 +31,7 @@ function(target_enable_sanitizers TARGET_NAME)
     if(LIST_OF_SANITIZERS)
         if(NOT "${LIST_OF_SANITIZERS}" STREQUAL "")
             target_compile_options(${TARGET_NAME} PUBLIC -fsanitize=${LIST_OF_SANITIZERS})
-            target_link_options(${TARGET_NAME} PUBLIC -fsanitize=${LIST_OF_SANITIZERS})
+            target_link_libraries(${TARGET_NAME} PUBLIC -fsanitize=${LIST_OF_SANITIZERS})
         endif()
     endif()
 
