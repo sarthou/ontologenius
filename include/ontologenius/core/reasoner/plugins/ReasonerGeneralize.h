@@ -11,7 +11,7 @@ class ReasonerGeneralize : public ReasonerInterface
 {
 public:
   ReasonerGeneralize();
-  ~ReasonerGeneralize() {}
+  virtual ~ReasonerGeneralize() = default;
 
   virtual void setParameter(const std::string& name, const std::string& value);
 

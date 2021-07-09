@@ -9,7 +9,7 @@ class ReasonerInverseOf : public ReasonerInterface
 {
 public:
   ReasonerInverseOf() {}
-  ~ReasonerInverseOf() {}
+  virtual ~ReasonerInverseOf() = default;
 
   virtual void preReason();
   virtual void postReason();

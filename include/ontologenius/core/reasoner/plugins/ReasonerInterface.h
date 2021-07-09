@@ -10,7 +10,7 @@ namespace ontologenius {
 class ReasonerInterface
 {
 public:
-  virtual ~ReasonerInterface() {}
+  virtual ~ReasonerInterface() = default;
 
   virtual void initialize(Ontology* onto) {ontology_ = onto; }
   virtual void setParameter(const std::string& name, const std::string& value)

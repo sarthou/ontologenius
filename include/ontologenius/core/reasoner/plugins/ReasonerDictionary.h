@@ -9,7 +9,7 @@ class ReasonerDictionary : public ReasonerInterface
 {
 public:
   ReasonerDictionary() { use_id_ = false; }
-  ~ReasonerDictionary() {}
+  virtual ~ReasonerDictionary() = default;
 
   void setParameter(const std::string& name, const std::string& value);
 
