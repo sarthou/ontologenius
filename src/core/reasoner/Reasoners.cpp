@@ -16,12 +16,15 @@ Reasoners::~Reasoners()
 {
   for(auto& it : reasoners_)
   {
-    /*if(it.second != nullptr)
+    if(it.second != nullptr)
     {
       delete it.second;
       it.second = nullptr;
-    }*/
-    //TODO: unload the library cause segfault or exception => unstable behavior
+    }
+  }
+
+  for(auto& it : reasoners_)
+  {
     try
     {
       loader_.unloadLibraryForClass(it.first);
@@ -40,15 +43,6 @@ Reasoners::~Reasoners()
       std::cout << "catch other" << std::endl;
     }
   }
-  /*for(auto& it : reasoners_)
-  {
-    if(it.second != nullptr)
-    {
-      std::cout << "delete " << it.first << std::endl;
-      delete it.second;
-      it.second = nullptr;
-    }
-  }*/
 }
 
 void Reasoners::link(Ontology* onto)
