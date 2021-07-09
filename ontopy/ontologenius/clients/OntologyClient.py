@@ -49,17 +49,27 @@ class OntologyClient(ClientBase):
             param += " -i false"
         return self.callStr("getName", param)
 
-    def getNames(self, name):
+    def getNames(self, name, take_id = True):
         """Gives all the labels (str[]) of the concept name(str) excepted the muted ones.
+           The default take_id(bool) argument can be set to False if you do not want to
+           consider the concept identifier as a possible default name.
            The result of this function depends on the setting of the working language.
         """
-        return self.call("getNames", name)
+        param = name
+        if take_id == False:
+            param += " -i false"
+        return self.call("getNames", param)
 
-    def getEveryNames(self, name):
+    def getEveryNames(self, name, take_id = True):
         """Gives all the labels (str[]) of the concept name(str) even the muted ones.
+           The default take_id(bool) argument can be set to False if you do not want to
+           consider the concept identifier as a possible default name.
            The result of this function depends on the setting of the working language.
         """
-        return self.call("getEveryNames", name)
+        param = name
+        if take_id == False:
+            param += " -i false"
+        return self.call("getEveryNames", param)
 
     def find(self, name, take_id = True):
         """Gives all the concepts (str[]) having for label name(str).

@@ -14,6 +14,8 @@ TEST(dynamic_tests, insert)
   bool res_bool = true;
   std::string test_word = "robot";
 
+  onto_ptr->reasoners.activate("ReasonerGeneralize");
+
   onto_ptr->feeder.addConcept("human");
   onto_ptr->feeder.addInheritage("man", "human");
   onto_ptr->feeder.addInheritage("woman", "human");
@@ -40,6 +42,7 @@ TEST(dynamic_tests, insert)
   onto_ptr->feeder.addProperty("laura", "hasLeg", "int", "2");
   onto_ptr->feeder.addProperty("alice", "hasLeg", "int", "2");
   onto_ptr->feeder.waitUpdate(500);
+  wait.sleep();
 
   res = onto_ptr->classes.getOn("woman", "hasLeg");
   res_bool = ((res.size() == 1) &&
@@ -48,6 +51,7 @@ TEST(dynamic_tests, insert)
 
   onto_ptr->feeder.removeProperty("alice", "hasLeg", "int", "2");
   onto_ptr->feeder.waitUpdate(500);
+  wait.sleep();
 
   res = onto_ptr->classes.getOn("woman", "hasLeg");
   res_bool = (res.size() == 0);

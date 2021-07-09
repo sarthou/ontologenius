@@ -30,13 +30,16 @@ a:hover {
 }
 
 body {
-  line-height:1;
   font-family:Arial, Helvetica, sans-serif;
   font-weight:400;
   transition-duration:1s;
   font-size: 16px;
   background-color:#e3e3e4;
   color:#404244;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 footer {
@@ -50,7 +53,6 @@ footer {
   height: 80px;
   padding: 10px;
 
-  position: fixed;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -125,7 +127,8 @@ a.laas_logo {
 .navigationbar h1 {
   font-size:2.5em;
   margin-bottom:0.85em;
-  margin-top:0.85em
+  margin-top:0.85em;
+  line-height: normal;
 }
 .navigationbar li {
   display:inline-block;
@@ -355,7 +358,7 @@ a.laas_logo {
   background-color:#fff;
   padding: 25px 35px 20px 30px;
   box-sizing:border-box;
-  margin-bottom:130px;
+  margin-bottom:50px;
 }
 .context ul,.context ol {
   margin-bottom:1.5em
@@ -539,7 +542,7 @@ p.tip {
  width:90%
 }
 .course-part-summary__header{
-  line-height: 0;
+  line-height: 1;
 }
 .course-part-summary__main-icon {
  background:#3a4b99;
@@ -739,7 +742,15 @@ ol.tutorial-part-summary_list>li {
   table td,table th {
     padding:5px 5px
   }
-  html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video {
-    font-size:102%
-  }
+
+  .course-part-summary__header {
+    font-size: 80%;
+    height: 25px;
+    word-wrap:break-word;
+   }
+
+   .tutorial-part-summary_list {
+    font-size: 80%;
+    word-wrap:break-word;
+   }
 }

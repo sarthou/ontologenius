@@ -9,7 +9,7 @@ class ReasonerRangeDomain : public ReasonerInterface
 {
 public:
   ReasonerRangeDomain() {}
-  ~ReasonerRangeDomain() {}
+  virtual ~ReasonerRangeDomain() = default;
 
   virtual void postReason();
 

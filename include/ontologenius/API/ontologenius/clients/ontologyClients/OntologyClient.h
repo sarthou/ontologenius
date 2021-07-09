@@ -38,12 +38,14 @@ public:
   std::string getName(const std::string& name, bool take_id = true);
   /// @brief Gives all the labels of a concept excepted the muted ones.
   /// @param name is the concept indentifier for which you serach its labels.
+  /// @param take_id can be set to false if you do not want to consider the concept identifier as a possible default name.
   /// @return The result of this function depends on the setting of the working language.
-  std::vector<std::string> getNames(const std::string& name);
+  std::vector<std::string> getNames(const std::string& name, bool take_id = true);
   /// @brief Gives all the labels of a concept even the muted ones.
   /// @param name is the concept indentifier for which you serach its labels.
+  /// @param take_id can be set to false if you do not want to consider the concept identifier as a possible default name.
   /// @return The result of this function depends on the setting of the working language.
-  std::vector<std::string> getEveryNames(const std::string& name);
+  std::vector<std::string> getEveryNames(const std::string& name, bool take_id = true);
   /// @brief Gives all the concepts having for label the one passed in argument.
   /// @param name is a concept name in natural language.
   /// @param take_id can be set to false if you do not want to consider the concept identifier as a possible default name.

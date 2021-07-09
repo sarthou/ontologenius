@@ -26,6 +26,8 @@ struct ObjectPropertyVectors_t
    std::map<std::string, std::vector<std::string>> dictionary_;
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
    bool annotation_usage_;
+
+   ObjectPropertyVectors_t() : annotation_usage_(false) {}
 };
 
 //for friend
@@ -47,6 +49,7 @@ public:
 
   void deepCopy(const ObjectPropertyGraph& other);
 
+  ObjectPropertyBranch_t* newDefaultBranch(const std::string& name);
   void add(const std::string& value, ObjectPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 
@@ -78,9 +81,9 @@ private:
     auto it = vect.find(disjoint);
     if(it != vect.end())
     {
-      me->disjoints_.push_back(it->second);
+      me->disjoints_.emplace_back(it->second);
       if(all)
-        it->second->disjoints_.push_back(me); // TODO do not save
+        it->second->disjoints_.emplace_back(me); // TODO do not save
       find = true;
     }
   }
@@ -93,9 +96,9 @@ private:
     auto it = vect.find(inverse);
     if(it != vect.end())
     {
-      me->inverses_.push_back(it->second);
+      me->inverses_.emplace_back(it->second);
       if(all)
-        it->second->inverses_.push_back(me); // TODO do not save
+        it->second->inverses_.emplace_back(me); // TODO do not save
       find = true;
     }
   }

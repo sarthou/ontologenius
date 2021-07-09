@@ -9,7 +9,7 @@ class ReasonerNone : public ReasonerInterface
 {
 public:
   ReasonerNone() {}
-  ~ReasonerNone() {}
+  virtual ~ReasonerNone() = default;
 
   virtual void preReason();
   virtual void postReason();

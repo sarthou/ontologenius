@@ -133,7 +133,7 @@
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
           <p>The SparqlClient class provides a ROS service to explore ontologenius with SPARQL-like queries.</p>
-          <p>The variables start with the symbol ? (e.g. ?my_var) and each triplet is separated by a comma.</p>
+          <p>The variables start with the symbol ? (e.g. ?my_var) and each triplet is separated by a dot.</p>
         </div>
 
         <div class="func">
@@ -145,7 +145,17 @@
 
           <h3 class="fn" id="call"><a name="call"></a><span class="name">call</span>(self, query)</h3>
 
-          <h2>Query Examples</h2>
+          <h2>Basic query Examples</h2>
+
+          <p>The general structure is always the same:</p>
+          <div class="code_block">
+            <p>SELECT * // or ?x to get specific variables</p>
+            <p>WHERE {</p>
+            <p>   // pattern</p>
+            <p>}</p>
+          </div>
+          <p>You can also add the DISTINCT keyword just after the SELECT to ensure unique results.
+              The following blocks are examples of possible patterns.</p>
 
         <div class="code_block">
           <p>Bedroom isA ?type</p>
@@ -184,7 +194,7 @@
         <p>Give all the individuals for which the individual 'Table1' is in it.</p>
 
         <div class="code_block">
-          <p>?object isA Table, ?object isIn ?room</p>
+          <p>?object isA Table. ?object isIn ?room</p>
         </div>
         <div class="code_block">
           <p>results: </p>
@@ -196,6 +206,18 @@
           <p>    values: [Table1, Bedroom]</p>
         </div>
         <p>Give all the individuals that are tables and the room in which they are.</p>
+
+        <h2>Query with negation</h2>
+        <div class="code_block">
+          <p>?object isA Table NOT EXISTS { ?object isIn LivingRoom }</p>
+        </div>
+        <div class="code_block">
+          <p>results: </p>
+          <p>  - </p>
+          <p>    names: [object]</p>
+          <p>    values: [Table1]</p>
+        </div>
+        <p>Give all the individuals that are tables and not in the living room.</p>
 
         </div>
       </div>

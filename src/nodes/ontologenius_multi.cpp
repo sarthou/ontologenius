@@ -46,7 +46,7 @@ ontologenius::Parameters params;
 bool deleteInterface(const std::string& name)
 {
   interfaces_[name]->stop();
-  usleep(1000);
+  usleep(200000);
   try
   {
     interfaces_threads_[name].join();
@@ -124,7 +124,7 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
       res.code = NO_EFFECT;
     else
     {
-      auto tmp = new ontologenius::RosInterface(n_, req.param);
+      auto tmp = new ontologenius::RosInterface(req.param);
       interfaces_[req.param] = tmp;
       tmp->setDisplay(params.at("display").getFirst() == "true");
       tmp->init(params.at("language").getFirst(),
@@ -165,7 +165,7 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
               res.code = NO_EFFECT;
             else
             {
-              auto tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), n_, copy_name);
+              auto tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), copy_name);
               interfaces_[copy_name] = tmp;
               tmp->setDisplay(params.at("display").getFirst() == "true");
               tmp->init(params.at("language").getFirst(),

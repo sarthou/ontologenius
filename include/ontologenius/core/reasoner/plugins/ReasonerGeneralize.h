@@ -11,7 +11,7 @@ class ReasonerGeneralize : public ReasonerInterface
 {
 public:
   ReasonerGeneralize();
-  ~ReasonerGeneralize() {}
+  virtual ~ReasonerGeneralize() = default;
 
   virtual void setParameter(const std::string& name, const std::string& value);
 
@@ -20,7 +20,7 @@ public:
   virtual std::string getName();
   virtual std::string getDesciption();
 
-  virtual bool defaultAvtive() {return true;}
+  virtual bool defaultAvtive() {return false;}
 private:
   size_t current_id_;
   size_t class_per_period_;

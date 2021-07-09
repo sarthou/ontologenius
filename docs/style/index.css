@@ -4,6 +4,10 @@ body {
   height: 100%;
   width: 100%;
   margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .container {
@@ -42,7 +46,7 @@ body {
   margin-left: auto;
   padding-left: 20px;
   padding-right: 20px;
-  width: 1180px;
+  max-width: 1180px;
 }
 
 .article {
@@ -170,6 +174,13 @@ body {
   font-size: 16px;
 }
 
+.onto-content {
+  max-width:1280px;
+  width:95%;
+  margin:auto;
+  margin-top:10px;
+}
+
 .onto-content h1 {
   border-left: 5px solid #324a5e;
   border-bottom: 2px solid #324a5e;
@@ -277,7 +288,6 @@ footer {
   height: 80px;
   padding: 10px;
 
-  position: fixed;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -290,9 +300,6 @@ a.laas_logo {
 }
 
 @media (min-width: 768px) {
-  .container {
-    width: 760px;
-  }
 
   .onto-teaser {
     display: inline;
@@ -310,17 +317,5 @@ a.laas_logo {
   .navbar-nav > li > a {
     padding-top: 15px;
     padding-bottom: 15px;
-  }
-}
-
-@media (min-width: 992px) {
-  .container {
-    width: 980px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .container {
-    width: 1180px;
   }
 }

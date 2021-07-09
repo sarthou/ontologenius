@@ -13,29 +13,28 @@ void ReasonerRangeDomain::postReason()
 void ReasonerRangeDomain::postReasonIndividuals()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-  std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
-  size_t indiv_size = indiv.size();
+  std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
 
   std::map<std::string, std::vector<std::string>>::iterator it_range;
   std::map<std::string, std::vector<std::string>>::iterator it_domain;
 
-  for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
-    if(indiv[indiv_i]->updated_ == true)
+  for(auto& indiv : indivs)
+    if(indiv->updated_ == true)
     {
-      it_range = indiv[indiv_i]->flags_.find("range");
-      if(it_range != indiv[indiv_i]->flags_.end())
+      it_range = indiv->flags_.find("range");
+      if(it_range != indiv->flags_.end())
       {
         for(std::string prop : it_range->second)
-          deduceRange(indiv[indiv_i], prop);
-        indiv[indiv_i]->flags_.erase("range");
+          deduceRange(indiv, prop);
+        indiv->flags_.erase("range");
       }
 
-      it_domain = indiv[indiv_i]->flags_.find("domain");
-      if(it_domain != indiv[indiv_i]->flags_.end())
+      it_domain = indiv->flags_.find("domain");
+      if(it_domain != indiv->flags_.end())
       {
         for(std::string prop : it_domain->second)
-          deduceDomain(indiv[indiv_i], prop);
-        indiv[indiv_i]->flags_.erase("domain");
+          deduceDomain(indiv, prop);
+        indiv->flags_.erase("domain");
       }
     }
 }
@@ -93,8 +92,9 @@ void ReasonerRangeDomain::deduceObjRange(IndividualBranch_t* branch, size_t inde
       branch->object_relations_[index].second->is_a_.emplace_back(range, 1.0, true);
       range->individual_childs_.emplace_back(branch->object_relations_[index].second, 1.0, true);
 
-      branch->object_relations_[index].second->updated_ = true;
-      range->updated_ = true;
+      branch->object_relations_[index].second->nb_updates_++;
+      range->nb_updates_++;
+      nb_update_++;
     }
   }
 }
@@ -134,8 +134,9 @@ void ReasonerRangeDomain::deduceObjDomain(IndividualBranch_t* branch, size_t ind
       branch->is_a_.emplace_back(domain, 1.0, true);
       domain->individual_childs_.emplace_back(branch, 1.0, true);
 
-      branch->updated_ = true;
-      domain->updated_ = true;
+      branch->nb_updates_++;
+      domain->nb_updates_++;
+      nb_update_++;
     }
   }
 }
@@ -175,8 +176,9 @@ void ReasonerRangeDomain::deduceDatDomain(IndividualBranch_t* branch, size_t ind
       branch->is_a_.emplace_back(domain, 1.0, true);
       domain->individual_childs_.emplace_back(branch, 1.0, true);
 
-      branch->updated_ = true;
-      domain->updated_ = true;
+      branch->nb_updates_++;
+      domain->nb_updates_++;
+      nb_update_++;
     }
   }
 }
@@ -265,8 +267,9 @@ void ReasonerRangeDomain::deduceObjRange(ClassBranch_t* branch, size_t index)
       branch->object_relations_[index].second->mothers_.emplace_back(range, 1.0, true);
       range->childs_.emplace_back(branch->object_relations_[index].second, 1.0, true);
 
-      branch->object_relations_[index].second->updated_ = true;
-      range->updated_ = true;
+      branch->object_relations_[index].second->nb_updates_++;
+      range->nb_updates_++;
+      nb_update_++;
     }
   }
 }
@@ -306,8 +309,9 @@ void ReasonerRangeDomain::deduceObjDomain(ClassBranch_t* branch, size_t index)
       branch->mothers_.emplace_back(domain, 1.0, true);
       domain->childs_.emplace_back(branch, 1.0, true);
 
-      branch->updated_ = true;
-      domain->updated_ = true;
+      branch->nb_updates_++;
+      domain->nb_updates_++;
+      nb_update_++;
     }
   }
 }
@@ -347,8 +351,9 @@ void ReasonerRangeDomain::deduceDatDomain(ClassBranch_t* branch, size_t index)
       branch->mothers_.emplace_back(domain, 1.0, true);
       domain->childs_.emplace_back(branch, 1.0, true);
 
-      branch->updated_ = true;
-      domain->updated_ = true;
+      branch->nb_updates_++;
+      domain->nb_updates_++;
+      nb_update_++;
     }
   }
 }

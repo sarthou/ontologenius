@@ -32,6 +32,7 @@ int OntologyReader::readFromUri(const std::string& uri, bool individual)
 {
   std::string response = "";
   int err = send_request("GET", uri, "", &response);
+  removeDocType(response);
 
   if(err == NO_ERROR)
   {
@@ -63,6 +64,7 @@ int OntologyReader::readFromFile(const std::string& fileName, bool individual)
   {
     response += tmp;
   }
+  removeDocType(response);
 
   TiXmlDocument doc;
   doc.Parse((const char*)response.c_str(), nullptr, TIXML_ENCODING_UTF8);
@@ -568,6 +570,31 @@ void OntologyReader::pushLang(std::map<std::string, std::vector<std::string>>& d
 
       if((lang != "") && (std::string(value) != "") && display_)
         std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang][dictionary[lang].size() - 1] << std::endl;
+    }
+  }
+}
+
+void OntologyReader::removeDocType(std::string& txt)
+{
+  size_t pose = txt.find("DOCTYPE");
+  if(pose != std::string::npos)
+  {
+    size_t nb = 1;
+    for(size_t i = pose; i < txt.size(); i++)
+    {
+      if(txt[i] == '<')
+        nb++;
+      else if(txt[i] == '>')
+      {
+        nb--;
+        if(nb == 0)
+        {
+          pose = pose-2;
+          auto tmp = txt.substr(pose, i-pose+1);
+          txt.erase(pose, i-pose+1);
+          return;
+        }
+      }
     }
   }
 }

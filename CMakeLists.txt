@@ -7,6 +7,7 @@ option(WITH_CLANG_TIDY "Enable clang-tidy static analysis during build" OFF)
 if(WITH_CLANG_TIDY)
     include(cmake/ClangTidy.cmake)
 endif()
+include(cmake/Sanitizers.cmake)
 
 function(add_onto_library TARGET)
     if(NOT TARGET)
@@ -21,6 +22,7 @@ function(add_onto_library TARGET)
     target_link_libraries(${TARGET} PRIVATE ${catkin_LIBRARIES})
     set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
     target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
+    target_enable_sanitizers(${TARGET})
 endfunction(add_onto_library)
 
 function(add_onto_executable TARGET)
@@ -36,6 +38,7 @@ function(add_onto_executable TARGET)
     target_link_libraries(${TARGET} PRIVATE ${catkin_LIBRARIES})
     set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
     target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
+    target_enable_sanitizers(${TARGET})
 endfunction(add_onto_executable)
 
 
@@ -266,6 +269,7 @@ add_onto_library(ontologenius_interface
   src/RosInterface.cpp
   src/core/ontologyOperators/differenceFinder.cpp
   src/core/ontologyOperators/Sparql.cpp
+  src/core/ontologyOperators/SparqlUtils.cpp
 )
 target_link_libraries(ontologenius_interface
  PUBLIC
@@ -296,12 +300,6 @@ target_link_libraries(ontologenius_tester PRIVATE ontologenius_core_lib)
 add_onto_executable(ontologenius_container_tester src/tests/container_test.cpp)
 target_link_libraries(ontologenius_container_tester PRIVATE ontologenius_core_lib)
 
-add_onto_executable(ontologenius_find_tester src/tests/getNameVsFind.cpp)
-target_link_libraries(ontologenius_find_tester PRIVATE ontologenius_lib ontologenius_core_lib)
-
-add_onto_executable(ontologenius_ORO src/tests/ORO.cpp)
-target_link_libraries(ontologenius_ORO PRIVATE ontologenius_lib ontologenius_core_lib)
-
 add_onto_executable(ontologenius_services_tester src/tests/service_tester.cpp)
 target_link_libraries(ontologenius_services_tester PRIVATE ontologenius_core_lib)
 
@@ -310,6 +308,24 @@ target_link_libraries(ontologenius_config_tester PRIVATE ontologenius_core_lib)
 
 add_onto_executable(ontologenius_versioning src/tests/versioning.cpp)
 target_link_libraries(ontologenius_versioning PRIVATE ontologenius_lib)
+
+#add_onto_executable(ontologenius_ORO src/tests/ORO.cpp)
+#target_link_libraries(ontologenius_ORO PRIVATE ontologenius_lib ontologenius_core_lib)
+
+#add_onto_executable(ontologenius_find_tester src/tests/getNameVsFind.cpp)
+#target_link_libraries(ontologenius_find_tester PRIVATE ontologenius_lib ontologenius_core_lib ontologenius_interface)
+
+#add_onto_executable(ontologenius_local_find src/tests/local_find.cpp)
+#target_link_libraries(ontologenius_local_find PRIVATE ontologenius_lib)
+
+#add_onto_executable(ontologenius_knowrob src/tests/knowrob_test.cpp)
+#target_link_libraries(ontologenius_knowrob PRIVATE ontologenius_interface)
+
+#add_onto_executable(ontologenius_oro src/tests/ORO_test.cpp)
+#target_link_libraries(ontologenius_oro PRIVATE ontologenius_interface ontologenius_lib)
+
+#add_onto_executable(ontologenius_deepcopy src/tests/deepcopy.cpp)
+#target_link_libraries(ontologenius_deepcopy PRIVATE ontologenius_lib)
 
 ##############################################################################
 # Qt Environment

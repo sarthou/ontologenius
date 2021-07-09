@@ -62,6 +62,7 @@ private:
   void applyConfig();
 
   void computeIndividualsUpdates();
+  void computeClassesUpdates();
   void computeIndividualsUpdatesPeriodic();
   void resetIndividualsUpdates();
 };
