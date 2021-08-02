@@ -128,10 +128,10 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
       interfaces_[req.param] = tmp;
 
       auto files = params.at("files").get();
-      if((req.param.find("robot") != std::string::npos) && (params.at("robot").getFirst() != "none"))
-        files.push_back(params.at("robot").getFirst());
-      else if(params.at("human").getFirst() != "none")
-        files.push_back(params.at("human").getFirst());
+      if((req.param.find("robot") != std::string::npos) && (params.at("robot_file").getFirst() != "none"))
+        files.push_back(params.at("robot_file").getFirst());
+      else if(params.at("human_file").getFirst() != "none")
+        files.push_back(params.at("human_file").getFirst());
 
       tmp->setDisplay(params.at("display").getFirst() == "true");
       tmp->init(params.at("language").getFirst(),
