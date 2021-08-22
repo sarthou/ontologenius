@@ -141,9 +141,13 @@ bool ReasonerChain::porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBr
   size_t properties_size = indiv_on->object_relations_.size();
   for(size_t i = 0; i < properties_size; i++)
   {
-    if(indiv_on->object_relations_[i].first->get() == chain_prop->get())
-      if(indiv_on->object_relations_[i].second->get() == chain_indiv->get())
+    if(indiv_on->object_relations_[i].second->get() == chain_indiv->get())
+    {
+      std::unordered_set<ObjectPropertyBranch_t*> down_properties;
+      ontology_->object_property_graph_.getDownPtr(chain_prop, down_properties);
+      if(down_properties.find(indiv_on->object_relations_[i].first) != down_properties.end())
         return true;
+    }
   }
   return false;
 }
