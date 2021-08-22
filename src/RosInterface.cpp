@@ -643,7 +643,7 @@ void RosInterface::feedThread()
       std::vector<std::string> notifications = feeder_.getNotifications();
       for(auto notif : notifications)
       {
-        Display::error(notif);
+        Display::error("[Feeder]" + notif);
         if(name_ != "")
           notif = "[" + name_ + "]" + notif;
         msg.data = notif;
@@ -697,11 +697,17 @@ void RosInterface::periodicReasoning()
     reasoner_mutex_.lock();
     reasoners_.runPeriodicReasoners();
 
-    std::vector<std::string> notifications = reasoners_.getNotifications();
+    auto notifications = reasoners_.getNotifications();
     for(auto& notif : notifications)
     {
-      std::cout << notif << std::endl;
-      msg.data = notif;
+      switch(notif.first)
+      {
+        case notification_debug: std::cout << "[Reasoners]" << notif.second << std::endl; break;
+        case notification_info: Display::info("[Reasoners]" + notif.second); break;
+        case notification_warning: Display::warning("[Reasoners]" + notif.second); break;
+        case notification_error: Display::error("[Reasoners]" + notif.second); break;
+      }
+      msg.data = notif.second;
       reasoner_publisher.publish(msg);
     }
 

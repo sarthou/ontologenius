@@ -95,6 +95,7 @@ public:
   void addInheritage(const std::string& indiv, const std::string& class_inherited);
   void addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
   void addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
+  int addProperty(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba = 1.0, bool infered = false);
   void addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on);
   void addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data);
   void addPropertyInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);

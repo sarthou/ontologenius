@@ -43,12 +43,21 @@ void ReasonerInverseOf::insertInverse(IndividualBranch_t* indiv_on, ObjectProper
     }  
   }
 
-  indiv_on->object_relations_.emplace_back(inv_prop, inv_indiv, 1.0, true);
-  indiv_on->object_properties_has_induced_.emplace_back();
-  indiv_on->nb_updates_++;
-  explanations_.emplace_back("[ADD]" + indiv_on->value() + "|" + inv_prop->value() + "|" + inv_indiv->value(),
-                             "[ADD]" + inv_indiv->value() + "|" + base_prop->value() + "|" + indiv_on->value());
-  nb_update_++;
+  try
+  {
+    int index = ontology_->individual_graph_.addProperty(indiv_on, inv_prop, inv_indiv, 1.0, true);
+    if(index == (int)indiv_on->object_relations_.size() - 1)
+      indiv_on->object_properties_has_induced_.emplace_back();
+    indiv_on->nb_updates_++;
+
+    explanations_.emplace_back("[ADD]" + indiv_on->value() + "|" + inv_prop->value() + "|" + inv_indiv->value(),
+                              "[ADD]" + inv_indiv->value() + "|" + base_prop->value() + "|" + indiv_on->value());
+    nb_update_++;
+  }
+  catch(GraphException& e)
+  {
+    notifications_.push_back(std::make_pair(notification_error, "[FAIL][" + std::string(e.what()) + "][add]" + indiv_on->value() + "|" + inv_prop->value() + "|" + inv_indiv->value()));
+  }
 }
 
 std::vector<ObjectPropertyElement_t> ReasonerInverseOf::getLowestInvert(ObjectPropertyBranch_t* base_prop)

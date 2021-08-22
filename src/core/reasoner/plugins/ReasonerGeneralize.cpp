@@ -102,7 +102,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Da
         if(me->data_relations_[prop_i].probability < 1.0)
         {
           if(me->data_relations_[prop_i].second.toString() != tmp.toString())
-            notifications_.push_back("[CHANGE]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property));
+            notifications_.push_back(std::make_pair(notification_info, "[CHANGE]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)));
 
           me->data_relations_[prop_i].second = tmp;
           me->data_relations_[prop_i].probability = std::get<2>(property) - 0.01;
@@ -111,7 +111,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Da
 
     if(index == -1)
     {
-      notifications_.push_back("[NEW]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property));
+      notifications_.push_back(std::make_pair(notification_info, "[NEW]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)));
       data_t tmp;
       tmp.set(std::get<1>(property));
       me->data_relations_.emplace_back(std::get<0>(property), tmp, std::get<2>(property) - 0.01);
@@ -124,7 +124,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Da
     size_t deleted = 0;
     for(auto i : deduced_indexs)
     {
-      notifications_.push_back("[DELETE]" + me->value() + ">" + me->data_relations_[i- deleted].first->value() + ":" + me->data_relations_[i- deleted].second.toString());
+      notifications_.push_back(std::make_pair(notification_info, "[DELETE]" + me->value() + ">" + me->data_relations_[i- deleted].first->value() + ":" + me->data_relations_[i- deleted].second.toString()));
       me->data_relations_.erase(me->data_relations_.begin() + i - deleted);
       deleted++;
     }
@@ -150,7 +150,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Ob
         if(me->object_relations_[prop_i].probability < 1.0)
         {
           if(me->object_relations_[prop_i].second != std::get<1>(property))
-            notifications_.push_back("[CHANGE]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)->value());
+            notifications_.push_back(std::make_pair(notification_info, "[CHANGE]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)->value()));
 
           me->object_relations_[prop_i].second = std::get<1>(property);
           me->object_relations_[prop_i].probability = std::get<2>(property) - 0.01;
@@ -159,7 +159,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Ob
 
     if(index == -1)
     {
-      notifications_.push_back("[NEW]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)->value());
+      notifications_.push_back(std::make_pair(notification_info, "[NEW]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)->value()));
       me->object_relations_.emplace_back(std::get<0>(property), std::get<1>(property), std::get<2>(property) - 0.01);
     }
   }
@@ -169,7 +169,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Ob
     size_t deleted = 0;
     for(auto i : deduced_indexs)
     {
-      notifications_.push_back("[DELETE]" + me->value() + ">" + me->object_relations_[i- deleted].first->value() + ":" + me->object_relations_[i- deleted].second->value());
+      notifications_.push_back(std::make_pair(notification_info, "[DELETE]" + me->value() + ">" + me->object_relations_[i- deleted].first->value() + ":" + me->object_relations_[i- deleted].second->value()));
       me->object_relations_.erase(me->object_relations_.begin() + i - deleted);
       deleted++;
     }

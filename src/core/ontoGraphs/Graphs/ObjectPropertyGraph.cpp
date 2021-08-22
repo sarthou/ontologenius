@@ -480,6 +480,31 @@ bool ObjectPropertyGraph::removeInverseOf(const std::string& from, const std::st
   return true;
 }
 
+bool ObjectPropertyGraph::isIrreflexive(const std::string& prop)
+{
+  ObjectPropertyBranch_t* branch = container_.find(prop);
+  if(branch == nullptr)
+    return false;
+  else
+    return isIrreflexive(branch);
+}
+
+bool ObjectPropertyGraph::isIrreflexive(ObjectPropertyBranch_t* prop)
+{
+  if(prop->properties_.irreflexive_property_)
+    return true;
+  else
+  {
+    for(auto mother : prop->mothers_)
+    {
+      if(isIrreflexive(mother.elem))
+        return true;
+    }
+  }
+
+  return false;
+}
+
 void ObjectPropertyGraph::deepCopy(const ObjectPropertyGraph& other)
 {
   for(const auto& root : other.roots_)

@@ -52,11 +52,17 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
     for(size_t i = 0; i < indivs_size; i++)
       if(!porpertyExist(on, chain[chain_size], indivs[i]))
       {
-        on->object_relations_.emplace_back(chain[chain_size], indivs[i], 1.0, true);
-        on->object_properties_has_induced_.emplace_back();
-        on->updated_ = true;
-        for(auto relation : on->object_relations_)
-          relation.second->updated_ = true;
+        try {
+          int index = ontology_->individual_graph_.addProperty(on, chain[chain_size], indivs[i], 1.0, true);
+          if(index == (int)on->object_relations_.size() - 1)
+            on->object_properties_has_induced_.emplace_back();
+        }
+        catch(GraphException& e)
+        {
+          notifications_.push_back(std::make_pair(notification_error, "[FAIL][" + std::string(e.what()) + "][add]" + on->value() + "|" + chain[chain_size]->value() + "|" + indivs[i]->value()));
+          continue;
+        }
+
         std::string explanation_reference;
         auto link_chain = tree.getChainTo(indivs[i]);
         for(auto& lc : link_chain)
