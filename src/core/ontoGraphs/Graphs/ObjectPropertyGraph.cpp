@@ -505,6 +505,31 @@ bool ObjectPropertyGraph::isIrreflexive(ObjectPropertyBranch_t* prop)
   return false;
 }
 
+bool ObjectPropertyGraph::isAsymetric(const std::string& prop)
+{
+  ObjectPropertyBranch_t* branch = container_.find(prop);
+  if(branch == nullptr)
+    return false;
+  else
+    return isAsymetric(branch);
+}
+
+bool ObjectPropertyGraph::isAsymetric(ObjectPropertyBranch_t* prop)
+{
+  if(prop->properties_.antisymetric_property_)
+    return true;
+  else
+  {
+    for(auto mother : prop->mothers_)
+    {
+      if(isIrreflexive(mother.elem))
+        return true;
+    }
+  }
+
+  return false;
+}
+
 void ObjectPropertyGraph::deepCopy(const ObjectPropertyGraph& other)
 {
   for(const auto& root : other.roots_)

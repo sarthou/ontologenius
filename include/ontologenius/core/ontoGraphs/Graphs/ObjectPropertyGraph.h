@@ -72,6 +72,8 @@ public:
 
   bool isIrreflexive(const std::string& prop);
   bool isIrreflexive(ObjectPropertyBranch_t* prop);
+  bool isAsymetric(const std::string& prop);
+  bool isAsymetric(ObjectPropertyBranch_t* prop);
 
 private:
   ClassGraph* class_graph_;

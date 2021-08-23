@@ -1202,6 +1202,31 @@ bool IndividualGraph::relationExists(const std::string& subject, const std::stri
   return false;
 }
 
+bool IndividualGraph::relationExists(IndividualBranch_t* subject, ObjectPropertyBranch_t* property, IndividualBranch_t* object)
+{
+  std::unordered_set<IndividualBranch_t*> sames;
+  getSame(subject, sames);
+  cleanMarks(sames);
+  for(IndividualBranch_t* it : sames)
+  {
+    for(IndivObjectRelationElement_t& relation : it->object_relations_)
+    {
+      if(relation.first != property)
+        continue;
+      else
+      {
+        std::unordered_set<IndividualBranch_t*> sames_tmp;
+        getSame(relation.second, sames_tmp);
+        for(auto same : sames_tmp)
+          if(same == object)
+            return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 void IndividualGraph::cleanMarks(std::unordered_set<IndividualBranch_t*>& indSet)
 {
   for(IndividualBranch_t* it : indSet)
@@ -1432,6 +1457,12 @@ int IndividualGraph::addProperty(IndividualBranch_t* indiv_from, ObjectPropertyB
       auto ids = getSameIdAndClean(indiv_from);
       if(ids.find(indiv_on->get()) != ids.end())
         throw GraphException("Inconsistency prevented regarding irreflexivity of the property");
+    }
+
+    if(object_property_graph_->isAsymetric(property))
+    {
+      if(relationExists(indiv_on, property, indiv_from))
+        throw GraphException("Inconsistency prevented regarding asymetry of the property");
     }
 
     int index = -1;
