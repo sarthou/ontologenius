@@ -12,17 +12,18 @@ void ReasonerChain::preReason()
 void ReasonerChain::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-  std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
-  size_t indiv_size = indiv.size();
-  for(size_t indiv_i = 0; indiv_i < indiv_size; indiv_i++)
-    if(indiv[indiv_i]->updated_ == true)
+  std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
+  for(auto indiv : indivs)
+    if(indiv->updated_ == true)
     {
-      for(size_t rel_i = 0; rel_i < indiv[indiv_i]->object_relations_.size(); rel_i++)
+      // Do not use a for each loop style.
+      // The vector object_relations_ is modified by resolveChain
+      for(size_t rel_i = 0; rel_i < indiv->object_relations_.size(); rel_i++)
       {
-        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(indiv[indiv_i]->object_relations_[rel_i].first);
+        std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(indiv->object_relations_[rel_i].first);
         for(ObjectPropertyBranch_t* it_prop : props)
-          for(size_t chain_i = 0; chain_i < it_prop->chains_.size(); chain_i++)
-            resolveChain(it_prop, it_prop->chains_[chain_i], indiv[indiv_i]->object_relations_[rel_i].second, indiv[indiv_i]);
+          for(auto& chain : it_prop->chains_)
+            resolveChain(it_prop, chain, indiv->object_relations_[rel_i].second, indiv);
       }
     }
 }
@@ -51,11 +52,17 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
     for(size_t i = 0; i < indivs_size; i++)
       if(!porpertyExist(on, chain[chain_size], indivs[i]))
       {
-        on->object_relations_.emplace_back(chain[chain_size], indivs[i], 1.0, true);
-        on->object_properties_has_induced_.emplace_back();
-        on->updated_ = true;
-        for(auto relation : on->object_relations_)
-          relation.second->updated_ = true;
+        try {
+          int index = ontology_->individual_graph_.addProperty(on, chain[chain_size], indivs[i], 1.0, true);
+          if(index == (int)on->object_relations_.size() - 1)
+            on->object_properties_has_induced_.emplace_back();
+        }
+        catch(GraphException& e)
+        {
+          notifications_.push_back(std::make_pair(notification_error, "[FAIL][" + std::string(e.what()) + "][add]" + on->value() + "|" + chain[chain_size]->value() + "|" + indivs[i]->value()));
+          continue;
+        }
+
         std::string explanation_reference;
         auto link_chain = tree.getChainTo(indivs[i]);
         for(auto& lc : link_chain)
@@ -134,9 +141,13 @@ bool ReasonerChain::porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBr
   size_t properties_size = indiv_on->object_relations_.size();
   for(size_t i = 0; i < properties_size; i++)
   {
-    if(indiv_on->object_relations_[i].first->get() == chain_prop->get())
-      if(indiv_on->object_relations_[i].second->get() == chain_indiv->get())
+    if(indiv_on->object_relations_[i].second->get() == chain_indiv->get())
+    {
+      std::unordered_set<ObjectPropertyBranch_t*> down_properties;
+      ontology_->object_property_graph_.getDownPtr(chain_prop, down_properties);
+      if(down_properties.find(indiv_on->object_relations_[i].first) != down_properties.end())
         return true;
+    }
   }
   return false;
 }

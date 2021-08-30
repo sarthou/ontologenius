@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>OntologyClient Class (cpp) | Ontologenius 0.2.8</title>
+  <title>OntologyClient Class (cpp) | Ontologenius 0.2.9</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -130,8 +130,8 @@
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getUp">getUp</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1, const std::string&amp; <i>selector</i> = &quot;&quot;)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#isA">isA</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>base_class</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getName">getName</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getNames">getNames</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getEveryNames">getEveryNames</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getNames">getNames</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getEveryNames">getEveryNames</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#find">find</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findSub">findSub</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findRegex">findRegex</a></b>(const std::string&amp; <i>regex</i>, bool <i>take_id</i> = true)</td></tr>
@@ -176,12 +176,14 @@
           <p>The default <i>take_id</i> argument can be set to false if you do not want to consider the concept identifier as a possible default name.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
-          <h3 class="fn" id="getNames"><a name="getNames"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">getNames</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <h3 class="fn" id="getNames"><a name="getNames"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">getNames</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">bool</span> <i>take_id</i> = true)</h3>
           <p>Gives all the labels of the concept <i>name</i> excepted the <a href="OntologyClient.html#mutedLabel">muted</a> ones.</p>
+          <p>The default <i>take_id</i> argument can be set to false if you do not want to consider the concept identifier as a possible default name.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
-          <h3 class="fn" id="getEveryNames"><a name="getEveryNames"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">getEveryNames</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <h3 class="fn" id="getEveryNames"><a name="getEveryNames"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">getEveryNames</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">bool</span> <i>take_id</i> = true)</h3>
           <p>Gives all the labels of the concept <i>name</i> even the <a href="OntologyClient.html#mutedLabel">muted</a> ones.</p>
+          <p>The default <i>take_id</i> argument can be set to false if you do not want to consider the concept identifier as a possible default name.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
           <h3 class="fn" id="find"><a name="find"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">find</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">bool</span> <i>take_id</i> = true)</h3>

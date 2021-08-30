@@ -9,7 +9,7 @@ int main(int argc, char** argv)
 
   ros::NodeHandle n;
 
-  ontologenius::RosInterface interface(&n);
+  ontologenius::RosInterface interface;
 
   ontologenius::Parameters params;
   params.insert(ontologenius::Parameter("language", {"-l", "--lang"}, {"en"}));

@@ -7,10 +7,18 @@
 
 namespace ontologenius {
 
+enum ReasonerNotificationStatus_e
+{
+  notification_debug,
+  notification_info,
+  notification_warning,
+  notification_error
+};
+
 class ReasonerInterface
 {
 public:
-  virtual ~ReasonerInterface() {}
+  virtual ~ReasonerInterface() = default;
 
   virtual void initialize(Ontology* onto) {ontology_ = onto; }
   virtual void setParameter(const std::string& name, const std::string& value)
@@ -31,7 +39,7 @@ public:
   static size_t getNbUpdates() {return nb_update_; }
   static void resetNbUpdates() {nb_update_ = 0; }
 
-  std::vector<std::string> getNotifications()
+  std::vector<std::pair<ReasonerNotificationStatus_e, std::string>> getNotifications()
   {
     auto tmp = std::move(notifications_);
     notifications_.clear();
@@ -49,7 +57,7 @@ protected:
 
   Ontology* ontology_;
 
-  std::vector<std::string> notifications_;
+  std::vector<std::pair<ReasonerNotificationStatus_e, std::string>> notifications_;
   std::vector<std::pair<std::string, std::string>> explanations_;
 
   static size_t nb_update_;

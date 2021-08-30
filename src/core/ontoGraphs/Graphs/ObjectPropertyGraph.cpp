@@ -34,6 +34,15 @@ ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, Class
   this->container_.load(all_branchs_);
 }
 
+ObjectPropertyBranch_t* ObjectPropertyGraph::newDefaultBranch(const std::string& name)
+{
+  auto branch = new ObjectPropertyBranch_t(name);
+  roots_[name] = branch;
+  all_branchs_.push_back(branch);
+  container_.insert(branch);
+  return branch;
+}
+
 void ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
@@ -374,12 +383,8 @@ bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, std::string& relatio
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
       ObjectPropertyBranch_t* tmp = container_.find(data);
       if(tmp == nullptr)
-      {
-        tmp = new ObjectPropertyBranch_t(data);
-        roots_[data] = tmp;
-        branchs_[data] = tmp;
-        container_.insert(tmp);
-      }
+        tmp = newDefaultBranch(data);
+
       conditionalPushBack(prop->mothers_, ObjectPropertyElement_t(tmp));
       conditionalPushBack(tmp->childs_, ObjectPropertyElement_t(prop));
       prop->updated_ = true;
@@ -402,12 +407,7 @@ bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, std::string& r
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
       ObjectPropertyBranch_t* tmp = container_.find(data);
       if(tmp == nullptr)
-      {
-        tmp = new ObjectPropertyBranch_t(data);
-        roots_[data] = tmp;
-        all_branchs_.push_back(tmp);
-        container_.insert(tmp);
-      }
+        tmp = newDefaultBranch(data);
 
       conditionalPushBack(tmp->mothers_, ObjectPropertyElement_t(prop));
       conditionalPushBack(prop->childs_, ObjectPropertyElement_t(tmp));
@@ -440,19 +440,9 @@ bool ObjectPropertyGraph::addInverseOf(const std::string& from, const std::strin
   else
   {
     if(from_branch == nullptr)
-    {
-      from_branch = new ObjectPropertyBranch_t(from);
-      roots_[from] = from_branch;
-      all_branchs_.push_back(from_branch);
-      container_.insert(from_branch);
-    }
+      from_branch = newDefaultBranch(from);
     else if(on_branch == nullptr)
-    {
-      on_branch = new ObjectPropertyBranch_t(on);
-      roots_[on] = on_branch;
-      all_branchs_.push_back(on_branch);
-      container_.insert(on_branch);
-    }
+      on_branch = newDefaultBranch(on);
   }
 
   conditionalPushBack(from_branch->inverses_, ObjectPropertyElement_t(on_branch, 1.0));
@@ -490,6 +480,56 @@ bool ObjectPropertyGraph::removeInverseOf(const std::string& from, const std::st
   return true;
 }
 
+bool ObjectPropertyGraph::isIrreflexive(const std::string& prop)
+{
+  ObjectPropertyBranch_t* branch = container_.find(prop);
+  if(branch == nullptr)
+    return false;
+  else
+    return isIrreflexive(branch);
+}
+
+bool ObjectPropertyGraph::isIrreflexive(ObjectPropertyBranch_t* prop)
+{
+  if(prop->properties_.irreflexive_property_)
+    return true;
+  else
+  {
+    for(auto mother : prop->mothers_)
+    {
+      if(isIrreflexive(mother.elem))
+        return true;
+    }
+  }
+
+  return false;
+}
+
+bool ObjectPropertyGraph::isAsymetric(const std::string& prop)
+{
+  ObjectPropertyBranch_t* branch = container_.find(prop);
+  if(branch == nullptr)
+    return false;
+  else
+    return isAsymetric(branch);
+}
+
+bool ObjectPropertyGraph::isAsymetric(ObjectPropertyBranch_t* prop)
+{
+  if(prop->properties_.antisymetric_property_)
+    return true;
+  else
+  {
+    for(auto mother : prop->mothers_)
+    {
+      if(isIrreflexive(mother.elem))
+        return true;
+    }
+  }
+
+  return false;
+}
+
 void ObjectPropertyGraph::deepCopy(const ObjectPropertyGraph& other)
 {
   for(const auto& root : other.roots_)
@@ -518,10 +558,10 @@ void ObjectPropertyGraph::cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPr
   new_branch->steady_dictionary_ = old_branch->steady_dictionary_;
 
   for(const auto& child : old_branch->childs_)
-    new_branch->childs_.emplace_back(ObjectPropertyElement_t(child, container_.find(child.elem->value())));
+    new_branch->childs_.emplace_back(child, container_.find(child.elem->value()));
 
   for(const auto& mother : old_branch->mothers_)
-    new_branch->mothers_.emplace_back(ObjectPropertyElement_t(mother, container_.find(mother.elem->value())));
+    new_branch->mothers_.emplace_back(mother, container_.find(mother.elem->value()));
 
   for(const auto& range : old_branch->ranges_)
     new_branch->ranges_.emplace_back(range, class_graph_->container_.find(range.elem->value()));

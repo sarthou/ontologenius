@@ -51,10 +51,10 @@
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="whatsThis">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getName&lt;/span&gt; will give you the label of the class given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'presenceSensor', action: 'getName'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getNames&lt;/span&gt; will give you all the labels of the class given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/class &amp;quot;{param: 'presenceSensor', action: 'getNames'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
-             <string>getName</string>
+             <string>getNames</string>
             </property>
            </widget>
           </item>
@@ -365,10 +365,10 @@
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="whatsThis">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getName&lt;/span&gt; will give you the label of the object property given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/object_property &amp;quot;{param: 'isIn', action: 'getName'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getNames&lt;/span&gt; will give you all the labels of the object property given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/object_property &amp;quot;{param: 'isIn', action: 'getNames'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
-             <string>getName</string>
+             <string>getNames</string>
             </property>
            </widget>
           </item>
@@ -578,10 +578,10 @@
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="whatsThis">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getName&lt;/span&gt; will give you the label of the data property given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/data_property &amp;quot;{param: 'have3Dposition', action: 'getName'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getNames&lt;/span&gt; will give you all the labels of the data property given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/data_property &amp;quot;{param: 'have3Dposition', action: 'getNames'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
-             <string>getName</string>
+             <string>getNames</string>
             </property>
            </widget>
           </item>
@@ -778,10 +778,10 @@
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="whatsThis">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getName&lt;/span&gt; will give you the label of the individual given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/individual &amp;quot;{param: 'cube1', action: 'getName'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getNames&lt;/span&gt; will give you all the labels of the individual given in the parameter&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Command line:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'monospace';&quot;&gt;$ rosservice call /ontologenius/individual &amp;quot;{param: 'cube1', action: 'getNames'}&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
-             <string>getName</string>
+             <string>getNames</string>
             </property>
            </widget>
           </item>

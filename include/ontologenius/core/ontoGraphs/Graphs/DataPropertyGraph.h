@@ -45,6 +45,7 @@ public:
 
   void deepCopy(const DataPropertyGraph& other);
 
+  DataPropertyBranch_t* newDefaultBranch(const std::string& name);
   void add(const std::string& value, DataPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
   bool addAnnotation(const std::string& value, DataPropertyVectors_t& property_vectors);
@@ -70,9 +71,9 @@ private:
     auto it = vect.find(disjoint);
     if(it != vect.end())
     {
-      me->disjoints_.push_back(it->second);
+      me->disjoints_.emplace_back(it->second);
       if(all)
-        it->second->disjoints_.push_back(me); // TODO do not save
+        it->second->disjoints_.emplace_back(me); // TODO do not save
       find = true;
     }
   }

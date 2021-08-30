@@ -806,7 +806,7 @@ std::unordered_set<std::string> ClassGraph::getDownIndividual(ClassBranch_t* bra
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
-  for(auto indiv : branch->individual_childs_)
+  for(auto& indiv : branch->individual_childs_)
     res.insert(indiv.elem->value());
 
   return res;
@@ -815,7 +815,7 @@ std::unordered_set<std::string> ClassGraph::getDownIndividual(ClassBranch_t* bra
 void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-  for(auto indiv : branch->individual_childs_)
+  for(auto& indiv : branch->individual_childs_)
     res.insert(indiv.elem->value());
 }
 
@@ -824,7 +824,7 @@ std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtrSafe(Cla
   std::unordered_set<IndividualBranch_t*> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
-  for(auto indiv : branch->individual_childs_)
+  for(auto& indiv : branch->individual_childs_)
     res.insert(indiv.elem);
 
   return res;
@@ -833,7 +833,7 @@ std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtrSafe(Cla
 void ClassGraph::getDownIndividualPtrSafe(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-  for(auto indiv : branch->individual_childs_)
+  for(auto& indiv : branch->individual_childs_)
     res.insert(indiv.elem);
 }
 
@@ -872,7 +872,7 @@ void ClassGraph::deleteClass(ClassBranch_t* _class)
     }
 
     IndividualBranch_t* elem = nullptr;
-    for(auto indiv : _class->individual_childs_)
+    for(auto& indiv : _class->individual_childs_)
     {
       elem = indiv.elem;
       for(size_t i = 0; i < elem->is_a_.size();)
@@ -952,9 +952,9 @@ void ClassGraph::addInheritage(std::string& class_base, std::string& class_inher
   }
 }
 
-bool ClassGraph::addProperty(std::string& class_from, std::string& property, std::string& class_on)
+void ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& property, const std::string& class_on)
 {
-  ClassBranch_t* branch_from = findBranch(class_from);
+  ClassBranch_t* branch_from = class_from;
   if(branch_from != nullptr)
   {
     ClassBranch_t* branch_on = findBranch(class_on);
@@ -963,7 +963,7 @@ bool ClassGraph::addProperty(std::string& class_from, std::string& property, std
     {
       IndividualBranch_t* test = individual_graph_->findBranch(class_on);
       if(test != nullptr)
-        return false; // TODO ERR
+        throw GraphException("object class does not exists");
 
       branch_on = new ClassBranch_t(class_on);
       container_.insert(branch_on);
@@ -975,28 +975,24 @@ bool ClassGraph::addProperty(std::string& class_from, std::string& property, std
     {
       DataPropertyBranch_t* test = data_property_graph_->findBranch(property);
       if(test != nullptr)
-        return false; // TODO ERR
+        throw GraphException(property + " is a data property");
 
       std::lock_guard<std::shared_timed_mutex> lock_property(object_property_graph_->mutex_);
-      branch_prop = new ObjectPropertyBranch_t(property);
-      object_property_graph_->container_.insert(branch_prop);
-      object_property_graph_->all_branchs_.push_back(branch_prop);
+      branch_prop = object_property_graph_->newDefaultBranch(property);
     }
 
     if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
-    {
       conditionalPushBack(branch_from->object_relations_, ClassObjectRelationElement_t(branch_prop, branch_on));
-      return true;
-    }
     else
-        return false;
+      throw GraphException("Inconsistency prevented regarding the range or domain of the property");
   }
-  return false;
+  else
+    throw GraphException("The class to apply the relation does not exist");
 }
 
-bool ClassGraph::addProperty(std::string& class_from, std::string& property, std::string& type, std::string& data)
+void ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& property, const std::string& type, const std::string& data)
 {
-  ClassBranch_t* branch_from = findBranch(class_from);
+  ClassBranch_t* branch_from = class_from;
   if(branch_from != nullptr)
   {
     data_t data_branch(type, data);
@@ -1006,28 +1002,24 @@ bool ClassGraph::addProperty(std::string& class_from, std::string& property, std
     {
       ObjectPropertyBranch_t* test = object_property_graph_->findBranch(property);
       if(test != nullptr)
-        return false; // TODO ERR
+        throw GraphException(property + " is an object property");
 
       std::lock_guard<std::shared_timed_mutex> lock_property(data_property_graph_->mutex_);
-      branch_prop = new DataPropertyBranch_t(property);
-      data_property_graph_->container_.insert(branch_prop);
-      data_property_graph_->all_branchs_.push_back(branch_prop);
+      branch_prop = data_property_graph_->newDefaultBranch(property);
     }
 
     if(checkRangeAndDomain(branch_from, branch_prop, data_branch))
-    {
       conditionalPushBack(branch_from->data_relations_, ClassDataRelationElement_t(branch_prop, data_branch));
-      return true;
-    }
     else
-      return false;
+      throw GraphException("Inconsistency prevented regarding the range or domain of the property");
   }
-  return false;
+  else
+    throw GraphException("The class to apply the relation does not exist");
 }
 
-bool ClassGraph::addPropertyInvert(std::string& class_from, std::string& property, std::string& class_on)
+void ClassGraph::addPropertyInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on)
 {
-  ClassBranch_t* branch_on = findBranch(class_on);
+  ClassBranch_t* branch_on = class_on;
   if(branch_on != nullptr)
   {
     ClassBranch_t* branch_from = findBranch(class_from);
@@ -1036,7 +1028,7 @@ bool ClassGraph::addPropertyInvert(std::string& class_from, std::string& propert
     {
       IndividualBranch_t* test = individual_graph_->findBranch(class_from);
       if(test != nullptr)
-        return false; // TODO ERR
+        throw GraphException("The class to apply the relation does not exist");
 
       branch_from = new ClassBranch_t(class_from);
       container_.insert(branch_from);
@@ -1048,23 +1040,19 @@ bool ClassGraph::addPropertyInvert(std::string& class_from, std::string& propert
     {
       DataPropertyBranch_t* test = data_property_graph_->findBranch(property);
       if(test != nullptr)
-        return false; // TODO ERR
+        throw GraphException(property + " is a data property");
 
       std::lock_guard<std::shared_timed_mutex> lock_property(object_property_graph_->mutex_);
-      branch_prop = new ObjectPropertyBranch_t(property);
-      object_property_graph_->container_.insert(branch_prop);
-      object_property_graph_->all_branchs_.push_back(branch_prop);
+      branch_prop = object_property_graph_->newDefaultBranch(property);
     }
 
     if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
-    {
       conditionalPushBack(branch_from->object_relations_, ClassObjectRelationElement_t(branch_prop, branch_on));
-      return true;
-    }
     else
-      return false;
+      throw GraphException("Inconsistency prevented regarding the range or domain of the property");
   }
-  return false;
+  else
+    throw GraphException("Object class does not exists");
 }
 
 void ClassGraph::removeLang(std::string& indiv, std::string& lang, std::string& name)
@@ -1099,7 +1087,7 @@ void ClassGraph::removeInheritage(std::string& class_base, std::string& class_in
   branch_inherited->updated_ = true;
 }
 
-bool ClassGraph::removeProperty(std::string& class_from, std::string& property, std::string& class_on)
+void ClassGraph::removeProperty(std::string& class_from, std::string& property, std::string& class_on)
 {
   ClassBranch_t* branch_from = findBranch(class_from);
   if(branch_from != nullptr)
@@ -1119,13 +1107,12 @@ bool ClassGraph::removeProperty(std::string& class_from, std::string& property, 
       else
         i++;
     }
-
-    return true;
   }
-  return false;
+  else
+    throw GraphException("The subject class does not exist");
 }
 
-bool ClassGraph::removeProperty(std::string& class_from, std::string& property, std::string& type, std::string& data)
+void ClassGraph::removeProperty(std::string& class_from, std::string& property, std::string& type, std::string& data)
 {
   ClassBranch_t* branch_from = findBranch(class_from);
   if(branch_from != nullptr)
@@ -1145,10 +1132,9 @@ bool ClassGraph::removeProperty(std::string& class_from, std::string& property, 
       else
         i++;
     }
-
-    return true;
   }
-  return false;
+  else
+    throw GraphException("The subject class does not exist");
 }
 
 bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t* prop, ClassBranch_t* on)
@@ -1272,13 +1258,13 @@ void ClassGraph::cpyBranch(ClassBranch_t* old_branch, ClassBranch_t* new_branch)
   new_branch->steady_dictionary_ = old_branch->steady_dictionary_;
 
   for(const auto& child : old_branch->childs_)
-    new_branch->childs_.emplace_back(ClassElement_t(child, container_.find(child.elem->value())));
+    new_branch->childs_.emplace_back(child, container_.find(child.elem->value()));
 
   for(const auto& mother : old_branch->mothers_)
-    new_branch->mothers_.emplace_back(ClassElement_t(mother, container_.find(mother.elem->value())));
+    new_branch->mothers_.emplace_back(mother, container_.find(mother.elem->value()));
 
   for(const auto& disjoint : old_branch->disjoints_)
-    new_branch->disjoints_.emplace_back(ClassElement_t(disjoint, container_.find(disjoint.elem->value())));
+    new_branch->disjoints_.emplace_back(disjoint, container_.find(disjoint.elem->value()));
 
   for(const auto& indiv : old_branch->individual_childs_)
     new_branch->individual_childs_.emplace_back(indiv, individual_graph_->container_.find(indiv.elem->value()));
@@ -1287,14 +1273,14 @@ void ClassGraph::cpyBranch(ClassBranch_t* old_branch, ClassBranch_t* new_branch)
   {
     auto prop = object_property_graph_->container_.find(relation.first->value());
     auto on = container_.find(relation.second->value());
-    new_branch->object_relations_.emplace_back(ClassObjectRelationElement_t(relation, prop, on));
+    new_branch->object_relations_.emplace_back(relation, prop, on);
   }
 
   for(const auto& relation : old_branch->data_relations_)
   {
     auto prop = data_property_graph_->container_.find(relation.first->value());
     auto data = relation.second;
-    new_branch->data_relations_.emplace_back(ClassDataRelationElement_t(relation, prop, data));
+    new_branch->data_relations_.emplace_back(relation, prop, data);
   }
 }
 

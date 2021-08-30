@@ -6,9 +6,10 @@
 
 namespace ontologenius {
 
-Feeder::Feeder(Ontology* onto) : versionor_(&feed_storage_)
+Feeder::Feeder(Ontology* onto, bool versioning) : versionor_(&feed_storage_)
 {
   onto_ = onto;
+  do_versioning_ = versioning;
 }
 
 bool Feeder::run()
@@ -43,8 +44,8 @@ bool Feeder::run()
       }
       continue;
     }
-
-    if(!feed.checkout_)
+    
+    if(do_versioning_ && !feed.checkout_)
       versionor_.insert(feed);
 
     if(feed.prop_ == "")
@@ -236,54 +237,64 @@ void Feeder::applyProperty(feed_t& feed)
     data_property = true;
   }
 
-  if(feed.action_ == action_add)
-  {
-    if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
-    {
-      if(data_property == true)
-        onto_->individual_graph_.addProperty(feed.from_, feed.prop_, type, data);
-      else
-        onto_->individual_graph_.addProperty(feed.from_, feed.prop_, feed.on_);
-    }
-    else if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
-    {
-      if(data_property == true)
-        onto_->class_graph_.addProperty(feed.from_, feed.prop_, type, data);
-      else
-        onto_->class_graph_.addProperty(feed.from_, feed.prop_, feed.on_);
-    }
-    else if(onto_->class_graph_.findBranch(feed.on_) != nullptr)
-      onto_->class_graph_.addPropertyInvert(feed.from_, feed.prop_, feed.on_);
-    else if(onto_->individual_graph_.findBranch(feed.on_) != nullptr)
-      onto_->individual_graph_.addPropertyInvert(feed.from_, feed.prop_, feed.on_);
-    else
-      notifications_.push_back("[FAIL][unknown concept to apply property]" + current_str_feed_);
-  }
-  else if(feed.action_ == action_del)
-  {
-    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
-    {
-      if(data_property == true)
-        onto_->class_graph_.removeProperty(feed.from_, feed.prop_, type, data);
-      else
-        onto_->class_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
-    }
-    else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
-    {
-      if(data_property == true)
-        onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, type, data);
-      else
-      {
-        auto tmp = onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
-        explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
-      }
+  IndividualBranch_t* indiv_branch = nullptr;
+  ClassBranch_t* class_branch = nullptr;
 
+  try {
+
+    if(feed.action_ == action_add)
+    {
+      if((indiv_branch = onto_->individual_graph_.findBranch(feed.from_)) != nullptr)
+      {
+        if(data_property == true)
+          onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, type, data);
+        else
+          onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, feed.on_);
+      }
+      else if((class_branch = onto_->class_graph_.findBranch(feed.from_)) != nullptr)
+      {
+        if(data_property == true)
+          onto_->class_graph_.addProperty(class_branch, feed.prop_, type, data);
+        else
+          onto_->class_graph_.addProperty(class_branch, feed.prop_, feed.on_);
+      }
+      else if((class_branch = onto_->class_graph_.findBranch(feed.on_)) != nullptr)
+        onto_->class_graph_.addPropertyInvert(feed.from_, feed.prop_, class_branch);
+      else if((indiv_branch = onto_->individual_graph_.findBranch(feed.on_)) != nullptr)
+        onto_->individual_graph_.addPropertyInvert(feed.from_, feed.prop_, indiv_branch);
+      else
+        notifications_.push_back("[FAIL][unknown concept to apply property]" + current_str_feed_);
+    }
+    else if(feed.action_ == action_del)
+    {
+      if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+      {
+        if(data_property == true)
+          onto_->class_graph_.removeProperty(feed.from_, feed.prop_, type, data);
+        else
+          onto_->class_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
+      }
+      else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+      {
+        if(data_property == true)
+          onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, type, data);
+        else
+        {
+          auto tmp = onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
+          explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+        }
+
+      }
+      else
+        notifications_.push_back("[FAIL][unknown concept to remove property]" + current_str_feed_);
     }
     else
-      notifications_.push_back("[FAIL][unknown concept to remove property]" + current_str_feed_);
+      notifications_.push_back("[FAIL][unknown action]" + current_str_feed_);
   }
-  else
-    notifications_.push_back("[FAIL][unknown action]" + current_str_feed_);
+  catch(GraphException& e)
+  {
+    notifications_.push_back("[FAIL][" + std::string(e.what()) + "]" + current_str_feed_);
+  }
 }
 
 } // namespace ontologenius

@@ -34,7 +34,7 @@ public:
   void runPostReasoners();
   void runPeriodicReasoners();
 
-  std::vector<std::string> getNotifications()
+  std::vector<std::pair<ReasonerNotificationStatus_e, std::string>> getNotifications()
   {
     auto tmp = std::move(notifications_);
     notifications_.clear();
@@ -53,7 +53,7 @@ private:
   ConfigReader config_;
   std::map<std::string, ReasonerInterface*> reasoners_;
   std::map<std::string, ReasonerInterface*> active_reasoners_;
-  std::vector<std::string> notifications_;
+  std::vector<std::pair<ReasonerNotificationStatus_e, std::string>> notifications_;
   // Here the explanations are about relations added through FOL
   std::vector<std::pair<std::string, std::string>> explanations_;
 
@@ -62,6 +62,7 @@ private:
   void applyConfig();
 
   void computeIndividualsUpdates();
+  void computeClassesUpdates();
   void computeIndividualsUpdatesPeriodic();
   void resetIndividualsUpdates();
 };

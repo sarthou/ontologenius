@@ -46,7 +46,7 @@ ontologenius::Parameters params;
 bool deleteInterface(const std::string& name)
 {
   interfaces_[name]->stop();
-  usleep(1000);
+  usleep(200000);
   try
   {
     interfaces_threads_[name].join();
@@ -124,12 +124,19 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
       res.code = NO_EFFECT;
     else
     {
-      auto tmp = new ontologenius::RosInterface(n_, req.param);
+      auto tmp = new ontologenius::RosInterface(req.param);
       interfaces_[req.param] = tmp;
+
+      auto files = params.at("files").get();
+      if((req.param.find("robot") != std::string::npos) && (params.at("robot_file").getFirst() != "none"))
+        files.push_back(params.at("robot_file").getFirst());
+      else if(params.at("human_file").getFirst() != "none")
+        files.push_back(params.at("human_file").getFirst());
+
       tmp->setDisplay(params.at("display").getFirst() == "true");
       tmp->init(params.at("language").getFirst(),
                 params.at("intern_file").getFirst(),
-                params.at("files").get(),
+                files,
                 params.at("config").getFirst());
 
       std::thread th(&ontologenius::RosInterface::run, tmp);
@@ -165,7 +172,7 @@ bool managerHandle(ontologenius::OntologeniusService::Request& req,
               res.code = NO_EFFECT;
             else
             {
-              auto tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), n_, copy_name);
+              auto tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), copy_name);
               interfaces_[copy_name] = tmp;
               tmp->setDisplay(params.at("display").getFirst() == "true");
               tmp->init(params.at("language").getFirst(),
@@ -221,6 +228,8 @@ int main(int argc, char** argv)
   params.insert(ontologenius::Parameter("intern_file", {"-i", "--intern_file"}, {"none"}));
   params.insert(ontologenius::Parameter("config", {"-c", "--config"}, {"none"}));
   params.insert(ontologenius::Parameter("display", {"-d", "--display"}, {"true"}));
+  params.insert(ontologenius::Parameter("human_file", {"-h", "--robot"}, {"none"}));
+  params.insert(ontologenius::Parameter("robot_file", {"-r", "--human"}, {"none"}));
   params.insert(ontologenius::Parameter("files", {}));
 
   params.set(argc, argv);

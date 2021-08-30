@@ -47,6 +47,15 @@ public:
     this->infered = other.infered;
   }
 
+  Single_t(const Single_t& other)
+  {
+    // A copy constructor with a pointer is dangerous, never delete it
+    // it should be managed by a Graph class
+    this->elem = other.elem;
+    this->probability = other.probability;
+    this->infered = other.infered;
+  }
+
   bool operator==(const Single_t& other)
   {
     if(elem == other.elem)
@@ -81,6 +90,16 @@ public:
   {
     this->first = first;
     this->second = second;
+    this->probability = other.probability;
+    this->infered = other.infered;
+  }
+
+  Pair_t(const Pair_t& other)
+  {
+    // A copy constructor with a pointer is dangerous, never delete it
+    // it should be managed by a Graph class
+    this->first = other.first;
+    this->second = other.second;
     this->probability = other.probability;
     this->infered = other.infered;
   }

@@ -9,7 +9,7 @@ class ReasonerSymetric : public ReasonerInterface
 {
 public:
   ReasonerSymetric() {}
-  ~ReasonerSymetric() {}
+  virtual ~ReasonerSymetric() = default;
 
   virtual void preReason();
   virtual void postReason();

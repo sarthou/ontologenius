@@ -26,12 +26,21 @@ void ReasonerSymetric::postReason()
           ObjectPropertyBranch_t* sym_prop = indiv[indiv_i]->object_relations_[prop_i].first;
           if(!symetricExist(indiv[indiv_i], sym_prop, sym_indiv))
           {
-            sym_indiv->object_relations_.emplace_back(sym_prop, indiv[indiv_i], 1.0, true);
-            sym_indiv->object_properties_has_induced_.emplace_back();
-            sym_indiv->nb_updates_++;
-            explanations_.emplace_back("[ADD]" + sym_indiv->value() + "|" + sym_prop->value() + "|" + indiv[indiv_i]->value(),
-                                       "[ADD]" + indiv[indiv_i]->value() + "|" + sym_prop->value() + "|" + sym_indiv->value());
-            nb_update_++;
+            try
+            {
+              int index = ontology_->individual_graph_.addProperty(sym_indiv, sym_prop, indiv[indiv_i], 1.0, true);
+              if(index == (int)sym_indiv->object_relations_.size() - 1)
+                sym_indiv->object_properties_has_induced_.emplace_back();
+              sym_indiv->nb_updates_++;
+
+              explanations_.emplace_back("[ADD]" + sym_indiv->value() + "|" + sym_prop->value() + "|" + indiv[indiv_i]->value(),
+                                        "[ADD]" + indiv[indiv_i]->value() + "|" + sym_prop->value() + "|" + sym_indiv->value());
+              nb_update_++;
+            }
+            catch(GraphException& e)
+            {
+              notifications_.push_back(std::make_pair(notification_error, "[FAIL][" + std::string(e.what()) + "][add]" + sym_indiv->value() + "|" + sym_prop->value() + "|" + indiv[indiv_i]->value()));
+            }
           }
         }
       }

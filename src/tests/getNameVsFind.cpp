@@ -5,9 +5,11 @@
 #include <cstdlib>     /* srand, rand */
 #include <ctime>
 #include <unordered_set>
+#include <thread>
 
 #include <ros/ros.h>
 
+#include "ontologenius/RosInterface.h"
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
 class FileReader
@@ -64,8 +66,6 @@ private:
 
 using namespace std::chrono;
 
-OntologyManipulator* onto_ptr;
-
 std::vector<std::string> readNbWords(size_t nb)
 {
   std::vector<std::string> res;
@@ -93,27 +93,34 @@ std::vector<std::string> readNbWords(size_t nb)
   return res;
 }
 
-void insertWords(const std::vector<std::string>& words, bool individual)
+void insertWords(ontologenius::RosInterface* interface, const std::vector<std::string>& words, bool individual)
 {
-  ros::Rate wait(10000);
+  interface->end_feed_ = false;
+
   if(individual == false)
   {
-    onto_ptr->feeder.addConcept("tmp");
+    interface->feeder_.store("[add]tmp|");
     for(auto& word : words)
     {
-      onto_ptr->feeder.addInheritage("tmp", word);
-      onto_ptr->feeder.addLanguage(word, "en", word);
-      wait.sleep();
+      interface->feeder_.store("[add]" + word + "|+|tmp");
+      interface->feeder_.store("[add]" + word + "|@en|" + word);
     }
   }
   else
+  {
     for(auto& word : words)
-    {
-      onto_ptr->feeder.addConcept(word);
-      wait.sleep();
-    }
+      interface->feeder_.store("[add]" + word + "|");
+  }
 
+  std::cout << "waiting" << std::endl;
+
+  while(interface->end_feed_ == false)
+  {
+    usleep(10);
+  }
 }
+
+OntologyManipulator* onto_ptr;
 
 double find(const std::vector<std::string>& words, bool individual)
 {
@@ -173,55 +180,63 @@ double getNames(const std::vector<std::string>& words, bool individual)
 
   if(individual == false)
   {
-    for(size_t j = 0; j < 1; j++)
-      for(auto& word : words)
-        nb += onto_ptr->classes.getNames(word).size();
+    for(auto& word : words)
+      nb += onto_ptr->classes.getNames(word).size();
   }
   else
   {
-    for(size_t j = 0; j < 1; j++)
-      for(auto& word : words)
-        nb += onto_ptr->individuals.getNames(word).size();
+    for(auto& word : words)
+      nb += onto_ptr->individuals.getNames(word).size();
   }
 
   return nb/words.size();
+}
+
+void reset(ontologenius::RosInterface* interface, ontologenius::Ontology** onto)
+{
+  interface->lock();
+  delete interface->onto_;
+  interface->onto_ = new ontologenius::Ontology();
+  interface->onto_->setDisplay(false);
+  interface->reasoners_.link(interface->onto_);
+  interface->feeder_.link(interface->onto_);
+  interface->sparql_.link(interface->onto_);
+  *onto = interface->onto_;
+  interface->release();
 }
 
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius_responseTime_tester");
 
-  ros::NodeHandle n;
-  OntologyManipulator onto(&n);
-  onto_ptr = &onto;
+  ros::NodeHandle nh;
+  ontologenius::Ontology* onto = nullptr;
+  ontologenius::RosInterface interface(&nh);
+  std::thread onto_thread;
 
-  ros::Rate wait(1);
-  ros::Rate fast(100);
+  interface.setDisplay(false);
+  interface.init("en", "none", {}, "none");
+  onto = interface.getOntology();
+  onto_thread = std::thread(&ontologenius::RosInterface::run, &interface);
+  interface.close();
 
-  onto.verbose(true);
-
-  onto.actions.reset();
-  onto.close();
-  wait.sleep();
+  OntologyManipulator onto_manip;
+  onto_ptr = &onto_manip;
 
   std::vector<size_t> nb_words = {100, 500, 1000, 5000, 10000, 50000, 100000, 450000};
   std::vector<double> finds, gettedNames;
 
-  for(auto& nb_word : nb_words)
+  /*for(auto& nb_word : nb_words)
   {
     std::cout << "will insert" << std::endl;
     std::vector<std::string> words = readNbWords(nb_word);
-    insertWords(words, false);
+    insertWords(&interface, words, true);
 
-    std::cout << "wait" << std::endl;
-    onto.feeder.waitUpdate(10000);
+    finds.push_back(find(words, true) / nb_word);
+    gettedNames.push_back(getName(words, true) / nb_word);
 
-    finds.push_back(find(words, false) / nb_word);
-    gettedNames.push_back(getName(words, false) / nb_word);
-
-    onto.actions.reset();
-    onto.close();
-    wait.sleep();
+    reset(&interface, &onto);
+    interface.close();
 
     std::cout << "*********" << std::endl;
     for(size_t j = 0; j < finds.size(); j++)
@@ -237,11 +252,24 @@ int main(int argc, char** argv)
   }
 
   std::vector<std::string> words = readNbWords(450000);
-  insertWords(words, false);
-  std::cout << "wait" << std::endl;
-  onto.feeder.waitUpdate(10000);
+  insertWords(&interface, words, true);
 
-  std::cout << "mean words = " << getNames(words, false) << std::endl;
+  std::cout << "mean words = " << getNames(words, true) << std::endl;*/
+
+  std::vector<std::string> words = readNbWords(466508);
+  size_t s = 0, min = 10000, max = 0;
+  for(auto& w : words)
+  {
+    s += w.size();
+    if(w.size() > max) max = w.size();
+    if(w.size() < min) min = w.size();
+  }
+  std::cout << "nb word " << words.size() << std::endl;
+  std::cout << "mean = " << s/466508.0 << std::endl;
+  std::cout << "min/max " << min << " : " << max << std::endl;
+
+  interface.stop();
+  onto_thread.join();
 
   return 0;
 }

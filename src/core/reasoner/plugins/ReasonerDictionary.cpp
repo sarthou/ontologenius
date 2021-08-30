@@ -12,37 +12,32 @@ void ReasonerDictionary::setParameter(const std::string& name, const std::string
 
 void ReasonerDictionary::postReason()
 {
-  size_t graph_size;
   {
     std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-    std::vector<IndividualBranch_t*> indiv = ontology_->individual_graph_.get();
-    graph_size = indiv.size();
-    for(size_t i = 0; i < graph_size; i++)
-      updateDictionary(indiv[i]);
+    std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
+    for(auto elem : indivs)
+      updateDictionary(elem);
   }
 
   {
     std::vector<ClassBranch_t*> classes = ontology_->class_graph_.getSafe();
     std::lock_guard<std::shared_timed_mutex> lock(ontology_->class_graph_.mutex_);
-    graph_size = classes.size();
-    for(size_t i = 0; i < graph_size; i++)
-      updateDictionary(classes[i]);
+    for(auto elem : classes)
+      updateDictionary(elem);
   }
 
   {
     std::vector<DataPropertyBranch_t*> data_properties = ontology_->data_property_graph_.getSafe();
     std::lock_guard<std::shared_timed_mutex> lock(ontology_->data_property_graph_.mutex_);
-    graph_size = data_properties.size();
-    for(size_t i = 0; i < graph_size; i++)
-      updateDictionary(data_properties[i]);
+    for(auto elem : data_properties)
+      updateDictionary(elem);
   }
 
   {
     std::vector<ObjectPropertyBranch_t*> object_properties = ontology_->object_property_graph_.getSafe();
     std::lock_guard<std::shared_timed_mutex> lock(ontology_->object_property_graph_.mutex_);
-    graph_size = object_properties.size();
-    for(size_t i = 0; i < graph_size; i++)
-      updateDictionary(object_properties[i]);
+    for(auto elem : object_properties)
+      updateDictionary(elem);
   }
 }
 
@@ -79,7 +74,10 @@ void ReasonerDictionary::split(ValuedNode* node)
       std::replace( tmp.begin(), tmp.end(), '_', ' ');
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         if(std::find(muted->begin(), muted->end(), tmp) == muted->end())
+        {
           it.second.push_back(tmp);
+          std::cout << "push " << tmp << std::endl;
+        }
       std::replace( tmp.begin(), tmp.end(), '-', ' ');
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         if(std::find(muted->begin(), muted->end(), tmp) == muted->end())

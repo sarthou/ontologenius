@@ -141,10 +141,10 @@ void IndividualChecker::checkObectPropertyDomain()
           if(intersection == nullptr)
           {
             graph_vect_[i]->flags_["domain"].push_back(object_relation.first->value());
-            print_warning("'" + graph_vect_[i]->value() + "' is not in domain of '" + object_relation.first->value() + "'");
+            print_warning("Individual '" + graph_vect_[i]->value() + "' is not in domain of object property '" + object_relation.first->value() + "'");
           }
           else
-            print_error("'" + graph_vect_[i]->value() + "' can not be in domain of '" + object_relation.first->value() + "'");
+            print_error("Individual '" + graph_vect_[i]->value() + "' can not be in domain of object property '" + object_relation.first->value() + "'");
         }
       }
     }
@@ -180,10 +180,10 @@ void IndividualChecker::checkObectPropertyRange()
           if(intersection == nullptr)
           {
             graph_vect_[i]->flags_["range"].push_back(object_relation.first->value());
-            print_warning("'" + object_relation.second->value() + "' is not in range of '" + object_relation.first->value() + "'");
+            print_warning("Individual '" + object_relation.second->value() + "' is not in range of object property '" + object_relation.first->value() + "'");
           }
           else
-            print_error("'" + object_relation.second->value() + "' can not be in range of '" + object_relation.first->value() + "'");
+            print_error("Individual '" + object_relation.second->value() + "' can not be in range of object property '" + object_relation.first->value() + "'");
         }
       }
     }
@@ -220,10 +220,10 @@ void IndividualChecker::checkDataPropertyDomain()
           if(intersection == nullptr)
           {
             graph_vect_[i]->flags_["range"].push_back(relation.first->value());
-            print_warning("'" + graph_vect_[i]->value() + "' is not in domain of '" + relation.first->value() + "'");
+            print_warning("Individual '" + graph_vect_[i]->value() + "' is not in domain of data property '" + relation.first->value() + "'");
           }
           else
-            print_error("'" + graph_vect_[i]->value() + "' can not be in domain of '" + relation.first->value() + "'");
+            print_error("Individual '" + graph_vect_[i]->value() + "' can not be in domain of data property '" + relation.first->value() + "'");
         }
       }
     }
@@ -242,7 +242,7 @@ void IndividualChecker::checkDataPropertyRange()
       {
         auto intersection = range.find(relation.second.type_);
         if(intersection == range.end())
-          print_error("'" + relation.second.type_ + "' is not in range of '" + relation.first->value() + "'");
+          print_error("Individual '" + relation.second.type_ + "' is not in range of '" + relation.first->value() + "'");
       }
     }
   }
