@@ -182,6 +182,7 @@ private:
   size_t commit_nb_;
 
   void sendNop();
+public:
   void publish(const std::string& str);
   void publishStamped(const std::string& str, const ros::Time& stamp);
 

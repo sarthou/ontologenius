@@ -1202,6 +1202,31 @@ bool IndividualGraph::relationExists(const std::string& subject, const std::stri
   return false;
 }
 
+bool IndividualGraph::relationExists(IndividualBranch_t* subject, ObjectPropertyBranch_t* property, IndividualBranch_t* object)
+{
+  std::unordered_set<IndividualBranch_t*> sames;
+  getSame(subject, sames);
+  cleanMarks(sames);
+  for(IndividualBranch_t* it : sames)
+  {
+    for(IndivObjectRelationElement_t& relation : it->object_relations_)
+    {
+      if(relation.first != property)
+        continue;
+      else
+      {
+        std::unordered_set<IndividualBranch_t*> sames_tmp;
+        getSame(relation.second, sames_tmp);
+        for(auto same : sames_tmp)
+          if(same == object)
+            return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 void IndividualGraph::cleanMarks(std::unordered_set<IndividualBranch_t*>& indSet)
 {
   for(IndividualBranch_t* it : indSet)
@@ -1423,6 +1448,47 @@ void IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const
   }
 }
 
+int IndividualGraph::addProperty(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba, bool infered)
+{
+  if(checkRangeAndDomain(indiv_from, property, indiv_on))
+  {
+    if(object_property_graph_->isIrreflexive(property))
+    {
+      auto ids = getSameIdAndClean(indiv_from);
+      if(ids.find(indiv_on->get()) != ids.end())
+        throw GraphException("Inconsistency prevented regarding irreflexivity of the property");
+    }
+
+    if(object_property_graph_->isAsymetric(property))
+    {
+      if(relationExists(indiv_on, property, indiv_from))
+        throw GraphException("Inconsistency prevented regarding asymetry of the property");
+    }
+
+    int index = -1;
+
+    index = indiv_from->ObjectPropertyExist(property, indiv_on);
+    if(index == -1)
+    {
+      indiv_from->object_relations_.emplace_back(IndivObjectRelationElement_t(property, indiv_on));
+      indiv_from->object_properties_has_induced_.emplace_back();
+      index = indiv_from->object_relations_.size() - 1;
+    }
+
+    indiv_from->object_relations_[index].probability = proba;
+    indiv_from->object_relations_[index].infered = infered;
+
+    indiv_from->updated_ = true;
+    setObjectPropertiesUpdated(indiv_from->object_relations_);
+
+    return index;
+  }
+  else
+    throw GraphException("Inconsistency prevented regarding the range or domain of the property");
+
+  return -1;
+}
+
 void IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on)
 {
   IndividualBranch_t* branch_from = indiv_from;
@@ -1450,27 +1516,7 @@ void IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::str
       branch_prop = object_property_graph_->newDefaultBranch(property);
     }
 
-    if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
-    {
-      int index = -1;
-
-      index = branch_from->ObjectPropertyExist(branch_prop, branch_on);
-      if(index == -1)
-      {
-        branch_from->object_relations_.emplace_back(IndivObjectRelationElement_t(branch_prop, branch_on));
-        branch_from->object_properties_has_induced_.emplace_back();
-      }
-      else
-      {
-        branch_from->object_relations_[index].probability = 1.0;
-        branch_from->object_relations_[index].infered = false;
-      }
-
-      branch_from->updated_ = true;
-      setObjectPropertiesUpdated(branch_from->object_relations_);
-    }
-    else
-      throw GraphException("Inconsistency prevented regarding the range or domain of the property");
+    addProperty(branch_from, branch_prop, branch_on);
   }
   else
     throw GraphException("The individual to apply the relation does not exist");
@@ -1533,27 +1579,7 @@ void IndividualGraph::addPropertyInvert(const std::string& indiv_from, const std
       branch_prop = object_property_graph_->newDefaultBranch(property);
     }
 
-    if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
-    {
-      int index = -1;
-
-      index = branch_from->ObjectPropertyExist(branch_prop, branch_on);
-      if(index == -1)
-      {
-        branch_from->object_relations_.emplace_back(IndivObjectRelationElement_t(branch_prop, branch_on));
-        branch_from->object_properties_has_induced_.emplace_back();
-      }
-      else
-      {
-        branch_from->object_relations_[index].probability = 1.0;
-        branch_from->object_relations_[index].infered = false;
-      }
-
-      branch_from->updated_ = true;
-      setObjectPropertiesUpdated(branch_from->object_relations_);
-    }
-    else
-      throw GraphException("Inconsistency prevented regarding the range or domain of the property");
+    addProperty(branch_from, branch_prop, branch_on);
   }
   else
     throw GraphException("Object entity does not exists");
@@ -1628,7 +1654,7 @@ bool IndividualGraph::removeSameAs(const std::string& indiv_1, const std::string
   return true;
 }
 
-std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on)
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered)
 {
   std::vector<std::pair<std::string, std::string>> explanations;
   bool updated = false;
@@ -1646,6 +1672,9 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
       {
         if((branch_on == nullptr) || (object_relation.second == branch_on))
         {
+          if((protect_infered == true) && (object_relation.infered == false))
+            break;
+
           auto exp_inv = removePropertyInverse(branch_from, object_relation.first, object_relation.second);
           auto exp_sym = removePropertySymetric(branch_from, object_relation.first, object_relation.second);
           auto exp_ch  = removePropertyChain(branch_from, object_relation.first, object_relation.second);
@@ -1784,7 +1813,8 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
 
         auto tmp = removeProperty(indiv_from->object_properties_has_induced_[i].from_[induced],
                                   indiv_from->object_properties_has_induced_[i].prop_[induced],
-                                  indiv_from->object_properties_has_induced_[i].on_[induced]);
+                                  indiv_from->object_properties_has_induced_[i].on_[induced],
+                                  true);
         explanations.insert(explanations.end(), tmp.begin(), tmp.end());
       }
     }

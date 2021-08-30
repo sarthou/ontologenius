@@ -95,6 +95,7 @@ public:
   void addInheritage(const std::string& indiv, const std::string& class_inherited);
   void addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
   void addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
+  int addProperty(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba = 1.0, bool infered = false);
   void addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on);
   void addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data);
   void addPropertyInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);
@@ -103,7 +104,7 @@ public:
   bool addSameAs(const std::string& indiv_1, const std::string& indiv_2);
   bool removeSameAs(const std::string& indiv_1, const std::string& indiv_2);
   // removing a relation using an object property has to generate an "explanation" if it remove other relations
-  std::vector<std::pair<std::string, std::string>> removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on);
+  std::vector<std::pair<std::string, std::string>> removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered = false);
   std::vector<std::pair<std::string, std::string>> removeProperty(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
   void removeProperty(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
   std::vector<std::pair<std::string, std::string>> removePropertyInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
@@ -136,6 +137,8 @@ private:
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth = -1);
   bool getRelatedWith(ClassBranch_t* class_branch, const std::string& data, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& took);
   bool getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const data_t& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake);
+
+  bool relationExists(IndividualBranch_t* subject, ObjectPropertyBranch_t* property, IndividualBranch_t* object);
 
   std::unordered_set<uint32_t> getSameId(const std::string& individual);
   void getSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);

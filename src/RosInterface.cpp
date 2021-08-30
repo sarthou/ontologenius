@@ -643,7 +643,7 @@ void RosInterface::feedThread()
       std::vector<std::string> notifications = feeder_.getNotifications();
       for(auto notif : notifications)
       {
-        Display::error(notif);
+        Display::error("[Feeder]" + notif);
         if(name_ != "")
           notif = "[" + name_ + "]" + notif;
         msg.data = notif;
@@ -697,11 +697,17 @@ void RosInterface::periodicReasoning()
     reasoner_mutex_.lock();
     reasoners_.runPeriodicReasoners();
 
-    std::vector<std::string> notifications = reasoners_.getNotifications();
+    auto notifications = reasoners_.getNotifications();
     for(auto& notif : notifications)
     {
-      std::cout << notif << std::endl;
-      msg.data = notif;
+      switch(notif.first)
+      {
+        case notification_debug: std::cout << "[Reasoners]" << notif.second << std::endl; break;
+        case notification_info: Display::info("[Reasoners]" + notif.second); break;
+        case notification_warning: Display::warning("[Reasoners]" + notif.second); break;
+        case notification_error: Display::error("[Reasoners]" + notif.second); break;
+      }
+      msg.data = notif.second;
       reasoner_publisher.publish(msg);
     }
 
@@ -754,7 +760,6 @@ param_t RosInterface::getParams(const std::string& param)
   if(str_params.size())
     parameters.base = str_params[0];
 
-  bool option_found = false;
   for(size_t i = 1; i < str_params.size(); i++)
   {
     if((str_params[i] == "-d") || (str_params[i] == "--depth"))
@@ -764,13 +769,11 @@ param_t RosInterface::getParams(const std::string& param)
       if(sscanf(str_params[i].c_str(), "%d", &tmp) != 1)
         tmp = -1;
       parameters.depth = tmp;
-      option_found = true;
     }
     else if((str_params[i] == "-s") || (str_params[i] == "--selector"))
     {
       i++;
       parameters.selector = str_params[i];
-      option_found = true;
     }
     else if((str_params[i] == "-t") || (str_params[i] == "--threshold"))
     {
@@ -779,7 +782,6 @@ param_t RosInterface::getParams(const std::string& param)
       if(sscanf(str_params[i].c_str(), "%f", &tmp) != 1)
         tmp = -1;
       parameters.threshold = tmp;
-      option_found = true;
     }
     else if((str_params[i] == "-i") || (str_params[i] == "--take_id"))
     {
@@ -789,11 +791,13 @@ param_t RosInterface::getParams(const std::string& param)
         tmp = true;
 
       parameters.take_id = tmp;
-      option_found = true;
     }
-    else if(option_found)
+    else if(str_params[i].size() && str_params[i][0] == '-')
+    {
       Display::warning("[WARNING] unknow parameter \"" + str_params[i] + "\"");
-    else
+      i++;
+    }
+    else if(str_params[i].size())
       parameters.base += " " + str_params[i];
   }
 
