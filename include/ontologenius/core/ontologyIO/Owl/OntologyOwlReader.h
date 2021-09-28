@@ -37,14 +37,6 @@ public:
   bool empty() {return (elemLoaded == 0); }
 
 private:
-  ClassGraph* class_graph_;
-  ObjectPropertyGraph* object_property_graph_;
-  DataPropertyGraph* data_property_graph_;
-  IndividualGraph* individual_graph_;
-
-  int elemLoaded;
-  bool display_;
-
   int read(TiXmlElement* rdf, const std::string& name);
   int readIndividual(TiXmlElement* rdf, const std::string& name);
 
