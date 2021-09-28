@@ -1,4 +1,4 @@
-#include "ontologenius/core/ontologyIO/writers/DataPropertiesWriter.h"
+#include "ontologenius/core/ontologyIO/Owl/writers/DataPropertiesOwlWriter.h"
 
 #include <vector>
 
@@ -6,13 +6,13 @@
 
 namespace ontologenius {
 
-DataPropertiesWriter::DataPropertiesWriter(DataPropertyGraph* property_graph, const std::string& ns)
+DataPropertiesOwlWriter::DataPropertiesOwlWriter(DataPropertyGraph* property_graph, const std::string& ns)
 {
   property_graph_ = property_graph;
   ns_ = ns;
 }
 
-void DataPropertiesWriter::write(FILE* file)
+void DataPropertiesOwlWriter::write(FILE* file)
 {
   file_ = file;
 
@@ -25,7 +25,7 @@ void DataPropertiesWriter::write(FILE* file)
   file_ = nullptr;
 }
 
-void DataPropertiesWriter::writeProperty(DataPropertyBranch_t* branch)
+void DataPropertiesOwlWriter::writeProperty(DataPropertyBranch_t* branch)
 {
   std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
     <owl:DatatypeProperty rdf:about=\"" + ns_ + "#" + branch->value() + "\">\n";
@@ -44,7 +44,7 @@ void DataPropertiesWriter::writeProperty(DataPropertyBranch_t* branch)
   writeString(tmp);
 }
 
-void DataPropertiesWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
+void DataPropertiesOwlWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
 {
   for(auto& mother : branch->mothers_)
     if(mother.infered == false)
@@ -58,7 +58,7 @@ void DataPropertiesWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
     }
 }
 
-void DataPropertiesWriter::writeRange(DataPropertyBranch_t* branch)
+void DataPropertiesOwlWriter::writeRange(DataPropertyBranch_t* branch)
 {
   for(auto& range : branch->ranges_)
   {
@@ -71,7 +71,7 @@ void DataPropertiesWriter::writeRange(DataPropertyBranch_t* branch)
   }
 }
 
-void DataPropertiesWriter::writeDomain(DataPropertyBranch_t* branch)
+void DataPropertiesOwlWriter::writeDomain(DataPropertyBranch_t* branch)
 {
   for(auto& domain : branch->domains_)
     if(domain.infered == false)

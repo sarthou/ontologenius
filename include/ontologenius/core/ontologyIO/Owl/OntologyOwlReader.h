@@ -1,5 +1,5 @@
-#ifndef ONTOLOGENIUS_ONTOLOGYREADER_H
-#define ONTOLOGENIUS_ONTOLOGYREADER_H
+#ifndef ONTOLOGENIUS_ONTOLOGYOWLREADER_H
+#define ONTOLOGENIUS_ONTOLOGYOWLREADER_H
 
 #include <vector>
 #include <string>
@@ -19,12 +19,12 @@ namespace ontologenius {
 
 class Ontology;
 
-class OntologyReader
+class OntologyOwlReader
 {
 public:
-  OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
-  OntologyReader(Ontology& onto);
-  ~OntologyReader() {}
+  OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
+  OntologyOwlReader(Ontology& onto);
+  ~OntologyOwlReader() {}
 
   int readFromUri(const std::string& uri, bool individual = false);
   int readFromFile(const std::string& fileName, bool individual = false);
@@ -80,7 +80,7 @@ private:
   void removeDocType(std::string& txt);
 };
 
-void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole, const std::string& attribute)
+void OntologyOwlReader::push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole, const std::string& attribute)
 {
   std::string data = getAttribute(subElem, attribute);
   if(data != "")
@@ -91,14 +91,14 @@ void OntologyReader::push(std::vector<std::string>& vect, TiXmlElement* subElem,
   }
 }
 
-void OntologyReader::push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole)
+void OntologyOwlReader::push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole)
 {
   vect.push_back(elem);
   if(symbole != "" && display_)
     std::cout << "│   │   ├── " << symbole << elem << std::endl;
 }
 
-void OntologyReader::push(std::vector<Single_t<std::string>>& vect, TiXmlElement* subElem, float probability, const std::string& symbole, const std::string& attribute)
+void OntologyOwlReader::push(std::vector<Single_t<std::string>>& vect, TiXmlElement* subElem, float probability, const std::string& symbole, const std::string& attribute)
 {
   std::string data = getAttribute(subElem, attribute);
   if(data != "")
@@ -109,7 +109,7 @@ void OntologyReader::push(std::vector<Single_t<std::string>>& vect, TiXmlElement
   }
 }
 
-void OntologyReader::push(std::vector<Pair_t<std::string, std::string>>& vect, const Pair_t<std::string, std::string>& elem, const std::string& symbole1, const std::string& symbole2)
+void OntologyOwlReader::push(std::vector<Pair_t<std::string, std::string>>& vect, const Pair_t<std::string, std::string>& elem, const std::string& symbole1, const std::string& symbole2)
 {
   vect.push_back(elem);
   if(symbole1 != "" && display_)
@@ -119,7 +119,7 @@ void OntologyReader::push(std::vector<Pair_t<std::string, std::string>>& vect, c
     std::cout << "│   │   ├── " << symbole2 << elem.second << std::endl;
 }
 
-void OntologyReader::push(std::vector<Pair_t<std::string, data_t>>& vect, const Pair_t<std::string, data_t>& elem, const std::string& symbole1, const std::string& symbole2)
+void OntologyOwlReader::push(std::vector<Pair_t<std::string, data_t>>& vect, const Pair_t<std::string, data_t>& elem, const std::string& symbole1, const std::string& symbole2)
 {
   vect.push_back(elem);
   if(symbole1 != "" && display_)
@@ -129,7 +129,7 @@ void OntologyReader::push(std::vector<Pair_t<std::string, data_t>>& vect, const 
     std::cout << "│   │   ├── " << symbole2 << elem.second.toString() << std::endl;
 }
 
-void OntologyReader::push(std::vector<bool>& vect, bool elem, const std::string& symbole)
+void OntologyOwlReader::push(std::vector<bool>& vect, bool elem, const std::string& symbole)
 {
   vect.push_back(elem);
   if(symbole != "" && display_)
@@ -141,14 +141,14 @@ void OntologyReader::push(std::vector<bool>& vect, bool elem, const std::string&
   }
 }
 
-std::string OntologyReader::getName(const std::string& uri)
+std::string OntologyOwlReader::getName(const std::string& uri)
 {
   size_t pos = uri.find("#");
   std::string result = uri.substr(pos+1);
   return result;
 }
 
-float OntologyReader::getProbability(TiXmlElement* elem)
+float OntologyOwlReader::getProbability(TiXmlElement* elem)
 {
   float proba = 1.0;
 
@@ -160,7 +160,7 @@ float OntologyReader::getProbability(TiXmlElement* elem)
   return proba;
 }
 
-inline std::string OntologyReader::getAttribute(TiXmlElement* elem, const std::string& attribute)
+inline std::string OntologyOwlReader::getAttribute(TiXmlElement* elem, const std::string& attribute)
 {
   const char* subAttr;
   subAttr = elem->Attribute(attribute.c_str());
@@ -170,7 +170,7 @@ inline std::string OntologyReader::getAttribute(TiXmlElement* elem, const std::s
     return "";
 }
 
-bool OntologyReader::testAttribute(TiXmlElement* subElem, const std::string& attribute)
+bool OntologyOwlReader::testAttribute(TiXmlElement* subElem, const std::string& attribute)
 {
   const char* subAttr;
   subAttr = subElem->Attribute(attribute.c_str());
@@ -182,4 +182,4 @@ bool OntologyReader::testAttribute(TiXmlElement* subElem, const std::string& att
 
 } // namespace ontologenius
 
-#endif // ONTOLOGENIUS_ONTOLOGYREADER_H
+#endif // ONTOLOGENIUS_ONTOLOGYOWLREADER_H

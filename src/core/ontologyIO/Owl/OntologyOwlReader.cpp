@@ -1,4 +1,4 @@
-#include "ontologenius/core/ontologyIO/OntologyReader.h"
+#include "ontologenius/core/ontologyIO/Owl/OntologyOwlReader.h"
 
 #include <fstream>
 
@@ -9,7 +9,7 @@
 
 namespace ontologenius {
 
-OntologyReader::OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph)
+OntologyOwlReader::OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph)
 {
   class_graph_ = class_graph;
   object_property_graph_ = object_property_graph;
@@ -18,7 +18,7 @@ OntologyReader::OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* obj
   elemLoaded = 0;
 }
 
-OntologyReader::OntologyReader(Ontology& onto)
+OntologyOwlReader::OntologyOwlReader(Ontology& onto)
 {
   class_graph_ = &onto.class_graph_;
   object_property_graph_ = &onto.object_property_graph_;
@@ -28,7 +28,7 @@ OntologyReader::OntologyReader(Ontology& onto)
 }
 
 
-int OntologyReader::readFromUri(const std::string& uri, bool individual)
+int OntologyOwlReader::readFromUri(const std::string& uri, bool individual)
 {
   std::string response = "";
   int err = send_request("GET", uri, "", &response);
@@ -48,7 +48,7 @@ int OntologyReader::readFromUri(const std::string& uri, bool individual)
     return REQUEST_ERROR;
 }
 
-int OntologyReader::readFromFile(const std::string& fileName, bool individual)
+int OntologyOwlReader::readFromFile(const std::string& fileName, bool individual)
 {
   std::string response = "";
   std::string tmp = "";
@@ -75,7 +75,7 @@ int OntologyReader::readFromFile(const std::string& fileName, bool individual)
     return readIndividual(rdf, fileName);
 }
 
-int OntologyReader::read(TiXmlElement* rdf, const std::string& name)
+int OntologyOwlReader::read(TiXmlElement* rdf, const std::string& name)
 {
   if(rdf == nullptr)
   {
@@ -138,7 +138,7 @@ int OntologyReader::read(TiXmlElement* rdf, const std::string& name)
   }
 }
 
-void OntologyReader::displayIndividualRules()
+void OntologyOwlReader::displayIndividualRules()
 {
   if(display_)
   {
@@ -149,7 +149,7 @@ void OntologyReader::displayIndividualRules()
   }
 }
 
-int OntologyReader::readIndividual(TiXmlElement* rdf, const std::string& name)
+int OntologyOwlReader::readIndividual(TiXmlElement* rdf, const std::string& name)
 {
   if(rdf == nullptr)
   {
@@ -175,7 +175,7 @@ int OntologyReader::readIndividual(TiXmlElement* rdf, const std::string& name)
   }
 }
 
-void OntologyReader::readClass(TiXmlElement* elem)
+void OntologyOwlReader::readClass(TiXmlElement* elem)
 {
   std::string node_name = "";
   ObjectVectors_t object_vector;
@@ -226,7 +226,7 @@ void OntologyReader::readClass(TiXmlElement* elem)
   elemLoaded++;
 }
 
-void OntologyReader::readIndividual(TiXmlElement* elem)
+void OntologyOwlReader::readIndividual(TiXmlElement* elem)
 {
   std::string elemName = elem->Value();
   if(elemName == "owl:NamedIndividual")
@@ -280,7 +280,7 @@ void OntologyReader::readIndividual(TiXmlElement* elem)
   }
 }
 
-void OntologyReader::readDescription(TiXmlElement* elem)
+void OntologyOwlReader::readDescription(TiXmlElement* elem)
 {
   std::vector<std::string> disjoints;
   bool isAllDisjointClasses = false;
@@ -317,7 +317,7 @@ void OntologyReader::readDescription(TiXmlElement* elem)
   disjoints.clear();
 }
 
-void OntologyReader::readIndividualDescription(TiXmlElement* elem)
+void OntologyOwlReader::readIndividualDescription(TiXmlElement* elem)
 {
   std::string elemName = elem->Value();
   if(elemName == "rdf:Description")
@@ -349,7 +349,7 @@ void OntologyReader::readIndividualDescription(TiXmlElement* elem)
   } // end if(elemName == "rdf:Description")
 }
 
-void OntologyReader::readObjectProperty(TiXmlElement* elem)
+void OntologyOwlReader::readObjectProperty(TiXmlElement* elem)
 {
   std::string node_name = "";
   ObjectPropertyVectors_t propertyVectors;
@@ -394,7 +394,7 @@ void OntologyReader::readObjectProperty(TiXmlElement* elem)
   elemLoaded++;
 }
 
-void OntologyReader::readDataProperty(TiXmlElement* elem)
+void OntologyOwlReader::readDataProperty(TiXmlElement* elem)
 {
   std::string node_name = "";
   DataPropertyVectors_t propertyVectors;
@@ -429,7 +429,7 @@ void OntologyReader::readDataProperty(TiXmlElement* elem)
   elemLoaded++;
 }
 
-void OntologyReader::readAnnotationProperty(TiXmlElement* elem)
+void OntologyOwlReader::readAnnotationProperty(TiXmlElement* elem)
 {
   std::string node_name = "";
   DataPropertyVectors_t propertyVectors; // we use a DataPropertyVectors_t that is sufficient to represent an annotation property
@@ -483,7 +483,7 @@ void OntologyReader::readAnnotationProperty(TiXmlElement* elem)
   elemLoaded++;
 }
 
-void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement* elem, const std::string& symbol, size_t level)
+void OntologyOwlReader::readCollection(std::vector<std::string>& vect, TiXmlElement* elem, const std::string& symbol, size_t level)
 {
   for(TiXmlElement* subElem = elem->FirstChildElement(); subElem != nullptr; subElem = subElem->NextSiblingElement())
   {
@@ -512,7 +512,7 @@ void OntologyReader::readCollection(std::vector<std::string>& vect, TiXmlElement
   }
 }
 
-std::string OntologyReader::readSomeValuesFrom(TiXmlElement* elem)
+std::string OntologyOwlReader::readSomeValuesFrom(TiXmlElement* elem)
 {
   std::string value = getAttribute(elem, "rdf:resource");
   if(value == "")
@@ -525,7 +525,7 @@ std::string OntologyReader::readSomeValuesFrom(TiXmlElement* elem)
   return value;
 }
 
-void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, const std::string& symbole, const std::string& attribute)
+void OntologyOwlReader::push(Properties_t& properties, TiXmlElement* subElem, const std::string& symbole, const std::string& attribute)
 {
   const char* subAttr;
   subAttr = subElem->Attribute(attribute.c_str());
@@ -554,7 +554,7 @@ void OntologyReader::push(Properties_t& properties, TiXmlElement* subElem, const
   }
 }
 
-void OntologyReader::pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem)
+void OntologyOwlReader::pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem)
 {
   const char* subAttr;
   subAttr = subElem->Attribute("xml:lang");
@@ -574,7 +574,7 @@ void OntologyReader::pushLang(std::map<std::string, std::vector<std::string>>& d
   }
 }
 
-void OntologyReader::removeDocType(std::string& txt)
+void OntologyOwlReader::removeDocType(std::string& txt)
 {
   size_t pose = txt.find("DOCTYPE");
   if(pose != std::string::npos)

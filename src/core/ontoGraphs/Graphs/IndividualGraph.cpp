@@ -1072,7 +1072,7 @@ std::unordered_set<std::string> IndividualGraph::findFuzzy(const std::string& va
   for(auto branch : individuals_)
   {
     if(use_default)
-      if((tmp_cost = dist.get(branch-> value(), value)) <= lower_cost)
+      if((tmp_cost = dist.get(branch->value(), value)) <= lower_cost)
       {
         if(tmp_cost != lower_cost)
         {

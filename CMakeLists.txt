@@ -136,14 +136,14 @@ add_onto_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Checkers/DataPropertyChecker.cpp
   src/core/ontoGraphs/Checkers/IndividualChecker.cpp
   src/core/ontoGraphs/Ontology.cpp
-  src/core/ontologyIO/OntologyReader.cpp
-  src/core/ontologyIO/OntologyWriter.cpp
-  src/core/ontologyIO/writers/NodeWriter.cpp
-  src/core/ontologyIO/writers/ClassWriter.cpp
-  src/core/ontologyIO/writers/ObjectPropertiesWriter.cpp
-  src/core/ontologyIO/writers/DataPropertiesWriter.cpp
-  src/core/ontologyIO/writers/AnnotationWriter.cpp
-  src/core/ontologyIO/writers/IndividualWriter.cpp
+  src/core/ontologyIO/Owl/OntologyOwlReader.cpp
+  src/core/ontologyIO/Owl/OntologyOwlWriter.cpp
+  src/core/ontologyIO/Owl/writers/NodeOwlWriter.cpp
+  src/core/ontologyIO/Owl/writers/ClassOwlWriter.cpp
+  src/core/ontologyIO/Owl/writers/ObjectPropertiesOwlWriter.cpp
+  src/core/ontologyIO/Owl/writers/DataPropertiesOwlWriter.cpp
+  src/core/ontologyIO/Owl/writers/AnnotationOwlWriter.cpp
+  src/core/ontologyIO/Owl/writers/IndividualOwlWriter.cpp
 )
 target_include_directories(ontologenius_ontoGraphs_lib
  PUBLIC

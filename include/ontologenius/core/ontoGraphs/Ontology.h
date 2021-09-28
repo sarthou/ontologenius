@@ -6,8 +6,8 @@
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
-#include "ontologenius/core/ontologyIO/OntologyReader.h"
-#include "ontologenius/core/ontologyIO/OntologyWriter.h"
+#include "ontologenius/core/ontologyIO/Owl/OntologyOwlReader.h"
+#include "ontologenius/core/ontologyIO/Owl/OntologyOwlWriter.h"
 
 namespace ontologenius {
 
@@ -37,8 +37,8 @@ public:
   IndividualGraph individual_graph_;
 
 private:
-  OntologyReader reader;
-  OntologyWriter writer;
+  OntologyOwlReader reader;
+  OntologyOwlWriter writer;
 
   std::vector<std::string> files_;
   std::vector<std::string> uri_;

@@ -1,4 +1,4 @@
-#include "ontologenius/core/ontologyIO/writers/ClassWriter.h"
+#include "ontologenius/core/ontologyIO/Owl/writers/ClassOwlWriter.h"
 
 #include <algorithm>
 
@@ -8,13 +8,13 @@
 
 namespace ontologenius {
 
-ClassWriter::ClassWriter(ClassGraph* class_graph, const std::string& ns)
+ClassOwlWriter::ClassOwlWriter(ClassGraph* class_graph, const std::string& ns)
 {
   class_graph_ = class_graph;
   ns_ = ns;
 }
 
-void ClassWriter::write(FILE* file)
+void ClassOwlWriter::write(FILE* file)
 {
   file_ = file;
 
@@ -27,7 +27,7 @@ void ClassWriter::write(FILE* file)
   file_ = nullptr;
 }
 
-void ClassWriter::writeGeneralAxioms(FILE* file)
+void ClassOwlWriter::writeGeneralAxioms(FILE* file)
 {
   file_ = file;
 
@@ -40,7 +40,7 @@ void ClassWriter::writeGeneralAxioms(FILE* file)
 }
 
 
-void ClassWriter::writeClass(ClassBranch_t* branch)
+void ClassOwlWriter::writeClass(ClassBranch_t* branch)
 {
   std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
     <owl:Class rdf:about=\"" + ns_ + "#" + branch->value() + "\">\n";
@@ -60,7 +60,7 @@ void ClassWriter::writeClass(ClassBranch_t* branch)
   writeString(tmp);
 }
 
-void ClassWriter::writeSubClassOf(ClassBranch_t* branch)
+void ClassOwlWriter::writeSubClassOf(ClassBranch_t* branch)
 {
   for(auto& mother : branch->mothers_)
     if(mother.infered == false)
@@ -75,7 +75,7 @@ void ClassWriter::writeSubClassOf(ClassBranch_t* branch)
     }
 }
 
-void ClassWriter::writeDisjointWith(ClassBranch_t* branch)
+void ClassOwlWriter::writeDisjointWith(ClassBranch_t* branch)
 {
   if(branch->disjoints_.size() < 2)
     for(auto& disjoint : branch->disjoints_)
@@ -90,7 +90,7 @@ void ClassWriter::writeDisjointWith(ClassBranch_t* branch)
       }
 }
 
-void ClassWriter::writeDisjointWith(std::vector<ClassBranch_t*>& classes)
+void ClassOwlWriter::writeDisjointWith(std::vector<ClassBranch_t*>& classes)
 {
   std::string start = "    <rdf:Description>\n\
         <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#AllDisjointClasses\"/>\n";
@@ -128,7 +128,7 @@ void ClassWriter::writeDisjointWith(std::vector<ClassBranch_t*>& classes)
   }
 }
 
-void ClassWriter::getDisjointsSets(ClassBranch_t* base, std::set<std::set<ClassBranch_t*>>& res)
+void ClassOwlWriter::getDisjointsSets(ClassBranch_t* base, std::set<std::set<ClassBranch_t*>>& res)
 {
   std::set<ClassBranch_t*> restriction_set;
 
@@ -145,7 +145,7 @@ void ClassWriter::getDisjointsSets(ClassBranch_t* base, std::set<std::set<ClassB
   }
 }
 
-void ClassWriter::getDisjointsSets(ClassBranch_t* last, const std::set<ClassBranch_t*>& base_set, const std::set<ClassBranch_t*>& restriction_set, std::set<std::set<ClassBranch_t*>>& res)
+void ClassOwlWriter::getDisjointsSets(ClassBranch_t* last, const std::set<ClassBranch_t*>& base_set, const std::set<ClassBranch_t*>& restriction_set, std::set<std::set<ClassBranch_t*>>& res)
 {
   std::set<ClassBranch_t*> local_disjoints;
   for(auto& disjoint : last->disjoints_)
@@ -175,7 +175,7 @@ void ClassWriter::getDisjointsSets(ClassBranch_t* last, const std::set<ClassBran
     res.insert(base_set);
 }
 
-void ClassWriter::writeObjectProperties(ClassBranch_t* branch)
+void ClassOwlWriter::writeObjectProperties(ClassBranch_t* branch)
 {
   for(ClassObjectRelationElement_t& relation : branch->object_relations_)
     if(relation.infered == false)
@@ -191,7 +191,7 @@ void ClassWriter::writeObjectProperties(ClassBranch_t* branch)
     }
 }
 
-void ClassWriter::writeDataProperties(ClassBranch_t* branch)
+void ClassOwlWriter::writeDataProperties(ClassBranch_t* branch)
 {
   for(ClassDataRelationElement_t& relation : branch->data_relations_)
     if(relation.infered == false)

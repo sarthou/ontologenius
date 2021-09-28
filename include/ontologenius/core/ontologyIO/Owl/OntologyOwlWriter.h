@@ -1,5 +1,5 @@
-#ifndef ONTOLOGENIUS_ONTOLOGYWRITER_H
-#define ONTOLOGENIUS_ONTOLOGYWRITER_H
+#ifndef ONTOLOGENIUS_ONTOLOGYOWLWRITER_H
+#define ONTOLOGENIUS_ONTOLOGYOWLWRITER_H
 
 #include <string>
 
@@ -12,12 +12,12 @@ namespace ontologenius {
 
 class Ontology;
 
-class OntologyWriter
+class OntologyOwlWriter
 {
 public:
-  OntologyWriter(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
-  OntologyWriter(Ontology& onto);
-  ~OntologyWriter() {}
+  OntologyOwlWriter(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
+  OntologyOwlWriter(Ontology& onto);
+  ~OntologyOwlWriter() {}
 
   void setFileName(const std::string& name) {file_name_ = name; }
   std::string getFileName() { return file_name_; }
@@ -41,4 +41,4 @@ private:
 
 } // namespace ontologenius
 
-#endif // ONTOLOGENIUS_ONTOLOGYWRITER_H
+#endif // ONTOLOGENIUS_ONTOLOGYOWLWRITER_H

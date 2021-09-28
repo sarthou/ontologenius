@@ -1,20 +1,20 @@
-#ifndef ONTOLOGENIUS_DATAPROPERTIESWRITER_H
-#define ONTOLOGENIUS_DATAPROPERTIESWRITER_H
+#ifndef ONTOLOGENIUS_DATAPROPERTIESOWLWRITER_H
+#define ONTOLOGENIUS_DATAPROPERTIESOWLWRITER_H
 
 #include <string>
 
-#include "ontologenius/core/ontologyIO/writers/PropertiesWriter.h"
+#include "ontologenius/core/ontologyIO/Owl/writers/PropertiesOwlWriter.h"
 
 namespace ontologenius {
 
 class DataPropertyGraph;
 class DataPropertyBranch_t;
 
-class DataPropertiesWriter : public PropertiesWriter<DataPropertyBranch_t>
+class DataPropertiesOwlWriter : public PropertiesOwlWriter<DataPropertyBranch_t>
 {
 public:
-  DataPropertiesWriter(DataPropertyGraph* property_graph, const std::string& ns);
-  ~DataPropertiesWriter() {};
+  DataPropertiesOwlWriter(DataPropertyGraph* property_graph, const std::string& ns);
+  ~DataPropertiesOwlWriter() {};
 
   void write(FILE* file);
 
@@ -29,4 +29,4 @@ private:
 
 } // namespace ontologenius
 
-#endif // ONTOLOGENIUS_DATAPROPERTIESWRITER_H
+#endif // ONTOLOGENIUS_DATAPROPERTIESOWLWRITER_H

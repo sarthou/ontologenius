@@ -1,4 +1,4 @@
-#include "ontologenius/core/ontologyIO/writers/IndividualWriter.h"
+#include "ontologenius/core/ontologyIO/Owl/writers/IndividualOwlWriter.h"
 
 #include <algorithm>
 #include <vector>
@@ -7,13 +7,13 @@
 
 namespace ontologenius {
 
-IndividualWriter::IndividualWriter(IndividualGraph* individual_graph, const std::string& ns)
+IndividualOwlWriter::IndividualOwlWriter(IndividualGraph* individual_graph, const std::string& ns)
 {
   individual_graph_ = individual_graph;
   ns_ = ns;
 }
 
-void IndividualWriter::write(FILE* file)
+void IndividualOwlWriter::write(FILE* file)
 {
   file_ = file;
 
@@ -26,7 +26,7 @@ void IndividualWriter::write(FILE* file)
   file_ = nullptr;
 }
 
-void IndividualWriter::writeGeneralAxioms(FILE* file)
+void IndividualOwlWriter::writeGeneralAxioms(FILE* file)
 {
   file_ = file;
 
@@ -38,7 +38,7 @@ void IndividualWriter::writeGeneralAxioms(FILE* file)
   file_ = nullptr;
 }
 
-void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
+void IndividualOwlWriter::writeIndividual(IndividualBranch_t* branch)
 {
   std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
     <owl:NamedIndividual rdf:about=\"" + ns_ + "#" + branch->value() + "\">\n";
@@ -56,7 +56,7 @@ void IndividualWriter::writeIndividual(IndividualBranch_t* branch)
   writeString(tmp);
 }
 
-void IndividualWriter::writeType(IndividualBranch_t* branch)
+void IndividualOwlWriter::writeType(IndividualBranch_t* branch)
 {
   for(auto& mother : branch->is_a_)
     if(mother.infered == false)
@@ -71,7 +71,7 @@ void IndividualWriter::writeType(IndividualBranch_t* branch)
     }
 }
 
-void IndividualWriter::writeObjectProperties(IndividualBranch_t* branch)
+void IndividualOwlWriter::writeObjectProperties(IndividualBranch_t* branch)
 {
   for(IndivObjectRelationElement_t& relation : branch->object_relations_)
     if(relation.infered == false)
@@ -87,7 +87,7 @@ void IndividualWriter::writeObjectProperties(IndividualBranch_t* branch)
     }
 }
 
-void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
+void IndividualOwlWriter::writeDataProperties(IndividualBranch_t* branch)
 {
   for(IndivDataRelationElement_t& relation : branch->data_relations_)
     if(relation.infered == false)
@@ -108,7 +108,7 @@ void IndividualWriter::writeDataProperties(IndividualBranch_t* branch)
       writeString(tmp);
     }
 }
-void IndividualWriter::writeSameAs(IndividualBranch_t* branch)
+void IndividualOwlWriter::writeSameAs(IndividualBranch_t* branch)
 {
   for(auto& same_as : branch->same_as_)
     if(same_as.infered == false)
@@ -120,7 +120,7 @@ void IndividualWriter::writeSameAs(IndividualBranch_t* branch)
     }
 }
 
-void IndividualWriter::writeDistincts(std::vector<IndividualBranch_t*>& individuals)
+void IndividualOwlWriter::writeDistincts(std::vector<IndividualBranch_t*>& individuals)
 {
   std::vector<std::string> distincts_done;
 
@@ -158,7 +158,7 @@ void IndividualWriter::writeDistincts(std::vector<IndividualBranch_t*>& individu
   }
 }
 
-void IndividualWriter::getDistincts(IndividualBranch_t* individual, std::vector<std::string>& distincts_current)
+void IndividualOwlWriter::getDistincts(IndividualBranch_t* individual, std::vector<std::string>& distincts_current)
 {
   if(std::find(distincts_current.begin(), distincts_current.end(), individual->value()) == distincts_current.end())
   {
