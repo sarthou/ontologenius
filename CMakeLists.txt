@@ -136,6 +136,7 @@ add_onto_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Checkers/DataPropertyChecker.cpp
   src/core/ontoGraphs/Checkers/IndividualChecker.cpp
   src/core/ontoGraphs/Ontology.cpp
+  src/core/ontologyIO/OntologyReader.cpp
   src/core/ontologyIO/Owl/OntologyOwlReader.cpp
   src/core/ontologyIO/Owl/OntologyOwlWriter.cpp
   src/core/ontologyIO/Owl/writers/NodeOwlWriter.cpp

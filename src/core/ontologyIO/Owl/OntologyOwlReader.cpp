@@ -9,25 +9,6 @@
 
 namespace ontologenius {
 
-OntologyOwlReader::OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph)
-{
-  class_graph_ = class_graph;
-  object_property_graph_ = object_property_graph;
-  data_property_graph_ = data_property_graph;
-  individual_graph_ = individual_graph;
-  elemLoaded = 0;
-}
-
-OntologyOwlReader::OntologyOwlReader(Ontology& onto)
-{
-  class_graph_ = &onto.class_graph_;
-  object_property_graph_ = &onto.object_property_graph_;
-  individual_graph_ = &onto.individual_graph_;
-  data_property_graph_ = &onto.data_property_graph_;
-  elemLoaded = 0;
-}
-
-
 int OntologyOwlReader::readFromUri(const std::string& uri, bool individual)
 {
   std::string response = "";
