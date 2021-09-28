@@ -48,7 +48,7 @@ public:
     size_t result = costs[n];
     delete [] costs;
 
-    return result/(double)m;
+    return result/(double)n;
   }
 };
 
