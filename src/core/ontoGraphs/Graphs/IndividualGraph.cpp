@@ -79,7 +79,7 @@ void IndividualGraph::add(const std::string& value, IndividualVectors_t& individ
     if(mother_branch == nullptr)
     {
       ObjectVectors_t empty_vectors;
-      class_graph_->add(is_a.elem, empty_vectors);
+      class_graph_->add(is_a.elem, empty_vectors, true);
       getInMap(&mother_branch, is_a.elem, class_graph_->roots_);
     }
 
@@ -199,7 +199,7 @@ void IndividualGraph::addObjectProperty(IndividualBranch_t* me, Pair_t<std::stri
   if(property_branch == nullptr)
   {
     ObjectPropertyVectors_t empty_vectors;
-    object_property_graph_->add(relation.first, empty_vectors);
+    object_property_graph_->add(relation.first, empty_vectors, true);
     getInMap(&property_branch, relation.first, object_property_graph_->roots_);
   }
 
@@ -222,7 +222,7 @@ void IndividualGraph::addDataProperty(IndividualBranch_t* me, Pair_t<std::string
   if(property_branch == nullptr)
   {
     DataPropertyVectors_t empty_vectors;
-    data_property_graph_->add(relation.first, empty_vectors);
+    data_property_graph_->add(relation.first, empty_vectors, true);
     getInMap(&property_branch, relation.first, data_property_graph_->roots_);
   }
 

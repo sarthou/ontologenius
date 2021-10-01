@@ -43,7 +43,7 @@ ObjectPropertyBranch_t* ObjectPropertyGraph::newDefaultBranch(const std::string&
   return branch;
 }
 
-void ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors)
+void ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors, bool direct_load)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
   /**********************
@@ -61,7 +61,14 @@ void ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t&
 
   //am I created ?
   if(me == nullptr)
+  {
     me = new ObjectPropertyBranch_t(value);
+    if(direct_load)
+    {
+      all_branchs_.push_back(me);
+      container_.insert(me);
+    }
+  }
 
   me->nb_mothers_ += property_vectors.mothers_.size();
 
