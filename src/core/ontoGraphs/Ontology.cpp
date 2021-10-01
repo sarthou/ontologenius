@@ -16,7 +16,8 @@ Ontology::Ontology(const std::string& language) : class_graph_(&individual_graph
                                                   object_property_graph_(&class_graph_),
                                                   data_property_graph_(&class_graph_),
                                                   individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
-                                                  reader((Ontology&)*this),
+                                                  owl_reader((Ontology&)*this),
+                                                  ttl_reader((Ontology&)*this),
                                                   writer((Ontology&)*this)
 {
   is_init_ = false;
@@ -32,7 +33,8 @@ Ontology::Ontology(const Ontology& other) : class_graph_(other.class_graph_, &in
                                             object_property_graph_(other.object_property_graph_, &class_graph_),
                                             data_property_graph_(other.data_property_graph_, &class_graph_),
                                             individual_graph_(other.individual_graph_, &class_graph_, &object_property_graph_, &data_property_graph_),
-                                            reader((Ontology&)*this),
+                                            owl_reader((Ontology&)*this),
+                                            ttl_reader((Ontology&)*this),
                                             writer((Ontology&)*this)
 {
   class_graph_.deepCopy(other.class_graph_);
@@ -70,14 +72,24 @@ int Ontology::close()
 
   if(err == 0)
   {
-    reader.displayIndividualRules();
+    owl_reader.displayIndividualRules();
 
     for(auto& uri : uri_)
-      reader.readFromUri(uri, true);
+    {
+      if(uri.find(".ttl") == std::string::npos)
+        owl_reader.readFromUri(uri, true);
+      else
+        ttl_reader.readFromUri(uri);
+    }
     uri_.clear();
 
     for(auto& file : files_)
-      reader.readFromFile(file, true);
+    {
+      if(file.find(".ttl") == std::string::npos)
+        owl_reader.readFromFile(file, true);
+      else
+        ttl_reader.readFromFile(file);
+    }
     files_.clear();
 
     individual_graph_.close();
@@ -109,13 +121,19 @@ int Ontology::close()
 int Ontology::readFromUri(const std::string& uri)
 {
   uri_.push_back(uri);
-  return reader.readFromUri(uri);
+  if(uri.find(".ttl") == std::string::npos)
+    return owl_reader.readFromUri(uri);
+  else
+    return 0; // ttl files only describe individuals
 }
 
 int Ontology::readFromFile(const std::string& file_name)
 {
   files_.push_back(file_name);
-  return reader.readFromFile(file_name);
+  if(file_name.find(".ttl") == std::string::npos)
+    return owl_reader.readFromFile(file_name);
+  else
+    return 0; // ttl files only describe individuals
 }
 
 bool Ontology::preload(const std::string& file_name)
@@ -123,9 +141,9 @@ bool Ontology::preload(const std::string& file_name)
   writer.setFileName(file_name);
   if(file_name != "none")
   {
-    if(reader.readFromFile(file_name) == NO_ERROR)
-      if(reader.readFromFile(file_name, true) == NO_ERROR)
-        if(reader.empty() == false)
+    if(owl_reader.readFromFile(file_name) == NO_ERROR)
+      if(owl_reader.readFromFile(file_name, true) == NO_ERROR)
+        if(owl_reader.empty() == false)
         {
           is_preloaded_ = true;
           Display::success("Ontology has been preloaded");
@@ -176,6 +194,12 @@ void Ontology::setLanguage(const std::string& language)
 std::string Ontology::getLanguage()
 {
   return class_graph_.getLanguage();
+}
+
+void Ontology::setDisplay(bool display)
+{
+  owl_reader.setDisplay(display);
+  ttl_reader.setDisplay(display);
 }
 
 } // namespace ontologenius

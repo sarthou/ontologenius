@@ -12,7 +12,7 @@ namespace ontologenius {
 int OntologyOwlReader::readFromUri(const std::string& uri, bool individual)
 {
   std::string response = "";
-  int err = send_request("GET", uri, "", &response);
+  int err = send_request("GET", uri, "", response);
   removeDocType(response);
 
   if(err == NO_ERROR)
@@ -29,15 +29,15 @@ int OntologyOwlReader::readFromUri(const std::string& uri, bool individual)
     return REQUEST_ERROR;
 }
 
-int OntologyOwlReader::readFromFile(const std::string& fileName, bool individual)
+int OntologyOwlReader::readFromFile(const std::string& file_name, bool individual)
 {
   std::string response = "";
   std::string tmp = "";
-  std::ifstream f(fileName);
+  std::ifstream f(file_name);
 
   if(!f.is_open())
   {
-    Display::error("Fail to open : " + fileName);
+    Display::error("Fail to open : " + file_name);
     return -1;
   }
 
@@ -51,9 +51,9 @@ int OntologyOwlReader::readFromFile(const std::string& fileName, bool individual
   doc.Parse((const char*)response.c_str(), nullptr, TIXML_ENCODING_UTF8);
   TiXmlElement* rdf = doc.FirstChildElement();
   if(individual == false)
-    return read(rdf, fileName);
+    return read(rdf, file_name);
   else
-    return readIndividual(rdf, fileName);
+    return readIndividual(rdf, file_name);
 }
 
 int OntologyOwlReader::read(TiXmlElement* rdf, const std::string& name)
@@ -187,7 +187,7 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
         {
           std::string property = subElemName.substr(subElemName.find(':')+1);
           if(testAttribute(subElem, "rdf:resource"))
-            push(object_vector.object_relations_, Pair_t<std::string, std::string>(property, toString(subElem), probability), "$", "^");
+            OntologyReader::push(object_vector.object_relations_, Pair_t<std::string, std::string>(property, toString(subElem), probability), "$", "^");
           else if(testAttribute(subElem, "rdf:datatype"))
           {
             const char* value = subElem->GetText();
@@ -196,7 +196,7 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
               data_t data;
               data.value_ = std::string(value);
               data.type_ = toString(subElem, "rdf:datatype");
-              push(object_vector.data_relations_, Pair_t<std::string, data_t>(property, data, probability), "$", "^");
+              OntologyReader::push(object_vector.data_relations_, Pair_t<std::string, data_t>(property, data, probability), "$", "^");
             }
           }
         }
@@ -240,7 +240,7 @@ void OntologyOwlReader::readIndividual(TiXmlElement* elem)
           {
             std::string property = subElemName.substr(subElemName.find(':')+1);
             if(testAttribute(subElem, "rdf:resource"))
-              push(individual_vector.object_relations_, Pair_t<std::string, std::string>(property, toString(subElem), probability), "$", "^");
+              OntologyReader::push(individual_vector.object_relations_, Pair_t<std::string, std::string>(property, toString(subElem), probability), "$", "^");
             else if(testAttribute(subElem, "rdf:datatype"))
             {
               const char* value = subElem->GetText();
@@ -249,7 +249,7 @@ void OntologyOwlReader::readIndividual(TiXmlElement* elem)
                 data_t data;
                 data.value_ = std::string(value);
                 data.type_ = toString(subElem, "rdf:datatype");
-                push(individual_vector.data_relations_, Pair_t<std::string, data_t>(property, data, probability), "$", "^");
+                OntologyReader::push(individual_vector.data_relations_, Pair_t<std::string, data_t>(property, data, probability), "$", "^");
               }
             }
           }

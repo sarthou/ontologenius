@@ -1,0 +1,59 @@
+@prefix : <http://example.org/elements> .       
+
+<http://en.wikipedia.org/wiki/Helium>                                                                               
+    :atomicNumber 2 ;               # xsd:integer                                                                      
+    :atomicMass 4.002602 ;          # xsd:decimal                                                                      
+    :specificGravity 1.663E-4 .     # xsd:double   
+
+<http://somecountry.example/census2007>
+    :isLandlocked false .           # xsd:boolean
+
+_:alice foaf:knows _:bob .
+_:bob foaf:knows _:alice .
+
+
+show:218 rdfs:label "That Seventies Show"^^xsd:string .            # literal with XML Schema string datatype
+show:218 rdfs:label "That Seventies Show"^^<http://www.w3.org/2001/XMLSchema#string> . # same as above
+show:218 rdfs:label "That Seventies Show" .                                            # same again
+show:218 show:localName "That Seventies Show"@en .                 # literal with a language tag
+show:218 show:localName 'Cette Série des Années Soixante-dix'@fr . # literal delimited by single quote
+show:218 show:localName "Cette Série des Années Septante"@fr-be .  # literal with a region subtag
+show:218 show:blurb '''This is a multi-line                        # literal with embedded new lines and quotes
+literal with many quotes (""""")
+and up to two sequential apostrophes ('').''' .
+
+<http://example.org/#green-goblin> foaf:name "Green Goblin" .
+
+<http://example.org/#spiderman> foaf:name "Spiderman" .
+
+<http://example.org/#green-goblin> somePrefix:enemyOf <http://example.org/#spiderman> .
+
+<http://example.org/#spiderman> <http://xmlns.com/foaf/0.1/name> "Spiderman", "Человек-паук"@ru .
+
+<http://example.org/#spiderman> <http://www.perceive.net/schemas/relationship/enemyOf> <http://example.org/#green-goblin> .
+<http://example.org/#spiderman> <http://xmlns.com/foaf/0.1/name> "Spiderman" .
+
+<http://example.org/#spiderman> <http://www.perceive.net/schemas/relationship/enemyOf> <http://example.org/#green-goblin> ;
+				<http://xmlns.com/foaf/0.1/name> "Spiderman" .
+
+<#green-goblin>
+    rel:enemyOf <#spiderman> ;
+    a foaf:Person ;    # in the context of the Marvel universe
+    foaf:name "Green Goblin" .
+
+<#spiderman>
+    rel:enemyOf    <#green-goblin>  ;
+    a foaf:Person ;
+    foaf:name "Spiderman", "Человек-паук"@ru .
+
+<http://data.linkedmdb.org/performance/20286> <http://data.linkedmdb.org/movie/performance_film> "Mujhse Shaadi Karogi" .
+<http://data.linkedmdb.org/performance/20286> <http://data.linkedmdb.org/movie/performance_special_performance_type> "" .
+<http://data.linkedmdb.org/performance/20286> <http://data.linkedmdb.org/movie/performance_part> "" .
+<http://data.linkedmdb.org/performance/20286> <http://data.linkedmdb.org/movie/performance_name> "" .
+<http://data.linkedmdb.org/performance/20286> <http://data.linkedmdb.org/movie/performance_performanceid> "20286"^^<http://www.w3.org/2001/XMLSchema#int> .
+<http://data.linkedmdb.org/performance/20286> <http://data.linkedmdb.org/movie/performance_note> "" .
+<http://data.linkedmdb.org/performance/20286> <http://data.linkedmdb.org/movie/performance_character> "" .
+<http://data.linkedmdb.org/performance/20286> <http://data.linkedmdb.org/movie/performance_actor> "Akshay Kumar" .
+<http://data.linkedmdb.org/performance/20286> <http://www.w3.org/2000/01/rdf-schema#label> "performance #20286" .
+<http://data.linkedmdb.org/performance/20286> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://data.linkedmdb.org/movie/performance> .
+<http://data.linkedmdb.org/performance/20286> <http://xmlns.com/foaf/0.1/page> <http://www.freebase.com/view/guid/9202a8c04000641f80000000011073a8> .
