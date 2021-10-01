@@ -51,18 +51,16 @@ void IndividualGraph::add(const std::string& value, IndividualVectors_t& individ
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   //am I created ?
   IndividualBranch_t* me = nullptr;
-  for(size_t i = 0; i < individuals_.size(); i++)
+  auto indiv_it = std::find_if(individuals_.begin(), individuals_.end(), [&value](IndividualBranch_t* branch){
+    return branch->value() == value;
+  });
+  if(indiv_it != individuals_.end())
   {
-    if(individuals_[i]->value() == value)
-    {
-      me = individuals_[i];
-      individuals_.erase(individuals_.begin() + i);
-      // erase because will be pushed again at the end
-      break;
-    }
+    me = *indiv_it;
+    individuals_.erase(indiv_it);
+    // erase because will be pushed again at the end
   }
-
-  if(me == nullptr)
+  else
     me = new IndividualBranch_t(value);
 
   /**********************

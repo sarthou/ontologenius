@@ -204,21 +204,20 @@ void OntologyTtlReader::sendToOntology(std::string subject, const std::vector<st
 
     if(property == "rdf:type")
       push(individual_vector_.is_a_, object.first, 1.0, "+");
+    else if(property == "owl:sameAs")
+      push(individual_vector_.same_as_, object.first, 1.0, "=");
     else if(property == "rdfs:label")
       pushLang(individual_vector_.dictionary_, object);
     else if(property == "onto:label")
       pushLang(individual_vector_.muted_dictionary_, object);
+    else if(object.second == "")
+      OntologyReader::push(individual_vector_.object_relations_, Pair_t<std::string, std::string>(property, object.first, 1.0), "$", "^");
     else
     {
-      if(object.second == "")
-        OntologyReader::push(individual_vector_.object_relations_, Pair_t<std::string, std::string>(property, object.first, 1.0), "$", "^");
-      else
-      {
-        data_t data;
-        data.value_ = object.first;
-        data.type_ = object.second;
-        OntologyReader::push(individual_vector_.data_relations_, Pair_t<std::string, data_t>(property, data, 1.0), "$", "^");
-      }
+      data_t data;
+      data.value_ = object.first;
+      data.type_ = object.second;
+      OntologyReader::push(individual_vector_.data_relations_, Pair_t<std::string, data_t>(property, data, 1.0), "$", "^");
     }
   }
 }
@@ -248,24 +247,12 @@ bool OntologyTtlReader::isMultiLineDelimiter(const std::string& raw_turtle, size
 
 size_t OntologyTtlReader::nextNonBlanckCharacter(const std::string& text, size_t pose)
 {
-  for(size_t i = pose + 1; i < text.size(); i++)
-  {
-    if((text[i] != ' ') && (text[i] != '\n') && (text[i] != '\r') && (text[i] != '\t'))
-      return i;
-  }
-
-  return std::string::npos;
+  return text.find_first_not_of(" \n\r\t",pose+1);
 }
 
 size_t OntologyTtlReader::nextBlanckCharacter(const std::string& text, size_t pose)
 {
-  for(size_t i = pose + 1; i < text.size(); i++)
-  {
-    if((text[i] == ' ') || (text[i] == '\n') || (text[i] == '\r') || (text[i] == '\t'))
-      return i;
-  }
-
-  return std::string::npos;
+  return text.find_first_of(" \n\r\t",pose+1);
 }
 
 size_t OntologyTtlReader::endOfBlock(const std::string& text, size_t pose)
@@ -288,15 +275,15 @@ size_t OntologyTtlReader::endOfBlock(const std::string& text, size_t pose)
   else
     return std::string::npos;
 
-  for(size_t i = pose + 1; i < text.size(); i++)
+  while(pose != std::string::npos)
   {
-    if(text[i] == next_to_find)
-    {
-      if(is_multi_line == false)
-        return i;
-      else if(isMultiLineDelimiter(text, i, next_to_find))
-        return i;
-    }
+    pose = text.find(next_to_find, pose+1);
+    if(pose == std::string::npos)
+      return pose;
+    else if(is_multi_line == false)
+      return pose;
+    else if(isMultiLineDelimiter(text, pose, next_to_find))
+      return pose;
   }
 
   return std::string::npos;
@@ -305,24 +292,23 @@ size_t OntologyTtlReader::endOfBlock(const std::string& text, size_t pose)
 std::string OntologyTtlReader::getElement(const std::string& text, size_t pose)
 {
   size_t end_pose = std::string::npos;
-  if((text[pose] == '"') || (text[pose] == '\'') || (text[pose] == '<'))
+  if(text[pose] == '<')
+    end_pose = endOfBlock(text, pose);
+  else if((text[pose] == '"') || (text[pose] == '\''))
   {
     end_pose = endOfBlock(text, pose);
-    if((text[pose] == '"') || (text[pose] == '\''))
+    if((text[end_pose + 1] == '^') && (text[end_pose + 2] == '^'))
     {
-      if((text[end_pose + 1] == '^') && (text[end_pose + 2] == '^'))
-      {
-        end_pose += 2;
-        if(text[end_pose + 1] == '<')
-          end_pose = endOfBlock(text, end_pose + 1);
-        else if((text[pose] != '"') || (text[pose] != '\''))
-          end_pose = nextBlanckCharacter(text, end_pose) - 1;
-        else
-          return "";
-      }
-      else if(text[end_pose + 1] == '@')
+      end_pose += 2;
+      if(text[end_pose + 1] == '<')
+        end_pose = endOfBlock(text, end_pose + 1);
+      else if((text[pose] != '"') || (text[pose] != '\''))
         end_pose = nextBlanckCharacter(text, end_pose) - 1;
+      else
+        return "";
     }
+    else if(text[end_pose + 1] == '@')
+      end_pose = nextBlanckCharacter(text, end_pose) - 1;
   }
   else
     end_pose = nextBlanckCharacter(text, pose) - 1;
@@ -366,10 +352,23 @@ std::string OntologyTtlReader::getSubject(const std::string& element)
 
 std::string OntologyTtlReader::getProperty(const std::string& element)
 {
-  if((element == "a") || (element == "rdf:type") || (element == "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>"))
+  if(element[0] == '<')
+  {
+    if(element == "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>")
+      return "rdf:type";
+    else if(element == "<http://www.w3.org/2000/01/rdf-schema#label>")
+      return "rdfs:label";
+    else if(element == "<http://www.w3.org/2002/07/owl#sameAs>")
+      return "rdfs:label";
+    else
+      return getSubject(element);
+  }
+  else if((element == "a") || (element == "rdf:type"))
     return "rdf:type";
-  else if((element == "rdfs:label") || (element == "<http://www.w3.org/2000/01/rdf-schema#label>"))
+  else if(element == "rdfs:label")
     return "rdfs:label";
+  else if(element == "owl:sameAs")
+    return "owl:sameAs";
   else if(element == "onto:label")
     return element;
   else if(element == ":")
@@ -397,6 +396,8 @@ std::pair<std::string, std::string> OntologyTtlReader::getObject(const std::stri
         else
           object.first = element.substr(1, element.size() - 2);
       }
+
+      return object;
     }
     else if((element[0] == '"') || (element[0] == '\''))
     {
@@ -419,6 +420,8 @@ std::pair<std::string, std::string> OntologyTtlReader::getObject(const std::stri
         object.first = element.substr(pose + 1, element.size() - pose - 1);
       else
         object.first = element;
+
+      return object;
     }
   }
 
@@ -447,7 +450,7 @@ std::pair<std::string, std::string> OntologyTtlReader::getObject(const std::stri
 void OntologyTtlReader::push(std::vector<Single_t<std::string>>& vect, const std::string& element, float probability, const std::string& symbole)
 {
   vect.push_back(Single_t<std::string>(element, probability));
-  if(symbole != "" && display_)
+  if(display_ && symbole != "")
     std::cout << "│   │   ├── " << symbole << element << std::endl;
 }
 
@@ -459,7 +462,7 @@ void OntologyTtlReader::pushLang(std::map<std::string, std::vector<std::string>>
   
   dictionary[lang].push_back(label.first);
 
-  if((label.first != "") && display_)
+  if(display_ && (label.first != ""))
     std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang][dictionary[lang].size() - 1] << std::endl;
 }
 
