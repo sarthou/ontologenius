@@ -46,7 +46,7 @@ void IndividualGraph::close()
   container_.load(individuals_);
 }
 
-void IndividualGraph::add(const std::string& value, IndividualVectors_t& individual_vector)
+IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVectors_t& individual_vector)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   //am I created ?
@@ -77,8 +77,7 @@ void IndividualGraph::add(const std::string& value, IndividualVectors_t& individ
     if(mother_branch == nullptr)
     {
       ObjectVectors_t empty_vectors;
-      class_graph_->add(is_a.elem, empty_vectors, true);
-      getInMap(&mother_branch, is_a.elem, class_graph_->roots_);
+      mother_branch = class_graph_->add(is_a.elem, empty_vectors, true);
     }
 
     conditionalPushBack(me->is_a_, ClassElement_t(mother_branch));
@@ -132,6 +131,7 @@ void IndividualGraph::add(const std::string& value, IndividualVectors_t& individ
   me->setSteady_muted_dictionary(individual_vector.muted_dictionary_);
 
   individuals_.push_back(me);
+  return me;
 }
 
 void IndividualGraph::add(std::vector<std::string>& distinct)
@@ -197,8 +197,7 @@ void IndividualGraph::addObjectProperty(IndividualBranch_t* me, Pair_t<std::stri
   if(property_branch == nullptr)
   {
     ObjectPropertyVectors_t empty_vectors;
-    object_property_graph_->add(relation.first, empty_vectors, true);
-    getInMap(&property_branch, relation.first, object_property_graph_->roots_);
+    property_branch = object_property_graph_->add(relation.first, empty_vectors, true);
   }
 
   IndividualBranch_t* indiv_branch = getBranch(relation.second);
@@ -220,8 +219,7 @@ void IndividualGraph::addDataProperty(IndividualBranch_t* me, Pair_t<std::string
   if(property_branch == nullptr)
   {
     DataPropertyVectors_t empty_vectors;
-    data_property_graph_->add(relation.first, empty_vectors, true);
-    getInMap(&property_branch, relation.first, data_property_graph_->roots_);
+    property_branch = data_property_graph_->add(relation.first, empty_vectors, true);
   }
 
   me->data_relations_.emplace_back(property_branch, relation.second, relation.probability);

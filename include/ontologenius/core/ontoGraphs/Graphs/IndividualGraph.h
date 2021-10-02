@@ -53,7 +53,7 @@ public:
     return individuals_;
   }
 
-  void add(const std::string& value, IndividualVectors_t& individual_vector);
+  IndividualBranch_t* add(const std::string& value, IndividualVectors_t& individual_vector);
   void add(std::vector<std::string>& distinct_);
 
   std::unordered_set<std::string> getSame(const std::string& individual);          //C1
