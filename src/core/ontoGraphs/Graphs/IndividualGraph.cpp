@@ -43,16 +43,21 @@ IndividualGraph::~IndividualGraph()
 void IndividualGraph::close()
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  container_.load(individuals_);
+  //container_.load(individuals_);
 }
 
 IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVectors_t& individual_vector)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   //am I created ?
-  IndividualBranch_t* me = getBranch(value);
+  //IndividualBranch_t* me = getBranch(value);
+  IndividualBranch_t* me = container_.find(value);
   if(me == nullptr)
+  {
     me = new IndividualBranch_t(value);
+    individuals_.push_back(me);
+    container_.insert(me);
+  }
 
   /**********************
   ** Class assertion
@@ -121,7 +126,6 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
   me->setSteady_dictionary(individual_vector.dictionary_);
   me->setSteady_muted_dictionary(individual_vector.muted_dictionary_);
 
-  individuals_.push_back(me);
   return me;
 }
 
@@ -191,11 +195,13 @@ void IndividualGraph::addObjectProperty(IndividualBranch_t* me, Pair_t<std::stri
     property_branch = object_property_graph_->add(relation.first, empty_vectors, true);
   }
 
-  IndividualBranch_t* indiv_branch = getBranch(relation.second);
+  //IndividualBranch_t* indiv_branch = getBranch(relation.second);
+  IndividualBranch_t* indiv_branch = container_.find(relation.second);
   if(indiv_branch == nullptr)
   {
     indiv_branch = new IndividualBranch_t(relation.second);
     individuals_.push_back(indiv_branch);
+    container_.insert(indiv_branch);
   }
 
   me->object_relations_.emplace_back(property_branch, indiv_branch, relation.probability);
