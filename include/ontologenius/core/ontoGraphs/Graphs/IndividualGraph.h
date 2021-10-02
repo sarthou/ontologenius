@@ -122,7 +122,7 @@ private:
 
   std::vector<IndividualBranch_t*> individuals_;
 
-  IndividualBranch_t* getBranch(const std::string& name)
+  IndividualBranch_t* getBranch(const std::string& name) const
   {
     auto indiv_it = std::find_if(individuals_.begin(), individuals_.end(), [&name](IndividualBranch_t* branch){
       return branch->value() == name;
