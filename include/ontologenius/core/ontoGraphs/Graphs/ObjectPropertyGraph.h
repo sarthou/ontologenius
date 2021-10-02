@@ -50,7 +50,7 @@ public:
   void deepCopy(const ObjectPropertyGraph& other);
 
   ObjectPropertyBranch_t* newDefaultBranch(const std::string& name);
-  void add(const std::string& value, ObjectPropertyVectors_t& property_vectors, bool direct_load = false);
+  ObjectPropertyBranch_t* add(const std::string& value, ObjectPropertyVectors_t& property_vectors, bool direct_load = false);
   void add(std::vector<std::string>& disjoints);
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);

@@ -43,7 +43,7 @@ ObjectPropertyBranch_t* ObjectPropertyGraph::newDefaultBranch(const std::string&
   return branch;
 }
 
-void ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors, bool direct_load)
+ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors, bool direct_load)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
   /**********************
@@ -232,6 +232,7 @@ void ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t&
   }
 
   mitigate(me);
+  return me;
 }
 
 void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)

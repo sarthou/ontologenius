@@ -41,7 +41,7 @@ ClassGraph::ClassGraph(const ClassGraph& other, IndividualGraph* individual_grap
   this->container_.load(all_branchs_);
 }
 
-void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector, bool direct_load)
+ClassBranch_t* ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector, bool direct_load)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
   ClassBranch_t* me = nullptr;
@@ -132,6 +132,7 @@ void ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector, b
   me->setSteady_muted_dictionary(object_vector.muted_dictionary_);
 
   mitigate(me);
+  return me;
 }
 
 void ClassGraph::add(std::vector<std::string>& disjoints)
