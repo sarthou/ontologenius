@@ -72,11 +72,7 @@ void OntologyTtlReader::removeComments(std::string& raw_turtle)
     {
       if(raw_turtle[i] == '#')
       {
-        size_t j = i + 1;
-        for(; j < raw_turtle.size(); j++)
-          if(raw_turtle[j] == '\n')
-            break;
-
+        size_t j = raw_turtle.find('\n', i + 1);
         raw_turtle.erase(i, j-i);
         i--;
       }
@@ -149,7 +145,7 @@ void OntologyTtlReader::readTriplets(const std::string& raw_turtle)
           return;
         }
 
-        triplets.push_back(std::array<std::string,3>{current_subject, current_property, current_object});
+        triplets.emplace_back(std::array<std::string,3>{current_subject, current_property, current_object});
 
         i = nextNonBlanckCharacter(raw_turtle, i + current_object.size() - 1);
 
@@ -261,7 +257,7 @@ size_t OntologyTtlReader::endOfBlock(const std::string& text, size_t pose)
   bool is_multi_line = false;
 
   if(text[pose] == '<')
-    next_to_find = '>';
+    return text.find('>', pose+1);
   else if(text[pose] == '"')
   {
     next_to_find = '"';
