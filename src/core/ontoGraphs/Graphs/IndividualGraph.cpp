@@ -120,6 +120,7 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
       conditionalPushBack(me->same_as_, IndividualElement_t(my_same));
       conditionalPushBack(my_same->same_as_, IndividualElement_t(me, 1.0, true));
       individuals_.push_back(my_same);
+      container_.insert(my_same);
     }
   }
 
@@ -147,6 +148,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
     {
       me = new IndividualBranch_t(distinct[distinct_i]);
       individuals_.push_back(me);
+      container_.insert(me);
     }
 
     //for all my distincts ...
@@ -171,6 +173,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
           auto my_distinct = new IndividualBranch_t(distinct[distinct_j]);
           conditionalPushBack(me->distinct_, IndividualElement_t(my_distinct));
           individuals_.push_back(my_distinct);
+          container_.insert(my_distinct);
         }
       }
     }
