@@ -102,7 +102,7 @@ int main(int argc, char** argv)
   ros::NodeHandle nh;
 
   ontologenius::Ontology* onto = nullptr;
-  ontologenius::RosInterface interface(&nh);
+  ontologenius::RosInterface interface;
   std::thread onto_thread;
 
   interface.setDisplay(false);
@@ -124,9 +124,9 @@ int main(int argc, char** argv)
     insertN(&interface, i);
     sizes.push_back(i);
 
-    /*r1.push_back(doQuery_R1(&onto_manip));
+    r1.push_back(doQuery_R1(&onto_manip));
     r2.push_back(doQuery_R2(&onto_manip));
-    r3.push_back(doQuery_R3(&onto_manip));*/
+    r3.push_back(doQuery_R3(&onto_manip));
 
     reset(&interface, &onto);
     onto->readFromFile("/home/gsarthou/openrobots/share/ontologies/testsuite.owl");

@@ -31,8 +31,8 @@ class ValuedNode : public UpdatableNode
 public:
   ValuedNode(const std::string& value) : UpdatableNode() {index_ = table_.add(value); }
 
-  uint32_t get() const {return index_; }
-  std::string value() const {return table_[index_]; }
+  uint32_t get() const { return index_; }
+  const std::string& value() const { return table_[index_]; }
 
   static WordTable table_;
 

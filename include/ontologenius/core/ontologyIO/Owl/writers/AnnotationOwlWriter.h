@@ -1,20 +1,20 @@
-#ifndef ONTOLOGENIUS_ANNOTATIONWRITER_H
-#define ONTOLOGENIUS_ANNOTATIONWRITER_H
+#ifndef ONTOLOGENIUS_ANNOTATIONOWLWRITER_H
+#define ONTOLOGENIUS_ANNOTATIONOWLWRITER_H
 
 #include <string>
 #include <vector>
 
-#include "ontologenius/core/ontologyIO/writers/NodeWriter.h"
+#include "ontologenius/core/ontologyIO/Owl/writers/NodeOwlWriter.h"
 
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 
 namespace ontologenius {
 
-class AnnotationWriter : private NodeWriter
+class AnnotationOwlWriter : private NodeOwlWriter
 {
 public:
-  AnnotationWriter(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, const std::string& ns);
+  AnnotationOwlWriter(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, const std::string& ns);
 
   void write(FILE* file);
 
@@ -33,4 +33,4 @@ private:
 
 } // namespace ontologenius
 
-#endif // ONTOLOGENIUS_ANNOTATIONWRITER_H
+#endif // ONTOLOGENIUS_ANNOTATIONOWLWRITER_H

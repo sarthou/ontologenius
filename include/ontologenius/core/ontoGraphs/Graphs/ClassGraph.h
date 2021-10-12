@@ -43,7 +43,7 @@ public:
   ClassGraph(const ClassGraph& other, IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   ~ClassGraph() {}
 
-  void add(const std::string& value, ObjectVectors_t& object_vector);
+  ClassBranch_t* add(const std::string& value, ObjectVectors_t& object_vector, bool direct_load = false);
   void add(std::vector<std::string>& disjoints);
 
   void deepCopy(const ClassGraph& other);

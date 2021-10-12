@@ -43,27 +43,21 @@ IndividualGraph::~IndividualGraph()
 void IndividualGraph::close()
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  container_.load(individuals_);
+  //container_.load(individuals_);
 }
 
-void IndividualGraph::add(const std::string& value, IndividualVectors_t& individual_vector)
+IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVectors_t& individual_vector)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   //am I created ?
-  IndividualBranch_t* me = nullptr;
-  for(size_t i = 0; i < individuals_.size(); i++)
-  {
-    if(individuals_[i]->value() == value)
-    {
-      me = individuals_[i];
-      individuals_.erase(individuals_.begin() + i);
-      // erase because will be pushed again at the end
-      break;
-    }
-  }
-
+  //IndividualBranch_t* me = getBranch(value);
+  IndividualBranch_t* me = container_.find(value);
   if(me == nullptr)
+  {
     me = new IndividualBranch_t(value);
+    individuals_.push_back(me);
+    container_.insert(me);
+  }
 
   /**********************
   ** Class assertion
@@ -79,8 +73,7 @@ void IndividualGraph::add(const std::string& value, IndividualVectors_t& individ
     if(mother_branch == nullptr)
     {
       ObjectVectors_t empty_vectors;
-      class_graph_->add(is_a.elem, empty_vectors);
-      getInMap(&mother_branch, is_a.elem, class_graph_->roots_);
+      mother_branch = class_graph_->add(is_a.elem, empty_vectors, true);
     }
 
     conditionalPushBack(me->is_a_, ClassElement_t(mother_branch));
@@ -127,13 +120,14 @@ void IndividualGraph::add(const std::string& value, IndividualVectors_t& individ
       conditionalPushBack(me->same_as_, IndividualElement_t(my_same));
       conditionalPushBack(my_same->same_as_, IndividualElement_t(me, 1.0, true));
       individuals_.push_back(my_same);
+      container_.insert(my_same);
     }
   }
 
   me->setSteady_dictionary(individual_vector.dictionary_);
   me->setSteady_muted_dictionary(individual_vector.muted_dictionary_);
 
-  individuals_.push_back(me);
+  return me;
 }
 
 void IndividualGraph::add(std::vector<std::string>& distinct)
@@ -154,6 +148,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
     {
       me = new IndividualBranch_t(distinct[distinct_i]);
       individuals_.push_back(me);
+      container_.insert(me);
     }
 
     //for all my distincts ...
@@ -178,6 +173,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
           auto my_distinct = new IndividualBranch_t(distinct[distinct_j]);
           conditionalPushBack(me->distinct_, IndividualElement_t(my_distinct));
           individuals_.push_back(my_distinct);
+          container_.insert(my_distinct);
         }
       }
     }
@@ -199,15 +195,16 @@ void IndividualGraph::addObjectProperty(IndividualBranch_t* me, Pair_t<std::stri
   if(property_branch == nullptr)
   {
     ObjectPropertyVectors_t empty_vectors;
-    object_property_graph_->add(relation.first, empty_vectors);
-    getInMap(&property_branch, relation.first, object_property_graph_->roots_);
+    property_branch = object_property_graph_->add(relation.first, empty_vectors, true);
   }
 
-  IndividualBranch_t* indiv_branch = getBranch(relation.second);
+  //IndividualBranch_t* indiv_branch = getBranch(relation.second);
+  IndividualBranch_t* indiv_branch = container_.find(relation.second);
   if(indiv_branch == nullptr)
   {
     indiv_branch = new IndividualBranch_t(relation.second);
     individuals_.push_back(indiv_branch);
+    container_.insert(indiv_branch);
   }
 
   me->object_relations_.emplace_back(property_branch, indiv_branch, relation.probability);
@@ -222,8 +219,7 @@ void IndividualGraph::addDataProperty(IndividualBranch_t* me, Pair_t<std::string
   if(property_branch == nullptr)
   {
     DataPropertyVectors_t empty_vectors;
-    data_property_graph_->add(relation.first, empty_vectors);
-    getInMap(&property_branch, relation.first, data_property_graph_->roots_);
+    property_branch = data_property_graph_->add(relation.first, empty_vectors, true);
   }
 
   me->data_relations_.emplace_back(property_branch, relation.second, relation.probability);
@@ -1072,7 +1068,7 @@ std::unordered_set<std::string> IndividualGraph::findFuzzy(const std::string& va
   for(auto branch : individuals_)
   {
     if(use_default)
-      if((tmp_cost = dist.get(branch-> value(), value)) <= lower_cost)
+      if((tmp_cost = dist.get(branch->value(), value)) <= lower_cost)
       {
         if(tmp_cost != lower_cost)
         {

@@ -74,10 +74,8 @@ void ReasonerDictionary::split(ValuedNode* node)
       std::replace( tmp.begin(), tmp.end(), '_', ' ');
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         if(std::find(muted->begin(), muted->end(), tmp) == muted->end())
-        {
           it.second.push_back(tmp);
-          std::cout << "push " << tmp << std::endl;
-        }
+      
       std::replace( tmp.begin(), tmp.end(), '-', ' ');
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         if(std::find(muted->begin(), muted->end(), tmp) == muted->end())

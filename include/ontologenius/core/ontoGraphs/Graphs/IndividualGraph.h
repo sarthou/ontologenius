@@ -53,7 +53,7 @@ public:
     return individuals_;
   }
 
-  void add(const std::string& value, IndividualVectors_t& individual_vector);
+  IndividualBranch_t* add(const std::string& value, IndividualVectors_t& individual_vector);
   void add(std::vector<std::string>& distinct_);
 
   std::unordered_set<std::string> getSame(const std::string& individual);          //C1
@@ -122,12 +122,15 @@ private:
 
   std::vector<IndividualBranch_t*> individuals_;
 
-  IndividualBranch_t* getBranch(const std::string& name)
+  IndividualBranch_t* getBranch(const std::string& name) const
   {
-    for(size_t indiv_i = 0; indiv_i < individuals_.size(); indiv_i++)
-      if(name == individuals_[indiv_i]->value())
-        return individuals_[indiv_i];
-    return nullptr;
+    auto indiv_it = std::find_if(individuals_.begin(), individuals_.end(), [&name](IndividualBranch_t* branch){
+      return branch->value() == name;
+    });
+    if(indiv_it != individuals_.end())
+      return *indiv_it;
+    else
+      return nullptr;
   }
 
   void addObjectProperty(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);

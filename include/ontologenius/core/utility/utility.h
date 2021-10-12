@@ -9,7 +9,7 @@
 
 namespace ontologenius {
 
-int send_request(std::string method, std::string url, std::string body, std::string* response)
+inline int send_request(const std::string& method, const std::string& url, const std::string& body, std::string& response)
 {
   ros::NodeHandle n;
 
@@ -27,7 +27,7 @@ int send_request(std::string method, std::string url, std::string body, std::str
   }
   else
   {
-    (*response) = srv.response.text;
+    response = srv.response.text;
     return 0;
   }
 }

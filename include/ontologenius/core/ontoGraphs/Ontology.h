@@ -6,8 +6,9 @@
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
-#include "ontologenius/core/ontologyIO/OntologyReader.h"
-#include "ontologenius/core/ontologyIO/OntologyWriter.h"
+#include "ontologenius/core/ontologyIO/Turtle/OntologyTtlReader.h"
+#include "ontologenius/core/ontologyIO/Owl/OntologyOwlReader.h"
+#include "ontologenius/core/ontologyIO/Owl/OntologyOwlWriter.h"
 
 namespace ontologenius {
 
@@ -29,7 +30,7 @@ public:
   void setLanguage(const std::string& language);
   std::string getLanguage();
 
-  void setDisplay(bool display) { reader.setDisplay(display); }
+  void setDisplay(bool display);
 
   ClassGraph class_graph_;
   ObjectPropertyGraph object_property_graph_;
@@ -37,8 +38,9 @@ public:
   IndividualGraph individual_graph_;
 
 private:
-  OntologyReader reader;
-  OntologyWriter writer;
+  OntologyOwlReader owl_reader;
+  OntologyTtlReader ttl_reader;
+  OntologyOwlWriter writer;
 
   std::vector<std::string> files_;
   std::vector<std::string> uri_;

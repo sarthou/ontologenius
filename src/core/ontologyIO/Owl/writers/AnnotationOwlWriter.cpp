@@ -1,15 +1,15 @@
-#include "ontologenius/core/ontologyIO/writers/AnnotationWriter.h"
+#include "ontologenius/core/ontologyIO/Owl/writers/AnnotationOwlWriter.h"
 
 namespace ontologenius {
 
-AnnotationWriter::AnnotationWriter(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, const std::string& ns)
+AnnotationOwlWriter::AnnotationOwlWriter(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, const std::string& ns)
 {
   object_property_graph_ = object_property_graph;
   data_property_graph_ = data_property_graph;
   ns_ = ns;
 }
 
-void AnnotationWriter::write(FILE* file)
+void AnnotationOwlWriter::write(FILE* file)
 {
   file_ = file;
 
@@ -34,7 +34,7 @@ void AnnotationWriter::write(FILE* file)
   file_ = nullptr;
 }
 
-void AnnotationWriter::writeAnnotation(ObjectPropertyBranch_t* branch)
+void AnnotationOwlWriter::writeAnnotation(ObjectPropertyBranch_t* branch)
 {
   std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
     <owl:AnnotationProperty rdf:about=\"" + ns_ + "#" + branch->value() + "\">\n";
@@ -48,7 +48,7 @@ void AnnotationWriter::writeAnnotation(ObjectPropertyBranch_t* branch)
   writeString(tmp);
 }
 
-void AnnotationWriter::writeAnnotation(DataPropertyBranch_t* branch)
+void AnnotationOwlWriter::writeAnnotation(DataPropertyBranch_t* branch)
 {
   std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
     <owl:AnnotationProperty rdf:about=\"" + ns_ + "#" + branch->value() + "\">\n";
@@ -62,7 +62,7 @@ void AnnotationWriter::writeAnnotation(DataPropertyBranch_t* branch)
   writeString(tmp);
 }
 
-void AnnotationWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
+void AnnotationOwlWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
 {
   for(auto& mother : branch->mothers_)
     if(mother.infered == false)
@@ -76,7 +76,7 @@ void AnnotationWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
     }
 }
 
-void AnnotationWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
+void AnnotationOwlWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
 {
   for(auto& mother : branch->mothers_)
     if(mother.infered == false)
@@ -90,7 +90,7 @@ void AnnotationWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
     }
 }
 
-void AnnotationWriter::writeRange(const std::vector<data_t>& ranges)
+void AnnotationOwlWriter::writeRange(const std::vector<data_t>& ranges)
 {
   for(auto& range : ranges)
   {
@@ -103,7 +103,7 @@ void AnnotationWriter::writeRange(const std::vector<data_t>& ranges)
   }
 }
 
-void AnnotationWriter::writeRange(const std::vector<ClassElement_t>& ranges)
+void AnnotationOwlWriter::writeRange(const std::vector<ClassElement_t>& ranges)
 {
   for(auto range : ranges)
     if(range.infered == false)
@@ -117,7 +117,7 @@ void AnnotationWriter::writeRange(const std::vector<ClassElement_t>& ranges)
     }
 }
 
-void AnnotationWriter::writeDomain(const std::vector<ClassElement_t>& domains)
+void AnnotationOwlWriter::writeDomain(const std::vector<ClassElement_t>& domains)
 {
   for(auto domain : domains)
     if(domain.infered == false)

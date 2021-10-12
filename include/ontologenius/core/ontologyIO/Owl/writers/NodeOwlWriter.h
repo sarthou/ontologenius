@@ -1,5 +1,5 @@
-#ifndef ONTOLOGENIUS_NODEWRITER_H
-#define ONTOLOGENIUS_NODEWRITER_H
+#ifndef ONTOLOGENIUS_NODEOWLWRITER_H
+#define ONTOLOGENIUS_NODEOWLWRITER_H
 
 #include <string>
 
@@ -8,11 +8,11 @@
 
 namespace ontologenius {
 
-class NodeWriter
+class NodeOwlWriter
 {
 public:
-  NodeWriter() {file_ = nullptr; };
-  ~NodeWriter() {};
+  NodeOwlWriter() {file_ = nullptr; };
+  ~NodeOwlWriter() {};
 
   FILE* file_;
   std::string ns_;
@@ -37,4 +37,4 @@ public:
 
 } // namespace ontologenius
 
-#endif // ONTOLOGENIUS_NODEWRITER_H
+#endif // ONTOLOGENIUS_NODEOWLWRITER_H
