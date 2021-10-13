@@ -4,18 +4,18 @@
 #include <string>
 #include <vector>
 
-#include "ontologenius/core/ontologyIO/writers/NodeWriter.h"
+#include "ontologenius/core/ontologyIO/Owl/writers/NodeOwlWriter.h"
 
 namespace ontologenius {
 
 class IndividualGraph;
 class IndividualBranch_t;
 
-class IndividualWriter : public NodeWriter
+class IndividualOwlWriter : public NodeOwlWriter
 {
 public:
-  IndividualWriter(IndividualGraph* individual_graph, const std::string& ns);
-  ~IndividualWriter() {};
+  IndividualOwlWriter(IndividualGraph* individual_graph, const std::string& ns);
+  ~IndividualOwlWriter() {};
 
   void write(FILE* file);
   void writeGeneralAxioms(FILE* file);

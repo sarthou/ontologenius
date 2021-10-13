@@ -1,22 +1,22 @@
-#ifndef ONTOLOGENIUS_CLASSWRITER_H
-#define ONTOLOGENIUS_CLASSWRITER_H
+#ifndef ONTOLOGENIUS_CLASSOWLWRITER_H
+#define ONTOLOGENIUS_CLASSOWLWRITER_H
 
 #include <string>
 #include <vector>
 #include <set>
 
-#include "ontologenius/core/ontologyIO/writers/NodeWriter.h"
+#include "ontologenius/core/ontologyIO/Owl/writers/NodeOwlWriter.h"
 
 namespace ontologenius {
 
 class ClassGraph;
 class ClassBranch_t;
 
-class ClassWriter : private NodeWriter
+class ClassOwlWriter : private NodeOwlWriter
 {
 public:
-  ClassWriter(ClassGraph* class_graph, const std::string& ns);
-  ~ClassWriter() {};
+  ClassOwlWriter(ClassGraph* class_graph, const std::string& ns);
+  ~ClassOwlWriter() {};
 
   void write(FILE* file);
   void writeGeneralAxioms(FILE* file);
@@ -36,4 +36,4 @@ private:
 
 } // namespace ontologenius
 
-#endif // ONTOLOGENIUS_CLASSWRITER_H
+#endif // ONTOLOGENIUS_CLASSOWLWRITER_H

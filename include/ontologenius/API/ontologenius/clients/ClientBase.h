@@ -31,7 +31,7 @@ public:
   /// @brief Constructs a ROS client.
   /// @param n is an initialized ROS node handle.
   /// @param name is the name of the ontologenius service
-  ClientBase(ros::NodeHandle* n, std::string name) : client(n->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + name, true))
+  ClientBase(ros::NodeHandle* n, std::string name) : client(n->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name, true))
   {
     n_ = n;
     name_ = name;
@@ -60,7 +60,7 @@ protected:
     {
       if(verbose_)
         std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + name_, true);
+      client = n_->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
       if(client.call(srv))
       {
         if(verbose_)
@@ -96,7 +96,7 @@ protected:
     {
       if(verbose_)
         std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + name_, true);
+      client = n_->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
       if(client.call(srv))
       {
         if(verbose_)
@@ -129,7 +129,7 @@ protected:
     {
       if(verbose_)
         std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + name_, true);
+      client = n_->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
       if(client.call(srv))
       {
         if(verbose_)
@@ -158,7 +158,7 @@ protected:
     {
       if(verbose_)
         std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/" + name_, true);
+      client = n_->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
       if(client.call(srv))
       {
         if(verbose_)

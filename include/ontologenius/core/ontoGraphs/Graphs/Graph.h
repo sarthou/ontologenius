@@ -10,6 +10,7 @@
 
 #include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerMap.h"
 #include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerDyn.h"
+#include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerSet.h"
 
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
@@ -42,7 +43,7 @@ public:
   virtual B* findBranchUnsafe(const std::string& name);
   virtual B* create(const std::string& name);
 
-  BranchContainerMap<B> container_;
+  BranchContainerSet<B> container_;
 
   std::string language_;
 

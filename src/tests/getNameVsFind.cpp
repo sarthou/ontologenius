@@ -211,7 +211,7 @@ int main(int argc, char** argv)
 
   ros::NodeHandle nh;
   ontologenius::Ontology* onto = nullptr;
-  ontologenius::RosInterface interface(&nh);
+  ontologenius::RosInterface interface;
   std::thread onto_thread;
 
   interface.setDisplay(false);
@@ -226,7 +226,7 @@ int main(int argc, char** argv)
   std::vector<size_t> nb_words = {100, 500, 1000, 5000, 10000, 50000, 100000, 450000};
   std::vector<double> finds, gettedNames;
 
-  /*for(auto& nb_word : nb_words)
+  for(auto& nb_word : nb_words)
   {
     std::cout << "will insert" << std::endl;
     std::vector<std::string> words = readNbWords(nb_word);
@@ -251,22 +251,26 @@ int main(int argc, char** argv)
     std::cout << "*********" << std::endl;
   }
 
-  std::vector<std::string> words = readNbWords(450000);
-  insertWords(&interface, words, true);
-
-  std::cout << "mean words = " << getNames(words, true) << std::endl;*/
-
-  std::vector<std::string> words = readNbWords(466508);
-  size_t s = 0, min = 10000, max = 0;
-  for(auto& w : words)
   {
-    s += w.size();
-    if(w.size() > max) max = w.size();
-    if(w.size() < min) min = w.size();
+    std::vector<std::string> words = readNbWords(450000);
+    insertWords(&interface, words, true);
+
+    std::cout << "mean words = " << getNames(words, true) << std::endl;
   }
-  std::cout << "nb word " << words.size() << std::endl;
-  std::cout << "mean = " << s/466508.0 << std::endl;
-  std::cout << "min/max " << min << " : " << max << std::endl;
+
+  {
+    std::vector<std::string> words = readNbWords(466508);
+    size_t s = 0, min = 10000, max = 0;
+    for(auto& w : words)
+    {
+      s += w.size();
+      if(w.size() > max) max = w.size();
+      if(w.size() < min) min = w.size();
+    }
+    std::cout << "nb word " << words.size() << std::endl;
+    std::cout << "mean = " << s/466508.0 << std::endl;
+    std::cout << "min/max " << min << " : " << max << std::endl;
+  }
 
   interface.stop();
   onto_thread.join();

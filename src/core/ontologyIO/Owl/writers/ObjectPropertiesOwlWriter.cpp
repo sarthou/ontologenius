@@ -1,4 +1,4 @@
-#include "ontologenius/core/ontologyIO/writers/ObjectPropertiesWriter.h"
+#include "ontologenius/core/ontologyIO/Owl/writers/ObjectPropertiesOwlWriter.h"
 
 #include <vector>
 
@@ -6,13 +6,13 @@
 
 namespace ontologenius {
 
-ObjectPropertiesWriter::ObjectPropertiesWriter(ObjectPropertyGraph* property_graph, const std::string& ns)
+ObjectPropertiesOwlWriter::ObjectPropertiesOwlWriter(ObjectPropertyGraph* property_graph, const std::string& ns)
 {
   property_graph_ = property_graph;
   ns_ = ns;
 }
 
-void ObjectPropertiesWriter::write(FILE* file)
+void ObjectPropertiesOwlWriter::write(FILE* file)
 {
   file_ = file;
 
@@ -25,7 +25,7 @@ void ObjectPropertiesWriter::write(FILE* file)
   file_ = nullptr;
 }
 
-void ObjectPropertiesWriter::writeProperty(ObjectPropertyBranch_t* branch)
+void ObjectPropertiesOwlWriter::writeProperty(ObjectPropertyBranch_t* branch)
 {
   std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
     <owl:ObjectProperty rdf:about=\"" + ns_ + "#" + branch->value() + "\">\n";
@@ -46,7 +46,7 @@ void ObjectPropertiesWriter::writeProperty(ObjectPropertyBranch_t* branch)
   writeString(tmp);
 }
 
-void ObjectPropertiesWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
+void ObjectPropertiesOwlWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
 {
   for(auto& mother : branch->mothers_)
     if(mother.infered == false)
@@ -60,7 +60,7 @@ void ObjectPropertiesWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
     }
 }
 
-void ObjectPropertiesWriter::writeInverseOf(ObjectPropertyBranch_t* branch)
+void ObjectPropertiesOwlWriter::writeInverseOf(ObjectPropertyBranch_t* branch)
 {
   for(auto& inverse : branch->inverses_)
     if(inverse.infered == false)
@@ -74,7 +74,7 @@ void ObjectPropertiesWriter::writeInverseOf(ObjectPropertyBranch_t* branch)
     }
 }
 
-void ObjectPropertiesWriter::writeRange(ObjectPropertyBranch_t* branch)
+void ObjectPropertiesOwlWriter::writeRange(ObjectPropertyBranch_t* branch)
 {
   for(auto& range : branch->ranges_)
     if(range.infered == false)
@@ -88,7 +88,7 @@ void ObjectPropertiesWriter::writeRange(ObjectPropertyBranch_t* branch)
     }
 }
 
-void ObjectPropertiesWriter::writeDomain(ObjectPropertyBranch_t* branch)
+void ObjectPropertiesOwlWriter::writeDomain(ObjectPropertyBranch_t* branch)
 {
   for(auto& domain : branch->domains_)
     if(domain.infered == false)
@@ -102,7 +102,7 @@ void ObjectPropertiesWriter::writeDomain(ObjectPropertyBranch_t* branch)
     }
 }
 
-void ObjectPropertiesWriter::writeChain(ObjectPropertyBranch_t* branch)
+void ObjectPropertiesOwlWriter::writeChain(ObjectPropertyBranch_t* branch)
 {
   for(auto& chain : branch->str_chains_)
   {

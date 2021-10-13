@@ -1,19 +1,19 @@
-#ifndef ONTOLOGENIUS_PROPERTIESWRITER_H
-#define ONTOLOGENIUS_PROPERTIESWRITER_H
+#ifndef ONTOLOGENIUS_PROPERTIESOWLWRITER_H
+#define ONTOLOGENIUS_PROPERTIESOWLWRITER_H
 
 #include <string>
 
-#include "ontologenius/core/ontologyIO/writers/NodeWriter.h"
+#include "ontologenius/core/ontologyIO/Owl/writers/NodeOwlWriter.h"
 #include "ontologenius/core/ontoGraphs/Branchs/PropertyBranch.h"
 
 namespace ontologenius {
 
 template <typename T>
-class PropertiesWriter : public NodeWriter
+class PropertiesOwlWriter : public NodeOwlWriter
 {
 public:
-  PropertiesWriter() {};
-  ~PropertiesWriter() {};
+  PropertiesOwlWriter() {};
+  ~PropertiesOwlWriter() {};
 
 protected:
 
@@ -22,7 +22,7 @@ protected:
 };
 
 template <typename T>
-void PropertiesWriter<T>::writeDisjointWith(PropertyBranch_t<T>* branch)
+void PropertiesOwlWriter<T>::writeDisjointWith(PropertyBranch_t<T>* branch)
 {
   for(auto& disjoint : branch->disjoints_)
     if(disjoint.infered == false)
@@ -37,7 +37,7 @@ void PropertiesWriter<T>::writeDisjointWith(PropertyBranch_t<T>* branch)
 }
 
 template <typename T>
-void PropertiesWriter<T>::writeProperties(PropertyBranch_t<T>* branch)
+void PropertiesOwlWriter<T>::writeProperties(PropertyBranch_t<T>* branch)
 {
   std::string tmp;
   if(branch->properties_.functional_property_ == true)
@@ -61,4 +61,4 @@ void PropertiesWriter<T>::writeProperties(PropertyBranch_t<T>* branch)
 
 } // namespace ontologenius
 
-#endif // ONTOLOGENIUS_PROPERTIESWRITER_H
+#endif // ONTOLOGENIUS_PROPERTIESOWLWRITER_H

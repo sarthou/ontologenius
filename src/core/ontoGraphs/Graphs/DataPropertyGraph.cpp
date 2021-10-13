@@ -43,7 +43,7 @@ DataPropertyBranch_t* DataPropertyGraph::newDefaultBranch(const std::string& nam
   return branch;
 }
 
-void DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& property_vectors)
+DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& property_vectors, bool direct_load)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
   /**********************
@@ -63,6 +63,11 @@ void DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& pro
   if(me == nullptr)
   {
     me = new DataPropertyBranch_t(value);
+    if(direct_load)
+    {
+      all_branchs_.push_back(me);
+      container_.insert(me);
+    }
   }
 
   me->nb_mothers_ += property_vectors.mothers_.size();
@@ -154,6 +159,7 @@ void DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& pro
   me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
 
   mitigate(me);
+  return me;
 }
 
 void DataPropertyGraph::add(std::vector<std::string>& disjoints)
