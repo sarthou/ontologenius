@@ -70,7 +70,7 @@ public:
 
   std::vector<std::string> getAll()
   {
-    std::vector<std::string> res(all_branchs_.size());
+    std::vector<std::string> res;
     for(auto branch : all_branchs_)
       res.push_back(branch->value());
     return res;
