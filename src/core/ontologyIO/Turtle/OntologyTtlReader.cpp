@@ -92,7 +92,10 @@ void OntologyTtlReader::removeComments(std::string& raw_turtle)
     else if(raw_turtle[i] == next_to_find)
     {
       if(is_multi_line == false)
-        next_to_find = 0x00;
+      {
+        if(isDelimiterEscaped(raw_turtle, i) == false)
+          next_to_find = 0x00;
+      }
       else if(isMultiLineDelimiter(raw_turtle, i, next_to_find))
       {
         next_to_find = 0x00;
@@ -241,6 +244,15 @@ bool OntologyTtlReader::isMultiLineDelimiter(const std::string& raw_turtle, size
     return false;
 }
 
+
+bool OntologyTtlReader::isDelimiterEscaped(const std::string& raw_turtle, size_t& pose)
+{
+  if(raw_turtle[pose - 1] == '\\')
+    return true;
+  else
+    return false;
+}
+
 size_t OntologyTtlReader::nextNonBlanckCharacter(const std::string& text, size_t pose)
 {
   return text.find_first_not_of(" \n\r\t",pose+1);
@@ -277,7 +289,10 @@ size_t OntologyTtlReader::endOfBlock(const std::string& text, size_t pose)
     if(pose == std::string::npos)
       return pose;
     else if(is_multi_line == false)
-      return pose;
+    {
+      if(isDelimiterEscaped(text, pose) == false)
+        return pose;
+    }
     else if(isMultiLineDelimiter(text, pose, next_to_find))
       return pose;
   }
@@ -355,7 +370,7 @@ std::string OntologyTtlReader::getProperty(const std::string& element)
     else if(element == "<http://www.w3.org/2000/01/rdf-schema#label>")
       return "rdfs:label";
     else if(element == "<http://www.w3.org/2002/07/owl#sameAs>")
-      return "rdfs:label";
+      return "owl:sameAs";
     else
       return getSubject(element);
   }
