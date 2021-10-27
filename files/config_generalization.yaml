@@ -1,0 +1,10 @@
+flow:
+  - ReasonerChain
+  - ReasonerDictionary
+  - ReasonerGeneralize
+  - ReasonerInverseOf
+  - ReasonerRangeDomain
+  - ReasonerSymetric
+ReasonerGeneralize:
+  min_count : 2
+  min_percent : 0.6
