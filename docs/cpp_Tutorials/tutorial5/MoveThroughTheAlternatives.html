@@ -130,14 +130,14 @@
           <div class="code_line"><br></div>
           <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;ros/ros.h&gt;</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/API/ontologenius/OntologiesManipulator.h&quot;</span></div>
+          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologiesManipulator.h&quot;</span></div>
           <div class="code_line"><br></div>
           <div class="code_line"><span class="cpp_type">int</span> main(<span class="cpp_type">int</span> argc, <span class="cpp_type">char</span><span class="cpp_op">**</span> argv)</div>
           <div class="code_line">{</div>
           <div class="code_line">  ros::init(argc, argv, <span class="cpp_string">&quot;explore_futures&quot;</span>);</div>
           <div class="code_line"><br></div>
           <div class="code_line">  ros::<span class="cpp_type">NodeHandle</span> n;</div>
-          <div class="code_line">  <span class="cpp_type">OntologiesManipulator</span> onto;</div>
+          <div class="code_line">  <span class="cpp_type">OntologiesManipulator</span> onto(&n);</div>
           <div class="code_line">  onto.waitInit();</div>
           <div class="code_line"><br></div>
           <div class="code_line">  onto.add(<span class="cpp_string">&quot;bob&quot;</span>);</div>
@@ -191,7 +191,7 @@
         <p>Now, let's break the code down.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 4;">
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/API/ontologenius/OntologiesManipulator.h&quot;</span></div>
+          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologiesManipulator.h&quot;</span></div>
         </div>
 
         <p>Since we need to manipulate multiple instances, we have to include the OntologiesManipulator header.</p>

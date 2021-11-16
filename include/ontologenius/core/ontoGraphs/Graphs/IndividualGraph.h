@@ -53,6 +53,14 @@ public:
     return individuals_;
   }
 
+  std::vector<std::string> getAll()
+  {
+    std::vector<std::string> res;
+    for(auto branch : individuals_)
+      res.push_back(branch->value());
+    return res;
+  }
+
   IndividualBranch_t* add(const std::string& value, IndividualVectors_t& individual_vector);
   void add(std::vector<std::string>& distinct_);
 

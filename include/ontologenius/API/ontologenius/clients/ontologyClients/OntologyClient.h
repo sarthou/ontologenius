@@ -49,26 +49,30 @@ public:
   /// @brief Gives all the concepts having for label the one passed in argument.
   /// @param name is a concept name in natural language.
   /// @param take_id can be set to false if you do not want to consider the concept identifier as a possible default name.
+  /// @param selector can be set to only get results inheriting from the selector concept.
   /// @return The result of this function depends on the setting of the working language.
-  std::vector<std::string> find(const std::string& name, bool take_id = true);
+  std::vector<std::string> find(const std::string& name, bool take_id = true, const std::string& selector = "");
   /// @brief Gives all the concepts having for label a subset of the one passed in argument.
   /// @param name is a concept name in natural language.
   /// @param take_id can be set to false if you do not want to consider the concept identifier as a possible default name.
+  /// @param selector can be set to only get results inheriting from the selector concept.
   /// @return The result of this function depends on the setting of the working language.
-  std::vector<std::string> findSub(const std::string& name, bool take_id = true);
+  std::vector<std::string> findSub(const std::string& name, bool take_id = true, const std::string& selector = "");
   /// @brief Gives all the concepts having a label matching the regular expression passed in argument.
   /// @param regex is a regular expression.
   /// @param take_id can be set to false if you do not want to consider the concept identifier as a possible default name.
+  /// @param selector can be set to only get results inheriting from the selector concept.
   /// @return The result of this function depends on the setting of the working language.
-  std::vector<std::string> findRegex(const std::string& regex, bool take_id = true);
+  std::vector<std::string> findRegex(const std::string& regex, bool take_id = true, const std::string& selector = "");
   /// @brief Gives all the concepts with the lowest edit distance with the name passed in argument.
   /// @param name is a concept name in natural language.
   /// @param threshold is the minimum editing distance.
   /// This value corresponds to the number of changes to be made to pass from one
   /// word to another divided by the length of the comparison word.
   /// @param take_id can be set to false if you do not want to consider the concept identifier as a possible default name.
+  /// @param selector can be set to only get results inheriting from the selector concept.
   /// @return The result of this function depends on the setting of the working language.
-  std::vector<std::string> findFuzzy(const std::string& name, double threshold = 0.5, bool take_id = true);
+  std::vector<std::string> findFuzzy(const std::string& name, double threshold = 0.5, bool take_id = true, const std::string& selector = "");
   /// @brief test if a concept exist in the subpart of the ontology managed by the client
   /// (i.e. class, individuals, object properties, data properties).
   /// @param name is a concept indentifier.

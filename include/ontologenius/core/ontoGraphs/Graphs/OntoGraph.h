@@ -68,6 +68,14 @@ public:
     return all_branchs_;
   }
 
+  std::vector<std::string> getAll()
+  {
+    std::vector<std::string> res;
+    for(auto branch : all_branchs_)
+      res.push_back(branch->value());
+    return res;
+  }
+
 protected:
   std::map<std::string, B*> branchs_;
   std::map<std::string, B*> roots_;
