@@ -160,6 +160,7 @@
           <div class="code_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius_empty.launch&quot;</span>&gt;</div>
           <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find feed_and_generalize)/birds.owl&quot;</span>/&gt;</div>
           <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
+          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;config_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/config_generalization.yaml&quot;</span>/&gt;</div>
           <div class="code_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
           <div class="code_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
         </div>
@@ -167,6 +168,11 @@
 
         <p>By specifying an internal file, ontologenius is allowed to save the ontology it contains in a file
           when it is stopped and to reload it on its next start. We will see the usefulness of this later.</p>
+
+        <p>You should also have noticed that we have used a new argument "config_file". With it, we can configure 
+          the reasoners we want to activate at the launch of Ontologenius and also tune their parameters. 
+          You can find more information about this file 
+          <a target="_blank" rel="noopener noreferrer" href="../../overview/reasonersConfiguration.html"><b>here</b></a>.</p>
 
         <nav class="course-pagination">
           <a href="../Tutorials.html" class="course-pagination__btn">

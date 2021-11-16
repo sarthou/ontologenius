@@ -56,7 +56,7 @@ std::vector<std::string> OntologyClient::getEveryNames(const std::string& name, 
   return call(srv);
 }
 
-std::vector<std::string> OntologyClient::find(const std::string& name, bool take_id)
+std::vector<std::string> OntologyClient::find(const std::string& name, bool take_id, const std::string& selector)
 {
   ontologenius::OntologeniusService srv;
 
@@ -64,11 +64,13 @@ std::vector<std::string> OntologyClient::find(const std::string& name, bool take
   srv.request.param = name;
   if(take_id == false)
     srv.request.param += " -i false";
+  if(selector != "")
+    srv.request.param += " -s " + selector;
 
   return call(srv);
 }
 
-std::vector<std::string> OntologyClient::findSub(const std::string& name, bool take_id)
+std::vector<std::string> OntologyClient::findSub(const std::string& name, bool take_id, const std::string& selector)
 {
   ontologenius::OntologeniusService srv;
 
@@ -76,11 +78,13 @@ std::vector<std::string> OntologyClient::findSub(const std::string& name, bool t
   srv.request.param = name;
   if(take_id == false)
     srv.request.param += " -i false";
+  if(selector != "")
+    srv.request.param += " -s " + selector;
 
   return call(srv);
 }
 
-std::vector<std::string> OntologyClient::findRegex(const std::string& regex, bool take_id)
+std::vector<std::string> OntologyClient::findRegex(const std::string& regex, bool take_id, const std::string& selector)
 {
   ontologenius::OntologeniusService srv;
 
@@ -88,11 +92,13 @@ std::vector<std::string> OntologyClient::findRegex(const std::string& regex, boo
   srv.request.param = regex;
   if(take_id == false)
     srv.request.param += " -i false";
+  if(selector != "")
+    srv.request.param += " -s " + selector;
 
   return call(srv);
 }
 
-std::vector<std::string> OntologyClient::findFuzzy(const std::string& name, double threshold, bool take_id)
+std::vector<std::string> OntologyClient::findFuzzy(const std::string& name, double threshold, bool take_id, const std::string& selector)
 {
   ontologenius::OntologeniusService srv;
 
@@ -100,6 +106,8 @@ std::vector<std::string> OntologyClient::findFuzzy(const std::string& name, doub
   srv.request.param = name + " -t " + std::to_string(threshold);
   if(take_id == false)
     srv.request.param += " -i false";
+  if(selector != "")
+    srv.request.param += " -s " + selector;
 
   return call(srv);
 }

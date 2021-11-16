@@ -293,6 +293,8 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
       if(onto_->class_graph_.touch(params()))
         res.values.push_back(params());
     }
+    else if(req.action == "getAll")
+      res.values = onto_->class_graph_.getAll();
     else
       res.code = UNKNOW_ACTION;
 
@@ -371,6 +373,8 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
       if(onto_->object_property_graph_.touch(params()))
         res.values.push_back(params());
     }
+    else if(req.action == "getAll")
+      res.values = onto_->object_property_graph_.getAll();
     else
       res.code = UNKNOW_ACTION;
 
@@ -445,6 +449,8 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
       if(onto_->data_property_graph_.touch(params()))
         res.values.push_back(params());
     }
+    else if(req.action == "getAll")
+      res.values = onto_->data_property_graph_.getAll();
     else
       res.code = UNKNOW_ACTION;
 
@@ -543,6 +549,8 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
       if(onto_->individual_graph_.relationExists(params()))
         res.values.push_back(params());
     }
+    else if(req.action == "getAll")
+      res.values = onto_->individual_graph_.getAll();
     else
       res.code = UNKNOW_ACTION;
 

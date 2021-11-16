@@ -31,6 +31,7 @@ private:
   void readTriplets(const std::string& raw_turtle);
   void sendToOntology(std::string subject, const std::vector<std::array<std::string,3>>& triplets);
   bool isMultiLineDelimiter(const std::string& raw_turtle, size_t& pose, char delim);
+  bool isDelimiterEscaped(const std::string& raw_turtle, size_t& pose);
   inline size_t nextNonBlanckCharacter(const std::string& text, size_t pose);
   inline size_t nextBlanckCharacter(const std::string& text, size_t pose);
   size_t endOfBlock(const std::string& text, size_t pose);
