@@ -122,7 +122,7 @@
 
         <h1 class="title">Insert new knowledge</h1>
 
-        <p>Before starting, here are some import, an ontology manipulator object, a small function that
+        <p>Before starting, here are some imports, an ontology manipulator object, a small function that
           removes the s of the plural of a word when it is present.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
@@ -284,7 +284,7 @@
         <p>The third match must contain "not" if the sentence is in its negative form and None if it is
           in its positive form.</p>
         <p>If the sentence is in its positive form, we remove the data property "can_verb" with the boolean value
-          false and add it with the value true. Although it seems strange, ontologenius allows an individual to own
+          false and add it with the value true. Although it seems strange, Ontologenius allows an individual to own
           the same property with different values. To be sure that this does not happen here because it does not
           make sense with booleans, we remove the value false before adding true. This is no problem removing a
           property that does not exist on an individual, it will have no effect. However, if we add to it the
@@ -293,7 +293,7 @@
         <p>We do the same for the negative form by removing the value true and adding the value false.</p>
 
         <p>Note, however, that we are applying a data property of the form "can_verb" to an individual or class
-          without ever having defined this property before. If ontologenius does not find the said
+          without ever having defined this property before. If Ontologenius does not find the said
           property it will create it alone by determining its type with respect to the data pointed. For all
           times after, the property will exist and will be reused.</p>
 
@@ -363,8 +363,8 @@
         </div>
 
         <p>Before moving on, note that we add the concept "bird" before all. This is because to
-          build an ontology, ontologenius must always know at least one concept. For example, if we want to
-          add the fact that a bird is an animal, ontologenius must know either bird or animal and will
+          build an ontology, Ontologenius must always know at least one concept. For example, if we want to
+          add the fact that a bird is an animal, Ontologenius must know either bird or animal and will
           automatically create the second if it does not exist yet.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 101;">
@@ -420,22 +420,22 @@
           it has deduced by itself that all birds can not fly. To excuse this mistake, it must be
           said that we did not help it.</p>
 
-        <p>The basic principle is that ontologenius realizes a generalization if 60% of the individuals
+        <p>The basic principle is that Ontologenius realizes a generalization if 60% of the individuals
           inheriting from the same classes have the same property and that from two individuals.</p>
 
         <p>Trying to remove this property with the call of the removeDataProperty function would have no effect
           since it would be deduced again. To make this property accurate, it should be explicitly told that
           birds can fly but we will not do that.</p>
 
-        <p>Before continuing, kill ontologenius and so your program then restarts it and ask it again if the
+        <p>Before continuing, kill Ontologenius and so your program then restarts it and ask it again if the
           birds can fly.</p>
 
         <div class="code_block">
           <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
         </div>
 
-        <p>It should answer you again no. Yet you have stopped ontologenius... This is where we understand its
-          long-term memory principle as well as the usefulness of the internal file. When stopping ontologenius,
+        <p>It should answer you again no. Yet you have stopped Ontologenius... This is where we understand its
+          long-term memory principle as well as the usefulness of the internal file. When stopping Ontologenius,
            it stored all its knowledge in the internal file that is reloaded at the restart.</p>
 
        <p>We will now teach it the principle of a parrot and a dove that are birds capable of flying and ask it again if
@@ -489,7 +489,7 @@
         <p>So we have seen here how to add new knowledge during the execution of the program and the impact of
           this through the mechanism of generalization.</p>
 
-        <p>If you wish, you can delete the internal file ontologenius has created and try again by adding
+        <p>If you wish, you can delete the internal file Ontologenius has created and try again by adding
           the following line just before closing the ontology in the main function.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 114;">
@@ -499,7 +499,7 @@
         <p>In fact, the generalization mechanism is a reasoning plugin that like all these mechanisms can be
           active or not through the reasoning manager.</p>
 
-        <p>However, if you do not delete the ontologenius internal file, the generalization has already been
+        <p>However, if you do not delete the Ontologenius internal file, the generalization has already been
           done and will remain so. It will just not be able to achieve new generalizations.</p>
 
         <nav class="course-pagination">
