@@ -71,44 +71,58 @@ class OntologyClient(ClientBase):
             param += " -i false"
         return self.call("getEveryNames", param)
 
-    def find(self, name, take_id = True):
+    def find(self, name, take_id = True, selector = ''):
         """Gives all the concepts (str[]) having for label name(str).
            The default take_id(bool) argument can be set to False if you do not want
            to consider the concept identifier as a possible default name.
+           The optional selector(str) parameter can be set to only get results inheriting from the selector(str) concept.
+           The default value '' represents no restriction on the result.
            The result of this function depends on the setting of the working language.
         """
         param = name
         if take_id == False:
             param += " -i false"
+        if selector != '':
+            param += " -s " + selector
         return self.call("find", param)
 
-    def findSub(self, name, take_id = True):
+    def findSub(self, name, take_id = True, selector = ''):
         """Gives all the concepts (str[]) having for label a subset of name(str).
            The default take_id(bool) argument can be set to false if you do not want to
            consider the concept identifier as a possible default name.
+           The optional selector(str) parameter can be set to only get results inheriting from the selector(str) concept.
+           The default value '' represents no restriction on the result.
            The result of this function depends on the setting of the working language.
         """
         param = name
         if take_id == False:
             param += " -i false"
+        if selector != '':
+            param += " -s " + selector
         return self.call("findSub", param)
 
-    def findRegex(self, name, take_id = True):
+    def findRegex(self, name, take_id = True, selector = ''):
         """Give all concepts (str[]) with a label matching the regular expression regex(str).
            The default take_id(bool) argument can be set to false if you do not want to consider
            the concept identifier as a possible default name.
+           The optional selector(str) parameter can be set to only get results inheriting from the selector(str) concept.
+           The default value '' represents no restriction on the result.
            The result of this function depends on the setting of the working language.
         """
         param = name
         if take_id == False:
             param += " -i false"
+        if selector != '':
+            param += " -s " + selector
         return self.call("findRegex", param)
 
-    def findFuzzy(self, name, threshold = 0.5, take_id = True):
+    def findFuzzy(self, name, threshold = 0.5, take_id = True, selector = ''):
         """Give all the names of concepts (str[]) with the lowest
            edit distance with parameter name(str).
            The default take_id(bool) argument can be set to false if you do not want to
            consider the concept identifier as a possible default name.
+           The optional selector(str) parameter can be set to only get results inheriting from the selector(str) concept.
+           The default value '' represents no restriction on the result.
            The result of this function depends on the setting of the working language and
            does not correspond to the concept identifiers but to other labels known by ontologenius.
            The minimum editing distance can be set with the threshold(double) parameter.
@@ -118,6 +132,8 @@ class OntologyClient(ClientBase):
         param = name + ' -t ' + str(threshold)
         if take_id == False:
             param += " -i false"
+        if selector != '':
+            param += " -s " + selector
         return self.call("findFuzzy", param)
 
     def exist(self, name):
