@@ -181,7 +181,7 @@
 
           <div class="code_line"><span class="cpp_type">void</span> wordCallback(<span class="cpp_op">const</span> std_msgs::<span class="cpp_type">String</span><span class="cpp_op">&</span> msg)</div>
           <div class="code_line">{</div>
-          <div class="code_line">  <span class="cpp_op">if</span>(msg.data <span class="cpp_op">==</span> <span class="cpp_type">&quot;start&quot;</span>)</div>
+          <div class="code_line">  <span class="cpp_op">if</span>(msg.data <span class="cpp_op">==</span> <span class="cpp_string">&quot;start&quot;</span>)</div>
           <div class="code_line">    start_ <span class="cpp_op">=</span> <span class="cpp_value">true</span>;</div>
           <div class="code_line">  <span class="cpp_op">else if</span>(std::find(names_.begin(), names_.end(), msg.data) <span class="cpp_op">==</span> names_.end())</div>
           <div class="code_line">    names_.push_back(msg.data);</div>
