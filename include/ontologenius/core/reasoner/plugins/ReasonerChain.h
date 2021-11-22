@@ -22,7 +22,7 @@ public:
 private:
   void resolveChain(ObjectPropertyBranch_t* prop, std::vector<ObjectPropertyBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on);
   void resolveLink(ObjectPropertyBranch_t* chain_property, ChainTree* tree, size_t index);
-  bool porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* chain_prop, IndividualBranch_t* chain_indiv);
+  bool relationExists(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* chain_prop, IndividualBranch_t* chain_indiv);
   void addInduced(IndividualBranch_t* indiv, size_t index, IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
 };
 
@@ -60,30 +60,44 @@ public:
 class ChainTree
 {
 public:
-  ChainTree() {size_ = 0; begin = nullptr;}
-  ~ChainTree() {if(begin != nullptr) delete begin; }
+  ChainTree()
+  {
+    size_ = 0;
+    begin = nullptr;
+  }
+
+  ~ChainTree()
+  {
+    if(begin != nullptr)
+      delete begin;
+  }
+
   std::vector<IndividualBranch_t*> get(size_t index)
   {
-    std::vector<IndividualBranch_t*> res;
     if(begin != nullptr)
-      res = get(begin, index, 0);
-    return res;
+      return get(begin, index, 0);
+    else
+      return {};
   }
+
   std::vector<chainNode_t*> getNodes(size_t index)
   {
-    std::vector<chainNode_t*> res;
     if(begin != nullptr)
-      res = getNodes(begin, index, 0);
-    return res;
+      return getNodes(begin, index, 0);
+    else
+      return {};
   }
+
   std::vector<chainNode_t*> getChainTo(IndividualBranch_t* indiv)
   {
-    std::vector<chainNode_t*> res;
     if(begin != nullptr)
-      res = getChainTo(begin, indiv);
-    return res;
+      return getChainTo(begin, indiv);
+    else
+      return {};
   }
-  size_t size() {return size_; }
+
+  size_t size() { return size_; }
+
   void push(chainNode_t* current, chainNode_t* next)
   {
     if(current != nullptr)
@@ -97,6 +111,7 @@ public:
     else
       begin = next;
   }
+
   void purge(size_t size)
   {
     if(begin != nullptr)
@@ -106,6 +121,8 @@ public:
   chainNode_t* begin;
 
 private:
+  size_t size_;
+
   std::vector<IndividualBranch_t*> get(chainNode_t* node, size_t index, size_t current)
   {
     std::vector<IndividualBranch_t*> res;
@@ -125,6 +142,7 @@ private:
     }
     return res;
   }
+
   std::vector<chainNode_t*> getNodes(chainNode_t* node, size_t index, size_t current)
   {
     std::vector<chainNode_t*> res;
@@ -144,6 +162,7 @@ private:
     }
     return res;
   }
+
   std::vector<chainNode_t*> getChainTo(chainNode_t* node, IndividualBranch_t* indiv)
   {
     std::vector<chainNode_t*> res;
@@ -166,6 +185,7 @@ private:
     }
     return res;
   }
+
   bool purge(chainNode_t* node, size_t size, size_t current)
   {
     bool tmp = true;
@@ -196,8 +216,6 @@ private:
     }
     return tmp;
   }
-
-  size_t size_;
 };
 
 } // namespace ontologenius

@@ -62,15 +62,13 @@ void ReasonerDictionary::setId(ValuedNode* node)
 
 void ReasonerDictionary::split(ValuedNode* node)
 {
-  size_t i, dic_size = 0;
   for(auto& it : node->dictionary_.spoken_)
   {
     std::vector<std::string>* muted = &node->dictionary_.muted_[it.first];
 
-    dic_size = it.second.size();
-    for(i = 0; i < dic_size; i++)
+    for(auto& word : it.second)
     {
-      std::string tmp = it.second[i];
+      std::string tmp = word;
       std::replace( tmp.begin(), tmp.end(), '_', ' ');
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         if(std::find(muted->begin(), muted->end(), tmp) == muted->end())
@@ -82,16 +80,16 @@ void ReasonerDictionary::split(ValuedNode* node)
           muted->push_back(tmp);
     }
 
-    for(i = 0; i < dic_size; i++)
+    for(auto& word : it.second)
     {
       std::string tmp = "";
-      tmp += it.second[i][0];
-      for(size_t char_i = 1; char_i < it.second[i].size(); char_i++)
+      tmp += word[0];
+      for(size_t char_i = 1; char_i < word.size(); char_i++)
       {
-        if((it.second[i][char_i] >= 'A') && (it.second[i][char_i] <= 'Z'))
-          if(it.second[i][char_i - 1] != ' ')
+        if((word[char_i] >= 'A') && (word[char_i] <= 'Z'))
+          if(word[char_i - 1] != ' ')
             tmp += ' ';
-        tmp += it.second[i][char_i];
+        tmp += word[char_i];
       }
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         if(std::find(muted->begin(), muted->end(), tmp) == muted->end())
@@ -102,15 +100,13 @@ void ReasonerDictionary::split(ValuedNode* node)
 
 void ReasonerDictionary::createLowerCase(ValuedNode* node)
 {
-  size_t i, dic_size = 0;
   for(auto& it : node->dictionary_.muted_)
   {
-    dic_size = it.second.size();
-    for(i = 0; i < dic_size; i++)
+    for(auto& word : it.second)
     {
       std::string tmp = "";
-      tmp.resize(it.second[i].size());
-      std::transform(it.second[i].begin(), it.second[i].end(), tmp.begin(), ::tolower);
+      tmp.resize(word.size());
+      std::transform(word.begin(), word.end(), tmp.begin(), ::tolower);
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
           it.second.push_back(tmp);
     }
@@ -119,12 +115,11 @@ void ReasonerDictionary::createLowerCase(ValuedNode* node)
   for(auto& it : node->dictionary_.spoken_)
   {
     std::vector<std::string>* muted = &node->dictionary_.muted_[it.first];
-    dic_size = it.second.size();
-    for(i = 0; i < dic_size; i++)
+    for(auto& word : it.second)
     {
       std::string tmp = "";
-      tmp.resize(it.second[i].size());
-      std::transform(it.second[i].begin(), it.second[i].end(), tmp.begin(), ::tolower);
+      tmp.resize(word.size());
+      std::transform(word.begin(), word.end(), tmp.begin(), ::tolower);
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         if (std::find(muted->begin(), muted->end(), tmp) == muted->end())
           muted->push_back(tmp);
@@ -134,20 +129,18 @@ void ReasonerDictionary::createLowerCase(ValuedNode* node)
 
 void ReasonerDictionary::replaceQuote(ValuedNode* node)
 {
-  size_t i, dic_size = 0;
   for (auto& it : node->dictionary_.spoken_)
   {
     std::vector<std::string>* muted = &node->dictionary_.muted_[it.first];
-    dic_size = it.second.size();
-    for(i = 0; i < dic_size; i++)
+    for(auto& word : it.second)
     {
-      std::string tmp = it.second[i];
+      std::string tmp = word;
       tmp.erase(std::remove(tmp.begin(), tmp.end(), '\''), tmp.end());
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         if (std::find(muted->begin(), muted->end(), tmp) == muted->end())
           muted->push_back(tmp);
 
-      tmp = it.second[i];
+      tmp = word;
       std::replace( tmp.begin(), tmp.end(), '\'', ' ');
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         if (std::find(muted->begin(), muted->end(), tmp) == muted->end())
@@ -158,16 +151,15 @@ void ReasonerDictionary::replaceQuote(ValuedNode* node)
   for (auto& it : node->dictionary_.muted_)
   {
     std::vector<std::string>* muted = &node->dictionary_.muted_[it.first];
-    dic_size = it.second.size();
-    for(i = 0; i < dic_size; i++)
+    for(auto& word : it.second)
     {
-      std::string tmp = it.second[i];
+      std::string tmp = word;
       tmp.erase(std::remove(tmp.begin(), tmp.end(), '\''), tmp.end());
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         if (std::find(muted->begin(), muted->end(), tmp) == muted->end())
           muted->push_back(tmp);
 
-      tmp = it.second[i];
+      tmp = word;
       std::replace( tmp.begin(), tmp.end(), '\'', ' ');
       if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
         if (std::find(muted->begin(), muted->end(), tmp) == muted->end())

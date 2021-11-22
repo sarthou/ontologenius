@@ -21,8 +21,7 @@ void ReasonerInverseOf::postReason()
         auto inverts = getLowestInvert(relation.first);
         for(auto& invert : inverts)
         {
-          IndividualBranch_t* sub_indiv = relation.second;
-          insertInverse(sub_indiv,
+          insertInverse(relation.second,
                       relation.first,
                       invert.elem,
                       indiv);
