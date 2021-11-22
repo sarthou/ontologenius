@@ -56,7 +56,10 @@ void Reasoners::configure(const std::string& config_path)
 {
   if((config_path != "") && (config_path != "none"))
   {
-    config_.read(config_path);
+    if(config_.read(config_path) == false)
+      Display::error("Fail to load configuration file: " + config_path);
+    else
+      Display::success("The reasoners have been configured");
   }
 }
 
