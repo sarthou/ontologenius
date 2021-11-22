@@ -564,7 +564,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
     if((found == false) && (indiv == nullptr))
     {
       std::unordered_set<uint32_t> down_classes = class_graph_->getDownIdSafe(individual);
-      std::unordered_set<uint32_t> doNotTake;
+      std::unordered_set<uint32_t> do_not_take;
 
       std::unordered_set<ClassBranch_t*> up_set;
       getUpPtr(indiv_i, up_set, 1);
@@ -572,7 +572,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
       {
         std::unordered_set<ClassBranch_t*> next_step;
         for(auto up : up_set)
-          found = found || getFrom(up, object_properties, data_properties, data_img, down_classes, next_step, doNotTake);
+          found = found || getFrom(up, object_properties, data_properties, data_img, down_classes, next_step, do_not_take);
 
         up_set = next_step;
       }
@@ -585,11 +585,11 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
   return res;
 }
 
-bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const data_t& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake)
+bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const data_t& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& do_not_take)
 {
   if(class_branch != nullptr)
   {
-    if(doNotTake.find(class_branch->get()) != doNotTake.end())
+    if(do_not_take.find(class_branch->get()) != do_not_take.end())
       return false;
 
     bool found = false;
@@ -623,7 +623,7 @@ bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<ui
 
     if(defined == true)
     {
-      class_graph_->getUpIdSafe(class_branch, doNotTake);
+      class_graph_->getUpIdSafe(class_branch, do_not_take);
       return found;
     }
     else
@@ -718,14 +718,14 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
 
     int found_depth = -1;
     uint32_t current_depth = 0;
-    std::unordered_set<uint32_t> doNotTake;
+    std::unordered_set<uint32_t> do_not_take;
     std::unordered_set<ClassBranch_t*> up_set;
     getUpPtr(indiv, up_set, 1);
     while(up_set.size() > 0)
     {
       std::unordered_set<ClassBranch_t*> next_step;
       for(auto up : up_set)
-        class_graph_->getWith(up, second_individual, res, doNotTake, current_depth, found_depth, depth, next_step);
+        class_graph_->getWith(up, second_individual, res, do_not_take, current_depth, found_depth, depth, next_step);
 
       up_set = next_step;
       current_depth++;
@@ -982,13 +982,13 @@ std::unordered_set<std::string> IndividualGraph::find(const std::string& value, 
         res.insert(indiv->value());
 
     if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
-      for(size_t dic_i = 0; dic_i < indiv->dictionary_.spoken_[language_].size(); dic_i++)
-        if(indiv->dictionary_.spoken_[language_][dic_i] == value)
+      for(auto& word : indiv->dictionary_.spoken_[language_])
+        if(word == value)
           res.insert(indiv->value());
 
     if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
-      for(size_t dic_i = 0; dic_i < indiv->dictionary_.muted_[language_].size(); dic_i++)
-        if(indiv->dictionary_.muted_[language_][dic_i] == value)
+      for(auto& word : indiv->dictionary_.muted_[language_])
+        if(word == value)
           res.insert(indiv->value());
   }
   return res;
@@ -1009,17 +1009,17 @@ std::unordered_set<std::string> IndividualGraph::findSub(const std::string& valu
     }
 
     if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
-      for(size_t dic_i = 0; dic_i < indiv->dictionary_.spoken_[language_].size(); dic_i++)
+      for(auto& word : indiv->dictionary_.spoken_[language_])
       {
-        std::regex regex("\\b(" + indiv->dictionary_.spoken_[language_][dic_i] + ")([^ ]*)");
+        std::regex regex("\\b(" + word + ")([^ ]*)");
         if(std::regex_search(value, match, regex))
           res.insert(indiv->value());
       }
 
     if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
-      for(size_t dic_i = 0; dic_i < indiv->dictionary_.muted_[language_].size(); dic_i++)
+      for(auto& word : indiv->dictionary_.muted_[language_])
       {
-        std::regex regex("\\b(" + indiv->dictionary_.muted_[language_][dic_i] + ")([^ ]*)");
+        std::regex regex("\\b(" + word + ")([^ ]*)");
         if(std::regex_search(value, match, regex))
           res.insert(indiv->value());
       }
@@ -1044,13 +1044,13 @@ std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& re
     }
 
     if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
-      for(size_t dic_i = 0; dic_i < indiv->dictionary_.spoken_[language_].size(); dic_i++)
-        if(std::regex_match(indiv->dictionary_.spoken_[language_][dic_i], match, base_regex))
+      for(auto& word : indiv->dictionary_.spoken_[language_])
+        if(std::regex_match(word, match, base_regex))
           res.insert(indiv->value());
 
     if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
-      for(size_t dic_i = 0; dic_i < indiv->dictionary_.muted_[language_].size(); dic_i++)
-        if(std::regex_match(indiv->dictionary_.muted_[language_][dic_i], match, base_regex))
+      for(auto& word : indiv->dictionary_.muted_[language_])
+        if(std::regex_match(word, match, base_regex))
           res.insert(indiv->value());
   }
   return res;
@@ -1213,6 +1213,7 @@ bool IndividualGraph::relationExists(IndividualBranch_t* subject, ObjectProperty
       {
         std::unordered_set<IndividualBranch_t*> sames_tmp;
         getSame(relation.second, sames_tmp);
+        cleanMarks(sames_tmp);
         for(auto same : sames_tmp)
           if(same == object)
             return true;

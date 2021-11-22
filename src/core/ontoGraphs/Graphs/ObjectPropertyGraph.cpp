@@ -501,7 +501,7 @@ bool ObjectPropertyGraph::isIrreflexive(ObjectPropertyBranch_t* prop)
     return true;
   else
   {
-    for(auto mother : prop->mothers_)
+    for(auto& mother : prop->mothers_)
     {
       if(isIrreflexive(mother.elem))
         return true;
@@ -526,7 +526,7 @@ bool ObjectPropertyGraph::isAsymetric(ObjectPropertyBranch_t* prop)
     return true;
   else
   {
-    for(auto mother : prop->mothers_)
+    for(auto& mother : prop->mothers_)
     {
       if(isIrreflexive(mother.elem))
         return true;
