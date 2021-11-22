@@ -778,20 +778,18 @@ void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_c
     {
       if(relation.second->value() == second_class)
         if(do_not_take.find(relation.first->get()) == do_not_take.end())
-        {
           object_property_graph_->getUp(relation.first, tmp_res, depth_prop);
-          do_not_take.insert(relation.first->get());
-        }
+      // We indicate that all properties should no longer be used to avoid overloading relations 
+      do_not_take.insert(relation.first->get());
     }
 
     for(ClassDataRelationElement_t& relation : first_class->data_relations_)
     {
       if(relation.second == data_img)
         if(do_not_take.find(relation.first->get()) == do_not_take.end())
-        {
           data_property_graph_->getUp(relation.first, tmp_res, depth_prop);
-          do_not_take.insert(relation.first->get());
-        }
+      // We indicate that all properties should no longer be used to avoid overloading relations 
+      do_not_take.insert(relation.first->get());
     }
 
     if(tmp_res.size() != 0)
