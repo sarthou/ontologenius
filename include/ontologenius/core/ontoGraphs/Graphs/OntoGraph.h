@@ -298,11 +298,10 @@ void OntoGraph<B>::getDown(B* branch, std::unordered_set<std::string>& res, int 
   if(current_depth < (unsigned int)depth)
   {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-    size_t size = branch->childs_.size();
     current_depth++;
-    for(size_t i = 0; i < size; i++)
-      if(res.find(branch->childs_[i].elem->value()) == res.end())
-        getDown(branch->childs_[i].elem, res, depth, current_depth);
+    for(auto& child : branch->childs_)
+      if(res.find(child.elem->value()) == res.end())
+        getDown(child.elem, res, depth, current_depth);
   }
 
   res.insert(branch->value());
@@ -314,11 +313,10 @@ void OntoGraph<B>::getUp(B* branch, std::unordered_set<std::string>& res, int de
   if(current_depth < (unsigned int)depth)
   {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-    size_t size = branch->mothers_.size();
     current_depth++;
-    for(size_t i = 0; i < size; i++)
-      if(res.find(branch->mothers_[i].elem->value()) == res.end())
-        getUp(branch->mothers_[i].elem, res, depth, current_depth);
+    for(auto& mother : branch->mothers_)
+      if(res.find(mother.elem->value()) == res.end())
+        getUp(mother.elem, res, depth, current_depth);
   }
 
   res.insert(branch->value());
@@ -330,10 +328,9 @@ void OntoGraph<B>::getDownIdSafe(B* branch, std::unordered_set<uint32_t>& res, i
   if(current_depth < (unsigned int)depth)
   {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-    size_t size = branch->childs_.size();
     current_depth++;
-    for(size_t i = 0; i < size; i++)
-      getDownIdSafe(branch->childs_[i].elem, res, depth, current_depth);
+    for(auto& child : branch->childs_)
+      getDownIdSafe(child.elem, res, depth, current_depth);
   }
 
   res.insert(branch->get());
@@ -345,10 +342,9 @@ void OntoGraph<B>::getUpIdSafe(B* branch, std::unordered_set<uint32_t>& res, int
   if(current_depth < (unsigned int)depth)
   {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-    size_t size = branch->mothers_.size();
     current_depth++;
-    for(size_t i = 0; i < size; i++)
-      getUpIdSafe(branch->mothers_[i].elem, res, depth, current_depth);
+    for(auto& mother : branch->mothers_)
+      getUpIdSafe(mother.elem, res, depth, current_depth);
   }
 
   res.insert(branch->get());
@@ -404,10 +400,9 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res, int depth, u
     current_depth++;
     res.insert(branch);
 
-    size_t size = branch->mothers_.size();
-    for(size_t i = 0; i < size; i++)
-      if(res.find(branch->mothers_[i].elem) == res.end())
-        getUpPtr(branch->mothers_[i].elem, res, depth, current_depth);
+    for(auto& mother : branch->mothers_)
+      if(res.find(mother.elem) == res.end())
+        getUpPtr(mother.elem, res, depth, current_depth);
   }
 
 }
@@ -430,13 +425,13 @@ bool fullComparator(D* branch, const std::string& value, const std::string& lang
       return true;
 
   if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
-    for(size_t i = 0; i < branch->dictionary_.spoken_[lang].size(); i++)
-      if(branch->dictionary_.spoken_[lang][i] == value)
+    for(auto& word : branch->dictionary_.spoken_[lang])
+      if(word == value)
         return true;
 
   if(branch->dictionary_.muted_.find(lang) != branch->dictionary_.muted_.end())
-    for(size_t i = 0; i < branch->dictionary_.muted_[lang].size(); i++)
-      if(branch->dictionary_.muted_[lang][i] == value)
+    for(auto& word : branch->dictionary_.muted_[lang])
+      if(word == value)
         return true;
   return false;
 }
@@ -454,17 +449,17 @@ bool comparator(D* branch, const std::string& value, const std::string& lang, bo
   }
 
   if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
-    for(size_t i = 0; i < branch->dictionary_.spoken_[lang].size(); i++)
+    for(auto& word : branch->dictionary_.spoken_[lang])
     {
-      std::regex regex("\\b(" + branch->dictionary_.spoken_[lang][i] + ")([^ ]*)");
+      std::regex regex("\\b(" + word + ")([^ ]*)");
       if(std::regex_search(value, match, regex))
         return true;
     }
 
   if(branch->dictionary_.muted_.find(lang) != branch->dictionary_.muted_.end())
-    for(size_t i = 0; i < branch->dictionary_.muted_[lang].size(); i++)
+    for(auto& word : branch->dictionary_.muted_[lang])
     {
-      std::regex regex("\\b(" + branch->dictionary_.muted_[lang][i] + ")([^ ]*)");
+      std::regex regex("\\b(" + word + ")([^ ]*)");
       if(std::regex_search(value, match, regex))
         return true;
     }
@@ -485,13 +480,13 @@ bool comparatorRegex(D* branch, const std::string& regex, const std::string& lan
   }
 
   if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
-    for(size_t i = 0; i < branch->dictionary_.spoken_[lang].size(); i++)
-      if(std::regex_match(branch->dictionary_.spoken_[lang][i], match, base_regex))
+    for(auto& word : branch->dictionary_.spoken_[lang])
+      if(std::regex_match(word, match, base_regex))
         return true;
 
   if(branch->dictionary_.muted_.find(lang) != branch->dictionary_.muted_.end())
-    for(size_t i = 0; i < branch->dictionary_.muted_[lang].size(); i++)
-      if(std::regex_match(branch->dictionary_.muted_[lang][i], match, base_regex))
+    for(auto& word : branch->dictionary_.muted_[lang])
+      if(std::regex_match(word, match, base_regex))
         return true;
   return false;
 }
@@ -501,9 +496,9 @@ std::unordered_set<std::string> OntoGraph<B>::find(const std::string& value, boo
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  std::vector<B*> branch = this->container_.find(&fullComparator<B>, value, this->language_, use_default);
-  for(size_t i = 0; i < branch.size(); i++)
-    res.insert(branch[i]->value());
+  std::vector<B*> branchs = this->container_.find(&fullComparator<B>, value, this->language_, use_default);
+  for(auto& branch : branchs)
+    res.insert(branch->value());
 
   return res;
 }
@@ -514,7 +509,7 @@ std::unordered_set<std::string> OntoGraph<B>::findSub(const std::string& value, 
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   std::vector<B*> branchs = this->container_.find(&comparator<B>, value, this->language_, use_default);
-  for(auto branch : branchs)
+  for(auto& branch : branchs)
     res.insert(branch->value());
 
   return res;
@@ -526,7 +521,7 @@ std::unordered_set<std::string> OntoGraph<B>::findRegex(const std::string& regex
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   std::vector<B*> branchs = this->container_.find(&comparatorRegex<B>, regex, this->language_, use_default);
-  for(auto branch : branchs)
+  for(auto& branch : branchs)
     res.insert(branch->value());
 
   return res;
@@ -556,27 +551,27 @@ std::unordered_set<std::string> OntoGraph<B>::findFuzzy(const std::string& value
       }
 
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
-      for(size_t i = 0; i < branch->dictionary_.spoken_[this->language_].size(); i++)
-        if((tmp_cost = dist.get(branch->dictionary_.spoken_[this->language_][i], value)) <= lower_cost)
+      for(auto& word : branch->dictionary_.spoken_[this->language_])
+        if((tmp_cost = dist.get(word, value)) <= lower_cost)
         {
           if(tmp_cost != lower_cost)
           {
             lower_cost = tmp_cost;
             res.clear();
           }
-          res.insert(branch->dictionary_.spoken_[this->language_][i]);
+          res.insert(word);
         }
 
     if(branch->dictionary_.muted_.find(this->language_) != branch->dictionary_.muted_.end())
-      for(size_t i = 0; i < branch->dictionary_.muted_[this->language_].size(); i++)
-        if((tmp_cost = dist.get(branch->dictionary_.muted_[this->language_][i], value)) <= lower_cost)
+      for(auto& word : branch->dictionary_.muted_[this->language_])
+        if((tmp_cost = dist.get(word, value)) <= lower_cost)
         {
           if(tmp_cost != lower_cost)
           {
             lower_cost = tmp_cost;
             res.clear();
           }
-          res.insert(branch->dictionary_.muted_[this->language_][i]);
+          res.insert(word);
         }
   }
 
