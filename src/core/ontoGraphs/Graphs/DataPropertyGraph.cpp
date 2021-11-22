@@ -70,10 +70,8 @@ DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPrope
     }
   }
 
-  me->nb_mothers_ += property_vectors.mothers_.size();
-
   //am I a root ?
-  if(me->nb_mothers_ == 0)
+  if(me->mothers_.size() + property_vectors.mothers_.size() == 0)
     roots_[me->value()] = me;
   else
   {
@@ -397,9 +395,6 @@ void DataPropertyGraph::deepCopy(const DataPropertyGraph& other)
 
 void DataPropertyGraph::cpyBranch(DataPropertyBranch_t* old_branch, DataPropertyBranch_t* new_branch)
 {
-  new_branch->family = old_branch->family;
-  new_branch->nb_mothers_ = old_branch->nb_mothers_;
-
   new_branch->nb_updates_ = old_branch->nb_updates_;
   new_branch->updated_ = old_branch->updated_;
   new_branch->flags_ = old_branch->flags_;

@@ -70,10 +70,8 @@ ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, Objec
     }
   }
 
-  me->nb_mothers_ += property_vectors.mothers_.size();
-
   //am I a root ?
-  if(me->nb_mothers_ == 0)
+  if(me->mothers_.size() + property_vectors.mothers_.size() == 0)
     roots_[value] = me;
   else
   {
@@ -555,9 +553,6 @@ void ObjectPropertyGraph::deepCopy(const ObjectPropertyGraph& other)
 
 void ObjectPropertyGraph::cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch)
 {
-  new_branch->family = old_branch->family;
-  new_branch->nb_mothers_ = old_branch->nb_mothers_;
-
   new_branch->nb_updates_ = old_branch->nb_updates_;
   new_branch->updated_ = old_branch->updated_;
   new_branch->flags_ = old_branch->flags_;

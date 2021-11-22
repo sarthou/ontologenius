@@ -84,9 +84,7 @@ protected:
   std::map<std::string, B*> tmp_mothers_;
 
   int depth_;
-
-  void link();
-  void add_family(B* branch, uint8_t family);
+  
   void amIA(B** me, std::map<std::string, B*>& vect, const std::string& value, bool erase = true);
 
   void mitigate(B* branch);
@@ -277,35 +275,6 @@ bool OntoGraph<B>::touch(const std::string& value)
     return true;
   else
     return false;
-}
-
-template <typename B>
-void OntoGraph<B>::link()
-{
-  depth_ = 0;
-
-  uint8_t nb_root_family = roots_.size();
-  size_t root_i = 0;
-  for(auto& it : roots_)
-  {
-    it.second->family = 256/(nb_root_family+1) * root_i;
-    for(size_t i = 0; i < it.second->childs_.size(); i++)
-      add_family(it.second->childs_[i].elem, it.second->family);
-    root_i++;
-  }
-}
-
-template <typename B>
-void OntoGraph<B>::add_family(B* branch, uint8_t family)
-{
-  branch->family += family/branch->nb_mothers_;
-  for(size_t i = 0; i < branch->childs_.size(); i++)
-  {
-    depth_++;
-    if(depth_ < 20)
-      add_family(branch->childs_[i].elem, family/branch->nb_mothers_);
-    depth_--;
-  }
 }
 
 template <typename B>

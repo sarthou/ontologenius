@@ -65,10 +65,8 @@ ClassBranch_t* ClassGraph::add(const std::string& value, ObjectVectors_t& object
     }
   }
 
-  me->nb_mothers_ += object_vector.mothers_.size();
-
   //am I a root ?
-  if(me->nb_mothers_ == 0)
+  if(me->mothers_.size() + object_vector.mothers_.size() == 0)
     roots_[value] = me;
   else
   {
