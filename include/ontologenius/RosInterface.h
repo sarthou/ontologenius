@@ -21,6 +21,8 @@
 #include "ontologenius/core/feeder/FeederEcho.h"
 #include "ontologenius/core/ontologyOperators/Sparql.h"
 
+//#define ONTO_TEST
+
 namespace ontologenius {
 
 struct param_t
@@ -86,7 +88,11 @@ public:
   /// @param display should be set to false to not allow debug display
   void setDisplay(bool display);
 
+#ifndef ONTO_TEST
 private:
+#else
+public:
+#endif
   /// @brief The ROS node handle. Its name is never used
   ros::NodeHandle n_;
   /// @brief The ROS callback queue dedicated to the given interface
@@ -101,6 +107,10 @@ private:
   FeederEcho feeder_echo_;
   /// @brief Resolves SPARQL queries.
   Sparql sparql_;
+
+#ifdef ONTO_TEST
+  bool end_feed_;
+#endif
 
   /// @brief The ontology instance name
   std::string name_;

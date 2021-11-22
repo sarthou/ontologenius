@@ -627,6 +627,9 @@ void RosInterface::feedThread()
 {
   ros::Publisher feeder_publisher = n_.advertise<std_msgs::String>(getTopicName("feeder_notifications"), PUB_QUEU_SIZE);
   bool feeder_end = true;
+#ifdef ONTO_TEST
+    end_feed_ = false;
+#endif
 
   ros::Rate wait(feeder_rate_);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
@@ -666,6 +669,9 @@ void RosInterface::feedThread()
       reasoner_mutex_.lock();
       reasoners_.runPostReasoners();
       reasoner_mutex_.unlock();
+#ifdef ONTO_TEST
+      end_feed_ = true;
+#endif
 
       feeder_end = true;
       msg.data = "end";
