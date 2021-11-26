@@ -197,7 +197,9 @@ void Reasoners::runPreReasoners()
         auto notif = it.second->getNotifications();
         notifications_.insert(notifications_.end(), notif.begin(), notif.end());
         auto explanations = it.second->getExplanations();
+        explanations_mutex_.lock();
         explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
+        explanations_mutex_.unlock();
       }
     }
 
@@ -224,7 +226,9 @@ void Reasoners::runPostReasoners()
         auto notif = it.second->getNotifications();
         notifications_.insert(notifications_.end(), notif.begin(), notif.end());
         auto explanations = it.second->getExplanations();
+        explanations_mutex_.lock();
         explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
+        explanations_mutex_.unlock();
       }
     }
     nb_updates = ReasonerInterface::getNbUpdates();
@@ -246,7 +250,9 @@ void Reasoners::runPeriodicReasoners()
       auto notif = it.second->getNotifications();
       notifications_.insert(notifications_.end(), notif.begin(), notif.end());
       auto explanations = it.second->getExplanations();
+      explanations_mutex_.lock();
       explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
+      explanations_mutex_.unlock();
     }
   }
 
