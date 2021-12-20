@@ -311,13 +311,16 @@ namespace ontologenius
 
   std::unordered_set<std::string> Sparql::getType(const triplet_t& triplet, const std::string& selector)
   {
-    auto res = onto_->individual_graph_.getType(triplet.object.name);
     if(selector == "")
-      return res;
-    else if(std::find(res.begin(), res.end(), selector) != res.end())
-      return std::unordered_set<std::string>({selector});
+      return onto_->individual_graph_.getType(triplet.object.name);
     else
-      return std::unordered_set<std::string>();
+    {
+      auto types = onto_->individual_graph_.getUp(selector);
+      if(std::find(types.begin(), types.end(), triplet.object.name) != types.end())
+        return std::unordered_set<std::string>({selector});
+      else
+        return std::unordered_set<std::string>();
+    }
   }
 
   std::unordered_set<std::string> Sparql::find(const triplet_t& triplet, const std::string& selector)
