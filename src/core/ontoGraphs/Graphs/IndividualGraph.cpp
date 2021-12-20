@@ -395,6 +395,7 @@ std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::stri
       {
         std::unordered_set<IndividualBranch_t*> sames_tmp;
         getSame(relation.second, sames_tmp);
+        cleanMarks(sames_tmp);
         std::unordered_set<std::string> tmp = set2set(sames_tmp);
         res.insert(tmp.begin(), tmp.end());
 
@@ -656,6 +657,7 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& indivi
 
     std::unordered_set<IndividualBranch_t*> sames;
     getSame(indiv, sames);
+    cleanMarks(sames);
     for(auto same_indiv : sames)
     {
       for(IndivObjectRelationElement_t& relation : same_indiv->object_relations_)
@@ -1176,6 +1178,7 @@ bool IndividualGraph::relationExists(const std::string& subject, const std::stri
       {
         std::unordered_set<IndividualBranch_t*> sames_tmp;
         getSame(relation.second, sames_tmp);
+        cleanMarks(sames_tmp);
         for(auto same : sames_tmp)
           if(same->value() == object)
             return true;
@@ -1975,6 +1978,7 @@ void IndividualGraph::deepCopy(const IndividualGraph& other)
   {
     std::unordered_set<IndividualBranch_t*> same_as;
     getSame(myself, same_as);
+    cleanMarks(same_as);
     for(auto me : same_as)
     {
       auto it = std::remove_if (me->same_as_.begin(), me->same_as_.end(), [myself](IndividualElement_t& elem)
