@@ -99,23 +99,19 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
   /**********************
   ** Same In Individual
   **********************/
-  //for all my inverses
+  //for all my sames
   for(auto& same_as : individual_vector.same_as_)
   {
-    bool i_find_my_same = false;
-
-    //is a root my inverse ?
-    for(auto& individual : individuals_)
-      if(same_as == individual->value())
-      {
-        conditionalPushBack(me->same_as_, IndividualElement_t(individual));
-        conditionalPushBack(individual->same_as_, IndividualElement_t(me, 1.0, true));
-        i_find_my_same = true;
-      }
-
-    //I create my same
-    if(!i_find_my_same)
+    //is my same already created ?
+    IndividualBranch_t* same = container_.find(same_as.elem);
+    if(same != nullptr)
     {
+      conditionalPushBack(me->same_as_, IndividualElement_t(same));
+      conditionalPushBack(same->same_as_, IndividualElement_t(me, 1.0, true));
+    }
+    else
+    {
+      //I create my same
       auto my_same = new IndividualBranch_t(same_as.elem);
       conditionalPushBack(me->same_as_, IndividualElement_t(my_same));
       conditionalPushBack(my_same->same_as_, IndividualElement_t(me, 1.0, true));
