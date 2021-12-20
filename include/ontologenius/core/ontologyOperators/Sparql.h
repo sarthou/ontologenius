@@ -40,7 +40,7 @@ private:
   std::map<std::string, SparqlOperator_e> operators_;
 
   std::vector<std::map<std::string, std::string>> resolve(std::vector<triplet_t> query, SparqlOperator_e op = sparql_none, const std::vector<std::map<std::string, std::string>>& prev_res = {});
-  std::vector<std::map<std::string, std::string>> resolve(std::vector<triplet_t> query, const std::map<std::string, std::string>& accu);
+  std::vector<std::map<std::string, std::string>> resolve(const std::vector<triplet_t>& query, const std::map<std::string, std::string>& accu);
   void resolveSubQuery(triplet_t triplet, const std::map<std::string, std::string>& accu, std::string& var_name, std::unordered_set<std::string>& values);
 
   std::unordered_set<std::string> getOn(const triplet_t& triplet, const std::string& selector = "");
