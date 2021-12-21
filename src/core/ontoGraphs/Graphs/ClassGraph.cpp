@@ -812,7 +812,7 @@ std::unordered_set<std::string> ClassGraph::getDownIndividual(ClassBranch_t* bra
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
   for(auto& indiv : branch->individual_childs_)
-    res.insert(indiv.elem->value());
+    individual_graph_->getSameAndClean(indiv.elem, res);
 
   return res;
 }
@@ -821,7 +821,7 @@ void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<std
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
   for(auto& indiv : branch->individual_childs_)
-    res.insert(indiv.elem->value());
+    individual_graph_->getSameAndClean(indiv.elem, res);
 }
 
 std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtrSafe(ClassBranch_t* branch)

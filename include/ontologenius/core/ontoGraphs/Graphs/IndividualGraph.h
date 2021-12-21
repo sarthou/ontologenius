@@ -122,6 +122,7 @@ public:
   std::vector<std::vector<ObjectPropertyBranch_t*>> getChains(ObjectPropertyBranch_t* base_property);
 
   void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, unsigned int current_depth = 0);
+  void getSameAndClean(IndividualBranch_t* individual, std::unordered_set<std::string>& res);
 
 private:
   ClassGraph* class_graph_;
@@ -154,7 +155,6 @@ private:
   std::unordered_set<uint32_t> getSameId(const std::string& individual);
   void getSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);
   std::unordered_set<std::string> getSameAndClean(IndividualBranch_t* individual);
-  void getSameAndClean(IndividualBranch_t* individual, std::unordered_set<std::string>& res);
   std::unordered_set<uint32_t> getSameIdAndClean(IndividualBranch_t* individual);
   void cleanMarks(std::unordered_set<IndividualBranch_t*>& indSet);
   std::unordered_set<std::string> set2set(std::unordered_set<IndividualBranch_t*>& indSet, bool clean = true);
