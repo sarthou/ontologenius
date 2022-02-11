@@ -24,6 +24,8 @@ struct DataPropertyVectors_t
    std::map<std::string, std::vector<std::string>> dictionary_;
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
    bool annotation_usage_;
+
+   DataPropertyVectors_t() : annotation_usage_(false) {}
 };
 
 //for friend
