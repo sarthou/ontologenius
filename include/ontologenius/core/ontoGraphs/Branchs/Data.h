@@ -44,12 +44,12 @@ struct data_t
     value_ = value.substr(value.find("#")+1);
   }
 
-  bool operator==(const data_t& other)
+  bool operator==(const data_t& other) const
   {
     return ((type_ == other.type_) && (value_ == other.value_));
   }
 
-  bool operator!=(const data_t& other)
+  bool operator!=(const data_t& other) const
   {
     return ((type_ != other.type_) || (value_ != other.value_));
   }
