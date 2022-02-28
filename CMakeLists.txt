@@ -422,31 +422,31 @@ install(DIRECTORY files/
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
 
-  add_rostest_gtest(ontologenius_library_tester test/library.test src/tests/library.cpp)
+  add_rostest_gtest(ontologenius_library_tester test/library.test src/tests/CI/library.cpp)
   target_include_directories(ontologenius_library_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_library_tester ontologenius_lib ${catkin_LIBRARIES})
 
-  add_rostest_gtest(ontologenius_requests_tester test/requests.test src/tests/requests.cpp)
+  add_rostest_gtest(ontologenius_requests_tester test/requests.test src/tests/CI/requests.cpp)
   target_include_directories(ontologenius_requests_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_requests_tester ontologenius_lib ${catkin_LIBRARIES})
 
-  add_rostest_gtest(ontologenius_global_tester test/globalFeatures.test src/tests/globalFeatures.cpp)
+  add_rostest_gtest(ontologenius_global_tester test/globalFeatures.test src/tests/CI/globalFeatures.cpp)
   target_include_directories(ontologenius_global_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_global_tester ontologenius_lib ${catkin_LIBRARIES})
 
-  add_rostest_gtest(ontologenius_propertiesInheritage_tester test/propertiesInheritage.test src/tests/propertiesInheritage.cpp)
+  add_rostest_gtest(ontologenius_propertiesInheritage_tester test/propertiesInheritage.test src/tests/CI/propertiesInheritage.cpp)
   target_include_directories(ontologenius_propertiesInheritage_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_propertiesInheritage_tester ontologenius_lib ${catkin_LIBRARIES})
 
-  add_rostest_gtest(ontologenius_dynamic_tester test/dynamic.test src/tests/dynamic.cpp)
+  add_rostest_gtest(ontologenius_dynamic_tester test/dynamic.test src/tests/CI/dynamic.cpp)
   target_include_directories(ontologenius_dynamic_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_dynamic_tester ontologenius_lib ${catkin_LIBRARIES})
 
-  add_rostest_gtest(ontologenius_multi_tester test/multi.test src/tests/multi.cpp)
+  add_rostest_gtest(ontologenius_multi_tester test/multi.test src/tests/CI/multi.cpp)
   target_include_directories(ontologenius_multi_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_multi_tester ontologenius_lib ${catkin_LIBRARIES})
 
-  add_rostest_gtest(ontologenius_cpy_test test/cpy.test src/tests/copy_test.cpp)
+  add_rostest_gtest(ontologenius_cpy_test test/cpy.test src/tests/CI/copy_test.cpp)
   set_target_properties(ontologenius_cpy_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
   target_include_directories(ontologenius_cpy_test PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_cpy_test ontologenius_lib ${catkin_LIBRARIES})
