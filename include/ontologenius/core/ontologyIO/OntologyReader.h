@@ -18,7 +18,7 @@ public:
   ~OntologyReader() {}
 
   void setDisplay(bool display) { display_ = display; }
-  bool empty() {return (elemLoaded == 0); }
+  bool empty() {return (elem_loaded == 0); }
 
 protected:
   ClassGraph* class_graph_;
@@ -26,7 +26,7 @@ protected:
   DataPropertyGraph* data_property_graph_;
   IndividualGraph* individual_graph_;
 
-  int elemLoaded;
+  int elem_loaded;
   bool display_;
 
   void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole)

@@ -53,12 +53,12 @@ int OntologyTtlReader::read(std::string raw_turtle, const std::string& file_name
   if(previous_subject_ != "")
   {
     individual_graph_->add(previous_subject_, individual_vector_);
-    elemLoaded++;
+    elem_loaded++;
     individual_vector_ = IndividualVectors_t();
   }
 
   if(display_)
-    std::cout << "└── "<< elemLoaded << " readed ! " << std::endl;
+    std::cout << "└── "<< elem_loaded << " readed ! " << std::endl;
   return NO_ERROR;
 }
 
@@ -187,7 +187,7 @@ void OntologyTtlReader::sendToOntology(std::string subject, const std::vector<st
     if(previous_subject_ != "")
     {
       individual_graph_->add(previous_subject_, individual_vector_);
-      elemLoaded++;
+      elem_loaded++;
       individual_vector_ = IndividualVectors_t();
     }
     previous_subject_ = subject;
