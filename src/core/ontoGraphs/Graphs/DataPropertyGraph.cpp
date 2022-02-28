@@ -215,13 +215,13 @@ bool DataPropertyGraph::addAnnotation(const std::string& value, DataPropertyVect
   **********************/
   DataPropertyBranch_t* me = nullptr;
   //am I a created mother ?
-  amIA(&me, tmp_mothers_, value);
+  amIA(&me, tmp_mothers_, value, false);
 
   //am I a created branch ?
-  amIA(&me, branchs_, value);
+  amIA(&me, branchs_, value, false);
 
   //am I a created root ?
-  amIA(&me, roots_, value);
+  amIA(&me, roots_, value, false);
 
   //am I created ?
   if(me == nullptr)
@@ -235,6 +235,8 @@ bool DataPropertyGraph::addAnnotation(const std::string& value, DataPropertyVect
       if(mother_branch != nullptr)
         break;
     }
+
+    // I do not exist but one of my mother do so I should exist
     if(mother_branch != nullptr)
     {
       add(value, property_vectors);
@@ -251,6 +253,8 @@ bool DataPropertyGraph::addAnnotation(const std::string& value, DataPropertyVect
         if(range_branch != nullptr)
           break;
       }
+
+      // My ranges are not classes so there are data and I should exists
       if((range_branch == nullptr) && (property_vectors.ranges_.size()))
       {
         add(value, property_vectors);
