@@ -34,7 +34,7 @@ public:
 
   void setDisplay(bool display) { display_ = display; }
   void displayIndividualRules();
-  bool empty() {return (elemLoaded == 0); }
+  bool empty() {return (elem_loaded == 0); }
 
 private:
   int read(TiXmlElement* rdf, const std::string& name);
