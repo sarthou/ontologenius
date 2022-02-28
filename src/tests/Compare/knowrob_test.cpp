@@ -6,6 +6,8 @@
 
 #include <ros/ros.h>
 
+#define ONTO_TEST
+
 #include "ontologenius/RosInterface.h"
 
 using namespace std::chrono;
@@ -90,10 +92,9 @@ void reset(ontologenius::RosInterface* interface, ontologenius::Ontology** onto)
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius_tester");
-  ros::NodeHandle nh;
 
   ontologenius::Ontology* onto = nullptr;
-  ontologenius::RosInterface interface(&nh);
+  ontologenius::RosInterface interface;
   std::thread onto_thread;
 
   interface.setDisplay(false);

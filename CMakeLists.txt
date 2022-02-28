@@ -284,50 +284,60 @@ target_link_libraries(ontologenius_interface
 ## The recommended prefix ensures that target names across packages don't collide
 ##############################
 
+##############################
+## NODES
+##############################
+
 add_onto_executable(ontologenius src/nodes/ontologenius_single.cpp)
 target_link_libraries(ontologenius PRIVATE ontologenius_interface)
 
 add_onto_executable(ontologenius_multi src/nodes/ontologenius_multi.cpp)
 target_link_libraries(ontologenius_multi PRIVATE ontologenius_interface)
 
-add_onto_executable(ontologenius_exemple src/exemple.cpp )
-target_link_libraries(ontologenius_exemple PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
-
 add_onto_executable(ontologenius_draw src/graphical/versioning/main.cpp )
 target_link_libraries(ontologenius_draw PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
 
-add_onto_executable(ontologenius_tester src/tests/tester.cpp)
+##############################
+## COMPARISONS
+##############################
+
+#add_onto_executable(ontologenius_knowrob src/tests/Compare/knowrob_test.cpp)
+#target_link_libraries(ontologenius_knowrob PRIVATE ontologenius_interface)
+
+#add_onto_executable(ontologenius_oro src/tests/Compare/ORO_test.cpp)
+#target_link_libraries(ontologenius_oro PRIVATE ontologenius_interface ontologenius_lib)
+
+#add_onto_executable(ontologenius_ORO src/tests/Compare/ORO.cpp)
+#target_link_libraries(ontologenius_ORO PRIVATE ontologenius_lib ontologenius_core_lib)
+
+##############################
+## PERFORMANCES
+##############################
+
+#add_onto_executable(ontologenius_deepcopy src/tests/Performances/deepcopy.cpp)
+#target_link_libraries(ontologenius_deepcopy PRIVATE ontologenius_lib)
+
+#add_onto_executable(ontologenius_find_tester src/tests/Performances/getNameVsFind.cpp)
+#target_link_libraries(ontologenius_find_tester PRIVATE ontologenius_lib ontologenius_core_lib ontologenius_interface)
+
+add_onto_executable(ontologenius_tester src/tests/Performances/tester.cpp)
 target_link_libraries(ontologenius_tester PRIVATE ontologenius_core_lib)
 
-add_onto_executable(ontologenius_container_tester src/tests/container_test.cpp)
+add_onto_executable(ontologenius_container_tester src/tests/Performances/container_test.cpp)
 target_link_libraries(ontologenius_container_tester PRIVATE ontologenius_core_lib)
 
-add_onto_executable(ontologenius_services_tester src/tests/service_tester.cpp)
-target_link_libraries(ontologenius_services_tester PRIVATE ontologenius_core_lib)
+##############################
+## FEATURES TESTS
+##############################
+
+add_onto_executable(ontologenius_exemple src/exemple.cpp )
+target_link_libraries(ontologenius_exemple PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
 
 add_onto_executable(ontologenius_config_tester src/tests/config_reader_test.cpp)
 target_link_libraries(ontologenius_config_tester PRIVATE ontologenius_core_lib)
 
 add_onto_executable(ontologenius_versioning src/tests/versioning.cpp)
 target_link_libraries(ontologenius_versioning PRIVATE ontologenius_lib)
-
-#add_onto_executable(ontologenius_ORO src/tests/ORO.cpp)
-#target_link_libraries(ontologenius_ORO PRIVATE ontologenius_lib ontologenius_core_lib)
-
-#add_onto_executable(ontologenius_find_tester src/tests/getNameVsFind.cpp)
-#target_link_libraries(ontologenius_find_tester PRIVATE ontologenius_lib ontologenius_core_lib ontologenius_interface)
-
-#add_onto_executable(ontologenius_local_find src/tests/local_find.cpp)
-#target_link_libraries(ontologenius_local_find PRIVATE ontologenius_lib)
-
-#add_onto_executable(ontologenius_knowrob src/tests/knowrob_test.cpp)
-#target_link_libraries(ontologenius_knowrob PRIVATE ontologenius_interface)
-
-#add_onto_executable(ontologenius_oro src/tests/ORO_test.cpp)
-#target_link_libraries(ontologenius_oro PRIVATE ontologenius_interface ontologenius_lib)
-
-#add_onto_executable(ontologenius_deepcopy src/tests/deepcopy.cpp)
-#target_link_libraries(ontologenius_deepcopy PRIVATE ontologenius_lib)
 
 ##############################################################################
 # Qt Environment
