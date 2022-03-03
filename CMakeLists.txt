@@ -271,6 +271,7 @@ add_onto_library(ontologenius_interface
   src/RosInterface.cpp
   src/core/ontologyOperators/differenceFinder.cpp
   src/core/ontologyOperators/Sparql.cpp
+  src/core/ontologyOperators/SparqlSolver.cpp
   src/core/ontologyOperators/SparqlUtils.cpp
 )
 target_link_libraries(ontologenius_interface
@@ -338,6 +339,9 @@ target_link_libraries(ontologenius_config_tester PRIVATE ontologenius_core_lib)
 
 add_onto_executable(ontologenius_versioning src/tests/versioning.cpp)
 target_link_libraries(ontologenius_versioning PRIVATE ontologenius_lib)
+
+add_onto_executable(ontologenius_sparql src/tests/sparql.cpp)
+target_link_libraries(ontologenius_sparql PRIVATE ontologenius_interface)
 
 ##############################################################################
 # Qt Environment

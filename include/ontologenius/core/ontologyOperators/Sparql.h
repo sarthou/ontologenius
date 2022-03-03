@@ -9,20 +9,6 @@
 namespace ontologenius
 {
 
-enum SparqlOperator_e
-{
-  sparql_none,
-  sparql_not_exists
-};
-
-struct SparqlBlock_t
-{
-  std::string raw;
-  SparqlOperator_e op;
-  std::vector<std::map<std::string, std::string>> res;
-  std::vector<SparqlBlock_t> sub_blocks;
-};
-
 class Sparql
 {
 public:
