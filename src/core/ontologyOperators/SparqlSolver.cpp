@@ -95,7 +95,7 @@ namespace ontologenius
     else
       error_ = "The query is malformed";
 
-    if(error_ != "")
+    if(error_ == "")
       for(auto& constraint : initial_solution.variable_constraints_)
         initial_solution.solution_full_[constraint.first] = "";
 
