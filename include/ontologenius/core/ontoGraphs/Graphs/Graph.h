@@ -30,7 +30,7 @@ class Graph
 {
   static_assert(std::is_base_of<ValuedNode,B>::value, "B must be derived from ValuedNode");
 public:
-  Graph() { language_ = "en"; }
+  Graph() : language_("en") {}
   virtual ~Graph() {}
 
   void setLanguage(std::string language) {language_ = language; }

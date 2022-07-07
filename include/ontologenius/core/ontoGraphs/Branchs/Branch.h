@@ -21,7 +21,7 @@ public:
   std::vector<Single_t<T*>> childs_;
   std::vector<Single_t<T*>> mothers_;
 
-  Branch_t(std::string value) : ValuedNode(value)
+  Branch_t(const std::string& value) : ValuedNode(value)
     {};
 };
 

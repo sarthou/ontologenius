@@ -50,7 +50,7 @@ public:
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);
   void getDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res);
-  std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& class_selector);
+  std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
 
   std::unordered_set<std::string> getRelationFrom(const std::string& _class, int depth = -1);  //C3
   std::unordered_set<std::string> getRelatedFrom(const std::string& property);     //C3
@@ -76,15 +76,15 @@ public:
 
   void deleteClass(ClassBranch_t* _class);
   int deletePropertiesOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect);
-  void addLang(std::string& _class, std::string& lang, std::string& name);
+  void addLang(const std::string& _class, std::string& lang, const std::string& name);
   void addInheritage(std::string& class_base, std::string& class_inherited);
   void addProperty(ClassBranch_t*, const std::string& property, const std::string& class_on);
   void addProperty(ClassBranch_t*, const std::string& property, const std::string& type, const std::string& data);
   void addPropertyInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on);
   void removeLang(std::string& indiv, std::string& lang, std::string& name);
   void removeInheritage(std::string& class_base, std::string& class_inherited);
-  void removeProperty(std::string& class_from, std::string& property, std::string& class_on);
-  void removeProperty(std::string& class_from, std::string& property, std::string& type, std::string& data);
+  void removeProperty(const std::string& class_from, const std::string& property, const std::string& class_on);
+  void removeProperty(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data);
 
 private:
   ObjectPropertyGraph* object_property_graph_;
@@ -95,7 +95,7 @@ private:
   void addDataProperty(ClassBranch_t* me, Pair_t<std::string, data_t>& relation);
 
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth);
-  void getRelatedFrom(std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res);
+  void getRelatedFrom(const std::unordered_set<uint32_t>& object_properties, const std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res);
   void getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth);
   void getRelatedOnDataProperties(const std::string& property, std::unordered_set<std::string>& res);
   void getRelationWith(ClassBranch_t* class_branch, std::map<std::string, int>& properties, std::vector<int>& depths, std::vector<std::string>& res, int depth);
@@ -122,7 +122,7 @@ private:
     }
   }
 
-  ClassBranch_t* findIntersection(std::unordered_set<ClassBranch_t*>& base, std::unordered_set<ClassBranch_t*>& comp)
+  ClassBranch_t* findIntersection(const std::unordered_set<ClassBranch_t*>& base, const std::unordered_set<ClassBranch_t*>& comp)
   {
     for (ClassBranch_t* it : comp)
     {

@@ -43,8 +43,8 @@ public:
 
   void deepCopy(const IndividualGraph& other);
 
-  void close();
-  std::vector<IndividualBranch_t*> get() {return individuals_; }
+  void close() final;
+  std::vector<IndividualBranch_t*> get() override {return individuals_; }
 
   std::vector<IndividualBranch_t*> getSafe()
   {

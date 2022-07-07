@@ -29,7 +29,7 @@ public:
   OntoGraph() {}
   ~OntoGraph();
 
-  void close();
+  void close() override;
 
   std::unordered_set<std::string> getDown(const std::string& value, int depth = -1);
   std::unordered_set<std::string> getUp(const std::string& value, int depth = -1);
@@ -56,7 +56,7 @@ public:
   void getUpPtr(B* branch, std::unordered_set<B*>& res, int depth, unsigned int current_depth = 0);
   inline void getUpPtr(B* branch, std::unordered_set<B*>& res);
 
-  std::vector<B*> get()
+  std::vector<B*> get() override
   {
     return all_branchs_;
   }
@@ -82,8 +82,6 @@ protected:
   std::vector<B*> all_branchs_;
 
   std::map<std::string, B*> tmp_mothers_;
-
-  int depth_;
   
   void amIA(B** me, std::map<std::string, B*>& vect, const std::string& value, bool erase = true);
 
@@ -531,7 +529,7 @@ template <typename B>
 std::unordered_set<std::string> OntoGraph<B>::findFuzzy(const std::string& value, bool use_default, double threshold)
 {
   double lower_cost = 100000;
-  double tmp_cost = 100000;
+  double tmp_cost;
   std::unordered_set<std::string> res;
 
   LevenshteinDistance dist;

@@ -33,7 +33,7 @@ public:
     return table_[index];
   }
 
-  inline void index2string(std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& base)
+  inline void index2string(std::unordered_set<std::string>& res, const std::unordered_set<uint32_t>& base)
   {
     for(uint32_t i : base)
       res.insert(table_[i]);
