@@ -26,8 +26,7 @@ IndividualGraph::IndividualGraph(const IndividualGraph& other, ClassGraph* class
 
   language_ = other.language_;
 
-  for(auto indiv : other.individuals_)
-    individuals_.push_back(new IndividualBranch_t(indiv->value()));
+  std::transform(other.individuals_.cbegin(), other.individuals_.cend(), std::back_inserter(individuals_), [](auto indiv){ return new IndividualBranch_t(indiv->value()); });
 
   container_.load(individuals_);
 }
@@ -135,9 +134,9 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
     //I need to find myself
     IndividualBranch_t* me = nullptr;
     //Am I created ?
-    for(auto& individual : individuals_)
-      if(distinct[distinct_i] == individual->value())
-        me = individual;
+    auto me_it = std::find_if(individuals_.cbegin(), individuals_.cend(), [dist = distinct[distinct_i]](auto individual){ return dist == individual->value(); });
+    if(me_it != individuals_.end())
+      me = *me_it;
 
     // I don't exist ?
     if(me == nullptr)

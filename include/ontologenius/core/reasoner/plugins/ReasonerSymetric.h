@@ -11,13 +11,13 @@ public:
   ReasonerSymetric() {}
   virtual ~ReasonerSymetric() = default;
 
-  virtual void preReason();
-  virtual void postReason();
+  virtual void preReason() override;
+  virtual void postReason() override;
 
-  virtual std::string getName();
-  virtual std::string getDesciption();
+  virtual std::string getName() override;
+  virtual std::string getDesciption() override;
 
-  virtual bool defaultAvtive() {return true;}
+  virtual bool defaultAvtive() override {return true;}
 private:
   bool symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv);
 };

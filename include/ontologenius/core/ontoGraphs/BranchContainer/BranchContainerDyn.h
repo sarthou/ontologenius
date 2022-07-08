@@ -32,12 +32,13 @@ template <typename B>
 class BranchContainerDyn : public BranchContainerBase<B>
 {
 public:
-  BranchContainerDyn()
+  BranchContainerDyn() : nodes_(nullptr),
+                         nodes_end_(nullptr),
+                         buffer_size_(0),
+                         nb_elem_(0)
   {
     nodes_ = new BranchNode_t<B>;
     nodes_end_ = nodes_;
-    buffer_size_ = 0;
-    nb_elem_ = 0;
   }
   BranchContainerDyn(const BranchContainerDyn& base);
 

@@ -46,7 +46,7 @@ protected:
 
   virtual void printStatus() = 0;
 
-  void printStatus(std::string type, std::string types, size_t nb)
+  void printStatus(const std::string& type, const std::string& types, size_t nb)
   {
     if(is_analysed)
     {

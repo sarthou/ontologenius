@@ -11,12 +11,12 @@ public:
   ReasonerNone() {}
   virtual ~ReasonerNone() = default;
 
-  virtual void preReason();
-  virtual void postReason();
-  virtual void periodicReason();
+  virtual void preReason() override;
+  virtual void postReason() override;
+  virtual void periodicReason() override;
 
-  virtual std::string getName();
-  virtual std::string getDesciption();
+  virtual std::string getName() override;
+  virtual std::string getDesciption() override;
 private:
 };
 

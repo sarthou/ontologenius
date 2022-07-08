@@ -12,13 +12,13 @@ public:
   ReasonerChain() {}
   ~ReasonerChain() {}
 
-  virtual void preReason();
-  virtual void postReason();
+  virtual void preReason() override;
+  virtual void postReason() override;
 
-  virtual std::string getName();
-  virtual std::string getDesciption();
+  virtual std::string getName() override;
+  virtual std::string getDesciption() override;
 
-  virtual bool defaultAvtive() {return true;}
+  virtual bool defaultAvtive() override {return true;}
 private:
   void resolveChain(ObjectPropertyBranch_t* prop, std::vector<ObjectPropertyBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on);
   void resolveLink(ObjectPropertyBranch_t* chain_property, ChainTree* tree, size_t index);

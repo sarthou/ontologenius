@@ -15,7 +15,7 @@ public:
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
   /// @param n is an initialized ROS node handle.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  OntologyClient(ros::NodeHandle* n, std::string name) : ClientBase(n, name)
+  OntologyClient(ros::NodeHandle* n, const std::string& name) : ClientBase(n, name)
   {
   }
 

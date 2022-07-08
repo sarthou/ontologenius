@@ -11,14 +11,14 @@ public:
   ReasonerDictionary() { use_id_ = false; }
   virtual ~ReasonerDictionary() = default;
 
-  void setParameter(const std::string& name, const std::string& value);
+  void setParameter(const std::string& name, const std::string& value) override;
 
-  virtual void postReason();
+  virtual void postReason() override;
 
-  virtual std::string getName();
-  virtual std::string getDesciption();
+  virtual std::string getName() override;
+  virtual std::string getDesciption() override;
 
-  virtual bool defaultAvtive() {return true;}
+  virtual bool defaultAvtive() override {return true;}
 private:
   bool use_id_;
 

@@ -56,8 +56,7 @@ public:
   std::vector<std::string> getAll()
   {
     std::vector<std::string> res;
-    for(auto branch : individuals_)
-      res.push_back(branch->value());
+    std::transform(individuals_.cbegin(), individuals_.cend(), std::back_inserter(res), [](auto branch){ return branch->value(); });
     return res;
   }
 

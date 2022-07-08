@@ -71,8 +71,7 @@ public:
   std::vector<std::string> getAll()
   {
     std::vector<std::string> res;
-    for(auto branch : all_branchs_)
-      res.push_back(branch->value());
+    std::transform(all_branchs_.cbegin(), all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->value(); });
     return res;
   }
 
@@ -113,10 +112,8 @@ void OntoGraph<B>::close()
 
   //link();
 
-  for(auto& it : roots_)
-    all_branchs_.push_back(it.second);
-  for(auto& it : branchs_)
-    all_branchs_.push_back(it.second);
+  std::transform(roots_.cbegin(), roots_.cend(), std::back_inserter(all_branchs_), [](auto map_it){ return map_it.second; });
+  std::transform(branchs_.cbegin(), branchs_.cend(), std::back_inserter(all_branchs_), [](auto map_it){ return map_it.second; });
 
   this->container_.load(all_branchs_);
 }
@@ -423,14 +420,13 @@ bool fullComparator(D* branch, const std::string& value, const std::string& lang
       return true;
 
   if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
-    for(auto& word : branch->dictionary_.spoken_[lang])
-      if(word == value)
-        return true;
+    if(std::any_of(branch->dictionary_.spoken_[lang].begin(), branch->dictionary_.spoken_[lang].end(), [value](auto word){ return word == value; }))
+      return true;
 
   if(branch->dictionary_.muted_.find(lang) != branch->dictionary_.muted_.end())
-    for(auto& word : branch->dictionary_.muted_[lang])
-      if(word == value)
-        return true;
+    if(std::any_of(branch->dictionary_.muted_[lang].begin(), branch->dictionary_.muted_[lang].end(), [value](auto word){ return word == value; }))
+      return true;
+
   return false;
 }
 

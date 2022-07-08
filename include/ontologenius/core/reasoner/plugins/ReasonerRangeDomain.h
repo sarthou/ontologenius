@@ -11,12 +11,12 @@ public:
   ReasonerRangeDomain() {}
   virtual ~ReasonerRangeDomain() = default;
 
-  virtual void postReason();
+  virtual void postReason() override;
 
-  virtual std::string getName();
-  virtual std::string getDesciption();
+  virtual std::string getName() override;
+  virtual std::string getDesciption() override;
 
-  virtual bool defaultAvtive() {return true;}
+  virtual bool defaultAvtive() override {return true;}
 private:
 
   void postReasonIndividuals();

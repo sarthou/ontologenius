@@ -43,7 +43,7 @@ class ObjectPropertyGraph : public OntoGraph<ObjectPropertyBranch_t>
   friend IndividualGraph;
   friend ClassGraph;
 public:
-  ObjectPropertyGraph(ClassGraph* class_graph);
+  explicit ObjectPropertyGraph(ClassGraph* class_graph);
   ObjectPropertyGraph(const ObjectPropertyGraph& other, ClassGraph* class_graph);
   ~ObjectPropertyGraph() {}
 

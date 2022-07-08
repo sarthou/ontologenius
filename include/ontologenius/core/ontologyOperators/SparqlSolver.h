@@ -20,7 +20,7 @@ struct SparqlConstraint_t
 
 struct SparqlVariableConstraint_t
 {
-  SparqlVariableConstraint_t(const std::string variable) { variable_ = variable; }
+  SparqlVariableConstraint_t(const std::string& variable) : variable_(variable) {}
   std::string variable_;
   std::vector<SparqlConstraint_t> constraints_;
   std::unordered_set<std::string> linked_variales_;
@@ -47,9 +47,8 @@ public:
   class iterator
   {
     public:
-      iterator(SparqlSolution_t intial_solution, SparqlSolver* solver = nullptr)
+      explicit iterator(const SparqlSolution_t& intial_solution, SparqlSolver* solver = nullptr) : current_solution_(intial_solution)
       {
-        current_solution_ = intial_solution;
         solver_ = solver;
       }
       iterator(const iterator& other) = default;
@@ -74,9 +73,8 @@ public:
 
       bool is_empty() const
       {
-        for(auto& it : current_solution_.solution_full_)
-          if(it.second != "")
-            return false;
+        if(std::any_of(current_solution_.solution_full_.begin(), current_solution_.solution_full_.end(), [](auto it){ return it.second != ""; }))
+          return false;
         return true;
       }
 

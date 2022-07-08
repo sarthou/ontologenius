@@ -11,7 +11,7 @@ namespace ontologenius {
 class commit_t
 {
 public:
-  commit_t(const std::string& id);
+  explicit commit_t(const std::string& id);
   ~commit_t();
 
   void setOrderId(size_t order);
