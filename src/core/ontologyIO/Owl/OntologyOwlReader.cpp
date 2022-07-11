@@ -469,10 +469,9 @@ void OntologyOwlReader::readCollection(std::vector<std::string>& vect, TiXmlElem
   for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
   {
     std::string sub_elem_name = sub_elem->Value();
-    const char* sub_attr;
     if(sub_elem_name == "rdf:Description")
     {
-      sub_attr = sub_elem->Attribute("rdf:about");
+      const char* sub_attr = sub_elem->Attribute("rdf:about");
       if(sub_attr != nullptr)
       {
         if(display_)
@@ -571,7 +570,6 @@ void OntologyOwlReader::removeDocType(std::string& txt)
         if(nb == 0)
         {
           pose = pose-2;
-          auto tmp = txt.substr(pose, i-pose+1);
           txt.erase(pose, i-pose+1);
           return;
         }

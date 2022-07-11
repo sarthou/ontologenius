@@ -33,7 +33,7 @@ class Single_t : public ProbabilisticElement_t
 public:
   T elem;
 
-  Single_t(const T& elem, float probability = 1.0, bool infered = false)
+  explicit Single_t(const T& elem, float probability = 1.0, bool infered = false)
   {
     this->elem = elem;
     this->probability = probability;

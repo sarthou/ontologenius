@@ -41,7 +41,7 @@ class DataPropertyGraph : public OntoGraph<DataPropertyBranch_t>
   friend IndividualGraph;
   friend ClassGraph;
 public:
-  DataPropertyGraph(ClassGraph* class_graph);
+  explicit DataPropertyGraph(ClassGraph* class_graph);
   DataPropertyGraph(const DataPropertyGraph& other, ClassGraph* class_graph);
   ~DataPropertyGraph() {}
 
@@ -56,11 +56,11 @@ public:
   std::unordered_set<std::string> getDomain(const std::string& value);
   void getDomainPtr(DataPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
   std::unordered_set<std::string> getRange(const std::string& value);
-  std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& selector);
+  std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& selector);
 
-  bool add(DataPropertyBranch_t* prop, std::string& relation, std::string& data);
-  bool addInvert(DataPropertyBranch_t* prop, std::string& relation, std::string& data);
-  bool remove(DataPropertyBranch_t* prop, std::string& relation, std::string& data);
+  bool add(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
+  bool addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
+  bool remove(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
 
 private:
   ClassGraph* class_graph_;

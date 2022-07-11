@@ -360,7 +360,7 @@ void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch_t* branch, std::unord
       class_graph_->getDownPtr(range.elem, res, depth);
 }
 
-std::unordered_set<std::string> ObjectPropertyGraph::select(std::unordered_set<std::string>& on, const std::string& selector)
+std::unordered_set<std::string> ObjectPropertyGraph::select(const std::unordered_set<std::string>& on, const std::string& selector)
 {
   std::unordered_set<std::string> res;
   for(const std::string& it : on)
@@ -372,15 +372,14 @@ std::unordered_set<std::string> ObjectPropertyGraph::select(std::unordered_set<s
   return res;
 }
 
-bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
 {
   if(relation != "")
   {
     if(relation[0] == '@')
     {
-      relation = relation.substr(1);
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      prop->setSteady_dictionary(relation, data);
+      prop->setSteady_dictionary(relation.substr(1), data);
       prop->updated_ = true;
     }
     else if((relation == "+") || (relation == "isA"))
@@ -404,7 +403,7 @@ bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, std::string& relatio
   return true;
 }
 
-bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
 {
   if(relation != "")
   {
@@ -428,7 +427,7 @@ bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, std::string& r
   return true;
 }
 
-bool ObjectPropertyGraph::remove(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool ObjectPropertyGraph::remove(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
 {
   (void)prop;
   (void)relation;
@@ -588,9 +587,8 @@ void ObjectPropertyGraph::cpyChainOfBranch(ObjectPropertyBranch_t* old_branch, O
   for(const auto& chain : old_branch->chains_)
   {
     std::vector<ObjectPropertyBranch_t*> tmp;
-    for(const auto& link : chain)
-      tmp.push_back(container_.find(link->value()));
-    new_branch->chains_.push_back(tmp);
+    std::transform(chain.cbegin(), chain.cend(), std::back_inserter(tmp), [this](const auto& link){ return this->container_.find(link->value()); });
+    new_branch->chains_.push_back(std::move(tmp));
   }
 }
 

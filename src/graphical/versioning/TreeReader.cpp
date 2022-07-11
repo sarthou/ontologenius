@@ -7,10 +7,8 @@ namespace ontologenius {
 size_t commit_t::global_width = 1;
 size_t commit_t::global_height = 0;
 
-commit_t::commit_t(const std::string& id)
+commit_t::commit_t(const std::string& id) : id_(id), order_(-1)
 {
-  id_ = id;
-  order_ = -1;
   global_height++;
 }
 

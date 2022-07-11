@@ -23,7 +23,7 @@ private:
 
   ObjectPropertyGraph* property_graph_;
 
-  ObjectPropertyBranch_t* findIntersection(std::unordered_set<ObjectPropertyBranch_t*>& base, std::unordered_set<ObjectPropertyBranch_t*>& comp)
+  ObjectPropertyBranch_t* findIntersection(const std::unordered_set<ObjectPropertyBranch_t*>& base, const std::unordered_set<ObjectPropertyBranch_t*>& comp)
   {
     for (ObjectPropertyBranch_t* it : comp)
     {

@@ -107,9 +107,9 @@ void OntologyTtlReader::removeComments(std::string& raw_turtle)
 
 void OntologyTtlReader::readTriplets(const std::string& raw_turtle)
 {
-  std::string current_subject = "";
-  std::string current_property = "";
-  std::string current_object = "";
+  std::string current_subject;
+  std::string current_property;
+  std::string current_object;
 
   for(size_t i = 0; i < raw_turtle.size(); i++)
   {
@@ -302,7 +302,7 @@ size_t OntologyTtlReader::endOfBlock(const std::string& text, size_t pose)
 
 std::string OntologyTtlReader::getElement(const std::string& text, size_t pose)
 {
-  size_t end_pose = std::string::npos;
+  size_t end_pose;
   if(text[pose] == '<')
     end_pose = endOfBlock(text, pose);
   else if((text[pose] == '"') || (text[pose] == '\''))

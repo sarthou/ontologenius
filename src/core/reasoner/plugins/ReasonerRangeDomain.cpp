@@ -39,14 +39,14 @@ void ReasonerRangeDomain::postReasonIndividuals()
     }
 }
 
-void ReasonerRangeDomain::deduceRange(IndividualBranch_t* branch, std::string& prop)
+void ReasonerRangeDomain::deduceRange(IndividualBranch_t* branch, const std::string& prop)
 {
   for(size_t i = 0; i < branch->object_relations_.size(); i++)
     if(branch->object_relations_[i].first->value() == prop)
       deduceObjRange(branch, i);
 }
 
-void ReasonerRangeDomain::deduceDomain(IndividualBranch_t* branch, std::string& prop)
+void ReasonerRangeDomain::deduceDomain(IndividualBranch_t* branch, const std::string& prop)
 {
   for(size_t i = 0; i < branch->object_relations_.size(); i++)
     if(branch->object_relations_[i].first->value() == prop)
@@ -214,14 +214,14 @@ void ReasonerRangeDomain::postReasonClasses()
     }
 }
 
-void ReasonerRangeDomain::deduceRange(ClassBranch_t* branch, std::string& prop)
+void ReasonerRangeDomain::deduceRange(ClassBranch_t* branch, const std::string& prop)
 {
   for(size_t i = 0; i < branch->object_relations_.size(); i++)
     if(branch->object_relations_[i].first->value() == prop)
       deduceObjRange(branch, i);
 }
 
-void ReasonerRangeDomain::deduceDomain(ClassBranch_t* branch, std::string& prop)
+void ReasonerRangeDomain::deduceDomain(ClassBranch_t* branch, const std::string& prop)
 {
   for(size_t i = 0; i < branch->object_relations_.size(); i++)
     if(branch->object_relations_[i].first->value() == prop)

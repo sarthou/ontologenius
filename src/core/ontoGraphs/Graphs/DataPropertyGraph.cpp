@@ -319,7 +319,7 @@ std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& v
   return res;
 }
 
-std::unordered_set<std::string> DataPropertyGraph::select(std::unordered_set<std::string>& on, const std::string& selector)
+std::unordered_set<std::string> DataPropertyGraph::select(const std::unordered_set<std::string>& on, const std::string& selector)
 {
   std::unordered_set<std::string> res;
   for(const std::string& it : on)
@@ -331,15 +331,14 @@ std::unordered_set<std::string> DataPropertyGraph::select(std::unordered_set<std
   return res;
 }
 
-bool DataPropertyGraph::add(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool DataPropertyGraph::add(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
 {
   if(relation != "")
   {
     if(relation[0] == '@')
     {
-      relation = relation.substr(1);
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      prop->setSteady_dictionary(relation, data);
+      prop->setSteady_dictionary(relation.substr(1), data);
       prop->updated_ = true;
     }
     else if((relation == "+") || (relation == "isA"))
@@ -359,7 +358,7 @@ bool DataPropertyGraph::add(DataPropertyBranch_t* prop, std::string& relation, s
   return true;
 }
 
-bool DataPropertyGraph::addInvert(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool DataPropertyGraph::addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
 {
   if(relation != "")
   {
@@ -380,7 +379,7 @@ bool DataPropertyGraph::addInvert(DataPropertyBranch_t* prop, std::string& relat
   return true;
 }
 
-bool DataPropertyGraph::remove(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool DataPropertyGraph::remove(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
 {
   (void)prop;
   (void)relation;

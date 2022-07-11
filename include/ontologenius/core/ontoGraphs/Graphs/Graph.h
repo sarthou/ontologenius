@@ -19,7 +19,7 @@ namespace ontologenius {
 
 struct GraphException : public std::exception {
   std::string msg_;
-  GraphException(const std::string& msg) : msg_(msg) {}
+  explicit GraphException(const std::string& msg) : msg_(msg) {}
   const char * what () const throw () {
     return msg_.c_str();
   }

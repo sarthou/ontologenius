@@ -800,7 +800,6 @@ void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_c
         return;
       }
 
-    current_depth++;
     getUpPtr(first_class, next_step, 1);
     next_step.erase(first_class);
   }

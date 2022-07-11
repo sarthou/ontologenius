@@ -5,11 +5,10 @@
 
 namespace ontologenius
 {
-  SparqlSolver::SparqlSolver() : sparql_pattern_("SELECT\\s*(DISTINCT)?\\s*([^\n]+)([\\s\n]*)WHERE([\\s\n]*)(.*)")
+  SparqlSolver::SparqlSolver() : onto_(nullptr),
+                                 sparql_pattern_("SELECT\\s*(DISTINCT)?\\s*([^\n]+)([\\s\n]*)WHERE([\\s\n]*)(.*)"),
+                                 error_("")
   {
-    onto_ = nullptr;
-    error_ = "";
-
     operators_["NOT EXISTS"] = sparql_not_exists;
   }
 
@@ -147,10 +146,9 @@ namespace ontologenius
     for(auto& variable : solution.variable_constraints_)
       variables_links[variable.first] = variable.second.linked_variales_;
 
-    std::string selected_var = "";
     while(variables_links.size())
     {
-      selected_var = "";
+      std::string selected_var = "";
       for(auto& variable : variables_links)
         if(variable.second.size() == 0)
         {
@@ -205,7 +203,7 @@ namespace ontologenius
       solution.solution_full_[variable] = *candidates.begin();
       candidates.erase(candidates.begin());
 
-      if(index < solution.ordered_variables_.size() - 1)
+      if(index < (int)(solution.ordered_variables_.size() - 1))
       {
         stepDown(solution, index+1);
         auto next_var = solution.ordered_variables_[index+1];
@@ -546,8 +544,7 @@ namespace ontologenius
     std::vector<triplet_t> sub_queries_triplet;
     try
     {
-      for(auto& q : sub_queries)
-        sub_queries_triplet.push_back(getTriplet(q));
+      std::transform(sub_queries.cbegin(), sub_queries.cend(), std::back_inserter(sub_queries_triplet), [](const auto& sub_query){ return getTriplet(sub_query); });
     }
     catch(const std::string& msg)
     {

@@ -15,7 +15,7 @@ struct data_t
   data_t(const std::string& type, const std::string& value) : value_(value), type_(type)
   {}
 
-  data_t(const std::string& value)
+  explicit data_t(const std::string& value)
   {
     set(value);
   }

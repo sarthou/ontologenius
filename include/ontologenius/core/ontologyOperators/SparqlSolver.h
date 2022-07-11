@@ -20,7 +20,7 @@ struct SparqlConstraint_t
 
 struct SparqlVariableConstraint_t
 {
-  SparqlVariableConstraint_t(const std::string& variable) : variable_(variable) {}
+  explicit SparqlVariableConstraint_t(const std::string& variable) : variable_(variable) {}
   std::string variable_;
   std::vector<SparqlConstraint_t> constraints_;
   std::unordered_set<std::string> linked_variales_;
