@@ -588,7 +588,8 @@ bool IndividualGraph::getFrom(ClassBranch_t* class_branch, const std::unordered_
         if(relation.first->get() == id)
         {
           defined = true;
-          found = std::any_of(down_classes.begin(), down_classes.end(), [id = relation.second->get()](auto class_id){ return id == class_id; });
+          if(std::any_of(down_classes.begin(), down_classes.end(), [id = relation.second->get()](auto class_id){ return id == class_id; }))
+            found = true;
         }
 
     if(defined == false)
