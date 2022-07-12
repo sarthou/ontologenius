@@ -31,10 +31,9 @@ public:
   /// @brief Constructs a ROS client.
   /// @param n is an initialized ROS node handle.
   /// @param name is the name of the ontologenius service
-  ClientBase(ros::NodeHandle* n, std::string name) : client(n->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name, true))
+  ClientBase(ros::NodeHandle* n, const std::string& name) : client(n->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name, true)), name_(name)
   {
     n_ = n;
-    name_ = name;
   }
 
   /// @brief Gives the total number of service calls from all ClientBase instances since the last reset.

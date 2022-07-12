@@ -11,17 +11,17 @@ public:
   ReasonerRangeDomain() {}
   virtual ~ReasonerRangeDomain() = default;
 
-  virtual void postReason();
+  virtual void postReason() override;
 
-  virtual std::string getName();
-  virtual std::string getDesciption();
+  virtual std::string getName() override;
+  virtual std::string getDesciption() override;
 
-  virtual bool defaultAvtive() {return true;}
+  virtual bool defaultAvtive() override {return true;}
 private:
 
   void postReasonIndividuals();
-  void deduceRange(IndividualBranch_t* branch, std::string& prop);
-  void deduceDomain(IndividualBranch_t* branch, std::string& prop);
+  void deduceRange(IndividualBranch_t* branch, const std::string& prop);
+  void deduceDomain(IndividualBranch_t* branch, const std::string& prop);
 
   void deduceObjRange(IndividualBranch_t* branch, size_t index);
   void deduceDatRange(IndividualBranch_t* branch, size_t index);
@@ -30,8 +30,8 @@ private:
 
 
   void postReasonClasses();
-  void deduceRange(ClassBranch_t* branch, std::string& prop);
-  void deduceDomain(ClassBranch_t* branch, std::string& prop);
+  void deduceRange(ClassBranch_t* branch, const std::string& prop);
+  void deduceDomain(ClassBranch_t* branch, const std::string& prop);
 
   void deduceObjRange(ClassBranch_t* branch, size_t index);
   void deduceDatRange(ClassBranch_t* branch, size_t index);

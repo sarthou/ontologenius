@@ -70,10 +70,8 @@ ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, Objec
     }
   }
 
-  me->nb_mothers_ += property_vectors.mothers_.size();
-
   //am I a root ?
-  if(me->nb_mothers_ == 0)
+  if(me->mothers_.size() + property_vectors.mothers_.size() == 0)
     roots_[value] = me;
   else
   {
@@ -362,7 +360,7 @@ void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch_t* branch, std::unord
       class_graph_->getDownPtr(range.elem, res, depth);
 }
 
-std::unordered_set<std::string> ObjectPropertyGraph::select(std::unordered_set<std::string>& on, const std::string& selector)
+std::unordered_set<std::string> ObjectPropertyGraph::select(const std::unordered_set<std::string>& on, const std::string& selector)
 {
   std::unordered_set<std::string> res;
   for(const std::string& it : on)
@@ -374,15 +372,14 @@ std::unordered_set<std::string> ObjectPropertyGraph::select(std::unordered_set<s
   return res;
 }
 
-bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
 {
   if(relation != "")
   {
     if(relation[0] == '@')
     {
-      relation = relation.substr(1);
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      prop->setSteady_dictionary(relation, data);
+      prop->setSteady_dictionary(relation.substr(1), data);
       prop->updated_ = true;
     }
     else if((relation == "+") || (relation == "isA"))
@@ -406,7 +403,7 @@ bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, std::string& relatio
   return true;
 }
 
-bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
 {
   if(relation != "")
   {
@@ -430,7 +427,7 @@ bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, std::string& r
   return true;
 }
 
-bool ObjectPropertyGraph::remove(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool ObjectPropertyGraph::remove(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
 {
   (void)prop;
   (void)relation;
@@ -503,7 +500,7 @@ bool ObjectPropertyGraph::isIrreflexive(ObjectPropertyBranch_t* prop)
     return true;
   else
   {
-    for(auto mother : prop->mothers_)
+    for(auto& mother : prop->mothers_)
     {
       if(isIrreflexive(mother.elem))
         return true;
@@ -528,7 +525,7 @@ bool ObjectPropertyGraph::isAsymetric(ObjectPropertyBranch_t* prop)
     return true;
   else
   {
-    for(auto mother : prop->mothers_)
+    for(auto& mother : prop->mothers_)
     {
       if(isIrreflexive(mother.elem))
         return true;
@@ -555,9 +552,6 @@ void ObjectPropertyGraph::deepCopy(const ObjectPropertyGraph& other)
 
 void ObjectPropertyGraph::cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch)
 {
-  new_branch->family = old_branch->family;
-  new_branch->nb_mothers_ = old_branch->nb_mothers_;
-
   new_branch->nb_updates_ = old_branch->nb_updates_;
   new_branch->updated_ = old_branch->updated_;
   new_branch->flags_ = old_branch->flags_;
@@ -593,9 +587,8 @@ void ObjectPropertyGraph::cpyChainOfBranch(ObjectPropertyBranch_t* old_branch, O
   for(const auto& chain : old_branch->chains_)
   {
     std::vector<ObjectPropertyBranch_t*> tmp;
-    for(const auto& link : chain)
-      tmp.push_back(container_.find(link->value()));
-    new_branch->chains_.push_back(tmp);
+    std::transform(chain.cbegin(), chain.cend(), std::back_inserter(tmp), [this](const auto& link){ return this->container_.find(link->value()); });
+    new_branch->chains_.push_back(std::move(tmp));
   }
 }
 

@@ -123,7 +123,7 @@
 
         <h1 class="title">Presentation</h1>
 
-        <p>This is the fifth tutorial! In the previous tutorial, we saw how to manage several instances of ontologenius,
+        <p>This is the fifth tutorial! In the previous tutorial, we saw how to manage several instances of Ontologenius,
           each representing a specific agent. However, each of these instances represents only an agent's knowledge base at
           present. When planning, we may need to estimate a possible future state of a knowledge base
           to execute algorithms on it. Of course, one cannot simply modify the current knowledge base of an agent at the
@@ -151,7 +151,7 @@
 
         <div class="text_block" style="margin-bottom:40px;">
           <span>
-            The first feature offered by ontologenius is deep copying. It is simply a complete copy of an existing instance
+            The first feature offered by Ontologenius is deep copying. It is simply a complete copy of an existing instance
             which then becomes independent. With this copy, we start from an existing point and we can make our modifications
             from this point. Besides, even if an internal file is set, a copy will never be saved automatically when killed.
             <br/>
@@ -161,7 +161,7 @@
             However, a deep copy is not a trivial process and it takes a little time to execute. Although this time can be negligible
             if we make only one copy, if we imagine a planning problem with a hundred states it can greatly affect the general
             performance of the planning all this for very often a low number of changes between each copy. Also, if you
-            try to create a hundred ontologenius instances, your computer will say "NO" at some point ... With my tests,
+            try to create a hundred Ontologenius instances, your computer will say "NO" at some point ... With my tests,
             I manage to create only 83 at the same time.
           </span>
           <img src="../../images/tutorial/tutorial_5_sol2.png " alt="new instance creation" height="160px" style="margin-left:20px; vertical-align:middle"/>
@@ -170,7 +170,7 @@
         <div class="text_block">
           <img src="../../images/tutorial/tutorial_5_sol3.png " alt="new instance creation" height="100px" style="margin-right:20px; vertical-align:middle"/>
           <span>
-            The second feature offered by ontologenius is a kind of versioning system on copied instances. Much like git, you can
+            The second feature offered by Ontologenius is a kind of versioning system on copied instances. Much like git, you can
             make changes to a copied instance and then commit those changes with a commit name. Then you can continue to make
             changes or go to a specific commit using its name. With this feature, you can represent multiple states of a
             knowledge base in a single instance.
@@ -183,28 +183,25 @@
 
         <h2>Before you start</h2>
 
-        <p>Before moving on, you can create a new package that we will call explore_futures. To be sure
-          that your new package will be well configured to use ontologenius, we advise you to follow this
-          <a target="_blank" rel="noopener noreferrer" href="../../SetUp.html"><b>guide</b></a>. To create the
-          launch file, leave the "files" argument empty, and then set
-          the "intern_file" argument to "$(find explore_futures)/futures.owl".
+        <p>Before moving on, you can create a new launch file. Leave the "files" argument empty, and then set
+          the "intern_file" argument to "$(find ontologenius_tutorial)/futures.owl".
         </p>
 
         <div class="code_block xml_code" style="counter-reset:code_line 0;">
           <div class="code_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
           <div class="code_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius_multi.launch&quot;</span>&gt;</div>
-          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find explore_futures)/futures.owl&quot;</span>/&gt;</div>
+          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius_tutorial)/futures.owl&quot;</span>/&gt;</div>
           <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
           <div class="code_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
           <div class="code_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
         </div>
 
         <p>You can see here that we base our launch file on the file "ontologenius_multi.launch" once again.
-          Because we are going to create a separate instance of ontologenius that will represent the knowledge
+          Because we are going to create a separate instance of Ontologenius that will represent the knowledge
           base for future estimates, we must be able to manage multiple instances.</p>
 
-        <p>By specifying an internal file, ontologenius is allowed to save the ontology it contains in a file
+        <p>By specifying an internal file, Ontologenius is allowed to save the ontology it contains in a file
           when it is stopped and to reload it on its next start. We will see more precisely the effect of this
           internal file on our estimates.</p>
 

@@ -11,13 +11,13 @@ public:
   ReasonerInverseOf() {}
   virtual ~ReasonerInverseOf() = default;
 
-  virtual void preReason();
-  virtual void postReason();
+  virtual void preReason() override;
+  virtual void postReason() override;
 
-  virtual std::string getName();
-  virtual std::string getDesciption();
+  virtual std::string getName() override;
+  virtual std::string getDesciption() override;
 
-  virtual bool defaultAvtive() {return true;}
+  virtual bool defaultAvtive() override {return true;}
 private:
 
   void insertInverse(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* base_prop, ObjectPropertyBranch_t* inv_prop, IndividualBranch_t* inv_indiv);

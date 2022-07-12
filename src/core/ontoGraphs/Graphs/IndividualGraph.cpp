@@ -26,8 +26,7 @@ IndividualGraph::IndividualGraph(const IndividualGraph& other, ClassGraph* class
 
   language_ = other.language_;
 
-  for(auto indiv : other.individuals_)
-    individuals_.push_back(new IndividualBranch_t(indiv->value()));
+  std::transform(other.individuals_.cbegin(), other.individuals_.cend(), std::back_inserter(individuals_), [](auto indiv){ return new IndividualBranch_t(indiv->value()); });
 
   container_.load(individuals_);
 }
@@ -99,23 +98,19 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
   /**********************
   ** Same In Individual
   **********************/
-  //for all my inverses
+  //for all my sames
   for(auto& same_as : individual_vector.same_as_)
   {
-    bool i_find_my_same = false;
-
-    //is a root my inverse ?
-    for(auto& individual : individuals_)
-      if(same_as == individual->value())
-      {
-        conditionalPushBack(me->same_as_, IndividualElement_t(individual));
-        conditionalPushBack(individual->same_as_, IndividualElement_t(me, 1.0, true));
-        i_find_my_same = true;
-      }
-
-    //I create my same
-    if(!i_find_my_same)
+    //is my same already created ?
+    IndividualBranch_t* same = container_.find(same_as.elem);
+    if(same != nullptr)
     {
+      conditionalPushBack(me->same_as_, IndividualElement_t(same));
+      conditionalPushBack(same->same_as_, IndividualElement_t(me, 1.0, true));
+    }
+    else
+    {
+      //I create my same
       auto my_same = new IndividualBranch_t(same_as.elem);
       conditionalPushBack(me->same_as_, IndividualElement_t(my_same));
       conditionalPushBack(my_same->same_as_, IndividualElement_t(me, 1.0, true));
@@ -139,9 +134,9 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
     //I need to find myself
     IndividualBranch_t* me = nullptr;
     //Am I created ?
-    for(auto& individual : individuals_)
-      if(distinct[distinct_i] == individual->value())
-        me = individual;
+    auto me_it = std::find_if(individuals_.cbegin(), individuals_.cend(), [dist = distinct[distinct_i]](auto individual){ return dist == individual->value(); });
+    if(me_it != individuals_.end())
+      me = *me_it;
 
     // I don't exist ?
     if(me == nullptr)
@@ -299,20 +294,12 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
   for(auto& individual : individuals_)
   {
     for(IndivObjectRelationElement_t& relation : individual->object_relations_)
-      for (uint32_t id : object_properties)
-        if(relation.first->get() == id)
-        {
-          getSameAndClean(individual, res);
-          break;
-        }
-
+      if(std::any_of(object_properties.begin(), object_properties.end(), [prop_id = relation.first->get()](auto& id){ return id == prop_id; }))
+        getSameAndClean(individual, res);
+    
     for(IndivDataRelationElement_t& relation : individual->data_relations_)
-      for (uint32_t id : data_properties)
-        if(relation.first->get() == id)
-        {
-          getSameAndClean(individual, res);
-          break;
-        }
+      if(std::any_of(object_properties.begin(), object_properties.end(), [prop_id = relation.first->get()](auto& id){ return id == prop_id; }))
+        getSameAndClean(individual, res);
 
     std::unordered_set<std::string> up_set = getUp(individual, 1);
     for(auto& up : up_set)
@@ -399,6 +386,7 @@ std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::stri
       {
         std::unordered_set<IndividualBranch_t*> sames_tmp;
         getSame(relation.second, sames_tmp);
+        cleanMarks(sames_tmp);
         std::unordered_set<std::string> tmp = set2set(sames_tmp);
         res.insert(tmp.begin(), tmp.end());
 
@@ -564,7 +552,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
     if((found == false) && (indiv == nullptr))
     {
       std::unordered_set<uint32_t> down_classes = class_graph_->getDownIdSafe(individual);
-      std::unordered_set<uint32_t> doNotTake;
+      std::unordered_set<uint32_t> do_not_take;
 
       std::unordered_set<ClassBranch_t*> up_set;
       getUpPtr(indiv_i, up_set, 1);
@@ -572,7 +560,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
       {
         std::unordered_set<ClassBranch_t*> next_step;
         for(auto up : up_set)
-          found = found || getFrom(up, object_properties, data_properties, data_img, down_classes, next_step, doNotTake);
+          found = found || getFrom(up, object_properties, data_properties, data_img, down_classes, next_step, do_not_take);
 
         up_set = next_step;
       }
@@ -585,11 +573,11 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
   return res;
 }
 
-bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const data_t& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake)
+bool IndividualGraph::getFrom(ClassBranch_t* class_branch, const std::unordered_set<uint32_t>& object_properties, const std::unordered_set<uint32_t>& data_properties, const data_t& data, const std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& do_not_take)
 {
   if(class_branch != nullptr)
   {
-    if(doNotTake.find(class_branch->get()) != doNotTake.end())
+    if(do_not_take.find(class_branch->get()) != do_not_take.end())
       return false;
 
     bool found = false;
@@ -600,12 +588,8 @@ bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<ui
         if(relation.first->get() == id)
         {
           defined = true;
-          for(uint32_t class_id : down_classes)
-            if(relation.second->get() == class_id)
-            {
-              found = true;
-              break;
-            }
+          if(std::any_of(down_classes.begin(), down_classes.end(), [id = relation.second->get()](auto class_id){ return id == class_id; }))
+            found = true;
         }
 
     if(defined == false)
@@ -623,7 +607,7 @@ bool IndividualGraph::getFrom(ClassBranch_t* class_branch, std::unordered_set<ui
 
     if(defined == true)
     {
-      class_graph_->getUpIdSafe(class_branch, doNotTake);
+      class_graph_->getUpIdSafe(class_branch, do_not_take);
       return found;
     }
     else
@@ -660,6 +644,7 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& indivi
 
     std::unordered_set<IndividualBranch_t*> sames;
     getSame(indiv, sames);
+    cleanMarks(sames);
     for(auto same_indiv : sames)
     {
       for(IndivObjectRelationElement_t& relation : same_indiv->object_relations_)
@@ -718,14 +703,14 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
 
     int found_depth = -1;
     uint32_t current_depth = 0;
-    std::unordered_set<uint32_t> doNotTake;
+    std::unordered_set<uint32_t> do_not_take;
     std::unordered_set<ClassBranch_t*> up_set;
     getUpPtr(indiv, up_set, 1);
     while(up_set.size() > 0)
     {
       std::unordered_set<ClassBranch_t*> next_step;
       for(auto up : up_set)
-        class_graph_->getWith(up, second_individual, res, doNotTake, current_depth, found_depth, depth, next_step);
+        class_graph_->getWith(up, second_individual, res, do_not_take, current_depth, found_depth, depth, next_step);
 
       up_set = next_step;
       current_depth++;
@@ -859,7 +844,7 @@ std::unordered_set<uint32_t> IndividualGraph::getSameIdAndClean(IndividualBranch
   return res;
 }
 
-std::unordered_set<std::string> IndividualGraph::select(std::unordered_set<std::string>& on, const std::string& class_selector)
+std::unordered_set<std::string> IndividualGraph::select(const std::unordered_set<std::string>& on, const std::string& class_selector)
 {
   std::unordered_set<std::string> res;
   std::unordered_set<std::string> classes;
@@ -982,13 +967,13 @@ std::unordered_set<std::string> IndividualGraph::find(const std::string& value, 
         res.insert(indiv->value());
 
     if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
-      for(size_t dic_i = 0; dic_i < indiv->dictionary_.spoken_[language_].size(); dic_i++)
-        if(indiv->dictionary_.spoken_[language_][dic_i] == value)
+      for(auto& word : indiv->dictionary_.spoken_[language_])
+        if(word == value)
           res.insert(indiv->value());
 
     if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
-      for(size_t dic_i = 0; dic_i < indiv->dictionary_.muted_[language_].size(); dic_i++)
-        if(indiv->dictionary_.muted_[language_][dic_i] == value)
+      for(auto& word : indiv->dictionary_.muted_[language_])
+        if(word == value)
           res.insert(indiv->value());
   }
   return res;
@@ -1009,17 +994,17 @@ std::unordered_set<std::string> IndividualGraph::findSub(const std::string& valu
     }
 
     if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
-      for(size_t dic_i = 0; dic_i < indiv->dictionary_.spoken_[language_].size(); dic_i++)
+      for(auto& word : indiv->dictionary_.spoken_[language_])
       {
-        std::regex regex("\\b(" + indiv->dictionary_.spoken_[language_][dic_i] + ")([^ ]*)");
+        std::regex regex("\\b(" + word + ")([^ ]*)");
         if(std::regex_search(value, match, regex))
           res.insert(indiv->value());
       }
 
     if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
-      for(size_t dic_i = 0; dic_i < indiv->dictionary_.muted_[language_].size(); dic_i++)
+      for(auto& word : indiv->dictionary_.muted_[language_])
       {
-        std::regex regex("\\b(" + indiv->dictionary_.muted_[language_][dic_i] + ")([^ ]*)");
+        std::regex regex("\\b(" + word + ")([^ ]*)");
         if(std::regex_search(value, match, regex))
           res.insert(indiv->value());
       }
@@ -1044,13 +1029,13 @@ std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& re
     }
 
     if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
-      for(size_t dic_i = 0; dic_i < indiv->dictionary_.spoken_[language_].size(); dic_i++)
-        if(std::regex_match(indiv->dictionary_.spoken_[language_][dic_i], match, base_regex))
+      for(auto& word : indiv->dictionary_.spoken_[language_])
+        if(std::regex_match(word, match, base_regex))
           res.insert(indiv->value());
 
     if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
-      for(size_t dic_i = 0; dic_i < indiv->dictionary_.muted_[language_].size(); dic_i++)
-        if(std::regex_match(indiv->dictionary_.muted_[language_][dic_i], match, base_regex))
+      for(auto& word : indiv->dictionary_.muted_[language_])
+        if(std::regex_match(word, match, base_regex))
           res.insert(indiv->value());
   }
   return res;
@@ -1059,7 +1044,7 @@ std::unordered_set<std::string> IndividualGraph::findRegex(const std::string& re
 std::unordered_set<std::string> IndividualGraph::findFuzzy(const std::string& value, bool use_default, double threshold)
 {
   double lower_cost = 100000;
-  double tmp_cost = lower_cost;
+  double tmp_cost;
   std::unordered_set<std::string> res;
 
   LevenshteinDistance dist;
@@ -1138,7 +1123,6 @@ std::unordered_set<std::string> IndividualGraph::getType(const std::string& clas
 
 bool IndividualGraph::relationExists(const std::string& param)
 {
-  std::unordered_set<std::string> res;
   std::string subject;
   std::string property;
   std::string object;
@@ -1180,9 +1164,9 @@ bool IndividualGraph::relationExists(const std::string& subject, const std::stri
       {
         std::unordered_set<IndividualBranch_t*> sames_tmp;
         getSame(relation.second, sames_tmp);
-        for(auto same : sames_tmp)
-          if(same->value() == object)
-            return true;
+        cleanMarks(sames_tmp);
+        if(std::any_of(sames_tmp.begin(), sames_tmp.end(), [object](const auto& same){ return object == same->value(); }))
+          return true;
       }
     }
 
@@ -1213,9 +1197,9 @@ bool IndividualGraph::relationExists(IndividualBranch_t* subject, ObjectProperty
       {
         std::unordered_set<IndividualBranch_t*> sames_tmp;
         getSame(relation.second, sames_tmp);
-        for(auto same : sames_tmp)
-          if(same == object)
-            return true;
+        cleanMarks(sames_tmp);
+        if(std::any_of(sames_tmp.begin(), sames_tmp.end(), [object](auto& same){ return object == same; }))
+          return true;
       }
     }
   }
@@ -1223,16 +1207,16 @@ bool IndividualGraph::relationExists(IndividualBranch_t* subject, ObjectProperty
   return false;
 }
 
-void IndividualGraph::cleanMarks(std::unordered_set<IndividualBranch_t*>& indSet)
+void IndividualGraph::cleanMarks(const std::unordered_set<IndividualBranch_t*>& indiv_set)
 {
-  for(IndividualBranch_t* it : indSet)
+  for(IndividualBranch_t* it : indiv_set)
     it->mark = false;
 }
 
-std::unordered_set<std::string> IndividualGraph::set2set(std::unordered_set<IndividualBranch_t*>& indSet, bool clean)
+std::unordered_set<std::string> IndividualGraph::set2set(const std::unordered_set<IndividualBranch_t*>& indiv_set, bool clean)
 {
   std::unordered_set<std::string> res;
-  for(IndividualBranch_t* it : indSet)
+  for(IndividualBranch_t* it : indiv_set)
   {
     if(clean)
       it->mark = false;
@@ -1654,14 +1638,13 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
 {
   std::vector<std::pair<std::string, std::string>> explanations;
   bool updated = false;
-  bool applied = false;
   std::unordered_set<ObjectPropertyBranch_t*> down_properties;
   object_property_graph_->getDownPtr(property, down_properties);
 
   for(size_t i = 0; i < branch_from->object_relations_.size();)
   {
     auto object_relation = branch_from->object_relations_[i];
-    applied = false;
+    bool applied = false;
     for(auto& down : down_properties)
     {
       if(object_relation.first == down)
@@ -1871,13 +1854,13 @@ std::vector<std::vector<ObjectPropertyBranch_t*>> IndividualGraph::getChains(Obj
 
 bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectPropertyBranch_t* prop, IndividualBranch_t* on)
 {
-  std::unordered_set<ObjectPropertyBranch_t*> prop_up;
-  object_property_graph_->getUpPtr(prop, prop_up);
+  std::unordered_set<ObjectPropertyBranch_t*> up_properties;
+  object_property_graph_->getUpPtr(prop, up_properties);
 
   //DOMAIN
   std::unordered_set<ClassBranch_t*> domain;
-  for(auto prop : prop_up)
-    object_property_graph_->getDomainPtr(prop, domain);
+  for(auto up_property : up_properties)
+    object_property_graph_->getDomainPtr(up_property, domain);
 
   if(domain.size() != 0)
   {
@@ -1901,8 +1884,8 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
 
   //RANGE
   std::unordered_set<ClassBranch_t*> range;
-  for(auto prop : prop_up)
-    object_property_graph_->getRangePtr(prop, range);
+  for(auto up_property : up_properties)
+    object_property_graph_->getRangePtr(up_property, range);
 
   if(range.size() != 0)
   {
@@ -1929,13 +1912,13 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
 
 bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, data_t& data)
 {
-  std::unordered_set<DataPropertyBranch_t*> prop_up;
-  data_property_graph_->getUpPtr(prop, prop_up);
+  std::unordered_set<DataPropertyBranch_t*> up_properties;
+  data_property_graph_->getUpPtr(prop, up_properties);
 
   //DOMAIN
   std::unordered_set<ClassBranch_t*> domain;
-  for(auto prop : prop_up)
-    data_property_graph_->getDomainPtr(prop, domain);
+  for(auto up_property : up_properties)
+    data_property_graph_->getDomainPtr(up_property, domain);
 
   if(domain.size() != 0)
   {
@@ -1978,14 +1961,12 @@ void IndividualGraph::deepCopy(const IndividualGraph& other)
   {
     std::unordered_set<IndividualBranch_t*> same_as;
     getSame(myself, same_as);
+    cleanMarks(same_as);
     for(auto me : same_as)
     {
-      auto it = std::remove_if (me->same_as_.begin(), me->same_as_.end(), [myself](IndividualElement_t& elem)
+      auto it = std::remove_if (me->same_as_.begin(), me->same_as_.end(), [myself](const IndividualElement_t& elem)
       {
-          if(elem.elem == myself) 
-            return true;
-          else
-            return false;
+          return elem.elem == myself;
       });
       me->same_as_.erase(it, me->same_as_.end());
     }

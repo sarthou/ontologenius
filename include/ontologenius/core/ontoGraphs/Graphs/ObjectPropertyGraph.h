@@ -43,7 +43,7 @@ class ObjectPropertyGraph : public OntoGraph<ObjectPropertyBranch_t>
   friend IndividualGraph;
   friend ClassGraph;
 public:
-  ObjectPropertyGraph(ClassGraph* class_graph);
+  explicit ObjectPropertyGraph(ClassGraph* class_graph);
   ObjectPropertyGraph(const ObjectPropertyGraph& other, ClassGraph* class_graph);
   ~ObjectPropertyGraph() {}
 
@@ -59,13 +59,13 @@ public:
   void getDomainPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
   std::unordered_set<std::string> getRange(const std::string& value);
   void getRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
-  std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& selector);
+  std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& selector);
 
   void getDisjoint(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res);
 
-  bool add(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
-  bool addInvert(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
-  bool remove(ObjectPropertyBranch_t* prop, std::string& relation, std::string& data);
+  bool add(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data);
+  bool addInvert(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data);
+  bool remove(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data);
 
   bool addInverseOf(const std::string& from, const std::string& on);
   bool removeInverseOf(const std::string& from, const std::string& on);

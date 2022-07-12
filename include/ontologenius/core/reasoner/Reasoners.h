@@ -43,8 +43,10 @@ public:
 
   std::vector<std::pair<std::string, std::string>> getExplanations()
   {
+    explanations_mutex_.lock();
     auto tmp = std::move(explanations_);
     explanations_.clear();
+    explanations_mutex_.unlock();
     return tmp;
   }
 
@@ -56,6 +58,7 @@ private:
   std::vector<std::pair<ReasonerNotificationStatus_e, std::string>> notifications_;
   // Here the explanations are about relations added through FOL
   std::vector<std::pair<std::string, std::string>> explanations_;
+  std::mutex explanations_mutex_;
 
   pluginlib::ClassLoader<ReasonerInterface> loader_;
 

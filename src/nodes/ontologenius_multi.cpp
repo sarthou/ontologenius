@@ -240,8 +240,7 @@ int main(int argc, char** argv)
   ros::spin();
 
   std::vector<std::string> interfaces_names;
-  for(auto& intreface : interfaces_)
-    interfaces_names.push_back(intreface.first);
+  std::transform(interfaces_.cbegin(), interfaces_.cend(), std::back_inserter(interfaces_names), [](const auto& it){ return it.first; });
 
   for(auto& interfaces_name : interfaces_names)
     deleteInterface(interfaces_name);

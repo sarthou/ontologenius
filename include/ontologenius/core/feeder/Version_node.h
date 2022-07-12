@@ -12,7 +12,7 @@ namespace ontologenius {
 class Version_node
 {
 public:
-  Version_node(size_t order, Version_node* prev = nullptr);
+  explicit Version_node(size_t order, Version_node* prev = nullptr);
   Version_node(size_t order, const std::string& id);
 
   void insert(const feed_t& data) { datas_.push_back(data); }

@@ -18,7 +18,7 @@ public:
   /// @brief Constructs a manipulator for several instance of ontologies with a pointer to a NodeHandle n.
   /// This pointer is necessary to create the ros services in the constructor.
   /// @param n is an initialized ros node handle
-  OntologiesManipulator(ros::NodeHandle* n);
+  explicit OntologiesManipulator(ros::NodeHandle* n);
   ~OntologiesManipulator();
 
   /// @brief Wait for ontologenius services to be advertised and available for. Blocks until it is.

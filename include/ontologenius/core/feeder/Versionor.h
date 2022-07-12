@@ -11,7 +11,7 @@ namespace ontologenius {
 class Versionor
 {
 public:
-  Versionor(FeedStorage* storage);
+  explicit Versionor(FeedStorage* storage);
   ~Versionor();
 
   void activate(bool activated) { activated_ = activated; }

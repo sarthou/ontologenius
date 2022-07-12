@@ -40,9 +40,7 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
 
   size_t chain_size = chain.size() - 1;
   for(size_t link_i = 0; link_i < chain_size; link_i++)
-  {
     resolveLink(chain[link_i], &tree, link_i);
-  }
 
   tree.purge(chain_size);
 
@@ -50,7 +48,7 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
   size_t indivs_size = indivs.size();
   if((chain.size() != 0) && (indivs_size != 0))
     for(size_t i = 0; i < indivs_size; i++)
-      if(!porpertyExist(on, chain[chain_size], indivs[i]))
+      if(!relationExists(on, chain[chain_size], indivs[i]))
       {
         try {
           int index = ontology_->individual_graph_.addProperty(on, chain[chain_size], indivs[i], 1.0, true);
@@ -109,7 +107,7 @@ void ReasonerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTre
   std::unordered_set<std::string> chain_props = ontology_->object_property_graph_.getDown(chain_property->value());
 
   std::vector<chainNode_t*> nodes = tree->getNodes(index);
-  for(auto node : nodes)
+  for(auto& node : nodes)
   {
     for(auto indiv : node->ons_)
     {
@@ -136,16 +134,15 @@ void ReasonerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTre
   }
 }
 
-bool ReasonerChain::porpertyExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* chain_prop, IndividualBranch_t* chain_indiv)
+bool ReasonerChain::relationExists(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* chain_prop, IndividualBranch_t* chain_indiv)
 {
-  size_t properties_size = indiv_on->object_relations_.size();
-  for(size_t i = 0; i < properties_size; i++)
+  for(auto& relation : indiv_on->object_relations_)
   {
-    if(indiv_on->object_relations_[i].second->get() == chain_indiv->get())
+    if(relation.second->get() == chain_indiv->get())
     {
       std::unordered_set<ObjectPropertyBranch_t*> down_properties;
       ontology_->object_property_graph_.getDownPtr(chain_prop, down_properties);
-      if(down_properties.find(indiv_on->object_relations_[i].first) != down_properties.end())
+      if(down_properties.find(relation.first) != down_properties.end())
         return true;
     }
   }

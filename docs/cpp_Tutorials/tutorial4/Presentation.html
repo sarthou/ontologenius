@@ -124,7 +124,7 @@
         <h1 class="title">Presentation of the problem</h1>
 
         <p>This is the fourth tutorial! You are now an expert in managing an ontology using
-          ontologenius and the ontology manipulator has no secrets for you.
+          Ontologenius and the ontology manipulator has no secrets for you.
           Now that we can represent the knowledge of our artificial agent, we will try to
           estimate and thus manage the knowledge of the other agents with whom we interact.
           This corresponds to the process called the theory of mind for human cognition.</p>
@@ -153,18 +153,16 @@
 
         <h2>Before you start</h2>
 
-        <p>Before moving on, you can create a new package that we will call multiple_ontologies. To be sure
-          that your new package will be well configured to use ontologenius, we advise you to follow this
-          <a target="_blank" rel="noopener noreferrer" href="../../SetUp.html"><b>guide</b></a>. To create the
-          launch file, set the "files" argument with the common ground ontology tutotial_4.owl, and then set
-          the "intern_file" argument to "$(find multiple_ontologies)/multi.owl".
+        <p>Before moving on, you can create a new launch file and set the "files" argument with the common 
+          ground ontology tutotial_4.owl, and then set
+          the "intern_file" argument to "$(find ontologenius_tutorial)/multi.owl".
         </p>
 
         <div class="code_block xml_code" style="counter-reset:code_line 0;">
           <div class="code_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;multiple_ontologies&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;multiple_ontologies&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;multiple_ontologies&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;multiple_ontologies&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;multiple_ontologies&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
           <div class="code_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius_multi.launch&quot;</span>&gt;</div>
-          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find multiple_ontologies)/multi.owl&quot;</span>/&gt;</div>
+          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius_tutorial)/multi.owl&quot;</span>/&gt;</div>
           <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/tutorials/tutorial_4.owl&quot;</span>/&gt;</div>
           <div class="code_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
           <div class="code_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
@@ -173,7 +171,7 @@
         <p>You can see here that we base our launch file on the file "ontologenius_multi.launch" this time.
           This will launch an executable specifically dedicated to the management of several ontologies.</p>
 
-        <p>By specifying an internal file, ontologenius is allowed to save the ontology it contains in a file
+        <p>By specifying an internal file, Ontologenius is allowed to save the ontology it contains in a file
           when it is stopped and to reload it on its next start. In the case of managing multiple ontologies,
           the name we give to this file is considered a namespace. We will see in detail what this means later in the tutorial.</p>
 

@@ -13,11 +13,15 @@
 #define PUB_QUEU_SIZE 1000
 #define SUB_QUEU_SIZE 10000
 
+#define FEEDER_DEFAULT_RATE 20
+#define FEEDER_COPY_RATE 4000
+
 namespace ontologenius {
 
 RosInterface::RosInterface(const std::string& name) :
                                                   feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
                                                   run_(true),
+                                                  feeder_rate_(FEEDER_DEFAULT_RATE),
                                                   feeder_end_pub_(n_.advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),
                                                   display_(true)
 {
@@ -34,6 +38,7 @@ RosInterface::RosInterface(const std::string& name) :
 RosInterface::RosInterface(RosInterface& other, const std::string& name) :
                                                 feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
                                                 run_(true),
+                                                feeder_rate_(FEEDER_DEFAULT_RATE),
                                                 feeder_end_pub_(n_.advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),
                                                 display_(true)
 {
@@ -76,7 +81,7 @@ void RosInterface::init(const std::string& lang, const std::string& intern_file,
   reasoners_.load();
   Display::info("Plugins loaded : " + reasoners_.list());
 
-  feeder_rate_ = 20;
+  feeder_rate_ = FEEDER_DEFAULT_RATE;
 }
 
 void RosInterface::init(const std::string& lang, const std::string& config_path)
@@ -88,7 +93,7 @@ void RosInterface::init(const std::string& lang, const std::string& config_path)
   Display::info("Plugins loaded : " + reasoners_.list());
 
   feeder_.activateVersionning(true);
-  feeder_rate_ = 4000;
+  feeder_rate_ = FEEDER_COPY_RATE;
 }
 
 void RosInterface::run()
@@ -627,6 +632,9 @@ void RosInterface::feedThread()
 {
   ros::Publisher feeder_publisher = n_.advertise<std_msgs::String>(getTopicName("feeder_notifications"), PUB_QUEU_SIZE);
   bool feeder_end = true;
+#ifdef ONTO_TEST
+    end_feed_ = false;
+#endif
 
   ros::Rate wait(feeder_rate_);
   while((ros::ok()) && (onto_->isInit(false) == false) && (run_ == true))
@@ -666,6 +674,9 @@ void RosInterface::feedThread()
       reasoner_mutex_.lock();
       reasoners_.runPostReasoners();
       reasoner_mutex_.unlock();
+#ifdef ONTO_TEST
+      end_feed_ = true;
+#endif
 
       feeder_end = true;
       msg.data = "end";
@@ -756,8 +767,7 @@ void RosInterface::set2string(const std::unordered_set<std::string>& word_set, s
 
 void RosInterface::set2vector(const std::unordered_set<std::string>& word_set, std::vector<std::string>& result)
 {
-  for(const std::string& it : word_set)
-    result.push_back(it);
+  std::copy(word_set.begin(), word_set.end(), std::back_inserter(result));
 }
 
 param_t RosInterface::getParams(const std::string& param)

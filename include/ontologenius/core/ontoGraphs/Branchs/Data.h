@@ -10,15 +10,12 @@ struct data_t
 {
   std::string value_;
   std::string type_;
-  size_t hash_;
+  //size_t hash_;
 
-  data_t(const std::string& type, const std::string& value)
-  {
-    value_ = value;
-    type_ = type;
-  }
+  data_t(const std::string& type, const std::string& value) : value_(value), type_(type)
+  {}
 
-  data_t(const std::string& value)
+  explicit data_t(const std::string& value)
   {
     set(value);
   }
@@ -44,12 +41,12 @@ struct data_t
     value_ = value.substr(value.find("#")+1);
   }
 
-  bool operator==(const data_t& other)
+  bool operator==(const data_t& other) const
   {
     return ((type_ == other.type_) && (value_ == other.value_));
   }
 
-  bool operator!=(const data_t& other)
+  bool operator!=(const data_t& other) const
   {
     return ((type_ != other.type_) || (value_ != other.value_));
   }

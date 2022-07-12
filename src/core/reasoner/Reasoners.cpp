@@ -56,7 +56,10 @@ void Reasoners::configure(const std::string& config_path)
 {
   if((config_path != "") && (config_path != "none"))
   {
-    config_.read(config_path);
+    if(config_.read(config_path) == false)
+      Display::error("Fail to load configuration file: " + config_path);
+    else
+      Display::success("The reasoners have been configured");
   }
 }
 
@@ -92,35 +95,23 @@ void Reasoners::load()
 
 std::string Reasoners::list()
 {
-  std::string out =  "Plugins loaded :\n";
   std::string res;
   for(auto& it : reasoners_)
-  {
-    out += " - From " + it.first + " : " + reasoners_[it.first]->getName() + " (" + reasoners_[it.first]->getDesciption() + ")\n";
     res += " -" + it.first;
-  }
   return res;
 }
 
 std::vector<std::string> Reasoners::listVector()
 {
-  std::string out =  "Plugins loaded :\n";
   std::vector<std::string> res;
-  for(auto& it : reasoners_)
-  {
-    out += " - From " + it.first + " : " + reasoners_[it.first]->getName() + " (" + reasoners_[it.first]->getDesciption() + ")\n";
-    res.push_back(it.first);
-  }
+  std::transform(reasoners_.cbegin(), reasoners_.cend(), std::back_inserter(res), [](const auto& it){ return it.first; });
   return res;
 }
 
 std::vector<std::string> Reasoners::activeListVector()
 {
   std::vector<std::string> res;
-  for(auto& it : active_reasoners_)
-  {
-    res.push_back(it.first);
-  }
+  std::transform(active_reasoners_.cbegin(), active_reasoners_.cend(), std::back_inserter(res), [](const auto& it){ return it.first; });
   return res;
 }
 
@@ -148,9 +139,8 @@ int Reasoners::activate(const std::string& plugin)
 
 int Reasoners::deactivate(const std::string& plugin)
 {
-  if(active_reasoners_.find(plugin) != active_reasoners_.end())
+  if(active_reasoners_.erase(plugin))
   {
-    active_reasoners_.erase(plugin);
     Display::success(plugin + " has been deactivated");
     return 0;
   }
@@ -194,7 +184,9 @@ void Reasoners::runPreReasoners()
         auto notif = it.second->getNotifications();
         notifications_.insert(notifications_.end(), notif.begin(), notif.end());
         auto explanations = it.second->getExplanations();
+        explanations_mutex_.lock();
         explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
+        explanations_mutex_.unlock();
       }
     }
 
@@ -221,7 +213,9 @@ void Reasoners::runPostReasoners()
         auto notif = it.second->getNotifications();
         notifications_.insert(notifications_.end(), notif.begin(), notif.end());
         auto explanations = it.second->getExplanations();
+        explanations_mutex_.lock();
         explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
+        explanations_mutex_.unlock();
       }
     }
     nb_updates = ReasonerInterface::getNbUpdates();
@@ -243,7 +237,9 @@ void Reasoners::runPeriodicReasoners()
       auto notif = it.second->getNotifications();
       notifications_.insert(notifications_.end(), notif.begin(), notif.end());
       auto explanations = it.second->getExplanations();
+      explanations_mutex_.lock();
       explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
+      explanations_mutex_.unlock();
     }
   }
 

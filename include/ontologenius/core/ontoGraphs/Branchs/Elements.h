@@ -33,14 +33,14 @@ class Single_t : public ProbabilisticElement_t
 public:
   T elem;
 
-  Single_t(T elem, float probability = 1.0, bool infered = false)
+  explicit Single_t(const T& elem, float probability = 1.0, bool infered = false)
   {
     this->elem = elem;
     this->probability = probability;
     this->infered = infered;
   }
 
-  Single_t(const Single_t& other, T elem)
+  Single_t(const Single_t& other, const T& elem)
   {
     this->elem = elem;
     this->probability = other.probability;
@@ -78,7 +78,7 @@ public:
   T first;
   U second;
 
-  Pair_t(T first, U second, float probability = 1.0, bool infered = false)
+  Pair_t(const T& first, const U& second, float probability = 1.0, bool infered = false)
   {
     this->first = first;
     this->second = second;
@@ -86,7 +86,7 @@ public:
     this->infered = infered;
   }
 
-  Pair_t(const Pair_t& other, T first, U second)
+  Pair_t(const Pair_t& other, const T& first, const U& second)
   {
     this->first = first;
     this->second = second;

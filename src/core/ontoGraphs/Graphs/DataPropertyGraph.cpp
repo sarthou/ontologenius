@@ -70,10 +70,8 @@ DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPrope
     }
   }
 
-  me->nb_mothers_ += property_vectors.mothers_.size();
-
   //am I a root ?
-  if(me->nb_mothers_ == 0)
+  if(me->mothers_.size() + property_vectors.mothers_.size() == 0)
     roots_[me->value()] = me;
   else
   {
@@ -217,13 +215,13 @@ bool DataPropertyGraph::addAnnotation(const std::string& value, DataPropertyVect
   **********************/
   DataPropertyBranch_t* me = nullptr;
   //am I a created mother ?
-  amIA(&me, tmp_mothers_, value);
+  amIA(&me, tmp_mothers_, value, false);
 
   //am I a created branch ?
-  amIA(&me, branchs_, value);
+  amIA(&me, branchs_, value, false);
 
   //am I a created root ?
-  amIA(&me, roots_, value);
+  amIA(&me, roots_, value, false);
 
   //am I created ?
   if(me == nullptr)
@@ -237,6 +235,8 @@ bool DataPropertyGraph::addAnnotation(const std::string& value, DataPropertyVect
       if(mother_branch != nullptr)
         break;
     }
+
+    // I do not exist but one of my mother do so I should exist
     if(mother_branch != nullptr)
     {
       add(value, property_vectors);
@@ -253,6 +253,8 @@ bool DataPropertyGraph::addAnnotation(const std::string& value, DataPropertyVect
         if(range_branch != nullptr)
           break;
       }
+
+      // My ranges are not classes so there are data and I should exists
       if((range_branch == nullptr) && (property_vectors.ranges_.size()))
       {
         add(value, property_vectors);
@@ -317,7 +319,7 @@ std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& v
   return res;
 }
 
-std::unordered_set<std::string> DataPropertyGraph::select(std::unordered_set<std::string>& on, const std::string& selector)
+std::unordered_set<std::string> DataPropertyGraph::select(const std::unordered_set<std::string>& on, const std::string& selector)
 {
   std::unordered_set<std::string> res;
   for(const std::string& it : on)
@@ -329,15 +331,14 @@ std::unordered_set<std::string> DataPropertyGraph::select(std::unordered_set<std
   return res;
 }
 
-bool DataPropertyGraph::add(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool DataPropertyGraph::add(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
 {
   if(relation != "")
   {
     if(relation[0] == '@')
     {
-      relation = relation.substr(1);
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      prop->setSteady_dictionary(relation, data);
+      prop->setSteady_dictionary(relation.substr(1), data);
       prop->updated_ = true;
     }
     else if((relation == "+") || (relation == "isA"))
@@ -357,7 +358,7 @@ bool DataPropertyGraph::add(DataPropertyBranch_t* prop, std::string& relation, s
   return true;
 }
 
-bool DataPropertyGraph::addInvert(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool DataPropertyGraph::addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
 {
   if(relation != "")
   {
@@ -378,7 +379,7 @@ bool DataPropertyGraph::addInvert(DataPropertyBranch_t* prop, std::string& relat
   return true;
 }
 
-bool DataPropertyGraph::remove(DataPropertyBranch_t* prop, std::string& relation, std::string& data)
+bool DataPropertyGraph::remove(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
 {
   (void)prop;
   (void)relation;
@@ -397,9 +398,6 @@ void DataPropertyGraph::deepCopy(const DataPropertyGraph& other)
 
 void DataPropertyGraph::cpyBranch(DataPropertyBranch_t* old_branch, DataPropertyBranch_t* new_branch)
 {
-  new_branch->family = old_branch->family;
-  new_branch->nb_mothers_ = old_branch->nb_mothers_;
-
   new_branch->nb_updates_ = old_branch->nb_updates_;
   new_branch->updated_ = old_branch->updated_;
   new_branch->flags_ = old_branch->flags_;

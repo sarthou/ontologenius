@@ -148,18 +148,16 @@
 
         <h2>Before you start</h2>
 
-        <p>Before moving on, you can create a new package that we will call feed_and_generalize. To be sure
-          that your new package will be well configured to use ontologenius, we advise you to follow this
-          <a target="_blank" rel="noopener noreferrer" href="../../SetUp.html"><b>guide</b></a>. To create the
-          launch file, set the "files" argument with an empty quotation mark to make sure you do not load an
-          existing ontology, and then set the "intern_file" argument to "$(find feed_and_generalize)/birds.owl".
+        <p>Before moving on, you can create a new launch file in our ontologenius_tutorial package. 
+          Set the "files" argument with an empty quotation mark to make sure you do not load an
+          existing ontology, and then set the "intern_file" argument to "$(find ontologenius_tutorial)/birds.owl".
         </p>
 
         <div class="code_block xml_code" style="counter-reset:code_line 0;">
           <div class="code_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;feed_and_generalize&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;feed_and_generalize&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;feed_and_generalize&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;feed_and_generalize&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;feed_and_generalize&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
           <div class="code_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius_empty.launch&quot;</span>&gt;</div>
-          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find feed_and_generalize)/birds.owl&quot;</span>/&gt;</div>
+          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius_tutorial)/birds.owl&quot;</span>/&gt;</div>
           <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
           <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;config_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/config_generalization.yaml&quot;</span>/&gt;</div>
           <div class="code_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
@@ -167,7 +165,7 @@
         </div>
 
 
-        <p>By specifying an internal file, ontologenius is allowed to save the ontology it contains in a file
+        <p>By specifying an internal file, Ontologenius is allowed to save the ontology it contains in a file
           when it is stopped and to reload it on its next start. We will see the usefulness of this later.</p>
 
         <p>You should also have noticed that we have used a new argument "config_file". With it, we can configure 

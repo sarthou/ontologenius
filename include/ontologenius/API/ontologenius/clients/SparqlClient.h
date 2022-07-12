@@ -15,9 +15,9 @@ public:
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
   /// @param n is an initialized ROS node handle.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  SparqlClient(ros::NodeHandle* n, const std::string& name) : client(n->serviceClient<ontologenius::OntologeniusSparqlService>((name == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name, true))
+  SparqlClient(ros::NodeHandle* n, const std::string& name) : client(n->serviceClient<ontologenius::OntologeniusSparqlService>((name == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name, true)),
+                                                              name_((name == "") ? "sparql" : "sparql/" + name)
   {
-    name_ = (name == "") ? "sparql" : "sparql/" + name;
     n_ = n;
   }
 

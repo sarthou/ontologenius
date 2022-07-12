@@ -40,13 +40,13 @@ void ClassDrawer::putInLayers()
 
 int ClassDrawer::createNode(ClassBranch_t* branch, node_t* mother)
 {
-  int family = branch->family;
+  int family = 0; // TODO create family
   if(!exist(branch->value()))
   {
     auto node = new node_t(branch->value());
     branchs_nodes.push_back(node);
     node->prev.push_back(mother);
-    node->family = branch->family;
+    node->family = family;
     for(auto& child : branch->childs_)
       family += createNode(child.elem, node);
 
@@ -71,8 +71,8 @@ void ClassDrawer::init()
     {
       auto node = new node_t(it.second->value(), 0);
       //roots_nodes.push_back(node);
-      node->family = it.second->family;
-      int family = it.second->family;
+      int family = 0; // TODO create family
+      node->family = family;
 
       for(auto& child : it.second->childs_)
         family += createNode(child.elem, node);

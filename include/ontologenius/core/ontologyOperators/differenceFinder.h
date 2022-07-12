@@ -11,7 +11,7 @@ namespace ontologenius {
 class comparator_t
 {
 public:
-  comparator_t() {concept_ = ""; }
+  comparator_t() : concept_("") {}
   std::string concept_;
   std::vector<std::string> object_properties_name_;
   std::vector<std::string> object_properties_on_;
@@ -38,79 +38,70 @@ private:
   void compareDatas(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res);
   void compareMothers(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res);
 
-  std::vector<std::string> toValued(std::vector<ObjectPropertyBranch_t*> vect)
+  std::vector<std::string> toValued(const std::vector<ObjectPropertyBranch_t*>& vect)
   {
     std::vector<std::string> res;
-    for(auto it : vect)
-      res.push_back(it->value());
+    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it->value(); });
     return res;
   }
 
-  std::vector<std::string> toValued(std::vector<DataPropertyBranch_t*> vect)
+  std::vector<std::string> toValued(const std::vector<DataPropertyBranch_t*>& vect)
   {
     std::vector<std::string> res;
-    for(auto it : vect)
-      res.push_back(it->value());
+    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it->value(); });
     return res;
   }
 
-  std::vector<std::string> toValued(std::vector<IndividualBranch_t*> vect)
+  std::vector<std::string> toValued(const std::vector<IndividualBranch_t*>& vect)
   {
     std::vector<std::string> res;
-    for(auto it : vect)
-      res.push_back(it->value());
+    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it->value(); });
     return res;
   }
 
-  std::vector<std::string> toValued(std::vector<ClassBranch_t*> vect)
+  std::vector<std::string> toValued(const std::vector<ClassBranch_t*>& vect)
   {
     std::vector<std::string> res;
-    for(auto it : vect)
-      res.push_back(it->value());
+    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it->value(); });
     return res;
   }
 
   template<typename T>
-  std::vector<std::string> toValued(std::vector<Single_t<T>> vect)
+  std::vector<std::string> toValued(const std::vector<Single_t<T>>& vect)
   {
     std::vector<std::string> res;
-    for(auto it : vect)
-      res.push_back(it.elem->value());
+    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.elem->value(); });
     return res;
   }
 
   template<typename T, typename U>
-  std::vector<std::string> toValuedFirst(std::vector<Pair_t<T, U>> vect)
+  std::vector<std::string> toValuedFirst(const std::vector<Pair_t<T, U>>& vect)
   {
     std::vector<std::string> res;
-    for(auto it : vect)
-      res.push_back(it.first->value());
+    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.first->value(); });
     return res;
   }
 
   template<typename T, typename U>
-  std::vector<std::string> toValuedSecond(std::vector<Pair_t<T, U>> vect)
+  std::vector<std::string> toValuedSecond(const std::vector<Pair_t<T, U>>& vect)
   {
     std::vector<std::string> res;
-    for(auto it : vect)
-      res.push_back(it.second->value());
+    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.second->value(); });
     return res;
   }
 
   template<typename T>
-  std::vector<std::string> toValuedSecond(std::vector<Pair_t<T, data_t>> vect)
+  std::vector<std::string> toValuedSecond(const std::vector<Pair_t<T, data_t>>& vect)
   {
     std::vector<std::string> res;
-    for(auto it : vect)
-      res.push_back(it.second.toString());
+    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.second.toString(); });
     return res;
   }
 
-  std::vector<std::string> toValued(std::vector<data_t> vect)
+  std::vector<std::string> toValued(const std::vector<data_t>& vect)
   {
     std::vector<std::string> res;
-    for(auto it : vect)
-      res.push_back(it.toString());
+    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.toString(); });
     return res;
   }
 };

@@ -173,7 +173,7 @@ void Feeder::classIndividualIsA(feed_t& feed)
   }
 }
 
-void Feeder::addInverseOf(feed_t& feed)
+void Feeder::addInverseOf(const feed_t& feed)
 {
   if(feed.action_ == action_add)
   {
@@ -187,7 +187,7 @@ void Feeder::addInverseOf(feed_t& feed)
   }
 }
 
-void Feeder::addSameAs(feed_t& feed)
+void Feeder::addSameAs(const feed_t& feed)
 {
   if(feed.action_ == action_add)
   {
