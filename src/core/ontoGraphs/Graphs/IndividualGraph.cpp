@@ -1665,6 +1665,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
           object_relation.second->updated_ = true;
           branch_from->object_relations_.erase(branch_from->object_relations_.begin() + i);
           branch_from->object_properties_has_induced_.erase(branch_from->object_properties_has_induced_.begin() + i);
+          branch_from->updated_ = true;
           updated = true;
           applied = true;
           break;
@@ -1720,7 +1721,10 @@ void IndividualGraph::removeProperty(const std::string& indiv_from, const std::s
       {
         if(((type == "_") || (branch_from->data_relations_[i].second.type_ == type)) &&
           ((data == "_") || (branch_from->data_relations_[i].second.value_ == data)))
+        {
           branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
+          branch_from->updated_ = true;
+        }
         else
           i++;
       }
@@ -1749,8 +1753,10 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
         {
           explanations.emplace_back("[DEL]" + indiv_on->value() + "|" + indiv_on->object_relations_[i].first->value() + "|" + indiv_on->object_relations_[i].second->value(),
                                      "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
+          indiv_on->object_relations_[i].second->updated_ = true;
           indiv_on->object_relations_.erase(indiv_on->object_relations_.begin() + i);
           indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
+          indiv_on->updated_ = true;
         }
   }
   return explanations;
@@ -1767,8 +1773,10 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
         {
           explanations.emplace_back("[DEL]" + indiv_on->value() + "|" + indiv_on->object_relations_[i].first->value() + "|" + indiv_on->object_relations_[i].second->value(),
                                      "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
+          indiv_on->object_relations_[i].second->updated_;
           indiv_on->object_relations_.erase(indiv_on->object_relations_.begin() + i);
           indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
+          indiv_on->updated_ = true;
         }
   }
   return explanations;
