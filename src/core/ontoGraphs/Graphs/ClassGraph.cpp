@@ -1104,6 +1104,7 @@ void ClassGraph::removeProperty(const std::string& class_from, const std::string
         {
           branch_from->object_relations_[i].second->updated_ = true;
           branch_from->object_relations_.erase(branch_from->object_relations_.begin() + i);
+          branch_from->updated_ = true;
         }
         else
           i++;
@@ -1129,6 +1130,7 @@ void ClassGraph::removeProperty(const std::string& class_from, const std::string
           ((data == "_") || (branch_from->data_relations_[i].second.value_ == data)))
         {
           branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
+          branch_from->updated_ = true;
         }
         else
           i++;
