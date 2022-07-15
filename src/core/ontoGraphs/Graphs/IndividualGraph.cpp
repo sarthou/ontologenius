@@ -1371,6 +1371,11 @@ void IndividualGraph::addLang(const std::string& indiv, const std::string& lang,
 void IndividualGraph::addInheritage(const std::string& indiv, const std::string& class_inherited)
 {
   IndividualBranch_t* branch = findBranch(indiv);
+  addInheritage(branch, class_inherited);
+}
+
+void IndividualGraph::addInheritage(IndividualBranch_t* branch, const std::string& class_inherited)
+{
   if(branch != nullptr)
   {
     ClassBranch_t* inherited = class_graph_->findBranch(class_inherited);

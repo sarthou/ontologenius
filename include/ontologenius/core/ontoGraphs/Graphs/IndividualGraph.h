@@ -100,6 +100,7 @@ public:
   void redirectDeleteIndividual(IndividualBranch_t* indiv, ClassBranch_t* _class);
   void addLang(const std::string& indiv, const std::string& lang, const std::string& name);
   void addInheritage(const std::string& indiv, const std::string& class_inherited);
+  void addInheritage(IndividualBranch_t* branch, const std::string& class_inherited);
   void addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
   void addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
   int addProperty(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba = 1.0, bool infered = false);
