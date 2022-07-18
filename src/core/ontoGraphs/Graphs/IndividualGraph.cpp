@@ -1248,10 +1248,15 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
 
 IndividualBranch_t* IndividualGraph::createIndividual(const std::string& name)
 {
-  IndividualBranch_t* indiv = findBranch(name);
+  std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+  return createIndividualUnsafe(name);
+}
+
+IndividualBranch_t* IndividualGraph::createIndividualUnsafe(const std::string& name)
+{
+  IndividualBranch_t* indiv = findBranchUnsafe(name);
   if(indiv == nullptr)
   {
-    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     indiv = new IndividualBranch_t(name);
     container_.insert(indiv);
     individuals_.push_back(indiv);
@@ -1376,11 +1381,16 @@ void IndividualGraph::addInheritage(const std::string& indiv, const std::string&
 
 void IndividualGraph::addInheritage(IndividualBranch_t* branch, const std::string& class_inherited)
 {
+  std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+  std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+  addInheritageUnsafe(branch, class_inherited);
+}
+
+void IndividualGraph::addInheritageUnsafe(IndividualBranch_t* branch, const std::string& class_inherited)
+{
   if(branch != nullptr)
   {
-    ClassBranch_t* inherited = class_graph_->findBranch(class_inherited);
-    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-    std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+    ClassBranch_t* inherited = class_graph_->findBranchUnsafe(class_inherited);
     if(inherited == nullptr)
     {
       IndividualBranch_t* tmp = findBranchUnsafe(class_inherited);
