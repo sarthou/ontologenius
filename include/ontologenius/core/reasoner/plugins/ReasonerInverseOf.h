@@ -11,7 +11,6 @@ public:
   ReasonerInverseOf() {}
   virtual ~ReasonerInverseOf() = default;
 
-  virtual void preReason() override;
   virtual void postReason() override;
 
   virtual std::string getName() override;

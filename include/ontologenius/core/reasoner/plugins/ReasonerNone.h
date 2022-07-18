@@ -11,7 +11,7 @@ public:
   ReasonerNone() {}
   virtual ~ReasonerNone() = default;
 
-  virtual void preReason() override;
+  virtual void preReason(const QueryInfo_t& query_info) override;
   virtual void postReason() override;
   virtual void periodicReason() override;
 

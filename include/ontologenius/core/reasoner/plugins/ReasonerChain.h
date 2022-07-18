@@ -12,7 +12,6 @@ public:
   ReasonerChain() {}
   ~ReasonerChain() {}
 
-  virtual void preReason() override;
   virtual void postReason() override;
 
   virtual std::string getName() override;

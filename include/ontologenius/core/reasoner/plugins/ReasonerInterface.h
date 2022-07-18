@@ -15,6 +15,31 @@ enum ReasonerNotificationStatus_e
   notification_error
 };
 
+enum QueryType_e
+{
+  query_relation,
+  query_inheritance,
+  query_label,
+  query_other
+};
+
+enum QueryOrigin_e
+{
+  query_origin_individual,
+  query_origin_class,
+  query_origin_object_property,
+  query_origin_data_property,
+};
+
+struct QueryInfo_t
+{
+  QueryType_e query_type;
+  QueryOrigin_e query_origin;
+  std::string subject;
+  std::string predicate;
+  std::string object;
+};
+
 class ReasonerInterface
 {
 public:
@@ -27,7 +52,10 @@ public:
     (void)value;
   }
 
-  virtual void preReason() {}
+  virtual void preReason(const QueryInfo_t& query_info)
+  {
+    (void)query_info;
+  }
   virtual void postReason() {}
   virtual void periodicReason() {}
 
@@ -53,7 +81,7 @@ public:
     return tmp;
   }
 protected:
-  ReasonerInterface() { }
+  ReasonerInterface() : ontology_(nullptr) {}
 
   Ontology* ontology_;
 

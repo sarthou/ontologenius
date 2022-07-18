@@ -11,7 +11,6 @@ public:
   ReasonerSymetric() {}
   virtual ~ReasonerSymetric() = default;
 
-  virtual void preReason() override;
   virtual void postReason() override;
 
   virtual std::string getName() override;

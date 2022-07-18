@@ -234,11 +234,12 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
     res.code = UNINIT;
   else
   {
-    reasoner_mutex_.lock();
-    reasoners_.runPreReasoners();
-    reasoner_mutex_.unlock();
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
+
+    reasoner_mutex_.lock();
+    reasoners_.runPreReasoners(query_origin_class, req.action, params());
+    reasoner_mutex_.unlock();
 
     std::unordered_set<std::string> set_res;
 
@@ -330,11 +331,12 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
     res.code = UNINIT;
   else
   {
-    reasoner_mutex_.lock();
-    reasoners_.runPreReasoners();
-    reasoner_mutex_.unlock();
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
+
+    reasoner_mutex_.lock();
+    reasoners_.runPreReasoners(query_origin_object_property, req.action, params());
+    reasoner_mutex_.unlock();
 
     std::unordered_set<std::string> set_res;
 
@@ -408,11 +410,12 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
     res.code = UNINIT;
   else
   {
-    reasoner_mutex_.lock();
-    reasoners_.runPreReasoners();
-    reasoner_mutex_.unlock();
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
+
+    reasoner_mutex_.lock();
+    reasoners_.runPreReasoners(query_origin_data_property, req.action, params());
+    reasoner_mutex_.unlock();
 
     std::unordered_set<std::string> set_res;
 
@@ -483,11 +486,12 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
     res.code = UNINIT;
   else
   {
-    reasoner_mutex_.lock();
-    reasoners_.runPreReasoners();
-    reasoner_mutex_.unlock();
     removeUselessSpace(req.action);
     param_t params = getParams(req.param);
+
+    reasoner_mutex_.lock();
+    reasoners_.runPreReasoners(query_origin_individual, req.action, params());
+    reasoner_mutex_.unlock();
 
     std::unordered_set<std::string> set_res;
 
