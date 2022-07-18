@@ -15,6 +15,10 @@ public:
   virtual void postReason() override;
   virtual void periodicReason() override;
 
+  virtual bool implementPreReasoning() override { return true; }
+  virtual bool implementPostReasoning() override { return true; }
+  virtual bool implementPeriodicReasoning() override { return true; }
+
   virtual std::string getName() override;
   virtual std::string getDesciption() override;
 private:

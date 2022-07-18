@@ -59,6 +59,10 @@ public:
   virtual void postReason() {}
   virtual void periodicReason() {}
 
+  virtual bool implementPostReasoning() { return false; }
+  virtual bool implementPreReasoning() { return false; }
+  virtual bool implementPeriodicReasoning() { return false; }
+
   virtual std::string getName() = 0;
   virtual std::string getDesciption() = 0;
 

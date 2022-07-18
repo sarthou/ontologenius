@@ -162,7 +162,16 @@ int Reasoners::deactivate(const std::string& plugin)
 std::string Reasoners::getDescription(std::string& plugin)
 {
   if(reasoners_.find(plugin) != reasoners_.end())
-    return reasoners_[plugin]->getDesciption();
+  {
+    std::string description = reasoners_[plugin]->getDesciption();
+    if(reasoners_[plugin]->implementPostReasoning())
+      description += "\n - post reasoning";
+    if(reasoners_[plugin]->implementPreReasoning())
+      description += "\n - pre reasoning";
+    if(reasoners_[plugin]->implementPeriodicReasoning())
+      description += "\n - periodic reasoning";
+    return description;
+  }
   else
   {
     Display::error(plugin + " does not exist");

@@ -17,6 +17,8 @@ public:
 
   virtual void periodicReason() override;
 
+  virtual bool implementPeriodicReasoning() override { return true; }
+
   virtual std::string getName() override;
   virtual std::string getDesciption() override;
 
