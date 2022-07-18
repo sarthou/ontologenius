@@ -1758,6 +1758,10 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
         {
           explanations.emplace_back("[DEL]" + indiv_on->value() + "|" + indiv_on->object_relations_[i].first->value() + "|" + indiv_on->object_relations_[i].second->value(),
                                      "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
+
+          auto exp_ch  = removePropertyChain(indiv_on, indiv_on->object_relations_[i].first, indiv_on->object_relations_[i].second);
+          explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
+
           indiv_on->object_relations_[i].second->updated_ = true;
           indiv_on->object_relations_.erase(indiv_on->object_relations_.begin() + i);
           indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
@@ -1778,6 +1782,10 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
         {
           explanations.emplace_back("[DEL]" + indiv_on->value() + "|" + indiv_on->object_relations_[i].first->value() + "|" + indiv_on->object_relations_[i].second->value(),
                                      "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
+
+          auto exp_ch  = removePropertyChain(indiv_on, indiv_on->object_relations_[i].first, indiv_on->object_relations_[i].second);
+          explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
+          
           indiv_on->object_relations_[i].second->updated_;
           indiv_on->object_relations_.erase(indiv_on->object_relations_.begin() + i);
           indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
