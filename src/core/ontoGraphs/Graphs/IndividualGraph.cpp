@@ -1762,9 +1762,9 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
   std::vector<std::pair<std::string, std::string>> explanations;
   for(auto& invert : property->inverses_)
   {
-    for(size_t i = 0; i < indiv_on->object_relations_.size(); i++)
-      if((indiv_on->object_relations_[i].first == invert.elem) &&
-        (indiv_on->object_relations_[i].second == indiv_from))
+    for(size_t i = 0; i < indiv_on->object_relations_.size();)
+      if((indiv_on->object_relations_[i].first->get() == invert.elem->get()) &&
+        (indiv_on->object_relations_[i].second->get() == indiv_from->get()))
         {
           explanations.emplace_back("[DEL]" + indiv_on->value() + "|" + indiv_on->object_relations_[i].first->value() + "|" + indiv_on->object_relations_[i].second->value(),
                                      "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
@@ -1777,6 +1777,8 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
           indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
           indiv_on->updated_ = true;
         }
+      else
+        i++;
   }
   return explanations;
 }
