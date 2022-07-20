@@ -281,7 +281,6 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
   }
 }
 
-
 std::unordered_set<std::string> ObjectPropertyGraph::getDisjoint(const std::string& value)
 {
   std::unordered_set<std::string> res;
@@ -295,7 +294,7 @@ std::unordered_set<std::string> ObjectPropertyGraph::getDisjoint(const std::stri
   return res;
 }
 
-void ObjectPropertyGraph::getDisjoint(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res)
+void ObjectPropertyGraph::getDisjointPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
 

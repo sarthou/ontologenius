@@ -27,7 +27,7 @@ void ObjectPropertyChecker::checkDisjoint()
     std::unordered_set<ObjectPropertyBranch_t*> disjoint;
 
     for(ObjectPropertyBranch_t* it : up)
-      property_graph_->getDisjoint(it, disjoint);
+      property_graph_->getDisjointPtr(it, disjoint);
 
     ObjectPropertyBranch_t* intersection = findIntersection(up, disjoint);
     if(intersection != nullptr)
