@@ -29,7 +29,7 @@ public:
   OntoGraph() {}
   ~OntoGraph();
 
-  void close() override;
+  virtual void close() override;
 
   std::unordered_set<std::string> getDown(const std::string& value, int depth = -1);
   std::unordered_set<std::string> getUp(const std::string& value, int depth = -1);

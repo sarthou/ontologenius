@@ -49,6 +49,8 @@ public:
 
   void deepCopy(const ObjectPropertyGraph& other);
 
+  virtual void close() override;
+
   ObjectPropertyBranch_t* newDefaultBranch(const std::string& name);
   ObjectPropertyBranch_t* add(const std::string& value, ObjectPropertyVectors_t& property_vectors, bool direct_load = false);
   void add(std::vector<std::string>& disjoints);
@@ -62,7 +64,7 @@ public:
   void getRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
   std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& selector);
 
-  void getDisjoint(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res);
+  void createInvertChains();
 
   bool add(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data);
   bool addInvert(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data);
@@ -121,6 +123,8 @@ private:
 
   void cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch);
   void cpyChainOfBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch);
+
+  std::vector<std::vector<ObjectPropertyBranch_t*>> getInvertChains(const std::vector<ObjectPropertyBranch_t*>& partial_res, const std::vector<ObjectPropertyBranch_t*>& chain);
 };
 
 } // namespace ontologenius
