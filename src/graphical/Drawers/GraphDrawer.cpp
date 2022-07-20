@@ -133,7 +133,7 @@ void GraphDrawer::link()
       }
 }
 
-bool GraphDrawer::exist(std::string value)
+bool GraphDrawer::exist(const std::string& value)
 {
   for(size_t i = 0; i < branchs_nodes.size(); i++)
     if(branchs_nodes[i]->value == value)

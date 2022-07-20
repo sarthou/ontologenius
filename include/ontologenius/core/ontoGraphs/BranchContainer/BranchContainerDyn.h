@@ -42,6 +42,8 @@ public:
   }
   BranchContainerDyn(const BranchContainerDyn& base);
 
+  BranchContainerDyn& operator=(const BranchContainerDyn& other) = delete;
+
   virtual ~BranchContainerDyn()
   {
     delete nodes_;
@@ -63,7 +65,8 @@ private:
 };
 
 template <typename B>
-BranchContainerDyn<B>::BranchContainerDyn(const BranchContainerDyn& base)
+BranchContainerDyn<B>::BranchContainerDyn(const BranchContainerDyn& base) : nodes_(nullptr),
+                                                                            nodes_end_(nullptr)
 {
   BranchNode_t<B>* current = base.nodes_;
   while(current != nullptr)

@@ -1248,10 +1248,15 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
 
 IndividualBranch_t* IndividualGraph::createIndividual(const std::string& name)
 {
-  IndividualBranch_t* indiv = findBranch(name);
+  std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+  return createIndividualUnsafe(name);
+}
+
+IndividualBranch_t* IndividualGraph::createIndividualUnsafe(const std::string& name)
+{
+  IndividualBranch_t* indiv = findBranchUnsafe(name);
   if(indiv == nullptr)
   {
-    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     indiv = new IndividualBranch_t(name);
     container_.insert(indiv);
     individuals_.push_back(indiv);
@@ -1371,11 +1376,21 @@ void IndividualGraph::addLang(const std::string& indiv, const std::string& lang,
 void IndividualGraph::addInheritage(const std::string& indiv, const std::string& class_inherited)
 {
   IndividualBranch_t* branch = findBranch(indiv);
+  addInheritage(branch, class_inherited);
+}
+
+void IndividualGraph::addInheritage(IndividualBranch_t* branch, const std::string& class_inherited)
+{
+  std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+  std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+  addInheritageUnsafe(branch, class_inherited);
+}
+
+void IndividualGraph::addInheritageUnsafe(IndividualBranch_t* branch, const std::string& class_inherited)
+{
   if(branch != nullptr)
   {
-    ClassBranch_t* inherited = class_graph_->findBranch(class_inherited);
-    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-    std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+    ClassBranch_t* inherited = class_graph_->findBranchUnsafe(class_inherited);
     if(inherited == nullptr)
     {
       IndividualBranch_t* tmp = findBranchUnsafe(class_inherited);
@@ -1665,6 +1680,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
           object_relation.second->updated_ = true;
           branch_from->object_relations_.erase(branch_from->object_relations_.begin() + i);
           branch_from->object_properties_has_induced_.erase(branch_from->object_properties_has_induced_.begin() + i);
+          branch_from->updated_ = true;
           updated = true;
           applied = true;
           break;
@@ -1720,7 +1736,10 @@ void IndividualGraph::removeProperty(const std::string& indiv_from, const std::s
       {
         if(((type == "_") || (branch_from->data_relations_[i].second.type_ == type)) &&
           ((data == "_") || (branch_from->data_relations_[i].second.value_ == data)))
+        {
           branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
+          branch_from->updated_ = true;
+        }
         else
           i++;
       }
@@ -1743,15 +1762,23 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
   std::vector<std::pair<std::string, std::string>> explanations;
   for(auto& invert : property->inverses_)
   {
-    for(size_t i = 0; i < indiv_on->object_relations_.size(); i++)
-      if((indiv_on->object_relations_[i].first == invert.elem) &&
-        (indiv_on->object_relations_[i].second == indiv_from))
+    for(size_t i = 0; i < indiv_on->object_relations_.size();)
+      if((indiv_on->object_relations_[i].first->get() == invert.elem->get()) &&
+        (indiv_on->object_relations_[i].second->get() == indiv_from->get()))
         {
           explanations.emplace_back("[DEL]" + indiv_on->value() + "|" + indiv_on->object_relations_[i].first->value() + "|" + indiv_on->object_relations_[i].second->value(),
                                      "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
+
+          auto exp_ch  = removePropertyChain(indiv_on, indiv_on->object_relations_[i].first, indiv_on->object_relations_[i].second);
+          explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
+
+          indiv_on->object_relations_[i].second->updated_ = true;
           indiv_on->object_relations_.erase(indiv_on->object_relations_.begin() + i);
           indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
+          indiv_on->updated_ = true;
         }
+      else
+        i++;
   }
   return explanations;
 }
@@ -1767,8 +1794,14 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
         {
           explanations.emplace_back("[DEL]" + indiv_on->value() + "|" + indiv_on->object_relations_[i].first->value() + "|" + indiv_on->object_relations_[i].second->value(),
                                      "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
+
+          auto exp_ch  = removePropertyChain(indiv_on, indiv_on->object_relations_[i].first, indiv_on->object_relations_[i].second);
+          explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
+          
+          indiv_on->object_relations_[i].second->updated_;
           indiv_on->object_relations_.erase(indiv_on->object_relations_.begin() + i);
           indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
+          indiv_on->updated_ = true;
         }
   }
   return explanations;

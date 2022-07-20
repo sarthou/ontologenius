@@ -29,6 +29,7 @@ public:
 class TreeDrawer
 {
 public:
+  TreeDrawer() : image_(nullptr) {}
   ~TreeDrawer();
 
   void draw(const std::string& file_name, commit_t* root, bool commit_only = false);

@@ -51,6 +51,8 @@ public:
   /// @brief The RosInterface destructor
   ~RosInterface();
 
+  RosInterface& operator=(const RosInterface& other) = delete;
+
   /// @brief Initializes the interface
   /// @param lang is the used language for the natural language names of the concepts
   /// @param intern_file is the path to the file in which the ontology will be stored at the end of the process. Could be set to "none" to not use it

@@ -15,6 +15,8 @@ public:
 
   virtual void postReason() override;
 
+  virtual bool implementPostReasoning() override { return true; }
+
   virtual std::string getName() override;
   virtual std::string getDesciption() override;
 

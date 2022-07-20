@@ -4,11 +4,6 @@
 
 namespace ontologenius {
 
-void ReasonerChain::preReason()
-{
-
-}
-
 void ReasonerChain::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
@@ -23,17 +18,17 @@ void ReasonerChain::postReason()
         std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(indiv->object_relations_[rel_i].first);
         for(ObjectPropertyBranch_t* it_prop : props)
           for(auto& chain : it_prop->chains_)
-            resolveChain(it_prop, chain, indiv->object_relations_[rel_i].second, indiv);
+            resolveChain(it_prop, chain, indiv, indiv->object_relations_[rel_i].second);
       }
     }
 }
 
 void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<ObjectPropertyBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on)
 {
-  auto indivs_node = new chainNode_t;
-  indivs_node->ons_.push_back(indiv);
-  indivs_node->froms_.push_back(on);
-  indivs_node->props_.push_back(prop);
+  auto indivs_node = new ChainNode_t;
+  indivs_node->on_ = on;
+  indivs_node->from_ = indiv;
+  indivs_node->prop_ = prop;
 
   ChainTree tree;
   tree.push(nullptr, indivs_node);
@@ -48,16 +43,17 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
   size_t indivs_size = indivs.size();
   if((chain.size() != 0) && (indivs_size != 0))
     for(size_t i = 0; i < indivs_size; i++)
-      if(!relationExists(on, chain[chain_size], indivs[i]))
+      if(!relationExists(indiv, chain[chain_size], indivs[i]))
       {
         try {
-          int index = ontology_->individual_graph_.addProperty(on, chain[chain_size], indivs[i], 1.0, true);
-          if(index == (int)on->object_relations_.size() - 1)
-            on->object_properties_has_induced_.emplace_back();
+          int index = ontology_->individual_graph_.addProperty(indiv, chain[chain_size], indivs[i], 1.0, true);
+          if(index == (int)indiv->object_relations_.size() - 1)
+            indiv->object_properties_has_induced_.emplace_back();
         }
         catch(GraphException& e)
         {
-          notifications_.push_back(std::make_pair(notification_error, "[FAIL][" + std::string(e.what()) + "][add]" + on->value() + "|" + chain[chain_size]->value() + "|" + indivs[i]->value()));
+          // We don't notify as we don't concider that as an error but rather as an impossible chain on a given individual
+          // notifications_.push_back(std::make_pair(notification_error, "[FAIL][" + std::string(e.what()) + "][add]" + indiv->value() + "|" + chain[chain_size]->value() + "|" + indivs[i]->value()));
           continue;
         }
 
@@ -68,67 +64,48 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
           if(explanation_reference != "") explanation_reference += ";";
           explanation_reference += lc->toString();
         }
-        explanations_.emplace_back("[ADD]" + on->value() + "|" + chain[chain_size]->value() + "|" + indivs[i]->value(),
+        explanations_.emplace_back("[ADD]" + indiv->value() + "|" + chain[chain_size]->value() + "|" + indivs[i]->value(),
                                    "[ADD]" + explanation_reference);
 
-        on->nb_updates_++;
+        indiv->nb_updates_++;
         nb_update_++;
 
-        for(size_t link_i = 0; link_i < chain.size(); link_i++)
+        for(auto chain_node : link_chain)
         {
-          std::vector<chainNode_t*> nodes = tree.getNodes(link_i);
-          for(auto& node : nodes)
-            for(size_t node_it = 0; node_it < node->ons_.size(); node_it++)
+          for(size_t relation_index = 0; relation_index < chain_node->from_->object_relations_.size(); relation_index++)
+          {
+            std::unordered_set<ObjectPropertyBranch_t*> prop_down;
+            ontology_->object_property_graph_.getDownPtr(chain_node->prop_, prop_down);
+            for(auto& down : prop_down)
             {
-              for(size_t prop_i = 0; prop_i < node->froms_[node_it]->object_relations_.size(); prop_i++)
-              {
-                std::unordered_set<ObjectPropertyBranch_t*> prop_down;
-                ontology_->object_property_graph_.getDownPtr(node->props_[node_it], prop_down);
-                for(auto& down : prop_down)
+              if(chain_node->from_->object_relations_[relation_index].first == down)
+                if(chain_node->from_->object_relations_[relation_index].second == chain_node->on_)
                 {
-                  if(node->froms_[node_it]->object_relations_[prop_i].first == down)
-                    if(node->froms_[node_it]->object_relations_[prop_i].second == node->ons_[node_it])
-                    {
-                      addInduced(node->froms_[node_it], prop_i, on, chain[chain_size], indivs[i]);
-                      break;
-                    }
+                  addInduced(chain_node->from_, relation_index, indiv, chain[chain_size], indivs[i]);
+                  break;
                 }
-              }
             }
+          }
         }
       }
 }
 
 void ReasonerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTree* tree, size_t index)
 {
-  std::vector<IndividualBranch_t*> tmp_on;
-  std::vector<IndividualBranch_t*> tmp_from;
-  std::vector<ObjectPropertyBranch_t*> tmp_prop;
   std::unordered_set<std::string> chain_props = ontology_->object_property_graph_.getDown(chain_property->value());
 
-  std::vector<chainNode_t*> nodes = tree->getNodes(index);
+  std::vector<ChainNode_t*> nodes = tree->getNodes(index);
   for(auto& node : nodes)
   {
-    for(auto indiv : node->ons_)
+    for(IndivObjectRelationElement_t& relation : node->on_->object_relations_)
     {
-      tmp_on.clear();
-      tmp_from.clear();
-      for(IndivObjectRelationElement_t& relation : indiv->object_relations_)
+      if(chain_props.find(relation.first->value()) != chain_props.end())
       {
-        if(chain_props.find(relation.first->value()) != chain_props.end())
-        {
-          tmp_on.push_back(relation.second);
-          tmp_from.push_back(indiv);
-          tmp_prop.push_back(relation.first);
-        }
-      }
-      if(tmp_on.size() != 0)
-      {
-        auto indivs = new chainNode_t;
-        indivs->ons_ = tmp_on;
-        indivs->froms_ = tmp_from;
-        indivs->props_ = tmp_prop;
-        tree->push(node, indivs);
+        auto next_node = new ChainNode_t;
+        next_node->on_ = relation.second;
+        next_node->from_ = node->on_;
+        next_node->prop_ = relation.first;
+        tree->push(node, next_node);
       }
     }
   }

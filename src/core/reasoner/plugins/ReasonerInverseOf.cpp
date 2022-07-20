@@ -4,11 +4,6 @@
 
 namespace ontologenius {
 
-void ReasonerInverseOf::preReason()
-{
-
-}
-
 void ReasonerInverseOf::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
@@ -48,6 +43,7 @@ void ReasonerInverseOf::insertInverse(IndividualBranch_t* indiv_on, ObjectProper
     if(index == (int)indiv_on->object_relations_.size() - 1)
       indiv_on->object_properties_has_induced_.emplace_back();
     indiv_on->nb_updates_++;
+    inv_indiv->nb_updates_++;
 
     explanations_.emplace_back("[ADD]" + indiv_on->value() + "|" + inv_prop->value() + "|" + inv_indiv->value(),
                               "[ADD]" + inv_indiv->value() + "|" + base_prop->value() + "|" + indiv_on->value());

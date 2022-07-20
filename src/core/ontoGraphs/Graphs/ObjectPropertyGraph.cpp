@@ -34,6 +34,12 @@ ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, Class
   this->container_.load(all_branchs_);
 }
 
+void ObjectPropertyGraph::close()
+{
+  OntoGraph<ObjectPropertyBranch_t>::close();
+  createInvertChains();
+}
+
 ObjectPropertyBranch_t* ObjectPropertyGraph::newDefaultBranch(const std::string& name)
 {
   auto branch = new ObjectPropertyBranch_t(name);
@@ -281,7 +287,6 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
   }
 }
 
-
 std::unordered_set<std::string> ObjectPropertyGraph::getDisjoint(const std::string& value)
 {
   std::unordered_set<std::string> res;
@@ -295,7 +300,7 @@ std::unordered_set<std::string> ObjectPropertyGraph::getDisjoint(const std::stri
   return res;
 }
 
-void ObjectPropertyGraph::getDisjoint(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res)
+void ObjectPropertyGraph::getDisjointPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
 
@@ -370,6 +375,29 @@ std::unordered_set<std::string> ObjectPropertyGraph::select(const std::unordered
       res.insert(it);
   }
   return res;
+}
+
+void ObjectPropertyGraph::createInvertChains()
+{
+  for(auto branch : all_branchs_)
+  {
+    for(auto& chain : branch->chains_)
+    {
+      for(auto invert : branch->inverses_)
+      {
+        auto invert_chains = getInvertChains({invert.elem}, chain);
+        for(auto& invert_chain : invert_chains)
+        {
+          std::vector<ObjectPropertyBranch_t*> reordered_chain;
+          for(auto it = invert_chain.rbegin() + 1; it != invert_chain.rend(); ++it)
+            reordered_chain.push_back(*it);
+          reordered_chain.push_back(invert_chain.back());
+
+          reordered_chain.front()->chains_.push_back({reordered_chain.begin() + 1, reordered_chain.end()});
+        }
+      }
+    }
+  }
 }
 
 bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
@@ -590,6 +618,26 @@ void ObjectPropertyGraph::cpyChainOfBranch(ObjectPropertyBranch_t* old_branch, O
     std::transform(chain.cbegin(), chain.cend(), std::back_inserter(tmp), [this](const auto& link){ return this->container_.find(link->value()); });
     new_branch->chains_.push_back(std::move(tmp));
   }
+}
+
+std::vector<std::vector<ObjectPropertyBranch_t*>> ObjectPropertyGraph::getInvertChains(const std::vector<ObjectPropertyBranch_t*>& partial_res, const std::vector<ObjectPropertyBranch_t*>& chain)
+{
+  std::vector<std::vector<ObjectPropertyBranch_t*>> res;
+
+  for(auto invert : chain.front()->inverses_)
+  {
+    std::vector<ObjectPropertyBranch_t*> invert_chain = partial_res;
+    invert_chain.push_back(invert.elem);
+    if(chain.size() > 1)
+    {
+      auto local_res = getInvertChains(invert_chain, {chain.begin() + 1, chain.end()});
+      res.insert(res.end(), local_res.begin(), local_res.end());
+    }
+    else
+      res.emplace_back(invert_chain);
+  }
+
+  return res;
 }
 
 } // namespace ontologenius
