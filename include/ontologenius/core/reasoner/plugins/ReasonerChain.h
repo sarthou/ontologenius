@@ -43,15 +43,21 @@ public:
 
   std::string toString()
   {
-    std::string res;
-    for(size_t i = 0; i < ons_.size(); i++)
-      res += froms_[i]->value() + "|" + props_[i]->value() + "|" + ons_[i]->value() + (i != 0 ? ";" : "");
-    return res;
+    return from_->value() + "|" + prop_->value() + "|" + on_->value();
   }
 
-  std::vector<IndividualBranch_t*> ons_;
-  std::vector<IndividualBranch_t*> froms_;
-  std::vector<ObjectPropertyBranch_t*> props_;
+  void printTree(size_t level = 0)
+  {
+    for(size_t i = 0; i < level; i++)
+      std::cout << " ";
+    std::cout << "- " << toString() << std::endl;
+    for(auto next : nexts)
+      next->printTree(level+1);
+  }
+
+  IndividualBranch_t* on_;
+  IndividualBranch_t* from_;
+  ObjectPropertyBranch_t* prop_;
   chainNode_t* prev;
   std::vector<chainNode_t*> nexts;
   size_t pose;
@@ -118,6 +124,12 @@ public:
       purge(begin, size, 0);
   }
 
+  void print()
+  {
+    if(begin != nullptr)
+      begin->printTree();
+  }
+
   chainNode_t* begin;
 
 private:
@@ -127,7 +139,7 @@ private:
   {
     std::vector<IndividualBranch_t*> res;
     if(current == index)
-      res = node->ons_;
+      res.push_back(node->on_);
     else
     {
       std::vector<IndividualBranch_t*> tmp;
@@ -166,7 +178,7 @@ private:
   std::vector<chainNode_t*> getChainTo(chainNode_t* node, IndividualBranch_t* indiv)
   {
     std::vector<chainNode_t*> res;
-    if(std::find(node->ons_.begin(), node->ons_.end(), indiv) != node->ons_.end())
+    if(node->on_ == indiv)
       res.push_back(node);
     else
     {
