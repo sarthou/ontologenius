@@ -156,15 +156,15 @@ TEST(requests_tests, reasoner_description_call)
   for(size_t i = 0; i < 1000; i++)
   {
     res = onto_ptr->reasoners.getDescription("ReasonerChain");
-    res_bool = res_bool && (res == "This reasoner resolve the properties chains axioms.");
+    res_bool = res_bool && (res == "This reasoner resolve the properties chains axioms.\n - post reasoning");
     res = onto_ptr->reasoners.getDescription("ReasonerDictionary");
-    res_bool = res_bool && (res == "This reasoner creates several alternative dictionaries to avoid too many restrictive labels.");
+    res_bool = res_bool && (res == "This reasoner creates several alternative dictionaries to avoid too many restrictive labels.\n - post reasoning");
     res = onto_ptr->reasoners.getDescription("ReasonerInverseOf");
-    res_bool = res_bool && (res == "This reasoner creates the inverse properties for each individual.");
+    res_bool = res_bool && (res == "This reasoner creates the inverse properties for each individual.\n - post reasoning");
     res = onto_ptr->reasoners.getDescription("ReasonerNone");
-    res_bool = res_bool && (res == "This is an reasoner model to show how to create your own reasoner plugin");
+    res_bool = res_bool && (res == "This is an reasoner model to show how to create your own reasoner plugin\n - post reasoning\n - pre reasoning\n - periodic reasoning");
     res = onto_ptr->reasoners.getDescription("ReasonerSymetric");
-    res_bool = res_bool && (res == "This reasoner creates the symetric properties for each individual.");
+    res_bool = res_bool && (res == "This reasoner creates the symetric properties for each individual.\n - post reasoning");
   }
 
   EXPECT_TRUE(res_bool);
@@ -172,7 +172,6 @@ TEST(requests_tests, reasoner_description_call)
 
 TEST(requests_tests, select_false_call)
 {
-  std::vector<std::string> res;
   std::string test_word = "human";
   bool res_bool = true;
 
