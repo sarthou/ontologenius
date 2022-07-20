@@ -12,7 +12,10 @@ class Versionor
 {
 public:
   explicit Versionor(FeedStorage* storage);
+  Versionor(const Versionor& other) = delete;
   ~Versionor();
+  
+  Versionor& operator=(const Versionor& other) = delete;
 
   void activate(bool activated) { activated_ = activated; }
 

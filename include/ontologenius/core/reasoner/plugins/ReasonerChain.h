@@ -27,21 +27,23 @@ private:
   void addInduced(IndividualBranch_t* indiv, size_t index, IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
 };
 
-class chainNode_t
+class ChainNode_t
 {
 public:
-  ~chainNode_t()
+  ChainNode_t() : on_(nullptr),
+                  from_(nullptr),
+                  prop_(nullptr),
+                  prev(nullptr),
+                  pose(0)
+  {}
+
+  ~ChainNode_t()
   {
     for(auto next : nexts)
       if(next != nullptr)
         delete next;
   }
-  chainNode_t()
-  {
-    prev = nullptr;
-    pose = 0;
-  }
-
+  
   std::string toString()
   {
     return from_->value() + "|" + prop_->value() + "|" + on_->value();
@@ -59,8 +61,8 @@ public:
   IndividualBranch_t* on_;
   IndividualBranch_t* from_;
   ObjectPropertyBranch_t* prop_;
-  chainNode_t* prev;
-  std::vector<chainNode_t*> nexts;
+  ChainNode_t* prev;
+  std::vector<ChainNode_t*> nexts;
   size_t pose;
 };
 
@@ -87,7 +89,7 @@ public:
       return {};
   }
 
-  std::vector<chainNode_t*> getNodes(size_t index)
+  std::vector<ChainNode_t*> getNodes(size_t index)
   {
     if(begin != nullptr)
       return getNodes(begin, index, 0);
@@ -95,7 +97,7 @@ public:
       return {};
   }
 
-  std::vector<chainNode_t*> getChainTo(IndividualBranch_t* indiv)
+  std::vector<ChainNode_t*> getChainTo(IndividualBranch_t* indiv)
   {
     if(begin != nullptr)
       return getChainTo(begin, indiv);
@@ -105,7 +107,7 @@ public:
 
   size_t size() { return size_; }
 
-  void push(chainNode_t* current, chainNode_t* next)
+  void push(ChainNode_t* current, ChainNode_t* next)
   {
     if(current != nullptr)
     {
@@ -131,12 +133,12 @@ public:
       begin->printTree();
   }
 
-  chainNode_t* begin;
+  ChainNode_t* begin;
 
 private:
   size_t size_;
 
-  std::vector<IndividualBranch_t*> get(chainNode_t* node, size_t index, size_t current)
+  std::vector<IndividualBranch_t*> get(ChainNode_t* node, size_t index, size_t current)
   {
     std::vector<IndividualBranch_t*> res;
     if(current == index)
@@ -156,14 +158,14 @@ private:
     return res;
   }
 
-  std::vector<chainNode_t*> getNodes(chainNode_t* node, size_t index, size_t current)
+  std::vector<ChainNode_t*> getNodes(ChainNode_t* node, size_t index, size_t current)
   {
-    std::vector<chainNode_t*> res;
+    std::vector<ChainNode_t*> res;
     if(current == index)
       res.push_back(node);
     else
     {
-      std::vector<chainNode_t*> tmp;
+      std::vector<ChainNode_t*> tmp;
       for(auto next : node->nexts)
       {
         if(next != nullptr)
@@ -176,9 +178,9 @@ private:
     return res;
   }
 
-  std::vector<chainNode_t*> getChainTo(chainNode_t* node, IndividualBranch_t* indiv)
+  std::vector<ChainNode_t*> getChainTo(ChainNode_t* node, IndividualBranch_t* indiv)
   {
-    std::vector<chainNode_t*> res;
+    std::vector<ChainNode_t*> res;
     if(node->on_ == indiv)
       res.push_back(node);
     else
@@ -199,7 +201,7 @@ private:
     return res;
   }
 
-  bool purge(chainNode_t* node, size_t size, size_t current)
+  bool purge(ChainNode_t* node, size_t size, size_t current)
   {
     bool tmp = true;
     if(node != nullptr)
@@ -224,7 +226,6 @@ private:
         if(node == begin)
           begin = nullptr;
         delete node;
-        node = nullptr;
       }
     }
     return tmp;

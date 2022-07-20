@@ -25,7 +25,7 @@ void ReasonerChain::postReason()
 
 void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<ObjectPropertyBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on)
 {
-  auto indivs_node = new chainNode_t;
+  auto indivs_node = new ChainNode_t;
   indivs_node->on_ = on;
   indivs_node->from_ = indiv;
   indivs_node->prop_ = prop;
@@ -94,14 +94,14 @@ void ReasonerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTre
 {
   std::unordered_set<std::string> chain_props = ontology_->object_property_graph_.getDown(chain_property->value());
 
-  std::vector<chainNode_t*> nodes = tree->getNodes(index);
+  std::vector<ChainNode_t*> nodes = tree->getNodes(index);
   for(auto& node : nodes)
   {
     for(IndivObjectRelationElement_t& relation : node->on_->object_relations_)
     {
       if(chain_props.find(relation.first->value()) != chain_props.end())
       {
-        auto next_node = new chainNode_t;
+        auto next_node = new ChainNode_t;
         next_node->on_ = relation.second;
         next_node->from_ = node->on_;
         next_node->prop_ = relation.first;

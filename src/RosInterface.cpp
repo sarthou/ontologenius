@@ -20,6 +20,9 @@ namespace ontologenius {
 
 RosInterface::RosInterface(const std::string& name) :
                                                   feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
+#ifdef ONTO_TEST
+                                                  end_feed_(true),
+#endif
                                                   run_(true),
                                                   feeder_rate_(FEEDER_DEFAULT_RATE),
                                                   feeder_end_pub_(n_.advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),
@@ -37,6 +40,9 @@ RosInterface::RosInterface(const std::string& name) :
 
 RosInterface::RosInterface(RosInterface& other, const std::string& name) :
                                                 feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
+#ifdef ONTO_TEST
+                                                end_feed_(true),
+#endif
                                                 run_(true),
                                                 feeder_rate_(FEEDER_DEFAULT_RATE),
                                                 feeder_end_pub_(n_.advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),

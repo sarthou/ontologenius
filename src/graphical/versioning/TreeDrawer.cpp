@@ -173,11 +173,10 @@ void TreeDrawer::drawLink(Node_t* node_from, Node_t* node_to)
   else
   {
     drawElipseRight(x_from, y_from+SPACE/2);
-    int length = SPACE - EDGE_RADIUS*2;
-    if(length > 0)
-      cvLine(image_, cvPoint(x_from + EDGE_RADIUS, y_from + SPACE/2),
-                     cvPoint(x_to - EDGE_RADIUS, y_from + SPACE/2),
-                     cvScalar(50,50,50), 2);
+    static_assert(SPACE - EDGE_RADIUS*2 > 0, "TreeDrawer has bad SPACE and EDGE_RADIUS values");
+    cvLine(image_, cvPoint(x_from + EDGE_RADIUS, y_from + SPACE/2),
+                    cvPoint(x_to - EDGE_RADIUS, y_from + SPACE/2),
+                    cvScalar(50,50,50), 2);
     drawElipseBottom(x_to, y_from+SPACE/2);
     cvLine(image_, cvPoint(x_to, y_from+SPACE/2 + EDGE_RADIUS),
                    cvPoint(x_to, y_to-NODE_RADIUS/2),
