@@ -135,7 +135,7 @@ TEST(requests_tests, reasoners_list_call)
   for(size_t i = 0; i < 1000; i++)
   {
     res = onto_ptr->reasoners.list();
-    res_bool = res_bool && ((res.size() == 7) &&
+    res_bool = res_bool && ((res.size() >= 7) &&
                             (find(res.begin(), res.end(), "ReasonerChain") != res.end()) &&
                             (find(res.begin(), res.end(), "ReasonerDictionary") != res.end()) &&
                             (find(res.begin(), res.end(), "ReasonerInverseOf") != res.end()) &&
