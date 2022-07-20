@@ -4,11 +4,6 @@
 
 namespace ontologenius {
 
-void ReasonerSymetric::preReason()
-{
-
-}
-
 void ReasonerSymetric::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);

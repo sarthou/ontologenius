@@ -30,7 +30,7 @@ public:
   int deactivate(const std::string& plugin);
   std::string getDescription(std::string& plugin);
 
-  void runPreReasoners();
+  void runPreReasoners(QueryOrigin_e origin, const std::string& action, const std::string& param);
   void runPostReasoners();
   void runPeriodicReasoners();
 
@@ -68,6 +68,8 @@ private:
   void computeClassesUpdates();
   void computeIndividualsUpdatesPeriodic();
   void resetIndividualsUpdates();
+
+  QueryInfo_t extractQueryInfo(QueryOrigin_e origin, const std::string& action, const std::string& param);
 };
 
 } // namespace ontologenius
