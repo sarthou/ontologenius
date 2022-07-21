@@ -15,7 +15,7 @@ namespace ontologenius {
 class Reasoners
 {
 public:
-  Reasoners(Ontology* onto = nullptr);
+  explicit Reasoners(const std::string& agent_name, Ontology* onto = nullptr);
   ~Reasoners();
 
   void link(Ontology* onto);
@@ -51,6 +51,7 @@ public:
   }
 
 private:
+  std::string agent_name_;
   Ontology* ontology_;
   ConfigReader config_;
   std::map<std::string, ReasonerInterface*> reasoners_;

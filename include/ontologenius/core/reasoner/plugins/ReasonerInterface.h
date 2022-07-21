@@ -45,7 +45,11 @@ class ReasonerInterface
 public:
   virtual ~ReasonerInterface() = default;
 
-  virtual void initialize(Ontology* onto) {ontology_ = onto; }
+  virtual void initialize(const std::string& agent_name, Ontology* onto)
+  {
+    agent_name_ = agent_name;
+    ontology_ = onto;
+  }
   virtual void setParameter(const std::string& name, const std::string& value)
   {
     (void)name;
@@ -87,6 +91,7 @@ public:
 protected:
   ReasonerInterface() : ontology_(nullptr) {}
 
+  std::string agent_name_;
   Ontology* ontology_;
 
   std::vector<std::pair<ReasonerNotificationStatus_e, std::string>> notifications_;

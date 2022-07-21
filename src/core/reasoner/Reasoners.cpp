@@ -7,7 +7,8 @@
 
 namespace ontologenius {
 
-Reasoners::Reasoners(Ontology* onto) : loader_("ontologenius", "ReasonerInterface")
+Reasoners::Reasoners(const std::string& agent_name, Ontology* onto) : agent_name_(agent_name),
+                                                                      loader_("ontologenius", "ReasonerInterface")
 {
   ontology_ = onto;
 }
@@ -49,7 +50,7 @@ void Reasoners::link(Ontology* onto)
 {
   ontology_ = onto;
   for(auto& it : reasoners_)
-    it.second->initialize(ontology_);
+    it.second->initialize(agent_name_, ontology_);
 }
 
 void Reasoners::configure(const std::string& config_path)
@@ -73,7 +74,7 @@ void Reasoners::load()
     {
       loader_.loadLibraryForClass(reasoner);
       ReasonerInterface* tmp = loader_.createUnmanagedInstance(reasoner);
-      tmp->initialize(ontology_);
+      tmp->initialize(agent_name_, ontology_);
       reasoners_[reasoner] = tmp;
       if(tmp->defaultAvtive())
         active_reasoners_[reasoner] = tmp;

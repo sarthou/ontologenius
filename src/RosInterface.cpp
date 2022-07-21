@@ -19,6 +19,7 @@
 namespace ontologenius {
 
 RosInterface::RosInterface(const std::string& name) :
+                                                  reasoners_(name),
                                                   feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
 #ifdef ONTO_TEST
                                                   end_feed_(true),
@@ -39,6 +40,7 @@ RosInterface::RosInterface(const std::string& name) :
 }
 
 RosInterface::RosInterface(RosInterface& other, const std::string& name) :
+                                                reasoners_(name),
                                                 feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
 #ifdef ONTO_TEST
                                                 end_feed_(true),
