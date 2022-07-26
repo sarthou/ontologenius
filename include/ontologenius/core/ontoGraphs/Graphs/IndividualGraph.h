@@ -145,8 +145,8 @@ private:
       return nullptr;
   }
 
-  void addObjectProperty(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
-  void addDataProperty(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation);
+  void addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
+  void addDataRelation(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation);
   void setRelationsUpdated(std::vector<IndivObjectRelationElement_t>& relations);
 
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth = -1);

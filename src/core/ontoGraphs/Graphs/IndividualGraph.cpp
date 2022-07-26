@@ -84,7 +84,7 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
   **********************/
   for(auto& object_relation : individual_vector.object_relations_)
   {
-    addObjectProperty(me, object_relation);
+    addObjectRelation(me, object_relation);
     me->object_properties_has_induced_.emplace_back();
   }
 
@@ -93,7 +93,7 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
   **********************/
   //for all my properties
   for(auto& data_relation : individual_vector.data_relations_)
-    addDataProperty(me, data_relation);
+    addDataRelation(me, data_relation);
 
   /**********************
   ** Same In Individual
@@ -181,7 +181,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
 *
 *********/
 
-void IndividualGraph::addObjectProperty(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation)
+void IndividualGraph::addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation)
 {
   ObjectPropertyBranch_t* property_branch = nullptr;
   getInMap(&property_branch, relation.first, object_property_graph_->roots_);
@@ -205,7 +205,7 @@ void IndividualGraph::addObjectProperty(IndividualBranch_t* me, Pair_t<std::stri
   me->object_relations_.emplace_back(property_branch, indiv_branch, relation.probability);
 }
 
-void IndividualGraph::addDataProperty(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation)
+void IndividualGraph::addDataRelation(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation)
 {
   DataPropertyBranch_t* property_branch = nullptr;
   getInMap(&property_branch, relation.first, data_property_graph_->roots_);

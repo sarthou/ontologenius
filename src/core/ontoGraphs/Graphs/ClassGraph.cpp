@@ -124,7 +124,7 @@ ClassBranch_t* ClassGraph::add(const std::string& value, ObjectVectors_t& object
   **********************/
   //for all my properties
   for(auto& data_relation : object_vector.data_relations_)
-    addDataProperty(me, data_relation);
+    addDataRelation(me, data_relation);
 
   me->setSteady_dictionary(object_vector.dictionary_);
   me->setSteady_muted_dictionary(object_vector.muted_dictionary_);
@@ -220,7 +220,7 @@ void ClassGraph::addObjectProperty(ClassBranch_t* me, Pair_t<std::string, std::s
   me->object_relations_.emplace_back(property_branch, class_branch, relation.probability);
 }
 
-void ClassGraph::addDataProperty(ClassBranch_t* me, Pair_t<std::string, data_t>& relation)
+void ClassGraph::addDataRelation(ClassBranch_t* me, Pair_t<std::string, data_t>& relation)
 {
   DataPropertyBranch_t* property_branch = nullptr;
   getInMap(&property_branch, relation.first, data_property_graph_->roots_);
@@ -889,7 +889,7 @@ void ClassGraph::deleteClass(ClassBranch_t* _class)
     }
 
     //erase properties applied to _class
-    int index = deletePropertiesOnClass(_class, all_branchs_);
+    int index = deleteRelationsOnClass(_class, all_branchs_);
 
     //delete indiv
     if(index > 0)
@@ -900,7 +900,7 @@ void ClassGraph::deleteClass(ClassBranch_t* _class)
   }
 }
 
-int ClassGraph::deletePropertiesOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect)
+int ClassGraph::deleteRelationsOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect)
 {
   int class_index = -1;
   for(size_t class_i = 0; class_i < vect.size(); class_i++)
