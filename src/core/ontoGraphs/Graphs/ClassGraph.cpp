@@ -117,7 +117,7 @@ ClassBranch_t* ClassGraph::add(const std::string& value, ObjectVectors_t& object
   ** Object Property assertion
   **********************/
   for(auto& object_relation : object_vector.object_relations_)
-    addObjectProperty(me, object_relation);
+    addObjectRelation(me, object_relation);
 
   /**********************
   ** Data Property assertion
@@ -193,7 +193,7 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
 *
 *********/
 
-void ClassGraph::addObjectProperty(ClassBranch_t* me, Pair_t<std::string, std::string>& relation)
+void ClassGraph::addObjectRelation(ClassBranch_t* me, Pair_t<std::string, std::string>& relation)
 {
   ObjectPropertyBranch_t* property_branch = nullptr;
   getInMap(&property_branch, relation.first, object_property_graph_->roots_);
