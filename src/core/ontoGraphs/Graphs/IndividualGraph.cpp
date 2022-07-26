@@ -1443,7 +1443,7 @@ void IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const
   }
 }
 
-int IndividualGraph::addProperty(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba, bool infered)
+int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba, bool infered)
 {
   if(checkRangeAndDomain(indiv_from, property, indiv_on))
   {
@@ -1485,7 +1485,7 @@ int IndividualGraph::addProperty(IndividualBranch_t* indiv_from, ObjectPropertyB
 }
 
 
-int IndividualGraph::addProperty(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, const data_t& data, double proba, bool infered)
+int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, const data_t& data, double proba, bool infered)
 {
   if(checkRangeAndDomain(indiv_from, property, data))
   {
@@ -1510,7 +1510,7 @@ int IndividualGraph::addProperty(IndividualBranch_t* indiv_from, DataPropertyBra
   return -1;
 }
 
-void IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on)
+void IndividualGraph::addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on)
 {
   IndividualBranch_t* branch_from = indiv_from;
   if(branch_from != nullptr)
@@ -1537,13 +1537,13 @@ void IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::str
       branch_prop = object_property_graph_->newDefaultBranch(property);
     }
 
-    addProperty(branch_from, branch_prop, branch_on);
+    addRelation(branch_from, branch_prop, branch_on);
   }
   else
     throw GraphException("The individual to apply the relation does not exist");
 }
 
-void IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data)
+void IndividualGraph::addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data)
 {
   IndividualBranch_t* branch_from = indiv_from;
   if(branch_from != nullptr)
@@ -1573,7 +1573,7 @@ void IndividualGraph::addProperty(IndividualBranch_t* indiv_from, const std::str
     throw GraphException("The individual to apply the relation does not exist");
 }
 
-void IndividualGraph::addPropertyInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on)
+void IndividualGraph::addRelationInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on)
 {
   IndividualBranch_t* branch_on = indiv_on;
   if(branch_on != nullptr)
@@ -1600,7 +1600,7 @@ void IndividualGraph::addPropertyInvert(const std::string& indiv_from, const std
       branch_prop = object_property_graph_->newDefaultBranch(property);
     }
 
-    addProperty(branch_from, branch_prop, branch_on);
+    addRelation(branch_from, branch_prop, branch_on);
   }
   else
     throw GraphException("Object entity does not exists");
@@ -1675,7 +1675,7 @@ bool IndividualGraph::removeSameAs(const std::string& indiv_1, const std::string
   return true;
 }
 
-std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered)
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered)
 {
   std::vector<std::pair<std::string, std::string>> explanations;
   bool updated = false;
@@ -1695,9 +1695,9 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
           if((protect_infered == true) && (object_relation.infered == false))
             break;
 
-          auto exp_inv = removePropertyInverse(branch_from, object_relation.first, object_relation.second);
-          auto exp_sym = removePropertySymetric(branch_from, object_relation.first, object_relation.second);
-          auto exp_ch  = removePropertyChain(branch_from, object_relation.first, object_relation.second);
+          auto exp_inv = removeRelationInverse(branch_from, object_relation.first, object_relation.second);
+          auto exp_sym = removeRelationSymetric(branch_from, object_relation.first, object_relation.second);
+          auto exp_ch  = removeRelationChain(branch_from, object_relation.first, object_relation.second);
 
           explanations.insert(explanations.end(), exp_inv.begin(), exp_inv.end());
           explanations.insert(explanations.end(), exp_sym.begin(), exp_sym.end());
@@ -1723,7 +1723,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
   return explanations;
 }
 
-std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty(const std::string& indiv_from, const std::string& property, const std::string& indiv_on)
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation(const std::string& indiv_from, const std::string& property, const std::string& indiv_on)
 {
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
@@ -1735,14 +1735,14 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
       {
         ObjectPropertyBranch_t* branch_property = object_property_graph_->findBranch(property);
         if(branch_property != nullptr)
-          return removeProperty(branch_from, branch_property, branch_on);
+          return removeRelation(branch_from, branch_property, branch_on);
       }
     }
     else
     {
       ObjectPropertyBranch_t* branch_property = object_property_graph_->findBranch(property);
       if(branch_property != nullptr)
-        return removeProperty(branch_from, branch_property, nullptr);
+        return removeRelation(branch_from, branch_property, nullptr);
     }
   }
   else
@@ -1751,7 +1751,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
   return std::vector<std::pair<std::string, std::string>>();
 }
 
-void IndividualGraph::removeProperty(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data)
+void IndividualGraph::removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data)
 {
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
@@ -1783,7 +1783,7 @@ void IndividualGraph::setRelationsUpdated(std::vector<IndivObjectRelationElement
     relation.second->updated_ = true;
 }
 
-std::vector<std::pair<std::string, std::string>> IndividualGraph::removePropertyInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelationInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
 {
   std::vector<std::pair<std::string, std::string>> explanations;
   for(auto& invert : property->inverses_)
@@ -1795,7 +1795,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
           explanations.emplace_back("[DEL]" + indiv_on->value() + "|" + indiv_on->object_relations_[i].first->value() + "|" + indiv_on->object_relations_[i].second->value(),
                                      "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
 
-          auto exp_ch  = removePropertyChain(indiv_on, indiv_on->object_relations_[i].first, indiv_on->object_relations_[i].second);
+          auto exp_ch  = removeRelationChain(indiv_on, indiv_on->object_relations_[i].first, indiv_on->object_relations_[i].second);
           explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
 
           indiv_on->object_relations_[i].second->updated_ = true;
@@ -1809,7 +1809,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
   return explanations;
 }
 
-std::vector<std::pair<std::string, std::string>> IndividualGraph::removePropertySymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelationSymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
 {
   std::vector<std::pair<std::string, std::string>> explanations;
   if(property->properties_.symetric_property_ == true)
@@ -1821,7 +1821,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
           explanations.emplace_back("[DEL]" + indiv_on->value() + "|" + indiv_on->object_relations_[i].first->value() + "|" + indiv_on->object_relations_[i].second->value(),
                                      "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
 
-          auto exp_ch  = removePropertyChain(indiv_on, indiv_on->object_relations_[i].first, indiv_on->object_relations_[i].second);
+          auto exp_ch  = removeRelationChain(indiv_on, indiv_on->object_relations_[i].first, indiv_on->object_relations_[i].second);
           explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
           
           indiv_on->object_relations_[i].second->updated_;
@@ -1833,7 +1833,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
   return explanations;
 }
 
-std::vector<std::pair<std::string, std::string>> IndividualGraph::removePropertyChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelationChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
 {
   std::vector<std::pair<std::string, std::string>> explanations;
 
@@ -1849,7 +1849,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
                                             indiv_from->object_properties_has_induced_[i].on_[induced]->value(),
                                    "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
 
-        auto tmp = removeProperty(indiv_from->object_properties_has_induced_[i].from_[induced],
+        auto tmp = removeRelation(indiv_from->object_properties_has_induced_[i].from_[induced],
                                   indiv_from->object_properties_has_induced_[i].prop_[induced],
                                   indiv_from->object_properties_has_induced_[i].on_[induced],
                                   true);
@@ -1868,7 +1868,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
 
       explanations.emplace_back("[DEL]" + indiv_from->value() + "|" + chained_property->value() + "|" + indiv->value(),
                                  "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
-      auto tmp = removeProperty(indiv_from, chained_property, indiv);
+      auto tmp = removeRelation(indiv_from, chained_property, indiv);
       explanations.insert(explanations.end(), tmp.begin(), tmp.end());
     }
   }

@@ -956,7 +956,7 @@ void ClassGraph::addInheritage(std::string& class_base, std::string& class_inher
   }
 }
 
-void ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& property, const std::string& class_on)
+void ClassGraph::addRelation(ClassBranch_t* class_from, const std::string& property, const std::string& class_on)
 {
   ClassBranch_t* branch_from = class_from;
   if(branch_from != nullptr)
@@ -994,7 +994,7 @@ void ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& prope
     throw GraphException("The class to apply the relation does not exist");
 }
 
-void ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& property, const std::string& type, const std::string& data)
+void ClassGraph::addRelation(ClassBranch_t* class_from, const std::string& property, const std::string& type, const std::string& data)
 {
   ClassBranch_t* branch_from = class_from;
   if(branch_from != nullptr)
@@ -1021,7 +1021,7 @@ void ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& prope
     throw GraphException("The class to apply the relation does not exist");
 }
 
-void ClassGraph::addPropertyInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on)
+void ClassGraph::addRelationInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on)
 {
   ClassBranch_t* branch_on = class_on;
   if(branch_on != nullptr)
@@ -1091,7 +1091,7 @@ void ClassGraph::removeInheritage(std::string& class_base, std::string& class_in
   branch_inherited->updated_ = true;
 }
 
-void ClassGraph::removeProperty(const std::string& class_from, const std::string& property, const std::string& class_on)
+void ClassGraph::removeRelation(const std::string& class_from, const std::string& property, const std::string& class_on)
 {
   ClassBranch_t* branch_from = findBranch(class_from);
   if(branch_from != nullptr)
@@ -1117,7 +1117,7 @@ void ClassGraph::removeProperty(const std::string& class_from, const std::string
     throw GraphException("The subject class does not exist");
 }
 
-void ClassGraph::removeProperty(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data)
+void ClassGraph::removeRelation(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data)
 {
   ClassBranch_t* branch_from = findBranch(class_from);
   if(branch_from != nullptr)

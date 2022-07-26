@@ -105,22 +105,22 @@ public:
   void addInheritageUnsafe(IndividualBranch_t* branch, const std::string& class_inherited);
   void addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
   void addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
-  int addProperty(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba = 1.0, bool infered = false);
-  int addProperty(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, const data_t& data, double proba = 1.0, bool infered = false);
-  void addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on);
-  void addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data);
-  void addPropertyInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);
+  int addRelation(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba = 1.0, bool infered = false);
+  int addRelation(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, const data_t& data, double proba = 1.0, bool infered = false);
+  void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on);
+  void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data);
+  void addRelationInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);
   void removeLang(const std::string& indiv, const std::string& lang, const std::string& name);
   void removeInheritage(const std::string& indiv, const std::string& class_inherited);
   bool addSameAs(const std::string& indiv_1, const std::string& indiv_2);
   bool removeSameAs(const std::string& indiv_1, const std::string& indiv_2);
   // removing a relation using an object property has to generate an "explanation" if it remove other relations
-  std::vector<std::pair<std::string, std::string>> removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered = false);
-  std::vector<std::pair<std::string, std::string>> removeProperty(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
-  void removeProperty(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
-  std::vector<std::pair<std::string, std::string>> removePropertyInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
-  std::vector<std::pair<std::string, std::string>> removePropertySymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
-  std::vector<std::pair<std::string, std::string>> removePropertyChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  std::vector<std::pair<std::string, std::string>> removeRelation(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered = false);
+  std::vector<std::pair<std::string, std::string>> removeRelation(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
+  void removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
+  std::vector<std::pair<std::string, std::string>> removeRelationInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  std::vector<std::pair<std::string, std::string>> removeRelationSymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  std::vector<std::pair<std::string, std::string>> removeRelationChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
   std::vector<IndividualBranch_t*> resolveLink(std::vector<ObjectPropertyBranch_t*>& chain, IndividualBranch_t* indiv_on, size_t index);
   std::vector<std::vector<ObjectPropertyBranch_t*>> getChains(ObjectPropertyBranch_t* base_property);
 
