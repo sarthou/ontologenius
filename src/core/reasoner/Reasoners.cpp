@@ -94,6 +94,12 @@ void Reasoners::load()
   applyConfig();
 }
 
+void Reasoners::initialize()
+{
+  for(auto& it : reasoners_)
+    it.second->initialize();
+}
+
 std::string Reasoners::list()
 {
   std::string res;
@@ -186,29 +192,28 @@ void Reasoners::runPreReasoners(QueryOrigin_e origin, const std::string& action,
 
   QueryInfo_t query_info = extractQueryInfo(origin, action, param);
 
-  do
+  for(auto& it : active_reasoners_)
   {
-    for(auto& it : active_reasoners_)
+    if(it.second)
     {
-      if(it.second)
-      {
-        it.second->preReason(query_info);
-        auto notif = it.second->getNotifications();
-        notifications_.insert(notifications_.end(), notif.begin(), notif.end());
-        auto explanations = it.second->getExplanations();
-        explanations_mutex_.lock();
-        explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
-        explanations_mutex_.unlock();
-      }
+      it.second->preReason(query_info);
+      auto notif = it.second->getNotifications();
+      notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+      auto explanations = it.second->getExplanations();
+      explanations_mutex_.lock();
+      explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
+      explanations_mutex_.unlock();
     }
-
-    nb_updates = ReasonerInterface::getNbUpdates();
-    ReasonerInterface::resetNbUpdates();
-
-    computeClassesUpdates();
-    computeIndividualsUpdates();
   }
-  while(nb_updates!= 0);
+
+  nb_updates = ReasonerInterface::getNbUpdates();
+  ReasonerInterface::resetNbUpdates();
+
+  computeClassesUpdates();
+  computeIndividualsUpdates();
+  
+  if(nb_updates!= 0)
+    runPostReasoners();
 }
 
 void Reasoners::runPostReasoners()

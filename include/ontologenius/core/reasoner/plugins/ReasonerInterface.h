@@ -45,11 +45,12 @@ class ReasonerInterface
 public:
   virtual ~ReasonerInterface() = default;
 
-  virtual void initialize(const std::string& agent_name, Ontology* onto)
+  void initialize(const std::string& agent_name, Ontology* onto)
   {
     agent_name_ = agent_name;
     ontology_ = onto;
   }
+  virtual void initialize() {} // This function is called once the ontology is closed 
   virtual void setParameter(const std::string& name, const std::string& value)
   {
     (void)name;

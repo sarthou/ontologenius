@@ -39,7 +39,8 @@ public:
   void setSteady_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
   void setSteady_muted_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
 
-  int ObjectPropertyExist(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
+  int objectPropertyExist(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
+  int dataPropertyExist(DataPropertyBranch_t* property, const data_t& data);
 };
 
 class Triplet

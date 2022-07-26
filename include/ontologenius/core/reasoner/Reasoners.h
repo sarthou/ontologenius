@@ -22,6 +22,7 @@ public:
 
   void configure(const std::string& config_path);
   void load();
+  void initialize();
   std::string list();
   std::vector<std::string> listVector();
   std::vector<std::string> activeListVector();

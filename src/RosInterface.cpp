@@ -164,6 +164,7 @@ void RosInterface::release()
 void RosInterface::close()
 {
   onto_->close();
+  reasoners_.initialize();
   reasoners_.runPostReasoners();
 }
 

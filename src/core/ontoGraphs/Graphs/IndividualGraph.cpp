@@ -1462,7 +1462,7 @@ int IndividualGraph::addProperty(IndividualBranch_t* indiv_from, ObjectPropertyB
 
     int index = -1;
 
-    index = indiv_from->ObjectPropertyExist(property, indiv_on);
+    index = indiv_from->objectPropertyExist(property, indiv_on);
     if(index == -1)
     {
       indiv_from->object_relations_.emplace_back(IndivObjectRelationElement_t(property, indiv_on));
@@ -1474,7 +1474,33 @@ int IndividualGraph::addProperty(IndividualBranch_t* indiv_from, ObjectPropertyB
     indiv_from->object_relations_[index].infered = infered;
 
     indiv_from->updated_ = true;
-    setObjectPropertiesUpdated(indiv_from->object_relations_);
+    setRelationsUpdated(indiv_from->object_relations_);
+
+    return index;
+  }
+  else
+    throw GraphException("Inconsistency prevented regarding the range or domain of the property");
+
+  return -1;
+}
+
+
+int IndividualGraph::addProperty(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, const data_t& data, double proba, bool infered)
+{
+  if(checkRangeAndDomain(indiv_from, property, data))
+  {
+    int index = -1;
+
+    index = indiv_from->dataPropertyExist(property, data);
+    if(index == -1)
+    {
+      indiv_from->data_relations_.emplace_back(IndivDataRelationElement_t(property, data));
+      index = indiv_from->data_relations_.size() - 1;
+    }
+
+    indiv_from->data_relations_[index].probability = proba;
+    indiv_from->data_relations_[index].infered = infered;
+    indiv_from->updated_ = true;
 
     return index;
   }
@@ -1692,7 +1718,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeProperty
       i++;
   }
   if(updated == true)
-    setObjectPropertiesUpdated(branch_from->object_relations_);
+    setRelationsUpdated(branch_from->object_relations_);
 
   return explanations;
 }
@@ -1751,7 +1777,7 @@ void IndividualGraph::removeProperty(const std::string& indiv_from, const std::s
     throw GraphException("The subject entity does not exist");
 }
 
-void IndividualGraph::setObjectPropertiesUpdated(std::vector<IndivObjectRelationElement_t>& relations)
+void IndividualGraph::setRelationsUpdated(std::vector<IndivObjectRelationElement_t>& relations)
 {
   for(auto& relation : relations)
     relation.second->updated_ = true;
@@ -1943,7 +1969,7 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
   return true;
 }
 
-bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, data_t& data)
+bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, const data_t& data)
 {
   std::unordered_set<DataPropertyBranch_t*> up_properties;
   data_property_graph_->getUpPtr(prop, up_properties);
