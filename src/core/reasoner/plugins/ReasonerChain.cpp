@@ -46,7 +46,7 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
       if(!relationExists(indiv, chain[chain_size], indivs[i]))
       {
         try {
-          int index = ontology_->individual_graph_.addProperty(indiv, chain[chain_size], indivs[i], 1.0, true);
+          int index = ontology_->individual_graph_.addRelation(indiv, chain[chain_size], indivs[i], 1.0, true);
           if(index == (int)indiv->object_relations_.size() - 1)
             indiv->object_properties_has_induced_.emplace_back();
         }

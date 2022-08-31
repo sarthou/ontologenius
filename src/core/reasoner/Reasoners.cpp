@@ -7,7 +7,8 @@
 
 namespace ontologenius {
 
-Reasoners::Reasoners(Ontology* onto) : loader_("ontologenius", "ReasonerInterface")
+Reasoners::Reasoners(const std::string& agent_name, Ontology* onto) : agent_name_(agent_name),
+                                                                      loader_("ontologenius", "ReasonerInterface")
 {
   ontology_ = onto;
 }
@@ -49,7 +50,7 @@ void Reasoners::link(Ontology* onto)
 {
   ontology_ = onto;
   for(auto& it : reasoners_)
-    it.second->initialize(ontology_);
+    it.second->initialize(agent_name_, ontology_);
 }
 
 void Reasoners::configure(const std::string& config_path)
@@ -73,7 +74,7 @@ void Reasoners::load()
     {
       loader_.loadLibraryForClass(reasoner);
       ReasonerInterface* tmp = loader_.createUnmanagedInstance(reasoner);
-      tmp->initialize(ontology_);
+      tmp->initialize(agent_name_, ontology_);
       reasoners_[reasoner] = tmp;
       if(tmp->defaultAvtive())
         active_reasoners_[reasoner] = tmp;
@@ -91,6 +92,12 @@ void Reasoners::load()
   }
 
   applyConfig();
+}
+
+void Reasoners::initialize()
+{
+  for(auto& it : reasoners_)
+    it.second->initialize();
 }
 
 std::string Reasoners::list()
@@ -185,29 +192,28 @@ void Reasoners::runPreReasoners(QueryOrigin_e origin, const std::string& action,
 
   QueryInfo_t query_info = extractQueryInfo(origin, action, param);
 
-  do
+  for(auto& it : active_reasoners_)
   {
-    for(auto& it : active_reasoners_)
+    if(it.second)
     {
-      if(it.second)
-      {
-        it.second->preReason(query_info);
-        auto notif = it.second->getNotifications();
-        notifications_.insert(notifications_.end(), notif.begin(), notif.end());
-        auto explanations = it.second->getExplanations();
-        explanations_mutex_.lock();
-        explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
-        explanations_mutex_.unlock();
-      }
+      it.second->preReason(query_info);
+      auto notif = it.second->getNotifications();
+      notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+      auto explanations = it.second->getExplanations();
+      explanations_mutex_.lock();
+      explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
+      explanations_mutex_.unlock();
     }
-
-    nb_updates = ReasonerInterface::getNbUpdates();
-    ReasonerInterface::resetNbUpdates();
-
-    computeClassesUpdates();
-    computeIndividualsUpdates();
   }
-  while(nb_updates!= 0);
+
+  nb_updates = ReasonerInterface::getNbUpdates();
+  ReasonerInterface::resetNbUpdates();
+
+  computeClassesUpdates();
+  computeIndividualsUpdates();
+  
+  if(nb_updates!= 0)
+    runPostReasoners();
 }
 
 void Reasoners::runPostReasoners()

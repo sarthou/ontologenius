@@ -75,24 +75,24 @@ public:
   void getDownIndividualPtrSafe(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res);
 
   void deleteClass(ClassBranch_t* _class);
-  int deletePropertiesOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect);
+  int deleteRelationsOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect);
   void addLang(const std::string& _class, std::string& lang, const std::string& name);
   void addInheritage(std::string& class_base, std::string& class_inherited);
-  void addProperty(ClassBranch_t*, const std::string& property, const std::string& class_on);
-  void addProperty(ClassBranch_t*, const std::string& property, const std::string& type, const std::string& data);
-  void addPropertyInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on);
+  void addRelation(ClassBranch_t*, const std::string& property, const std::string& class_on);
+  void addRelation(ClassBranch_t*, const std::string& property, const std::string& type, const std::string& data);
+  void addRelationInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on);
   void removeLang(std::string& indiv, std::string& lang, std::string& name);
   void removeInheritage(std::string& class_base, std::string& class_inherited);
-  void removeProperty(const std::string& class_from, const std::string& property, const std::string& class_on);
-  void removeProperty(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data);
+  void removeRelation(const std::string& class_from, const std::string& property, const std::string& class_on);
+  void removeRelation(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data);
 
 private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
   IndividualGraph* individual_graph_;
 
-  void addObjectProperty(ClassBranch_t* me, Pair_t<std::string, std::string>& relation);
-  void addDataProperty(ClassBranch_t* me, Pair_t<std::string, data_t>& relation);
+  void addObjectRelation(ClassBranch_t* me, Pair_t<std::string, std::string>& relation);
+  void addDataRelation(ClassBranch_t* me, Pair_t<std::string, data_t>& relation);
 
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth);
   void getRelatedFrom(const std::unordered_set<uint32_t>& object_properties, const std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res);

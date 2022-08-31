@@ -102,7 +102,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "ontologenius_tester");
 
   ontologenius::Ontology onto;
-  ontologenius::Reasoners reasoners(&onto);
+  ontologenius::Reasoners reasoners("", &onto);
   reasoners.load();
   reasoners.list();
 

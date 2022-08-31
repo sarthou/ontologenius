@@ -117,14 +117,14 @@ ClassBranch_t* ClassGraph::add(const std::string& value, ObjectVectors_t& object
   ** Object Property assertion
   **********************/
   for(auto& object_relation : object_vector.object_relations_)
-    addObjectProperty(me, object_relation);
+    addObjectRelation(me, object_relation);
 
   /**********************
   ** Data Property assertion
   **********************/
   //for all my properties
   for(auto& data_relation : object_vector.data_relations_)
-    addDataProperty(me, data_relation);
+    addDataRelation(me, data_relation);
 
   me->setSteady_dictionary(object_vector.dictionary_);
   me->setSteady_muted_dictionary(object_vector.muted_dictionary_);
@@ -193,7 +193,7 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
 *
 *********/
 
-void ClassGraph::addObjectProperty(ClassBranch_t* me, Pair_t<std::string, std::string>& relation)
+void ClassGraph::addObjectRelation(ClassBranch_t* me, Pair_t<std::string, std::string>& relation)
 {
   ObjectPropertyBranch_t* property_branch = nullptr;
   getInMap(&property_branch, relation.first, object_property_graph_->roots_);
@@ -220,7 +220,7 @@ void ClassGraph::addObjectProperty(ClassBranch_t* me, Pair_t<std::string, std::s
   me->object_relations_.emplace_back(property_branch, class_branch, relation.probability);
 }
 
-void ClassGraph::addDataProperty(ClassBranch_t* me, Pair_t<std::string, data_t>& relation)
+void ClassGraph::addDataRelation(ClassBranch_t* me, Pair_t<std::string, data_t>& relation)
 {
   DataPropertyBranch_t* property_branch = nullptr;
   getInMap(&property_branch, relation.first, data_property_graph_->roots_);
@@ -889,7 +889,7 @@ void ClassGraph::deleteClass(ClassBranch_t* _class)
     }
 
     //erase properties applied to _class
-    int index = deletePropertiesOnClass(_class, all_branchs_);
+    int index = deleteRelationsOnClass(_class, all_branchs_);
 
     //delete indiv
     if(index > 0)
@@ -900,7 +900,7 @@ void ClassGraph::deleteClass(ClassBranch_t* _class)
   }
 }
 
-int ClassGraph::deletePropertiesOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect)
+int ClassGraph::deleteRelationsOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect)
 {
   int class_index = -1;
   for(size_t class_i = 0; class_i < vect.size(); class_i++)
@@ -956,7 +956,7 @@ void ClassGraph::addInheritage(std::string& class_base, std::string& class_inher
   }
 }
 
-void ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& property, const std::string& class_on)
+void ClassGraph::addRelation(ClassBranch_t* class_from, const std::string& property, const std::string& class_on)
 {
   ClassBranch_t* branch_from = class_from;
   if(branch_from != nullptr)
@@ -994,7 +994,7 @@ void ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& prope
     throw GraphException("The class to apply the relation does not exist");
 }
 
-void ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& property, const std::string& type, const std::string& data)
+void ClassGraph::addRelation(ClassBranch_t* class_from, const std::string& property, const std::string& type, const std::string& data)
 {
   ClassBranch_t* branch_from = class_from;
   if(branch_from != nullptr)
@@ -1021,7 +1021,7 @@ void ClassGraph::addProperty(ClassBranch_t* class_from, const std::string& prope
     throw GraphException("The class to apply the relation does not exist");
 }
 
-void ClassGraph::addPropertyInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on)
+void ClassGraph::addRelationInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on)
 {
   ClassBranch_t* branch_on = class_on;
   if(branch_on != nullptr)
@@ -1091,7 +1091,7 @@ void ClassGraph::removeInheritage(std::string& class_base, std::string& class_in
   branch_inherited->updated_ = true;
 }
 
-void ClassGraph::removeProperty(const std::string& class_from, const std::string& property, const std::string& class_on)
+void ClassGraph::removeRelation(const std::string& class_from, const std::string& property, const std::string& class_on)
 {
   ClassBranch_t* branch_from = findBranch(class_from);
   if(branch_from != nullptr)
@@ -1117,7 +1117,7 @@ void ClassGraph::removeProperty(const std::string& class_from, const std::string
     throw GraphException("The subject class does not exist");
 }
 
-void ClassGraph::removeProperty(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data)
+void ClassGraph::removeRelation(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data)
 {
   ClassBranch_t* branch_from = findBranch(class_from);
   if(branch_from != nullptr)
