@@ -22,11 +22,11 @@ public:
   /// @param n is an initialized ROS node handle.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
   FeederPublisher(ros::NodeHandle* n, const std::string& name) :
+                  n_(n),
+                  name_(name),
                   pub_(n->advertise<std_msgs::String>((name == "") ? "ontologenius/insert" : "ontologenius/insert/" + name, 1000)),
                   stamped_pub_(n->advertise<ontologenius::StampedString>((name == "") ? "ontologenius/insert_stamped" : "ontologenius/insert_stamped/" + name, 1000))
   {
-    n_ = n;
-    name_ = name;
     srand (time(NULL));
     commit_nb_ = rand() % 100000 + 1;
     commit_sub_ = n_->subscribe(name_ == "" ? "ontologenius/end" : "ontologenius/end/" + name_, 1000, &FeederPublisher::commitCallback, this);
@@ -34,11 +34,11 @@ public:
   }
 
   FeederPublisher(FeederPublisher& other) :
+                  n_(other.n_),
+                  name_(other.name_),
                   pub_(other.n_->advertise<std_msgs::String>((other.name_ == "") ? "ontologenius/insert" : "ontologenius/insert/" + other.name_, 1000)),
                   stamped_pub_(other.n_->advertise<ontologenius::StampedString>((other.name_ == "") ? "ontologenius/insert_stamped" : "ontologenius/insert_stamped/" + other.name_, 1000))
   {
-    n_ = other.n_;
-    name_ = other.name_;
     commit_sub_ = n_->subscribe(name_ == "" ? "ontologenius/end" : "ontologenius/end/" + name_, 1000, &FeederPublisher::commitCallback, this);
     commit_nb_ = other.commit_nb_;
     updated_ = false;

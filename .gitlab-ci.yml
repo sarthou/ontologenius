@@ -2,39 +2,39 @@
   script:
     - mkdir -p ~/ros_ws/src
     - cd ~/ros_ws
-    - catkin_make
+    - catkin_make -DCMAKE_BUILD_TYPE=Release
     - cd src
     - cp -r /builds/$GITLAB_USER_LOGIN/ontologenius .
     - cd ..
-    - catkin_make
+    - catkin_make -DCMAKE_BUILD_TYPE=Release
 
 .test_script_template : &test_script_definition_py2
   script:
     - mkdir -p ~/ros_ws/src
     - cd ~/ros_ws
-    - catkin_make
+    - catkin_make -DCMAKE_BUILD_TYPE=Release
     - cd src
     - cp -r /builds/$GITLAB_USER_LOGIN/ontologenius .
     - cd ..
     - pip install requests --user
     - source devel/setup.bash
-    - catkin_make
+    - catkin_make -DCMAKE_BUILD_TYPE=Release
     - source devel/setup.bash
-    - catkin_make run_tests_ontologenius_rostest -j1 && catkin_make test -j1
+    - catkin_make run_tests_ontologenius_rostest -j1 -DCMAKE_BUILD_TYPE=Release && catkin_make test -j1 -DCMAKE_BUILD_TYPE=Release
 
 .test_script_template : &test_script_definition_py3
   script:
     - mkdir -p ~/ros_ws/src
     - cd ~/ros_ws
-    - catkin_make
+    - catkin_make -DCMAKE_BUILD_TYPE=Release
     - cd src
     - cp -r /builds/$GITLAB_USER_LOGIN/ontologenius .
     - cd ..
     - pip3 install requests --user
     - source devel/setup.bash
-    - catkin_make
+    - catkin_make -DCMAKE_BUILD_TYPE=Release
     - source devel/setup.bash
-    - catkin_make run_tests_ontologenius_rostest -j1 && catkin_make test -j1
+    - catkin_make run_tests_ontologenius_rostest -j1 -DCMAKE_BUILD_TYPE=Release && catkin_make test -j1 -DCMAKE_BUILD_TYPE=Release
 
 .kinetic_before_template : &kinetic_before_definition
   before_script:

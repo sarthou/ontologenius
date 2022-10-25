@@ -15,21 +15,58 @@ enum ReasonerNotificationStatus_e
   notification_error
 };
 
+enum QueryType_e
+{
+  query_relation,
+  query_inheritance,
+  query_label,
+  query_other
+};
+
+enum QueryOrigin_e
+{
+  query_origin_individual,
+  query_origin_class,
+  query_origin_object_property,
+  query_origin_data_property,
+};
+
+struct QueryInfo_t
+{
+  QueryType_e query_type;
+  QueryOrigin_e query_origin;
+  std::string subject;
+  std::string predicate;
+  std::string object;
+};
+
 class ReasonerInterface
 {
 public:
   virtual ~ReasonerInterface() = default;
 
-  virtual void initialize(Ontology* onto) {ontology_ = onto; }
+  void initialize(const std::string& agent_name, Ontology* onto)
+  {
+    agent_name_ = agent_name;
+    ontology_ = onto;
+  }
+  virtual void initialize() {} // This function is called once the ontology is closed 
   virtual void setParameter(const std::string& name, const std::string& value)
   {
     (void)name;
     (void)value;
   }
 
-  virtual void preReason() {}
+  virtual void preReason(const QueryInfo_t& query_info)
+  {
+    (void)query_info;
+  }
   virtual void postReason() {}
   virtual void periodicReason() {}
+
+  virtual bool implementPostReasoning() { return false; }
+  virtual bool implementPreReasoning() { return false; }
+  virtual bool implementPeriodicReasoning() { return false; }
 
   virtual std::string getName() = 0;
   virtual std::string getDesciption() = 0;
@@ -53,8 +90,9 @@ public:
     return tmp;
   }
 protected:
-  ReasonerInterface() { }
+  ReasonerInterface() : ontology_(nullptr) {}
 
+  std::string agent_name_;
   Ontology* ontology_;
 
   std::vector<std::pair<ReasonerNotificationStatus_e, std::string>> notifications_;

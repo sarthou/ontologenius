@@ -271,6 +271,7 @@ add_onto_library(ontologenius_interface
   src/RosInterface.cpp
   src/core/ontologyOperators/differenceFinder.cpp
   src/core/ontologyOperators/Sparql.cpp
+  src/core/ontologyOperators/SparqlSolver.cpp
   src/core/ontologyOperators/SparqlUtils.cpp
 )
 target_link_libraries(ontologenius_interface
@@ -284,26 +285,54 @@ target_link_libraries(ontologenius_interface
 ## The recommended prefix ensures that target names across packages don't collide
 ##############################
 
+##############################
+## NODES
+##############################
+
 add_onto_executable(ontologenius src/nodes/ontologenius_single.cpp)
 target_link_libraries(ontologenius PRIVATE ontologenius_interface)
 
 add_onto_executable(ontologenius_multi src/nodes/ontologenius_multi.cpp)
 target_link_libraries(ontologenius_multi PRIVATE ontologenius_interface)
 
-add_onto_executable(ontologenius_exemple src/exemple.cpp )
-target_link_libraries(ontologenius_exemple PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
-
 add_onto_executable(ontologenius_draw src/graphical/versioning/main.cpp )
 target_link_libraries(ontologenius_draw PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
 
-add_onto_executable(ontologenius_tester src/tests/tester.cpp)
+##############################
+## COMPARISONS
+##############################
+
+#add_onto_executable(ontologenius_knowrob src/tests/Compare/knowrob_test.cpp)
+#target_link_libraries(ontologenius_knowrob PRIVATE ontologenius_interface)
+
+#add_onto_executable(ontologenius_oro src/tests/Compare/ORO_test.cpp)
+#target_link_libraries(ontologenius_oro PRIVATE ontologenius_interface ontologenius_lib)
+
+#add_onto_executable(ontologenius_ORO src/tests/Compare/ORO.cpp)
+#target_link_libraries(ontologenius_ORO PRIVATE ontologenius_lib ontologenius_core_lib)
+
+##############################
+## PERFORMANCES
+##############################
+
+#add_onto_executable(ontologenius_deepcopy src/tests/Performances/deepcopy.cpp)
+#target_link_libraries(ontologenius_deepcopy PRIVATE ontologenius_lib)
+
+#add_onto_executable(ontologenius_find_tester src/tests/Performances/getNameVsFind.cpp)
+#target_link_libraries(ontologenius_find_tester PRIVATE ontologenius_lib ontologenius_core_lib ontologenius_interface)
+
+add_onto_executable(ontologenius_tester src/tests/Performances/tester.cpp)
 target_link_libraries(ontologenius_tester PRIVATE ontologenius_core_lib)
 
-add_onto_executable(ontologenius_container_tester src/tests/container_test.cpp)
+add_onto_executable(ontologenius_container_tester src/tests/Performances/container_test.cpp)
 target_link_libraries(ontologenius_container_tester PRIVATE ontologenius_core_lib)
 
-add_onto_executable(ontologenius_services_tester src/tests/service_tester.cpp)
-target_link_libraries(ontologenius_services_tester PRIVATE ontologenius_core_lib)
+##############################
+## FEATURES TESTS
+##############################
+
+add_onto_executable(ontologenius_exemple src/exemple.cpp )
+target_link_libraries(ontologenius_exemple PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
 
 add_onto_executable(ontologenius_config_tester src/tests/config_reader_test.cpp)
 target_link_libraries(ontologenius_config_tester PRIVATE ontologenius_core_lib)
@@ -311,23 +340,8 @@ target_link_libraries(ontologenius_config_tester PRIVATE ontologenius_core_lib)
 add_onto_executable(ontologenius_versioning src/tests/versioning.cpp)
 target_link_libraries(ontologenius_versioning PRIVATE ontologenius_lib)
 
-#add_onto_executable(ontologenius_ORO src/tests/ORO.cpp)
-#target_link_libraries(ontologenius_ORO PRIVATE ontologenius_lib ontologenius_core_lib)
-
-#add_onto_executable(ontologenius_find_tester src/tests/getNameVsFind.cpp)
-#target_link_libraries(ontologenius_find_tester PRIVATE ontologenius_lib ontologenius_core_lib ontologenius_interface)
-
-#add_onto_executable(ontologenius_local_find src/tests/local_find.cpp)
-#target_link_libraries(ontologenius_local_find PRIVATE ontologenius_lib)
-
-#add_onto_executable(ontologenius_knowrob src/tests/knowrob_test.cpp)
-#target_link_libraries(ontologenius_knowrob PRIVATE ontologenius_interface)
-
-#add_onto_executable(ontologenius_oro src/tests/ORO_test.cpp)
-#target_link_libraries(ontologenius_oro PRIVATE ontologenius_interface ontologenius_lib)
-
-#add_onto_executable(ontologenius_deepcopy src/tests/deepcopy.cpp)
-#target_link_libraries(ontologenius_deepcopy PRIVATE ontologenius_lib)
+add_onto_executable(ontologenius_sparql src/tests/sparql.cpp)
+target_link_libraries(ontologenius_sparql PRIVATE ontologenius_interface)
 
 ##############################################################################
 # Qt Environment
@@ -422,31 +436,31 @@ install(DIRECTORY files/
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
 
-  add_rostest_gtest(ontologenius_library_tester test/library.test src/tests/library.cpp)
+  add_rostest_gtest(ontologenius_library_tester test/library.test src/tests/CI/library.cpp)
   target_include_directories(ontologenius_library_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_library_tester ontologenius_lib ${catkin_LIBRARIES})
 
-  add_rostest_gtest(ontologenius_requests_tester test/requests.test src/tests/requests.cpp)
+  add_rostest_gtest(ontologenius_requests_tester test/requests.test src/tests/CI/requests.cpp)
   target_include_directories(ontologenius_requests_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_requests_tester ontologenius_lib ${catkin_LIBRARIES})
 
-  add_rostest_gtest(ontologenius_global_tester test/globalFeatures.test src/tests/globalFeatures.cpp)
+  add_rostest_gtest(ontologenius_global_tester test/globalFeatures.test src/tests/CI/globalFeatures.cpp)
   target_include_directories(ontologenius_global_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_global_tester ontologenius_lib ${catkin_LIBRARIES})
 
-  add_rostest_gtest(ontologenius_propertiesInheritage_tester test/propertiesInheritage.test src/tests/propertiesInheritage.cpp)
+  add_rostest_gtest(ontologenius_propertiesInheritage_tester test/propertiesInheritage.test src/tests/CI/propertiesInheritage.cpp)
   target_include_directories(ontologenius_propertiesInheritage_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_propertiesInheritage_tester ontologenius_lib ${catkin_LIBRARIES})
 
-  add_rostest_gtest(ontologenius_dynamic_tester test/dynamic.test src/tests/dynamic.cpp)
+  add_rostest_gtest(ontologenius_dynamic_tester test/dynamic.test src/tests/CI/dynamic.cpp)
   target_include_directories(ontologenius_dynamic_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_dynamic_tester ontologenius_lib ${catkin_LIBRARIES})
 
-  add_rostest_gtest(ontologenius_multi_tester test/multi.test src/tests/multi.cpp)
+  add_rostest_gtest(ontologenius_multi_tester test/multi.test src/tests/CI/multi.cpp)
   target_include_directories(ontologenius_multi_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_multi_tester ontologenius_lib ${catkin_LIBRARIES})
 
-  add_rostest_gtest(ontologenius_cpy_test test/cpy.test src/tests/copy_test.cpp)
+  add_rostest_gtest(ontologenius_cpy_test test/cpy.test src/tests/CI/copy_test.cpp)
   set_target_properties(ontologenius_cpy_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
   target_include_directories(ontologenius_cpy_test PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_cpy_test ontologenius_lib ${catkin_LIBRARIES})

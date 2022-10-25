@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>OntologyClient Class (python) | Ontologenius 0.2.10</title>
+  <title>OntologyClient Class (python) | Ontologenius 0.2.11</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -131,10 +131,10 @@
               <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getName">getName</a></b>(self, name, take_id = True)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getNames">getNames</a></b>(self, name, take_id = True)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getEveryNames">getEveryNames</a></b>(self, name, take_id = True)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#find">find</a></b>(self, name, take_id = True)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findSub">findSub</a></b>(self, name, take_id = True)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findRegex">findRegex</a></b>(self, name, take_id = True)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findFuzzy">findFuzzy</a></b>(self, name, threshold = 0.5, take_id = True)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#find">find</a></b>(self, name, take_id = True, selector = '')</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findSub">findSub</a></b>(self, name, take_id = True, selector = '')</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findRegex">findRegex</a></b>(self, name, take_id = True, selector = '')</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findFuzzy">findFuzzy</a></b>(self, name, threshold = 0.5, take_id = True, selector = '')</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#exist">exist</a></b>(self, name)</td></tr>
             </tbody>
           </table>
@@ -185,24 +185,28 @@
           <p>The default <i>take_id</i>(bool) argument can be set to False if you do not want to consider the concept identifier as a possible default name.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
-          <h3 class="fn" id="find"><a name="find"></a><span class="name">find</span>(self, name, take_id = True)</h3>
+          <h3 class="fn" id="find"><a name="find"></a><span class="name">find</span>(self, name, take_id = True, selector = '')</h3>
           <p>Gives all the concepts (str[]) having for label <i>name</i>(str).</p>
           <p>The default <i>take_id</i>(bool) argument can be set to False if you do not want to consider the concept identifier as a possible default name.</p>
+          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) concept. The default value '' represents no restriction on the result.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
-          <h3 class="fn" id="findSub"><a name="findSub"></a><span class="name">findSub</span>(self, name, take_id = True)</h3>
+          <h3 class="fn" id="findSub"><a name="findSub"></a><span class="name">findSub</span>(self, name, take_id = True, selector = '')</h3>
           <p>Gives all the concepts (str[]) having for label a subset of <i>name</i>(str).</p>
           <p>The default <i>take_id</i>(bool) argument can be set to false if you do not want to consider the concept identifier as a possible default name.</p>
+          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) concept. The default value '' represents no restriction on the result.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
-          <h3 class="fn" id="findRegex"><a name="findRegex"></a><span class="name">findRegex</span>(self, name, take_id = True)</h3>
+          <h3 class="fn" id="findRegex"><a name="findRegex"></a><span class="name">findRegex</span>(self, name, take_id = True, selector = '')</h3>
           <p>Give all concepts (str[]) with a label matching the regular expression <i>regex</i>(str).</p>
           <p>The default <i>take_id</i>(bool) argument can be set to false if you do not want to consider the concept identifier as a possible default name.</p>
+          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) concept. The default value '' represents no restriction on the result.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
-          <h3 class="fn" id="findFuzzy"><a name="findFuzzy"></a><span class="name">findFuzzy</span>(self, name, threshold = 0.5, take_id = True)</h3>
+          <h3 class="fn" id="findFuzzy"><a name="findFuzzy"></a><span class="name">findFuzzy</span>(self, name, threshold = 0.5, take_id = True, selector = '')</h3>
           <p>Give all the names of concepts (str[]) with the lowest edit distance with parameter <i>name</i>(str).</p>
           <p>The default <i>take_id</i>(bool) argument can be set to false if you do not want to consider the concept identifier as a possible default name.</p>
+          <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i>(str) concept. The default value '' represents no restriction on the result.</p>
           <p>The result of this function depends on the setting of the working language and does not correspond to the concept identifiers but to other labels known by ontologenius.</p>
           <p>The minimum editing distance can be set with the <i>threshold</i>(double) parameter. This value corresponds to the number of changes to be made to pass from one word to another divided by the length of the comparison word.</p>
 

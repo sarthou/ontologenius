@@ -9,10 +9,10 @@ namespace ontologenius {
 class ClassChecker : public ValidityChecker<ClassBranch_t>
 {
 public:
-  ClassChecker(ClassGraph* graph) : ValidityChecker(graph) {class_graph_ = graph;}
+  explicit ClassChecker(ClassGraph* graph) : ValidityChecker(graph) {class_graph_ = graph;}
   ~ClassChecker() {}
 
-  size_t check();
+  size_t check() override;
   void printStatus(){ValidityChecker<ClassBranch_t>::printStatus("class", "classes", graph_vect_.size());}
 
 private:

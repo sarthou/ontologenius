@@ -1,5 +1,7 @@
 #include "ontologenius/core/feeder/Version_node.h"
 
+#include <numeric>
+
 namespace ontologenius {
 
 size_t Version_node::global_order_id_ = 0;
@@ -13,12 +15,10 @@ Version_node::Version_node(size_t order, Version_node* prev)
   order_id_ = order;
 }
 
-Version_node::Version_node(size_t order, const std::string& id)
-{
-  id_ = id;
-  prev_ = nullptr;
-  order_id_ = order;
-}
+Version_node::Version_node(size_t order, const std::string& id) : id_(id),
+                                                                  order_id_(order),
+                                                                  prev_(nullptr)
+{}
 
 std::vector<feed_t> Version_node::getDatasDirect()
 {
@@ -71,10 +71,8 @@ std::string Version_node::toXml(int level)
   std::string xml;
   xml += getSpaces(level) + "<Node id=\"" + id_ + "\">\n";
   xml += getSpaces(level + 1) + orderIdToXml() + "\n";
-  for(auto& data : datas_)
-    xml += getSpaces(level + 1) + dataToXml(data) + "\n";
-  for(auto& next : nexts_)
-    xml += next->toXml(level + 1);
+  xml = std::accumulate(datas_.begin(), datas_.end(), xml, [level, this](auto base, const feed_t& data){ return base + this->getSpaces(level + 1) + this->dataToXml(data) + "\n"; });
+  xml = std::accumulate(nexts_.begin(), nexts_.end(), xml, [level](auto base, auto next){ return base + next->toXml(level + 1); });
   xml += getSpaces(level) + "</Node>\n";
   return xml;
 }

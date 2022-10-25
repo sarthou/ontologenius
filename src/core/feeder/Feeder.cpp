@@ -173,7 +173,7 @@ void Feeder::classIndividualIsA(feed_t& feed)
   }
 }
 
-void Feeder::addInverseOf(feed_t& feed)
+void Feeder::addInverseOf(const feed_t& feed)
 {
   if(feed.action_ == action_add)
   {
@@ -187,7 +187,7 @@ void Feeder::addInverseOf(feed_t& feed)
   }
 }
 
-void Feeder::addSameAs(feed_t& feed)
+void Feeder::addSameAs(const feed_t& feed)
 {
   if(feed.action_ == action_add)
   {
@@ -247,21 +247,21 @@ void Feeder::applyProperty(feed_t& feed)
       if((indiv_branch = onto_->individual_graph_.findBranch(feed.from_)) != nullptr)
       {
         if(data_property == true)
-          onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, type, data);
+          onto_->individual_graph_.addRelation(indiv_branch, feed.prop_, type, data);
         else
-          onto_->individual_graph_.addProperty(indiv_branch, feed.prop_, feed.on_);
+          onto_->individual_graph_.addRelation(indiv_branch, feed.prop_, feed.on_);
       }
       else if((class_branch = onto_->class_graph_.findBranch(feed.from_)) != nullptr)
       {
         if(data_property == true)
-          onto_->class_graph_.addProperty(class_branch, feed.prop_, type, data);
+          onto_->class_graph_.addRelation(class_branch, feed.prop_, type, data);
         else
-          onto_->class_graph_.addProperty(class_branch, feed.prop_, feed.on_);
+          onto_->class_graph_.addRelation(class_branch, feed.prop_, feed.on_);
       }
       else if((class_branch = onto_->class_graph_.findBranch(feed.on_)) != nullptr)
-        onto_->class_graph_.addPropertyInvert(feed.from_, feed.prop_, class_branch);
+        onto_->class_graph_.addRelationInvert(feed.from_, feed.prop_, class_branch);
       else if((indiv_branch = onto_->individual_graph_.findBranch(feed.on_)) != nullptr)
-        onto_->individual_graph_.addPropertyInvert(feed.from_, feed.prop_, indiv_branch);
+        onto_->individual_graph_.addRelationInvert(feed.from_, feed.prop_, indiv_branch);
       else
         notifications_.push_back("[FAIL][unknown concept to apply property]" + current_str_feed_);
     }
@@ -270,17 +270,17 @@ void Feeder::applyProperty(feed_t& feed)
       if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
       {
         if(data_property == true)
-          onto_->class_graph_.removeProperty(feed.from_, feed.prop_, type, data);
+          onto_->class_graph_.removeRelation(feed.from_, feed.prop_, type, data);
         else
-          onto_->class_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
+          onto_->class_graph_.removeRelation(feed.from_, feed.prop_, feed.on_);
       }
       else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
       {
         if(data_property == true)
-          onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, type, data);
+          onto_->individual_graph_.removeRelation(feed.from_, feed.prop_, type, data);
         else
         {
-          auto tmp = onto_->individual_graph_.removeProperty(feed.from_, feed.prop_, feed.on_);
+          auto tmp = onto_->individual_graph_.removeRelation(feed.from_, feed.prop_, feed.on_);
           explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
         }
 

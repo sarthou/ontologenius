@@ -53,12 +53,12 @@ int OntologyTtlReader::read(std::string raw_turtle, const std::string& file_name
   if(previous_subject_ != "")
   {
     individual_graph_->add(previous_subject_, individual_vector_);
-    elemLoaded++;
+    elem_loaded++;
     individual_vector_ = IndividualVectors_t();
   }
 
   if(display_)
-    std::cout << "└── "<< elemLoaded << " readed ! " << std::endl;
+    std::cout << "└── "<< elem_loaded << " readed ! " << std::endl;
   return NO_ERROR;
 }
 
@@ -107,9 +107,9 @@ void OntologyTtlReader::removeComments(std::string& raw_turtle)
 
 void OntologyTtlReader::readTriplets(const std::string& raw_turtle)
 {
-  std::string current_subject = "";
-  std::string current_property = "";
-  std::string current_object = "";
+  std::string current_subject;
+  std::string current_property;
+  std::string current_object;
 
   for(size_t i = 0; i < raw_turtle.size(); i++)
   {
@@ -187,7 +187,7 @@ void OntologyTtlReader::sendToOntology(std::string subject, const std::vector<st
     if(previous_subject_ != "")
     {
       individual_graph_->add(previous_subject_, individual_vector_);
-      elemLoaded++;
+      elem_loaded++;
       individual_vector_ = IndividualVectors_t();
     }
     previous_subject_ = subject;
@@ -302,7 +302,7 @@ size_t OntologyTtlReader::endOfBlock(const std::string& text, size_t pose)
 
 std::string OntologyTtlReader::getElement(const std::string& text, size_t pose)
 {
-  size_t end_pose = std::string::npos;
+  size_t end_pose;
   if(text[pose] == '<')
     end_pose = endOfBlock(text, pose);
   else if((text[pose] == '"') || (text[pose] == '\''))

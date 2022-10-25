@@ -180,23 +180,23 @@
           <div class="code_line">  <span class="cpp_op">while</span>(found <span class="cpp_op">==</span> <span class="cpp_value">false</span>)</div>
           <div class="code_line">  {</div>
           <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt; tmp_routes;</div>
-          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> route_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; route_i < routes.size(); route_i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> route_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; route_i <span class="cpp_op">&lt;</span> routes.size(); route_i<span class="cpp_op">++</span>)</div>
           <div class="code_line">    {</div>
           <div class="code_line">      <span class="cpp_type">size_t</span> size <span class="cpp_op">=</span> routes[route_i].size() <span class="cpp_op">-</span> <span class="cpp_value">1</span>;</div>
           <div class="code_line">      std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; intersections <span class="cpp_op">=</span> onto_-&gt;individuals.getFrom(<span class="cpp_string">&quot;isAlong&quot;</span>, routes[route_i][size]);</div>
           <div class="code_line"><br></div>
-          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> int_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; int_i < intersections.size(); int_i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> int_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; int_i <span class="cpp_op">&lt;</span> intersections.size(); int_i<span class="cpp_op">++</span>)</div>
           <div class="code_line">      {</div>
           <div class="code_line">        std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; paths <span class="cpp_op">=</span> onto_-&gt;individuals.getOn(intersections[int_i], <span class="cpp_string">&quot;isAlong&quot;</span>);</div>
           <div class="code_line"><br></div>
           <div class="code_line">        <span class="cpp_comment">// erase paths already present in the current route</span></div>
-          <div class="code_line">        <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i < paths.size();)</div>
+          <div class="code_line">        <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> paths.size();)</div>
           <div class="code_line">          <span class="cpp_op">if</span>(std::find(routes[route_i].begin(), routes[route_i].end(), paths[i]) <span class="cpp_op">!=</span> routes[route_i].end())</div>
           <div class="code_line">            paths.erase(paths.begin() <span class="cpp_op">+</span> i);</div>
           <div class="code_line">          <span class="cpp_op">else</span></div>
           <div class="code_line">            i<span class="cpp_op">++</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">        <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i < paths.size(); i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">        <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> paths.size(); i<span class="cpp_op">++</span>)</div>
           <div class="code_line">        {</div>
           <div class="code_line">          tmp <span class="cpp_op">=</span> routes[route_i];</div>
           <div class="code_line">          tmp.push_back(intersections[int_i]);</div>
@@ -236,7 +236,7 @@
 
         <div class="code_block cpp_code" style="counter-reset:code_line 14;">
           <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt; tmp_routes;</div>
-          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> route_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; route_i < routes.size(); route_i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> route_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; route_i <span class="cpp_op">&lt;</span> routes.size(); route_i<span class="cpp_op">++</span>)</div>
         </div>
         <p>Since we use a breadth-first search, we browse the set of current routes at each itteration and we
           rank the routes found at the current iteration in the variable tmp_routes.</p>
@@ -260,7 +260,7 @@
         <p>Notice how with a single line we are able to retrieve accurate information from our knowledge base.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 20;">
-          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> int_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; int_i < intersections.size(); int_i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> int_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; int_i <span class="cpp_op">&lt;</span> intersections.size(); int_i<span class="cpp_op">++</span>)</div>
         </div>
         <p>We are now going through all of our intersections to see where they can lead us.</p>
 
@@ -277,7 +277,7 @@
            intersection <span class="color_red">intersections[int_i]</span> <span class="color_green">is along</span>.
 
         <div class="code_block cpp_code" style="counter-reset:code_line 31;">
-          <div class="code_line">        <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i < paths.size(); i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">        <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> paths.size(); i<span class="cpp_op">++</span>)</div>
         </div>
         <p>For all paths not already present in route_i, we create a new route which is the route_i plus the
           intersection leading to the new path as well as the new path.</p>
@@ -302,11 +302,11 @@
           <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; path_from <span class="cpp_op">=</span> onto_-&gt;individuals.getOn(from, <span class="cpp_string">&quot;isAlong&quot;</span>);</div>
           <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; path_to <span class="cpp_op">=</span> onto_-&gt;individuals.getFrom(<span class="cpp_string">&quot;hasAlong&quot;</span>, to);</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> from_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; from_i < path_from.size(); from_i<span class="cpp_op">++</span>)</div>
-          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> to_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; to_i < path_to.size(); to_i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> from_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; from_i <span class="cpp_op">&lt;</span> path_from.size(); from_i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> to_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; to_i <span class="cpp_op">&lt;</span> path_to.size(); to_i<span class="cpp_op">++</span>)</div>
           <div class="code_line">    {</div>
           <div class="code_line">      std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt; routes <span class="cpp_op">=</span> findRoutes(path_from[from_i], path_to[to_i]);</div>
-          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i < routes.size(); i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> routes.size(); i<span class="cpp_op">++</span>)</div>
           <div class="code_line">        <span class="cpp_op">if</span>(routes[i][routes[i].size() <span class="cpp_op">-</span> <span class="cpp_value">1</span>] <span class="cpp_op">==</span> path_to[to_i])</div>
           <div class="code_line">          <span class="cpp_op">if</span>(routes[i].size() <span class="cpp_op">&lt;</span> min_size)</div>
           <div class="code_line">          {</div>

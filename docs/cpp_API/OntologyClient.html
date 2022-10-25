@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>OntologyClient Class (cpp) | Ontologenius 0.2.10</title>
+  <title>OntologyClient Class (cpp) | Ontologenius 0.2.11</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -132,10 +132,10 @@
               <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getName">getName</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getNames">getNames</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getEveryNames">getEveryNames</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#find">find</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findSub">findSub</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findRegex">findRegex</a></b>(const std::string&amp; <i>regex</i>, bool <i>take_id</i> = true)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findFuzzy">findFuzzy</a></b>(const std::string&amp; <i>name</i>, double <i>threshold</i> = 0.5, bool <i>take_id</i> = true)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#find">find</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true, const std::string&amp; <i>selector</i> = &quot;&quot;)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findSub">findSub</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true, const std::string&amp; <i>selector</i> = &quot;&quot;)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findRegex">findRegex</a></b>(const std::string&amp; <i>regex</i>, bool <i>take_id</i> = true, const std::string&amp; <i>selector</i> = &quot;&quot;)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findFuzzy">findFuzzy</a></b>(const std::string&amp; <i>name</i>, double <i>threshold</i> = 0.5, bool <i>take_id</i> = true, const std::string&amp; <i>selector</i> = &quot;&quot;)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#exist">exist</a></b>(const std::string&amp; <i>name</i>)</td></tr>
             </tbody>
           </table>
@@ -186,24 +186,28 @@
           <p>The default <i>take_id</i> argument can be set to false if you do not want to consider the concept identifier as a possible default name.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
-          <h3 class="fn" id="find"><a name="find"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">find</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">bool</span> <i>take_id</i> = true)</h3>
+          <h3 class="fn" id="find"><a name="find"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">find</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">bool</span> <i>take_id</i> = true, const <span class="type">std::string</span>&amp; <i>selector</i> = &quot;&quot;)</h3>
           <p>Gives all the concepts having for label <i>name</i>.</p>
           <p>The default <i>take_id</i> argument can be set to false if you do not want to consider the concept identifier as a possible default name.</p>
+          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> concept. The default value &quot;&quot; represents no restriction on the result.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
-          <h3 class="fn" id="findSub"><a name="findSub"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">findSub</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">bool</span> <i>take_id</i> = true)</h3>
+          <h3 class="fn" id="findSub"><a name="findSub"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">findSub</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">bool</span> <i>take_id</i> = true, const <span class="type">std::string</span>&amp; <i>selector</i> = &quot;&quot;)</h3>
           <p>Gives all the concepts having for label a subset of <i>name</i>.</p>
           <p>The default <i>take_id</i> argument can be set to false if you do not want to consider the concept identifier as a possible default name.</p>
+          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> concept. The default value &quot;&quot; represents no restriction on the result.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
-          <h3 class="fn" id="findRegex"><a name="findRegex"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">findRegex</span>(const <span class="type">std::string</span>&amp; <i>regex</i>, <span class="type">bool</span> <i>take_id</i> = true)</h3>
+          <h3 class="fn" id="findRegex"><a name="findRegex"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">findRegex</span>(const <span class="type">std::string</span>&amp; <i>regex</i>, <span class="type">bool</span> <i>take_id</i> = true, const <span class="type">std::string</span>&amp; <i>selector</i> = &quot;&quot;)</h3>
           <p>Gives all concepts with a label matching the regular expression <i>regex</i>.</p>
           <p>The default <i>take_id</i> argument can be set to false if you do not want to consider the concept identifier as a possible default name.</p>
+          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> concept. The default value &quot;&quot; represents no restriction on the result.</p>
           <p>The result of this function depends on the setting of the working language.</p>
 
-          <h3 class="fn" id="findFuzzy"><a name="findFuzzy"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">findFuzzy</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">double</span> <i>threshold</i> = 0.5, <span class="type">bool</span> <i>take_id</i> = true)</h3>
+          <h3 class="fn" id="findFuzzy"><a name="findFuzzy"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">findFuzzy</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">double</span> <i>threshold</i> = 0.5, <span class="type">bool</span> <i>take_id</i> = true, const <span class="type">std::string</span>&amp; <i>selector</i> = &quot;&quot;)</h3>
           <p>Gives all the names of concepts with the lowest edit distance with parameter <i>name</i>.</p>
           <p>The default <i>take_id</i> argument can be set to false if you do not want to consider the concept identifier as a possible default name.</p>
+          <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> concept. The default value &quot;&quot; represents no restriction on the result.</p>
           <p>The result of this function depends on the setting of the working language and does not correspond to the concept identifiers but to other labels known by ontologenius.</p>
           <p>The minimum editing distance can be set with the <i>threshold</i> parameter. This value corresponds to the number of changes to be made to pass from one word to another divided by the length of the comparison word.</p>
 

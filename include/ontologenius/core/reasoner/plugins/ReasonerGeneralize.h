@@ -13,14 +13,16 @@ public:
   ReasonerGeneralize();
   virtual ~ReasonerGeneralize() = default;
 
-  virtual void setParameter(const std::string& name, const std::string& value);
+  virtual void setParameter(const std::string& name, const std::string& value) override;
 
-  virtual void periodicReason();
+  virtual void periodicReason() override;
 
-  virtual std::string getName();
-  virtual std::string getDesciption();
+  virtual bool implementPeriodicReasoning() override { return true; }
 
-  virtual bool defaultAvtive() {return false;}
+  virtual std::string getName() override;
+  virtual std::string getDesciption() override;
+
+  virtual bool defaultAvtive() override {return false;}
 private:
   size_t current_id_;
   size_t class_per_period_;

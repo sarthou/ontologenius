@@ -97,7 +97,6 @@ void ClassOwlWriter::writeDisjointWith(std::vector<ClassBranch_t*>& classes)
 
   std::string end = "    </rdf:Description>\n";
 
-  std::vector<std::set<std::string>> disjoints_sets;
   std::set<std::set<ClassBranch_t*>> disjoints_vects;
 
   for(auto& classe : classes)

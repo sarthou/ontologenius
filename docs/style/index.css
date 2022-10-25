@@ -234,7 +234,7 @@ body {
 .onto-grid-item-menu {
   width: 215px;
   height: 200px;
-  background-color: #808282;
+  background-color: #808282c7;
   position: absolute;
   left: -190px;
   transition: all 1.0s ease;

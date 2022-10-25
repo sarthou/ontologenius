@@ -4,9 +4,10 @@
 
 namespace ontologenius {
 
-void ReasonerNone::preReason()
+void ReasonerNone::preReason(const QueryInfo_t& query_info)
 {
   //put your pre-reasonning here
+  (void)query_info;
 }
 
 void ReasonerNone::postReason()

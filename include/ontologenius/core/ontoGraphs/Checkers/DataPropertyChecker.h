@@ -9,10 +9,10 @@ namespace ontologenius {
 class DataPropertyChecker : public ValidityChecker<DataPropertyBranch_t>
 {
 public:
-  DataPropertyChecker(DataPropertyGraph* graph) : ValidityChecker(graph) {property_graph_ = graph;}
+  explicit DataPropertyChecker(DataPropertyGraph* graph) : ValidityChecker(graph) {property_graph_ = graph;}
   ~DataPropertyChecker() {}
 
-  size_t check();
+  size_t check() override;
   void printStatus(){ValidityChecker<DataPropertyBranch_t>::printStatus(std::string("data property"), std::string("data properties"), graph_vect_.size());}
 private:
   void checkDisjoint();

@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Launchers | Ontologenius 0.2.10</title>
+  <title>Launchers | Ontologenius 0.2.11</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -88,17 +88,14 @@
           While the first two are mandatory, the only purpose of the latter is to quickly see the effect of queries.</p>
 
         <h2><i class="fas fa-angle-right"></i> Ontologenius core</h2>
-        <p>An ontologenius core need three parameters to be able to run:</p>
+        <p>An Ontologenius core needs at least three parameters to be able to run:</p>
         <ul>
-          <li><b>language</b>: the language used by ontologenius when dealing with names in natural language. It could be for example &quot;en&quot;.
+          <li><b>language</b>: the language used by Ontologenius when dealing with names in natural language. It could be for example &quot;en&quot;.
             This value can be modified during execution but must still be defined at launch.</li>
-          <li><b>config_file</b>: the configuration file that will be used to configure the reasoners.
-            To use the default configuration, you have to set this parameter to &quot;none&quot;.
-            See the <a href="reasonersConfiguration.html">configuration page</a> to setup your file.</li>
-          <li><b>intern_file</b>: the OWL file that will be used to store the ontology of all the concepts present in ontologenius when
+          <li><b>intern_file</b>: the OWL file that will be used to store the ontology of all the concepts present in Ontologenius when
             you stop it. If the file does not exist, it will be automatically created. If the file path does not exist, it will NOT be
             created. To don't use an internal file, you have to set this parameter to &quot;none&quot;.</li>
-          <li><b>files</b>: a set of OWL files that will be loaded at the launch of ontologenius. If intern_file is set and already
+          <li><b>files</b>: a set of OWL files that will be loaded at the launch of Ontologenius. If intern_file is set and already
             exists, these files will not be taken into account.</li>
         </ul>
 
@@ -108,73 +105,104 @@
           </p>
         </div>
 
-        <p>Let's see what this file system means first when we use ontologenius in single mode at first.</p>
+        <p>Let's see what this file system means first when we use Ontologenius in single mode at first.</p>
 
         <p>We consider the following parameters:</p>
 
         <div class="code_block">
-          <div class="terminal_line">  &lt;arg name=&quot;language&quot; default=&quot;en&quot;/&gt;</div>
-          <div class="terminal_line">  &lt;arg name=&quot;intern_file&quot; default=&quot;$(find ontologenius)/file_intern/ontologenius.owl&quot;/&gt;</div>
-          <div class="terminal_line">  &lt;arg name=&quot;config_file&quot; default=&quot;$(find ontologenius)/files/config_example.yaml&quot;/&gt;</div>
-          <div class="terminal_line">  &lt;arg name=&quot;files&quot; default=&quot;</div>
-          <div class="terminal_line">    $(find ontologenius)/files/attribute.owl</div>
-          <div class="terminal_line">    $(find ontologenius)/files/measure.owl</div>
-          <div class="terminal_line">    $(find ontologenius)/files/property.owl</div>
-          <div class="terminal_line">    $(find ontologenius)/files/positionProperty.owl</div>
-          <div class="terminal_line">  &quot;/&gt;</div>
-          <div class="terminal_line">  &lt;node name=&quot;ontologenius_core&quot; pkg=&quot;ontologenius&quot; type=&quot;ontologenius&quot; output=&quot;screen&quot; args=&quot;-l $(arg language) -c $(arg config_file) -i $(arg intern_file) $(arg files)&quot;&gt; &lt;/node&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;en&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
+          <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/attribute.owl</span></div>
+          <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/measure.owl</span></div>
+          <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/property.owl</span></div>
+          <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/positionProperty.owl</span></div>
+          <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;-l $(arg language) -i $(arg intern_file) $(arg files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
         </div>
 
-        <p>When you start ontologenius for the first time with these parameters, you are in case a). This means that the internal
-          file does not exist at the moment or is empty. In this case ontologenius will load the four files listed in the
+        <p>When you start Ontologenius for the first time with these parameters, you are in case a). This means that the internal
+          file does not exist at the moment or is empty. In this case Ontologenius will load the four files listed in the
           file parameter.</p>
 
-        <p>Once you stop ontologenius, the current knowledge will be saved in the internal file. So, when you run ontologenius again,
+        <p>Once you stop Ontologenius, the current knowledge will be saved in the internal file. So, when you run Ontologenius again,
           the internal file will exist and will not be empty this time. You will then be in case b) where the files listed will no
           longer be taken into account and only the internal file will be loaded.</p>
 
         <p>All the ontologies listed in the files parameter can be considered as the basic knowledge of your agent and the internal
           file as his personal memory.</p>
 
-        <p>Now consider using ontologenius in multi mode with the same parameters. The only difference here is the executable used.</p>
+        <p>Now consider using Ontologenius in multi mode with the same parameters. The only difference here is the executable used.</p>
 
         <div class="code_block">
-          <div class="terminal_line">  &lt;arg name=&quot;language&quot; default=&quot;en&quot;/&gt;</div>
-          <div class="terminal_line">  &lt;arg name=&quot;config_file&quot; default=&quot;$(find ontologenius)/files/config_example.yaml&quot;/&gt;</div>
-          <div class="terminal_line">  &lt;arg name=&quot;intern_file&quot; default=&quot;$(find ontologenius)/file_intern/ontologenius.owl&quot;/&gt;</div>
-          <div class="terminal_line">  &lt;arg name=&quot;files&quot; default=&quot;</div>
-          <div class="terminal_line">    $(find ontologenius)/files/attribute.owl</div>
-          <div class="terminal_line">    $(find ontologenius)/files/measure.owl</div>
-          <div class="terminal_line">    $(find ontologenius)/files/property.owl</div>
-          <div class="terminal_line">    $(find ontologenius)/files/positionProperty.owl</div>
-          <div class="terminal_line">  &quot;/&gt;</div>
-          <div class="terminal_line">  &lt;node name=&quot;ontologenius_core&quot; pkg=&quot;ontologenius&quot; type=&quot;ontologenius_multi&quot; output=&quot;screen&quot; args=&quot;-l $(arg language) -c $(arg config_file) -i $(arg intern_file) $(arg files)&quot;&gt; &lt;/node&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;en&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
+          <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/attribute.owl</span></div>
+          <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/measure.owl</span></div>
+          <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/property.owl</span></div>
+          <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/positionProperty.owl</span></div>
+          <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;ontologenius_multi&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;-l $(arg language) -i $(arg intern_file) $(arg files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
         </div>
 
         <p>Since you will be able to manage multiple agents, you will have several internal files. Taking the above parameters and
-          creating two bob and max agents, ontologenius will concide two internal files: ontologenius_bob.owl and ontologenius_max.owl</p>
+          creating two bob and max agents, Ontologenius will concide two internal files: ontologenius_bob.owl and ontologenius_max.owl</p>
         <p>For the rest of the mechanism, it will work as in single mode. This means that the files listed can be considered the common
           ground of all agents. Every time a new agent is created, he will be charged with that common ground.</p>
+
+        <p>An Ontologenius core can take additional parameters for advanced uses:</p>
+        <ul>
+          <li><b>config_file</b>: the configuration file that will be used to configure the reasoners.
+            To use the default configuration, you have to set this parameter to &quot;none&quot;.
+            See the <a href="reasonersConfiguration.html">configuration page</a> to setup your file.</li>
+          <li><b>display</b>: is a boolean (&quot;true&quot; or &quot;false&quot;) to enable or disable
+            the trees representing the content of the loaded files. By default this parameter is setted to true.</li>
+          <li><b>robot_file</b>: a single OWL file that will be loaded at the launch of Ontologenius (only in multi mode) 
+            if the instance name contain the word &quot;robot&quot;.
+            If intern_file is set and already exists, this file will not be taken into account.</li>
+          <li><b>human_file</b>: a single OWL file that will be loaded at the launch of Ontologenius (only in multi mode) 
+            if the instance name does not contain the word &quot;robot&quot;.
+            If intern_file is set and already exists, this file will not be taken into account.</li>
+        </ul>
+
+        <p>Here below is an example of launch file using all the parameters.</p>
+
+        <div class="code_block">
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;en&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;config_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/config_example.yaml&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;display&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;true&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;robot_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/ontologenius_robot.owl&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;human_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/ontologenius_human.owl&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
+          <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/attribute.owl</span></div>
+          <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/measure.owl</span></div>
+          <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/property.owl</span></div>
+          <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/positionProperty.owl</span></div>
+          <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;ontologenius_multi&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;-l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) -r $(arg robot_file) -h $(arg human_file) $(arg files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
+        </div>
 
         <p class="tip">Arguments are passed to the executable as options (-l, -i, -c). If you do not set an option, the setting will take a default value.</p>
 
         <h2><i class="fas fa-angle-right"></i> Ontologenius REST</h2>
 
-        <p>The REST executable is actually just a python node that provides ontologenius with a way to access the Internet to download
+        <p>The REST executable is actually just a python node that provides Ontologenius with a way to access the Internet to download
           ontologies, for example.</p>
         <p>This node does not need to be started if you do not want to load ontologies from the Internet.</p>
 
         <div class="code_block">
-          <div class="terminal_line">  &lt;node name=&quot;ontologenius_rest&quot; pkg=&quot;ontologenius&quot; type=&quot;REST.py&quot; output=&quot;screen&quot; &gt; &lt;/node&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_rest&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;REST.py&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> &gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
         </div>
 
         <h2><i class="fas fa-angle-right"></i> OntoloGUI</h2>
 
-        <p>OntoloGUI is the ontologenius GUI. Its only purpose is to help you develop applications using ontologenius. It is not
+        <p>OntoloGUI is the Ontologenius GUI. Its only purpose is to help you develop applications using Ontologenius. It is not
           necessarily necessary to launch it and is presented in more detail here.</p>
 
         <div class="code_block">
-          <div class="terminal_line">  &lt;node name=&quot;ontologenius_gui&quot; pkg=&quot;ontologenius&quot; type=&quot;ontoloGUI&quot; output=&quot;screen&quot; &gt; &lt;/node&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_gui&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;ontoloGUI&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> &gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
         </div>
 
         <h2><i class="fas fa-angle-right"></i> Launch files</h2>

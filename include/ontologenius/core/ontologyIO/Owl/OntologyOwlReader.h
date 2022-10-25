@@ -26,7 +26,7 @@ class OntologyOwlReader : public OntologyReader
 public:
   OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph) :
                     OntologyReader(class_graph, object_property_graph, data_property_graph, individual_graph) {}
-  OntologyOwlReader(Ontology& onto) : OntologyReader(onto) {}
+  explicit OntologyOwlReader(Ontology& onto) : OntologyReader(onto) {}
   ~OntologyOwlReader() {}
 
   int readFromUri(const std::string& uri, bool individual = false);
@@ -34,7 +34,7 @@ public:
 
   void setDisplay(bool display) { display_ = display; }
   void displayIndividualRules();
-  bool empty() {return (elemLoaded == 0); }
+  bool empty() {return (elem_loaded == 0); }
 
 private:
   int read(TiXmlElement* rdf, const std::string& name);

@@ -90,51 +90,53 @@ namespace ontologenius
     }
   }
 
-  std::vector<std::map<std::string, std::string>> Sparql::resolve(std::vector<triplet_t> query, const std::map<std::string, std::string>& accu)
+  std::vector<std::map<std::string, std::string>> Sparql::resolve(const std::vector<triplet_t>& query, const std::map<std::string, std::string>& accu)
   {
     std::vector<std::map<std::string, std::string>> res;
 
     triplet_t current = query[0];
-    query.erase(query.begin());
 
     std::unordered_set<std::string> values;
     std::string var_name;
     resolveSubQuery(current, accu, var_name, values);
 
+    if(values.size() == 0)
+      return res;
+
+    std::vector<triplet_t> new_query(query.begin() + 1, query.end());
+    //query.erase(query.begin());
+
+    bool variable_exixts_in_accu = (accu.find(var_name) != accu.end());
+
     for(auto& value : values)
     {
-      std::map<std::string, std::string> new_accu = accu;
-      if(new_accu.find(var_name) != new_accu.end())
-      {
-        if(new_accu[var_name] != value)
-          continue;
-      }
-      else
-        new_accu[var_name] = value;
-
-
       std::vector<std::map<std::string, std::string>> local_res;
-      if(query.size())
+      if(new_query.size())
       {
-        local_res = resolve(query, new_accu);
+        std::map<std::string, std::string> new_accu = accu;
+        if(variable_exixts_in_accu)
+        {
+          if(new_accu[var_name] != value)
+            continue;
+        }
+        else
+          new_accu[var_name] = value;
+
+        local_res = resolve(new_query, new_accu);
         if(local_res.size() == 0)
           continue;
       }
 
       if(local_res.size() != 0)
       {
-        for(auto lr : local_res)
+        for(auto& lr : local_res)
         {
           lr[var_name] = value;
           res.push_back(lr);
         }
       }
       else
-      {
-        std::map<std::string, std::string> tmp;
-        tmp[var_name] = value;
-        res.push_back(tmp);
-      }
+        res.emplace_back(std::initializer_list<std::pair<const std::string, std::string>>{{var_name, value}});
     }
 
     return res;
@@ -279,13 +281,18 @@ namespace ontologenius
 
   std::unordered_set<std::string> Sparql::getFrom(const triplet_t& triplet, const std::string& selector)
   {
-    auto res = onto_->individual_graph_.getFrom(triplet.object.name, triplet.predicat.name);
     if(selector == "")
-      return res;
-    else if(std::find(res.begin(), res.end(), selector) != res.end())
-      return std::unordered_set<std::string>({selector});
+      return onto_->individual_graph_.getFrom(triplet.object.name, triplet.predicat.name);
     else
-      return std::unordered_set<std::string>();
+    {
+      // Here we revert the problem as we know what we are expecting for.
+      auto res = onto_->individual_graph_.getOn(selector, triplet.predicat.name);
+      if(std::find(res.begin(), res.end(), triplet.object.name) != res.end())
+        return std::unordered_set<std::string>({selector});
+      else
+        return std::unordered_set<std::string>();
+    }
+      
   }
 
   std::unordered_set<std::string> Sparql::getUp(const triplet_t& triplet, const std::string& selector)
@@ -304,13 +311,16 @@ namespace ontologenius
 
   std::unordered_set<std::string> Sparql::getType(const triplet_t& triplet, const std::string& selector)
   {
-    auto res = onto_->individual_graph_.getType(triplet.object.name);
     if(selector == "")
-      return res;
-    else if(std::find(res.begin(), res.end(), selector) != res.end())
-      return std::unordered_set<std::string>({selector});
+      return onto_->individual_graph_.getType(triplet.object.name);
     else
-      return std::unordered_set<std::string>();
+    {
+      auto types = onto_->individual_graph_.getUp(selector);
+      if(std::find(types.begin(), types.end(), triplet.object.name) != types.end())
+        return std::unordered_set<std::string>({selector});
+      else
+        return std::unordered_set<std::string>();
+    }
   }
 
   std::unordered_set<std::string> Sparql::find(const triplet_t& triplet, const std::string& selector)

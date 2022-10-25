@@ -13,7 +13,7 @@
 
 namespace ontologenius {
 
-OntologyOwlWriter::OntologyOwlWriter(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph)
+OntologyOwlWriter::OntologyOwlWriter(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph) : file_(nullptr)
 {
   class_graph_ = class_graph;
   object_property_graph_ = object_property_graph;

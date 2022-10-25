@@ -161,9 +161,9 @@
           <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt; inheritances <span class="cpp_op">=</span> getWordsInheritance(names_);</div>
           <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> inheritances.size(); i<span class="cpp_op">++</span>)</div>
           <div class="code_line">  {</div>
-          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> names_[i] <span class="cpp_op">&lt;&lt;</span> &quot; is a : &quot;;</div>
+          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> names_[i] <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot; is a : &quot;</span>;</div>
           <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> j <span class="cpp_op">=</span> <span class="cpp_value">0</span>; j <span class="cpp_op">&lt;</span> inheritances[i].size(); j<span class="cpp_op">++</span>)</div>
-          <div class="code_line">      std::cout <span class="cpp_op">&lt;&lt;</span> inheritances[i][j] <span class="cpp_op">&lt;&lt;</span> &quot; &quot;;</div>
+          <div class="code_line">      std::cout <span class="cpp_op">&lt;&lt;</span> inheritances[i][j] <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot; &quot;</span>;</div>
           <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
           <div class="code_line">  }</div>
         </div>
@@ -172,7 +172,7 @@
         <div class="code_block">
           <div class="terminal_line">catkin_make</div>
           <div class="terminal_line"><br></div>
-          <div class="terminal_line">roslaunch intruder intruder.launch</div>
+          <div class="terminal_line">roslaunch ontologenius_tutorial intruder.launch</div>
         </div>
 
         <p>In another terminal we will publish a few words to see the result:</p>
@@ -287,12 +287,12 @@
           <div class="code_line">{</div>
           <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">struct intruder_t</span>&gt; intruders;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> vect_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; vect_i <span class="cpp_op">&lt; </span>inheritances.size(); vect_i++)</div>
-          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> class_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; class_i <span class="cpp_op">&lt; </span>inheritances[vect_i].size(); class_i++)</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> vect_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; vect_i <span class="cpp_op">&lt; </span>inheritances.size(); vect_i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> class_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; class_i <span class="cpp_op">&lt; </span>inheritances[vect_i].size(); class_i<span class="cpp_op">++</span>)</div>
           <div class="code_line">    {</div>
           <div class="code_line">      <span class="cpp_type">int</span> intruder_index <span class="cpp_op">=</span> <span class="cpp_value">-1</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> vect_j <span class="cpp_op">=</span> <span class="cpp_value">0</span>; vect_j <span class="cpp_op">&lt; </span>inheritances.size(); vect_j++)</div>
+          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> vect_j <span class="cpp_op">=</span> <span class="cpp_value">0</span>; vect_j <span class="cpp_op">&lt; </span>inheritances.size(); vect_j<span class="cpp_op">++</span>)</div>
           <div class="code_line">        <span class="cpp_op">if</span>(vect_j <span class="cpp_op">!=</span> vect_i)</div>
           <div class="code_line">        {</div>
           <div class="code_line">          std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt;::<span class="cpp_type">iterator</span> it <span class="cpp_op">=</span> find(inheritances[vect_j].begin(), inheritances[vect_j].end(), inheritances[vect_i][class_i]);</div>

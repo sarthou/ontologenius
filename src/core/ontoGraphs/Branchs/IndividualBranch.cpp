@@ -60,13 +60,29 @@ void IndividualBranch_t::setSteady_muted_dictionary(const std::map<std::string, 
   }
 }
 
-int IndividualBranch_t::ObjectPropertyExist(ObjectPropertyBranch_t* property, IndividualBranch_t* individual)
+int IndividualBranch_t::objectPropertyExist(ObjectPropertyBranch_t* property, IndividualBranch_t* individual)
 {
   int res = -1;
   for(size_t i = 0; i < object_relations_.size(); i++)
   {
     if(object_relations_[i].first == property)
       if(object_relations_[i].second == individual)
+      {
+        res = i;
+        break;
+      }
+  }
+
+  return res;
+}
+
+int IndividualBranch_t::dataPropertyExist(DataPropertyBranch_t* property, const data_t& data)
+{
+  int res = -1;
+  for(size_t i = 0; i < data_relations_.size(); i++)
+  {
+    if(data_relations_[i].first == property)
+      if(data_relations_[i].second == data)
       {
         res = i;
         break;

@@ -7,7 +7,8 @@
 
 namespace ontologenius {
 
-Reasoners::Reasoners(Ontology* onto) : loader_("ontologenius", "ReasonerInterface")
+Reasoners::Reasoners(const std::string& agent_name, Ontology* onto) : agent_name_(agent_name),
+                                                                      loader_("ontologenius", "ReasonerInterface")
 {
   ontology_ = onto;
 }
@@ -49,14 +50,17 @@ void Reasoners::link(Ontology* onto)
 {
   ontology_ = onto;
   for(auto& it : reasoners_)
-    it.second->initialize(ontology_);
+    it.second->initialize(agent_name_, ontology_);
 }
 
 void Reasoners::configure(const std::string& config_path)
 {
   if((config_path != "") && (config_path != "none"))
   {
-    config_.read(config_path);
+    if(config_.read(config_path) == false)
+      Display::error("Fail to load configuration file: " + config_path);
+    else
+      Display::success("The reasoners have been configured");
   }
 }
 
@@ -70,7 +74,7 @@ void Reasoners::load()
     {
       loader_.loadLibraryForClass(reasoner);
       ReasonerInterface* tmp = loader_.createUnmanagedInstance(reasoner);
-      tmp->initialize(ontology_);
+      tmp->initialize(agent_name_, ontology_);
       reasoners_[reasoner] = tmp;
       if(tmp->defaultAvtive())
         active_reasoners_[reasoner] = tmp;
@@ -90,37 +94,31 @@ void Reasoners::load()
   applyConfig();
 }
 
+void Reasoners::initialize()
+{
+  for(auto& it : reasoners_)
+    it.second->initialize();
+}
+
 std::string Reasoners::list()
 {
-  std::string out =  "Plugins loaded :\n";
   std::string res;
   for(auto& it : reasoners_)
-  {
-    out += " - From " + it.first + " : " + reasoners_[it.first]->getName() + " (" + reasoners_[it.first]->getDesciption() + ")\n";
     res += " -" + it.first;
-  }
   return res;
 }
 
 std::vector<std::string> Reasoners::listVector()
 {
-  std::string out =  "Plugins loaded :\n";
   std::vector<std::string> res;
-  for(auto& it : reasoners_)
-  {
-    out += " - From " + it.first + " : " + reasoners_[it.first]->getName() + " (" + reasoners_[it.first]->getDesciption() + ")\n";
-    res.push_back(it.first);
-  }
+  std::transform(reasoners_.cbegin(), reasoners_.cend(), std::back_inserter(res), [](const auto& it){ return it.first; });
   return res;
 }
 
 std::vector<std::string> Reasoners::activeListVector()
 {
   std::vector<std::string> res;
-  for(auto& it : active_reasoners_)
-  {
-    res.push_back(it.first);
-  }
+  std::transform(active_reasoners_.cbegin(), active_reasoners_.cend(), std::back_inserter(res), [](const auto& it){ return it.first; });
   return res;
 }
 
@@ -148,9 +146,8 @@ int Reasoners::activate(const std::string& plugin)
 
 int Reasoners::deactivate(const std::string& plugin)
 {
-  if(active_reasoners_.find(plugin) != active_reasoners_.end())
+  if(active_reasoners_.erase(plugin))
   {
-    active_reasoners_.erase(plugin);
     Display::success(plugin + " has been deactivated");
     return 0;
   }
@@ -172,7 +169,16 @@ int Reasoners::deactivate(const std::string& plugin)
 std::string Reasoners::getDescription(std::string& plugin)
 {
   if(reasoners_.find(plugin) != reasoners_.end())
-    return reasoners_[plugin]->getDesciption();
+  {
+    std::string description = reasoners_[plugin]->getDesciption();
+    if(reasoners_[plugin]->implementPostReasoning())
+      description += "\n - post reasoning";
+    if(reasoners_[plugin]->implementPreReasoning())
+      description += "\n - pre reasoning";
+    if(reasoners_[plugin]->implementPeriodicReasoning())
+      description += "\n - periodic reasoning";
+    return description;
+  }
   else
   {
     Display::error(plugin + " does not exist");
@@ -180,31 +186,34 @@ std::string Reasoners::getDescription(std::string& plugin)
   }
 }
 
-void Reasoners::runPreReasoners()
+void Reasoners::runPreReasoners(QueryOrigin_e origin, const std::string& action, const std::string& param)
 {
   size_t nb_updates = 0;
 
-  do
+  QueryInfo_t query_info = extractQueryInfo(origin, action, param);
+
+  for(auto& it : active_reasoners_)
   {
-    for(auto& it : active_reasoners_)
+    if(it.second)
     {
-      if(it.second)
-      {
-        it.second->preReason();
-        auto notif = it.second->getNotifications();
-        notifications_.insert(notifications_.end(), notif.begin(), notif.end());
-        auto explanations = it.second->getExplanations();
-        explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
-      }
+      it.second->preReason(query_info);
+      auto notif = it.second->getNotifications();
+      notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+      auto explanations = it.second->getExplanations();
+      explanations_mutex_.lock();
+      explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
+      explanations_mutex_.unlock();
     }
-
-    nb_updates = ReasonerInterface::getNbUpdates();
-    ReasonerInterface::resetNbUpdates();
-
-    computeClassesUpdates();
-    computeIndividualsUpdates();
   }
-  while(nb_updates!= 0);
+
+  nb_updates = ReasonerInterface::getNbUpdates();
+  ReasonerInterface::resetNbUpdates();
+
+  computeClassesUpdates();
+  computeIndividualsUpdates();
+  
+  if(nb_updates!= 0)
+    runPostReasoners();
 }
 
 void Reasoners::runPostReasoners()
@@ -221,7 +230,9 @@ void Reasoners::runPostReasoners()
         auto notif = it.second->getNotifications();
         notifications_.insert(notifications_.end(), notif.begin(), notif.end());
         auto explanations = it.second->getExplanations();
+        explanations_mutex_.lock();
         explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
+        explanations_mutex_.unlock();
       }
     }
     nb_updates = ReasonerInterface::getNbUpdates();
@@ -243,7 +254,9 @@ void Reasoners::runPeriodicReasoners()
       auto notif = it.second->getNotifications();
       notifications_.insert(notifications_.end(), notif.begin(), notif.end());
       auto explanations = it.second->getExplanations();
+      explanations_mutex_.lock();
       explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
+      explanations_mutex_.unlock();
     }
   }
 
@@ -326,6 +339,83 @@ void Reasoners::resetIndividualsUpdates()
     indiv->nb_updates_ = 0;
     indiv->updated_ = true;
   }
+}
+
+QueryInfo_t Reasoners::extractQueryInfo(QueryOrigin_e origin, const std::string& action, const std::string& param)
+{
+  QueryInfo_t query_info;
+  query_info.query_origin = origin;
+
+  if((action == "getUp") || (action == "isA"))
+  {
+    query_info.query_type = query_inheritance;
+    query_info.subject = param;
+  }
+  else if((action == "getDown") || (action == "getType"))
+  {
+    query_info.query_type = query_inheritance;
+    query_info.object = param;
+  }
+  else if((action == "getRelationOn") || (action == "getRelatedWith"))
+  {
+    query_info.query_type = query_relation;
+    query_info.object = param;
+  }
+  else if((action == "getRelationFrom") || (action == "getRelationWith"))
+  {
+    query_info.query_type = query_relation;
+    query_info.subject = param;
+  }
+  else if((action == "getRelatedFrom") || (action == "getRelatedOn"))
+  {
+    query_info.query_type = query_relation;
+    query_info.predicate = param;
+  }
+  else if(action == "getOn")
+  {
+    query_info.query_type = query_relation;
+    size_t pose = param.find(':');
+    if(pose != std::string::npos)
+    {
+      query_info.subject = param.substr(0, pose);
+      query_info.predicate = param.substr(pose+1);
+    }
+  }
+  else if(action == "getFrom")
+  {
+    query_info.query_type = query_relation;
+    size_t pose = param.find(':');
+    if(pose != std::string::npos)
+    {
+      query_info.object = param.substr(0, pose);
+      query_info.predicate = param.substr(pose+1);
+    }
+  }
+  else if(action == "getWith")
+  {
+    query_info.query_type = query_relation;
+    size_t pose = param.find(':');
+    if(pose != std::string::npos)
+    {
+      query_info.subject = param.substr(0, pose);
+      query_info.object = param.substr(pose+1);
+    }
+  }
+  else if((action == "getName") || (action == "getNames") ||
+          (action == "getEveryNames") || (action == "find") ||
+          (action == "findSub") || (action == "findRegex") ||
+          (action == "findFuzzy"))
+  {
+    query_info.query_type = query_label;
+    query_info.subject = param;
+  }
+  else
+  {
+    query_info.query_type = query_other;
+    query_info.subject = param;
+  }
+
+  return query_info;
 }
 
 } // namespace ontologenius

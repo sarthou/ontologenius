@@ -15,15 +15,10 @@ std::vector<std::string> differenceFinder::getDiff(Ontology* onto1, Ontology* on
   {
     ClassBranch_t* class_onto1 = onto1->class_graph_.findBranch(concept);
     ClassBranch_t* class_onto2 = onto2->class_graph_.findBranch(concept);
-    if((class_onto1 == nullptr) && (class_onto2 != nullptr))
+    if(class_onto2 != nullptr)
       comp2 = toComparator(class_onto2);
-    else if((class_onto1 != nullptr) && (class_onto2 == nullptr))
+    if(class_onto1 != nullptr)
       comp1 = toComparator(class_onto1);
-    else if((class_onto1 != nullptr) && (class_onto2 != nullptr))
-    {
-      comp1 = toComparator(class_onto1);
-      comp2 = toComparator(class_onto2);
-    }
   }
   else if(indiv_onto1 == nullptr)
   {
@@ -36,11 +31,12 @@ std::vector<std::string> differenceFinder::getDiff(Ontology* onto1, Ontology* on
   {
     comp1 = toComparator(indiv_onto1);
     ClassBranch_t* class_onto2 = onto2->class_graph_.findBranch(concept);
-    if(class_onto2 == nullptr)
+    if(class_onto2 != nullptr)
       comp2 = toComparator(class_onto2);
   }
   else
-  {    comp1 = toComparator(indiv_onto1);
+  {   
+    comp1 = toComparator(indiv_onto1);
     comp2 = toComparator(indiv_onto2);
   }
 
@@ -106,7 +102,7 @@ void differenceFinder::compareDatas(comparator_t& comp1, comparator_t& comp2, st
     for(size_t i = 0; i < comp1.data_properties_name_.size(); i++)
     {
       std::vector<size_t> found_indexs;
-      for(size_t j = 0; j < comp2.data_properties_name_.size(); i++)
+      for(size_t j = 0; j < comp2.data_properties_name_.size(); j++)
         if(comp1.data_properties_name_[i] == comp2.data_properties_name_[j])
         {
           found_indexs.push_back(j);

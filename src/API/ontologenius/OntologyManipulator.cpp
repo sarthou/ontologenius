@@ -1,7 +1,8 @@
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 #include "ontologenius/graphical/Display.h"
 
-OntologyManipulator::OntologyManipulator(ros::NodeHandle* n, const std::string& name) : individuals(&n_, name),
+OntologyManipulator::OntologyManipulator(ros::NodeHandle* n, const std::string& name) : name_(name),
+                                                                                        individuals(&n_, name),
                                                                                         objectProperties(&n_, name),
                                                                                         dataProperties(&n_, name),
                                                                                         classes(&n_, name),
@@ -17,7 +18,8 @@ OntologyManipulator::OntologyManipulator(ros::NodeHandle* n, const std::string& 
   ros::service::waitForService(service_name);
 }
 
-OntologyManipulator::OntologyManipulator(const std::string& name) : individuals(&n_, name),
+OntologyManipulator::OntologyManipulator(const std::string& name) : name_(name),
+                                                                    individuals(&n_, name),
                                                                     objectProperties(&n_, name),
                                                                     dataProperties(&n_, name),
                                                                     classes(&n_, name),
@@ -26,12 +28,12 @@ OntologyManipulator::OntologyManipulator(const std::string& name) : individuals(
                                                                     feeder(&n_, name),
                                                                     sparql(&n_, name)
 {
-  name_ = name;
   std::string service_name = (name == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name;
   ros::service::waitForService(service_name);
 }
 
-OntologyManipulator::OntologyManipulator(const OntologyManipulator& other): individuals(&n_, other.name_),
+OntologyManipulator::OntologyManipulator(const OntologyManipulator& other): name_(other.name_),
+                                                                      individuals(&n_, other.name_),
                                                                       objectProperties(&n_, other.name_),
                                                                       dataProperties(&n_, other.name_),
                                                                       classes(&n_, other.name_),
@@ -40,12 +42,12 @@ OntologyManipulator::OntologyManipulator(const OntologyManipulator& other): indi
                                                                       feeder(&n_, other.name_),
                                                                       sparql(&n_, other.name_)
 {
-  name_ = other.name_;
   std::string service_name = (name_ == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name_;
   ros::service::waitForService(service_name);
 }
 
-OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): individuals(&n_, other.name_),
+OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): name_(other.name_),
+                                                                      individuals(&n_, other.name_),
                                                                       objectProperties(&n_, other.name_),
                                                                       dataProperties(&n_, other.name_),
                                                                       classes(&n_, other.name_),
@@ -54,7 +56,6 @@ OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): individua
                                                                       feeder(&n_, other.name_),
                                                                       sparql(&n_, other.name_)
 {
-  name_ = other.name_;
   std::string service_name = (name_ == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name_;
   ros::service::waitForService(service_name);
 }

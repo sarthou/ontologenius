@@ -125,7 +125,7 @@
         <h1 class="title">Launch the program</h1>
 
         <p>Perfect, we now have an early program that, while not doing much, is functional.
-          It is therefore time for us to launch our program as well as ontologenius.
+          It is therefore time for us to launch our program as well as Ontologenius.
           One way that will seem obvious to us will be to launch our two programs
           independently like this:</p>
         <p>terminal 1:</p>
@@ -137,7 +137,7 @@
           <div class="terminal_line">rosrun intruder intruder.py</div>
         </div>
 
-        <p>However, ontologenius has three launch parameters and by doing so we take the default
+        <p>However, Ontologenius has three launch parameters and by doing so we take the default
           parameters that are not necessarily the ones we need. Let's detail the parameters available:</p>
         <ul>
           <li class="fn"><b><i>language</i></b>: That's what we call the working language. Ontologenius
@@ -149,7 +149,7 @@
             modify as a user. This own file is precisely intern_file. To avoid using an internal file,
             simply set the <i>none</i> value to a path.</li>
           <li class="fn"><b><i>files</i></b>: These are the input files, those that will be loaded at the
-            launch of ontologenius. Be careful though, these files are not taken into account if you use
+            launch of Ontologenius. Be careful though, these files are not taken into account if you use
             an internal file and this file already contains knowledge.</li>
         </ul>
 
@@ -161,18 +161,18 @@
           <li class="fn"><b><i>ontologenius_empty.launch</i></b>: It defines the working language as being English,
             it also defines an internal file but does not define any input files.</li>
           <li class="fn"><b><i>ontologenius_full.launch</i></b>: The parameters are the same as for
-            <i>ontologenius.launch</i>. The only difference is that the ontologenius GUI (ontoloGUI) is also launched.</li>
+            <i>ontologenius.launch</i>. The only difference is that the Ontologenius GUI (ontoloGUI) is also launched.</li>
         </ul>
 
         <p>For our application, we do not need the GUI so we will ontologenius.launch or ontologenius_empty.launch.
           Indeed, we can use one or the other because we will in all cases redefine our own parameters.</p>
 
-        <p>Let's create our launch file that will launch our application as well as ontologenius with
+        <p>Let's create our launch file that will launch our application as well as Ontologenius with
           our parameters:</p>
 
         <div class="code_block xml_code" style="counter-reset:code_line 0;">
           <div class="code_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;intruder.py&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;intruder.py&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
           <div class="code_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius.launch&quot;</span>&gt;</div>
           <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;none&quot;</span>/&gt;</div>
           <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/tutorials/tutorial_1.owl&quot;</span>/&gt;</div>
@@ -189,15 +189,15 @@
 
         <p>I believe we are ready to launch our program:</p>
         <div class="code_block">
-          <div class="terminal_line">roslaunch intruder intruder.launch</div>
+          <div class="terminal_line">roslaunch ontologenius_tutorial intruder.launch</div>
         </div>
 
         <p>If all went well, you should have at the bottom of your terminal a section of which summarizes
           the number of classes, individuals, and property that were loaded from the input file. As a result
           of this, you should find the &quot;Let's play&quot; that we have code together. This summary is
-          generated following the closure of the ontology. It is there to let you know what ontologenius
+          generated following the closure of the ontology. It is there to let you know what Ontologenius
           has taken into account. Also, if you scroll a little upwards, you can observe the complete
-          arborescence of those read by ontologenius.</p>
+          arborescence of those read by Ontologenius.</p>
 
         <p>So let's check if our topic works well with the following publications:</p>
         <div class="code_block">

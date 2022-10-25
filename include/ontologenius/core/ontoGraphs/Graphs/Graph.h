@@ -19,7 +19,7 @@ namespace ontologenius {
 
 struct GraphException : public std::exception {
   std::string msg_;
-  GraphException(const std::string& msg) : msg_(msg) {}
+  explicit GraphException(const std::string& msg) : msg_(msg) {}
   const char * what () const throw () {
     return msg_.c_str();
   }
@@ -30,10 +30,10 @@ class Graph
 {
   static_assert(std::is_base_of<ValuedNode,B>::value, "B must be derived from ValuedNode");
 public:
-  Graph() { language_ = "en"; }
+  Graph() : language_("en") {}
   virtual ~Graph() {}
 
-  void setLanguage(std::string language) {language_ = language; }
+  void setLanguage(const std::string& language) {language_ = language; }
   std::string getLanguage() {return language_; }
 
   virtual void close() = 0;

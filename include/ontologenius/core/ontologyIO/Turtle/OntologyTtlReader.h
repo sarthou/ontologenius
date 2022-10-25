@@ -15,7 +15,7 @@ class OntologyTtlReader : public OntologyReader
 public:
   OntologyTtlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph) :
                     OntologyReader(class_graph, object_property_graph, data_property_graph, individual_graph) {}
-  OntologyTtlReader(Ontology& onto) : OntologyReader(onto) {}
+  explicit OntologyTtlReader(Ontology& onto) : OntologyReader(onto) {}
   ~OntologyTtlReader() {}
 
   int readFromUri(const std::string& uri);

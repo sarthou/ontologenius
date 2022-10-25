@@ -10,7 +10,8 @@ OntologyReader::OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* obj
   object_property_graph_ = object_property_graph;
   data_property_graph_ = data_property_graph;
   individual_graph_ = individual_graph;
-  elemLoaded = 0;
+  elem_loaded = 0;
+  display_ = false;
 }
 
 OntologyReader::OntologyReader(Ontology& onto)
@@ -19,7 +20,8 @@ OntologyReader::OntologyReader(Ontology& onto)
   object_property_graph_ = &onto.object_property_graph_;
   individual_graph_ = &onto.individual_graph_;
   data_property_graph_ = &onto.data_property_graph_;
-  elemLoaded = 0;
+  elem_loaded = 0;
+  display_ = false;
 }
 
 } // namespace ontologenius

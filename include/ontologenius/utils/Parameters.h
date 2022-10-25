@@ -19,20 +19,16 @@ public:
   std::vector<std::string> values_;
   std::vector<std::string> default_values_;
 
-  Parameter(const std::string& name, const std::vector<std::string>& options, const std::vector<std::string>& default_values = {})
-  {
-    name_ = name;
-    options_ = options;
-    default_values_ = default_values;
-  }
+  Parameter(const std::string& name, const std::vector<std::string>& options, const std::vector<std::string>& default_values = {}) : name_(name),
+                                                                                                                                     options_(options),
+                                                                                                                                     default_values_(default_values)
+  {}
 
-  Parameter(const Parameter& other)
-  {
-    name_ = other.name_;
-    options_ = other.options_;
-    values_ = other.values_;
-    default_values_ = other.default_values_;
-  }
+  Parameter(const Parameter& other) : name_(other.name_),
+                                      options_(other.options_),
+                                      values_(other.values_),
+                                      default_values_(other.default_values_)
+  {}
 
   void insert(const std::string& value) { values_.push_back(value); }
 
@@ -54,10 +50,7 @@ public:
 
   bool testOption(const std::string& option)
   {
-    for(auto op : options_)
-      if(option == op)
-        return true;
-    return false;
+    return std::any_of(options_.begin(), options_.end(), [option](auto op){ return option == op; });
   }
 
   void display()

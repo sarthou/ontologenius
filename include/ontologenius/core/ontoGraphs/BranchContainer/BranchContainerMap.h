@@ -16,11 +16,11 @@ public:
   BranchContainerMap(const BranchContainerMap& base);
   virtual ~BranchContainerMap() {} //B* is destructed by ontograph
 
-  virtual B* find(const std::string& word);
-  virtual std::vector<B*> find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default);
-  virtual void load(std::vector<B*>& vect);
-  virtual void insert(B* branch);
-  virtual void erase(B* branch);
+  virtual B* find(const std::string& word) override;
+  virtual std::vector<B*> find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default) override;
+  virtual void load(std::vector<B*>& vect) override;
+  virtual void insert(B* branch) override;
+  virtual void erase(B* branch) override;
 private:
   std::unordered_map<std::string, B*> nodes_;
 };

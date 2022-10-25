@@ -33,7 +33,7 @@ struct node_t
   rect_t rect;
   int family;
 
-  node_t(std::string p_value, int p_layer = -1) : value(p_value), layer(p_layer), pos(-1), marker(false) {}
+  explicit node_t(const std::string& p_value, int p_layer = -1) : value(p_value), layer(p_layer), pos(-1), marker(false), family(-1) {}
 };
 
 class GraphDrawer
@@ -49,7 +49,7 @@ protected:
   std::vector<std::vector<node_t*>> layer_nodes;
 
   IplImage* image;
-  bool exist(std::string value);
+  bool exist(const std::string& value);
 
   void setRect(int layer, int nb_layer, int nb_index, node_t* node);
   void link();

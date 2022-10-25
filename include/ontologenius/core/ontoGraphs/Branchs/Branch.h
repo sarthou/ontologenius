@@ -21,10 +21,7 @@ public:
   std::vector<Single_t<T*>> childs_;
   std::vector<Single_t<T*>> mothers_;
 
-  uint8_t family;
-  uint8_t nb_mothers_;
-
-  Branch_t(std::string value) : ValuedNode(value), family(0), nb_mothers_(0)
+  explicit Branch_t(const std::string& value) : ValuedNode(value)
     {};
 };
 

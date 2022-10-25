@@ -25,7 +25,7 @@ struct feed_t
   std::string on_;
   bool checkout_;
 
-  feed_t() { checkout_ = false; }
+  feed_t() : action_(action_nop), checkout_(false) {}
 };
 
 class FeedStorage

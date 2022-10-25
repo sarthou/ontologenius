@@ -9,10 +9,10 @@ namespace ontologenius {
 class IndividualChecker : public ValidityChecker<IndividualBranch_t>
 {
 public:
-  IndividualChecker(IndividualGraph* graph) : ValidityChecker(graph) {individual_graph_ = graph;}
+  explicit IndividualChecker(IndividualGraph* graph) : ValidityChecker(graph) {individual_graph_ = graph;}
   ~IndividualChecker() {}
 
-  size_t check();
+  size_t check() override;
   void printStatus(){ValidityChecker<IndividualBranch_t>::printStatus(std::string("individual"), std::string("individuals"), graph_vect_.size());}
 private:
   IndividualGraph* individual_graph_;

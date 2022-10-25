@@ -43,8 +43,8 @@ public:
 
   void deepCopy(const IndividualGraph& other);
 
-  void close();
-  std::vector<IndividualBranch_t*> get() {return individuals_; }
+  void close() final;
+  std::vector<IndividualBranch_t*> get() override {return individuals_; }
 
   std::vector<IndividualBranch_t*> getSafe()
   {
@@ -56,8 +56,7 @@ public:
   std::vector<std::string> getAll()
   {
     std::vector<std::string> res;
-    for(auto branch : individuals_)
-      res.push_back(branch->value());
+    std::transform(individuals_.cbegin(), individuals_.cend(), std::back_inserter(res), [](auto branch){ return branch->value(); });
     return res;
   }
 
@@ -82,7 +81,7 @@ public:
   std::unordered_set<std::string> getRangeOf(const std::string& individual, int depth = -1);
   std::unordered_set<std::string> getUp(IndividualBranch_t* indiv, int depth = -1, unsigned int current_depth = 0);
   std::unordered_set<std::string> getUp(const std::string& individual, int depth = -1);            //C3
-  std::unordered_set<std::string> select(std::unordered_set<std::string>& on, const std::string& class_selector);
+  std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
   std::string getName(const std::string& value, bool use_default = true);
   std::vector<std::string> getNames(const std::string& value, bool use_default = true);
   std::vector<std::string> getEveryNames(const std::string& value, bool use_default = true);
@@ -97,31 +96,36 @@ public:
 
   ClassBranch_t* upgradeToBranch(IndividualBranch_t* indiv);
   IndividualBranch_t* createIndividual(const std::string& name);
+  IndividualBranch_t* createIndividualUnsafe(const std::string& name);
   void deleteIndividual(IndividualBranch_t* indiv);
   void redirectDeleteIndividual(IndividualBranch_t* indiv, ClassBranch_t* _class);
   void addLang(const std::string& indiv, const std::string& lang, const std::string& name);
   void addInheritage(const std::string& indiv, const std::string& class_inherited);
+  void addInheritage(IndividualBranch_t* branch, const std::string& class_inherited);
+  void addInheritageUnsafe(IndividualBranch_t* branch, const std::string& class_inherited);
   void addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
   void addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
-  int addProperty(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba = 1.0, bool infered = false);
-  void addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on);
-  void addProperty(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data);
-  void addPropertyInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);
+  int addRelation(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba = 1.0, bool infered = false);
+  int addRelation(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, const data_t& data, double proba = 1.0, bool infered = false);
+  void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on);
+  void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data);
+  void addRelationInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);
   void removeLang(const std::string& indiv, const std::string& lang, const std::string& name);
   void removeInheritage(const std::string& indiv, const std::string& class_inherited);
   bool addSameAs(const std::string& indiv_1, const std::string& indiv_2);
   bool removeSameAs(const std::string& indiv_1, const std::string& indiv_2);
   // removing a relation using an object property has to generate an "explanation" if it remove other relations
-  std::vector<std::pair<std::string, std::string>> removeProperty(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered = false);
-  std::vector<std::pair<std::string, std::string>> removeProperty(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
-  void removeProperty(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
-  std::vector<std::pair<std::string, std::string>> removePropertyInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
-  std::vector<std::pair<std::string, std::string>> removePropertySymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
-  std::vector<std::pair<std::string, std::string>> removePropertyChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  std::vector<std::pair<std::string, std::string>> removeRelation(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered = false);
+  std::vector<std::pair<std::string, std::string>> removeRelation(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
+  void removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
+  std::vector<std::pair<std::string, std::string>> removeRelationInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  std::vector<std::pair<std::string, std::string>> removeRelationSymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  std::vector<std::pair<std::string, std::string>> removeRelationChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
   std::vector<IndividualBranch_t*> resolveLink(std::vector<ObjectPropertyBranch_t*>& chain, IndividualBranch_t* indiv_on, size_t index);
   std::vector<std::vector<ObjectPropertyBranch_t*>> getChains(ObjectPropertyBranch_t* base_property);
 
   void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, unsigned int current_depth = 0);
+  void getSameAndClean(IndividualBranch_t* individual, std::unordered_set<std::string>& res);
 
 private:
   ClassGraph* class_graph_;
@@ -141,26 +145,25 @@ private:
       return nullptr;
   }
 
-  void addObjectProperty(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
-  void addDataProperty(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation);
-  void setObjectPropertiesUpdated(std::vector<IndivObjectRelationElement_t>& relations);
+  void addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
+  void addDataRelation(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation);
+  void setRelationsUpdated(std::vector<IndivObjectRelationElement_t>& relations);
 
   void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth = -1);
   bool getRelatedWith(ClassBranch_t* class_branch, const std::string& data, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& took);
-  bool getFrom(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, const data_t& data, std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake);
+  bool getFrom(ClassBranch_t* class_branch, const std::unordered_set<uint32_t>& object_properties, const std::unordered_set<uint32_t>& data_properties, const data_t& data, const std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake);
 
   bool relationExists(IndividualBranch_t* subject, ObjectPropertyBranch_t* property, IndividualBranch_t* object);
 
   std::unordered_set<uint32_t> getSameId(const std::string& individual);
   void getSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);
   std::unordered_set<std::string> getSameAndClean(IndividualBranch_t* individual);
-  void getSameAndClean(IndividualBranch_t* individual, std::unordered_set<std::string>& res);
   std::unordered_set<uint32_t> getSameIdAndClean(IndividualBranch_t* individual);
-  void cleanMarks(std::unordered_set<IndividualBranch_t*>& indSet);
-  std::unordered_set<std::string> set2set(std::unordered_set<IndividualBranch_t*>& indSet, bool clean = true);
+  void cleanMarks(const std::unordered_set<IndividualBranch_t*>& indiv_set);
+  std::unordered_set<std::string> set2set(const std::unordered_set<IndividualBranch_t*>& indiv_set, bool clean = true);
 
   bool checkRangeAndDomain(IndividualBranch_t* from, ObjectPropertyBranch_t* prop, IndividualBranch_t* on);
-  bool checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, data_t& data);
+  bool checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, const data_t& data);
 
   void cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch);
 };

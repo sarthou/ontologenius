@@ -16,7 +16,7 @@ struct BranchNode_t
   std::string id;
   T* branch;
 
-  BranchNode_t() {next = nullptr; id = ""; branch = nullptr; }
+  BranchNode_t() : next(nullptr), id(""), branch(nullptr) {}
   ~BranchNode_t()
   {
     //T* branch is destructed by ontograph
@@ -32,36 +32,41 @@ template <typename B>
 class BranchContainerDyn : public BranchContainerBase<B>
 {
 public:
-  BranchContainerDyn()
+  BranchContainerDyn() : nodes_(nullptr),
+                         nodes_end_(nullptr),
+                         buffer_size_(0),
+                         nb_elem_(0)
   {
     nodes_ = new BranchNode_t<B>;
     nodes_end_ = nodes_;
-    nb_elem_ = 0;
   }
   BranchContainerDyn(const BranchContainerDyn& base);
+
+  BranchContainerDyn& operator=(const BranchContainerDyn& other) = delete;
 
   virtual ~BranchContainerDyn()
   {
     delete nodes_;
   }
 
-  virtual B* find(const std::string& word);
-  virtual std::vector<B*> find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default);
-  virtual void load(std::vector<B*>& vect);
-  virtual void insert(B* branch);
-  virtual void erase(B* branch);
+  virtual B* find(const std::string& word) override;
+  virtual std::vector<B*> find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default) override;
+  virtual void load(std::vector<B*>& vect) override;
+  virtual void insert(B* branch) override;
+  virtual void erase(B* branch) override;
 private:
   BranchNode_t<B>* nodes_;
   BranchNode_t<B>* nodes_end_;
   size_t buffer_size_;
   size_t nb_elem_;
 
-  void insertEnd(std::string id, B* branch);
+  void insertEnd(const std::string& id, B* branch);
   void reconf(BranchNode_t<B>* node);
 };
 
 template <typename B>
-BranchContainerDyn<B>::BranchContainerDyn(const BranchContainerDyn& base)
+BranchContainerDyn<B>::BranchContainerDyn(const BranchContainerDyn& base) : nodes_(nullptr),
+                                                                            nodes_end_(nullptr)
 {
   BranchNode_t<B>* current = base.nodes_;
   while(current != nullptr)
@@ -137,7 +142,7 @@ void BranchContainerDyn<B>::erase(B* branch)
 }
 
 template <typename B>
-void BranchContainerDyn<B>::insertEnd(std::string id, B* branch)
+void BranchContainerDyn<B>::insertEnd(const std::string& id, B* branch)
 {
   BranchNode_t<B>* tmp = new BranchNode_t<B>;
   tmp->id = id;
