@@ -9,11 +9,16 @@
 
 namespace ontologenius {
 
-int OntologyOwlReader::readFromUri(const std::string& uri, bool individual)
+int OntologyOwlReader::readFromUri(std::string uri, bool individual)
 {
+  fixUrl(uri);
+
   std::string response = "";
   int err = send_request("GET", uri, "", response);
   removeDocType(response);
+
+  if(isProtected(response))
+    Display::warning("The requested file may be protected: " + uri);
 
   if(err == NO_ERROR)
   {
@@ -63,14 +68,13 @@ int OntologyOwlReader::read(TiXmlElement* rdf, const std::string& name)
     Display::error("Failed to read file: " + name);
     return OTHER;
   }
-  else if(rdf->Value() != "rdf:RDF")
+  else if(std::string(rdf->Value()) != "rdf:RDF")
   {
     Display::error("File is not based on RDF: " + name);
     return OTHER;
   }
   else
   {
-    std::cout << rdf->Value() << std::endl;
     if(display_)
     {
       std::cout << name << std::endl;
@@ -582,6 +586,37 @@ void OntologyOwlReader::removeDocType(std::string& txt)
       }
     }
   }
+}
+
+void OntologyOwlReader::fixUrl(std::string& url)
+{
+  size_t dot_pose = url.find_last_of(".");
+  size_t pose = url.find_last_of("/");
+  if(dot_pose < pose)
+    url += ".owl";
+
+  pose = url.find("github.");
+  if(pose != std::string::npos)
+  {
+    url.replace(pose, std::string("github.").size(), "raw.githubusercontent.");
+    size_t blob_pose = url.find("blob/");
+    url.erase(blob_pose, std::string("blob/").size());
+  }
+
+  pose = url.find("gitlab.");
+  if(pose != std::string::npos)
+  {
+    pose = url.find("/blob/");
+    url.replace(pose, std::string("/blob/").size(), "/raw/");
+  }
+}
+
+bool OntologyOwlReader::isProtected(const std::string& page_content)
+{
+  if(page_content.find("type=\"password\"") != std::string::npos)
+    return true;
+  else
+    return false;
 }
 
 } // namespace ontologenius
