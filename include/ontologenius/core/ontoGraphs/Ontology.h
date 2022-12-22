@@ -6,8 +6,7 @@
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
-#include "ontologenius/core/ontologyIO/Turtle/OntologyTtlReader.h"
-#include "ontologenius/core/ontologyIO/Owl/OntologyOwlReader.h"
+#include "ontologenius/core/ontologyIO/OntologyLoader.h"
 #include "ontologenius/core/ontologyIO/Owl/OntologyOwlWriter.h"
 
 namespace ontologenius {
@@ -38,12 +37,8 @@ public:
   IndividualGraph individual_graph_;
 
 private:
-  OntologyOwlReader owl_reader;
-  OntologyTtlReader ttl_reader;
+  OntologyLoader loader_;
   OntologyOwlWriter writer;
-
-  std::vector<std::string> files_;
-  std::vector<std::string> uri_;
 
   bool is_preloaded_;
   bool is_init_;

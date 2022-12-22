@@ -114,7 +114,7 @@ int OntologyOwlReader::read(TiXmlElement* rdf, const std::string& name)
     for(TiXmlElement* elem : elem_annotation_prop)
       readAnnotationProperty(elem);
     if(display_)
-      std::cout << "└── "<< elem_loaded << " readed ! " << std::endl;
+      std::cout << "└── "<< nb_loaded_elem_ << " readed ! " << std::endl;
     return NO_ERROR;
   }
 }
@@ -151,7 +151,7 @@ int OntologyOwlReader::readIndividual(TiXmlElement* rdf, const std::string& name
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != nullptr; elem = elem->NextSiblingElement())
       readIndividualDescription(elem);
     if(display_)
-      std::cout << "└── "<< elem_loaded << " readed ! " << std::endl;
+      std::cout << "└── "<< nb_loaded_elem_ << " readed ! " << std::endl;
     return NO_ERROR;
   }
 }
@@ -204,7 +204,7 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
     }
   }
   class_graph_->add(node_name, object_vector);
-  elem_loaded++;
+  nb_loaded_elem_++;
 }
 
 void OntologyOwlReader::readIndividual(TiXmlElement* elem)
@@ -257,7 +257,7 @@ void OntologyOwlReader::readIndividual(TiXmlElement* elem)
       }
     }
     individual_graph_->add(node_name, individual_vector);
-    elem_loaded++;
+    nb_loaded_elem_++;
   }
 }
 
@@ -372,7 +372,7 @@ void OntologyOwlReader::readObjectProperty(TiXmlElement* elem)
   }
 
   object_property_graph_->add(node_name, property_vector);
-  elem_loaded++;
+  nb_loaded_elem_++;
 }
 
 void OntologyOwlReader::readDataProperty(TiXmlElement* elem)
@@ -407,7 +407,7 @@ void OntologyOwlReader::readDataProperty(TiXmlElement* elem)
   }
 
   data_property_graph_->add(node_name, property_vector);
-  elem_loaded++;
+  nb_loaded_elem_++;
 }
 
 void OntologyOwlReader::readAnnotationProperty(TiXmlElement* elem)
@@ -461,7 +461,7 @@ void OntologyOwlReader::readAnnotationProperty(TiXmlElement* elem)
     // if no data property is found, the annotation will be setted as an object property by default
   }
 
-  elem_loaded++;
+  nb_loaded_elem_++;
 }
 
 void OntologyOwlReader::readCollection(std::vector<std::string>& vect, TiXmlElement* elem, const std::string& symbol, size_t level)
