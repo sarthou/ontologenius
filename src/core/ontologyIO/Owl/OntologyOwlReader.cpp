@@ -63,8 +63,14 @@ int OntologyOwlReader::read(TiXmlElement* rdf, const std::string& name)
     Display::error("Failed to read file: " + name);
     return OTHER;
   }
+  else if(rdf->Value() != "rdf:RDF")
+  {
+    Display::error("File is not based on RDF: " + name);
+    return OTHER;
+  }
   else
   {
+    std::cout << rdf->Value() << std::endl;
     if(display_)
     {
       std::cout << name << std::endl;
