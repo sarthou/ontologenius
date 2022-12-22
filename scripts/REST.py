@@ -38,6 +38,8 @@ def get_resource(url, headers):
     except requests.exceptions.RequestException as err:
         rospy.logwarn("[REST.get_resource()] Request error: " + str(err))
 
+    return response_code, ""
+
 
 def delete_resource(url, headers):
     """
