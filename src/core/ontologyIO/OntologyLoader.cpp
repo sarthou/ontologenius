@@ -15,20 +15,34 @@ OntologyLoader::OntologyLoader(Ontology& onto) : owl_reader_(onto), ttl_reader_(
 
 int OntologyLoader::loadFile(const std::string& file)
 {
-  files_.push_back(file);
   if(file.find(".ttl") == std::string::npos)
-    return owl_reader_.readFromFile(file);
+  {
+    int err = owl_reader_.readFromFile(file);
+    if(err == NO_ERROR)
+      files_.push_back(file);
+    return err;
+  }
   else
-    return 0; // ttl files only describe individuals
+  {
+    files_.push_back(file);
+    return NO_ERROR; // ttl files only describe individuals
+  }
 }
 
 int OntologyLoader::loadUri(const std::string& uri)
 {
-  uri_.push_back(uri);
   if(uri.find(".ttl") == std::string::npos)
-    return owl_reader_.readFromUri(uri);
+  {
+    int err = owl_reader_.readFromUri(uri);
+    if(err == NO_ERROR)
+      uri_.push_back(uri);
+    return err;
+  }
   else
-    return 0; // ttl files only describe individuals
+  {
+    uri_.push_back(uri);
+    return NO_ERROR; // ttl files only describe individuals
+  }
 }
 
 int OntologyLoader::loadIndividuals()
