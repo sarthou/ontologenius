@@ -48,6 +48,44 @@ int OntologyOwlReader::readFromFile(const std::string& file_name, bool individua
     return readIndividual(rdf, file_name);
 }
 
+std::vector<std::string> OntologyOwlReader::getImportsFromRaw(std::string content)
+{
+  std::vector<std::string> imports;
+  removeDocType(content);
+
+  TiXmlDocument doc;
+  doc.Parse((const char*)content.c_str(), nullptr, TIXML_ENCODING_UTF8);
+  TiXmlElement* rdf = doc.FirstChildElement();
+
+  if(rdf == nullptr)
+    return {};
+  else if(std::string(rdf->Value()) != "rdf:RDF")
+    return {};
+  else
+  {
+    auto ontology_elem = rdf->FirstChildElement("owl:Ontology");
+    for(TiXmlElement* elem = ontology_elem->FirstChildElement("owl:imports"); elem != nullptr; elem = elem->NextSiblingElement("owl:imports"))
+      imports.emplace_back(elem->Attribute("rdf:resource"));
+  }
+
+  return imports;
+}
+
+std::vector<std::string> OntologyOwlReader::getImportsFromFile(const std::string& file_name)
+{
+  std::string raw_file = "";
+  std::string tmp = "";
+  std::ifstream f(file_name);
+
+  if(!f.is_open())
+    return {};
+
+  while(getline(f,tmp))
+    raw_file += tmp;
+  
+  return getImportsFromRaw(raw_file);
+}
+
 int OntologyOwlReader::read(TiXmlElement* rdf, const std::string& name)
 {
   if(rdf == nullptr)

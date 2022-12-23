@@ -32,6 +32,9 @@ public:
   int readFromUri(std::string content, const std::string& uri, bool individual = false);
   int readFromFile(const std::string& fileName, bool individual = false);
 
+  std::vector<std::string> getImportsFromRaw(std::string content);
+  std::vector<std::string> getImportsFromFile(const std::string& file_name);
+
   void setDisplay(bool display) { display_ = display; }
   void displayIndividualRules();
   bool empty() {return (nb_loaded_elem_ == 0); }
