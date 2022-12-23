@@ -9,10 +9,8 @@
 
 namespace ontologenius {
 
-int OntologyOwlReader::readFromUri(std::string uri, bool individual)
+int OntologyOwlReader::readFromUri(const std::string& uri, bool individual)
 {
-  fixUrl(uri);
-
   std::string response = "";
   int err = send_request("GET", uri, "", response);
   removeDocType(response);
@@ -585,29 +583,6 @@ void OntologyOwlReader::removeDocType(std::string& txt)
         }
       }
     }
-  }
-}
-
-void OntologyOwlReader::fixUrl(std::string& url)
-{
-  size_t dot_pose = url.find_last_of(".");
-  size_t pose = url.find_last_of("/");
-  if(dot_pose < pose)
-    url += ".owl";
-
-  pose = url.find("github.");
-  if(pose != std::string::npos)
-  {
-    url.replace(pose, std::string("github.").size(), "raw.githubusercontent.");
-    size_t blob_pose = url.find("blob/");
-    url.erase(blob_pose, std::string("blob/").size());
-  }
-
-  pose = url.find("gitlab.");
-  if(pose != std::string::npos)
-  {
-    pose = url.find("/blob/");
-    url.replace(pose, std::string("/blob/").size(), "/raw/");
   }
 }
 

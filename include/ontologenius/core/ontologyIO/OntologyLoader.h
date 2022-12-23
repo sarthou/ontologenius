@@ -20,8 +20,8 @@ public:
   explicit OntologyLoader(Ontology& onto);
   ~OntologyLoader() {}
 
-  int loadFile(const std::string& file);
-  int loadUri(const std::string& uri);
+  int loadFile(std::string file);
+  int loadUri(std::string uri);
 
   int loadIndividuals();
 
@@ -36,6 +36,9 @@ private:
 
   std::vector<std::string> files_;
   std::vector<std::string> uri_;
+
+  void fixUrl(std::string& url);
+  void fixPath(std::string& path);
 };
 
 } // namespace ontologenius

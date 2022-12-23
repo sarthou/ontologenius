@@ -29,7 +29,7 @@ public:
   explicit OntologyOwlReader(Ontology& onto) : OntologyReader(onto) {}
   ~OntologyOwlReader() {}
 
-  int readFromUri(std::string uri, bool individual = false);
+  int readFromUri(const std::string& uri, bool individual = false);
   int readFromFile(const std::string& fileName, bool individual = false);
 
   void setDisplay(bool display) { display_ = display; }
@@ -71,7 +71,6 @@ private:
   }
 
   void removeDocType(std::string& txt);
-  void fixUrl(std::string& url);
   bool isProtected(const std::string& page_content);
 };
 
