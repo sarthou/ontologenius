@@ -4,32 +4,21 @@
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/utility/error_code.h"
-#include "ontologenius/core/utility/utility.h"
 #include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 
-int OntologyOwlReader::readFromUri(const std::string& uri, bool individual)
+int OntologyOwlReader::readFromUri(std::string content, const std::string& uri, bool individual)
 {
-  std::string response = "";
-  int err = send_request("GET", uri, "", response);
-  removeDocType(response);
+  removeDocType(content);
 
-  if(isProtected(response))
-    Display::warning("The requested file may be protected: " + uri);
-
-  if(err == NO_ERROR)
-  {
-    TiXmlDocument doc;
-    doc.Parse((const char*)response.c_str(), nullptr, TIXML_ENCODING_UTF8);
-    TiXmlElement* rdf = doc.FirstChildElement();
-    if(individual == false)
-      return read(rdf, uri);
-    else
-      return readIndividual(rdf, uri);
-  }
+  TiXmlDocument doc;
+  doc.Parse((const char*)content.c_str(), nullptr, TIXML_ENCODING_UTF8);
+  TiXmlElement* rdf = doc.FirstChildElement();
+  if(individual == false)
+    return read(rdf, uri);
   else
-    return REQUEST_ERROR;
+    return readIndividual(rdf, uri);
 }
 
 int OntologyOwlReader::readFromFile(const std::string& file_name, bool individual)
@@ -584,14 +573,6 @@ void OntologyOwlReader::removeDocType(std::string& txt)
       }
     }
   }
-}
-
-bool OntologyOwlReader::isProtected(const std::string& page_content)
-{
-  if(page_content.find("type=\"password\"") != std::string::npos)
-    return true;
-  else
-    return false;
 }
 
 } // namespace ontologenius

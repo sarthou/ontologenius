@@ -1,5 +1,8 @@
 #include "ontologenius/core/ontologyIO/OntologyLoader.h"
+
 #include "ontologenius/core/utility/error_code.h"
+#include "ontologenius/core/utility/utility.h"
+#include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 
@@ -40,18 +43,24 @@ int OntologyLoader::loadUri(std::string uri)
   fixUrl(uri);
   if(std::find(uri_.begin(), uri_.end(), uri) == uri_.end())
   {
-    if(uri.find(".ttl") == std::string::npos)
+    int download_err = downloadFile(uri);
+    if(download_err == NO_ERROR)
     {
-      int err = owl_reader_.readFromUri(uri);
-      if(err == NO_ERROR)
+      if(uri.find(".ttl") == std::string::npos)
+      {
+        int err = owl_reader_.readFromUri(uri_to_file_[uri], uri);
+        if(err == NO_ERROR)
+          uri_.push_back(uri);
+        return err;
+      }
+      else
+      {
         uri_.push_back(uri);
-      return err;
+        return NO_ERROR; // ttl files only describe individuals
+      }
     }
     else
-    {
-      uri_.push_back(uri);
-      return NO_ERROR; // ttl files only describe individuals
-    }
+      return download_err;
   }
   else
     return NO_ERROR;
@@ -65,11 +74,12 @@ int OntologyLoader::loadIndividuals()
   for(auto& uri : uri_)
   {
     if(uri.find(".ttl") == std::string::npos)
-      err += owl_reader_.readFromUri(uri, true);
+      err += owl_reader_.readFromUri(uri_to_file_[uri], uri, true);
     else
-      err += ttl_reader_.readFromUri(uri);
+      err += ttl_reader_.readFromUri(uri_to_file_[uri], uri);
   }
   uri_.clear();
+  uri_to_file_.clear();
 
   for(auto& file : files_)
   {
@@ -124,6 +134,31 @@ void OntologyLoader::fixPath(std::string& path)
   size_t dot_pose = path.find_last_of(".");
   if(dot_pose == std::string::npos)
     path += ".owl";
+}
+
+bool OntologyLoader::isProtected(const std::string& page_content)
+{
+  if(page_content.find("type=\"password\"") != std::string::npos)
+    return true;
+  else
+    return false;
+}
+
+int OntologyLoader::downloadFile(const std::string& uri)
+{
+  std::string response = "";
+  int err = send_request("GET", uri, "", response);
+
+  if(isProtected(response))
+    Display::warning("The requested file may be protected: " + uri);
+
+  if(err == NO_ERROR)
+  {
+    uri_to_file_.emplace(uri, response);
+    return NO_ERROR;
+  }
+  else
+    return REQUEST_ERROR;
 }
 
 } // namespace eontologenius

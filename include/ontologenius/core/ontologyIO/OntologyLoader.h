@@ -36,9 +36,13 @@ private:
 
   std::vector<std::string> files_;
   std::vector<std::string> uri_;
+  std::unordered_map<std::string, std::string> uri_to_file_;
 
   void fixUrl(std::string& url);
   void fixPath(std::string& path);
+  bool isProtected(const std::string& page_content);
+
+  int downloadFile(const std::string& uri);
 };
 
 } // namespace ontologenius

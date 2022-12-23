@@ -10,15 +10,9 @@
 
 namespace ontologenius {
 
-int OntologyTtlReader::readFromUri(const std::string& uri)
+int OntologyTtlReader::readFromUri(const std::string& content, const std::string& uri)
 {
-  std::string response = "";
-  int err = send_request("GET", uri, "", response);
-
-  if(err == NO_ERROR)
-    return read(response, uri);
-  else
-    return REQUEST_ERROR;
+  return read(content, uri);
 }
 
 int OntologyTtlReader::readFromFile(const std::string& file_name)
