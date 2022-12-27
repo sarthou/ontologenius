@@ -3,6 +3,9 @@
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/core/utility/utility.h"
 #include "ontologenius/graphical/Display.h"
+#include "ontologenius/utils/String.h"
+
+#include <ros/package.h>
 
 namespace ontologenius {
 
@@ -19,10 +22,14 @@ OntologyLoader::OntologyLoader(Ontology& onto) : owl_reader_(onto), ttl_reader_(
 int OntologyLoader::loadFile(std::string file)
 {
   fixPath(file);
-  if(std::find(files_.begin(), files_.end(), file) == files_.end())
+  if(std::find(loading_files_.begin(), loading_files_.end(), file) == loading_files_.end())
   {
+    loading_files_.push_back(file);
     if(file.find(".ttl") == std::string::npos)
     {
+      auto imports = owl_reader_.getImportsFromFile(file);
+      loadImports(imports);
+
       int err = owl_reader_.readFromFile(file);
       if(err == NO_ERROR)
         files_.push_back(file);
@@ -41,13 +48,18 @@ int OntologyLoader::loadFile(std::string file)
 int OntologyLoader::loadUri(std::string uri)
 {
   fixUrl(uri);
-  if(std::find(uri_.begin(), uri_.end(), uri) == uri_.end())
+  if(std::find(loading_uri_.begin(), loading_uri_.end(), uri) == loading_uri_.end())
   {
+    loading_uri_.push_back(uri);
+
     int download_err = downloadFile(uri);
     if(download_err == NO_ERROR)
     {
       if(uri.find(".ttl") == std::string::npos)
       {
+        auto imports = owl_reader_.getImportsFromRaw(uri_to_file_[uri]);
+        loadImports(imports);
+
         int err = owl_reader_.readFromUri(uri_to_file_[uri], uri);
         if(err == NO_ERROR)
           uri_.push_back(uri);
@@ -159,6 +171,97 @@ int OntologyLoader::downloadFile(const std::string& uri)
   }
   else
     return REQUEST_ERROR;
+}
+
+void OntologyLoader::loadImports(const std::vector<std::string>& imports)
+{
+  for(auto& import : imports)
+  {
+    bool loaded = true;
+    auto with_package = resolvePath(import);
+    if(with_package.first != "")
+    {
+      std::string path = ros::package::getPath(with_package.first);
+      path += "/" + with_package.second;
+
+      fixPath(path);
+      if(std::find(loading_files_.begin(), loading_files_.end(), path) == loading_files_.end())
+      {
+        Display::info("[OntologyLoader] Package " + with_package.first + " has been detected");
+        Display::info("[OntologyLoader] Load imported file: " + path);
+        if(loadFile(path) != NO_ERROR)
+        {
+          Display::warning("[OntologyLoader] Automatic package deduction failed.");
+          loaded = false;
+        }
+      }
+    }
+    
+    if(!loaded && import.find("http") == 0)
+    {
+      std::string path = import;
+      fixUrl(path);
+      if(std::find(loading_uri_.begin(), loading_uri_.end(), path) == loading_uri_.end())
+      {
+        Display::info("[OntologyLoader] Load imported uri: " + path);
+        loadUri(path);
+      }
+    }
+    else if(!loaded)
+    {
+      std::string path = import;
+      fixPath(path);
+      if(std::find(loading_files_.begin(), loading_files_.end(), path) == loading_files_.end())
+      {
+        Display::info("[OntologyLoader] Load imported file: " + path);
+        loadFile(path);
+      }
+    }
+  }
+}
+
+std::pair<std::string, std::string> OntologyLoader::resolvePath(const std::string& raw_path)
+{
+  std::vector<std::string> packages;
+  ros::package::getAll(packages);
+
+  auto parts = split(raw_path, "/");
+  for(auto part_it = parts.begin(); part_it != parts.end(); ++part_it)
+  {
+    auto package_it = std::find(packages.begin(), packages.end(), *part_it);
+    if(package_it != packages.end())
+    {
+      size_t package_pose = raw_path.find(*part_it);
+      std::string rest = raw_path.substr(package_pose + (*part_it).size() + 1);
+
+      // The following is used to remove extras added by github and gitlab
+
+      size_t useless_pose = rest.find("blob/");
+      if(useless_pose != std::string::npos)
+      {
+        useless_pose = rest.find("/", useless_pose + std::string("blob/").size() + 1);
+        rest = rest.substr(useless_pose + 1);
+      }
+
+      useless_pose = rest.find("raw/");
+      if(useless_pose != std::string::npos)
+      {
+        useless_pose = rest.find("/", useless_pose + std::string("raw/").size() + 1);
+        rest = rest.substr(useless_pose + 1);
+      }
+
+      useless_pose = rest.find("raw.githubusercontent.com/");
+      if(useless_pose != std::string::npos)
+      {
+        useless_pose = rest.find("/");
+        rest = rest.substr(useless_pose + 1);
+      }
+
+      return {*part_it, rest};
+    }
+  }
+
+  return {"", raw_path};
 }
 
 } // namespace eontologenius
