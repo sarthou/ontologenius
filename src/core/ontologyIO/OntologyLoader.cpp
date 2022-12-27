@@ -196,6 +196,8 @@ void OntologyLoader::loadImports(const std::vector<std::string>& imports)
         }
       }
     }
+    else
+      loaded = false;
     
     if(!loaded && import.find("http") == 0)
     {
