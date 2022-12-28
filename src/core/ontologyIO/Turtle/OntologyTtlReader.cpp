@@ -10,15 +10,9 @@
 
 namespace ontologenius {
 
-int OntologyTtlReader::readFromUri(const std::string& uri)
+int OntologyTtlReader::readFromUri(const std::string& content, const std::string& uri)
 {
-  std::string response = "";
-  int err = send_request("GET", uri, "", response);
-
-  if(err == NO_ERROR)
-    return read(response, uri);
-  else
-    return REQUEST_ERROR;
+  return read(content, uri);
 }
 
 int OntologyTtlReader::readFromFile(const std::string& file_name)
@@ -53,12 +47,12 @@ int OntologyTtlReader::read(std::string raw_turtle, const std::string& file_name
   if(previous_subject_ != "")
   {
     individual_graph_->add(previous_subject_, individual_vector_);
-    elem_loaded++;
+    nb_loaded_elem_++;
     individual_vector_ = IndividualVectors_t();
   }
 
   if(display_)
-    std::cout << "└── "<< elem_loaded << " readed ! " << std::endl;
+    std::cout << "└── "<< nb_loaded_elem_ << " readed ! " << std::endl;
   return NO_ERROR;
 }
 
@@ -187,7 +181,7 @@ void OntologyTtlReader::sendToOntology(std::string subject, const std::vector<st
     if(previous_subject_ != "")
     {
       individual_graph_->add(previous_subject_, individual_vector_);
-      elem_loaded++;
+      nb_loaded_elem_++;
       individual_vector_ = IndividualVectors_t();
     }
     previous_subject_ = subject;

@@ -4,29 +4,21 @@
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/utility/error_code.h"
-#include "ontologenius/core/utility/utility.h"
 #include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 
-int OntologyOwlReader::readFromUri(const std::string& uri, bool individual)
+int OntologyOwlReader::readFromUri(std::string content, const std::string& uri, bool individual)
 {
-  std::string response = "";
-  int err = send_request("GET", uri, "", response);
-  removeDocType(response);
+  removeDocType(content);
 
-  if(err == NO_ERROR)
-  {
-    TiXmlDocument doc;
-    doc.Parse((const char*)response.c_str(), nullptr, TIXML_ENCODING_UTF8);
-    TiXmlElement* rdf = doc.FirstChildElement();
-    if(individual == false)
-      return read(rdf, uri);
-    else
-      return readIndividual(rdf, uri);
-  }
+  TiXmlDocument doc;
+  doc.Parse((const char*)content.c_str(), nullptr, TIXML_ENCODING_UTF8);
+  TiXmlElement* rdf = doc.FirstChildElement();
+  if(individual == false)
+    return read(rdf, uri);
   else
-    return REQUEST_ERROR;
+    return readIndividual(rdf, uri);
 }
 
 int OntologyOwlReader::readFromFile(const std::string& file_name, bool individual)
@@ -56,11 +48,54 @@ int OntologyOwlReader::readFromFile(const std::string& file_name, bool individua
     return readIndividual(rdf, file_name);
 }
 
+std::vector<std::string> OntologyOwlReader::getImportsFromRaw(std::string content)
+{
+  std::vector<std::string> imports;
+  removeDocType(content);
+
+  TiXmlDocument doc;
+  doc.Parse((const char*)content.c_str(), nullptr, TIXML_ENCODING_UTF8);
+  TiXmlElement* rdf = doc.FirstChildElement();
+
+  if(rdf == nullptr)
+    return {};
+  else if(std::string(rdf->Value()) != "rdf:RDF")
+    return {};
+  else
+  {
+    auto ontology_elem = rdf->FirstChildElement("owl:Ontology");
+    for(TiXmlElement* elem = ontology_elem->FirstChildElement("owl:imports"); elem != nullptr; elem = elem->NextSiblingElement("owl:imports"))
+      imports.emplace_back(elem->Attribute("rdf:resource"));
+  }
+
+  return imports;
+}
+
+std::vector<std::string> OntologyOwlReader::getImportsFromFile(const std::string& file_name)
+{
+  std::string raw_file = "";
+  std::string tmp = "";
+  std::ifstream f(file_name);
+
+  if(!f.is_open())
+    return {};
+
+  while(getline(f,tmp))
+    raw_file += tmp;
+  
+  return getImportsFromRaw(raw_file);
+}
+
 int OntologyOwlReader::read(TiXmlElement* rdf, const std::string& name)
 {
   if(rdf == nullptr)
   {
     Display::error("Failed to read file: " + name);
+    return OTHER;
+  }
+  else if(std::string(rdf->Value()) != "rdf:RDF")
+  {
+    Display::error("File is not based on RDF: " + name);
     return OTHER;
   }
   else
@@ -114,7 +149,7 @@ int OntologyOwlReader::read(TiXmlElement* rdf, const std::string& name)
     for(TiXmlElement* elem : elem_annotation_prop)
       readAnnotationProperty(elem);
     if(display_)
-      std::cout << "└── "<< elem_loaded << " readed ! " << std::endl;
+      std::cout << "└── "<< nb_loaded_elem_ << " readed ! " << std::endl;
     return NO_ERROR;
   }
 }
@@ -151,7 +186,7 @@ int OntologyOwlReader::readIndividual(TiXmlElement* rdf, const std::string& name
     for(TiXmlElement* elem = rdf->FirstChildElement(); elem != nullptr; elem = elem->NextSiblingElement())
       readIndividualDescription(elem);
     if(display_)
-      std::cout << "└── "<< elem_loaded << " readed ! " << std::endl;
+      std::cout << "└── "<< nb_loaded_elem_ << " readed ! " << std::endl;
     return NO_ERROR;
   }
 }
@@ -204,7 +239,7 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
     }
   }
   class_graph_->add(node_name, object_vector);
-  elem_loaded++;
+  nb_loaded_elem_++;
 }
 
 void OntologyOwlReader::readIndividual(TiXmlElement* elem)
@@ -257,7 +292,7 @@ void OntologyOwlReader::readIndividual(TiXmlElement* elem)
       }
     }
     individual_graph_->add(node_name, individual_vector);
-    elem_loaded++;
+    nb_loaded_elem_++;
   }
 }
 
@@ -372,7 +407,7 @@ void OntologyOwlReader::readObjectProperty(TiXmlElement* elem)
   }
 
   object_property_graph_->add(node_name, property_vector);
-  elem_loaded++;
+  nb_loaded_elem_++;
 }
 
 void OntologyOwlReader::readDataProperty(TiXmlElement* elem)
@@ -407,7 +442,7 @@ void OntologyOwlReader::readDataProperty(TiXmlElement* elem)
   }
 
   data_property_graph_->add(node_name, property_vector);
-  elem_loaded++;
+  nb_loaded_elem_++;
 }
 
 void OntologyOwlReader::readAnnotationProperty(TiXmlElement* elem)
@@ -461,7 +496,7 @@ void OntologyOwlReader::readAnnotationProperty(TiXmlElement* elem)
     // if no data property is found, the annotation will be setted as an object property by default
   }
 
-  elem_loaded++;
+  nb_loaded_elem_++;
 }
 
 void OntologyOwlReader::readCollection(std::vector<std::string>& vect, TiXmlElement* elem, const std::string& symbol, size_t level)
