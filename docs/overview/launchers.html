@@ -96,8 +96,10 @@
             you stop it. If the file does not exist, it will be automatically created. If the file path does not exist, it will NOT be
             created. To don't use an internal file, you have to set this parameter to &quot;none&quot;.</li>
           <li><b>files</b>: a set of OWL files that will be loaded at the launch of Ontologenius. If intern_file is set and already
-            exists, these files will not be taken into account.</li>
+            exists, these files will not be taken into account. Additionally, if the files import other files, the latter will be automatically loaded too.</li>
         </ul>
+
+        <p class="tip">Imported files can be Github URL, Gitlab URL, raw URL or local path. In all cases, Ontologenius will try to identify a ROS package in the paths and will use your local package if it exists.</p>
 
         <div align="center">
           <p>
@@ -165,6 +167,8 @@
             if the instance name does not contain the word &quot;robot&quot;.
             If intern_file is set and already exists, this file will not be taken into account.</li>
         </ul>
+
+        <p class="tip">Either for the robot file or the human file, Ontologenius will automatically load the related imported files if some exist.</p>
 
         <p>Here below is an example of launch file using all the parameters.</p>
 
