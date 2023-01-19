@@ -191,14 +191,13 @@ void RosInterface::setDisplay(bool display)
 
 void RosInterface::knowledgeCallback(const std_msgs::String::ConstPtr& msg)
 {
-  feeder_.store(msg->data);
-  feeder_echo_.add(msg->data);
+  auto time = ros::Time::now();
+  feeder_.store(msg->data, {time.sec, time.nsec});
 }
 
 void RosInterface::stampedKnowledgeCallback(const ontologenius::StampedString::ConstPtr& msg)
 {
-  feeder_.store(msg->data);
-  feeder_echo_.add(msg->data, msg->stamp);
+  feeder_.store(msg->data, {msg->stamp.sec, msg->stamp.nsec});
 }
 
 bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req,
@@ -664,9 +663,10 @@ void RosInterface::feedThread()
     wait.sleep();
   }
 
-  feeder_.store("[add]myself|");
+  auto time = ros::Time::now();
+  feeder_.store("[add]myself|", {time.sec, time.nsec});
   if(name_ != "")
-    feeder_.store("[add]myself|=|" + name_);
+    feeder_.store("[add]myself|=|" + name_, {time.sec, time.nsec});
 
   std_msgs::String msg;
   while(ros::ok() && (run_ == true))
@@ -690,6 +690,8 @@ void RosInterface::feedThread()
 
       auto explanations = feeder_.getExplanations();
       feeder_echo_.add(explanations);
+      auto echo = feeder_.getValidRelations();
+      feeder_echo_.add(echo);
     }
     else if(feeder_end == false)
     {

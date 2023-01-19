@@ -49,7 +49,7 @@ bool Feeder::run()
       versionor_.insert(feed);
 
     if(addFeed(feed))
-      valid_relations_.push_back(current_str_feed_);
+      valid_relations_.emplace_back(current_str_feed_, feed.stamp);
   }
 
   return has_run;
