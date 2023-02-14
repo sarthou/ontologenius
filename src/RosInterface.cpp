@@ -688,10 +688,10 @@ void RosInterface::feedThread()
         feeder_publisher.publish(msg);
       }
 
-      auto explanations = feeder_.getExplanations();
-      feeder_echo_.add(explanations);
       auto echo = feeder_.getValidRelations();
       feeder_echo_.add(echo);
+      auto explanations = feeder_.getExplanations();
+      feeder_echo_.add(explanations);
     }
     else if(feeder_end == false)
     {
