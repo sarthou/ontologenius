@@ -27,9 +27,9 @@ bool Feeder::run()
     feeds.pop();
 
     if(feed.action_ == action_add)
-      current_str_feed_ = "[add] " + feed.from_ + " | " + feed.prop_ + " | " + feed.on_;
+      current_str_feed_ = "[add]" + feed.from_ + "|" + feed.prop_ + "|" + feed.on_;
     else if(feed.action_ == action_del)
-      current_str_feed_ = "[del] " + feed.from_ + " | " + feed.prop_ + " | " + feed.on_;
+      current_str_feed_ = "[del]" + feed.from_ + "|" + feed.prop_ + "|" + feed.on_;
     else
     {
       if(feed.action_ == action_commit)
