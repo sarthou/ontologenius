@@ -99,19 +99,19 @@ public:
   IndividualBranch_t* createIndividualUnsafe(const std::string& name);
   void deleteIndividual(IndividualBranch_t* indiv);
   void redirectDeleteIndividual(IndividualBranch_t* indiv, ClassBranch_t* _class);
-  void addLang(const std::string& indiv, const std::string& lang, const std::string& name);
-  void addInheritage(const std::string& indiv, const std::string& class_inherited);
-  void addInheritage(IndividualBranch_t* branch, const std::string& class_inherited);
-  void addInheritageUnsafe(IndividualBranch_t* branch, const std::string& class_inherited);
-  void addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
-  void addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
+  bool addLang(const std::string& indiv, const std::string& lang, const std::string& name);
+  bool addInheritage(const std::string& indiv, const std::string& class_inherited);
+  bool addInheritage(IndividualBranch_t* branch, const std::string& class_inherited);
+  bool addInheritageUnsafe(IndividualBranch_t* branch, const std::string& class_inherited);
+  bool addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
+  bool addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
   int addRelation(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba = 1.0, bool infered = false);
   int addRelation(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, const data_t& data, double proba = 1.0, bool infered = false);
   void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on);
   void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data);
   void addRelationInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);
-  void removeLang(const std::string& indiv, const std::string& lang, const std::string& name);
-  void removeInheritage(const std::string& indiv, const std::string& class_inherited);
+  bool removeLang(const std::string& indiv, const std::string& lang, const std::string& name);
+  bool removeInheritage(const std::string& indiv, const std::string& class_inherited);
   bool addSameAs(const std::string& indiv_1, const std::string& indiv_2);
   bool removeSameAs(const std::string& indiv_1, const std::string& indiv_2);
   // removing a relation using an object property has to generate an "explanation" if it remove other relations

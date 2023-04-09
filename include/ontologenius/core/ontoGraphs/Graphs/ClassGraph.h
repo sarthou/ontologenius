@@ -76,13 +76,13 @@ public:
 
   void deleteClass(ClassBranch_t* _class);
   int deleteRelationsOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect);
-  void addLang(const std::string& _class, std::string& lang, const std::string& name);
-  void addInheritage(std::string& class_base, std::string& class_inherited);
+  bool addLang(const std::string& _class, std::string& lang, const std::string& name);
+  bool addInheritage(std::string& class_base, std::string& class_inherited);
   void addRelation(ClassBranch_t*, const std::string& property, const std::string& class_on);
   void addRelation(ClassBranch_t*, const std::string& property, const std::string& type, const std::string& data);
   void addRelationInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on);
-  void removeLang(std::string& indiv, std::string& lang, std::string& name);
-  void removeInheritage(std::string& class_base, std::string& class_inherited);
+  bool removeLang(std::string& indiv, std::string& lang, std::string& name);
+  bool removeInheritage(std::string& class_base, std::string& class_inherited);
   void removeRelation(const std::string& class_from, const std::string& property, const std::string& class_on);
   void removeRelation(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data);
 

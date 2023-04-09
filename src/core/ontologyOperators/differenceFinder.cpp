@@ -102,7 +102,7 @@ void differenceFinder::compareDatas(comparator_t& comp1, comparator_t& comp2, st
     for(size_t i = 0; i < comp1.data_properties_name_.size(); i++)
     {
       std::vector<size_t> found_indexs;
-      for(size_t j = 0; j < comp2.data_properties_name_.size(); i++)
+      for(size_t j = 0; j < comp2.data_properties_name_.size(); j++)
         if(comp1.data_properties_name_[i] == comp2.data_properties_name_[j])
         {
           found_indexs.push_back(j);

@@ -29,12 +29,15 @@ public:
   explicit OntologyOwlReader(Ontology& onto) : OntologyReader(onto) {}
   ~OntologyOwlReader() {}
 
-  int readFromUri(const std::string& uri, bool individual = false);
+  int readFromUri(std::string content, const std::string& uri, bool individual = false);
   int readFromFile(const std::string& fileName, bool individual = false);
+
+  std::vector<std::string> getImportsFromRaw(std::string content);
+  std::vector<std::string> getImportsFromFile(const std::string& file_name);
 
   void setDisplay(bool display) { display_ = display; }
   void displayIndividualRules();
-  bool empty() {return (elem_loaded == 0); }
+  bool empty() {return (nb_loaded_elem_ == 0); }
 
 private:
   int read(TiXmlElement* rdf, const std::string& name);
