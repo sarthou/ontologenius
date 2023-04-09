@@ -159,7 +159,7 @@
           <div class="code_line">_start = <span class="py_value">False</span></div>
           <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">def</span> <span class="py_function">say</span>(text):</div>
-          <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'[SAY]'</span>  + text</div>
+          <div class="code_line">    <span class="py_op">print</span>(<span class="py_string">'[SAY]'</span>  + text)</div>
           <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">def</span> <span class="py_function">summarize</span>(words):</div>
           <div class="code_line">    to_say = <span class="py_string">'on '</span> </div>
@@ -241,7 +241,7 @@
          <p>Here we have the callback function of our input topic. This topic thus receives strings which
            will be the words from which our program will have to find the intruder. Inside the function,
            we can see that we use the word &quot;start&quot; as a synchronization word that will launch our reasoning.
-           The different words of &quot;strat&quot; are then stored in the list _names pending processing.
+           The different words of &quot;start&quot; are then stored in the list _names pending processing.
            To add security, line 27 verifies that the word is not already present in the _names list to
            avoid duplicates.</p>
 
@@ -264,7 +264,7 @@
           <div class="code_line"><br></div>
           <div class="code_line">        _start = <span class="py_value">False</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line">        say(<span class="py_string">'Let\'s play!'</span> );</div>
+          <div class="code_line">        say(<span class="py_string">'Let\'s play!'</span> )</div>
           <div class="code_line"><br></div>
           <div class="code_line">        <span class="py_op">while</span> (<span class="py_op">not</span> rospy.is_shutdown()) <span class="py_op">and</span> (_start == <span class="py_value">False</span>):</div>
           <div class="code_line">            rate.sleep()</div>
@@ -323,7 +323,7 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 42;">
           <div class="code_line">        _start = <span class="py_value">False</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line">        say(<span class="py_string">'Let\'s play!'</span> );</div>
+          <div class="code_line">        say(<span class="py_string">'Let\'s play!'</span> )</div>
         </div>
         <p>We initialize the synchronization variable and inform the user that the program is ready to
           listen to the words.</p>
