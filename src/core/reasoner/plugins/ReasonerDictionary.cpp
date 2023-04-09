@@ -104,11 +104,14 @@ void ReasonerDictionary::createLowerCase(ValuedNode* node)
   {
     for(auto& word : it.second)
     {
-      std::string tmp = "";
-      tmp.resize(word.size());
-      std::transform(word.begin(), word.end(), tmp.begin(), ::tolower);
-      if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
+      if(word.size())
+      {
+        std::string tmp = "";
+        tmp.resize(word.size());
+        std::transform(word.begin(), word.end(), tmp.begin(), ::tolower);
+        if (std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
           it.second.push_back(tmp);
+      }
     }
   }
 

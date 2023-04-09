@@ -23,7 +23,11 @@ namespace ontologenius
           case 0: res.subject = resource; break;
           case 1: res.predicat = resource; break;
           case 2: res.object = resource; break;
-          default: throw "invalid triplet format in : " + triplet_txt;
+          default:
+            if(res.object.variable == false)
+              res.object.name += " " + resource.name;
+            else
+              throw "invalid triplet format in : " + triplet_txt;
         }
         cpt++;
       }
