@@ -36,16 +36,6 @@
     - source devel/setup.bash
     - catkin_make run_tests_ontologenius_rostest -j1 -DCMAKE_BUILD_TYPE=Release && catkin_make test -j1 -DCMAKE_BUILD_TYPE=Release
 
-.kinetic_before_template : &kinetic_before_definition
-  before_script:
-  - source /opt/ros/kinetic/setup.bash
-  - apt-get update -qq && apt-get install -y libcppunit-1.13-0v5 libcppunit-dev python-rosdep python-pip
-
-.lunar_before_template : &lunar_before_definition
-  before_script:
-  - source /opt/ros/lunar/setup.bash
-  - apt-get update -qq && apt-get install -y libcppunit-1.13-0v5 libcppunit-dev libtinyxml-dev python-rosdep python-pip
-
 .melodic_before_template : &melodic_before_definition
   before_script:
   - source /opt/ros/melodic/setup.bash
@@ -56,29 +46,9 @@
   - source /opt/ros/noetic/setup.bash
   - apt-get update -qq && apt-get install -y libcppunit-1.15-0 libcppunit-dev libtinyxml-dev git-all python3-rosdep python3-pip
 
-
 stages:
   - build
   - test
-
-run-build-kinetic:
-  image: ros:kinetic-perception-xenial
-  stage: build
-  <<: *kinetic_before_definition
-  <<: *build_script_definition
-
-#run-test-kinetic:
-#  stage: test
-#  image: ros:kinetic-perception-xenial
-#  <<: *kinetic_before_definition
-#  <<: *test_script_definition_py2
-
-run-build-lunar:
-  image: ros:lunar-perception-xenial
-  stage: build
-  allow_failure : true
-  <<: *lunar_before_definition
-  <<: *build_script_definition
 
 run-test-melodic:
   stage: test
