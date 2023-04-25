@@ -12,7 +12,7 @@ jobs:
         include:
           - operating-system: ubuntu-18.04
             distro: melodic
-          - operating-system: ubuntu-20.04
+          - operating-system: ubuntu-22.04
             distro: noetic
     env:
       ROS_CI_DESKTOP: "`lsb_release -cs`"
@@ -28,8 +28,6 @@ jobs:
       - uses: actions/checkout@v1
       - name: Install ROS
         run: |
-            sudo apt update
-            sudo apt upgrade -y
             sudo sh -c "echo \"deb http://packages.ros.org/ros/ubuntu $ROS_CI_DESKTOP main\" > /etc/apt/sources.list.d/ros-latest.list"
             sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
             sudo apt update -qq
