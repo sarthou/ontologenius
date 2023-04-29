@@ -361,8 +361,6 @@ file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}  resources/*.qrc)
 QT5_ADD_RESOURCES(QT_RESOURCES_CPP ${QT_RESOURCES})
 QT5_WRAP_UI(QT_FORMS_HPP ${QT_FORMS})
 
-add_definitions( -std=c++11 -fPIC)
-
 ##############################################################################
 # Sources
 ##############################################################################
