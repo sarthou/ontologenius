@@ -1321,7 +1321,7 @@ void IndividualGraph::redirectDeleteIndividual(IndividualBranch_t* indiv, ClassB
 
     // erase indiv from parents
     std::unordered_set<ClassBranch_t*> up_set;
-    getUpPtr(indiv, up_set, 1);
+    class_graph_->getUpPtr(_class, up_set, 1);
 
     for(auto up : up_set)
     {
