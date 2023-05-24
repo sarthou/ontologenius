@@ -45,3 +45,6 @@
 /file_intern/*
 
 *.pyc
+
+# VsCode files
+settings.json

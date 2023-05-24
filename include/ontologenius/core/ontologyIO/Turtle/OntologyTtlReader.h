@@ -18,7 +18,7 @@ public:
   explicit OntologyTtlReader(Ontology& onto) : OntologyReader(onto) {}
   ~OntologyTtlReader() {}
 
-  int readFromUri(const std::string& uri);
+  int readFromUri(const std::string& content, const std::string& uri);
   int readFromFile(const std::string& fileName);
 
 private:

@@ -17,9 +17,19 @@ enum action_t
   action_nop
 };
 
+struct RosTime_t
+{
+  uint32_t sec;
+  uint32_t nsec;
+
+  RosTime_t() : sec(0), nsec(0) {}
+  RosTime_t(uint32_t seconds, uint32_t n_seconds) : sec(seconds), nsec(n_seconds) {}
+};
+
 struct feed_t
 {
   action_t action_;
+  RosTime_t stamp;
   std::string from_;
   std::string prop_;
   std::string on_;
@@ -33,7 +43,7 @@ class FeedStorage
 public:
   FeedStorage();
 
-  void add(const std::string& regex);
+  void add(const std::string& regex, const RosTime_t& stamp);
   void add(std::vector<feed_t>& datas);
   std::queue<feed_t> get();
   size_t size() { return fifo_1.size() + fifo_2.size(); }

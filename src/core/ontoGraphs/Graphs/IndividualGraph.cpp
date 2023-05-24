@@ -1321,7 +1321,7 @@ void IndividualGraph::redirectDeleteIndividual(IndividualBranch_t* indiv, ClassB
 
     // erase indiv from parents
     std::unordered_set<ClassBranch_t*> up_set;
-    getUpPtr(indiv, up_set, 1);
+    class_graph_->getUpPtr(_class, up_set, 1);
 
     for(auto up : up_set)
     {
@@ -1361,7 +1361,7 @@ void IndividualGraph::redirectDeleteIndividual(IndividualBranch_t* indiv, ClassB
   }
 }
 
-void IndividualGraph::addLang(const std::string& indiv, const std::string& lang, const std::string& name)
+bool IndividualGraph::addLang(const std::string& indiv, const std::string& lang, const std::string& name)
 {
   IndividualBranch_t* branch = findBranch(indiv);
   if(branch != nullptr)
@@ -1370,23 +1370,26 @@ void IndividualGraph::addLang(const std::string& indiv, const std::string& lang,
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     branch->setSteady_dictionary(lang_id, name);
     branch->updated_ = true;
+    return true;
   }
+  else
+    return false;
 }
 
-void IndividualGraph::addInheritage(const std::string& indiv, const std::string& class_inherited)
+bool IndividualGraph::addInheritage(const std::string& indiv, const std::string& class_inherited)
 {
   IndividualBranch_t* branch = findBranch(indiv);
-  addInheritage(branch, class_inherited);
+  return addInheritage(branch, class_inherited);
 }
 
-void IndividualGraph::addInheritage(IndividualBranch_t* branch, const std::string& class_inherited)
+bool IndividualGraph::addInheritage(IndividualBranch_t* branch, const std::string& class_inherited)
 {
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
   std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
-  addInheritageUnsafe(branch, class_inherited);
+  return addInheritageUnsafe(branch, class_inherited);
 }
 
-void IndividualGraph::addInheritageUnsafe(IndividualBranch_t* branch, const std::string& class_inherited)
+bool IndividualGraph::addInheritageUnsafe(IndividualBranch_t* branch, const std::string& class_inherited)
 {
   if(branch != nullptr)
   {
@@ -1407,10 +1410,14 @@ void IndividualGraph::addInheritageUnsafe(IndividualBranch_t* branch, const std:
     conditionalPushBack(inherited->individual_childs_, IndividualElement_t(branch));
     branch->updated_ = true;
     inherited->updated_ = true;
+
+    return true; // TODO verify that multi inheritances are compatible
   }
+  else
+    return false;
 }
 
-void IndividualGraph::addInheritageInvert(const std::string& indiv, const std::string& class_inherited)
+bool IndividualGraph::addInheritageInvert(const std::string& indiv, const std::string& class_inherited)
 {
   ClassBranch_t* inherited = class_graph_->findBranch(class_inherited);
   if(inherited != nullptr)
@@ -1423,10 +1430,14 @@ void IndividualGraph::addInheritageInvert(const std::string& indiv, const std::s
     conditionalPushBack(inherited->individual_childs_, IndividualElement_t(branch));
     branch->updated_ = true;
     inherited->updated_ = true;
+
+    return true; // TODO verify that multi inheritances are compatible
   }
+  else
+    return false;
 }
 
-void IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited)
+bool IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited)
 {
   IndividualBranch_t* tmp = findBranch(class_inherited);
   if(tmp != nullptr)
@@ -1440,7 +1451,11 @@ void IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const
     conditionalPushBack(inherited->individual_childs_, IndividualElement_t(branch));
     branch->updated_ = true;
     inherited->updated_ = true;
+
+    return true; // TODO verify that multi inheritances are compatible
   }
+  else
+    return false;
 }
 
 int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba, bool infered)
@@ -1606,28 +1621,34 @@ void IndividualGraph::addRelationInvert(const std::string& indiv_from, const std
     throw GraphException("Object entity does not exists");
 }
 
-void IndividualGraph::removeLang(const std::string& indiv, const std::string& lang, const std::string& name)
+bool IndividualGraph::removeLang(const std::string& indiv, const std::string& lang, const std::string& name)
 {
   IndividualBranch_t* branch = findBranch(indiv);
+  if(branch != nullptr)
+  {
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
-  std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    auto lang_id = lang.substr(1);
+    removeFromDictionary(branch->dictionary_.spoken_, lang_id, name);
+    removeFromDictionary(branch->dictionary_.muted_, lang_id, name);
+    removeFromDictionary(branch->steady_dictionary_.spoken_, lang_id, name);
+    removeFromDictionary(branch->steady_dictionary_.muted_, lang_id, name);
 
-  auto lang_id = lang.substr(1);
-  removeFromDictionary(branch->dictionary_.spoken_, lang_id, name);
-  removeFromDictionary(branch->dictionary_.muted_, lang_id, name);
-  removeFromDictionary(branch->steady_dictionary_.spoken_, lang_id, name);
-  removeFromDictionary(branch->steady_dictionary_.muted_, lang_id, name);
+    return true;
+  }
+  else
+    return false;
 }
 
-void IndividualGraph::removeInheritage(const std::string& class_base, const std::string& class_inherited)
+bool IndividualGraph::removeInheritage(const std::string& class_base, const std::string& class_inherited)
 {
   IndividualBranch_t* branch_base = findBranch(class_base);
   ClassBranch_t* branch_inherited = class_graph_->findBranch(class_inherited);
 
   if(branch_base == nullptr)
-    return;
+    return false;
   if(branch_inherited == nullptr)
-    return;
+    return false;
 
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
   std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
@@ -1637,6 +1658,8 @@ void IndividualGraph::removeInheritage(const std::string& class_base, const std:
 
   branch_base->updated_ = true;
   branch_inherited->updated_ = true;
+
+  return true;
 }
 
 bool IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& indiv_2)

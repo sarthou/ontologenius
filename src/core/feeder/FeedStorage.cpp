@@ -10,10 +10,11 @@ FeedStorage::FeedStorage() : base_regex(R"(^\[(\w+)\](.*)\|(.*)\|(.*)$)"),
   queue_choice_ = true;
 }
 
-void FeedStorage::add(const std::string& regex)
+void FeedStorage::add(const std::string& regex, const RosTime_t& stamp)
 {
   std::smatch base_match;
   feed_t feed;
+  feed.stamp = stamp;
   if (std::regex_match(regex, base_match, base_regex))
   {
     if (base_match.size() == 5)

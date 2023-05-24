@@ -30,6 +30,14 @@ public:
     mut_.unlock();
   }
 
+  void add(const std::vector<std::pair<std::string, RosTime_t>>& facts)
+  {
+    mut_.lock();
+    for(auto& fact : facts)
+      echo_messages.emplace_back(fact.first, ros::Time{fact.second.sec, fact.second.nsec});
+    mut_.unlock();
+  }
+
   void add(const std::vector<std::pair<std::string, std::string>>& explanations)
   {
     mut_.lock();

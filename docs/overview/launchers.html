@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Launchers | Ontologenius 0.2.11</title>
+  <title>Launchers | Ontologenius 0.2.12</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -96,8 +96,10 @@
             you stop it. If the file does not exist, it will be automatically created. If the file path does not exist, it will NOT be
             created. To don't use an internal file, you have to set this parameter to &quot;none&quot;.</li>
           <li><b>files</b>: a set of OWL files that will be loaded at the launch of Ontologenius. If intern_file is set and already
-            exists, these files will not be taken into account.</li>
+            exists, these files will not be taken into account. Additionally, if the files import other files, the latter will be automatically loaded too.</li>
         </ul>
+
+        <p class="tip">Imported files can be Github URL, Gitlab URL, raw URL or local path. In all cases, Ontologenius will try to identify a ROS package in the paths and will use your local package if it exists.</p>
 
         <div align="center">
           <p>
@@ -166,12 +168,14 @@
             If intern_file is set and already exists, this file will not be taken into account.</li>
         </ul>
 
+        <p class="tip">Either for the robot file or the human file, Ontologenius will automatically load the related imported files if some exist.</p>
+
         <p>Here below is an example of launch file using all the parameters.</p>
 
         <div class="code_block">
           <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;en&quot;</span>/&gt;</div>
           <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
-          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;config_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/config_example.yaml&quot;</span>/&gt;</div>
+          <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;config_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/configuration/config_example.yaml&quot;</span>/&gt;</div>
           <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;display&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;true&quot;</span>/&gt;</div>
           <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;robot_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/ontologenius_robot.owl&quot;</span>/&gt;</div>
           <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;human_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/ontologenius_human.owl&quot;</span>/&gt;</div>
