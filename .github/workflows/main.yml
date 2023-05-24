@@ -9,9 +9,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - operating-system: ubuntu-18.04
-            ros_distro: melodic
-            disto: bionic
+          #- operating-system: ubuntu-18.04
+          #  ros_distro: melodic
+          #  disto: bionic
           - operating-system: ubuntu-20.04
             ros_distro: noetic
             disto: focal
