@@ -11,10 +11,29 @@
 #include "time.h"
 #include <chrono>
 
+#include <stdio.h>
+#include <execinfo.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 using namespace std::chrono;
+
+void handler(int sig)
+{
+  void *array[10];
+  size_t size;
+
+  size = backtrace(array, 10);
+
+  fprintf(stderr, "Error: signal %d:\n", sig);
+  backtrace_symbols_fd(array, size, STDERR_FILENO);
+  exit(1);
+}
 
 int main(int argc, char** argv)
 {
+  signal(SIGSEGV, handler);
   ros::init(argc, argv, "ontologenius_sparql");
 
   ros::NodeHandle nh;
@@ -43,7 +62,9 @@ int main(int argc, char** argv)
   interface.close();
 
   //std::string query = "SELECT * WHERE {?0 isA Container. ?0 hasIn ?1. ?0 isOnTopOf ?2. ?1 isA Cube. ?1 hasFigure ?3. ?3 isA Circle}";
-  std::string query = "SELECT * WHERE {?0 isA movie_director. ?0 movie_performance ?2. ?2 isA movie_performance}";
+  //std::string query = "SELECT * WHERE {?0 isA movie_director. ?0 movie_performance ?2. ?2 isA movie_performance}";
+  std::string query = "?0 isA movie_director, ?0 movie_performance ?8, ?8 isA movie_performance, ?8 performance_actor string#Dany Boon";
+  //std::string query = "SELECT * WHERE {?0 isA movie_actor}";
   ontologenius::SparqlSolver sparql;
   sparql.link(onto);
   sparql.set(query);

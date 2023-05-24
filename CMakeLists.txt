@@ -20,7 +20,7 @@ function(add_onto_library TARGET)
     add_dependencies(${TARGET} ontologenius_gencpp ${catkin_EXPORTED_TARGETS})
     target_include_directories(${TARGET} PUBLIC include PRIVATE ${catkin_INCLUDE_DIRS})
     target_link_libraries(${TARGET} PRIVATE ${catkin_LIBRARIES})
-    set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
     target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
     target_enable_sanitizers(${TARGET})
 endfunction(add_onto_library)
@@ -36,7 +36,7 @@ function(add_onto_executable TARGET)
     #add_dependencies(${TARGET} ${catkin_EXPORTED_TARGETS})
     target_include_directories(${TARGET} PUBLIC include PRIVATE ${catkin_INCLUDE_DIRS})
     target_link_libraries(${TARGET} PRIVATE ${catkin_LIBRARIES})
-    set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
     target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
     target_enable_sanitizers(${TARGET})
 endfunction(add_onto_executable)
@@ -360,8 +360,6 @@ file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}  resources/*.qrc)
 
 QT5_ADD_RESOURCES(QT_RESOURCES_CPP ${QT_RESOURCES})
 QT5_WRAP_UI(QT_FORMS_HPP ${QT_FORMS})
-
-add_definitions( -std=c++11 -fPIC)
 
 ##############################################################################
 # Sources

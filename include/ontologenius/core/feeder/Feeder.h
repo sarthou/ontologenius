@@ -13,7 +13,7 @@ class Feeder
 public:
   Feeder(Ontology* onto = nullptr, bool versioning = false);
 
-  void store(const std::string& feed) { feed_storage_.add(feed); }
+  void store(const std::string& feed, const RosTime_t& stamp) { feed_storage_.add(feed, stamp); }
   bool run();
   void link(Ontology* onto) {onto_ = onto; }
   void setVersioning(bool do_versioning) { do_versioning_ = do_versioning; }
@@ -32,6 +32,13 @@ public:
     return tmp;
   }
 
+  std::vector<std::pair<std::string, RosTime_t>> getValidRelations()
+  {
+    auto tmp = std::move(valid_relations_);
+    valid_relations_.clear();
+    return tmp;
+  }
+
   void activateVersionning(bool activated) { versionor_.activate(activated); }
   void exportToXml(const std::string& path) { versionor_.exportToXml(path); }
 
@@ -47,22 +54,27 @@ private:
   std::vector<std::string> notifications_;
   // Here the explanations are about relations removed because of FOL
   std::vector<std::pair<std::string, std::string>> explanations_;
+  // Here the valid realtions added to the ontology
+  std::vector<std::pair<std::string, RosTime_t>> valid_relations_;
+
   std::string current_str_feed_;
 
-  void addDelClass(action_t& action, std::string& name);
-  void addDelIndiv(action_t& action, std::string& name);
+  bool addFeed(feed_t& feed);
 
-  void addInheritage(feed_t& feed);
-  void modifyDataPropertyInheritance(feed_t& feed);
-  void modifyDataPropertyInheritanceInvert(feed_t& feed);
-  void modifyObjectPropertyInheritance(feed_t& feed);
-  void modifyObjectPropertyInheritanceInvert(feed_t& feed);
-  void classIndividualIsA(feed_t& feed);
-  void addInverseOf(const feed_t& feed);
-  void addSameAs(const feed_t& feed);
+  bool addDelClass(action_t& action, std::string& name);
+  bool addDelIndiv(action_t& action, std::string& name);
 
-  void classIndividualLangage(feed_t& feed);
-  void applyProperty(feed_t& feed);
+  bool addInheritage(feed_t& feed);
+  bool modifyDataPropertyInheritance(feed_t& feed);
+  bool modifyDataPropertyInheritanceInvert(feed_t& feed);
+  bool modifyObjectPropertyInheritance(feed_t& feed);
+  bool modifyObjectPropertyInheritanceInvert(feed_t& feed);
+  bool classIndividualIsA(feed_t& feed);
+  bool addInverseOf(const feed_t& feed);
+  bool addSameAs(const feed_t& feed);
+
+  bool classIndividualLangage(feed_t& feed);
+  bool applyProperty(feed_t& feed);
 };
 
 } // namespace ontologenius

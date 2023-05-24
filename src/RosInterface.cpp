@@ -107,26 +107,35 @@ void RosInterface::init(const std::string& lang, const std::string& config_path)
 void RosInterface::run()
 {
   ros::Subscriber knowledge_subscriber = n_.subscribe(getTopicName("insert"), PUB_QUEU_SIZE, &RosInterface::knowledgeCallback, this);
+  (void)knowledge_subscriber;
 
   ros::Subscriber stamped_knowledge_subscriber = n_.subscribe(getTopicName("insert_stamped"), PUB_QUEU_SIZE, &RosInterface::stampedKnowledgeCallback, this);
+  (void)stamped_knowledge_subscriber;
 
   // Start up ROS service with callbacks
   ros::ServiceServer service = n_.advertiseService(getTopicName("actions"), &RosInterface::actionsHandle, this);
+  (void)service;
 
   ros::ServiceServer service_class = n_.advertiseService(getTopicName("class"), &RosInterface::classHandle, this);
+  (void)service_class;
 
   ros::ServiceServer service_object_property = n_.advertiseService(getTopicName("object_property"), &RosInterface::objectPropertyHandle, this);
+  (void)service_object_property;
 
   ros::ServiceServer service_data_property = n_.advertiseService(getTopicName("data_property"), &RosInterface::dataPropertyHandle, this);
+  (void)service_data_property;
 
   ros::ServiceServer service_individual = n_.advertiseService(getTopicName("individual"), &RosInterface::individualHandle, this);
+  (void)service_individual;
 
   ros::ServiceServer service_reasoner = n_.advertiseService(getTopicName("reasoner"), &RosInterface::reasonerHandle, this);
+  (void)service_reasoner;
 
   std::thread feed_thread(&RosInterface::feedThread, this);
   std::thread periodic_reasoning_thread(&RosInterface::periodicReasoning, this);
 
   ros::ServiceServer service_sparql = n_.advertiseService(getTopicName("sparql"), &RosInterface::sparqlHandle, this);
+  (void)service_sparql;
 
   if(name_ != "")
     Display::info(name_ + " is ready");
@@ -182,14 +191,13 @@ void RosInterface::setDisplay(bool display)
 
 void RosInterface::knowledgeCallback(const std_msgs::String::ConstPtr& msg)
 {
-  feeder_.store(msg->data);
-  feeder_echo_.add(msg->data);
+  auto time = ros::Time::now();
+  feeder_.store(msg->data, {time.sec, time.nsec});
 }
 
 void RosInterface::stampedKnowledgeCallback(const ontologenius::StampedString::ConstPtr& msg)
 {
-  feeder_.store(msg->data);
-  feeder_echo_.add(msg->data, msg->stamp);
+  feeder_.store(msg->data, {msg->stamp.sec, msg->stamp.nsec});
 }
 
 bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req,
@@ -655,9 +663,10 @@ void RosInterface::feedThread()
     wait.sleep();
   }
 
-  feeder_.store("[add]myself|");
+  auto time = ros::Time::now();
+  feeder_.store("[add]myself|", {time.sec, time.nsec});
   if(name_ != "")
-    feeder_.store("[add]myself|=|" + name_);
+    feeder_.store("[add]myself|=|" + name_, {time.sec, time.nsec});
 
   std_msgs::String msg;
   while(ros::ok() && (run_ == true))
@@ -679,6 +688,8 @@ void RosInterface::feedThread()
         feeder_publisher.publish(msg);
       }
 
+      auto echo = feeder_.getValidRelations();
+      feeder_echo_.add(echo);
       auto explanations = feeder_.getExplanations();
       feeder_echo_.add(explanations);
     }

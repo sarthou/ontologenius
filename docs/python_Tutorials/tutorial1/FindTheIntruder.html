@@ -154,9 +154,9 @@
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
           <div class="code_line">    inheritances = getWordsInheritance(_names)</div>
           <div class="code_line">        <span class="py_op">for</span> i <span class="py_op">in</span> range(len(inheritances)):</div>
-          <div class="code_line">            <span class="py_op">print</span> _names[i] + <span class="py_string">' is a:'</span></div>
+          <div class="code_line">            <span class="py_op">print</span> (_names[i] + <span class="py_string">' is a:'</span>)</div>
           <div class="code_line">            <span class="py_op">for</span> is_a <span class="py_op">in</span> inheritances[i]:</div>
-          <div class="code_line">                <span class="py_op">print</span> <span class="py_string">'- '</span> + is_a</div>
+          <div class="code_line">                <span class="py_op">print</span> (<span class="py_string">'- '</span> + is_a)</div>
         </div>
 
         <p>We can now launch it!</p>
@@ -191,7 +191,7 @@
         </div>
         <p>Our program knows what each word means</p>
         <p>We can represent this part of the ontology as follow:</p>
-        <img src="../../images/tutorial/inheritance.png " alt="tutorial 2 map of the city" width="30%" class="center"/>
+        <img src="../../images/tutorial/inheritance.png " alt="tutorial 1 inheritance graph" width="30%" class="center"/>
 
         <h2>Delete the same</h2>
 
@@ -208,16 +208,16 @@
           <div class="code_line">        <span class="py_op">for</span> word <span class="py_op">in</span> inheritances[<span class="py_value">0</span>]:</div>
           <div class="code_line">            is_same = <span class="py_value">True</span></div>
           <div class="code_line">            <span class="py_op">for</span> i <span class="py_op">in</span> range(<span class="py_value">1</span>, len(inheritances)):</div>
-          <div class="code_line">                <span class="py_op">if</span> word <span class="py_op">in</span> inheritances[i]:</div>
+          <div class="code_line">                <span class="py_op">if not</span> word <span class="py_op">in</span> inheritances[i]:</div>
           <div class="code_line">                    is_same = <span class="py_value">False</span></div>
           <div class="code_line"><br></div>
           <div class="code_line">            <span class="py_op">if</span> is_same:</div>
           <div class="code_line">                sames.insert(<span class="py_value">1</span>, word)</div>
           <div class="code_line"><br></div>
-          <div class="code_line">            <span class="py_op">for</span> same <span class="py_op">in</span> sames:</div>
-          <div class="code_line">                <span class="py_op">for</span> inheritance <span class="py_op">in</span> inheritances:</div>
-          <div class="code_line">                    <span class="py_op">if</span> same <span class="py_op">in</span> inheritance:</div>
-          <div class="code_line">                        inheritance.remove(same)</div>
+          <div class="code_line">        <span class="py_op">for</span> same <span class="py_op">in</span> sames:</div>
+          <div class="code_line">            <span class="py_op">for</span> inheritance <span class="py_op">in</span> inheritances:</div>
+          <div class="code_line">                <span class="py_op">if</span> same <span class="py_op">in</span> inheritance:</div>
+          <div class="code_line">                    inheritance.remove(same)</div>
         </div>
 
         <p>Add the call to this function in the main function just after the getWordsInheritance call.</p>
@@ -297,7 +297,7 @@
           <div class="code_line">        deleteTheSame(inheritances)</div>
           <div class="code_line">        intruders = find_intruder(_names, inheritances)</div>
           <div class="code_line">        <span class="py_op">for</span> intruder <span class="py_op">in</span> intruders:</div>
-          <div class="code_line">            say(<span class="py_string">'the intruder is '</span> + intruder[<span class="py_value">0</span>] + <span class="py_string">' because it is the only one that is not: '</span> + intruder[<span class="py_value">1</span>]) intruder is ' + intruder[<span class="py_value">0</span>] + <span class="py_string">' because it is the only one that is not: '</span> + intruder[<span class="py_value">1</span>])</div>
+          <div class="code_line">            say(<span class="py_string">'the intruder is '</span> + intruder[<span class="py_value">0</span>] + <span class="py_string">' because it is the only one that is not: '</span> + intruder[<span class="py_value">1</span>])</div>
         </div>
 
         <p>Run the program, then in another terminal re-query the programs on the words:

@@ -42,6 +42,7 @@ namespace ontologenius
     }
     else
     {
+      std::cout << "[SparqlSolver] solve custom form" << std::endl;
       initial_solution = getInitialSolutionCustom();
       initial_solution.solution_ = initial_solution.solution_full_;
     }
