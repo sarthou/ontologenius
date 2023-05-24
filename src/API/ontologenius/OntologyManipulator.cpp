@@ -14,8 +14,8 @@ OntologyManipulator::OntologyManipulator(ros::NodeHandle* n, const std::string& 
   (void)n;
   ontologenius::Display::warning("OntologyManipulator(ros::NodeHandle* n, const std::string& name) is deprecated. Use OntologyManipulator(const std::string& name) instead.");
   name_ = name;
-  std::string servive_name = (name == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name;
-  ros::service::waitForService(servive_name);
+  std::string service_name = (name == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name;
+  ros::service::waitForService(service_name);
 }
 
 OntologyManipulator::OntologyManipulator(const std::string& name) : name_(name),
@@ -28,8 +28,8 @@ OntologyManipulator::OntologyManipulator(const std::string& name) : name_(name),
                                                                     feeder(&n_, name),
                                                                     sparql(&n_, name)
 {
-  std::string servive_name = (name == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name;
-  ros::service::waitForService(servive_name);
+  std::string service_name = (name == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name;
+  ros::service::waitForService(service_name);
 }
 
 OntologyManipulator::OntologyManipulator(const OntologyManipulator& other): name_(other.name_),
@@ -42,8 +42,8 @@ OntologyManipulator::OntologyManipulator(const OntologyManipulator& other): name
                                                                       feeder(&n_, other.name_),
                                                                       sparql(&n_, other.name_)
 {
-  std::string servive_name = (name_ == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name_;
-  ros::service::waitForService(servive_name);
+  std::string service_name = (name_ == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name_;
+  ros::service::waitForService(service_name);
 }
 
 OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): name_(other.name_),
@@ -56,6 +56,6 @@ OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): name_(oth
                                                                       feeder(&n_, other.name_),
                                                                       sparql(&n_, other.name_)
 {
-  std::string servive_name = (name_ == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name_;
-  ros::service::waitForService(servive_name);
+  std::string service_name = (name_ == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name_;
+  ros::service::waitForService(service_name);
 }
