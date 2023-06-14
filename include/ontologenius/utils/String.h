@@ -16,9 +16,9 @@ namespace ontologenius {
       std::string part = tmp_text.substr(0, pos);
       tmp_text = tmp_text.substr(pos + delim.size(), tmp_text.size() - pos - delim.size());
       if(part != "")
-        res.push_back(part);
+        res.emplace_back(part);
     }
-    res.push_back(tmp_text);
+    res.emplace_back(tmp_text);
     return res;
   }
 
