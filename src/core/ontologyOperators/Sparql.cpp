@@ -151,38 +151,46 @@ namespace ontologenius
       if(triplet.subject.variable && !triplet.object.variable)
       {
         var_name = triplet.subject.name;
-        if(accu.find(var_name) != accu.end())
-          values = getType(triplet, accu.at(var_name));
+        auto var_it = accu.find(var_name);
+        if(var_it != accu.end())
+          values = getType(triplet, var_it->second);
         else
           values = getType(triplet);
       }
       else if(!triplet.subject.variable && triplet.object.variable)
       {
         var_name = triplet.object.name;
-        if(accu.find(var_name) != accu.end())
-          values = getUp(triplet, accu.at(var_name));
+        auto var_it = accu.find(var_name);
+        if(var_it != accu.end())
+          values = getUp(triplet, var_it->second);
         else
           values = getUp(triplet);
       }
       else if(triplet.subject.variable && triplet.object.variable)
       {
         var_name = triplet.subject.name;
-        if(accu.find(var_name) != accu.end())
+        auto var_it = accu.find(var_name);
+        if(var_it != accu.end())
         {
-          triplet.subject.name = accu.at(triplet.subject.name);
+          triplet.subject.name = var_it->second;
           var_name = triplet.object.name;
-          if(accu.find(var_name) != accu.end())
-            values = getUp(triplet, accu.at(var_name));
+          var_it = accu.find(var_name);
+          if(var_it != accu.end())
+            values = getUp(triplet, var_it->second);
           else
             values = getUp(triplet);
         }
-        else if(accu.find(triplet.object.name) != accu.end())
-        {
-          triplet.object.name = accu.at(triplet.object.name);
-          values = getType(triplet);
-        }
         else
-          error_ = "can not resolve query : " + toString(triplet) + " : No variable already bounded";
+        {
+          var_it = accu.find(triplet.object.name);
+          if(var_it != accu.end())
+          {
+            triplet.object.name = var_it->second;
+            values = getType(triplet);
+          }
+          else
+            error_ = "can not resolve query : " + toString(triplet) + " : No variable already bounded";
+        }
       }
       else
         error_ = "can not resolve query : " + toString(triplet) + " : No variable";
@@ -192,38 +200,46 @@ namespace ontologenius
       if(triplet.subject.variable && !triplet.object.variable)
       {
         var_name = triplet.subject.name;
-        if(accu.find(var_name) != accu.end())
-          values = find(triplet, accu.at(var_name));
+        auto var_it = accu.find(var_name);
+        if(var_it != accu.end())
+          values = find(triplet, var_it->second);
         else
           values = find(triplet);
       }
       else if(!triplet.subject.variable && triplet.object.variable)
       {
         var_name = triplet.object.name;
-        if(accu.find(var_name) != accu.end())
-          values = getName(triplet, accu.at(var_name));
+        auto var_it = accu.find(var_name);
+        if(var_it != accu.end())
+          values = getName(triplet, var_it->second);
         else
           values = getName(triplet);
       }
       else if(triplet.subject.variable && triplet.object.variable)
       {
         var_name = triplet.subject.name;
-        if(accu.find(var_name) != accu.end())
+        auto var_it = accu.find(var_name);
+        if(var_it != accu.end())
         {
-          triplet.subject.name = accu.at(triplet.subject.name);
+          triplet.subject.name = var_it->second;
           var_name = triplet.object.name;
-          if(accu.find(var_name) != accu.end())
-            values = getName(triplet, accu.at(var_name));
+          var_it = accu.find(var_name);
+          if(var_it != accu.end())
+            values = getName(triplet, var_it->second);
           else
             values = getName(triplet);
         }
-        else if(accu.find(triplet.object.name) != accu.end())
-        {
-          triplet.object.name = accu.at(triplet.object.name);
-          values = find(triplet);
-        }
         else
-          error_ = "can not resolve query : " + toString(triplet) + " : No variable already bounded";
+        {
+          var_it = accu.find(triplet.object.name);
+          if(var_it != accu.end())
+          {
+            triplet.object.name = var_it->second;
+            values = find(triplet);
+          }
+          else
+            error_ = "can not resolve query : " + toString(triplet) + " : No variable already bounded";
+        }
       }
       else
         error_ = "can not resolve query : " + toString(triplet) + " : No variable";
@@ -231,38 +247,46 @@ namespace ontologenius
     else if(triplet.subject.variable && !triplet.object.variable)
     {
       var_name = triplet.subject.name;
-      if(accu.find(var_name) != accu.end())
-        values = getFrom(triplet, accu.at(var_name));
+      auto var_it = accu.find(var_name);
+      if(var_it != accu.end())
+        values = getFrom(triplet, var_it->second);
       else
         values = getFrom(triplet);
     }
     else if(!triplet.subject.variable && triplet.object.variable)
     {
       var_name = triplet.object.name;
-      if(accu.find(var_name) != accu.end())
-        values = getOn(triplet, accu.at(var_name));
+      auto var_it = accu.find(var_name);
+      if(var_it != accu.end())
+        values = getOn(triplet, var_it->second);
       else
         values = getOn(triplet);
     }
     else if(triplet.subject.variable && triplet.object.variable)
     {
       var_name = triplet.subject.name;
-      if(accu.find(var_name) != accu.end())
+      auto var_it = accu.find(var_name);
+      if(var_it != accu.end())
       {
-        triplet.subject.name = accu.at(triplet.subject.name);
+        triplet.subject.name = var_it->second;
         var_name = triplet.object.name;
-        if(accu.find(var_name) != accu.end())
-          values = getOn(triplet, accu.at(var_name));
+        var_it = accu.find(var_name);
+        if(var_it != accu.end())
+          values = getOn(triplet, var_it->second);
         else
           values = getOn(triplet);
       }
-      else if(accu.find(triplet.object.name) != accu.end())
-      {
-        triplet.object.name = accu.at(triplet.object.name);
-        values = getFrom(triplet);
-      }
       else
-        error_ = "can not resolve query : " + toString(triplet) + " : No variable already bounded";
+      {
+        var_it = accu.find(triplet.object.name);
+        if(var_it != accu.end())
+        {
+          triplet.object.name = var_it->second;
+          values = getFrom(triplet);
+        }
+        else
+          error_ = "can not resolve query : " + toString(triplet) + " : No variable already bounded";
+      }
     }
     else
       error_ = "can not resolve query : " + toString(triplet) + " : No variable";
