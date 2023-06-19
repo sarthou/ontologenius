@@ -810,38 +810,53 @@ void IndividualGraph::getSame(IndividualBranch_t* individual, std::unordered_set
 
 std::unordered_set<std::string> IndividualGraph::getSameAndClean(IndividualBranch_t* individual)
 {
-  std::unordered_set<IndividualBranch_t*> sames;
-  getSame(individual, sames);
-  cleanMarks(sames);
+  if(individual->same_as_.size())
+  {
+    std::unordered_set<IndividualBranch_t*> sames;
+    getSame(individual, sames);
+    cleanMarks(sames);
 
-  std::unordered_set<std::string> res;
-  for(IndividualBranch_t* it : sames)
-    res.insert(it->value());
+    std::unordered_set<std::string> res;
+    for(IndividualBranch_t* it : sames)
+      res.insert(it->value());
 
-  return res;
+    return res;
+  }
+  else
+    return {individual->value()};
 }
 
 void IndividualGraph::getSameAndClean(IndividualBranch_t* individual, std::unordered_set<std::string>& res)
 {
-  std::unordered_set<IndividualBranch_t*> sames;
-  getSame(individual, sames);
-  cleanMarks(sames);
+  if(individual->same_as_.size())
+  {
+    std::unordered_set<IndividualBranch_t*> sames;
+    getSame(individual, sames);
+    cleanMarks(sames);
 
-  for(IndividualBranch_t* it : sames)
-    res.insert(it->value());
+    for(IndividualBranch_t* it : sames)
+      res.insert(it->value());
+  }
+  else
+    res.insert(individual->value());
 }
 
 std::unordered_set<uint32_t> IndividualGraph::getSameIdAndClean(IndividualBranch_t* individual)
 {
-  std::unordered_set<IndividualBranch_t*> sames;
-  getSame(individual, sames);
-  cleanMarks(sames);
+  if(individual->same_as_.size())
+  {
+    std::unordered_set<IndividualBranch_t*> sames;
+    getSame(individual, sames);
+    cleanMarks(sames);
 
-  std::unordered_set<uint32_t> res;
-  for(IndividualBranch_t* it : sames)
-    res.insert(it->get());
+    std::unordered_set<uint32_t> res;
+    for(IndividualBranch_t* it : sames)
+      res.insert(it->get());
 
-  return res;
+    return res;
+  }
+  else
+    return {individual->get()};
 }
 
 std::unordered_set<std::string> IndividualGraph::select(const std::unordered_set<std::string>& on, const std::string& class_selector)
