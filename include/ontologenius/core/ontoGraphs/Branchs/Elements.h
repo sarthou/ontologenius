@@ -14,16 +14,12 @@ public:
 
   bool operator>(float prob)
   {
-    if(probability > prob)
-      return true;
-    return false;
+    return (probability > prob);
   }
 
   bool operator<(float prob)
   {
-    if(probability < prob)
-      return true;
-    return false;
+    return (probability < prob);
   }
 };
 
@@ -58,16 +54,12 @@ public:
 
   bool operator==(const Single_t& other)
   {
-    if(elem == other.elem)
-      return true;
-    return false;
+    return (elem == other.elem);
   }
 
   bool operator==(const T& other)
   {
-    if(elem == other)
-      return true;
-    return false;
+    return (elem == other);
   }
 };
 
@@ -106,9 +98,7 @@ public:
 
   bool operator==(const Pair_t& other)
   {
-    if((first == other.first) && (second == other.second))
-      return true;
-    return false;
+    return ((first == other.first) && (second == other.second));
   }
 };
 
