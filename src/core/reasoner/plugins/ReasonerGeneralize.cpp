@@ -22,7 +22,7 @@ void ReasonerGeneralize::setParameter(const std::string& name, const std::string
     min_percent_ = std::stof(value,&sz);
 }
 
-void ReasonerGeneralize::periodicReason()
+bool ReasonerGeneralize::periodicReason()
 {
   std::vector<ClassBranch_t*> classes = ontology_->class_graph_.getSafe();
 
@@ -77,6 +77,8 @@ void ReasonerGeneralize::periodicReason()
         break;
     }
   }
+
+  return (notifications_.size() != 0);
 }
 
 void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<DataPropertyBranch_t*, std::string, float>> properties)

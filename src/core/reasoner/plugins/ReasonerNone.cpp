@@ -4,10 +4,11 @@
 
 namespace ontologenius {
 
-void ReasonerNone::preReason(const QueryInfo_t& query_info)
+bool ReasonerNone::preReason(const QueryInfo_t& query_info)
 {
   //put your pre-reasonning here
   (void)query_info;
+  return false;
 }
 
 void ReasonerNone::postReason()
@@ -15,9 +16,10 @@ void ReasonerNone::postReason()
   //put your post-reasonning here
 }
 
-void ReasonerNone::periodicReason()
+bool ReasonerNone::periodicReason()
 {
   //put your periodic reasonning here
+  return false;
 }
 
 std::string ReasonerNone::getName()

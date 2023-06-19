@@ -196,24 +196,28 @@ void Reasoners::runPreReasoners(QueryOrigin_e origin, const std::string& action,
   {
     if(it.second)
     {
-      it.second->preReason(query_info);
-      auto notif = it.second->getNotifications();
-      notifications_.insert(notifications_.end(), notif.begin(), notif.end());
-      auto explanations = it.second->getExplanations();
-      explanations_mutex_.lock();
-      explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
-      explanations_mutex_.unlock();
+      if(it.second->preReason(query_info))
+      {
+        auto notif = it.second->getNotifications();
+        notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+        auto explanations = it.second->getExplanations();
+        explanations_mutex_.lock();
+        explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
+        explanations_mutex_.unlock();
+      }
     }
   }
 
   nb_updates = ReasonerInterface::getNbUpdates();
   ReasonerInterface::resetNbUpdates();
 
-  computeClassesUpdates();
-  computeIndividualsUpdates();
-  
   if(nb_updates!= 0)
+  {
+    computeClassesUpdates();
+    computeIndividualsUpdates();
+
     runPostReasoners();
+  }
 }
 
 void Reasoners::runPostReasoners()
@@ -246,21 +250,28 @@ void Reasoners::runPostReasoners()
 
 void Reasoners::runPeriodicReasoners()
 {
+  bool has_run = false;
+
   for(auto& it : active_reasoners_)
   {
     if(it.second != nullptr)
     {
-      it.second->periodicReason();
-      auto notif = it.second->getNotifications();
-      notifications_.insert(notifications_.end(), notif.begin(), notif.end());
-      auto explanations = it.second->getExplanations();
-      explanations_mutex_.lock();
-      explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
-      explanations_mutex_.unlock();
+      bool this_has_run = it.second->periodicReason();
+      if(this_has_run)
+      {
+        has_run = true; 
+        auto notif = it.second->getNotifications();
+        notifications_.insert(notifications_.end(), notif.begin(), notif.end());
+        auto explanations = it.second->getExplanations();
+        explanations_mutex_.lock();
+        explanations_.insert(explanations_.end(), explanations.begin(), explanations.end());
+        explanations_mutex_.unlock();
+      }
     }
   }
 
-  computeIndividualsUpdatesPeriodic();
+  if(has_run)
+    computeIndividualsUpdatesPeriodic();
 }
 
 void Reasoners::applyConfig()

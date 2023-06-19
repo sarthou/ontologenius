@@ -15,7 +15,7 @@ public:
 
   virtual void setParameter(const std::string& name, const std::string& value) override;
 
-  virtual void periodicReason() override;
+  virtual bool periodicReason() override;
 
   virtual bool implementPeriodicReasoning() override { return true; }
 
