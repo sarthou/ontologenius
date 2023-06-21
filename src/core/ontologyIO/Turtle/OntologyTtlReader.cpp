@@ -64,23 +64,28 @@ void OntologyTtlReader::removeComments(std::string& raw_turtle)
   {
     if(next_to_find == 0x00)
     {
-      if(raw_turtle[i] == '#')
+      if(raw_turtle[i] == '<')
       {
-        size_t j = raw_turtle.find('\n', i + 1);
-        raw_turtle.erase(i, j-i);
-        i--;
-      }
-      else if(raw_turtle[i] == '<')
         next_to_find = '>';
+        i = raw_turtle.find(next_to_find, i + 1) - 1;
+      }
       else if(raw_turtle[i] == '"')
       {
         next_to_find = '"';
         is_multi_line = isMultiLineDelimiter(raw_turtle, i, '"');
+        i = raw_turtle.find(next_to_find, i + 1) - 1;
       }
       else if(raw_turtle[i] == '\'')
       {
         next_to_find = '\'';
         is_multi_line = isMultiLineDelimiter(raw_turtle, i, '\'');
+        i = raw_turtle.find(next_to_find, i + 1) - 1;
+      }
+      else if(raw_turtle[i] == '#')
+      {
+        size_t j = raw_turtle.find('\n', i + 1);
+        raw_turtle.erase(i, j-i);
+        i--;
       }
     }
     else if(raw_turtle[i] == next_to_find)
@@ -89,12 +94,16 @@ void OntologyTtlReader::removeComments(std::string& raw_turtle)
       {
         if(isDelimiterEscaped(raw_turtle, i) == false)
           next_to_find = 0x00;
+        else
+          i = raw_turtle.find(next_to_find, i + 1) - 1;
       }
       else if(isMultiLineDelimiter(raw_turtle, i, next_to_find))
       {
         next_to_find = 0x00;
         is_multi_line = false;
       }
+      else
+        i = raw_turtle.find(next_to_find, i + 1) - 1;
     }
   }
 }
