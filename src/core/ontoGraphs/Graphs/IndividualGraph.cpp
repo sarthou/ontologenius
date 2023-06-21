@@ -1498,13 +1498,12 @@ int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, ObjectPropertyB
       indiv_from->object_relations_.emplace_back(IndivObjectRelationElement_t(property, indiv_on));
       indiv_from->object_properties_has_induced_.emplace_back();
       index = indiv_from->object_relations_.size() - 1;
+      indiv_on->updated_ = true;
+      indiv_from->updated_ = true;
     }
 
     indiv_from->object_relations_[index].probability = proba;
     indiv_from->object_relations_[index].infered = infered;
-
-    indiv_from->updated_ = true;
-    setRelationsUpdated(indiv_from->object_relations_);
 
     return index;
   }
@@ -1716,7 +1715,6 @@ bool IndividualGraph::removeSameAs(const std::string& indiv_1, const std::string
 std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered)
 {
   std::vector<std::pair<std::string, std::string>> explanations;
-  bool updated = false;
   std::unordered_set<ObjectPropertyBranch_t*> down_properties;
   object_property_graph_->getDownPtr(property, down_properties);
 
@@ -1745,7 +1743,6 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
           branch_from->object_relations_.erase(branch_from->object_relations_.begin() + i);
           branch_from->object_properties_has_induced_.erase(branch_from->object_properties_has_induced_.begin() + i);
           branch_from->updated_ = true;
-          updated = true;
           applied = true;
           break;
         }
@@ -1755,8 +1752,6 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
     if(applied == false)
       i++;
   }
-  if(updated == true)
-    setRelationsUpdated(branch_from->object_relations_);
 
   return explanations;
 }
