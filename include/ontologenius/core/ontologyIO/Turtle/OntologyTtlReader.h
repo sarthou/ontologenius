@@ -8,14 +8,15 @@
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
+#include <regex>
+
 namespace ontologenius {
 
 class OntologyTtlReader : public OntologyReader
 {
 public:
-  OntologyTtlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph) :
-                    OntologyReader(class_graph, object_property_graph, data_property_graph, individual_graph) {}
-  explicit OntologyTtlReader(Ontology& onto) : OntologyReader(onto) {}
+  OntologyTtlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
+  explicit OntologyTtlReader(Ontology& onto);
   ~OntologyTtlReader() {}
 
   int readFromUri(const std::string& content, const std::string& uri);
@@ -25,11 +26,15 @@ private:
   std::string previous_subject_;
   IndividualVectors_t individual_vector_;
 
+  std::regex double_reg_;
+  std::regex decimal_reg_;
+  std::regex integer_reg_;
+
   int read(std::string raw_turtle, const std::string& file_name);
 
   void removeComments(std::string& raw_turtle);
   void readTriplets(const std::string& raw_turtle);
-  void sendToOntology(std::string subject, const std::vector<std::array<std::string,3>>& triplets);
+  void sendToOntology(std::string& subject, const std::vector<std::array<std::string,3>>& triplets);
   bool isMultiLineDelimiter(const std::string& raw_turtle, size_t& pose, char delim);
   bool isDelimiterEscaped(const std::string& raw_turtle, size_t& pose);
   inline size_t nextNonBlanckCharacter(const std::string& text, size_t pose);
