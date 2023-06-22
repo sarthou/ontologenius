@@ -35,7 +35,6 @@ int OntologyTtlReader::readFromUri(const std::string& content, const std::string
 int OntologyTtlReader::readFromFile(const std::string& file_name)
 {
   std::string response = "";
-  std::string tmp = "";
   std::ifstream f(file_name);
 
   if(!f.is_open())
@@ -44,8 +43,9 @@ int OntologyTtlReader::readFromFile(const std::string& file_name)
     return -1;
   }
 
-  while(getline(f,tmp))
-    response += tmp + "\n";
+  std::ostringstream ss;
+  ss << f.rdbuf();
+  response = ss.str();
   
   return read(response, file_name);
 }
