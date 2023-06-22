@@ -93,10 +93,15 @@ public:
   }
 
   template<typename C>
-  inline void conditionalPushBack(std::vector<C>& vect, const C& data)
+  inline bool conditionalPushBack(std::vector<C>& vect, const C& data)
   {
     if(std::find(vect.begin(), vect.end(), data) == vect.end())
-      vect.push_back(data);
+    {
+      vect.emplace_back(data);
+      return true;
+    }
+    else
+      return false;
   }
 };
 
