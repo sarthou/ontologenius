@@ -51,11 +51,13 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
   //am I created ?
   //IndividualBranch_t* me = getBranch(value);
   IndividualBranch_t* me = container_.find(value);
+  bool is_new = false;
   if(me == nullptr)
   {
     me = new IndividualBranch_t(value);
     individuals_.push_back(me);
     container_.insert(me);
+    is_new = true;
   }
 
   /**********************
@@ -75,8 +77,16 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
       mother_branch = class_graph_->add(is_a.elem, empty_vectors, true);
     }
 
-    conditionalPushBack(me->is_a_, ClassElement_t(mother_branch));
-    conditionalPushBack(mother_branch->individual_childs_, IndividualElement_t(me));
+    if(is_new)
+    {
+      me->is_a_.emplace_back(mother_branch);
+      mother_branch->individual_childs_.emplace_back(me);
+    }
+    else
+    {
+      if(conditionalPushBack(me->is_a_, ClassElement_t(mother_branch)))
+        mother_branch->individual_childs_.emplace_back(me);
+    }
   }
 
   /**********************
@@ -105,15 +115,15 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
     IndividualBranch_t* same = container_.find(same_as.elem);
     if(same != nullptr)
     {
-      conditionalPushBack(me->same_as_, IndividualElement_t(same));
-      conditionalPushBack(same->same_as_, IndividualElement_t(me, 1.0, true));
+      if(conditionalPushBack(me->same_as_, IndividualElement_t(same)))
+        same->same_as_.emplace_back(me, 1.0, true);
     }
     else
     {
       //I create my same
       auto my_same = new IndividualBranch_t(same_as.elem);
-      conditionalPushBack(me->same_as_, IndividualElement_t(my_same));
-      conditionalPushBack(my_same->same_as_, IndividualElement_t(me, 1.0, true));
+      me->same_as_.emplace_back(my_same);
+      my_same->same_as_.emplace_back(me, 1.0, true);
       individuals_.push_back(my_same);
       container_.insert(my_same);
     }
