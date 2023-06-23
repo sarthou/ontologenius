@@ -801,6 +801,17 @@ void IndividualGraph::getUpPtr(IndividualBranch_t* indiv, std::unordered_set<Cla
   }
 }
 
+void IndividualGraph::getDistincts(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res)
+{
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  if(individual != nullptr)
+  {
+    for(auto& distinct : individual->distinct_)
+      getSame(distinct.elem, res);
+    cleanMarks(res);
+  }
+}
+
 std::unordered_set<uint32_t> IndividualGraph::getSameId(const std::string& individual)
 {
   return getSameIdAndClean(container_.find(individual));

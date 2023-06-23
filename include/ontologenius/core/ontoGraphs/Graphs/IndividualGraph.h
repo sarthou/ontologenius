@@ -154,6 +154,7 @@ private:
 
   bool relationExists(IndividualBranch_t* subject, ObjectPropertyBranch_t* property, IndividualBranch_t* object);
 
+  void getDistincts(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);
   std::unordered_set<uint32_t> getSameId(const std::string& individual);
   void getSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);
   std::unordered_set<std::string> getSameAndClean(IndividualBranch_t* individual);
