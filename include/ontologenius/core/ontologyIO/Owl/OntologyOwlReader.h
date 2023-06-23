@@ -17,6 +17,7 @@
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
+#include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
 namespace ontologenius {
 
 class Ontology;
@@ -52,8 +53,10 @@ private:
   int readIndividual(TiXmlElement* rdf, const std::string& name);
 
   void readClass(TiXmlElement* elem);
+  void readEquivalentClass(TiXmlElement* elem, const std::string& class_name);
   void readRestriction(TiXmlElement* elem, ExpressionMember_t* exp);
   void readCardinality(TiXmlElement* elem, Cardinality_t* card);
+  void readCollection(TiXmlElement* elem, ExpressionMember_t* exp);
   void readIndividual(TiXmlElement* elem);
   void readDescription(TiXmlElement* elem);
   void readIndividualDescription(TiXmlElement* elem);

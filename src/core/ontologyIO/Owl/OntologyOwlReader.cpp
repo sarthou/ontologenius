@@ -215,6 +215,8 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
         pushLang(object_vector.dictionary_, sub_elem);
       else if(sub_elem_name == "onto:label")
         pushLang(object_vector.muted_dictionary_, sub_elem);
+      else if(sub_elem_name == "owl:equivalentClass")
+        readEquivalentClass(sub_elem, attr);
       else
       {
         std::string ns = sub_elem_name.substr(0,sub_elem_name.find(':'));
@@ -242,6 +244,64 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
   nb_loaded_elem_++;
 }
 
+void OntologyOwlReader::readEquivalentClass(TiXmlElement* elem, const std::string& class_name)
+{
+  AnonymousClass_t* ano = new AnonymousClass_t(); // /!\ warning think about the deletion
+  ano->class_equiv = class_name;
+
+  //std::cout << "New anonymous class with " << class_name << std::endl;
+
+  if(elem->FirstChild() == nullptr){
+      ExpressionMember_t* exp = new ExpressionMember_t;
+      exp->mother = nullptr;
+      exp->class_restriction = getName(elem->Attribute("rdf:resource"));
+      exp->str_equivalence = exp->class_restriction;
+      ano->equivalence = exp;
+      ano->str_equivalences = exp->str_equivalence;
+
+      std::cout << "\t=" << ano->str_equivalences << std::endl;
+  }
+ 
+  for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+  {
+    std::string sub_elem_name = sub_elem->Value();
+    
+    ExpressionMember_t* exp = new ExpressionMember_t();
+    exp->mother = nullptr;
+    ano->equivalence = exp;
+
+    if(sub_elem_name == "owl:Restriction"){
+      readRestriction(sub_elem, exp);
+      ano->str_equivalences = "(" + exp->rest.getRestriction() + ")";
+    }
+    else{
+      readCollection(sub_elem, exp);
+      ano->str_equivalences = exp->str_equivalence;
+    }
+      
+
+    std::cout << "\t=" << ano->str_equivalences << std::endl;
+
+    // for(auto elem3: ano->equivalence->intersects){
+    //   std::cout << elem3->str_equivalence << std::endl;
+    //   for(auto elem4 : elem3->intersects){
+    //     std::cout << elem4->str_equivalence << std::endl;
+    //     for(auto elem5 : elem4->intersects){
+    //     std::cout << elem5->str_equivalence << std::endl;
+    //   }
+    //   }
+    // }
+    // for(auto elem3: ano->equivalence->intersects){
+    //   std::cout << elem3->distributable << std::endl;
+    //   for(auto elem4 : elem3->intersects){
+    //     std::cout << elem4->distributable << std::endl;
+    //     for(auto elem5 : elem4->intersects){
+    //     std::cout << elem5->distributable << std::endl;
+    //   }
+    //   }
+   // }
+  }   
+}
 void OntologyOwlReader::readRestriction(TiXmlElement* elem, ExpressionMember_t* exp)
 {
 
@@ -285,6 +345,46 @@ void OntologyOwlReader::readCardinality(TiXmlElement* elem, Cardinality_t* card)
 
   if(elem->GetText() != nullptr)
     card->cardinality_number = elem->GetText();
+}
+void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* exp){
+
+  for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+  {
+    if(getName(sub_elem->Value())  == "owl:Class")
+      readCollection(sub_elem, exp);
+    else
+    {
+      ExpressionMember_t* exp2 = new ExpressionMember_t;
+      exp2->mother = exp;
+      exp->intersects.push_back(exp2);
+      if(getName(sub_elem->Value()) == "owl:intersectionOf")
+      {
+        exp2->andor = true;
+        exp2->nb_sub = getNbChildren(sub_elem);
+        readCollection(sub_elem, exp2);
+        exp2->UpdateEquiv();
+        exp->str_equivalence = exp2->str_equivalence;
+      }
+      else if(getName(sub_elem->Value())  == "owl:unionOf")
+      {
+        exp2->andor = false;
+        exp2->nb_sub = getNbChildren(sub_elem);
+        readCollection(sub_elem, exp2);
+        exp2->UpdateEquiv();
+        exp->str_equivalence = exp2->str_equivalence;
+      }
+      else if(getName(sub_elem->Value())  == "owl:Restriction")
+      {
+        readRestriction(sub_elem, exp2);
+        exp2->str_equivalence = "(" + exp2->rest.getRestriction() + ")";
+      }
+      else if(getName(sub_elem->Value())  == "rdf:Description")
+      {
+        exp2->class_restriction = getName(sub_elem->Attribute("rdf:about"));
+        exp2->str_equivalence = exp2->class_restriction;
+      }
+    }
+  }
 }
 void OntologyOwlReader::readIndividual(TiXmlElement* elem)
 {
