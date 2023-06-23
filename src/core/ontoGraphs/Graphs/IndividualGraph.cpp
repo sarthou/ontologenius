@@ -890,6 +890,24 @@ std::unordered_set<uint32_t> IndividualGraph::getSameIdAndClean(IndividualBranch
     return {};
 }
 
+void IndividualGraph::getSameAndClean(IndividualBranch_t* individual, std::unordered_set<uint32_t>& res)
+{
+  if(individual != nullptr)
+  {
+    if(individual->same_as_.size())
+    {
+      std::unordered_set<IndividualBranch_t*> sames;
+      getSame(individual, sames);
+      cleanMarks(sames);
+
+      std::unordered_set<uint32_t> res;
+      std::transform(sames.cbegin(), sames.cend(), std::inserter(res, res.begin()), [](auto same){ return same->get(); });
+    }
+    else
+      res.insert(individual->get());
+  }
+}
+
 std::unordered_set<std::string> IndividualGraph::select(const std::unordered_set<std::string>& on, const std::string& class_selector)
 {
   std::unordered_set<std::string> res;

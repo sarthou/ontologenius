@@ -126,6 +126,7 @@ public:
 
   void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, unsigned int current_depth = 0);
   void getSameAndClean(IndividualBranch_t* individual, std::unordered_set<std::string>& res);
+  void getSameAndClean(IndividualBranch_t* individual, std::unordered_set<uint32_t>& res);
 
 private:
   ClassGraph* class_graph_;
