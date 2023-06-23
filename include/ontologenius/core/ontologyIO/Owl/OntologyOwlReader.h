@@ -52,6 +52,7 @@ private:
   int readIndividual(TiXmlElement* rdf, const std::string& name);
 
   void readClass(TiXmlElement* elem);
+  void readRestriction(TiXmlElement* elem, ExpressionMember_t* exp);
   void readCardinality(TiXmlElement* elem, Cardinality_t* card);
   void readIndividual(TiXmlElement* elem);
   void readDescription(TiXmlElement* elem);

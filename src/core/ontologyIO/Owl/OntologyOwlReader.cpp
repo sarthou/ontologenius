@@ -242,6 +242,36 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
   nb_loaded_elem_++;
 }
 
+void OntologyOwlReader::readRestriction(TiXmlElement* elem, ExpressionMember_t* exp)
+{
+
+  std::tuple<std::string, std::string, std::string> tuple_test;
+  
+  Cardinality_t* test_card = new Cardinality_t();
+  Restriction_t restr;
+  restr.card = test_card;
+
+  for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+  {
+    std::string sub_elem_name = sub_elem->Value();
+    
+    if(sub_elem_name == "owl:onProperty")
+    {
+      std::string attr_prop = getName(sub_elem->Attribute("rdf:resource"));
+      restr.property=attr_prop;
+    }
+    else if(sub_elem_name == "owl:onClass" || sub_elem_name == "owl:onDataRange")
+    {
+      std::string attr_class = getName(sub_elem->Attribute("rdf:resource"));
+      restr.restriction_range=attr_class;
+
+    }
+    else{
+      readCardinality(sub_elem, test_card);
+    }
+  }
+  exp->rest = restr;
+}
 void OntologyOwlReader::readCardinality(TiXmlElement* elem, Cardinality_t* card){
   std::string sub_elem_name = elem->Value();
 
