@@ -68,14 +68,14 @@ void ClassChecker::checkDisjoint()
 
 void ClassChecker::checkObectPropertyDomain()
 {
-  for(size_t i = 0; i < graph_size; i++)
+  for(auto& _class : graph_vect_)
   {
     std::unordered_set<ClassBranch_t*> up;
-    class_graph_->getUpPtr(graph_vect_[i], up);
+    class_graph_->getUpPtr(_class, up);
 
     std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
 
-    for(ClassObjectRelationElement_t& object_relation : graph_vect_[i]->object_relations_)
+    for(ClassObjectRelationElement_t& object_relation : _class->object_relations_)
     {
       std::unordered_set<ObjectPropertyBranch_t*> prop_up;
       class_graph_->object_property_graph_->getUpPtr(object_relation.first, prop_up);
@@ -95,11 +95,11 @@ void ClassChecker::checkObectPropertyDomain()
 
           if(intersection == nullptr)
           {
-            graph_vect_[i]->flags_["domain"].push_back(object_relation.first->value());
-            print_warning("'" + graph_vect_[i]->value() + "' is not in domain of '" + object_relation.first->value() + "'");
+            _class->flags_["domain"].push_back(object_relation.first->value());
+            print_warning("'" + _class->value() + "' is not in domain of '" + object_relation.first->value() + "'");
           }
           else
-            print_error("'" + graph_vect_[i]->value() + "' can not be in domain of '" + object_relation.first->value() + "'");
+            print_error("'" + _class->value() + "' can not be in domain of '" + object_relation.first->value() + "'");
         }
       }
     }
@@ -108,9 +108,9 @@ void ClassChecker::checkObectPropertyDomain()
 
 void ClassChecker::checkObectPropertyRange()
 {
-  for(size_t i = 0; i < graph_size; i++)
+  for(auto& _class : graph_vect_)
   {
-    for(ClassObjectRelationElement_t& object_relation : graph_vect_[i]->object_relations_)
+    for(ClassObjectRelationElement_t& object_relation : _class->object_relations_)
     {
       std::unordered_set<ClassBranch_t*> up;
       class_graph_->getUpPtr(object_relation.second, up);
@@ -134,7 +134,7 @@ void ClassChecker::checkObectPropertyRange()
 
           if(intersection == nullptr)
           {
-            graph_vect_[i]->flags_["range"].push_back(object_relation.first->value());
+            _class->flags_["range"].push_back(object_relation.first->value());
             print_warning("'" + object_relation.second->value() + "' is not in range of '" + object_relation.first->value() + "'");
           }
           else
@@ -147,14 +147,14 @@ void ClassChecker::checkObectPropertyRange()
 
 void ClassChecker::checkDataPropertyDomain()
 {
-  for(size_t i = 0; i < graph_size; i++)
+  for(auto& _class : graph_vect_)
   {
     std::unordered_set<ClassBranch_t*> up;
-    class_graph_->getUpPtr(graph_vect_[i], up);
+    class_graph_->getUpPtr(_class, up);
 
     std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
 
-    for(ClassDataRelationElement_t& relation : graph_vect_[i]->data_relations_)
+    for(ClassDataRelationElement_t& relation : _class->data_relations_)
     {
       std::unordered_set<DataPropertyBranch_t*> prop_up;
       class_graph_->data_property_graph_->getUpPtr(relation.first, prop_up);
@@ -174,11 +174,11 @@ void ClassChecker::checkDataPropertyDomain()
 
           if(intersection == nullptr)
           {
-            graph_vect_[i]->flags_["range"].push_back(relation.first->value());
-            print_warning("'" + graph_vect_[i]->value() + "' is not in domain of '" + relation.first->value() + "'");
+            _class->flags_["range"].push_back(relation.first->value());
+            print_warning("'" + _class->value() + "' is not in domain of '" + relation.first->value() + "'");
           }
           else
-            print_error("'" + graph_vect_[i]->value() + "' can not be in domain of '" + relation.first->value() + "'");
+            print_error("'" + _class->value() + "' can not be in domain of '" + relation.first->value() + "'");
         }
       }
     }
@@ -188,9 +188,9 @@ void ClassChecker::checkDataPropertyDomain()
 void ClassChecker::checkDataPropertyRange()
 {
   std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
-  for(size_t i = 0; i < graph_size; i++)
+  for(auto& _class : graph_vect_)
   {
-    for(ClassDataRelationElement_t& relation : graph_vect_[i]->data_relations_)
+    for(ClassDataRelationElement_t& relation : _class->data_relations_)
     {
       std::unordered_set<std::string> range = class_graph_->data_property_graph_->getRange(relation.first->value());
       if(range.size() != 0)
