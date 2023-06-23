@@ -667,6 +667,9 @@ void RosInterface::feedThread()
   feeder_.store("[add]myself|", {time.sec, time.nsec});
   if(name_ != "")
     feeder_.store("[add]myself|=|" + name_, {time.sec, time.nsec});
+  feeder_mutex_.lock();
+  feeder_.run();
+  feeder_mutex_.unlock();
 
   std_msgs::String msg;
   while(ros::ok() && (run_ == true))
