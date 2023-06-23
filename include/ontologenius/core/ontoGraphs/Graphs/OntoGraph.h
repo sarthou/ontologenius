@@ -290,59 +290,54 @@ void OntoGraph<B>::amIA(B** me, std::map<std::string, B*>& vect, const std::stri
 template <typename B>
 void OntoGraph<B>::getDown(B* branch, std::unordered_set<std::string>& res, int depth, unsigned int current_depth)
 {
-  if(current_depth < (unsigned int)depth)
+  if(current_depth <= (unsigned int)depth)
   {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
     current_depth++;
-    for(auto& child : branch->childs_)
-      if(res.find(child.elem->value()) == res.end())
+    if(res.insert(branch->value()).second)
+      for(auto& child : branch->childs_)
         getDown(child.elem, res, depth, current_depth);
   }
-
-  res.insert(branch->value());
 }
 
 template <typename B>
 void OntoGraph<B>::getUp(B* branch, std::unordered_set<std::string>& res, int depth, unsigned int current_depth)
 {
-  if(current_depth < (unsigned int)depth)
+  if(current_depth <= (unsigned int)depth)
   {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
     current_depth++;
-    for(auto& mother : branch->mothers_)
-      if(res.find(mother.elem->value()) == res.end())
+
+    if(res.insert(branch->value()).second)
+      for(auto& mother : branch->mothers_)
         getUp(mother.elem, res, depth, current_depth);
   }
-
-  res.insert(branch->value());
 }
 
 template <typename B>
 void OntoGraph<B>::getDownIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
 {
-  if(current_depth < (unsigned int)depth)
+  if(current_depth <= (unsigned int)depth)
   {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
     current_depth++;
-    for(auto& child : branch->childs_)
-      getDownIdSafe(child.elem, res, depth, current_depth);
+    if(res.insert(branch->get()).second)
+      for(auto& child : branch->childs_)
+        getDownIdSafe(child.elem, res, depth, current_depth);
   }
-
-  res.insert(branch->get());
 }
 
 template <typename B>
 void OntoGraph<B>::getUpIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
 {
-  if(current_depth < (unsigned int)depth)
+  if(current_depth <= (unsigned int)depth)
   {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
     current_depth++;
-    for(auto& mother : branch->mothers_)
-      getUpIdSafe(mother.elem, res, depth, current_depth);
+    if(res.insert(branch->get()).second)
+      for(auto& mother : branch->mothers_)
+        getUpIdSafe(mother.elem, res, depth, current_depth);
   }
-
-  res.insert(branch->get());
 }
 
 template <typename B>
