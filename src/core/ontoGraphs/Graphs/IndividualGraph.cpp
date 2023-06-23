@@ -1820,12 +1820,6 @@ void IndividualGraph::removeRelation(const std::string& indiv_from, const std::s
     throw GraphException("The subject entity does not exist");
 }
 
-void IndividualGraph::setRelationsUpdated(std::vector<IndivObjectRelationElement_t>& relations)
-{
-  for(auto& relation : relations)
-    relation.second->updated_ = true;
-}
-
 std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelationInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
 {
   std::vector<std::pair<std::string, std::string>> explanations;
