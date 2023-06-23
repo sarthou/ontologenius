@@ -617,7 +617,7 @@ bool IndividualGraph::getFrom(ClassBranch_t* class_branch, const std::unordered_
 
     if(defined == true)
     {
-      class_graph_->getUpIdSafe(class_branch, do_not_take);
+      class_graph_->getUp(class_branch, do_not_take);
       return found;
     }
     else

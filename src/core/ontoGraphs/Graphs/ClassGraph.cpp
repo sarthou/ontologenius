@@ -526,7 +526,7 @@ void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::stri
             if(relation.second != data)
             {
               found = true;
-              getDownIdSafe(down, do_not_take);
+              getDown(down, do_not_take);
             }
 
         if(found == false)
@@ -554,7 +554,7 @@ void ClassGraph::objectGetRelatedWith(ClassBranch_t* class_branch, const std::st
             if(relation.second->value() != _class)
             {
               found = true;
-              getDownIdSafe(down, do_not_take);
+              getDown(down, do_not_take);
             }
 
         if(found == false)

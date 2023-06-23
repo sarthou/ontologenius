@@ -46,8 +46,8 @@ public:
 
   void getDown(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
   void getUp(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
-  void getDownIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
-  void getUpIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
+  void getDown(B* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
+  void getUp(B* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
 
   std::unordered_set<B*> getDownPtrSafe(B* branch, int depth = -1);
   void getDownPtr(B* branch, std::unordered_set<B*>& res, int depth, unsigned int current_depth = 0);
@@ -155,7 +155,7 @@ std::unordered_set<uint32_t> OntoGraph<B>::getDownIdSafe(const std::string& valu
   B* branch = this->container_.find(value);
 
   if(branch != nullptr)
-    getDownIdSafe(branch, res, depth);
+    getDown(branch, res, depth);
 
   return res;
 }
@@ -169,7 +169,7 @@ std::unordered_set<uint32_t> OntoGraph<B>::getUpIdSafe(const std::string& value,
   B* branch = this->container_.find(value);
 
   if(branch != nullptr)
-    getUpIdSafe(branch, res, depth);
+    getUp(branch, res, depth);
 
   return res;
 }
@@ -315,7 +315,7 @@ void OntoGraph<B>::getUp(B* branch, std::unordered_set<std::string>& res, int de
 }
 
 template <typename B>
-void OntoGraph<B>::getDownIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
+void OntoGraph<B>::getDown(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
 {
   if(current_depth <= (unsigned int)depth)
   {
@@ -323,12 +323,12 @@ void OntoGraph<B>::getDownIdSafe(B* branch, std::unordered_set<uint32_t>& res, i
     current_depth++;
     if(res.insert(branch->get()).second)
       for(auto& child : branch->childs_)
-        getDownIdSafe(child.elem, res, depth, current_depth);
+        getDown(child.elem, res, depth, current_depth);
   }
 }
 
 template <typename B>
-void OntoGraph<B>::getUpIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
+void OntoGraph<B>::getUp(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
 {
   if(current_depth <= (unsigned int)depth)
   {
@@ -336,7 +336,7 @@ void OntoGraph<B>::getUpIdSafe(B* branch, std::unordered_set<uint32_t>& res, int
     current_depth++;
     if(res.insert(branch->get()).second)
       for(auto& mother : branch->mothers_)
-        getUpIdSafe(mother.elem, res, depth, current_depth);
+        getUp(mother.elem, res, depth, current_depth);
   }
 }
 
