@@ -76,6 +76,7 @@ private:
   inline float getProbability(TiXmlElement* elem);
   inline std::string getAttribute(TiXmlElement* elem, const std::string& attribute);
   inline bool testAttribute(TiXmlElement* subElem, const std::string& attribute);
+  inline int getNbChildren(TiXmlElement* elem);
 
   std::string toString(TiXmlElement* subElem, std::string attribute = "rdf:resource")
   {
@@ -150,6 +151,15 @@ bool OntologyOwlReader::testAttribute(TiXmlElement* subElem, const std::string& 
     return false;
 }
 
+int OntologyOwlReader::getNbChildren(TiXmlElement* elem)
+{
+  int cpt = 0;
+  for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+  {
+    cpt++;
+  }
+  return cpt;
+}
 } // namespace ontologenius
 
 #endif // ONTOLOGENIUS_ONTOLOGYOWLREADER_H
