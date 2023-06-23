@@ -19,7 +19,7 @@ public:
   explicit OntologyTtlReader(Ontology& onto);
   ~OntologyTtlReader() {}
 
-  int readFromUri(const std::string& content, const std::string& uri);
+  int readFromUri(std::string& content, const std::string& uri);
   int readFromFile(const std::string& fileName);
 
 private:
@@ -30,7 +30,7 @@ private:
   std::regex decimal_reg_;
   std::regex integer_reg_;
 
-  int read(std::string raw_turtle, const std::string& file_name);
+  int read(std::string& raw_turtle, const std::string& file_name);
 
   void removeComments(std::string& raw_turtle);
   void readTriplets(const std::string& raw_turtle);

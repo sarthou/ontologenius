@@ -27,7 +27,7 @@ OntologyTtlReader::OntologyTtlReader(Ontology& onto) : OntologyReader(onto),
                                                        integer_reg_("^[-+]?\\d+$")
 {}
 
-int OntologyTtlReader::readFromUri(const std::string& content, const std::string& uri)
+int OntologyTtlReader::readFromUri(std::string& content, const std::string& uri)
 {
   return read(content, uri);
 }
@@ -50,7 +50,7 @@ int OntologyTtlReader::readFromFile(const std::string& file_name)
   return read(response, file_name);
 }
 
-int OntologyTtlReader::read(std::string raw_turtle, const std::string& file_name)
+int OntologyTtlReader::read(std::string& raw_turtle, const std::string& file_name)
 {
   raw_turtle = " " + raw_turtle;
   removeComments(raw_turtle);
