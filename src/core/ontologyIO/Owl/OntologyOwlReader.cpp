@@ -242,6 +242,20 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
   nb_loaded_elem_++;
 }
 
+void OntologyOwlReader::readCardinality(TiXmlElement* elem, Cardinality_t* card){
+  std::string sub_elem_name = elem->Value();
+
+  const char* resource = elem->Attribute("rdf:resource");
+  //const char* data_type = elem->Attribute("rdf:datatype");
+  
+  if(resource != nullptr)
+    card->cardinality_range = getName(resource);
+
+  card->cardinality_type = card_map[sub_elem_name];
+
+  if(elem->GetText() != nullptr)
+    card->cardinality_number = elem->GetText();
+}
 void OntologyOwlReader::readIndividual(TiXmlElement* elem)
 {
   std::string elem_name = elem->Value();

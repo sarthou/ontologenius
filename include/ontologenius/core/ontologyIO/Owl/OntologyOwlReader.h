@@ -24,6 +24,14 @@ class Ontology;
 class OntologyOwlReader : public OntologyReader
 {
 public:
+  std::unordered_map<std::string, std::string> card_map = {
+  { "owl:someValuesFrom", "some" },
+  { "owl:allValuesFrom", "only" },
+  { "owl:minQualifiedCardinality", "min" },
+  { "owl:maxQualifiedCardinality", "max" },
+  { "owl:qualifiedCardinality", "exactly" },
+  { "owl:hasValue", "value" }
+  };
   OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph) :
                     OntologyReader(class_graph, object_property_graph, data_property_graph, individual_graph) {}
   explicit OntologyOwlReader(Ontology& onto) : OntologyReader(onto) {}
@@ -44,6 +52,7 @@ private:
   int readIndividual(TiXmlElement* rdf, const std::string& name);
 
   void readClass(TiXmlElement* elem);
+  void readCardinality(TiXmlElement* elem, Cardinality_t* card);
   void readIndividual(TiXmlElement* elem);
   void readDescription(TiXmlElement* elem);
   void readIndividualDescription(TiXmlElement* elem);
