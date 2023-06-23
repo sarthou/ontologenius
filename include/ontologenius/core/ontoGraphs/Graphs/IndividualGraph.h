@@ -64,8 +64,11 @@ public:
   void add(std::vector<std::string>& distinct_);
 
   std::unordered_set<std::string> getSame(const std::string& individual);          //C1
+  std::unordered_set<uint32_t> getSame(uint32_t individual);
   std::unordered_set<std::string> getDistincts(const std::string& individual);     //C2
+  std::unordered_set<uint32_t> getDistincts(uint32_t individual);
   std::unordered_set<std::string> getRelationFrom(const std::string& individual, int depth = -1);  //C3
+  std::unordered_set<uint32_t> getRelationFrom(uint32_t individual, int depth);
   std::unordered_set<std::string> getRelatedFrom(const std::string& property);     //C3
   std::unordered_set<std::string> getRelationOn(const std::string& individual, int depth = -1);    //C4
   std::unordered_set<std::string> getRelatedOn(const std::string& property);       //C3
@@ -146,10 +149,13 @@ private:
       return nullptr;
   }
 
+  template<typename T> std::unordered_set<T> getDistincts(IndividualBranch_t* individual);
+  template<typename T> std::unordered_set<T> getRelationFrom(IndividualBranch_t* individual, int depth);
+
   void addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
   void addDataRelation(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation);
 
-  void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth = -1);
+  template<typename T> void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<T>& res, int depth = -1);
   bool getRelatedWith(ClassBranch_t* class_branch, const std::string& data, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& took);
   bool getFrom(ClassBranch_t* class_branch, const std::unordered_set<uint32_t>& object_properties, const std::unordered_set<uint32_t>& data_properties, const data_t& data, const std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake);
 
@@ -167,7 +173,61 @@ private:
   bool checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, const data_t& data);
 
   void cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch);
+
+  void ObjectPropertyGraphGetUp(ObjectPropertyBranch_t* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
+  void ObjectPropertyGraphGetUp(ObjectPropertyBranch_t* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
+  void DataPropertyGraphGetUp(DataPropertyBranch_t* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
+  void DataPropertyGraphGetUp(DataPropertyBranch_t* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
 };
+
+template<typename T>
+std::unordered_set<T> IndividualGraph::getDistincts(IndividualBranch_t* individual)
+{
+  std::unordered_set<T> res;
+  if(individual != nullptr)
+    for(auto& distinct : individual->distinct_)
+      getSameAndClean(distinct.elem, res);
+  return res;
+}
+
+template<typename T>
+std::unordered_set<T> IndividualGraph::getRelationFrom(IndividualBranch_t* individual, int depth)
+{
+  std::unordered_set<T> res;
+  if(individual != nullptr)
+  {
+    std::unordered_set<IndividualBranch_t*> sames;
+    getSame(individual, sames);
+    cleanMarks(sames);
+    for(IndividualBranch_t* it : sames)
+    {
+      for(IndivObjectRelationElement_t& relation : it->object_relations_)
+        ObjectPropertyGraphGetUp(relation.first, res, depth);
+
+      for(IndivDataRelationElement_t& relation : it->data_relations_)
+        DataPropertyGraphGetUp(relation.first, res, depth);
+
+      std::unordered_set<ClassBranch_t*> up_set;
+      getUpPtr(it, up_set);
+      for(auto up : up_set)
+        getRelationFrom(up, res, depth);
+    }
+  }
+  return res;
+}
+
+template<typename T>
+void IndividualGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<T>& res, int depth)
+{
+  if(class_branch != nullptr)
+  {
+    for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
+      ObjectPropertyGraphGetUp(relation.first, res, depth);
+
+    for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
+      DataPropertyGraphGetUp(relation.first, res, depth);
+  }
+}
 
 } // namespace ontologenius
 
