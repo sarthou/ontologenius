@@ -33,8 +33,10 @@ public:
 
   std::unordered_set<std::string> getDown(const std::string& value, int depth = -1);
   std::unordered_set<std::string> getUp(const std::string& value, int depth = -1);
-  std::unordered_set<uint32_t> getDownIdSafe(const std::string& value, int depth = -1);
-  std::unordered_set<uint32_t> getUpIdSafe(const std::string& value, int depth = -1);
+  std::unordered_set<uint32_t> getDownId(const std::string& value, int depth = -1);
+  std::unordered_set<uint32_t> getDownId(uint32_t value, int depth = -1);
+  std::unordered_set<uint32_t> getUpId(const std::string& value, int depth = -1);
+  std::unordered_set<uint32_t> getUpId(uint32_t value, int depth = -1);
   std::string getName(const std::string& value, bool use_default = true);
   std::vector<std::string> getNames(const std::string& value, bool use_default = true);
   std::vector<std::string> getEveryNames(const std::string& value, bool use_default = true);
@@ -147,7 +149,7 @@ std::unordered_set<std::string> OntoGraph<B>::getUp(const std::string& value, in
 }
 
 template <typename B>
-std::unordered_set<uint32_t> OntoGraph<B>::getDownIdSafe(const std::string& value, int depth)
+std::unordered_set<uint32_t> OntoGraph<B>::getDownId(const std::string& value, int depth)
 {
   std::unordered_set<uint32_t> res;
 
@@ -161,7 +163,21 @@ std::unordered_set<uint32_t> OntoGraph<B>::getDownIdSafe(const std::string& valu
 }
 
 template <typename B>
-std::unordered_set<uint32_t> OntoGraph<B>::getUpIdSafe(const std::string& value, int depth)
+std::unordered_set<uint32_t> OntoGraph<B>::getDownId(uint32_t value, int depth)
+{
+  std::unordered_set<uint32_t> res;
+
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  B* branch = this->container_.find(ValuedNode::table_.get(value));
+
+  if(branch != nullptr)
+    getDown(branch, res, depth);
+
+  return res;
+}
+
+template <typename B>
+std::unordered_set<uint32_t> OntoGraph<B>::getUpId(const std::string& value, int depth)
 {
   std::unordered_set<uint32_t> res;
 
@@ -174,6 +190,19 @@ std::unordered_set<uint32_t> OntoGraph<B>::getUpIdSafe(const std::string& value,
   return res;
 }
 
+template <typename B>
+std::unordered_set<uint32_t> OntoGraph<B>::getUpId(uint32_t value, int depth)
+{
+  std::unordered_set<uint32_t> res;
+
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  B* branch = this->container_.find(ValuedNode::table_.get(value));
+
+  if(branch != nullptr)
+    getUp(branch, res, depth);
+
+  return res;
+}
 
 template <typename B>
 std::string OntoGraph<B>::getName(const std::string& value, bool use_default)

@@ -325,8 +325,8 @@ void IndividualGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordere
 
 std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::string& property)
 {
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
+  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
   std::unordered_set<std::string> class_res;
   class_graph_->getRelatedFrom(object_properties, data_properties, class_res);
@@ -383,8 +383,8 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
 
 std::unordered_set<std::string> IndividualGraph::getRelatedOn(const std::string& property)
 {
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
+  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
   std::unordered_set<std::string> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
@@ -549,8 +549,8 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& para
 
 std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& individual, const std::string& property)
 {
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
+  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
   std::unordered_set<std::string> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
@@ -593,7 +593,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
 
     if((found == false) && (indiv == nullptr))
     {
-      std::unordered_set<uint32_t> down_classes = class_graph_->getDownIdSafe(individual);
+      std::unordered_set<uint32_t> down_classes = class_graph_->getDownId(individual);
       std::unordered_set<uint32_t> do_not_take;
 
       std::unordered_set<ClassBranch_t*> up_set;
@@ -681,8 +681,8 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& indivi
 
   if(indiv != nullptr)
   {
-    std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
-    std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
+    std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+    std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
     std::unordered_set<IndividualBranch_t*> sames;
     getSame(indiv, sames);

@@ -401,8 +401,8 @@ void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::uno
 
 std::unordered_set<std::string> ClassGraph::getRelatedOn(const std::string& property)
 {
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
+  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
@@ -425,7 +425,7 @@ std::unordered_set<std::string> ClassGraph::getRelatedOn(const std::string& prop
 
 void ClassGraph::getRelatedOnDataProperties(const std::string& property, std::unordered_set<std::string>& res)
 {
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
+  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
   for(auto& branch : all_branchs_)
   {
@@ -606,9 +606,9 @@ std::unordered_set<std::string> ClassGraph::getFrom(const std::string& param)
 
 std::unordered_set<std::string> ClassGraph::getFrom(const std::string& _class, const std::string& property)
 {
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
-  std::unordered_set<uint32_t> down_classes = getDownIdSafe(_class);
+  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> down_classes = getDownId(_class);
 
   std::unordered_set<std::string> res;
   std::unordered_set<uint32_t> do_not_take;
@@ -656,8 +656,8 @@ std::unordered_set<std::string> ClassGraph::getOn(const std::string& param)
 
 std::unordered_set<std::string> ClassGraph::getOn(const std::string& _class, const std::string& property)
 {
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
+  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
   int found_depth = -1;
   std::unordered_set<std::string> res;
