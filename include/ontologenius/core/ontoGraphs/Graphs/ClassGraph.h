@@ -56,6 +56,7 @@ public:
   std::unordered_set<std::string> getRelationFrom(const std::string& _class, int depth = -1);  //C3
   std::unordered_set<uint32_t> getRelationFrom(uint32_t _class, int depth = -1);
   std::unordered_set<std::string> getRelatedFrom(const std::string& property);     //C3
+  std::unordered_set<uint32_t> getRelatedFrom(uint32_t property);
   std::unordered_set<std::string> getRelationOn(const std::string& _class, int depth = -1);    //C4
   std::unordered_set<std::string> getRelatedOn(const std::string& property);       //C3
   std::unordered_set<std::string> getRelationWith(const std::string& _class);  //C3
@@ -98,7 +99,7 @@ private:
 
   template<typename T> std::unordered_set<T> getRelationFrom(ClassBranch_t* class_branch, int depth = -1);
   template<typename T> void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<T>& res, int depth);
-  void getRelatedFrom(const std::unordered_set<uint32_t>& object_properties, const std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res);
+  template<typename T> void getRelatedFrom(const std::unordered_set<uint32_t>& object_properties, const std::unordered_set<uint32_t>& data_properties, std::unordered_set<T>& res);
   void getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth);
   void getRelatedOnDataProperties(const std::string& property, std::unordered_set<std::string>& res);
   void getRelationWith(ClassBranch_t* class_branch, std::map<std::string, int>& properties, std::vector<int>& depths, std::vector<std::string>& res, int depth);

@@ -333,8 +333,8 @@ void ClassGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordered_set
 
 std::unordered_set<std::string> ClassGraph::getRelatedFrom(const std::string& property)
 {
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
+  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
   std::unordered_set<std::string> res;
   getRelatedFrom(object_properties, data_properties, res);
@@ -342,7 +342,19 @@ std::unordered_set<std::string> ClassGraph::getRelatedFrom(const std::string& pr
   return res;
 }
 
-void ClassGraph::getRelatedFrom(const std::unordered_set<uint32_t>& object_properties, const std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res)
+std::unordered_set<uint32_t> ClassGraph::getRelatedFrom(uint32_t property)
+{
+  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
+
+  std::unordered_set<uint32_t> res;
+  getRelatedFrom(object_properties, data_properties, res);
+
+  return res;
+}
+
+template<typename T>
+void ClassGraph::getRelatedFrom(const std::unordered_set<uint32_t>& object_properties, const std::unordered_set<uint32_t>& data_properties, std::unordered_set<T>& res)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
   for(auto& branch : all_branchs_)
@@ -350,20 +362,12 @@ void ClassGraph::getRelatedFrom(const std::unordered_set<uint32_t>& object_prope
     for(ClassObjectRelationElement_t& relation : branch->object_relations_)
       for (uint32_t id : object_properties)
         if(relation.first->get() == id)
-        {
-          std::unordered_set<ClassBranch_t*> tmp = getDownPtrSafe(branch);
-          for(auto tmp_i : tmp)
-            res.insert(tmp_i->value());
-        }
+          getDown(branch, res);
 
     for(ClassDataRelationElement_t& relation : branch->data_relations_)
       for (uint32_t id : data_properties)
         if(relation.first->get() == id)
-        {
-          std::unordered_set<ClassBranch_t*> tmp = getDownPtrSafe(branch);
-          for(auto tmp_i : tmp)
-            res.insert(tmp_i->value());
-        }
+          getDown(branch, res);
   }
 }
 
