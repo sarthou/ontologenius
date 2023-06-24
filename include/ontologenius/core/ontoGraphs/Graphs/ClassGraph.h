@@ -49,10 +49,12 @@ public:
   void deepCopy(const ClassGraph& other);
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);
+  std::unordered_set<uint32_t> getDisjoint(uint32_t value);
   void getDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res);
   std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
 
   std::unordered_set<std::string> getRelationFrom(const std::string& _class, int depth = -1);  //C3
+  std::unordered_set<uint32_t> getRelationFrom(uint32_t _class, int depth = -1);
   std::unordered_set<std::string> getRelatedFrom(const std::string& property);     //C3
   std::unordered_set<std::string> getRelationOn(const std::string& _class, int depth = -1);    //C4
   std::unordered_set<std::string> getRelatedOn(const std::string& property);       //C3
@@ -94,7 +96,8 @@ private:
   void addObjectRelation(ClassBranch_t* me, Pair_t<std::string, std::string>& relation);
   void addDataRelation(ClassBranch_t* me, Pair_t<std::string, data_t>& relation);
 
-  void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth);
+  template<typename T> std::unordered_set<T> getRelationFrom(ClassBranch_t* class_branch, int depth = -1);
+  template<typename T> void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<T>& res, int depth);
   void getRelatedFrom(const std::unordered_set<uint32_t>& object_properties, const std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res);
   void getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth);
   void getRelatedOnDataProperties(const std::string& property, std::unordered_set<std::string>& res);
@@ -106,6 +109,8 @@ private:
 
   bool checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t* prop, ClassBranch_t* on);
   bool checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* prop, data_t& data);
+
+  template<typename T> std::unordered_set<T> getDisjoint(ClassBranch_t* branch);
 
   void isMyDisjoint(ClassBranch_t* me, const std::string& disjoint, std::map<std::string, ClassBranch_t*>& vect, bool& find, bool all = true)
   {

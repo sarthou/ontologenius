@@ -245,10 +245,23 @@ void ClassGraph::addDataRelation(ClassBranch_t* me, Pair_t<std::string, data_t>&
 
 std::unordered_set<std::string> ClassGraph::getDisjoint(const std::string& value)
 {
-  std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-
   ClassBranch_t* branch = container_.find(value);
+  return getDisjoint<std::string>(branch);
+}
+
+std::unordered_set<uint32_t> ClassGraph::getDisjoint(uint32_t value)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+  ClassBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  return getDisjoint<uint32_t>(branch);
+}
+
+template<typename T>
+std::unordered_set<T> ClassGraph::getDisjoint(ClassBranch_t* branch)
+{
+  std::unordered_set<T> res;
+
   if(branch != nullptr)
     for(auto& disjoint : branch->disjoints_)
       getDown(disjoint.elem, res);
@@ -278,10 +291,22 @@ std::unordered_set<std::string> ClassGraph::select(const std::unordered_set<std:
 
 std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& _class, int depth)
 {
-  std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-
   ClassBranch_t* class_branch = container_.find(_class);
+  return getRelationFrom<std::string>(class_branch, depth);
+}
+
+std::unordered_set<uint32_t> ClassGraph::getRelationFrom(uint32_t _class, int depth)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+  ClassBranch_t* class_branch = container_.find(ValuedNode::table_.get(_class));
+  return getRelationFrom<uint32_t>(class_branch, depth);
+}
+
+template<typename T>
+std::unordered_set<T> ClassGraph::getRelationFrom(ClassBranch_t* class_branch, int depth)
+{
+  std::unordered_set<T> res;;
   if(class_branch != nullptr)
   {
     std::unordered_set<ClassBranch_t*> up_classes = getUpPtrSafe(class_branch);
@@ -292,7 +317,8 @@ std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& _
   return res;
 }
 
-void ClassGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth)
+template<typename T>
+void ClassGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<T>& res, int depth)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
   if(class_branch != nullptr)
