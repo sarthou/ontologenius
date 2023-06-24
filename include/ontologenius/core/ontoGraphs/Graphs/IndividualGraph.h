@@ -70,6 +70,7 @@ public:
   std::unordered_set<std::string> getRelationFrom(const std::string& individual, int depth = -1);  //C3
   std::unordered_set<uint32_t> getRelationFrom(uint32_t individual, int depth);
   std::unordered_set<std::string> getRelatedFrom(const std::string& property);     //C3
+  std::unordered_set<uint32_t> getRelatedFrom(uint32_t property);
   std::unordered_set<std::string> getRelationOn(const std::string& individual, int depth = -1);    //C4
   std::unordered_set<std::string> getRelatedOn(const std::string& property);       //C3
   std::unordered_set<std::string> getRelationWith(const std::string& individual);  //C3
@@ -151,6 +152,8 @@ private:
 
   template<typename T> std::unordered_set<T> getDistincts(IndividualBranch_t* individual);
   template<typename T> std::unordered_set<T> getRelationFrom(IndividualBranch_t* individual, int depth);
+  template<typename T> std::unordered_set<T> getRelatedFrom(const T& property);
+  template<typename T> void getUp(IndividualBranch_t* indiv, std::unordered_set<T>& res, int depth = -1, unsigned int current_depth = 0);
 
   void addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
   void addDataRelation(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation);

@@ -325,13 +325,24 @@ void IndividualGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordere
 
 std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::string& property)
 {
+  return getRelatedFrom<std::string>(property);
+}
+
+std::unordered_set<uint32_t> IndividualGraph::getRelatedFrom(uint32_t property)
+{
+  return getRelatedFrom<uint32_t>(property);
+}
+
+template<typename T>
+std::unordered_set<T> IndividualGraph::getRelatedFrom(const T& property)
+{
   std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownId(property);
   std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownId(property);
 
-  std::unordered_set<std::string> class_res;
+  std::unordered_set<T> class_res;
   class_graph_->getRelatedFrom(object_properties, data_properties, class_res);
 
-  std::unordered_set<std::string> res;
+  std::unordered_set<T> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(auto& individual : individuals_)
   {
@@ -343,7 +354,8 @@ std::unordered_set<std::string> IndividualGraph::getRelatedFrom(const std::strin
       if(std::any_of(object_properties.begin(), object_properties.end(), [prop_id = relation.first->get()](auto& id){ return id == prop_id; }))
         getSameAndClean(individual, res);
 
-    std::unordered_set<std::string> up_set = getUp(individual, 1);
+    std::unordered_set<T> up_set;
+    getUp(individual, up_set, 1);
     for(auto& up : up_set)
       if(class_res.find(up) != class_res.end())
       {
@@ -830,6 +842,21 @@ void IndividualGraph::getUpPtr(IndividualBranch_t* indiv, std::unordered_set<Cla
     for(IndividualBranch_t* it : sames)
       for(auto& is_a : it->is_a_)
         class_graph_->getUpPtr(is_a.elem, res, depth, current_depth);
+  }
+}
+
+template<typename T>
+void IndividualGraph::getUp(IndividualBranch_t* indiv, std::unordered_set<T>& res, int depth, unsigned int current_depth)
+{
+  current_depth++;
+  if(indiv != nullptr)
+  {
+    std::unordered_set<IndividualBranch_t*> sames;
+    getSame(indiv, sames);
+    cleanMarks(sames);
+    for(IndividualBranch_t* it : sames)
+      for(auto& is_a : it->is_a_)
+        class_graph_->getUp(is_a.elem, res, depth, current_depth);
   }
 }
 
