@@ -173,61 +173,7 @@ private:
   bool checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, const data_t& data);
 
   void cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch);
-
-  void ObjectPropertyGraphGetUp(ObjectPropertyBranch_t* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
-  void ObjectPropertyGraphGetUp(ObjectPropertyBranch_t* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
-  void DataPropertyGraphGetUp(DataPropertyBranch_t* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
-  void DataPropertyGraphGetUp(DataPropertyBranch_t* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
 };
-
-template<typename T>
-std::unordered_set<T> IndividualGraph::getDistincts(IndividualBranch_t* individual)
-{
-  std::unordered_set<T> res;
-  if(individual != nullptr)
-    for(auto& distinct : individual->distinct_)
-      getSameAndClean(distinct.elem, res);
-  return res;
-}
-
-template<typename T>
-std::unordered_set<T> IndividualGraph::getRelationFrom(IndividualBranch_t* individual, int depth)
-{
-  std::unordered_set<T> res;
-  if(individual != nullptr)
-  {
-    std::unordered_set<IndividualBranch_t*> sames;
-    getSame(individual, sames);
-    cleanMarks(sames);
-    for(IndividualBranch_t* it : sames)
-    {
-      for(IndivObjectRelationElement_t& relation : it->object_relations_)
-        ObjectPropertyGraphGetUp(relation.first, res, depth);
-
-      for(IndivDataRelationElement_t& relation : it->data_relations_)
-        DataPropertyGraphGetUp(relation.first, res, depth);
-
-      std::unordered_set<ClassBranch_t*> up_set;
-      getUpPtr(it, up_set);
-      for(auto up : up_set)
-        getRelationFrom(up, res, depth);
-    }
-  }
-  return res;
-}
-
-template<typename T>
-void IndividualGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<T>& res, int depth)
-{
-  if(class_branch != nullptr)
-  {
-    for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
-      ObjectPropertyGraphGetUp(relation.first, res, depth);
-
-    for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
-      DataPropertyGraphGetUp(relation.first, res, depth);
-  }
-}
 
 } // namespace ontologenius
 
