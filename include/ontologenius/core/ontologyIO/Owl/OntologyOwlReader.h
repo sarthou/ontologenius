@@ -40,6 +40,7 @@ public:
   bool empty() {return (nb_loaded_elem_ == 0); }
 
 private:
+  std::unordered_map<std::string, std::string> card_map_;
   int read(TiXmlElement* rdf, const std::string& name);
   int readIndividual(TiXmlElement* rdf, const std::string& name);
 
