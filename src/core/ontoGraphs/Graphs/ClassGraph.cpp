@@ -220,7 +220,7 @@ void ClassGraph::addObjectRelation(ClassBranch_t* me, Pair_t<std::string, std::s
   me->object_relations_.emplace_back(property_branch, class_branch, relation.probability);
 }
 
-void ClassGraph::addDataRelation(ClassBranch_t* me, Pair_t<std::string, data_t>& relation)
+void ClassGraph::addDataRelation(ClassBranch_t* me, Pair_t<std::string, LiteralNode>& relation)
 {
   DataPropertyBranch_t* property_branch = nullptr;
   getInMap(&property_branch, relation.first, data_property_graph_->roots_);
@@ -395,7 +395,7 @@ std::unordered_set<std::string> ClassGraph::getRelationOn(const std::string& _cl
 
 void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth)
 {
-  data_t data_img(_class);
+  LiteralNode data_img(_class);
 
   for(auto& branch : all_branchs_)
     for(ClassDataRelationElement_t& relation : branch->data_relations_)
@@ -516,7 +516,7 @@ std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _c
   std::unordered_set<index_t> do_not_take;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
-  data_t data_img(_class);
+  LiteralNode data_img(_class);
 
   for(auto& branch : all_branchs_)
   {
@@ -536,7 +536,7 @@ std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _c
   return res;
 }
 
-void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const data_t& data, std::unordered_set<std::string>& res, std::unordered_set<index_t>& do_not_take)
+void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const LiteralNode& data, std::unordered_set<std::string>& res, std::unordered_set<index_t>& do_not_take)
 {
   if(class_branch != nullptr)
   {
@@ -618,7 +618,7 @@ std::unordered_set<std::string> ClassGraph::getFrom(const std::string& _class, c
   std::unordered_set<index_t> do_not_take;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
-  data_t data_img(_class);
+  LiteralNode data_img(_class);
 
   for(auto& branch : all_branchs_)
   {
@@ -802,7 +802,7 @@ void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_c
   {
     std::unordered_set<std::string> tmp_res;
 
-    data_t data_img(second_class);
+    LiteralNode data_img(second_class);
 
     for(ClassObjectRelationElement_t& relation : first_class->object_relations_)
     {
@@ -1036,7 +1036,7 @@ void ClassGraph::addRelation(ClassBranch_t* class_from, const std::string& prope
   ClassBranch_t* branch_from = class_from;
   if(branch_from != nullptr)
   {
-    data_t data_branch(type, data);
+    LiteralNode data_branch(type, data);
 
     DataPropertyBranch_t* branch_prop = data_property_graph_->findBranch(property);
     if(branch_prop == nullptr)
@@ -1246,7 +1246,7 @@ bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t
   return true;
 }
 
-bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* prop, data_t& data)
+bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* prop, LiteralNode& data)
 {
   std::unordered_set<ClassBranch_t*> up_from;
   getUpPtr(from, up_from);

@@ -1,5 +1,5 @@
-#ifndef ONTOLOGENIUS_DATA_H
-#define ONTOLOGENIUS_DATA_H
+#ifndef ONTOLOGENIUS_LITERALNODE_H
+#define ONTOLOGENIUS_LITERALNODE_H
 
 #include <string>
 #include <functional>
@@ -8,7 +8,7 @@
 
 namespace ontologenius {
 
-class data_t
+class LiteralNode
 {
 public:
   std::string value_;
@@ -16,18 +16,18 @@ public:
   
   static WordTable table_;
 
-  data_t(const std::string& type, const std::string& value) : value_(value), type_(type)
+  LiteralNode(const std::string& type, const std::string& value) : value_(value), type_(type)
   {
     index_ = table_.add(type + "#" + value);
   }
 
-  explicit data_t(const std::string& value)
+  explicit LiteralNode(const std::string& value)
   {
     index_ = table_.add(value);
     set(value);
   }
 
-  data_t() {}
+  LiteralNode() {}
 
   std::string getNs() const
   {
@@ -51,12 +51,12 @@ public:
     value_ = value.substr(pose + 1);
   }
 
-  bool operator==(const data_t& other) const
+  bool operator==(const LiteralNode& other) const
   {
     return ((type_ == other.type_) && (value_ == other.value_));
   }
 
-  bool operator!=(const data_t& other) const
+  bool operator!=(const LiteralNode& other) const
   {
     return ((type_ != other.type_) || (value_ != other.value_));
   }
@@ -67,4 +67,4 @@ private:
 
 } // namespace ontologenius
 
-#endif // ONTOLOGENIUS_DATA_H
+#endif // ONTOLOGENIUS_LITERALNODE_H

@@ -90,7 +90,7 @@ void AnnotationOwlWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
     }
 }
 
-void AnnotationOwlWriter::writeRange(const std::vector<data_t>& ranges)
+void AnnotationOwlWriter::writeRange(const std::vector<LiteralNode>& ranges)
 {
   for(auto& range : ranges)
   {

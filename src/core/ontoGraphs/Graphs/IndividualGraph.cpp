@@ -215,7 +215,7 @@ void IndividualGraph::addObjectRelation(IndividualBranch_t* me, Pair_t<std::stri
   me->object_relations_.emplace_back(property_branch, indiv_branch, relation.probability);
 }
 
-void IndividualGraph::addDataRelation(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation)
+void IndividualGraph::addDataRelation(IndividualBranch_t* me, Pair_t<std::string, LiteralNode>& relation)
 {
   DataPropertyBranch_t* property_branch = nullptr;
   getInMap(&property_branch, relation.first, data_property_graph_->roots_);
@@ -380,7 +380,7 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
 
   if(res.size() == 0)
   {
-    data_t data_img(individual);
+    LiteralNode data_img(individual);
 
     for(auto& indiv : individuals_)
       for(IndivDataRelationElement_t& relation : indiv->data_relations_)
@@ -474,7 +474,7 @@ std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::strin
   std::unordered_set<std::string> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
 
-  data_t data_img(individual);
+  LiteralNode data_img(individual);
 
   for(auto& indiv : individuals_)
   {
@@ -528,7 +528,7 @@ bool IndividualGraph::getRelatedWith(ClassBranch_t* class_branch, const std::str
       took.insert(relation.first->get());
     }
 
-    data_t data_img(data);
+    LiteralNode data_img(data);
 
     for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
     {
@@ -568,7 +568,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
 
   IndividualBranch_t* indiv = container_.find(individual);
-  data_t data_img(individual);
+  LiteralNode data_img(individual);
 
   for(auto& indiv_i : individuals_)
   {
@@ -627,7 +627,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
   return res;
 }
 
-bool IndividualGraph::getFrom(ClassBranch_t* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, const data_t& data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& do_not_take)
+bool IndividualGraph::getFrom(ClassBranch_t* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, const LiteralNode& data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& do_not_take)
 {
   if(class_branch != nullptr)
   {
@@ -743,7 +743,7 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
   std::unordered_set<std::string> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   IndividualBranch_t* indiv = container_.find(first_individual);
-  data_t data_img(second_individual);
+  LiteralNode data_img(second_individual);
 
   if(indiv != nullptr)
   {
@@ -1622,7 +1622,7 @@ int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, ObjectPropertyB
 }
 
 
-int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, const data_t& data, double proba, bool infered)
+int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, const LiteralNode& data, double proba, bool infered)
 {
   if(checkRangeAndDomain(indiv_from, property, data))
   {
@@ -1685,7 +1685,7 @@ void IndividualGraph::addRelation(IndividualBranch_t* indiv_from, const std::str
   IndividualBranch_t* branch_from = indiv_from;
   if(branch_from != nullptr)
   {
-    data_t data_branch(type, data);
+    LiteralNode data_branch(type, data);
 
     DataPropertyBranch_t* branch_prop = data_property_graph_->findBranch(property);
     if(branch_prop == nullptr)
@@ -2104,7 +2104,7 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
   return true;
 }
 
-bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, const data_t& data)
+bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, const LiteralNode& data)
 {
   std::unordered_set<DataPropertyBranch_t*> up_properties;
   data_property_graph_->getUpPtr(prop, up_properties);

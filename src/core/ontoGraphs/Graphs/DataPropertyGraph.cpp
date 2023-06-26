@@ -144,7 +144,7 @@ DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPrope
   //for all my ranges
   for(const auto& range : property_vectors.ranges_)
   {
-    data_t data(range);
+    LiteralNode data(range);
     conditionalPushBack(me->ranges_, data); // FIXME
   }
 

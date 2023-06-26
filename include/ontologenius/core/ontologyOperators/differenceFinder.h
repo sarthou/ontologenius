@@ -91,14 +91,14 @@ private:
   }
 
   template<typename T>
-  std::vector<std::string> toValuedSecond(const std::vector<Pair_t<T, data_t>>& vect)
+  std::vector<std::string> toValuedSecond(const std::vector<Pair_t<T, LiteralNode>>& vect)
   {
     std::vector<std::string> res;
     std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.second.toString(); });
     return res;
   }
 
-  std::vector<std::string> toValued(const std::vector<data_t>& vect)
+  std::vector<std::string> toValued(const std::vector<LiteralNode>& vect)
   {
     std::vector<std::string> res;
     std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.toString(); });

@@ -62,7 +62,7 @@ protected:
     }
   }
 
-  void push(std::vector<Pair_t<std::string, data_t>>& vect, const Pair_t<std::string, data_t>& elem, const std::string& symbole1, const std::string& symbole2)
+  void push(std::vector<Pair_t<std::string, LiteralNode>>& vect, const Pair_t<std::string, LiteralNode>& elem, const std::string& symbole1, const std::string& symbole2)
   {
     vect.emplace_back(elem);
     if(display_)

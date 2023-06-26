@@ -95,7 +95,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Da
     for(size_t prop_i = 0; prop_i < me->data_relations_.size(); prop_i++)
       if(me->data_relations_[prop_i].first == std::get<0>(property))
       {
-        data_t tmp;
+        LiteralNode tmp;
         tmp.set(std::get<1>(property));
 
         index = prop_i;
@@ -114,7 +114,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Da
     if(index == -1)
     {
       notifications_.push_back(std::make_pair(notification_info, "[NEW]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)));
-      data_t tmp;
+      LiteralNode tmp;
       tmp.set(std::get<1>(property));
       me->data_relations_.emplace_back(std::get<0>(property), tmp, std::get<2>(property) - 0.01);
       std::get<0>(property)->annotation_usage_ = true;

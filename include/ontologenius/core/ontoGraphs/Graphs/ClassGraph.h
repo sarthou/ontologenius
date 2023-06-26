@@ -20,7 +20,7 @@ struct ObjectVectors_t
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
 
    std::vector<Pair_t<std::string, std::string>> object_relations_;
-   std::vector<Pair_t<std::string, data_t>> data_relations_;
+   std::vector<Pair_t<std::string, LiteralNode>> data_relations_;
 };
 
 //for friend
@@ -95,7 +95,7 @@ private:
   IndividualGraph* individual_graph_;
 
   void addObjectRelation(ClassBranch_t* me, Pair_t<std::string, std::string>& relation);
-  void addDataRelation(ClassBranch_t* me, Pair_t<std::string, data_t>& relation);
+  void addDataRelation(ClassBranch_t* me, Pair_t<std::string, LiteralNode>& relation);
 
   template<typename T> std::unordered_set<T> getRelationFrom(ClassBranch_t* class_branch, int depth = -1);
   template<typename T> void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<T>& res, int depth);
@@ -103,13 +103,13 @@ private:
   void getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth);
   void getRelatedOnDataProperties(const std::string& property, std::unordered_set<std::string>& res);
   void getRelationWith(ClassBranch_t* class_branch, std::map<std::string, int>& properties, std::vector<int>& depths, std::vector<std::string>& res, int depth);
-  void dataGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const data_t& data, std::unordered_set<std::string>& res, std::unordered_set<index_t>& doNotTake);
+  void dataGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const LiteralNode& data, std::unordered_set<std::string>& res, std::unordered_set<index_t>& doNotTake);
   void objectGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const std::string& _class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& doNotTake);
   void getOn(ClassBranch_t* class_branch, std::unordered_set<index_t>& object_properties, std::unordered_set<index_t>& data_properties, std::unordered_set<std::string>& res, uint32_t current_depth, int& found_depth);
   void getWith(ClassBranch_t* first_class, const std::string& second_class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& doNotTake, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step);
 
   bool checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t* prop, ClassBranch_t* on);
-  bool checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* prop, data_t& data);
+  bool checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* prop, LiteralNode& data);
 
   template<typename T> std::unordered_set<T> getDisjoint(ClassBranch_t* branch);
 

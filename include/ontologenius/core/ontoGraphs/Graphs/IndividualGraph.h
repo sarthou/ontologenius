@@ -18,7 +18,7 @@ struct IndividualVectors_t
    std::vector<Single_t<std::string>> is_a_;
 
    std::vector<Pair_t<std::string, std::string>> object_relations_;
-   std::vector<Pair_t<std::string, data_t>> data_relations_;
+   std::vector<Pair_t<std::string, LiteralNode>> data_relations_;
 
    std::vector<Single_t<std::string>> same_as_;
    std::map<std::string, std::vector<std::string>> dictionary_;
@@ -110,7 +110,7 @@ public:
   bool addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
   bool addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
   int addRelation(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba = 1.0, bool infered = false);
-  int addRelation(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, const data_t& data, double proba = 1.0, bool infered = false);
+  int addRelation(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, const LiteralNode& data, double proba = 1.0, bool infered = false);
   void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on);
   void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data);
   void addRelationInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);
@@ -156,11 +156,11 @@ private:
   template<typename T> void getUp(IndividualBranch_t* indiv, std::unordered_set<T>& res, int depth = -1, uint32_t current_depth = 0);
 
   void addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
-  void addDataRelation(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation);
+  void addDataRelation(IndividualBranch_t* me, Pair_t<std::string, LiteralNode>& relation);
 
   template<typename T> void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<T>& res, int depth = -1);
   bool getRelatedWith(ClassBranch_t* class_branch, const std::string& data, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& took);
-  bool getFrom(ClassBranch_t* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, const data_t& data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& doNotTake);
+  bool getFrom(ClassBranch_t* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, const LiteralNode& data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& doNotTake);
 
   bool relationExists(IndividualBranch_t* subject, ObjectPropertyBranch_t* property, IndividualBranch_t* object);
 
@@ -173,7 +173,7 @@ private:
   std::unordered_set<std::string> set2set(const std::unordered_set<IndividualBranch_t*>& indiv_set, bool clean = true);
 
   bool checkRangeAndDomain(IndividualBranch_t* from, ObjectPropertyBranch_t* prop, IndividualBranch_t* on);
-  bool checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, const data_t& data);
+  bool checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, const LiteralNode& data);
 
   void cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch);
 };

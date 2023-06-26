@@ -237,10 +237,10 @@ void OntologyTtlReader::sendToOntology(std::string& subject, const std::vector<s
       OntologyReader::push(individual_vector_.object_relations_, Pair_t<std::string, std::string>(property, object.first, 1.0), "$", "^");
     else
     {
-      data_t data;
+      LiteralNode data;
       data.value_ = object.first;
       data.type_ = object.second;
-      OntologyReader::push(individual_vector_.data_relations_, Pair_t<std::string, data_t>(property, data, 1.0), "$", "^");
+      OntologyReader::push(individual_vector_.data_relations_, Pair_t<std::string, LiteralNode>(property, data, 1.0), "$", "^");
     }
   }
 }

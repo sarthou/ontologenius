@@ -18,7 +18,7 @@ class IndividualBranch_t;
 
 typedef Single_t<IndividualBranch_t*> IndividualElement_t;
 typedef Pair_t<ObjectPropertyBranch_t*, IndividualBranch_t*> IndivObjectRelationElement_t;
-typedef Pair_t<DataPropertyBranch_t*, data_t> IndivDataRelationElement_t;
+typedef Pair_t<DataPropertyBranch_t*, LiteralNode> IndivDataRelationElement_t;
 
 class IndividualBranch_t : public ValuedNode
 {
@@ -40,7 +40,7 @@ public:
   void setSteady_muted_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
 
   int objectPropertyExist(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
-  int dataPropertyExist(DataPropertyBranch_t* property, const data_t& data);
+  int dataPropertyExist(DataPropertyBranch_t* property, const LiteralNode& data);
 };
 
 class Triplet

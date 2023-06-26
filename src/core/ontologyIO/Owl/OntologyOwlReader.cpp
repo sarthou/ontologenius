@@ -228,10 +228,10 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
             const char* value = sub_elem->GetText();
             if(value != nullptr)
             {
-              data_t data;
+              LiteralNode data;
               data.value_ = std::string(value);
               data.type_ = toString(sub_elem, "rdf:datatype");
-              OntologyReader::push(object_vector.data_relations_, Pair_t<std::string, data_t>(property, data, probability), "$", "^");
+              OntologyReader::push(object_vector.data_relations_, Pair_t<std::string, LiteralNode>(property, data, probability), "$", "^");
             }
           }
         }
@@ -281,10 +281,10 @@ void OntologyOwlReader::readIndividual(TiXmlElement* elem)
               const char* value = sub_elem->GetText();
               if(value != nullptr)
               {
-                data_t data;
+                LiteralNode data;
                 data.value_ = std::string(value);
                 data.type_ = toString(sub_elem, "rdf:datatype");
-                OntologyReader::push(individual_vector.data_relations_, Pair_t<std::string, data_t>(property, data, probability), "$", "^");
+                OntologyReader::push(individual_vector.data_relations_, Pair_t<std::string, LiteralNode>(property, data, probability), "$", "^");
               }
             }
           }
