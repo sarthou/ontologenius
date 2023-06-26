@@ -7,12 +7,13 @@
 namespace ontologenius {
 
 class ValuedNode;
+class LiteralNode;
 template <typename T> struct Branch_t;
 
 template <typename B>
 class BranchContainerBase
 {
-  static_assert(std::is_base_of<ValuedNode,B>::value, "B must be derived from ValuedNode");
+  static_assert(std::is_base_of<ValuedNode,B>::value || std::is_base_of<LiteralNode,B>::value, "B must be derived from ValuedNode or LiteralNode");
 public:
   BranchContainerBase() {}
   virtual ~BranchContainerBase() {}
