@@ -4,19 +4,26 @@
 #include <string>
 #include <functional>
 
+#include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
+
 namespace ontologenius {
 
-struct data_t
+class data_t
 {
+public:
   std::string value_;
   std::string type_;
-  //size_t hash_;
+  
+  static WordTable table_;
 
   data_t(const std::string& type, const std::string& value) : value_(value), type_(type)
-  {}
+  {
+    index_ = table_.add(type + "#" + value);
+  }
 
   explicit data_t(const std::string& value)
   {
+    index_ = table_.add(value);
     set(value);
   }
 
@@ -34,11 +41,14 @@ struct data_t
       return "http://www.w3.org/2002/07/xsd"; //http://www.w3.org/2001/XMLSchema
   }
 
-  std::string toString() const {return( type_ + "#" + value_); }
-  void set(std::string value)
+  std::string toString() const { return( type_ + "#" + value_); }
+  const std::string& value() const { return table_[-index_]; } // externaly the data indexs are negatives
+  index_t get() const { return -index_; } // externaly the data indexs are negatives
+  void set(const std::string& value)
   {
-    type_ = value.substr(0,value.find("#"));
-    value_ = value.substr(value.find("#")+1);
+    size_t pose = value.find("#");
+    type_ = value.substr(0, pose);
+    value_ = value.substr(pose + 1);
   }
 
   bool operator==(const data_t& other) const
@@ -50,6 +60,9 @@ struct data_t
   {
     return ((type_ != other.type_) || (value_ != other.value_));
   }
+
+private:
+  index_t index_;
 };
 
 } // namespace ontologenius
