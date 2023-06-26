@@ -13,6 +13,10 @@ typedef int64_t index_t;
 class WordTable
 {
 public:
+  WordTable()
+  {
+    table_.push_back(""); // index 0 is reserved for the "no result index"
+  }
   
   inline index_t add(const std::string& value)
   {
