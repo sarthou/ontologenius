@@ -25,17 +25,8 @@ class Ontology;
 class OntologyOwlReader : public OntologyReader
 {
 public:
-  std::unordered_map<std::string, std::string> card_map = {
-  { "owl:someValuesFrom", "some" },
-  { "owl:allValuesFrom", "only" },
-  { "owl:minQualifiedCardinality", "min" },
-  { "owl:maxQualifiedCardinality", "max" },
-  { "owl:qualifiedCardinality", "exactly" },
-  { "owl:hasValue", "value" }
-  };
-  OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph) :
-                    OntologyReader(class_graph, object_property_graph, data_property_graph, individual_graph) {}
-  explicit OntologyOwlReader(Ontology& onto) : OntologyReader(onto) {}
+  OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
+  explicit OntologyOwlReader(Ontology& onto);
   ~OntologyOwlReader() {}
 
   int readFromUri(std::string content, const std::string& uri, bool individual = false);

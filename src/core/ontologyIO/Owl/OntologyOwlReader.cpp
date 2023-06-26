@@ -8,6 +8,27 @@
 
 namespace ontologenius {
 
+OntologyOwlReader::OntologyOwlReader(ClassGraph* class_graph,
+                                     ObjectPropertyGraph* object_property_graph,
+                                     DataPropertyGraph* data_property_graph,
+                                     IndividualGraph* individual_graph) :
+                                                      OntologyReader(class_graph, object_property_graph, data_property_graph, individual_graph),
+                                                      card_map_{{ "owl:someValuesFrom", "some" },
+                                                                { "owl:allValuesFrom", "only" },
+                                                                { "owl:minQualifiedCardinality", "min" },
+                                                                { "owl:maxQualifiedCardinality", "max" },
+                                                                { "owl:qualifiedCardinality", "exactly" },
+                                                                { "owl:hasValue", "value" }}
+{}
+
+OntologyOwlReader::OntologyOwlReader(Ontology& onto) : OntologyReader(onto),
+                                                       card_map_{{ "owl:someValuesFrom", "some" },
+                                                                 { "owl:allValuesFrom", "only" },
+                                                                 { "owl:minQualifiedCardinality", "min" },
+                                                                 { "owl:maxQualifiedCardinality", "max" },
+                                                                 { "owl:qualifiedCardinality", "exactly" },
+                                                                 { "owl:hasValue", "value" }}
+{}
 int OntologyOwlReader::readFromUri(std::string content, const std::string& uri, bool individual)
 {
   removeDocType(content);
@@ -341,7 +362,7 @@ void OntologyOwlReader::readCardinality(TiXmlElement* elem, Cardinality_t* card)
   if(resource != nullptr)
     card->cardinality_range = getName(resource);
 
-  card->cardinality_type = card_map[sub_elem_name];
+  card->cardinality_type = card_map_[sub_elem_name];
 
   if(elem->GetText() != nullptr)
     card->cardinality_number = elem->GetText();
