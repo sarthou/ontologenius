@@ -215,7 +215,7 @@ void IndividualGraph::addObjectRelation(IndividualBranch_t* me, Pair_t<std::stri
   me->object_relations_.emplace_back(property_branch, indiv_branch, relation.probability);
 }
 
-void IndividualGraph::addDataRelation(IndividualBranch_t* me, Pair_t<std::string, LiteralNode>& relation)
+void IndividualGraph::addDataRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation)
 {
   DataPropertyBranch_t* property_branch = nullptr;
   getInMap(&property_branch, relation.first, data_property_graph_->roots_);
@@ -227,7 +227,8 @@ void IndividualGraph::addDataRelation(IndividualBranch_t* me, Pair_t<std::string
     property_branch = data_property_graph_->add(relation.first, empty_vectors, true);
   }
 
-  me->data_relations_.emplace_back(property_branch, relation.second, relation.probability);
+  LiteralNode* literal = data_property_graph_->createLiteral(relation.second);
+  me->data_relations_.emplace_back(property_branch, literal, relation.probability);
 }
 
 /*********
@@ -380,12 +381,13 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
 
   if(res.size() == 0)
   {
-    LiteralNode data_img(individual);
+    LiteralNode* literal = data_property_graph_->literal_container_.find(individual);
 
-    for(auto& indiv : individuals_)
-      for(IndivDataRelationElement_t& relation : indiv->data_relations_)
-        if(relation.second == data_img)
-          data_property_graph_->getUp(relation.first, res, depth);
+    if(literal != nullptr)
+      for(auto& indiv : individuals_)
+        for(IndivDataRelationElement_t& relation : indiv->data_relations_)
+          if(relation.second == literal)
+            data_property_graph_->getUp(relation.first, res, depth);
 
     class_graph_->getRelationOnDataProperties(individual, res, depth);
   }
@@ -410,7 +412,7 @@ std::unordered_set<std::string> IndividualGraph::getRelatedOn(const std::string&
     for(IndivDataRelationElement_t& relation : indiv->data_relations_)
       for (index_t id : data_properties)
         if(relation.first->get() == id)
-          res.insert(relation.second.toString());
+          res.insert(relation.second->value());
   }
 
   class_graph_->getRelatedOnDataProperties(property, res);
@@ -451,11 +453,11 @@ std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::stri
 
       for(IndivDataRelationElement_t& relation : it->data_relations_)
       {
-        res.insert(relation.second.toString());
+        res.insert(relation.second->value());
 
         properties[relation.first->value()] = tmp_res.size();
         depths.push_back(0);
-        tmp_res.push_back(relation.second.toString());
+        tmp_res.push_back(relation.second->value());
       }
     }
 
@@ -474,7 +476,7 @@ std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::strin
   std::unordered_set<std::string> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
 
-  LiteralNode data_img(individual);
+  LiteralNode* literal = data_property_graph_->literal_container_.find(individual);
 
   for(auto& indiv : individuals_)
   {
@@ -488,14 +490,15 @@ std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::strin
         took.insert(relation.first->get());
       }
 
-    for(IndivDataRelationElement_t& relation : indiv->data_relations_)
-    {
-      if(relation.second == data_img)
+    if(literal != nullptr)
+      for(IndivDataRelationElement_t& relation : indiv->data_relations_)
       {
-        found = true;
-        took.insert(relation.first->get());
+        if(relation.second == literal)
+        {
+          found = true;
+          took.insert(relation.first->get());
+        }
       }
-    }
 
     std::unordered_set<ClassBranch_t*> up_set;
     getUpPtr(indiv, up_set, 1);
@@ -528,11 +531,11 @@ bool IndividualGraph::getRelatedWith(ClassBranch_t* class_branch, const std::str
       took.insert(relation.first->get());
     }
 
-    LiteralNode data_img(data);
+    LiteralNode* literal = data_property_graph_->literal_container_.find(data);
 
     for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
     {
-      if(relation.second == data_img)
+      if(relation.second == literal)
         if(took.find(relation.first->get()) == took.end())
           res = true;
       took.insert(relation.first->get());
@@ -568,7 +571,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
 
   IndividualBranch_t* indiv = container_.find(individual);
-  LiteralNode data_img(individual);
+  LiteralNode* literal = data_property_graph_->literal_container_.find(individual);
 
   for(auto& indiv_i : individuals_)
   {
@@ -591,16 +594,17 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
     }
 
     if(defined == false)
-      for(IndivDataRelationElement_t& relation : indiv_i->data_relations_)
-        for (index_t id : data_properties)
-          if(relation.first->get() == id)
-          {
-            if(relation.second == data_img)
+      if(literal != nullptr)
+        for(IndivDataRelationElement_t& relation : indiv_i->data_relations_)
+          for (index_t id : data_properties)
+            if(relation.first->get() == id)
             {
-              found = true;
-              break;
+              if(relation.second == literal)
+              {
+                found = true;
+                break;
+              }
             }
-          }
 
 
     if((found == false) && (indiv == nullptr))
@@ -614,7 +618,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
       {
         std::unordered_set<ClassBranch_t*> next_step;
         for(auto up : up_set)
-          found = found || getFrom(up, object_properties, data_properties, data_img, down_classes, next_step, do_not_take);
+          found = found || getFrom(up, object_properties, data_properties, literal, down_classes, next_step, do_not_take);
 
         up_set = next_step;
       }
@@ -627,7 +631,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
   return res;
 }
 
-bool IndividualGraph::getFrom(ClassBranch_t* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, const LiteralNode& data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& do_not_take)
+bool IndividualGraph::getFrom(ClassBranch_t* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, LiteralNode* data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& do_not_take)
 {
   if(class_branch != nullptr)
   {
@@ -647,17 +651,18 @@ bool IndividualGraph::getFrom(ClassBranch_t* class_branch, const std::unordered_
         }
 
     if(defined == false)
-      for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
-        for (index_t id : data_properties)
-          if(relation.first->get() == id)
-          {
-            defined = true;
-            if(relation.second == data)
+      if(data != nullptr)
+        for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
+          for (index_t id : data_properties)
+            if(relation.first->get() == id)
             {
-              found = true;
-              break;
+              defined = true;
+              if(relation.second == data)
+              {
+                found = true;
+                break;
+              }
             }
-          }
 
     if(defined == true)
     {
@@ -709,7 +714,7 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& indivi
       for(IndivDataRelationElement_t& relation : same_indiv->data_relations_)
         for (index_t id : data_properties)
           if(relation.first->get() == id)
-            res.insert(relation.second.toString());
+            res.insert(relation.second->value());
     }
 
     if(res.size() == 0)
@@ -743,7 +748,7 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
   std::unordered_set<std::string> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   IndividualBranch_t* indiv = container_.find(first_individual);
-  LiteralNode data_img(second_individual);
+  LiteralNode* literal = data_property_graph_->literal_container_.find(second_individual);
 
   if(indiv != nullptr)
   {
@@ -752,7 +757,7 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
         object_property_graph_->getUp(relation.first, res, depth);
 
     for(IndivDataRelationElement_t& relation : indiv->data_relations_)
-      if(relation.second == data_img)
+      if(relation.second == literal)
         data_property_graph_->getUp(relation.first, res, depth);
 
     int found_depth = -1;
@@ -1297,7 +1302,7 @@ bool IndividualGraph::relationExists(const std::string& subject, const std::stri
     {
       if(relation.first->value() != property)
         continue;
-      else if(relation.second.toString() == object)
+      else if(relation.second->value() == object)
         return true;
     }
   }
@@ -1622,7 +1627,7 @@ int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, ObjectPropertyB
 }
 
 
-int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, const LiteralNode& data, double proba, bool infered)
+int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, LiteralNode* data, double proba, bool infered)
 {
   if(checkRangeAndDomain(indiv_from, property, data))
   {
@@ -1685,7 +1690,7 @@ void IndividualGraph::addRelation(IndividualBranch_t* indiv_from, const std::str
   IndividualBranch_t* branch_from = indiv_from;
   if(branch_from != nullptr)
   {
-    LiteralNode data_branch(type, data);
+    LiteralNode* literal = data_property_graph_->createLiteral(type + "#" + data);
 
     DataPropertyBranch_t* branch_prop = data_property_graph_->findBranch(property);
     if(branch_prop == nullptr)
@@ -1698,9 +1703,9 @@ void IndividualGraph::addRelation(IndividualBranch_t* indiv_from, const std::str
       branch_prop = data_property_graph_->newDefaultBranch(property);
     }
 
-    if(checkRangeAndDomain(branch_from, branch_prop, data_branch))
+    if(checkRangeAndDomain(branch_from, branch_prop, literal))
     {
-      conditionalPushBack(branch_from->data_relations_, IndivDataRelationElement_t(branch_prop,data_branch));
+      conditionalPushBack(branch_from->data_relations_, IndivDataRelationElement_t(branch_prop, literal));
       branch_from->updated_ = true;
     }
     else
@@ -1901,8 +1906,8 @@ void IndividualGraph::removeRelation(const std::string& indiv_from, const std::s
     {
       if(branch_from->data_relations_[i].first->value() == property)
       {
-        if(((type == "_") || (branch_from->data_relations_[i].second.type_ == type)) &&
-          ((data == "_") || (branch_from->data_relations_[i].second.value_ == data)))
+        if(((type == "_") || (branch_from->data_relations_[i].second->type_ == type)) &&
+          ((data == "_") || (branch_from->data_relations_[i].second->value_ == data)))
         {
           branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
           branch_from->updated_ = true;
@@ -2104,7 +2109,7 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
   return true;
 }
 
-bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, const LiteralNode& data)
+bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, LiteralNode* data)
 {
   std::unordered_set<DataPropertyBranch_t*> up_properties;
   data_property_graph_->getUpPtr(prop, up_properties);
@@ -2138,7 +2143,7 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataProperty
   std::unordered_set<std::string> range = data_property_graph_->getRange(prop->value());
   if(range.size() != 0)
   {
-    if(range.find(data.type_) == range.end())
+    if(range.find(data->type_) == range.end())
       return false;
   }
 

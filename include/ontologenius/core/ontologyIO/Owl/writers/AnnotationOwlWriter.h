@@ -26,7 +26,7 @@ private:
   void writeAnnotation(DataPropertyBranch_t* branch);
   void writeSubPropertyOf(ObjectPropertyBranch_t* branch);
   void writeSubPropertyOf(DataPropertyBranch_t* branch);
-  void writeRange(const std::vector<LiteralNode>& ranges);
+  void writeRange(const std::vector<LiteralNode*>& ranges);
   void writeRange(const std::vector<ClassElement_t>& ranges);
   void writeDomain(const std::vector<ClassElement_t>& domains);
 };

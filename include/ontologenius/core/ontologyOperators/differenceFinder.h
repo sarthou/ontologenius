@@ -89,21 +89,6 @@ private:
     std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.second->value(); });
     return res;
   }
-
-  template<typename T>
-  std::vector<std::string> toValuedSecond(const std::vector<Pair_t<T, LiteralNode>>& vect)
-  {
-    std::vector<std::string> res;
-    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.second.toString(); });
-    return res;
-  }
-
-  std::vector<std::string> toValued(const std::vector<LiteralNode>& vect)
-  {
-    std::vector<std::string> res;
-    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.toString(); });
-    return res;
-  }
 };
 
 } // namespace ontologenius

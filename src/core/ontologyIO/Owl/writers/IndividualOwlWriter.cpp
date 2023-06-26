@@ -97,11 +97,11 @@ void IndividualOwlWriter::writeDataProperties(IndividualBranch_t* branch)
                         relation.first->value() +
                         proba +
                         " rdf:datatype=\"" +
-                        relation.second.getNs() +
+                        relation.second->getNs() +
                         "#" +
-                        relation.second.type_ +
+                        relation.second->type_ +
                         "\">" +
-                        relation.second.value_ +
+                        relation.second->value_ +
                         "</" +
                         relation.first->value() +
                         ">\n";

@@ -61,19 +61,6 @@ protected:
         std::cout << "│   │   ├── " << symbole2 << elem.second << std::endl;
     }
   }
-
-  void push(std::vector<Pair_t<std::string, LiteralNode>>& vect, const Pair_t<std::string, LiteralNode>& elem, const std::string& symbole1, const std::string& symbole2)
-  {
-    vect.emplace_back(elem);
-    if(display_)
-    {
-      if(symbole1 != "")
-        std::cout << "│   │   ├── " << symbole1 << elem.first << std::endl;
-
-      if(symbole2 != "")
-        std::cout << "│   │   ├── " << symbole2 << elem.second.toString() << std::endl;
-    }
-  }
 };
 
 } // namespace ontologenius

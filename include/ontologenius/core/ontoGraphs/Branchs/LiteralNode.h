@@ -27,8 +27,6 @@ public:
     set(value);
   }
 
-  LiteralNode() {}
-
   std::string getNs() const
   {
     if((type_ == "real") || (type_ == "rational"))
@@ -42,8 +40,8 @@ public:
   }
 
   std::string toString() const { return( type_ + "#" + value_); }
-  const std::string& value() const { return table_[-index_]; } // externaly the data indexs are negatives
-  index_t get() const { return -index_; } // externaly the data indexs are negatives
+  const std::string& value() const { return table_[index_]; }
+  index_t get() const { return -index_; }
   void set(const std::string& value)
   {
     size_t pose = value.find("#");

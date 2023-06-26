@@ -21,7 +21,7 @@ class DataPropertyBranch_t :  public Branch_t<DataPropertyBranch_t>,
 {
 public:
   std::vector<ClassElement_t> domains_;
-  std::vector<LiteralNode> ranges_;
+  std::vector<LiteralNode*> ranges_;
 
   DataPropertyBranch_t(const std::string& value = "") : Branch_t(value) {};
 

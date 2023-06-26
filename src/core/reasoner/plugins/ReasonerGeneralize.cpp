@@ -41,13 +41,13 @@ bool ReasonerGeneralize::periodicReason()
       std::shared_lock<std::shared_timed_mutex> lock_indiv_shared(ontology_->individual_graph_.mutex_);
       std::shared_lock<std::shared_timed_mutex> lock_shared(ontology_->class_graph_.mutex_);
 
-      PropertiesCounter<DataPropertyBranch_t*, std::string> data_counter(min_count_, min_percent_);
+      PropertiesCounter<DataPropertyBranch_t*, LiteralNode*> data_counter(min_count_, min_percent_);
       PropertiesCounter<ObjectPropertyBranch_t*, ClassBranch_t*> object_counter;
 
       for(auto down : down_set)
       {
         for(auto& data_relation : down->data_relations_)
-          data_counter.add(data_relation.first, data_relation.second.toString());
+          data_counter.add(data_relation.first, data_relation.second);
 
         for(auto& object_relation : down->object_relations_)
           object_counter.add(object_relation.first, object_relation.second);
@@ -56,7 +56,7 @@ bool ReasonerGeneralize::periodicReason()
       for(auto down : indiv_down_set)
       {
         for(auto& data_relation : down->data_relations_)
-          data_counter.add(data_relation.first, data_relation.second.toString());
+          data_counter.add(data_relation.first, data_relation.second);
       }
 
       lock_shared.unlock();
@@ -81,7 +81,7 @@ bool ReasonerGeneralize::periodicReason()
   return (notifications_.size() != 0);
 }
 
-void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<DataPropertyBranch_t*, std::string, float>> properties)
+void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<DataPropertyBranch_t*, LiteralNode*, float>> properties)
 {
   std::unordered_set<size_t> deduced_indexs;
   for(size_t i = 0; i < me->data_relations_.size(); i++)
@@ -95,28 +95,23 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Da
     for(size_t prop_i = 0; prop_i < me->data_relations_.size(); prop_i++)
       if(me->data_relations_[prop_i].first == std::get<0>(property))
       {
-        LiteralNode tmp;
-        tmp.set(std::get<1>(property));
-
         index = prop_i;
         deduced_indexs.erase(index);
 
         if(me->data_relations_[prop_i].probability < 1.0)
         {
-          if(me->data_relations_[prop_i].second.toString() != tmp.toString())
-            notifications_.push_back(std::make_pair(notification_info, "[CHANGE]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)));
+          if(me->data_relations_[prop_i].second != std::get<1>(property))
+            notifications_.push_back(std::make_pair(notification_info, "[CHANGE]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)->value()));
 
-          me->data_relations_[prop_i].second = tmp;
+          me->data_relations_[prop_i].second = std::get<1>(property);
           me->data_relations_[prop_i].probability = std::get<2>(property) - 0.01;
         }
       }
 
     if(index == -1)
     {
-      notifications_.push_back(std::make_pair(notification_info, "[NEW]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)));
-      LiteralNode tmp;
-      tmp.set(std::get<1>(property));
-      me->data_relations_.emplace_back(std::get<0>(property), tmp, std::get<2>(property) - 0.01);
+      notifications_.push_back(std::make_pair(notification_info, "[NEW]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)->value()));
+      me->data_relations_.emplace_back(std::get<0>(property), std::get<1>(property), std::get<2>(property) - 0.01);
       std::get<0>(property)->annotation_usage_ = true;
     }
   }
@@ -126,7 +121,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Da
     size_t deleted = 0;
     for(auto i : deduced_indexs)
     {
-      notifications_.push_back(std::make_pair(notification_info, "[DELETE]" + me->value() + ">" + me->data_relations_[i- deleted].first->value() + ":" + me->data_relations_[i- deleted].second.toString()));
+      notifications_.push_back(std::make_pair(notification_info, "[DELETE]" + me->value() + ">" + me->data_relations_[i- deleted].first->value() + ":" + me->data_relations_[i- deleted].second->value()));
       me->data_relations_.erase(me->data_relations_.begin() + i - deleted);
       deleted++;
     }
