@@ -49,14 +49,14 @@ public:
   void deepCopy(const ClassGraph& other);
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);
-  std::unordered_set<uint32_t> getDisjoint(uint32_t value);
+  std::unordered_set<index_t> getDisjoint(index_t value);
   void getDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res);
   std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
 
   std::unordered_set<std::string> getRelationFrom(const std::string& _class, int depth = -1);  //C3
-  std::unordered_set<uint32_t> getRelationFrom(uint32_t _class, int depth = -1);
+  std::unordered_set<index_t> getRelationFrom(index_t _class, int depth = -1);
   std::unordered_set<std::string> getRelatedFrom(const std::string& property);     //C3
-  std::unordered_set<uint32_t> getRelatedFrom(uint32_t property);
+  std::unordered_set<index_t> getRelatedFrom(index_t property);
   std::unordered_set<std::string> getRelationOn(const std::string& _class, int depth = -1);    //C4
   std::unordered_set<std::string> getRelatedOn(const std::string& property);       //C3
   std::unordered_set<std::string> getRelationWith(const std::string& _class);  //C3
@@ -99,14 +99,14 @@ private:
 
   template<typename T> std::unordered_set<T> getRelationFrom(ClassBranch_t* class_branch, int depth = -1);
   template<typename T> void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<T>& res, int depth);
-  template<typename T> void getRelatedFrom(const std::unordered_set<uint32_t>& object_properties, const std::unordered_set<uint32_t>& data_properties, std::unordered_set<T>& res);
+  template<typename T> void getRelatedFrom(const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, std::unordered_set<T>& res);
   void getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth);
   void getRelatedOnDataProperties(const std::string& property, std::unordered_set<std::string>& res);
   void getRelationWith(ClassBranch_t* class_branch, std::map<std::string, int>& properties, std::vector<int>& depths, std::vector<std::string>& res, int depth);
-  void dataGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const data_t& data, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake);
-  void objectGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const std::string& _class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake);
-  void getOn(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res, uint32_t current_depth, int& found_depth);
-  void getWith(ClassBranch_t* first_class, const std::string& second_class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& doNotTake, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step);
+  void dataGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const data_t& data, std::unordered_set<std::string>& res, std::unordered_set<index_t>& doNotTake);
+  void objectGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const std::string& _class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& doNotTake);
+  void getOn(ClassBranch_t* class_branch, std::unordered_set<index_t>& object_properties, std::unordered_set<index_t>& data_properties, std::unordered_set<std::string>& res, uint32_t current_depth, int& found_depth);
+  void getWith(ClassBranch_t* first_class, const std::string& second_class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& doNotTake, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step);
 
   bool checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t* prop, ClassBranch_t* on);
   bool checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* prop, data_t& data);

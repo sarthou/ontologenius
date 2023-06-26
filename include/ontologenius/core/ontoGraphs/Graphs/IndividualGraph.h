@@ -64,13 +64,13 @@ public:
   void add(std::vector<std::string>& distinct_);
 
   std::unordered_set<std::string> getSame(const std::string& individual);          //C1
-  std::unordered_set<uint32_t> getSame(uint32_t individual);
+  std::unordered_set<index_t> getSame(index_t individual);
   std::unordered_set<std::string> getDistincts(const std::string& individual);     //C2
-  std::unordered_set<uint32_t> getDistincts(uint32_t individual);
+  std::unordered_set<index_t> getDistincts(index_t individual);
   std::unordered_set<std::string> getRelationFrom(const std::string& individual, int depth = -1);  //C3
-  std::unordered_set<uint32_t> getRelationFrom(uint32_t individual, int depth);
+  std::unordered_set<index_t> getRelationFrom(index_t individual, int depth);
   std::unordered_set<std::string> getRelatedFrom(const std::string& property);     //C3
-  std::unordered_set<uint32_t> getRelatedFrom(uint32_t property);
+  std::unordered_set<index_t> getRelatedFrom(index_t property);
   std::unordered_set<std::string> getRelationOn(const std::string& individual, int depth = -1);    //C4
   std::unordered_set<std::string> getRelatedOn(const std::string& property);       //C3
   std::unordered_set<std::string> getRelationWith(const std::string& individual);  //C3
@@ -83,7 +83,7 @@ public:
   std::unordered_set<std::string> getWith(const std::string& first_individual, const std::string& second_individual, int depth = -1);
   std::unordered_set<std::string> getDomainOf(const std::string& individual, int depth = -1);
   std::unordered_set<std::string> getRangeOf(const std::string& individual, int depth = -1);
-  std::unordered_set<std::string> getUp(IndividualBranch_t* indiv, int depth = -1, unsigned int current_depth = 0);
+  std::unordered_set<std::string> getUp(IndividualBranch_t* indiv, int depth = -1, uint32_t current_depth = 0);
   std::unordered_set<std::string> getUp(const std::string& individual, int depth = -1);            //C3
   std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
   std::string getName(const std::string& value, bool use_default = true);
@@ -128,9 +128,9 @@ public:
   std::vector<IndividualBranch_t*> resolveLink(std::vector<ObjectPropertyBranch_t*>& chain, IndividualBranch_t* indiv_on, size_t index);
   std::vector<std::vector<ObjectPropertyBranch_t*>> getChains(ObjectPropertyBranch_t* base_property);
 
-  void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, unsigned int current_depth = 0);
+  void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, uint32_t current_depth = 0);
   void getSameAndClean(IndividualBranch_t* individual, std::unordered_set<std::string>& res);
-  void getSameAndClean(IndividualBranch_t* individual, std::unordered_set<uint32_t>& res);
+  void getSameAndClean(IndividualBranch_t* individual, std::unordered_set<index_t>& res);
 
 private:
   ClassGraph* class_graph_;
@@ -153,22 +153,22 @@ private:
   template<typename T> std::unordered_set<T> getDistincts(IndividualBranch_t* individual);
   template<typename T> std::unordered_set<T> getRelationFrom(IndividualBranch_t* individual, int depth);
   template<typename T> std::unordered_set<T> getRelatedFrom(const T& property);
-  template<typename T> void getUp(IndividualBranch_t* indiv, std::unordered_set<T>& res, int depth = -1, unsigned int current_depth = 0);
+  template<typename T> void getUp(IndividualBranch_t* indiv, std::unordered_set<T>& res, int depth = -1, uint32_t current_depth = 0);
 
   void addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
   void addDataRelation(IndividualBranch_t* me, Pair_t<std::string, data_t>& relation);
 
   template<typename T> void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<T>& res, int depth = -1);
-  bool getRelatedWith(ClassBranch_t* class_branch, const std::string& data, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& took);
-  bool getFrom(ClassBranch_t* class_branch, const std::unordered_set<uint32_t>& object_properties, const std::unordered_set<uint32_t>& data_properties, const data_t& data, const std::unordered_set<uint32_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<uint32_t>& doNotTake);
+  bool getRelatedWith(ClassBranch_t* class_branch, const std::string& data, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& took);
+  bool getFrom(ClassBranch_t* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, const data_t& data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& doNotTake);
 
   bool relationExists(IndividualBranch_t* subject, ObjectPropertyBranch_t* property, IndividualBranch_t* object);
 
   void getDistincts(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);
-  std::unordered_set<uint32_t> getSameId(const std::string& individual);
+  std::unordered_set<index_t> getSameId(const std::string& individual);
   void getSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);
   std::unordered_set<std::string> getSameAndClean(IndividualBranch_t* individual);
-  std::unordered_set<uint32_t> getSameIdAndClean(IndividualBranch_t* individual);
+  std::unordered_set<index_t> getSameIdAndClean(IndividualBranch_t* individual);
   void cleanMarks(const std::unordered_set<IndividualBranch_t*>& indiv_set);
   std::unordered_set<std::string> set2set(const std::unordered_set<IndividualBranch_t*>& indiv_set, bool clean = true);
 

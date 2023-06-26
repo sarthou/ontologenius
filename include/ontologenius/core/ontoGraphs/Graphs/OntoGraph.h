@@ -33,10 +33,10 @@ public:
 
   std::unordered_set<std::string> getDown(const std::string& value, int depth = -1);
   std::unordered_set<std::string> getUp(const std::string& value, int depth = -1);
-  std::unordered_set<uint32_t> getDownId(const std::string& value, int depth = -1);
-  std::unordered_set<uint32_t> getDownId(uint32_t value, int depth = -1);
-  std::unordered_set<uint32_t> getUpId(const std::string& value, int depth = -1);
-  std::unordered_set<uint32_t> getUpId(uint32_t value, int depth = -1);
+  std::unordered_set<index_t> getDownId(const std::string& value, int depth = -1);
+  std::unordered_set<index_t> getDownId(index_t value, int depth = -1);
+  std::unordered_set<index_t> getUpId(const std::string& value, int depth = -1);
+  std::unordered_set<index_t> getUpId(index_t value, int depth = -1);
   std::string getName(const std::string& value, bool use_default = true);
   std::vector<std::string> getNames(const std::string& value, bool use_default = true);
   std::vector<std::string> getEveryNames(const std::string& value, bool use_default = true);
@@ -48,8 +48,8 @@ public:
 
   void getDown(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
   void getUp(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
-  void getDown(B* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
-  void getUp(B* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
+  void getDown(B* branch, std::unordered_set<index_t>& res, int depth = -1, unsigned int current_depth = 0);
+  void getUp(B* branch, std::unordered_set<index_t>& res, int depth = -1, unsigned int current_depth = 0);
 
   std::unordered_set<B*> getDownPtrSafe(B* branch, int depth = -1);
   void getDownPtr(B* branch, std::unordered_set<B*>& res, int depth, unsigned int current_depth = 0);
@@ -149,9 +149,9 @@ std::unordered_set<std::string> OntoGraph<B>::getUp(const std::string& value, in
 }
 
 template <typename B>
-std::unordered_set<uint32_t> OntoGraph<B>::getDownId(const std::string& value, int depth)
+std::unordered_set<index_t> OntoGraph<B>::getDownId(const std::string& value, int depth)
 {
-  std::unordered_set<uint32_t> res;
+  std::unordered_set<index_t> res;
 
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
@@ -163,9 +163,9 @@ std::unordered_set<uint32_t> OntoGraph<B>::getDownId(const std::string& value, i
 }
 
 template <typename B>
-std::unordered_set<uint32_t> OntoGraph<B>::getDownId(uint32_t value, int depth)
+std::unordered_set<index_t> OntoGraph<B>::getDownId(index_t value, int depth)
 {
-  std::unordered_set<uint32_t> res;
+  std::unordered_set<index_t> res;
 
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(ValuedNode::table_.get(value));
@@ -177,9 +177,9 @@ std::unordered_set<uint32_t> OntoGraph<B>::getDownId(uint32_t value, int depth)
 }
 
 template <typename B>
-std::unordered_set<uint32_t> OntoGraph<B>::getUpId(const std::string& value, int depth)
+std::unordered_set<index_t> OntoGraph<B>::getUpId(const std::string& value, int depth)
 {
-  std::unordered_set<uint32_t> res;
+  std::unordered_set<index_t> res;
 
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
@@ -191,9 +191,9 @@ std::unordered_set<uint32_t> OntoGraph<B>::getUpId(const std::string& value, int
 }
 
 template <typename B>
-std::unordered_set<uint32_t> OntoGraph<B>::getUpId(uint32_t value, int depth)
+std::unordered_set<index_t> OntoGraph<B>::getUpId(index_t value, int depth)
 {
-  std::unordered_set<uint32_t> res;
+  std::unordered_set<index_t> res;
 
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(ValuedNode::table_.get(value));
@@ -344,7 +344,7 @@ void OntoGraph<B>::getUp(B* branch, std::unordered_set<std::string>& res, int de
 }
 
 template <typename B>
-void OntoGraph<B>::getDown(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
+void OntoGraph<B>::getDown(B* branch, std::unordered_set<index_t>& res, int depth, unsigned int current_depth)
 {
   if(current_depth <= (unsigned int)depth)
   {
@@ -357,7 +357,7 @@ void OntoGraph<B>::getDown(B* branch, std::unordered_set<uint32_t>& res, int dep
 }
 
 template <typename B>
-void OntoGraph<B>::getUp(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
+void OntoGraph<B>::getUp(B* branch, std::unordered_set<index_t>& res, int depth, unsigned int current_depth)
 {
   if(current_depth <= (unsigned int)depth)
   {
