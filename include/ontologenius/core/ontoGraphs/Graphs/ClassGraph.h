@@ -62,6 +62,7 @@ public:
   std::unordered_set<std::string> getRelatedOn(const std::string& property);       //C3
   std::unordered_set<index_t> getRelatedOn(index_t property);
   std::unordered_set<std::string> getRelationWith(const std::string& _class);  //C3
+  std::unordered_set<index_t> getRelationWith(index_t _class);
   std::unordered_set<std::string> getRelatedWith(const std::string& _class);   //C3
   std::unordered_set<std::string> getFrom(const std::string& param);
   std::unordered_set<std::string> getFrom(const std::string& _class, const std::string& property);
@@ -108,8 +109,7 @@ private:
   void getRelatedOnDataProperties(const std::string& property, std::unordered_set<std::string>& res);
   void getRelatedOnDataProperties(index_t property, std::unordered_set<index_t>& res);
   void getRelationWith(ClassBranch_t* class_branch, std::map<index_t, int>& properties, std::vector<int>& depths, std::vector<std::string>& res, int depth);
-  void dataGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, LiteralNode* data, std::unordered_set<std::string>& res, std::unordered_set<index_t>& doNotTake);
-  void objectGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const std::string& _class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& doNotTake);
+  void getRelationWith(ClassBranch_t* class_branch, std::map<index_t, int>& properties, std::vector<int>& depths, std::vector<index_t>& res, int depth);
   void getOn(ClassBranch_t* class_branch, std::unordered_set<index_t>& object_properties, std::unordered_set<index_t>& data_properties, std::unordered_set<std::string>& res, uint32_t current_depth, int& found_depth);
   void getWith(ClassBranch_t* first_class, const std::string& second_class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& doNotTake, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step);
 

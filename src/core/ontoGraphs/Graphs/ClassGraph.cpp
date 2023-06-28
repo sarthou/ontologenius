@@ -521,6 +521,22 @@ std::unordered_set<std::string> ClassGraph::getRelationWith(const std::string& _
   return res;
 }
 
+std::unordered_set<index_t> ClassGraph::getRelationWith(index_t _class)
+{
+  std::unordered_set<index_t> res;
+  ClassBranch_t* class_branch = container_.find(ValuedNode::table_.get(_class));
+  if(class_branch != nullptr)
+  {
+    std::map<index_t, int> properties;
+    std::vector<int> depths;
+    std::vector<index_t> tmp_res;
+    getRelationWith(class_branch, properties, depths, tmp_res, 0);
+    for(auto& it : tmp_res)
+      res.insert(it);
+  }
+  return res;
+}
+
 void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<index_t, int>& properties, std::vector<int>& depths, std::vector<std::string>& res, int depth)
 {
   depth++;
@@ -565,6 +581,60 @@ void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<index_t, 
         properties[relation.first->get()] = res.size();
         depths.push_back(depth);
         res.push_back(relation.second->value());
+      }
+    }
+
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_branch, 1);
+    for(ClassBranch_t* up : up_set)
+      if(up != class_branch)
+        getRelationWith(up, properties, depths, res, depth);
+  }
+}
+
+void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<index_t, int>& properties, std::vector<int>& depths, std::vector<index_t>& res, int depth)
+{
+  depth++;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+
+  if(class_branch != nullptr)
+  {
+    for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
+    {
+      auto it = properties.find(relation.first->get());
+      if(it != properties.end())
+      {
+        int index = properties[relation.first->get()];
+        if(depths[index] > depth)
+        {
+          depths[index] = depth;
+          res[index] = relation.second->get();
+        }
+      }
+      else
+      {
+        properties[relation.first->get()] = res.size();
+        depths.push_back(depth);
+        res.push_back(relation.second->get());
+      }
+    }
+
+    for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
+    {
+      auto it = properties.find(relation.first->get());
+      if(it != properties.end())
+      {
+        int index = properties[relation.first->get()];
+        if(depths[index] > depth)
+        {
+          depths[index] = depth;
+          res[index] = relation.second->get();
+        }
+      }
+      else
+      {
+        properties[relation.first->get()] = res.size();
+        depths.push_back(depth);
+        res.push_back(relation.second->get());
       }
     }
 
