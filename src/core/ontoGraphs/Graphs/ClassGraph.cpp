@@ -652,17 +652,19 @@ std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _c
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
   LiteralNode* literal = data_property_graph_->literal_container_.find(_class);
+  ClassBranch_t* class_branch = container_.find(_class);
 
   for(auto& branch : all_branchs_)
   {
-    for(ClassObjectRelationElement_t& relation : branch->object_relations_)
-      if(relation.second->value() == _class)
-        objectGetRelatedWith(branch, relation.first->value(), _class, res, do_not_take);
+    if(class_branch != nullptr)
+      for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+        if(relation.second->value() == _class)
+          objectGetRelatedWith(branch, relation.first->get(), class_branch->get(), res, do_not_take);
 
     if(literal != nullptr)
       for(ClassDataRelationElement_t& relation : branch->data_relations_)
         if(relation.second == literal)
-          dataGetRelatedWith(branch, relation.first->value(), literal, res, do_not_take);
+          dataGetRelatedWith(branch, relation.first->get(), literal, res, do_not_take);
   }
 
   for(auto i : do_not_take)
@@ -672,7 +674,7 @@ std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _c
   return res;
 }
 
-void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, LiteralNode* data, std::unordered_set<std::string>& res, std::unordered_set<index_t>& do_not_take)
+void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, index_t property, LiteralNode* data, std::unordered_set<std::string>& res, std::unordered_set<index_t>& do_not_take)
 {
   if(class_branch != nullptr)
   {
@@ -688,7 +690,7 @@ void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::stri
         bool found = false;
 
         for(ClassDataRelationElement_t& relation : down->data_relations_)
-          if(relation.first->value() == property)
+          if(relation.first->get() == property)
             if(relation.second != data)
             {
               found = true;
@@ -701,7 +703,7 @@ void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::stri
   }
 }
 
-void ClassGraph::objectGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const std::string& _class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& do_not_take)
+void ClassGraph::objectGetRelatedWith(ClassBranch_t* class_branch, index_t property, index_t _class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& do_not_take)
 {
   if(class_branch != nullptr)
   {
@@ -716,8 +718,8 @@ void ClassGraph::objectGetRelatedWith(ClassBranch_t* class_branch, const std::st
       {
         bool found = false;
         for(ClassObjectRelationElement_t& relation : down->object_relations_)
-          if(relation.first->value() == property)
-            if(relation.second->value() != _class)
+          if(relation.first->get() == property)
+            if(relation.second->get() != _class)
             {
               found = true;
               getDown(down, do_not_take);
@@ -763,14 +765,14 @@ std::unordered_set<std::string> ClassGraph::getFrom(const std::string& _class, c
         if(relation.second->get() == class_id)
           for (index_t id : object_properties)
             if(relation.first->get() == id)
-              objectGetRelatedWith(branch, relation.first->value(), ValuedNode::table_[class_id], res, do_not_take);
+              objectGetRelatedWith(branch, relation.first->get(), class_id, res, do_not_take);
 
     if(literal != nullptr)
       for(ClassDataRelationElement_t& relation :branch->data_relations_)
         if(relation.second == literal)
           for (index_t id : data_properties)
             if(relation.first->get() == id)
-              dataGetRelatedWith(branch, relation.first->value(), literal, res, do_not_take);
+              dataGetRelatedWith(branch, relation.first->get(), literal, res, do_not_take);
   }
 
   for(auto i : do_not_take)
