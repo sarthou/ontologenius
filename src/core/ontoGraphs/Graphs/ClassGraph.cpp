@@ -377,16 +377,7 @@ std::unordered_set<std::string> ClassGraph::getRelationOn(const std::string& _cl
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
-  ClassBranch_t* class_branch = container_.find(_class);
-  if(class_branch != nullptr)
-  {
-    index_t id = class_branch->get();
-
-    for(auto& branch : all_branchs_)
-      for(ClassObjectRelationElement_t& relation : branch->object_relations_)
-        if(relation.second->get() == id)
-          object_property_graph_->getUp(relation.first, res, depth);
-  }
+  getRelationOnObjectProperties(_class, res, depth);
 
   if(res.size() == 0)
     getRelationOnDataProperties(_class, res, depth);
@@ -394,7 +385,42 @@ std::unordered_set<std::string> ClassGraph::getRelationOn(const std::string& _cl
   return res;
 }
 
+std::unordered_set<index_t> ClassGraph::getRelationOn(index_t _class, int depth)
+{
+  std::unordered_set<index_t> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+
+  if(_class > 0)
+    getRelationOnObjectProperties(ValuedNode::table_.get(_class), res, depth);
+  else
+    getRelationOnDataProperties(LiteralNode::table_.get(-_class), res, depth);
+
+  return res;
+}
+
+template<typename T>
+void ClassGraph::getRelationOnObjectProperties(const std::string& _class, std::unordered_set<T>& res, int depth)
+{
+  ClassBranch_t* class_branch = container_.find(_class);
+  if(class_branch != nullptr)
+    for(auto& branch : all_branchs_)
+      for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+        if(relation.second == class_branch)
+          object_property_graph_->getUp(relation.first, res, depth);
+}
+
 void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth)
+{
+  LiteralNode* literal = data_property_graph_->literal_container_.find(_class);
+
+  if(literal != nullptr)
+    for(auto& branch : all_branchs_)
+      for(ClassDataRelationElement_t& relation : branch->data_relations_)
+        if(relation.second == literal)
+          data_property_graph_->getUp(relation.first, res, depth);
+}
+
+void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::unordered_set<index_t>& res, int depth)
 {
   LiteralNode* literal = data_property_graph_->literal_container_.find(_class);
 
@@ -429,6 +455,30 @@ std::unordered_set<std::string> ClassGraph::getRelatedOn(const std::string& prop
   return res;
 }
 
+std::unordered_set<index_t> ClassGraph::getRelatedOn(index_t property)
+{
+  std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
+
+  std::unordered_set<index_t> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+
+  for(auto& branch : all_branchs_)
+  {
+    for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+      for (index_t id : object_properties)
+        if(relation.first->get() == id)
+          res.insert(relation.second->get());
+
+    for(ClassDataRelationElement_t& relation : branch->data_relations_)
+      for (index_t id : data_properties)
+        if(relation.first->get() == id)
+          res.insert(relation.second->get());
+  }
+
+  return res;
+}
+
 void ClassGraph::getRelatedOnDataProperties(const std::string& property, std::unordered_set<std::string>& res)
 {
   std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
@@ -439,6 +489,19 @@ void ClassGraph::getRelatedOnDataProperties(const std::string& property, std::un
       for (index_t id : data_properties)
         if(relation.first->get() == id)
           res.insert(relation.second->value());
+  }
+}
+
+void ClassGraph::getRelatedOnDataProperties(index_t property, std::unordered_set<index_t>& res)
+{
+  std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
+
+  for(auto& branch : all_branchs_)
+  {
+    for(ClassDataRelationElement_t& relation : branch->data_relations_)
+      for (index_t id : data_properties)
+        if(relation.first->get() == id)
+          res.insert(relation.second->get());
   }
 }
 
