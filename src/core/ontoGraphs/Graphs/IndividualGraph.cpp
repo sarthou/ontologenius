@@ -424,7 +424,7 @@ std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::stri
 {
   std::unordered_set<std::string> res;
 
-  std::map<std::string, int> properties;
+  std::map<index_t, int> properties;
   std::vector<int> depths;
   std::vector<std::string> tmp_res;
 
@@ -446,7 +446,7 @@ std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::stri
         std::unordered_set<std::string> tmp = set2set(sames_tmp);
         res.insert(tmp.begin(), tmp.end());
 
-        properties[relation.first->value()] = tmp_res.size();
+        properties[relation.first->get()] = tmp_res.size();
         depths.push_back(0);
         tmp_res.push_back(relation.second->value());
       }
@@ -455,7 +455,7 @@ std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::stri
       {
         res.insert(relation.second->value());
 
-        properties[relation.first->value()] = tmp_res.size();
+        properties[relation.first->get()] = tmp_res.size();
         depths.push_back(0);
         tmp_res.push_back(relation.second->value());
       }

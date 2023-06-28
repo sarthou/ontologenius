@@ -511,7 +511,7 @@ std::unordered_set<std::string> ClassGraph::getRelationWith(const std::string& _
   ClassBranch_t* class_branch = container_.find(_class);
   if(class_branch != nullptr)
   {
-    std::map<std::string, int> properties;
+    std::map<index_t, int> properties;
     std::vector<int> depths;
     std::vector<std::string> tmp_res;
     getRelationWith(class_branch, properties, depths, tmp_res, 0);
@@ -521,7 +521,7 @@ std::unordered_set<std::string> ClassGraph::getRelationWith(const std::string& _
   return res;
 }
 
-void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<std::string, int>& properties, std::vector<int>& depths, std::vector<std::string>& res, int depth)
+void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<index_t, int>& properties, std::vector<int>& depths, std::vector<std::string>& res, int depth)
 {
   depth++;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
@@ -530,10 +530,10 @@ void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<std::stri
   {
     for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
     {
-      auto it = properties.find(relation.first->value());
+      auto it = properties.find(relation.first->get());
       if(it != properties.end())
       {
-        int index = properties[relation.first->value()];
+        int index = properties[relation.first->get()];
         if(depths[index] > depth)
         {
           depths[index] = depth;
@@ -542,7 +542,7 @@ void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<std::stri
       }
       else
       {
-        properties[relation.first->value()] = res.size();
+        properties[relation.first->get()] = res.size();
         depths.push_back(depth);
         res.push_back(relation.second->value());
       }
@@ -550,10 +550,10 @@ void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<std::stri
 
     for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
     {
-      auto it = properties.find(relation.first->value());
+      auto it = properties.find(relation.first->get());
       if(it != properties.end())
       {
-        int index = properties[relation.first->value()];
+        int index = properties[relation.first->get()];
         if(depths[index] > depth)
         {
           depths[index] = depth;
@@ -562,7 +562,7 @@ void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<std::stri
       }
       else
       {
-        properties[relation.first->value()] = res.size();
+        properties[relation.first->get()] = res.size();
         depths.push_back(depth);
         res.push_back(relation.second->value());
       }
