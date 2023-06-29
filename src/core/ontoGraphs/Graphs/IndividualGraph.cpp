@@ -748,18 +748,33 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
   std::unordered_set<std::string> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   IndividualBranch_t* indiv = container_.find(first_individual);
-  LiteralNode* literal = data_property_graph_->literal_container_.find(second_individual);
+
+  index_t second_individual_index = 0;
+  auto second_individual_ptr = container_.find(second_individual);
+  if(second_individual_ptr != nullptr)
+    second_individual_index = second_individual_ptr->get();
+  else
+  {
+    auto literal = data_property_graph_->literal_container_.find(second_individual);
+    if(literal != nullptr)
+      second_individual_index = literal->get();
+  }
 
   if(indiv != nullptr)
   {
-    for(IndivObjectRelationElement_t& relation : indiv->object_relations_)
-      if(relation.second->value() == second_individual)
-        object_property_graph_->getUp(relation.first, res, depth);
-
-    for(IndivDataRelationElement_t& relation : indiv->data_relations_)
-      if(relation.second == literal)
-        data_property_graph_->getUp(relation.first, res, depth);
-
+    if(second_individual_index > 0)
+    {
+      for(IndivObjectRelationElement_t& relation : indiv->object_relations_)
+        if(relation.second->get() == second_individual_index)
+          object_property_graph_->getUp(relation.first, res, depth);
+    }
+    else
+    {
+      for(IndivDataRelationElement_t& relation : indiv->data_relations_)
+        if(relation.second->get() == second_individual_index)
+          data_property_graph_->getUp(relation.first, res, depth);
+    }
+    
     int found_depth = -1;
     uint32_t current_depth = 0;
     std::unordered_set<index_t> do_not_take;
@@ -769,7 +784,7 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
     {
       std::unordered_set<ClassBranch_t*> next_step;
       for(auto up : up_set)
-        class_graph_->getWith(up, second_individual, res, do_not_take, current_depth, found_depth, depth, next_step);
+        class_graph_->getWith(up, second_individual_index, res, do_not_take, current_depth, found_depth, depth, next_step);
 
       up_set = next_step;
       current_depth++;

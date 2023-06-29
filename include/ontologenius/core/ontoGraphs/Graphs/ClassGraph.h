@@ -67,10 +67,13 @@ public:
   std::unordered_set<index_t> getRelatedWith(index_t _class);
   std::unordered_set<std::string> getFrom(const std::string& param);
   std::unordered_set<std::string> getFrom(const std::string& _class, const std::string& property);
+  std::unordered_set<index_t> getFrom(index_t _class, index_t property);
   std::unordered_set<std::string> getOn(const std::string& param);
   std::unordered_set<std::string> getOn(const std::string& _class, const std::string& property);
+  std::unordered_set<index_t> getOn(index_t _class, index_t property);
   std::unordered_set<std::string> getWith(const std::string& param, int depth = -1);
   std::unordered_set<std::string> getWith(const std::string& first_class, const std::string& second_class, int depth = -1);
+  std::unordered_set<index_t> getWith(index_t first_class, index_t second_class, int depth = -1);
   std::unordered_set<std::string> getDomainOf(const std::string& _class, int depth = -1);
   std::unordered_set<std::string> getRangeOf(const std::string& _class, int depth = -1);
   std::unordered_set<std::string> getDomainOf(ClassBranch_t* branch, int depth = -1);
@@ -113,8 +116,8 @@ private:
   void getRelationWith(ClassBranch_t* class_branch, std::map<index_t, int>& properties, std::vector<int>& depths, std::vector<index_t>& res, int depth);
   template<typename T> void dataGetRelatedWith(ClassBranch_t* class_branch, index_t property, LiteralNode* data, std::unordered_set<T>& res, std::unordered_set<index_t>& doNotTake);
   template<typename T> void objectGetRelatedWith(ClassBranch_t* class_branch, index_t property, index_t _class, std::unordered_set<T>& res, std::unordered_set<index_t>& doNotTake);
-  void getOn(ClassBranch_t* class_branch, std::unordered_set<index_t>& object_properties, std::unordered_set<index_t>& data_properties, std::unordered_set<std::string>& res, uint32_t current_depth, int& found_depth);
-  void getWith(ClassBranch_t* first_class, const std::string& second_class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& doNotTake, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step);
+  template<typename T> void getOn(ClassBranch_t* class_branch, std::unordered_set<index_t>& object_properties, std::unordered_set<index_t>& data_properties, std::unordered_set<T>& res, uint32_t current_depth, int& found_depth);
+  template<typename T> void getWith(ClassBranch_t* first_class, index_t second_class, std::unordered_set<T>& res, std::unordered_set<index_t>& doNotTake, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step);
 
   bool checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t* prop, ClassBranch_t* on);
   bool checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* prop, LiteralNode* data);

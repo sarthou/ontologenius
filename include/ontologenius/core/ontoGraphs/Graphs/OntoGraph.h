@@ -11,6 +11,7 @@
 
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 
 #include "ontologenius/core/Algorithms/LevenshteinDistance.h"
 
@@ -92,6 +93,8 @@ protected:
   void eraseFromVector(std::vector<B*>& vect, B* branch);
   void insert(std::unordered_set<std::string>& set, ValuedNode* node) { set.insert(node->value()); }
   void insert(std::unordered_set<index_t>& set, ValuedNode* node) { set.insert(node->get()); }
+  void insert(std::unordered_set<std::string>& set, LiteralNode* node) { set.insert(node->value()); }
+  void insert(std::unordered_set<index_t>& set, LiteralNode* node) { set.insert(node->get()); }
 };
 
 template <typename B>
