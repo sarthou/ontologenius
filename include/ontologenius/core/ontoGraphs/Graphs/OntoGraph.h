@@ -90,6 +90,8 @@ protected:
   std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<B*>& vect);
   std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<Single_t<B*>>& vect);
   void eraseFromVector(std::vector<B*>& vect, B* branch);
+  void insert(std::unordered_set<std::string>& set, ValuedNode* node) { set.insert(node->value()); }
+  void insert(std::unordered_set<index_t>& set, ValuedNode* node) { set.insert(node->get()); }
 };
 
 template <typename B>

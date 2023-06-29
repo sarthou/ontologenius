@@ -668,20 +668,57 @@ std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _c
   }
 
   for(auto i : do_not_take)
-    if(res.find(ValuedNode::table_[i]) != res.end())
-      res.erase(ValuedNode::table_[i]);
+    res.erase(ValuedNode::table_[i]);
 
   return res;
 }
 
-void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, index_t property, LiteralNode* data, std::unordered_set<std::string>& res, std::unordered_set<index_t>& do_not_take)
+std::unordered_set<index_t> ClassGraph::getRelatedWith(index_t _class)
+{
+  std::unordered_set<index_t> res;
+  std::unordered_set<index_t> do_not_take;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+
+  if(_class > 0)
+  {
+    ClassBranch_t* class_branch = container_.find(ValuedNode::table_.get(_class));
+
+    if(class_branch != nullptr)
+      for(auto& branch : all_branchs_)
+      {
+        for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+          if(relation.second->get() == _class)
+            objectGetRelatedWith(branch, relation.first->get(), class_branch->get(), res, do_not_take);
+      }
+  }
+  else
+  {
+    LiteralNode* literal = data_property_graph_->literal_container_.find(LiteralNode::table_.get(_class));
+
+    if(literal != nullptr)
+      for(auto& branch : all_branchs_)
+      {
+        for(ClassDataRelationElement_t& relation : branch->data_relations_)
+          if(relation.second == literal)
+            dataGetRelatedWith(branch, relation.first->get(), literal, res, do_not_take);
+      }
+  }
+
+  for(auto i : do_not_take)
+    res.erase(i);
+
+  return res;
+}
+
+template<typename T>
+void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, index_t property, LiteralNode* data, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take)
 {
   if(class_branch != nullptr)
   {
     if(do_not_take.find(class_branch->get()) != do_not_take.end())
       return;
 
-    res.insert(class_branch->value());
+    insert(res, class_branch);
 
     std::unordered_set<ClassBranch_t*> down_set = getDownPtrSafe(class_branch, 1);
     for(ClassBranch_t* down : down_set)
@@ -703,14 +740,15 @@ void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, index_t propert
   }
 }
 
-void ClassGraph::objectGetRelatedWith(ClassBranch_t* class_branch, index_t property, index_t _class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& do_not_take)
+template<typename T>
+void ClassGraph::objectGetRelatedWith(ClassBranch_t* class_branch, index_t property, index_t _class, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take)
 {
   if(class_branch != nullptr)
   {
     if(do_not_take.find(class_branch->get()) != do_not_take.end())
       return;
 
-    res.insert(class_branch->value());
+    insert(res, class_branch);
 
     std::unordered_set<ClassBranch_t*> down_set = getDownPtrSafe(class_branch, 1);
     for(ClassBranch_t* down : down_set)
