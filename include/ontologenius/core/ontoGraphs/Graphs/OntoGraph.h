@@ -33,19 +33,25 @@ public:
   virtual void close() override;
 
   std::unordered_set<std::string> getDown(const std::string& value, int depth = -1);
+  std::unordered_set<index_t> getDown(index_t value, int depth = -1) { return getDownId(value, depth); }
   std::unordered_set<std::string> getUp(const std::string& value, int depth = -1);
+  std::unordered_set<index_t> getUp(index_t value, int depth = -1) { return getUpId(value, depth); }
   std::unordered_set<index_t> getDownId(const std::string& value, int depth = -1);
   std::unordered_set<index_t> getDownId(index_t value, int depth = -1);
   std::unordered_set<index_t> getUpId(const std::string& value, int depth = -1);
   std::unordered_set<index_t> getUpId(index_t value, int depth = -1);
   std::string getName(const std::string& value, bool use_default = true);
+  std::string getName(index_t value, bool use_default = true);
   std::vector<std::string> getNames(const std::string& value, bool use_default = true);
+  std::vector<std::string> getNames(index_t value, bool use_default = true);
   std::vector<std::string> getEveryNames(const std::string& value, bool use_default = true);
-  std::unordered_set<std::string> find(const std::string& value, bool use_default = true);
-  std::unordered_set<std::string> findSub(const std::string& value, bool use_default = true);
-  std::unordered_set<std::string> findRegex(const std::string& regex, bool use_default = true);
+  std::vector<std::string> getEveryNames(index_t value, bool use_default = true);
+  template <typename T> std::unordered_set<T> find(const std::string& value, bool use_default = true);
+  template <typename T> std::unordered_set<T> findSub(const std::string& value, bool use_default = true);
+  template <typename T> std::unordered_set<T> findRegex(const std::string& regex, bool use_default = true);
   std::unordered_set<std::string> findFuzzy(const std::string& value, bool use_default = true, double threshold = 0.5);
   bool touch(const std::string& value);
+  bool touch(index_t value);
 
   void getDown(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
   void getUp(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
@@ -109,6 +115,11 @@ protected:
   void insert(std::unordered_set<index_t>& set, ValuedNode* node) { set.insert(node->get()); }
   void insert(std::unordered_set<std::string>& set, LiteralNode* node) { set.insert(node->value()); }
   void insert(std::unordered_set<index_t>& set, LiteralNode* node) { set.insert(node->get()); }
+
+private:
+  std::string getName(B* branch, bool use_default);
+  std::vector<std::string> getNames(B* branch, bool use_default);
+  std::vector<std::string> getEveryNames(B* branch, bool use_default = true);
 };
 
 template <typename B>
@@ -226,10 +237,26 @@ std::unordered_set<index_t> OntoGraph<B>::getUpId(index_t value, int depth)
 template <typename B>
 std::string OntoGraph<B>::getName(const std::string& value, bool use_default)
 {
-  std::string res = "";
-
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
+
+  return getName(branch, use_default);
+}
+
+template <typename B>
+std::string OntoGraph<B>::getName(index_t value, bool use_default)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  B* branch = this->container_.find(ValuedNode::table_.get(value));
+
+  return getName(branch, use_default);
+}
+
+template <typename B>
+std::string OntoGraph<B>::getName(B* branch, bool use_default)
+{
+  std::string res = "";
+
   if(branch != nullptr)
   {
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
@@ -258,10 +285,10 @@ std::string OntoGraph<B>::getName(const std::string& value, bool use_default)
           res = branch->dictionary_.spoken_[this->language_][0];
       }
       else if(use_default)
-        res = value;
+        res = branch->value();
     }
     else if(use_default)
-      res = value;
+      res = branch->value();
   }
 
   return res;
@@ -270,16 +297,30 @@ std::string OntoGraph<B>::getName(const std::string& value, bool use_default)
 template <typename B>
 std::vector<std::string> OntoGraph<B>::getNames(const std::string& value, bool use_default)
 {
-  std::vector<std::string> res;
-
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
+  return getNames(branch, use_default);
+}
+
+template <typename B>
+std::vector<std::string> OntoGraph<B>::getNames(index_t value, bool use_default)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  B* branch = this->container_.find(ValuedNode::table_.get(value));
+  return getNames(branch, use_default);
+}
+
+template <typename B>
+std::vector<std::string> OntoGraph<B>::getNames(B* branch, bool use_default)
+{
+  std::vector<std::string> res;
+
   if(branch != nullptr)
   {
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
       res = branch->dictionary_.spoken_[this->language_];
     else if(use_default)
-      res.push_back(value);
+      res.push_back(branch->value());
   }
 
   return res;
@@ -288,16 +329,29 @@ std::vector<std::string> OntoGraph<B>::getNames(const std::string& value, bool u
 template <typename B>
 std::vector<std::string> OntoGraph<B>::getEveryNames(const std::string& value, bool use_default)
 {
-  std::vector<std::string> res;
-
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
+  return getEveryNames(branch, use_default);
+}
+
+template <typename B>
+std::vector<std::string> OntoGraph<B>::getEveryNames(index_t value, bool use_default)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  B* branch = this->container_.find(ValuedNode::table_.get(value));
+  return getEveryNames(branch, use_default);
+}
+
+template <typename B>
+std::vector<std::string> OntoGraph<B>::getEveryNames(B* branch, bool use_default)
+{
+  std::vector<std::string> res;
   if(branch != nullptr)
   {
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
       res = branch->dictionary_.spoken_[this->language_];
     else if(use_default)
-      res.push_back(value);
+      res.push_back(branch->value());
 
     if(branch->dictionary_.muted_.find(this->language_) != branch->dictionary_.muted_.end())
     {
@@ -313,11 +367,14 @@ template <typename B>
 bool OntoGraph<B>::touch(const std::string& value)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  B* branch = this->container_.find(value);
-  if(branch != nullptr)
-    return true;
-  else
-    return false;
+  return (this->container_.find(value) != nullptr);
+}
+
+template <typename B>
+bool OntoGraph<B>::touch(index_t value)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  return (this->container_.find(ValuedNode::table_.get(value)) != nullptr);
 }
 
 template <typename B>
@@ -526,37 +583,40 @@ bool comparatorRegex(D* branch, const std::string& regex, const std::string& lan
 }
 
 template <typename B>
-std::unordered_set<std::string> OntoGraph<B>::find(const std::string& value, bool use_default)
+template <typename T>
+std::unordered_set<T> OntoGraph<B>::find(const std::string& value, bool use_default)
 {
-  std::unordered_set<std::string> res;
+  std::unordered_set<T> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   std::vector<B*> branchs = this->container_.find(&fullComparator<B>, value, this->language_, use_default);
   for(auto& branch : branchs)
-    res.insert(branch->value());
+    insert(res, branch);
 
   return res;
 }
 
 template <typename B>
-std::unordered_set<std::string> OntoGraph<B>::findSub(const std::string& value, bool use_default)
+template <typename T>
+std::unordered_set<T> OntoGraph<B>::findSub(const std::string& value, bool use_default)
 {
-  std::unordered_set<std::string> res;
+  std::unordered_set<T> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   std::vector<B*> branchs = this->container_.find(&comparator<B>, value, this->language_, use_default);
   for(auto& branch : branchs)
-    res.insert(branch->value());
+    insert(res, branch);
 
   return res;
 }
 
 template <typename B>
-std::unordered_set<std::string> OntoGraph<B>::findRegex(const std::string& regex, bool use_default)
+template <typename T>
+std::unordered_set<T> OntoGraph<B>::findRegex(const std::string& regex, bool use_default)
 {
-  std::unordered_set<std::string> res;
+  std::unordered_set<T> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   std::vector<B*> branchs = this->container_.find(&comparatorRegex<B>, regex, this->language_, use_default);
   for(auto& branch : branchs)
-    res.insert(branch->value());
+    insert(res, branch);
 
   return res;
 }
