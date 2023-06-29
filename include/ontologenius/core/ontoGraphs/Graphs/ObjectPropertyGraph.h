@@ -56,11 +56,15 @@ public:
   void add(std::vector<std::string>& disjoints);
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);
+  std::unordered_set<index_t> getDisjoint(index_t value);
   void getDisjointPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res);
   std::unordered_set<std::string> getInverse(const std::string& value);
+  std::unordered_set<index_t> getInverse(index_t value);
   std::unordered_set<std::string> getDomain(const std::string& value);
+  std::unordered_set<index_t> getDomain(index_t value);
   void getDomainPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
   std::unordered_set<std::string> getRange(const std::string& value);
+  std::unordered_set<index_t> getRange(index_t value);
   void getRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
 
   void createInvertChains();
