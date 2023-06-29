@@ -62,7 +62,6 @@ public:
   void getDomainPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
   std::unordered_set<std::string> getRange(const std::string& value);
   void getRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
-  std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& selector);
 
   void createInvertChains();
 

@@ -349,18 +349,6 @@ std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& v
   return res;
 }
 
-std::unordered_set<std::string> DataPropertyGraph::select(const std::unordered_set<std::string>& on, const std::string& selector)
-{
-  std::unordered_set<std::string> res;
-  for(const std::string& it : on)
-  {
-    std::unordered_set<std::string> tmp = getUp(it);
-    if(tmp.find(selector) != tmp.end())
-      res.insert(it);
-  }
-  return res;
-}
-
 bool DataPropertyGraph::add(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
 {
   if(relation != "")

@@ -58,7 +58,6 @@ public:
   std::unordered_set<std::string> getDomain(const std::string& value);
   void getDomainPtr(DataPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
   std::unordered_set<std::string> getRange(const std::string& value);
-  std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& selector);
 
   bool add(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
   bool addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);

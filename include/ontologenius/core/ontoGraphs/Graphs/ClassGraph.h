@@ -51,7 +51,6 @@ public:
   std::unordered_set<std::string> getDisjoint(const std::string& value);
   std::unordered_set<index_t> getDisjoint(index_t value);
   void getDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res);
-  std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
 
   std::unordered_set<std::string> getRelationFrom(const std::string& _class, int depth = -1);  //C3
   std::unordered_set<index_t> getRelationFrom(index_t _class, int depth = -1);

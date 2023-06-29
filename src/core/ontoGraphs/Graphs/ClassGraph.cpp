@@ -276,20 +276,6 @@ void ClassGraph::getDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBran
     getDownPtr(disjoint.elem, res);
 }
 
-std::unordered_set<std::string> ClassGraph::select(const std::unordered_set<std::string>& on, const std::string& class_selector)
-{
-  std::unordered_set<std::string> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-
-  for(const std::string& it : on)
-  {
-    std::unordered_set<std::string> tmp = getUp(it);
-    if(tmp.find(class_selector) != tmp.end())
-      res.insert(it);
-  }
-  return res;
-}
-
 std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& _class, int depth)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);

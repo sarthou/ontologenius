@@ -59,6 +59,20 @@ public:
   void getUpPtr(B* branch, std::unordered_set<B*>& res, int depth, unsigned int current_depth = 0);
   inline void getUpPtr(B* branch, std::unordered_set<B*>& res);
 
+  template<typename T> std::unordered_set<T> select(const std::unordered_set<T>& on, const T& selector)
+  {
+    std::unordered_set<T> res;
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+
+    for(auto& it : on)
+    {
+      std::unordered_set<T> tmp = getUp(it);
+      if(tmp.find(selector) != tmp.end())
+        res.insert(it);
+    }
+    return res;
+  }
+
   std::vector<B*> get() override
   {
     return all_branchs_;

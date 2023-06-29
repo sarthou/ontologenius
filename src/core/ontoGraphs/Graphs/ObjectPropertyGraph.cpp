@@ -365,18 +365,6 @@ void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch_t* branch, std::unord
       class_graph_->getDownPtr(range.elem, res, depth);
 }
 
-std::unordered_set<std::string> ObjectPropertyGraph::select(const std::unordered_set<std::string>& on, const std::string& selector)
-{
-  std::unordered_set<std::string> res;
-  for(const std::string& it : on)
-  {
-    std::unordered_set<std::string> tmp = getUp(it);
-    if(tmp.find(selector) != tmp.end())
-      res.insert(it);
-  }
-  return res;
-}
-
 void ObjectPropertyGraph::createInvertChains()
 {
   for(auto branch : all_branchs_)
