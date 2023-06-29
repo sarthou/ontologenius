@@ -79,8 +79,8 @@ public:
   std::unordered_set<std::string> getRangeOf(const std::string& _class, int depth = -1);
   std::unordered_set<index_t> getRangeOf(index_t _class, int depth = -1);
 
-  std::unordered_set<std::string> getDownIndividual(ClassBranch_t* branch);
   void getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res);
+  void getDownIndividual(ClassBranch_t* branch, std::unordered_set<index_t>& res);
   std::unordered_set<IndividualBranch_t*> getDownIndividualPtrSafe(ClassBranch_t* branch);
   void getDownIndividualPtrSafe(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res);
 
