@@ -11,6 +11,7 @@
 
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 
 #include "ontologenius/core/Algorithms/LevenshteinDistance.h"
 
@@ -33,8 +34,10 @@ public:
 
   std::unordered_set<std::string> getDown(const std::string& value, int depth = -1);
   std::unordered_set<std::string> getUp(const std::string& value, int depth = -1);
-  std::unordered_set<uint32_t> getDownIdSafe(const std::string& value, int depth = -1);
-  std::unordered_set<uint32_t> getUpIdSafe(const std::string& value, int depth = -1);
+  std::unordered_set<index_t> getDownId(const std::string& value, int depth = -1);
+  std::unordered_set<index_t> getDownId(index_t value, int depth = -1);
+  std::unordered_set<index_t> getUpId(const std::string& value, int depth = -1);
+  std::unordered_set<index_t> getUpId(index_t value, int depth = -1);
   std::string getName(const std::string& value, bool use_default = true);
   std::vector<std::string> getNames(const std::string& value, bool use_default = true);
   std::vector<std::string> getEveryNames(const std::string& value, bool use_default = true);
@@ -46,8 +49,8 @@ public:
 
   void getDown(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
   void getUp(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
-  void getDownIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
-  void getUpIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth = -1, unsigned int current_depth = 0);
+  void getDown(B* branch, std::unordered_set<index_t>& res, int depth = -1, unsigned int current_depth = 0);
+  void getUp(B* branch, std::unordered_set<index_t>& res, int depth = -1, unsigned int current_depth = 0);
 
   std::unordered_set<B*> getDownPtrSafe(B* branch, int depth = -1);
   void getDownPtr(B* branch, std::unordered_set<B*>& res, int depth, unsigned int current_depth = 0);
@@ -88,6 +91,10 @@ protected:
   std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<B*>& vect);
   std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<Single_t<B*>>& vect);
   void eraseFromVector(std::vector<B*>& vect, B* branch);
+  void insert(std::unordered_set<std::string>& set, ValuedNode* node) { set.insert(node->value()); }
+  void insert(std::unordered_set<index_t>& set, ValuedNode* node) { set.insert(node->get()); }
+  void insert(std::unordered_set<std::string>& set, LiteralNode* node) { set.insert(node->value()); }
+  void insert(std::unordered_set<index_t>& set, LiteralNode* node) { set.insert(node->get()); }
 };
 
 template <typename B>
@@ -147,33 +154,60 @@ std::unordered_set<std::string> OntoGraph<B>::getUp(const std::string& value, in
 }
 
 template <typename B>
-std::unordered_set<uint32_t> OntoGraph<B>::getDownIdSafe(const std::string& value, int depth)
+std::unordered_set<index_t> OntoGraph<B>::getDownId(const std::string& value, int depth)
 {
-  std::unordered_set<uint32_t> res;
+  std::unordered_set<index_t> res;
 
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
 
   if(branch != nullptr)
-    getDownIdSafe(branch, res, depth);
+    getDown(branch, res, depth);
 
   return res;
 }
 
 template <typename B>
-std::unordered_set<uint32_t> OntoGraph<B>::getUpIdSafe(const std::string& value, int depth)
+std::unordered_set<index_t> OntoGraph<B>::getDownId(index_t value, int depth)
 {
-  std::unordered_set<uint32_t> res;
+  std::unordered_set<index_t> res;
+
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  B* branch = this->container_.find(ValuedNode::table_.get(value));
+
+  if(branch != nullptr)
+    getDown(branch, res, depth);
+
+  return res;
+}
+
+template <typename B>
+std::unordered_set<index_t> OntoGraph<B>::getUpId(const std::string& value, int depth)
+{
+  std::unordered_set<index_t> res;
 
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   B* branch = this->container_.find(value);
 
   if(branch != nullptr)
-    getUpIdSafe(branch, res, depth);
+    getUp(branch, res, depth);
 
   return res;
 }
 
+template <typename B>
+std::unordered_set<index_t> OntoGraph<B>::getUpId(index_t value, int depth)
+{
+  std::unordered_set<index_t> res;
+
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  B* branch = this->container_.find(ValuedNode::table_.get(value));
+
+  if(branch != nullptr)
+    getUp(branch, res, depth);
+
+  return res;
+}
 
 template <typename B>
 std::string OntoGraph<B>::getName(const std::string& value, bool use_default)
@@ -315,7 +349,7 @@ void OntoGraph<B>::getUp(B* branch, std::unordered_set<std::string>& res, int de
 }
 
 template <typename B>
-void OntoGraph<B>::getDownIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
+void OntoGraph<B>::getDown(B* branch, std::unordered_set<index_t>& res, int depth, unsigned int current_depth)
 {
   if(current_depth <= (unsigned int)depth)
   {
@@ -323,12 +357,12 @@ void OntoGraph<B>::getDownIdSafe(B* branch, std::unordered_set<uint32_t>& res, i
     current_depth++;
     if(res.insert(branch->get()).second)
       for(auto& child : branch->childs_)
-        getDownIdSafe(child.elem, res, depth, current_depth);
+        getDown(child.elem, res, depth, current_depth);
   }
 }
 
 template <typename B>
-void OntoGraph<B>::getUpIdSafe(B* branch, std::unordered_set<uint32_t>& res, int depth, unsigned int current_depth)
+void OntoGraph<B>::getUp(B* branch, std::unordered_set<index_t>& res, int depth, unsigned int current_depth)
 {
   if(current_depth <= (unsigned int)depth)
   {
@@ -336,7 +370,7 @@ void OntoGraph<B>::getUpIdSafe(B* branch, std::unordered_set<uint32_t>& res, int
     current_depth++;
     if(res.insert(branch->get()).second)
       for(auto& mother : branch->mothers_)
-        getUpIdSafe(mother.elem, res, depth, current_depth);
+        getUp(mother.elem, res, depth, current_depth);
   }
 }
 

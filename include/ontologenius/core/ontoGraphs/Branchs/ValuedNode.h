@@ -31,7 +31,7 @@ class ValuedNode : public UpdatableNode
 public:
   explicit ValuedNode(const std::string& value) : UpdatableNode() {index_ = table_.add(value); }
 
-  uint32_t get() const { return index_; }
+  index_t get() const { return index_; }
   const std::string& value() const { return table_[index_]; }
 
   static WordTable table_;
@@ -48,7 +48,7 @@ public:
 
 private:
 
-  uint32_t index_;
+  index_t index_;
 };
 
 } // namespace ontologenius

@@ -195,9 +195,9 @@ void ClassChecker::checkDataPropertyRange()
       std::unordered_set<std::string> range = class_graph_->data_property_graph_->getRange(relation.first->value());
       if(range.size() != 0)
       {
-        auto intersection = range.find(relation.second.type_);
+        auto intersection = range.find(relation.second->type_);
         if(intersection == range.end())
-          print_error("'" + relation.second.type_ + "' is not in range of '" + relation.first->value() + "'");
+          print_error("'" + relation.second->type_ + "' is not in range of '" + relation.first->value() + "'");
       }
     }
   }
