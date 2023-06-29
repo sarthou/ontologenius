@@ -768,13 +768,13 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
         if(relation.second->get() == second_individual_index)
           object_property_graph_->getUp(relation.first, res, depth);
     }
-    else
+    else if(second_individual_index < 0)
     {
       for(IndivDataRelationElement_t& relation : indiv->data_relations_)
         if(relation.second->get() == second_individual_index)
           data_property_graph_->getUp(relation.first, res, depth);
     }
-    
+
     int found_depth = -1;
     uint32_t current_depth = 0;
     std::unordered_set<index_t> do_not_take;
@@ -782,6 +782,10 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
     getUpPtr(indiv, up_set, 1);
     while(up_set.size() > 0)
     {
+      auto second_class_ptr = class_graph_->container_.find(second_individual);
+      if(second_class_ptr != nullptr)
+        second_individual_index = second_class_ptr->get();
+        
       std::unordered_set<ClassBranch_t*> next_step;
       for(auto up : up_set)
         class_graph_->getWith(up, second_individual_index, res, do_not_take, current_depth, found_depth, depth, next_step);
