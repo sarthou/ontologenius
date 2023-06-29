@@ -1067,10 +1067,26 @@ std::unordered_set<std::string> ClassGraph::getDomainOf(const std::string& _clas
   return res;
 }
 
+std::unordered_set<index_t> ClassGraph::getDomainOf(index_t _class, int depth)
+{
+  ClassBranch_t* branch = container_.find(ValuedNode::table_.get(_class));
+  std::unordered_set<index_t> res;
+  getDomainOf(branch, res, depth);
+  return res;
+}
+
 std::unordered_set<std::string> ClassGraph::getRangeOf(const std::string& _class, int depth)
 {
   ClassBranch_t* branch = container_.find(_class);
   std::unordered_set<std::string> res;
+  getRangeOf(branch, res, depth);
+  return res;
+}
+
+std::unordered_set<index_t> ClassGraph::getRangeOf(index_t _class, int depth)
+{
+  ClassBranch_t* branch = container_.find(ValuedNode::table_.get(_class));
+  std::unordered_set<index_t> res;
   getRangeOf(branch, res, depth);
   return res;
 }
@@ -1089,6 +1105,21 @@ void ClassGraph::getDomainOf(ClassBranch_t* branch, std::unordered_set<std::stri
   }
 }
 
+void ClassGraph::getDomainOf(ClassBranch_t* branch, std::unordered_set<index_t>& res, int depth)
+{
+  if(branch != nullptr)
+  {
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(branch, depth);
+    for(auto& prop : object_property_graph_->all_branchs_)
+    {
+      for(auto& dom : prop->domains_)
+        if(up_set.find(dom.elem) != up_set.end())
+          res.insert(prop->get());
+    }
+  }
+}
+
+
 void ClassGraph::getRangeOf(ClassBranch_t* branch, std::unordered_set<std::string>& res, int depth)
 {
   if(branch != nullptr)
@@ -1099,6 +1130,20 @@ void ClassGraph::getRangeOf(ClassBranch_t* branch, std::unordered_set<std::strin
       for(auto& range : prop->ranges_)
         if(up_set.find(range.elem) != up_set.end())
           res.insert(prop->value());
+    }
+  }
+}
+
+void ClassGraph::getRangeOf(ClassBranch_t* branch, std::unordered_set<index_t>& res, int depth)
+{
+  if(branch != nullptr)
+  {
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(branch, depth);
+    for(auto& prop : object_property_graph_->all_branchs_)
+    {
+      for(auto& range : prop->ranges_)
+        if(up_set.find(range.elem) != up_set.end())
+          res.insert(prop->get());
     }
   }
 }
