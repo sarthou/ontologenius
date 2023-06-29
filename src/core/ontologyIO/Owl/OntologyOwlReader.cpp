@@ -377,6 +377,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
     {
       ExpressionMember_t* exp2 = new ExpressionMember_t;
       exp2->mother = exp;
+      exp2->andor = false;
       exp->intersects.push_back(exp2);
       if(getName(sub_elem->Value()) == "owl:intersectionOf")
       {
@@ -385,6 +386,10 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
         readCollection(sub_elem, exp2);
         exp2->UpdateEquiv();
         exp->str_equivalence = exp2->str_equivalence;
+        // std::cout << " Before distribution : " << exp->str_equivalence  << std::endl;
+        // exp2->DistributeEquiv_v2();
+        // exp->str_equivalence = exp2->str_equivalence;
+        // std::cout << " After distribution : " << exp->str_equivalence  << std::endl;
       }
       else if(getName(sub_elem->Value())  == "owl:unionOf")
       {
@@ -396,11 +401,13 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
       }
       else if(getName(sub_elem->Value())  == "owl:Restriction")
       {
+        exp2->nb_sub = 0;
         readRestriction(sub_elem, exp2);
         exp2->str_equivalence = "(" + exp2->rest.getRestriction() + ")";
       }
       else if(getName(sub_elem->Value())  == "rdf:Description")
       {
+        exp2->nb_sub = 0;
         exp2->class_restriction = getName(sub_elem->Attribute("rdf:about"));
         exp2->str_equivalence = exp2->class_restriction;
       }
