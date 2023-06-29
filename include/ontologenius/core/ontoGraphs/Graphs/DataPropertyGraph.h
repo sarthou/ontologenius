@@ -55,9 +55,12 @@ public:
   LiteralNode* createLiteralUnsafe(const std::string& value);
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);
+  std::unordered_set<index_t> getDisjoint(index_t value);
   std::unordered_set<std::string> getDomain(const std::string& value);
+  std::unordered_set<index_t> getDomain(index_t value);
   void getDomainPtr(DataPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
   std::unordered_set<std::string> getRange(const std::string& value);
+  std::unordered_set<index_t> getRange(index_t value);
 
   bool add(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
   bool addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
