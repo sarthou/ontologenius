@@ -807,10 +807,7 @@ std::unordered_set<std::string> IndividualGraph::getDomainOf(const std::string& 
   std::unordered_set<std::string> res;
 
   for(auto c : classes)
-  {
-    std::unordered_set<std::string> tmp = class_graph_->getDomainOf(c, depth);
-    res.insert(tmp.begin(), tmp.end());
-  }
+    class_graph_->getDomainOf(c, res, depth);
 
   return res;
 }
@@ -824,10 +821,7 @@ std::unordered_set<std::string> IndividualGraph::getRangeOf(const std::string& i
   std::unordered_set<std::string> res;
 
   for(auto c : classes)
-  {
-    std::unordered_set<std::string> tmp = class_graph_->getRangeOf(c, depth);
-    res.insert(tmp.begin(), tmp.end());
-  }
+    class_graph_->getRangeOf(c, res, depth);
 
   return res;
 }
