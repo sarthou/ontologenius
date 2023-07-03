@@ -1003,14 +1003,14 @@ std::unordered_set<index_t> ClassGraph::getWith(index_t first_class, index_t sec
 }
 
 
-void ClassGraph::getWith(ClassBranch_t* first_class, index_t second_class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& doNotTake, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step)
+void ClassGraph::getWith(ClassBranch_t* first_class, index_t second_class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step)
 {
-  getWith_(first_class, second_class, res, doNotTake, current_depth, found_depth, depth_prop, next_step);
+  getWith_(first_class, second_class, res, do_not_take, current_depth, found_depth, depth_prop, next_step);
 }
 
-void ClassGraph::getWith(ClassBranch_t* first_class, index_t second_class, std::unordered_set<index_t>& res, std::unordered_set<index_t>& doNotTake, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step)
+void ClassGraph::getWith(ClassBranch_t* first_class, index_t second_class, std::unordered_set<index_t>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step)
 {
-  getWith_(first_class, second_class, res, doNotTake, current_depth, found_depth, depth_prop, next_step);
+  getWith_(first_class, second_class, res, do_not_take, current_depth, found_depth, depth_prop, next_step);
 }
 
 template<typename T>
