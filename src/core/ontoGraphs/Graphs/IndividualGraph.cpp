@@ -572,6 +572,12 @@ std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::strin
     auto literal_ptr = data_property_graph_->literal_container_.find(individual);
     if(literal_ptr != nullptr)
       indiv_index = literal_ptr->get();
+    else
+    {
+      auto class_ptr = class_graph_->container_.find(individual);
+      if(class_ptr != nullptr)
+        indiv_index = class_ptr->get();
+    }
   }
 
   if(indiv_index != 0)
