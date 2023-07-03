@@ -11,7 +11,6 @@
 
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
-#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 
 #include "ontologenius/core/Algorithms/LevenshteinDistance.h"
 
@@ -111,10 +110,6 @@ protected:
   std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<B*>& vect);
   std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<Single_t<B*>>& vect);
   void eraseFromVector(std::vector<B*>& vect, B* branch);
-  void insert(std::unordered_set<std::string>& set, ValuedNode* node) { set.insert(node->value()); }
-  void insert(std::unordered_set<index_t>& set, ValuedNode* node) { set.insert(node->get()); }
-  void insert(std::unordered_set<std::string>& set, LiteralNode* node) { set.insert(node->value()); }
-  void insert(std::unordered_set<index_t>& set, LiteralNode* node) { set.insert(node->get()); }
 
 private:
   std::string getName(B* branch, bool use_default);
@@ -590,7 +585,7 @@ std::unordered_set<T> OntoGraph<B>::find(const std::string& value, bool use_defa
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   std::vector<B*> branchs = this->container_.find(&fullComparator<B>, value, this->language_, use_default);
   for(auto& branch : branchs)
-    insert(res, branch);
+    this->insert(res, branch);
 
   return res;
 }
@@ -603,7 +598,7 @@ std::unordered_set<T> OntoGraph<B>::findSub(const std::string& value, bool use_d
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   std::vector<B*> branchs = this->container_.find(&comparator<B>, value, this->language_, use_default);
   for(auto& branch : branchs)
-    insert(res, branch);
+    this->insert(res, branch);
 
   return res;
 }
@@ -616,7 +611,7 @@ std::unordered_set<T> OntoGraph<B>::findRegex(const std::string& regex, bool use
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
   std::vector<B*> branchs = this->container_.find(&comparatorRegex<B>, regex, this->language_, use_default);
   for(auto& branch : branchs)
-    insert(res, branch);
+    this->insert(res, branch);
 
   return res;
 }

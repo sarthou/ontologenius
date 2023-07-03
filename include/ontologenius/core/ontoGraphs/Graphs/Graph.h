@@ -14,6 +14,7 @@
 
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 
 namespace ontologenius {
 
@@ -103,6 +104,11 @@ public:
     else
       return false;
   }
+
+  void insert(std::unordered_set<std::string>& set, ValuedNode* node) { set.insert(node->value()); }
+  void insert(std::unordered_set<index_t>& set, ValuedNode* node) { set.insert(node->get()); }
+  void insert(std::unordered_set<std::string>& set, LiteralNode* node) { set.insert(node->value()); }
+  void insert(std::unordered_set<index_t>& set, LiteralNode* node) { set.insert(node->get()); }
 };
 
 template <typename B>
