@@ -395,6 +395,33 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
   return res;
 }
 
+std::unordered_set<index_t> IndividualGraph::getRelationOn(index_t individual, int depth)
+{
+  std::unordered_set<index_t> res;
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+
+  if(individual > 0)
+  {
+    std::unordered_set<index_t> same = getSameId(individual);
+    for(index_t id : same)
+      for(auto& indiv : individuals_)
+        for(IndivObjectRelationElement_t& relation : indiv->object_relations_)
+          if(relation.second->get() == id)
+            object_property_graph_->getUp(relation.first, res, depth);
+  }
+  else
+  {
+    for(auto& indiv : individuals_)
+      for(IndivDataRelationElement_t& relation : indiv->data_relations_)
+        if(relation.second->get() == individual)
+          data_property_graph_->getUp(relation.first, res, depth);
+
+    class_graph_->getRelationOnDataProperties(LiteralNode::table_.get(-individual), res, depth);
+  }
+
+  return res;
+}
+
 std::unordered_set<std::string> IndividualGraph::getRelatedOn(const std::string& property)
 {
   std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
@@ -892,6 +919,11 @@ void IndividualGraph::getDistincts(IndividualBranch_t* individual, std::unordere
 std::unordered_set<index_t> IndividualGraph::getSameId(const std::string& individual)
 {
   return getSameIdAndClean(container_.find(individual));
+}
+
+std::unordered_set<index_t> IndividualGraph::getSameId(index_t individual)
+{
+  return getSameIdAndClean(container_.find(ValuedNode::table_.get(individual)));
 }
 
 void IndividualGraph::getSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res)

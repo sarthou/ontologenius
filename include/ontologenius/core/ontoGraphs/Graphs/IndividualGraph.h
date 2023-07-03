@@ -72,6 +72,7 @@ public:
   std::unordered_set<std::string> getRelatedFrom(const std::string& property);     //C3
   std::unordered_set<index_t> getRelatedFrom(index_t property);
   std::unordered_set<std::string> getRelationOn(const std::string& individual, int depth = -1);    //C4
+  std::unordered_set<index_t> getRelationOn(index_t individual, int depth = -1); 
   std::unordered_set<std::string> getRelatedOn(const std::string& property);       //C3
   std::unordered_set<std::string> getRelationWith(const std::string& individual);  //C3
   std::unordered_set<std::string> getRelatedWith(const std::string& individual);   //C3
@@ -166,6 +167,7 @@ private:
 
   void getDistincts(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);
   std::unordered_set<index_t> getSameId(const std::string& individual);
+  std::unordered_set<index_t> getSameId(index_t individual);
   void getSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);
   std::unordered_set<std::string> getSameAndClean(IndividualBranch_t* individual);
   std::unordered_set<index_t> getSameIdAndClean(IndividualBranch_t* individual);
