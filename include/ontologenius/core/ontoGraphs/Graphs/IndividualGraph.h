@@ -84,6 +84,7 @@ public:
   std::unordered_set<index_t> getFrom(index_t individual, index_t property);
   std::unordered_set<std::string> getOn(const std::string& param);
   std::unordered_set<std::string> getOn(const std::string& individual, const std::string& property);
+  std::unordered_set<index_t> getOn(index_t individual, index_t property);
   std::unordered_set<std::string> getWith(const std::string& param, int depth = -1);
   std::unordered_set<std::string> getWith(const std::string& first_individual, const std::string& second_individual, int depth = -1);
   std::unordered_set<std::string> getDomainOf(const std::string& individual, int depth = -1);
@@ -162,6 +163,7 @@ private:
   template<typename T> void getUp(IndividualBranch_t* indiv, std::unordered_set<T>& res, int depth = -1, uint32_t current_depth = 0);
   template<typename T> void getRelatedWith(index_t individual, std::unordered_set<T>& res);
   template<typename T> void getFrom(index_t individual, const T& property, std::unordered_set<T>& res);
+  template<typename T> std::unordered_set<T> getOn(IndividualBranch_t* individual, const T& property);
 
   void addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
   void addDataRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);

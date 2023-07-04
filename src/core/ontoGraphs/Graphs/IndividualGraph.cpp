@@ -840,17 +840,32 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& param)
 
 std::unordered_set<std::string> IndividualGraph::getOn(const std::string& individual, const std::string& property)
 {
-  std::unordered_set<std::string> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   IndividualBranch_t* indiv = container_.find(individual);
 
-  if(indiv != nullptr)
+  return getOn(indiv, property);
+}
+
+std::unordered_set<index_t> IndividualGraph::getOn(index_t individual, index_t property)
+{
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  IndividualBranch_t* indiv = container_.find(ValuedNode::table_.get(individual));
+
+  return getOn(indiv, property);
+}
+
+template<typename T>
+std::unordered_set<T> IndividualGraph::getOn(IndividualBranch_t* individual, const T& property)
+{
+  std::unordered_set<T> res;
+  
+  if(individual != nullptr)
   {
     std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
     std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
 
     std::unordered_set<IndividualBranch_t*> sames;
-    getSame(indiv, sames);
+    getSame(individual, sames);
     cleanMarks(sames);
     for(auto same_indiv : sames)
     {
@@ -862,14 +877,14 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& indivi
       for(IndivDataRelationElement_t& relation : same_indiv->data_relations_)
         for (index_t id : data_properties)
           if(relation.first->get() == id)
-            res.insert(relation.second->value());
+            insert(res, relation.second);
     }
 
     if(res.size() == 0)
     {
       int found_depth = -1;
       std::unordered_set<ClassBranch_t*> up_set;
-      getUpPtr(indiv, up_set, 1);
+      getUpPtr(individual, up_set, 1);
       for(ClassBranch_t* up : up_set)
         class_graph_->getOn(up, object_properties, data_properties, res, 1, found_depth);
     }
