@@ -1220,10 +1220,22 @@ std::unordered_set<index_t> IndividualGraph::select(const std::unordered_set<ind
 
 std::string IndividualGraph::getName(const std::string& value, bool use_default)
 {
-  std::string res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-
   IndividualBranch_t* branch = container_.find(value);
+  return getName(branch, use_default);
+}
+
+std::string IndividualGraph::getName(index_t value, bool use_default)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  return getName(branch, use_default);
+}
+
+std::string IndividualGraph::getName(IndividualBranch_t* branch, bool use_default)
+{
+  std::string res;
+  
   if(branch != nullptr)
   {
     if(branch->dictionary_.spoken_.find(language_) != branch->dictionary_.spoken_.end())
@@ -1252,10 +1264,10 @@ std::string IndividualGraph::getName(const std::string& value, bool use_default)
           res = branch->dictionary_.spoken_[this->language_][0];
       }
       else if(use_default)
-        res = value;
+        res = branch->value();
     }
     else if(use_default)
-      res = value;
+      res = branch->value();
   }
 
   return res;
@@ -1263,16 +1275,27 @@ std::string IndividualGraph::getName(const std::string& value, bool use_default)
 
 std::vector<std::string> IndividualGraph::getNames(const std::string& value, bool use_default)
 {
-  std::vector<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-
   IndividualBranch_t* branch = container_.find(value);
+  return getNames(branch, use_default);
+}
+
+std::vector<std::string> IndividualGraph::getNames(index_t value, bool use_default)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  return getNames(branch, use_default);
+}
+
+std::vector<std::string> IndividualGraph::getNames(IndividualBranch_t* branch, bool use_default)
+{
+  std::vector<std::string> res;
   if(branch != nullptr)
   {
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
       res = branch->dictionary_.spoken_[this->language_];
     else if(use_default)
-      res.push_back(value);
+      res.push_back(branch->value());
   }
 
   return res;
@@ -1280,23 +1303,33 @@ std::vector<std::string> IndividualGraph::getNames(const std::string& value, boo
 
 std::vector<std::string> IndividualGraph::getEveryNames(const std::string& value, bool use_default)
 {
-  std::vector<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-
   IndividualBranch_t* branch = container_.find(value);
+  return getEveryNames(branch, use_default);
+}
+
+std::vector<std::string> IndividualGraph::getEveryNames(index_t value, bool use_default)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  return getEveryNames(branch, use_default);
+}
+
+std::vector<std::string> IndividualGraph::getEveryNames(IndividualBranch_t* branch, bool use_default)
+{
+  std::vector<std::string> res;
   if(branch != nullptr)
   {
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
       res = branch->dictionary_.spoken_[this->language_];
     else if(use_default)
-      res.push_back(value);
+      res.push_back(branch->value());
 
     if(branch->dictionary_.muted_.find(this->language_) != branch->dictionary_.muted_.end())
     {
       std::vector<std::string> muted = branch->dictionary_.muted_[this->language_];
       res.insert(res.end(), muted.begin(), muted.end());
     }
-
   }
 
   return res;

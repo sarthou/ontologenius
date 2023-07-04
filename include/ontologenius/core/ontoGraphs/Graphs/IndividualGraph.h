@@ -97,8 +97,11 @@ public:
   std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
   std::unordered_set<index_t> select(const std::unordered_set<index_t>& on, index_t class_selector);
   std::string getName(const std::string& value, bool use_default = true);
+  std::string getName(index_t value, bool use_default = true);
   std::vector<std::string> getNames(const std::string& value, bool use_default = true);
+  std::vector<std::string> getNames(index_t value, bool use_default = true);
   std::vector<std::string> getEveryNames(const std::string& value, bool use_default = true);
+  std::vector<std::string> getEveryNames(index_t value, bool use_default = true);
   std::unordered_set<std::string> find(const std::string& value, bool use_default = true);
   std::unordered_set<std::string> findSub(const std::string& value, bool use_default = true);
   std::unordered_set<std::string> findRegex(const std::string& regex, bool use_default = true);
@@ -171,6 +174,9 @@ private:
   template<typename T> void getWith(IndividualBranch_t* first_individual, index_t second_individual_index, std::unordered_set<T>& res, int depth);
   template<typename T> void getDomainOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth);
   template<typename T> void getRangeOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth);
+  std::string getName(IndividualBranch_t* branch, bool use_default);
+  std::vector<std::string> getNames(IndividualBranch_t* branch, bool use_default);
+  std::vector<std::string> getEveryNames(IndividualBranch_t* branch, bool use_default);
 
   void addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
   void addDataRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
