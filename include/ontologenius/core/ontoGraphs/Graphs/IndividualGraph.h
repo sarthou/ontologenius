@@ -95,6 +95,7 @@ public:
   std::unordered_set<std::string> getUp(const std::string& individual, int depth = -1);            //C3
   std::unordered_set<index_t> getUp(index_t individual, int depth = -1);
   std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
+  std::unordered_set<index_t> select(const std::unordered_set<index_t>& on, index_t class_selector);
   std::string getName(const std::string& value, bool use_default = true);
   std::vector<std::string> getNames(const std::string& value, bool use_default = true);
   std::vector<std::string> getEveryNames(const std::string& value, bool use_default = true);

@@ -1186,6 +1186,38 @@ std::unordered_set<std::string> IndividualGraph::select(const std::unordered_set
   return res;
 }
 
+std::unordered_set<index_t> IndividualGraph::select(const std::unordered_set<index_t>& on, index_t class_selector)
+{
+  std::unordered_set<index_t> res;
+  std::unordered_set<index_t> classes;
+
+  for(index_t it : on)
+  {
+    if(it > 0)
+    {
+      IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(it));
+      if(branch!= nullptr)
+      {
+        std::unordered_set<index_t> tmp;
+        getUp(branch, tmp);
+        if(tmp.find(class_selector) != tmp.end())
+          res.insert(it);
+      }
+      else
+        classes.insert(it);
+    }
+  }
+
+  if(classes.size())
+  {
+    std::unordered_set<index_t> tmp_res = class_graph_->select(classes, class_selector);
+    if(tmp_res.size())
+      res.insert(tmp_res.begin(), tmp_res.end());
+  }
+
+  return res;
+}
+
 std::string IndividualGraph::getName(const std::string& value, bool use_default)
 {
   std::string res;
