@@ -921,19 +921,40 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
     auto literal = data_property_graph_->literal_container_.find(second_individual);
     if(literal != nullptr)
       second_individual_index = literal->get();
+    else
+    {
+      auto second_class_ptr = class_graph_->container_.find(second_individual);
+      if(second_class_ptr != nullptr)
+        second_individual_index = second_class_ptr->get();
+    }
   }
+  getWith(indiv, second_individual_index, res, depth);
+  return res;
+}
 
-  if(indiv != nullptr)
+std::unordered_set<index_t> IndividualGraph::getWith(index_t first_individual, index_t second_individual, int depth)
+{
+  std::unordered_set<index_t> res;
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  IndividualBranch_t* indiv = container_.find(ValuedNode::table_.get(first_individual));
+  getWith(indiv, second_individual, res, depth);
+  return res;
+}
+
+template<typename T>
+void IndividualGraph::getWith(IndividualBranch_t* first_individual, index_t second_individual_index, std::unordered_set<T>& res, int depth)
+{
+  if(first_individual != nullptr)
   {
     if(second_individual_index > 0)
     {
-      for(IndivObjectRelationElement_t& relation : indiv->object_relations_)
+      for(IndivObjectRelationElement_t& relation : first_individual->object_relations_)
         if(relation.second->get() == second_individual_index)
           object_property_graph_->getUp(relation.first, res, depth);
     }
     else if(second_individual_index < 0)
     {
-      for(IndivDataRelationElement_t& relation : indiv->data_relations_)
+      for(IndivDataRelationElement_t& relation : first_individual->data_relations_)
         if(relation.second->get() == second_individual_index)
           data_property_graph_->getUp(relation.first, res, depth);
     }
@@ -942,13 +963,9 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
     uint32_t current_depth = 0;
     std::unordered_set<index_t> do_not_take;
     std::unordered_set<ClassBranch_t*> up_set;
-    getUpPtr(indiv, up_set, 1);
+    getUpPtr(first_individual, up_set, 1);
     while(up_set.size() > 0)
     {
-      auto second_class_ptr = class_graph_->container_.find(second_individual);
-      if(second_class_ptr != nullptr)
-        second_individual_index = second_class_ptr->get();
-        
       std::unordered_set<ClassBranch_t*> next_step;
       for(auto up : up_set)
         class_graph_->getWith(up, second_individual_index, res, do_not_take, current_depth, found_depth, depth, next_step);
@@ -957,8 +974,6 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
       current_depth++;
     }
   }
-
-  return res;
 }
 
 std::unordered_set<std::string> IndividualGraph::getDomainOf(const std::string& individual, int depth)
