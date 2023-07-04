@@ -1149,7 +1149,6 @@ void IndividualGraph::getSameAndClean(IndividualBranch_t* individual, std::unord
       getSame(individual, sames);
       cleanMarks(sames);
 
-      std::unordered_set<index_t> res;
       std::transform(sames.cbegin(), sames.cend(), std::inserter(res, res.begin()), [](auto same){ return same->get(); });
     }
     else
