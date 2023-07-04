@@ -1110,24 +1110,9 @@ void IndividualGraph::getSame(IndividualBranch_t* individual, std::unordered_set
 
 std::unordered_set<std::string> IndividualGraph::getSameAndClean(IndividualBranch_t* individual)
 {
-  if(individual != nullptr)
-  {
-    if(individual->same_as_.size())
-    {
-      std::unordered_set<IndividualBranch_t*> sames;
-      getSame(individual, sames);
-      cleanMarks(sames);
-
-      std::unordered_set<std::string> res;
-      std::transform(sames.cbegin(), sames.cend(), std::inserter(res, res.begin()), [](auto same){ return same->value(); });
-
-      return res;
-    }
-    else
-      return {individual->value()};
-  }
-  else
-    return {};
+  std::unordered_set<std::string> res;
+  getSameAndClean(individual, res);
+  return res;
 }
 
 void IndividualGraph::getSameAndClean(IndividualBranch_t* individual, std::unordered_set<std::string>& res)
@@ -1149,24 +1134,9 @@ void IndividualGraph::getSameAndClean(IndividualBranch_t* individual, std::unord
 
 std::unordered_set<index_t> IndividualGraph::getSameIdAndClean(IndividualBranch_t* individual)
 {
-  if(individual != nullptr)
-  {
-    if(individual->same_as_.size())
-    {
-      std::unordered_set<IndividualBranch_t*> sames;
-      getSame(individual, sames);
-      cleanMarks(sames);
-
-      std::unordered_set<index_t> res;
-      std::transform(sames.cbegin(), sames.cend(), std::inserter(res, res.begin()), [](auto same){ return same->get(); });
-
-      return res;
-    }
-    else
-      return {individual->get()};
-  }
-  else
-    return {};
+  std::unordered_set<index_t> res;
+  getSameAndClean(individual, res);
+  return res;
 }
 
 void IndividualGraph::getSameAndClean(IndividualBranch_t* individual, std::unordered_set<index_t>& res)
