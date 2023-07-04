@@ -92,8 +92,8 @@ public:
   std::unordered_set<index_t> getDomainOf(index_t individual, int depth = -1);
   std::unordered_set<std::string> getRangeOf(const std::string& individual, int depth = -1);
   std::unordered_set<index_t> getRangeOf(index_t individual, int depth = -1);
-  std::unordered_set<std::string> getUp(IndividualBranch_t* indiv, int depth = -1, uint32_t current_depth = 0);
   std::unordered_set<std::string> getUp(const std::string& individual, int depth = -1);            //C3
+  std::unordered_set<index_t> getUp(index_t individual, int depth = -1);
   std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
   std::string getName(const std::string& value, bool use_default = true);
   std::vector<std::string> getNames(const std::string& value, bool use_default = true);

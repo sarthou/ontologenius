@@ -1028,41 +1028,22 @@ void IndividualGraph::getRangeOf(IndividualBranch_t* individual, std::unordered_
     class_graph_->getRangeOf(c, res, depth);
 }
 
-std::unordered_set<std::string> IndividualGraph::getUp(IndividualBranch_t* indiv, int depth, uint32_t current_depth)
-{
-  current_depth++;
-  std::unordered_set<std::string> res;
-  if(indiv != nullptr)
-  {
-    std::unordered_set<IndividualBranch_t*> sames;
-    getSame(indiv, sames);
-    cleanMarks(sames);
-    for(IndividualBranch_t* it : sames)
-      for(auto& is_a : it->is_a_)
-        class_graph_->getUp(is_a.elem, res, depth, current_depth);
-  }
-  return res;
-}
-
 std::unordered_set<std::string> IndividualGraph::getUp(const std::string& individual, int depth)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   IndividualBranch_t* indiv = container_.find(individual);
-  return getUp(indiv, depth);
+  std::unordered_set<std::string> res;
+  getUp(indiv, res, depth);
+  return res;
 }
 
-void IndividualGraph::getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth, uint32_t current_depth)
+std::unordered_set<index_t> IndividualGraph::getUp(index_t individual, int depth)
 {
-  current_depth++;
-  if(indiv != nullptr)
-  {
-    std::unordered_set<IndividualBranch_t*> sames;
-    getSame(indiv, sames);
-    cleanMarks(sames);
-    for(IndividualBranch_t* it : sames)
-      for(auto& is_a : it->is_a_)
-        class_graph_->getUpPtr(is_a.elem, res, depth, current_depth);
-  }
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  IndividualBranch_t* indiv = container_.find(ValuedNode::table_.get(individual));
+  std::unordered_set<index_t> res;
+  getUp(indiv, res, depth);
+  return res;
 }
 
 template<typename T>
@@ -1077,6 +1058,20 @@ void IndividualGraph::getUp(IndividualBranch_t* indiv, std::unordered_set<T>& re
     for(IndividualBranch_t* it : sames)
       for(auto& is_a : it->is_a_)
         class_graph_->getUp(is_a.elem, res, depth, current_depth);
+  }
+}
+
+void IndividualGraph::getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth, uint32_t current_depth)
+{
+  current_depth++;
+  if(indiv != nullptr)
+  {
+    std::unordered_set<IndividualBranch_t*> sames;
+    getSame(indiv, sames);
+    cleanMarks(sames);
+    for(IndividualBranch_t* it : sames)
+      for(auto& is_a : it->is_a_)
+        class_graph_->getUpPtr(is_a.elem, res, depth, current_depth);
   }
 }
 
@@ -1202,7 +1197,8 @@ std::unordered_set<std::string> IndividualGraph::select(const std::unordered_set
     IndividualBranch_t* branch = container_.find(it);
     if(branch!= nullptr)
     {
-      std::unordered_set<std::string> tmp = getUp(branch);
+      std::unordered_set<std::string> tmp;
+      getUp(branch, tmp);
       if(tmp.find(class_selector) != tmp.end())
         res.insert(it);
     }
