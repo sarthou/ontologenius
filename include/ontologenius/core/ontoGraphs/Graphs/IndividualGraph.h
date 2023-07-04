@@ -81,6 +81,7 @@ public:
   std::unordered_set<index_t> getRelatedWith(index_t individual);
   std::unordered_set<std::string> getFrom(const std::string& param);
   std::unordered_set<std::string> getFrom(const std::string& individual, const std::string& property);
+  std::unordered_set<index_t> getFrom(index_t individual, index_t property);
   std::unordered_set<std::string> getOn(const std::string& param);
   std::unordered_set<std::string> getOn(const std::string& individual, const std::string& property);
   std::unordered_set<std::string> getWith(const std::string& param, int depth = -1);
@@ -160,13 +161,14 @@ private:
   template<typename T> void getRelatedOn(const T& property, std::unordered_set<T>& res);
   template<typename T> void getUp(IndividualBranch_t* indiv, std::unordered_set<T>& res, int depth = -1, uint32_t current_depth = 0);
   template<typename T> void getRelatedWith(index_t individual, std::unordered_set<T>& res);
+  template<typename T> void getFrom(index_t individual, const T& property, std::unordered_set<T>& res);
 
   void addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
   void addDataRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
 
   template<typename T> void getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<T>& res, int depth = -1);
   bool getRelatedWith(ClassBranch_t* class_branch, index_t data, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& took);
-  bool getFrom(ClassBranch_t* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, LiteralNode* data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& do_not_take);
+  bool getFrom(ClassBranch_t* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, index_t data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& do_not_take);
 
   bool relationExists(IndividualBranch_t* subject, ObjectPropertyBranch_t* property, IndividualBranch_t* object);
 

@@ -675,67 +675,90 @@ bool IndividualGraph::getRelatedWith(ClassBranch_t* class_branch, index_t data, 
 
 std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& param)
 {
-  std::unordered_set<std::string> res;
-  std::string individual;
-  std::string property;
   size_t pose = param.find(':');
   if(pose != std::string::npos)
   {
-    individual = param.substr(0, pose);
-    property = param.substr(pose+1);
+    std::string individual = param.substr(0, pose);
+    std::string property = param.substr(pose+1);
     return getFrom(individual, property);
   }
-  return res;
+  return {};
 }
 
 std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& individual, const std::string& property)
 {
+  std::unordered_set<std::string> res;
+  index_t indiv_index = 0;
+  auto indiv_ptr = container_.find(individual);
+  if(indiv_ptr != nullptr)
+    indiv_index = indiv_ptr->get();
+  else
+  {
+    auto literal_ptr = data_property_graph_->literal_container_.find(individual);
+    if(literal_ptr != nullptr)
+      indiv_index = literal_ptr->get();
+    else
+    {
+      auto class_ptr = class_graph_->container_.find(individual);
+      if(class_ptr != nullptr)
+        indiv_index = class_ptr->get();
+    }
+  }
+
+  getFrom(indiv_index, property, res);
+
+  return res;
+}
+
+std::unordered_set<index_t> IndividualGraph::getFrom(index_t individual, index_t property)
+{
+  std::unordered_set<index_t> res;
+  getFrom(individual, property, res);
+  return res;
+}
+
+template<typename T>
+void IndividualGraph::getFrom(index_t individual, const T& property, std::unordered_set<T>& res)
+{
   std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
   std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
-
-  std::unordered_set<std::string> res;
+  
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-
-  IndividualBranch_t* indiv = container_.find(individual);
-  LiteralNode* literal = data_property_graph_->literal_container_.find(individual);
 
   for(auto& indiv_i : individuals_)
   {
     bool found = false;
-    bool defined = false;
 
-    if(indiv != nullptr)
+    if(individual > 0)
     {
       for(IndivObjectRelationElement_t& relation : indiv_i->object_relations_)
         for (index_t id : object_properties)
           if(relation.first->get() == id)
           {
-            defined = true;
-            if(relation.second == indiv)
+            if(relation.second->get() == individual)
             {
               found = true;
               break;
             }
           }
     }
-
-    if(defined == false)
-      if(literal != nullptr)
-        for(IndivDataRelationElement_t& relation : indiv_i->data_relations_)
-          for (index_t id : data_properties)
-            if(relation.first->get() == id)
+    else if(individual < 0)
+      for(IndivDataRelationElement_t& relation : indiv_i->data_relations_)
+        for (index_t id : data_properties)
+          if(relation.first->get() == id)
+          {
+            if(relation.second->get() == individual)
             {
-              if(relation.second == literal)
-              {
-                found = true;
-                break;
-              }
+              found = true;
+              break;
             }
+          }
 
-
-    if((found == false) && (indiv == nullptr))
+    if(found == false)
     {
-      std::unordered_set<index_t> down_classes = class_graph_->getDownId(individual);
+      std::unordered_set<index_t> down_classes;
+      if(individual > 0)
+        down_classes = class_graph_->getDownId(individual);
       std::unordered_set<index_t> do_not_take;
 
       std::unordered_set<ClassBranch_t*> up_set;
@@ -744,7 +767,7 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
       {
         std::unordered_set<ClassBranch_t*> next_step;
         for(auto up : up_set)
-          found = found || getFrom(up, object_properties, data_properties, literal, down_classes, next_step, do_not_take);
+          found = found || getFrom(up, object_properties, data_properties, individual, down_classes, next_step, do_not_take);
 
         up_set = next_step;
       }
@@ -753,11 +776,9 @@ std::unordered_set<std::string> IndividualGraph::getFrom(const std::string& indi
     if(found == true)
       getSameAndClean(indiv_i, res);
   }
-
-  return res;
 }
 
-bool IndividualGraph::getFrom(ClassBranch_t* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, LiteralNode* data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& do_not_take)
+bool IndividualGraph::getFrom(ClassBranch_t* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, index_t data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch_t*>& next_step, std::unordered_set<index_t>& do_not_take)
 {
   if(class_branch != nullptr)
   {
@@ -767,28 +788,29 @@ bool IndividualGraph::getFrom(ClassBranch_t* class_branch, const std::unordered_
     bool found = false;
     bool defined = false;
 
-    for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
-      for (index_t id : object_properties)
-        if(relation.first->get() == id)
-        {
-          defined = true;
-          if(std::any_of(down_classes.begin(), down_classes.end(), [id = relation.second->get()](auto class_id){ return id == class_id; }))
-            found = true;
-        }
-
-    if(defined == false)
-      if(data != nullptr)
-        for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
-          for (index_t id : data_properties)
-            if(relation.first->get() == id)
+    if(down_classes.size())
+    {
+      for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
+        for (index_t id : object_properties)
+          if(relation.first->get() == id)
+          {
+            defined = true;
+            if(std::any_of(down_classes.begin(), down_classes.end(), [id = relation.second->get()](auto class_id){ return id == class_id; }))
+              found = true;
+          }
+    }
+    else if(data < 0)
+      for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
+        for (index_t id : data_properties)
+          if(relation.first->get() == id)
+          {
+            defined = true;
+            if(relation.second->get() == data)
             {
-              defined = true;
-              if(relation.second == data)
-              {
-                found = true;
-                break;
-              }
+              found = true;
+              break;
             }
+          }
 
     if(defined == true)
     {
