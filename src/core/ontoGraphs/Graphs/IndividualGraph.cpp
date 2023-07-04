@@ -979,29 +979,53 @@ void IndividualGraph::getWith(IndividualBranch_t* first_individual, index_t seco
 std::unordered_set<std::string> IndividualGraph::getDomainOf(const std::string& individual, int depth)
 {
   IndividualBranch_t* branch = container_.find(individual);
-  std::unordered_set<ClassBranch_t*> classes;
-  getUpPtr(branch, classes, 1);
-
   std::unordered_set<std::string> res;
+  getDomainOf(branch, res, depth);
+  return res;
+}
+
+std::unordered_set<index_t> IndividualGraph::getDomainOf(index_t individual, int depth)
+{
+  IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(individual));
+  std::unordered_set<index_t> res;
+  getDomainOf(branch, res, depth);
+  return res;
+}
+
+template<typename T>
+void IndividualGraph::getDomainOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth)
+{
+  std::unordered_set<ClassBranch_t*> classes;
+  getUpPtr(individual, classes, 1);
 
   for(auto c : classes)
     class_graph_->getDomainOf(c, res, depth);
-
-  return res;
 }
 
 std::unordered_set<std::string> IndividualGraph::getRangeOf(const std::string& individual, int depth)
 {
   IndividualBranch_t* branch = container_.find(individual);
-  std::unordered_set<ClassBranch_t*> classes;
-  getUpPtr(branch, classes, 1);
-
   std::unordered_set<std::string> res;
+  getRangeOf(branch, res, depth);
+  return res;
+}
+
+std::unordered_set<index_t> IndividualGraph::getRangeOf(index_t individual, int depth)
+{
+  IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(individual));
+  std::unordered_set<index_t> res;
+  getRangeOf(branch, res, depth);
+  return res;
+}
+
+template<typename T>
+void IndividualGraph::getRangeOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth)
+{
+  std::unordered_set<ClassBranch_t*> classes;
+  getUpPtr(individual, classes, 1);
 
   for(auto c : classes)
     class_graph_->getRangeOf(c, res, depth);
-
-  return res;
 }
 
 std::unordered_set<std::string> IndividualGraph::getUp(IndividualBranch_t* indiv, int depth, uint32_t current_depth)

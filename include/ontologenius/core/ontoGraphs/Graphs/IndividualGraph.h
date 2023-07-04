@@ -89,7 +89,9 @@ public:
   std::unordered_set<std::string> getWith(const std::string& first_individual, const std::string& second_individual, int depth = -1);
   std::unordered_set<index_t> getWith(index_t first_individual, index_t second_individual, int depth = -1);
   std::unordered_set<std::string> getDomainOf(const std::string& individual, int depth = -1);
+  std::unordered_set<index_t> getDomainOf(index_t individual, int depth = -1);
   std::unordered_set<std::string> getRangeOf(const std::string& individual, int depth = -1);
+  std::unordered_set<index_t> getRangeOf(index_t individual, int depth = -1);
   std::unordered_set<std::string> getUp(IndividualBranch_t* indiv, int depth = -1, uint32_t current_depth = 0);
   std::unordered_set<std::string> getUp(const std::string& individual, int depth = -1);            //C3
   std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
@@ -166,6 +168,8 @@ private:
   template<typename T> void getFrom(index_t individual, const T& property, std::unordered_set<T>& res);
   template<typename T> std::unordered_set<T> getOn(IndividualBranch_t* individual, const T& property);
   template<typename T> void getWith(IndividualBranch_t* first_individual, index_t second_individual_index, std::unordered_set<T>& res, int depth);
+  template<typename T> void getDomainOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth);
+  template<typename T> void getRangeOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth);
 
   void addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
   void addDataRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
