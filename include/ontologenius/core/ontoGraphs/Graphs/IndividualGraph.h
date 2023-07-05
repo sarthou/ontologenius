@@ -108,7 +108,9 @@ public:
   template<typename T> std::unordered_set<T> findRegex(const std::string& regex, bool use_default = true);
   std::unordered_set<std::string> findFuzzy(const std::string& value, bool use_default = true, double threshold = 0.5);
   bool touch(const std::string& value);
+  bool touch(index_t value);
   std::unordered_set<std::string> getType(const std::string& class_selector);
+  std::unordered_set<index_t> getType(index_t class_selector);
   bool relationExists(const std::string& param);
   bool relationExists(const std::string& subject, const std::string& property, const std::string& object);
 

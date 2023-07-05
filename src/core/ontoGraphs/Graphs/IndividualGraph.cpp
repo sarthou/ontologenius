@@ -1389,13 +1389,16 @@ std::unordered_set<std::string> IndividualGraph::findFuzzy(const std::string& va
 
 bool IndividualGraph::touch(const std::string& value)
 {
-  bool res = false;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   IndividualBranch_t* branch = container_.find(value);
-  if(branch != nullptr)
-    res = true;
+  return (branch != nullptr);
+}
 
-  return res;
+bool IndividualGraph::touch(index_t value)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  return (branch != nullptr);
 }
 
 std::unordered_set<std::string> IndividualGraph::getType(const std::string& class_selector)
@@ -1404,6 +1407,22 @@ std::unordered_set<std::string> IndividualGraph::getType(const std::string& clas
 
   std::unordered_set<std::string> res;
   ClassBranch_t* class_branch = class_graph_->container_.find(class_selector);
+  if(class_branch != nullptr)
+  {
+    std::unordered_set<ClassBranch_t*> down_set = class_graph_->getDownPtrSafe(class_branch);
+    for(auto down : down_set)
+      class_graph_->getDownIndividual(down, res);
+  }
+
+  return res;
+}
+
+std::unordered_set<index_t> IndividualGraph::getType(index_t class_selector)
+{
+  std::shared_lock<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+
+  std::unordered_set<index_t> res;
+  ClassBranch_t* class_branch = class_graph_->container_.find(ValuedNode::table_.get(class_selector));
   if(class_branch != nullptr)
   {
     std::unordered_set<ClassBranch_t*> down_set = class_graph_->getDownPtrSafe(class_branch);
