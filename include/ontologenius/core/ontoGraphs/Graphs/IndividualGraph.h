@@ -6,6 +6,7 @@
 #include <map>
 #include <unordered_set>
 #include <stdint.h>
+#include <regex>
 
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 
@@ -102,9 +103,9 @@ public:
   std::vector<std::string> getNames(index_t value, bool use_default = true);
   std::vector<std::string> getEveryNames(const std::string& value, bool use_default = true);
   std::vector<std::string> getEveryNames(index_t value, bool use_default = true);
-  std::unordered_set<std::string> find(const std::string& value, bool use_default = true);
-  std::unordered_set<std::string> findSub(const std::string& value, bool use_default = true);
-  std::unordered_set<std::string> findRegex(const std::string& regex, bool use_default = true);
+  template<typename T> std::unordered_set<T> find(const std::string& value, bool use_default = true);
+  template<typename T> std::unordered_set<T> findSub(const std::string& value, bool use_default = true);
+  template<typename T> std::unordered_set<T> findRegex(const std::string& regex, bool use_default = true);
   std::unordered_set<std::string> findFuzzy(const std::string& value, bool use_default = true, double threshold = 0.5);
   bool touch(const std::string& value);
   std::unordered_set<std::string> getType(const std::string& class_selector);
@@ -201,6 +202,94 @@ private:
 
   void cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch);
 };
+
+template<typename T>
+std::unordered_set<T> IndividualGraph::find(const std::string& value, bool use_default)
+{
+  std::unordered_set<std::string> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  for(auto& indiv : individuals_)
+  {
+    if(use_default)
+      if(indiv-> value() == value)
+        insert(res, indiv);
+
+    if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
+      for(auto& word : indiv->dictionary_.spoken_[language_])
+        if(word == value)
+          insert(res, indiv);
+
+    if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
+      for(auto& word : indiv->dictionary_.muted_[language_])
+        if(word == value)
+          insert(res, indiv);
+  }
+  return res;
+}
+
+template<typename T>
+std::unordered_set<T> IndividualGraph::findSub(const std::string& value, bool use_default)
+{
+  std::unordered_set<std::string> res;
+  std::smatch match;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  for(auto& indiv : individuals_)
+  {
+    if(use_default)
+    {
+      std::regex regex("\\b(" + indiv-> value() + ")([^ ]*)");
+      if(std::regex_search(value, match, regex))
+        insert(res, indiv);
+    }
+
+    if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
+      for(auto& word : indiv->dictionary_.spoken_[language_])
+      {
+        std::regex regex("\\b(" + word + ")([^ ]*)");
+        if(std::regex_search(value, match, regex))
+          insert(res, indiv);
+      }
+
+    if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
+      for(auto& word : indiv->dictionary_.muted_[language_])
+      {
+        std::regex regex("\\b(" + word + ")([^ ]*)");
+        if(std::regex_search(value, match, regex))
+          insert(res, indiv);
+      }
+  }
+  return res;
+}
+
+template<typename T>
+std::unordered_set<T> IndividualGraph::findRegex(const std::string& regex, bool use_default)
+{
+  std::unordered_set<std::string> res;
+  std::regex base_regex(regex);
+  std::smatch match;
+
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  for(auto& indiv : individuals_)
+  {
+    if(use_default)
+    {
+      std::string tmp = indiv->value();
+      if(std::regex_match(tmp, match, base_regex))
+        insert(res, indiv);
+    }
+
+    if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
+      for(auto& word : indiv->dictionary_.spoken_[language_])
+        if(std::regex_match(word, match, base_regex))
+          insert(res, indiv);
+
+    if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
+      for(auto& word : indiv->dictionary_.muted_[language_])
+        if(std::regex_match(word, match, base_regex))
+          insert(res, indiv);
+  }
+  return res;
+}
 
 } // namespace ontologenius
 

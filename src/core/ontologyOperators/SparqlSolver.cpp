@@ -432,7 +432,7 @@ namespace ontologenius
 
   std::unordered_set<std::string> SparqlSolver::find(const triplet_t& triplet, const std::string& selector)
   {
-    auto res = onto_->individual_graph_.find(triplet.object.name);
+    auto res = onto_->individual_graph_.find<std::string>(triplet.object.name);
     if(selector == "")
       return res;
     else if(std::find(res.begin(), res.end(), selector) != res.end())

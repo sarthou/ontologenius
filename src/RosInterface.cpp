@@ -551,11 +551,11 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
     else if(req.action == "getEveryNames")
       res.values = onto_->individual_graph_.getEveryNames(params(), params.take_id);
     else if(req.action == "find")
-      set_res = onto_->individual_graph_.find(params(), params.take_id);
+      set_res = onto_->individual_graph_.find<std::string>(params(), params.take_id);
     else if(req.action == "findSub")
-      set_res = onto_->individual_graph_.findSub(params(), params.take_id);
+      set_res = onto_->individual_graph_.findSub<std::string>(params(), params.take_id);
     else if(req.action == "findRegex")
-      set_res = onto_->individual_graph_.findRegex(params(), params.take_id);
+      set_res = onto_->individual_graph_.findRegex<std::string>(params(), params.take_id);
     else if(req.action == "findFuzzy")
     {
       if(params.threshold != -1)
