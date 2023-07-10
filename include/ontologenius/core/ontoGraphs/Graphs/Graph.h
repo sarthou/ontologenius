@@ -44,6 +44,9 @@ public:
   virtual B* findBranchUnsafe(const std::string& name);
   virtual B* create(const std::string& name);
 
+  index_t getIndex(const std::string& name);
+  std::vector<index_t> getIndexes(const std::vector<std::string>& names);
+
   BranchContainerSet<B> container_;
 
   std::string language_;
@@ -140,6 +143,26 @@ B* Graph<B>::create(const std::string& name)
     container_.insert(indiv);
   }
   return indiv;
+}
+
+template <typename B>
+index_t Graph<B>::getIndex(const std::string& name)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+  auto branch = container_.find(name);
+  if(branch != nullptr)
+    return branch->get();
+  else
+    return 0;
+}
+
+template <typename B>
+std::vector<index_t> Graph<B>::getIndexes(const std::vector<std::string>& names)
+{
+  std::vector<index_t> res;
+  for(auto& name : names)
+    res.push_back(getIndex(name));
+  return res; 
 }
 
 } // namespace ontologenius
