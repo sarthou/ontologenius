@@ -291,7 +291,7 @@ std::unordered_set<T> IndividualGraph::getRelationFrom(IndividualBranch_t* indiv
   std::unordered_set<T> res;
   if(individual != nullptr)
   {
-    std::vector<IndividualBranch_t*> sames;
+    std::unordered_set<IndividualBranch_t*> sames;
     getSame(individual, sames);
     cleanMarks(sames);
     for(IndividualBranch_t* it : sames)
@@ -477,7 +477,7 @@ std::unordered_set<std::string> IndividualGraph::getRelationWith(const std::stri
   IndividualBranch_t* indiv = container_.find(individual);
   if(indiv != nullptr)
   {
-    std::vector<IndividualBranch_t*> sames;
+    std::unordered_set<IndividualBranch_t*> sames;
     getSame(indiv, sames);
     cleanMarks(sames);
     for(IndividualBranch_t* it : sames)
@@ -524,7 +524,7 @@ std::unordered_set<index_t> IndividualGraph::getRelationWith(index_t individual)
   IndividualBranch_t* indiv = ordered_individuals_[individual];
   if(indiv != nullptr)
   {
-    std::vector<IndividualBranch_t*> sames;
+    std::unordered_set<IndividualBranch_t*> sames;
     getSame(indiv, sames);
     cleanMarks(sames);
     for(IndividualBranch_t* it : sames)
@@ -864,7 +864,7 @@ std::unordered_set<T> IndividualGraph::getOn(IndividualBranch_t* individual, con
     std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
     std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
 
-    std::vector<IndividualBranch_t*> sames;
+    std::unordered_set<IndividualBranch_t*> sames;
     getSame(individual, sames);
     cleanMarks(sames);
     for(auto same_indiv : sames)
@@ -1052,7 +1052,7 @@ void IndividualGraph::getUp(IndividualBranch_t* indiv, std::unordered_set<T>& re
   current_depth++;
   if(indiv != nullptr)
   {
-    std::vector<IndividualBranch_t*> sames;
+    std::unordered_set<IndividualBranch_t*> sames;
     getSame(indiv, sames);
     cleanMarks(sames);
     for(IndividualBranch_t* it : sames)
@@ -1066,7 +1066,7 @@ void IndividualGraph::getUpPtr(IndividualBranch_t* indiv, std::unordered_set<Cla
   current_depth++;
   if(indiv != nullptr)
   {
-    std::vector<IndividualBranch_t*> sames;
+    std::unordered_set<IndividualBranch_t*> sames;
     getSame(indiv, sames);
     cleanMarks(sames);
     for(IndividualBranch_t* it : sames)
@@ -1145,7 +1145,7 @@ void IndividualGraph::getSameAndClean(IndividualBranch_t* individual, std::unord
   {
     if(individual->same_as_.size())
     {
-      std::vector<IndividualBranch_t*> sames;
+      std::unordered_set<IndividualBranch_t*> sames;
       getSame(individual, sames);
       cleanMarks(sames);
 
@@ -1169,7 +1169,7 @@ void IndividualGraph::getSameAndClean(IndividualBranch_t* individual, std::unord
   {
     if(individual->same_as_.size())
     {
-      std::vector<IndividualBranch_t*> sames;
+      std::unordered_set<IndividualBranch_t*> sames;
       getSame(individual, sames);
       cleanMarks(sames);
 
@@ -1487,7 +1487,7 @@ bool IndividualGraph::relationExists(const std::string& subject, const std::stri
   if(subject_branch == nullptr)
     return false;
 
-  std::vector<IndividualBranch_t*> sames;
+  std::unordered_set<IndividualBranch_t*> sames;
   getSame(subject_branch, sames);
   cleanMarks(sames);
   for(IndividualBranch_t* it : sames)
@@ -1498,7 +1498,7 @@ bool IndividualGraph::relationExists(const std::string& subject, const std::stri
         continue;
       else
       {
-        std::vector<IndividualBranch_t*> sames_tmp;
+        std::unordered_set<IndividualBranch_t*> sames_tmp;
         getSame(relation.second, sames_tmp);
         cleanMarks(sames_tmp);
         if(std::any_of(sames_tmp.begin(), sames_tmp.end(), [object](const auto& same){ return object == same->value(); }))
@@ -1520,7 +1520,7 @@ bool IndividualGraph::relationExists(const std::string& subject, const std::stri
 
 bool IndividualGraph::relationExists(IndividualBranch_t* subject, ObjectPropertyBranch_t* property, IndividualBranch_t* object)
 {
-  std::vector<IndividualBranch_t*> sames;
+  std::unordered_set<IndividualBranch_t*> sames;
   getSame(subject, sames);
   cleanMarks(sames);
   for(IndividualBranch_t* it : sames)
@@ -1531,7 +1531,7 @@ bool IndividualGraph::relationExists(IndividualBranch_t* subject, ObjectProperty
         continue;
       else
       {
-        std::vector<IndividualBranch_t*> sames_tmp;
+        std::unordered_set<IndividualBranch_t*> sames_tmp;
         getSame(relation.second, sames_tmp);
         cleanMarks(sames_tmp);
         if(std::any_of(sames_tmp.begin(), sames_tmp.end(), [object](auto& same){ return object == same; }))
@@ -2360,7 +2360,7 @@ void IndividualGraph::deepCopy(const IndividualGraph& other)
   auto myself = container_.find("myself");
   if(myself != nullptr)
   {
-    std::vector<IndividualBranch_t*> same_as;
+    std::unordered_set<IndividualBranch_t*> same_as;
     getSame(myself, same_as);
     cleanMarks(same_as);
     for(auto me : same_as)
