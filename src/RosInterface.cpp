@@ -625,7 +625,7 @@ bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &re
 bool RosInterface::sparqlHandle(ontologenius::OntologeniusSparqlService::Request &req,
                                 ontologenius::OntologeniusSparqlService::Response &res)
 {
-  std::vector<std::map<std::string, std::string>> results = sparql_.run(req.query);
+  std::vector<std::map<std::string, std::string>> results = sparql_.runStr(req.query);
 
   for(auto& result : results)
   {
