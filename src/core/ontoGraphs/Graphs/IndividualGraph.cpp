@@ -27,6 +27,12 @@ IndividualGraph::IndividualGraph(const IndividualGraph& other, ClassGraph* class
   language_ = other.language_;
 
   std::transform(other.individuals_.cbegin(), other.individuals_.cend(), std::back_inserter(individuals_), [](auto indiv){ return new IndividualBranch_t(indiv->value()); });
+  for(auto individual : individuals_)
+  {
+    if((size_t)individual->get() >= ordered_individuals_.size())
+      ordered_individuals_.resize(individual->get() + 1, nullptr);
+    ordered_individuals_[individual->get()] = individual;
+  }
 
   container_.load(individuals_);
 }
@@ -54,7 +60,7 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
   if(me == nullptr)
   {
     me = new IndividualBranch_t(value);
-    individuals_.push_back(me);
+    insertBranchInVectors(me);
     container_.insert(me);
     is_new = true;
   }
@@ -123,7 +129,7 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
       auto my_same = new IndividualBranch_t(same_as.elem);
       me->same_as_.emplace_back(my_same);
       my_same->same_as_.emplace_back(me, 1.0, true);
-      individuals_.push_back(my_same);
+      insertBranchInVectors(my_same);
       container_.insert(my_same);
     }
   }
@@ -140,18 +146,14 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
 
   for(size_t distinct_i = 0; distinct_i < distinct.size(); distinct_i++)
   {
-    //I need to find myself
-    IndividualBranch_t* me = nullptr;
-    //Am I created ?
-    auto me_it = std::find_if(individuals_.cbegin(), individuals_.cend(), [dist = distinct[distinct_i]](auto individual){ return dist == individual->value(); });
-    if(me_it != individuals_.end())
-      me = *me_it;
+    //am I created ?
+    IndividualBranch_t* me = container_.find(distinct[distinct_i]);
 
     // I don't exist ?
     if(me == nullptr)
     {
       me = new IndividualBranch_t(distinct[distinct_i]);
-      individuals_.push_back(me);
+      insertBranchInVectors(me);
       container_.insert(me);
     }
 
@@ -176,7 +178,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
         {
           auto my_distinct = new IndividualBranch_t(distinct[distinct_j]);
           conditionalPushBack(me->distinct_, IndividualElement_t(my_distinct));
-          individuals_.push_back(my_distinct);
+          insertBranchInVectors(my_distinct);
           container_.insert(my_distinct);
         }
       }
@@ -206,7 +208,7 @@ void IndividualGraph::addObjectRelation(IndividualBranch_t* me, Pair_t<std::stri
   if(indiv_branch == nullptr)
   {
     indiv_branch = new IndividualBranch_t(relation.second);
-    individuals_.push_back(indiv_branch);
+    insertBranchInVectors(indiv_branch);
     container_.insert(indiv_branch);
   }
 
@@ -242,7 +244,7 @@ std::unordered_set<std::string> IndividualGraph::getSame(const std::string& indi
 
 std::unordered_set<index_t> IndividualGraph::getSame(index_t individual)
 {
-  return getSameIdAndClean(container_.find(ValuedNode::table_.get(individual)));
+  return getSameIdAndClean(ordered_individuals_[individual]);
 }
 
 std::unordered_set<std::string> IndividualGraph::getDistincts(const std::string& individual)
@@ -255,7 +257,7 @@ std::unordered_set<std::string> IndividualGraph::getDistincts(const std::string&
 std::unordered_set<index_t> IndividualGraph::getDistincts(index_t individual)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  IndividualBranch_t* indiv = container_.find(ValuedNode::table_.get(individual));
+  IndividualBranch_t* indiv = ordered_individuals_[individual];
   return getDistincts<index_t>(indiv);
 }
 
@@ -279,7 +281,7 @@ std::unordered_set<std::string> IndividualGraph::getRelationFrom(const std::stri
 std::unordered_set<index_t> IndividualGraph::getRelationFrom(index_t individual, int depth)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  IndividualBranch_t* indiv = container_.find(ValuedNode::table_.get(individual));
+  IndividualBranch_t* indiv = ordered_individuals_[individual];
   return getRelationFrom<index_t>(indiv, depth);
 }
 
@@ -519,7 +521,7 @@ std::unordered_set<index_t> IndividualGraph::getRelationWith(index_t individual)
 
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
 
-  IndividualBranch_t* indiv = container_.find(ValuedNode::table_.get(individual));
+  IndividualBranch_t* indiv = ordered_individuals_[individual];
   if(indiv != nullptr)
   {
     std::unordered_set<IndividualBranch_t*> sames;
@@ -847,7 +849,7 @@ std::unordered_set<std::string> IndividualGraph::getOn(const std::string& indivi
 std::unordered_set<index_t> IndividualGraph::getOn(index_t individual, index_t property)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  IndividualBranch_t* indiv = container_.find(ValuedNode::table_.get(individual));
+  IndividualBranch_t* indiv = ordered_individuals_[individual];
 
   return getOn(indiv, property);
 }
@@ -934,7 +936,7 @@ std::unordered_set<index_t> IndividualGraph::getWith(index_t first_individual, i
 {
   std::unordered_set<index_t> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  IndividualBranch_t* indiv = container_.find(ValuedNode::table_.get(first_individual));
+  IndividualBranch_t* indiv = ordered_individuals_[first_individual];
   getWith(indiv, second_individual, res, depth);
   return res;
 }
@@ -984,7 +986,7 @@ std::unordered_set<std::string> IndividualGraph::getDomainOf(const std::string& 
 
 std::unordered_set<index_t> IndividualGraph::getDomainOf(index_t individual, int depth)
 {
-  IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(individual));
+  IndividualBranch_t* branch = ordered_individuals_[individual];
   std::unordered_set<index_t> res;
   getDomainOf(branch, res, depth);
   return res;
@@ -1010,7 +1012,7 @@ std::unordered_set<std::string> IndividualGraph::getRangeOf(const std::string& i
 
 std::unordered_set<index_t> IndividualGraph::getRangeOf(index_t individual, int depth)
 {
-  IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(individual));
+  IndividualBranch_t* branch = ordered_individuals_[individual];
   std::unordered_set<index_t> res;
   getRangeOf(branch, res, depth);
   return res;
@@ -1038,7 +1040,7 @@ std::unordered_set<std::string> IndividualGraph::getUp(const std::string& indivi
 std::unordered_set<index_t> IndividualGraph::getUp(index_t individual, int depth)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  IndividualBranch_t* indiv = container_.find(ValuedNode::table_.get(individual));
+  IndividualBranch_t* indiv = ordered_individuals_[individual];
   std::unordered_set<index_t> res;
   getUp(indiv, res, depth);
   return res;
@@ -1091,7 +1093,7 @@ std::unordered_set<index_t> IndividualGraph::getSameId(const std::string& indivi
 
 std::unordered_set<index_t> IndividualGraph::getSameId(index_t individual)
 {
-  return getSameIdAndClean(container_.find(ValuedNode::table_.get(individual)));
+  return getSameIdAndClean(ordered_individuals_[individual]);
 }
 
 void IndividualGraph::getSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res)
@@ -1192,7 +1194,7 @@ std::unordered_set<index_t> IndividualGraph::select(const std::unordered_set<ind
   {
     if(it > 0)
     {
-      IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(it));
+      IndividualBranch_t* branch = ordered_individuals_[it];;
       if(branch!= nullptr)
       {
         std::unordered_set<index_t> tmp;
@@ -1225,7 +1227,7 @@ std::string IndividualGraph::getName(const std::string& value, bool use_default)
 std::string IndividualGraph::getName(index_t value, bool use_default)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  IndividualBranch_t* branch = ordered_individuals_[value];
   return getName(branch, use_default);
 }
 
@@ -1280,7 +1282,7 @@ std::vector<std::string> IndividualGraph::getNames(const std::string& value, boo
 std::vector<std::string> IndividualGraph::getNames(index_t value, bool use_default)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  IndividualBranch_t* branch = ordered_individuals_[value];
   return getNames(branch, use_default);
 }
 
@@ -1308,7 +1310,7 @@ std::vector<std::string> IndividualGraph::getEveryNames(const std::string& value
 std::vector<std::string> IndividualGraph::getEveryNames(index_t value, bool use_default)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  IndividualBranch_t* branch = ordered_individuals_[value];
   return getEveryNames(branch, use_default);
 }
 
@@ -1395,7 +1397,7 @@ bool IndividualGraph::touch(const std::string& value)
 bool IndividualGraph::touch(index_t value)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  IndividualBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  IndividualBranch_t* branch = ordered_individuals_[value];
   return (branch != nullptr);
 }
 
@@ -1569,7 +1571,7 @@ IndividualBranch_t* IndividualGraph::createIndividualUnsafe(const std::string& n
   {
     indiv = new IndividualBranch_t(name);
     container_.insert(indiv);
-    individuals_.push_back(indiv);
+    insertBranchInVectors(indiv);
   }
   return indiv;
 }
@@ -1616,7 +1618,7 @@ void IndividualGraph::deleteIndividual(IndividualBranch_t* indiv)
     }
 
     //delete indiv
-    individuals_.erase(individuals_.begin() + indiv_index);
+    removeBranchInVectors(indiv_index);
     container_.erase(indiv);
     delete indiv;
   }
@@ -1665,7 +1667,7 @@ void IndividualGraph::redirectDeleteIndividual(IndividualBranch_t* indiv, ClassB
     }
 
     //delete indiv
-    individuals_.erase(individuals_.begin() + indiv_index);
+    removeBranchInVectors(indiv_index);
     container_.erase(indiv);
     delete indiv;
   }
@@ -2400,6 +2402,21 @@ void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch
       new_branch->object_properties_has_induced_.back().push(from, prop, on);
     }
   }
+}
+
+void IndividualGraph::insertBranchInVectors(IndividualBranch_t* branch)
+{
+  individuals_.push_back(branch);
+  if((size_t)branch->get() >= ordered_individuals_.size())
+    ordered_individuals_.resize(branch->get() + 1, nullptr);
+  ordered_individuals_[branch->get()] = branch;
+}
+
+void IndividualGraph::removeBranchInVectors(size_t vector_index)
+{
+  index_t index = individuals_[vector_index]->get();
+  individuals_.erase(individuals_.begin() + vector_index);
+  ordered_individuals_[index] = nullptr;
 }
 
 } // namespace ontologenius

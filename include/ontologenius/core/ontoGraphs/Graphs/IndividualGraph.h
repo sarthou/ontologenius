@@ -153,7 +153,9 @@ private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
 
-  std::vector<IndividualBranch_t*> individuals_;
+  std::vector<IndividualBranch_t*> individuals_;        // contains all the active individuals
+  std::vector<IndividualBranch_t*> ordered_individuals_;// contains the individuals ordered wrt their index
+                                                        // unused indexes have nullptr in
 
   template<typename T> std::unordered_set<T> getDistincts(IndividualBranch_t* individual);
   template<typename T> std::unordered_set<T> getRelationFrom(IndividualBranch_t* individual, int depth);
@@ -192,6 +194,8 @@ private:
   bool checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, LiteralNode* data);
 
   void cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch);
+  void insertBranchInVectors(IndividualBranch_t* branch);
+  void removeBranchInVectors(size_t vector_index);
 };
 
 template<typename T>
