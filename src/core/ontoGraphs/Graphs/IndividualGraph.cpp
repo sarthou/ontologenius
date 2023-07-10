@@ -49,7 +49,6 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   //am I created ?
-  //IndividualBranch_t* me = getBranch(value);
   IndividualBranch_t* me = container_.find(value);
   bool is_new = false;
   if(me == nullptr)
@@ -203,7 +202,6 @@ void IndividualGraph::addObjectRelation(IndividualBranch_t* me, Pair_t<std::stri
     property_branch = object_property_graph_->add(relation.first, empty_vectors, true);
   }
 
-  //IndividualBranch_t* indiv_branch = getBranch(relation.second);
   IndividualBranch_t* indiv_branch = container_.find(relation.second);
   if(indiv_branch == nullptr)
   {

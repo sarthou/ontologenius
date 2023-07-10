@@ -155,17 +155,6 @@ private:
 
   std::vector<IndividualBranch_t*> individuals_;
 
-  IndividualBranch_t* getBranch(const std::string& name) const
-  {
-    auto indiv_it = std::find_if(individuals_.begin(), individuals_.end(), [&name](IndividualBranch_t* branch){
-      return branch->value() == name;
-    });
-    if(indiv_it != individuals_.end())
-      return *indiv_it;
-    else
-      return nullptr;
-  }
-
   template<typename T> std::unordered_set<T> getDistincts(IndividualBranch_t* individual);
   template<typename T> std::unordered_set<T> getRelationFrom(IndividualBranch_t* individual, int depth);
   template<typename T> std::unordered_set<T> getRelatedFrom(const T& property);
