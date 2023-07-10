@@ -10,7 +10,12 @@ namespace ontologenius
   template<>
   index_t convertResourceValue<index_t>(const std::string& value)
   {
-    return std::stoll(value);
+    try {
+      return std::stoll(value);
+    }
+    catch(...) {
+      return 0;
+    }
   }
 
   void removeUselessSpace(std::string& text)

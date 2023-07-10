@@ -75,7 +75,8 @@ resource_t<T> getResource(std::string resource_txt)
   else
   {
     res.variable = false;
-    res.value = convertResourceValue<T>(resource_txt);
+    if(resource_txt != "isA")
+      res.value = convertResourceValue<T>(resource_txt);
   }
   res.name = resource_txt;
 
