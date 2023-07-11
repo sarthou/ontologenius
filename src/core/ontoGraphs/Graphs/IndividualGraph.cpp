@@ -1154,6 +1154,7 @@ void IndividualGraph::getSameAndClean(IndividualBranch_t* individual, std::unord
     if(individual->same_as_.size())
     {
       std::unordered_set<IndividualBranch_t*> sames;
+      sames.reserve(individual->same_as_.size() * 2);
       getSame(individual, sames);
       cleanMarks(sames);
 
@@ -1178,6 +1179,7 @@ void IndividualGraph::getSameAndClean(IndividualBranch_t* individual, std::unord
     if(individual->same_as_.size())
     {
       std::unordered_set<IndividualBranch_t*> sames;
+      sames.reserve(individual->same_as_.size() * 2);
       getSame(individual, sames);
       cleanMarks(sames);
 
