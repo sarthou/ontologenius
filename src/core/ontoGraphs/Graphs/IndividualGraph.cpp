@@ -867,19 +867,27 @@ std::unordered_set<T> IndividualGraph::getOn(IndividualBranch_t* individual, con
     std::unordered_set<IndividualBranch_t*> sames;
     getSame(individual, sames);
     cleanMarks(sames);
-    for(auto same_indiv : sames)
+    if(object_properties.size())
     {
-      for(IndivObjectRelationElement_t& relation : same_indiv->object_relations_)
-        for (index_t id : object_properties)
-          if(relation.first->get() == id)
-            getSameAndClean(relation.second, res);
-
-      for(IndivDataRelationElement_t& relation : same_indiv->data_relations_)
-        for (index_t id : data_properties)
-          if(relation.first->get() == id)
-            insert(res, relation.second);
+      for(auto same_indiv : sames)
+      {
+        for(IndivObjectRelationElement_t& relation : same_indiv->object_relations_)
+          for (index_t id : object_properties)
+            if(relation.first->get() == id)
+              getSameAndClean(relation.second, res);
+      }
     }
-
+    else if(data_properties.size())
+    {
+      for(auto same_indiv : sames)
+      {
+        for(IndivDataRelationElement_t& relation : same_indiv->data_relations_)
+          for (index_t id : data_properties)
+            if(relation.first->get() == id)
+              insert(res, relation.second);
+      }
+    }
+    
     if(res.size() == 0)
     {
       int found_depth = -1;
