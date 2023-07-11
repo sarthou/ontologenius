@@ -116,15 +116,15 @@ namespace ontologenius
       return res;
 
     std::vector<triplet_t<T>> new_query(query.begin() + 1, query.end());
-    //query.erase(query.begin());
 
-    bool variable_exixts_in_accu = (accu.find(var_name) != accu.end());
-
-    for(auto& value : values)
+    if(new_query.size())
     {
-      std::vector<std::map<std::string, T>> local_res;
-      if(new_query.size())
+      bool variable_exixts_in_accu = (accu.find(var_name) != accu.end());
+
+      res.reserve(values.size());
+      for(auto& value : values)
       {
+        std::vector<std::map<std::string, T>> local_res;
         std::map<std::string, T> new_accu = accu;
         if(variable_exixts_in_accu)
         {
@@ -135,21 +135,22 @@ namespace ontologenius
           new_accu[var_name] = value;
 
         local_res = resolve(new_query, new_accu);
-        if(local_res.size() == 0)
-          continue;
-      }
-
-      if(local_res.size() != 0)
-      {
-        for(auto& lr : local_res)
+        if(local_res.size() != 0)
         {
-          lr[var_name] = value;
-          res.push_back(lr);
+          for(auto& lr : local_res)
+          {
+            lr[var_name] = value;
+            res.push_back(lr);
+          }
         }
       }
-      else
-        res.emplace_back(std::initializer_list<std::pair<const std::string, T>>{{var_name, value}});
     }
+    else
+    {
+      res.reserve(values.size());
+      for(auto& value : values)
+        res.emplace_back(std::initializer_list<std::pair<const std::string, T>>{{var_name, value}});
+    } 
 
     return res;
   }
