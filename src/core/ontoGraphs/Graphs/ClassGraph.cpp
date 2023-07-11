@@ -1148,6 +1148,7 @@ void ClassGraph::getRangeOf(ClassBranch_t* branch, std::unordered_set<index_t>& 
 void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+  res.reserve(res.size() + branch->individual_childs_.size() * 1.5);
   for(auto& indiv : branch->individual_childs_)
     individual_graph_->getSameAndClean(indiv.elem, res);
 }
@@ -1155,6 +1156,7 @@ void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<std
 void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<index_t>& res)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+  res.reserve(res.size() + branch->individual_childs_.size() * 1.5);
   for(auto& indiv : branch->individual_childs_)
     individual_graph_->getSameAndClean(indiv.elem, res);
 }
