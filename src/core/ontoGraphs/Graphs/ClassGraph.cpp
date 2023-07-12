@@ -403,7 +403,7 @@ void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::uno
     for(auto& branch : all_branchs_)
       for(ClassDataRelationElement_t& relation : branch->data_relations_)
         if(relation.second == literal)
-          data_property_graph_->getUp(relation.first, res, depth);
+          data_property_graph_->getUpSafe(relation.first, res, depth);
 }
 
 void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::unordered_set<index_t>& res, int depth)
@@ -414,7 +414,7 @@ void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::uno
     for(auto& branch : all_branchs_)
       for(ClassDataRelationElement_t& relation : branch->data_relations_)
         if(relation.second == literal)
-          data_property_graph_->getUp(relation.first, res, depth);
+          data_property_graph_->getUpSafe(relation.first, res, depth);
 }
 
 std::unordered_set<std::string> ClassGraph::getRelatedOn(const std::string& property)

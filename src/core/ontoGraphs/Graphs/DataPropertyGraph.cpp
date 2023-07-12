@@ -335,7 +335,7 @@ std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(auto& domain : branch->domains_)
-      class_graph_->getDown(domain.elem, res);
+      class_graph_->getDownSafe(domain.elem, res);
 
   return res;
 }
@@ -348,7 +348,7 @@ std::unordered_set<index_t> DataPropertyGraph::getDomain(index_t value)
   DataPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
   if(branch != nullptr)
     for(auto& domain : branch->domains_)
-      class_graph_->getDown(domain.elem, res);
+      class_graph_->getDownSafe(domain.elem, res);
 
   return res;
 }

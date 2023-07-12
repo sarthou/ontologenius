@@ -377,7 +377,7 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
     for(auto& indiv : individuals_)
       for(IndivObjectRelationElement_t& relation : indiv->object_relations_)
         if(relation.second->get() == id)
-          object_property_graph_->getUp(relation.first, res, depth);
+          object_property_graph_->getUpSafe(relation.first, res, depth);
 
   if(res.size() == 0)
   {
@@ -387,7 +387,7 @@ std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string
       for(auto& indiv : individuals_)
         for(IndivDataRelationElement_t& relation : indiv->data_relations_)
           if(relation.second == literal)
-            data_property_graph_->getUp(relation.first, res, depth);
+            data_property_graph_->getUpSafe(relation.first, res, depth);
 
     class_graph_->getRelationOnDataProperties(individual, res, depth);
   }
@@ -407,14 +407,14 @@ std::unordered_set<index_t> IndividualGraph::getRelationOn(index_t individual, i
       for(auto& indiv : individuals_)
         for(IndivObjectRelationElement_t& relation : indiv->object_relations_)
           if(relation.second->get() == id)
-            object_property_graph_->getUp(relation.first, res, depth);
+            object_property_graph_->getUpSafe(relation.first, res, depth);
   }
   else
   {
     for(auto& indiv : individuals_)
       for(IndivDataRelationElement_t& relation : indiv->data_relations_)
         if(relation.second->get() == individual)
-          data_property_graph_->getUp(relation.first, res, depth);
+          data_property_graph_->getUpSafe(relation.first, res, depth);
 
     class_graph_->getRelationOnDataProperties(LiteralNode::table_.get(-individual), res, depth);
   }
@@ -814,7 +814,7 @@ bool IndividualGraph::getFrom(ClassBranch_t* class_branch, const std::unordered_
 
     if(defined == true)
     {
-      class_graph_->getUp(class_branch, do_not_take);
+      class_graph_->getUpSafe(class_branch, do_not_take);
       return found;
     }
     else
