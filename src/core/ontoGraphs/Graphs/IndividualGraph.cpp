@@ -861,12 +861,12 @@ std::unordered_set<T> IndividualGraph::getOn(IndividualBranch_t* individual, con
   
   if(individual != nullptr)
   {
-    std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
-    std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
-
     std::unordered_set<IndividualBranch_t*> sames;
     getSame(individual, sames);
     cleanMarks(sames);
+
+    std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
+    std::unordered_set<index_t> data_properties;
     if(object_properties.size())
     {
       for(auto same_indiv : sames)
@@ -877,14 +877,18 @@ std::unordered_set<T> IndividualGraph::getOn(IndividualBranch_t* individual, con
               getSameAndClean(relation.second, res);
       }
     }
-    else if(data_properties.size())
+    else 
     {
-      for(auto same_indiv : sames)
+      data_properties = data_property_graph_->getDownId(property);
+      if(data_properties.size())
       {
-        for(IndivDataRelationElement_t& relation : same_indiv->data_relations_)
-          for (index_t id : data_properties)
-            if(relation.first->get() == id)
-              insert(res, relation.second);
+        for(auto same_indiv : sames)
+        {
+          for(IndivDataRelationElement_t& relation : same_indiv->data_relations_)
+            for (index_t id : data_properties)
+              if(relation.first->get() == id)
+                insert(res, relation.second);
+        }
       }
     }
     
