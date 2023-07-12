@@ -897,31 +897,39 @@ void ClassGraph::getOn(ClassBranch_t* class_branch, std::unordered_set<index_t>&
 {
   if(class_branch != nullptr)
   {
+    if(current_depth >= (uint32_t)found_depth)
+      return;
+
     std::unordered_set<T> tmp_res;
 
-    for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
-      for (index_t id : object_properties)
-        if(relation.first->get() == id)
-          insert(tmp_res, relation.second);
-
-    if(tmp_res.size() == 0)
+    if(object_properties.size())
+    {
+      for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
+        for (index_t id : object_properties)
+          if(relation.first->get() == id)
+            insert(tmp_res, relation.second);
+    }
+    else if(data_properties.size())
+    {
       for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
         for (index_t id : data_properties)
           if(relation.first->get() == id)
             insert(tmp_res, relation.second);
+    }
+    else
+      return;
 
     if(tmp_res.size() != 0)
-      if(current_depth < (uint32_t)found_depth)
+    {
+      if(data_properties.size())
       {
-        if(data_properties.size())
-        {
-          res = tmp_res;
-          found_depth = current_depth;
-          return;
-        }
-        else
-        res.insert(tmp_res.begin(), res.end());
+        res = std::move(tmp_res);
+        found_depth = current_depth;
+        return;
       }
+      else
+        res.insert(tmp_res.begin(), tmp_res.end());
+    }
 
     current_depth++;
     std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_branch, 1);
