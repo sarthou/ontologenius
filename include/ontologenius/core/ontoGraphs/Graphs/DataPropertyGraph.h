@@ -51,12 +51,16 @@ public:
   DataPropertyBranch_t* add(const std::string& value, DataPropertyVectors_t& property_vectors, bool direct_load = false);
   void add(std::vector<std::string>& disjoints);
   bool addAnnotation(const std::string& value, DataPropertyVectors_t& property_vectors);
+  LiteralNode* createLiteral(const std::string& value);
+  LiteralNode* createLiteralUnsafe(const std::string& value);
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);
+  std::unordered_set<index_t> getDisjoint(index_t value);
   std::unordered_set<std::string> getDomain(const std::string& value);
+  std::unordered_set<index_t> getDomain(index_t value);
   void getDomainPtr(DataPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
   std::unordered_set<std::string> getRange(const std::string& value);
-  std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& selector);
+  std::unordered_set<index_t> getRange(index_t value);
 
   bool add(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
   bool addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
@@ -64,6 +68,7 @@ public:
 
 private:
   ClassGraph* class_graph_;
+  BranchContainerSet<LiteralNode> literal_container_;
 
   void isMyDisjoint(DataPropertyBranch_t* me, const std::string& disjoint, std::map<std::string, DataPropertyBranch_t*>& vect, bool& find, bool all = true)
   {

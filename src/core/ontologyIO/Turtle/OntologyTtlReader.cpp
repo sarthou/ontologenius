@@ -34,7 +34,6 @@ int OntologyTtlReader::readFromUri(std::string& content, const std::string& uri)
 
 int OntologyTtlReader::readFromFile(const std::string& file_name)
 {
-  std::string response = "";
   std::ifstream f(file_name);
 
   if(!f.is_open())
@@ -43,9 +42,14 @@ int OntologyTtlReader::readFromFile(const std::string& file_name)
     return -1;
   }
 
-  std::ostringstream ss;
-  ss << f.rdbuf();
-  response = ss.str();
+  f.seekg(0, std::ios::end);
+  const auto size = f.tellg();
+
+  std::string response;
+  response.resize(size);
+  f.seekg(0);
+  f.read(&response[0], size); 
+  f.close();
   
   return read(response, file_name);
 }
@@ -237,10 +241,8 @@ void OntologyTtlReader::sendToOntology(std::string& subject, const std::vector<s
       OntologyReader::push(individual_vector_.object_relations_, Pair_t<std::string, std::string>(property, object.first, 1.0), "$", "^");
     else
     {
-      data_t data;
-      data.value_ = object.first;
-      data.type_ = object.second;
-      OntologyReader::push(individual_vector_.data_relations_, Pair_t<std::string, data_t>(property, data, 1.0), "$", "^");
+      LiteralNode data(object.second, object.first);
+      OntologyReader::push(individual_vector_.data_relations_, Pair_t<std::string, std::string>(property, data.toString(), 1.0), "$", "^");
     }
   }
 }

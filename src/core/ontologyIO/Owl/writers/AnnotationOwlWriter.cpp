@@ -90,14 +90,14 @@ void AnnotationOwlWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
     }
 }
 
-void AnnotationOwlWriter::writeRange(const std::vector<data_t>& ranges)
+void AnnotationOwlWriter::writeRange(const std::vector<LiteralNode*>& ranges)
 {
   for(auto& range : ranges)
   {
     std::string tmp = "        <rdfs:range rdf:resource=\"" +
-                      range.getNs() +
+                      range->getNs() +
                       "#" +
-                      range.type_ +
+                      range->type_ +
                       + "\"/>\n";
     writeString(tmp);
   }

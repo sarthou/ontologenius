@@ -30,7 +30,7 @@ private:
   size_t min_count_;
   float min_percent_;
 
-  void setDeduced(ClassBranch_t* me, std::vector<std::tuple<DataPropertyBranch_t*, std::string, float>> properties);
+  void setDeduced(ClassBranch_t* me, std::vector<std::tuple<DataPropertyBranch_t*, LiteralNode*, float>> properties);
   void setDeduced(ClassBranch_t* me, std::vector<std::tuple<ObjectPropertyBranch_t*, ClassBranch_t*, float>> properties);
 };
 

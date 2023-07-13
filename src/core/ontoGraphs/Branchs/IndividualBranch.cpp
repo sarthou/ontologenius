@@ -76,7 +76,7 @@ int IndividualBranch_t::objectPropertyExist(ObjectPropertyBranch_t* property, In
   return res;
 }
 
-int IndividualBranch_t::dataPropertyExist(DataPropertyBranch_t* property, const data_t& data)
+int IndividualBranch_t::dataPropertyExist(DataPropertyBranch_t* property, LiteralNode* data)
 {
   int res = -1;
   for(size_t i = 0; i < data_relations_.size(); i++)

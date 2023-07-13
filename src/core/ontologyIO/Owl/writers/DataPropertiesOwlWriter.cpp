@@ -63,9 +63,9 @@ void DataPropertiesOwlWriter::writeRange(DataPropertyBranch_t* branch)
   for(auto& range : branch->ranges_)
   {
     std::string tmp = "        <rdfs:range rdf:resource=\"" +
-                      range.getNs() +
+                      range->getNs() +
                       "#" +
-                      range.type_ +
+                      range->type_ +
                       + "\"/>\n";
     writeString(tmp);
   }

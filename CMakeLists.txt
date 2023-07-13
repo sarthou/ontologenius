@@ -127,6 +127,7 @@ add_onto_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Branchs/DataPropertyBranch.cpp
   src/core/ontoGraphs/Branchs/IndividualBranch.cpp
   src/core/ontoGraphs/Branchs/ValuedNode.cpp
+  src/core/ontoGraphs/Branchs/LiteralNode.cpp
   src/core/ontoGraphs/Graphs/ClassGraph.cpp
   src/core/ontoGraphs/Graphs/ObjectPropertyGraph.cpp
   src/core/ontoGraphs/Graphs/DataPropertyGraph.cpp

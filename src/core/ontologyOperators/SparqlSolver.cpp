@@ -102,7 +102,7 @@ namespace ontologenius
     return initial_solution;
   }
  
-  void SparqlSolver::insertConstraints(const std::vector<triplet_t>& triplets, SparqlSolution_t& solution, SparqlOperator_e sparql_operator)
+  void SparqlSolver::insertConstraints(const std::vector<strTriplet_t>& triplets, SparqlSolution_t& solution, SparqlOperator_e sparql_operator)
   {
     for(auto& triplet : triplets)
     {
@@ -236,7 +236,7 @@ namespace ontologenius
     }
   }
 
-  std::unordered_set<std::string> SparqlSolver::solveTriplet(triplet_t triplet, const std::map<std::string, std::string>& binding)
+  std::unordered_set<std::string> SparqlSolver::solveTriplet(strTriplet_t triplet, const std::map<std::string, std::string>& binding)
   {
     if(triplet.predicat.variable)
       error_ = "predicat can not be a variable in: " + toString(triplet);
@@ -376,7 +376,7 @@ namespace ontologenius
     return {};
   }
 
-  std::unordered_set<std::string> SparqlSolver::getOn(const triplet_t& triplet, const std::string& selector)
+  std::unordered_set<std::string> SparqlSolver::getOn(const strTriplet_t& triplet, const std::string& selector)
   {
     auto res = onto_->individual_graph_.getOn(triplet.subject.name, triplet.predicat.name);
     if(selector == "")
@@ -387,7 +387,7 @@ namespace ontologenius
       return std::unordered_set<std::string>();
   }
 
-  std::unordered_set<std::string> SparqlSolver::getFrom(const triplet_t& triplet, const std::string& selector)
+  std::unordered_set<std::string> SparqlSolver::getFrom(const strTriplet_t& triplet, const std::string& selector)
   {
     if(selector == "")
       return onto_->individual_graph_.getFrom(triplet.object.name, triplet.predicat.name);
@@ -402,7 +402,7 @@ namespace ontologenius
     }
   }
 
-  std::unordered_set<std::string> SparqlSolver::getUp(const triplet_t& triplet, const std::string& selector)
+  std::unordered_set<std::string> SparqlSolver::getUp(const strTriplet_t& triplet, const std::string& selector)
   {
     if(selector == "")
       return onto_->individual_graph_.getUp(triplet.subject.name);
@@ -416,7 +416,7 @@ namespace ontologenius
     }
   }
 
-  std::unordered_set<std::string> SparqlSolver::getType(const triplet_t& triplet, const std::string& selector)
+  std::unordered_set<std::string> SparqlSolver::getType(const strTriplet_t& triplet, const std::string& selector)
   {
     if(selector == "")
       return onto_->individual_graph_.getType(triplet.object.name);
@@ -430,9 +430,9 @@ namespace ontologenius
     }
   }
 
-  std::unordered_set<std::string> SparqlSolver::find(const triplet_t& triplet, const std::string& selector)
+  std::unordered_set<std::string> SparqlSolver::find(const strTriplet_t& triplet, const std::string& selector)
   {
-    auto res = onto_->individual_graph_.find(triplet.object.name);
+    auto res = onto_->individual_graph_.find<std::string>(triplet.object.name);
     if(selector == "")
       return res;
     else if(std::find(res.begin(), res.end(), selector) != res.end())
@@ -441,7 +441,7 @@ namespace ontologenius
       return std::unordered_set<std::string>();
   }
 
-  std::unordered_set<std::string> SparqlSolver::getName(const triplet_t& triplet, const std::string& selector)
+  std::unordered_set<std::string> SparqlSolver::getName(const strTriplet_t& triplet, const std::string& selector)
   {
     auto res = onto_->individual_graph_.getNames(triplet.subject.name);
     if(selector == "")
@@ -550,13 +550,13 @@ namespace ontologenius
     return res;
   }
 
-  std::vector<triplet_t> SparqlSolver::getTriplets(const std::string& query, const std::string& delim)
+  std::vector<strTriplet_t> SparqlSolver::getTriplets(const std::string& query, const std::string& delim)
   {
     std::vector<std::string> sub_queries = split(query, delim);
-    std::vector<triplet_t> sub_queries_triplet;
+    std::vector<strTriplet_t> sub_queries_triplet;
     try
     {
-      std::transform(sub_queries.cbegin(), sub_queries.cend(), std::back_inserter(sub_queries_triplet), [](const auto& sub_query){ return getTriplet(sub_query); });
+      std::transform(sub_queries.cbegin(), sub_queries.cend(), std::back_inserter(sub_queries_triplet), [](const auto& sub_query){ return getTriplet<std::string>(sub_query); });
     }
     catch(const std::string& msg)
     {

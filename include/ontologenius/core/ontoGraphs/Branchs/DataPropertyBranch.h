@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/PropertyBranch.h"
-#include "ontologenius/core/ontoGraphs/Branchs/Data.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 
 namespace ontologenius {
 
@@ -21,7 +21,7 @@ class DataPropertyBranch_t :  public Branch_t<DataPropertyBranch_t>,
 {
 public:
   std::vector<ClassElement_t> domains_;
-  std::vector<data_t> ranges_;
+  std::vector<LiteralNode*> ranges_;
 
   DataPropertyBranch_t(const std::string& value = "") : Branch_t(value) {};
 

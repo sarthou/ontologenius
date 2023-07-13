@@ -144,8 +144,8 @@ DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPrope
   //for all my ranges
   for(const auto& range : property_vectors.ranges_)
   {
-    data_t data(range);
-    conditionalPushBack(me->ranges_, data); // FIXME
+    LiteralNode* literal = createLiteralUnsafe(range + "#");
+    conditionalPushBack(me->ranges_, literal);
   }
 
   /**********************
@@ -271,12 +271,55 @@ bool DataPropertyGraph::addAnnotation(const std::string& value, DataPropertyVect
   }
 }
 
+LiteralNode* DataPropertyGraph::createLiteral(const std::string& value)
+{
+  LiteralNode* literal = nullptr;
+  {
+    std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+    literal = literal_container_.find(value);
+  }
+
+  if(literal == nullptr)
+  {
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    literal = new LiteralNode(value);
+    literal_container_.insert(literal);
+  }
+  return literal;
+}
+
+LiteralNode* DataPropertyGraph::createLiteralUnsafe(const std::string& value)
+{
+  LiteralNode* literal = nullptr;
+  literal = literal_container_.find(value);
+
+  if(literal == nullptr)
+  {
+    literal = new LiteralNode(value);
+    literal_container_.insert(literal);
+  }
+  return literal;
+}
+
 std::unordered_set<std::string> DataPropertyGraph::getDisjoint(const std::string& value)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
 
   DataPropertyBranch_t* branch = container_.find(value);
+  if(branch != nullptr)
+    for(auto& disjoint : branch->disjoints_)
+      getDown(disjoint.elem, res);
+
+  return res;
+}
+
+std::unordered_set<index_t> DataPropertyGraph::getDisjoint(index_t value)
+{
+  std::unordered_set<index_t> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+
+  DataPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
   if(branch != nullptr)
     for(auto& disjoint : branch->disjoints_)
       getDown(disjoint.elem, res);
@@ -292,7 +335,20 @@ std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(auto& domain : branch->domains_)
-      class_graph_->getDown(domain.elem, res);
+      class_graph_->getDownSafe(domain.elem, res);
+
+  return res;
+}
+
+std::unordered_set<index_t> DataPropertyGraph::getDomain(index_t value)
+{
+  std::unordered_set<index_t> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+
+  DataPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  if(branch != nullptr)
+    for(auto& domain : branch->domains_)
+      class_graph_->getDownSafe(domain.elem, res);
 
   return res;
 }
@@ -314,20 +370,21 @@ std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& v
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(auto& range : branch->ranges_)
-      res.insert(range.type_);
+      res.insert(range->type_);
 
   return res;
 }
 
-std::unordered_set<std::string> DataPropertyGraph::select(const std::unordered_set<std::string>& on, const std::string& selector)
+std::unordered_set<index_t> DataPropertyGraph::getRange(index_t value)
 {
-  std::unordered_set<std::string> res;
-  for(const std::string& it : on)
-  {
-    std::unordered_set<std::string> tmp = getUp(it);
-    if(tmp.find(selector) != tmp.end())
-      res.insert(it);
-  }
+  std::unordered_set<index_t> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+
+  DataPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  if(branch != nullptr)
+    for(auto& range : branch->ranges_)
+      res.insert(range->get());
+
   return res;
 }
 
