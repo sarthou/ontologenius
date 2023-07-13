@@ -1570,18 +1570,6 @@ bool IndividualGraph::relationExists(IndividualBranch_t* subject, ObjectProperty
   return false;
 }
 
-std::unordered_set<std::string> IndividualGraph::set2set(const std::unordered_set<IndividualBranch_t*>& indiv_set, bool clean)
-{
-  std::unordered_set<std::string> res;
-  for(IndividualBranch_t* it : indiv_set)
-  {
-    if(clean)
-      it->mark = false;
-    res.insert(it->value());
-  }
-  return res;
-}
-
 ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
 {
   if(indiv != nullptr)
@@ -2403,8 +2391,6 @@ void IndividualGraph::deepCopy(const IndividualGraph& other)
 
 void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch)
 {
-  new_branch->mark = old_branch->mark;
-
   new_branch->nb_updates_ = old_branch->nb_updates_;
   new_branch->updated_ = old_branch->updated_;
   new_branch->flags_ = old_branch->flags_;

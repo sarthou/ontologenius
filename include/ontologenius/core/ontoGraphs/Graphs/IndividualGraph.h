@@ -189,7 +189,6 @@ private:
   void getSame(IndividualBranch_t* individual, std::vector<IndividualBranch_t*>& res);
   std::unordered_set<std::string> getSame(IndividualBranch_t* individual);
   std::unordered_set<index_t> getSameId(IndividualBranch_t* individual);
-  std::unordered_set<std::string> set2set(const std::unordered_set<IndividualBranch_t*>& indiv_set, bool clean = true);
 
   bool checkRangeAndDomain(IndividualBranch_t* from, ObjectPropertyBranch_t* prop, IndividualBranch_t* on);
   bool checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, LiteralNode* data);
