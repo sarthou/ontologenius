@@ -1117,11 +1117,19 @@ void IndividualGraph::getUpPtr(IndividualBranch_t* indiv, std::unordered_set<Cla
   current_depth++;
   if(indiv != nullptr)
   {
-    std::unordered_set<IndividualBranch_t*> sames;
-    getSame(indiv, sames);
-    for(IndividualBranch_t* it : sames)
-      for(auto& is_a : it->is_a_)
+    if(indiv->same_as_.size())
+    {
+      std::unordered_set<IndividualBranch_t*> sames;
+      getSame(indiv, sames);
+      for(IndividualBranch_t* it : sames)
+        for(auto& is_a : it->is_a_)
+          class_graph_->getUpPtr(is_a.elem, res, depth, current_depth);
+    }
+    else
+    {
+      for(auto& is_a : indiv->is_a_)
         class_graph_->getUpPtr(is_a.elem, res, depth, current_depth);
+    }
   }
 }
 
