@@ -145,8 +145,8 @@ public:
   std::vector<std::vector<ObjectPropertyBranch_t*>> getChains(ObjectPropertyBranch_t* base_property);
 
   void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, uint32_t current_depth = 0);
-  void getSameAndClean(IndividualBranch_t* individual, std::unordered_set<std::string>& res);
-  void getSameAndClean(IndividualBranch_t* individual, std::unordered_set<index_t>& res);
+  void getSame(IndividualBranch_t* individual, std::unordered_set<std::string>& res);
+  void getSame(IndividualBranch_t* individual, std::unordered_set<index_t>& res);
 
 private:
   ClassGraph* class_graph_;
@@ -172,6 +172,7 @@ private:
   std::vector<std::string> getNames(IndividualBranch_t* branch, bool use_default);
   std::vector<std::string> getEveryNames(IndividualBranch_t* branch, bool use_default);
 
+  void addSames(IndividualBranch_t* me, const std::vector<Single_t<std::string>>& sames, bool is_new = true);
   void addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
   void addDataRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
 
@@ -186,10 +187,8 @@ private:
   std::unordered_set<index_t> getSameId(index_t individual);
   void getSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);
   void getSame(IndividualBranch_t* individual, std::vector<IndividualBranch_t*>& res);
-  void cleanMarks(const std::unordered_set<IndividualBranch_t*>& indiv_set);
-  void cleanMarks(const std::vector<IndividualBranch_t*>& indiv_set);
-  std::unordered_set<std::string> getSameAndClean(IndividualBranch_t* individual);
-  std::unordered_set<index_t> getSameIdAndClean(IndividualBranch_t* individual);
+  std::unordered_set<std::string> getSame(IndividualBranch_t* individual);
+  std::unordered_set<index_t> getSameId(IndividualBranch_t* individual);
   std::unordered_set<std::string> set2set(const std::unordered_set<IndividualBranch_t*>& indiv_set, bool clean = true);
 
   bool checkRangeAndDomain(IndividualBranch_t* from, ObjectPropertyBranch_t* prop, IndividualBranch_t* on);

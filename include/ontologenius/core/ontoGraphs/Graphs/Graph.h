@@ -108,6 +108,21 @@ public:
       return false;
   }
 
+  template<typename C>
+  inline bool conditionalPushBack(std::vector<Single_t<C>>& vect, const Single_t<C>& data)
+  {
+    auto it = std::find(vect.begin(), vect.end(), data);
+    if(it == vect.end())
+    {
+      vect.emplace_back(data);
+      return true;
+    }
+    else if(it->infered && (data.infered == false))
+      it->infered = false;
+      
+    return false;
+  }
+
   void insert(std::unordered_set<std::string>& set, ValuedNode* node) { set.insert(node->value()); }
   void insert(std::unordered_set<index_t>& set, ValuedNode* node) { set.insert(node->get()); }
   void insert(std::unordered_set<std::string>& set, LiteralNode* node) { set.insert(node->value()); }
