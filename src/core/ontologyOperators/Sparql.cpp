@@ -106,19 +106,17 @@ namespace ontologenius
   {
     std::vector<std::map<std::string, T>> res;
 
-    triplet_t<T> current = query[0];
-
     std::unordered_set<T> values;
     std::string var_name;
-    resolveSubQuery(current, accu, var_name, values);
+    resolveSubQuery(query[0], accu, var_name, values);
 
     if(values.size() == 0)
       return res;
 
-    std::vector<triplet_t<T>> new_query(query.begin() + 1, query.end());
-
-    if(new_query.size())
+    if(query.size() > 1)
     {
+      std::vector<triplet_t<T>> new_query(query.begin() + 1, query.end());
+
       bool variable_exixts_in_accu = (accu.find(var_name) != accu.end());
 
       res.reserve(values.size());
