@@ -117,20 +117,25 @@ namespace ontologenius
     {
       std::vector<triplet_t<T>> new_query(query.begin() + 1, query.end());
 
-      bool variable_exixts_in_accu = (accu.find(var_name) != accu.end());
+      auto accu_it = accu.find(var_name);
 
       res.reserve(values.size());
       for(auto& value : values)
       {
         std::vector<std::map<std::string, T>> local_res;
-        std::map<std::string, T> new_accu = accu;
-        if(variable_exixts_in_accu)
+        std::map<std::string, T> new_accu;
+        if(accu_it != accu.end())
         {
-          if(new_accu[var_name] != value)
+          if(accu_it->second != value)
             continue;
+          else
+            new_accu = accu;
         }
         else
+        {
+          new_accu = accu;
           new_accu[var_name] = value;
+        }
 
         local_res = resolve(new_query, new_accu);
         if(local_res.size() != 0)
