@@ -104,7 +104,7 @@ std::vector<std::map<std::string, std::string>> runSparqlSolver(ontologenius::Sp
 std::vector<std::map<std::string, std::string>> runSparqlBase(ontologenius::Sparql& solver, const std::string& query)
 {
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
-  auto solutions = solver.run(query);
+  auto solutions = solver.runStr(query);
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 

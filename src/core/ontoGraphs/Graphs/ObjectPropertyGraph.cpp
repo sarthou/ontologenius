@@ -300,6 +300,20 @@ std::unordered_set<std::string> ObjectPropertyGraph::getDisjoint(const std::stri
   return res;
 }
 
+std::unordered_set<index_t> ObjectPropertyGraph::getDisjoint(index_t value)
+{
+  std::unordered_set<index_t> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+
+  ObjectPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  if(branch != nullptr)
+    for(auto& disjoint : branch->disjoints_)
+      getDown(disjoint.elem, res);
+
+  return res;
+}
+
+
 void ObjectPropertyGraph::getDisjointPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
@@ -322,12 +336,38 @@ std::unordered_set<std::string> ObjectPropertyGraph::getInverse(const std::strin
   return res;
 }
 
+std::unordered_set<index_t> ObjectPropertyGraph::getInverse(index_t value)
+{
+  std::unordered_set<index_t> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+
+  ObjectPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  if(branch != nullptr)
+    for(auto& inverse : branch->inverses_)
+      getDown(inverse.elem, res);
+
+  return res;
+}
+
 std::unordered_set<std::string> ObjectPropertyGraph::getDomain(const std::string& value)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
 
   ObjectPropertyBranch_t* branch = container_.find(value);
+  if(branch != nullptr)
+    for(auto& domain : branch->domains_)
+      class_graph_->getDown(domain.elem, res);
+
+  return res;
+}
+
+std::unordered_set<index_t> ObjectPropertyGraph::getDomain(index_t value)
+{
+  std::unordered_set<index_t> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+
+  ObjectPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
   if(branch != nullptr)
     for(auto& domain : branch->domains_)
       class_graph_->getDown(domain.elem, res);
@@ -357,24 +397,25 @@ std::unordered_set<std::string> ObjectPropertyGraph::getRange(const std::string&
   return res;
 }
 
+std::unordered_set<index_t> ObjectPropertyGraph::getRange(index_t value)
+{
+  std::unordered_set<index_t> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+
+  ObjectPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  if(branch != nullptr)
+    for(auto& range : branch->ranges_)
+      class_graph_->getDown(range.elem, res);
+
+  return res;
+}
+
 void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
   if(branch != nullptr)
     for(auto& range : branch->ranges_)
       class_graph_->getDownPtr(range.elem, res, depth);
-}
-
-std::unordered_set<std::string> ObjectPropertyGraph::select(const std::unordered_set<std::string>& on, const std::string& selector)
-{
-  std::unordered_set<std::string> res;
-  for(const std::string& it : on)
-  {
-    std::unordered_set<std::string> tmp = getUp(it);
-    if(tmp.find(selector) != tmp.end())
-      res.insert(it);
-  }
-  return res;
 }
 
 void ObjectPropertyGraph::createInvertChains()
