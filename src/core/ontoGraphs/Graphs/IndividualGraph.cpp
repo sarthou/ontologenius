@@ -2023,6 +2023,9 @@ bool IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& i
   conditionalPushBack(branch_1->same_as_, IndividualElement_t(branch_2));
   conditionalPushBack(branch_2->same_as_, IndividualElement_t(branch_1));
 
+  conditionalPushBack(branch_1->same_as_, IndividualElement_t(branch_1));
+  conditionalPushBack(branch_2->same_as_, IndividualElement_t(branch_2));
+
   return true;
 }
 
@@ -2038,6 +2041,12 @@ bool IndividualGraph::removeSameAs(const std::string& indiv_1, const std::string
 
   removeFromVect(branch_1->same_as_, IndividualElement_t(branch_2));
   removeFromVect(branch_2->same_as_, IndividualElement_t(branch_1));
+
+  if(branch_1->same_as_.size() == 1)
+    branch_1->same_as_.clear();
+
+  if(branch_2->same_as_.size() == 1)
+    branch_2->same_as_.clear();
 
   return true;
 }
