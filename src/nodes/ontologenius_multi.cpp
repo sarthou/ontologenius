@@ -62,7 +62,7 @@ bool deleteInterface(const std::string& name)
   delete interfaces_[name];
   interfaces_.erase(name);
 
-  std::cout << name << " STOPPED" << std::endl;
+  std::cout << name << " STOPED" << std::endl;
   return true;
 }
 
