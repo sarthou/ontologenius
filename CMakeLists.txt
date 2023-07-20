@@ -275,6 +275,7 @@ target_link_libraries(ontologenius_reasoner_plugin
 add_onto_library(ontologenius_interface
   src/interface/RosInterface.cpp
   src/interface/RosInterfaceStringHandlers.cpp
+  src/interface/RosInterfaceIndexHandlers.cpp
   src/core/ontologyOperators/differenceFinder.cpp
   src/core/ontologyOperators/Sparql.cpp
   src/core/ontologyOperators/SparqlSolver.cpp

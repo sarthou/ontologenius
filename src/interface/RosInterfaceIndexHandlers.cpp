@@ -5,8 +5,8 @@
 
 namespace ontologenius {
 
-bool RosInterface::classIndexHandle(ontologenius::OntologeniusService::Request &req,
-                                    ontologenius::OntologeniusService::Response &res)
+bool RosInterface::classIndexHandle(ontologenius::OntologeniusIndexService::Request& req,
+                                    ontologenius::OntologeniusIndexService::Response& res)
 {
   res.code = 0;
 
@@ -21,7 +21,7 @@ bool RosInterface::classIndexHandle(ontologenius::OntologeniusService::Request &
     reasoners_.runPreReasoners(query_origin_class, req.action, params());
     reasoner_mutex_.unlock();
 
-    std::unordered_set<std::string> set_res;
+    /*std::unordered_set<std::string> set_res;
 
     if(req.action == "getDown")
       set_res = onto_->class_graph_.getDown(params(), params.depth);
@@ -96,14 +96,14 @@ bool RosInterface::classIndexHandle(ontologenius::OntologeniusService::Request &
     }
 
     if(res.values.size() == 0)
-      set2vector(set_res, res.values);
+      set2vector(set_res, res.values);*/
   }
 
   return true;
 }
 
-bool RosInterface::objectPropertyIndexHandle(ontologenius::OntologeniusService::Request &req,
-                                             ontologenius::OntologeniusService::Response &res)
+bool RosInterface::objectPropertyIndexHandle(ontologenius::OntologeniusIndexService::Request& req,
+                                             ontologenius::OntologeniusIndexService::Response& res)
 {
   res.code = 0;
 
@@ -118,7 +118,7 @@ bool RosInterface::objectPropertyIndexHandle(ontologenius::OntologeniusService::
     reasoners_.runPreReasoners(query_origin_object_property, req.action, params());
     reasoner_mutex_.unlock();
 
-    std::unordered_set<std::string> set_res;
+    /*std::unordered_set<std::string> set_res;
 
     if(req.action == "getDown")
       set_res = onto_->object_property_graph_.getDown(params(), params.depth);
@@ -175,14 +175,14 @@ bool RosInterface::objectPropertyIndexHandle(ontologenius::OntologeniusService::
     }
 
     if(res.values.size() == 0)
-      set2vector(set_res, res.values);
+      set2vector(set_res, res.values);*/
   }
 
   return true;
 }
 
-bool RosInterface::dataPropertyIndexHandle(ontologenius::OntologeniusService::Request &req,
-                                           ontologenius::OntologeniusService::Response &res)
+bool RosInterface::dataPropertyIndexHandle(ontologenius::OntologeniusIndexService::Request& req,
+                                           ontologenius::OntologeniusIndexService::Response& res)
 {
   res.code = 0;
 
@@ -197,7 +197,7 @@ bool RosInterface::dataPropertyIndexHandle(ontologenius::OntologeniusService::Re
     reasoners_.runPreReasoners(query_origin_data_property, req.action, params());
     reasoner_mutex_.unlock();
 
-    std::unordered_set<std::string> set_res;
+    /*std::unordered_set<std::string> set_res;
 
     if(req.action == "getDown")
       set_res = onto_->data_property_graph_.getDown(params(), params.depth);
@@ -251,14 +251,14 @@ bool RosInterface::dataPropertyIndexHandle(ontologenius::OntologeniusService::Re
     }
 
     if(res.values.size() == 0)
-      set2vector(set_res, res.values);
+      set2vector(set_res, res.values);*/
   }
 
   return true;
 }
 
-bool RosInterface::individualIndexHandle(ontologenius::OntologeniusService::Request  &req,
-                                         ontologenius::OntologeniusService::Response &res)
+bool RosInterface::individualIndexHandle(ontologenius::OntologeniusIndexService::Request& req,
+                                         ontologenius::OntologeniusIndexService::Response& res)
 {
   res.code = 0;
 
@@ -273,7 +273,7 @@ bool RosInterface::individualIndexHandle(ontologenius::OntologeniusService::Requ
     reasoners_.runPreReasoners(query_origin_individual, req.action, params());
     reasoner_mutex_.unlock();
 
-    std::unordered_set<std::string> set_res;
+    /*std::unordered_set<std::string> set_res;
 
     if(req.action == "getSame")
       set_res = onto_->individual_graph_.getSame(params());
@@ -356,20 +356,20 @@ bool RosInterface::individualIndexHandle(ontologenius::OntologeniusService::Requ
     }
 
     if(res.values.size() == 0)
-      set2vector(set_res, res.values);
+      set2vector(set_res, res.values);*/
   }
 
   return true;
 }
 
-bool RosInterface::sparqlHandle(ontologenius::OntologeniusSparqlService::Request &req,
-                                ontologenius::OntologeniusSparqlService::Response &res)
+bool RosInterface::sparqIndexlHandle(ontologenius::OntologeniusSparqlIndexService::Request& req,
+                                     ontologenius::OntologeniusSparqlIndexService::Response& res)
 {
-  std::vector<std::map<std::string, std::string>> results = sparql_.runStr(req.query);
+  /*std::vector<std::map<std::string, index_t>> results = sparql_.runStr(req.query);
 
   for(auto& result : results)
   {
-    ontologenius::OntologeniusSparqlResponse tmp;
+    ontologenius::OntologeniusSparqlIndexResponse tmp;
     for(auto& r : result)
     {
       tmp.names.push_back(r.first);
@@ -378,7 +378,7 @@ bool RosInterface::sparqlHandle(ontologenius::OntologeniusSparqlService::Request
     res.results.push_back(tmp);
   }
 
-  res.error = sparql_.getError();
+  res.error = sparql_.getError();*/
 
   return true;
 }

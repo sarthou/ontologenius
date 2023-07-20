@@ -14,6 +14,8 @@
 #include "ontologenius/StampedString.h"
 #include "ontologenius/OntologeniusService.h"
 #include "ontologenius/OntologeniusSparqlService.h"
+#include "ontologenius/OntologeniusIndexService.h"
+#include "ontologenius/OntologeniusSparqlIndexService.h"
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/reasoner/Reasoners.h"
@@ -139,6 +141,7 @@ public:
   /// @brief The ROS service callback in charge of general operations on the ontology
   bool actionsHandle(ontologenius::OntologeniusService::Request &req,
                      ontologenius::OntologeniusService::Response &res);
+
   /// @brief The ROS service callback in charge of the exploration on classes
   bool classHandle(ontologenius::OntologeniusService::Request &req,
                    ontologenius::OntologeniusService::Response &res);
@@ -151,12 +154,29 @@ public:
   /// @brief The ROS service callback in charge of the exploration on individuals
   bool individualHandle(ontologenius::OntologeniusService::Request  &req,
                         ontologenius::OntologeniusService::Response &res);
-  /// @brief The ROS service callback in charge of the reasoners
-  bool reasonerHandle(ontologenius::OntologeniusService::Request &req,
-                    ontologenius::OntologeniusService::Response &res);
   /// @brief The ROS service callback in charge of the SPARQL queries
   bool sparqlHandle(ontologenius::OntologeniusSparqlService::Request &req,
-                  ontologenius::OntologeniusSparqlService::Response &res);
+                    ontologenius::OntologeniusSparqlService::Response &res);
+
+  /// @brief The ROS service callback in charge of the exploration on classes with indexes
+  bool classIndexHandle(ontologenius::OntologeniusIndexService::Request &req,
+                        ontologenius::OntologeniusIndexService::Response &res);
+  /// @brief The ROS service callback in charge of the exploration on object properties with indexes
+  bool objectPropertyIndexHandle(ontologenius::OntologeniusIndexService::Request &req,
+                                 ontologenius::OntologeniusIndexService::Response &res);
+  /// @brief The ROS service callback in charge of the exploration on data properties with indexes
+  bool dataPropertyIndexHandle(ontologenius::OntologeniusIndexService::Request &req,
+                               ontologenius::OntologeniusIndexService::Response &res);
+  /// @brief The ROS service callback in charge of the exploration on individuals with indexes
+  bool individualIndexHandle(ontologenius::OntologeniusIndexService::Request  &req,
+                             ontologenius::OntologeniusIndexService::Response &res);
+  /// @brief The ROS service callback in charge of the SPARQL queries with indexes
+  bool sparqIndexlHandle(ontologenius::OntologeniusSparqlIndexService::Request& req,
+                         ontologenius::OntologeniusSparqlIndexService::Response& res);
+
+  /// @brief The ROS service callback in charge of the reasoners
+  bool reasonerHandle(ontologenius::OntologeniusService::Request &req,
+                      ontologenius::OntologeniusService::Response &res);
 
   /// @brief The thread that periodically manages the update of the ontology with the incoming instructions 
   void feedThread();
