@@ -75,6 +75,7 @@ catkin_python_setup()
    HTTP_headers.msg
    StampedString.msg
    OntologeniusSparqlResponse.msg
+   OntologeniusSparqlIndexResponse.msg
    OntologeniusExplanation.msg
  )
 
@@ -84,7 +85,9 @@ catkin_python_setup()
   REST.srv
   standard_service.srv
   OntologeniusService.srv
+  OntologeniusIndexService.srv
   OntologeniusSparqlService.srv
+  OntologeniusSparqlIndexService.srv
  )
 
 ## Generate added messages and services with any dependencies listed here
