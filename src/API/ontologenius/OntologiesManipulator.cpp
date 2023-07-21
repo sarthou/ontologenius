@@ -10,6 +10,10 @@ OntologiesManipulator::~OntologiesManipulator()
   for(auto& manipulator : manipulators_)
     if(manipulator.second != nullptr)
       delete manipulator.second;
+
+  for(auto& manipulator : manipulators_index_)
+    if(manipulator.second != nullptr)
+      delete manipulator.second;
 }
 
 void OntologiesManipulator::waitInit(int32_t timeout)
@@ -33,6 +37,14 @@ OntologyManipulator* OntologiesManipulator::get(const std::string& name)
     return nullptr;
 }
 
+OntologyManipulatorIndex* OntologiesManipulator::getIndex(const std::string& name)
+{
+  if(manipulators_index_.find(name) != manipulators_index_.end())
+    return manipulators_index_[name];
+  else
+    return nullptr;
+}
+
 bool OntologiesManipulator::add(const std::string& name)
 {
   if(manipulators_.find(name) != manipulators_.end())
@@ -45,6 +57,7 @@ bool OntologiesManipulator::add(const std::string& name)
     {
       ros::service::waitForService("ontologenius/sparql/" + name);
       manipulators_[name] = new OntologyManipulator(name);
+      manipulators_index_[name] = new OntologyManipulatorIndex(name);
       return true;
     }
   }
@@ -62,6 +75,8 @@ bool OntologiesManipulator::copy(const std::string& dest_name, const std::string
     {
       auto tmp = new OntologyManipulator(dest_name);
       manipulators_[dest_name] = tmp;
+      auto tmp_index = new OntologyManipulatorIndex(dest_name);
+      manipulators_index_[dest_name] = tmp_index;
       return true;
     }
   }
@@ -79,6 +94,8 @@ bool OntologiesManipulator::del(const std::string& name)
     {
       delete manipulators_[name];
       manipulators_.erase(name);
+      delete manipulators_index_[name];
+      manipulators_index_.erase(name);
       return true;
     }
   }

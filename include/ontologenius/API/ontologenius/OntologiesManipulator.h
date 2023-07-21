@@ -8,6 +8,9 @@
 
 #include "ontologenius/API/ontologenius/clients/ManagerClient.h"
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
+#include "ontologenius/API/ontologenius/OntologyManipulatorIndex.h"
+
+using namespace onto;
 
 /// @brief The OntologiesManipulator class allows to create and delete ontologies instances dynamically.
 /// Its usage is strongly recommended for multi-ontology usage and ensures good thread management.
@@ -33,27 +36,36 @@ public:
   /// @param name is the name of the instance to get.
   /// @return Returns nullptr if no OntologyManipulator instance is named name.
   OntologyManipulator* get(const std::string& name);
+  /// @brief Gets a pointer on the OntologyManipulatorIndex instance named name.
+  /// @param name is the name of the instance to get.
+  /// @return Returns nullptr if no OntologyManipulatorIndex instance is named name.
+  OntologyManipulatorIndex* getIndex(const std::string& name);
 
-  /// @brief Creates a new instance of ontologyManipulator identified by the name name.
+  /// @brief Creates a new instance of ontologyManipulator and ontologyManipulatorIndex identified by the name name.
   /// @param name is the name of the instance to create
   /// @return Returns false if the creation fails. Returns true even if the instance already exists.
   bool add(const std::string& name);
-  /// @brief Creates a new instance of ontologyManipulator identified by the name dest_name that manipulates a copy of the ontology handled by the ontologyManipulator src_name.
+  /// @brief Creates a new instance of ontologyManipulator and ontologyManipulatorIndex identified by the name dest_name that manipulates a copy of the ontology handled by the ontologyManipulator src_name.
   /// @param dest_name is the new of the instance to create.
   /// @param src_name is the new of the instance to copy.
   /// @return Returns false if the copy fails. Returns true even if the instance already exists.
   bool copy(const std::string& dest_name, const std::string& src_name);
-  /// @brief Deletes the instance of ontologyManipulator identified by the name name.
+  /// @brief Deletes the instance of ontologyManipulator and ontologyManipulatorIndex identified by the name name.
   /// @param name is the name of the instance to delete.
   /// @return Returns false deletion fails. Returns true even if the instance does not exist.
   bool del(const std::string& name);
 
   /// @brief If verbose is set to true, the clients will post messages about the failure to call the services and about their restoration.
-  void verbose(bool verbose) { ClientBase::verbose(verbose); }
+  void verbose(bool verbose)
+  {
+    ClientBase::verbose(verbose);
+    ClientBaseIndex::verbose(verbose);
+  }
 
 private:
   ros::NodeHandle* n_; // do not move this line below
   std::map<std::string, OntologyManipulator*> manipulators_;
+  std::map<std::string, OntologyManipulatorIndex*> manipulators_index_;
 };
 
 #endif // ONTOLOGENIUS_ONTOLOGIESMANIPULATOR_H
