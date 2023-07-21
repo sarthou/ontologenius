@@ -1,4 +1,5 @@
 #include "ontologenius/interface/RosInterface.h"
+#include "ontologenius/interface/InterfaceParams.h"
 
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
@@ -15,7 +16,8 @@ bool RosInterface::classHandle(ontologenius::OntologeniusService::Request &req,
   else
   {
     removeUselessSpace(req.action);
-    param_t params = getParams(req.param);
+    InterfaceParams params;
+    params.extractStringParams(req.param);
 
     reasoner_mutex_.lock();
     reasoners_.runPreReasoners(query_origin_class, req.action, params());
@@ -112,7 +114,8 @@ bool RosInterface::objectPropertyHandle(ontologenius::OntologeniusService::Reque
   else
   {
     removeUselessSpace(req.action);
-    param_t params = getParams(req.param);
+    InterfaceParams params;
+    params.extractStringParams(req.param);
 
     reasoner_mutex_.lock();
     reasoners_.runPreReasoners(query_origin_object_property, req.action, params());
@@ -191,7 +194,8 @@ bool RosInterface::dataPropertyHandle(ontologenius::OntologeniusService::Request
   else
   {
     removeUselessSpace(req.action);
-    param_t params = getParams(req.param);
+    InterfaceParams params;
+    params.extractStringParams(req.param);
 
     reasoner_mutex_.lock();
     reasoners_.runPreReasoners(query_origin_data_property, req.action, params());
@@ -267,7 +271,8 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
   else
   {
     removeUselessSpace(req.action);
-    param_t params = getParams(req.param);
+    InterfaceParams params;
+    params.extractStringParams(req.param);
 
     reasoner_mutex_.lock();
     reasoners_.runPreReasoners(query_origin_individual, req.action, params());

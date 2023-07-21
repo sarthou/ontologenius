@@ -27,19 +27,6 @@
 
 namespace ontologenius {
 
-struct param_t
-{
-  std::string base;
-  size_t depth;
-  std::string selector;
-  double threshold;
-  bool take_id;
-
-  param_t(): depth(-1), threshold(-1), take_id(true) {}
-
-  std::string operator()() { return base; }
-};
-
 class RosInterface
 {
 public:
@@ -194,7 +181,6 @@ public:
   /// @param word_set is the set to convert
   /// @param result is the vector of strings to which to add the elements of the set
   void set2vector(const std::unordered_set<std::string>& word_set, std::vector<std::string>& result);
-  param_t getParams(const std::string& param);
 
   /// @brief Gets a topic name related corresponding to the current instance name
   /// @param topic_name is the name of the topic you want to create
