@@ -208,7 +208,7 @@ private:
 template<typename T>
 std::unordered_set<T> IndividualGraph::find(const std::string& value, bool use_default)
 {
-  std::unordered_set<std::string> res;
+  std::unordered_set<T> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(auto& indiv : individuals_)
   {
@@ -232,7 +232,7 @@ std::unordered_set<T> IndividualGraph::find(const std::string& value, bool use_d
 template<typename T>
 std::unordered_set<T> IndividualGraph::findSub(const std::string& value, bool use_default)
 {
-  std::unordered_set<std::string> res;
+  std::unordered_set<T> res;
   std::smatch match;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(auto& indiv : individuals_)
@@ -266,7 +266,7 @@ std::unordered_set<T> IndividualGraph::findSub(const std::string& value, bool us
 template<typename T>
 std::unordered_set<T> IndividualGraph::findRegex(const std::string& regex, bool use_default)
 {
-  std::unordered_set<std::string> res;
+  std::unordered_set<T> res;
   std::regex base_regex(regex);
   std::smatch match;
 
