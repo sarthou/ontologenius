@@ -158,7 +158,7 @@ public:
   bool individualIndexHandle(ontologenius::OntologeniusIndexService::Request  &req,
                              ontologenius::OntologeniusIndexService::Response &res);
   /// @brief The ROS service callback in charge of the SPARQL queries with indexes
-  bool sparqIndexlHandle(ontologenius::OntologeniusSparqlIndexService::Request& req,
+  bool sparqlIndexHandle(ontologenius::OntologeniusSparqlIndexService::Request& req,
                          ontologenius::OntologeniusSparqlIndexService::Response& res);
 
   /// @brief The ROS service callback in charge of the reasoners

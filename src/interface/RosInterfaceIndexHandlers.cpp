@@ -367,7 +367,7 @@ bool RosInterface::individualIndexHandle(ontologenius::OntologeniusIndexService:
   return true;
 }
 
-bool RosInterface::sparqIndexlHandle(ontologenius::OntologeniusSparqlIndexService::Request& req,
+bool RosInterface::sparqlIndexHandle(ontologenius::OntologeniusSparqlIndexService::Request& req,
                                      ontologenius::OntologeniusSparqlIndexService::Response& res)
 {
   std::vector<std::map<std::string, index_t>> results = sparql_.runIndex(req.query);

@@ -128,6 +128,18 @@ void RosInterface::run()
   ros::ServiceServer service_individual = n_.advertiseService(getTopicName("individual"), &RosInterface::individualHandle, this);
   (void)service_individual;
 
+  ros::ServiceServer service_class_index = n_.advertiseService(getTopicName("class_index"), &RosInterface::classIndexHandle, this);
+  (void)service_class_index;
+
+  ros::ServiceServer service_object_property_index = n_.advertiseService(getTopicName("object_property_index"), &RosInterface::objectPropertyIndexHandle, this);
+  (void)service_object_property_index;
+
+  ros::ServiceServer service_data_property_index = n_.advertiseService(getTopicName("data_property_index"), &RosInterface::dataPropertyIndexHandle, this);
+  (void)service_data_property_index;
+
+  ros::ServiceServer service_individual_index = n_.advertiseService(getTopicName("individual_index"), &RosInterface::individualIndexHandle, this);
+  (void)service_individual_index;
+
   ros::ServiceServer service_reasoner = n_.advertiseService(getTopicName("reasoner"), &RosInterface::reasonerHandle, this);
   (void)service_reasoner;
 
@@ -136,6 +148,9 @@ void RosInterface::run()
 
   ros::ServiceServer service_sparql = n_.advertiseService(getTopicName("sparql"), &RosInterface::sparqlHandle, this);
   (void)service_sparql;
+
+  ros::ServiceServer service_sparql_index = n_.advertiseService(getTopicName("sparql_index"), &RosInterface::sparqlIndexHandle, this);
+  (void)service_sparql_index;
 
   if(name_ != "")
     Display::info(name_ + " is ready");
