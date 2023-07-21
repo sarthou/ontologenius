@@ -61,6 +61,13 @@ public:
     return res;
   }
 
+  std::vector<index_t> getAllIndex()
+  {
+    std::vector<index_t> res;
+    std::transform(individuals_.cbegin(), individuals_.cend(), std::back_inserter(res), [](auto branch){ return branch->get(); });
+    return res;
+  }
+
   IndividualBranch_t* add(const std::string& value, IndividualVectors_t& individual_vector);
   void add(std::vector<std::string>& distinct_);
 
