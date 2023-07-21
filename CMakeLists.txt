@@ -241,6 +241,7 @@ add_onto_library(ontologenius_lib
   src/API/ontologenius/clients/ManagerClient.cpp
   src/API/ontologenius/clients/ClientBase.cpp
   src/API/ontologenius/clients/SparqlClient.cpp
+  src/API/ontologenius/clientsIndex/ontologyClients/ObjectPropertyIndexClient.cpp
   src/API/ontologenius/clientsIndex/ontologyClients/DataPropertyIndexClient.cpp
   src/API/ontologenius/clientsIndex/ontologyClients/ClassIndexClient.cpp
   src/API/ontologenius/clientsIndex/ontologyClients/OntologyIndexClient.cpp
