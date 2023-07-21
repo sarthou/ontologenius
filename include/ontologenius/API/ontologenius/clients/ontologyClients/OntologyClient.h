@@ -3,6 +3,8 @@
 
 #include "ontologenius/API/ontologenius/clients/ClientBase.h"
 
+namespace onto {
+
 /// @brief The OntologyClient class provides an abstraction common to all ontologenius exploration ROS services.
 /// The OntologyClient implements the functions common to every ontologenius exploration.
 /// This class is based on ClientBase and so ensure a persistent connection with the service based on.
@@ -79,5 +81,7 @@ public:
   /// @return Returns true if the concept exists.
   bool exist(const std::string& name);
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_ONTOLOGYCLIENT_H

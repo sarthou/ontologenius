@@ -3,6 +3,8 @@
 
 #include "ontologenius/API/ontologenius/clients/ontologyClients/OntologyClient.h"
 
+namespace onto {
+
 /// @brief The IndividualClient class provides an abstraction of ontologenius individuals ROS service.
 /// The ontologenius individuals' service allows the exploration of individuals contained by ontologenius core.
 /// This class is based on ClientBase and so ensure a persistent connection with ontologenius/individual service.
@@ -106,5 +108,7 @@ public:
 private:
 
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_INDIVIDUALCLIENT_H

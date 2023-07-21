@@ -1,5 +1,7 @@
 #include "ontologenius/API/ontologenius/clients/ActionClient.h"
 
+namespace onto {
+
 bool ActionClient::close()
 {
   ontologenius::OntologeniusService srv;
@@ -68,3 +70,5 @@ bool ActionClient::reset()
 
   return callNR(srv);
 }
+
+} // namespace onto

@@ -3,6 +3,8 @@
 
 #include "ontologenius/API/ontologenius/clients/ClientBase.h"
 
+namespace onto {
+
 /// @brief The ActionClient class provides an abstraction ontologenius action ROS services.
 /// This class is based on ClientBase and so ensure a persistent connection with the service based on.
 /// The persistent connection ensures a minimal response time.
@@ -52,5 +54,7 @@ public:
 private:
 
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_ACTIONCLIENT_H

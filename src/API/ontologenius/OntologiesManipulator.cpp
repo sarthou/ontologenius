@@ -1,5 +1,7 @@
 #include "ontologenius/API/ontologenius/OntologiesManipulator.h"
 
+namespace onto {
+
 OntologiesManipulator::OntologiesManipulator(ros::NodeHandle* n) : ManagerClient(n)
 {
   n_ = n;
@@ -100,3 +102,5 @@ bool OntologiesManipulator::del(const std::string& name)
     }
   }
 }
+
+} // namespace onto

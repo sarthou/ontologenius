@@ -21,6 +21,8 @@
 #define COLOR_GREEN   "\x1B[1;92m"
 #endif
 
+namespace onto {
+
 /// @brief The ClientBase class provides an abstraction for any ROS services.
 /// This class ensure a persistent connection with the service based on.
 /// The persistent connection ensures a minimal response time.
@@ -179,5 +181,7 @@ private:
     static size_t cpt;
     static bool verbose_;
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_CLIENTBASE_H

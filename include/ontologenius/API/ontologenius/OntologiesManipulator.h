@@ -10,7 +10,7 @@
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 #include "ontologenius/API/ontologenius/OntologyManipulatorIndex.h"
 
-using namespace onto;
+namespace onto {
 
 /// @brief The OntologiesManipulator class allows to create and delete ontologies instances dynamically.
 /// Its usage is strongly recommended for multi-ontology usage and ensures good thread management.
@@ -67,5 +67,7 @@ private:
   std::map<std::string, OntologyManipulator*> manipulators_;
   std::map<std::string, OntologyManipulatorIndex*> manipulators_index_;
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_ONTOLOGIESMANIPULATOR_H

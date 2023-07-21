@@ -120,7 +120,7 @@ void insertWords(ontologenius::RosInterface* interface, const std::vector<std::s
   }
 }
 
-OntologyManipulator* onto_ptr;
+onto::OntologyManipulator* onto_ptr;
 
 double find(const std::vector<std::string>& words, bool individual)
 {
@@ -220,7 +220,7 @@ int main(int argc, char** argv)
   onto_thread = std::thread(&ontologenius::RosInterface::run, &interface);
   interface.close();
 
-  OntologyManipulator onto_manip;
+  onto::OntologyManipulator onto_manip;
   onto_ptr = &onto_manip;
 
   std::vector<size_t> nb_words = {100, 500, 1000, 5000, 10000, 50000, 100000, 450000};

@@ -4,7 +4,7 @@
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
-OntologyManipulator* onto_ptr;
+onto::OntologyManipulator* onto_ptr;
 
 TEST(library_tests, close_call)
 {
@@ -105,7 +105,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "ontologenius_library_tester");
 
   ros::NodeHandle n;
-  OntologyManipulator onto(&n);
+  onto::OntologyManipulator onto(&n);
   onto_ptr = &onto;
 
   testing::InitGoogleTest(&argc, argv);

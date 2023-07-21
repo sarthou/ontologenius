@@ -15,6 +15,8 @@
 #include "ontologenius/API/ontologenius/clients/ReasonerClient.h"
 #include "ontologenius/API/ontologenius/FeederPublisher.h"
 
+namespace onto {
+
 /// @brief The OntologyManipulator class is just an object to access all API ROS abstraction classes so that you can query and manage ontologenius.
 class OntologyManipulator
 {
@@ -62,5 +64,7 @@ public:
   /// @brief ROS service client to make SPAQRL queries
   SparqlClient sparql;
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_ONTOLOGYMANIPULATOR_H

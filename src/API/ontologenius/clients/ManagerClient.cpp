@@ -1,5 +1,7 @@
 #include "ontologenius/API/ontologenius/clients/ManagerClient.h"
 
+namespace onto {
+
 std::vector<std::string> ManagerClient::list()
 {
   ontologenius::OntologeniusService srv;
@@ -43,3 +45,5 @@ std::vector<std::string> ManagerClient::getDifference(const std::string& onto1, 
 
   return call(srv);
 }
+
+} // namespace onto

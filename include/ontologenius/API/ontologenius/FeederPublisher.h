@@ -8,6 +8,8 @@
 #include "std_msgs/String.h"
 #include "ontologenius/StampedString.h"
 
+namespace onto {
+
 /// @brief The FeederPublisher class provides an abstraction ontologenius feeder(insert) ROS topic.
 /// Working in a closed world can be interesting, but with ontologenius, you can also choose to work in an open world by adding and modifying the agent's knowledge base during its operation.
 /// The feeder publisher is used to insert and delete knowledge dynamically.
@@ -188,5 +190,7 @@ public:
 
   void commitCallback(const std_msgs::String::ConstPtr& msg);
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_FEEDERPUBLISHER_H
