@@ -102,6 +102,13 @@ public:
     return res;
   }
 
+  std::vector<index_t> getAllIndex()
+  {
+    std::vector<index_t> res;
+    std::transform(all_branchs_.cbegin(), all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->get(); });
+    return res;
+  }
+
 protected:
   std::map<std::string, B*> branchs_;
   std::map<std::string, B*> roots_;
