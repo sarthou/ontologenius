@@ -9,7 +9,7 @@
 
 #include <ros/ros.h>
 
-#include "ontologenius/RosInterface.h"
+#include "ontologenius/interface/RosInterface.h"
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
 class FileReader

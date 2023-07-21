@@ -4,7 +4,7 @@
 
 #include "ontologenius/OntologeniusExplanation.h"
 
-#include "ontologenius/RosInterface.h"
+#include "ontologenius/interface/RosInterface.h"
 
 #include "ontologenius/utils/String.h"
 #include "ontologenius/core/utility/error_code.h"

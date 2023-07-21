@@ -1,4 +1,4 @@
-#include "ontologenius/RosInterface.h"
+#include "ontologenius/interface/RosInterface.h"
 
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"

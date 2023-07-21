@@ -10,7 +10,7 @@
 #include <ros/ros.h>
 
 #include "ontologenius/utils/Parameters.h"
-#include "ontologenius/RosInterface.h"
+#include "ontologenius/interface/RosInterface.h"
 #include "ontologenius/core/ontologyOperators/differenceFinder.h"
 #include "ontologenius/core/utility/error_code.h"
 
