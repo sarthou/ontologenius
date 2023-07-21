@@ -23,82 +23,82 @@ bool RosInterface::classIndexHandle(ontologenius::OntologeniusIndexService::Requ
     reasoners_.runPreReasoners(query_origin_class, req.action, params());
     reasoner_mutex_.unlock();
 
-    /*std::unordered_set<std::string> set_res;
+    std::unordered_set<index_t> set_res_index;
 
     if(req.action == "getDown")
-      set_res = onto_->class_graph_.getDown(params(), params.depth);
+      set_res_index = onto_->class_graph_.getDown(params.main_index, params.depth);
     else if(req.action == "getUp")
-      set_res = onto_->class_graph_.getUp(params(), params.depth);
+      set_res_index = onto_->class_graph_.getUp(params.main_index, params.depth);
     else if(req.action == "getDisjoint")
-      set_res = onto_->class_graph_.getDisjoint(params());
+      set_res_index = onto_->class_graph_.getDisjoint(params.main_index);
     else if(req.action == "getName")
     {
-      auto tmp = onto_->class_graph_.getName(params(), params.take_id);
+      auto tmp = onto_->class_graph_.getName(params.main_index, params.take_id);
       if(tmp != "")
-        res.values.push_back(tmp);
+        res.string_values.push_back(tmp);
     }
     else if(req.action == "getNames")
-      res.values = onto_->class_graph_.getNames(params(), params.take_id);
+      res.string_values = onto_->class_graph_.getNames(params.main_index, params.take_id);
     else if(req.action == "getEveryNames")
-      res.values = onto_->class_graph_.getEveryNames(params(), params.take_id);
+      res.string_values = onto_->class_graph_.getEveryNames(params.main_index, params.take_id);
     else if(req.action == "getRelationFrom")
-      set_res = onto_->class_graph_.getRelationFrom(params(), params.depth);
+      set_res_index = onto_->class_graph_.getRelationFrom(params.main_index, params.depth);
     else if(req.action == "getRelatedFrom")
-      set_res = onto_->class_graph_.getRelatedFrom(params());
+      set_res_index = onto_->class_graph_.getRelatedFrom(params.main_index);
     else if(req.action == "getRelationOn")
-      set_res = onto_->class_graph_.getRelationOn(params(), params.depth);
+      set_res_index = onto_->class_graph_.getRelationOn(params.main_index, params.depth);
     else if(req.action == "getRelatedOn")
-      set_res = onto_->class_graph_.getRelatedOn(params());
+      set_res_index = onto_->class_graph_.getRelatedOn(params.main_index);
     else if(req.action == "getRelationWith")
-      set_res = onto_->class_graph_.getRelationWith(params());
+      set_res_index = onto_->class_graph_.getRelationWith(params.main_index);
     else if(req.action == "getRelatedWith")
-      set_res = onto_->class_graph_.getRelatedWith(params());
+      set_res_index = onto_->class_graph_.getRelatedWith(params.main_index);
     else if(req.action == "getOn")
-      set_res = onto_->class_graph_.getOn(params());
+      set_res_index = onto_->class_graph_.getOn(params.main_index, params.optional_index);
     else if(req.action == "getFrom")
-      set_res = onto_->class_graph_.getFrom(params());
+      set_res_index = onto_->class_graph_.getFrom(params.main_index, params.optional_index);
     else if(req.action == "getWith")
-      set_res = onto_->class_graph_.getWith(params(), params.depth);
+      set_res_index = onto_->class_graph_.getWith(params.main_index, params.optional_index, params.depth);
     else if(req.action == "getDomainOf")
-      set_res = onto_->class_graph_.getDomainOf(params(), params.depth);
+      set_res_index = onto_->class_graph_.getDomainOf(params.main_index, params.depth);
     else if(req.action == "getRangeOf")
-      set_res = onto_->class_graph_.getRangeOf(params(), params.depth);
+      set_res_index = onto_->class_graph_.getRangeOf(params.main_index, params.depth);
     else if(req.action == "find")
-      set2vector(onto_->class_graph_.find<std::string>(params(), params.take_id), res.values);
+      set2vector(onto_->class_graph_.find<index_t>(params(), params.take_id), res.index_values);
     else if(req.action == "findSub")
-      set2vector(onto_->class_graph_.findSub<std::string>(params(), params.take_id), res.values);
+      set2vector(onto_->class_graph_.findSub<index_t>(params(), params.take_id), res.index_values);
     else if(req.action == "findRegex")
-      set2vector(onto_->class_graph_.findRegex<std::string>(params(), params.take_id), res.values);
+      set2vector(onto_->class_graph_.findRegex<index_t>(params(), params.take_id), res.index_values);
     else if(req.action == "findFuzzy")
     {
       if(params.threshold != -1)
-        set2vector(onto_->class_graph_.findFuzzy(params(), params.take_id, params.threshold), res.values);
+        set2vector(onto_->class_graph_.findFuzzy(params(), params.take_id, params.threshold), res.string_values);
       else
-        set2vector(onto_->class_graph_.findFuzzy(params(), params.take_id), res.values);
+        set2vector(onto_->class_graph_.findFuzzy(params(), params.take_id), res.string_values);
     }
     else if(req.action == "exist")
     {
-      if(onto_->class_graph_.touch(params()))
-        res.values.push_back(params());
+      if(onto_->class_graph_.touch(params.main_index))
+        res.index_values.push_back(params.main_index);
     }
     else if(req.action == "getAll")
-      res.values = onto_->class_graph_.getAll();
+      res.index_values = onto_->class_graph_.getAllIndex();
     else
       res.code = UNKNOW_ACTION;
 
-    if(params.selector != "")
+    if(params.selector_index != 0)
     {
       if((req.action == "getUp") || (req.action == "getDown") ||
         (req.action == "getDisjoint") || (req.action == "getOn") ||
         (req.action == "getFrom"))
-        set_res = onto_->class_graph_.select(set_res, params.selector);
+        set_res_index = onto_->class_graph_.select(set_res_index, params.selector_index);
       else if((req.action == "getRelationFrom") || (req.action == "getRelationOn") || (req.action == "getWith") ||
               (req.action == "getDomainOf") || (req.action == "getRangeOf"))
-        set_res = onto_->object_property_graph_.select(set_res, params.selector);
+        set_res_index = onto_->object_property_graph_.select(set_res_index, params.selector_index);
     }
 
-    if(res.values.size() == 0)
-      set2vector(set_res, res.values);*/
+    if(res.index_values.size() == 0)
+      set2vector(set_res_index, res.index_values);
   }
 
   return true;
