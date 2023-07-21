@@ -250,6 +250,7 @@ add_onto_library(ontologenius_lib
   src/API/ontologenius/clientsIndex/SparqlIndexClient.cpp
   src/API/ontologenius/FeederPublisher.cpp
   src/API/ontologenius/OntologyManipulator.cpp
+  src/API/ontologenius/OntologyManipulatorIndex.cpp
   src/API/ontologenius/OntologiesManipulator.cpp
 )
 target_link_libraries(ontologenius_lib
