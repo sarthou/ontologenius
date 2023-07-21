@@ -177,10 +177,14 @@ public:
   /// @param word_set is the set to convert
   /// @param result is the string to which to add the elements of the set 
   void set2string(const std::unordered_set<std::string>& word_set, std::string& result);
-  /// @brief Convert a set of strings into a vector of strings
+  /// @brief Convert a set of T into a vector of T
   /// @param word_set is the set to convert
-  /// @param result is the vector of strings to which to add the elements of the set
-  void set2vector(const std::unordered_set<std::string>& word_set, std::vector<std::string>& result);
+  /// @param result is the vector of T to which to add the elements of the set
+  template <typename T>
+  void set2vector(const std::unordered_set<T>& word_set, std::vector<T>& result)
+  {
+    std::copy(word_set.begin(), word_set.end(), std::back_inserter(result));
+  }
 
   /// @brief Gets a topic name related corresponding to the current instance name
   /// @param topic_name is the name of the topic you want to create

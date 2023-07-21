@@ -414,9 +414,4 @@ void RosInterface::set2string(const std::unordered_set<std::string>& word_set, s
     result += it + " ";
 }
 
-void RosInterface::set2vector(const std::unordered_set<std::string>& word_set, std::vector<std::string>& result)
-{
-  std::copy(word_set.begin(), word_set.end(), std::back_inserter(result));
-}
-
 } // namespace ontologenius
