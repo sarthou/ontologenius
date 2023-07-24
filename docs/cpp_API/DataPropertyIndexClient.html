@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>SparqlClient Class (cpp) | Ontologenius 0.2.12</title>
+  <title>DataPropertyIndexClient Class (cpp) | Ontologenius 0.2.12</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -46,8 +46,8 @@
           <div id="contents-toggle" class=""></div>
           <h3>Contents</h3>
           <ul style="display: block;">
-            <li class="level1"><a href="#methods">Methods</a></li>
-            <li class="level1"><a href="#reimplemented-methods">Reimplemented Methods</a></li>
+            <li class="level1"><a href="#public-functions">Public Functions</a></li>
+            <li class="level1"><a href="#reimplemented-public-functions">Reimplemented Public Functions</a></li>
             <li class="level1"><a href="#details">Detailed Description</a></li>
           </ul>
         </div>
@@ -78,7 +78,7 @@
         <div class="contents">
           <div id="contents-toggle" class=""></div>
           <h3>
-            <i class="fas fa-angle-right"></i>
+            <i class="fas fa-angle-down"></i>
             <a href="CppAPI.html">
               All C++ Classes
             </a>
@@ -96,19 +96,20 @@
             <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
-            <li class="level1"><a href="SparqlClient.html"><b>SparqlClient</b></a></li>
+            <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
             <li class="level1"><a href="ClassIndexClient.html">ClassIndexClient</a></li>
             <li class="level1"><a href="ClientBaseIndex.html">ClientBaseIndex</a></li>
-            <li class="level1"><a href="DataPropertyIndexClient.html">DataPropertyIndexClient</a></li>
+            <li class="level1"><a href="DataPropertyIndexClient.html"><b>DataPropertyIndexClient</b></a></li>
             <li class="level1"><a href="IndividualIndexClient.html">IndividualIndexClient</a></li>
             <li class="level1"><a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></li>
             <li class="level1"><a href="OntologyIndexClient.html">OntologyIndexClient</a></li>
             <li class="level1"><a href="OntologyManipulatorIndex.html">OntologyManipulatorIndex</a></li>
             <li class="level1"><a href="SparqlIndexClient.html">SparqlIndexClient</a></li>
           </ul>
+          </br>
           <h3>
-            <i class="fas fa-angle-down"></i>
+            <i class="fas fa-angle-right"></i>
             <a href="../python_API/PythonAPI.html">
               All Python Classes
             </a>
@@ -117,117 +118,71 @@
       </div>
 
       <div class="context">
-        <h1 class="title">SparqlClient Class</h1>
-        <p>The SparqlClient class provides a ROS service to explore ontologenius with SPARQL-like queries. <a href="#details">More...</a></p>
+        <h1 class="title">DataPropertyIndexClient Class</h1>
+        <p>The DataPropertyIndexClient class provides a ROS service abstraction for data properties exploration. <a href="#details">More...</a></p>
+        <div class="table">
+          <table class="alignedsummary"><tbody>
+            <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clientsIndex/ontologyClients/DataPropertyIndexClient.h&quot;</span></td></tr>
+            <tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="OntologyIndexClient.html">OntologyIndexClient</a></td></tr>
+            <tr><td class="memItemLeft rightAlign topAlign"> Namespace:</td><td class="memItemRight bottomAlign"> onto</td></tr>
+          </tbody></table>
+        </div>
+
+        <a name="public-functions"></a>
+        <h2 id="public-functions">Public Functions</h2>
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clients/SparqlClient.h&quot;</span></td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> Namespace:</td><td class="memItemRight bottomAlign"> onto</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#DataPropertyIndexClient">DataPropertyIndexClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getDown">getDown</a></b>(int64_t <i>index</i>, int <i>depth</i> = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getDisjoint">getDisjoint</a></b>(int64_t <i>index</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getDomain">getDomain</a></b>(int64_t <i>index</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getRange">getRange</a></b>(int64_t <i>index</i>)</td></tr>
             </tbody>
           </table>
         </div>
 
-        <a name="methods"></a>
-        <h2 id="methods">Methods</h2>
-        <div class="table">
-          <table class="alignedsummary">
-            <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="SparqlClient.html#SparqlClient">SparqlClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;OntologeniusSparqlResponse&gt; </td><td class="memItemRight bottomAlign"><b><a href="SparqlClient.html#call">call</a></b>(const std::string&amp; <i>query</i>)</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <a name="reimplemented-public-functions"></a>
+        <h2 id="reimplemented-public-functions">Reimplemented Public Functions</h2>
+        <ul>
+          <li class="fn">10 public functions inherited from <a href="OntologyClient.html#public-functions">OntologyIndexClient</a></li>
+          <li class="fn">2 public functions inherited from <a href="ClientBase.html#public-functions">ClientBaseIndex</a></li>
+        </ul>
 
         <a name="details"></a>
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
-          <p>The SparqlClient class provides a ROS service to explore ontologenius with SPARQL-like queries.</p>
-          <p>The variables start with the symbol ? (e.g. ?my_var) and each triplet is separated by a dot.</p>
+          <p>The DataPropertyIndexClient class provides an abstraction of ontologenius data properties ROS service.</p>
+          <p>The ontologenius data properties service allows the exploration of data properties contained by ontologenius core using indexes.</p>
+          <p>This class is based on <a href="ClientBaseIndex.html">ClientBaseIndex</a> and so ensure a persistent connection with ontologenius/data_property_index service.
+             The persistent connection ensures a minimal response time.
+             A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>At the difference of the usual DataPropertyClient class, this one provides access to the interface based on indexes (integers) for better performances.</p>
         </div>
+
+        <p><b>See also </b><a href="DataPropertyClient.html">DataPropertyClient</a>.</p>
+
+        <p><b>See also </b><a href="IndividualIndexClient.html">IndividualIndexClient</a>, <a href="ClassIndexClient.html">ClassIndexClient</a> and <a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a>.</p>
 
         <div class="func">
-          <h2>Methods Documentation</h2>
+          <h2>Public Function Documentation</h2>
 
-          <h3 class="fn" id="SparqlClient"><a name="SparqlClient"></a><span class="name">SparqlClient</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Constructs a sparql client.</p>
+          <h3 class="fn" id="DataPropertyIndexClient"><a name="DataPropertyIndexClient"></a>DataPropertyIndexClient::<span class="name">DataPropertyIndexClient</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Constructs a data property client with a pointer to a NodeHandle <i>n</i>.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
 
-          <h3 class="fn" id="call"><a name="call"></a><span class="type">std::vector&lt;OntologeniusSparqlResponse&gt; </span><span class="name">call</span>(const <span class="type">std::string</span>&amp; <i>query</i>)</h3>
+          <h3 class="fn" id="getDown"><a name="getDown"></a><span class="type">std::vector&lt;int64_t&gt;</span> DataPropertyIndexClient::<span class="name">getDown</span>(<span class="type">int64_t</span> <i>index</i>, <span class="type">int</span> <i>depth</i> = -1)</h3>
+          <p>Gives all properties below the one given in the parameter: <i>index</i>.</p>
+          <p>The optional <i>depth</i> parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
 
-          <h2>Basic query Examples</h2>
+          <h3 class="fn" id="getDisjoint"><a name="getDisjoint"></a><span class="type">std::vector&lt;int64_t&gt;</span> DataPropertyIndexClient::<span class="name">getDisjoint</span>(<span class="type">int64_t</span> <i>index</i>)</h3>
+          <p>Gives all the disjoint properties of the property <i>index</i>.</p>
 
-          <p>The general structure is always the same:</p>
-          <div class="code_block">
-            <p>SELECT * // or ?x to get specific variables</p>
-            <p>WHERE {</p>
-            <p>   // pattern</p>
-            <p>}</p>
-          </div>
-          <p>You can also add the DISTINCT keyword just after the SELECT to ensure unique results.
-              The following blocks are examples of possible patterns.</p>
+          <h3 class="fn" id="getDomain"><a name="getDomain"></a><span class="type">std::vector&lt;int64_t&gt;</span> DataPropertyIndexClient::<span class="name">getDomain</span>(<span class="type">int64_t</span> <i>index</i>)</h3>
+          <p>Gives all the domain classes of the property <i>index</i>.</p>
 
-        <div class="code_block">
-          <p>Bedroom isA ?type</p>
-        </div>
-        <div class="code_block">
-          <p>results: </p>
-          <p>  - </p>
-          <p>    names: [type]</p>
-          <p>    values: [Room]</p>
-        </div>
-        <p>Give to class of Bedroom.</p>
-
-        <div class="code_block">
-          <p>?table isA Table</p>
-        </div>
-        <div class="code_block">
-          <p>results: </p>
-          <p>  - </p>
-          <p>    names: [table]</p>
-          <p>    values: [Table2]</p>
-          <p>  - </p>
-          <p>    names: [table]</p>
-          <p>    values: [Table1]</p>
-        </div>
-        <p>Give all the tables.</p>
-
-        <div class="code_block">
-          <p>Table1 isIn ?room</p>
-        </div>
-        <div class="code_block">
-          <p>results: </p>
-          <p>  - </p>
-          <p>    names: [room]</p>
-          <p>    values: [Bedroom]</p>
-        </div>
-        <p>Give all the individuals for which the individual 'Table1' is in it.</p>
-
-        <div class="code_block">
-          <p>?object isA Table. ?object isIn ?room</p>
-        </div>
-        <div class="code_block">
-          <p>results: </p>
-          <p>  - </p>
-          <p>    names: [object, room]</p>
-          <p>    values: [Table2, LivingRoom]</p>
-          <p>  - </p>
-          <p>    names: [object, room]</p>
-          <p>    values: [Table1, Bedroom]</p>
-        </div>
-        <p>Give all the individuals that are tables and the room in which they are.</p>
-
-        <h2>Query with negation</h2>
-        <div class="code_block">
-          <p>?object isA Table NOT EXISTS { ?object isIn LivingRoom }</p>
-        </div>
-        <div class="code_block">
-          <p>results: </p>
-          <p>  - </p>
-          <p>    names: [object]</p>
-          <p>    values: [Table1]</p>
-        </div>
-        <p>Give all the individuals that are tables and not in the living room.</p>
+          <h3 class="fn" id="getRange"><a name="getRange"></a><span class="type">std::vector&lt;int64_t&gt;</span> DataPropertyIndexClient::<span class="name">getRange</span>(<span class="type">int64_t</span> <i>index</i>)</h3>
+          <p>Gives all the ranges types of the property <i>index</i>.</p>
 
         </div>
       </div>

@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ClientBase Class (cpp) | Ontologenius 0.2.12</title>
+  <title>ClientBaseIndex Class (cpp) | Ontologenius 0.2.12</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -87,7 +87,7 @@
           <ul style="display: block;">
             <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
             <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
-            <li class="level1"><a href="ClientBase.html"><b>ClientBase</b></a></li>
+            <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
             <li class="level1"><a href="DataPropertyClient.html">DataPropertyClient</a></li>
             <li class="level1"><a href="FeederPublisher.html">FeederPublisher</a></li>
             <li class="level1"><a href="IndividualClient.html">IndividualClient</a></li>
@@ -100,7 +100,7 @@
             <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
             <li class="level1"><a href="ClassIndexClient.html">ClassIndexClient</a></li>
-            <li class="level1"><a href="ClientBaseIndex.html">ClientBaseIndex</a></li>
+            <li class="level1"><a href="ClientBaseIndex.html"><b>ClientBaseIndex</b></a></li>
             <li class="level1"><a href="DataPropertyIndexClient.html">DataPropertyIndexClient</a></li>
             <li class="level1"><a href="IndividualIndexClient.html">IndividualIndexClient</a></li>
             <li class="level1"><a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></li>
@@ -119,12 +119,12 @@
       </div>
 
       <div class="context">
-        <h1 class="title">ClientBase Class</h1>
-        <p>The ClientBase class provides a common ROS service abstraction. <a href="#details">More...</a></p>
+        <h1 class="title">ClientBaseIndex Class</h1>
+        <p>The ClientBaseIndex class provides a common ROS service abstraction. <a href="#details">More...</a></p>
         <div class="table">
           <table class="alignedsummary"><tbody>
-            <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clients/ClientBase.h&quot;</span></td></tr>
-            <tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <a href="OntologyClient.html">OntologyClient</a>, <a href="ActionClient.html">ActionClient</a>, <a href="ManagerClient.html">ManagerClient</a>, <a href="ReasonerClient.html">ReasonerClient</a></td></tr>
+            <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clientsIndex/ClientBaseIndex.h&quot;</span></td></tr>
+            <tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <a href="OntologyIndexClient.html">OntologyIndexClient</a></td></tr>
             <tr><td class="memItemLeft rightAlign topAlign"> Namespace:</td><td class="memItemRight bottomAlign"> onto</td></tr>
           </tbody></table>
         </div>
@@ -134,9 +134,9 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#ClientBase">ClientBase</a></b>(ros::NodeHandle* <i>n</i>, std::string <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> size_t </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#nb">nb</a></b>()</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#resetNb">resetNb</a></b>()</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#ClientBaseIndex">ClientBaseIndex</a></b>(ros::NodeHandle* <i>n</i>, std::string <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> size_t </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#nb">nb</a></b>()</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#resetNb">resetNb</a></b>()</td></tr>
             </tbody>
           </table>
         </div>
@@ -146,10 +146,12 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#call">call</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callStr">callStr</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callNR">callNR</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callBool">callBool</a></b>(ontologenius::OntologeniusService&amp; <i>srv</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#call">call</a></b>(ontologenius::OntologeniusIndexService&amp; <i>srv</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callIndexes">callIndexes</a></b>(ontologenius::OntologeniusIndexService&amp; <i>srv</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callStr">callStr</a></b>(ontologenius::OntologeniusIndexService&amp; <i>srv</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callIndex">callIndex</a></b>(ontologenius::OntologeniusIndexService&amp; <i>srv</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callNR">callNR</a></b>(ontologenius::OntologeniusIndexService&amp; <i>srv</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callBool">callBool</a></b>(ontologenius::OntologeniusIndexService&amp; <i>srv</i>)</td></tr>
             </tbody>
           </table>
         </div>
@@ -157,38 +159,48 @@
         <a name="details"></a>
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
-          <p>The ClientBase class provides an abstraction for any ROS services.</p>
+          <p>The ClientBaseIndex class provides an abstraction for any ROS services based on indexes.</p>
           <p>This class ensure a persistent connection with the service based on. The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
         </div>
+
+        <p><b>See also </b><a href="ClientBase.html">ClientBase</a>.</p>
 
         <div class="func">
           <h2>Public Function Documentation</h2>
 
-          <h3 class="fn" id="ClientBase"><a name="ClientBase"></a>ClientBase::<span class="name">ClientBase</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <h3 class="fn" id="ClientBaseIndex"><a name="ClientBaseIndex"></a>ClientBaseIndex::<span class="name">ClientBaseIndex</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Constructs a ROS client linked to the service <i>name</i> with a pointer to a NodeHandle <i>n</i>.</p>
 
-          <h3 class="fn" id="nb"><a name="nb"></a><span class="type">size_t</span> ClientBase::<span class="name">nb</span>()</h3>
-          <p>Gives the total number of service calls from all ClientBase instances since the last reset.</p>
+          <h3 class="fn" id="nb"><a name="nb"></a><span class="type">size_t</span> ClientBaseIndex::<span class="name">nb</span>()</h3>
+          <p>Gives the total number of service calls from all ClientBaseIndex instances since the last reset.</p>
 
-          <h3 class="fn" id="resetNb"><a name="resetNb"></a><span class="type"></span> ClientBase::<span class="name">resetNb</span>()</h3>
-          <p>Reset Call Counter for all instances of ClientBase.</p>
+          <h3 class="fn" id="resetNb"><a name="resetNb"></a><span class="type"></span> ClientBaseIndex::<span class="name">resetNb</span>()</h3>
+          <p>Reset Call Counter for all instances of ClientBaseIndex.</p>
 
           <h2>Protected Function Documentation</h2>
 
-          <h3 class="fn" id="call"><a name="call"></a>inline <span class="type">std::vector&lt;std::string&gt;</span> ClientBase::<span class="name">call</span>(<span class="type">ontologenius::OntologeniusService</span>&amp; <i>srv</i>)</h3>
-          <p>Calls the service set up in the constructor of ClientBase with the request <i>srv</i></p>
+          <h3 class="fn" id="call"><a name="call"></a>inline <span class="type">std::vector&lt;std::string&gt;</span> ClientBaseIndex::<span class="name">call</span>(<span class="type">ontologenius::OntologeniusIndexService</span>&amp; <i>srv</i>)</h3>
+          <p>Calls the service set up in the constructor of ClientBaseIndex with the request <i>srv</i></p>
           <p>If the service call fails, the first element of the returned vector is &quot;ERR:SERVICE_FAIL&quot;.</p>
 
-          <h3 class="fn" id="callStr"><a name="callStr"></a>inline <span class="type">std::string</span> ClientBase::<span class="name">callStr</span>(<span class="type">ontologenius::OntologeniusService</span>&amp; <i>srv</i>)</h3>
-          <p>Calls the service set up in the constructor of ClientBase with the request <i>srv</i></p>
+          <h3 class="fn" id="callIndexes"><a name="callIndexes"></a>inline <span class="type">std::vector&lt;int64_t&gt;</span> ClientBaseIndex::<span class="name">callIndexes</span>(<span class="type">ontologenius::OntologeniusIndexService</span>&amp; <i>srv</i>)</h3>
+          <p>Calls the service set up in the constructor of ClientBaseIndex with the request <i>srv</i></p>
+          <p>If the service call fails, the first element of the returned vector is 0.</p>
+
+          <h3 class="fn" id="callStr"><a name="callStr"></a>inline <span class="type">std::string</span> ClientBaseIndex::<span class="name">callStr</span>(<span class="type">ontologenius::OntologeniusIndexService</span>&amp; <i>srv</i>)</h3>
+          <p>Calls the service set up in the constructor of ClientBaseIndex with the request <i>srv</i></p>
           <p>If the service call fails, the returned value is &quot;ERR:SERVICE_FAIL&quot;.</p>
 
-          <h3 class="fn" id="callNR"><a name="callNR"></a>inline <span class="type">bool</span> ClientBase::<span class="name">callNR</span>(<span class="type">ontologenius::OntologeniusService</span>&amp; <i>srv</i>)</h3>
-          <p>Calls the service set up in the constructor of ClientBase with the request <i>srv</i></p>
+          <h3 class="fn" id="callIndex"><a name="callIndex"></a>inline <span class="type">int64_t</span> ClientBaseIndex::<span class="name">callIndex</span>(<span class="type">ontologenius::OntologeniusIndexService</span>&amp; <i>srv</i>)</h3>
+          <p>Calls the service set up in the constructor of ClientBaseIndex with the request <i>srv</i></p>
+          <p>If the service call fails or has no response, the returned value is 0.</p>
+
+          <h3 class="fn" id="callNR"><a name="callNR"></a>inline <span class="type">bool</span> ClientBaseIndex::<span class="name">callNR</span>(<span class="type">ontologenius::OntologeniusIndexService</span>&amp; <i>srv</i>)</h3>
+          <p>Calls the service set up in the constructor of ClientBaseIndex with the request <i>srv</i></p>
           <p>Returns false if the service call fails.</p>
 
-          <h3 class="fn" id="callBool"><a name="callBool"></a>inline <span class="type">bool</span> ClientBase::<span class="name">callBool</span>(<span class="type">ontologenius::OntologeniusService</span>&amp; <i>srv</i>)</h3>
-          <p>Calls the service set up in the constructor of ClientBase with the request <i>srv</i></p>
+          <h3 class="fn" id="callBool"><a name="callBool"></a>inline <span class="type">bool</span> ClientBaseIndex::<span class="name">callBool</span>(<span class="type">ontologenius::OntologeniusIndexService</span>&amp; <i>srv</i>)</h3>
+          <p>Calls the service set up in the constructor of ClientBaseIndex with the request <i>srv</i></p>
           <p>Returns false if the service call fails or the result code of the service is different from SUCCESS.</p>
 
         </div>

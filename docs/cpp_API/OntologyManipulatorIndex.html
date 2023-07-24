@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>OntologyManipulator Class (cpp) | Ontologenius 0.2.12</title>
+  <title>OntologyManipulatorIndex Class (cpp) | Ontologenius 0.2.12</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -94,7 +94,7 @@
             <li class="level1"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></li>
             <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
-            <li class="level1"><a href="OntologyManipulator.html"><b>OntologyManipulator</b></a></li>
+            <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -104,7 +104,7 @@
             <li class="level1"><a href="IndividualIndexClient.html">IndividualIndexClient</a></li>
             <li class="level1"><a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></li>
             <li class="level1"><a href="OntologyIndexClient.html">OntologyIndexClient</a></li>
-            <li class="level1"><a href="OntologyManipulatorIndex.html">OntologyManipulatorIndex</a></li>
+            <li class="level1"><a href="OntologyManipulatorIndex.html"><b>OntologyManipulatorIndex</b></a></li>
             <li class="level1"><a href="SparqlIndexClient.html">SparqlIndexClient</a></li>
           </ul>
           </br>
@@ -118,12 +118,12 @@
       </div>
 
       <div class="context">
-        <h1 class="title">OntologyManipulator Class</h1>
-        <p>The OntologyManipulator class is an object with instances of all classes needed to manipulate an ontology.<a href="#details">More...</a></p>
+        <h1 class="title">OntologyManipulatorIndex Class</h1>
+        <p>The OntologyManipulatorIndex class is an object with instances of all classes needed to manipulate an ontology based on indexes.<a href="#details">More...</a></p>
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/OntologyManipulator.h&quot;</span>
+              <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/OntologyManipulatorIndex.h&quot;</span>
               <tr><td class="memItemLeft rightAlign topAlign"> Namespace:</td><td class="memItemRight bottomAlign"> onto</td></tr>
             </tbody>
           </table>
@@ -133,14 +133,14 @@
         <h2 id="public-attributes">Public Attributes</h2>
         <div class="table">
           <ul>
-            <li class="fn"><b><a href="OntologyManipulator.html#individuals">individuals</a></b> : IndividualClient</li>
-            <li class="fn"><b><a href="OntologyManipulator.html#objectProperties">objectProperties</a></b> : ObjectPropertyClient</li>
-            <li class="fn"><b><a href="OntologyManipulator.html#dataProperties">dataProperties</a></b> : DataPropertyClient</li>
-            <li class="fn"><b><a href="OntologyManipulator.html#classes">classes</a></b> : ClassClient</li>
-            <li class="fn"><b><a href="OntologyManipulator.html#actions">actions</a></b> : ActionClient</li>
-            <li class="fn"><b><a href="OntologyManipulator.html#reasoners">reasoners</a></b> : ReasonerClient</li>
-            <li class="fn"><b><a href="OntologyManipulator.html#feeder">feeder</a></b> : FeederPublisher</li>
-            <li class="fn"><b><a href="OntologyManipulator.html#sparql">sparql</a></b> : SparqlClient</li>
+            <li class="fn"><b><a href="OntologyManipulatorIndex.html#individuals">individuals</a></b> : IndividualIndexClient</li>
+            <li class="fn"><b><a href="OntologyManipulatorIndex.html#objectProperties">objectProperties</a></b> : ObjectPropertyIndexClient</li>
+            <li class="fn"><b><a href="OntologyManipulatorIndex.html#dataProperties">dataProperties</a></b> : DataPropertyIndexClient</li>
+            <li class="fn"><b><a href="OntologyManipulatorIndex.html#classes">classes</a></b> : ClassIndexClient</li>
+            <li class="fn"><b><a href="OntologyManipulatorIndex.html#actions">actions</a></b> : ActionClient</li>
+            <li class="fn"><b><a href="OntologyManipulatorIndex.html#reasoners">reasoners</a></b> : ReasonerClient</li>
+            <li class="fn"><b><a href="OntologyManipulatorIndex.html#feeder">feeder</a></b> : FeederPublisher</li>
+            <li class="fn"><b><a href="OntologyManipulatorIndex.html#sparql">sparql</a></b> : SparqlIndexClient</li>
           </ul>
         </div>
 
@@ -149,12 +149,12 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#OntologyManipulator">OntologyManipulator</a></b>(const std::string&amp; <i>name</i> = &quot;&quot;)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#OntologyManipulatorCpy">OntologyManipulator</a></b>(const OntologyManipulator&amp; <i>other</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#close">close</a></b>()</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> size_t </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#nb">nb</a></b>()</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#resetNb">resetNb</a></b>()</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#verbose">verbose</a></b>(bool verbose)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulatorIndex.html#OntologyManipulatorIndex">OntologyManipulatorIndex</a></b>(const std::string&amp; <i>name</i> = &quot;&quot;)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulatorIndex.html#OntologyManipulatorCpy">OntologyManipulatorIndex</a></b>(const OntologyManipulatorIndex&amp; <i>other</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulatorIndex.html#close">close</a></b>()</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> size_t </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulatorIndex.html#nb">nb</a></b>()</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulatorIndex.html#resetNb">resetNb</a></b>()</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyManipulatorIndex.html#verbose">verbose</a></b>(bool verbose)</td></tr>
             </tbody>
           </table>
         </div>
@@ -162,25 +162,26 @@
         <a name="details"></a>
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
-          <p>The OntologyManipulator class is just an object to access all API ROS abstraction classes so that you can query and manage ontologenius.</p>
+          <p>The OntologyManipulatorIndex class is just an object to access all API ROS abstraction classes so that you can query and manage ontologenius.</p>
+          <p>At the difference of the usual OntologyManipulator class, this one provides access to the interfaces based on indexes (integers) for better performances.</p>
         </div>
 
-        <p><b>See also </b><a href="OntologiesManipulator.html">OntologiesManipulator</a>.</p>
+        <p><b>See also </b><a href="OntologiesManipulator.html">OntologiesManipulator</a> and <a href="OntologyManipulator.html">OntologyManipulator</a>.</p>
 
         <div class="attr">
           <h2>Public Attribute Documentation</h2>
 
-          <h3 class="fn" id="individuals"><a name="individuals"></a><span class="name">individuals</span> : <span class="type"><a href="IndividualClient.html">IndividualClient</a></span></h3>
-          <p>ROS service client to query ontologenius about individuals.</p>
+          <h3 class="fn" id="individuals"><a name="individuals"></a><span class="name">individuals</span> : <span class="type"><a href="IndividualIndexClient.html">IndividualIndexClient</a></span></h3>
+          <p>ROS service client to query ontologenius about individuals using indexes.</p>
 
-          <h3 class="fn" id="objectProperties"><a name="objectProperties"></a><span class="name">objectProperties</span> : <span class="type"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></span></h3>
-          <p>ROS service client to query ontologenius about object properties.</p>
+          <h3 class="fn" id="objectProperties"><a name="objectProperties"></a><span class="name">objectProperties</span> : <span class="type"><a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></span></h3>
+          <p>ROS service client to query ontologenius about object properties using indexes.</p>
 
-          <h3 class="fn" id="dataProperties"><a name="dataProperties"></a><span class="name">dataProperties</span> : <span class="type"><a href="DataPropertyClient.html">DataPropertyClient</a></span></h3>
-          <p>ROS service client to query ontologenius about data properties.</p>
+          <h3 class="fn" id="dataProperties"><a name="dataProperties"></a><span class="name">dataProperties</span> : <span class="type"><a href="DataPropertyIndexClient.html">DataPropertyIndexClient</a></span></h3>
+          <p>ROS service client to query ontologenius about data properties using indexes.</p>
 
-          <h3 class="fn" id="classes"><a name="classes"></a><span class="name">classes</span> : <span class="type"><a href="ClassClient.html">ClassClient</a></span></h3>
-          <p>ROS service client to query ontologenius about classes.</p>
+          <h3 class="fn" id="classes"><a name="classes"></a><span class="name">classes</span> : <span class="type"><a href="ClassIndexClient.html">ClassIndexClient</a></span></h3>
+          <p>ROS service client to query ontologenius about classes using indexes.</p>
 
           <h3 class="fn" id="actions"><a name="actions"></a><span class="name">actions</span> : <span class="type"><a href="ActionClient.html">ActionClient</a></span></h3>
           <p>ROS service client to manage the ontology instance.</p>
@@ -191,31 +192,31 @@
           <h3 class="fn" id="feeder"><a name="feeder"></a><span class="name">feeder</span> : <span class="type"><a href="FeederPublisher.html">FeederPublisher</a></span></h3>
           <p>ROS Publisher to insert and delete knowledge dynamically.</p>
 
-          <h3 class="fn" id="sparql"><a name="sparql"></a><span class="name">sparql</span> : <span class="type"><a href="SparqlClient.html">SparqlClient</a></span></h3>
-          <p>ROS service client to make SPARQL queries.</p>
+          <h3 class="fn" id="sparql"><a name="sparql"></a><span class="name">sparql</span> : <span class="type"><a href="SparqlIndexClient.html">SparqlIndexClient</a></span></h3>
+          <p>ROS service client to make SPARQL queries using indexes.</p>
         </div>
 
         <div class="func">
           <h2>Public Function Documentation</h2>
 
-          <h3 class="fn" id="OntologyManipulator"><a name="OntologyManipulator"></a>OntologyManipulator::<span class="name">OntologyManipulator</span>(const <span class="type">std::string</span>&amp; <i>name</i> = &quot;&quot;)</h3>
-          <p>Constructs an ontology manipulator.</p>
+          <h3 class="fn" id="OntologyManipulatorIndex"><a name="OntologyManipulatorIndex"></a>OntologyManipulatorIndex::<span class="name">OntologyManipulatorIndex</span>(const <span class="type">std::string</span>&amp; <i>name</i> = &quot;&quot;)</h3>
+          <p>Constructs an index based ontology manipulator.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, do not specify the ontology name <i>name</i>.</p>
 
-          <h3 class="fn" id="OntologyManipulatorCpy"><a name="OntologyManipulatorCpy"></a>OntologyManipulator::<span class="name">OntologyManipulator</span>(const <span class="type">OntologyManipulator</span>&amp; <i>other</i>)</h3>
-          <p>OntologyManipulator copy constructor.</p>
+          <h3 class="fn" id="OntologyManipulatorCpy"><a name="OntologyManipulatorCpy"></a>OntologyManipulatorIndex::<span class="name">OntologyManipulatorIndex</span>(const <span class="type">OntologyManipulatorIndex</span>&amp; <i>other</i>)</h3>
+          <p>OntologyManipulatorIndex copy constructor.</p>
 
-          <h3 class="fn" id="nb"><a name="nb"></a><span class="type">size_t</span> OntologyManipulator::<span class="name">nb</span>()</h3>
+          <h3 class="fn" id="nb"><a name="nb"></a><span class="type">size_t</span> OntologyManipulatorIndex::<span class="name">nb</span>()</h3>
           <p>Gives the total number of service calls from all ROS clients instances since the last reset.</p>
 
-          <h3 class="fn" id="resetNb"><a name="resetNb"></a><span class="type"></span> OntologyManipulator::<span class="name">resetNb</span>()</h3>
+          <h3 class="fn" id="resetNb"><a name="resetNb"></a><span class="type"></span> OntologyManipulatorIndex::<span class="name">resetNb</span>()</h3>
           <p>Reset Call Counter for all instances of ROS clients.</p>
 
-          <h3 class="fn" id="close"><a name="close"></a><span class="type">bool</span> OntologyManipulator::<span class="name">close</span>()</h3>
+          <h3 class="fn" id="close"><a name="close"></a><span class="type">bool</span> OntologyManipulatorIndex::<span class="name">close</span>()</h3>
           <p>Same as the ActionClient closing function. Link all the concepts loaded from files and the Internet. Before closing an ontology, exploration requests are not allowed.</p>
           <p>Returns false if the service call fails.</p>
 
-          <h3 class="fn" id="verbose"><a name="verbose"></a><span class="type"></span> OntologyManipulator::<span class="name">verbose</span>(<span class="type">bool</span> verbose)</h3>
+          <h3 class="fn" id="verbose"><a name="verbose"></a><span class="type"></span> OntologyManipulatorIndex::<span class="name">verbose</span>(<span class="type">bool</span> verbose)</h3>
           <p>If verbose is set to true, the clients will post messages about the failure to call the services and about their restoration.</p>
 
         </div>
