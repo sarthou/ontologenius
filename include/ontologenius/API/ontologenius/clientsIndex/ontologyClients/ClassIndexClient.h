@@ -26,7 +26,7 @@ public:
   /// @param depth can be set to limit tree propagation to a specific value.
   /// The default value -1 represents no propagation limitation.
   /// @param selector can be set to only get results inheriting from the selector class.
-  /// The default value "" represents no restriction on the result.
+  /// The default value 0 represents no restriction on the result.
   /// @return a vector of identifiers of classes.
   std::vector<int64_t> getDown(int64_t index, int depth = -1, int64_t selector = 0);
   /// @brief Gives all the disjoint classes of the one specified in the parameter.
@@ -38,21 +38,21 @@ public:
   /// @param index is the identifier of the class being the subject of the triplet.
   /// @param property is the identifier of the property being the predicat of the triplet.
   /// @param selector can be set to only get results inheriting from the selector class.
-  /// The default value "" represents no restriction on the result.
+  /// The default value 0 represents no restriction on the result.
   /// @return a vector of identifiers of classes.
   std::vector<int64_t> getOn(int64_t index, int64_t property, int64_t selector = 0);
   /// @brief Gives all the classes having the specified property pointing to the specified class.
   /// @param property is the identifier of the property being the predicat of the triplet.
   /// @param index is the identifier of the class being the object of the triplet.
   /// @param selector can be set to only get results inheriting from the selector class.
-  /// The default value "" represents no restriction on the result.
+  /// The default value 0 represents no restriction on the result.
   /// @return a vector of identifiers of classes.
   std::vector<int64_t> getFrom(int64_t property, int64_t index, int64_t selector = 0);
   /// @brief Gives all the properties linking the two specified classes.
   /// @param indiv_from is the identifier of the class being the subject of the triplet.
   /// @param indiv_to is the identifier of the class being the object of the triplet.
   /// @param selector can be set to only get results inheriting from the selector property.
-  /// The default value "" represents no restriction on the result.
+  /// The default value 0 represents no restriction on the result.
   /// @param depth can be set to limit tree propagation to a specific value.
   /// The default value -1 represents no propagation limitation.
   /// @return a vector of identifiers of properties.
@@ -91,7 +91,7 @@ public:
   /// @brief Gives all the properties for which the specified class is part of the domain.
   /// @param index is the identifier of an class.
   /// @param selector can be set to only get results inheriting from the selector property.
-  /// The default value "" represents no restriction on the result.
+  /// The default value 0 represents no restriction on the result.
   /// @param depth can be set to limit tree propagation of the class to a specific value.
   /// The default value -1 represents no propagation limitation.
   /// @return a vector of identifiers of properties.
@@ -99,7 +99,7 @@ public:
   /// @brief Gives all the properties for which the specified class is part of the range.
   /// @param index is the identifier of an class.
   /// @param selector can be set to only get results inheriting from the selector property.
-  /// The default value "" represents no restriction on the result.
+  /// The default value 0 represents no restriction on the result.
   /// @param depth can be set to limit tree propagation of the class to a specific value.
   /// The default value -1 represents no propagation limitation.
   /// @return a vector of identifiers of object properties.
