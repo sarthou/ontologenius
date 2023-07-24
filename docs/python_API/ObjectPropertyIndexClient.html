@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ActionClient Class (python) | Ontologenius 0.2.12</title>
+  <title>ObjectPropertyIndexClient Class (python) | Ontologenius 0.2.12</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -85,12 +85,12 @@
           </h3>
           <h3>
             <i class="fas fa-angle-down"></i>
-            <a href="/PythonAPI.html">
+            <a href="PythonAPI.html">
               All Python Classes
             </a>
           </h3>
           <ul style="display: block;">
-            <li class="level1"><a href="ActionClient.html"><b>ActionClient</b></a></li>
+            <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
             <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
             <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
             <li class="level1"><a href="DataPropertyClient.html">DataPropertyClient</a></li>
@@ -108,7 +108,7 @@
             <li class="level1"><a href="ClientBaseIndex.html">ClientBaseIndex</a></li>
             <li class="level1"><a href="DataPropertyIndexClient.html">DataPropertyIndexClient</a></li>
             <li class="level1"><a href="IndividualIndexClient.html">IndividualIndexClient</a></li>
-            <li class="level1"><a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></li>
+            <li class="level1"><a href="ObjectPropertyIndexClient.html"><b>ObjectPropertyIndexClient</b></a></li>
             <li class="level1"><a href="OntologyIndexClient.html">OntologyIndexClient</a></li>
             <li class="level1"><a href="OntologyManipulatorIndex.html">OntologyManipulatorIndex</a></li>
             <li class="level1"><a href="SparqlIndexClient.html">SparqlIndexClient</a></li>
@@ -117,15 +117,12 @@
       </div>
 
       <div class="context">
-        <h1 class="title">ActionClient Class</h1>
-        <p>The ActionClient class provides a common ROS service abstraction for ontologenius action service. <a href="#details">More...</a></p>
+        <h1 class="title">ObjectPropertyIndexClient Class</h1>
+        <p>The ObjectPropertyIndexClient class provides a ROS service abstraction for object properties exploration. <a href="#details">More...</a></p>
         <div class="table">
           <table class="alignedsummary">
-            <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span>
-              </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="ClientBase.html">ClientBase</a></td></tr>
-            </tbody>
-          </table>
+          <tbody><tr><td class="memItemLeft rightAlign topAlign"> Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span>
+          </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="OntologyIndexClient.html">OntologyIndexClient</a></td></tr></tbody></table>
         </div>
 
         <a name="methods"></a>
@@ -133,15 +130,12 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#__init__">__init__</a></b>(self, name)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#close">close</a></b>(self)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#save">save</a></b>(self, path)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#export">export</a></b>(self, path)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#setLang">setLang</a></b>(self, lang)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#getLang">getLang</a></b>(self)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#add">add</a></b>(self, uri)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#fadd">fadd</a></b>(self, file)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#reset">reset</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyIndexClient.html#__init__">__init__</a></b>(self, name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyIndexClient.html#getDown">getDown</a></b>(self, index, depth = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyIndexClient.html#getDisjoint">getDisjoint</a></b>(self, index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyIndexClient.html#getDomain">getDomain</a></b>(self, index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyIndexClient.html#getRange">getRange</a></b>(self, index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyIndexClient.html#getInverse">getInverse</a></b>(self, index)</td></tr>
             </tbody>
           </table>
         </div>
@@ -149,59 +143,46 @@
         <a name="reimplemented-methods"></a>
         <h2 id="reimplemented-methods">Reimplemented Methods</h2>
         <ul>
-          <li class="fn">2 methods inherited from <a href="ClientBase.html#methods">ClientBase</a></li>
+          <li class="fn">10 methods inherited from <a href="OntologyIndexClient.html#methods">OntologyIndexClient</a></li>
+          <li class="fn">2 methods inherited from <a href="ClientIndexBase.html#methods">ClientIndexBase</a></li>
         </ul>
 
         <a name="details"></a>
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
-          <p>The ActionClient class provides an abstraction ontologenius action ROS services.</p>
-          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with the service based on. The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>The ObjectPropertyIndexClient class provides an abstraction of ontologenius object properties ROS service.</p>
+          <p>The ontologenius object properties service allows the exploration of object properties contained by ontologenius core based on indexes.</p>
+          <p>This class is based on <a href="ClientIndexBase.html">ClientIndexBase</a> and so ensure a persistent connection with ontologenius/object_property_index service.
+             The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>At the difference of the usual ObjectPropertyClient class, this one provides access to the interface based on indexes (integers) for better performances.</p>
         </div>
+
+        <p><b>See also </b><a href="ObjectPropertyClient.html">ObjectPropertyClient</a>.</p>
+
+        <p><b>See also </b><a href="ClassIndexClient.html">ClassIndexClient</a>, <a href="IndividualIndexClient.html">IndividualIndexClient</a> and <a href="DataPropertyIndexClient.html">DataPropertyIndexClient</a>.</p>
 
         <div class="func">
           <h2>Methods Documentation</h2>
 
           <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self, name)</h3>
-          <p>Constructs an action client.</p>
-          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, <i>name</i>(str) should be defined as ''.</p>
+          <p>Constructs a class client.</p>
+          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, <i>name</i> should be defined as ''.</p>
 
-          <h3 class="fn" id="close"><a name="close"></a><span class="name">close</span>(self)</h3>
-          <p>Link all the concepts loaded from files and the Internet. Before closing an ontology, exploration requests are not allowed.</p>
-          <p>Returns False if the service call fails.</p>
+          <h3 class="fn" id="getDown"><a name="getDown"></a><span class="name">getDown</span>(self, index, depth = -1)</h3>
+          <p>Gives all properties (integer[]) below the one given in the parameter: <i>index</i>(integer).</p>
+          <p>The optional <i>depth</i>(integer) parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
 
-          <h3 class="fn" id="save"><a name="save"></a><span class="name">save</span>(self, path)</h3>
-          <p>Saves the current ontology in the absolute <i>path</i>(str) path. The <i>path</i>(str) parameter must be of the form: my/path/to/ontology.owl</p>
-          <p>Returns False if the service call fails.</p>
+          <h3 class="fn" id="getDisjoint"><a name="getDisjoint"></a><span class="name">getDisjoint</span>(self, index)</h3>
+          <p>Gives all the disjoint properties (integer[]) of the property <i>index</i>(integer).</p>
 
-          <h3 class="fn" id="export"><a name="export"></a><span class="name">export</span>(self, path)</h3>
-          <p>Exports the current modification tree in the absolute <i>path</i>(str) path. The <i>path</i>(str) parameter must be of the form: my/path/to/file.xml</p>
-          <p>This function has no effect on non copied ontologies.</p>
-          <p>Returns False if the service call fails.</p>
+          <h3 class="fn" id="getDomain"><a name="getDomain"></a><span class="name">getDomain</span>(self, index)</h3>
+          <p>Gives all the domain classes (integer[]) of the property <i>index</i>(integer).</p>
 
-          <h3 class="fn" id="setLang"><a name="setLang"></a><span class="name">setLang</span>(self, lang)</h3>
-          <p>Sets the language of work <i>lang</i>(str).</p>
-          <p>Returns False if the service call fails.</p>
+          <h3 class="fn" id="getRange"><a name="getRange"></a><span class="name">getRange</span>(self, index)</h3>
+          <p>Gives all the ranges classes (integer[]) of the property <i>index</i>(integer).</p>
 
-          <h3 class="fn" id="getLang"><a name="getLang"></a><span class="name">getLang</span>(self)</h3>
-          <p>Return the working language (str).</p>
-
-          <h3 class="fn" id="add"><a name="add"></a><span class="name">add</span>(self, uri)</h3>
-          <p>Load an ontology file (.owl or .ttl) stored at <i>uri</i>(str) from the internet. The Close function should be called after all the desired files have been loaded.</p>
-          <p>The owl files can use the import attribute to import additional files. Imported files can be Github URL, Gitlab URL, raw URL or local path. In all cases, Ontologenius 
-            will try to identify a ROS package in the paths and will use your local package if it exists.</p>
-          <p>Returns False if the service call fails.</p>
-
-          <h3 class="fn" id="fadd"><a name="fadd"></a><span class="name">fadd</span>(self, file)</h3>
-          <p>Load an ontology file (.owl or .ttl) stored at <i>file</i>(str) from your local computer. The Close function should be called after all the desired files have been loaded.</p>
-          <p>The owl files can use the import attribute to import additional files. Imported files can be Github URL, Gitlab URL, raw URL or local path. In all cases, Ontologenius 
-            will try to identify a ROS package in the paths and will use your local package if it exists.</p>
-          <p>Returns False if the service call fails.</p>
-
-
-          <h3 class="fn" id="reset"><a name="reset"></a><span class="name">reset</span>(self)</h3>
-          <p>Unload all the knowledge previously loaded or learned.</p>
-          <p>Returns False if the service call fails.</p>
+          <h3 class="fn" id="getInverse"><a name="getInverse"></a><span class="name">getInverse</span>(self, index)</h3>
+          <p>Gives all the inverses properties (integer[]) of the property <i>index</i>(integer).</p>
 
         </div>
       </div>
