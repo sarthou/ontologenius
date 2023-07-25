@@ -13,7 +13,7 @@ OntologyManipulatorIndex::OntologyManipulatorIndex(const std::string& name) : na
                                                                     feeder(&n_, name),
                                                                     sparql(&n_, name)
 {
-  std::string service_name = (name == "") ? "ontologenius/sparql_index" : "ontologenius/sparql_index/" + name;
+  std::string service_name = (name == "") ? "ontologenius/convertion" : "ontologenius/convertion/" + name;
   ros::service::waitForService(service_name);
 }
 
@@ -27,7 +27,7 @@ OntologyManipulatorIndex::OntologyManipulatorIndex(const OntologyManipulatorInde
                                                                       feeder(&n_, other.name_),
                                                                       sparql(&n_, other.name_)
 {
-  std::string service_name = (name_ == "") ? "ontologenius/sparql_index" : "ontologenius/sparql_index/" + name_;
+  std::string service_name = (name_ == "") ? "ontologenius/convertion" : "ontologenius/convertion/" + name_;
   ros::service::waitForService(service_name);
 }
 
@@ -41,7 +41,7 @@ OntologyManipulatorIndex::OntologyManipulatorIndex(OntologyManipulatorIndex&& ot
                                                                       feeder(&n_, other.name_),
                                                                       sparql(&n_, other.name_)
 {
-  std::string service_name = (name_ == "") ? "ontologenius/sparql_index" : "ontologenius/sparql_index/" + name_;
+  std::string service_name = (name_ == "") ? "ontologenius/convertion" : "ontologenius/convertion/" + name_;
   ros::service::waitForService(service_name);
 }
 

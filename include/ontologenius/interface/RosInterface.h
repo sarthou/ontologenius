@@ -16,6 +16,7 @@
 #include "ontologenius/OntologeniusSparqlService.h"
 #include "ontologenius/OntologeniusIndexService.h"
 #include "ontologenius/OntologeniusSparqlIndexService.h"
+#include "ontologenius/OntologeniusConvertion.h"
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/reasoner/Reasoners.h"
@@ -164,6 +165,10 @@ public:
   /// @brief The ROS service callback in charge of the reasoners
   bool reasonerHandle(ontologenius::OntologeniusService::Request &req,
                       ontologenius::OntologeniusService::Response &res);
+
+  /// @brief The ROS service callback in charge of the convertion from index to identifier and inverse
+  bool convertionHandle(ontologenius::OntologeniusConvertion::Request &req,
+                        ontologenius::OntologeniusConvertion::Response &res);
 
   /// @brief The thread that periodically manages the update of the ontology with the incoming instructions 
   void feedThread();

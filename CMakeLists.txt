@@ -83,7 +83,7 @@ catkin_python_setup()
  add_service_files(
   FILES
   REST.srv
-  standard_service.srv
+  OntologeniusConvertion.srv
   OntologeniusService.srv
   OntologeniusIndexService.srv
   OntologeniusSparqlService.srv

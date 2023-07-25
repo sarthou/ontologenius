@@ -152,6 +152,9 @@ void RosInterface::run()
   ros::ServiceServer service_sparql_index = n_.advertiseService(getTopicName("sparql_index"), &RosInterface::sparqlIndexHandle, this);
   (void)service_sparql_index;
 
+  ros::ServiceServer service_convertion = n_.advertiseService(getTopicName("convertion"), &RosInterface::convertionHandle, this);
+  (void)service_convertion;
+
   if(name_ != "")
     Display::info(name_ + " is ready");
   else
@@ -276,6 +279,44 @@ bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &re
   else
     res.code = UNKNOW_ACTION;
   reasoner_mutex_.unlock();
+
+  return true;
+}
+
+bool RosInterface::convertionHandle(ontologenius::OntologeniusConvertion::Request &req,
+                                    ontologenius::OntologeniusConvertion::Response &res)
+{
+  if(req.values_int.size())
+  {
+    if(req.source == req.INDIVIDUALS)
+      res.values_str = onto_->individual_graph_.getIdentifiers(req.values_int);
+    else if(req.source == req.CLASSES)
+      res.values_str = onto_->class_graph_.getIdentifiers(req.values_int);
+    else if(req.source == req.DATA_PROPERTIES)
+      res.values_str = onto_->data_property_graph_.getIdentifiers(req.values_int);
+    else if(req.source == req.OBJECT_PROPERTIES)
+      res.values_str = onto_->object_property_graph_.getIdentifiers(req.values_int);
+    else if(req.source == req.LITERAL)
+      res.values_str = onto_->data_property_graph_.getLiteralIdentifiers(req.values_int);
+    else
+      return false;
+  }
+
+  if(req.values_str.size())
+  {
+    if(req.source == req.INDIVIDUALS)
+      res.values_int = onto_->individual_graph_.getIndexes(req.values_str);
+    else if(req.source == req.CLASSES)
+      res.values_int = onto_->class_graph_.getIndexes(req.values_str);
+    else if(req.source == req.DATA_PROPERTIES)
+      res.values_int = onto_->data_property_graph_.getIndexes(req.values_str);
+    else if(req.source == req.OBJECT_PROPERTIES)
+      res.values_int = onto_->object_property_graph_.getIndexes(req.values_str);
+    else if(req.source == req.LITERAL)
+      res.values_int = onto_->data_property_graph_.getIndexes(req.values_str);
+    else
+      return false;
+  }
 
   return true;
 }

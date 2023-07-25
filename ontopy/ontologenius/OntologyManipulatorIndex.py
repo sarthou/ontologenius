@@ -21,7 +21,7 @@ class OntologyManipulatorIndex:
         self.feeder = FeederPublisher(name)
         self.sparql = SparqlIndexClient(name)
 
-        service_name = "ontologenius/sparql_index"
+        service_name = "ontologenius/convertion"
         if name != '':
             service_name+= "/" + name
         rospy.wait_for_service(service_name)
