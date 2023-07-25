@@ -66,7 +66,7 @@ public:
   /// @param selector can be set to only get results inheriting from the selector concept.
   /// @return The result of this function depends on the setting of the working language.
   std::vector<std::string> findRegex(const std::string& regex, bool take_id = true, const std::string& selector = "");
-  /// @brief Gives all the concepts with the lowest edit distance with the name passed in argument.
+  /// @brief Gives all the names of concepts with the lowest edit distance with the name passed in argument.
   /// @param name is a concept name in natural language.
   /// @param threshold is the minimum editing distance.
   /// This value corresponds to the number of changes to be made to pass from one

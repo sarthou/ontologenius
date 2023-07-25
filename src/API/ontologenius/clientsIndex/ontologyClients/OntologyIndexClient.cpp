@@ -100,7 +100,7 @@ std::vector<int64_t> OntologyIndexClient::findRegex(const std::string& regex, bo
   return callIndexes(srv);
 }
 
-std::vector<int64_t> OntologyIndexClient::findFuzzy(const std::string& name, double threshold, bool take_id, int64_t selector)
+std::vector<std::string> OntologyIndexClient::findFuzzy(const std::string& name, double threshold, bool take_id, int64_t selector)
 {
   ontologenius::OntologeniusIndexService srv;
 
@@ -111,7 +111,7 @@ std::vector<int64_t> OntologyIndexClient::findFuzzy(const std::string& name, dou
   if(selector != 0)
     srv.request.param += " -s " + std::to_string(selector);
 
-  return callIndexes(srv);
+  return call(srv);
 }
 
 bool OntologyIndexClient::exist(int64_t index)

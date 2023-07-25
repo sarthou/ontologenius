@@ -66,7 +66,7 @@ public:
   /// @param selector can be set to only get results inheriting from the selector concept.
   /// @return The result of this function depends on the setting of the working language.
   std::vector<int64_t> findRegex(const std::string& regex, bool take_id = true, int64_t selector = 0);
-  /// @brief Gives all the concepts with the lowest edit distance with the name passed in argument.
+  /// @brief Gives all the names of concepts with the lowest edit distance with the name passed in argument.
   /// @param name is a concept name in natural language.
   /// @param threshold is the minimum editing distance.
   /// This value corresponds to the number of changes to be made to pass from one
@@ -74,7 +74,7 @@ public:
   /// @param take_id can be set to false if you do not want to consider the concept identifier as a possible default name.
   /// @param selector can be set to only get results inheriting from the selector concept.
   /// @return The result of this function depends on the setting of the working language.
-  std::vector<int64_t> findFuzzy(const std::string& name, double threshold = 0.5, bool take_id = true, int64_t selector = 0);
+  std::vector<std::string> findFuzzy(const std::string& name, double threshold = 0.5, bool take_id = true, int64_t selector = 0);
   /// @brief test if a concept exist in the subpart of the ontology managed by the client
   /// (i.e. class, individuals, object properties, data properties).
   /// @param index is a concept indentifier as an integer.
