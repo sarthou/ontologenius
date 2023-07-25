@@ -195,35 +195,8 @@ target_link_libraries(ontologenius_drawer_lib
 )
 
 ##############################
-## INTERPRETER
+## API
 ##############################
-
-#add_onto_library(ontologenius_codeDescription_lib
-#  src/interpreter/codeDescription/Types/VariablesType.cpp
-#  src/interpreter/codeDescription/Types/StringType.cpp
-#  src/interpreter/codeDescription/Functions/FunctionDescriptor.cpp
-#  src/interpreter/codeDescription/Functions/FunctionContainer.cpp
-#  src/interpreter/codeDescription/Functions/OntoFunctions.cpp
-#  src/interpreter/codeDescription/Functions/PropertyFunctions.cpp
-#  src/interpreter/codeDescription/TextManipulator.cpp
-#  src/interpreter/codeDescription/Code.cpp
-#  src/interpreter/codeDescription/Namespace.cpp
-#  src/interpreter/codeDescription/Syntax/Operators.cpp
-#  src/interpreter/codeDescription/Syntax/IfelseCF.cpp
-#  src/interpreter/fileManagers/FileManager.cpp
-#  src/interpreter/fileManagers/FileWriter.cpp
-#)
-
-#add_onto_library(ontologenius_interpreter_lib
-#  src/interpreter/Parser.cpp
-#  src/interpreter/Error.cpp
-#  src/interpreter/Compiler.cpp
-#)
-#target_link_libraries(ontologenius_interpreter_lib
-# PUBLIC
-#  ontologenius_codeDescription_lib
-#  ontologenius_ontoGraphs_lib
-#)
 
 add_onto_library(ontologenius_lib
   src/API/ontologenius/clients/ontologyClients/IndividualClient.cpp
@@ -250,7 +223,6 @@ add_onto_library(ontologenius_lib
 )
 target_link_libraries(ontologenius_lib
  PUBLIC
-#  ontologenius_interpreter_lib
   ontologenius_core_lib
 )
 
