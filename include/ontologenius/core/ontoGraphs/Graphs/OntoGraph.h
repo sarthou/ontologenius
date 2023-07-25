@@ -110,11 +110,7 @@ public:
   }
 
 protected:
-  std::map<std::string, B*> branchs_;
-  std::map<std::string, B*> roots_;
   std::vector<B*> all_branchs_;
-
-  std::map<std::string, B*> tmp_mothers_;
   
   void amIA(B** me, std::map<std::string, B*>& vect, const std::string& value, bool erase = true);
 
@@ -135,8 +131,6 @@ OntoGraph<B>::~OntoGraph()
   for(auto& branch : all_branchs_)
     delete branch;
 
-  branchs_.clear();
-  roots_.clear();
   all_branchs_.clear();
 }
 
@@ -144,15 +138,6 @@ template <typename B>
 void OntoGraph<B>::close()
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-
-  roots_.insert(tmp_mothers_.begin(), tmp_mothers_.end());
-
-  tmp_mothers_.clear();
-
-  //link();
-
-  std::transform(roots_.cbegin(), roots_.cend(), std::back_inserter(all_branchs_), [](auto map_it){ return map_it.second; });
-  std::transform(branchs_.cbegin(), branchs_.cend(), std::back_inserter(all_branchs_), [](auto map_it){ return map_it.second; });
 
   this->container_.load(all_branchs_);
 }

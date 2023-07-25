@@ -24,73 +24,44 @@ ClassGraph::ClassGraph(const ClassGraph& other, IndividualGraph* individual_grap
 
   language_ = other.language_;
 
-  for(const auto& root : other.roots_)
+  for(auto branch : other.all_branchs_)
   {
-    auto class_branch = new ClassBranch_t(root.first);
-    roots_[root.first] = class_branch;
-    all_branchs_.push_back(class_branch);
-  }
-
-  for(const auto& branch : other.branchs_)
-  {
-    auto class_branch = new ClassBranch_t(branch.first);
-    branchs_[branch.first] = class_branch;
+    auto class_branch = new ClassBranch_t(branch->value());
     all_branchs_.push_back(class_branch);
   }
 
   this->container_.load(all_branchs_);
 }
 
-ClassBranch_t* ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector, bool direct_load)
+ClassBranch_t* ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-  ClassBranch_t* me = nullptr;
-  //am I a created mother ?
-  amIA(&me, tmp_mothers_, value);
-
-  //am I a created branch ?
-  amIA(&me, branchs_, value);
-
-  //am I a created root ?
-  amIA(&me, roots_, value);
 
   //am I created ?
+  ClassBranch_t* me = container_.find(value);
   if(me == nullptr)
   {
     me = new ClassBranch_t(value);
-    if(direct_load)
-    {
-      all_branchs_.push_back(me);
-      this->container_.insert(me);
-    }
+    all_branchs_.push_back(me);
+    this->container_.insert(me);
   }
 
-  //am I a root ?
-  if(me->mothers_.size() + object_vector.mothers_.size() == 0)
-    roots_[value] = me;
-  else
+  /**********************
+  ** Class assertion
+  **********************/
+  //for all my mothers
+  for(auto& mother : object_vector.mothers_)
   {
-    /**********************
-    ** Class assertion
-    **********************/
-    //for all my mothers
-    for(auto& mother : object_vector.mothers_)
+    ClassBranch_t* mother_branch = container_.find(mother.elem);
+    if(mother_branch == nullptr)
     {
-      ClassBranch_t* mother_branch = nullptr;
-      getInMap(&mother_branch, mother.elem, roots_);
-      getInMap(&mother_branch, mother.elem, branchs_);
-      getInMap(&mother_branch, mother.elem, tmp_mothers_);
-      if(mother_branch == nullptr)
-      {
-        mother_branch = new ClassBranch_t(mother.elem);
-        tmp_mothers_[mother_branch->value()] = mother_branch;
-      }
-
-      conditionalPushBack(mother_branch->childs_, ClassElement_t(me, mother.probability, true));
-      conditionalPushBack(me->mothers_, ClassElement_t(mother_branch, mother.probability));
+      mother_branch = new ClassBranch_t(mother.elem);
+      all_branchs_.push_back(mother_branch);
+      this->container_.insert(mother_branch);
     }
-    //but i am also a branch
-    branchs_[me->value()] = me;
+
+    conditionalPushBack(mother_branch->childs_, ClassElement_t(me, mother.probability, true));
+    conditionalPushBack(me->mothers_, ClassElement_t(mother_branch, mother.probability));
   }
 
   /**********************
@@ -99,14 +70,12 @@ ClassBranch_t* ClassGraph::add(const std::string& value, ObjectVectors_t& object
   //for all my disjoints
   for(auto& disjoint : object_vector.disjoints_)
   {
-    ClassBranch_t* disjoint_branch = nullptr;
-    getInMap(&disjoint_branch, disjoint.elem, roots_);
-    getInMap(&disjoint_branch, disjoint.elem, branchs_);
-    getInMap(&disjoint_branch, disjoint.elem, tmp_mothers_);
+    ClassBranch_t* disjoint_branch = container_.find(disjoint.elem);
     if(disjoint_branch == nullptr)
     {
       disjoint_branch = new ClassBranch_t(disjoint.elem);
-      tmp_mothers_[disjoint_branch->value()] = disjoint_branch;
+      all_branchs_.push_back(disjoint_branch);
+      this->container_.insert(disjoint_branch);
     }
 
     conditionalPushBack(me->disjoints_, ClassElement_t(disjoint_branch, disjoint.probability));
@@ -140,21 +109,12 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
   for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
-    ClassBranch_t* me = nullptr;
-    //Am I a root ?
-    amIA(&me, roots_, disjoints[disjoints_i], false);
-
-    //Am I a branch ?
-    amIA(&me, branchs_, disjoints[disjoints_i], false);
-
-    //Am I a tmp_mother ?
-    amIA(&me, tmp_mothers_, disjoints[disjoints_i], false);
-
-    // I don't exist ? so I will be a tmp_mother
+    ClassBranch_t* me = container_.find(disjoints[disjoints_i]);
     if(me == nullptr)
     {
       me = new ClassBranch_t(disjoints[disjoints_i]);
-      tmp_mothers_[me->value()] = me;
+      all_branchs_.push_back(me);
+      this->container_.insert(me);
     }
 
     //for all my disjoints ...
@@ -163,25 +123,16 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
       //... excepted me
       if(disjoints_i != disjoints_j)
       {
-        bool i_find_my_disjoint = false;
-
-        //is a root my disjoint ?
-        isMyDisjoint(me, disjoints[disjoints_j], roots_, i_find_my_disjoint, false);
-
-        //is a branch my disjoint ?
-        isMyDisjoint(me, disjoints[disjoints_j], branchs_, i_find_my_disjoint, false);
-
-        //is a tmp mother is my disjoint ?
-        isMyDisjoint(me, disjoints[disjoints_j], tmp_mothers_, i_find_my_disjoint, false);
-
-        //I create my disjoint
-        if(!i_find_my_disjoint)
+        ClassBranch_t* disjoint_branch = container_.find(disjoints[disjoints_j]);
+        if(disjoint_branch == nullptr)
         {
-          auto my_disjoint = new ClassBranch_t(disjoints[disjoints_j]);
-          me->disjoints_.emplace_back(my_disjoint);
-          my_disjoint->disjoints_.emplace_back(me); // TODO do not save
-          tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother
+          disjoint_branch = new ClassBranch_t(disjoints[disjoints_j]);
+          all_branchs_.push_back(disjoint_branch);
+          this->container_.insert(disjoint_branch);
         }
+
+        conditionalPushBack(me->disjoints_, ClassElement_t(disjoint_branch));
+        conditionalPushBack(disjoint_branch->disjoints_, ClassElement_t(me, 1.0, true));
       }
     }
   }
@@ -195,26 +146,21 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
 
 void ClassGraph::addObjectRelation(ClassBranch_t* me, Pair_t<std::string, std::string>& relation)
 {
-  ObjectPropertyBranch_t* property_branch = nullptr;
-  getInMap(&property_branch, relation.first, object_property_graph_->roots_);
-  getInMap(&property_branch, relation.first, object_property_graph_->branchs_);
-  getInMap(&property_branch, relation.first, object_property_graph_->tmp_mothers_);
+  ObjectPropertyBranch_t* property_branch = object_property_graph_->container_.find(relation.first);
   if(property_branch == nullptr)
   {
     ObjectPropertyVectors_t empty_vectors;
     object_property_graph_->add(relation.first, empty_vectors);
-    getInMap(&property_branch, relation.first, object_property_graph_->roots_);
+    property_branch = object_property_graph_->container_.find(relation.first);
   }
   property_branch->annotation_usage_ = true;
 
-  ClassBranch_t* class_branch = nullptr;
-  getInMap(&class_branch, relation.second, roots_);
-  getInMap(&class_branch, relation.second, branchs_);
-  getInMap(&class_branch, relation.second, tmp_mothers_);
+  ClassBranch_t* class_branch = container_.find(relation.second);
   if(class_branch == nullptr)
   {
     class_branch = new ClassBranch_t(relation.second);
-    tmp_mothers_[class_branch->value()] = class_branch;
+    all_branchs_.push_back(class_branch);
+    this->container_.insert(class_branch);
   }
 
   me->object_relations_.emplace_back(property_branch, class_branch, relation.probability);
@@ -222,15 +168,12 @@ void ClassGraph::addObjectRelation(ClassBranch_t* me, Pair_t<std::string, std::s
 
 void ClassGraph::addDataRelation(ClassBranch_t* me, Pair_t<std::string, std::string>& relation)
 {
-  DataPropertyBranch_t* property_branch = nullptr;
-  getInMap(&property_branch, relation.first, data_property_graph_->roots_);
-  getInMap(&property_branch, relation.first, data_property_graph_->branchs_);
-  getInMap(&property_branch, relation.first, data_property_graph_->tmp_mothers_);
+  DataPropertyBranch_t* property_branch = data_property_graph_->container_.find(relation.first);
   if(property_branch == nullptr)
   {
     DataPropertyVectors_t empty_vectors;
     data_property_graph_->add(relation.first, empty_vectors);
-    getInMap(&property_branch, relation.first, data_property_graph_->roots_);
+    property_branch = data_property_graph_->container_.find(relation.first);
   }
   property_branch->annotation_usage_ = true;
 
@@ -1605,11 +1548,8 @@ bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* 
 
 void ClassGraph::deepCopy(const ClassGraph& other)
 {
-  for(const auto& root : other.roots_)
-    cpyBranch(root.second, roots_[root.first]);
-
-  for(const auto& branch : other.branchs_)
-    cpyBranch(branch.second, branchs_[branch.first]);
+  for(size_t i = 0; i < other.all_branchs_.size(); i++)
+    cpyBranch(other.all_branchs_[i], all_branchs_[i]);
 }
 
 void ClassGraph::cpyBranch(ClassBranch_t* old_branch, ClassBranch_t* new_branch)

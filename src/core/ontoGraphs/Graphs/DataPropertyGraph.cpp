@@ -17,17 +17,9 @@ DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other, ClassGraph*
 
   language_ = other.language_;
 
-  for(const auto& root : other.roots_)
+  for(const auto& branch : other.all_branchs_)
   {
-    auto prop_branch = new DataPropertyBranch_t(root.first);
-    roots_[root.first] = prop_branch;
-    all_branchs_.push_back(prop_branch);
-  }
-
-  for(const auto& branch : other.branchs_)
-  {
-    auto prop_branch = new DataPropertyBranch_t(branch.first);
-    branchs_[branch.first] = prop_branch;
+    auto prop_branch = new DataPropertyBranch_t(branch->value());
     all_branchs_.push_back(prop_branch);
   }
 
@@ -37,63 +29,39 @@ DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other, ClassGraph*
 DataPropertyBranch_t* DataPropertyGraph::newDefaultBranch(const std::string& name)
 {
   auto branch = new DataPropertyBranch_t(name);
-  roots_[name] = branch;
   all_branchs_.push_back(branch);
   container_.insert(branch);
   return branch;
 }
 
-DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& property_vectors, bool direct_load)
+DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& property_vectors)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
   /**********************
   ** Mothers
   **********************/
-  DataPropertyBranch_t* me = nullptr;
-  //am I a created mother ?
-  amIA(&me, tmp_mothers_, value);
-
-  //am I a created branch ?
-  amIA(&me, branchs_, value);
-
-  //am I a created root ?
-  amIA(&me, roots_, value);
-
+  DataPropertyBranch_t* me = this->container_.find(value);
   //am I created ?
   if(me == nullptr)
   {
     me = new DataPropertyBranch_t(value);
-    if(direct_load)
-    {
-      all_branchs_.push_back(me);
-      container_.insert(me);
-    }
+    all_branchs_.push_back(me);
+    container_.insert(me);
   }
 
-  //am I a root ?
-  if(me->mothers_.size() + property_vectors.mothers_.size() == 0)
-    roots_[me->value()] = me;
-  else
+  //for all my mothers
+  for(auto& mother : property_vectors.mothers_)
   {
-    //for all my mothers
-    for(auto& mother : property_vectors.mothers_)
+    DataPropertyBranch_t* mother_branch = this->container_.find(mother.elem);
+    if(mother_branch == nullptr)
     {
-      DataPropertyBranch_t* mother_branch = nullptr;
-      getInMap(&mother_branch, mother.elem, roots_);
-      getInMap(&mother_branch, mother.elem, branchs_);
-      getInMap(&mother_branch, mother.elem, tmp_mothers_);
-      if(mother_branch == nullptr)
-      {
-        mother_branch = new DataPropertyBranch_t(mother.elem);
-        tmp_mothers_[mother_branch->value()] = mother_branch;
-      }
-
-      conditionalPushBack(mother_branch->childs_, DataPropertyElement_t(me, mother.probability, true));
-      conditionalPushBack(me->mothers_, DataPropertyElement_t(mother_branch, mother.probability));
+      mother_branch = new DataPropertyBranch_t(mother.elem);
+      all_branchs_.push_back(mother_branch);
+      container_.insert(mother_branch);
     }
 
-    //but i am also a branch
-    branchs_[me->value()] = me;
+    conditionalPushBack(mother_branch->childs_, DataPropertyElement_t(me, mother.probability, true));
+    conditionalPushBack(me->mothers_, DataPropertyElement_t(mother_branch, mother.probability));
   }
 
   /**********************
@@ -102,16 +70,13 @@ DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPrope
   //for all my disjoints
   for(auto& disjoint : property_vectors.disjoints_)
   {
-    DataPropertyBranch_t* disjoint_branch = nullptr;
-    getInMap(&disjoint_branch, disjoint.elem, roots_);
-    getInMap(&disjoint_branch, disjoint.elem, branchs_);
-    getInMap(&disjoint_branch, disjoint.elem, tmp_mothers_);
-
+    DataPropertyBranch_t* disjoint_branch = this->container_.find(disjoint.elem);
     //I create my disjoint
     if(disjoint_branch == nullptr)
     {
       disjoint_branch = new DataPropertyBranch_t(disjoint.elem);
-      tmp_mothers_[disjoint_branch->value()] = disjoint_branch; //I put my disjoint as tmp_mother
+      all_branchs_.push_back(disjoint_branch);
+      container_.insert(disjoint_branch);
     }
     conditionalPushBack(me->disjoints_, DataPropertyElement_t(disjoint_branch, disjoint.probability));
     conditionalPushBack(disjoint_branch->disjoints_, DataPropertyElement_t(me, disjoint.probability, true));
@@ -123,17 +88,13 @@ DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPrope
   //for all my domains
   for(auto& domain : property_vectors.domains_)
   {
-    ClassBranch_t* domain_branch = nullptr;
-    getInMap(&domain_branch, domain.elem, class_graph_->roots_);
-    getInMap(&domain_branch, domain.elem, class_graph_->branchs_);
-    getInMap(&domain_branch, domain.elem, class_graph_->tmp_mothers_);
-
+    ClassBranch_t* domain_branch = class_graph_->container_.find(domain.elem);
     //I create my domain
     if(domain_branch == nullptr)
     {
       ObjectVectors_t empty_vectors;
       class_graph_->add(domain.elem, empty_vectors);
-      getInMap(&domain_branch, domain.elem, class_graph_->roots_);
+      domain_branch = class_graph_->container_.find(domain.elem);
     }
     conditionalPushBack(me->domains_, ClassElement_t(domain_branch, domain.probability));
   }
@@ -167,21 +128,12 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
   for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
-    DataPropertyBranch_t* me = nullptr;
-    //Am I a root ?
-    amIA(&me, roots_, disjoints[disjoints_i], false);
-
-    //Am I a branch ?
-    amIA(&me, branchs_, disjoints[disjoints_i], false);
-
-    //Am I a tmp_mother ?
-    amIA(&me, tmp_mothers_, disjoints[disjoints_i], false);
-
-    // I don't exist ? so I will be a tmp_mother
+    DataPropertyBranch_t* me = this->container_.find(disjoints[disjoints_i]);
     if(me == nullptr)
     {
       me = new DataPropertyBranch_t(disjoints[disjoints_i]);
-      tmp_mothers_[me->value()] = me;
+      all_branchs_.push_back(me);
+      container_.insert(me);
     }
 
     //for all my disjoints ...
@@ -190,16 +142,12 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
       //... excepted me
       if(disjoints_i != disjoints_j)
       {
-        DataPropertyBranch_t* disjoint_branch = nullptr;
-        getInMap(&disjoint_branch, disjoints[disjoints_j], roots_);
-        getInMap(&disjoint_branch, disjoints[disjoints_j], branchs_);
-        getInMap(&disjoint_branch, disjoints[disjoints_j], tmp_mothers_);
-
-        //I create my disjoint
+        DataPropertyBranch_t* disjoint_branch = this->container_.find(disjoints[disjoints_j]);
         if(disjoint_branch == nullptr)
         {
           disjoint_branch = new DataPropertyBranch_t(disjoints[disjoints_j]);
-          tmp_mothers_[disjoint_branch->value()] = disjoint_branch; //I put my disjoint as tmp_mother
+          all_branchs_.push_back(disjoint_branch);
+          container_.insert(disjoint_branch);
         }
         conditionalPushBack(me->disjoints_, DataPropertyElement_t(disjoint_branch));
         conditionalPushBack(disjoint_branch->disjoints_, DataPropertyElement_t(me, 1.0, true));
@@ -213,25 +161,13 @@ bool DataPropertyGraph::addAnnotation(const std::string& value, DataPropertyVect
   /**********************
   ** Mothers
   **********************/
-  DataPropertyBranch_t* me = nullptr;
-  //am I a created mother ?
-  amIA(&me, tmp_mothers_, value, false);
-
-  //am I a created branch ?
-  amIA(&me, branchs_, value, false);
-
-  //am I a created root ?
-  amIA(&me, roots_, value, false);
-
-  //am I created ?
+  DataPropertyBranch_t* me = this->container_.find(value);
   if(me == nullptr)
   {
     DataPropertyBranch_t* mother_branch = nullptr;
     for(auto& mother : property_vectors.mothers_)
     {
-      getInMap(&mother_branch, mother.elem, roots_);
-      getInMap(&mother_branch, mother.elem, branchs_);
-      getInMap(&mother_branch, mother.elem, tmp_mothers_);
+      mother_branch = this->container_.find(mother.elem);
       if(mother_branch != nullptr)
         break;
     }
@@ -247,9 +183,7 @@ bool DataPropertyGraph::addAnnotation(const std::string& value, DataPropertyVect
       ClassBranch_t* range_branch = nullptr;
       for(auto& range : property_vectors.ranges_)
       {
-        getInMap(&range_branch, range, class_graph_->roots_);
-        getInMap(&range_branch, range, class_graph_->branchs_);
-        getInMap(&range_branch, range, class_graph_->tmp_mothers_);
+        range_branch = class_graph_->container_.find(range);
         if(range_branch != nullptr)
           break;
       }
@@ -481,11 +415,8 @@ std::vector<std::string> DataPropertyGraph::getLiteralIdentifiers(const std::vec
 
 void DataPropertyGraph::deepCopy(const DataPropertyGraph& other)
 {
-  for(const auto& root : other.roots_)
-    cpyBranch(root.second, roots_[root.first]);
-
-  for(const auto& branch : other.branchs_)
-    cpyBranch(branch.second, branchs_[branch.first]);
+  for(size_t i = 0; i < other.all_branchs_.size(); i++)
+    cpyBranch(other.all_branchs_[i], all_branchs_[i]);
 }
 
 void DataPropertyGraph::cpyBranch(DataPropertyBranch_t* old_branch, DataPropertyBranch_t* new_branch)

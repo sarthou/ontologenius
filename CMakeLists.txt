@@ -181,11 +181,6 @@ target_link_libraries(ontologenius_core_lib
 ##############################
 
 add_onto_library(ontologenius_drawer_lib
-  src/graphical/Drawers/GraphDrawer.cpp
-  src/graphical/Drawers/ClassDrawer.cpp
-  src/graphical/Drawers/ObjectPropertyDrawer.cpp
-  src/graphical/Drawers/DataPropertyDrawer.cpp
-  src/graphical/Drawers/OntologyDrawer.cpp
   src/graphical/versioning/TreeReader.cpp
   src/graphical/versioning/TreeDrawer.cpp
   )
@@ -345,9 +340,6 @@ target_link_libraries(ontologenius_container_tester PRIVATE ontologenius_core_li
 ##############################
 ## FEATURES TESTS
 ##############################
-
-add_onto_executable(ontologenius_exemple src/exemple.cpp )
-target_link_libraries(ontologenius_exemple PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
 
 add_onto_executable(ontologenius_config_tester src/tests/config_reader_test.cpp)
 target_link_libraries(ontologenius_config_tester PRIVATE ontologenius_core_lib)

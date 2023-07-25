@@ -71,15 +71,12 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
   //for all my classes
   for(auto& is_a : individual_vector.is_a_)
   {
-    ClassBranch_t* mother_branch = nullptr;
-    getInMap(&mother_branch, is_a.elem, class_graph_->roots_);
-    getInMap(&mother_branch, is_a.elem, class_graph_->branchs_);
-
+    ClassBranch_t* mother_branch = class_graph_->container_.find(is_a.elem);
     //I create my class
     if(mother_branch == nullptr)
     {
       ObjectVectors_t empty_vectors;
-      mother_branch = class_graph_->add(is_a.elem, empty_vectors, true);
+      mother_branch = class_graph_->add(is_a.elem, empty_vectors);
     }
 
     if(is_new)
@@ -230,14 +227,11 @@ void IndividualGraph::addSames(IndividualBranch_t* me, const std::vector<Single_
 
 void IndividualGraph::addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation)
 {
-  ObjectPropertyBranch_t* property_branch = nullptr;
-  getInMap(&property_branch, relation.first, object_property_graph_->roots_);
-  getInMap(&property_branch, relation.first, object_property_graph_->branchs_);
-  getInMap(&property_branch, relation.first, object_property_graph_->tmp_mothers_);
+  ObjectPropertyBranch_t* property_branch = object_property_graph_->container_.find(relation.first);
   if(property_branch == nullptr)
   {
     ObjectPropertyVectors_t empty_vectors;
-    property_branch = object_property_graph_->add(relation.first, empty_vectors, true);
+    property_branch = object_property_graph_->add(relation.first, empty_vectors);
   }
 
   IndividualBranch_t* indiv_branch = container_.find(relation.second);
@@ -253,14 +247,11 @@ void IndividualGraph::addObjectRelation(IndividualBranch_t* me, Pair_t<std::stri
 
 void IndividualGraph::addDataRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation)
 {
-  DataPropertyBranch_t* property_branch = nullptr;
-  getInMap(&property_branch, relation.first, data_property_graph_->roots_);
-  getInMap(&property_branch, relation.first, data_property_graph_->branchs_);
-  getInMap(&property_branch, relation.first, data_property_graph_->tmp_mothers_);
+  DataPropertyBranch_t* property_branch = data_property_graph_->container_.find(relation.first);
   if(property_branch == nullptr)
   {
     DataPropertyVectors_t empty_vectors;
-    property_branch = data_property_graph_->add(relation.first, empty_vectors, true);
+    property_branch = data_property_graph_->add(relation.first, empty_vectors);
   }
 
   LiteralNode* literal = data_property_graph_->createLiteral(relation.second);
