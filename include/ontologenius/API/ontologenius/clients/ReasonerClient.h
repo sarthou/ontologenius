@@ -3,6 +3,8 @@
 
 #include "ontologenius/API/ontologenius/clients/ClientBase.h"
 
+namespace onto {
+
 /// @brief The ReasonerClient class provides an abstraction ontologenius reasoner ROS services.
 /// The reasoner client is used to manage reasoner plugins for an ontology instance.
 /// This makes it possible to activate or deactivate plugins.
@@ -42,5 +44,7 @@ public:
 private:
 
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_REASONERCLIENT_H

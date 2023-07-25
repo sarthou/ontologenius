@@ -7,7 +7,7 @@
 #include <ros/ros.h>
 
 #include "ontologenius/utils/Parameters.h"
-#include "ontologenius/RosInterface.h"
+#include "ontologenius/interface/RosInterface.h"
 
 void handler(int sig)
 {

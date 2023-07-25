@@ -9,7 +9,7 @@
 
 using namespace std::chrono;
 
-void insertN(OntologyManipulator* onto, size_t n)
+void insertN(onto::OntologyManipulator* onto, size_t n)
 {
   onto->feeder.waitConnected();
   for(size_t i = 0; i < n; i++)
@@ -28,7 +28,7 @@ void insertN(OntologyManipulator* onto, size_t n)
   onto->feeder.waitUpdate();
 }
 
-double deepCopy(OntologiesManipulator* onto, size_t n)
+double deepCopy(onto::OntologiesManipulator* onto, size_t n)
 {
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
@@ -48,7 +48,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "ontologenius_multi_tester");
 
   ros::NodeHandle n;
-  OntologiesManipulator onto(&n);
+  onto::OntologiesManipulator onto(&n);
 
   std::vector<size_t> sizes;
   std::vector<double> res;

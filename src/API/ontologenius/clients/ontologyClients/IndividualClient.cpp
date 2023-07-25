@@ -1,5 +1,7 @@
 #include "ontologenius/API/ontologenius/clients/ontologyClients/IndividualClient.h"
 
+namespace onto {
+
 std::vector<std::string> IndividualClient::getOn(const std::string& name, const std::string& property, const std::string& selector)
 {
   ontologenius::OntologeniusService srv;
@@ -152,3 +154,5 @@ std::vector<std::string> IndividualClient::getDistincts(const std::string& name)
 
   return call(srv);
 }
+
+} // namespace onto

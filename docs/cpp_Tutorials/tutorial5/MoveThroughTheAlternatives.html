@@ -97,6 +97,15 @@
             <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
             <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="../../cpp_API/SparqlClient.html">SparqlClient</a></li>
+            <li class="level2"><b>Index based classes</b></li>
+            <li class="level1"><a href="../../cpp_API/ClassIndexClient.html">ClassIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ClientBaseIndex.html">ClientBaseIndex</a></li>
+            <li class="level1"><a href="../../cpp_API/DataPropertyIndexClient.html">DataPropertyIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/IndividualIndexClient.html">IndividualIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologyIndexClient.html">OntologyIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologyManipulatorIndex.html">OntologyManipulatorIndex</a></li>
+            <li class="level1"><a href="../../cpp_API/SparqlIndexClient.html">SparqlIndexClient</a></li>
           </ul>
           <br/>
           <h3>
@@ -137,7 +146,7 @@
           <div class="code_line">  ros::init(argc, argv, <span class="cpp_string">&quot;explore_futures&quot;</span>);</div>
           <div class="code_line"><br></div>
           <div class="code_line">  ros::<span class="cpp_type">NodeHandle</span> n;</div>
-          <div class="code_line">  <span class="cpp_type">OntologiesManipulator</span> onto(&n);</div>
+          <div class="code_line">  onto::<span class="cpp_type">OntologiesManipulator</span> onto(&n);</div>
           <div class="code_line">  onto.waitInit();</div>
           <div class="code_line"><br></div>
           <div class="code_line">  onto.add(<span class="cpp_string">&quot;bob&quot;</span>);</div>

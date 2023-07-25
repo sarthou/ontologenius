@@ -7,7 +7,7 @@
 
 #include "ontologenius/API/ontologenius/OntologiesManipulator.h"
 
-OntologiesManipulator* onto_ptr;
+onto::OntologiesManipulator* onto_ptr;
 
 TEST(multi_tests, create)
 {
@@ -97,7 +97,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "ontologenius_multi_tester");
 
   ros::NodeHandle n;
-  OntologiesManipulator onto(&n);
+  onto::OntologiesManipulator onto(&n);
   onto_ptr = &onto;
 
   onto.waitInit();

@@ -3,6 +3,8 @@
 
 #include "ontologenius/API/ontologenius/clients/ClientBase.h"
 
+namespace onto {
+
 /// @brief The OntologyClient class provides an abstraction common to all ontologenius exploration ROS services.
 /// The OntologyClient implements the functions common to every ontologenius exploration.
 /// This class is based on ClientBase and so ensure a persistent connection with the service based on.
@@ -64,7 +66,7 @@ public:
   /// @param selector can be set to only get results inheriting from the selector concept.
   /// @return The result of this function depends on the setting of the working language.
   std::vector<std::string> findRegex(const std::string& regex, bool take_id = true, const std::string& selector = "");
-  /// @brief Gives all the concepts with the lowest edit distance with the name passed in argument.
+  /// @brief Gives all the names of concepts with the lowest edit distance with the name passed in argument.
   /// @param name is a concept name in natural language.
   /// @param threshold is the minimum editing distance.
   /// This value corresponds to the number of changes to be made to pass from one
@@ -79,5 +81,7 @@ public:
   /// @return Returns true if the concept exists.
   bool exist(const std::string& name);
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_ONTOLOGYCLIENT_H

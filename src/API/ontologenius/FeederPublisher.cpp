@@ -3,6 +3,8 @@
 #include <chrono>
 #include <unistd.h>
 
+namespace onto {
+
 void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& on, const ros::Time& stamp)
 {
   std::string msg = "[add]" + from + "|" + property + "|" + on;
@@ -182,3 +184,5 @@ void FeederPublisher::commitCallback(const std_msgs::String::ConstPtr& msg)
   if(msg->data == "end")
     updated_ = true;
 }
+
+} // namespace onto

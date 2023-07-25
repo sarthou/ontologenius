@@ -6,7 +6,7 @@
 #include "ontologenius/core/ontologyOperators/SparqlSolver.h"
 #include "ontologenius/core/ontologyOperators/Sparql.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
-#include "ontologenius/RosInterface.h"
+#include "ontologenius/interface/RosInterface.h"
 
 #include "time.h"
 #include <chrono>

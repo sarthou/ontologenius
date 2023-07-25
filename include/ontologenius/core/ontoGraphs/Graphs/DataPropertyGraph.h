@@ -48,7 +48,8 @@ public:
   void deepCopy(const DataPropertyGraph& other);
 
   DataPropertyBranch_t* newDefaultBranch(const std::string& name);
-  DataPropertyBranch_t* add(const std::string& value, DataPropertyVectors_t& property_vectors, bool direct_load = false);
+  DataPropertyBranch_t* findOrCreateBranch(const std::string& name);
+  DataPropertyBranch_t* add(const std::string& value, DataPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
   bool addAnnotation(const std::string& value, DataPropertyVectors_t& property_vectors);
   LiteralNode* createLiteral(const std::string& value);
@@ -66,24 +67,14 @@ public:
   bool addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
   bool remove(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
 
+  index_t getLiteralIndex(const std::string& name);
+  std::vector<index_t> getLiteralIndexes(const std::vector<std::string>& names);
+  std::string getLiteralIdentifier(index_t index);
+  std::vector<std::string> getLiteralIdentifiers(const std::vector<index_t>& indexes);
+
 private:
   ClassGraph* class_graph_;
   BranchContainerSet<LiteralNode> literal_container_;
-
-  void isMyDisjoint(DataPropertyBranch_t* me, const std::string& disjoint, std::map<std::string, DataPropertyBranch_t*>& vect, bool& find, bool all = true)
-  {
-    if(find)
-      return;
-
-    auto it = vect.find(disjoint);
-    if(it != vect.end())
-    {
-      me->disjoints_.emplace_back(it->second);
-      if(all)
-        it->second->disjoints_.emplace_back(me); // TODO do not save
-      find = true;
-    }
-  }
 
   void cpyBranch(DataPropertyBranch_t* old_branch, DataPropertyBranch_t* new_branch);
 };

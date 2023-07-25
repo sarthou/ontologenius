@@ -75,6 +75,7 @@ catkin_python_setup()
    HTTP_headers.msg
    StampedString.msg
    OntologeniusSparqlResponse.msg
+   OntologeniusSparqlIndexResponse.msg
    OntologeniusExplanation.msg
  )
 
@@ -82,9 +83,11 @@ catkin_python_setup()
  add_service_files(
   FILES
   REST.srv
-  standard_service.srv
+  OntologeniusConvertion.srv
   OntologeniusService.srv
+  OntologeniusIndexService.srv
   OntologeniusSparqlService.srv
+  OntologeniusSparqlIndexService.srv
  )
 
 ## Generate added messages and services with any dependencies listed here
@@ -178,11 +181,6 @@ target_link_libraries(ontologenius_core_lib
 ##############################
 
 add_onto_library(ontologenius_drawer_lib
-  src/graphical/Drawers/GraphDrawer.cpp
-  src/graphical/Drawers/ClassDrawer.cpp
-  src/graphical/Drawers/ObjectPropertyDrawer.cpp
-  src/graphical/Drawers/DataPropertyDrawer.cpp
-  src/graphical/Drawers/OntologyDrawer.cpp
   src/graphical/versioning/TreeReader.cpp
   src/graphical/versioning/TreeDrawer.cpp
   )
@@ -238,8 +236,16 @@ add_onto_library(ontologenius_lib
   src/API/ontologenius/clients/ManagerClient.cpp
   src/API/ontologenius/clients/ClientBase.cpp
   src/API/ontologenius/clients/SparqlClient.cpp
+  src/API/ontologenius/clientsIndex/ontologyClients/IndividualIndexClient.cpp
+  src/API/ontologenius/clientsIndex/ontologyClients/ObjectPropertyIndexClient.cpp
+  src/API/ontologenius/clientsIndex/ontologyClients/DataPropertyIndexClient.cpp
+  src/API/ontologenius/clientsIndex/ontologyClients/ClassIndexClient.cpp
+  src/API/ontologenius/clientsIndex/ontologyClients/OntologyIndexClient.cpp
+  src/API/ontologenius/clientsIndex/ClientBaseIndex.cpp
+  src/API/ontologenius/clientsIndex/SparqlIndexClient.cpp
   src/API/ontologenius/FeederPublisher.cpp
   src/API/ontologenius/OntologyManipulator.cpp
+  src/API/ontologenius/OntologyManipulatorIndex.cpp
   src/API/ontologenius/OntologiesManipulator.cpp
 )
 target_link_libraries(ontologenius_lib
@@ -270,7 +276,9 @@ target_link_libraries(ontologenius_reasoner_plugin
 ##############################
 
 add_onto_library(ontologenius_interface
-  src/RosInterface.cpp
+  src/interface/RosInterface.cpp
+  src/interface/RosInterfaceStringHandlers.cpp
+  src/interface/RosInterfaceIndexHandlers.cpp
   src/core/ontologyOperators/differenceFinder.cpp
   src/core/ontologyOperators/Sparql.cpp
   src/core/ontologyOperators/SparqlSolver.cpp
@@ -332,9 +340,6 @@ target_link_libraries(ontologenius_container_tester PRIVATE ontologenius_core_li
 ##############################
 ## FEATURES TESTS
 ##############################
-
-add_onto_executable(ontologenius_exemple src/exemple.cpp )
-target_link_libraries(ontologenius_exemple PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
 
 add_onto_executable(ontologenius_config_tester src/tests/config_reader_test.cpp)
 target_link_libraries(ontologenius_config_tester PRIVATE ontologenius_core_lib)

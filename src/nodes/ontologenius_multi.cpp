@@ -10,7 +10,7 @@
 #include <ros/ros.h>
 
 #include "ontologenius/utils/Parameters.h"
-#include "ontologenius/RosInterface.h"
+#include "ontologenius/interface/RosInterface.h"
 #include "ontologenius/core/ontologyOperators/differenceFinder.h"
 #include "ontologenius/core/utility/error_code.h"
 
@@ -62,7 +62,7 @@ bool deleteInterface(const std::string& name)
   delete interfaces_[name];
   interfaces_.erase(name);
 
-  std::cout << name << " STOPPED" << std::endl;
+  std::cout << name << " STOPED" << std::endl;
   return true;
 }
 

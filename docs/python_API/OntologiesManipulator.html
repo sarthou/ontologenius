@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>OntologiesManipulator Class (python) | Ontologenius 0.2.12</title>
+  <title>OntologiesManipulator Class (python) | Ontologenius 0.3.0</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -103,13 +103,22 @@
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
+            <li class="level2"><b>Index based classes</b></li>
+            <li class="level1"><a href="ClassIndexClient.html">ClassIndexClient</a></li>
+            <li class="level1"><a href="ClientBaseIndex.html">ClientBaseIndex</a></li>
+            <li class="level1"><a href="DataPropertyIndexClient.html">DataPropertyIndexClient</a></li>
+            <li class="level1"><a href="IndividualIndexClient.html">IndividualIndexClient</a></li>
+            <li class="level1"><a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></li>
+            <li class="level1"><a href="OntologyIndexClient.html">OntologyIndexClient</a></li>
+            <li class="level1"><a href="OntologyManipulatorIndex.html">OntologyManipulatorIndex</a></li>
+            <li class="level1"><a href="SparqlIndexClient.html">SparqlIndexClient</a></li>
           </ul>
         </div>
       </div>
 
       <div class="context">
         <h1 class="title">OntologiesManipulator Class</h1>
-        <p>The OntologiesManipulator class is an interface to manage several instance of <a href="OntologyManipulator.html">OntologyManipulator</a> in a multi-ontology usage. <a href="#details">More...</a></p>
+        <p>The OntologiesManipulator class is an interface to manage several instance of <a href="OntologyManipulator.html">OntologyManipulator</a> and <a href="OntologyManipulatorIndex.html">OntologyManipulatorIndex</a> in a multi-ontology usage. <a href="#details">More...</a></p>
         <div class="table">
           <table class="alignedsummary">
             <tbody>
@@ -127,6 +136,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#__init__">__init__</a></b>(self)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#waitInit">waitInit</a></b>(self, timeout = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> OntologyManipulator </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#get">get</a></b>(self, name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> OntologyManipulatorIndex </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#getIndex">getIndex</a></b>(self, name)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#setVerbose">setVerbose</a></b>(self, verbose)</td></tr>
             </tbody>
           </table>
@@ -168,16 +178,20 @@
           <p>Returns an <a href="OntologyManipulator.html">OntologyManipulator</a> object instance named <i>name</i>(str).</p>
           <p>Returns None if no OntologyManipulator instance is named <i>name</i>.</p>
 
+          <h3 class="fn" id="getIndex"><a name="getIndex"></a><span class="name">getIndex</span>(self, name)</h3>
+          <p>Returns an <a href="OntologyManipulatorIndex.html">OntologyManipulatorIndex</a> object instance named <i>name</i>(str).</p>
+          <p>Returns None if no OntologyManipulatorIndex instance is named <i>name</i>.</p>
+
           <h3 class="fn" id="add"><a name="add"></a><span class="name">add</span>(self, name)</h3>
-          <p>Creates a new instance of ontologyManipulator identified by the name <i>name</i>(str).</p>
+          <p>Creates a new instance of OntologyManipulator and OntologyManipulatorIndex identified by the name <i>name</i>(str).</p>
           <p>Returns False if the creation fails. Returns True even if the instance already exists.</p>
 
           <h3 class="fn" id="copy"><a name="copy"></a><span class="name">copy</span>(self, dest_name, src_name)</h3>
-          <p>Creates a new instance of ontologyManipulator identified by the name <i>dest_name</i>(str) that manipulates a copy of the ontology handled by the ontologyManipulator <i>src_name</i>(str).</p>
+          <p>Creates a new instance of OntologyManipulator and OntologyManipulatorIndex identified by the name <i>dest_name</i>(str) that manipulates a copy of the ontology handled by the OntologyManipulator and OntologyManipulatorIndex <i>src_name</i>(str).</p>
           <p>Returns False if the copy fails. Returns True even if the instance already exists.</p>
 
           <h3 class="fn" id="del"><a name="del"></a><span class="name">delete</span>(self, name)</h3>
-          <p>Deletes the instance of ontologyManipulator identified by the name <i>name</i>(str).</p>
+          <p>Deletes the instance of OntologyManipulator and OntologyManipulatorIndex identified by the name <i>name</i>(str).</p>
           <p>Returns False deletion fails. Returns True even if the instance does not exist.</p>
 
           <h3 class="fn" id="setVerbose"><a name="setVerbose"></a><span class="name">setVerbose</span>(self, verbose)</h3>
