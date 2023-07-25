@@ -66,6 +66,11 @@ public:
   bool addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
   bool remove(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
 
+  index_t getLiteralIndex(const std::string& name);
+  std::vector<index_t> getLiteralIndexes(const std::vector<std::string>& names);
+  std::string getLiteralIdentifier(int64_t index);
+  std::vector<std::string> getLiteralIdentifiers(const std::vector<int64_t>& indexes);
+
 private:
   ClassGraph* class_graph_;
   BranchContainerSet<LiteralNode> literal_container_;

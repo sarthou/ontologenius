@@ -444,6 +444,41 @@ bool DataPropertyGraph::remove(DataPropertyBranch_t* prop, const std::string& re
   return false;
 }
 
+index_t DataPropertyGraph::getLiteralIndex(const std::string& name)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+  auto branch = literal_container_.find(name);
+  if(branch != nullptr)
+    return branch->get();
+  else
+    return 0;
+}
+
+std::vector<index_t> DataPropertyGraph::getLiteralIndexes(const std::vector<std::string>& names)
+{
+  std::vector<index_t> res;
+  for(auto& name : names)
+    res.push_back(getLiteralIndex(name));
+  return res; 
+}
+
+std::string DataPropertyGraph::getLiteralIdentifier(int64_t index)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+  if((index < 0) && (index > (long int)LiteralNode::table_.size()))
+    return LiteralNode::table_[-index];
+  else
+    return "";
+}
+
+std::vector<std::string> DataPropertyGraph::getLiteralIdentifiers(const std::vector<int64_t>& indexes)
+{
+  std::vector<std::string> res;
+  for(auto& index : indexes)
+    res.push_back(getLiteralIdentifier(index));
+  return res; 
+}
+
 void DataPropertyGraph::deepCopy(const DataPropertyGraph& other)
 {
   for(const auto& root : other.roots_)
