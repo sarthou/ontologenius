@@ -103,7 +103,7 @@ bool Feeder::addDelIndiv(action_t& action, std::string& name)
 {
   if(action == action_add)
   {
-    onto_->individual_graph_.createIndividual(name);
+    onto_->individual_graph_.findOrCreateBranchSafe(name);
     return true;
   }
   else

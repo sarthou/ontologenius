@@ -34,31 +34,30 @@ DataPropertyBranch_t* DataPropertyGraph::newDefaultBranch(const std::string& nam
   return branch;
 }
 
+DataPropertyBranch_t* DataPropertyGraph::findOrCreateBranch(const std::string& name)
+{
+  auto branch = this->container_.find(name);
+  if(branch == nullptr)
+  {
+    branch = new DataPropertyBranch_t(name);
+    all_branchs_.push_back(branch);
+    container_.insert(branch);
+  }
+  return branch;
+}
+
 DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& property_vectors)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
   /**********************
   ** Mothers
   **********************/
-  DataPropertyBranch_t* me = this->container_.find(value);
-  //am I created ?
-  if(me == nullptr)
-  {
-    me = new DataPropertyBranch_t(value);
-    all_branchs_.push_back(me);
-    container_.insert(me);
-  }
+  DataPropertyBranch_t* me = findOrCreateBranch(value);
 
   //for all my mothers
   for(auto& mother : property_vectors.mothers_)
   {
-    DataPropertyBranch_t* mother_branch = this->container_.find(mother.elem);
-    if(mother_branch == nullptr)
-    {
-      mother_branch = new DataPropertyBranch_t(mother.elem);
-      all_branchs_.push_back(mother_branch);
-      container_.insert(mother_branch);
-    }
+    DataPropertyBranch_t* mother_branch = findOrCreateBranch(mother.elem);
 
     conditionalPushBack(mother_branch->childs_, DataPropertyElement_t(me, mother.probability, true));
     conditionalPushBack(me->mothers_, DataPropertyElement_t(mother_branch, mother.probability));
@@ -70,14 +69,8 @@ DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPrope
   //for all my disjoints
   for(auto& disjoint : property_vectors.disjoints_)
   {
-    DataPropertyBranch_t* disjoint_branch = this->container_.find(disjoint.elem);
-    //I create my disjoint
-    if(disjoint_branch == nullptr)
-    {
-      disjoint_branch = new DataPropertyBranch_t(disjoint.elem);
-      all_branchs_.push_back(disjoint_branch);
-      container_.insert(disjoint_branch);
-    }
+    DataPropertyBranch_t* disjoint_branch = findOrCreateBranch(disjoint.elem);
+
     conditionalPushBack(me->disjoints_, DataPropertyElement_t(disjoint_branch, disjoint.probability));
     conditionalPushBack(disjoint_branch->disjoints_, DataPropertyElement_t(me, disjoint.probability, true));
   }
@@ -88,14 +81,8 @@ DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPrope
   //for all my domains
   for(auto& domain : property_vectors.domains_)
   {
-    ClassBranch_t* domain_branch = class_graph_->container_.find(domain.elem);
-    //I create my domain
-    if(domain_branch == nullptr)
-    {
-      ObjectVectors_t empty_vectors;
-      class_graph_->add(domain.elem, empty_vectors);
-      domain_branch = class_graph_->container_.find(domain.elem);
-    }
+    ClassBranch_t* domain_branch = class_graph_->findOrCreateBranch(domain.elem);
+
     conditionalPushBack(me->domains_, ClassElement_t(domain_branch, domain.probability));
   }
 
@@ -128,13 +115,7 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
   for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
-    DataPropertyBranch_t* me = this->container_.find(disjoints[disjoints_i]);
-    if(me == nullptr)
-    {
-      me = new DataPropertyBranch_t(disjoints[disjoints_i]);
-      all_branchs_.push_back(me);
-      container_.insert(me);
-    }
+    DataPropertyBranch_t* me = findOrCreateBranch(disjoints[disjoints_i]);
 
     //for all my disjoints ...
     for(size_t disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
@@ -142,13 +123,8 @@ void DataPropertyGraph::add(std::vector<std::string>& disjoints)
       //... excepted me
       if(disjoints_i != disjoints_j)
       {
-        DataPropertyBranch_t* disjoint_branch = this->container_.find(disjoints[disjoints_j]);
-        if(disjoint_branch == nullptr)
-        {
-          disjoint_branch = new DataPropertyBranch_t(disjoints[disjoints_j]);
-          all_branchs_.push_back(disjoint_branch);
-          container_.insert(disjoint_branch);
-        }
+        DataPropertyBranch_t* disjoint_branch = findOrCreateBranch(disjoints[disjoints_j]);
+        
         conditionalPushBack(me->disjoints_, DataPropertyElement_t(disjoint_branch));
         conditionalPushBack(disjoint_branch->disjoints_, DataPropertyElement_t(me, 1.0, true));
       }

@@ -71,13 +71,7 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
   //for all my classes
   for(auto& is_a : individual_vector.is_a_)
   {
-    ClassBranch_t* mother_branch = class_graph_->container_.find(is_a.elem);
-    //I create my class
-    if(mother_branch == nullptr)
-    {
-      ObjectVectors_t empty_vectors;
-      mother_branch = class_graph_->add(is_a.elem, empty_vectors);
-    }
+    ClassBranch_t* mother_branch = class_graph_->findOrCreateBranch(is_a.elem);
 
     if(is_new)
     {
@@ -125,15 +119,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
   for(size_t distinct_i = 0; distinct_i < distinct.size(); distinct_i++)
   {
     //am I created ?
-    IndividualBranch_t* me = container_.find(distinct[distinct_i]);
-
-    // I don't exist ?
-    if(me == nullptr)
-    {
-      me = new IndividualBranch_t(distinct[distinct_i]);
-      insertBranchInVectors(me);
-      container_.insert(me);
-    }
+    IndividualBranch_t* me = findOrCreateBranch(distinct[distinct_i]);
 
     //for all my distincts ...
     for(size_t distinct_j = 0; distinct_j < distinct.size(); distinct_j++)
@@ -227,34 +213,17 @@ void IndividualGraph::addSames(IndividualBranch_t* me, const std::vector<Single_
 
 void IndividualGraph::addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation)
 {
-  ObjectPropertyBranch_t* property_branch = object_property_graph_->container_.find(relation.first);
-  if(property_branch == nullptr)
-  {
-    ObjectPropertyVectors_t empty_vectors;
-    property_branch = object_property_graph_->add(relation.first, empty_vectors);
-  }
-
-  IndividualBranch_t* indiv_branch = container_.find(relation.second);
-  if(indiv_branch == nullptr)
-  {
-    indiv_branch = new IndividualBranch_t(relation.second);
-    insertBranchInVectors(indiv_branch);
-    container_.insert(indiv_branch);
-  }
+  ObjectPropertyBranch_t* property_branch = object_property_graph_->findOrCreateBranch(relation.first);
+  IndividualBranch_t* indiv_branch = findOrCreateBranch(relation.second);
 
   me->object_relations_.emplace_back(property_branch, indiv_branch, relation.probability);
 }
 
 void IndividualGraph::addDataRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation)
 {
-  DataPropertyBranch_t* property_branch = data_property_graph_->container_.find(relation.first);
-  if(property_branch == nullptr)
-  {
-    DataPropertyVectors_t empty_vectors;
-    property_branch = data_property_graph_->add(relation.first, empty_vectors);
-  }
-
+  DataPropertyBranch_t* property_branch = data_property_graph_->findOrCreateBranch(relation.first);
   LiteralNode* literal = data_property_graph_->createLiteral(relation.second);
+  
   me->data_relations_.emplace_back(property_branch, literal, relation.probability);
 }
 
@@ -1582,13 +1551,13 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
   return nullptr;
 }
 
-IndividualBranch_t* IndividualGraph::createIndividual(const std::string& name)
+IndividualBranch_t* IndividualGraph::findOrCreateBranchSafe(const std::string& name)
 {
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-  return createIndividualUnsafe(name);
+  return findOrCreateBranch(name);
 }
 
-IndividualBranch_t* IndividualGraph::createIndividualUnsafe(const std::string& name)
+IndividualBranch_t* IndividualGraph::findOrCreateBranch(const std::string& name)
 {
   IndividualBranch_t* indiv = findBranchUnsafe(name);
   if(indiv == nullptr)
@@ -1758,7 +1727,7 @@ bool IndividualGraph::addInheritageInvert(const std::string& indiv, const std::s
   ClassBranch_t* inherited = class_graph_->findBranch(class_inherited);
   if(inherited != nullptr)
   {
-    IndividualBranch_t* branch = createIndividual(indiv);
+    IndividualBranch_t* branch = findOrCreateBranchSafe(indiv);
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
 
@@ -1779,7 +1748,7 @@ bool IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const
   if(tmp != nullptr)
   {
     ClassBranch_t* inherited = upgradeToBranch(tmp);
-    IndividualBranch_t* branch = createIndividual(indiv);
+    IndividualBranch_t* branch = findOrCreateBranchSafe(indiv);
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
 
@@ -1872,7 +1841,7 @@ void IndividualGraph::addRelation(IndividualBranch_t* indiv_from, const std::str
       if(test != nullptr)
         throw GraphException("object entity does not exists");
 
-      branch_on = createIndividual(indiv_on);
+      branch_on = findOrCreateBranchSafe(indiv_on);
     }
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
@@ -1935,7 +1904,7 @@ void IndividualGraph::addRelationInvert(const std::string& indiv_from, const std
       if(test != nullptr)
         throw GraphException("The individual to apply the relation does not exist");
 
-      branch_from = createIndividual(indiv_from);
+      branch_from = findOrCreateBranchSafe(indiv_from);
     }
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
@@ -2006,9 +1975,9 @@ bool IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& i
     return false;
 
   if(branch_1 == nullptr)
-    branch_1 = createIndividual(indiv_1);
+    branch_1 = findOrCreateBranchSafe(indiv_1);
   else if(branch_2 == nullptr)
-    branch_2 = createIndividual(indiv_2);
+    branch_2 = findOrCreateBranchSafe(indiv_2);
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
   conditionalPushBack(branch_1->same_as_, IndividualElement_t(branch_2));

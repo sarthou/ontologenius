@@ -40,30 +40,30 @@ ObjectPropertyBranch_t* ObjectPropertyGraph::newDefaultBranch(const std::string&
   return branch;
 }
 
+ObjectPropertyBranch_t* ObjectPropertyGraph::findOrCreateBranch(const std::string& name)
+{
+  auto branch = this->container_.find(name);
+  if(branch == nullptr)
+  {
+    branch = new ObjectPropertyBranch_t(name);
+    all_branchs_.push_back(branch);
+    container_.insert(branch);
+  }
+  return branch;
+}
+
 ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
   /**********************
   ** Mothers
   **********************/
-  ObjectPropertyBranch_t* me = this->container_.find(value);
-  if(me == nullptr)
-  {
-    me = new ObjectPropertyBranch_t(value);
-    all_branchs_.push_back(me);
-    container_.insert(me);
-  }
+  ObjectPropertyBranch_t* me = findOrCreateBranch(value);
 
   //for all my mothers
   for(auto& mother : property_vectors.mothers_)
   {
-    ObjectPropertyBranch_t* mother_branch = this->container_.find(mother.elem);
-    if(mother_branch == nullptr)
-    {
-      mother_branch = new ObjectPropertyBranch_t(mother.elem);
-      all_branchs_.push_back(mother_branch);
-      container_.insert(mother_branch);
-    }
+    ObjectPropertyBranch_t* mother_branch = findOrCreateBranch(mother.elem);
 
     conditionalPushBack(mother_branch->childs_, ObjectPropertyElement_t(me, mother.probability, true));
     conditionalPushBack(me->mothers_, ObjectPropertyElement_t(mother_branch, mother.probability));
@@ -75,14 +75,8 @@ ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, Objec
   //for all my disjoints
   for(auto& disjoint : property_vectors.disjoints_)
   {
-    ObjectPropertyBranch_t* disjoint_branch = this->container_.find(disjoint.elem);
-    //I create my disjoint
-    if(disjoint_branch == nullptr)
-    {
-      disjoint_branch = new ObjectPropertyBranch_t(disjoint.elem);
-      all_branchs_.push_back(disjoint_branch);
-      container_.insert(disjoint_branch);
-    }
+    ObjectPropertyBranch_t* disjoint_branch = findOrCreateBranch(disjoint.elem);
+
     conditionalPushBack(me->disjoints_, ObjectPropertyElement_t(disjoint_branch, disjoint.probability));
     conditionalPushBack(disjoint_branch->disjoints_, ObjectPropertyElement_t(me, disjoint.probability, true));
   }
@@ -93,14 +87,8 @@ ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, Objec
   //for all my inverses
   for(auto& inverse : property_vectors.inverses_)
   {
-    ObjectPropertyBranch_t* inverse_branch = this->container_.find(inverse.elem);
-    //I create my disjoint
-    if(inverse_branch == nullptr)
-    {
-      inverse_branch = new ObjectPropertyBranch_t(inverse.elem);
-      all_branchs_.push_back(inverse_branch);
-      container_.insert(inverse_branch);
-    }
+    ObjectPropertyBranch_t* inverse_branch = findOrCreateBranch(inverse.elem);
+
     conditionalPushBack(me->inverses_, ObjectPropertyElement_t(inverse_branch, inverse.probability));
     conditionalPushBack(inverse_branch->inverses_, ObjectPropertyElement_t(me, inverse.probability, true));
   }
@@ -111,14 +99,8 @@ ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, Objec
   //for all my domains
   for(auto& domain : property_vectors.domains_)
   {
-    ClassBranch_t* domain_branch = class_graph_->container_.find(domain.elem);
-    //I create my domain
-    if(domain_branch == nullptr)
-    {
-      ObjectVectors_t empty_vectors;
-      class_graph_->add(domain.elem, empty_vectors);
-      domain_branch = class_graph_->container_.find(domain.elem);
-    }
+    ClassBranch_t* domain_branch = class_graph_->findOrCreateBranch(domain.elem);
+
     conditionalPushBack(me->domains_, ClassElement_t(domain_branch, domain.probability));
   }
 
@@ -128,14 +110,8 @@ ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, Objec
   //for all my ranges
   for(auto& range : property_vectors.ranges_)
   {
-    ClassBranch_t* range_branch = class_graph_->container_.find(range.elem);
-    //I create my domain
-    if(range_branch == nullptr)
-    {
-      ObjectVectors_t empty_vectors;
-      class_graph_->add(range.elem, empty_vectors);
-      range_branch = class_graph_->container_.find(range.elem);
-    }
+    ClassBranch_t* range_branch = class_graph_->findOrCreateBranch(range.elem);
+
     conditionalPushBack(me->ranges_, ClassElement_t(range_branch, range.probability));
   }
 
@@ -160,13 +136,7 @@ ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, Objec
 
     for(auto& link : chain_i)
     {
-      ObjectPropertyBranch_t* next = this->container_.find(link);
-      if(next == nullptr)
-      {
-        next = new ObjectPropertyBranch_t(link);
-        all_branchs_.push_back(next);
-        container_.insert(next);
-      }
+      ObjectPropertyBranch_t* next = findOrCreateBranch(link);
 
       if(first == nullptr)
         first = next;
@@ -190,13 +160,7 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
   for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
-    ObjectPropertyBranch_t* me = this->container_.find(disjoints[disjoints_i]);
-    if(me == nullptr)
-    {
-      me = new ObjectPropertyBranch_t(disjoints[disjoints_i]);
-      all_branchs_.push_back(me);
-      container_.insert(me);
-    }
+    ObjectPropertyBranch_t* me = findOrCreateBranch(disjoints[disjoints_i]);
 
     //for all my disjoints ...
     for(size_t disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
@@ -204,14 +168,8 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
       //... excepted me
       if(disjoints_i != disjoints_j)
       {
-        ObjectPropertyBranch_t* disjoint_branch = this->container_.find(disjoints[disjoints_j]);
-        //I create my disjoint
-        if(disjoint_branch == nullptr)
-        {
-          disjoint_branch = new ObjectPropertyBranch_t(disjoints[disjoints_j]);
-          all_branchs_.push_back(disjoint_branch);
-          container_.insert(disjoint_branch);
-        }
+        ObjectPropertyBranch_t* disjoint_branch = findOrCreateBranch(disjoints[disjoints_j]);
+        
         conditionalPushBack(me->disjoints_, ObjectPropertyElement_t(disjoint_branch));
         conditionalPushBack(disjoint_branch->disjoints_, ObjectPropertyElement_t(me, 1.0, true));
       }
@@ -387,9 +345,7 @@ bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, const std::string& r
     {
 
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      ObjectPropertyBranch_t* tmp = container_.find(data);
-      if(tmp == nullptr)
-        tmp = newDefaultBranch(data);
+      ObjectPropertyBranch_t* tmp = findOrCreateBranch(data);
 
       conditionalPushBack(prop->mothers_, ObjectPropertyElement_t(tmp));
       conditionalPushBack(tmp->childs_, ObjectPropertyElement_t(prop));
@@ -411,9 +367,7 @@ bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, const std::str
     if((relation == "+") || (relation == "isA"))
     {
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      ObjectPropertyBranch_t* tmp = container_.find(data);
-      if(tmp == nullptr)
-        tmp = newDefaultBranch(data);
+      ObjectPropertyBranch_t* tmp = findOrCreateBranch(data);
 
       conditionalPushBack(tmp->mothers_, ObjectPropertyElement_t(prop));
       conditionalPushBack(prop->childs_, ObjectPropertyElement_t(tmp));

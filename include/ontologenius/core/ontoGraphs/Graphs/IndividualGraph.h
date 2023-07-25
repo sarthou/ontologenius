@@ -122,8 +122,8 @@ public:
   bool relationExists(const std::string& subject, const std::string& property, const std::string& object);
 
   ClassBranch_t* upgradeToBranch(IndividualBranch_t* indiv);
-  IndividualBranch_t* createIndividual(const std::string& name);
-  IndividualBranch_t* createIndividualUnsafe(const std::string& name);
+  IndividualBranch_t* findOrCreateBranchSafe(const std::string& name);
+  IndividualBranch_t* findOrCreateBranch(const std::string& name);
   void deleteIndividual(IndividualBranch_t* indiv);
   void redirectDeleteIndividual(IndividualBranch_t* indiv, ClassBranch_t* _class);
   bool addLang(const std::string& indiv, const std::string& lang, const std::string& name);

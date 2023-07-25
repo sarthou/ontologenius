@@ -48,6 +48,7 @@ public:
   void deepCopy(const DataPropertyGraph& other);
 
   DataPropertyBranch_t* newDefaultBranch(const std::string& name);
+  DataPropertyBranch_t* findOrCreateBranch(const std::string& name);
   DataPropertyBranch_t* add(const std::string& value, DataPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
   bool addAnnotation(const std::string& value, DataPropertyVectors_t& property_vectors);
