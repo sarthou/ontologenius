@@ -462,16 +462,16 @@ std::vector<index_t> DataPropertyGraph::getLiteralIndexes(const std::vector<std:
   return res; 
 }
 
-std::string DataPropertyGraph::getLiteralIdentifier(int64_t index)
+std::string DataPropertyGraph::getLiteralIdentifier(index_t index)
 {
   std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-  if((index < 0) && (index > (long int)LiteralNode::table_.size()))
+  if((index < 0) && (index > (index_t)LiteralNode::table_.size()))
     return LiteralNode::table_[-index];
   else
     return "";
 }
 
-std::vector<std::string> DataPropertyGraph::getLiteralIdentifiers(const std::vector<int64_t>& indexes)
+std::vector<std::string> DataPropertyGraph::getLiteralIdentifiers(const std::vector<index_t>& indexes)
 {
   std::vector<std::string> res;
   for(auto& index : indexes)

@@ -68,8 +68,8 @@ public:
 
   index_t getLiteralIndex(const std::string& name);
   std::vector<index_t> getLiteralIndexes(const std::vector<std::string>& names);
-  std::string getLiteralIdentifier(int64_t index);
-  std::vector<std::string> getLiteralIdentifiers(const std::vector<int64_t>& indexes);
+  std::string getLiteralIdentifier(index_t index);
+  std::vector<std::string> getLiteralIdentifiers(const std::vector<index_t>& indexes);
 
 private:
   ClassGraph* class_graph_;
