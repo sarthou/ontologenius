@@ -169,7 +169,6 @@ add_onto_library(ontologenius_core_lib
   src/core/reasoner/plugins/ReasonerInterface.cpp
   src/core/reasoner/Reasoners.cpp
   src/core/reasoner/ConfigReader.cpp
-#  src/core/Computer.cpp
 )
 target_link_libraries(ontologenius_core_lib
  PUBLIC
@@ -217,6 +216,7 @@ add_onto_library(ontologenius_lib
   src/API/ontologenius/clientsIndex/ClientBaseIndex.cpp
   src/API/ontologenius/clientsIndex/SparqlIndexClient.cpp
   src/API/ontologenius/FeederPublisher.cpp
+  src/API/ontologenius/ConvertionClient.cpp
   src/API/ontologenius/OntologyManipulator.cpp
   src/API/ontologenius/OntologyManipulatorIndex.cpp
   src/API/ontologenius/OntologiesManipulator.cpp
