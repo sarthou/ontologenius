@@ -16,6 +16,7 @@ Ontology::Ontology(const std::string& language) : class_graph_(&individual_graph
                                                   object_property_graph_(&class_graph_),
                                                   data_property_graph_(&class_graph_),
                                                   individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
+                                                  anonymous_graph_(&class_graph_, &object_property_graph_, &data_property_graph_, &individual_graph_),
                                                   loader_((Ontology&)*this),
                                                   writer((Ontology&)*this)
 {
@@ -32,6 +33,7 @@ Ontology::Ontology(const Ontology& other) : class_graph_(other.class_graph_, &in
                                             object_property_graph_(other.object_property_graph_, &class_graph_),
                                             data_property_graph_(other.data_property_graph_, &class_graph_),
                                             individual_graph_(other.individual_graph_, &class_graph_, &object_property_graph_, &data_property_graph_),
+                                            anonymous_graph_(other.anonymous_graph_, &class_graph_, &object_property_graph_, &data_property_graph_, &individual_graph_),
                                             loader_((Ontology&)*this),
                                             writer((Ontology&)*this)
 {

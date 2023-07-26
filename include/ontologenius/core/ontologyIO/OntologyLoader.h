@@ -16,7 +16,7 @@ class Ontology;
 class OntologyLoader
 {
 public:
-  OntologyLoader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
+  OntologyLoader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
   explicit OntologyLoader(Ontology& onto);
   ~OntologyLoader() {}
 

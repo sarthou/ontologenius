@@ -17,7 +17,7 @@
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
-#include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 namespace ontologenius {
 
 class Ontology;
@@ -25,7 +25,7 @@ class Ontology;
 class OntologyOwlReader : public OntologyReader
 {
 public:
-  OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
+  OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
   explicit OntologyOwlReader(Ontology& onto);
   ~OntologyOwlReader() {}
 

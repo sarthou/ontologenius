@@ -12,8 +12,9 @@ namespace ontologenius {
 OntologyLoader::OntologyLoader(ClassGraph* class_graph,
                                ObjectPropertyGraph* object_property_graph,
                                DataPropertyGraph* data_property_graph,
-                               IndividualGraph* individual_graph) : owl_reader_(class_graph, object_property_graph, data_property_graph, individual_graph),
-                                                                    ttl_reader_(class_graph, object_property_graph, data_property_graph, individual_graph)
+                               IndividualGraph* individual_graph,
+                               AnonymousClassGraph* anonymous_graph) : owl_reader_(class_graph, object_property_graph, data_property_graph, individual_graph, anonymous_graph),
+                                                                    ttl_reader_(class_graph, object_property_graph, data_property_graph, individual_graph, anonymous_graph)
 {}
 
 OntologyLoader::OntologyLoader(Ontology& onto) : owl_reader_(onto), ttl_reader_(onto)

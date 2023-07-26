@@ -5,14 +5,16 @@
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
+#include "ontologenius/utils/String.h"
 
 namespace ontologenius {
 
 OntologyOwlReader::OntologyOwlReader(ClassGraph* class_graph,
                                      ObjectPropertyGraph* object_property_graph,
                                      DataPropertyGraph* data_property_graph,
-                                     IndividualGraph* individual_graph) :
-                                                      OntologyReader(class_graph, object_property_graph, data_property_graph, individual_graph),
+                                     IndividualGraph* individual_graph,
+                                     AnonymousClassGraph* anonymous_graph) :
+                                                      OntologyReader(class_graph, object_property_graph, data_property_graph, individual_graph, anonymous_graph),
                                                       card_map_{{ "owl:someValuesFrom", "some" },
                                                                 { "owl:allValuesFrom", "only" },
                                                                 { "owl:minQualifiedCardinality", "min" },

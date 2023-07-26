@@ -28,6 +28,7 @@ struct IndividualVectors_t
 
 //for friend
 class IndividualChecker;
+class AnonymousGraph;
 
 //for graphs usage
 class ClassGraph;
@@ -37,6 +38,7 @@ class DataPropertyGraph;
 class IndividualGraph : public Graph<IndividualBranch_t>
 {
   friend IndividualChecker;
+  friend AnonymousGraph;
 public:
   IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   IndividualGraph(const IndividualGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
