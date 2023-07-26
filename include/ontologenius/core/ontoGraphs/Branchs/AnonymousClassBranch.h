@@ -1,10 +1,26 @@
-#ifndef ONTOLOGENIUS_ANOBRANCH_H
-#define ONTOLOGENIUS_ANOBRANCH_H
+#ifndef ONTOLOGENIUS_ANOCLASSBRANCH_H
+#define ONTOLOGENIUS_ANOCLASSBRANCH_H
 
 #include <string>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
+
 namespace ontologenius {
+
+enum CardType_t 
+{
+  some_,
+  only_,
+  min_,
+  max_,
+  exactly_,
+  value_
+};
+
+// example : hasComponent some Camera / hasComponent min 2 Camera / hasComponent value indiv1
 
 struct Cardinality_t
 {
@@ -13,8 +29,17 @@ struct Cardinality_t
   std::string cardinality_range;
   
   std::string getCardinality(){
-    //std::cout << cardinality_type + " " + cardinality_number + " " + cardinality_range;
+    //std::cout << "type" << cardinality_type + " number " + cardinality_number + " range " + cardinality_range;
     return cardinality_type + " " + cardinality_number + " " + cardinality_range;
+  }
+
+  std::vector<std::string> getCardinalityVector(){
+    std::vector<std::string> result;
+    result.push_back(cardinality_range);
+    result.push_back(cardinality_number);
+    result.push_back(cardinality_type);
+    //std::cout << cardinality_type + " " + cardinality_number + " " + cardinality_range;
+    return result;
   }
   
 };
@@ -27,8 +52,27 @@ struct Restriction_t
 
   std::string getRestriction()
   {
-    //std::cout << property + " " + card->getCardinality() + " " + restriction_range;
-    return property + " " + card->getCardinality() + " " + restriction_range;
+    //std::cout << "property : " << property + " " + "cardinality : " << card->getCardinality() + " " + "restriction : " << restriction_range << std::endl;
+    return property + " " + card->getCardinality() + "" + restriction_range;
+  }
+
+  std::vector<std::string> getRestrictionVector()
+  {
+    std::vector<std::string> result;
+
+    if(property != "")
+      result.push_back(property);
+    if(card->cardinality_type != "")
+      result.push_back(card->cardinality_type);
+    if(card->cardinality_number != "")
+      result.push_back(card->cardinality_number);
+    if(card->cardinality_range != "")
+      result.push_back(card->cardinality_range);
+    if(restriction_range != "")
+      result.push_back(restriction_range);
+
+    //std::cout << "property : " << property + " " + "cardinality : " << card->getCardinality() + " " + "restriction : " << restriction_range << std::endl;
+    return result;
   }
 };
 
@@ -239,14 +283,61 @@ struct ExpressionMember_t{
   }
 };
 
-struct AnonymousClass_t
+struct AnonymousClassVectors_t
 {
-  std::string id;
   std::string class_equiv;
   ExpressionMember_t* equivalence;
   std::string str_equivalences;
-  
+  std::vector<std::string> equivalences_vect;
+  std::vector<std::vector<std::string>> equiv_vect;
+
 };
+
+
+//Capability
+// -> directement dans les classes si tout seul
+// -> si expression complexe -> classe anonyme donc oui
+
+//hasComponent min 2 Camera
+// ObjectPropertyBranch_t* cardinality ClassBranch_t*
+
+//has_node max 2 boolean
+// DataPropertyBranch_t* cardinality datatype (boolean, string, etc)
+
+//hasComponent value indiv1
+//ObjectPropertyBranch_t* value IndividualBranch_t*
+
+// previously ValuedNode but error on static_assert B must be derived from Branch_t on creation of Anonymous Graph
+//class AnonymousClassBranch_t : public Branch_t<AnonymousClassBranch_t>
+class AnonymousClassBranch_t : public ValuedNode
+{
+public:
+  // pointer to the class which is equivalent to this AnonymousClass
+  ClassBranch_t* class_equiv_;
+  // pointers to the concepts used in the equivalence relation
+  ClassBranch_t* class_involved_;
+  ObjectPropertyBranch_t* object_property_involved_;
+  DataPropertyBranch_t* data_property_involved_;
+  IndividualBranch_t* individual_involved_;
+
+  CardType_t card_type_;
+  int card_number_;
+  LiteralNode* card_range_;
+  // type : enum ; number : int ; range : LiteralNode* avec value = NULL mais type pas vide
+
+  // the expressions are only and between restrictions
+  // std::vector<Branch_t*> object_property_equivalence_;
+  // std::vector<ValuedNode*> class_equivalence_;
+  // std::vector<ValuedNode*> data_property_equivalence_;
+  // std::vector<ValuedNode*> individual_equivalence_;
+
+  // comparer pointeurs ou utiliser les id 
+
+  // creation with the value being the ano_id
+  AnonymousClassBranch_t(const std::string& value = "") : ValuedNode(value) {};
+ 
+};
+
 } // namespace ontologenius
 
-#endif // ONTOLOGENIUS_ANOBRANCH_H
+#endif // ONTOLOGENIUS_ANOCLASSBRANCH_H

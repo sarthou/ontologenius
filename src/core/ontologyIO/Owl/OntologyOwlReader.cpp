@@ -239,7 +239,8 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
       else if(sub_elem_name == "onto:label")
         pushLang(object_vector.muted_dictionary_, sub_elem);
       else if(sub_elem_name == "owl:equivalentClass")
-        readEquivalentClass(sub_elem, attr);
+        AnonymousClassVectors_t ano_class = readEquivalentClass(sub_elem, attr);
+        anonymous_graph_->add(node_name, ano_class);
       else
       {
         std::string ns = sub_elem_name.substr(0,sub_elem_name.find(':'));
@@ -265,22 +266,25 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
   nb_loaded_elem_++;
 }
 
-void OntologyOwlReader::readEquivalentClass(TiXmlElement* elem, const std::string& class_name)
+AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* elem, const std::string& class_name)
 {
-  AnonymousClass_t* ano = new AnonymousClass_t(); // /!\ warning think about the deletion
-  ano->class_equiv = class_name;
-
+  AnonymousClassVectors_t ano;
+  ano.class_equiv = class_name;
+  std::vector<std::string> vect;
   //std::cout << "New anonymous class with " << class_name << std::endl;
 
-  if(elem->FirstChild() == nullptr){
+  if(elem->FirstChild() == nullptr)
+  {
       ExpressionMember_t* exp = new ExpressionMember_t;
       exp->mother = nullptr;
       exp->class_restriction = getName(elem->Attribute("rdf:resource"));
       exp->str_equivalence = exp->class_restriction;
-      ano->equivalence = exp;
-      ano->str_equivalences = exp->str_equivalence;
+      ano.equivalence = exp;
+      ano.str_equivalences = exp->str_equivalence;
+      ano.equivalences_vect.push_back(exp->class_restriction);
 
-      std::cout << "\t=" << ano->str_equivalences << std::endl;
+      vect.push_back(exp->class_restriction);
+      ano.equiv_vect.push_back(vect);
   }
  
   for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
@@ -289,11 +293,13 @@ void OntologyOwlReader::readEquivalentClass(TiXmlElement* elem, const std::strin
     
     ExpressionMember_t* exp = new ExpressionMember_t();
     exp->mother = nullptr;
-    ano->equivalence = exp;
+    ano.equivalence = exp;
 
     if(sub_elem_name == "owl:Restriction"){
       readRestriction(sub_elem, exp);
-      ano->str_equivalences = "(" + exp->rest.getRestriction() + ")";
+      ano.str_equivalences = "(" + exp->rest.getRestriction() + ")";
+      ano.equivalences_vect.push_back(ano.str_equivalences);
+      ano.equiv_vect.push_back(exp->rest.getRestrictionVector());
     }
     else{
       readCollection(sub_elem, exp);
