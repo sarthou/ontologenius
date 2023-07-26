@@ -8,6 +8,8 @@
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 
+#include "ontologenius/utils/String.h"
+
 namespace ontologenius {
 
 
@@ -33,56 +35,86 @@ AnonymousClassBranch_t* AnonymousClassGraph::add( const std::string& value, Anon
     ClassBranch_t* class_branch = class_graph_->findOrCreateBranch(value);
     anonymous_branch->class_equiv_= class_branch;
 
-    
-    //if size == 1 => Component Eq to Camera
-    // if(ano.equiv_vect[0].size() == 1)
-    // {
-    //   std::cout << "Equivalence only to a class" << std::endl;
+    for(auto elem : ano.equiv_vect)
+    {
+      if(elem.size() == 1)
+      {
+        std::cout << "Class expression equivalence" << std::endl;
+        ClassBranch_t* class_branch = class_graph_->findOrCreateBranch(elem[0]);
+        anonymous_branch->class_involved_= class_branch;
+      }
+      else if(elem[1] == "value")
+      {
+        std::cout << "Value expression equivalence" << std::endl;
+        // ObjectProperty
+        std::string object_prop_str = elem[0];
+        ObjectPropertyBranch_t* object_branch = object_property_graph_->findOrCreateBranch(object_prop_str);
+        anonymous_branch->object_property_involved_= object_branch;
 
-    // }
-    // else
-    // {
-    //   // if last element is a Class then the property is an obj prop, if it is a type (e.g boolean) then it is a data property
-    //   // Object property
-    //   std::string object_prop_str = ano.equiv_vect[0][0];
-    //   ObjectPropertyBranch_t* object_branch = object_property_graph_->findOrCreateBranch(object_prop_str);
-    //   anonymous_branch->object_property_involved_= object_branch;
+        // Individual
+        std::string indiv_str = elem[2];
+        IndividualBranch_t* indiv_branch = individual_graph_->findOrCreateBranch(indiv_str);
+        anonymous_branch->individual_involved_= indiv_branch;
+        //Cardinality
+        anonymous_branch->card_type_ = value_;
 
-    //   // Data property
-    //   std::string data_prop_str = ano.equiv_vect[0][0];
-    //   DataPropertyBranch_t* data_branch = data_property_graph_->findOrCreateBranch(data_prop_str);
-    //   anonymous_branch->data_property_involved_= data_branch;
+      }
+      else if(isIn("http://www.w3.org/", elem.back() ) )
+      {
+        std::cout << "Data property expression equivalence" << std::endl;
+        // Data property
+        std::string data_prop_str = elem[0];
+        DataPropertyBranch_t* data_branch = data_property_graph_->findOrCreateBranch(data_prop_str);
+        anonymous_branch->data_property_involved_= data_branch;
+        // Range
+        std::string type = split(elem.back(), "#").back();
+        anonymous_branch->card_range_ = new LiteralNode(type, "");
+        //Cardinality
+        if(elem.size() == 4)
+          anonymous_branch->card_number_ = stoi(elem[2]);
+        else
+          anonymous_branch->card_number_ = 0;
 
-    //   // Individuals
-    //   std::string indiv_str = ano.equiv_vect[0][2];
-    //   IndividualBranch_t* indiv_branch = individual_graph_->findOrCreateBranch(indiv_str);
-    //   anonymous_branch->individual_involved_= indiv_branch;
- 
-    // }
-    
-    // look for the restriction field :
-    // if property is not null
-    //-> look in ObjectProperty -> if found -> look for the next part in the ClassBranch
-    // -> look in DataProperty -> if found -> look for the next part in the type
-    
-    // in the equiv relation :
+        if(elem[1]=="some")
+          anonymous_branch->card_type_ = some_;
+        else if(elem[1]=="only")
+          anonymous_branch->card_type_ = only_;
+        else if(elem[1]=="exactly")
+          anonymous_branch->card_type_ = exactly_;
+        else if(elem[1]=="min")
+          anonymous_branch->card_type_ = min_;
+        else
+          anonymous_branch->card_type_ = max_;
+      }
+      else{
+        std::cout << "Object property expression equivalence" << std::endl;
+        // if last element is a Class then the property is an obj prop, if it is a type (e.g boolean) then it is a data property
+        // Object property
+        std::string object_prop_str = elem[0];
+        ObjectPropertyBranch_t* object_branch = object_property_graph_->findOrCreateBranch(object_prop_str);
+        anonymous_branch->object_property_involved_= object_branch;
+        // Range
+        ClassBranch_t* class_branch = class_graph_->findOrCreateBranch(elem.back());
+        anonymous_branch->class_involved_= class_branch;
+        //Cardinality
+        if(elem.size() == 4)
+          anonymous_branch->card_number_ = stoi(elem[2]);
+        else
+          anonymous_branch->card_number_ = 0;
 
-    // look for the ClassBranch_t 
-   
-    //class_equiv = class_graph_->findBranch(ano);
-    // triple check for classes 
-    // ClassBranch_t* domain_branch = nullptr;
-    // getInMap(&domain_branch, domain.elem, class_graph_->roots_);
-    // getInMap(&domain_branch, domain.elem, class_graph_->branchs_);
-    // getInMap(&domain_branch, domain.elem, class_graph_->tmp_mothers_);
-
-
-
-    // Fill the cardinality
-
-
-    return new AnonymousClassBranch_t();
-
+        if(elem[1]=="some")
+          anonymous_branch->card_type_ = some_;
+        else if(elem[1]=="only")
+          anonymous_branch->card_type_ = only_;
+        else if(elem[1]=="exactly")
+          anonymous_branch->card_type_ = exactly_;
+        else if(elem[1]=="min")
+          anonymous_branch->card_type_ = min_;
+        else
+          anonymous_branch->card_type_ = max_;
+      }
+    }
+    return anonymous_branch;
 }
 
 AnonymousClassGraph::AnonymousClassGraph(const AnonymousClassGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph)

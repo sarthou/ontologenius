@@ -45,10 +45,10 @@ private:
   int readIndividual(TiXmlElement* rdf, const std::string& name);
 
   void readClass(TiXmlElement* elem);
-  void readEquivalentClass(TiXmlElement* elem, const std::string& class_name);
+  AnonymousClassVectors_t readEquivalentClass(TiXmlElement* elem, const std::string& class_name);
   void readRestriction(TiXmlElement* elem, ExpressionMember_t* exp);
   void readCardinality(TiXmlElement* elem, Cardinality_t* card);
-  void readCollection(TiXmlElement* elem, ExpressionMember_t* exp);
+  void readCollection(TiXmlElement* elem, ExpressionMember_t* exp, AnonymousClassVectors_t& ano);
   void readIndividual(TiXmlElement* elem);
   void readDescription(TiXmlElement* elem);
   void readIndividualDescription(TiXmlElement* elem);
@@ -104,6 +104,17 @@ void OntologyOwlReader::push(std::vector<Single_t<std::string>>& vect, TiXmlElem
   }
 }
 
+void OntologyOwlReader::push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole)
+{
+  std::string data = elem;
+  if(data != "")
+  {
+    vect.push_back(data);
+    if(symbole != "" && display_)
+      std::cout << "│   │   ├── " << symbole << data << std::endl;
+  }
+
+}
 std::string OntologyOwlReader::getName(const std::string& uri)
 {
   size_t pos = uri.find("#");

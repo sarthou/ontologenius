@@ -239,8 +239,11 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
       else if(sub_elem_name == "onto:label")
         pushLang(object_vector.muted_dictionary_, sub_elem);
       else if(sub_elem_name == "owl:equivalentClass")
+      {
         AnonymousClassVectors_t ano_class = readEquivalentClass(sub_elem, attr);
         anonymous_graph_->add(node_name, ano_class);
+        //push(object_vector.equivalence_ids_, ano_class.str_equivalences , "=");
+      }
       else
       {
         std::string ns = sub_elem_name.substr(0,sub_elem_name.find(':'));
@@ -302,38 +305,18 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
       ano.equiv_vect.push_back(exp->rest.getRestrictionVector());
     }
     else{
-      readCollection(sub_elem, exp);
-      ano->str_equivalences = exp->str_equivalence;
+      readCollection(sub_elem, exp, ano);
+      ano.str_equivalences = exp->str_equivalence;
     }
       
 
-    std::cout << "\t=" << ano->str_equivalences << std::endl;
+    std::cout << "\t=" << ano.str_equivalences << std::endl;
 
-    // for(auto elem3: ano->equivalence->intersects){
-    //   std::cout << elem3->str_equivalence << std::endl;
-    //   for(auto elem4 : elem3->intersects){
-    //     std::cout << elem4->str_equivalence << std::endl;
-    //     for(auto elem5 : elem4->intersects){
-    //     std::cout << elem5->str_equivalence << std::endl;
-    //   }
-    //   }
-    // }
-    // for(auto elem3: ano->equivalence->intersects){
-    //   std::cout << elem3->distributable << std::endl;
-    //   for(auto elem4 : elem3->intersects){
-    //     std::cout << elem4->distributable << std::endl;
-    //     for(auto elem5 : elem4->intersects){
-    //     std::cout << elem5->distributable << std::endl;
-    //   }
-    //   }
-   // }
-  }   
+  return ano; 
+  }
 }
 void OntologyOwlReader::readRestriction(TiXmlElement* elem, ExpressionMember_t* exp)
 {
-
-  std::tuple<std::string, std::string, std::string> tuple_test;
-  
   Cardinality_t* test_card = new Cardinality_t();
   Restriction_t restr;
   restr.card = test_card;
@@ -349,9 +332,11 @@ void OntologyOwlReader::readRestriction(TiXmlElement* elem, ExpressionMember_t* 
     }
     else if(sub_elem_name == "owl:onClass" || sub_elem_name == "owl:onDataRange")
     {
-      std::string attr_class = getName(sub_elem->Attribute("rdf:resource"));
-      restr.restriction_range=attr_class;
-
+      std::string attr_class = sub_elem->Attribute("rdf:resource");
+      if(isIn("http://www.w3.org/", attr_class))
+         restr.restriction_range=attr_class;
+      else
+        restr.restriction_range= getName(attr_class);
     }
     else{
       readCardinality(sub_elem, test_card);
@@ -365,20 +350,24 @@ void OntologyOwlReader::readCardinality(TiXmlElement* elem, Cardinality_t* card)
   const char* resource = elem->Attribute("rdf:resource");
   //const char* data_type = elem->Attribute("rdf:datatype");
   
-  if(resource != nullptr)
-    card->cardinality_range = getName(resource);
-
+  if(resource != nullptr){
+    std::string s = resource;
+    if(isIn("http://www.w3.org/", s))
+      card->cardinality_range = resource;
+    else
+      card->cardinality_range = getName(resource);
+  }
   card->cardinality_type = card_map_[sub_elem_name];
 
   if(elem->GetText() != nullptr)
     card->cardinality_number = elem->GetText();
 }
-void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* exp){
+void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* exp, AnonymousClassVectors_t& ano){
 
   for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
   {
     if(getName(sub_elem->Value())  == "owl:Class")
-      readCollection(sub_elem, exp);
+      readCollection(sub_elem, exp, ano);
     else
     {
       ExpressionMember_t* exp2 = new ExpressionMember_t;
@@ -389,7 +378,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
       {
         exp2->andor = true;
         exp2->nb_sub = getNbChildren(sub_elem);
-        readCollection(sub_elem, exp2);
+        readCollection(sub_elem, exp2, ano);
         exp2->UpdateEquiv();
         exp->str_equivalence = exp2->str_equivalence;
         // std::cout << " Before distribution : " << exp->str_equivalence  << std::endl;
@@ -401,7 +390,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
       {
         exp2->andor = false;
         exp2->nb_sub = getNbChildren(sub_elem);
-        readCollection(sub_elem, exp2);
+        readCollection(sub_elem, exp2, ano);
         exp2->UpdateEquiv();
         exp->str_equivalence = exp2->str_equivalence;
       }
