@@ -145,13 +145,11 @@
           <div class="code_line">_onto = <span class="py_value">None</span></div>
           <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">def</span> <span class="py_function">displayRoute</span>(route):</div>
-          <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'Route:'</span></div>
+          <div class="code_line">    <span class="py_op">print</span>(<span class="py_string">'Route:'</span>)</div>
           <div class="code_line">    <span class="py_op">for</span> point <span class="py_op">in</span> route:</div>
-          <div class="code_line">        <span class="py_op">print</span> <span class="py_string">'- '</span> + point</div>
+          <div class="code_line">        <span class="py_op">print</span>(<span class="py_string">'- '</span> + point)</div>
           <div class="code_line"><br></div>
           <div class="code_line"><span class="py_op">if</span> __name__ == <span class="py_string">'__main__'</span>:</div>
-          <div class="code_line">    <span class="py_op">global</span> _onto</div>
-          <div class="code_line"><br></div>
           <div class="code_line">    rospy.init_node(<span class="py_string">'find_our_way'</span>)</div>
           <div class="code_line"><br></div>
           <div class="code_line">    _onto = OntologyManipulator()</div>
