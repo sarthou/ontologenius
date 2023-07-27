@@ -3,7 +3,7 @@ import rospy
 from .clients import *
 from .clientsIndex import *
 from .FeederPublisher import FeederPublisher
-from .ConvertionClient import ConvertionClient
+from .ConversionClient import ConversionClient
 
 class OntologyManipulatorIndex:
     """The OntologyManipulatorIndex class is just an object to access all API ROS abstraction classes so that you can query and manage ontologenius."""
@@ -21,9 +21,9 @@ class OntologyManipulatorIndex:
         self.reasoners = ReasonerClient(name)
         self.feeder = FeederPublisher(name)
         self.sparql = SparqlIndexClient(name)
-        self.convertion = ConvertionClient(name)
+        self.conversion = ConversionClient(name)
 
-        service_name = "ontologenius/convertion"
+        service_name = "ontologenius/conversion"
         if name != '':
             service_name+= "/" + name
         rospy.wait_for_service(service_name)

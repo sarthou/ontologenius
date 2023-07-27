@@ -5,17 +5,17 @@
 
 #include <ros/ros.h>
 
-#include "ontologenius/OntologeniusConvertion.h"
+#include "ontologenius/OntologeniusConversion.h"
 
 namespace onto {
 
-class ConvertionClient
+class ConversionClient
 {
 public:
-  /// @brief Constructs a ROS convertion client.
+  /// @brief Constructs a ROS conversion client.
   /// @param n is an initialized ROS node handle.
   /// @param name is the name of the ontologenius service
-  ConvertionClient(ros::NodeHandle* n, const std::string& name);
+  ConversionClient(ros::NodeHandle* n, const std::string& name);
 
   void verbose(bool verbose) { verbose_ = verbose; }
 
@@ -55,7 +55,7 @@ private:
   std::vector<int64_t> Id2Index(const std::vector<std::string>& ids, int8_t source);
   int64_t Id2Index(const std::string& id, int8_t source);
 
-  inline bool call(ontologenius::OntologeniusConvertion& srv);
+  inline bool call(ontologenius::OntologeniusConversion& srv);
 };
 
 } // namespace onto

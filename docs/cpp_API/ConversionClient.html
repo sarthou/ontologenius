@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ConvertionClient Class (cpp) | Ontologenius 0.3.0</title>
+  <title>ConversionClient Class (cpp) | Ontologenius 0.3.0</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -99,7 +99,7 @@
             <li class="level2"><b>Index based classes</b></li>
             <li class="level1"><a href="ClassIndexClient.html">ClassIndexClient</a></li>
             <li class="level1"><a href="ClientBaseIndex.html">ClientBaseIndex</a></li>
-            <li class="level1"><a href="ConvertionClient.html"><b>ConvertionClient</b></a></li>
+            <li class="level1"><a href="ConversionClient.html"><b>ConversionClient</b></a></li>
             <li class="level1"><a href="DataPropertyIndexClient.html">DataPropertyIndexClient</a></li>
             <li class="level1"><a href="IndividualIndexClient.html">IndividualIndexClient</a></li>
             <li class="level1"><a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></li>
@@ -118,12 +118,12 @@
       </div>
 
       <div class="context">
-        <h1 class="title">ConvertionClient Class</h1>
-        <p>The ConvertionClient class provides an abstraction to the ontologenius convertion ROS services. <a href="#details">More...</a></p>
+        <h1 class="title">ConversionClient Class</h1>
+        <p>The ConversionClient class provides an abstraction to the ontologenius conversion ROS services. <a href="#details">More...</a></p>
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clients/ConvertionClient.h&quot;</span></td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clients/ConversionClient.h&quot;</span></td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> Namespace:</td><td class="memItemRight bottomAlign"> onto</td></tr>
             </tbody>
           </table>
@@ -134,28 +134,28 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#ConvertionClient">ConvertionClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#setVerbose">verbose</a></b>(bool verbose)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#individualsIndex2Ids">individualsIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#classesIndex2Ids">classesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#dataPropertiesIndex2Ids">dataPropertiesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#objectPropertiesIndex2Ids">objectPropertiesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#literalsIndex2Ids">literalsIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#individualsIndex2Id">individualsIndex2Id</a></b>(int64_t index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#classesIndex2Id">classesIndex2Id</a></b>(int64_t index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#dataPropertiesIndex2Id">dataPropertiesIndex2Id</a></b>(int64_t index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#objectPropertiesIndex2Id">objectPropertiesIndex2Id</a></b>(int64_t index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#literalsIndex2Id">literalsIndex2Id</a></b>(int64_t index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#individualsId2Indexes">individualsId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#classesId2Indexes">classesId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#dataPropertiesId2Indexes">dataPropertiesId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#objectPropertiesId2Indexes">objectPropertiesId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#literalsId2Indexes">literalsId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#individualsId2Index">individualsId2Index</a></b>(const std::string&amp; id)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#classesId2Index">classesId2Index</a></b>(const std::string&amp; id)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#dataPropertiesId2Index">dataPropertiesId2Index</a></b>(const std::string&amp; id)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#objectPropertiesId2Index">objectPropertiesId2Index</a></b>(const std::string&amp; id)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#literalsId2Index">literalsId2Index</a></b>(const std::string&amp; id)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#ConversionClient">ConversionClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#setVerbose">verbose</a></b>(bool verbose)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsIndex2Ids">individualsIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesIndex2Ids">classesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesIndex2Ids">dataPropertiesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesIndex2Ids">objectPropertiesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsIndex2Ids">literalsIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsIndex2Id">individualsIndex2Id</a></b>(int64_t index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesIndex2Id">classesIndex2Id</a></b>(int64_t index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesIndex2Id">dataPropertiesIndex2Id</a></b>(int64_t index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesIndex2Id">objectPropertiesIndex2Id</a></b>(int64_t index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsIndex2Id">literalsIndex2Id</a></b>(int64_t index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsId2Indexes">individualsId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesId2Indexes">classesId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesId2Indexes">dataPropertiesId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesId2Indexes">objectPropertiesId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsId2Indexes">literalsId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsId2Index">individualsId2Index</a></b>(const std::string&amp; id)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesId2Index">classesId2Index</a></b>(const std::string&amp; id)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesId2Index">dataPropertiesId2Index</a></b>(const std::string&amp; id)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesId2Index">objectPropertiesId2Index</a></b>(const std::string&amp; id)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsId2Index">literalsId2Index</a></b>(const std::string&amp; id)</td></tr>
             </tbody>
           </table>
         </div>
@@ -163,7 +163,7 @@
         <a name="details"></a>
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
-          <p>The ConvertionClient class provides an abstraction to the ontologenius convertion ROS services to pass from identifiers to indexes and inverse.</p>
+          <p>The ConversionClient class provides an abstraction to the ontologenius conversion ROS services to pass from identifiers to indexes and inverse.</p>
           <p>This class ensures a persistent connection with the service based on. The persistent connection ensures a minimal response time.
              A reconnection logic is implemented in the event that the persistent connection fails. </p>
         </div>
@@ -171,90 +171,90 @@
         <div class="func">
           <h2>Public Function Documentation</h2>
 
-          <h3 class="fn" id="ConvertionClient"><a name="ConvertionClient"></a>ConvertionClient::<span class="name">ConvertionClient</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Constructs an convertion client with a pointer to a NodeHandle <i>n</i>.</p>
+          <h3 class="fn" id="ConversionClient"><a name="ConversionClient"></a>ConversionClient::<span class="name">ConversionClient</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Constructs an conversion client with a pointer to a NodeHandle <i>n</i>.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
 
-          <h3 class="fn" id="verbose"><a name="verbose"></a><span class="type">void</span> ConvertionClient::<span class="name">verbose</span>(<span class="type">bool</span> <i>verbose</i>)</h3>
+          <h3 class="fn" id="verbose"><a name="verbose"></a><span class="type">void</span> ConversionClient::<span class="name">verbose</span>(<span class="type">bool</span> <i>verbose</i>)</h3>
           <p>If <i>verbose</i> is set to true, the clients will post messages about the failure to call the services and about their restoration.</p>
 
-          <h3 class="fn" id="individualsIndex2Ids"><a name="individualsIndex2Ids"></a><span class="type">std::vector&lt;std::string&gt;</span> ConvertionClient::<span class="name">individualsIndex2Id</span>(const <span class="type">std::vector&lt;int64_t&gt;</span>&amp; <i>indexes</i>)</h3>
+          <h3 class="fn" id="individualsIndex2Ids"><a name="individualsIndex2Ids"></a><span class="type">std::vector&lt;std::string&gt;</span> ConversionClient::<span class="name">individualsIndex2Id</span>(const <span class="type">std::vector&lt;int64_t&gt;</span>&amp; <i>indexes</i>)</h3>
           <p>Converts a vector of indexes representing individuals to identifiers.</p>
           <p>Returns a vector of identifiers whose order matches the original indexes order. Unknown concepts (or from wrong types) will be return as empty strings.</p>
 
-          <h3 class="fn" id="classesIndex2Ids"><a name="classesIndex2Ids"></a><span class="type">std::vector&lt;std::string&gt;</span> ConvertionClient::<span class="name">classesIndex2Id</span>(const <span class="type">std::vector&lt;int64_t&gt;</span>&amp; <i>indexes</i>)</h3>
+          <h3 class="fn" id="classesIndex2Ids"><a name="classesIndex2Ids"></a><span class="type">std::vector&lt;std::string&gt;</span> ConversionClient::<span class="name">classesIndex2Id</span>(const <span class="type">std::vector&lt;int64_t&gt;</span>&amp; <i>indexes</i>)</h3>
           <p>Converts a vector of indexes representing classes to identifiers.</p>
           <p>Returns a vector of identifiers whose order matches the original indexes order. Unknown concepts (or from wrong types) will be return as empty strings.</p>
 
-          <h3 class="fn" id="dataPropertiesIndex2Ids"><a name="dataPropertiesIndex2Ids"></a><span class="type">std::vector&lt;std::string&gt;</span> ConvertionClient::<span class="name">dataPropertiesIndex2Id</span>(const <span class="type">std::vector&lt;int64_t&gt;</span>&amp; <i>indexes</i>)</h3>
+          <h3 class="fn" id="dataPropertiesIndex2Ids"><a name="dataPropertiesIndex2Ids"></a><span class="type">std::vector&lt;std::string&gt;</span> ConversionClient::<span class="name">dataPropertiesIndex2Id</span>(const <span class="type">std::vector&lt;int64_t&gt;</span>&amp; <i>indexes</i>)</h3>
           <p>Converts a vector of indexes representing data properties to identifiers.</p>
           <p>Returns a vector of identifiers whose order matches the original indexes order. Unknown concepts (or from wrong types) will be return as empty strings.</p>
 
-          <h3 class="fn" id="objectPropertiesIndex2Ids"><a name="objectPropertiesIndex2Ids"></a><span class="type">std::vector&lt;std::string&gt;</span> ConvertionClient::<span class="name">objectPropertiesIndex2Id</span>(const <span class="type">std::vector&lt;int64_t&gt;</span>&amp; <i>indexes</i>)</h3>
+          <h3 class="fn" id="objectPropertiesIndex2Ids"><a name="objectPropertiesIndex2Ids"></a><span class="type">std::vector&lt;std::string&gt;</span> ConversionClient::<span class="name">objectPropertiesIndex2Id</span>(const <span class="type">std::vector&lt;int64_t&gt;</span>&amp; <i>indexes</i>)</h3>
           <p>Converts a vector of indexes representing object properties to identifiers.</p>
           <p>Returns a vector of identifiers whose order matches the original indexes order. Unknown concepts (or from wrong types) will be return as empty strings.</p>
 
-          <h3 class="fn" id="literalsIndex2Ids"><a name="literalsIndex2Ids"></a><span class="type">std::vector&lt;std::string&gt;</span> ConvertionClient::<span class="name">literalsIndex2Id</span>(const <span class="type">std::vector&lt;int64_t&gt;</span>&amp; <i>indexes</i>)</h3>
+          <h3 class="fn" id="literalsIndex2Ids"><a name="literalsIndex2Ids"></a><span class="type">std::vector&lt;std::string&gt;</span> ConversionClient::<span class="name">literalsIndex2Id</span>(const <span class="type">std::vector&lt;int64_t&gt;</span>&amp; <i>indexes</i>)</h3>
           <p>Converts a vector of indexes representing literals to identifiers.</p>
           <p>Returns a vector of identifiers whose order matches the original indexes order. Unknown concepts (or from wrong types) will be return as empty strings.</p>
 
-          <h3 class="fn" id="individualsIndex2Id"><a name="individualsIndex2Id"></a><span class="type">std::string</span> ConvertionClient::<span class="name">individualsIndex2Id</span>(<span class="type">int64_t</span> <i>index</i>)</h3>
+          <h3 class="fn" id="individualsIndex2Id"><a name="individualsIndex2Id"></a><span class="type">std::string</span> ConversionClient::<span class="name">individualsIndex2Id</span>(<span class="type">int64_t</span> <i>index</i>)</h3>
           <p>Converts an index representing an individual to its identifier.</p>
           <p>Returns a single identifier. Unknown concept (or from wrong types) will be return as an empty string.</p>
 
-          <h3 class="fn" id="classesIndex2Id"><a name="classesIndex2Id"></a><span class="type">std::string</span> ConvertionClient::<span class="name">classesIndex2Id</span>(<span class="type">int64_t</span> <i>index</i>)</h3>
+          <h3 class="fn" id="classesIndex2Id"><a name="classesIndex2Id"></a><span class="type">std::string</span> ConversionClient::<span class="name">classesIndex2Id</span>(<span class="type">int64_t</span> <i>index</i>)</h3>
           <p>Converts an index representing a class to its identifier.</p>
           <p>Returns a single identifier. Unknown concept (or from wrong types) will be return as an empty string.</p>
 
-          <h3 class="fn" id="dataPropertiesIndex2Id"><a name="dataPropertiesIndex2Id"></a><span class="type">std::string</span> ConvertionClient::<span class="name">dataPropertiesIndex2Id</span>(<span class="type">int64_t</span> <i>index</i>)</h3>
+          <h3 class="fn" id="dataPropertiesIndex2Id"><a name="dataPropertiesIndex2Id"></a><span class="type">std::string</span> ConversionClient::<span class="name">dataPropertiesIndex2Id</span>(<span class="type">int64_t</span> <i>index</i>)</h3>
           <p>Converts an index representing a data property to its identifier.</p>
           <p>Returns a single identifier. Unknown concept (or from wrong types) will be return as an empty string.</p>
 
-          <h3 class="fn" id="objectPropertiesIndex2Id"><a name="objectPropertiesIndex2Id"></a><span class="type">std::string</span> ConvertionClient::<span class="name">objectPropertiesIndex2Id</span>(<span class="type">int64_t</span> <i>index</i>)</h3>
+          <h3 class="fn" id="objectPropertiesIndex2Id"><a name="objectPropertiesIndex2Id"></a><span class="type">std::string</span> ConversionClient::<span class="name">objectPropertiesIndex2Id</span>(<span class="type">int64_t</span> <i>index</i>)</h3>
           <p>Converts an index representing an object to its identifier.</p>
           <p>Returns a single identifier. Unknown concept (or from wrong types) will be return as an empty string.</p>
 
-          <h3 class="fn" id="literalsIndex2Id"><a name="literalsIndex2Id"></a><span class="type">std::string</span> ConvertionClient::<span class="name">literalsIndex2Id</span>(<span class="type">int64_t</span> <i>index</i>)</h3>
+          <h3 class="fn" id="literalsIndex2Id"><a name="literalsIndex2Id"></a><span class="type">std::string</span> ConversionClient::<span class="name">literalsIndex2Id</span>(<span class="type">int64_t</span> <i>index</i>)</h3>
           <p>Converts an index representing a literal to its identifier.</p>
           <p>Returns a single identifier. Unknown concept (or from wrong types) will be return as an empty string.</p>
 
-          <h3 class="fn" id="individualsId2Indexes"><a name="individualsId2Indexes"></a><span class="type">std::vector&lt;int64_t&gt;</span> ConvertionClient::<span class="name">individualsId2Index</span>(const <span class="type">std::vector&lt;std::string&gt;</span>&amp; <i>ids</i>)</h3>
+          <h3 class="fn" id="individualsId2Indexes"><a name="individualsId2Indexes"></a><span class="type">std::vector&lt;int64_t&gt;</span> ConversionClient::<span class="name">individualsId2Index</span>(const <span class="type">std::vector&lt;std::string&gt;</span>&amp; <i>ids</i>)</h3>
           <p>Converts a vector of identifiers representing individuals to indexes.</p>
           <p>Returns a vector of indexes whose order matches the original identifiers order. Unknown concepts (or from wrong types) will be return as index 0.</p>
 
-          <h3 class="fn" id="classesId2Indexes"><a name="classesId2Indexes"></a><span class="type">std::vector&lt;int64_t&gt;</span> ConvertionClient::<span class="name">classesId2Index</span>(const <span class="type">std::vector&lt;std::string&gt;</span>&amp; <i>ids</i>)</h3>
+          <h3 class="fn" id="classesId2Indexes"><a name="classesId2Indexes"></a><span class="type">std::vector&lt;int64_t&gt;</span> ConversionClient::<span class="name">classesId2Index</span>(const <span class="type">std::vector&lt;std::string&gt;</span>&amp; <i>ids</i>)</h3>
           <p>Converts a vector of identifiers representing classes to indexes.</p>
           <p>Returns a vector of indexes whose order matches the original identifiers order. Unknown concepts (or from wrong types) will be return as index 0.</p>
 
-          <h3 class="fn" id="dataPropertiesId2Indexes"><a name="dataPropertiesId2Indexes"></a><span class="type">std::vector&lt;int64_t&gt;</span> ConvertionClient::<span class="name">dataPropertiesId2Index</span>(const <span class="type">std::vector&lt;std::string&gt;</span>&amp; <i>ids</i>)</h3>
+          <h3 class="fn" id="dataPropertiesId2Indexes"><a name="dataPropertiesId2Indexes"></a><span class="type">std::vector&lt;int64_t&gt;</span> ConversionClient::<span class="name">dataPropertiesId2Index</span>(const <span class="type">std::vector&lt;std::string&gt;</span>&amp; <i>ids</i>)</h3>
           <p>Converts a vector of identifiers representing data properties to indexes.</p>
           <p>Returns a vector of indexes whose order matches the original identifiers order. Unknown concepts (or from wrong types) will be return as index 0.</p>
 
-          <h3 class="fn" id="objectPropertiesId2Indexes"><a name="objectPropertiesId2Indexes"></a><span class="type">std::vector&lt;int64_t&gt;</span> ConvertionClient::<span class="name">objectPropertiesId2Index</span>(const <span class="type">std::vector&lt;std::string&gt;</span>&amp; <i>ids</i>)</h3>
+          <h3 class="fn" id="objectPropertiesId2Indexes"><a name="objectPropertiesId2Indexes"></a><span class="type">std::vector&lt;int64_t&gt;</span> ConversionClient::<span class="name">objectPropertiesId2Index</span>(const <span class="type">std::vector&lt;std::string&gt;</span>&amp; <i>ids</i>)</h3>
           <p>Converts a vector of identifiers representing object properties to indexes.</p>
           <p>Returns a vector of indexes whose order matches the original identifiers order. Unknown concepts (or from wrong types) will be return as index 0.</p>
 
-          <h3 class="fn" id="literalsId2Indexes"><a name="literalsId2Indexes"></a><span class="type">std::vector&lt;int64_t&gt;</span> ConvertionClient::<span class="name">literalsId2Index</span>(const <span class="type">std::vector&lt;std::string&gt;</span>&amp; <i>ids</i>)</h3>
+          <h3 class="fn" id="literalsId2Indexes"><a name="literalsId2Indexes"></a><span class="type">std::vector&lt;int64_t&gt;</span> ConversionClient::<span class="name">literalsId2Index</span>(const <span class="type">std::vector&lt;std::string&gt;</span>&amp; <i>ids</i>)</h3>
           <p>Converts a vector of identifiers representing literals to indexes.</p>
           <p>Returns a vector of indexes whose order matches the original identifiers order. Unknown concepts (or from wrong types) will be return as index 0.</p>
 
-          <h3 class="fn" id="individualsId2Index"><a name="individualsId2Index"></a><span class="type">int64_t</span> ConvertionClient::<span class="name">individualsId2Index</span>(const <span class="type">std::string</span>&amp; <i>id</i>)</h3>
+          <h3 class="fn" id="individualsId2Index"><a name="individualsId2Index"></a><span class="type">int64_t</span> ConversionClient::<span class="name">individualsId2Index</span>(const <span class="type">std::string</span>&amp; <i>id</i>)</h3>
           <p>Converts an identifier representing an individual to its index.</p>
           <p>Returns a single index. Unknown concept (or from wrong types) will be return as index 0.</p>
 
-          <h3 class="fn" id="classesId2Index"><a name="classesId2Index"></a><span class="type">int64_t</span> ConvertionClient::<span class="name">classesId2Index</span>(const <span class="type">std::string</span>&amp; <i>id</i>)</h3>
+          <h3 class="fn" id="classesId2Index"><a name="classesId2Index"></a><span class="type">int64_t</span> ConversionClient::<span class="name">classesId2Index</span>(const <span class="type">std::string</span>&amp; <i>id</i>)</h3>
           <p>Converts an identifier representing a class to its index.</p>
           <p>Returns a single index. Unknown concept (or from wrong types) will be return as index 0.</p>
 
-          <h3 class="fn" id="dataPropertiesId2Index"><a name="dataPropertiesId2Index"></a><span class="type">int64_t</span> ConvertionClient::<span class="name">dataPropertiesId2Index</span>(const <span class="type">std::string</span>&amp; <i>id</i>)</h3>
+          <h3 class="fn" id="dataPropertiesId2Index"><a name="dataPropertiesId2Index"></a><span class="type">int64_t</span> ConversionClient::<span class="name">dataPropertiesId2Index</span>(const <span class="type">std::string</span>&amp; <i>id</i>)</h3>
           <p>Converts an identifier representing a data property to its index.</p>
           <p>Returns a single index. Unknown concept (or from wrong types) will be return as index 0.</p>
 
-          <h3 class="fn" id="objectPropertiesId2Index"><a name="objectPropertiesId2Index"></a><span class="type">int64_t</span> ConvertionClient::<span class="name">objectPropertiesId2Index</span>(const <span class="type">std::string</span>&amp; <i>id</i>)</h3>
+          <h3 class="fn" id="objectPropertiesId2Index"><a name="objectPropertiesId2Index"></a><span class="type">int64_t</span> ConversionClient::<span class="name">objectPropertiesId2Index</span>(const <span class="type">std::string</span>&amp; <i>id</i>)</h3>
           <p>Converts an identifier representing an object property to its index.</p>
           <p>Returns a single index. Unknown concept (or from wrong types) will be return as index 0.</p>
 
-          <h3 class="fn" id="literalsId2Index"><a name="literalsId2Index"></a><span class="type">int64_t</span> ConvertionClient::<span class="name">literalsId2Index</span>(const <span class="type">std::string</span>&amp; <i>id</i>)</h3>
+          <h3 class="fn" id="literalsId2Index"><a name="literalsId2Index"></a><span class="type">int64_t</span> ConversionClient::<span class="name">literalsId2Index</span>(const <span class="type">std::string</span>&amp; <i>id</i>)</h3>
           <p>Converts an identifier representing a literal to its index.</p>
           <p>Returns a single index. Unknown concept (or from wrong types) will be return as index 0.</p>
 

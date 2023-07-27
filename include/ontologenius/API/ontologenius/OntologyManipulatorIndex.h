@@ -14,7 +14,7 @@
 #include "ontologenius/API/ontologenius/clients/ActionClient.h"
 #include "ontologenius/API/ontologenius/clients/ReasonerClient.h"
 #include "ontologenius/API/ontologenius/FeederPublisher.h"
-#include "ontologenius/API/ontologenius/ConvertionClient.h"
+#include "ontologenius/API/ontologenius/ConversionClient.h"
 
 namespace onto {
 
@@ -66,7 +66,7 @@ public:
   /// @brief ROS service client to make SPAQRL queries
   SparqlIndexClient sparql;
   /// @brief ROS service client to make convertions between indexes and string identifiers
-  ConvertionClient convertion;
+  ConversionClient conversion;
 };
 
 } // namespace onto

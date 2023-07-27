@@ -5,4 +5,4 @@ from .OntologyManipulator import OntologyManipulator
 from .OntologyManipulatorIndex import OntologyManipulatorIndex
 from .OntologiesManipulator import OntologiesManipulator
 from .FeederPublisher import FeederPublisher
-from .ConvertionClient import ConvertionClient
+from .ConversionClient import ConversionClient

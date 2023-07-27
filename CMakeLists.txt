@@ -83,7 +83,7 @@ catkin_python_setup()
  add_service_files(
   FILES
   REST.srv
-  OntologeniusConvertion.srv
+  OntologeniusConversion.srv
   OntologeniusService.srv
   OntologeniusIndexService.srv
   OntologeniusSparqlService.srv
@@ -216,7 +216,7 @@ add_onto_library(ontologenius_lib
   src/API/ontologenius/clientsIndex/ClientBaseIndex.cpp
   src/API/ontologenius/clientsIndex/SparqlIndexClient.cpp
   src/API/ontologenius/FeederPublisher.cpp
-  src/API/ontologenius/ConvertionClient.cpp
+  src/API/ontologenius/ConversionClient.cpp
   src/API/ontologenius/OntologyManipulator.cpp
   src/API/ontologenius/OntologyManipulatorIndex.cpp
   src/API/ontologenius/OntologiesManipulator.cpp
