@@ -83,7 +83,7 @@
             </a>
           </h3>
           <ul style="display: block;">
-            <li class="level1"><a href="ActionClient.html"><b>ActionClient</b></a></li>
+            <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
             <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
             <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
             <li class="level1"><a href="DataPropertyClient.html">DataPropertyClient</a></li>
@@ -135,6 +135,7 @@
           <table class="alignedsummary">
             <tbody>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#ConvertionClient">ConvertionClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#setVerbose">verbose</a></b>(bool verbose)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#individualsIndex2Ids">individualsIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#classesIndex2Ids">classesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConvertionClient.html#dataPropertiesIndex2Ids">dataPropertiesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
@@ -173,6 +174,9 @@
           <h3 class="fn" id="ConvertionClient"><a name="ConvertionClient"></a>ConvertionClient::<span class="name">ConvertionClient</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Constructs an convertion client with a pointer to a NodeHandle <i>n</i>.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
+
+          <h3 class="fn" id="verbose"><a name="verbose"></a><span class="type">void</span> ConvertionClient::<span class="name">verbose</span>(<span class="type">bool</span> <i>verbose</i>)</h3>
+          <p>If <i>verbose</i> is set to true, the clients will post messages about the failure to call the services and about their restoration.</p>
 
           <h3 class="fn" id="individualsIndex2Ids"><a name="individualsIndex2Ids"></a><span class="type">std::vector&lt;std::string&gt;</span> ConvertionClient::<span class="name">individualsIndex2Id</span>(const <span class="type">std::vector&lt;int64_t&gt;</span>&amp; <i>indexes</i>)</h3>
           <p>Converts a vector of indexes representing individuals to identifiers.</p>
