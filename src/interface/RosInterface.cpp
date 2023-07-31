@@ -152,7 +152,7 @@ void RosInterface::run()
   ros::ServiceServer service_sparql_index = n_.advertiseService(getTopicName("sparql_index"), &RosInterface::sparqlIndexHandle, this);
   (void)service_sparql_index;
 
-  ros::ServiceServer service_convertion = n_.advertiseService(getTopicName("conversion"), &RosInterface::convertionHandle, this);
+  ros::ServiceServer service_convertion = n_.advertiseService(getTopicName("conversion"), &RosInterface::conversionHandle, this);
   (void)service_convertion;
 
   if(name_ != "")
@@ -283,7 +283,7 @@ bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &re
   return true;
 }
 
-bool RosInterface::convertionHandle(ontologenius::OntologeniusConversion::Request &req,
+bool RosInterface::conversionHandle(ontologenius::OntologeniusConversion::Request &req,
                                     ontologenius::OntologeniusConversion::Response &res)
 {
   if(req.values_int.size())

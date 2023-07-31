@@ -167,7 +167,7 @@ public:
                       ontologenius::OntologeniusService::Response &res);
 
   /// @brief The ROS service callback in charge of the conversion from index to identifier and inverse
-  bool convertionHandle(ontologenius::OntologeniusConversion::Request &req,
+  bool conversionHandle(ontologenius::OntologeniusConversion::Request &req,
                         ontologenius::OntologeniusConversion::Response &res);
 
   /// @brief The thread that periodically manages the update of the ontology with the incoming instructions 
