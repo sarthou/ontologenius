@@ -387,6 +387,11 @@ a.laas_logo {
   margin-top:0.75em;
   max-width:100%
 }
+.context p a img {
+  margin-top:4px;
+  margin-right: 5px;
+  float: inline-start
+}
 .context .table table img {
   max-width:initial
 }
