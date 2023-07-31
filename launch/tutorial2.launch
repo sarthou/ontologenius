@@ -1,7 +1,0 @@
-
-<launch>
-    <include file="$(find ontologenius)/launch/ontologenius.launch">
-        <arg name="intern_file" default="none"/>
-        <arg name="files" default="$(find ontologenius)/files/tutorials/tutorial_2.owl"/>
-    </include>
-</launch>
