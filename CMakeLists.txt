@@ -429,6 +429,10 @@ if(CATKIN_ENABLE_TESTING)
   target_include_directories(ontologenius_propertiesInheritage_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_propertiesInheritage_tester ontologenius_lib ${catkin_LIBRARIES})
 
+  add_rostest_gtest(ontologenius_propertiesInheritageIndex_tester test/propertiesInheritageIndex.test src/tests/CI/propertiesInheritageIndex.cpp)
+  target_include_directories(ontologenius_propertiesInheritageIndex_tester PRIVATE ${catkin_INCLUDE_DIRS})
+  target_link_libraries(ontologenius_propertiesInheritageIndex_tester ontologenius_lib ${catkin_LIBRARIES})
+
   add_rostest_gtest(ontologenius_dynamic_tester test/dynamic.test src/tests/CI/dynamic.cpp)
   target_include_directories(ontologenius_dynamic_tester PRIVATE ${catkin_INCLUDE_DIRS})
   target_link_libraries(ontologenius_dynamic_tester ontologenius_lib ${catkin_LIBRARIES})
