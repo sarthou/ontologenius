@@ -313,7 +313,7 @@ bool RosInterface::convertionHandle(ontologenius::OntologeniusConversion::Reques
     else if(req.source == req.OBJECT_PROPERTIES)
       res.values_int = onto_->object_property_graph_.getIndexes(req.values_str);
     else if(req.source == req.LITERAL)
-      res.values_int = onto_->data_property_graph_.getIndexes(req.values_str);
+      res.values_int = onto_->data_property_graph_.getLiteralIndexes(req.values_str);
     else
       return false;
   }
