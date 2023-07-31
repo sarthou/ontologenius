@@ -14,12 +14,12 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 a {
-  color:#324a5e;
+  color:#3d5a72;
   text-decoration:none;
   transition-duration:0.3s
 }
 a:hover {
-  color:#324a5e
+  color:#3d5a72
 }
 .center{
   display: block;
@@ -48,7 +48,7 @@ footer {
   font-weight:400;
   transition-duration:1s;
   font-size: 16px;
-  background-color:#324a5e;
+  background-color:#3d5a72;
   color:#ffffff;
   height: 80px;
   padding: 10px;
@@ -624,7 +624,7 @@ ol.tutorial-part-summary_list>li {
  padding-left:40px
 }
 .toturial-header {
-  background-color:#324a5e;
+  background-color:#3d5a72;
   display:block;
   overflow-x:auto;
   margin-bottom:25px;
@@ -654,9 +654,9 @@ ol.tutorial-part-summary_list>li {
   outline: none;
   padding: 16px 32px;
   text-transform: uppercase;
-  color: #324a5e;
+  color: #3d5a72;
   background-color: #fff;
-  border-color: #324a5e;
+  border-color: #3d5a72;
   transition-duration:1s
 }
 .course-pagination__btn:hover {
