@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     a.setStyle(new DarkStyle);
 
     std::string path = ros::package::getPath("ontologenius");
-    path = path + "/docs/img/logo/ontologenius.ico";
+    path = path + "/docs/images/ontologenius.ico";
     QIcon icon(QString::fromStdString(path));
     a.setWindowIcon(icon);
 
