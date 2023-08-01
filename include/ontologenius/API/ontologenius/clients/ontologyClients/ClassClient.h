@@ -3,6 +3,8 @@
 
 #include "ontologenius/API/ontologenius/clients/ontologyClients/OntologyClient.h"
 
+namespace onto {
+
 /// @brief The ClassClient class provides an abstraction of ontologenius classes ROS service.
 /// The ontologenius classes service allows the exploration of classes contained by ontologenius core.
 /// This class is based on ClientBase and so ensure a persistent connection with ontologenius/class service.
@@ -106,5 +108,7 @@ public:
 private:
 
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_CLASSCLIENT_H

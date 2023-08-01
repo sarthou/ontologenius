@@ -102,7 +102,7 @@ namespace ontologenius
     return initial_solution;
   }
  
-  void SparqlSolver::insertConstraints(const std::vector<triplet_t>& triplets, SparqlSolution_t& solution, SparqlOperator_e sparql_operator)
+  void SparqlSolver::insertConstraints(const std::vector<strTriplet_t>& triplets, SparqlSolution_t& solution, SparqlOperator_e sparql_operator)
   {
     for(auto& triplet : triplets)
     {
@@ -143,17 +143,18 @@ namespace ontologenius
 
   void SparqlSolver::orderVariables(SparqlSolution_t& solution)
   {
-    std::map<std::string, std::unordered_set<std::string>> variables_links;
+    std::unordered_map<std::string, std::unordered_set<std::string>> variables_links;
     for(auto& variable : solution.variable_constraints_)
-      variables_links[variable.first] = variable.second.linked_variales_;
+      variables_links.insert({variable.first, variable.second.linked_variales_});
 
+    solution.ordered_variables_.reserve(variables_links.size());
     while(variables_links.size())
     {
       std::string selected_var = "";
       for(auto& variable : variables_links)
         if(variable.second.size() == 0)
         {
-          solution.ordered_variables_.push_back(variable.first);
+          solution.ordered_variables_.emplace_back(variable.first);
           selected_var = variable.first;
           break;
         }
@@ -199,12 +200,13 @@ namespace ontologenius
       }
     }
 
+    bool is_last = (index >= (int)(solution.ordered_variables_.size() - 1));
     while(candidates.size())
     {
       solution.solution_full_[variable] = *candidates.begin();
       candidates.erase(candidates.begin());
 
-      if(index < (int)(solution.ordered_variables_.size() - 1))
+      if(is_last == false)
       {
         stepDown(solution, index+1);
         auto next_var = solution.ordered_variables_[index+1];
@@ -234,50 +236,51 @@ namespace ontologenius
     }
   }
 
-  std::unordered_set<std::string> SparqlSolver::solveTriplet(triplet_t triplet, const std::map<std::string, std::string>& binding)
+  std::unordered_set<std::string> SparqlSolver::solveTriplet(strTriplet_t triplet, const std::map<std::string, std::string>& binding)
   {
-    std::unordered_set<std::string> local_res;
-    std::string var_name;
-
     if(triplet.predicat.variable)
       error_ = "predicat can not be a variable in: " + toString(triplet);
     else if(triplet.predicat.name == "isA")
     {
       if(triplet.subject.variable && !triplet.object.variable)
       {
-        var_name = triplet.subject.name;
-        if(binding.find(var_name) != binding.end())
-          local_res = getType(triplet, binding.at(var_name));
+        auto var_it = binding.find(triplet.subject.name);
+        if(var_it != binding.end())
+          return getType(triplet, var_it->second);
         else
-          local_res = getType(triplet);
+          return getType(triplet);
       }
       else if(!triplet.subject.variable && triplet.object.variable)
       {
-        var_name = triplet.object.name;
-        if(binding.find(var_name) != binding.end())
-          local_res = getUp(triplet, binding.at(var_name));
+        auto var_it = binding.find(triplet.object.name);
+        if(var_it != binding.end())
+          return getUp(triplet, var_it->second);
         else
-          local_res = getUp(triplet);
+          return getUp(triplet);
       }
       else if(triplet.subject.variable && triplet.object.variable)
       {
-        var_name = triplet.subject.name;
-        if(binding.find(var_name) != binding.end())
+        auto var_it = binding.find(triplet.subject.name);
+        if(var_it != binding.end())
         {
-          triplet.subject.name = binding.at(triplet.subject.name);
-          var_name = triplet.object.name;
-          if(binding.find(var_name) != binding.end())
-            local_res = getUp(triplet, binding.at(var_name));
+          triplet.subject.name = var_it->second;
+          var_it = binding.find(triplet.object.name);
+          if(var_it != binding.end())
+            return getUp(triplet, var_it->second);
           else
-            local_res = getUp(triplet);
-        }
-        else if(binding.find(triplet.object.name) != binding.end())
-        {
-          triplet.object.name = binding.at(triplet.object.name);
-          local_res = getType(triplet);
+            return getUp(triplet);
         }
         else
-          error_ = "can not resolve query : " + toString(triplet) + " : No variable already bounded";
+        {
+          var_it = binding.find(triplet.object.name);
+          if(var_it != binding.end())
+          {
+            triplet.object.name = var_it->second;
+            return getType(triplet);
+          }
+          else
+            error_ = "can not resolve query : " + toString(triplet) + " : No variable already bounded";
+        }
       }
       else
         error_ = "can not resolve query : " + toString(triplet) + " : No variable";
@@ -286,86 +289,94 @@ namespace ontologenius
     {
       if(triplet.subject.variable && !triplet.object.variable)
       {
-        var_name = triplet.subject.name;
-        if(binding.find(var_name) != binding.end())
-          local_res = find(triplet, binding.at(var_name));
+        auto var_it = binding.find(triplet.subject.name);
+        if(var_it != binding.end())
+          return find(triplet, var_it->second);
         else
-          local_res = find(triplet);
+          return find(triplet);
       }
       else if(!triplet.subject.variable && triplet.object.variable)
       {
-        var_name = triplet.object.name;
-        if(binding.find(var_name) != binding.end())
-          local_res = getName(triplet, binding.at(var_name));
+        auto var_it = binding.find(triplet.object.name);
+        if(var_it != binding.end())
+          return getName(triplet, var_it->second);
         else
-          local_res = getName(triplet);
+          return getName(triplet);
       }
       else if(triplet.subject.variable && triplet.object.variable)
       {
-        var_name = triplet.subject.name;
-        if(binding.find(var_name) != binding.end())
+        auto var_it = binding.find(triplet.subject.name);
+        if(var_it != binding.end())
         {
-          triplet.subject.name = binding.at(triplet.subject.name);
-          var_name = triplet.object.name;
-          if(binding.find(var_name) != binding.end())
-            local_res = getName(triplet, binding.at(var_name));
+          triplet.subject.name = var_it->second;
+          var_it = binding.find(triplet.object.name);
+          if(var_it != binding.end())
+            return getName(triplet, var_it->second);
           else
-            local_res = getName(triplet);
-        }
-        else if(binding.find(triplet.object.name) != binding.end())
-        {
-          triplet.object.name = binding.at(triplet.object.name);
-          local_res = find(triplet);
+            return getName(triplet);
         }
         else
-          error_ = "can not resolve query : " + toString(triplet) + " : No variable already bounded";
+        { 
+          var_it = binding.find(triplet.object.name);
+          if(var_it != binding.end())
+          {
+            triplet.object.name = var_it->second;
+            return find(triplet);
+          }
+          else
+            error_ = "can not resolve query : " + toString(triplet) + " : No variable already bounded";
+        }
       }
       else
         error_ = "can not resolve query : " + toString(triplet) + " : No variable";
     }
     else if(triplet.subject.variable && !triplet.object.variable)
     {
-      var_name = triplet.subject.name;
-      if(binding.find(var_name) != binding.end())
-        local_res = getFrom(triplet, binding.at(var_name));
+      auto var_it = binding.find(triplet.subject.name);
+      if(var_it != binding.end())
+        return getFrom(triplet, var_it->second);
       else
-        local_res = getFrom(triplet);
+        return getFrom(triplet);
     }
     else if(!triplet.subject.variable && triplet.object.variable)
     {
-      var_name = triplet.object.name;
-      if(binding.find(var_name) != binding.end())
-        local_res = getOn(triplet, binding.at(var_name));
+      auto var_it = binding.find(triplet.object.name);
+      if(var_it != binding.end())
+        return getOn(triplet, var_it->second);
       else
-        local_res = getOn(triplet);
+        return getOn(triplet);
     }
     else if(triplet.subject.variable && triplet.object.variable)
     {
-      var_name = triplet.subject.name;
-      if(binding.find(var_name) != binding.end())
+      auto var_it = binding.find(triplet.subject.name);
+      if(var_it != binding.end())
       {
-        triplet.subject.name = binding.at(triplet.subject.name);
-        var_name = triplet.object.name;
-        if(binding.find(var_name) != binding.end())
-          local_res = getOn(triplet, binding.at(var_name));
+        triplet.subject.name = var_it->second;
+        var_it = binding.find(triplet.object.name);
+        if(var_it != binding.end())
+          return getOn(triplet, var_it->second);
         else
-          local_res = getOn(triplet);
+          return getOn(triplet);
       }
-      else if(binding.find(triplet.object.name) != binding.end())
+      else 
       {
-        triplet.object.name = binding.at(triplet.object.name);
-        local_res = getFrom(triplet);
+        var_it = binding.find(triplet.object.name);
+        if(var_it != binding.end())
+        {
+          triplet.object.name = var_it->second;
+          return getFrom(triplet);
+        }
+        else
+          error_ = "can not resolve query : " + toString(triplet) + " : No variable already bounded";
       }
-      else
-        error_ = "can not resolve query : " + toString(triplet) + " : No variable already bounded";
     }
     else
       error_ = "can not resolve query : " + toString(triplet) + " : No variable";
 
-    return local_res;
+    return {};
   }
 
-  std::unordered_set<std::string> SparqlSolver::getOn(const triplet_t& triplet, const std::string& selector)
+  std::unordered_set<std::string> SparqlSolver::getOn(const strTriplet_t& triplet, const std::string& selector)
   {
     auto res = onto_->individual_graph_.getOn(triplet.subject.name, triplet.predicat.name);
     if(selector == "")
@@ -376,7 +387,7 @@ namespace ontologenius
       return std::unordered_set<std::string>();
   }
 
-  std::unordered_set<std::string> SparqlSolver::getFrom(const triplet_t& triplet, const std::string& selector)
+  std::unordered_set<std::string> SparqlSolver::getFrom(const strTriplet_t& triplet, const std::string& selector)
   {
     if(selector == "")
       return onto_->individual_graph_.getFrom(triplet.object.name, triplet.predicat.name);
@@ -391,7 +402,7 @@ namespace ontologenius
     }
   }
 
-  std::unordered_set<std::string> SparqlSolver::getUp(const triplet_t& triplet, const std::string& selector)
+  std::unordered_set<std::string> SparqlSolver::getUp(const strTriplet_t& triplet, const std::string& selector)
   {
     if(selector == "")
       return onto_->individual_graph_.getUp(triplet.subject.name);
@@ -405,7 +416,7 @@ namespace ontologenius
     }
   }
 
-  std::unordered_set<std::string> SparqlSolver::getType(const triplet_t& triplet, const std::string& selector)
+  std::unordered_set<std::string> SparqlSolver::getType(const strTriplet_t& triplet, const std::string& selector)
   {
     if(selector == "")
       return onto_->individual_graph_.getType(triplet.object.name);
@@ -419,9 +430,9 @@ namespace ontologenius
     }
   }
 
-  std::unordered_set<std::string> SparqlSolver::find(const triplet_t& triplet, const std::string& selector)
+  std::unordered_set<std::string> SparqlSolver::find(const strTriplet_t& triplet, const std::string& selector)
   {
-    auto res = onto_->individual_graph_.find(triplet.object.name);
+    auto res = onto_->individual_graph_.find<std::string>(triplet.object.name);
     if(selector == "")
       return res;
     else if(std::find(res.begin(), res.end(), selector) != res.end())
@@ -430,7 +441,7 @@ namespace ontologenius
       return std::unordered_set<std::string>();
   }
 
-  std::unordered_set<std::string> SparqlSolver::getName(const triplet_t& triplet, const std::string& selector)
+  std::unordered_set<std::string> SparqlSolver::getName(const strTriplet_t& triplet, const std::string& selector)
   {
     auto res = onto_->individual_graph_.getNames(triplet.subject.name);
     if(selector == "")
@@ -459,8 +470,8 @@ namespace ontologenius
     removeUselessSpace(query);
 
     std::vector<SparqlBlock_t> res;
-    std::map<std::string, std::string> tmp_blocks;
-    std::set<std::string> blocks_id;
+    std::unordered_map<std::string, std::string> tmp_blocks;
+    std::unordered_set<std::string> blocks_id;
     size_t cpt = 0;
     size_t bracket_pose = 0;
 
@@ -475,7 +486,7 @@ namespace ontologenius
       }
       std::string mark = "__" + std::to_string(cpt);
       blocks_id.insert(mark);
-      tmp_blocks[mark] = text_in;
+      tmp_blocks.insert({mark, text_in});
       query.replace(bracket_pose, end_pose - bracket_pose + 1, mark);
       cpt++;
     }
@@ -539,13 +550,13 @@ namespace ontologenius
     return res;
   }
 
-  std::vector<triplet_t> SparqlSolver::getTriplets(const std::string& query, const std::string& delim)
+  std::vector<strTriplet_t> SparqlSolver::getTriplets(const std::string& query, const std::string& delim)
   {
     std::vector<std::string> sub_queries = split(query, delim);
-    std::vector<triplet_t> sub_queries_triplet;
+    std::vector<strTriplet_t> sub_queries_triplet;
     try
     {
-      std::transform(sub_queries.cbegin(), sub_queries.cend(), std::back_inserter(sub_queries_triplet), [](const auto& sub_query){ return getTriplet(sub_query); });
+      std::transform(sub_queries.cbegin(), sub_queries.cend(), std::back_inserter(sub_queries_triplet), [](const auto& sub_query){ return getTriplet<std::string>(sub_query); });
     }
     catch(const std::string& msg)
     {

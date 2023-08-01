@@ -1,5 +1,7 @@
 #include "ontologenius/API/ontologenius/clients/ontologyClients/OntologyClient.h"
 
+namespace onto {
+
 std::vector<std::string> OntologyClient::getUp(const std::string& name, int depth, const std::string& selector)
 {
   ontologenius::OntologeniusService srv;
@@ -121,3 +123,5 @@ bool OntologyClient::exist(const std::string& name)
 
   return (callStr(srv) != "");
 }
+
+} // namespace onto

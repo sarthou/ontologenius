@@ -1,0 +1,202 @@
+<html lang="en_US">
+
+<head>
+  <title>DataPropertyIndexClient Class (python) | Ontologenius 0.3.0</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../index.html">
+              <img src="../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Python API Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -240px;">
+        <div class="contents class-content">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="#methods">Methods</a></li>
+            <li class="level1"><a href="#reimplemented-methods">Reimplemented Methods</a></li>
+            <li class="level1"><a href="#details">Detailed Description</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="../overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="../overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../cpp_API/CppAPI.html">
+              All C++ Classes
+            </a>
+          </h3>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
+            <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
+            <li class="level2"><b>Index based classes</b></li>
+            <li class="level1"><a href="ClassIndexClient.html">ClassIndexClient</a></li>
+            <li class="level1"><a href="ClientBaseIndex.html">ClientBaseIndex</a></li>
+            <li class="level1"><a href="ConversionClient.html">ConversionClient</a></li>
+            <li class="level1"><a href="DataPropertyIndexClient.html"><b>DataPropertyIndexClient</b></a></li>
+            <li class="level1"><a href="IndividualIndexClient.html">IndividualIndexClient</a></li>
+            <li class="level1"><a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></li>
+            <li class="level1"><a href="OntologyIndexClient.html">OntologyIndexClient</a></li>
+            <li class="level1"><a href="OntologyManipulatorIndex.html">OntologyManipulatorIndex</a></li>
+            <li class="level1"><a href="SparqlIndexClient.html">SparqlIndexClient</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">DataPropertyIndexClient Class</h1>
+        <p>The DataPropertyIndexClient class provides a ROS service abstraction for data properties exploration. <a href="#details">More...</a></p>
+        <div class="table">
+          <table class="alignedsummary">
+          <tbody><tr><td class="memItemLeft rightAlign topAlign"> Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span>
+          </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="OntologyIndexClient.html">OntologyIndexClient</a></td></tr></tbody></table>
+        </div>
+
+        <a name="methods"></a>
+        <h2 id="methods">Methods</h2>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#__init__">__init__</a></b>(self, name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getDown">getDown</a></b>(self, index, depth = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getDisjoint">getDisjoint</a></b>(self, index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getDomain">getDomain</a></b>(self, index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getRange">getRange</a></b>(self, index)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="reimplemented-methods"></a>
+        <h2 id="reimplemented-methods">Reimplemented Methods</h2>
+        <ul>
+          <li class="fn">10 methods inherited from <a href="OntologyClient.html#methods">OntologyClient</a></li>
+          <li class="fn">2 methods inherited from <a href="ClientBase.html#methods">ClientBase</a></li>
+        </ul>
+
+        <a name="details"></a>
+        <div class="descr">
+          <h2 id="details">Detailed Description</h2>
+          <p>The DataPropertyIndexClient class provides an abstraction of ontologenius data properties ROS service.</p>
+          <p>The ontologenius data properties service allows the exploration of data properties contained by ontologenius core.</p>
+          <p>This class is based on <a href="ClientBaseIndex.html">ClientBaseIndex</a> and so ensure a persistent connection with ontologenius/data_property_index service.
+             The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>At the difference of the usual DataPropertyClient class, this one provides access to the interface based on indexes (integers) for better performances.</p>
+        </div>
+
+        <p><b>See also </b><a href="DataPropertyClient.html">DataPropertyClient</a>.</p>
+
+        <p><b>See also </b><a href="IndividualIndexClient.html">IndividualIndexClient</a>, <a href="ClassIndexClient.html">ClassIndexClient</a> and <a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a>.</p>
+
+        <div class="func">
+          <h2>Methods Documentation</h2>
+
+          <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self, name)</h3>
+          <p>Constructs a class client.</p>
+          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, <i>name</i>(str) should be defined as ''.</p>
+
+          <h3 class="fn" id="getDown"><a name="getDown"></a><span class="name">getDown</span>(self, index, depth = -1)</h3>
+          <p>Gives all properties (integer[]) below the one given in the parameter: <i>index</i>(integer).</p>
+          <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
+
+          <h3 class="fn" id="getDisjoint"><a name="getDisjoint"></a><span class="name">getDisjoint</span>(self, index)</h3>
+          <p>Gives all the disjoint properties (integer[]) of the property <i>index</i> (integer).</p>
+
+          <h3 class="fn" id="getDomain"><a name="getDomain"></a><span class="name">getDomain</span>(self, index)</h3>
+          <p>Gives all the domain classes (integer[]) of the property <i>index</i>(integer).</p>
+
+          <h3 class="fn" id="getRange"><a name="getRange"></a><span class="name">getRange</span>(self, index)</h3>
+          <p>Gives all the ranges types (integer[]) of the property <i>index</i>(integer).</p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

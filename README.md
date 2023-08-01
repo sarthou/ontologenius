@@ -1,4 +1,4 @@
-# <img src="docs/img/logo/ontologenius.png" width="150"> ontologenius
+# <img src="docs/images/ontologenius.png" width="150"> ontologenius
 [![Release][Release-Image]][Release-Url]  Master : [![Build Status](https://gitlab.com/sarthou/ontologenius/badges/master/pipeline.svg)](https://gitlab.com/sarthou/ontologenius/commits/master) Dev : [![Build Status](https://gitlab.com/sarthou/ontologenius/badges/dev/pipeline.svg)](https://gitlab.com/sarthou/ontologenius/commits/dev)
 
 
@@ -21,4 +21,4 @@ On this launcher file, you will find an argument indicating the path to the onto
 You can add your own ontology files in the argument if you want them to be loaded at the beginning of the program.
 
 [Release-Url]: https://sarthou.github.io/ontologenius/
-[Release-image]: http://img.shields.io/badge/release-v0.2.12-1eb0fc.svg
+[Release-image]: http://img.shields.io/badge/release-v0.3.0-1eb0fc.svg

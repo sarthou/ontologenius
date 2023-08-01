@@ -1,7 +1,6 @@
 #include "ontologenius/core/ontologyIO/Turtle/OntologyTtlReader.h"
 
 #include <fstream>
-#include <regex>
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/utility/error_code.h"
@@ -10,15 +9,31 @@
 
 namespace ontologenius {
 
-int OntologyTtlReader::readFromUri(const std::string& content, const std::string& uri)
+OntologyTtlReader::OntologyTtlReader(ClassGraph* class_graph,
+                                     ObjectPropertyGraph* object_property_graph,
+                                     DataPropertyGraph* data_property_graph,
+                                     IndividualGraph* individual_graph) : OntologyReader(class_graph,
+                                                                                         object_property_graph,
+                                                                                         data_property_graph,
+                                                                                         individual_graph),
+                                                                          double_reg_("^[-+]?\\d+\\.\\d+[eE][-+]?\\d+$"),
+                                                                          decimal_reg_("^[-+]?\\d*\\.\\d+$"),
+                                                                          integer_reg_("^[-+]?\\d+$")
+{}
+
+OntologyTtlReader::OntologyTtlReader(Ontology& onto) : OntologyReader(onto),
+                                                       double_reg_("^[-+]?\\d+\\.\\d+[eE][-+]?\\d+$"),
+                                                       decimal_reg_("^[-+]?\\d*\\.\\d+$"),
+                                                       integer_reg_("^[-+]?\\d+$")
+{}
+
+int OntologyTtlReader::readFromUri(std::string& content, const std::string& uri)
 {
   return read(content, uri);
 }
 
 int OntologyTtlReader::readFromFile(const std::string& file_name)
 {
-  std::string response = "";
-  std::string tmp = "";
   std::ifstream f(file_name);
 
   if(!f.is_open())
@@ -27,13 +42,19 @@ int OntologyTtlReader::readFromFile(const std::string& file_name)
     return -1;
   }
 
-  while(getline(f,tmp))
-    response += tmp + "\n";
+  f.seekg(0, std::ios::end);
+  const auto size = f.tellg();
+
+  std::string response;
+  response.resize(size);
+  f.seekg(0);
+  f.read(&response[0], size); 
+  f.close();
   
   return read(response, file_name);
 }
 
-int OntologyTtlReader::read(std::string raw_turtle, const std::string& file_name)
+int OntologyTtlReader::read(std::string& raw_turtle, const std::string& file_name)
 {
   raw_turtle = " " + raw_turtle;
   removeComments(raw_turtle);
@@ -42,6 +63,7 @@ int OntologyTtlReader::read(std::string raw_turtle, const std::string& file_name
     std::cout << file_name << std::endl;
     std::cout << "├── Individuals" << std::endl;
   }
+
   readTriplets(raw_turtle);
 
   if(previous_subject_ != "")
@@ -64,23 +86,28 @@ void OntologyTtlReader::removeComments(std::string& raw_turtle)
   {
     if(next_to_find == 0x00)
     {
-      if(raw_turtle[i] == '#')
+      if(raw_turtle[i] == '<')
       {
-        size_t j = raw_turtle.find('\n', i + 1);
-        raw_turtle.erase(i, j-i);
-        i--;
-      }
-      else if(raw_turtle[i] == '<')
         next_to_find = '>';
+        i = raw_turtle.find(next_to_find, i + 1) - 1;
+      }
       else if(raw_turtle[i] == '"')
       {
         next_to_find = '"';
         is_multi_line = isMultiLineDelimiter(raw_turtle, i, '"');
+        i = raw_turtle.find(next_to_find, i + 1) - 1;
       }
       else if(raw_turtle[i] == '\'')
       {
         next_to_find = '\'';
         is_multi_line = isMultiLineDelimiter(raw_turtle, i, '\'');
+        i = raw_turtle.find(next_to_find, i + 1) - 1;
+      }
+      else if(raw_turtle[i] == '#')
+      {
+        size_t j = raw_turtle.find('\n', i + 1);
+        raw_turtle.erase(i, j-i);
+        i--;
       }
     }
     else if(raw_turtle[i] == next_to_find)
@@ -89,12 +116,16 @@ void OntologyTtlReader::removeComments(std::string& raw_turtle)
       {
         if(isDelimiterEscaped(raw_turtle, i) == false)
           next_to_find = 0x00;
+        else
+          i = raw_turtle.find(next_to_find, i + 1) - 1;
       }
       else if(isMultiLineDelimiter(raw_turtle, i, next_to_find))
       {
         next_to_find = 0x00;
         is_multi_line = false;
       }
+      else
+        i = raw_turtle.find(next_to_find, i + 1) - 1;
     }
   }
 }
@@ -146,23 +177,26 @@ void OntologyTtlReader::readTriplets(const std::string& raw_turtle)
 
         i = nextNonBlanckCharacter(raw_turtle, i + current_object.size() - 1);
 
-        if(raw_turtle[i] == '.')
+        switch (raw_turtle[i])
         {
+        case '.':
           repeated_object = false;
           repeated_property = false;
-        }
-        else if(raw_turtle[i] == ';')
-        {
+          break;
+
+        case ';':
           repeated_object = false;
           repeated_property = true;
-        }
-        else if(raw_turtle[i] == ',')
-        {
+          break;
+
+        case ',':
           repeated_object = true;
           repeated_property = false;
-        }
-        else
+          break;
+        
+        default:
           return;
+        }
       }
       while (repeated_object == true);
       
@@ -173,7 +207,7 @@ void OntologyTtlReader::readTriplets(const std::string& raw_turtle)
   }
 }
 
-void OntologyTtlReader::sendToOntology(std::string subject, const std::vector<std::array<std::string,3>>& triplets)
+void OntologyTtlReader::sendToOntology(std::string& subject, const std::vector<std::array<std::string,3>>& triplets)
 {
   subject = getSubject(subject);
   if(subject != previous_subject_)
@@ -207,10 +241,8 @@ void OntologyTtlReader::sendToOntology(std::string subject, const std::vector<st
       OntologyReader::push(individual_vector_.object_relations_, Pair_t<std::string, std::string>(property, object.first, 1.0), "$", "^");
     else
     {
-      data_t data;
-      data.value_ = object.first;
-      data.type_ = object.second;
-      OntologyReader::push(individual_vector_.data_relations_, Pair_t<std::string, data_t>(property, data, 1.0), "$", "^");
+      LiteralNode data(object.second, object.first);
+      OntologyReader::push(individual_vector_.data_relations_, Pair_t<std::string, std::string>(property, data.toString(), 1.0), "$", "^");
     }
   }
 }
@@ -218,16 +250,8 @@ void OntologyTtlReader::sendToOntology(std::string subject, const std::vector<st
 bool OntologyTtlReader::isMultiLineDelimiter(const std::string& raw_turtle, size_t& pose, char delim)
 {
   size_t cpt = 0;
-  for(size_t i = pose; i < raw_turtle.size(); i++)
-  {
-    if(raw_turtle[i] == delim)
-      cpt++;
-    else
-      break;
-
-    if(cpt == 3)
-      break;
-  }
+  while((raw_turtle[pose + cpt] == delim) && (cpt < 3))
+    cpt++;
 
   if(cpt == 3)
   {
@@ -241,10 +265,7 @@ bool OntologyTtlReader::isMultiLineDelimiter(const std::string& raw_turtle, size
 
 bool OntologyTtlReader::isDelimiterEscaped(const std::string& raw_turtle, size_t& pose)
 {
-  if(raw_turtle[pose - 1] == '\\')
-    return true;
-  else
-    return false;
+  return (raw_turtle[pose - 1] == '\\');
 }
 
 size_t OntologyTtlReader::nextNonBlanckCharacter(const std::string& text, size_t pose)
@@ -262,14 +283,15 @@ size_t OntologyTtlReader::endOfBlock(const std::string& text, size_t pose)
   char next_to_find = 0x00;
   bool is_multi_line = false;
 
-  if(text[pose] == '<')
+  char first_char = text[pose];
+  if(first_char == '<')
     return text.find('>', pose+1);
-  else if(text[pose] == '"')
+  else if(first_char == '"')
   {
     next_to_find = '"';
     is_multi_line = isMultiLineDelimiter(text, pose, '"');
   }
-  else if(text[pose] == '\'')
+  else if(first_char == '\'')
   {
     next_to_find = '\'';
     is_multi_line = isMultiLineDelimiter(text, pose, '\'');
@@ -330,21 +352,15 @@ std::string OntologyTtlReader::getSubject(const std::string& element)
   {
     if(element[0] == '<')
     {
-      size_t pose = element.find_last_of("#");
+      size_t pose = element.find_last_of("#/");
       if(pose != std::string::npos)
         return element.substr(pose + 1, element.size() - pose -2);
       else
-      {
-        pose = element.find_last_of("/");
-        if(pose != std::string::npos)
-          return element.substr(pose + 1, element.size() - pose -2);
-        else
-          return element.substr(1, element.size() - 2);
-      }
+        return element.substr(1, element.size() - 2);
     }
     else
     {
-      size_t pose = element.find_last_of(":");
+      size_t pose = element.rfind(':');
       if(pose != std::string::npos)
         return element.substr(pose + 1, element.size() - pose - 1);
       else
@@ -390,12 +406,12 @@ std::pair<std::string, std::string> OntologyTtlReader::getObject(const std::stri
   {
     if(element[0] == '<')
     {
-      size_t pose = element.find_last_of("#");
+      size_t pose = element.rfind('#');
       if(pose != std::string::npos)
         object.first = element.substr(pose + 1, element.size() - pose -2);
       else
       {
-        pose = element.find_last_of("/");
+        pose = element.rfind('/');
         if(pose != std::string::npos)
           object.first = element.substr(pose + 1, element.size() - pose -2);
         else
@@ -420,7 +436,7 @@ std::pair<std::string, std::string> OntologyTtlReader::getObject(const std::stri
     }
     else
     {
-      size_t pose = element.find_last_of(":");
+      size_t pose = element.rfind(':');
       if(pose != std::string::npos)
         object.first = element.substr(pose + 1, element.size() - pose - 1);
       else
@@ -432,19 +448,16 @@ std::pair<std::string, std::string> OntologyTtlReader::getObject(const std::stri
 
   if(object.second == "")
   {
-    if((object.first == "true") && (object.first == "false"))
+    if((object.first == "true") || (object.first == "false"))
       object.second = "boolean";
     else
     {
-      std::regex double_reg("^[-+]?\\d+\\.\\d+[eE][-+]?\\d+$");
-      std::regex decimal_reg("^[-+]?\\d*\\.\\d+$");
-      std::regex integer_reg("^[-+]?\\d+$");
       std::smatch match;
-      if(std::regex_search(object.first, match, double_reg))
+      if(std::regex_search(object.first, match, double_reg_))
         object.second = "double";
-      else if(std::regex_search(object.first, match, decimal_reg))
+      else if(std::regex_search(object.first, match, decimal_reg_))
         object.second = "decimal";
-      else if(std::regex_search(object.first, match, integer_reg))
+      else if(std::regex_search(object.first, match, integer_reg_))
         object.second = "integer";
     }
   }
@@ -454,7 +467,7 @@ std::pair<std::string, std::string> OntologyTtlReader::getObject(const std::stri
 
 void OntologyTtlReader::push(std::vector<Single_t<std::string>>& vect, const std::string& element, float probability, const std::string& symbole)
 {
-  vect.push_back(Single_t<std::string>(element, probability));
+  vect.emplace_back(element, probability);
   if(display_ && symbole != "")
     std::cout << "│   │   ├── " << symbole << element << std::endl;
 }
@@ -462,10 +475,10 @@ void OntologyTtlReader::push(std::vector<Single_t<std::string>>& vect, const std
 void OntologyTtlReader::pushLang(std::map<std::string, std::vector<std::string>>& dictionary, const std::pair<std::string, std::string>& label)
 {
   std::string lang = "en";
-  if((label.second != "string") && (label.second != ""))
+  if((label.second != "") && (label.second != "string"))
     lang = label.second.substr(1);
   
-  dictionary[lang].push_back(label.first);
+  dictionary[lang].emplace_back(label.first);
 
   if(display_ && (label.first != ""))
     std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang][dictionary[lang].size() - 1] << std::endl;

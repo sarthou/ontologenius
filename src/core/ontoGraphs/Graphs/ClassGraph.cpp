@@ -24,73 +24,52 @@ ClassGraph::ClassGraph(const ClassGraph& other, IndividualGraph* individual_grap
 
   language_ = other.language_;
 
-  for(const auto& root : other.roots_)
+  for(auto branch : other.all_branchs_)
   {
-    auto class_branch = new ClassBranch_t(root.first);
-    roots_[root.first] = class_branch;
-    all_branchs_.push_back(class_branch);
-  }
-
-  for(const auto& branch : other.branchs_)
-  {
-    auto class_branch = new ClassBranch_t(branch.first);
-    branchs_[branch.first] = class_branch;
+    auto class_branch = new ClassBranch_t(branch->value());
     all_branchs_.push_back(class_branch);
   }
 
   this->container_.load(all_branchs_);
 }
 
-ClassBranch_t* ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector, bool direct_load)
+ClassBranch_t* ClassGraph::newDefaultBranch(const std::string& name)
+{
+  auto branch = new ClassBranch_t(name);
+  all_branchs_.push_back(branch);
+  container_.insert(branch);
+  return branch;
+}
+
+ClassBranch_t* ClassGraph::findOrCreateBranch(const std::string& name)
+{
+  auto branch = this->container_.find(name);
+  if(branch == nullptr)
+  {
+    branch = new ClassBranch_t(name);
+    all_branchs_.push_back(branch);
+    this->container_.insert(branch);
+  }
+  return branch;
+}
+
+ClassBranch_t* ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-  ClassBranch_t* me = nullptr;
-  //am I a created mother ?
-  amIA(&me, tmp_mothers_, value);
-
-  //am I a created branch ?
-  amIA(&me, branchs_, value);
-
-  //am I a created root ?
-  amIA(&me, roots_, value);
 
   //am I created ?
-  if(me == nullptr)
-  {
-    me = new ClassBranch_t(value);
-    if(direct_load)
-    {
-      all_branchs_.push_back(me);
-      this->container_.insert(me);
-    }
-  }
+  ClassBranch_t* me = findOrCreateBranch(value);
 
-  //am I a root ?
-  if(me->mothers_.size() + object_vector.mothers_.size() == 0)
-    roots_[value] = me;
-  else
+  /**********************
+  ** Class assertion
+  **********************/
+  //for all my mothers
+  for(auto& mother : object_vector.mothers_)
   {
-    /**********************
-    ** Class assertion
-    **********************/
-    //for all my mothers
-    for(auto& mother : object_vector.mothers_)
-    {
-      ClassBranch_t* mother_branch = nullptr;
-      getInMap(&mother_branch, mother.elem, roots_);
-      getInMap(&mother_branch, mother.elem, branchs_);
-      getInMap(&mother_branch, mother.elem, tmp_mothers_);
-      if(mother_branch == nullptr)
-      {
-        mother_branch = new ClassBranch_t(mother.elem);
-        tmp_mothers_[mother_branch->value()] = mother_branch;
-      }
+    ClassBranch_t* mother_branch = findOrCreateBranch(mother.elem);
 
-      conditionalPushBack(mother_branch->childs_, ClassElement_t(me, mother.probability, true));
-      conditionalPushBack(me->mothers_, ClassElement_t(mother_branch, mother.probability));
-    }
-    //but i am also a branch
-    branchs_[me->value()] = me;
+    conditionalPushBack(mother_branch->childs_, ClassElement_t(me, mother.probability, true));
+    conditionalPushBack(me->mothers_, ClassElement_t(mother_branch, mother.probability));
   }
 
   /**********************
@@ -99,15 +78,7 @@ ClassBranch_t* ClassGraph::add(const std::string& value, ObjectVectors_t& object
   //for all my disjoints
   for(auto& disjoint : object_vector.disjoints_)
   {
-    ClassBranch_t* disjoint_branch = nullptr;
-    getInMap(&disjoint_branch, disjoint.elem, roots_);
-    getInMap(&disjoint_branch, disjoint.elem, branchs_);
-    getInMap(&disjoint_branch, disjoint.elem, tmp_mothers_);
-    if(disjoint_branch == nullptr)
-    {
-      disjoint_branch = new ClassBranch_t(disjoint.elem);
-      tmp_mothers_[disjoint_branch->value()] = disjoint_branch;
-    }
+    ClassBranch_t* disjoint_branch = findOrCreateBranch(disjoint.elem);
 
     conditionalPushBack(me->disjoints_, ClassElement_t(disjoint_branch, disjoint.probability));
     conditionalPushBack(disjoint_branch->disjoints_, ClassElement_t(me, disjoint.probability, true));
@@ -140,22 +111,7 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
   for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
   {
     //I need to find myself
-    ClassBranch_t* me = nullptr;
-    //Am I a root ?
-    amIA(&me, roots_, disjoints[disjoints_i], false);
-
-    //Am I a branch ?
-    amIA(&me, branchs_, disjoints[disjoints_i], false);
-
-    //Am I a tmp_mother ?
-    amIA(&me, tmp_mothers_, disjoints[disjoints_i], false);
-
-    // I don't exist ? so I will be a tmp_mother
-    if(me == nullptr)
-    {
-      me = new ClassBranch_t(disjoints[disjoints_i]);
-      tmp_mothers_[me->value()] = me;
-    }
+    ClassBranch_t* me = findOrCreateBranch(disjoints[disjoints_i]);
 
     //for all my disjoints ...
     for(size_t disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
@@ -163,25 +119,10 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
       //... excepted me
       if(disjoints_i != disjoints_j)
       {
-        bool i_find_my_disjoint = false;
+        ClassBranch_t* disjoint_branch = findOrCreateBranch(disjoints[disjoints_j]);
 
-        //is a root my disjoint ?
-        isMyDisjoint(me, disjoints[disjoints_j], roots_, i_find_my_disjoint, false);
-
-        //is a branch my disjoint ?
-        isMyDisjoint(me, disjoints[disjoints_j], branchs_, i_find_my_disjoint, false);
-
-        //is a tmp mother is my disjoint ?
-        isMyDisjoint(me, disjoints[disjoints_j], tmp_mothers_, i_find_my_disjoint, false);
-
-        //I create my disjoint
-        if(!i_find_my_disjoint)
-        {
-          auto my_disjoint = new ClassBranch_t(disjoints[disjoints_j]);
-          me->disjoints_.emplace_back(my_disjoint);
-          my_disjoint->disjoints_.emplace_back(me); // TODO do not save
-          tmp_mothers_[my_disjoint->value()] = my_disjoint; //I put my disjoint as tmp_mother
-        }
+        conditionalPushBack(me->disjoints_, ClassElement_t(disjoint_branch));
+        conditionalPushBack(disjoint_branch->disjoints_, ClassElement_t(me, 1.0, true));
       }
     }
   }
@@ -195,46 +136,21 @@ void ClassGraph::add(std::vector<std::string>& disjoints)
 
 void ClassGraph::addObjectRelation(ClassBranch_t* me, Pair_t<std::string, std::string>& relation)
 {
-  ObjectPropertyBranch_t* property_branch = nullptr;
-  getInMap(&property_branch, relation.first, object_property_graph_->roots_);
-  getInMap(&property_branch, relation.first, object_property_graph_->branchs_);
-  getInMap(&property_branch, relation.first, object_property_graph_->tmp_mothers_);
-  if(property_branch == nullptr)
-  {
-    ObjectPropertyVectors_t empty_vectors;
-    object_property_graph_->add(relation.first, empty_vectors);
-    getInMap(&property_branch, relation.first, object_property_graph_->roots_);
-  }
+  ObjectPropertyBranch_t* property_branch = object_property_graph_->findOrCreateBranch(relation.first);
   property_branch->annotation_usage_ = true;
 
-  ClassBranch_t* class_branch = nullptr;
-  getInMap(&class_branch, relation.second, roots_);
-  getInMap(&class_branch, relation.second, branchs_);
-  getInMap(&class_branch, relation.second, tmp_mothers_);
-  if(class_branch == nullptr)
-  {
-    class_branch = new ClassBranch_t(relation.second);
-    tmp_mothers_[class_branch->value()] = class_branch;
-  }
+  ClassBranch_t* class_branch = findOrCreateBranch(relation.second);
 
   me->object_relations_.emplace_back(property_branch, class_branch, relation.probability);
 }
 
-void ClassGraph::addDataRelation(ClassBranch_t* me, Pair_t<std::string, data_t>& relation)
+void ClassGraph::addDataRelation(ClassBranch_t* me, Pair_t<std::string, std::string>& relation)
 {
-  DataPropertyBranch_t* property_branch = nullptr;
-  getInMap(&property_branch, relation.first, data_property_graph_->roots_);
-  getInMap(&property_branch, relation.first, data_property_graph_->branchs_);
-  getInMap(&property_branch, relation.first, data_property_graph_->tmp_mothers_);
-  if(property_branch == nullptr)
-  {
-    DataPropertyVectors_t empty_vectors;
-    data_property_graph_->add(relation.first, empty_vectors);
-    getInMap(&property_branch, relation.first, data_property_graph_->roots_);
-  }
+  DataPropertyBranch_t* property_branch = data_property_graph_->findOrCreateBranch(relation.first);
   property_branch->annotation_usage_ = true;
 
-  me->data_relations_.emplace_back(property_branch, relation.second, relation.probability);
+  auto literal = data_property_graph_->createLiteral(relation.second);
+  me->data_relations_.emplace_back(property_branch, literal, relation.probability);
 }
 
 /*********
@@ -245,10 +161,23 @@ void ClassGraph::addDataRelation(ClassBranch_t* me, Pair_t<std::string, data_t>&
 
 std::unordered_set<std::string> ClassGraph::getDisjoint(const std::string& value)
 {
-  std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-
   ClassBranch_t* branch = container_.find(value);
+  return getDisjoint<std::string>(branch);
+}
+
+std::unordered_set<index_t> ClassGraph::getDisjoint(index_t value)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+  ClassBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  return getDisjoint<index_t>(branch);
+}
+
+template<typename T>
+std::unordered_set<T> ClassGraph::getDisjoint(ClassBranch_t* branch)
+{
+  std::unordered_set<T> res;
+
   if(branch != nullptr)
     for(auto& disjoint : branch->disjoints_)
       getDown(disjoint.elem, res);
@@ -262,26 +191,24 @@ void ClassGraph::getDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBran
     getDownPtr(disjoint.elem, res);
 }
 
-std::unordered_set<std::string> ClassGraph::select(const std::unordered_set<std::string>& on, const std::string& class_selector)
-{
-  std::unordered_set<std::string> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-
-  for(const std::string& it : on)
-  {
-    std::unordered_set<std::string> tmp = getUp(it);
-    if(tmp.find(class_selector) != tmp.end())
-      res.insert(it);
-  }
-  return res;
-}
-
 std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& _class, int depth)
 {
-  std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-
   ClassBranch_t* class_branch = container_.find(_class);
+  return getRelationFrom<std::string>(class_branch, depth);
+}
+
+std::unordered_set<index_t> ClassGraph::getRelationFrom(index_t _class, int depth)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+  ClassBranch_t* class_branch = container_.find(ValuedNode::table_.get(_class));
+  return getRelationFrom<index_t>(class_branch, depth);
+}
+
+template<typename T>
+std::unordered_set<T> ClassGraph::getRelationFrom(ClassBranch_t* class_branch, int depth)
+{
+  std::unordered_set<T> res;;
   if(class_branch != nullptr)
   {
     std::unordered_set<ClassBranch_t*> up_classes = getUpPtrSafe(class_branch);
@@ -292,7 +219,8 @@ std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& _
   return res;
 }
 
-void ClassGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<std::string>& res, int depth)
+template<typename T>
+void ClassGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordered_set<T>& res, int depth)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
   if(class_branch != nullptr)
@@ -307,8 +235,8 @@ void ClassGraph::getRelationFrom(ClassBranch_t* class_branch, std::unordered_set
 
 std::unordered_set<std::string> ClassGraph::getRelatedFrom(const std::string& property)
 {
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
+  std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
 
   std::unordered_set<std::string> res;
   getRelatedFrom(object_properties, data_properties, res);
@@ -316,28 +244,32 @@ std::unordered_set<std::string> ClassGraph::getRelatedFrom(const std::string& pr
   return res;
 }
 
-void ClassGraph::getRelatedFrom(const std::unordered_set<uint32_t>& object_properties, const std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res)
+std::unordered_set<index_t> ClassGraph::getRelatedFrom(index_t property)
+{
+  std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
+
+  std::unordered_set<index_t> res;
+  getRelatedFrom(object_properties, data_properties, res);
+
+  return res;
+}
+
+template<typename T>
+void ClassGraph::getRelatedFrom(const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, std::unordered_set<T>& res)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
   for(auto& branch : all_branchs_)
   {
     for(ClassObjectRelationElement_t& relation : branch->object_relations_)
-      for (uint32_t id : object_properties)
+      for (index_t id : object_properties)
         if(relation.first->get() == id)
-        {
-          std::unordered_set<ClassBranch_t*> tmp = getDownPtrSafe(branch);
-          for(auto tmp_i : tmp)
-            res.insert(tmp_i->value());
-        }
+          getDown(branch, res);
 
     for(ClassDataRelationElement_t& relation : branch->data_relations_)
-      for (uint32_t id : data_properties)
+      for (index_t id : data_properties)
         if(relation.first->get() == id)
-        {
-          std::unordered_set<ClassBranch_t*> tmp = getDownPtrSafe(branch);
-          for(auto tmp_i : tmp)
-            res.insert(tmp_i->value());
-        }
+          getDown(branch, res);
   }
 }
 
@@ -346,16 +278,7 @@ std::unordered_set<std::string> ClassGraph::getRelationOn(const std::string& _cl
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
-  ClassBranch_t* class_branch = container_.find(_class);
-  if(class_branch != nullptr)
-  {
-    uint32_t id = class_branch->get();
-
-    for(auto& branch : all_branchs_)
-      for(ClassObjectRelationElement_t& relation : branch->object_relations_)
-        if(relation.second->get() == id)
-          object_property_graph_->getUp(relation.first, res, depth);
-  }
+  getRelationOnObjectProperties(_class, res, depth);
 
   if(res.size() == 0)
     getRelationOnDataProperties(_class, res, depth);
@@ -363,20 +286,56 @@ std::unordered_set<std::string> ClassGraph::getRelationOn(const std::string& _cl
   return res;
 }
 
+std::unordered_set<index_t> ClassGraph::getRelationOn(index_t _class, int depth)
+{
+  std::unordered_set<index_t> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+
+  if(_class > 0)
+    getRelationOnObjectProperties(ValuedNode::table_.get(_class), res, depth);
+  else
+    getRelationOnDataProperties(LiteralNode::table_.get(-_class), res, depth);
+
+  return res;
+}
+
+template<typename T>
+void ClassGraph::getRelationOnObjectProperties(const std::string& _class, std::unordered_set<T>& res, int depth)
+{
+  ClassBranch_t* class_branch = container_.find(_class);
+  if(class_branch != nullptr)
+    for(auto& branch : all_branchs_)
+      for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+        if(relation.second == class_branch)
+          object_property_graph_->getUp(relation.first, res, depth);
+}
+
 void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth)
 {
-  data_t data_img(_class);
+  LiteralNode* literal = data_property_graph_->literal_container_.find(_class);
 
-  for(auto& branch : all_branchs_)
-    for(ClassDataRelationElement_t& relation : branch->data_relations_)
-      if(relation.second == data_img)
-        data_property_graph_->getUp(relation.first, res, depth);
+  if(literal != nullptr)
+    for(auto& branch : all_branchs_)
+      for(ClassDataRelationElement_t& relation : branch->data_relations_)
+        if(relation.second == literal)
+          data_property_graph_->getUpSafe(relation.first, res, depth);
+}
+
+void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::unordered_set<index_t>& res, int depth)
+{
+  LiteralNode* literal = data_property_graph_->literal_container_.find(_class);
+
+  if(literal != nullptr)
+    for(auto& branch : all_branchs_)
+      for(ClassDataRelationElement_t& relation : branch->data_relations_)
+        if(relation.second == literal)
+          data_property_graph_->getUpSafe(relation.first, res, depth);
 }
 
 std::unordered_set<std::string> ClassGraph::getRelatedOn(const std::string& property)
 {
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
+  std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
 
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
@@ -384,14 +343,38 @@ std::unordered_set<std::string> ClassGraph::getRelatedOn(const std::string& prop
   for(auto& branch : all_branchs_)
   {
     for(ClassObjectRelationElement_t& relation : branch->object_relations_)
-      for (uint32_t id : object_properties)
+      for (index_t id : object_properties)
         if(relation.first->get() == id)
           res.insert(relation.second->value());
 
     for(ClassDataRelationElement_t& relation : branch->data_relations_)
-      for (uint32_t id : data_properties)
+      for (index_t id : data_properties)
         if(relation.first->get() == id)
-          res.insert(relation.second.toString());
+          res.insert(relation.second->value());
+  }
+
+  return res;
+}
+
+std::unordered_set<index_t> ClassGraph::getRelatedOn(index_t property)
+{
+  std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
+
+  std::unordered_set<index_t> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+
+  for(auto& branch : all_branchs_)
+  {
+    for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+      for (index_t id : object_properties)
+        if(relation.first->get() == id)
+          res.insert(relation.second->get());
+
+    for(ClassDataRelationElement_t& relation : branch->data_relations_)
+      for (index_t id : data_properties)
+        if(relation.first->get() == id)
+          res.insert(relation.second->get());
   }
 
   return res;
@@ -399,14 +382,27 @@ std::unordered_set<std::string> ClassGraph::getRelatedOn(const std::string& prop
 
 void ClassGraph::getRelatedOnDataProperties(const std::string& property, std::unordered_set<std::string>& res)
 {
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
+  std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
 
   for(auto& branch : all_branchs_)
   {
     for(ClassDataRelationElement_t& relation : branch->data_relations_)
-      for (uint32_t id : data_properties)
+      for (index_t id : data_properties)
         if(relation.first->get() == id)
-          res.insert(relation.second.toString());
+          res.insert(relation.second->value());
+  }
+}
+
+void ClassGraph::getRelatedOnDataProperties(index_t property, std::unordered_set<index_t>& res)
+{
+  std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
+
+  for(auto& branch : all_branchs_)
+  {
+    for(ClassDataRelationElement_t& relation : branch->data_relations_)
+      for (index_t id : data_properties)
+        if(relation.first->get() == id)
+          res.insert(relation.second->get());
   }
 }
 
@@ -416,7 +412,7 @@ std::unordered_set<std::string> ClassGraph::getRelationWith(const std::string& _
   ClassBranch_t* class_branch = container_.find(_class);
   if(class_branch != nullptr)
   {
-    std::map<std::string, int> properties;
+    std::map<index_t, int> properties;
     std::vector<int> depths;
     std::vector<std::string> tmp_res;
     getRelationWith(class_branch, properties, depths, tmp_res, 0);
@@ -426,7 +422,23 @@ std::unordered_set<std::string> ClassGraph::getRelationWith(const std::string& _
   return res;
 }
 
-void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<std::string, int>& properties, std::vector<int>& depths, std::vector<std::string>& res, int depth)
+std::unordered_set<index_t> ClassGraph::getRelationWith(index_t _class)
+{
+  std::unordered_set<index_t> res;
+  ClassBranch_t* class_branch = container_.find(ValuedNode::table_.get(_class));
+  if(class_branch != nullptr)
+  {
+    std::map<index_t, int> properties;
+    std::vector<int> depths;
+    std::vector<index_t> tmp_res;
+    getRelationWith(class_branch, properties, depths, tmp_res, 0);
+    for(auto& it : tmp_res)
+      res.insert(it);
+  }
+  return res;
+}
+
+void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<index_t, int>& properties, std::vector<int>& depths, std::vector<std::string>& res, int depth)
 {
   depth++;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
@@ -435,10 +447,10 @@ void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<std::stri
   {
     for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
     {
-      auto it = properties.find(relation.first->value());
+      auto it = properties.find(relation.first->get());
       if(it != properties.end())
       {
-        int index = properties[relation.first->value()];
+        int index = properties[relation.first->get()];
         if(depths[index] > depth)
         {
           depths[index] = depth;
@@ -447,7 +459,7 @@ void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<std::stri
       }
       else
       {
-        properties[relation.first->value()] = res.size();
+        properties[relation.first->get()] = res.size();
         depths.push_back(depth);
         res.push_back(relation.second->value());
       }
@@ -455,21 +467,75 @@ void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<std::stri
 
     for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
     {
-      auto it = properties.find(relation.first->value());
+      auto it = properties.find(relation.first->get());
       if(it != properties.end())
       {
-        int index = properties[relation.first->value()];
+        int index = properties[relation.first->get()];
         if(depths[index] > depth)
         {
           depths[index] = depth;
-          res[index] = relation.second.toString();
+          res[index] = relation.second->value();
         }
       }
       else
       {
-        properties[relation.first->value()] = res.size();
+        properties[relation.first->get()] = res.size();
         depths.push_back(depth);
-        res.push_back(relation.second.toString());
+        res.push_back(relation.second->value());
+      }
+    }
+
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_branch, 1);
+    for(ClassBranch_t* up : up_set)
+      if(up != class_branch)
+        getRelationWith(up, properties, depths, res, depth);
+  }
+}
+
+void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<index_t, int>& properties, std::vector<int>& depths, std::vector<index_t>& res, int depth)
+{
+  depth++;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+
+  if(class_branch != nullptr)
+  {
+    for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
+    {
+      auto it = properties.find(relation.first->get());
+      if(it != properties.end())
+      {
+        int index = properties[relation.first->get()];
+        if(depths[index] > depth)
+        {
+          depths[index] = depth;
+          res[index] = relation.second->get();
+        }
+      }
+      else
+      {
+        properties[relation.first->get()] = res.size();
+        depths.push_back(depth);
+        res.push_back(relation.second->get());
+      }
+    }
+
+    for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
+    {
+      auto it = properties.find(relation.first->get());
+      if(it != properties.end())
+      {
+        int index = properties[relation.first->get()];
+        if(depths[index] > depth)
+        {
+          depths[index] = depth;
+          res[index] = relation.second->get();
+        }
+      }
+      else
+      {
+        properties[relation.first->get()] = res.size();
+        depths.push_back(depth);
+        res.push_back(relation.second->get());
       }
     }
 
@@ -483,37 +549,77 @@ void ClassGraph::getRelationWith(ClassBranch_t* class_branch, std::map<std::stri
 std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _class)
 {
   std::unordered_set<std::string> res;
-  std::unordered_set<uint32_t> do_not_take;
+  std::unordered_set<index_t> do_not_take;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
-  data_t data_img(_class);
+  LiteralNode* literal = data_property_graph_->literal_container_.find(_class);
+  ClassBranch_t* class_branch = container_.find(_class);
 
   for(auto& branch : all_branchs_)
   {
-    for(ClassObjectRelationElement_t& relation : branch->object_relations_)
-      if(relation.second->value() == _class)
-        objectGetRelatedWith(branch, relation.first->value(), _class, res, do_not_take);
+    if(class_branch != nullptr)
+      for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+        if(relation.second->value() == _class)
+          objectGetRelatedWith(branch, relation.first->get(), class_branch->get(), res, do_not_take);
 
-    for(ClassDataRelationElement_t& relation : branch->data_relations_)
-      if(relation.second == data_img)
-        dataGetRelatedWith(branch, relation.first->value(), data_img, res, do_not_take);
+    if(literal != nullptr)
+      for(ClassDataRelationElement_t& relation : branch->data_relations_)
+        if(relation.second == literal)
+          dataGetRelatedWith(branch, relation.first->get(), literal, res, do_not_take);
   }
 
   for(auto i : do_not_take)
-    if(res.find(ValuedNode::table_[i]) != res.end())
-      res.erase(ValuedNode::table_[i]);
+    res.erase(ValuedNode::table_[i]);
 
   return res;
 }
 
-void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const data_t& data, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& do_not_take)
+std::unordered_set<index_t> ClassGraph::getRelatedWith(index_t _class)
+{
+  std::unordered_set<index_t> res;
+  std::unordered_set<index_t> do_not_take;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+
+  if(_class > 0)
+  {
+    ClassBranch_t* class_branch = container_.find(ValuedNode::table_.get(_class));
+
+    if(class_branch != nullptr)
+      for(auto& branch : all_branchs_)
+      {
+        for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+          if(relation.second->get() == _class)
+            objectGetRelatedWith(branch, relation.first->get(), class_branch->get(), res, do_not_take);
+      }
+  }
+  else
+  {
+    LiteralNode* literal = data_property_graph_->literal_container_.find(LiteralNode::table_.get(-_class));
+
+    if(literal != nullptr)
+      for(auto& branch : all_branchs_)
+      {
+        for(ClassDataRelationElement_t& relation : branch->data_relations_)
+          if(relation.second == literal)
+            dataGetRelatedWith(branch, relation.first->get(), literal, res, do_not_take);
+      }
+  }
+
+  for(auto i : do_not_take)
+    res.erase(i);
+
+  return res;
+}
+
+template<typename T>
+void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, index_t property, LiteralNode* data, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take)
 {
   if(class_branch != nullptr)
   {
     if(do_not_take.find(class_branch->get()) != do_not_take.end())
       return;
 
-    res.insert(class_branch->value());
+    insert(res, class_branch);
 
     std::unordered_set<ClassBranch_t*> down_set = getDownPtrSafe(class_branch, 1);
     for(ClassBranch_t* down : down_set)
@@ -522,11 +628,11 @@ void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::stri
         bool found = false;
 
         for(ClassDataRelationElement_t& relation : down->data_relations_)
-          if(relation.first->value() == property)
+          if(relation.first->get() == property)
             if(relation.second != data)
             {
               found = true;
-              getDownIdSafe(down, do_not_take);
+              getDown(down, do_not_take);
             }
 
         if(found == false)
@@ -535,14 +641,15 @@ void ClassGraph::dataGetRelatedWith(ClassBranch_t* class_branch, const std::stri
   }
 }
 
-void ClassGraph::objectGetRelatedWith(ClassBranch_t* class_branch, const std::string& property, const std::string& _class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& do_not_take)
+template<typename T>
+void ClassGraph::objectGetRelatedWith(ClassBranch_t* class_branch, index_t property, index_t _class, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take)
 {
   if(class_branch != nullptr)
   {
     if(do_not_take.find(class_branch->get()) != do_not_take.end())
       return;
 
-    res.insert(class_branch->value());
+    insert(res, class_branch);
 
     std::unordered_set<ClassBranch_t*> down_set = getDownPtrSafe(class_branch, 1);
     for(ClassBranch_t* down : down_set)
@@ -550,11 +657,11 @@ void ClassGraph::objectGetRelatedWith(ClassBranch_t* class_branch, const std::st
       {
         bool found = false;
         for(ClassObjectRelationElement_t& relation : down->object_relations_)
-          if(relation.first->value() == property)
-            if(relation.second->value() != _class)
+          if(relation.first->get() == property)
+            if(relation.second->get() != _class)
             {
               found = true;
-              getDownIdSafe(down, do_not_take);
+              getDown(down, do_not_take);
             }
 
         if(found == false)
@@ -565,7 +672,6 @@ void ClassGraph::objectGetRelatedWith(ClassBranch_t* class_branch, const std::st
 
 std::unordered_set<std::string> ClassGraph::getFrom(const std::string& param)
 {
-  std::unordered_set<std::string> res;
   std::string _class;
   std::string property;
   size_t pose = param.find(':');
@@ -575,35 +681,36 @@ std::unordered_set<std::string> ClassGraph::getFrom(const std::string& param)
     property = param.substr(pose+1);
     return getFrom(_class, property);
   }
-  return res;
+  return {};
 }
 
 std::unordered_set<std::string> ClassGraph::getFrom(const std::string& _class, const std::string& property)
 {
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
-  std::unordered_set<uint32_t> down_classes = getDownIdSafe(_class);
+  std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
+  std::unordered_set<index_t> down_classes = getDownId(_class);
 
   std::unordered_set<std::string> res;
-  std::unordered_set<uint32_t> do_not_take;
+  std::unordered_set<index_t> do_not_take;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
-  data_t data_img(_class);
+  LiteralNode* literal = data_property_graph_->literal_container_.find(_class);
 
   for(auto& branch : all_branchs_)
   {
     for(ClassObjectRelationElement_t& relation : branch->object_relations_)
-      for(uint32_t class_id : down_classes)
+      for(index_t class_id : down_classes)
         if(relation.second->get() == class_id)
-          for (uint32_t id : object_properties)
+          for (index_t id : object_properties)
             if(relation.first->get() == id)
-              objectGetRelatedWith(branch, relation.first->value(), ValuedNode::table_[class_id], res, do_not_take);
+              objectGetRelatedWith(branch, relation.first->get(), class_id, res, do_not_take);
 
-    for(ClassDataRelationElement_t& relation :branch->data_relations_)
-      if(relation.second == data_img)
-        for (uint32_t id : data_properties)
-          if(relation.first->get() == id)
-            dataGetRelatedWith(branch, relation.first->value(), data_img, res, do_not_take);
+    if(literal != nullptr)
+      for(ClassDataRelationElement_t& relation :branch->data_relations_)
+        if(relation.second == literal)
+          for (index_t id : data_properties)
+            if(relation.first->get() == id)
+              dataGetRelatedWith(branch, relation.first->get(), literal, res, do_not_take);
   }
 
   for(auto i : do_not_take)
@@ -613,9 +720,51 @@ std::unordered_set<std::string> ClassGraph::getFrom(const std::string& _class, c
   return res;
 }
 
+std::unordered_set<index_t> ClassGraph::getFrom(index_t _class, index_t property)
+{
+  std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
+
+  std::unordered_set<index_t> res;
+  std::unordered_set<index_t> do_not_take;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+
+  if(_class > 0)
+  {
+    std::unordered_set<index_t> down_classes = getDownId(_class);
+
+    for(auto& branch : all_branchs_)
+    {
+      for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+        for(index_t class_id : down_classes)
+          if(relation.second->get() == class_id)
+            for (index_t id : object_properties)
+              if(relation.first->get() == id)
+                objectGetRelatedWith(branch, relation.first->get(), class_id, res, do_not_take);
+    }
+  }
+  else
+  {
+    LiteralNode* literal = data_property_graph_->literal_container_.find(LiteralNode::table_.get(-_class));
+
+    for(auto& branch : all_branchs_)
+    {
+      for(ClassDataRelationElement_t& relation :branch->data_relations_)
+        if(relation.second == literal)
+          for (index_t id : data_properties)
+            if(relation.first->get() == id)
+              dataGetRelatedWith(branch, relation.first->get(), literal, res, do_not_take);
+    }
+  }
+
+  for(auto i : do_not_take)
+    res.erase(i);
+
+  return res;
+}
+
 std::unordered_set<std::string> ClassGraph::getOn(const std::string& param)
 {
-  std::unordered_set<std::string> res;
   std::string _class;
   std::string property;
   size_t pose = param.find(':');
@@ -625,13 +774,13 @@ std::unordered_set<std::string> ClassGraph::getOn(const std::string& param)
     property = param.substr(pose+1);
     return getOn(_class, property);
   }
-  return res;
+  return {};
 }
 
 std::unordered_set<std::string> ClassGraph::getOn(const std::string& _class, const std::string& property)
 {
-  std::unordered_set<uint32_t> object_properties = object_property_graph_->getDownIdSafe(property);
-  std::unordered_set<uint32_t> data_properties = data_property_graph_->getDownIdSafe(property);
+  std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
 
   int found_depth = -1;
   std::unordered_set<std::string> res;
@@ -643,35 +792,59 @@ std::unordered_set<std::string> ClassGraph::getOn(const std::string& _class, con
   return res;
 }
 
-void ClassGraph::getOn(ClassBranch_t* class_branch, std::unordered_set<uint32_t>& object_properties, std::unordered_set<uint32_t>& data_properties, std::unordered_set<std::string>& res, uint32_t current_depth, int& found_depth)
+std::unordered_set<index_t> ClassGraph::getOn(index_t _class, index_t property)
+{
+  std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
+  std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
+
+  int found_depth = -1;
+  std::unordered_set<index_t> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+
+  ClassBranch_t* class_branch = container_.find(ValuedNode::table_.get(_class));
+  getOn(class_branch, object_properties, data_properties, res, 0, found_depth);
+
+  return res;
+}
+
+template<typename T>
+void ClassGraph::getOn(ClassBranch_t* class_branch, std::unordered_set<index_t>& object_properties, std::unordered_set<index_t>& data_properties, std::unordered_set<T>& res, uint32_t current_depth, int& found_depth)
 {
   if(class_branch != nullptr)
   {
-    std::unordered_set<std::string> tmp_res;
+    if(current_depth >= (uint32_t)found_depth)
+      return;
 
-    for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
-      for (uint32_t id : object_properties)
-        if(relation.first->get() == id)
-          tmp_res.insert(relation.second->value());
+    std::unordered_set<T> tmp_res;
 
-    if(tmp_res.size() == 0)
-      for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
-        for (uint32_t id : data_properties)
+    if(object_properties.size())
+    {
+      for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
+        for (index_t id : object_properties)
           if(relation.first->get() == id)
-            tmp_res.insert(relation.second.toString());
+            insert(tmp_res, relation.second);
+    }
+    else if(data_properties.size())
+    {
+      for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
+        for (index_t id : data_properties)
+          if(relation.first->get() == id)
+            insert(tmp_res, relation.second);
+    }
+    else
+      return;
 
     if(tmp_res.size() != 0)
-      if(current_depth < (uint32_t)found_depth)
+    {
+      if(data_properties.size())
       {
-        if(data_properties.size())
-        {
-          res = tmp_res;
-          found_depth = current_depth;
-          return;
-        }
-        else
-        res.insert(tmp_res.begin(), res.end());
+        res = std::move(tmp_res);
+        found_depth = current_depth;
+        return;
       }
+      else
+        res.insert(tmp_res.begin(), tmp_res.end());
+    }
 
     current_depth++;
     std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_branch, 1);
@@ -683,7 +856,6 @@ void ClassGraph::getOn(ClassBranch_t* class_branch, std::unordered_set<uint32_t>
 
 std::unordered_set<std::string> ClassGraph::getWith(const std::string& param, int depth)
 {
-  std::unordered_set<std::string> res;
   size_t pose = param.find(':');
   if(pose != std::string::npos)
   {
@@ -691,7 +863,7 @@ std::unordered_set<std::string> ClassGraph::getWith(const std::string& param, in
     std::string second_class = param.substr(pose+1);
     return getWith(first_class, second_class, depth);
   }
-  return res;
+  return {};
 }
 
 std::unordered_set<std::string> ClassGraph::getWith(const std::string& first_class, const std::string& second_class, int depth)
@@ -700,11 +872,46 @@ std::unordered_set<std::string> ClassGraph::getWith(const std::string& first_cla
 
   int found_depth = -1;
   uint32_t current_depth = 0;
-  std::unordered_set<uint32_t> do_not_take;
+  std::unordered_set<index_t> do_not_take;
   std::unordered_set<ClassBranch_t*> up_set;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
 
+  index_t second_class_index = 0;
+  auto second_class_ptr = container_.find(second_class);
+  if(second_class_ptr != nullptr)
+    second_class_index = second_class_ptr->get();
+  else
+  {
+    auto literal = data_property_graph_->literal_container_.find(second_class);
+    if(literal != nullptr)
+      second_class_index = literal->get();
+  }
+
   up_set.insert(container_.find(first_class));
+  while(up_set.size() > 0)
+  {
+    std::unordered_set<ClassBranch_t*> next_step;
+    for(auto up : up_set)
+      getWith(up, second_class_index, res, do_not_take, current_depth, found_depth, depth, next_step);
+
+    up_set = std::move(next_step);
+    current_depth++;
+  }
+
+  return res;
+}
+
+std::unordered_set<index_t> ClassGraph::getWith(index_t first_class, index_t second_class, int depth)
+{
+  std::unordered_set<index_t> res;
+
+  int found_depth = -1;
+  uint32_t current_depth = 0;
+  std::unordered_set<index_t> do_not_take;
+  std::unordered_set<ClassBranch_t*> up_set;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+
+  up_set.insert(container_.find(ValuedNode::table_.get(first_class)));
   while(up_set.size() > 0)
   {
     std::unordered_set<ClassBranch_t*> next_step;
@@ -718,78 +925,45 @@ std::unordered_set<std::string> ClassGraph::getWith(const std::string& first_cla
   return res;
 }
 
-std::unordered_set<std::string> ClassGraph::getDomainOf(const std::string& _class, int depth)
+
+void ClassGraph::getWith(ClassBranch_t* first_class, index_t second_class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step)
 {
-  ClassBranch_t* branch = container_.find(_class);
-  return getDomainOf(branch, depth);
+  getWith_(first_class, second_class, res, do_not_take, current_depth, found_depth, depth_prop, next_step);
 }
 
-std::unordered_set<std::string> ClassGraph::getRangeOf(const std::string& _class, int depth)
+void ClassGraph::getWith(ClassBranch_t* first_class, index_t second_class, std::unordered_set<index_t>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step)
 {
-  ClassBranch_t* branch = container_.find(_class);
-  return getRangeOf(branch, depth);
+  getWith_(first_class, second_class, res, do_not_take, current_depth, found_depth, depth_prop, next_step);
 }
 
-std::unordered_set<std::string> ClassGraph::getDomainOf(ClassBranch_t* branch, int depth)
-{
-  std::unordered_set<std::string> res;
-
-  if(branch != nullptr)
-  {
-    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(branch, depth);
-    for(auto& prop : object_property_graph_->all_branchs_)
-    {
-      for(auto& dom : prop->domains_)
-        if(up_set.find(dom.elem) != up_set.end())
-          res.insert(prop->value());
-    }
-  }
-
-  return res;
-}
-
-std::unordered_set<std::string> ClassGraph::getRangeOf(ClassBranch_t* branch, int depth)
-{
-  std::unordered_set<std::string> res;
-
-  if(branch != nullptr)
-  {
-    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(branch, depth);
-    for(auto& prop : object_property_graph_->all_branchs_)
-    {
-      for(auto& range : prop->ranges_)
-        if(up_set.find(range.elem) != up_set.end())
-          res.insert(prop->value());
-    }
-  }
-
-  return res;
-}
-
-void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_class, std::unordered_set<std::string>& res, std::unordered_set<uint32_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step)
+template<typename T>
+void ClassGraph::getWith_(ClassBranch_t* first_class, index_t second_class, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch_t*>& next_step)
 {
   if(first_class != nullptr)
   {
-    std::unordered_set<std::string> tmp_res;
+    std::unordered_set<T> tmp_res;
 
-    data_t data_img(second_class);
-
-    for(ClassObjectRelationElement_t& relation : first_class->object_relations_)
+    if(second_class > 0)
     {
-      if(relation.second->value() == second_class)
-        if(do_not_take.find(relation.first->get()) == do_not_take.end())
-          object_property_graph_->getUp(relation.first, tmp_res, depth_prop);
-      // We indicate that all properties should no longer be used to avoid overloading relations 
-      do_not_take.insert(relation.first->get());
+      for(ClassObjectRelationElement_t& relation : first_class->object_relations_)
+      {
+        if(relation.second->get() == second_class)
+          if(do_not_take.find(relation.first->get()) == do_not_take.end())
+            object_property_graph_->getUp(relation.first, tmp_res, depth_prop);
+        // We indicate that all properties should no longer be used to avoid overloading relations 
+        do_not_take.insert(relation.first->get());
+      }
     }
-
-    for(ClassDataRelationElement_t& relation : first_class->data_relations_)
+    else
     {
-      if(relation.second == data_img)
-        if(do_not_take.find(relation.first->get()) == do_not_take.end())
-          data_property_graph_->getUp(relation.first, tmp_res, depth_prop);
-      // We indicate that all properties should no longer be used to avoid overloading relations 
-      do_not_take.insert(relation.first->get());
+      for(ClassDataRelationElement_t& relation : first_class->data_relations_)
+      {
+        if(relation.second->get() == second_class)
+          if(do_not_take.find(relation.first->get()) == do_not_take.end())
+            data_property_graph_->getUp(relation.first, tmp_res, depth_prop);
+        // We indicate that all properties should no longer be used to avoid overloading relations 
+        do_not_take.insert(relation.first->get());
+      }
     }
 
     if(tmp_res.size() != 0)
@@ -805,22 +979,109 @@ void ClassGraph::getWith(ClassBranch_t* first_class, const std::string& second_c
   }
 }
 
-std::unordered_set<std::string> ClassGraph::getDownIndividual(ClassBranch_t* branch)
+std::unordered_set<std::string> ClassGraph::getDomainOf(const std::string& _class, int depth)
 {
+  ClassBranch_t* branch = container_.find(_class);
   std::unordered_set<std::string> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-
-  for(auto& indiv : branch->individual_childs_)
-    individual_graph_->getSameAndClean(indiv.elem, res);
-
+  getDomainOf(branch, res, depth);
   return res;
+}
+
+std::unordered_set<index_t> ClassGraph::getDomainOf(index_t _class, int depth)
+{
+  ClassBranch_t* branch = container_.find(ValuedNode::table_.get(_class));
+  std::unordered_set<index_t> res;
+  getDomainOf(branch, res, depth);
+  return res;
+}
+
+std::unordered_set<std::string> ClassGraph::getRangeOf(const std::string& _class, int depth)
+{
+  ClassBranch_t* branch = container_.find(_class);
+  std::unordered_set<std::string> res;
+  getRangeOf(branch, res, depth);
+  return res;
+}
+
+std::unordered_set<index_t> ClassGraph::getRangeOf(index_t _class, int depth)
+{
+  ClassBranch_t* branch = container_.find(ValuedNode::table_.get(_class));
+  std::unordered_set<index_t> res;
+  getRangeOf(branch, res, depth);
+  return res;
+}
+
+void ClassGraph::getDomainOf(ClassBranch_t* branch, std::unordered_set<std::string>& res, int depth)
+{
+  if(branch != nullptr)
+  {
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(branch, depth);
+    for(auto& prop : object_property_graph_->all_branchs_)
+    {
+      for(auto& dom : prop->domains_)
+        if(up_set.find(dom.elem) != up_set.end())
+          res.insert(prop->value());
+    }
+  }
+}
+
+void ClassGraph::getDomainOf(ClassBranch_t* branch, std::unordered_set<index_t>& res, int depth)
+{
+  if(branch != nullptr)
+  {
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(branch, depth);
+    for(auto& prop : object_property_graph_->all_branchs_)
+    {
+      for(auto& dom : prop->domains_)
+        if(up_set.find(dom.elem) != up_set.end())
+          res.insert(prop->get());
+    }
+  }
+}
+
+
+void ClassGraph::getRangeOf(ClassBranch_t* branch, std::unordered_set<std::string>& res, int depth)
+{
+  if(branch != nullptr)
+  {
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(branch, depth);
+    for(auto& prop : object_property_graph_->all_branchs_)
+    {
+      for(auto& range : prop->ranges_)
+        if(up_set.find(range.elem) != up_set.end())
+          res.insert(prop->value());
+    }
+  }
+}
+
+void ClassGraph::getRangeOf(ClassBranch_t* branch, std::unordered_set<index_t>& res, int depth)
+{
+  if(branch != nullptr)
+  {
+    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(branch, depth);
+    for(auto& prop : object_property_graph_->all_branchs_)
+    {
+      for(auto& range : prop->ranges_)
+        if(up_set.find(range.elem) != up_set.end())
+          res.insert(prop->get());
+    }
+  }
 }
 
 void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+  res.reserve(res.size() + branch->individual_childs_.size() * 1.5);
   for(auto& indiv : branch->individual_childs_)
-    individual_graph_->getSameAndClean(indiv.elem, res);
+    individual_graph_->getSame(indiv.elem, res);
+}
+
+void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<index_t>& res)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
+  res.reserve(res.size() + branch->individual_childs_.size() * 1.5);
+  for(auto& indiv : branch->individual_childs_)
+    individual_graph_->getSame(indiv.elem, res);
 }
 
 std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtrSafe(ClassBranch_t* branch)
@@ -1006,7 +1267,7 @@ void ClassGraph::addRelation(ClassBranch_t* class_from, const std::string& prope
   ClassBranch_t* branch_from = class_from;
   if(branch_from != nullptr)
   {
-    data_t data_branch(type, data);
+    LiteralNode* literal_branch = data_property_graph_->createLiteral(type + "#" + data);
 
     DataPropertyBranch_t* branch_prop = data_property_graph_->findBranch(property);
     if(branch_prop == nullptr)
@@ -1019,8 +1280,8 @@ void ClassGraph::addRelation(ClassBranch_t* class_from, const std::string& prope
       branch_prop = data_property_graph_->newDefaultBranch(property);
     }
 
-    if(checkRangeAndDomain(branch_from, branch_prop, data_branch))
-      conditionalPushBack(branch_from->data_relations_, ClassDataRelationElement_t(branch_prop, data_branch));
+    if(checkRangeAndDomain(branch_from, branch_prop, literal_branch))
+      conditionalPushBack(branch_from->data_relations_, ClassDataRelationElement_t(branch_prop, literal_branch));
     else
       throw GraphException("Inconsistency prevented regarding the range or domain of the property");
   }
@@ -1141,8 +1402,8 @@ void ClassGraph::removeRelation(const std::string& class_from, const std::string
     {
       if(branch_from->data_relations_[i].first->value() == property)
       {
-        if(( (type == "_") || (branch_from->data_relations_[i].second.type_ == type)) &&
-          ((data == "_") || (branch_from->data_relations_[i].second.value_ == data)))
+        if(( (type == "_") || (branch_from->data_relations_[i].second->type_ == type)) &&
+          ((data == "_") || (branch_from->data_relations_[i].second->value_ == data)))
         {
           branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
           branch_from->updated_ = true;
@@ -1216,7 +1477,7 @@ bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t
   return true;
 }
 
-bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* prop, data_t& data)
+bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* prop, LiteralNode* data)
 {
   std::unordered_set<ClassBranch_t*> up_from;
   getUpPtr(from, up_from);
@@ -1250,7 +1511,7 @@ bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* 
   std::unordered_set<std::string> range = data_property_graph_->getRange(prop->value());
   if(range.size() != 0)
   {
-    if(range.find(data.type_) == range.end())
+    if(range.find(data->type_) == range.end())
       return false;
   }
 
@@ -1259,11 +1520,8 @@ bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* 
 
 void ClassGraph::deepCopy(const ClassGraph& other)
 {
-  for(const auto& root : other.roots_)
-    cpyBranch(root.second, roots_[root.first]);
-
-  for(const auto& branch : other.branchs_)
-    cpyBranch(branch.second, branchs_[branch.first]);
+  for(size_t i = 0; i < other.all_branchs_.size(); i++)
+    cpyBranch(other.all_branchs_[i], all_branchs_[i]);
 }
 
 void ClassGraph::cpyBranch(ClassBranch_t* old_branch, ClassBranch_t* new_branch)

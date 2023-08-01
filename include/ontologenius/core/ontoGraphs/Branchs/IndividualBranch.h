@@ -18,13 +18,11 @@ class IndividualBranch_t;
 
 typedef Single_t<IndividualBranch_t*> IndividualElement_t;
 typedef Pair_t<ObjectPropertyBranch_t*, IndividualBranch_t*> IndivObjectRelationElement_t;
-typedef Pair_t<DataPropertyBranch_t*, data_t> IndivDataRelationElement_t;
+typedef Pair_t<DataPropertyBranch_t*, LiteralNode*> IndivDataRelationElement_t;
 
 class IndividualBranch_t : public ValuedNode
 {
 public:
-  bool mark;
-
   std::vector<ClassElement_t> is_a_;
   std::vector<IndivObjectRelationElement_t> object_relations_;
   std::vector<Triplet> object_properties_has_induced_;
@@ -32,7 +30,7 @@ public:
   std::vector<IndividualElement_t> same_as_;
   std::vector<IndividualElement_t> distinct_;
 
-  IndividualBranch_t(const std::string& value = "") : ValuedNode(value) {mark = false; }
+  IndividualBranch_t(const std::string& value = "") : ValuedNode(value) {}
 
   void setSteady_dictionary(const std::string& lang, const std::string& word);
   void setSteady_muted_dictionary(const std::string& lang, const std::string& word);
@@ -40,7 +38,7 @@ public:
   void setSteady_muted_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
 
   int objectPropertyExist(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
-  int dataPropertyExist(DataPropertyBranch_t* property, const data_t& data);
+  int dataPropertyExist(DataPropertyBranch_t* property, LiteralNode* data);
 };
 
 class Triplet

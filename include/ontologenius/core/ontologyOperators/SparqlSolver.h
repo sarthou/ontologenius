@@ -12,7 +12,7 @@ namespace ontologenius
 
 struct SparqlConstraint_t
 {
-  triplet_t triplet_;
+  strTriplet_t triplet_;
   SparqlOperator_e operator_;
   bool subject_constraint_;
   bool leaf_;
@@ -106,22 +106,22 @@ private:
 
   SparqlSolution_t getInitialSolutionStandard(const std::string& pattern);
   SparqlSolution_t getInitialSolutionCustom();
-  void insertConstraints(const std::vector<triplet_t>& triplets, SparqlSolution_t& solution, SparqlOperator_e sparql_operator);
+  void insertConstraints(const std::vector<strTriplet_t>& triplets, SparqlSolution_t& solution, SparqlOperator_e sparql_operator);
   void orderVariables(SparqlSolution_t& solution);
   void stepDown(SparqlSolution_t& solution, int index);
   void nextSolution(SparqlSolution_t& solution);
 
-  std::unordered_set<std::string> solveTriplet(triplet_t triplet, const std::map<std::string, std::string>& binding);
-  std::unordered_set<std::string> getOn(const triplet_t& triplet, const std::string& selector = "");
-  std::unordered_set<std::string> getFrom(const triplet_t& triplet, const std::string& selector = "");
-  std::unordered_set<std::string> getUp(const triplet_t& triplet, const std::string& selector = "");
-  std::unordered_set<std::string> getType(const triplet_t& triplet, const std::string& selector = "");
-  std::unordered_set<std::string> find(const triplet_t& triplet, const std::string& selector = "");
-  std::unordered_set<std::string> getName(const triplet_t& triplet, const std::string& selector = "");
+  std::unordered_set<std::string> solveTriplet(strTriplet_t triplet, const std::map<std::string, std::string>& binding);
+  std::unordered_set<std::string> getOn(const strTriplet_t& triplet, const std::string& selector = "");
+  std::unordered_set<std::string> getFrom(const strTriplet_t& triplet, const std::string& selector = "");
+  std::unordered_set<std::string> getUp(const strTriplet_t& triplet, const std::string& selector = "");
+  std::unordered_set<std::string> getType(const strTriplet_t& triplet, const std::string& selector = "");
+  std::unordered_set<std::string> find(const strTriplet_t& triplet, const std::string& selector = "");
+  std::unordered_set<std::string> getName(const strTriplet_t& triplet, const std::string& selector = "");
 
   std::string getPattern(const std::string& text);
   std::vector<SparqlBlock_t> getBlocks(std::string query);
-  std::vector<triplet_t> getTriplets(const std::string& query, const std::string& delim);
+  std::vector<strTriplet_t> getTriplets(const std::string& query, const std::string& delim);
 };
 
 } // namespace ontologenius

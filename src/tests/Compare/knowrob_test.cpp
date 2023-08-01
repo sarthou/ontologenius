@@ -8,7 +8,7 @@
 
 #define ONTO_TEST
 
-#include "ontologenius/RosInterface.h"
+#include "ontologenius/interface/RosInterface.h"
 
 using namespace std::chrono;
 

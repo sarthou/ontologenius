@@ -6,6 +6,8 @@
 #include "ontologenius/OntologeniusSparqlService.h"
 #include "ontologenius/OntologeniusSparqlResponse.h"
 
+namespace onto {
+
 /// @brief The SparqlClient class provides a ROS service to explore ontologenius with SPARQL-like queries.
 /// The variables start with the symbol ? (e.g. ?my_var) and each triplet is separated by a comma.
 class SparqlClient
@@ -28,5 +30,7 @@ private:
   std::string name_;
   ros::NodeHandle* n_;
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_SPARQLCLIENT_H

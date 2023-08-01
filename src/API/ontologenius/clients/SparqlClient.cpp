@@ -1,5 +1,7 @@
 #include "ontologenius/API/ontologenius/clients/SparqlClient.h"
 
+namespace onto {
+
 std::vector<ontologenius::OntologeniusSparqlResponse> SparqlClient::call(const std::string& query)
 {
   ontologenius::OntologeniusSparqlService srv;
@@ -16,3 +18,5 @@ std::vector<ontologenius::OntologeniusSparqlResponse> SparqlClient::call(const s
       return {};
   }
 }
+
+} // namespace onto

@@ -3,6 +3,8 @@
 
 #include "ontologenius/API/ontologenius/clients/ontologyClients/OntologyClient.h"
 
+namespace onto {
+
 /// @brief The DataPropertyClient class provides an abstraction of ontologenius data properties ROS service.
 /// The ontologenius data properties service allows the exploration of data properties contained by ontologenius core.
 /// This class is based on ClientBase and so ensure a persistent connection with ontologenius/data_property service.
@@ -41,5 +43,7 @@ public:
 private:
 
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_DATAPROPERTYCLIENT_H

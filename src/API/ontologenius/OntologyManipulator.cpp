@@ -1,6 +1,8 @@
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 #include "ontologenius/graphical/Display.h"
 
+namespace onto {
+
 OntologyManipulator::OntologyManipulator(ros::NodeHandle* n, const std::string& name) : name_(name),
                                                                                         individuals(&n_, name),
                                                                                         objectProperties(&n_, name),
@@ -59,3 +61,5 @@ OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): name_(oth
   std::string service_name = (name_ == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name_;
   ros::service::waitForService(service_name);
 }
+
+} // namespace onto

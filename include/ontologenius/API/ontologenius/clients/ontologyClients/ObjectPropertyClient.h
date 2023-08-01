@@ -3,6 +3,8 @@
 
 #include "ontologenius/API/ontologenius/clients/ontologyClients/OntologyClient.h"
 
+namespace onto {
+
 /// @brief The ObjectPropertyClient class provides an abstraction of ontologenius object properties ROS service.
 /// The ontologenius object properties service allows the exploration of object properties contained by ontologenius core.
 /// This class is based on ClientBase and so ensure a persistent connection with ontologenius/object_property service.
@@ -45,5 +47,7 @@ public:
 private:
 
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_OBJECTPROPERTYCLIENT_H

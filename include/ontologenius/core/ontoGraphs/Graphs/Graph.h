@@ -14,6 +14,7 @@
 
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 
 namespace ontologenius {
 
@@ -42,6 +43,11 @@ public:
   virtual B* findBranch(const std::string& name);
   virtual B* findBranchUnsafe(const std::string& name);
   virtual B* create(const std::string& name);
+
+  index_t getIndex(const std::string& name);
+  std::vector<index_t> getIndexes(const std::vector<std::string>& names);
+  std::string getIdentifier(index_t index);
+  std::vector<std::string> getIdentifiers(const std::vector<index_t>& indexes);
 
   BranchContainerSet<B> container_;
 
@@ -93,11 +99,36 @@ public:
   }
 
   template<typename C>
-  inline void conditionalPushBack(std::vector<C>& vect, const C& data)
+  inline bool conditionalPushBack(std::vector<C>& vect, const C& data)
   {
     if(std::find(vect.begin(), vect.end(), data) == vect.end())
-      vect.push_back(data);
+    {
+      vect.emplace_back(data);
+      return true;
+    }
+    else
+      return false;
   }
+
+  template<typename C>
+  inline bool conditionalPushBack(std::vector<Single_t<C>>& vect, const Single_t<C>& data)
+  {
+    auto it = std::find(vect.begin(), vect.end(), data);
+    if(it == vect.end())
+    {
+      vect.emplace_back(data);
+      return true;
+    }
+    else if(it->infered && (data.infered == false))
+      it->infered = false;
+      
+    return false;
+  }
+
+  void insert(std::unordered_set<std::string>& set, ValuedNode* node) { set.insert(node->value()); }
+  void insert(std::unordered_set<index_t>& set, ValuedNode* node) { set.insert(node->get()); }
+  void insert(std::unordered_set<std::string>& set, LiteralNode* node) { set.insert(node->value()); }
+  void insert(std::unordered_set<index_t>& set, LiteralNode* node) { set.insert(node->get()); }
 };
 
 template <typename B>
@@ -129,6 +160,45 @@ B* Graph<B>::create(const std::string& name)
     container_.insert(indiv);
   }
   return indiv;
+}
+
+template <typename B>
+index_t Graph<B>::getIndex(const std::string& name)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+  auto branch = container_.find(name);
+  if(branch != nullptr)
+    return branch->get();
+  else
+    return 0;
+}
+
+template <typename B>
+std::vector<index_t> Graph<B>::getIndexes(const std::vector<std::string>& names)
+{
+  std::vector<index_t> res;
+  for(auto& name : names)
+    res.push_back(getIndex(name));
+  return res; 
+}
+
+template <typename B>
+std::string Graph<B>::getIdentifier(index_t index)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+  if((index > 0) && (index < (index_t)ValuedNode::table_.size()))
+    return ValuedNode::table_[index];
+  else
+    return "";
+}
+
+template <typename B>
+std::vector<std::string> Graph<B>::getIdentifiers(const std::vector<index_t>& indexes)
+{
+  std::vector<std::string> res;
+  for(auto& index : indexes)
+    res.push_back(getIdentifier(index));
+  return res; 
 }
 
 } // namespace ontologenius

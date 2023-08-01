@@ -15,7 +15,7 @@ public:
 
   virtual void setParameter(const std::string& name, const std::string& value) override;
 
-  virtual void periodicReason() override;
+  virtual bool periodicReason() override;
 
   virtual bool implementPeriodicReasoning() override { return true; }
 
@@ -30,7 +30,7 @@ private:
   size_t min_count_;
   float min_percent_;
 
-  void setDeduced(ClassBranch_t* me, std::vector<std::tuple<DataPropertyBranch_t*, std::string, float>> properties);
+  void setDeduced(ClassBranch_t* me, std::vector<std::tuple<DataPropertyBranch_t*, LiteralNode*, float>> properties);
   void setDeduced(ClassBranch_t* me, std::vector<std::tuple<ObjectPropertyBranch_t*, ClassBranch_t*, float>> properties);
 };
 

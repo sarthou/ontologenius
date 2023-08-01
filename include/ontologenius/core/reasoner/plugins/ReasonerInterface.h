@@ -57,12 +57,13 @@ public:
     (void)value;
   }
 
-  virtual void preReason(const QueryInfo_t& query_info)
+  virtual bool preReason(const QueryInfo_t& query_info)
   {
     (void)query_info;
+    return false;
   }
   virtual void postReason() {}
-  virtual void periodicReason() {}
+  virtual bool periodicReason() { return false; }
 
   virtual bool implementPostReasoning() { return false; }
   virtual bool implementPreReasoning() { return false; }

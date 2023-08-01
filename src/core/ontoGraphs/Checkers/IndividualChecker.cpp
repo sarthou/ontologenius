@@ -33,20 +33,18 @@ size_t IndividualChecker::check()
 
 void IndividualChecker::checkSame()
 {
-  for(size_t i = 0; i < graph_size; i++)
+  for(IndividualBranch_t* indiv : graph_vect_)
   {
-    std::unordered_set<std::string> same = individual_graph_->getSame(graph_vect_[i]->value());
-    std::unordered_set<std::string> distinct;
+    std::unordered_set<IndividualBranch_t*> sames;
+    individual_graph_->getSame(indiv, sames);
+    std::unordered_set<IndividualBranch_t*> distincts;
 
-    for (const std::string& it : same)
-    {
-      std::unordered_set<std::string> tmp = individual_graph_->getDistincts(it);
-      distinct.insert(tmp.begin(), tmp.end());
-    }
+    for (auto same : sames)
+      individual_graph_->getDistincts(same, distincts);
 
-    std::string intersection = findIntersection(same, distinct);
-    if(intersection != "")
-      print_error("'" + graph_vect_[i]->value() + "' can't be same and distinct with '" + intersection + "'");
+    auto intersection = findIntersection(sames, distincts);
+    if(intersection != nullptr)
+      print_error("'" + indiv->value() + "' can't be same and distinct with '" + intersection->value() + "'");
   }
 }
 
@@ -93,19 +91,19 @@ void IndividualChecker::checkDisjoint()
 void IndividualChecker::checkReflexive()
 {
   std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
-  for(size_t i = 0; i < graph_size; i++)
+  for(IndividualBranch_t* indiv : graph_vect_)
   {
-    for(IndivObjectRelationElement_t& object_relation : graph_vect_[i]->object_relations_)
+    for(IndivObjectRelationElement_t& object_relation : indiv->object_relations_)
     {
       if(object_relation.first->properties_.reflexive_property_)
       {
-        if(graph_vect_[i]->get() != object_relation.second->get())
-          print_error("'" + object_relation.first->value() + "' is reflexive so can't be from '" + graph_vect_[i]->value() + "' to '" + object_relation.second->value() + "'");
+        if(indiv->get() != object_relation.second->get())
+          print_error("'" + object_relation.first->value() + "' is reflexive so can't be from '" + indiv->value() + "' to '" + object_relation.second->value() + "'");
       }
       else if(object_relation.first->properties_.irreflexive_property_)
       {
-        if(graph_vect_[i]->get() == object_relation.second->get())
-          print_error("'" + object_relation.first->value() + "' is irreflexive so can't be from '" + graph_vect_[i]->value() + "' to '" + object_relation.second->value() + "'");
+        if(indiv->get() == object_relation.second->get())
+          print_error("'" + object_relation.first->value() + "' is irreflexive so can't be from '" + indiv->value() + "' to '" + object_relation.second->value() + "'");
       }
     }
   }
@@ -113,14 +111,14 @@ void IndividualChecker::checkReflexive()
 
 void IndividualChecker::checkObectPropertyDomain()
 {
-  for(size_t i = 0; i < graph_size; i++)
+  std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
+
+  for(auto& indiv : graph_vect_)
   {
     std::unordered_set<ClassBranch_t*> up;
-    individual_graph_->getUpPtr(graph_vect_[i], up);
+    individual_graph_->getUpPtr(indiv, up);
 
-    std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
-
-    for(IndivObjectRelationElement_t& object_relation : graph_vect_[i]->object_relations_)
+    for(IndivObjectRelationElement_t& object_relation : indiv->object_relations_)
     {
       std::unordered_set<ObjectPropertyBranch_t*> prop_up;
       individual_graph_->object_property_graph_->getUpPtr(object_relation.first, prop_up);
@@ -140,11 +138,11 @@ void IndividualChecker::checkObectPropertyDomain()
 
           if(intersection == nullptr)
           {
-            graph_vect_[i]->flags_["domain"].push_back(object_relation.first->value());
-            print_warning("Individual '" + graph_vect_[i]->value() + "' is not in domain of object property '" + object_relation.first->value() + "'");
+            indiv->flags_["domain"].push_back(object_relation.first->value());
+            print_warning("Individual '" + indiv->value() + "' is not in domain of object property '" + object_relation.first->value() + "'");
           }
           else
-            print_error("Individual '" + graph_vect_[i]->value() + "' can not be in domain of object property '" + object_relation.first->value() + "'");
+            print_error("Individual '" + indiv->value() + "' can not be in domain of object property '" + object_relation.first->value() + "'");
         }
       }
     }
@@ -153,14 +151,15 @@ void IndividualChecker::checkObectPropertyDomain()
 
 void IndividualChecker::checkObectPropertyRange()
 {
-  for(size_t i = 0; i < graph_size; i++)
+  std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
+
+  for(auto& indiv : graph_vect_)
   {
-    for(IndivObjectRelationElement_t& object_relation : graph_vect_[i]->object_relations_)
+    for(IndivObjectRelationElement_t& object_relation : indiv->object_relations_)
     {
       std::unordered_set<ClassBranch_t*> up;
       individual_graph_->getUpPtr(object_relation.second, up);
 
-      std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
       std::unordered_set<ObjectPropertyBranch_t*> prop_up;
       individual_graph_->object_property_graph_->getUpPtr(object_relation.first, prop_up);
       std::unordered_set<ClassBranch_t*> range;
@@ -179,7 +178,7 @@ void IndividualChecker::checkObectPropertyRange()
 
           if(intersection == nullptr)
           {
-            graph_vect_[i]->flags_["range"].push_back(object_relation.first->value());
+            indiv->flags_["range"].push_back(object_relation.first->value());
             print_warning("Individual '" + object_relation.second->value() + "' is not in range of object property '" + object_relation.first->value() + "'");
           }
           else
@@ -192,14 +191,14 @@ void IndividualChecker::checkObectPropertyRange()
 
 void IndividualChecker::checkDataPropertyDomain()
 {
-  for(size_t i = 0; i < graph_size; i++)
+  for(auto& indiv : graph_vect_)
   {
     std::unordered_set<ClassBranch_t*> up;
-    individual_graph_->getUpPtr(graph_vect_[i], up);
+    individual_graph_->getUpPtr(indiv, up);
 
     std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
 
-    for(IndivDataRelationElement_t& relation : graph_vect_[i]->data_relations_)
+    for(IndivDataRelationElement_t& relation : indiv->data_relations_)
     {
       std::unordered_set<DataPropertyBranch_t*> prop_up;
       individual_graph_->data_property_graph_->getUpPtr(relation.first, prop_up);
@@ -219,11 +218,11 @@ void IndividualChecker::checkDataPropertyDomain()
 
           if(intersection == nullptr)
           {
-            graph_vect_[i]->flags_["range"].push_back(relation.first->value());
-            print_warning("Individual '" + graph_vect_[i]->value() + "' is not in domain of data property '" + relation.first->value() + "'");
+            indiv->flags_["range"].push_back(relation.first->value());
+            print_warning("Individual '" + indiv->value() + "' is not in domain of data property '" + relation.first->value() + "'");
           }
           else
-            print_error("Individual '" + graph_vect_[i]->value() + "' can not be in domain of data property '" + relation.first->value() + "'");
+            print_error("Individual '" + indiv->value() + "' can not be in domain of data property '" + relation.first->value() + "'");
         }
       }
     }
@@ -233,16 +232,16 @@ void IndividualChecker::checkDataPropertyDomain()
 void IndividualChecker::checkDataPropertyRange()
 {
   std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
-  for(size_t i = 0; i < graph_size; i++)
+  for(auto& indiv : graph_vect_)
   {
-    for(IndivDataRelationElement_t& relation : graph_vect_[i]->data_relations_)
+    for(IndivDataRelationElement_t& relation : indiv->data_relations_)
     {
       std::unordered_set<std::string> range = individual_graph_->data_property_graph_->getRange(relation.first->value());
       if(range.size() != 0)
       {
-        auto intersection = range.find(relation.second.type_);
+        auto intersection = range.find(relation.second->type_);
         if(intersection == range.end())
-          print_error("Individual '" + relation.second.type_ + "' is not in range of '" + relation.first->value() + "'");
+          print_error("Individual '" + relation.second->type_ + "' is not in range of '" + relation.first->value() + "'");
       }
     }
   }
@@ -251,13 +250,13 @@ void IndividualChecker::checkDataPropertyRange()
 void IndividualChecker::checkAssymetric()
 {
   std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
-  for(size_t i = 0; i < graph_size; i++)
+  for(auto& indiv : graph_vect_)
   {
-    for(IndivObjectRelationElement_t& object_relation : graph_vect_[i]->object_relations_)
+    for(IndivObjectRelationElement_t& object_relation : indiv->object_relations_)
     {
       if(object_relation.first->properties_.antisymetric_property_)
-        if(symetricExist(graph_vect_[i], object_relation.first, object_relation.second))
-          print_error("'" + object_relation.first->value() + "' is antisymetric so can't be from '" + graph_vect_[i]->value() + "' to '" + object_relation.second->value() + "' and inverse");
+        if(symetricExist(indiv, object_relation.first, object_relation.second))
+          print_error("'" + object_relation.first->value() + "' is antisymetric so can't be from '" + indiv->value() + "' to '" + object_relation.second->value() + "' and inverse");
     }
   }
 }

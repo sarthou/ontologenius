@@ -6,7 +6,7 @@
 
 #include <ros/ros.h>
 
-#include "ontologenius/RosInterface.h"
+#include "ontologenius/interface/RosInterface.h"
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
 using namespace std::chrono;
@@ -29,7 +29,7 @@ void insertN(ontologenius::RosInterface* interface, size_t n)
   }
 }
 
-double doQuery_R1(OntologyManipulator* onto_ptr)
+double doQuery_R1(onto::OntologyManipulator* onto_ptr)
 {
   std::cout << "R1" << std::endl;
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -45,7 +45,7 @@ double doQuery_R1(OntologyManipulator* onto_ptr)
   return time_span.count();
 }
 
-double doQuery_R2(OntologyManipulator* onto_ptr)
+double doQuery_R2(onto::OntologyManipulator* onto_ptr)
 {
   std::cout << "R2" << std::endl;
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -67,7 +67,7 @@ double doQuery_R2(OntologyManipulator* onto_ptr)
   return time_span.count();
 }
 
-double doQuery_R3(OntologyManipulator* onto_ptr)
+double doQuery_R3(onto::OntologyManipulator* onto_ptr)
 {
   std::cout << "R3" << std::endl;
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -110,7 +110,7 @@ int main(int argc, char** argv)
   onto = interface.getOntology();
   onto_thread = std::thread(&ontologenius::RosInterface::run, &interface);
 
-  OntologyManipulator onto_manip;
+  onto::OntologyManipulator onto_manip;
 
   onto->readFromFile("/home/gsarthou/openrobots/share/ontologies/testsuite.owl");
   interface.close();

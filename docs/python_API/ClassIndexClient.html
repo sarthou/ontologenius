@@ -1,0 +1,248 @@
+<html lang="en_US">
+
+<head>
+  <title>ClassIndexClient Class (python) | Ontologenius 0.3.0</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../index.html">
+              <img src="../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Python API Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -240px;">
+        <div class="contents class-content">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="#methods">Methods</a></li>
+            <li class="level1"><a href="#reimplemented-methods">Reimplemented Methods</a></li>
+            <li class="level1"><a href="#details">Detailed Description</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="../overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="../overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../cpp_API/CppAPI.html">
+              All C++ Classes
+            </a>
+          </h3>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
+            <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
+            <li class="level2"><b>Index based classes</b></li>
+            <li class="level1"><a href="ClassIndexClient.html"><b>ClassIndexClient</b></a></li>
+            <li class="level1"><a href="ClientBaseIndex.html">ClientBaseIndex</a></li>
+            <li class="level1"><a href="ConversionClient.html">ConversionClient</a></li>
+            <li class="level1"><a href="DataPropertyIndexClient.html">DataPropertyIndexClient</a></li>
+            <li class="level1"><a href="IndividualIndexClient.html">IndividualIndexClient</a></li>
+            <li class="level1"><a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></li>
+            <li class="level1"><a href="OntologyIndexClient.html">OntologyIndexClient</a></li>
+            <li class="level1"><a href="OntologyManipulatorIndex.html">OntologyManipulatorIndex</a></li>
+            <li class="level1"><a href="SparqlIndexClient.html">SparqlIndexClient</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">ClassIndexClient Class</h1>
+        <p>The ClassIndexClient class provides a ROS service abstraction for classes exploration. <a href="#details">More...</a></p>
+        <div class="table">
+          <table class="alignedsummary">
+          <tbody><tr><td class="memItemLeft rightAlign topAlign"> Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span>
+          </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="OntologyIndexClient.html">OntologyIndexClient</a></td></tr></tbody></table>
+        </div>
+
+        <a name="methods"></a>
+        <h2 id="methods">Public Methods</h2>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#__init__">__init__</a></b>(self, name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getDown">getDown</a></b>(self, index, depth = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getDisjoint">getDisjoint</a></b>(self, index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getOn">getOn</a></b>(self, index, property, selector = 0)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getFrom">getFrom</a></b>(self, property, index, selector = 0)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getWith">getWith</a></b>(self, class_from, class_to, selector = 0, depth = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelatedFrom">getRelatedFrom</a></b>(self, property)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelatedOn">getRelatedOn</a></b>(self, property)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelatedWith">getRelatedWith</a></b>(self, index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelationFrom">getRelationFrom</a></b>(self, index, depth = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelationOn">getRelationOn</a></b>(self, index, depth = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelationWith">getRelationWith</a></b>(self, index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getDomainOf">getDomainOf</a></b>(self, index, selector = 0, depth = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRangeOf">getRangeOf</a></b>(self, index, selector = 0, depth = -1)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="reimplemented-methods"></a>
+        <h2 id="reimplemented-methods">Reimplemented Methods</h2>
+        <ul>
+          <li class="fn">10 methods inherited from <a href="OntologyIndexClient.html#methods">OntologyIndexClient</a></li>
+          <li class="fn">2 methods inherited from <a href="ClientBaseIndex.html#methods">ClientBaseIndex</a></li>
+        </ul>
+
+        <a name="details"></a>
+        <div class="descr">
+          <h2 id="details">Detailed Description</h2>
+          <p>The ClassIndexClient class provides an abstraction of ontologenius classes ROS service.</p>
+          <p>The ontologenius classes service allows the exploration of classes contained by ontologenius core based on integer.</p>
+          <p>This class is based on <a href="ClientIndexBase.html">ClientIndexBase</a> and so ensure a persistent connection with ontologenius/class_index service.
+             The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>At the difference of the usual ClassClient class, this one provides access to the interface based on indexes (integers) for better performances.</p>
+        </div>
+
+        <p><b>See also </b><a href="ClassClient.html">ClassClient</a>.</p>
+
+        <p><b>See also </b><a href="IndividualIndexClient.html">IndividualIndexClient</a>, <a href="DataPropertyIndexClient.html">DataPropertyIndexClient</a> and <a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a>.</p>
+
+        <div class="func">
+          <h2>Methods Documentation</h2>
+
+          <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self, name)</h3>
+          <p>Constructs a class client..</p>
+          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, <i>name</i>(str) should be defined as ''.</p>
+
+          <h3 class="fn" id="getDown"><a name="getDown"></a><span class="name">getDown</span>(self, index, depth = -1)</h3>
+          <p>Gives all classes (integer[]) below the one given in the parameter: <i>index</i>(interger).</p>
+          <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
+
+          <h3 class="fn" id="getDisjoint"><a name="getDisjoint"></a><span class="name">getDisjoint</span>(self, index)</h3>
+          <p>Gives all the disjoint classes (integer[]) of the one given in the parameter: <i>index</i>(interger).</p>
+
+          <h3 class="fn" id="getOn"><a name="getOn"></a><span class="name">getOn</span>(self, index, property, selector = 0)</h3>
+          <p>Gives all the classes (integer[]) pointed by the property <i>property</i>(interger) and applied to the class <i>index</i>(interger).</p>
+          <p>The optional <i>selector</i>(integer) parameter can be set to only get results inheriting from the <i>selector</i>(integer) class. The default value 0 represents no restriction on the result.</p>
+
+          <h3 class="fn" id="getFrom"><a name="getFrom"></a><span class="name">getFrom</span>(self, property, index, selector = 0)</h3>
+          <p>Gives all the classes (integer[]) having the given property <i>property</i>(interger) and pointing to the class <i>index</i>(interger).</p>
+          <p>The optional <i>selector</i>(integer) parameter can be set to only get results inheriting from the <i>selector</i>(integer) class. The default value 0 represents no restriction on the result.</p>
+
+          <h3 class="fn" id="getWith"><a name="getWith"></a><span class="name">getWith</span>(self, class_from, class_to, selector = 0, depth = -1)</h3>
+          <p>Gives all the properties (integer[]) linking the two classes <i>class_from</i>(interger) and <i>class_to</i>(interger).</p>
+          <p>The optional <i>selector</i>(integer) parameter can be set to only get results inheriting from the <i>selector</i>(integer) property. The default value 0 represents no restriction on the result.</p>
+          <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
+
+          <h3 class="fn" id="getRelatedFrom"><a name="getRelatedFrom"></a><span class="name">getRelatedFrom</span>(self, property)</h3>
+          <p>Gives all the classes (integer[]) possessing the property <i>property</i>(interger).</p>
+
+          <h3 class="fn" id="getRelatedOn"><a name="getRelatedOn"></a><span class="name">getRelatedOn</span>(self, property)</h3>
+          <p>Gives all the classes (integer[]) pointed to by the property <i>property</i>(interger).</p>
+
+          <h3 class="fn" id="getRelatedWith"><a name="getRelatedWith"></a><span class="name">getRelatedWith</span>(self, index)</h3>
+          <p>Gives all the classes (integer[]) having a property pointing to the class <i>index</i>(interger).</p>
+
+          <h3 class="fn" id="getRelationFrom"><a name="getRelationFrom"><span class="name">getRelationFrom</span>(self, index, depth = -1)</h3>
+          <p>Gives all the properties (integer[]) applied to the class <i>index</i>(interger).</p>
+          <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
+
+          <h3 class="fn" id="getRelationOn"><a name="getRelationOn"></a><span class="name">getRelationOn</span>(self, index, depth = -1)</h3>
+          <p>Gives all the properties (integer[]) going to the class <i>index</i>(interger).</p>
+          <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
+
+          <h3 class="fn" id="getRelationWith"><a name="getRelationWith"></a><span class="name">getRelationWith</span>(self, index)</h3>
+          <p>Gives all the classes (integer[]) pointed by a property applied to the class <i>index</i>(interger).</p>
+
+          <h3 class="fn" id="getDomainOf"><a name="getDomainOf"></a><span class="name">getDomainOf</span>(self, index, selector = 0, depth = -1)</h3>
+          <p>Gives all the properties (integer[]) for which the class <i>index</i>(interger) is part of the domain.</p>
+          <p>The optional <i>selector</i>(integer) parameter can be set to only get results inheriting from the <i>selector</i>(integer) property. The default value 0 represents no restriction on the result.</p>
+          <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation of the class to a specific value. The default value -1 represents no propagation limitation.</p>
+
+          <h3 class="fn" id="getRangeOf"><a name="getRangeOf"></a><span class="name">getRangeOf</span>(self, index, selector = 0, depth = -1)</h3>
+          <p>Gives all the properties (integer[]) for which the class <i>index</i>(interger) is part of the range.</p>
+          <p>The optional <i>selector</i>(integer) parameter can be set to only get results inheriting from the <i>selector</i>(integer) property. The default value 0 represents no restriction on the result.</p>
+          <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation of the class to a specific value. The default value -1 represents no propagation limitation.</p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

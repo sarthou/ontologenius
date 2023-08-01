@@ -5,7 +5,7 @@
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
-OntologyManipulator* onto_ptr;
+onto::OntologyManipulator* onto_ptr;
 
 TEST(dynamic_tests, insert)
 {
@@ -63,7 +63,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "ontologenius_dynamic_tester");
 
   ros::NodeHandle n;
-  OntologyManipulator onto(&n);
+  onto::OntologyManipulator onto(&n);
   onto_ptr = &onto;
 
   ros::Rate wait(1);
