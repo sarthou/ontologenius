@@ -3,6 +3,8 @@
 
 #include "ontologenius/API/ontologenius/clients/ClientBase.h"
 
+namespace onto {
+
 /// @brief The ManagerClient class provides an abstraction ontologenius manage ROS services.
 /// The manager client is used to manage ontology instances in multi-ontology usage.
 /// This makes it possible to start new ontologies or to stop old ones, but also to study the
@@ -50,5 +52,7 @@ public:
 private:
 
 };
+
+} // namespace onto
 
 #endif // ONTOLOGENIUS_MANAGERCLIENT_H

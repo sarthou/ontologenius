@@ -6,7 +6,7 @@
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
-OntologyManipulator* onto_ptr;
+onto::OntologyManipulator* onto_ptr;
 
 TEST(requests_tests, getName_call)
 {
@@ -188,7 +188,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "ontologenius_requests_tester");
 
   ros::NodeHandle n;
-  OntologyManipulator onto(&n);
+  onto::OntologyManipulator onto(&n);
   onto_ptr = &onto;
 
   onto.close();

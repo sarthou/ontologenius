@@ -1,5 +1,7 @@
 #include "ontologenius/API/ontologenius/clients/ReasonerClient.h"
 
+namespace onto {
+
 std::vector<std::string> ReasonerClient::list()
 {
   ontologenius::OntologeniusService srv;
@@ -42,3 +44,5 @@ std::string ReasonerClient::getDescription(const std::string& name)
 
   return callStr(srv);
 }
+
+} // namespace onto

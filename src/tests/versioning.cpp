@@ -12,7 +12,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "ontologenius_dynamic_tester");
 
   ros::NodeHandle n;
-  OntologiesManipulator onto(&n);
+  onto::OntologiesManipulator onto(&n);
   onto.waitInit();
 
   onto.add("bob");

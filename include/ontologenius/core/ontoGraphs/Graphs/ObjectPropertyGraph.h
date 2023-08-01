@@ -52,7 +52,8 @@ public:
   virtual void close() override;
 
   ObjectPropertyBranch_t* newDefaultBranch(const std::string& name);
-  ObjectPropertyBranch_t* add(const std::string& value, ObjectPropertyVectors_t& property_vectors, bool direct_load = false);
+  ObjectPropertyBranch_t* findOrCreateBranch(const std::string& name);
+  ObjectPropertyBranch_t* add(const std::string& value, ObjectPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);
@@ -83,46 +84,6 @@ public:
 
 private:
   ClassGraph* class_graph_;
-
-  void isMyDisjoint(ObjectPropertyBranch_t* me, std::string& disjoint, std::map<std::string, ObjectPropertyBranch_t*>& vect, bool& find, bool all = true)
-  {
-    if(find)
-      return;
-
-    auto it = vect.find(disjoint);
-    if(it != vect.end())
-    {
-      me->disjoints_.emplace_back(it->second);
-      if(all)
-        it->second->disjoints_.emplace_back(me); // TODO do not save
-      find = true;
-    }
-  }
-
-  void isMyInverse(ObjectPropertyBranch_t* me, std::string& inverse, std::map<std::string, ObjectPropertyBranch_t*>& vect, bool& find, bool all = true)
-  {
-    if(find)
-      return;
-
-    auto it = vect.find(inverse);
-    if(it != vect.end())
-    {
-      me->inverses_.emplace_back(it->second);
-      if(all)
-        it->second->inverses_.emplace_back(me); // TODO do not save
-      find = true;
-    }
-  }
-
-  void getNextChainLink(ObjectPropertyBranch_t** next, std::string& next_link, std::map<std::string, ObjectPropertyBranch_t*>& vect)
-  {
-    if(*next == nullptr)
-    {
-      auto it = vect.find(next_link);
-      if(it != vect.end())
-        *next = it->second;
-    }
-  }
 
   void cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch);
   void cpyChainOfBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch);

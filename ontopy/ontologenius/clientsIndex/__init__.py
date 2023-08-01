@@ -1,0 +1,8 @@
+from .ClientBaseIndex import ClientBaseIndex
+
+from .OntologyIndexClient import OntologyIndexClient
+from .DataPropertyIndexClient import DataPropertyIndexClient
+from .IndividualIndexClient import IndividualIndexClient
+from .ObjectPropertyIndexClient import ObjectPropertyIndexClient
+from .ClassIndexClient import ClassIndexClient
+from .SparqlIndexClient import SparqlIndexClient

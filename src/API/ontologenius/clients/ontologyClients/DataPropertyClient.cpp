@@ -1,5 +1,7 @@
 #include "ontologenius/API/ontologenius/clients/ontologyClients/DataPropertyClient.h"
 
+namespace onto {
+
 std::vector<std::string> DataPropertyClient::getDown(const std::string& name, int depth)
 {
   ontologenius::OntologeniusService srv;
@@ -38,3 +40,5 @@ std::vector<std::string> DataPropertyClient::getRange(const std::string& name)
 
   return call(srv);
 }
+
+} // namespace onto

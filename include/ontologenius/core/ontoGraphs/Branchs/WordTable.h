@@ -44,6 +44,11 @@ public:
     for(index_t i : base)
       res.insert(table_[i]);
   }
+
+  inline size_t size() const
+  {
+    return table_.size();
+  }
 private:
   std::vector<std::string> table_;
 };

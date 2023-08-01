@@ -43,7 +43,9 @@ public:
   ClassGraph(const ClassGraph& other, IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   ~ClassGraph() {}
 
-  ClassBranch_t* add(const std::string& value, ObjectVectors_t& object_vector, bool direct_load = false);
+  ClassBranch_t* newDefaultBranch(const std::string& name);
+  ClassBranch_t* findOrCreateBranch(const std::string& name);
+  ClassBranch_t* add(const std::string& value, ObjectVectors_t& object_vector);
   void add(std::vector<std::string>& disjoints);
 
   void deepCopy(const ClassGraph& other);
@@ -128,21 +130,6 @@ private:
   bool checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* prop, LiteralNode* data);
 
   template<typename T> std::unordered_set<T> getDisjoint(ClassBranch_t* branch);
-
-  void isMyDisjoint(ClassBranch_t* me, const std::string& disjoint, std::map<std::string, ClassBranch_t*>& vect, bool& find, bool all = true)
-  {
-    if(find)
-      return;
-
-    auto it = vect.find(disjoint);
-    if(it != vect.end())
-    {
-      me->disjoints_.emplace_back(it->second);
-      if(all)
-        it->second->disjoints_.emplace_back(me); // TODO do not save
-      find = true;
-    }
-  }
 
   ClassBranch_t* findIntersection(const std::unordered_set<ClassBranch_t*>& base, const std::unordered_set<ClassBranch_t*>& comp)
   {

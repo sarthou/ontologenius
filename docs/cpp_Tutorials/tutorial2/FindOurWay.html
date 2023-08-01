@@ -97,6 +97,16 @@
             <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
             <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="../../cpp_API/SparqlClient.html">SparqlClient</a></li>
+            <li class="level2"><b>Index based classes</b></li>
+            <li class="level1"><a href="../../cpp_API/ClassIndexClient.html">ClassIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ClientBaseIndex.html">ClientBaseIndex</a></li>
+            <li class="level1"><a href="../../cpp_API/ConversionClient.html">ConversionClient</a></li>
+            <li class="level1"><a href="../../cpp_API/DataPropertyIndexClient.html">DataPropertyIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/IndividualIndexClient.html">IndividualIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologyIndexClient.html">OntologyIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologyManipulatorIndex.html">OntologyManipulatorIndex</a></li>
+            <li class="level1"><a href="../../cpp_API/SparqlIndexClient.html">SparqlIndexClient</a></li>
           </ul>
           </br>
           <h3>
@@ -134,7 +144,7 @@
           <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ros/ros.h&quot;</span></div>
           <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologyManipulator.h&quot;</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line"><span class="cpp_type">OntologyManipulator</span><span class="cpp_op">*</span> onto_;</div>
+          <div class="code_line">onto::<span class="cpp_type">OntologyManipulator</span><span class="cpp_op">*</span> onto_;</div>
           <div class="code_line"><br></div>
           <div class="code_line"><span class="cpp_type">void</span> displayRoute(std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; route)</div>
           <div class="code_line">{</div>
@@ -148,7 +158,7 @@
           <div class="code_line">  ros::init(argc, argv, <span class="cpp_string">&quot;find_our_way&quot;</span>);</div>
           <div class="code_line"><br></div>
           <div class="code_line">  ros::<span class="cpp_type">NodeHandle</span> n;</div>
-          <div class="code_line">  <span class="cpp_type">OntologyManipulator</span> onto;</div>
+          <div class="code_line">  onto::<span class="cpp_type">OntologyManipulator</span> onto;</div>
           <div class="code_line">  onto_ <span class="cpp_op">= &</span>onto;</div>
           <div class="code_line"><br></div>
           <div class="code_line">  onto.close();</div>

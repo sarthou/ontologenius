@@ -1,5 +1,7 @@
 #include "ontologenius/API/ontologenius/clients/ontologyClients/ObjectPropertyClient.h"
 
+namespace onto {
+
 std::vector<std::string> ObjectPropertyClient::getDown(const std::string& name, int depth)
 {
   ontologenius::OntologeniusService srv;
@@ -47,3 +49,5 @@ std::vector<std::string> ObjectPropertyClient::getInverse(const std::string& nam
 
   return call(srv);
 }
+
+} // namespace onto

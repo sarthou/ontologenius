@@ -1,5 +1,7 @@
 #include "ontologenius/API/ontologenius/clients/ontologyClients/ClassClient.h"
 
+namespace onto {
+
 std::vector<std::string> ClassClient::getDown(const std::string& name, int depth, const std::string& selector)
 {
   ontologenius::OntologeniusService srv;
@@ -148,3 +150,5 @@ std::vector<std::string> ClassClient::getRangeOf(const std::string& name, const 
 
   return call(srv);
 }
+
+} // namespace onto

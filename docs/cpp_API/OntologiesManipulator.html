@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>OntologiesManipulator Class (cpp) | Ontologenius 0.2.12</title>
+  <title>OntologiesManipulator Class (cpp) | Ontologenius 0.3.0</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -97,6 +97,16 @@
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
+            <li class="level2"><b>Index based classes</b></li>
+            <li class="level1"><a href="ClassIndexClient.html">ClassIndexClient</a></li>
+            <li class="level1"><a href="ClientBaseIndex.html">ClientBaseIndex</a></li>
+            <li class="level1"><a href="ConversionClient.html">ConversionClient</a></li>
+            <li class="level1"><a href="DataPropertyIndexClient.html">DataPropertyIndexClient</a></li>
+            <li class="level1"><a href="IndividualIndexClient.html">IndividualIndexClient</a></li>
+            <li class="level1"><a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></li>
+            <li class="level1"><a href="OntologyIndexClient.html">OntologyIndexClient</a></li>
+            <li class="level1"><a href="OntologyManipulatorIndex.html">OntologyManipulatorIndex</a></li>
+            <li class="level1"><a href="SparqlIndexClient.html">SparqlIndexClient</a></li>
           </ul>
           </br>
           <h3>
@@ -110,12 +120,13 @@
 
       <div class="context">
         <h1 class="title">OntologiesManipulator Class</h1>
-        <p>The OntologiesManipulator class is an interface to manage several instance of <a href="OntologyManipulator.html">OntologyManipulator</a> in a multi-ontology usage. <a href="#details">More...</a></p>
+        <p>The OntologiesManipulator class is an interface to manage several instance of <a href="OntologyManipulator.html">OntologyManipulator</a> and <a href="OntologyIndexManipulator.html">OntologyIndexManipulator</a> in a multi-ontology usage. <a href="#details">More...</a></p>
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/OntologiesManipulator.h&quot;</span>
-              </td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="ManagerClient.html">ManagerClient</a></td></tr></tbody></table>
+              <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/OntologiesManipulator.h&quot;</span></td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="ManagerClient.html">ManagerClient</a></td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> Namespace:</td><td class="memItemRight bottomAlign"> onto</td></tr>
             </tbody>
           </table>
         </div>
@@ -129,6 +140,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#waitInit">waitInit</a></b>(int32_t <i>timeout</i> = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> OntologyManipulator* </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#operator">operator[]</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> OntologyManipulator* </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#get">get</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> OntologyIndexManipulator* </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#get">getIndex</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#verbose">verbose</a></b>(bool verbose)</td></tr>
             </tbody>
           </table>
@@ -175,19 +187,23 @@
           <p>Returns a pointer on the OntologyManipulator instance named <i>name</i>.</p>
           <p>Returns nullptr if no OntologyManipulator instance is named <i>name</i>.</p>
 
+          <h3 class="fn" id="get"><a name="get"></a><span class="type"><a href="OntologyIndexManipulator.html">OntologyIndexManipulator</a></span>* OntologiesManipulator::<span class="name">getIndex</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Returns a pointer on the OntologyIndexManipulator instance named <i>name</i>.</p>
+          <p>Returns nullptr if no OntologyIndexManipulator instance is named <i>name</i>.</p>
+
           <h3 class="fn" id="add"><a name="add"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">add</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Creates a new instance of ontologyManipulator identified by the name <i>name</i>.</p>
+          <p>Creates a new instance of ontologyManipulator and OntologyIndexManipulator identified by the name <i>name</i>.</p>
           <p>Returns false if the creation fails. Returns true even if the instance already exists.</p>
 
           <h3 class="fn" id="copy"><a name="copy"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">copy</span>(const <span class="type">std::string</span>&amp; <i>dest_name</i>, const <span class="type">std::string</span>&amp; <i>src_name</i>)</h3>
-          <p>Creates a new instance of ontologyManipulator identified by the name <i>dest_name</i> that manipulates a copy of the ontology handled by the ontologyManipulator <i>src_name</i>.</p>
+          <p>Creates a new instance of ontologyManipulator and OntologyIndexManipulator identified by the name <i>dest_name</i> that manipulates a copy of the ontology handled by the ontologyManipulator <i>src_name</i>.</p>
           <p>Returns false if the copy fails. Returns true even if the instance already exists.</p>
 
           <h3 class="fn" id="del"><a name="del"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">del</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Deletes the instance of ontologyManipulator identified by the name <i>name</i>.</p>
+          <p>Deletes the instance of ontologyManipulator and OntologyIndexManipulator identified by the name <i>name</i>.</p>
           <p>Returns false deletion fails. Returns true even if the instance does not exist.</p>
 
-          <h3 class="fn" id="verbose"><a name="verbose"></a><span class="type"></span> OntologyManipulator::<span class="name">verbose</span>(<span class="type">bool</span> verbose)</h3>
+          <h3 class="fn" id="verbose"><a name="verbose"></a><span class="type"></span> OntologiesManipulator::<span class="name">verbose</span>(<span class="type">bool</span> verbose)</h3>
           <p>If verbose is set to true, the clients will post messages about the failure to call the services and about their restoration.</p>
 
         </div>

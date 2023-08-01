@@ -73,8 +73,8 @@ body {
 }
 
 .navbar-default {
-  background-color: #324a5e;
-  border-color: #324a5e;
+  background-color: #3d5a72;
+  border-color: #3d5a72;
 }
 
 .navbar-default .navbar-brand,
@@ -182,8 +182,8 @@ body {
 }
 
 .onto-content h1 {
-  border-left: 5px solid #324a5e;
-  border-bottom: 2px solid #324a5e;
+  border-left: 5px solid #3d5a72;
+  border-bottom: 2px solid #3d5a72;
   padding-left: 10px;
 }
 
@@ -218,7 +218,7 @@ body {
 }
 
 .onto-grid-item-title {
-  background-color: #324a5e;
+  background-color: #3d5a72;
   max-width: 80%;
   padding: 5px 20px;
   top: 0px;
@@ -283,7 +283,7 @@ footer {
   font-weight:400;
   transition-duration:1s;
   font-size: 16px;
-  background-color:#324a5e;
+  background-color:#3d5a72;
   color:#ffffff;
   height: 80px;
   padding: 10px;

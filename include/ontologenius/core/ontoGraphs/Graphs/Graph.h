@@ -46,6 +46,8 @@ public:
 
   index_t getIndex(const std::string& name);
   std::vector<index_t> getIndexes(const std::vector<std::string>& names);
+  std::string getIdentifier(index_t index);
+  std::vector<std::string> getIdentifiers(const std::vector<index_t>& indexes);
 
   BranchContainerSet<B> container_;
 
@@ -177,6 +179,25 @@ std::vector<index_t> Graph<B>::getIndexes(const std::vector<std::string>& names)
   std::vector<index_t> res;
   for(auto& name : names)
     res.push_back(getIndex(name));
+  return res; 
+}
+
+template <typename B>
+std::string Graph<B>::getIdentifier(index_t index)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+  if((index > 0) && (index < (index_t)ValuedNode::table_.size()))
+    return ValuedNode::table_[index];
+  else
+    return "";
+}
+
+template <typename B>
+std::vector<std::string> Graph<B>::getIdentifiers(const std::vector<index_t>& indexes)
+{
+  std::vector<std::string> res;
+  for(auto& index : indexes)
+    res.push_back(getIdentifier(index));
   return res; 
 }
 

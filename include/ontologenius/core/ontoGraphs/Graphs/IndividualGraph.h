@@ -61,6 +61,13 @@ public:
     return res;
   }
 
+  std::vector<index_t> getAllIndex()
+  {
+    std::vector<index_t> res;
+    std::transform(individuals_.cbegin(), individuals_.cend(), std::back_inserter(res), [](auto branch){ return branch->get(); });
+    return res;
+  }
+
   IndividualBranch_t* add(const std::string& value, IndividualVectors_t& individual_vector);
   void add(std::vector<std::string>& distinct_);
 
@@ -115,8 +122,8 @@ public:
   bool relationExists(const std::string& subject, const std::string& property, const std::string& object);
 
   ClassBranch_t* upgradeToBranch(IndividualBranch_t* indiv);
-  IndividualBranch_t* createIndividual(const std::string& name);
-  IndividualBranch_t* createIndividualUnsafe(const std::string& name);
+  IndividualBranch_t* findOrCreateBranchSafe(const std::string& name);
+  IndividualBranch_t* findOrCreateBranch(const std::string& name);
   void deleteIndividual(IndividualBranch_t* indiv);
   void redirectDeleteIndividual(IndividualBranch_t* indiv, ClassBranch_t* _class);
   bool addLang(const std::string& indiv, const std::string& lang, const std::string& name);
@@ -189,7 +196,6 @@ private:
   void getSame(IndividualBranch_t* individual, std::vector<IndividualBranch_t*>& res);
   std::unordered_set<std::string> getSame(IndividualBranch_t* individual);
   std::unordered_set<index_t> getSameId(IndividualBranch_t* individual);
-  std::unordered_set<std::string> set2set(const std::unordered_set<IndividualBranch_t*>& indiv_set, bool clean = true);
 
   bool checkRangeAndDomain(IndividualBranch_t* from, ObjectPropertyBranch_t* prop, IndividualBranch_t* on);
   bool checkRangeAndDomain(IndividualBranch_t* from, DataPropertyBranch_t* prop, LiteralNode* data);
@@ -202,7 +208,7 @@ private:
 template<typename T>
 std::unordered_set<T> IndividualGraph::find(const std::string& value, bool use_default)
 {
-  std::unordered_set<std::string> res;
+  std::unordered_set<T> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(auto& indiv : individuals_)
   {
@@ -226,7 +232,7 @@ std::unordered_set<T> IndividualGraph::find(const std::string& value, bool use_d
 template<typename T>
 std::unordered_set<T> IndividualGraph::findSub(const std::string& value, bool use_default)
 {
-  std::unordered_set<std::string> res;
+  std::unordered_set<T> res;
   std::smatch match;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   for(auto& indiv : individuals_)
@@ -260,7 +266,7 @@ std::unordered_set<T> IndividualGraph::findSub(const std::string& value, bool us
 template<typename T>
 std::unordered_set<T> IndividualGraph::findRegex(const std::string& regex, bool use_default)
 {
-  std::unordered_set<std::string> res;
+  std::unordered_set<T> res;
   std::regex base_regex(regex);
   std::smatch match;
 
