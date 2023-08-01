@@ -21,6 +21,7 @@ struct ObjectVectors_t
 
    std::vector<Pair_t<std::string, std::string>> object_relations_;
    std::vector<Pair_t<std::string, std::string>> data_relations_;
+   std::vector<std::string> equivalences_;
 };
 
 //for friend

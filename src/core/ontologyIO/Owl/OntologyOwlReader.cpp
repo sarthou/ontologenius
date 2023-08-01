@@ -242,7 +242,7 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
       {
         AnonymousClassVectors_t ano_class = readEquivalentClass(sub_elem, attr);
         anonymous_graph_->add(node_name, ano_class);
-        //push(object_vector.equivalence_ids_, ano_class.str_equivalences , "=");
+        push(object_vector.equivalences_, ano_class.str_equivalences , "=");
       }
       else
       {
@@ -275,7 +275,6 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
   ano.class_equiv = class_name;
   std::vector<std::string> vect;
   //std::cout << "New anonymous class with " << class_name << std::endl;
-
   if(elem->FirstChild() == nullptr)
   {
       ExpressionMember_t* exp = new ExpressionMember_t;
@@ -284,7 +283,6 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
       exp->str_equivalence = exp->class_restriction;
       ano.equivalence = exp;
       ano.str_equivalences = exp->str_equivalence;
-      ano.equivalences_vect.push_back(exp->class_restriction);
 
       vect.push_back(exp->class_restriction);
       ano.equiv_vect.push_back(vect);
@@ -301,7 +299,6 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
     if(sub_elem_name == "owl:Restriction"){
       readRestriction(sub_elem, exp);
       ano.str_equivalences = "(" + exp->rest.getRestriction() + ")";
-      ano.equivalences_vect.push_back(ano.str_equivalences);
       ano.equiv_vect.push_back(exp->rest.getRestrictionVector());
     }
     else{
@@ -311,10 +308,18 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
       
 
     std::cout << "\t=" << ano.str_equivalences << std::endl;
-
-  return ano; 
   }
+  
+  // std::cout << "Equivalence vector :" << std::endl;
+  // for(auto it : ano.equiv_vect){
+  //   for(auto it2 : it){
+  //     std::cout << it2 << std::endl;
+  //   }
+  //   std::cout << "" << std::endl;
+  // }
+  return ano; 
 }
+
 void OntologyOwlReader::readRestriction(TiXmlElement* elem, ExpressionMember_t* exp)
 {
   Cardinality_t* test_card = new Cardinality_t();
@@ -344,6 +349,7 @@ void OntologyOwlReader::readRestriction(TiXmlElement* elem, ExpressionMember_t* 
   }
   exp->rest = restr;
 }
+
 void OntologyOwlReader::readCardinality(TiXmlElement* elem, Cardinality_t* card){
   std::string sub_elem_name = elem->Value();
 
@@ -362,6 +368,7 @@ void OntologyOwlReader::readCardinality(TiXmlElement* elem, Cardinality_t* card)
   if(elem->GetText() != nullptr)
     card->cardinality_number = elem->GetText();
 }
+
 void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* exp, AnonymousClassVectors_t& ano){
 
   for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
@@ -399,16 +406,22 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
         exp2->nb_sub = 0;
         readRestriction(sub_elem, exp2);
         exp2->str_equivalence = "(" + exp2->rest.getRestriction() + ")";
+        ano.equiv_vect.push_back(exp2->rest.getRestrictionVector());
       }
       else if(getName(sub_elem->Value())  == "rdf:Description")
       {
         exp2->nb_sub = 0;
         exp2->class_restriction = getName(sub_elem->Attribute("rdf:about"));
         exp2->str_equivalence = exp2->class_restriction;
+
+        std::vector<std::string> vect;
+        vect.push_back(exp2->class_restriction);
+        ano.equiv_vect.push_back(vect);
       }
     }
   }
 }
+
 void OntologyOwlReader::readIndividual(TiXmlElement* elem)
 {
   std::string elem_name = elem->Value();
