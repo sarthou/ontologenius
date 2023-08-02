@@ -4,13 +4,18 @@
 
 #include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
+
 
 namespace ontologenius {
 
-ClassOwlWriter::ClassOwlWriter(ClassGraph* class_graph, const std::string& ns)
+ClassOwlWriter::ClassOwlWriter(ClassGraph* class_graph, AnonymousClassGraph* anonymous_graph, const std::string& ns)
 {
   class_graph_ = class_graph;
+  anonymous_graph_ = anonymous_graph;
   ns_ = ns;
 }
 
@@ -21,6 +26,8 @@ void ClassOwlWriter::write(FILE* file)
   std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
 
   std::vector<ClassBranch_t*> classes = class_graph_->get();
+  
+
   for(auto& classe : classes)
     writeClass(classe);
 
@@ -45,7 +52,8 @@ void ClassOwlWriter::writeClass(ClassBranch_t* branch)
   std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
     <owl:Class rdf:about=\"" + ns_ + "#" + branch->value() + "\">\n";
   writeString(tmp);
-
+  
+  writeEquivalentClass(branch);
   writeSubClassOf(branch);
 
   writeDisjointWith(branch);
@@ -58,6 +66,176 @@ void ClassOwlWriter::writeClass(ClassBranch_t* branch)
 
   tmp = "    </owl:Class>\n\n\n\n";
   writeString(tmp);
+}
+
+void ClassOwlWriter::writeEquivalentClass(ClassBranch_t* branch)
+{
+  std::vector<AnonymousClassBranch_t*> equiv = anonymous_graph_->get();
+
+  for(auto& elem : equiv)
+  {
+    if(elem->class_equiv_->value() == branch->value())
+    {
+      std::string start = "        <owl:equivalentClass";
+      std::string end = "        </owl:equivalentClass>\n";
+      std::string tmp;
+      writeString(start);
+      // single expression
+      if(elem->ano_elem_->sub_elements_.size() == 0)
+      {
+        // Subclass only
+        if(elem->ano_elem_->class_involved_ != nullptr && elem->ano_elem_->object_property_involved_ == nullptr)
+        {
+          tmp = " rdf:resource=\"" + ns_ + "#" + elem->ano_elem_->class_involved_->value();
+          end = "\"/>\n";     
+          writeString(tmp);
+        }
+        //Class expression
+        else{
+          std::string tmp = ">\n";
+          writeString(tmp);
+          writeRestriction(elem->ano_elem_, 12);
+        }
+      }
+      // Collection of expressions
+      else
+      {
+        std::string tmp = ">\n";
+        writeString(tmp);
+        writeCollection(elem->ano_elem_, 8);
+      }
+      writeString(end);
+    }
+  }
+
+}
+
+void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_ident)
+{
+  nb_ident +=  4;
+  std::string indent(nb_ident, ' ');
+  std::string indent_sub(nb_ident + 4, ' ');
+  std::string start_class = "<owl:Class>\n";
+  std::string end_class = "</owl:Class>\n";
+  std::string start, end, tmp;
+
+  if(ano_elem->nb_sub > 0)
+  {
+    if(ano_elem->andor == true)
+    {
+      start = "<owl:intersectionOf rdf:parseType=\"Collection\">\n";
+      end = "</owl:intersectionOf>\n";
+
+      writeString(indent + start_class);
+      writeString(indent_sub + start);
+
+      for(auto sub_elem : ano_elem->sub_elements_)
+        writeCollection(sub_elem, nb_ident + 4);
+
+      writeString(indent_sub + end);
+      writeString(indent + end_class);
+    }
+    else if(ano_elem->andor == false)
+    {
+      start = "<owl:unionOf rdf:parseType=\"Collection\">\n";
+      end = "</owl:unionOf>\n";
+
+      writeString(indent + start_class);
+      writeString(indent_sub + start);
+
+      for(auto sub_elem : ano_elem->sub_elements_)
+        writeCollection(sub_elem, nb_ident + 4);
+
+      writeString(indent_sub + end);
+      writeString(indent + end_class);
+    }
+  }
+  else
+  {
+    if(ano_elem->class_involved_ != nullptr && ano_elem->object_property_involved_ == nullptr)
+    {
+      tmp = "<rdf:Description rdf:about=\"" + ns_ + "#" + ano_elem->class_involved_->value() + "\"/>\n"; 
+      writeString(indent + tmp);
+    }
+    else{
+      writeRestriction(ano_elem, nb_ident);
+    }
+  }
+}
+
+void ClassOwlWriter::writeRestriction(AnonymousClassElement_t* ano_element, int nb_indent)
+{
+  std::string indent(nb_indent, ' ');
+  std::string indent_sub(nb_indent + 4, ' ');
+  std::string start = indent + "<owl:Restriction>\n";
+  std::string end = indent + "</owl:Restriction>\n";
+  std::string tmp;
+
+  tmp = indent_sub + "<owl:onProperty rdf:resource=\"" + ns_ + "#";
+
+  if(ano_element->data_property_involved_ == nullptr)
+  {
+    tmp += ano_element->object_property_involved_->value() + "\"/>\n";
+  }
+  else{
+    tmp += ano_element->data_property_involved_->value() + "\"/>\n";
+  }
+
+  tmp += indent_sub;
+  switch(ano_element->card_.card_type_)
+  {
+    
+    case value_ : 
+      tmp += "<owl:hasValue rdf:resource=\"" + ns_ + "#" + ano_element->individual_involved_->value() + "\"/>\n";
+      break;
+    case only_ : 
+      tmp += "<owl:allValuesFrom rdf:resource=\"" + ns_ + "#" + ano_element->class_involved_->value() + "\"/>\n";
+      break;
+    case exactly_ : 
+      tmp += "<owl:qualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">" 
+            + std::to_string(ano_element->card_.card_number_) +
+            "</owl:qualifiedCardinality>" + "\n";
+      tmp+= indent_sub;
+      tmp += writeCardinality(ano_element);
+      break;
+    case min_ : 
+      tmp += "<owl:minQualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">" 
+            + std::to_string(ano_element->card_.card_number_) +
+            "</owl:minQualifiedCardinality>" + "\n";
+      tmp+= indent_sub;
+      tmp += writeCardinality(ano_element);
+      break;
+    case max_ : 
+      tmp += "<owl:maxQualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">" 
+            + std::to_string(ano_element->card_.card_number_) +
+            "</owl:maxQualifiedCardinality>" + "\n";
+      tmp+= indent_sub;
+      tmp += writeCardinality(ano_element);
+      break;
+   
+    case some_ :
+      if(ano_element->data_property_involved_ == nullptr)
+        tmp += "<owl:someValuesFrom rdf:resource=\"" + ns_ + "#" + ano_element->class_involved_->value() + "\"/>\n";
+      else
+        tmp += "<owl:someValuesFrom rdf:datatype=\"" + ano_element->card_.card_range_->getNs() + "#" + ano_element->card_.card_range_->type_ + "\"/>\n";
+      break;
+  }
+
+  writeString(start);
+  writeString(tmp);
+  writeString(end);
+
+}
+
+std::string ClassOwlWriter::writeCardinality(AnonymousClassElement_t* ano_element)
+{
+  std::string tmp;
+  if( ano_element->data_property_involved_ == nullptr )
+    tmp = "<owl:onClass rdf:resource=\"" + ns_ + "#" + ano_element->class_involved_->value() + "\"/>\n";
+  else
+    tmp = "<owl:onDataRange rdf:resource=\"" + ano_element->card_.card_range_->getNs() + "#" + ano_element->card_.card_range_->type_ + "\"/>\n";
+
+  return tmp;
 }
 
 void ClassOwlWriter::writeSubClassOf(ClassBranch_t* branch)
