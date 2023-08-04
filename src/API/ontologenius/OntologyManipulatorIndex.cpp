@@ -11,9 +11,10 @@ OntologyManipulatorIndex::OntologyManipulatorIndex(const std::string& name) : na
                                                                     actions(&n_, name),
                                                                     reasoners(&n_, name),
                                                                     feeder(&n_, name),
-                                                                    sparql(&n_, name)
+                                                                    sparql(&n_, name),
+                                                                    conversion(&n_, name)
 {
-  std::string service_name = (name == "") ? "ontologenius/convertion" : "ontologenius/convertion/" + name;
+  std::string service_name = (name == "") ? "ontologenius/conversion" : "ontologenius/conversion/" + name;
   ros::service::waitForService(service_name);
 }
 
@@ -25,9 +26,10 @@ OntologyManipulatorIndex::OntologyManipulatorIndex(const OntologyManipulatorInde
                                                                       actions(&n_, other.name_),
                                                                       reasoners(&n_, other.name_),
                                                                       feeder(&n_, other.name_),
-                                                                      sparql(&n_, other.name_)
+                                                                      sparql(&n_, other.name_),
+                                                                      conversion(&n_, other.name_)
 {
-  std::string service_name = (name_ == "") ? "ontologenius/convertion" : "ontologenius/convertion/" + name_;
+  std::string service_name = (name_ == "") ? "ontologenius/conversion" : "ontologenius/conversion/" + name_;
   ros::service::waitForService(service_name);
 }
 
@@ -39,9 +41,10 @@ OntologyManipulatorIndex::OntologyManipulatorIndex(OntologyManipulatorIndex&& ot
                                                                       actions(&n_, other.name_),
                                                                       reasoners(&n_, other.name_),
                                                                       feeder(&n_, other.name_),
-                                                                      sparql(&n_, other.name_)
+                                                                      sparql(&n_, other.name_),
+                                                                      conversion(&n_, other.name_)
 {
-  std::string service_name = (name_ == "") ? "ontologenius/convertion" : "ontologenius/convertion/" + name_;
+  std::string service_name = (name_ == "") ? "ontologenius/conversion" : "ontologenius/conversion/" + name_;
   ros::service::waitForService(service_name);
 }
 

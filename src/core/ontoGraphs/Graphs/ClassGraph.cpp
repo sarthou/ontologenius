@@ -594,7 +594,7 @@ std::unordered_set<index_t> ClassGraph::getRelatedWith(index_t _class)
   }
   else
   {
-    LiteralNode* literal = data_property_graph_->literal_container_.find(LiteralNode::table_.get(_class));
+    LiteralNode* literal = data_property_graph_->literal_container_.find(LiteralNode::table_.get(-_class));
 
     if(literal != nullptr)
       for(auto& branch : all_branchs_)
@@ -745,7 +745,7 @@ std::unordered_set<index_t> ClassGraph::getFrom(index_t _class, index_t property
   }
   else
   {
-    LiteralNode* literal = data_property_graph_->literal_container_.find(LiteralNode::table_.get(_class));
+    LiteralNode* literal = data_property_graph_->literal_container_.find(LiteralNode::table_.get(-_class));
 
     for(auto& branch : all_branchs_)
     {

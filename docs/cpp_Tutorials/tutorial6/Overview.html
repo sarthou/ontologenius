@@ -1,0 +1,257 @@
+<html lang="en_US">
+
+<head>
+  <title>Speed up your algorithms (cpp) : Overview</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../images/favicon.ico" rel="shortcut icon">
+  <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../../index.html">
+              <img src="../../images/ontologenius.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Cpp Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: 0px;">
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="Overview.html"><b>1. Overview</b></a></li>
+            <li class="level1"><a href="Solution.html">2. Solution</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../Download.html">Download</a></li>
+            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="../../overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="../../overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="../../cpp_API/CppAPI.html">
+              All C++ Classes
+            </a>
+          </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../../cpp_API/ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="../../cpp_API/DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="../../cpp_API/FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="../../cpp_API/IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
+            <li class="level1"><a href="../../cpp_API/SparqlClient.html">SparqlClient</a></li>
+            <li class="level2"><b>Index based classes</b></li>
+            <li class="level1"><a href="../../cpp_API/ClassIndexClient.html">ClassIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ClientBaseIndex.html">ClientBaseIndex</a></li>
+            <li class="level1"><a href="../../cpp_API/ConversionClient.html">ConversionClient</a></li>
+            <li class="level1"><a href="../../cpp_API/DataPropertyIndexClient.html">DataPropertyIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/IndividualIndexClient.html">IndividualIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologyIndexClient.html">OntologyIndexClient</a></li>
+            <li class="level1"><a href="../../cpp_API/OntologyManipulatorIndex.html">OntologyManipulatorIndex</a></li>
+            <li class="level1"><a href="../../cpp_API/SparqlIndexClient.html">SparqlIndexClient</a></li>
+          </ul>
+          </br>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../../python_API/PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="context">
+        <div class="toturial-header">
+          <h1 class="title">Speed up your algorithms (cpp)</h1>
+          <a class="toturial-subheader">
+            <div class="tutorial-subheader__main-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="toturial-subheader__title">
+              <h2 class="title">Run Forrest! Run !</h2>
+            </div>
+          </a>
+        </div>
+
+        <h1 class="title">Overview</h1>
+
+        <p>This is the last tutorial! Implementing algorithms, we all know that scaling is important and that performances can become a bottleneck when trying to do so.
+           Furthermore, using an external knowledge base and thus passing by a communication layer, the amount of data to transfer can be an issue.
+           In such a way, the use of strings to interact with Ontologenius is not the more suitable one to have the best performances possible...
+           This is why Ontologenius proposes an interface based on indexes as integers! 
+           More than reducing the amount of data to transfer, that provides a significative gain in Ontologenius internal algorithms and allows you to do the same on your side.
+        </p>
+
+        <p>The mini-project that we will do will be the adaptation of the second tutorial algorithm, by using indexes..</p>
+
+          <img src="../../images/tutorial/forest.jpg " alt="Run Forrest! Run!" width="70%" class="center"/>
+
+        <h2>The ontology manipulator</h2>
+
+        <p>Until now, we have used an OntologyManipulator to access the different methods to explore the ontology, but using concept's identifiers (strings).</p>
+
+        <p>To access the index version of the API, we will now use an <a href="../../cpp_API/OntologyManipulatorIndex.html" target="_blank" rel="noopener noreferrer">OntologyManipulatorIndex</a>.
+           If it seems to be the exact same one as the original one, this is normal. Indeed, the interface is the same (same members' name and same functions' name) but all the exploration queries use indexes instead of identifiers, meaning integers instead of strings.
+           All related classes, based on index use, can be found at the bottom of the left sidebar.
+        </p>
+
+        <p class="tip">Working in multi instances mode, you steal have to use an OntologiesManipulator and insteed of using the get method to extract an OntologyManipulator, you can use the getIndex method to extract an OntologyManipulatorIndex. </p>
+
+        <h2>Passing from indentifiers to indexes</h2>
+
+        <p>Before moving ahead, one should ask itself "But how can I know the index of a concept?", and this is an excellent question...</p>
+
+        <p>Indexes are attributed by Ontologenius to any concepts. It is a kind of internal identifier used by Ontologenius to ease the concepts manipulation. 
+           In such a way, from one run to another, we cannot ensure that a given concept will have the same index... 
+           It is thus important to first query Ontologenius for the indexes.
+        </p>
+
+        <p>The actual only difference between an OntologiesManipulator and an OntologyManipulatorIndex, is the presence of a "conversion" member.
+           The conversion member is an instance of a <a href="../../cpp_API/ConversionClient.html" target="_blank" rel="noopener noreferrer">ConversionClient</a> which allows 
+           you to pass from identifiers to indexes and inverse.
+        </p>
+
+        <p>To better understand, let's take an easy example. Compile the folowing code and run in while launching Ontologenius with the launch file of the second tutorial.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologyManipulatorIndex.h&quot;</span></div>
+          <div class="code_line"><br></div>
+          <div class="code_line">template&lt;typename <span class="cpp_type">T</span>&gt;</div>
+          <div class="code_line"><span class="cpp_type">void</span> printVector(const std::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt;& vector)</div>
+          <div class="code_line">{</div>
+          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;-------&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">auto</span>& elem : vector)</div>
+          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;- &quot;</span> <span class="cpp_op">&lt;&lt;</span> elem <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+          <div class="code_line">}</div>
+          <div class="code_line"><br></div>
+          <div class="code_line"><span class="cpp_type">int</span> main(<span class="cpp_type">int</span> argc, <span class="cpp_type">char</span>** argv)</div>
+          <div class="code_line">{</div>
+          <div class="code_line">  ros::init(argc, argv, <span class="cpp_string">&quot;speed_up&quot;</span>);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  ros::NodeHandle n;</div>
+          <div class="code_line">  onto::OntologyManipulatorIndex onto;</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  onto.close();</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  <span class="cpp_type">int64_t</span> path_index <span class="cpp_op">= </span>onto.conversion.classesId2Index(<span class="cpp_string">&quot;path&quot;</span>);</div>
+          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">int64_t</span>&gt; path_indexes <span class="cpp_op">= </span>onto.individuals.getType(path_index);</div>
+          <div class="code_line">  printVector(path_indexes);</div>
+          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::string&gt; path_identifiers <span class="cpp_op">= </span>onto.conversion.individualsIndex2Id(path_indexes);</div>
+          <div class="code_line">  printVector(path_identifiers);</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  <span class="cpp_return">return</span> <span class="cpp_value">0</span>;</div>
+          <div class="code_line">}</div>
+        </div>
+
+        <p>In this example we have asked for the index of the "path" concept, then we have queried all the individuals of this type, but using the index, and finally, 
+           we have converted the result into identifiers to display it to the user! Easy!</p>
+
+        <h2>Literals and names</h2>
+
+        <p>In index-based use, two special cases hold: the literals and the names in natural language.</p>
+
+        <p>First of all, the names in natural language do not use indexes and should thus be used with strings as usual.</p>
+
+        <p>At the difference, the literals used with data properties have indexes associated with them. 
+           However, these indexes are negative! This specificity can be useful to easily discriminate literals to usual concepts.
+        </p>
+
+        <p>Nevertheless, if concepts have positive indexes and literals have negative ones, what about zero? 
+           It holds as an empty string as used in the identifier-based queries, meaning no answer.
+        </p>
+
+        <h2>Time to code!</h2>
+
+        <p>It is now your turn to code. Take the final version of tutorial 2 and modify it to use indexes. A solution is provided on the next page of the tutorial.</p>
+
+        <p>While coding keep in mind that conversion between identifiers and indexes should be kept as the interface with your algorithm (initialisation and result display) and should be avoided in it.</p>
+
+        <p class="tip">In cpp use, to gain in flexibility do not hesitate to use templates or typedef to easily pass from strings to indexes.</p>
+
+        <nav class="course-pagination">
+          <a href="../Tutorials.html" class="course-pagination__btn">
+            <i class="fas fa-angle-left"></i>
+            <span>Tutorials</span>
+          </a>
+          <span class="course-pagination__separator"></span>
+          <a href="Solution.html" class="course-pagination__btn">
+            <span>Solution</span>
+            <i class="fas fa-angle-right"></i>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

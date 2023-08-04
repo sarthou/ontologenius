@@ -727,8 +727,7 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius_global_tester");
 
-  ros::NodeHandle n;
-  onto::OntologyManipulator onto(&n);
+  onto::OntologyManipulator onto;
   onto_ptr = &onto;
 
   onto.close();

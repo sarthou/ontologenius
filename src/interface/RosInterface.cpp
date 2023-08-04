@@ -152,7 +152,7 @@ void RosInterface::run()
   ros::ServiceServer service_sparql_index = n_.advertiseService(getTopicName("sparql_index"), &RosInterface::sparqlIndexHandle, this);
   (void)service_sparql_index;
 
-  ros::ServiceServer service_convertion = n_.advertiseService(getTopicName("convertion"), &RosInterface::convertionHandle, this);
+  ros::ServiceServer service_convertion = n_.advertiseService(getTopicName("conversion"), &RosInterface::conversionHandle, this);
   (void)service_convertion;
 
   if(name_ != "")
@@ -283,8 +283,8 @@ bool RosInterface::reasonerHandle(ontologenius::OntologeniusService::Request &re
   return true;
 }
 
-bool RosInterface::convertionHandle(ontologenius::OntologeniusConvertion::Request &req,
-                                    ontologenius::OntologeniusConvertion::Response &res)
+bool RosInterface::conversionHandle(ontologenius::OntologeniusConversion::Request &req,
+                                    ontologenius::OntologeniusConversion::Response &res)
 {
   if(req.values_int.size())
   {
@@ -313,7 +313,7 @@ bool RosInterface::convertionHandle(ontologenius::OntologeniusConvertion::Reques
     else if(req.source == req.OBJECT_PROPERTIES)
       res.values_int = onto_->object_property_graph_.getIndexes(req.values_str);
     else if(req.source == req.LITERAL)
-      res.values_int = onto_->data_property_graph_.getIndexes(req.values_str);
+      res.values_int = onto_->data_property_graph_.getLiteralIndexes(req.values_str);
     else
       return false;
   }

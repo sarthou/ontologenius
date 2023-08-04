@@ -113,6 +113,18 @@ std::vector<std::map<std::string, std::string>> runSparqlBase(ontologenius::Spar
   return solutions;
 }
 
+std::vector<std::map<std::string, ontologenius::index_t>> runSparqlBaseIndex(ontologenius::Sparql& solver, const std::string& query)
+{
+  high_resolution_clock::time_point t1 = high_resolution_clock::now();
+  auto solutions = solver.runIndex(query);
+  high_resolution_clock::time_point t2 = high_resolution_clock::now();
+  duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+
+  std::cout << "Sparql index has found " << solutions.size() << " solutions in " << time_span.count()*1000 << "ms" << std::endl;
+
+  return solutions;
+}
+
 void configureInterface(ontologenius::RosInterface& interface)
 {
   std::vector<std::string> files = {
@@ -134,6 +146,22 @@ void configureInterfaceTaboo(ontologenius::RosInterface& interface)
 
   interface.setDisplay(false);
   interface.init("en", "none", files, config);
+}
+
+void testInsertIndex(size_t nb)
+{
+  std::unordered_set<ontologenius::index_t> set;
+  high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+  for(size_t i = 0; i < nb; i++)
+  {
+    set.insert(i);
+  }
+
+  high_resolution_clock::time_point t2 = high_resolution_clock::now();
+  duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+
+  std::cout << "Insertion of " << nb << " long in " << time_span.count()*1000 << "ms" << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -163,9 +191,33 @@ int main(int argc, char** argv)
 
   ontologenius::Sparql sparql_base;
   sparql_base.link(onto);
-  auto solution_base = runSparqlBase(sparql_base, query);
 
-  compareSolutions(solution_it, solution_base);
+  for(size_t i = 0; i < 3; i++)
+  {
+    query = "SELECT * WHERE {?0 isA movie_actor}";
+    auto solution_base = runSparqlBase(sparql_base, query);
+
+    usleep(1000000);
+
+    query = "SELECT * WHERE {?0 isA " + std::to_string(onto->class_graph_.getIndex("movie_actor")) + "}";
+    auto solution_index = runSparqlBaseIndex(sparql_base, query);
+
+    usleep(1000000);
+
+    query = "SELECT * WHERE {?0 isA movie_director. ?0 movie_performance ?2. ?2 isA movie_performance}";
+    solution_base = runSparqlBase(sparql_base, query);
+
+    usleep(1000000);
+
+    query = "SELECT * WHERE {?0 isA " + std::to_string(onto->class_graph_.getIndex("movie_director")) + 
+            ". ?0 " + std::to_string(onto->class_graph_.getIndex("movie_performance")) + 
+            " ?2. ?2 isA " + std::to_string(onto->class_graph_.getIndex("movie_performance")) + 
+            "}";
+    solution_index = runSparqlBaseIndex(sparql_base, query);
+  }
+
+  interface.stop();
+  onto_thread.join();
 
   return 0;
 }
