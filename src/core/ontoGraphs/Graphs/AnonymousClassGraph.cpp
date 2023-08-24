@@ -69,6 +69,7 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
       // std::cout << "Value expression equivalence : " << ano_element->object_property_involved_->value() << " " << vect_equiv[1]
       // << " " << ano_element->individual_involved_->value() << std::endl;
     }
+    // if last element in vect_equiv contains http://www.w3.org/ => data property
     else if(isIn("http://www.w3.org/", vect_equiv.back() ) )
     {
       // Data property
@@ -104,7 +105,6 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
     }
     else
     {
-      // if last element is a Class then the property is an obj prop, if it is a type (e.g boolean) then it is a data property
       // Object property
       ano_element->object_property_involved_= object_property_graph_->findOrCreateBranch(vect_equiv.front());
      
@@ -143,60 +143,59 @@ void AnonymousClassGraph::update(ExpressionMember_t* exp , AnonymousClassElement
 {
     if(exp->nb_sub >= 1)
     {
-      // if root, we do not create a new node, we just fill the values with the current expression 
-      AnonymousClassElement_t* ano_ptr;
+      AnonymousClassElement_t* ano_tmp;
 
-      if(root)
-        ano_ptr = ano;
+      if(root) // if root, we do not create a new node, we just fill the values with the current expression 
+        ano_tmp = ano;
       else
       { 
         AnonymousClassElement_t* ano_elem = new AnonymousClassElement_t();
+        ano_tmp = ano_elem;
         ano->sub_elements_.push_back(ano_elem);
-        ano_ptr = ano_elem;
       }
 
-      ano_ptr->nb_sub = exp->nb_sub;
-      ano_ptr->andor = exp->andor;
-      ano_ptr->negation = exp->negation;
+      ano_tmp->nb_sub = exp->nb_sub;
+      ano_tmp->andor = exp->andor;
+      ano_tmp->negation = exp->negation;
       
 
       if(exp->nb_sub == 1)
       {
-        std::vector<std::string> vect_equiv= exp->rest.getRestrictionVector();
+        std::vector<std::string> vect_equiv = exp->rest.getRestrictionVector();
   
         if(vect_equiv.size() > 1)
         {
           std::string property = vect_equiv.front();
           
           if(exp->isDataProp){
-            ano_ptr->data_property_involved_= data_property_graph_->findOrCreateBranch(property);
+            ano_tmp->data_property_involved_= data_property_graph_->findOrCreateBranch(property);
             //std::cout << "Complex range Data property : " << exp->rest.getRestriction() << std::endl;
           } 
           else{
-            ano_ptr->object_property_involved_= object_property_graph_->findOrCreateBranch(property);
+            ano_tmp->object_property_involved_= object_property_graph_->findOrCreateBranch(property);
             //std::cout << "Complex range Object property : " << exp->rest.getRestriction() << std::endl;
           }
 
           if(vect_equiv[1]=="some")
-            ano_ptr->card_.card_type_ = some_;
+            ano_tmp->card_.card_type_ = some_;
           else if(vect_equiv[1]=="only")
-            ano_ptr->card_.card_type_ = only_;
+            ano_tmp->card_.card_type_ = only_;
           else if(vect_equiv[1]=="exactly")
-            ano_ptr->card_.card_type_ = exactly_;
+            ano_tmp->card_.card_type_ = exactly_;
           else if(vect_equiv[1]=="min")
-            ano_ptr->card_.card_type_ = min_;
+            ano_tmp->card_.card_type_ = min_;
           else if(vect_equiv[1]=="max")
-            ano_ptr->card_.card_type_ = max_;
+            ano_tmp->card_.card_type_ = max_;
           else
-            ano_ptr->card_.card_type_ = error_;
+            ano_tmp->card_.card_type_ = error_;
           
           if(vect_equiv.size() == 3)
-            ano_ptr->card_.card_number_ = std::stoi(vect_equiv.back());
+            ano_tmp->card_.card_number_ = std::stoi(vect_equiv.back());
         }
       }
 
       for(auto elem: exp->intersects)
-        update(elem, ano_ptr, false);
+        update(elem, ano_tmp, false);
     }
     else
       ano->sub_elements_.push_back(createElement(exp));
@@ -240,7 +239,7 @@ AnonymousClassBranch_t* AnonymousClassGraph::add(const std::string& value, Anony
           anonymous_branch->ano_elem_ = createElement(leaf);
       }
     }
-    return anonymous_branch;
+  return anonymous_branch;
 }
 
 
