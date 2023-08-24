@@ -56,7 +56,7 @@ void OntologyOwlWriter::write(const std::string& file_name)
   annotations.write(file_);
 
   writeBanner("Classes");
-  ClassOwlWriter classes(class_graph_, anonymous_graph_, ns_);
+  ClassOwlWriter classes(class_graph_, ns_);
   classes.write(file_);
 
   writeBanner("Object Properties");
