@@ -12,25 +12,28 @@ namespace ontologenius {
 
 enum CardType_t 
 {
+  none_,
   some_,
   only_,
   min_,
   max_,
   exactly_,
-  value_
+  value_,
+  error_
 };
 
 struct CardinalityElement_t
 {
-  CardType_t card_type_;
-  int card_number_;
-  LiteralNode* card_range_;
+  CardType_t card_type_ = none_;
+  int card_number_ = 0;
+  LiteralNode* card_range_ = nullptr;
 };
 
 class AnonymousClassElement_t
 {
 public:
   bool andor; // true = and / false = or
+  bool negation; // true = not / false = nothing
   int nb_sub; // number of sub elements
 
   // pointers to the concepts used in the equivalence relation
@@ -44,7 +47,7 @@ public:
   //AnonymousClassBranch_t* anonymous_class_; // pointer to the anonymous class (branch)
   std::vector<AnonymousClassElement_t*> sub_elements_; // vector of sub elements, if size == 0 => this element is an expression (leaf)
 
-  AnonymousClassElement_t() : andor(false), nb_sub(0), class_involved_(nullptr), object_property_involved_(nullptr), 
+  AnonymousClassElement_t() : andor(false), negation(false), nb_sub(0), class_involved_(nullptr), object_property_involved_(nullptr), 
                               data_property_involved_(nullptr), individual_involved_(nullptr) {};
  
 };

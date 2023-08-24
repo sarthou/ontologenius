@@ -46,9 +46,10 @@ private:
 
   void readClass(TiXmlElement* elem);
   AnonymousClassVectors_t readEquivalentClass(TiXmlElement* elem, const std::string& class_name);
-  void readRestriction(TiXmlElement* elem, ExpressionMember_t* exp);
-  void readCardinality(TiXmlElement* elem, Cardinality_t* card);
   void readCollection(TiXmlElement* elem, ExpressionMember_t* exp, AnonymousClassVectors_t& ano);
+  void readRestriction(TiXmlElement* elem, ExpressionMember_t* exp, AnonymousClassVectors_t& ano);
+  void readCardinality(TiXmlElement* elem, ExpressionMember_t* exp);
+  void updatePropertyType(ExpressionMember_t* exp);
   void readIndividual(TiXmlElement* elem);
   void readDescription(TiXmlElement* elem);
   void readIndividualDescription(TiXmlElement* elem);
@@ -161,6 +162,7 @@ int OntologyOwlReader::getNbChildren(TiXmlElement* elem)
   {
     cpt++;
   }
+  //std::cout << "elem : " << elem->Value() << "has " << cpt << "children" << std::endl;
   return cpt;
 }
 } // namespace ontologenius

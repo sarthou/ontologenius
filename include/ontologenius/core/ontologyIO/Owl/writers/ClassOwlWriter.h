@@ -11,15 +11,12 @@ namespace ontologenius {
 
 class ClassGraph;
 class ClassBranch_t;
-
-class AnonymousClassGraph;
-class AnonymousClassBranch_t;
 class AnonymousClassElement_t;
 
 class ClassOwlWriter : private NodeOwlWriter
 {
 public:
-  ClassOwlWriter(ClassGraph* class_graph, AnonymousClassGraph* anonymous_graph, const std::string& ns);
+  ClassOwlWriter(ClassGraph* class_graph, const std::string& ns);
   ~ClassOwlWriter() {};
 
   void write(FILE* file);
@@ -27,14 +24,13 @@ public:
 
 private:
   ClassGraph* class_graph_;
-  AnonymousClassGraph* anonymous_graph_;
 
   void writeClass(ClassBranch_t* branch);
   void writeSubClassOf(ClassBranch_t* branch);
   void writeEquivalentClass(ClassBranch_t* branch);
-  void writeCollection(AnonymousClassElement_t* ano_elem, int nb_ident);
+  void writeCollection(AnonymousClassElement_t* ano_elem, int nb_ident, bool data_prop); // data_prop == true if previous node is OnDataRange
   void writeRestriction(AnonymousClassElement_t* ano_elem, int nb_indent);
-  std::string writeCardinality(AnonymousClassElement_t* ano_element);
+  void writeCardinality(AnonymousClassElement_t* ano_element, int nb_indent);
   void writeDisjointWith(ClassBranch_t* branch);
   void writeDisjointWith(std::vector<ClassBranch_t*>& classes);
   void getDisjointsSets(ClassBranch_t* base, std::set<std::set<ClassBranch_t*>>& res);

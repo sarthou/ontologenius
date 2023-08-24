@@ -14,8 +14,15 @@ struct Cardinality_t
   std::string cardinality_range = "";
   
   std::string getCardinality(){
+    std::string res = " ";
     //std::cout << "type" << cardinality_type + " number " + cardinality_number + " range " + cardinality_range;
-    return cardinality_type + " " + cardinality_number + " " + cardinality_range;
+    if(cardinality_type != "")
+      res += cardinality_type + " ";
+    if(cardinality_number != "")
+      res += cardinality_number +" ";
+    if(cardinality_range != "")
+      res += cardinality_range + " ";
+    return res;
   }
 
   std::vector<std::string> getCardinalityVector(){
@@ -31,14 +38,24 @@ struct Cardinality_t
 
 struct Restriction_t
 {
-  Cardinality_t* card;
+  Cardinality_t card;
   std::string property = "";
   std::string restriction_range = "";
 
   std::string getRestriction()
   {
     //std::cout << "property : " << property + " " + "cardinality : " << card->getCardinality() + " " + "restriction : " << restriction_range << std::endl;
-    return property + " " + card->getCardinality() + "" + restriction_range;
+  std::string res = " ";
+
+  if(!property.empty())
+    res +=property +" ";
+
+  res+= card.getCardinality();
+
+  if(!restriction_range.empty())
+    res += restriction_range + " ";
+
+  return res;
   }
 
   std::vector<std::string> getRestrictionVector()
@@ -47,12 +64,12 @@ struct Restriction_t
     //card->cardinality_number.empty();
     if(property != "")
       result.push_back(property);
-    if(card->cardinality_type != "")
-      result.push_back(card->cardinality_type);
-    if(card->cardinality_number != "")
-      result.push_back(card->cardinality_number);
-    if(card->cardinality_range != "")
-      result.push_back(card->cardinality_range);
+    if(card.cardinality_type != "")
+      result.push_back(card.cardinality_type);
+    if(card.cardinality_number != "")
+      result.push_back(card.cardinality_number);
+    if(card.cardinality_range != "")
+      result.push_back(card.cardinality_range);
     if(restriction_range != "")
       result.push_back(restriction_range);
 
@@ -64,7 +81,9 @@ struct Restriction_t
 struct ExpressionMember_t{
 
   bool andor = false; // true = and / false = or
+  bool negation = false; // true = not node / false = nothing
   int nb_sub = 0; // number of sub elements
+  bool isDataProp = false;
   bool distributable = false; // true if contains "and" & "or" nodes
   Restriction_t rest; // Restriction (e.g hasComponent some Camera)
   std::string class_restriction; // if the restriction is only a class restriction (e.g A Eq to B)
@@ -79,6 +98,8 @@ struct ExpressionMember_t{
     int size_inter = intersects.size();
 
     str_equivalence = "(";
+    if(negation)
+      str_equivalence += " not (";
 
     for(auto elem2: intersects)
     {
@@ -88,6 +109,10 @@ struct ExpressionMember_t{
       current++;
     }
     str_equivalence += ")";
+    
+    if(negation)
+      str_equivalence += ")";
+
   }
 
 // Distribution function with strings
@@ -301,10 +326,10 @@ public:
     AnonymousClassGraph(const AnonymousClassGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, 
     DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
     ~AnonymousClassGraph() {}; 
-    AnonymousClassBranch_t* add(const std::string& value, AnonymousClassVectors_t& ano_class);
-    void update(ExpressionMember_t* exp, AnonymousClassElement_t* ano_class, bool root);
     AnonymousClassElement_t* createElement(ExpressionMember_t* exp_leaf);
-
+    void update(ExpressionMember_t* exp, AnonymousClassElement_t* ano_class, bool root);
+    AnonymousClassBranch_t* add(const std::string& value, AnonymousClassVectors_t& ano_class);
+    
     void close() {};
     std::vector<AnonymousClassBranch_t*> get() override { return anonymous_classes_;}
     

@@ -279,12 +279,12 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
   {
       ExpressionMember_t* exp = new ExpressionMember_t;
       exp->mother = nullptr;
-      exp->class_restriction = getName(elem->Attribute("rdf:resource"));
-      exp->str_equivalence = exp->class_restriction;
+      exp->rest.restriction_range = getName(elem->Attribute("rdf:resource"));
+      exp->str_equivalence = exp->rest.getRestriction();
       ano.equivalence = exp;
       ano.str_equivalences = exp->str_equivalence;
 
-      vect.push_back(exp->class_restriction);
+      vect.push_back(exp->rest.getRestriction());
       ano.equiv_vect.push_back(vect);
   }
  
@@ -296,91 +296,40 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
     exp->mother = nullptr;
     ano.equivalence = exp;
 
-    if(sub_elem_name == "owl:Restriction"){
-      readRestriction(sub_elem, exp);
-      ano.str_equivalences = "(" + exp->rest.getRestriction() + ")";
+    if(sub_elem_name == "owl:Restriction")
+    {
+      ExpressionMember_t* exp2 = new ExpressionMember_t();
+      exp2->mother = exp;
+      exp->intersects.push_back(exp2);
+      readRestriction(sub_elem, exp2, ano);
+      exp->str_equivalence = exp2->str_equivalence;
+      ano.str_equivalences = exp->str_equivalence;
       ano.equiv_vect.push_back(exp->rest.getRestrictionVector());
     }
-    else{
+    else
+    {
       readCollection(sub_elem, exp, ano);
       ano.str_equivalences = exp->str_equivalence;
     }
-      
-
-    std::cout << "\t=" << ano.str_equivalences << std::endl;
   }
-  
-  // std::cout << "Equivalence vector :" << std::endl;
-  // for(auto it : ano.equiv_vect){
-  //   for(auto it2 : it){
-  //     std::cout << it2 << std::endl;
-  //   }
-  //   std::cout << "" << std::endl;
-  // }
+
   return ano; 
 }
 
-void OntologyOwlReader::readRestriction(TiXmlElement* elem, ExpressionMember_t* exp)
+void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* exp, AnonymousClassVectors_t& ano)
 {
-  Cardinality_t* test_card = new Cardinality_t();
-  Restriction_t restr;
-  restr.card = test_card;
 
   for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
   {
-    std::string sub_elem_name = sub_elem->Value();
-    
-    if(sub_elem_name == "owl:onProperty")
-    {
-      std::string attr_prop = getName(sub_elem->Attribute("rdf:resource"));
-      restr.property=attr_prop;
-    }
-    else if(sub_elem_name == "owl:onClass" || sub_elem_name == "owl:onDataRange")
-    {
-      std::string attr_class = sub_elem->Attribute("rdf:resource");
-      if(isIn("http://www.w3.org/", attr_class))
-         restr.restriction_range=attr_class;
-      else
-        restr.restriction_range= getName(attr_class);
-    }
-    else{
-      readCardinality(sub_elem, test_card);
-    }
-  }
-  exp->rest = restr;
-}
-
-void OntologyOwlReader::readCardinality(TiXmlElement* elem, Cardinality_t* card){
-  std::string sub_elem_name = elem->Value();
-
-  const char* resource = elem->Attribute("rdf:resource");
-  //const char* data_type = elem->Attribute("rdf:datatype");
-  
-  if(resource != nullptr){
-    std::string s = resource;
-    if(isIn("http://www.w3.org/", s))
-      card->cardinality_range = resource;
-    else
-      card->cardinality_range = getName(resource);
-  }
-  card->cardinality_type = card_map_[sub_elem_name];
-
-  if(elem->GetText() != nullptr)
-    card->cardinality_number = elem->GetText();
-}
-
-void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* exp, AnonymousClassVectors_t& ano){
-
-  for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
-  {
-    if(getName(sub_elem->Value())  == "owl:Class")
+    if(getName(sub_elem->Value())  == "owl:Class" || getName(sub_elem->Value())  == "rdfs:Datatype")
       readCollection(sub_elem, exp, ano);
     else
     {
-      ExpressionMember_t* exp2 = new ExpressionMember_t;
+      ExpressionMember_t* exp2 = new ExpressionMember_t();
       exp2->mother = exp;
       exp2->andor = false;
       exp->intersects.push_back(exp2);
+
       if(getName(sub_elem->Value()) == "owl:intersectionOf")
       {
         exp2->andor = true;
@@ -388,10 +337,6 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
         readCollection(sub_elem, exp2, ano);
         exp2->UpdateEquiv();
         exp->str_equivalence = exp2->str_equivalence;
-        // std::cout << " Before distribution : " << exp->str_equivalence  << std::endl;
-        // exp2->DistributeEquiv_v2();
-        // exp->str_equivalence = exp2->str_equivalence;
-        // std::cout << " After distribution : " << exp->str_equivalence  << std::endl;
       }
       else if(getName(sub_elem->Value())  == "owl:unionOf")
       {
@@ -403,22 +348,135 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
       }
       else if(getName(sub_elem->Value())  == "owl:Restriction")
       {
-        exp2->nb_sub = 0;
-        readRestriction(sub_elem, exp2);
-        exp2->str_equivalence = "(" + exp2->rest.getRestriction() + ")";
-        ano.equiv_vect.push_back(exp2->rest.getRestrictionVector());
+        readRestriction(sub_elem, exp2, ano);
       }
       else if(getName(sub_elem->Value())  == "rdf:Description")
       {
-        exp2->nb_sub = 0;
-        exp2->class_restriction = getName(sub_elem->Attribute("rdf:about"));
-        exp2->str_equivalence = exp2->class_restriction;
+        std::string s = sub_elem->Attribute("rdf:about");
+        if(isIn("http://www.w3.org/", s)){
+          exp2->rest.restriction_range = s;
+          updatePropertyType(exp2);
+        }   
+        else
+          exp2->rest.restriction_range = getName(s);
+        exp2->str_equivalence = exp2->rest.getRestriction();
+      }
+       else if(getName(sub_elem->Value())  == "owl:complementOf" || getName(sub_elem->Value())  == "owl:datatypeComplementOf")
+      {
+        exp2->andor = false;
+        exp2->negation = true;
+        exp2->nb_sub = 1;
 
-        std::vector<std::string> vect;
-        vect.push_back(exp2->class_restriction);
-        ano.equiv_vect.push_back(vect);
+        if(sub_elem->FirstChildElement() == nullptr)
+        {
+          ExpressionMember_t* exp3 = new ExpressionMember_t;
+          exp2->intersects.push_back(exp3);
+          exp3->mother = exp2;
+
+          std::string s = sub_elem->Attribute("rdf:resource");
+          if(isIn("http://www.w3.org/", s))
+          {
+            exp3->rest.card.cardinality_range = s;
+            updatePropertyType(exp3);
+          }
+          else
+            exp3->rest.card.cardinality_range = getName(s);
+          exp3->str_equivalence = exp3->rest.getRestriction();
+          exp2->str_equivalence = " not (" + exp3->str_equivalence + ")";
+        }
+        else{
+          readCollection(sub_elem, exp2, ano);
+          exp2->UpdateEquiv();
+        }
+        exp->str_equivalence = exp2->str_equivalence;
+
       }
     }
+  }
+}
+
+void OntologyOwlReader::readRestriction(TiXmlElement* elem, ExpressionMember_t* exp, AnonymousClassVectors_t& ano)
+{
+
+  for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+  {
+    std::string sub_elem_name = sub_elem->Value();
+    
+    if(sub_elem_name == "owl:onProperty")
+      exp->rest.property = getName(sub_elem->Attribute("rdf:resource"));
+    else if(sub_elem_name == "owl:onClass" || sub_elem_name == "owl:onDataRange")
+    {
+      const char* resource = sub_elem->Attribute("rdf:resource");
+      if(resource != nullptr)
+      {
+        std::string attr_class = sub_elem->Attribute("rdf:resource");
+        if(isIn("http://www.w3.org/", attr_class))
+        {
+          exp->rest.restriction_range = attr_class;
+          updatePropertyType(exp);
+        }
+        else
+          exp->rest.restriction_range= getName(attr_class);
+      }
+      else
+      {
+        exp->nb_sub += 1;
+        readCollection(sub_elem, exp, ano);
+      }
+    }
+    else
+    {
+      readCardinality(sub_elem, exp);
+      // someValuesFrom with empty rdf resource
+      if(sub_elem->FirstChildElement() != nullptr)
+      {
+        exp->nb_sub += 1;
+        readCollection(sub_elem, exp, ano);
+      }
+    }
+    if(exp->nb_sub == 1)
+      exp->str_equivalence = "(" + exp->rest.getRestriction() + exp->intersects.front()->str_equivalence + ")";
+    else
+      exp->str_equivalence = "(" + exp->rest.getRestriction() + ")";
+  }
+
+}
+
+void OntologyOwlReader::readCardinality(TiXmlElement* elem, ExpressionMember_t* exp)
+{
+  std::string sub_elem_name = elem->Value();
+
+  const char* resource = elem->Attribute("rdf:resource");
+  exp->rest.card.cardinality_type = card_map_[sub_elem_name];
+
+  if(elem->GetText() != nullptr)
+    exp->rest.card.cardinality_number = elem->GetText();
+
+  if(resource != nullptr)
+  {
+    std::string s = resource;
+    if(isIn("http://www.w3.org/", s))
+    {
+      exp->rest.card.cardinality_range = resource;
+      updatePropertyType(exp);
+    }
+    else
+      exp->rest.card.cardinality_range = getName(resource);
+  }
+}
+
+void OntologyOwlReader::updatePropertyType(ExpressionMember_t* exp)
+{
+  if(!exp->rest.property.empty())
+  {
+    exp->isDataProp = true;
+    return;
+  }
+  else{
+    if(exp->mother != nullptr)
+      updatePropertyType(exp->mother);
+    else
+      return;
   }
 }
 
