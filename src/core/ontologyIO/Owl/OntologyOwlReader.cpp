@@ -273,8 +273,8 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
 {
   AnonymousClassVectors_t ano;
   ano.class_equiv = class_name;
-  std::vector<std::string> vect;
-  //std::cout << "New anonymous class with " << class_name << std::endl;
+
+  // Class only equivalence  : Camera Eq to Component
   if(elem->FirstChild() == nullptr)
   {
       ExpressionMember_t* exp = new ExpressionMember_t;
@@ -283,11 +283,9 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
       exp->str_equivalence = exp->rest.getRestriction();
       ano.equivalence = exp;
       ano.str_equivalences = exp->str_equivalence;
-
-      vect.push_back(exp->rest.getRestriction());
-      ano.equiv_vect.push_back(vect);
   }
  
+  // Expression equivalence : 
   for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
   {
     std::string sub_elem_name = sub_elem->Value();
@@ -296,6 +294,7 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
     exp->mother = nullptr;
     ano.equivalence = exp;
 
+    // Restriction equivalence : Camera Eq to hasComponent some Component
     if(sub_elem_name == "owl:Restriction")
     {
       ExpressionMember_t* exp2 = new ExpressionMember_t();
@@ -304,8 +303,8 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
       readRestriction(sub_elem, exp2, ano);
       exp->str_equivalence = exp2->str_equivalence;
       ano.str_equivalences = exp->str_equivalence;
-      ano.equiv_vect.push_back(exp->rest.getRestrictionVector());
     }
+    // Complex equivalence : Camera Eq to (hasComponent some Component and has_node only rational)
     else
     {
       readCollection(sub_elem, exp, ano);
@@ -325,6 +324,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
       readCollection(sub_elem, exp, ano);
     else
     {
+      // Children node creation
       ExpressionMember_t* exp2 = new ExpressionMember_t();
       exp2->mother = exp;
       exp2->andor = false;
@@ -361,12 +361,14 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
           exp2->rest.restriction_range = getName(s);
         exp2->str_equivalence = exp2->rest.getRestriction();
       }
-       else if(getName(sub_elem->Value())  == "owl:complementOf" || getName(sub_elem->Value())  == "owl:datatypeComplementOf")
+      else if(getName(sub_elem->Value())  == "owl:complementOf" || getName(sub_elem->Value())  == "owl:datatypeComplementOf")
       {
+        // Negation node creation
         exp2->andor = false;
         exp2->negation = true;
         exp2->nb_sub = 1;
 
+        // Simple negation : not (Capability)
         if(sub_elem->FirstChildElement() == nullptr)
         {
           ExpressionMember_t* exp3 = new ExpressionMember_t;
@@ -384,12 +386,13 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
           exp3->str_equivalence = exp3->rest.getRestriction();
           exp2->str_equivalence = " not (" + exp3->str_equivalence + ")";
         }
-        else{
+        // Complex negation : not ((has_node only rational) and Camera)
+        else
+        {
           readCollection(sub_elem, exp2, ano);
           exp2->UpdateEquiv();
         }
         exp->str_equivalence = exp2->str_equivalence;
-
       }
     }
   }
@@ -407,6 +410,8 @@ void OntologyOwlReader::readRestriction(TiXmlElement* elem, ExpressionMember_t* 
     else if(sub_elem_name == "owl:onClass" || sub_elem_name == "owl:onDataRange")
     {
       const char* resource = sub_elem->Attribute("rdf:resource");
+      // Simple restriction range : Camera Eq to  hasComponent some Lidar
+      // <owl:onClass rdf:resource="test_bastien#Lidar"/>
       if(resource != nullptr)
       {
         std::string attr_class = sub_elem->Attribute("rdf:resource");
@@ -418,25 +423,38 @@ void OntologyOwlReader::readRestriction(TiXmlElement* elem, ExpressionMember_t* 
         else
           exp->rest.restriction_range= getName(attr_class);
       }
+      // Complex restriction range with max, min, exactly : Camera Eq to  hasComponent max 2 (not DirtyCutlery)
+      // <owl:onClass>
+      //     <owl:Class>
+      //         <owl:complementOf rdf:resource="test_bastien#DirtyCutlery"/>
+      //     </owl:Class>
+      // </owl:onClass>
       else
       {
-        exp->nb_sub += 1;
+        exp->nb_sub = 1;
         readCollection(sub_elem, exp, ano);
       }
     }
     else
-    {
+    { // Cardinality reading
       readCardinality(sub_elem, exp);
-      // someValuesFrom with empty rdf resource
+      // Complex restriction range with some, only : Camera Eq to hasComponent only (not DirtyCutlery)
+      // <owl:allValuesFrom>
+      //    <owl:Class>
+      //        <owl:complementOf rdf:resource="test_bastien#DirtyCutlery"/>
+      //    </owl:Class>
+      // </owl:allValuesFrom>
       if(sub_elem->FirstChildElement() != nullptr)
       {
-        exp->nb_sub += 1;
+        exp->nb_sub = 1;
         readCollection(sub_elem, exp, ano);
       }
     }
-    if(exp->nb_sub == 1)
+
+    // Update the str expression
+    if(exp->nb_sub == 1) // Complex range
       exp->str_equivalence = "(" + exp->rest.getRestriction() + exp->intersects.front()->str_equivalence + ")";
-    else
+    else // Simple range
       exp->str_equivalence = "(" + exp->rest.getRestriction() + ")";
   }
 
