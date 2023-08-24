@@ -128,11 +128,8 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
     {
       start = "<owl:intersectionOf rdf:parseType=\"Collection\">\n";
       end = "</owl:intersectionOf>\n";
-
-      //if(obj_prop)
+  
       writeString(indent + start_class);
-      //else
-        //writeString(indent + start_data);
       writeString(indent_sub + start);
 
       for(auto sub_elem : ano_elem->sub_elements_)
@@ -145,11 +142,6 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
     {
       start = "<owl:unionOf rdf:parseType=\"Collection\">\n";
       end = "</owl:unionOf>\n";
-
-      //if(obj_prop)
-      //writeString(indent + start_class);
-      //else
-      //writeString(indent + start_data);
 
       writeString(indent + start_class);
       writeString(indent_sub + start);
@@ -175,9 +167,10 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
 
       writeString(indent + start_data);
       writeString(indent_sub + start_comp);
-
+      // Simple negation range on data property
       if(sub_elem->nb_sub == 0 && sub_elem->data_property_involved_ == nullptr && sub_elem->card_.card_range_->type_ != "")
         writeString(" rdf:resource=\"" + sub_elem->card_.card_range_->getNs()  + "#" + sub_elem->card_.card_range_->type_ + "\"/>\n");
+      // Complex negation range on data property
       else
       {
         writeString( ">\n");
@@ -193,16 +186,16 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
 
       writeString(indent + start_class);
       writeString(indent_sub + start_comp);
-
+      // Simple negation range on object property
       if(sub_elem->nb_sub == 0 &&  sub_elem->class_involved_ != nullptr && sub_elem->object_property_involved_ == nullptr)
         writeString(" rdf:resource=\"" + ns_ + "#" + sub_elem->class_involved_->value() + "\"/>\n");
+      // Complex negation range on object property
       else
       {
         writeString( ">\n");
         writeCollection(sub_elem, nb_ident + 4, false);
         writeString(indent_sub + end_comp);
       }
-        
       writeString(indent + end_class);
     }
   }
@@ -235,12 +228,9 @@ void ClassOwlWriter::writeRestriction(AnonymousClassElement_t* ano_element, int 
   tmp = indent_sub + "<owl:onProperty rdf:resource=\"" + ns_ + "#";
 
   if(ano_element->data_property_involved_ == nullptr)
-  {
     tmp += ano_element->object_property_involved_->value() + "\"/>\n";
-  }
-  else{
+  else
     tmp += ano_element->data_property_involved_->value() + "\"/>\n";
-  }
 
   writeString(start);
   writeString(tmp);
@@ -318,7 +308,6 @@ void ClassOwlWriter::writeRestriction(AnonymousClassElement_t* ano_element, int 
       if(ano_element->nb_sub == 1)
       {
         tmp +=  ">\n";
-        //writeString(start);
         writeString(tmp);
         if(ano_element->object_property_involved_ != nullptr)
           writeCollection(ano_element->sub_elements_.front(), nb_indent + 4, false);
@@ -351,7 +340,7 @@ void ClassOwlWriter::writeCardinality(AnonymousClassElement_t* ano_element, int 
   std::string indent(nb_indent, ' ');
   std::string indent_sub(nb_indent + 4, ' ');
 
-  if( ano_element->data_property_involved_ == nullptr )
+  if(ano_element->data_property_involved_ == nullptr)
   {
     tmp = "<owl:onClass";
     end = "</owl:onClass>\n";
@@ -366,7 +355,6 @@ void ClassOwlWriter::writeCardinality(AnonymousClassElement_t* ano_element, int 
       writeString(indent + tmp);
       writeCollection(ano_element->sub_elements_.front(), nb_indent, false);
       writeString(indent + end);
-
     } 
   }
   else
@@ -378,7 +366,6 @@ void ClassOwlWriter::writeCardinality(AnonymousClassElement_t* ano_element, int 
       tmp += " rdf:resource=\"" + ano_element->card_.card_range_->getNs() + "#" + ano_element->card_.card_range_->type_ + "\"/>\n";
       writeString(indent + tmp);
     }
-     
     else
     {
       tmp += ">\n";
