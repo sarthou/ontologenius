@@ -17,8 +17,8 @@ public:
   Sparql();
   void link(Ontology* onto) { onto_ = onto; }
 
-  std::vector<std::map<std::string, std::string>> runStr(const std::string& query);
-  std::vector<std::map<std::string, index_t>> runIndex(const std::string& query);
+  std::vector<std::map<std::string, std::string>> runStr(const std::string& query, bool single_same = false);
+  std::vector<std::map<std::string, index_t>> runIndex(const std::string& query, bool single_same = false);
 
   std::string getError() { return error_; }
 
@@ -27,6 +27,7 @@ private:
   std::string error_;
   std::regex sparql_pattern_;
   std::map<std::string, SparqlOperator_e> operators_;
+  bool single_same_;
 
   template<typename T> std::vector<std::map<std::string, T>> run(const std::string& query);
 

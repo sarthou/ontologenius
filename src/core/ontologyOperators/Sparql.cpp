@@ -12,13 +12,15 @@ namespace ontologenius
     operators_["NOT EXISTS"] = sparql_not_exists;
   }
 
-  std::vector<std::map<std::string, std::string>> Sparql::runStr(const std::string& query)
+  std::vector<std::map<std::string, std::string>> Sparql::runStr(const std::string& query, bool single_same)
   {
+    single_same_ = single_same;
     return run<std::string>(query);
   }
 
-  std::vector<std::map<std::string, index_t>> Sparql::runIndex(const std::string& query)
+  std::vector<std::map<std::string, index_t>> Sparql::runIndex(const std::string& query, bool single_same)
   {
+    single_same_ = single_same;
     return run<index_t>(query);
   }
 
@@ -313,7 +315,7 @@ namespace ontologenius
   template<typename T>
   std::unordered_set<T> Sparql::getOn(const triplet_t<T>& triplet, const T& selector)
   {
-    auto res = onto_->individual_graph_.getOn(triplet.subject.value, triplet.predicat.value);
+    auto res = onto_->individual_graph_.getOn(triplet.subject.value, triplet.predicat.value, single_same_);
     if(isSelectorDefined(selector) == false)
       return res;
     else if(std::find(res.begin(), res.end(), selector) != res.end())
@@ -326,11 +328,11 @@ namespace ontologenius
   std::unordered_set<T> Sparql::getFrom(const triplet_t<T>& triplet, const T& selector)
   {
     if(isSelectorDefined(selector) == false)
-      return onto_->individual_graph_.getFrom(triplet.object.value, triplet.predicat.value);
+      return onto_->individual_graph_.getFrom(triplet.object.value, triplet.predicat.value, single_same_);
     else
     {
       // Here we revert the problem as we know what we are expecting for.
-      auto res = onto_->individual_graph_.getOn(selector, triplet.predicat.value);
+      auto res = onto_->individual_graph_.getOn(selector, triplet.predicat.value, single_same_);
       if(std::find(res.begin(), res.end(), triplet.object.value) != res.end())
         return std::unordered_set<T>({selector});
       else
@@ -357,7 +359,7 @@ namespace ontologenius
   std::unordered_set<T> Sparql::getType(const triplet_t<T>& triplet, const T& selector)
   {
     if(isSelectorDefined(selector) == false)
-      return onto_->individual_graph_.getType(triplet.object.value);
+      return onto_->individual_graph_.getType(triplet.object.value, single_same_);
     else
     {
       auto types = onto_->individual_graph_.getUp(selector);
