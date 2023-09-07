@@ -20,11 +20,11 @@ class SparqlClient:
     def call(self, query):
         try:
             response = self._client(query)
-            return response.results
+            return (response.names, response.results)
         except rospy.ServiceException as e:
             self._client = rospy.ServiceProxy('ontologenius/' + self._name, OntologeniusSparqlService, True)
             try:
                 response = self._client(query)
-                return response.results
+                return (response.names, response.results)
             except rospy.ServiceException as e:
                 return None
