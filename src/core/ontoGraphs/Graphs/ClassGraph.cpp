@@ -847,10 +847,10 @@ void ClassGraph::getOn(ClassBranch_t* class_branch, std::unordered_set<index_t>&
     }
 
     current_depth++;
-    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_branch, 1);
-    for(ClassBranch_t* up : up_set)
-      if(up != class_branch)
-        getOn(up, object_properties, data_properties, res, current_depth, found_depth);
+    //std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_branch, 1);
+    for(auto& up : class_branch->mothers_)
+      if(up.elem != class_branch)
+        getOn(up.elem, object_properties, data_properties, res, current_depth, found_depth);
   }
 }
 
