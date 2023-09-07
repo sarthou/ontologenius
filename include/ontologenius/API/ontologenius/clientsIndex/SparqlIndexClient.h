@@ -23,7 +23,7 @@ public:
     n_ = n;
   }
 
-  std::vector<ontologenius::OntologeniusSparqlIndexResponse> call(const std::string& query);
+  std::pair<std::vector<std::string>, std::vector<ontologenius::OntologeniusSparqlIndexResponse>> call(const std::string& query);
 
 private:
   ros::ServiceClient client;

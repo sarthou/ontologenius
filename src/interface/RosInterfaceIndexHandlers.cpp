@@ -372,14 +372,19 @@ bool RosInterface::sparqlIndexHandle(ontologenius::OntologeniusSparqlIndexServic
 {
   std::vector<std::map<std::string, index_t>> results = sparql_.runIndex(req.query);
 
+  if(results.size())
+  {
+    auto first = results.front();
+    for(auto& r : first)
+      res.names.push_back(r.first);
+  }
+
   for(auto& result : results)
   {
     ontologenius::OntologeniusSparqlIndexResponse tmp;
     for(auto& r : result)
-    {
-      tmp.names.push_back(r.first);
       tmp.values.push_back(r.second);
-    }
+    
     res.results.push_back(tmp);
   }
 

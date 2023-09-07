@@ -372,14 +372,19 @@ bool RosInterface::sparqlHandle(ontologenius::OntologeniusSparqlService::Request
 {
   std::vector<std::map<std::string, std::string>> results = sparql_.runStr(req.query);
 
+  if(results.size())
+  {
+    auto first = results.front();
+    for(auto& r : first)
+      res.names.push_back(r.first);
+  }
+
   for(auto& result : results)
   {
     ontologenius::OntologeniusSparqlResponse tmp;
     for(auto& r : result)
-    {
-      tmp.names.push_back(r.first);
       tmp.values.push_back(r.second);
-    }
+    
     res.results.push_back(tmp);
   }
 

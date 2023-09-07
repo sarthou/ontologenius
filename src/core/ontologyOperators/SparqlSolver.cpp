@@ -3,6 +3,10 @@
 #include "ontologenius/utils/String.h"
 #include "ontologenius/graphical/Display.h"
 
+#include "time.h"
+#include <chrono>
+using namespace std::chrono;
+
 namespace ontologenius
 {
   SparqlSolver::SparqlSolver() : onto_(nullptr),
@@ -17,7 +21,8 @@ namespace ontologenius
     SparqlSolution_t initial_solution;
 
     std::smatch match;
-    if (std::regex_match(query_, match, sparql_pattern_))
+    bool has_matched = std::regex_match(query_, match, sparql_pattern_);
+    if (has_matched)
     {
       std::string vars = match[2].str();
       removeChar(vars, {'\n', '\r'});
@@ -38,7 +43,6 @@ namespace ontologenius
         else if(var != "")
           initial_solution.solution_[var.substr(1)] = "";
       }
-        
     }
     else
     {
@@ -51,7 +55,11 @@ namespace ontologenius
 
     orderVariables(initial_solution);
     int index = 0;
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
     stepDown(initial_solution, index);
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+    std::cout << "took " << time_span.count()*1000 << "ms" << std::endl;
 
     return SparqlSolver::iterator(initial_solution, this);
   }
