@@ -347,8 +347,9 @@ namespace ontologenius
       return onto_->individual_graph_.getUp(triplet.subject.value);
     else
     {
-      auto is = onto_->individual_graph_.getUp(triplet.subject.value);
-      if(std::find(is.begin(), is.end(), selector) != is.end())
+      //auto is = onto_->individual_graph_.getUp(triplet.subject.value);
+      //if(std::find(is.begin(), is.end(), selector) != is.end())
+      if(onto_->individual_graph_.isA(triplet.subject.value, selector))
         return std::unordered_set<T>({selector});
       else
         return std::unordered_set<T>();
@@ -362,9 +363,10 @@ namespace ontologenius
       return onto_->individual_graph_.getType(triplet.object.value, single_same_);
     else
     {
-      auto types = onto_->individual_graph_.getUp(selector);
-      if(std::find(types.begin(), types.end(), triplet.object.value) != types.end())
-        return std::unordered_set<T>({selector});
+      //auto types = onto_->individual_graph_.getUp(selector);
+      //if(std::find(types.begin(), types.end(), triplet.object.value) != types.end())
+      if(onto_->individual_graph_.isA(selector, triplet.object.value))
+        return {selector};
       else
         return std::unordered_set<T>();
     }
