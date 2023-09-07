@@ -1089,6 +1089,7 @@ void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<ind
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
   if(single_same)
   {
+    res.reserve(res.size() + branch->individual_childs_.size());
     for(auto& indiv : branch->individual_childs_)
       individual_graph_->getLowestSame(indiv.elem, res);
   }
