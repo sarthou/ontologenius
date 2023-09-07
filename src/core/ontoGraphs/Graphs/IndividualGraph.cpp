@@ -1084,21 +1084,36 @@ void IndividualGraph::getUp(IndividualBranch_t* indiv, std::unordered_set<T>& re
 
 void IndividualGraph::getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth, uint32_t current_depth)
 {
-  current_depth++;
   if(indiv != nullptr)
   {
-    if(indiv->same_as_.size())
+    if(depth != 1)
     {
-      std::unordered_set<IndividualBranch_t*> sames;
-      getSame(indiv, sames);
-      for(IndividualBranch_t* it : sames)
-        for(auto& is_a : it->is_a_)
+      current_depth++;
+      if(indiv->same_as_.size())
+      {
+        for(auto& it : indiv->same_as_)
+          for(auto& is_a : it.elem->is_a_)
+            class_graph_->getUpPtr(is_a.elem, res, depth, current_depth);
+      }
+      else
+      {
+        for(auto& is_a : indiv->is_a_)
           class_graph_->getUpPtr(is_a.elem, res, depth, current_depth);
+      }
     }
     else
     {
-      for(auto& is_a : indiv->is_a_)
-        class_graph_->getUpPtr(is_a.elem, res, depth, current_depth);
+      if(indiv->same_as_.size())
+      {
+        for(auto& it : indiv->same_as_)
+          for(auto& is_a : it.elem->is_a_)
+            res.insert(is_a.elem);
+      }
+      else
+      {
+        for(auto& is_a : indiv->is_a_)
+          res.insert(is_a.elem);
+      }
     }
   }
 }
