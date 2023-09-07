@@ -1500,6 +1500,59 @@ std::unordered_set<index_t> IndividualGraph::getType(index_t class_selector, boo
   return res;
 }
 
+
+bool IndividualGraph::isA(const std::string& indiv, const std::string& class_selector)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  IndividualBranch_t* branch = container_.find(indiv);
+  if(branch != nullptr)
+  {
+    std::shared_lock<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+    if(branch->same_as_.size())
+    {
+      std::unordered_set<IndividualBranch_t*> sames;
+      getSame(branch, sames);
+      for(IndividualBranch_t* it : sames)
+        for(auto& is_a : it->is_a_)
+          if(class_graph_->existInInheritance(is_a.elem, class_selector))
+            return true;
+    }
+    else
+    {
+      for(auto& is_a : branch->is_a_)
+        if(class_graph_->existInInheritance(is_a.elem, class_selector))
+          return true;
+    }
+  }
+  return false;
+}
+
+bool IndividualGraph::isA(index_t indiv, index_t class_selector)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  IndividualBranch_t* branch = ordered_individuals_[indiv];
+  if(branch != nullptr)
+  {
+    std::shared_lock<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+    if(branch->same_as_.size())
+    {
+      std::unordered_set<IndividualBranch_t*> sames;
+      getSame(branch, sames);
+      for(IndividualBranch_t* it : sames)
+        for(auto& is_a : it->is_a_)
+          if(class_graph_->existInInheritance(is_a.elem, class_selector))
+            return true;
+    }
+    else
+    {
+      for(auto& is_a : branch->is_a_)
+        if(class_graph_->existInInheritance(is_a.elem, class_selector))
+          return true;
+    }
+  }
+  return false;
+}
+
 bool IndividualGraph::relationExists(const std::string& param)
 {
   std::string subject;

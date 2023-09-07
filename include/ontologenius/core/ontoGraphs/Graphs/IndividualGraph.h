@@ -118,6 +118,8 @@ public:
   bool touch(index_t value);
   std::unordered_set<std::string> getType(const std::string& class_selector, bool single_same = false);
   std::unordered_set<index_t> getType(index_t class_selector, bool single_same = false);
+  bool isA(const std::string& indiv, const std::string& class_selector);
+  bool isA(index_t indiv, index_t class_selector);
   bool relationExists(const std::string& param);
   bool relationExists(const std::string& subject, const std::string& property, const std::string& object);
 
