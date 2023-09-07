@@ -852,6 +852,8 @@ std::unordered_set<index_t> IndividualGraph::getOn(index_t individual, index_t p
   return getOn(indiv, property, single_same);
 }
 
+// Duplication in this function avoid the creation of the same_as set
+// This for performance issues in the SPARQL solver
 template<typename T>
 std::unordered_set<T> IndividualGraph::getOn(IndividualBranch_t* individual, const T& property, bool single_same)
 {
@@ -859,16 +861,28 @@ std::unordered_set<T> IndividualGraph::getOn(IndividualBranch_t* individual, con
   
   if(individual != nullptr)
   {
-    std::unordered_set<IndividualBranch_t*> sames;
-    getSame(individual, sames);
-
     std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
     std::unordered_set<index_t> data_properties;
     if(object_properties.size())
     {
-      for(auto same_indiv : sames)
+      if(individual->same_as_.size())
       {
-        for(IndivObjectRelationElement_t& relation : same_indiv->object_relations_)
+        for(auto& same_indiv : individual->same_as_)
+        {
+          for(IndivObjectRelationElement_t& relation : same_indiv.elem->object_relations_)
+            for (index_t id : object_properties)
+              if(relation.first->get() == id)
+              {
+                if(single_same)
+                  getLowestSame(relation.second, res);
+                else
+                  getSame(relation.second, res);
+              }
+        }
+      }
+      else
+      {
+        for(IndivObjectRelationElement_t& relation : individual->object_relations_)
           for (index_t id : object_properties)
             if(relation.first->get() == id)
             {
@@ -879,14 +893,24 @@ std::unordered_set<T> IndividualGraph::getOn(IndividualBranch_t* individual, con
             }
       }
     }
-    else 
+    else
     {
       data_properties = data_property_graph_->getDownId(property);
       if(data_properties.size())
       {
-        for(auto same_indiv : sames)
+        if(individual->same_as_.size())
         {
-          for(IndivDataRelationElement_t& relation : same_indiv->data_relations_)
+          for(auto& same_indiv : individual->same_as_)
+          {
+            for(IndivDataRelationElement_t& relation : same_indiv.elem->data_relations_)
+              for (index_t id : data_properties)
+                if(relation.first->get() == id)
+                  insert(res, relation.second);
+          }
+        }
+        else
+        {
+          for(IndivDataRelationElement_t& relation : individual->data_relations_)
             for (index_t id : data_properties)
               if(relation.first->get() == id)
                 insert(res, relation.second);
@@ -1068,10 +1092,8 @@ void IndividualGraph::getUp(IndividualBranch_t* indiv, std::unordered_set<T>& re
   {
     if(indiv->same_as_.size())
     {
-      std::unordered_set<IndividualBranch_t*> sames;
-      getSame(indiv, sames);
-      for(IndividualBranch_t* it : sames)
-        for(auto& is_a : it->is_a_)
+      for(auto& it : indiv->same_as_)
+        for(auto& is_a : it.elem->is_a_)
           class_graph_->getUp(is_a.elem, res, depth, current_depth);
     }
     else
@@ -1507,7 +1529,8 @@ std::unordered_set<index_t> IndividualGraph::getType(index_t class_selector, boo
   ClassBranch_t* class_branch = class_graph_->container_.find(ValuedNode::table_.get(class_selector));
   if(class_branch != nullptr)
   {
-    std::unordered_set<ClassBranch_t*> down_set = class_graph_->getDownPtrSafe(class_branch);
+    std::unordered_set<ClassBranch_t*> down_set;
+    class_graph_->getDownPtr(class_branch, down_set);
     for(auto down : down_set)
       class_graph_->getDownIndividual(down, res, single_same);
   }
