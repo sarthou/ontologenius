@@ -10,6 +10,10 @@
   $(find ontologenius)/files/positionProperty.owl
   $(find ontologenius)/files/testIndividuals.owl
   "/>
+  <arg name="tcmalloc_path" default=""/>
+
+  <env name="LD_PRELOAD" value="$(arg tcmalloc_path)"/>
+
   <node name="ontologenius_core" pkg="ontologenius" type="ontologenius" output="screen" args="-l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) $(arg files)"> </node>
   <node name="ontologenius_rest" pkg="ontologenius" type="REST.py" output="screen"> </node>
 </launch>
