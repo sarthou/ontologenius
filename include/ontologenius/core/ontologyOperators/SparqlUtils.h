@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <unordered_map>
 
 #include "ontologenius/utils/String.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
