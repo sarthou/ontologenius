@@ -144,6 +144,20 @@
           </a>
         </nav>
 
+        <h2>Improve performaces</h2>
+
+        <p>If you really need huge performaces, you can use the tcmalloc library which provide custom allocators.</p>
+
+        <div class="code_block">
+          <p>sudo apt install libtcmalloc-minimal4</p>
+        </div>
+
+        <p>You can now use the dedicated ontologenius launch argument by providing the path toward the tcmalloc library. To find the path use the following:</p>
+
+        <div class="code_block">
+          <p>find /usr -name *tcmalloc*</p>
+        </div>
+
       </div>
     </div>
 
