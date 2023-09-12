@@ -370,16 +370,17 @@ bool RosInterface::individualIndexHandle(ontologenius::OntologeniusIndexService:
 bool RosInterface::sparqlIndexHandle(ontologenius::OntologeniusSparqlIndexService::Request& req,
                                      ontologenius::OntologeniusSparqlIndexService::Response& res)
 {
-  std::vector<std::map<std::string, index_t>> results = sparql_.runIndex(req.query);
+  std::pair<std::vector<std::string>, std::vector<std::vector<index_t>>> results = sparql_.runIndex(req.query);
 
-  for(auto& result : results)
+  if(results.second.size())
+      res.names = results.first;
+
+  for(auto& result : results.second)
   {
     ontologenius::OntologeniusSparqlIndexResponse tmp;
     for(auto& r : result)
-    {
-      tmp.names.push_back(r.first);
-      tmp.values.push_back(r.second);
-    }
+      tmp.values.push_back(r);
+    
     res.results.push_back(tmp);
   }
 

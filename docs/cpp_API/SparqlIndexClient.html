@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>SparqlIndexClient Class (cpp) | Ontologenius 0.3.0</title>
+  <title>SparqlIndexClient Class (cpp) | Ontologenius 0.3.1</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -135,7 +135,7 @@
           <table class="alignedsummary">
             <tbody>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="SparqlIndexClient.html#SparqlIndexClient">SparqlIndexClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;OntologeniusSparqlIndexResponse&gt; </td><td class="memItemRight bottomAlign"><b><a href="SparqlIndexClient.html#call">call</a></b>(const std::string&amp; <i>query</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::pair&lt;std::vector&lt;std::string&gt;, std::vector&lt;OntologeniusSparqlIndexResponse&gt;&gt; </td><td class="memItemRight bottomAlign"><b><a href="SparqlIndexClient.html#call">call</a></b>(const std::string&amp; <i>query</i>)</td></tr>
             </tbody>
           </table>
         </div>
@@ -157,7 +157,7 @@
           <p>Constructs a sparql client.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
 
-          <h3 class="fn" id="call"><a name="call"></a><span class="type">std::vector&lt;OntologeniusSparqlIndexResponse&gt; </span><span class="name">call</span>(const <span class="type">std::string</span>&amp; <i>query</i>)</h3>
+          <h3 class="fn" id="call"><a name="call"></a><span class="type">std::pair&lt;std::vector&lt;std::string&gt;, std::vector&lt;OntologeniusSparqlIndexResponse&gt;&gt; </span><span class="name">call</span>(const <span class="type">std::string</span>&amp; <i>query</i>)</h3>
 
           <h2>Basic query Examples</h2>
 

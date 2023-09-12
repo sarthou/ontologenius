@@ -1,2 +1,1 @@
-string[] names
 string[] values

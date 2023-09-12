@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Install | Ontologenius 0.3.0</title>
+  <title>Install | Ontologenius 0.3.1</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="images/favicon.ico" rel="shortcut icon">
@@ -143,6 +143,20 @@
             <i class="fas fa-angle-right"></i>
           </a>
         </nav>
+
+        <h2>Improve performaces</h2>
+
+        <p>If you really need huge performaces, you can use the tcmalloc library which provide custom allocators.</p>
+
+        <div class="code_block">
+          <p>sudo apt install libtcmalloc-minimal4</p>
+        </div>
+
+        <p>You can now use the dedicated ontologenius launch argument by providing the path toward the tcmalloc library. To find the path use the following:</p>
+
+        <div class="code_block">
+          <p>find /usr -name *tcmalloc*</p>
+        </div>
 
       </div>
     </div>

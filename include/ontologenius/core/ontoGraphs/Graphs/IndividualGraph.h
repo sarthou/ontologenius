@@ -88,11 +88,11 @@ public:
   std::unordered_set<std::string> getRelatedWith(const std::string& individual);   //C3
   std::unordered_set<index_t> getRelatedWith(index_t individual);
   std::unordered_set<std::string> getFrom(const std::string& param);
-  std::unordered_set<std::string> getFrom(const std::string& individual, const std::string& property);
-  std::unordered_set<index_t> getFrom(index_t individual, index_t property);
+  std::unordered_set<std::string> getFrom(const std::string& individual, const std::string& property, bool single_same = false);
+  std::unordered_set<index_t> getFrom(index_t individual, index_t property, bool single_same = false);
   std::unordered_set<std::string> getOn(const std::string& param);
-  std::unordered_set<std::string> getOn(const std::string& individual, const std::string& property);
-  std::unordered_set<index_t> getOn(index_t individual, index_t property);
+  std::unordered_set<std::string> getOn(const std::string& individual, const std::string& property, bool single_same = false);
+  std::unordered_set<index_t> getOn(index_t individual, index_t property, bool single_same = false);
   std::unordered_set<std::string> getWith(const std::string& param, int depth = -1);
   std::unordered_set<std::string> getWith(const std::string& first_individual, const std::string& second_individual, int depth = -1);
   std::unordered_set<index_t> getWith(index_t first_individual, index_t second_individual, int depth = -1);
@@ -116,8 +116,10 @@ public:
   std::unordered_set<std::string> findFuzzy(const std::string& value, bool use_default = true, double threshold = 0.5);
   bool touch(const std::string& value);
   bool touch(index_t value);
-  std::unordered_set<std::string> getType(const std::string& class_selector);
-  std::unordered_set<index_t> getType(index_t class_selector);
+  std::unordered_set<std::string> getType(const std::string& class_selector, bool single_same = false);
+  std::unordered_set<index_t> getType(index_t class_selector, bool single_same = false);
+  bool isA(const std::string& indiv, const std::string& class_selector);
+  bool isA(index_t indiv, index_t class_selector);
   bool relationExists(const std::string& param);
   bool relationExists(const std::string& subject, const std::string& property, const std::string& object);
 
@@ -152,7 +154,9 @@ public:
   std::vector<std::vector<ObjectPropertyBranch_t*>> getChains(ObjectPropertyBranch_t* base_property);
 
   void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, uint32_t current_depth = 0);
+  void getLowestSame(IndividualBranch_t* individual, std::unordered_set<std::string>& res);
   void getSame(IndividualBranch_t* individual, std::unordered_set<std::string>& res);
+  void getLowestSame(IndividualBranch_t* individual, std::unordered_set<index_t>& res);
   void getSame(IndividualBranch_t* individual, std::unordered_set<index_t>& res);
 
 private:
@@ -170,8 +174,8 @@ private:
   template<typename T> void getRelatedOn(const T& property, std::unordered_set<T>& res);
   template<typename T> void getUp(IndividualBranch_t* indiv, std::unordered_set<T>& res, int depth = -1, uint32_t current_depth = 0);
   template<typename T> void getRelatedWith(index_t individual, std::unordered_set<T>& res);
-  template<typename T> void getFrom(index_t individual, const T& property, std::unordered_set<T>& res);
-  template<typename T> std::unordered_set<T> getOn(IndividualBranch_t* individual, const T& property);
+  template<typename T> void getFrom(index_t individual, const T& property, std::unordered_set<T>& res, bool single_same = false);
+  template<typename T> std::unordered_set<T> getOn(IndividualBranch_t* individual, const T& property, bool single_same = false);
   template<typename T> void getWith(IndividualBranch_t* first_individual, index_t second_individual_index, std::unordered_set<T>& res, int depth);
   template<typename T> void getDomainOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth);
   template<typename T> void getRangeOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth);
@@ -192,6 +196,7 @@ private:
   void getDistincts(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);
   std::unordered_set<index_t> getSameId(const std::string& individual);
   std::unordered_set<index_t> getSameId(index_t individual);
+  void getLowestSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);
   void getSame(IndividualBranch_t* individual, std::unordered_set<IndividualBranch_t*>& res);
   void getSame(IndividualBranch_t* individual, std::vector<IndividualBranch_t*>& res);
   std::unordered_set<std::string> getSame(IndividualBranch_t* individual);

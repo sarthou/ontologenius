@@ -370,16 +370,17 @@ bool RosInterface::individualHandle(ontologenius::OntologeniusService::Request  
 bool RosInterface::sparqlHandle(ontologenius::OntologeniusSparqlService::Request &req,
                                 ontologenius::OntologeniusSparqlService::Response &res)
 {
-  std::vector<std::map<std::string, std::string>> results = sparql_.runStr(req.query);
+  std::pair<std::vector<std::string>, std::vector<std::vector<std::string>>> results = sparql_.runStr(req.query);
 
-  for(auto& result : results)
+  if(results.second.size())
+    res.names = results.first;
+
+  for(auto& result : results.second)
   {
     ontologenius::OntologeniusSparqlResponse tmp;
     for(auto& r : result)
-    {
-      tmp.names.push_back(r.first);
-      tmp.values.push_back(r.second);
-    }
+      tmp.values.push_back(r);
+    
     res.results.push_back(tmp);
   }
 

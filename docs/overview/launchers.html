@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Launchers | Ontologenius 0.3.0</title>
+  <title>Launchers | Ontologenius 0.3.1</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -224,6 +224,12 @@
 
         <p class="tip">All the internal files are setted to : $(find ontologenius)/file_intern/ontologenius.owl
           <br>Empty launchers have no files to load.</p>
+
+        <h2><i class="fas fa-angle-right"></i> Advanced use</h2>
+
+        <p>All launch files have an additional argument called <b>tcmalloc_path</b> which is used to locally set the LD_PRELOAD env variable in order to use custom allocators.
+           If you prefer other allocator than tcmalloc (like jemalloc) tou can use the same argument.
+        </p>
 
       </div>
     </div>

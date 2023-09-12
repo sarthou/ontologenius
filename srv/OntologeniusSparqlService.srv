@@ -1,4 +1,5 @@
 string query
 ---
+string[] names
 OntologeniusSparqlResponse[] results
 string error
