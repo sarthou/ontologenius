@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>SparqlClient Class (cpp) | Ontologenius 0.3.0</title>
+  <title>SparqlClient Class (cpp) | Ontologenius 0.3.1</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -135,7 +135,7 @@
           <table class="alignedsummary">
             <tbody>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="SparqlClient.html#SparqlClient">SparqlClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;OntologeniusSparqlResponse&gt; </td><td class="memItemRight bottomAlign"><b><a href="SparqlClient.html#call">call</a></b>(const std::string&amp; <i>query</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::pair&lt;std::vector&lt;std::string&gt;, std::vector&lt;OntologeniusSparqlResponse&gt;&gt; </td><td class="memItemRight bottomAlign"><b><a href="SparqlClient.html#call">call</a></b>(const std::string&amp; <i>query</i>)</td></tr>
             </tbody>
           </table>
         </div>
@@ -154,7 +154,7 @@
           <p>Constructs a sparql client.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
 
-          <h3 class="fn" id="call"><a name="call"></a><span class="type">std::vector&lt;OntologeniusSparqlResponse&gt; </span><span class="name">call</span>(const <span class="type">std::string</span>&amp; <i>query</i>)</h3>
+          <h3 class="fn" id="call"><a name="call"></a><span class="type">std::pair&lt;std::vector&lt;std::string&gt;, std::vector&lt;OntologeniusSparqlResponse&gt;&gt; </span><span class="name">call</span>(const <span class="type">std::string</span>&amp; <i>query</i>)</h3>
 
           <h2>Basic query Examples</h2>
 
@@ -168,67 +168,58 @@
           <p>You can also add the DISTINCT keyword just after the SELECT to ensure unique results.
               The following blocks are examples of possible patterns.</p>
 
-        <div class="code_block">
-          <p>Bedroom isA ?type</p>
-        </div>
-        <div class="code_block">
-          <p>results: </p>
-          <p>  - </p>
-          <p>    names: [type]</p>
-          <p>    values: [Room]</p>
-        </div>
-        <p>Give to class of Bedroom.</p>
+          <div class="code_block">
+            <p>Bedroom isA ?type</p>
+          </div>
+          <div class="code_block">
+            <p>names: [type]</p>
+            <p>results: </p>
+            <p>  - values: [Room]</p>
+          </div>
+          <p>Give to class of Bedroom.</p>
 
-        <div class="code_block">
-          <p>?table isA Table</p>
-        </div>
-        <div class="code_block">
-          <p>results: </p>
-          <p>  - </p>
-          <p>    names: [table]</p>
-          <p>    values: [Table2]</p>
-          <p>  - </p>
-          <p>    names: [table]</p>
-          <p>    values: [Table1]</p>
-        </div>
-        <p>Give all the tables.</p>
+          <div class="code_block">
+            <p>?table isA Table</p>
+          </div>
+          <div class="code_block">
+            <p>names: [table]</p>
+            <p>results: </p>
+            <p>  - values: [Table2]</p>
+            <p>  - values: [Table1]</p>
+          </div>
+          <p>Give all the tables.</p>
 
-        <div class="code_block">
-          <p>Table1 isIn ?room</p>
-        </div>
-        <div class="code_block">
-          <p>results: </p>
-          <p>  - </p>
-          <p>    names: [room]</p>
-          <p>    values: [Bedroom]</p>
-        </div>
-        <p>Give all the individuals for which the individual 'Table1' is in it.</p>
+          <div class="code_block">
+            <p>Table1 isIn ?room</p>
+          </div>
+          <div class="code_block">
+            <p>names: [room]</p>
+            <p>results: </p>
+            <p>  - values: [Bedroom]</p>
+          </div>
+          <p>Give all the individuals for which the individual 'Table1' is in it.</p>
 
-        <div class="code_block">
-          <p>?object isA Table. ?object isIn ?room</p>
-        </div>
-        <div class="code_block">
-          <p>results: </p>
-          <p>  - </p>
-          <p>    names: [object, room]</p>
-          <p>    values: [Table2, LivingRoom]</p>
-          <p>  - </p>
-          <p>    names: [object, room]</p>
-          <p>    values: [Table1, Bedroom]</p>
-        </div>
-        <p>Give all the individuals that are tables and the room in which they are.</p>
+          <div class="code_block">
+            <p>?object isA Table. ?object isIn ?room</p>
+          </div>
+          <div class="code_block">
+            <p>names: [object, room]</p>
+            <p>results: </p>
+            <p>  - values: [Table2, LivingRoom]</p>
+            <p>  - values: [Table1, Bedroom]</p>
+          </div>
+          <p>Give all the individuals that are tables and the room in which they are.</p>
 
-        <h2>Query with negation</h2>
-        <div class="code_block">
-          <p>?object isA Table NOT EXISTS { ?object isIn LivingRoom }</p>
-        </div>
-        <div class="code_block">
-          <p>results: </p>
-          <p>  - </p>
-          <p>    names: [object]</p>
-          <p>    values: [Table1]</p>
-        </div>
-        <p>Give all the individuals that are tables and not in the living room.</p>
+          <h2>Query with negation</h2>
+          <div class="code_block">
+            <p>?object isA Table NOT EXISTS { ?object isIn LivingRoom }</p>
+          </div>
+          <div class="code_block">
+            <p>names: [object]</p>
+            <p>results: </p>
+            <p>  - values: [Table1]</p>
+          </div>
+          <p>Give all the individuals that are tables and not in the living room.</p>
 
         </div>
       </div>

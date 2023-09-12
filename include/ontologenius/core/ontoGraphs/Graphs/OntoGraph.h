@@ -52,6 +52,9 @@ public:
   bool touch(const std::string& value);
   bool touch(index_t value);
 
+  bool existInInheritance(B* branch, const std::string& selector);
+  bool existInInheritance(B* branch, index_t selector);
+
   void getDownSafe(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
   void getUpSafe(B* branch, std::unordered_set<std::string>& res, int depth = -1, unsigned int current_depth = 0);
   void getDownSafe(B* branch, std::unordered_set<index_t>& res, int depth = -1, unsigned int current_depth = 0);
@@ -382,6 +385,34 @@ void OntoGraph<B>::amIA(B** me, std::map<std::string, B*>& vect, const std::stri
         vect.erase(it);
     }
   }
+}
+
+template <typename B>
+bool OntoGraph<B>::existInInheritance(B* branch, const std::string& selector)
+{
+  if(branch->value() == selector)
+    return true;
+  else
+  {
+    for(auto& mother : branch->mothers_)
+      if(existInInheritance(mother.elem, selector))
+        return true;
+  }
+  return false;
+}
+
+template <typename B>
+bool OntoGraph<B>::existInInheritance(B* branch, index_t selector)
+{
+  if(branch->get() == selector)
+    return true;
+  else
+  {
+    for(auto& mother : branch->mothers_)
+      if(existInInheritance(mother.elem, selector))
+        return true;
+  }
+  return false;
 }
 
 template <typename B>
