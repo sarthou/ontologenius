@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
-<rdf:RDF xmlns="ontologenius/attribute#"
-     xml:base="ontologenius/attribute"
+<rdf:RDF xmlns="https://github.com/sarthou/ontologenius/blob/master/files/attribute#"
+     xml:base="https://github.com/sarthou/ontologenius/blob/master/files/attribute"
+     xmlns:attribute="https://github.com/sarthou/ontologenius/blob/master/files/attribute#"
+     xmlns:position_property="https://github.com/sarthou/ontologenius/blob/master/files/positionProperty#"
+     xmlns:onto="ontologenius#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-     <owl:Ontology rdf:about="ontologenius/attribute">
-         <owl:imports rdf:resource="ontologenius/files/positionProperty"/>
+     <owl:Ontology rdf:about="https://github.com/sarthou/ontologenius/blob/master/files/attribute">
+         <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/positionProperty"/>
      </owl:Ontology>
 
 
@@ -23,10 +26,10 @@
 
 
 
-    <!-- ontologenius/attribute#activity -->
+    <!-- attribute#activity -->
 
-    <owl:Class rdf:about="ontologenius/attribute#activity">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#attribute"/>
+    <owl:Class rdf:about="attribute#activity">
+        <rdfs:subClassOf rdf:resource="attribute#attribute"/>
         <rdfs:comment>explain if an entity can move by it self</rdfs:comment>
         <rdfs:label xml:lang="en">activity</rdfs:label>
         <rdfs:label xml:lang="fr">activité</rdfs:label>
@@ -34,38 +37,38 @@
 
 
 
-    <!-- ontologenius/attribute#actuator -->
+    <!-- attribute#actuator -->
 
-    <owl:Class rdf:about="ontologenius/attribute#actuator">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#technicalObject"/>
+    <owl:Class rdf:about="attribute#actuator">
+        <rdfs:subClassOf rdf:resource="attribute#technicalObject"/>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#adult -->
+    <!-- attribute#adult -->
 
-    <owl:Class rdf:about="ontologenius/attribute#adult">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#age"/>
+    <owl:Class rdf:about="attribute#adult">
+        <rdfs:subClassOf rdf:resource="attribute#age"/>
         <rdfs:label xml:lang="fr">adult</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#affair -->
+    <!-- attribute#affair -->
 
-    <owl:Class rdf:about="ontologenius/attribute#affair">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#nonLiving"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#object"/>
+    <owl:Class rdf:about="attribute#affair">
+        <rdfs:subClassOf rdf:resource="attribute#nonLiving"/>
+        <rdfs:subClassOf rdf:resource="attribute#object"/>
         <rdfs:comment>affairs are every little non alive objects</rdfs:comment>
         <rdfs:label xml:lang="fr">affaire</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#age -->
+    <!-- attribute#age -->
 
-    <owl:Class rdf:about="ontologenius/attribute#age">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#attribute"/>
+    <owl:Class rdf:about="attribute#age">
+        <rdfs:subClassOf rdf:resource="attribute#attribute"/>
         <rdfs:comment>approximated age description</rdfs:comment>
         <rdfs:label xml:lang="en">age</rdfs:label>
         <rdfs:label xml:lang="fr">âge</rdfs:label>
@@ -73,75 +76,75 @@
 
 
 
-    <!-- ontologenius/attribute#agent -->
+    <!-- attribute#agent -->
 
-    <owl:Class rdf:about="ontologenius/attribute#agent">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#animate"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#entity"/>
+    <owl:Class rdf:about="attribute#agent">
+        <rdfs:subClassOf rdf:resource="attribute#animate"/>
+        <rdfs:subClassOf rdf:resource="attribute#entity"/>
         <rdfs:comment>an agent is an animated entity</rdfs:comment>
         <rdfs:label xml:lang="fr">agent</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#animal -->
+    <!-- attribute#animal -->
 
-    <owl:Class rdf:about="ontologenius/attribute#animal">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#agent"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#living"/>
+    <owl:Class rdf:about="attribute#animal">
+        <rdfs:subClassOf rdf:resource="attribute#agent"/>
+        <rdfs:subClassOf rdf:resource="attribute#living"/>
         <rdfs:label xml:lang="fr">animal</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#animate -->
+    <!-- attribute#animate -->
 
-    <owl:Class rdf:about="ontologenius/attribute#animate">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#activity"/>
-        <owl:disjointWith rdf:resource="ontologenius/attribute#inanimate"/>
+    <owl:Class rdf:about="attribute#animate">
+        <rdfs:subClassOf rdf:resource="attribute#activity"/>
+        <owl:disjointWith rdf:resource="attribute#inanimate"/>
         <rdfs:label xml:lang="fr">animé</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#area -->
+    <!-- attribute#area -->
 
-    <owl:Class rdf:about="ontologenius/attribute#area">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#attribute"/>
+    <owl:Class rdf:about="attribute#area">
+        <rdfs:subClassOf rdf:resource="attribute#attribute"/>
         <rdfs:label xml:lang="fr">zone</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#arm -->
+    <!-- attribute#arm -->
 
-    <owl:Class rdf:about="ontologenius/attribute#arm">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#joint"/>
+    <owl:Class rdf:about="attribute#arm">
+        <rdfs:subClassOf rdf:resource="attribute#joint"/>
         <rdfs:label xml:lang="fr">bras</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#attribute -->
+    <!-- attribute#attribute -->
 
-    <owl:Class rdf:about="ontologenius/attribute#attribute">
+    <owl:Class rdf:about="attribute#attribute">
         <rdfs:label xml:lang="fr">attribut</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#bed -->
+    <!-- attribute#bed -->
 
-    <owl:Class rdf:about="ontologenius/attribute#bed">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#furniture"/>
+    <owl:Class rdf:about="attribute#bed">
+        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#black -->
+    <!-- attribute#black -->
 
-    <owl:Class rdf:about="ontologenius/attribute#black">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#color"/>
+    <owl:Class rdf:about="attribute#black">
+        <rdfs:subClassOf rdf:resource="attribute#color"/>
         <rdfs:label xml:lang="en">black</rdfs:label>
         <rdfs:label xml:lang="fi">musta</rdfs:label>
         <rdfs:label xml:lang="fr">noir</rdfs:label>
@@ -149,10 +152,10 @@
 
 
 
-    <!-- ontologenius/attribute#blue -->
+    <!-- attribute#blue -->
 
-    <owl:Class rdf:about="ontologenius/attribute#blue">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#color"/>
+    <owl:Class rdf:about="attribute#blue">
+        <rdfs:subClassOf rdf:resource="attribute#color"/>
         <rdfs:label xml:lang="fr">bleu</rdfs:label>
         <rdfs:label xml:lang="en">blue</rdfs:label>
         <rdfs:label xml:lang="fi">sininen</rdfs:label>
@@ -160,74 +163,74 @@
 
 
 
-    <!-- ontologenius/attribute#blueBook -->
+    <!-- attribute#blueBook -->
 
-    <owl:Class rdf:about="ontologenius/attribute#blueBook">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#blue"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#book"/>
+    <owl:Class rdf:about="attribute#blueBook">
+        <rdfs:subClassOf rdf:resource="attribute#blue"/>
+        <rdfs:subClassOf rdf:resource="attribute#book"/>
         <rdfs:label xml:lang="en">blue book</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#blueLamp -->
+    <!-- attribute#blueLamp -->
 
-    <owl:Class rdf:about="ontologenius/attribute#blueLamp">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#blue"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#lamp"/>
+    <owl:Class rdf:about="attribute#blueLamp">
+        <rdfs:subClassOf rdf:resource="attribute#blue"/>
+        <rdfs:subClassOf rdf:resource="attribute#lamp"/>
         <rdfs:label xml:lang="en">blue lamp</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#book -->
+    <!-- attribute#book -->
 
-    <owl:Class rdf:about="ontologenius/attribute#book">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#affair"/>
+    <owl:Class rdf:about="attribute#book">
+        <rdfs:subClassOf rdf:resource="attribute#affair"/>
         <rdfs:label xml:lang="fr">livre</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#box -->
+    <!-- attribute#box -->
 
-    <owl:Class rdf:about="ontologenius/attribute#box">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#affair"/>
+    <owl:Class rdf:about="attribute#box">
+        <rdfs:subClassOf rdf:resource="attribute#affair"/>
         <rdfs:label xml:lang="fr">boite</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#cat -->
+    <!-- attribute#cat -->
 
-    <owl:Class rdf:about="ontologenius/attribute#cat">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#animal"/>
+    <owl:Class rdf:about="attribute#cat">
+        <rdfs:subClassOf rdf:resource="attribute#animal"/>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#chair -->
+    <!-- attribute#chair -->
 
-    <owl:Class rdf:about="ontologenius/attribute#chair">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#furniture"/>
+    <owl:Class rdf:about="attribute#chair">
+        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#child -->
+    <!-- attribute#child -->
 
-    <owl:Class rdf:about="ontologenius/attribute#child">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#human"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#young"/>
+    <owl:Class rdf:about="attribute#child">
+        <rdfs:subClassOf rdf:resource="attribute#human"/>
+        <rdfs:subClassOf rdf:resource="attribute#young"/>
         <rdfs:label xml:lang="fr">enfant</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#color -->
+    <!-- attribute#color -->
 
-    <owl:Class rdf:about="ontologenius/attribute#color">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#attribute"/>
+    <owl:Class rdf:about="attribute#color">
+        <rdfs:subClassOf rdf:resource="attribute#attribute"/>
         <rdfs:label xml:lang="en">color</rdfs:label>
         <rdfs:label xml:lang="fr">couleur</rdfs:label>
         <rdfs:label xml:lang="fi">väri</rdfs:label>
@@ -235,62 +238,62 @@
 
 
 
-    <!-- ontologenius/attribute#conveyance -->
+    <!-- attribute#conveyance -->
 
-    <owl:Class rdf:about="ontologenius/attribute#conveyance">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#technicalObject"/>
+    <owl:Class rdf:about="attribute#conveyance">
+        <rdfs:subClassOf rdf:resource="attribute#technicalObject"/>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#cube -->
+    <!-- attribute#cube -->
 
-    <owl:Class rdf:about="ontologenius/attribute#cube">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#affair"/>
-        <positionProperty:hasColor ont:class="ontologenius/attribute#black"/>
+    <owl:Class rdf:about="attribute#cube">
+        <rdfs:subClassOf rdf:resource="attribute#affair"/>
+        <position_property:hasColor rdf:resource="attribute#black"/>
         <rdfs:label xml:lang="fr">cube</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#cup -->
+    <!-- attribute#cup -->
 
-    <owl:Class rdf:about="ontologenius/attribute#cup">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#affair"/>
+    <owl:Class rdf:about="attribute#cup">
+        <rdfs:subClassOf rdf:resource="attribute#affair"/>
         <rdfs:label xml:lang="fr">tasse</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#desk -->
+    <!-- attribute#desk -->
 
-    <owl:Class rdf:about="ontologenius/attribute#desk">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#furniture"/>
+    <owl:Class rdf:about="attribute#desk">
+        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#dog -->
+    <!-- attribute#dog -->
 
-    <owl:Class rdf:about="ontologenius/attribute#dog">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#animal"/>
-        <positionProperty:hasTail onto:probability="0.5" rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</positionProperty:hasTail>
+    <owl:Class rdf:about="attribute#dog">
+        <rdfs:subClassOf rdf:resource="attribute#animal"/>
+        <position_property:hasTail onto:probability="0.5" rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</position_property:hasTail>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#door -->
+    <!-- attribute#door -->
 
-    <owl:Class rdf:about="ontologenius/attribute#door">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#furniture"/>
+    <owl:Class rdf:about="attribute#door">
+        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#entity -->
+    <!-- attribute#entity -->
 
-    <owl:Class rdf:about="ontologenius/attribute#entity">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#attribute"/>
+    <owl:Class rdf:about="attribute#entity">
+        <rdfs:subClassOf rdf:resource="attribute#attribute"/>
         <rdfs:comment>entity can describe every physical things like human, robot, objetcs, ...</rdfs:comment>
         <rdfs:label xml:lang="en">entity</rdfs:label>
         <rdfs:label xml:lang="fr">entité</rdfs:label>
@@ -298,421 +301,421 @@
 
 
 
-    <!-- ontologenius/attribute#fan -->
+    <!-- attribute#fan -->
 
-    <owl:Class rdf:about="ontologenius/attribute#fan">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#actuator"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#affair"/>
+    <owl:Class rdf:about="attribute#fan">
+        <rdfs:subClassOf rdf:resource="attribute#actuator"/>
+        <rdfs:subClassOf rdf:resource="attribute#affair"/>
         <rdfs:label xml:lang="fr">ventilateur</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#female -->
+    <!-- attribute#female -->
 
-    <owl:Class rdf:about="ontologenius/attribute#female">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#gender"/>
-        <owl:disjointWith rdf:resource="ontologenius/attribute#male"/>
+    <owl:Class rdf:about="attribute#female">
+        <rdfs:subClassOf rdf:resource="attribute#gender"/>
+        <owl:disjointWith rdf:resource="attribute#male"/>
         <rdfs:label xml:lang="fr">féminin</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#fish -->
+    <!-- attribute#fish -->
 
-    <owl:Class rdf:about="ontologenius/attribute#fish">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#animal"/>
+    <owl:Class rdf:about="attribute#fish">
+        <rdfs:subClassOf rdf:resource="attribute#animal"/>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#foot -->
+    <!-- attribute#foot -->
 
-    <owl:Class rdf:about="ontologenius/attribute#foot">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#joint"/>
+    <owl:Class rdf:about="attribute#foot">
+        <rdfs:subClassOf rdf:resource="attribute#joint"/>
         <rdfs:label xml:lang="fr">pied</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#furniture -->
+    <!-- attribute#furniture -->
 
-    <owl:Class rdf:about="ontologenius/attribute#furniture">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#nonLiving"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#object"/>
+    <owl:Class rdf:about="attribute#furniture">
+        <rdfs:subClassOf rdf:resource="attribute#nonLiving"/>
+        <rdfs:subClassOf rdf:resource="attribute#object"/>
         <rdfs:label xml:lang="fr">meuble</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#gender -->
+    <!-- attribute#gender -->
 
-    <owl:Class rdf:about="ontologenius/attribute#gender">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#attribute"/>
+    <owl:Class rdf:about="attribute#gender">
+        <rdfs:subClassOf rdf:resource="attribute#attribute"/>
         <rdfs:label xml:lang="en">gender</rdfs:label>
         <rdfs:label xml:lang="fr">genre</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#grass -->
+    <!-- attribute#grass -->
 
-    <owl:Class rdf:about="ontologenius/attribute#grass">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#green"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#vegetal"/>
-        <owl:disjointWith rdf:resource="ontologenius/attribute#tree"/>
+    <owl:Class rdf:about="attribute#grass">
+        <rdfs:subClassOf rdf:resource="attribute#green"/>
+        <rdfs:subClassOf rdf:resource="attribute#vegetal"/>
+        <owl:disjointWith rdf:resource="attribute#tree"/>
         <rdfs:label xml:lang="fr">herbe</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#green -->
+    <!-- attribute#green -->
 
-    <owl:Class rdf:about="ontologenius/attribute#green">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#color"/>
+    <owl:Class rdf:about="attribute#green">
+        <rdfs:subClassOf rdf:resource="attribute#color"/>
         <rdfs:label xml:lang="fr">vert</rdfs:label>
         <rdfs:label xml:lang="fi">vihreä</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#greenCup -->
+    <!-- attribute#greenCup -->
 
-    <owl:Class rdf:about="ontologenius/attribute#greenCup">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#cup"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#green"/>
+    <owl:Class rdf:about="attribute#greenCup">
+        <rdfs:subClassOf rdf:resource="attribute#cup"/>
+        <rdfs:subClassOf rdf:resource="attribute#green"/>
         <rdfs:label xml:lang="en">green cup</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#hand -->
+    <!-- attribute#hand -->
 
-    <owl:Class rdf:about="ontologenius/attribute#hand">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#joint"/>
+    <owl:Class rdf:about="attribute#hand">
+        <rdfs:subClassOf rdf:resource="attribute#joint"/>
         <rdfs:label xml:lang="fr">main</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#head -->
+    <!-- attribute#head -->
 
-    <owl:Class rdf:about="ontologenius/attribute#head">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#joint"/>
+    <owl:Class rdf:about="attribute#head">
+        <rdfs:subClassOf rdf:resource="attribute#joint"/>
         <rdfs:label xml:lang="fr">tête</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#human -->
+    <!-- attribute#human -->
 
-    <owl:Class rdf:about="ontologenius/attribute#human">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#agent"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#living"/>
-        <positionProperty:hasMother rdf:resource="ontologenius/testIndividuals#woman"/>
-        <positionProperty:hasFather rdf:resource="ontologenius/testIndividuals#man"/>
-        <positionProperty:hasLeg rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</positionProperty:hasLeg>
+    <owl:Class rdf:about="attribute#human">
+        <rdfs:subClassOf rdf:resource="attribute#agent"/>
+        <rdfs:subClassOf rdf:resource="attribute#living"/>
+        <position_property:hasMother rdf:resource="ontologenius/testIndividuals#woman"/>
+        <position_property:hasFather rdf:resource="ontologenius/testIndividuals#man"/>
+        <position_property:hasLeg rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</position_property:hasLeg>
         <rdfs:label xml:lang="fr">humain</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#inanimate -->
+    <!-- attribute#inanimate -->
 
-    <owl:Class rdf:about="ontologenius/attribute#inanimate">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#activity"/>
+    <owl:Class rdf:about="attribute#inanimate">
+        <rdfs:subClassOf rdf:resource="attribute#activity"/>
         <rdfs:label xml:lang="fr">inanimé</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#indoorArea -->
+    <!-- attribute#indoorArea -->
 
-    <owl:Class rdf:about="ontologenius/attribute#indoorArea">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#area"/>
-        <owl:disjointWith rdf:resource="ontologenius/attribute#outdoorArea"/>
+    <owl:Class rdf:about="attribute#indoorArea">
+        <rdfs:subClassOf rdf:resource="attribute#area"/>
+        <owl:disjointWith rdf:resource="attribute#outdoorArea"/>
         <rdfs:label xml:lang="en">indoor area</rdfs:label>
         <rdfs:label xml:lang="fr">zone intérieure</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#joint -->
+    <!-- attribute#joint -->
 
-    <owl:Class rdf:about="ontologenius/attribute#joint">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#entity"/>
-	<rdfs:subClassOf rdf:resource="ontologenius/attribute#animate"/>
+    <owl:Class rdf:about="attribute#joint">
+        <rdfs:subClassOf rdf:resource="attribute#entity"/>
+	<rdfs:subClassOf rdf:resource="attribute#animate"/>
         <rdfs:comment>joints are parts of agent</rdfs:comment>
         <rdfs:label xml:lang="fr">jointure</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#lamp -->
+    <!-- attribute#lamp -->
 
-    <owl:Class rdf:about="ontologenius/attribute#lamp">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#actuator"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#affair"/>
+    <owl:Class rdf:about="attribute#lamp">
+        <rdfs:subClassOf rdf:resource="attribute#actuator"/>
+        <rdfs:subClassOf rdf:resource="attribute#affair"/>
         <rdfs:label xml:lang="fr">lampe</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#leg -->
+    <!-- attribute#leg -->
 
-    <owl:Class rdf:about="ontologenius/attribute#leg">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#joint"/>
+    <owl:Class rdf:about="attribute#leg">
+        <rdfs:subClassOf rdf:resource="attribute#joint"/>
         <rdfs:label xml:lang="fr">jambe</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#living -->
+    <!-- attribute#living -->
 
-    <owl:Class rdf:about="ontologenius/attribute#living">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#vitality"/>
-        <owl:disjointWith rdf:resource="ontologenius/attribute#nonLiving"/>
+    <owl:Class rdf:about="attribute#living">
+        <rdfs:subClassOf rdf:resource="attribute#vitality"/>
+        <owl:disjointWith rdf:resource="attribute#nonLiving"/>
         <rdfs:label xml:lang="fr">vivant</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#luminositySensor -->
+    <!-- attribute#luminositySensor -->
 
-    <owl:Class rdf:about="ontologenius/attribute#luminositySensor">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#sensor"/>
+    <owl:Class rdf:about="attribute#luminositySensor">
+        <rdfs:subClassOf rdf:resource="attribute#sensor"/>
         <rdfs:label xml:lang="fr">capteur de luminosité</rdfs:label>
         <rdfs:label xml:lang="en">luminosity sensor</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#male -->
+    <!-- attribute#male -->
 
-    <owl:Class rdf:about="ontologenius/attribute#male">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#gender"/>
+    <owl:Class rdf:about="attribute#male">
+        <rdfs:subClassOf rdf:resource="attribute#gender"/>
         <rdfs:label xml:lang="fr">masculin</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#man -->
+    <!-- attribute#man -->
 
-    <owl:Class rdf:about="ontologenius/attribute#man">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#human"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#male"/>
-        <owl:disjointWith rdf:resource="ontologenius/attribute#woman"/>
-        <positionProperty:hasLeg rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</positionProperty:hasLeg>
+    <owl:Class rdf:about="attribute#man">
+        <rdfs:subClassOf rdf:resource="attribute#human"/>
+        <rdfs:subClassOf rdf:resource="attribute#male"/>
+        <owl:disjointWith rdf:resource="attribute#woman"/>
+        <position_property:hasLeg rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</position_property:hasLeg>
         <rdfs:label xml:lang="fr">homme</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#motionSensor -->
+    <!-- attribute#motionSensor -->
 
-    <owl:Class rdf:about="ontologenius/attribute#motionSensor">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#sensor"/>
+    <owl:Class rdf:about="attribute#motionSensor">
+        <rdfs:subClassOf rdf:resource="attribute#sensor"/>
         <rdfs:label xml:lang="fr">capteur de mouvement</rdfs:label>
         <rdfs:label xml:lang="en">motion sensor</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#nonLiving -->
+    <!-- attribute#nonLiving -->
 
-    <owl:Class rdf:about="ontologenius/attribute#nonLiving">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#vitality"/>
+    <owl:Class rdf:about="attribute#nonLiving">
+        <rdfs:subClassOf rdf:resource="attribute#vitality"/>
         <rdfs:label xml:lang="fr">non vivant</rdfs:label>
         <rdfs:label xml:lang="en">non-living</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#object -->
+    <!-- attribute#object -->
 
-    <owl:Class rdf:about="ontologenius/attribute#object">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#inanimate"/>
+    <owl:Class rdf:about="attribute#object">
+        <rdfs:subClassOf rdf:resource="attribute#entity"/>
+        <rdfs:subClassOf rdf:resource="attribute#inanimate"/>
         <rdfs:comment>an object is an inanimated entity</rdfs:comment>
         <rdfs:label xml:lang="fr">objet</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#old -->
+    <!-- attribute#old -->
 
-    <owl:Class rdf:about="ontologenius/attribute#old">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#age"/>
+    <owl:Class rdf:about="attribute#old">
+        <rdfs:subClassOf rdf:resource="attribute#age"/>
         <rdfs:label xml:lang="fr">vieux</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#outdoorArea -->
+    <!-- attribute#outdoorArea -->
 
-    <owl:Class rdf:about="ontologenius/attribute#outdoorArea">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#area"/>
+    <owl:Class rdf:about="attribute#outdoorArea">
+        <rdfs:subClassOf rdf:resource="attribute#area"/>
         <rdfs:label xml:lang="en">outdoor area</rdfs:label>
         <rdfs:label xml:lang="fr">zone extérieur</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#pepper -->
+    <!-- attribute#pepper -->
 
-    <owl:Class rdf:about="ontologenius/attribute#pepper">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#robot"/>
-        <owl:disjointWith rdf:resource="ontologenius/attribute#pr2"/>
+    <owl:Class rdf:about="attribute#pepper">
+        <rdfs:subClassOf rdf:resource="attribute#robot"/>
+        <owl:disjointWith rdf:resource="attribute#pr2"/>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#pink -->
+    <!-- attribute#pink -->
 
-    <owl:Class rdf:about="ontologenius/attribute#pink">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#color"/>
+    <owl:Class rdf:about="attribute#pink">
+        <rdfs:subClassOf rdf:resource="attribute#color"/>
         <rdfs:label xml:lang="fi">pinkki</rdfs:label>
         <rdfs:label xml:lang="fr">rose</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#plant -->
+    <!-- attribute#plant -->
 
-    <owl:Class rdf:about="ontologenius/attribute#plant">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#vegetal"/>
+    <owl:Class rdf:about="attribute#plant">
+        <rdfs:subClassOf rdf:resource="attribute#vegetal"/>
         <rdfs:label xml:lang="fr">plante</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#pr2 -->
+    <!-- attribute#pr2 -->
 
-    <owl:Class rdf:about="ontologenius/attribute#pr2">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#robot"/>
+    <owl:Class rdf:about="attribute#pr2">
+        <rdfs:subClassOf rdf:resource="attribute#robot"/>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#presenceSensor -->
+    <!-- attribute#presenceSensor -->
 
-    <owl:Class rdf:about="ontologenius/attribute#presenceSensor">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#sensor"/>
+    <owl:Class rdf:about="attribute#presenceSensor">
+        <rdfs:subClassOf rdf:resource="attribute#sensor"/>
         <rdfs:label xml:lang="fr">capteur de présence</rdfs:label>
         <rdfs:label xml:lang="en">presence sensor</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#purple -->
+    <!-- attribute#purple -->
 
-    <owl:Class rdf:about="ontologenius/attribute#purple">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#color"/>
+    <owl:Class rdf:about="attribute#purple">
+        <rdfs:subClassOf rdf:resource="attribute#color"/>
         <rdfs:label xml:lang="fr">violet</rdfs:label>
         <rdfs:label xml:lang="fi">violetti</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#red -->
+    <!-- attribute#red -->
 
-    <owl:Class rdf:about="ontologenius/attribute#red">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#color"/>
+    <owl:Class rdf:about="attribute#red">
+        <rdfs:subClassOf rdf:resource="attribute#color"/>
         <rdfs:label xml:lang="fi">punainen</rdfs:label>
         <rdfs:label xml:lang="fr">rouge</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#redBed -->
+    <!-- attribute#redBed -->
 
-    <owl:Class rdf:about="ontologenius/attribute#redBed">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bed"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#red"/>
+    <owl:Class rdf:about="attribute#redBed">
+        <rdfs:subClassOf rdf:resource="attribute#bed"/>
+        <rdfs:subClassOf rdf:resource="attribute#red"/>
         <rdfs:label xml:lang="en">red bed</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#redFan -->
+    <!-- attribute#redFan -->
 
-    <owl:Class rdf:about="ontologenius/attribute#redFan">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#fan"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#red"/>
+    <owl:Class rdf:about="attribute#redFan">
+        <rdfs:subClassOf rdf:resource="attribute#fan"/>
+        <rdfs:subClassOf rdf:resource="attribute#red"/>
         <rdfs:label xml:lang="en">red fan</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#redFish -->
+    <!-- attribute#redFish -->
 
-    <owl:Class rdf:about="ontologenius/attribute#redFish">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#fish"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#red"/>
+    <owl:Class rdf:about="attribute#redFish">
+        <rdfs:subClassOf rdf:resource="attribute#fish"/>
+        <rdfs:subClassOf rdf:resource="attribute#red"/>
         <rdfs:label xml:lang="en">red fish</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#robot -->
+    <!-- attribute#robot -->
 
-    <owl:Class rdf:about="ontologenius/attribute#robot">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#agent"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#nonLiving"/>
+    <owl:Class rdf:about="attribute#robot">
+        <rdfs:subClassOf rdf:resource="attribute#agent"/>
+        <rdfs:subClassOf rdf:resource="attribute#nonLiving"/>
         <rdfs:label xml:lang="fr">robot</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#sensor -->
+    <!-- attribute#sensor -->
 
-    <owl:Class rdf:about="ontologenius/attribute#sensor">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#affair"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#technicalObject"/>
+    <owl:Class rdf:about="attribute#sensor">
+        <rdfs:subClassOf rdf:resource="attribute#affair"/>
+        <rdfs:subClassOf rdf:resource="attribute#technicalObject"/>
         <rdfs:label xml:lang="fr">capteur</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#shelf -->
+    <!-- attribute#shelf -->
 
-    <owl:Class rdf:about="ontologenius/attribute#shelf">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#furniture"/>
+    <owl:Class rdf:about="attribute#shelf">
+        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#sofa -->
+    <!-- attribute#sofa -->
 
-    <owl:Class rdf:about="ontologenius/attribute#sofa">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#furniture"/>
+    <owl:Class rdf:about="attribute#sofa">
+        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#table -->
+    <!-- attribute#table -->
 
-    <owl:Class rdf:about="ontologenius/attribute#table">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#furniture"/>
+    <owl:Class rdf:about="attribute#table">
+        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#tape -->
+    <!-- attribute#tape -->
 
-    <owl:Class rdf:about="ontologenius/attribute#tape">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#affair"/>
+    <owl:Class rdf:about="attribute#tape">
+        <rdfs:subClassOf rdf:resource="attribute#affair"/>
         <rdfs:label xml:lang="fr">cassette</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#technicalObject -->
+    <!-- attribute#technicalObject -->
 
-    <owl:Class rdf:about="ontologenius/attribute#technicalObject">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#nonLiving"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#object"/>
-        <owl:disjointWith rdf:resource="ontologenius/attribute#vegetal"/>
+    <owl:Class rdf:about="attribute#technicalObject">
+        <rdfs:subClassOf rdf:resource="attribute#nonLiving"/>
+        <rdfs:subClassOf rdf:resource="attribute#object"/>
+        <owl:disjointWith rdf:resource="attribute#vegetal"/>
         <rdfs:comment>a technical object can also be an affair or a furniture</rdfs:comment>
         <rdfs:label xml:lang="fr">objet technique</rdfs:label>
         <rdfs:label xml:lang="en">technical object</rdfs:label>
@@ -722,58 +725,58 @@ furniture</rdfs:seeAlso>
 
 
 
-    <!-- ontologenius/attribute#temperatureSensor -->
+    <!-- attribute#temperatureSensor -->
 
-    <owl:Class rdf:about="ontologenius/attribute#temperatureSensor">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#sensor"/>
+    <owl:Class rdf:about="attribute#temperatureSensor">
+        <rdfs:subClassOf rdf:resource="attribute#sensor"/>
         <rdfs:label xml:lang="fr">capteur de température</rdfs:label>
         <rdfs:label xml:lang="en">temperature sensor</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#torso -->
+    <!-- attribute#torso -->
 
-    <owl:Class rdf:about="ontologenius/attribute#torso">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#joint"/>
+    <owl:Class rdf:about="attribute#torso">
+        <rdfs:subClassOf rdf:resource="attribute#joint"/>
         <rdfs:label xml:lang="fr">torse</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#trashbin -->
+    <!-- attribute#trashbin -->
 
-    <owl:Class rdf:about="ontologenius/attribute#trashbin">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#affair"/>
+    <owl:Class rdf:about="attribute#trashbin">
+        <rdfs:subClassOf rdf:resource="attribute#affair"/>
         <rdfs:label xml:lang="fr">poubelle</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#tree -->
+    <!-- attribute#tree -->
 
-    <owl:Class rdf:about="ontologenius/attribute#tree">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#green"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#vegetal"/>
+    <owl:Class rdf:about="attribute#tree">
+        <rdfs:subClassOf rdf:resource="attribute#green"/>
+        <rdfs:subClassOf rdf:resource="attribute#vegetal"/>
         <rdfs:label xml:lang="fr">arbre</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#vegetal -->
+    <!-- attribute#vegetal -->
 
-    <owl:Class rdf:about="ontologenius/attribute#vegetal">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#living"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#object"/>
+    <owl:Class rdf:about="attribute#vegetal">
+        <rdfs:subClassOf rdf:resource="attribute#living"/>
+        <rdfs:subClassOf rdf:resource="attribute#object"/>
         <rdfs:label xml:lang="fr">végétal</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#vitality -->
+    <!-- attribute#vitality -->
 
-    <owl:Class rdf:about="ontologenius/attribute#vitality">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#attribute"/>
+    <owl:Class rdf:about="attribute#vitality">
+        <rdfs:subClassOf rdf:resource="attribute#attribute"/>
         <rdfs:comment>vitality describe if an entity is alive or not</rdfs:comment>
         <rdfs:label xml:lang="en">vitality</rdfs:label>
         <rdfs:label xml:lang="fr">vitalité</rdfs:label>
@@ -782,126 +785,126 @@ furniture</rdfs:seeAlso>
 
 
 
-    <!-- ontologenius/attribute#white -->
+    <!-- attribute#white -->
 
-    <owl:Class rdf:about="ontologenius/attribute#white">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#color"/>
+    <owl:Class rdf:about="attribute#white">
+        <rdfs:subClassOf rdf:resource="attribute#color"/>
         <rdfs:label xml:lang="fr">blanc</rdfs:label>
         <rdfs:label xml:lang="fi">valkoinen</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#woman -->
+    <!-- attribute#woman -->
 
-    <owl:Class rdf:about="ontologenius/attribute#woman">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#female"/>
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#human"/>
+    <owl:Class rdf:about="attribute#woman">
+        <rdfs:subClassOf rdf:resource="attribute#female"/>
+        <rdfs:subClassOf rdf:resource="attribute#human"/>
         <rdfs:label xml:lang="fr">femme</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#yellow -->
+    <!-- attribute#yellow -->
 
-    <owl:Class rdf:about="ontologenius/attribute#yellow">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#color"/>
+    <owl:Class rdf:about="attribute#yellow">
+        <rdfs:subClassOf rdf:resource="attribute#color"/>
         <rdfs:label xml:lang="fr">jaune</rdfs:label>
         <rdfs:label xml:lang="fi">keltainen</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#young -->
+    <!-- attribute#young -->
 
-    <owl:Class rdf:about="ontologenius/attribute#young">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#age"/>
+    <owl:Class rdf:about="attribute#young">
+        <rdfs:subClassOf rdf:resource="attribute#age"/>
         <rdfs:label xml:lang="fr">jeune</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#bird -->
+    <!-- attribute#bird -->
 
-    <owl:Class rdf:about="ontologenius/attribute#bird">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#animal"/>
+    <owl:Class rdf:about="attribute#bird">
+        <rdfs:subClassOf rdf:resource="attribute#animal"/>
         <rdfs:label xml:lang="fr">oiseau</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#Penguin -->
+    <!-- attribute#Penguin -->
 
-    <owl:Class rdf:about="ontologenius/attribute#Penguin">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
-        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</positionProperty:canFly>
+    <owl:Class rdf:about="attribute#Penguin">
+        <rdfs:subClassOf rdf:resource="attribute#bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
         <rdfs:label xml:lang="fr">manchot</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#Ostrich -->
+    <!-- attribute#Ostrich -->
 
-    <owl:Class rdf:about="ontologenius/attribute#Ostrich">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
-        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</positionProperty:canFly>
+    <owl:Class rdf:about="attribute#Ostrich">
+        <rdfs:subClassOf rdf:resource="attribute#bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
         <rdfs:label xml:lang="fr">autruche</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#Takahe -->
+    <!-- attribute#Takahe -->
 
-    <owl:Class rdf:about="ontologenius/attribute#Takahe">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
-        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</positionProperty:canFly>
+    <owl:Class rdf:about="attribute#Takahe">
+        <rdfs:subClassOf rdf:resource="attribute#bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
         <rdfs:label xml:lang="fr">takahe</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#Kiwi -->
+    <!-- attribute#Kiwi -->
 
-    <owl:Class rdf:about="ontologenius/attribute#Kiwi">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
-        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</positionProperty:canFly>
+    <owl:Class rdf:about="attribute#Kiwi">
+        <rdfs:subClassOf rdf:resource="attribute#bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
         <rdfs:label xml:lang="fr">kiwi</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#Cassowary -->
+    <!-- attribute#Cassowary -->
 
-    <owl:Class rdf:about="ontologenius/attribute#Cassowary">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
-        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</positionProperty:canFly>
+    <owl:Class rdf:about="attribute#Cassowary">
+        <rdfs:subClassOf rdf:resource="attribute#bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#Kakapo -->
+    <!-- attribute#Kakapo -->
 
-    <owl:Class rdf:about="ontologenius/attribute#Kakapo">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
-        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</positionProperty:canFly>
+    <owl:Class rdf:about="attribute#Kakapo">
+        <rdfs:subClassOf rdf:resource="attribute#bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#Canary -->
+    <!-- attribute#Canary -->
 
-    <owl:Class rdf:about="ontologenius/attribute#Canary">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
-        <positionProperty:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">true</positionProperty:canFly>
+    <owl:Class rdf:about="attribute#Canary">
+        <rdfs:subClassOf rdf:resource="attribute#bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">true</attribute:canFly>
         <rdfs:label xml:lang="fr">canari</rdfs:label>
     </owl:Class>
 
 
 
-    <!-- ontologenius/attribute#Dove -->
+    <!-- attribute#Dove -->
 
-    <owl:Class rdf:about="ontologenius/attribute#Dove">
-        <rdfs:subClassOf rdf:resource="ontologenius/attribute#bird"/>
+    <owl:Class rdf:about="attribute#Dove">
+        <rdfs:subClassOf rdf:resource="attribute#bird"/>
         <rdfs:label xml:lang="fr">colombe</rdfs:label>
     </owl:Class>
 
@@ -918,11 +921,11 @@ furniture</rdfs:seeAlso>
 
 
 
-    <!-- ontologenius/positionProperty#canFly -->
+    <!-- attribute#canFly -->
 
-    <owl:DatatypeProperty rdf:about="ontologenius#canFly">
-        <rdfs:domain rdf:resource="ontologenius/attribute#animal"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#bool"/>
+    <owl:DatatypeProperty rdf:about="attribute#canFly">
+        <rdfs:domain rdf:resource="attribute#animal"/>
+        <rdfs:range rdf:datatype="http://www.w3.org/2001/XMLSchema#bool"/>
     </owl:DatatypeProperty>
 
 
@@ -938,62 +941,62 @@ furniture</rdfs:seeAlso>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="ontologenius/attribute#actuator"/>
-            <rdf:Description rdf:about="ontologenius/attribute#conveyance"/>
-            <rdf:Description rdf:about="ontologenius/attribute#sensor"/>
+            <rdf:Description rdf:about="attribute#actuator"/>
+            <rdf:Description rdf:about="attribute#conveyance"/>
+            <rdf:Description rdf:about="attribute#sensor"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="ontologenius/attribute#adult"/>
-            <rdf:Description rdf:about="ontologenius/attribute#old"/>
-            <rdf:Description rdf:about="ontologenius/attribute#young"/>
+            <rdf:Description rdf:about="attribute#adult"/>
+            <rdf:Description rdf:about="attribute#old"/>
+            <rdf:Description rdf:about="attribute#young"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="ontologenius/attribute#affair"/>
-            <rdf:Description rdf:about="ontologenius/attribute#furniture"/>
-            <rdf:Description rdf:about="ontologenius/attribute#vegetal"/>
+            <rdf:Description rdf:about="attribute#affair"/>
+            <rdf:Description rdf:about="attribute#furniture"/>
+            <rdf:Description rdf:about="attribute#vegetal"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="ontologenius/attribute#agent"/>
-            <rdf:Description rdf:about="ontologenius/attribute#joint"/>
-            <rdf:Description rdf:about="ontologenius/attribute#object"/>
+            <rdf:Description rdf:about="attribute#agent"/>
+            <rdf:Description rdf:about="attribute#joint"/>
+            <rdf:Description rdf:about="attribute#object"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="ontologenius/attribute#animal"/>
-            <rdf:Description rdf:about="ontologenius/attribute#human"/>
-            <rdf:Description rdf:about="ontologenius/attribute#robot"/>
+            <rdf:Description rdf:about="attribute#animal"/>
+            <rdf:Description rdf:about="attribute#human"/>
+            <rdf:Description rdf:about="attribute#robot"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="ontologenius/attribute#arm"/>
-            <rdf:Description rdf:about="ontologenius/attribute#foot"/>
-            <rdf:Description rdf:about="ontologenius/attribute#hand"/>
-            <rdf:Description rdf:about="ontologenius/attribute#head"/>
-            <rdf:Description rdf:about="ontologenius/attribute#leg"/>
-            <rdf:Description rdf:about="ontologenius/attribute#torso"/>
+            <rdf:Description rdf:about="attribute#arm"/>
+            <rdf:Description rdf:about="attribute#foot"/>
+            <rdf:Description rdf:about="attribute#hand"/>
+            <rdf:Description rdf:about="attribute#head"/>
+            <rdf:Description rdf:about="attribute#leg"/>
+            <rdf:Description rdf:about="attribute#torso"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="ontologenius/attribute#cat"/>
-            <rdf:Description rdf:about="ontologenius/attribute#dog"/>
-            <rdf:Description rdf:about="ontologenius/attribute#fish"/>
-            <rdf:Description rdf:about="ontologenius/attribute#pepper"/>
-            <rdf:Description rdf:about="ontologenius/attribute#pr2"/>
+            <rdf:Description rdf:about="attribute#cat"/>
+            <rdf:Description rdf:about="attribute#dog"/>
+            <rdf:Description rdf:about="attribute#fish"/>
+            <rdf:Description rdf:about="attribute#pepper"/>
+            <rdf:Description rdf:about="attribute#pr2"/>
         </owl:members>
     </rdf:Description>
 </rdf:RDF>
