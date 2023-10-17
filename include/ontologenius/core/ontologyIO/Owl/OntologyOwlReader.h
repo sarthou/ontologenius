@@ -159,10 +159,7 @@ int OntologyOwlReader::getNbChildren(TiXmlElement* elem)
 {
   int cpt = 0;
   for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
-  {
     cpt++;
-  }
-  //std::cout << "elem : " << elem->Value() << "has " << cpt << "children" << std::endl;
   return cpt;
 }
 } // namespace ontologenius

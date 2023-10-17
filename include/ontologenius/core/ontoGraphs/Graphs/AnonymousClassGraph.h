@@ -82,6 +82,7 @@ struct ExpressionMember_t{
 
   bool andor = false; // true = and / false = or
   bool negation = false; // true = not node / false = nothing
+  bool oneof = false; // true = OneOf node
   int nb_sub = 0; // number of sub elements
   bool isDataProp = false;
   bool distributable = false; // true if contains "and" & "or" nodes
@@ -104,8 +105,11 @@ struct ExpressionMember_t{
     for(auto elem2: intersects)
     {
       str_equivalence += elem2->str_equivalence;
-      if(current < size_inter - 1 )
+      if(elem2->mother->oneof)
+        str_equivalence += "," ;
+      else if(current < size_inter - 1 )
         str_equivalence += (elem2->mother->andor) ? " and " : " or ";
+      
       current++;
     }
     str_equivalence += ")";

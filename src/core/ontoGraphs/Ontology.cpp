@@ -60,6 +60,7 @@ int Ontology::close()
   class_graph_.close();
   object_property_graph_.close();
   data_property_graph_.close();
+  anonymous_graph_.close();
 
   ClassChecker class_checker(&class_graph_);
   ObjectPropertyChecker object_property_checker(&object_property_graph_);

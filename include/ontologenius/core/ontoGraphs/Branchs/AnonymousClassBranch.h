@@ -34,6 +34,7 @@ class AnonymousClassElement_t
 public:
   bool andor; // true = and / false = or
   bool negation; // true = not / false = nothing
+  bool oneof; // true = OneOf element
   int nb_sub; // number of sub elements
 
   // pointers to the concepts used in the equivalence relation
@@ -47,7 +48,7 @@ public:
   //AnonymousClassBranch_t* anonymous_class_; // pointer to the anonymous class (branch)
   std::vector<AnonymousClassElement_t*> sub_elements_; // vector of sub elements, if size == 0 => this element is an expression (leaf)
 
-  AnonymousClassElement_t() : andor(false), negation(false), nb_sub(0), class_involved_(nullptr), object_property_involved_(nullptr), 
+  AnonymousClassElement_t() : andor(false), negation(false), oneof(false), nb_sub(0), class_involved_(nullptr), object_property_involved_(nullptr), 
                               data_property_involved_(nullptr), individual_involved_(nullptr) {};
  
 };

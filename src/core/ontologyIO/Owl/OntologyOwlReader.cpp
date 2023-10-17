@@ -394,6 +394,14 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
         }
         exp->str_equivalence = exp2->str_equivalence;
       }
+      else if(getName(sub_elem->Value())  == "owl:oneOf")
+      {
+        exp2->oneof = true;
+        exp2->nb_sub = getNbChildren(sub_elem);
+        readCollection(sub_elem, exp2, ano);
+        exp2->UpdateEquiv();
+        exp->str_equivalence = exp2->str_equivalence;
+      }
     }
   }
 }

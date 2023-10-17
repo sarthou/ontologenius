@@ -35,7 +35,7 @@ public:
       return "http://www.w3.org/1999/02/22-rdf-syntax-ns";
     else if(type_ == "Literal")
       return "http://www.w3.org/2000/01/rdf-schema";
-    else if(type_ == "boolean")
+    else if((type_ == "boolean") || (type_ == "string") || (type_ == "double") || (type_ == "integer"))
       return "http://www.w3.org/2001/XMLSchema";
     else
       return "http://www.w3.org/2002/07/xsd"; //http://www.w3.org/2001/XMLSchema

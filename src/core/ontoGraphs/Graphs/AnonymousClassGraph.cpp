@@ -36,7 +36,7 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
 
     AnonymousClassElement_t* ano_element = new AnonymousClassElement_t();
     std::vector<std::string> vect_equiv = exp_leaf->rest.getRestrictionVector();
-
+    
     if(exp_leaf->negation)
       ano_element->negation = true;
 
@@ -51,8 +51,11 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
       }
       else
       {
-        //std::cout << "Class member range" << std::endl;
-        ano_element->class_involved_= class_graph_->findOrCreateBranch(s);
+        if(exp_leaf->mother != nullptr && exp_leaf->mother->oneof)
+          ano_element->individual_involved_= individual_graph_->findOrCreateBranch(s);
+        else
+          ano_element->class_involved_= class_graph_->findOrCreateBranch(s);
+          
       }    
     }
     else if(vect_equiv[1] == "value")
@@ -157,8 +160,8 @@ void AnonymousClassGraph::update(ExpressionMember_t* exp , AnonymousClassElement
       ano_tmp->nb_sub = exp->nb_sub;
       ano_tmp->andor = exp->andor;
       ano_tmp->negation = exp->negation;
+      ano_tmp->oneof = exp->oneof;
       
-
       if(exp->nb_sub == 1)
       {
         std::vector<std::string> vect_equiv = exp->rest.getRestrictionVector();
@@ -192,6 +195,7 @@ void AnonymousClassGraph::update(ExpressionMember_t* exp , AnonymousClassElement
           if(vect_equiv.size() == 3)
             ano_tmp->card_.card_number_ = std::stoi(vect_equiv.back());
         }
+        
       }
 
       for(auto elem: exp->intersects)
