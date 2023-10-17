@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
-<rdf:RDF xmlns="ontologenius/positionProperty#"
-     xml:base="ontologenius/positionProperty"
+<rdf:RDF xmlns="https://github.com/sarthou/ontologenius/blob/master/files/positionProperty#"
+     xml:base="https://github.com/sarthou/ontologenius/blob/master/files/positionProperty"
+     xmlns:position_property="https://github.com/sarthou/ontologenius/blob/master/files/positionProperty#"
+     xmlns:attribute="https://github.com/sarthou/ontologenius/blob/master/files/attribute#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-    <owl:Ontology rdf:about="ontologenius/positionProperty">
+    <owl:Ontology rdf:about="https://github.com/sarthou/ontologenius/blob/master/files/positionProperty">
         <owl:imports rdf:resource="ontologenius/files/attribute"/>
     </owl:Ontology>
 
@@ -23,223 +25,223 @@
 
 
 
-    <!-- ontologenius/positionProperty#isAt -->
+    <!-- position_property#isAt -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isAt">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isPositioned"/>
+    <owl:ObjectProperty rdf:about="position_property#isAt">
+        <rdfs:subPropertyOf rdf:resource="position_property#isPositioned"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#hasColor -->
+    <!-- position_property#hasColor -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#hasColor">
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#color"/>
+    <owl:ObjectProperty rdf:about="position_property#hasColor">
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#color"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isBehind -->
+    <!-- position_property#isBehind -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isBehind">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isPositioned"/>
-        <owl:inverseOf rdf:resource="ontologenius/positionProperty#isFront"/>
+    <owl:ObjectProperty rdf:about="position_property#isBehind">
+        <rdfs:subPropertyOf rdf:resource="position_property#isPositioned"/>
+        <owl:inverseOf rdf:resource="position_property#isFront"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#area"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#area"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isBetween -->
+    <!-- position_property#isBetween -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isBetween">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isPositioned"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#area"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#entity"/>
+    <owl:ObjectProperty rdf:about="position_property#isBetween">
+        <rdfs:subPropertyOf rdf:resource="position_property#isPositioned"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#area"/>
+        <rdfs:range rdf:resource="attribute#entity"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isFront -->
+    <!-- position_property#isFront -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isFront">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isPositioned"/>
+    <owl:ObjectProperty rdf:about="position_property#isFront">
+        <rdfs:subPropertyOf rdf:resource="position_property#isPositioned"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#area"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#area"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isIn -->
+    <!-- position_property#isIn -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isIn">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isPositioned"/>
+    <owl:ObjectProperty rdf:about="position_property#isIn">
+        <rdfs:subPropertyOf rdf:resource="position_property#isPositioned"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#area"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#entity"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#area"/>
+        <rdfs:range rdf:resource="attribute#entity"/>
         <owl:propertyChainAxiom rdf:parseType="Collection">
-            <rdf:Description rdf:about="ontologenius/positionProperty#isOn"/>
-            <rdf:Description rdf:about="ontologenius/positionProperty#isIn"/>
+            <rdf:Description rdf:about="position_property#isOn"/>
+            <rdf:Description rdf:about="position_property#isIn"/>
         </owl:propertyChainAxiom>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isInArea -->
+    <!-- position_property#isInArea -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isInArea">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isIn"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#area"/>
+    <owl:ObjectProperty rdf:about="position_property#isInArea">
+        <rdfs:subPropertyOf rdf:resource="position_property#isIn"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#area"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isInBox -->
+    <!-- position_property#isInBox -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isInBox">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isIn"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#box"/>
+    <owl:ObjectProperty rdf:about="position_property#isInBox">
+        <rdfs:subPropertyOf rdf:resource="position_property#isIn"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#box"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isInBuilding -->
+    <!-- position_property#isInBuilding -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isInBuilding">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isInArea"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#indoorArea"/>
+    <owl:ObjectProperty rdf:about="position_property#isInBuilding">
+        <rdfs:subPropertyOf rdf:resource="position_property#isInArea"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#indoorArea"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isInFrontOf -->
+    <!-- position_property#isInFrontOf -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isInFrontOf">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isPositioned"/>
+    <owl:ObjectProperty rdf:about="position_property#isInFrontOf">
+        <rdfs:subPropertyOf rdf:resource="position_property#isPositioned"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isInHand -->
+    <!-- position_property#isInHand -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isInHand">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isIn"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#hand"/>
+    <owl:ObjectProperty rdf:about="position_property#isInHand">
+        <rdfs:subPropertyOf rdf:resource="position_property#isIn"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#hand"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isInRoom -->
+    <!-- position_property#isInRoom -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isInRoom">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isInArea"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#indoorArea"/>
+    <owl:ObjectProperty rdf:about="position_property#isInRoom">
+        <rdfs:subPropertyOf rdf:resource="position_property#isInArea"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#indoorArea"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isNext -->
+    <!-- position_property#isNext -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isNext">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isPositioned"/>
+    <owl:ObjectProperty rdf:about="position_property#isNext">
+        <rdfs:subPropertyOf rdf:resource="position_property#isPositioned"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#entity"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#entity"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isOn -->
+    <!-- position_property#isOn -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isOn">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isPositioned"/>
-        <owl:inverseOf rdf:resource="ontologenius/positionProperty#isUnder"/>
+    <owl:ObjectProperty rdf:about="position_property#isOn">
+        <rdfs:subPropertyOf rdf:resource="position_property#isPositioned"/>
+        <owl:inverseOf rdf:resource="position_property#isUnder"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#entity"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#entity"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isOnLeft -->
+    <!-- position_property#isOnLeft -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isOnLeft">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isNext"/>
-        <owl:inverseOf rdf:resource="ontologenius/positionProperty#isOnRight"/>
+    <owl:ObjectProperty rdf:about="position_property#isOnLeft">
+        <rdfs:subPropertyOf rdf:resource="position_property#isNext"/>
+        <owl:inverseOf rdf:resource="position_property#isOnRight"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#entity"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#entity"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isOnRight -->
+    <!-- position_property#isOnRight -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isOnRight">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isNext"/>
+    <owl:ObjectProperty rdf:about="position_property#isOnRight">
+        <rdfs:subPropertyOf rdf:resource="position_property#isNext"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#entity"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#entity"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#isPositioned -->
+    <!-- position_property#isPositioned -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isPositioned"/>
+    <owl:ObjectProperty rdf:about="position_property#isPositioned"/>
 
 
 
-    <!-- ontologenius/positionProperty#isUnder -->
+    <!-- position_property#isUnder -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#isUnder">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#isPositioned"/>
+    <owl:ObjectProperty rdf:about="position_property#isUnder">
+        <rdfs:subPropertyOf rdf:resource="position_property#isPositioned"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#entity"/>
+        <rdfs:domain rdf:resource="attribute#entity"/>
+        <rdfs:range rdf:resource="attribute#entity"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#hasParent -->
+    <!-- position_property#hasParent -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#hasParent">
+    <owl:ObjectProperty rdf:about="position_property#hasParent">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#human"/>
-        <rdfs:range rdf:resource="ontologenius/attribute#human"/>
+        <rdfs:domain rdf:resource="attribute#human"/>
+        <rdfs:range rdf:resource="attribute#human"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#hasMother -->
+    <!-- position_property#hasMother -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#hasMother">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#hasParent"/>
+    <owl:ObjectProperty rdf:about="position_property#hasMother">
+        <rdfs:subPropertyOf rdf:resource="position_property#hasParent"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
     </owl:ObjectProperty>
 
 
 
-    <!-- ontologenius/positionProperty#hasFather -->
+    <!-- position_property#hasFather -->
 
-    <owl:ObjectProperty rdf:about="ontologenius/positionProperty#hasFather">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#hasParent"/>
+    <owl:ObjectProperty rdf:about="position_property#hasFather">
+        <rdfs:subPropertyOf rdf:resource="position_property#hasParent"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
     </owl:ObjectProperty>
 
@@ -256,30 +258,30 @@
 
 
 
-    <!-- ontologenius/positionProperty#have3Dposition -->
+    <!-- position_property#have3Dposition -->
 
-    <owl:DatatypeProperty rdf:about="ontologenius/positionProperty#have3Dposition">
-        <rdfs:domain rdf:resource="ontologenius/attribute#entity"/>
+    <owl:DatatypeProperty rdf:about="position_property#have3Dposition">
+        <rdfs:domain rdf:resource="attribute#entity"/>
         <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#real"/>
     </owl:DatatypeProperty>
 
 
 
-    <!-- ontologenius/positionProperty#objectHave3Dposition -->
+    <!-- position_property#objectHave3Dposition -->
 
-    <owl:DatatypeProperty rdf:about="ontologenius/positionProperty#objectHave3Dposition">
-        <rdfs:subPropertyOf rdf:resource="ontologenius/positionProperty#have3Dposition"/>
-        <rdfs:domain rdf:resource="ontologenius/attribute#object"/>
+    <owl:DatatypeProperty rdf:about="position_property#objectHave3Dposition">
+        <rdfs:subPropertyOf rdf:resource="position_property#have3Dposition"/>
+        <rdfs:domain rdf:resource="attribute#object"/>
         <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#real"/>
         <rdfs:range rdf:resource="http://www.w3.org/2002/07/xsd#integer"/>
     </owl:DatatypeProperty>
 
 
 
-    <!-- ontologenius/positionProperty#hasLeg -->
+    <!-- position_property#hasLeg -->
 
-    <owl:DatatypeProperty rdf:about="ontologenius/positionProperty#hasLeg">
-        <rdfs:domain rdf:resource="ontologenius/attribute#human"/>
+    <owl:DatatypeProperty rdf:about="position_property#hasLeg">
+        <rdfs:domain rdf:resource="attribute#human"/>
         <rdfs:range rdf:resource="http://www.w3.org/2002/07/xsd#integer"/>
     </owl:DatatypeProperty>
 
@@ -296,33 +298,33 @@
 
 
 
-    <!-- ontologenius/attribute#area -->
+    <!-- attribute#area -->
 
-    <owl:Class rdf:about="ontologenius/attribute#area"/>
-
-
-
-    <!-- ontologenius/attribute#box -->
-
-    <owl:Class rdf:about="ontologenius/attribute#box"/>
+    <owl:Class rdf:about="attribute#area"/>
 
 
 
-    <!-- ontologenius/attribute#entity -->
+    <!-- attribute#box -->
 
-    <owl:Class rdf:about="ontologenius/attribute#entity"/>
-
-
-
-    <!-- ontologenius/attribute#hand -->
-
-    <owl:Class rdf:about="ontologenius/attribute#hand"/>
+    <owl:Class rdf:about="attribute#box"/>
 
 
 
-    <!-- ontologenius/attribute#indoorArea -->
+    <!-- attribute#entity -->
 
-    <owl:Class rdf:about="ontologenius/attribute#indoorArea"/>
+    <owl:Class rdf:about="attribute#entity"/>
+
+
+
+    <!-- attribute#hand -->
+
+    <owl:Class rdf:about="attribute#hand"/>
+
+
+
+    <!-- attribute#indoorArea -->
+
+    <owl:Class rdf:about="attribute#indoorArea"/>
 </rdf:RDF>
 
 

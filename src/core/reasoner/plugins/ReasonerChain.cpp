@@ -9,17 +9,26 @@ void ReasonerChain::postReason()
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
   for(auto indiv : indivs)
-    if(indiv->updated_ == true)
+    if((indiv->updated_ == true) || (indiv->flags_.find("chain") != indiv->flags_.end()))
     {
+      bool has_active_chain = false;
       // Do not use a for each loop style.
       // The vector object_relations_ is modified by resolveChain
       for(size_t rel_i = 0; rel_i < indiv->object_relations_.size(); rel_i++)
       {
         std::unordered_set<ObjectPropertyBranch_t*> props = ontology_->object_property_graph_.getUpPtrSafe(indiv->object_relations_[rel_i].first);
         for(ObjectPropertyBranch_t* it_prop : props)
+        {
+          has_active_chain = has_active_chain || (it_prop->chains_.size() != 0);
           for(auto& chain : it_prop->chains_)
             resolveChain(it_prop, chain, indiv, indiv->object_relations_[rel_i].second);
+        }
       }
+
+      if(has_active_chain)
+        indiv->flags_["chain"] = {};
+      else
+        indiv->flags_.erase("chain");
     }
 }
 
