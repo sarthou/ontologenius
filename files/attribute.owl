@@ -250,7 +250,6 @@
 
     <owl:Class rdf:about="attribute#cube">
         <rdfs:subClassOf rdf:resource="attribute#affair"/>
-        <position_property:hasColor rdf:resource="attribute#black"/>
         <rdfs:label xml:lang="fr">cube</rdfs:label>
     </owl:Class>
 
