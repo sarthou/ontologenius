@@ -101,28 +101,28 @@ std::vector<std::map<std::string, std::string>> runSparqlSolver(ontologenius::Sp
   return solutions;
 }
 
-std::vector<std::map<std::string, std::string>> runSparqlBase(ontologenius::Sparql& solver, const std::string& query)
+std::vector<std::vector<std::string>> runSparqlBase(ontologenius::Sparql& solver, const std::string& query)
 {
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
   auto solutions = solver.runStr(query);
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
-  std::cout << "Sparql has found " << solutions.size() << " solutions in " << time_span.count()*1000 << "ms" << std::endl;
+  std::cout << "Sparql has found " << solutions.second.size() << " solutions in " << time_span.count()*1000 << "ms" << std::endl;
 
-  return solutions;
+  return solutions.second;
 }
 
-std::vector<std::map<std::string, ontologenius::index_t>> runSparqlBaseIndex(ontologenius::Sparql& solver, const std::string& query)
+std::vector<std::vector<ontologenius::index_t>> runSparqlBaseIndex(ontologenius::Sparql& solver, const std::string& query)
 {
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
   auto solutions = solver.runIndex(query);
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
-  std::cout << "Sparql index has found " << solutions.size() << " solutions in " << time_span.count()*1000 << "ms" << std::endl;
+  std::cout << "Sparql index has found " << solutions.second.size() << " solutions in " << time_span.count()*1000 << "ms" << std::endl;
 
-  return solutions;
+  return solutions.second;
 }
 
 void configureInterface(ontologenius::RosInterface& interface)

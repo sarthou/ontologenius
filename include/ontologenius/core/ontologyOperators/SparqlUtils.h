@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <unordered_map>
 
 #include "ontologenius/utils/String.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
@@ -28,11 +29,25 @@ struct SparqlBlock_t
 template<typename T>
 struct resource_t
 {
+  resource_t() : variable_id(-1),
+                 is_variable(false),
+                 regex(false) {}
+  
+  static std::unordered_map<std::string, int64_t> variables;
+  static std::vector<std::string> to_variables;
+
   std::string name;
   T value;
-  bool variable;
+  int64_t variable_id;
+  bool is_variable;
   bool regex;
 };
+
+template<typename T>
+std::unordered_map<std::string, int64_t> resource_t<T>::variables;
+
+template<typename T>
+std::vector<std::string> resource_t<T>::to_variables;
 
 template<typename T>
 struct triplet_t
@@ -69,12 +84,22 @@ resource_t<T> getResource(std::string resource_txt)
 
   if(resource_txt[0] == '?')
   {
-    res.variable = true;
+    res.is_variable = true;
     resource_txt = resource_txt.substr(1);
+    auto var_it = resource_t<T>::variables.find(resource_txt);
+    if(var_it == resource_t<T>::variables.end())
+    {
+      int64_t index = resource_t<T>::variables.size();
+      resource_t<T>::variables[resource_txt] = index;
+      res.variable_id = index;
+      resource_t<T>::to_variables.push_back(resource_txt);
+    }
+    else
+      res.variable_id = var_it->second;
   }
   else
   {
-    res.variable = false;
+    res.is_variable = false;
     if(resource_txt != "isA")
       res.value = convertResourceValue<T>(resource_txt);
   }
@@ -101,7 +126,7 @@ triplet_t<T> getTriplet(const std::string& triplet_txt)
         case 1: res.predicat = resource; break;
         case 2: res.object = resource; break;
         default:
-          if(res.object.variable == false)
+          if(res.object.is_variable == false)
             res.object.name += " " + resource.name;
           else
             throw "invalid triplet format in : " + triplet_txt;
@@ -116,9 +141,9 @@ triplet_t<T> getTriplet(const std::string& triplet_txt)
 template<typename T>
 std::string toString(const triplet_t<T>& triplet)
 {
-  return (triplet.subject.variable ? "?" : "") + triplet.subject.name + " " +
-          (triplet.predicat.variable ? "?" : "") + triplet.predicat.name + " " +
-          (triplet.object.variable ? "?" : "") + triplet.object.name;
+  return (triplet.subject.is_variable ? "?" : "") + triplet.subject.name + " " +
+          (triplet.predicat.is_variable ? "?" : "") + triplet.predicat.name + " " +
+          (triplet.object.is_variable ? "?" : "") + triplet.object.name;
 }
 
 template<typename T>
@@ -134,6 +159,22 @@ void removeDuplicate(std::vector<std::map<std::string, T>>& vect)
 }
 
 template<typename T>
+std::vector<int64_t> convertVariables(const std::vector<std::string>& var_names)
+{
+  std::vector<int64_t> res;
+  for(auto& var : var_names)
+    res.push_back(resource_t<T>::variables[var]);
+  std::sort(res.begin(), res.end());
+  return res;
+}
+
+template<typename T>
+void removeDuplicate(std::vector<std::vector<T>>& vect)
+{
+  vect.erase(unique(vect.begin(), vect.end()), vect.end());
+}
+
+template<typename T>
 void filter(std::vector<std::map<std::string, T>>& res, const std::vector<std::string>& vars, bool distinct)
 {
   if(vars.size())
@@ -145,6 +186,27 @@ void filter(std::vector<std::map<std::string, T>>& res, const std::vector<std::s
     {
       for (auto itr = sub_res.cbegin() ; itr != sub_res.cend() ; )
         itr = (std::find(vars.begin(), vars.end(), "?" + itr->first) == vars.end()) ? sub_res.erase(itr) : std::next(itr);
+    }
+
+    if(distinct)
+      removeDuplicate(res);
+  }
+}
+
+template<typename T>
+void filter(std::vector<std::vector<T>>& res, const std::vector<std::string>& vars, bool distinct)
+{
+  if(vars.size())
+  {
+    if(vars[0] == "*")
+      return;
+
+    std::vector<int64_t> var_index = convertVariables<T>(vars);
+    
+    for(auto& sub_res : res)
+    {
+      for(auto it = var_index.rbegin(); it != var_index.rend(); ++it)
+        sub_res.erase(sub_res.begin() + *it);
     }
 
     if(distinct)

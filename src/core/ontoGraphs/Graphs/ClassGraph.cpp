@@ -847,10 +847,10 @@ void ClassGraph::getOn(ClassBranch_t* class_branch, std::unordered_set<index_t>&
     }
 
     current_depth++;
-    std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_branch, 1);
-    for(ClassBranch_t* up : up_set)
-      if(up != class_branch)
-        getOn(up, object_properties, data_properties, res, current_depth, found_depth);
+    //std::unordered_set<ClassBranch_t*> up_set = getUpPtrSafe(class_branch, 1);
+    for(auto& up : class_branch->mothers_)
+      if(up.elem != class_branch)
+        getOn(up.elem, object_properties, data_properties, res, current_depth, found_depth);
   }
 }
 
@@ -1068,20 +1068,37 @@ void ClassGraph::getRangeOf(ClassBranch_t* branch, std::unordered_set<index_t>& 
   }
 }
 
-void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res)
+void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res, bool single_same)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-  res.reserve(res.size() + branch->individual_childs_.size() * 1.5);
-  for(auto& indiv : branch->individual_childs_)
-    individual_graph_->getSame(indiv.elem, res);
+  if(single_same)
+  {
+    res.reserve(res.size() + branch->individual_childs_.size() * 1.5);
+    for(auto& indiv : branch->individual_childs_)
+      individual_graph_->getLowestSame(indiv.elem, res);
+  }
+  else
+  {
+    for(auto& indiv : branch->individual_childs_)
+      individual_graph_->getSame(indiv.elem, res);
+  }
 }
 
-void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<index_t>& res)
+void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<index_t>& res, bool single_same)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-  res.reserve(res.size() + branch->individual_childs_.size() * 1.5);
-  for(auto& indiv : branch->individual_childs_)
-    individual_graph_->getSame(indiv.elem, res);
+  if(single_same)
+  {
+    res.reserve(res.size() + branch->individual_childs_.size());
+    for(auto& indiv : branch->individual_childs_)
+      individual_graph_->getLowestSame(indiv.elem, res);
+  }
+  else
+  {
+    res.reserve(res.size() + branch->individual_childs_.size() * 1.5);
+    for(auto& indiv : branch->individual_childs_)
+      individual_graph_->getSame(indiv.elem, res);
+  }
 }
 
 std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtrSafe(ClassBranch_t* branch)

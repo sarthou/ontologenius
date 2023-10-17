@@ -64,6 +64,8 @@ public:
       for(size_t i = 0; i < dictionary[lang].size();)
         if(dictionary[lang][i] == word)
           dictionary[lang].erase(dictionary[lang].begin() + i);
+        else
+          i++;
     }
   }
 

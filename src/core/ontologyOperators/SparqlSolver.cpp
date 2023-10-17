@@ -3,6 +3,10 @@
 #include "ontologenius/utils/String.h"
 #include "ontologenius/graphical/Display.h"
 
+#include "time.h"
+#include <chrono>
+using namespace std::chrono;
+
 namespace ontologenius
 {
   SparqlSolver::SparqlSolver() : onto_(nullptr),
@@ -17,7 +21,8 @@ namespace ontologenius
     SparqlSolution_t initial_solution;
 
     std::smatch match;
-    if (std::regex_match(query_, match, sparql_pattern_))
+    bool has_matched = std::regex_match(query_, match, sparql_pattern_);
+    if (has_matched)
     {
       std::string vars = match[2].str();
       removeChar(vars, {'\n', '\r'});
@@ -38,7 +43,6 @@ namespace ontologenius
         else if(var != "")
           initial_solution.solution_[var.substr(1)] = "";
       }
-        
     }
     else
     {
@@ -51,7 +55,11 @@ namespace ontologenius
 
     orderVariables(initial_solution);
     int index = 0;
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
     stepDown(initial_solution, index);
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+    std::cout << "took " << time_span.count()*1000 << "ms" << std::endl;
 
     return SparqlSolver::iterator(initial_solution, this);
   }
@@ -106,7 +114,7 @@ namespace ontologenius
   {
     for(auto& triplet : triplets)
     {
-      if(triplet.object.variable)
+      if(triplet.object.is_variable)
       {
         auto constraint_it = solution.variable_constraints_.find(triplet.object.name);
         if(constraint_it == solution.variable_constraints_.end())
@@ -116,12 +124,12 @@ namespace ontologenius
         constraint.operator_ = sparql_operator;
         constraint.triplet_ = triplet;
         constraint.subject_constraint_ = false;
-        constraint.leaf_ = !triplet.subject.variable;
+        constraint.leaf_ = !triplet.subject.is_variable;
         constraint_it->second.constraints_.push_back(constraint);
-        if(triplet.subject.variable)
+        if(triplet.subject.is_variable)
           constraint_it->second.linked_variales_.insert(triplet.subject.name);
       }
-      else if(triplet.subject.variable)
+      else if(triplet.subject.is_variable)
       {
         auto constraint_it = solution.variable_constraints_.find(triplet.subject.name);
         if(constraint_it == solution.variable_constraints_.end())
@@ -131,10 +139,10 @@ namespace ontologenius
         constraint.operator_ = sparql_operator;
         constraint.triplet_ = triplet;
         constraint.subject_constraint_ = true;
-        constraint.leaf_ = !triplet.object.variable;
+        constraint.leaf_ = !triplet.object.is_variable;
         constraint_it->second.constraints_.push_back(constraint);
       }
-      else if(triplet.predicat.variable)
+      else if(triplet.predicat.is_variable)
         error_ = "The predicate of a triplet cannot be a variable";
       else
         error_ = "No variable found in the triplet";
@@ -238,11 +246,11 @@ namespace ontologenius
 
   std::unordered_set<std::string> SparqlSolver::solveTriplet(strTriplet_t triplet, const std::map<std::string, std::string>& binding)
   {
-    if(triplet.predicat.variable)
+    if(triplet.predicat.is_variable)
       error_ = "predicat can not be a variable in: " + toString(triplet);
     else if(triplet.predicat.name == "isA")
     {
-      if(triplet.subject.variable && !triplet.object.variable)
+      if(triplet.subject.is_variable && !triplet.object.is_variable)
       {
         auto var_it = binding.find(triplet.subject.name);
         if(var_it != binding.end())
@@ -250,7 +258,7 @@ namespace ontologenius
         else
           return getType(triplet);
       }
-      else if(!triplet.subject.variable && triplet.object.variable)
+      else if(!triplet.subject.is_variable && triplet.object.is_variable)
       {
         auto var_it = binding.find(triplet.object.name);
         if(var_it != binding.end())
@@ -258,7 +266,7 @@ namespace ontologenius
         else
           return getUp(triplet);
       }
-      else if(triplet.subject.variable && triplet.object.variable)
+      else if(triplet.subject.is_variable && triplet.object.is_variable)
       {
         auto var_it = binding.find(triplet.subject.name);
         if(var_it != binding.end())
@@ -287,7 +295,7 @@ namespace ontologenius
     }
     else if(triplet.predicat.name == "hasLabel")
     {
-      if(triplet.subject.variable && !triplet.object.variable)
+      if(triplet.subject.is_variable && !triplet.object.is_variable)
       {
         auto var_it = binding.find(triplet.subject.name);
         if(var_it != binding.end())
@@ -295,7 +303,7 @@ namespace ontologenius
         else
           return find(triplet);
       }
-      else if(!triplet.subject.variable && triplet.object.variable)
+      else if(!triplet.subject.is_variable && triplet.object.is_variable)
       {
         auto var_it = binding.find(triplet.object.name);
         if(var_it != binding.end())
@@ -303,7 +311,7 @@ namespace ontologenius
         else
           return getName(triplet);
       }
-      else if(triplet.subject.variable && triplet.object.variable)
+      else if(triplet.subject.is_variable && triplet.object.is_variable)
       {
         auto var_it = binding.find(triplet.subject.name);
         if(var_it != binding.end())
@@ -330,7 +338,7 @@ namespace ontologenius
       else
         error_ = "can not resolve query : " + toString(triplet) + " : No variable";
     }
-    else if(triplet.subject.variable && !triplet.object.variable)
+    else if(triplet.subject.is_variable && !triplet.object.is_variable)
     {
       auto var_it = binding.find(triplet.subject.name);
       if(var_it != binding.end())
@@ -338,7 +346,7 @@ namespace ontologenius
       else
         return getFrom(triplet);
     }
-    else if(!triplet.subject.variable && triplet.object.variable)
+    else if(!triplet.subject.is_variable && triplet.object.is_variable)
     {
       auto var_it = binding.find(triplet.object.name);
       if(var_it != binding.end())
@@ -346,7 +354,7 @@ namespace ontologenius
       else
         return getOn(triplet);
     }
-    else if(triplet.subject.variable && triplet.object.variable)
+    else if(triplet.subject.is_variable && triplet.object.is_variable)
     {
       auto var_it = binding.find(triplet.subject.name);
       if(var_it != binding.end())
