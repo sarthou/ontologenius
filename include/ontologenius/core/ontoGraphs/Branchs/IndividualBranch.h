@@ -13,7 +13,7 @@
 namespace ontologenius {
 
 // Classes predefinition
-class Triplet;
+class Triplets;
 class IndividualBranch_t;
 
 typedef Single_t<IndividualBranch_t*> IndividualElement_t;
@@ -25,7 +25,7 @@ class IndividualBranch_t : public ValuedNode
 public:
   std::vector<ClassElement_t> is_a_;
   std::vector<IndivObjectRelationElement_t> object_relations_;
-  std::vector<Triplet> object_properties_has_induced_;
+  std::vector<Triplets> object_properties_has_induced_;
   std::vector<IndivDataRelationElement_t> data_relations_;
   std::vector<IndividualElement_t> same_as_;
   std::vector<IndividualElement_t> distinct_;
@@ -41,7 +41,7 @@ public:
   int dataPropertyExist(DataPropertyBranch_t* property, LiteralNode* data);
 };
 
-class Triplet
+class Triplets
 {
 public:
   void push(IndividualBranch_t* from,
