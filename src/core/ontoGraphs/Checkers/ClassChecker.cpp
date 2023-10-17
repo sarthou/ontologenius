@@ -14,8 +14,8 @@ size_t ClassChecker::check()
 
   checkDisjoint();
 
-  checkObectPropertyDomain();
-  checkObectPropertyRange();
+  checkObjectPropertyDomain();
+  checkObjectPropertyRange();
 
   checkDataPropertyDomain();
   checkDataPropertyRange();
@@ -66,7 +66,7 @@ void ClassChecker::checkDisjoint()
   }
 }
 
-void ClassChecker::checkObectPropertyDomain()
+void ClassChecker::checkObjectPropertyDomain()
 {
   for(auto& _class : graph_vect_)
   {
@@ -106,7 +106,7 @@ void ClassChecker::checkObectPropertyDomain()
   }
 }
 
-void ClassChecker::checkObectPropertyRange()
+void ClassChecker::checkObjectPropertyRange()
 {
   for(auto& _class : graph_vect_)
   {
