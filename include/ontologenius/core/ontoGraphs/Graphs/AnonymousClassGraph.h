@@ -313,17 +313,19 @@ class DataPropertyGraph;
 class IndividualGraph;
 class ClassGraph;
 
+class AnonymousClassChecker;
 
 // OntoGraph and not just Graph because in Ontology.h -> need to have only arguments which have a get() and close() specification
 // class AnonymousClassGraph : public OntoGraph<AnonymousClassBranch_t>
 class AnonymousClassGraph : public Graph<AnonymousClassBranch_t>
 {
 
-friend ObjectPropertyGraph;
-friend DataPropertyGraph;
-friend IndividualGraph;
-friend ClassGraph;
+  friend ObjectPropertyGraph;
+  friend DataPropertyGraph;
+  friend IndividualGraph;
+  friend ClassGraph;
 
+  friend AnonymousClassChecker;
 public:
     AnonymousClassGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, 
     DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
