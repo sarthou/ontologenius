@@ -140,6 +140,7 @@ add_onto_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Checkers/ObjectPropertyChecker.cpp
   src/core/ontoGraphs/Checkers/DataPropertyChecker.cpp
   src/core/ontoGraphs/Checkers/IndividualChecker.cpp
+  src/core/ontoGraphs/Checkers/AnonymousClassChecker.cpp
   src/core/ontoGraphs/Ontology.cpp
   src/core/ontologyIO/OntologyLoader.cpp
   src/core/ontologyIO/OntologyReader.cpp
