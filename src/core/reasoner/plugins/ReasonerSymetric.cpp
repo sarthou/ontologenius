@@ -56,7 +56,7 @@ std::string ReasonerSymetric::getName()
   return "reasoner symetric";
 }
 
-std::string ReasonerSymetric::getDesciption()
+std::string ReasonerSymetric::getDescription()
 {
   return "This reasoner creates the symetric properties for each individual.";
 }
