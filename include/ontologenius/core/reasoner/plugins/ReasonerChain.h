@@ -17,7 +17,7 @@ public:
   virtual bool implementPostReasoning() override { return true; }
 
   virtual std::string getName() override;
-  virtual std::string getDesciption() override;
+  virtual std::string getDescription() override;
 
   virtual bool defaultAvtive() override {return true;}
 private:

@@ -20,7 +20,7 @@ public:
   virtual bool implementPeriodicReasoning() override { return true; }
 
   virtual std::string getName() override;
-  virtual std::string getDesciption() override;
+  virtual std::string getDescription() override;
 private:
 };
 

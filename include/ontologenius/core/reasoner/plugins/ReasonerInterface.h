@@ -70,7 +70,7 @@ public:
   virtual bool implementPeriodicReasoning() { return false; }
 
   virtual std::string getName() = 0;
-  virtual std::string getDesciption() = 0;
+  virtual std::string getDescription() = 0;
 
   virtual bool defaultAvtive() {return false;}
 
