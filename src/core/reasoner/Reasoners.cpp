@@ -170,7 +170,7 @@ std::string Reasoners::getDescription(std::string& plugin)
 {
   if(reasoners_.find(plugin) != reasoners_.end())
   {
-    std::string description = reasoners_[plugin]->getDesciption();
+    std::string description = reasoners_[plugin]->getDescription();
     if(reasoners_[plugin]->implementPostReasoning())
       description += "\n - post reasoning";
     if(reasoners_[plugin]->implementPreReasoning())

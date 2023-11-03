@@ -178,7 +178,7 @@ std::string ReasonerGeneralize::getName()
   return "reasoner generalize";
 }
 
-std::string ReasonerGeneralize::getDesciption()
+std::string ReasonerGeneralize::getDescription()
 {
   return "This reasoner aims to infer new knowledge by generalizing explicit relationships between concepts.";
 }

@@ -27,7 +27,7 @@ std::string ReasonerNone::getName()
   return "reasoner none";
 }
 
-std::string ReasonerNone::getDesciption()
+std::string ReasonerNone::getDescription()
 {
   return "This is an reasoner model to show how to create your own reasoner plugin";
 }

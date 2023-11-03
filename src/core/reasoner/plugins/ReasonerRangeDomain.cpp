@@ -363,7 +363,7 @@ std::string ReasonerRangeDomain::getName()
   return "reasoner range and domain";
 }
 
-std::string ReasonerRangeDomain::getDesciption()
+std::string ReasonerRangeDomain::getDescription()
 {
   return "This is an reasoner to deduce new inheritances based on range and domain of properties.";
 }
