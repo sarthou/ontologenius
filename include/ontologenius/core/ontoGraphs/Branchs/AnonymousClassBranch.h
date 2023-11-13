@@ -68,22 +68,8 @@ public:
   AnonymousClassBranch_t(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), ano_elem_(nullptr) {}  
   // pointer to the class which is equivalent to this AnonymousClass
   ClassBranch_t* class_equiv_;
-  // pointers to the concepts used in the equivalence relation
-  ClassBranch_t* class_involved_;
-  ObjectPropertyBranch_t* object_property_involved_;
-  DataPropertyBranch_t* data_property_involved_;
-  IndividualBranch_t* individual_involved_;
-
-  CardType_t card_type_;
-  int card_number_;
-  LiteralNode* card_range_;
 
   AnonymousClassElement_t* ano_elem_;
-
-  AnonymousClassBranch_t(const std::string& value = "") : ValuedNode(value), class_equiv_(nullptr), class_involved_(nullptr),
-                                                          object_property_involved_(nullptr), data_property_involved_(nullptr), 
-                                                          individual_involved_(nullptr)  {};
- 
 };
 
 } // namespace ontologenius
