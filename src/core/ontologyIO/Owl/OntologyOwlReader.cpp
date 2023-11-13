@@ -277,41 +277,47 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
   // Class only equivalence  : Camera Eq to Component
   if(elem->FirstChild() == nullptr)
   {
-      ExpressionMember_t* exp = new ExpressionMember_t;
+      ExpressionMember_t* exp = new ExpressionMember_t();
       exp->mother = nullptr;
-      exp->rest.restriction_range = getName(elem->Attribute("rdf:resource"));
-      exp->str_equivalence = exp->rest.getRestriction();
+
+      ExpressionMember_t* exp2 = new ExpressionMember_t();
+      exp2->rest.restriction_range = getName(elem->Attribute("rdf:resource"));
+      exp2->str_equivalence = exp2->rest.getRestriction();
+      exp->intersects.push_back(exp2);
+      exp->str_equivalence = exp2->str_equivalence;
       ano.equivalence = exp;
       ano.str_equivalences = exp->str_equivalence;
   }
  
   // Expression equivalence : 
-  for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
-  {
-    std::string sub_elem_name = sub_elem->Value();
-    
+  else
+  { 
     ExpressionMember_t* exp = new ExpressionMember_t();
     exp->mother = nullptr;
     ano.equivalence = exp;
 
-    // Restriction equivalence : Camera Eq to hasComponent some Component
-    if(sub_elem_name == "owl:Restriction")
+    for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
-      ExpressionMember_t* exp2 = new ExpressionMember_t();
-      exp2->mother = exp;
-      exp->intersects.push_back(exp2);
-      readRestriction(sub_elem, exp2, ano);
-      exp->str_equivalence = exp2->str_equivalence;
-      ano.str_equivalences = exp->str_equivalence;
-    }
-    // Complex equivalence : Camera Eq to (hasComponent some Component and has_node only rational)
-    else
-    {
-      readCollection(sub_elem, exp, ano);
-      ano.str_equivalences = exp->str_equivalence;
+      std::string sub_elem_name = sub_elem->Value();
+      
+      // Restriction equivalence : Camera Eq to hasComponent some Component
+      if(sub_elem_name == "owl:Restriction")
+      {
+        ExpressionMember_t* exp2 = new ExpressionMember_t();
+        exp2->mother = exp;
+        exp->intersects.push_back(exp2);
+        readRestriction(sub_elem, exp2, ano);
+        exp->str_equivalence = exp2->str_equivalence;
+        ano.str_equivalences = exp->str_equivalence;
+      }
+      // Logical expression equivalence : Camera Eq to (hasComponent some Component and has_node only rational)
+      else
+      {
+        readCollection(sub_elem, exp, ano);
+        ano.str_equivalences = exp->str_equivalence;
+      }
     }
   }
-
   return ano; 
 }
 
@@ -320,7 +326,8 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
 
   for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
   {
-    if(getName(sub_elem->Value())  == "owl:Class" || getName(sub_elem->Value())  == "rdfs:Datatype")
+    std::string elem_value = sub_elem->Value();
+    if(elem_value  == "owl:Class" || elem_value  == "rdfs:Datatype")
       readCollection(sub_elem, exp, ano);
     else
     {
@@ -330,7 +337,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
       exp2->andor = false;
       exp->intersects.push_back(exp2);
 
-      if(getName(sub_elem->Value()) == "owl:intersectionOf")
+      if(elem_value == "owl:intersectionOf")
       {
         exp2->logical_type_ = logical_and;
         exp2->andor = true;
@@ -339,7 +346,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
         exp2->UpdateEquiv();
         exp->str_equivalence = exp2->str_equivalence;
       }
-      else if(getName(sub_elem->Value())  == "owl:unionOf")
+      else if(elem_value  == "owl:unionOf")
       {
         exp2->logical_type_ = logical_or;
         exp2->andor = false;
@@ -348,14 +355,15 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
         exp2->UpdateEquiv();
         exp->str_equivalence = exp2->str_equivalence;
       }
-      else if(getName(sub_elem->Value())  == "owl:Restriction")
+      else if(elem_value == "owl:Restriction")
       {
         readRestriction(sub_elem, exp2, ano);
       }
-      else if(getName(sub_elem->Value())  == "rdf:Description")
+      else if(elem_value == "rdf:Description")
       {
         std::string s = sub_elem->Attribute("rdf:about");
-        if(isIn("http://www.w3.org/", s)){
+        if(isIn("http://www.w3.org/", s))
+        {
           exp2->rest.restriction_range = s;
           updatePropertyType(exp2);
         }   
@@ -363,7 +371,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
           exp2->rest.restriction_range = getName(s);
         exp2->str_equivalence = exp2->rest.getRestriction();
       }
-      else if(getName(sub_elem->Value())  == "owl:complementOf" || getName(sub_elem->Value())  == "owl:datatypeComplementOf")
+      else if(elem_value == "owl:complementOf" || elem_value == "owl:datatypeComplementOf")
       {
         // Negation node creation
         exp2->logical_type_ = logical_not;
@@ -397,7 +405,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
         }
         exp->str_equivalence = exp2->str_equivalence;
       }
-      else if(getName(sub_elem->Value())  == "owl:oneOf")
+      else if(elem_value  == "owl:oneOf")
       {
         exp2->oneof = true;
         exp2->nb_sub = getNbChildren(sub_elem);
@@ -496,17 +504,15 @@ void OntologyOwlReader::readCardinality(TiXmlElement* elem, ExpressionMember_t* 
 
 void OntologyOwlReader::updatePropertyType(ExpressionMember_t* exp)
 {
-  if(!exp->rest.property.empty())
+  if(exp->rest.property.empty() == false)
   {
     exp->isDataProp = true;
     return;
   }
-  else{
-    if(exp->mother != nullptr)
+  else if(exp->mother != nullptr)
       updatePropertyType(exp->mother);
-    else
-      return;
-  }
+  else
+    return;
 }
 
 void OntologyOwlReader::readIndividual(TiXmlElement* elem)

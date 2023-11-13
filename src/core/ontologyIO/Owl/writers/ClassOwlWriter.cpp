@@ -74,38 +74,36 @@ void ClassOwlWriter::writeEquivalentClass(ClassBranch_t* branch)
  
   for(auto& elem : equiv)
   {
-      //std::cout << "Writing class : " << elem->class_equiv_->value() << std::endl;
-      std::string start = "        <owl:equivalentClass";
-      std::string end = "        </owl:equivalentClass>\n";
-      std::string tmp;
-      writeString(start);
-      // single expression
-      if(elem->ano_elem_->sub_elements_.size() == 0)
+    std::string start = "        <owl:equivalentClass";
+    std::string end = "        </owl:equivalentClass>\n";
+    std::string tmp;
+    writeString(start);
+    
+    // single expression
+    if(elem->ano_elem_->sub_elements_.size() == 0)
+    {
+      // Subclass only
+      if(elem->ano_elem_->class_involved_ != nullptr && elem->ano_elem_->object_property_involved_ == nullptr)
       {
-        // Subclass only
-        if(elem->ano_elem_->class_involved_ != nullptr && elem->ano_elem_->object_property_involved_ == nullptr)
-        {
-          //std::cout << "Writing class element sublclass only" << std::endl;
-          tmp = " rdf:resource=\"" + ns_ + "#" + elem->ano_elem_->class_involved_->value();
-          end = "\"/>\n";     
-          writeString(tmp);
-        }
-        //Class expression
-        else{
-          //std::cout << "Writing class expression" << std::endl;
-          std::string tmp = ">\n";
-          writeString(tmp);
-          writeRestriction(elem->ano_elem_, 12);
-        }
+        tmp = " rdf:resource=\"" + ns_ + "#" + elem->ano_elem_->class_involved_->value();
+        end = "\"/>\n";     
+        writeString(tmp);
       }
-      // Collection of expressions
-      else
-      {
+      //Class expression
+      else{
         std::string tmp = ">\n";
         writeString(tmp);
-        writeCollection(elem->ano_elem_, 8, false);
+        writeRestriction(elem->ano_elem_, 12);
       }
-      writeString(end);
+    }
+    // Collection of expressions
+    else
+    {
+      std::string tmp = ">\n";
+      writeString(tmp);
+      writeCollection(elem->ano_elem_, 8, false);
+    }
+    writeString(end);
   }
 
 }
