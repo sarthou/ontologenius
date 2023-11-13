@@ -20,4 +20,7 @@
   <class type="ReasonerRangeDomain" base_class_type="ReasonerInterface">
     <description>This is an reasoner to deduce new inheritances based on range and domain of properties.</description>
   </class>
+  <class type="ReasonerAno" base_class_type="ReasonerInterface">
+    <description>This is a reasoner for equivalent classes.</description>
+  </class>
 </library>
