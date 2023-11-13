@@ -22,7 +22,7 @@ public:
 
     void printStatus()
     {
-        ValidityChecker<AnonymousClassBranch_t>::printStatus(std::string("anonymous_class"), std::string("anonymous_classes"), graph_vect_.size());
+        ValidityChecker<AnonymousClassBranch_t>::printStatus("anonymous_class", "anonymous_classes", graph_vect_.size());
     };
 
 private:

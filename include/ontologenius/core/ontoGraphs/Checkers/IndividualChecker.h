@@ -13,7 +13,7 @@ public:
   ~IndividualChecker() {}
 
   size_t check() override;
-  void printStatus(){ValidityChecker<IndividualBranch_t>::printStatus(std::string("individual"), std::string("individuals"), graph_vect_.size());}
+  void printStatus(){ValidityChecker<IndividualBranch_t>::printStatus("individual", "individuals", graph_vect_.size());}
 private:
   IndividualGraph* individual_graph_;
 
