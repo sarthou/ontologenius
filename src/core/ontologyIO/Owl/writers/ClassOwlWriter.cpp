@@ -121,8 +121,7 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
   std::string end_data = "</rdfs:Datatype>\n";
 
   std::string start, end, tmp;
-  // if and node
-  if(ano_elem->andor)
+  if(ano_elem->logical_type_ == logical_and)
   {
     //std::cout << "Writing Inter" << std::endl;
     start = "<owl:intersectionOf rdf:parseType=\"Collection\">\n";
@@ -143,8 +142,7 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
     else
       writeString(indent + end_class);
   }
-  // else if or node
-  else if(!ano_elem->andor && !ano_elem->negation && !ano_elem->oneof && ano_elem->nb_sub > 0 && ano_elem->data_property_involved_ == nullptr && ano_elem->object_property_involved_ == nullptr)
+  else if(ano_elem->logical_type_ == logical_or)
   {
     //std::cout << "Writing Union" << std::endl;
     start = "<owl:unionOf rdf:parseType=\"Collection\">\n";
@@ -165,22 +163,7 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
     else
       writeString(indent + end_class);
   }
-  // else if oneof node
-  else if (ano_elem->oneof)
-  {
-    //std::cout << "Writing OneOf" << std::endl;
-    start = "<owl:oneOf rdf:parseType=\"Collection\">\n";
-    end = "</owl:oneOf>\n";
-
-    writeString(indent + start_class);
-    writeString(indent_sub + start);
-    for(auto sub_elem : ano_elem->sub_elements_)
-        writeCollection(sub_elem, nb_ident + 4, data_prop);
-    writeString(indent_sub + end);
-    writeString(indent + end_class);
-  }
-  // else if negation node
-  else if(ano_elem->negation)
+  else if(ano_elem->logical_type_ == logical_not)
   {
     AnonymousClassElement_t* sub_elem = ano_elem->sub_elements_.front();
 

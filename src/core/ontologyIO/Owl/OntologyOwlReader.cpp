@@ -332,6 +332,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
 
       if(getName(sub_elem->Value()) == "owl:intersectionOf")
       {
+        exp2->logical_type_ = logical_and;
         exp2->andor = true;
         exp2->nb_sub = getNbChildren(sub_elem);
         readCollection(sub_elem, exp2, ano);
@@ -340,6 +341,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
       }
       else if(getName(sub_elem->Value())  == "owl:unionOf")
       {
+        exp2->logical_type_ = logical_or;
         exp2->andor = false;
         exp2->nb_sub = getNbChildren(sub_elem);
         readCollection(sub_elem, exp2, ano);
@@ -364,6 +366,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
       else if(getName(sub_elem->Value())  == "owl:complementOf" || getName(sub_elem->Value())  == "owl:datatypeComplementOf")
       {
         // Negation node creation
+        exp2->logical_type_ = logical_not;
         exp2->andor = false;
         exp2->negation = true;
         exp2->nb_sub = 1;
