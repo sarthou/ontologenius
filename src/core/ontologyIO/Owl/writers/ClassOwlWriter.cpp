@@ -209,8 +209,18 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
       writeString(indent + end_class);
     }
   }
-  // else if (restrcition.size > 1)
-  //  restriction si cardtype != none ou error
+  else if (ano_elem->oneof)
+  {
+    start = "<owl:oneOf rdf:parseType=\"Collection\">\n";
+    end = "</owl:oneOf>\n";
+
+    writeString(indent + start_class);
+    writeString(indent_sub + start);
+    for(auto sub_elem : ano_elem->sub_elements_)
+        writeCollection(sub_elem, nb_ident + 4, data_prop);
+    writeString(indent_sub + end);
+    writeString(indent + end_class);
+  }
   else if(ano_elem->card_.card_type_ != none_)
   {
     //std::cout << "Writing restriction" << std::endl;
