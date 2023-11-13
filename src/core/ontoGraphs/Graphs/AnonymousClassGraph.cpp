@@ -118,11 +118,11 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
         }
       }  
     }
-
+  
   return ano_element;
 }
 
-void AnonymousClassGraph::update(ExpressionMember_t* exp , AnonymousClassElement_t* ano, bool root)
+void AnonymousClassGraph::update(ExpressionMember_t* exp , AnonymousClassElement_t* ano)
 {
   if(exp->logical_type_ != logical_none || exp->oneof == true || exp->nb_sub == 1)
   {
@@ -130,7 +130,7 @@ void AnonymousClassGraph::update(ExpressionMember_t* exp , AnonymousClassElement
     ano->sub_elements_.push_back(ano_tmp);
 
     for(auto elem: exp->intersects)
-      update(elem, ano_tmp, false);
+      update(elem, ano_tmp);
   }
   else
     ano->sub_elements_.push_back(createElement(exp));
@@ -161,7 +161,7 @@ AnonymousClassBranch_t* AnonymousClassGraph::add(const std::string& value, Anony
 
       if(leaf->intersects.size() != 0)
       {
-        update(leaf, ano_elem, true);
+        update(leaf, ano_elem);
         // not so good but works to erase the empty node at the beginning
         anonymous_branch->ano_elem_ = ano_elem->sub_elements_.front();
       }

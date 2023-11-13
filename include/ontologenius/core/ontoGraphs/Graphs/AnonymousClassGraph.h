@@ -336,9 +336,10 @@ public:
     DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
     ~AnonymousClassGraph() {}; 
     AnonymousClassElement_t* createElement(ExpressionMember_t* exp_leaf);
-    void update(ExpressionMember_t* exp, AnonymousClassElement_t* ano_class, bool root);
+    void update(ExpressionMember_t* exp, AnonymousClassElement_t* ano_class);
     AnonymousClassBranch_t* add(const std::string& value, AnonymousClassVectors_t& ano_class);
-    
+    void printTree(AnonymousClassElement_t* ano_elem, size_t level, bool root);
+    std::string getCardinality(CardType_t value);
     void close() {};
     std::vector<AnonymousClassBranch_t*> get() override { return anonymous_classes_;}
     
