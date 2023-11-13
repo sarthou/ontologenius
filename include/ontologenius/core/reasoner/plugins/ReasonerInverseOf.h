@@ -18,7 +18,7 @@ public:
   virtual std::string getName() override;
   virtual std::string getDescription() override;
 
-  virtual bool defaultAvtive() override {return true;}
+  virtual bool defaultActive() override {return true;}
 private:
 
   void insertInverse(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* base_prop, ObjectPropertyBranch_t* inv_prop, IndividualBranch_t* inv_indiv);

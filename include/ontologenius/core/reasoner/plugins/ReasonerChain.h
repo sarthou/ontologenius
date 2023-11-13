@@ -19,7 +19,7 @@ public:
   virtual std::string getName() override;
   virtual std::string getDescription() override;
 
-  virtual bool defaultAvtive() override {return true;}
+  virtual bool defaultActive() override {return true;}
 private:
   void resolveChain(ObjectPropertyBranch_t* prop, std::vector<ObjectPropertyBranch_t*> chain, IndividualBranch_t* indiv, IndividualBranch_t* on);
   void resolveLink(ObjectPropertyBranch_t* chain_property, ChainTree* tree, size_t index);

@@ -19,7 +19,7 @@ public:
   virtual std::string getName() override;
   virtual std::string getDescription() override;
 
-  virtual bool defaultAvtive() override {return true;}
+  virtual bool defaultActive() override {return true;}
 private:
 
   bool relationExists(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* property, IndividualBranch_t* chain_indiv);
