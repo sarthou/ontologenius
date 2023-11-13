@@ -80,6 +80,7 @@ struct Restriction_t
 
 struct ExpressionMember_t{
 
+  LogicalNodeType_e logical_type_ = logical_none;
   bool andor = false; // true = and / false = or
   bool negation = false; // true = not node / false = nothing
   bool oneof = false; // true = OneOf node
@@ -92,6 +93,8 @@ struct ExpressionMember_t{
   ExpressionMember_t* mother = nullptr;
   std::string str_equivalence;
   std::string distributed_equivalence;
+
+  ExpressionMember_t() : logical_type_(logical_none), andor(nullptr), negation(nullptr), oneof(nullptr), nb_sub(0), isDataProp(false) {}  
 
   void UpdateEquiv()
   {
