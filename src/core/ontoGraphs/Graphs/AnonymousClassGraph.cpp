@@ -171,6 +171,93 @@ AnonymousClassBranch_t* AnonymousClassGraph::add(const std::string& value, Anony
   return anonymous_branch;
 }
 
+void AnonymousClassGraph::printTreev2(AnonymousClassElement_t* ano_elem, size_t level, bool root)
+{ 
+  std::string space(level*4, ' ');
+  std::string tmp = "";
 
+  if(root)
+    std::cout << space;
 
+  if(ano_elem->logical_type_ == LogicalNodeType_e::logical_and)
+    tmp+= "and";
+  else if(ano_elem->logical_type_ == LogicalNodeType_e::logical_or)
+    tmp+= "or";
+  else if(ano_elem->logical_type_ == LogicalNodeType_e::logical_not)
+    tmp+= "not";
+  else if(ano_elem->oneof)
+    tmp+= "oneOf";
+  else if(ano_elem->object_property_involved_ != nullptr)
+  {
+    tmp += ano_elem->object_property_involved_->value();
+    tmp += " " + getCardinality(ano_elem->card_.card_type_);
+
+    if(ano_elem->card_.card_type_ == ontologenius::CardType_t::value_)
+      tmp += " " + ano_elem->individual_involved_->value();
+    else
+    {
+      if(ano_elem->card_.card_number_ != 0)
+        tmp += " " +  std::to_string(ano_elem->card_.card_number_);
+      if(ano_elem->class_involved_ != nullptr)
+        tmp += " " + ano_elem->class_involved_->value();
+    }
+  }
+  else if(ano_elem->data_property_involved_ != nullptr )
+  {
+    tmp += ano_elem->data_property_involved_->value();
+    tmp += " " + getCardinality(ano_elem->card_.card_type_);
+    if(ano_elem->card_.card_number_ != 0)
+      tmp += " " +  std::to_string(ano_elem->card_.card_number_);
+    if(ano_elem->card_.card_range_ != nullptr)
+      tmp += " " + ano_elem->card_.card_range_->value();
+  }
+  else
+  { 
+    if(ano_elem->class_involved_ != nullptr)
+      tmp+= ano_elem->class_involved_->value();
+    else if(ano_elem->individual_involved_ != nullptr)
+      tmp+= ano_elem->individual_involved_->value();
+    else if(ano_elem->card_.card_range_ != nullptr)
+      tmp += ano_elem->card_.card_range_->type_;
+  }
+  std::cout << tmp << std::endl;
+
+  for(auto sub_elem : ano_elem->sub_elements_)
+  {
+    //std::cout << "│   ";
+
+    for(int i = 0; i < int(level) ; i++)
+      std::cout << "│   ";
+    if(sub_elem == ano_elem->sub_elements_.back())
+      std::cout << "└── ";
+    else
+       std::cout << "├── " ;    
+    printTreev2(sub_elem, level + 1, false);
+  }
+}
+
+std::string AnonymousClassGraph::getCardinality(CardType_t value)
+{
+  std::string res;
+
+  switch (value)
+  {
+  case CardType_t::some_:
+    return "some";
+  case CardType_t::only_:
+    return "only";
+  case CardType_t::min_:
+    return "min";
+  case CardType_t::max_:
+   return "max";
+  case CardType_t::exactly_:
+    return "exactly";
+  case CardType_t::value_:
+    return "value";
+  case CardType_t::error_:
+    return "error";
+  default:
+    return "";
+  }
+}
 } // namespace ontologenius
