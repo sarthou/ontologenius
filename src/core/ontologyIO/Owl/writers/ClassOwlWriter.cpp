@@ -121,7 +121,6 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
   std::string start, end, tmp;
   if(ano_elem->logical_type_ == logical_and)
   {
-    //std::cout << "Writing Inter" << std::endl;
     start = "<owl:intersectionOf rdf:parseType=\"Collection\">\n";
     end = "</owl:intersectionOf>\n";
 
@@ -142,7 +141,6 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
   }
   else if(ano_elem->logical_type_ == logical_or)
   {
-    //std::cout << "Writing Union" << std::endl;
     start = "<owl:unionOf rdf:parseType=\"Collection\">\n";
     end = "</owl:unionOf>\n";
 
@@ -167,10 +165,8 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
 
     std::string start_comp;
     std::string end_comp;
-    //std::cout << "Writing Not" << std::endl;
     if(data_prop)
     {
-      //std::cout << "data prop not" << std::endl;
       start_comp = "<owl:datatypeComplementOf";
       end_comp = "</owl:datatypeComplementOf>\n";
 
@@ -190,7 +186,6 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
     }
     else
     {
-      //std::cout << "not data prop not" << std::endl;
       start_comp = "<owl:complementOf";
       end_comp = "</owl:complementOf>\n";
 
@@ -223,7 +218,6 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
   }
   else if(ano_elem->card_.card_type_ != none_)
   {
-    //std::cout << "Writing restriction" << std::endl;
     writeRestriction(ano_elem, nb_ident);
   }
   else
@@ -231,19 +225,16 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
     tmp = "<rdf:Description rdf:about=\"";
     if(ano_elem->class_involved_ != nullptr && ano_elem->object_property_involved_ == nullptr)
     {
-      std::cout << "Writing class element" << std::endl;
       tmp += ns_ + "#" + ano_elem->class_involved_->value() + "\"/>\n";
       writeString(indent + tmp);
     }
     else if(ano_elem->card_.card_range_ != nullptr && ano_elem->data_property_involved_ == nullptr)
     {
-      std::cout << "Writing card type element" << std::endl;
       tmp += ano_elem->card_.card_range_->getNs() + "#" + ano_elem->card_.card_range_->type_ + "\"/>\n";
       writeString(indent + tmp);
     }
     else if(ano_elem->individual_involved_ != nullptr && ano_elem->card_.card_type_ != value_)
     {
-      std::cout << "Writing indiv element" << std::endl;
       tmp += ns_ + "#" + ano_elem->individual_involved_->value() + "\"/>\n";
       writeString(indent + tmp);
     }
