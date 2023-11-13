@@ -129,7 +129,7 @@ int OntologyOwlReader::read(TiXmlElement* rdf, const std::string& name)
       std::cout << "************************************" << std::endl;
       std::cout << "+ sub          | > domain  | @ language" << std::endl;
       std::cout << "- disjoint     | < range   | . chain axiom" << std::endl;
-      std::cout << "/ inverse      | * type    | " << std::endl;
+      std::cout << "/ inverse      | * type    | = equivalence" << std::endl;
       std::cout << "$ has property | ^ related | " << std::endl;
       std::cout << "************************************" << std::endl;
     }
