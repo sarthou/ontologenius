@@ -60,8 +60,9 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
     std::string equiv = vect_equiv.front();
     if(isIn("http://www.w3.org/", equiv))
     {
-      std::string type = split(s, "#").back();
-      ano_element->card_.card_range_ = new LiteralNode(type, "");
+      std::string type = split(equiv, "#").back();
+      LiteralNode* literal = data_property_graph_->createLiteral(type + "#");
+      ano_element->card_.card_range_ = literal;
     }
     else if(exp_leaf->mother != nullptr && exp_leaf->mother->oneof)
       ano_element->individual_involved_= individual_graph_->findOrCreateBranch(equiv);
@@ -113,7 +114,8 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
         {
           ano_element->data_property_involved_= data_property_graph_->findOrCreateBranch(property);
           std::string type = split(vect_equiv.back(), "#").back();
-          ano_element->card_.card_range_ = new LiteralNode(type, "");
+          LiteralNode* literal = data_property_graph_->createLiteral(type + "#");
+          ano_element->card_.card_range_ = literal;
         }
         else
         {
