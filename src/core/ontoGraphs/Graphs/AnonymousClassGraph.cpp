@@ -23,6 +23,7 @@ AnonymousClassGraph::AnonymousClassGraph(ClassGraph* class_graph, ObjectProperty
   cpt_anonymous_classes_ = 0;
 }
 
+AnonymousClassGraph::AnonymousClassGraph(const AnonymousClassGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, 
                                         DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph)
 {
   class_graph_ = class_graph;
@@ -126,7 +127,7 @@ void AnonymousClassGraph::update(ExpressionMember_t* exp , AnonymousClassElement
     AnonymousClassElement_t* ano_tmp = createElement(exp);
     ano->sub_elements_.push_back(ano_tmp);
 
-    for(auto elem: exp->intersects)
+    for(auto elem : exp->intersects)
       update(elem, ano_tmp);
   }
   else
@@ -137,7 +138,7 @@ AnonymousClassBranch_t* AnonymousClassGraph::add(const std::string& value, Anony
 {   
     std::lock_guard<std::shared_timed_mutex> lock(Graph<AnonymousClassBranch_t>::mutex_);
 
-    std::string ano_name = "ano"+ std::to_string(cpt_anonymous_classes_);
+    std::string ano_name = "anonymous"+ std::to_string(anonymous_classes_.size());
     AnonymousClassBranch_t* anonymous_branch = new AnonymousClassBranch_t(ano_name);
     //std::cout << "New anonymous branch id : " << anonymous_branch->value() << " =>" << ano.str_equivalences << std::endl;
     cpt_anonymous_classes_++;

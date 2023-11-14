@@ -84,7 +84,7 @@ struct ExpressionMember_t
   Restriction_t rest; // Restriction (e.g hasComponent some Camera)
   std::string class_restriction; // if the restriction is only a class restriction (e.g A Eq to B)
   std::vector<ExpressionMember_t*> intersects; // sub elements
-  ExpressionMember_t* mother = nullptr;
+  ExpressionMember_t* mother;
   std::string str_equivalence;
   std::string distributed_equivalence;
 
@@ -100,7 +100,7 @@ struct ExpressionMember_t
     if(logical_type_ == logical_not)
       str_equivalence += " not (";
 
-    for(auto elem2: intersects)
+    for(auto elem2 : intersects)
     {
       str_equivalence += elem2->str_equivalence;
       if(elem2->mother->oneof)
@@ -331,10 +331,14 @@ class AnonymousClassGraph : public Graph<AnonymousClassBranch_t>
   friend AnonymousClassChecker;
 public:
     AnonymousClassGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, 
-    DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
+                        DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
     AnonymousClassGraph(const AnonymousClassGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, 
-    DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
-    ~AnonymousClassGraph() {}; 
+                        DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
+    ~AnonymousClassGraph() {};
+
+    void close() {};
+    std::vector<AnonymousClassBranch_t*> get() override { return anonymous_classes_;}
+
     AnonymousClassElement_t* createElement(ExpressionMember_t* exp_leaf);
     void update(ExpressionMember_t* exp, AnonymousClassElement_t* ano_class);
     AnonymousClassBranch_t* add(const std::string& value, AnonymousClassVectors_t& ano_class);
@@ -346,7 +350,7 @@ private:
     ObjectPropertyGraph* object_property_graph_;
     DataPropertyGraph* data_property_graph_;
     IndividualGraph* individual_graph_;
-    int cpt_anonymous_classes_;
+
     std::vector<AnonymousClassBranch_t*> anonymous_classes_;
 
 };
