@@ -282,10 +282,10 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
 
       ExpressionMember_t* exp2 = new ExpressionMember_t();
       exp2->rest.restriction_range = getName(elem->Attribute("rdf:resource"));
-      exp2->str_equivalence = exp2->rest.getRestriction();
+      exp2->str_equivalence = exp2->rest.toString();
       exp->intersects.push_back(exp2);
       exp->str_equivalence = exp2->str_equivalence;
-      ano.equivalence = exp;
+      ano.equivalence_tree = exp;
       ano.str_equivalences = exp->str_equivalence;
   }
  
@@ -294,7 +294,7 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
   { 
     ExpressionMember_t* exp = new ExpressionMember_t();
     exp->mother = nullptr;
-    ano.equivalence = exp;
+    ano.equivalence_tree = exp;
 
     for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
@@ -342,7 +342,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
         exp2->logical_type_ = logical_and;
         exp2->is_complex = (getNbChildren(sub_elem) != 0);
         readCollection(sub_elem, exp2, ano);
-        exp2->UpdateEquiv();
+        exp2->updateEquivString();
         exp->str_equivalence = exp2->str_equivalence;
       }
       else if(elem_value  == "owl:unionOf")
@@ -350,7 +350,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
         exp2->logical_type_ = logical_or;
         exp2->is_complex = (getNbChildren(sub_elem) != 0);
         readCollection(sub_elem, exp2, ano);
-        exp2->UpdateEquiv();
+        exp2->updateEquivString();
         exp->str_equivalence = exp2->str_equivalence;
       }
       else if(elem_value == "owl:Restriction")
@@ -367,7 +367,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
         }   
         else
           exp2->rest.restriction_range = getName(s);
-        exp2->str_equivalence = exp2->rest.getRestriction();
+        exp2->str_equivalence = exp2->rest.toString();
       }
       else if(elem_value == "owl:complementOf" || elem_value == "owl:datatypeComplementOf")
       {
@@ -390,14 +390,14 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
           }
           else
             exp3->rest.card.cardinality_range = getName(s);
-          exp3->str_equivalence = exp3->rest.getRestriction();
+          exp3->str_equivalence = exp3->rest.toString();
           exp2->str_equivalence = " not (" + exp3->str_equivalence + ")";
         }
         // Complex negation : not ((has_node only rational) and Camera)
         else
         {
           readCollection(sub_elem, exp2, ano);
-          exp2->UpdateEquiv();
+          exp2->updateEquivString();
         }
         exp->str_equivalence = exp2->str_equivalence;
       }
@@ -406,7 +406,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
         exp2->oneof = true;
         exp2->is_complex = (getNbChildren(sub_elem) != 0);
         readCollection(sub_elem, exp2, ano);
-        exp2->UpdateEquiv();
+        exp2->updateEquivString();
         exp->str_equivalence = exp2->str_equivalence;
       }
     }
@@ -461,16 +461,16 @@ void OntologyOwlReader::readRestriction(TiXmlElement* elem, ExpressionMember_t* 
       // </owl:allValuesFrom>
       if(sub_elem->FirstChildElement() != nullptr)
       {
-        exp->nb_sub = 1;
+        exp->is_complex = true;
         readCollection(sub_elem, exp, ano);
       }
     }
 
     // Update the str expression
     if(exp->is_complex)
-      exp->str_equivalence = "(" + exp->rest.getRestriction() + exp->intersects.front()->str_equivalence + ")";
-    else // Simple range
-      exp->str_equivalence = "(" + exp->rest.getRestriction() + ")";
+      exp->str_equivalence = "(" + exp->rest.toString() + exp->intersects.front()->str_equivalence + ")";
+    else
+      exp->str_equivalence = "(" + exp->rest.toString() + ")";
   }
 
 }
@@ -502,7 +502,7 @@ void OntologyOwlReader::updatePropertyType(ExpressionMember_t* exp)
 {
   if(exp->rest.property.empty() == false)
   {
-    exp->isDataProp = true;
+    exp->is_data_property = true;
     return;
   }
   else if(exp->mother != nullptr)

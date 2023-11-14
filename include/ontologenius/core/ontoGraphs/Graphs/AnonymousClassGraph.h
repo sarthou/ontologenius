@@ -9,11 +9,12 @@ namespace ontologenius {
 
 struct Cardinality_t
 {
-  std::string cardinality_type = "";
-  std::string cardinality_number = "";
-  std::string cardinality_range = "";
+  std::string cardinality_type;
+  std::string cardinality_number;
+  std::string cardinality_range;
   
-  std::string getCardinality(){
+  std::string toString()
+  {
     std::string res = " ";
     //std::cout << "type" << cardinality_type + " number " + cardinality_number + " range " + cardinality_range;
     if(cardinality_type != "")
@@ -25,13 +26,9 @@ struct Cardinality_t
     return res;
   }
 
-  std::vector<std::string> getCardinalityVector(){
-    std::vector<std::string> result;
-    result.push_back(cardinality_range);
-    result.push_back(cardinality_number);
-    result.push_back(cardinality_type);
-    //std::cout << cardinality_type + " " + cardinality_number + " " + cardinality_range;
-    return result;
+  std::vector<std::string> toVector()
+  {
+    return {cardinality_range, cardinality_number, cardinality_type};
   }
   
 };
@@ -39,26 +36,25 @@ struct Cardinality_t
 struct Restriction_t
 {
   Cardinality_t card;
-  std::string property = "";
-  std::string restriction_range = "";
+  std::string property;
+  std::string restriction_range;
 
-  std::string getRestriction()
+  std::string toString()
   {
-    //std::cout << "property : " << property + " " + "cardinality : " << card->getCardinality() + " " + "restriction : " << restriction_range << std::endl;
-  std::string res = " ";
+    std::string res = " ";
 
-  if(!property.empty())
-    res +=property +" ";
+    if(!property.empty())
+      res += property +" ";
 
-  res+= card.getCardinality();
+    res += card.toString();
 
-  if(!restriction_range.empty())
-    res += restriction_range + " ";
+    if(!restriction_range.empty())
+      res += restriction_range + " ";
 
-  return res;
+    return res;
   }
 
-  std::vector<std::string> getRestrictionVector()
+  std::vector<std::string> toVector()
   {
     std::vector<std::string> result;
     //card->cardinality_number.empty();
@@ -78,7 +74,13 @@ struct Restriction_t
   }
 };
 
+struct ExpressionMember_t
+{
+  LogicalNodeType_e logical_type_;
+  bool oneof; // true = OneOf node
   bool is_complex; // number of sub elements
+  bool is_data_property;
+
   Restriction_t rest; // Restriction (e.g hasComponent some Camera)
   std::string class_restriction; // if the restriction is only a class restriction (e.g A Eq to B)
   std::vector<ExpressionMember_t*> intersects; // sub elements
@@ -86,15 +88,16 @@ struct Restriction_t
   std::string str_equivalence;
   std::string distributed_equivalence;
 
-  ExpressionMember_t() : logical_type_(logical_none), andor(nullptr), negation(nullptr), oneof(nullptr), nb_sub(0), isDataProp(false) {}  
+  ExpressionMember_t() : logical_type_(logical_none), oneof(false),
+                         is_complex(false), is_data_property(false), mother(nullptr) {}  
 
-  void UpdateEquiv()
+  void updateEquivString()
   {
     int current = 0;
     int size_inter = intersects.size();
 
     str_equivalence = "(";
-    if(negation)
+    if(logical_type_ == logical_not)
       str_equivalence += " not (";
 
     for(auto elem2: intersects)
@@ -103,13 +106,18 @@ struct Restriction_t
       if(elem2->mother->oneof)
         str_equivalence += "," ;
       else if(current < size_inter - 1 )
-        str_equivalence += (elem2->mother->andor) ? " and " : " or ";
+      {
+        if(logical_type_ == logical_and)
+          str_equivalence += " and ";
+        else if(logical_type_ == logical_or)
+          str_equivalence += " or ";
+      }
       
       current++;
     }
     str_equivalence += ")";
     
-    if(negation)
+    if(logical_type_ == logical_not)
       str_equivalence += ")";
 
   }
@@ -295,7 +303,7 @@ struct Restriction_t
 struct AnonymousClassVectors_t
 {
   std::string class_equiv;
-  ExpressionMember_t* equivalence;
+  ExpressionMember_t* equivalence_tree;
   std::string str_equivalences;
   std::vector<std::vector<std::string>> equiv_vect;
 
@@ -331,9 +339,7 @@ public:
     void update(ExpressionMember_t* exp, AnonymousClassElement_t* ano_class);
     AnonymousClassBranch_t* add(const std::string& value, AnonymousClassVectors_t& ano_class);
     void printTree(AnonymousClassElement_t* ano_elem, size_t level, bool root);
-    std::string getCardinality(CardType_t value);
-    void close() {};
-    std::vector<AnonymousClassBranch_t*> get() override { return anonymous_classes_;}
+    std::string toString(CardType_t value);
     
 private:
     ClassGraph* class_graph_;

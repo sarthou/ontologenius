@@ -54,10 +54,10 @@ public:
 
   CardinalityElement_t card_;
 
-  //AnonymousClassBranch_t* anonymous_class_; // pointer to the anonymous class (branch)
-  std::vector<AnonymousClassElement_t*> sub_elements_; // vector of sub elements, if size == 0 => this element is an expression (leaf)
+  std::vector<AnonymousClassElement_t*> sub_elements_;
 
-  AnonymousClassElement_t() : logical_type_(logical_none), andor(false), negation(false), oneof(false), nb_sub(0), class_involved_(nullptr), object_property_involved_(nullptr), 
+  AnonymousClassElement_t() : logical_type_(logical_none), oneof(false), is_complex(false), 
+                              class_involved_(nullptr), object_property_involved_(nullptr), 
                               data_property_involved_(nullptr), individual_involved_(nullptr) {}
  
 };
@@ -66,7 +66,7 @@ class AnonymousClassBranch_t : public ValuedNode
 {
 public:
   AnonymousClassBranch_t(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), ano_elem_(nullptr) {}  
-  // pointer to the class which is equivalent to this AnonymousClass
+
   ClassBranch_t* class_equiv_;
 
   AnonymousClassElement_t* ano_elem_;
