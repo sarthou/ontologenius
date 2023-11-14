@@ -44,7 +44,7 @@ public:
   bool andor; // true = and / false = or
   bool negation; // true = not / false = nothing
   bool oneof; // true = OneOf element
-  int nb_sub; // number of sub elements
+  bool is_complex;
 
   // pointers to the concepts used in the equivalence relation
   ClassBranch_t* class_involved_;

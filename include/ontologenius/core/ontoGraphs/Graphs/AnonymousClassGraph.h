@@ -78,15 +78,7 @@ struct Restriction_t
   }
 };
 
-struct ExpressionMember_t{
-
-  LogicalNodeType_e logical_type_ = logical_none;
-  bool andor = false; // true = and / false = or
-  bool negation = false; // true = not node / false = nothing
-  bool oneof = false; // true = OneOf node
-  int nb_sub = 0; // number of sub elements
-  bool isDataProp = false;
-  bool distributable = false; // true if contains "and" & "or" nodes
+  bool is_complex; // number of sub elements
   Restriction_t rest; // Restriction (e.g hasComponent some Camera)
   std::string class_restriction; // if the restriction is only a class restriction (e.g A Eq to B)
   std::vector<ExpressionMember_t*> intersects; // sub elements

@@ -340,8 +340,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
       if(elem_value == "owl:intersectionOf")
       {
         exp2->logical_type_ = logical_and;
-        exp2->andor = true;
-        exp2->nb_sub = getNbChildren(sub_elem);
+        exp2->is_complex = (getNbChildren(sub_elem) != 0);
         readCollection(sub_elem, exp2, ano);
         exp2->UpdateEquiv();
         exp->str_equivalence = exp2->str_equivalence;
@@ -349,8 +348,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
       else if(elem_value  == "owl:unionOf")
       {
         exp2->logical_type_ = logical_or;
-        exp2->andor = false;
-        exp2->nb_sub = getNbChildren(sub_elem);
+        exp2->is_complex = (getNbChildren(sub_elem) != 0);
         readCollection(sub_elem, exp2, ano);
         exp2->UpdateEquiv();
         exp->str_equivalence = exp2->str_equivalence;
@@ -375,9 +373,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
       {
         // Negation node creation
         exp2->logical_type_ = logical_not;
-        exp2->andor = false;
-        exp2->negation = true;
-        exp2->nb_sub = 1;
+        exp2->is_complex = true;
 
         // Simple negation : not (Capability)
         if(sub_elem->FirstChildElement() == nullptr)
@@ -408,7 +404,7 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
       else if(elem_value  == "owl:oneOf")
       {
         exp2->oneof = true;
-        exp2->nb_sub = getNbChildren(sub_elem);
+        exp2->is_complex = (getNbChildren(sub_elem) != 0);
         readCollection(sub_elem, exp2, ano);
         exp2->UpdateEquiv();
         exp->str_equivalence = exp2->str_equivalence;
@@ -450,7 +446,7 @@ void OntologyOwlReader::readRestriction(TiXmlElement* elem, ExpressionMember_t* 
       // </owl:onClass>
       else
       {
-        exp->nb_sub = 1;
+        exp->is_complex = true;
         readCollection(sub_elem, exp, ano);
       }
     }
@@ -471,7 +467,7 @@ void OntologyOwlReader::readRestriction(TiXmlElement* elem, ExpressionMember_t* 
     }
 
     // Update the str expression
-    if(exp->nb_sub == 1) // Complex range
+    if(exp->is_complex)
       exp->str_equivalence = "(" + exp->rest.getRestriction() + exp->intersects.front()->str_equivalence + ")";
     else // Simple range
       exp->str_equivalence = "(" + exp->rest.getRestriction() + ")";

@@ -173,7 +173,7 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
       writeString(indent + start_data);
       writeString(indent_sub + start_comp);
       // Simple negation range on data property
-      if(sub_elem->nb_sub == 0 && sub_elem->data_property_involved_ == nullptr && sub_elem->card_.card_range_->type_ != "")
+      if(sub_elem->is_complex == false && sub_elem->data_property_involved_ == nullptr && sub_elem->card_.card_range_->type_ != "")
         writeString(" rdf:resource=\"" + sub_elem->card_.card_range_->getNs()  + "#" + sub_elem->card_.card_range_->type_ + "\"/>\n");
       // Complex negation range on data property
       else
@@ -192,7 +192,7 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
       writeString(indent + start_class);
       writeString(indent_sub + start_comp);
       // Simple negation range on object property
-      if(sub_elem->nb_sub == 0 &&  sub_elem->class_involved_ != nullptr && sub_elem->object_property_involved_ == nullptr)
+      if(sub_elem->is_complex == false &&  sub_elem->class_involved_ != nullptr && sub_elem->object_property_involved_ == nullptr)
         writeString(" rdf:resource=\"" + ns_ + "#" + sub_elem->class_involved_->value() + "\"/>\n");
       // Complex negation range on object property
       else
@@ -216,7 +216,7 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
     writeString(indent_sub + end);
     writeString(indent + end_class);
   }
-  else if(ano_elem->card_.card_type_ != none_)
+  else if(ano_elem->card_.card_type_ != cardinality_none)
   {
     writeRestriction(ano_elem, nb_ident);
   }
@@ -233,7 +233,7 @@ void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_i
       tmp += ano_elem->card_.card_range_->getNs() + "#" + ano_elem->card_.card_range_->type_ + "\"/>\n";
       writeString(indent + tmp);
     }
-    else if(ano_elem->individual_involved_ != nullptr && ano_elem->card_.card_type_ != value_)
+    else if(ano_elem->individual_involved_ != nullptr && ano_elem->card_.card_type_ != cardinality_value)
     {
       tmp += ns_ + "#" + ano_elem->individual_involved_->value() + "\"/>\n";
       writeString(indent + tmp);
@@ -263,18 +263,18 @@ void ClassOwlWriter::writeRestriction(AnonymousClassElement_t* ano_element, int 
 
   switch(ano_element->card_.card_type_)
   {
-    case none_ :
+    case cardinality_none :
       break;
       
-    case value_ : 
+    case cardinality_value : 
       tmp += "<owl:hasValue rdf:resource=\"" + ns_ + "#" + ano_element->individual_involved_->value() + "\"/>\n";
       writeString(tmp);
       writeString(end);
       break;
-    case only_ : 
+    case cardinality_only : 
       tmp += "<owl:allValuesFrom";
       // complex range
-      if(ano_element->nb_sub == 1)
+      if(ano_element->is_complex)
       {
         tmp +=  ">\n";
         writeString(tmp);
@@ -298,7 +298,7 @@ void ClassOwlWriter::writeRestriction(AnonymousClassElement_t* ano_element, int 
         writeString(end);
       }
       break;
-    case exactly_ : 
+    case cardinality_exactly : 
       tmp += "<owl:qualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">" 
             + std::to_string(ano_element->card_.card_number_) +
             "</owl:qualifiedCardinality>" + "\n";
@@ -306,7 +306,7 @@ void ClassOwlWriter::writeRestriction(AnonymousClassElement_t* ano_element, int 
       writeCardinality(ano_element, nb_indent + 4);
       writeString(end);
       break;
-    case min_ : 
+    case cardinality_min : 
       tmp += "<owl:minQualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">" 
             + std::to_string(ano_element->card_.card_number_) +
             "</owl:minQualifiedCardinality>" + "\n";
@@ -314,7 +314,7 @@ void ClassOwlWriter::writeRestriction(AnonymousClassElement_t* ano_element, int 
       writeCardinality(ano_element, nb_indent + 4);
       writeString(end);
       break;
-    case max_ : 
+    case cardinality_max : 
       tmp += "<owl:maxQualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">" 
             + std::to_string(ano_element->card_.card_number_) +
             "</owl:maxQualifiedCardinality>" + "\n";
@@ -324,10 +324,10 @@ void ClassOwlWriter::writeRestriction(AnonymousClassElement_t* ano_element, int 
 
       break;
    
-    case some_ :
+    case cardinality_some :
       tmp += "<owl:someValuesFrom";
       //complex range
-      if(ano_element->nb_sub == 1)
+      if(ano_element->is_complex)
       {
         tmp +=  ">\n";
         writeString(tmp);
@@ -350,7 +350,7 @@ void ClassOwlWriter::writeRestriction(AnonymousClassElement_t* ano_element, int 
       }
       break;
     
-    case error_ :
+    case cardinality_error :
       std::cout << "error on cardinality type -> error_" << std::endl;
       break;
   }

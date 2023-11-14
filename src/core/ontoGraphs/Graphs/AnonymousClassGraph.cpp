@@ -35,7 +35,7 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
 {
   AnonymousClassElement_t* ano_element = new AnonymousClassElement_t();
   std::vector<std::string> vect_equiv = exp_leaf->rest.getRestrictionVector();
-  ano_element->nb_sub = exp_leaf->nb_sub;
+  ano_element->is_complex = exp_leaf->is_complex;
 
   if(exp_leaf->logical_type_ != logical_none)
   {
@@ -87,7 +87,7 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
       else
         ano_element->card_.card_type_ = cardinality_error;
 
-      if(exp_leaf->nb_sub == 1)
+      if(exp_leaf->is_complex)
       {
         if(exp_leaf->isDataProp)
           ano_element->data_property_involved_= data_property_graph_->findOrCreateBranch(property);
@@ -124,7 +124,7 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
 
 void AnonymousClassGraph::update(ExpressionMember_t* exp , AnonymousClassElement_t* ano)
 {
-  if(exp->logical_type_ != logical_none || exp->oneof == true || exp->nb_sub == 1)
+  if(exp->logical_type_ != logical_none || exp->oneof == true || exp->is_complex)
   {
     AnonymousClassElement_t* ano_tmp = createElement(exp);
     ano->sub_elements_.push_back(ano_tmp);
@@ -242,19 +242,19 @@ std::string AnonymousClassGraph::getCardinality(CardType_t value)
 
   switch (value)
   {
-  case CardType_t::some_:
+  case CardType_t::cardinality_some:
     return "some";
-  case CardType_t::only_:
+  case CardType_t::cardinality_only:
     return "only";
-  case CardType_t::min_:
+  case CardType_t::cardinality_min:
     return "min";
-  case CardType_t::max_:
+  case CardType_t::cardinality_max:
    return "max";
-  case CardType_t::exactly_:
+  case CardType_t::cardinality_exactly:
     return "exactly";
-  case CardType_t::value_:
+  case CardType_t::cardinality_value:
     return "value";
-  case CardType_t::error_:
+  case CardType_t::cardinality_error:
     return "error";
   default:
     return "";
