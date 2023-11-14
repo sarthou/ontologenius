@@ -12,14 +12,14 @@ namespace ontologenius {
 
 enum CardType_t 
 {
-  none_,
-  some_,
-  only_,
-  min_,
-  max_,
-  exactly_,
-  value_,
-  error_
+  cardinality_none,
+  cardinality_some,
+  cardinality_only,
+  cardinality_min,
+  cardinality_max,
+  cardinality_exactly,
+  cardinality_value,
+  cardinality_error
 };
 
 enum LogicalNodeType_e
@@ -32,8 +32,8 @@ enum LogicalNodeType_e
 
 struct CardinalityElement_t
 {
-  CardType_t card_type_ = none_;
-  int card_number_ = 0;
+  CardType_t card_type_ = cardinality_none;
+  size_t card_number_ = 0;
   LiteralNode* card_range_ = nullptr;
 };
 

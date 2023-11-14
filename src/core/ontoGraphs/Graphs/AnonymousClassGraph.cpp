@@ -67,7 +67,7 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
   else if(vect_equiv[1] == "value")
   { 
     ano_element->object_property_involved_= object_property_graph_->findOrCreateBranch(vect_equiv.front());
-    ano_element->card_.card_type_ = value_;
+    ano_element->card_.card_type_ = cardinality_value;
     ano_element->individual_involved_= individual_graph_->findOrCreateBranch(vect_equiv[2]);
   }
   else{
@@ -75,17 +75,17 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
       std::string property = vect_equiv.front();
 
       if(vect_equiv[1]=="some")
-        ano_element->card_.card_type_ = some_;
+        ano_element->card_.card_type_ = cardinality_some;
       else if(vect_equiv[1]=="only")
-        ano_element->card_.card_type_ = only_;
+        ano_element->card_.card_type_ = cardinality_only;
       else if(vect_equiv[1]=="exactly")
-        ano_element->card_.card_type_ = exactly_;
+        ano_element->card_.card_type_ = cardinality_exactly;
       else if(vect_equiv[1]=="min")
-        ano_element->card_.card_type_ = min_;
+        ano_element->card_.card_type_ = cardinality_min;
       else if(vect_equiv[1]=="max")
-        ano_element->card_.card_type_ = max_;
+        ano_element->card_.card_type_ = cardinality_max;
       else
-        ano_element->card_.card_type_ = error_;
+        ano_element->card_.card_type_ = cardinality_error;
 
       if(exp_leaf->nb_sub == 1)
       {
@@ -192,7 +192,7 @@ void AnonymousClassGraph::printTreev2(AnonymousClassElement_t* ano_elem, size_t 
     tmp += ano_elem->object_property_involved_->value();
     tmp += " " + getCardinality(ano_elem->card_.card_type_);
 
-    if(ano_elem->card_.card_type_ == ontologenius::CardType_t::value_)
+    if(ano_elem->card_.card_type_ == ontologenius::CardType_t::cardinality_value)
       tmp += " " + ano_elem->individual_involved_->value();
     else
     {
