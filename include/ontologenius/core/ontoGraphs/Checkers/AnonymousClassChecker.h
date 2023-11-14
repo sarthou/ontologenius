@@ -27,11 +27,6 @@ public:
 
 private:
     AnonymousClassGraph* ano_class_graph_;
-
-    
-
-
-
 };
 
 } // namespace ontologenius

@@ -288,7 +288,6 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
       ano.equivalence_tree = exp;
       ano.str_equivalences = exp->str_equivalence;
   }
- 
   // Expression equivalence : 
   else
   { 
@@ -334,7 +333,6 @@ void OntologyOwlReader::readCollection(TiXmlElement* elem, ExpressionMember_t* e
       // Children node creation
       ExpressionMember_t* exp2 = new ExpressionMember_t();
       exp2->mother = exp;
-      exp2->andor = false;
       exp->intersects.push_back(exp2);
 
       if(elem_value == "owl:intersectionOf")

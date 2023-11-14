@@ -41,8 +41,6 @@ class AnonymousClassElement_t
 {
 public:
   LogicalNodeType_e logical_type_;
-  bool andor; // true = and / false = or
-  bool negation; // true = not / false = nothing
   bool oneof; // true = OneOf element
   bool is_complex;
 
@@ -68,7 +66,6 @@ public:
   AnonymousClassBranch_t(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), ano_elem_(nullptr) {}  
 
   ClassBranch_t* class_equiv_;
-
   AnonymousClassElement_t* ano_elem_;
 };
 
