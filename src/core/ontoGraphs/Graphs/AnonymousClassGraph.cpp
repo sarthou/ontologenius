@@ -30,6 +30,12 @@ AnonymousClassGraph::AnonymousClassGraph(const AnonymousClassGraph& other, Class
   individual_graph_ = individual_graph;
   object_property_graph_ = object_property_graph;
   data_property_graph_ = data_property_graph;
+
+  for(auto branch : other.anonymous_classes_)
+  {
+    auto class_branch = new AnonymousClassBranch_t(branch->value());
+    anonymous_classes_.push_back(class_branch);
+  }
 }
 
 AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* exp_leaf)
