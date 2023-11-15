@@ -130,18 +130,14 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
   return ano_element;
 }
 
-void AnonymousClassGraph::update(ExpressionMember_t* exp , AnonymousClassElement_t* ano)
+AnonymousClassElement_t* AnonymousClassGraph::createTree(ExpressionMember_t* member_node)
 {
-  if(exp->logical_type_ != logical_none || exp->oneof == true || exp->is_complex)
-  {
-    AnonymousClassElement_t* ano_tmp = createElement(exp);
-    ano->sub_elements_.push_back(ano_tmp);
+  AnonymousClassElement_t* node = createElement(member_node);
 
-    for(auto elem : exp->intersects)
-      update(elem, ano_tmp);
-  }
-  else
-    ano->sub_elements_.push_back(createElement(exp));
+  for(auto child : member_node->child_members)
+    node->sub_elements_.push_back(createTree(child));
+
+  return node;
 }
 
 AnonymousClassBranch_t* AnonymousClassGraph::add(const std::string& value, AnonymousClassVectors_t& ano)
