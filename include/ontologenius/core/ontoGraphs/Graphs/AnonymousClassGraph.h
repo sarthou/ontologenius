@@ -77,7 +77,7 @@ struct ExpressionMember_t
   bool is_data_property;
 
   Restriction_t rest; // Restriction (e.g hasComponent some Camera)
-  std::vector<ExpressionMember_t*> intersects; // sub elements
+  std::vector<ExpressionMember_t*> child_members; // sub elements
   ExpressionMember_t* mother;
   std::string str_equivalence;
   std::string distributed_equivalence;
@@ -85,34 +85,43 @@ struct ExpressionMember_t
   ExpressionMember_t() : logical_type_(logical_none), oneof(false),
                          is_complex(false), is_data_property(false), mother(nullptr) {}  
 
-  void updateEquivString()
+  std::string toString()
   {
-    int current = 0;
-    int size_inter = intersects.size();
+    std::string str_equivalence;
 
-    str_equivalence = "(";
-    if(logical_type_ == logical_not)
-      str_equivalence += " not (";
-
-    for(auto elem2 : intersects)
+    if(child_members.size() == 0)
+      str_equivalence = rest.toString();
+    else if(logical_type_ == logical_not)
+      str_equivalence = "not (" + child_members.front()->toString() + ")";
+    else
     {
-      str_equivalence += elem2->str_equivalence;
-      if(elem2->mother->oneof)
-        str_equivalence += "," ;
-      else if(current < size_inter - 1 )
+      std::string inner;
+      for(auto child : child_members)
       {
-        if(logical_type_ == logical_and)
-          str_equivalence += " and ";
-        else if(logical_type_ == logical_or)
-          str_equivalence += " or ";
+        if(inner != "")
+        {
+          if(logical_type_ == logical_and)
+            inner += " and ";
+          else if(logical_type_ == logical_or)
+            inner += " or ";
+          else if(oneof == true)
+            inner += ", " ;
+        }
+        if(oneof == true)
+          inner += child->toString();
+        else
+          inner += "(" + child->toString() + ")";
       }
-      
-      current++;
+
+      if(oneof == true)
+        str_equivalence = "oneOf (" + inner + ")";
+      else if(is_complex)
+        str_equivalence = rest.toString() + inner;
+      else
+        str_equivalence = inner;
     }
-    str_equivalence += ")";
-    
-    if(logical_type_ == logical_not)
-      str_equivalence += ")";
+
+    return str_equivalence;
   }
 };
 
