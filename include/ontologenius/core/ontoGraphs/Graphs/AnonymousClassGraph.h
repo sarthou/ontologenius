@@ -14,13 +14,13 @@ struct Cardinality_t
   
   std::string toString()
   {
-    std::string res = " ";
+    std::string res;
     if(cardinality_type != "")
       res += cardinality_type + " ";
     if(cardinality_number != "")
-      res += cardinality_number +" ";
+      res += cardinality_number + " ";
     if(cardinality_range != "")
-      res += cardinality_range + " ";
+      res += cardinality_range;
     return res;
   }
 
@@ -38,15 +38,15 @@ struct Restriction_t
 
   std::string toString()
   {
-    std::string res = " ";
+    std::string res;
 
     if(!property.empty())
-      res += property +" ";
+      res += property + " ";
 
     res += card.toString();
 
     if(!restriction_range.empty())
-      res += restriction_range + " ";
+      res += restriction_range;
 
     return res;
   }
@@ -73,7 +73,7 @@ struct ExpressionMember_t
 {
   LogicalNodeType_e logical_type_;
   bool oneof; // true = OneOf node
-  bool is_complex; // number of sub elements
+  bool is_complex;
   bool is_data_property;
 
   Restriction_t rest; // Restriction (e.g hasComponent some Camera)
