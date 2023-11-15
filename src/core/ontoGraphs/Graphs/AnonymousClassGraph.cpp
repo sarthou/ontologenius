@@ -10,6 +10,8 @@
 
 #include "ontologenius/utils/String.h"
 
+#define DEBUG
+
 namespace ontologenius {
 
 
@@ -161,19 +163,10 @@ AnonymousClassBranch_t* AnonymousClassGraph::add(const std::string& value, Anony
     anonymous_branch->class_equiv_= class_branch;
     class_branch->equiv_relations_.push_back(anonymous_branch);
 
-    if(root->mother == nullptr)
-    {
-      ExpressionMember_t* leaf = root->intersects.front();
+  #ifdef DEBUG
+  printTree(anonymous_branch->ano_elem_, 3, true);
+  #endif
 
-      if(leaf->intersects.size() != 0)
-      {
-        update(leaf, ano_elem);
-        // not so good but works to erase the empty node at the beginning
-        anonymous_branch->ano_elem_ = ano_elem->sub_elements_.front();
-      }
-      else
-        anonymous_branch->ano_elem_ = createElement(leaf);
-    }
   return anonymous_branch;
 }
 
