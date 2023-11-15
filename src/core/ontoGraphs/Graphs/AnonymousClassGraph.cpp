@@ -142,22 +142,18 @@ AnonymousClassElement_t* AnonymousClassGraph::createTree(ExpressionMember_t* mem
 
 AnonymousClassBranch_t* AnonymousClassGraph::add(const std::string& value, AnonymousClassVectors_t& ano)
 {   
-    std::lock_guard<std::shared_timed_mutex> lock(Graph<AnonymousClassBranch_t>::mutex_);
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<AnonymousClassBranch_t>::mutex_);
 
-    std::string ano_name = "anonymous"+ std::to_string(anonymous_classes_.size());
-    AnonymousClassBranch_t* anonymous_branch = new AnonymousClassBranch_t(ano_name);
-    //std::cout << "New anonymous branch id : " << anonymous_branch->value() << " =>" << ano.str_equivalences << std::endl;
-    cpt_anonymous_classes_++;
+  std::string ano_name = "anonymous"+ std::to_string(anonymous_classes_.size());
+  AnonymousClassBranch_t* anonymous_branch = new AnonymousClassBranch_t(ano_name);
 
-    anonymous_classes_.push_back(anonymous_branch);
+  anonymous_classes_.push_back(anonymous_branch);
 
-    ExpressionMember_t* root = ano.equivalence_tree;
-    AnonymousClassElement_t* ano_elem = new AnonymousClassElement_t();
+  ClassBranch_t* class_branch = class_graph_->findOrCreateBranch(value);
+  anonymous_branch->class_equiv_= class_branch;
+  class_branch->equiv_relations_.push_back(anonymous_branch);
 
-     // Class equivalent to 
-    ClassBranch_t* class_branch = class_graph_->findOrCreateBranch(value);
-    anonymous_branch->class_equiv_= class_branch;
-    class_branch->equiv_relations_.push_back(anonymous_branch);
+  anonymous_branch->ano_elem_ = createTree(ano.equivalence_tree);
 
   #ifdef DEBUG
   printTree(anonymous_branch->ano_elem_, 3, true);
