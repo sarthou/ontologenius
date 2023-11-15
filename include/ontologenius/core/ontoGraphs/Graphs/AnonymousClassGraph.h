@@ -79,7 +79,6 @@ struct ExpressionMember_t
   Restriction_t rest; // Restriction (e.g hasComponent some Camera)
   std::vector<ExpressionMember_t*> child_members; // sub elements
   ExpressionMember_t* mother;
-  std::string str_equivalence;
   std::string distributed_equivalence;
 
   ExpressionMember_t() : logical_type_(logical_none), oneof(false),
