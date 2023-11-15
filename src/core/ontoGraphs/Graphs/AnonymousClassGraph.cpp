@@ -190,7 +190,7 @@ void AnonymousClassGraph::printTreev2(AnonymousClassElement_t* ano_elem, size_t 
         tmp += " " + ano_elem->class_involved_->value();
     }
   }
-  else if(ano_elem->data_property_involved_ != nullptr )
+  else if(ano_elem->data_property_involved_ != nullptr)
   {
     tmp += ano_elem->data_property_involved_->value();
     tmp += " " + toString(ano_elem->card_.card_type_);
@@ -202,9 +202,9 @@ void AnonymousClassGraph::printTreev2(AnonymousClassElement_t* ano_elem, size_t 
   else
   { 
     if(ano_elem->class_involved_ != nullptr)
-      tmp+= ano_elem->class_involved_->value();
+      tmp += ano_elem->class_involved_->value();
     else if(ano_elem->individual_involved_ != nullptr)
-      tmp+= ano_elem->individual_involved_->value();
+      tmp += ano_elem->individual_involved_->value();
     else if(ano_elem->card_.card_range_ != nullptr)
       tmp += ano_elem->card_.card_range_->type_;
   }
