@@ -40,18 +40,18 @@ AnonymousClassGraph::AnonymousClassGraph(const AnonymousClassGraph& other, Class
   }
 }
 
-AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* exp_leaf)
+AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* exp)
 {
   AnonymousClassElement_t* ano_element = new AnonymousClassElement_t();
-  std::vector<std::string> vect_equiv = exp_leaf->rest.toVector();
-  ano_element->is_complex = exp_leaf->is_complex;
+  std::vector<std::string> vect_equiv = exp->rest.toVector();
+  ano_element->is_complex = exp->is_complex;
 
-  if(exp_leaf->logical_type_ != logical_none)
+  if(exp->logical_type_ != logical_none)
   {
-    ano_element->logical_type_ = exp_leaf->logical_type_;
+    ano_element->logical_type_ = exp->logical_type_;
     return ano_element;
   }
-  else if(exp_leaf->oneof == true)
+  else if(exp->oneof == true)
   {
     ano_element->oneof = true;
     return ano_element;
@@ -66,7 +66,7 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
       LiteralNode* literal = data_property_graph_->createLiteral(type + "#");
       ano_element->card_.card_range_ = literal;
     }
-    else if(exp_leaf->mother != nullptr && exp_leaf->mother->oneof)
+    else if(exp->mother != nullptr && exp->mother->oneof)
       ano_element->individual_involved_= individual_graph_->findOrCreateBranch(equiv);
     else
       ano_element->class_involved_= class_graph_->findOrCreateBranch(equiv);
@@ -79,53 +79,50 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
   }
   else
   {
-      std::string property = vect_equiv.front();
+    std::string property = vect_equiv.front();
 
-      if(vect_equiv[1]=="some")
-        ano_element->card_.card_type_ = cardinality_some;
-      else if(vect_equiv[1]=="only")
-        ano_element->card_.card_type_ = cardinality_only;
-      else if(vect_equiv[1]=="exactly")
-        ano_element->card_.card_type_ = cardinality_exactly;
-      else if(vect_equiv[1]=="min")
-        ano_element->card_.card_type_ = cardinality_min;
-      else if(vect_equiv[1]=="max")
-        ano_element->card_.card_type_ = cardinality_max;
+    if(vect_equiv[1]=="some")
+      ano_element->card_.card_type_ = cardinality_some;
+    else if(vect_equiv[1]=="only")
+      ano_element->card_.card_type_ = cardinality_only;
+    else if(vect_equiv[1]=="exactly")
+      ano_element->card_.card_type_ = cardinality_exactly;
+    else if(vect_equiv[1]=="min")
+      ano_element->card_.card_type_ = cardinality_min;
+    else if(vect_equiv[1]=="max")
+      ano_element->card_.card_type_ = cardinality_max;
+    else
+      ano_element->card_.card_type_ = cardinality_error;
+
+    if(exp->is_complex)
+    {
+      if(exp->is_data_property)
+        ano_element->data_property_involved_= data_property_graph_->findOrCreateBranch(property);
       else
-        ano_element->card_.card_type_ = cardinality_error;
+        ano_element->object_property_involved_= object_property_graph_->findOrCreateBranch(property);
+      
+      if(vect_equiv.size() == 3)
+          ano_element->card_.card_number_ = std::stoi(vect_equiv.back());
+    }
+    else
+    {
+      if(vect_equiv.size() == 4)
+        ano_element->card_.card_number_ = stoi(vect_equiv[2]);
 
-      if(exp_leaf->is_complex)
+      if(isIn("http://www.w3.org/", vect_equiv.back()))
       {
-        if(exp_leaf->is_data_property)
-          ano_element->data_property_involved_= data_property_graph_->findOrCreateBranch(property);
-        else
-          ano_element->object_property_involved_= object_property_graph_->findOrCreateBranch(property);
-        
-        if(vect_equiv.size() == 3)
-            ano_element->card_.card_number_ = std::stoi(vect_equiv.back());
+        ano_element->data_property_involved_= data_property_graph_->findOrCreateBranch(property);
+        std::string type = split(vect_equiv.back(), "#").back();
+        LiteralNode* literal = data_property_graph_->createLiteral(type + "#");
+        ano_element->card_.card_range_ = literal;
       }
       else
       {
-        if(vect_equiv.size() == 4)
-          ano_element->card_.card_number_ = stoi(vect_equiv[2]);
-        else
-          ano_element->card_.card_number_ = 0;
-
-        // if last element in vect_equiv contains http://www.w3.org/ => data property
-        if(isIn("http://www.w3.org/", vect_equiv.back()))
-        {
-          ano_element->data_property_involved_= data_property_graph_->findOrCreateBranch(property);
-          std::string type = split(vect_equiv.back(), "#").back();
-          LiteralNode* literal = data_property_graph_->createLiteral(type + "#");
-          ano_element->card_.card_range_ = literal;
-        }
-        else
-        {
-          ano_element->object_property_involved_= object_property_graph_->findOrCreateBranch(property);
-          ano_element->class_involved_= class_graph_->findOrCreateBranch(vect_equiv.back());
-        }
-      }  
-    }
+        ano_element->object_property_involved_= object_property_graph_->findOrCreateBranch(property);
+        ano_element->class_involved_= class_graph_->findOrCreateBranch(vect_equiv.back());
+      }
+    }  
+  }
   
   return ano_element;
 }
