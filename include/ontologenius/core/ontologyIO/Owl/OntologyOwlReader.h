@@ -46,10 +46,22 @@ private:
 
   void readClass(TiXmlElement* elem);
   AnonymousClassVectors_t readEquivalentClass(TiXmlElement* elem, const std::string& class_name);
-  void readCollection(TiXmlElement* elem, ExpressionMember_t* exp, AnonymousClassVectors_t& ano);
-  void readRestriction(TiXmlElement* elem, ExpressionMember_t* exp, AnonymousClassVectors_t& ano);
-  void readCardinality(TiXmlElement* elem, ExpressionMember_t* exp);
-  void updatePropertyType(ExpressionMember_t* exp);
+
+  ExpressionMember_t* readRestriction(TiXmlElement* elem);
+  ExpressionMember_t* readClassExpression(TiXmlElement* elem);
+  ExpressionMember_t* readDatatypeExpression(TiXmlElement* elem);
+  ExpressionMember_t* readIntersection(TiXmlElement* elem);
+  ExpressionMember_t* readUnion(TiXmlElement* elem);
+  ExpressionMember_t* readOneOf(TiXmlElement* elem);
+  ExpressionMember_t* readComplement(TiXmlElement* elem);
+  ExpressionMember_t* readComplexDescription(TiXmlElement* elem);
+  ExpressionMember_t* readResource(TiXmlElement* elem, const std::string& attribute_name = "rdf:resource");
+  
+  void addChildMember(ExpressionMember_t* parent, ExpressionMember_t* child, TiXmlElement* used_elem);
+
+  bool readCardinalityRange(TiXmlElement* elem, ExpressionMember_t* exp);
+  void readCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp);
+
   void readIndividual(TiXmlElement* elem);
   void readDescription(TiXmlElement* elem);
   void readIndividualDescription(TiXmlElement* elem);
