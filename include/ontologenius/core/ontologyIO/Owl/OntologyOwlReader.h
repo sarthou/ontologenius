@@ -102,7 +102,7 @@ void OntologyOwlReader::push(std::vector<std::string>& vect, TiXmlElement* subEl
   {
     vect.push_back(data);
     if(symbole != "" && display_)
-      std::cout << "│   │   ├── " << symbole << data << std::endl;
+      std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
   }
 }
 
@@ -113,7 +113,7 @@ void OntologyOwlReader::push(std::vector<Single_t<std::string>>& vect, TiXmlElem
   {
     vect.push_back(Single_t<std::string>(data, probability));
     if(symbole != "" && display_)
-      std::cout << "│   │   ├── " << symbole << data << std::endl;
+      std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
   }
 }
 
@@ -124,7 +124,7 @@ void OntologyOwlReader::push(std::vector<std::string>& vect, const std::string& 
   {
     vect.push_back(data);
     if(symbole != "" && display_)
-      std::cout << "│   │   ├── " << symbole << data << std::endl;
+      std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
   }
 
 }
