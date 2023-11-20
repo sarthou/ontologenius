@@ -358,8 +358,6 @@ void ClassOwlWriter::writeCardinalityRange(AnonymousClassElement_t* ano_elem, si
 
   switch(ano_elem->card_.card_type_)
   {
-    case cardinality_none :
-      break;
     case cardinality_value : 
       tmp += "<owl:hasValue rdf:resource=\"" + ns_ + "#" + ano_elem->individual_involved_->value() + "\"/>\n";
       writeString(tmp, level);
@@ -444,7 +442,6 @@ void ClassOwlWriter::writeCardinality(AnonymousClassElement_t* ano_element, size
   }
 }
 
-// --------------------------------------------------
 void ClassOwlWriter::writeSubClassOf(ClassBranch_t* branch)
 {
   for(auto& mother : branch->mothers_)
