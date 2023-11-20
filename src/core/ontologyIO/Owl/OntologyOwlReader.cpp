@@ -381,13 +381,20 @@ ExpressionMember_t* OntologyOwlReader::readDatatypeExpression(TiXmlElement* elem
 {
   for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
   {
+    ExpressionMember_t* exp = nullptr;
     std::string sub_elem_name = sub_elem->Value();
     if(sub_elem_name == "owl:unionOf")
-      return readUnion(sub_elem);
+      exp = readUnion(sub_elem);
     else if(sub_elem_name == "owl:intersectionOf")
-      return readIntersection(sub_elem);
+      exp = readIntersection(sub_elem);
     else if(sub_elem_name == "owl:datatypeComplementOf")
-      return readComplement(sub_elem);
+      exp = readComplement(sub_elem);
+
+    if(exp != nullptr)
+    {
+      exp->is_data_property = true;
+      return exp;
+    }
   }
 
   return nullptr;
