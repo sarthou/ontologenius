@@ -9,6 +9,7 @@
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 
+#include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 
@@ -337,7 +338,10 @@ void ClassOwlWriter::writeCardinalityValue(AnonymousClassElement_t* ano_elem, si
       field = "owl:maxQualifiedCardinality";
       break;
     case cardinality_error :
-      std::cout << "error on cardinality type -> error_" << std::endl; // TODO use Display
+      Display::error("cardinality type error");
+      break;
+    default :
+      Display::error("cardinality type " + std::to_string(ano_elem->card_.card_type_) + " not supported by this function");
       break;
   }
 
@@ -365,6 +369,12 @@ void ClassOwlWriter::writeCardinalityRange(AnonymousClassElement_t* ano_elem, si
       break;
     case cardinality_some :
       field = "owl:someValuesFrom";
+      break;
+    case cardinality_error :
+      Display::error("cardinality type error");
+      break;
+    default :
+      Display::error("cardinality type " + std::to_string(ano_elem->card_.card_type_) + " not supported by this function");
       break;
   }
 
