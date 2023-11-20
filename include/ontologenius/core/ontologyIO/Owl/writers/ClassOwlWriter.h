@@ -29,8 +29,6 @@ private:
   void writeSubClassOf(ClassBranch_t* branch);
   void writeEquivalentClass(ClassBranch_t* branch);
   void writeCollection(AnonymousClassElement_t* ano_elem, int nb_ident, bool data_prop); // data_prop == true if previous node is OnDataRange
-  void writeRestriction(AnonymousClassElement_t* ano_elem, int nb_indent);
-  void writeCardinality(AnonymousClassElement_t* ano_element, int nb_indent);
   void writeDisjointWith(ClassBranch_t* branch);
   void writeDisjointWith(std::vector<ClassBranch_t*>& classes);
   void getDisjointsSets(ClassBranch_t* base, std::set<std::set<ClassBranch_t*>>& res);
