@@ -72,12 +72,12 @@ struct Restriction_t
 struct ExpressionMember_t
 {
   LogicalNodeType_e logical_type_;
-  bool oneof; // true = OneOf node
+  bool oneof;
   bool is_complex;
   bool is_data_property;
 
   Restriction_t rest; // Restriction (e.g hasComponent some Camera)
-  std::vector<ExpressionMember_t*> child_members; // sub elements
+  std::vector<ExpressionMember_t*> child_members;
   ExpressionMember_t* mother;
   std::string distributed_equivalence;
 
