@@ -45,7 +45,6 @@ void ClassOwlWriter::writeGeneralAxioms(FILE* file)
   file_ = nullptr;
 }
 
-
 void ClassOwlWriter::writeClass(ClassBranch_t* branch)
 {
   std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
@@ -73,330 +72,369 @@ void ClassOwlWriter::writeEquivalentClass(ClassBranch_t* branch)
  
   for(auto& elem : equiv)
   {
-    std::string start = "        <owl:equivalentClass";
-    std::string end = "        </owl:equivalentClass>\n";
-    std::string tmp;
-    writeString(start);
-    
+    std::string tmp, field;
+    field = "owl:equivalentClass";
+    size_t level = 2;
+ 
     // single expression
-    if(elem->ano_elem_->sub_elements_.size() == 0)
+    if(elem->ano_elem_->sub_elements_.size() == 0 &&
+      elem->ano_elem_->class_involved_ != nullptr && 
+      elem->ano_elem_->object_property_involved_ == nullptr)
     {
-      // Subclass only
-      if(elem->ano_elem_->class_involved_ != nullptr && elem->ano_elem_->object_property_involved_ == nullptr)
-      {
-        tmp = " rdf:resource=\"" + ns_ + "#" + elem->ano_elem_->class_involved_->value();
-        end = "\"/>\n";     
-        writeString(tmp);
-      }
-      //Class expression
-      else{
-        std::string tmp = ">\n";
-        writeString(tmp);
-        writeRestriction(elem->ano_elem_, 12);
-      }
+      tmp = "<" + field + " " + getResource(elem->ano_elem_) + "/>\n";
+      writeString(tmp, level);
     }
     // Collection of expressions
     else
     {
-      std::string tmp = ">\n";
-      writeString(tmp);
-      writeCollection(elem->ano_elem_, 8, false);
-    }
-    writeString(end);
-  }
+      tmp = "<" + field + ">\n";
+      writeString(tmp, level);
 
+      if(elem->ano_elem_->logical_type_ != logical_none || elem->ano_elem_->oneof == true)
+        writeClassExpression(elem->ano_elem_, level+1);
+      else
+        writeRestriction(elem->ano_elem_, level+1);
+
+      tmp = "</" + field + ">\n";
+      writeString(tmp, level);
+    }
+  }
 }
 
-void ClassOwlWriter::writeCollection(AnonymousClassElement_t* ano_elem, int nb_ident, bool data_prop)
+void ClassOwlWriter::writeRestriction(AnonymousClassElement_t* ano_elem, size_t level)
 {
-  nb_ident +=  4;
-  std::string indent(nb_ident, ' ');
-  std::string indent_sub(nb_ident + 4, ' ');
-  std::string start_class = "<owl:Class>\n";
-  std::string end_class = "</owl:Class>\n";
-  std::string start_data = "<rdfs:Datatype>\n";
-  std::string end_data = "</rdfs:Datatype>\n";
+  std::string tmp, field, subfield;
 
-  std::string start, end, tmp;
-  if(ano_elem->logical_type_ == logical_and)
+  field = "owl:Restriction";
+  subfield = "owl:onProperty";
+
+  tmp = "<" + field + ">\n";
+  writeString(tmp, level);
+
+  // Property
+  tmp = "<" + subfield + " " + getResource(ano_elem, "rdf:resource", true) + "/>\n";
+  writeString(tmp, level+1);
+
+ // Cardinality
+  if(ano_elem->card_.card_type_ == cardinality_max || 
+    ano_elem->card_.card_type_ == cardinality_min ||
+    ano_elem->card_.card_type_ == cardinality_exactly)
   {
-    start = "<owl:intersectionOf rdf:parseType=\"Collection\">\n";
-    end = "</owl:intersectionOf>\n";
-
-    if(data_prop)
-      writeString(indent + start_data);
-    else
-      writeString(indent + start_class);
-    writeString(indent_sub + start);
-
-    for(auto sub_elem : ano_elem->sub_elements_)
-      writeCollection(sub_elem, nb_ident + 4, data_prop);
-
-    writeString(indent_sub + end);
-    if(data_prop)
-      writeString(indent + end_data);
-    else
-      writeString(indent + end_class);
+    writeCardinalityValue(ano_elem, level+1);
   }
-  else if(ano_elem->logical_type_ == logical_or)
+  else if(ano_elem->card_.card_type_ == cardinality_only|| 
+    ano_elem->card_.card_type_ == cardinality_some ||
+    ano_elem->card_.card_type_ == cardinality_value)
   {
-    start = "<owl:unionOf rdf:parseType=\"Collection\">\n";
-    end = "</owl:unionOf>\n";
-
-    if(data_prop)
-      writeString(indent + start_data);
+    if(ano_elem->data_property_involved_ != nullptr)
+      writeCardinalityRange(ano_elem, level+1, true);
     else
-      writeString(indent + start_class);
-    writeString(indent_sub + start);
-
-    for(auto sub_elem : ano_elem->sub_elements_)
-      writeCollection(sub_elem, nb_ident + 4, data_prop);
-
-    writeString(indent_sub + end);
-    if(data_prop)
-      writeString(indent + end_data);
-    else
-      writeString(indent + end_class);
+      writeCardinalityRange(ano_elem, level+1, false);
   }
+
+  tmp = "</" + field + ">\n";
+  writeString(tmp, level);
+}
+
+void ClassOwlWriter::writeClassExpression(AnonymousClassElement_t* ano_elem, size_t level)
+{
+  std::string tmp, field;
+
+  field = "owl:Class";
+
+  tmp = "<" + field + ">\n";
+  writeString(tmp, level);
+
+  if(ano_elem->logical_type_ == logical_or)
+    writeUnion(ano_elem, level+1);
+  else if(ano_elem->logical_type_ == logical_and)
+    writeIntersection(ano_elem, level+1);
   else if(ano_elem->logical_type_ == logical_not)
+    writeComplement(ano_elem, level+1);
+  else if(ano_elem->oneof == true)
+    writeOneOf(ano_elem, level+1);
+
+  tmp = "</" + field + ">\n";
+  writeString(tmp, level);
+}
+
+void ClassOwlWriter::writeDatatypeExpression(AnonymousClassElement_t* ano_elem, size_t level)
+{
+  std::string tmp, field;
+
+  field = "rdfs:Datatype";
+
+  tmp = "<" + field + ">\n";
+  writeString(tmp, level);
+
+  if(ano_elem->logical_type_ == logical_or)
+    writeUnion(ano_elem,level+1);
+  else if(ano_elem->logical_type_ == logical_and)
+    writeIntersection(ano_elem,level+1);
+  else if(ano_elem->logical_type_ == logical_not)
+    writeDataComplement(ano_elem,level+1);
+
+  tmp = "</" + field + ">\n";
+  writeString(tmp, level);
+}
+
+void ClassOwlWriter::writeIntersection(AnonymousClassElement_t* ano_elem, size_t level)
+{
+  std::string tmp, field;
+  field = "owl:intersectionOf";
+
+  tmp = "<" + field + " " + "rdf:parseType=\"Collection\">\n";
+  writeString(tmp, level);
+
+  for(auto child : ano_elem->sub_elements_)
+    writeComplexDescription(child, level+1);
+  
+  tmp = "</" + field + ">\n";
+  writeString(tmp, level);
+}
+
+void ClassOwlWriter::writeUnion(AnonymousClassElement_t* ano_elem, size_t level)
+{
+  std::string tmp;
+  std::string field = "owl:unionOf";
+
+  tmp = "<" + field + " " + "rdf:parseType=\"Collection\">\n";
+  writeString(tmp, level);
+
+  for(auto child : ano_elem->sub_elements_)
+    writeComplexDescription(child,level+1);
+  
+  tmp = "</" + field + ">\n";
+  writeString(tmp, level);
+}
+
+void ClassOwlWriter::writeOneOf(AnonymousClassElement_t* ano_elem, size_t level)
+{
+  std::string tmp, field;
+  field = "owl:oneOf";
+
+  tmp = "<" + field + " " + "rdf:parseType=\"Collection\">\n";
+  writeString(tmp, level);
+
+  for(auto child : ano_elem->sub_elements_)
   {
-    AnonymousClassElement_t* sub_elem = ano_elem->sub_elements_.front();
-
-    std::string start_comp;
-    std::string end_comp;
-    if(data_prop)
-    {
-      start_comp = "<owl:datatypeComplementOf";
-      end_comp = "</owl:datatypeComplementOf>\n";
-
-      writeString(indent + start_data);
-      writeString(indent_sub + start_comp);
-      // Simple negation range on data property
-      if(sub_elem->is_complex == false && sub_elem->data_property_involved_ == nullptr && sub_elem->card_.card_range_->type_ != "")
-        writeString(" rdf:resource=\"" + sub_elem->card_.card_range_->getNs()  + "#" + sub_elem->card_.card_range_->type_ + "\"/>\n");
-      // Complex negation range on data property
-      else
-      {
-        writeString( ">\n");
-        writeCollection(sub_elem, nb_ident + 4, false);
-        writeString(indent_sub + end_comp);
-      }
-      writeString(indent + end_data);
-    }
-    else
-    {
-      start_comp = "<owl:complementOf";
-      end_comp = "</owl:complementOf>\n";
-
-      writeString(indent + start_class);
-      writeString(indent_sub + start_comp);
-      // Simple negation range on object property
-      if(sub_elem->is_complex == false &&  sub_elem->class_involved_ != nullptr && sub_elem->object_property_involved_ == nullptr)
-        writeString(" rdf:resource=\"" + ns_ + "#" + sub_elem->class_involved_->value() + "\"/>\n");
-      // Complex negation range on object property
-      else
-      {
-        writeString( ">\n");
-        writeCollection(sub_elem, nb_ident + 4, false);
-        writeString(indent_sub + end_comp);
-      }
-      writeString(indent + end_class);
-    }
+    tmp = "<rdf:Description " + getResource(child, "rdf:about") + "/>\n";
+    writeString(tmp, level+1);
   }
-  else if (ano_elem->oneof)
-  {
-    start = "<owl:oneOf rdf:parseType=\"Collection\">\n";
-    end = "</owl:oneOf>\n";
 
-    writeString(indent + start_class);
-    writeString(indent_sub + start);
-    for(auto sub_elem : ano_elem->sub_elements_)
-        writeCollection(sub_elem, nb_ident + 4, data_prop);
-    writeString(indent_sub + end);
-    writeString(indent + end_class);
-  }
-  else if(ano_elem->card_.card_type_ != cardinality_none)
+  tmp = "</" + field + ">\n";
+  writeString(tmp, level);
+}
+
+void ClassOwlWriter::writeComplement(AnonymousClassElement_t* ano_elem, size_t level)
+{
+  std::string tmp;
+  std::string field = "owl:complementOf";  
+
+  if(ano_elem->sub_elements_.front()->class_involved_ != nullptr && ano_elem->object_property_involved_ == nullptr)
   {
-    writeRestriction(ano_elem, nb_ident);
+    tmp = "<" + field + " " + getResource(ano_elem->sub_elements_.front()) + "/>\n";
+    writeString(tmp, level);
   }
   else
   {
-    tmp = "<rdf:Description rdf:about=\"";
-    if(ano_elem->class_involved_ != nullptr && ano_elem->object_property_involved_ == nullptr)
-    {
-      tmp += ns_ + "#" + ano_elem->class_involved_->value() + "\"/>\n";
-      writeString(indent + tmp);
-    }
-    else if(ano_elem->card_.card_range_ != nullptr && ano_elem->data_property_involved_ == nullptr)
-    {
-      tmp += ano_elem->card_.card_range_->getNs() + "#" + ano_elem->card_.card_range_->type_ + "\"/>\n";
-      writeString(indent + tmp);
-    }
-    else if(ano_elem->individual_involved_ != nullptr && ano_elem->card_.card_type_ != cardinality_value)
-    {
-      tmp += ns_ + "#" + ano_elem->individual_involved_->value() + "\"/>\n";
-      writeString(indent + tmp);
-    }
+    tmp = "<" + field + ">\n";
+    writeString(tmp, level);
+    
+    writeComplexDescription(ano_elem->sub_elements_.front(), level+1);
+
+    tmp = "</" + field + ">\n";
+    writeString(tmp, level);
   }
 }
 
-void ClassOwlWriter::writeRestriction(AnonymousClassElement_t* ano_element, int nb_indent)
+void ClassOwlWriter::writeDataComplement(AnonymousClassElement_t* ano_elem, size_t level)
 {
-  std::string indent(nb_indent, ' ');
-  std::string indent_sub(nb_indent + 4, ' ');
-  std::string start = indent + "<owl:Restriction>\n";
-  std::string end = indent + "</owl:Restriction>\n";
+  std::string tmp, field;
+  field = "owl:datatypeComplementOf";  
+
+  if(ano_elem->sub_elements_.front()->card_.card_range_ != nullptr)
+  {
+    tmp = "<" + field + " " + getResource(ano_elem->sub_elements_.front()) + "/>\n";
+    writeString(tmp, level);
+  }
+  else
+  {
+    tmp = "<" + field + ">\n";
+    writeString(tmp, level);
+    
+    writeDatatypeExpression(ano_elem->sub_elements_.front(), level+1);
+
+    tmp = "</" + field + ">\n";
+    writeString(tmp, level);
+  }
+}
+
+void ClassOwlWriter::writeComplexDescription(AnonymousClassElement_t* ano_elem, size_t level)
+{
   std::string tmp;
-  
-  tmp = indent_sub + "<owl:onProperty rdf:resource=\"" + ns_ + "#";
 
-  if(ano_element->data_property_involved_ == nullptr)
-    tmp += ano_element->object_property_involved_->value() + "\"/>\n";
-  else if(ano_element->object_property_involved_ == nullptr)
-    tmp += ano_element->data_property_involved_->value() + "\"/>\n";
+  if(ano_elem->sub_elements_.size() == 0)
+  {
+    if(ano_elem->object_property_involved_ == nullptr && ano_elem->data_property_involved_ == nullptr)
+    {
+      tmp = "<rdf:Description " + getResource(ano_elem, "rdf:about") + "/>\n";
+      writeString(tmp, level);
+    }
+    else
+      writeRestriction(ano_elem, level);
+  }
+  else if(ano_elem->card_.card_type_ == cardinality_none)
+  {
+    if(ano_elem->data_property_involved_ != nullptr)
+      writeDatatypeExpression(ano_elem, level);
+    else
+      writeClassExpression(ano_elem, level);
+  }
+  else
+    writeRestriction(ano_elem, level);
+}
 
-  writeString(start);
-  writeString(tmp);
+std::string ClassOwlWriter::getResource(AnonymousClassElement_t* ano_elem, const std::string& attribute_name, bool used_property)
+{ 
+  if(used_property == true)
+  {
+    if(ano_elem->object_property_involved_ != nullptr)
+      return attribute_name + "=\"" + ns_ + "#" + ano_elem->object_property_involved_->value() + "\"";
+    else if(ano_elem->data_property_involved_ != nullptr)
+      return attribute_name + "=\"" + ns_ + "#" + ano_elem->data_property_involved_->value() + "\"";
+    else
+      return "";
+  }
+  else if(ano_elem->class_involved_ != nullptr)
+    return attribute_name + "=\"" + ns_ + "#" + ano_elem->class_involved_->value() + "\"";
 
-  tmp = indent_sub;
+  else if(ano_elem->card_.card_range_ != nullptr)
+    return attribute_name + "=\"" + ano_elem->card_.card_range_->getNs() + "#" + ano_elem->card_.card_range_->type_ + "\"";
 
-  switch(ano_element->card_.card_type_)
+  else if(ano_elem->individual_involved_ != nullptr)
+    return attribute_name + "=\"" + ns_ + "#" + ano_elem->individual_involved_->value() + "\"";
+  else
+    return "";
+ 
+}
+
+void ClassOwlWriter::writeCardinalityValue(AnonymousClassElement_t* ano_elem, size_t level)
+{
+  std::string tmp, field;
+
+  switch(ano_elem->card_.card_type_)
   {
     case cardinality_none :
       break;
-      
-    case cardinality_value : 
-      tmp += "<owl:hasValue rdf:resource=\"" + ns_ + "#" + ano_element->individual_involved_->value() + "\"/>\n";
-      writeString(tmp);
-      writeString(end);
+    case cardinality_exactly :
+      field = "owl:qualifiedCardinality";
       break;
-    case cardinality_only : 
-      tmp += "<owl:allValuesFrom";
-      // complex range
-      if(ano_element->is_complex)
-      {
-        tmp +=  ">\n";
-        writeString(tmp);
-        if(ano_element->object_property_involved_ != nullptr)
-          writeCollection(ano_element->sub_elements_.front(), nb_indent + 4, false);
-        else
-          writeCollection(ano_element->sub_elements_.front(), nb_indent + 4, true);
-      
-        tmp = indent_sub + "</owl:allValuesFrom>";
-        writeString(tmp);
-        writeString("\n" + end);
-      }
-      // simple range 
-      else
-      { 
-        if(ano_element->class_involved_ != nullptr)
-          tmp += " rdf:resource=\"" + ns_ + "#" + ano_element->class_involved_->value() + "\"/>\n";
-        else if(ano_element->card_.card_range_ != nullptr)
-          tmp += " rdf:resource=\"" + ano_element->card_.card_range_->getNs() + "#" + ano_element->card_.card_range_->type_ + "\"/>\n";
-        writeString(tmp);
-        writeString(end);
-      }
+    case cardinality_min :
+      field = "owl:minQualifiedCardinality";
       break;
-    case cardinality_exactly : 
-      tmp += "<owl:qualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">" 
-            + std::to_string(ano_element->card_.card_number_) +
-            "</owl:qualifiedCardinality>" + "\n";
-      writeString(tmp);
-      writeCardinality(ano_element, nb_indent + 4);
-      writeString(end);
+    case cardinality_max :
+      field = "owl:maxQualifiedCardinality";
       break;
-    case cardinality_min : 
-      tmp += "<owl:minQualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">" 
-            + std::to_string(ano_element->card_.card_number_) +
-            "</owl:minQualifiedCardinality>" + "\n";
-      writeString(tmp);
-      writeCardinality(ano_element, nb_indent + 4);
-      writeString(end);
-      break;
-    case cardinality_max : 
-      tmp += "<owl:maxQualifiedCardinality rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">" 
-            + std::to_string(ano_element->card_.card_number_) +
-            "</owl:maxQualifiedCardinality>" + "\n";
-      writeString(tmp);
-      writeCardinality(ano_element, nb_indent + 4);
-      writeString(end);
-
-      break;
-   
-    case cardinality_some :
-      tmp += "<owl:someValuesFrom";
-      //complex range
-      if(ano_element->is_complex)
-      {
-        tmp +=  ">\n";
-        writeString(tmp);
-        if(ano_element->object_property_involved_ != nullptr)
-          writeCollection(ano_element->sub_elements_.front(), nb_indent + 4, false);
-        else
-          writeCollection(ano_element->sub_elements_.front(), nb_indent + 4, true);
-        tmp = indent_sub + "</owl:someValuesFrom>";
-        writeString(tmp);
-        writeString("\n" + end);
-      }
-      else
-      { // simple range 
-        if(ano_element->class_involved_ != nullptr)
-          tmp += " rdf:resource=\"" + ns_ + "#" + ano_element->class_involved_->value() + "\"/>\n";
-        else if(ano_element->card_.card_range_ != nullptr)
-          tmp += " rdf:resource=\"" + ano_element->card_.card_range_->getNs() + "#" + ano_element->card_.card_range_->type_ + "\"/>\n";
-        writeString(tmp);
-        writeString(end);
-      }
-      break;
-    
     case cardinality_error :
-      std::cout << "error on cardinality type -> error_" << std::endl;
+      std::cout << "error on cardinality type -> error_" << std::endl; // TODO use Display
       break;
+  }
+
+  tmp = "<" + field + " rdf:datatype=\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\">" + 
+        std::to_string(ano_elem->card_.card_number_) + "</" + field + ">\n";
+  writeString(tmp, level);
+
+  writeCardinality(ano_elem, level);
+}
+
+void ClassOwlWriter::writeCardinalityRange(AnonymousClassElement_t* ano_elem, size_t level, bool is_data_prop)
+{
+  std::string tmp, field;
+
+  switch(ano_elem->card_.card_type_)
+  {
+    case cardinality_none :
+      break;
+    case cardinality_value : 
+      tmp += "<owl:hasValue rdf:resource=\"" + ns_ + "#" + ano_elem->individual_involved_->value() + "\"/>\n";
+      writeString(tmp, level);
+      return;
+    case cardinality_only : 
+      field = "owl:allValuesFrom";
+      break;
+    case cardinality_some :
+      field = "owl:someValuesFrom";
+      break;
+  }
+
+  if(ano_elem->is_complex == false)
+  {
+    tmp = "<" + field + " " + getResource(ano_elem) + "/>\n";
+    writeString(tmp, level);
+  }
+  else
+  {
+    tmp = "<" + field + ">\n";
+    writeString(tmp, level);
+
+    if(is_data_prop == true)
+      writeDatatypeExpression(ano_elem->sub_elements_.front(), level + 1);
+    else
+      writeComplexDescription(ano_elem->sub_elements_.front(), level + 1);
+
+    tmp = "</" + field + ">\n";
+    writeString(tmp, level);
   }
 }
 
-void ClassOwlWriter::writeCardinality(AnonymousClassElement_t* ano_element, int nb_indent)
+void ClassOwlWriter::writeCardinality(AnonymousClassElement_t* ano_element, size_t level)
 {
-  std::string tmp, end;
-  std::string indent(nb_indent, ' ');
-  std::string indent_sub(nb_indent + 4, ' ');
-
+  std::string tmp, field;
+ 
   if(ano_element->data_property_involved_ == nullptr)
   {
-    tmp = "<owl:onClass";
-    end = "</owl:onClass>\n";
+    field = "owl:onClass";
+
     if(ano_element->class_involved_ != nullptr)
     {
-      tmp += " rdf:resource=\"" + ns_ + "#" + ano_element->class_involved_->value() + "\"/>\n";
-      writeString(indent + tmp);
+      tmp = "<" + field + " " + getResource(ano_element) + "/>\n";
+      writeString(tmp, level);
     }
     else
     {
-      tmp += ">\n";
-      writeString(indent + tmp);
-      writeCollection(ano_element->sub_elements_.front(), nb_indent, false);
-      writeString(indent + end);
+      tmp = "<" + field + ">\n";
+      writeString(tmp, level);
+
+      writeClassExpression(ano_element->sub_elements_.front(), level+1);
+
+      tmp = "</" + field + ">\n";
+      writeString(tmp, level);
     } 
   }
   else
   {
-    tmp = "<owl:onDataRange";
-    end = "</owl:onDataRange>\n";
+    field = "<owl:onDataRange";
+
     if(ano_element->card_.card_range_ != nullptr)
     {
-      tmp += " rdf:resource=\"" + ano_element->card_.card_range_->getNs() + "#" + ano_element->card_.card_range_->type_ + "\"/>\n";
-      writeString(indent + tmp);
+      tmp = "<" + field + " " + getResource(ano_element) + "/>\n";
+      writeString(tmp, level);
     }
     else
     {
-      tmp += ">\n";
-      writeString(indent + tmp);
-      writeCollection(ano_element->sub_elements_.front(), nb_indent, true);
-      writeString(indent + end);
+      tmp = "<" + field + ">\n";
+      writeString(tmp, level);
+
+      writeDatatypeExpression(ano_element->sub_elements_.front(), level+1);
+
+      tmp = "</" + field + ">\n";
+      writeString(tmp, level);
     }
   }
 }
 
+// --------------------------------------------------
 void ClassOwlWriter::writeSubClassOf(ClassBranch_t* branch)
 {
   for(auto& mother : branch->mothers_)
