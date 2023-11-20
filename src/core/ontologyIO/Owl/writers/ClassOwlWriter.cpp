@@ -296,30 +296,6 @@ void ClassOwlWriter::writeComplexDescription(AnonymousClassElement_t* ano_elem, 
     writeRestriction(ano_elem, level);
 }
 
-std::string ClassOwlWriter::getResource(AnonymousClassElement_t* ano_elem, const std::string& attribute_name, bool used_property)
-{ 
-  if(used_property == true)
-  {
-    if(ano_elem->object_property_involved_ != nullptr)
-      return attribute_name + "=\"" + ns_ + "#" + ano_elem->object_property_involved_->value() + "\"";
-    else if(ano_elem->data_property_involved_ != nullptr)
-      return attribute_name + "=\"" + ns_ + "#" + ano_elem->data_property_involved_->value() + "\"";
-    else
-      return "";
-  }
-  else if(ano_elem->class_involved_ != nullptr)
-    return attribute_name + "=\"" + ns_ + "#" + ano_elem->class_involved_->value() + "\"";
-
-  else if(ano_elem->card_.card_range_ != nullptr)
-    return attribute_name + "=\"" + ano_elem->card_.card_range_->getNs() + "#" + ano_elem->card_.card_range_->type_ + "\"";
-
-  else if(ano_elem->individual_involved_ != nullptr)
-    return attribute_name + "=\"" + ns_ + "#" + ano_elem->individual_involved_->value() + "\"";
-  else
-    return "";
- 
-}
-
 void ClassOwlWriter::writeCardinalityValue(AnonymousClassElement_t* ano_elem, size_t level)
 {
   std::string tmp, field;
@@ -440,6 +416,30 @@ void ClassOwlWriter::writeCardinality(AnonymousClassElement_t* ano_element, size
       writeString(tmp, level);
     }
   }
+}
+
+std::string ClassOwlWriter::getResource(AnonymousClassElement_t* ano_elem, const std::string& attribute_name, bool used_property)
+{ 
+  if(used_property == true)
+  {
+    if(ano_elem->object_property_involved_ != nullptr)
+      return attribute_name + "=\"" + ns_ + "#" + ano_elem->object_property_involved_->value() + "\"";
+    else if(ano_elem->data_property_involved_ != nullptr)
+      return attribute_name + "=\"" + ns_ + "#" + ano_elem->data_property_involved_->value() + "\"";
+    else
+      return "";
+  }
+  else if(ano_elem->class_involved_ != nullptr)
+    return attribute_name + "=\"" + ns_ + "#" + ano_elem->class_involved_->value() + "\"";
+
+  else if(ano_elem->card_.card_range_ != nullptr)
+    return attribute_name + "=\"" + ano_elem->card_.card_range_->getNs() + "#" + ano_elem->card_.card_range_->type_ + "\"";
+
+  else if(ano_elem->individual_involved_ != nullptr)
+    return attribute_name + "=\"" + ns_ + "#" + ano_elem->individual_involved_->value() + "\"";
+  else
+    return "";
+ 
 }
 
 void ClassOwlWriter::writeSubClassOf(ClassBranch_t* branch)
