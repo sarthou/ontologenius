@@ -112,14 +112,58 @@ public:
     return res;
   }
 
+  template<template<typename> typename C>
+  C<B*> intersection(const std::unordered_set<B*>& set, const C<B*>& c)
+  {
+    C<B*> res;
+    for(B* v : c)
+    {
+      if(set.find(v) != set.end())
+        std::fill_n(std::inserter(res, res.end()), 1, v);
+    }
+    return res;
+  }
+
+  template<template<typename> typename C>
+  B* firstIntersection(const std::unordered_set<B*>& set, const C<B*>& c)
+  {
+    for(B* v : c)
+    {
+      if(set.find(v) != set.end())
+        return v;
+    }
+    return nullptr;
+  }
+
+  template<template<typename> typename C>
+  C<B*> intersection(const std::unordered_set<B*>& set, const C<Single_t<B*>>& c)
+  {
+    C<B*> res;
+    for(auto& v : c)
+    {
+      if(set.find(v.elem) != set.end())
+        std::fill_n(std::inserter(res, res.end()), 1, v.elem);
+    }
+    return res;
+  }
+
+  template<template<typename> typename C>
+  B* firstIntersection(const std::unordered_set<B*>& set, const C<Single_t<B*>>& c)
+  {
+    for(auto& v : c)
+    {
+      if(set.find(v.elem) != set.end())
+        return v.elem;
+    }
+    return nullptr;
+  }
+
 protected:
   std::vector<B*> all_branchs_;
   
   void amIA(B** me, std::map<std::string, B*>& vect, const std::string& value, bool erase = true);
 
   void mitigate(B* branch);
-  std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<B*>& vect);
-  std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<Single_t<B*>>& vect);
   void eraseFromVector(std::vector<B*>& vect, B* branch);
 
 private:
@@ -747,30 +791,6 @@ void OntoGraph<B>::mitigate(B* branch)
       this->removeFromElemVect(mother.elem->childs_, branch);
     }
   }
-}
-
-template <typename B>
-std::vector<B*> OntoGraph<B>::intersection(const std::unordered_set<B*>& set, const std::vector<B*>& vect)
-{
-  std::vector<B*> res;
-  for(B* v : vect)
-  {
-    if(set.find(v) != set.end())
-      res.push_back(v);
-  }
-  return res;
-}
-
-template <typename B>
-std::vector<B*> OntoGraph<B>::intersection(const std::unordered_set<B*>& set, const std::vector<Single_t<B*>>& vect)
-{
-  std::vector<B*> res;
-  for(const Single_t<B*>& v : vect)
-  {
-    if(set.find(v.elem) != set.end())
-      res.push_back(v.elem);
-  }
-  return res;
 }
 
 template <typename B>
