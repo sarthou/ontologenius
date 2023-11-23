@@ -59,6 +59,7 @@ public:
 
   std::unordered_set<std::string> getDisjoint(const std::string& value);
   std::unordered_set<index_t> getDisjoint(index_t value);
+  void getDisjointPtr(DataPropertyBranch_t* branch, std::unordered_set<DataPropertyBranch_t*>& res);
   std::unordered_set<std::string> getDomain(const std::string& value);
   std::unordered_set<index_t> getDomain(index_t value);
   void getDomainPtr(DataPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);

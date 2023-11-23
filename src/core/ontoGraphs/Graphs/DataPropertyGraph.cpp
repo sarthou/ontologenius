@@ -237,6 +237,15 @@ std::unordered_set<index_t> DataPropertyGraph::getDisjoint(index_t value)
   return res;
 }
 
+void DataPropertyGraph::getDisjointPtr(DataPropertyBranch_t* branch, std::unordered_set<DataPropertyBranch_t*>& res)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+
+  if(branch != nullptr)
+    for(auto& disjoint : branch->disjoints_)
+      getDownPtr(disjoint.elem, res);
+}
+
 std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& value)
 {
   std::unordered_set<std::string> res;
