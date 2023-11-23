@@ -121,7 +121,7 @@ void ClassChecker::checkObjectPropertyRange()
       std::unordered_set<ClassBranch_t*> range;
       for(auto prop : prop_up)
         class_graph_->object_property_graph_->getRangePtr(prop, range);
-
+     
       if(range.size() != 0)
       {
         ClassBranch_t* intersection = findIntersection(up, range);
