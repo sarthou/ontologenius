@@ -22,6 +22,7 @@ struct IndividualVectors_t
    std::vector<Pair_t<std::string, std::string>> data_relations_;
 
    std::vector<Single_t<std::string>> same_as_;
+   // TODO : add vector distinct
    std::map<std::string, std::vector<std::string>> dictionary_;
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
 };
@@ -122,6 +123,8 @@ public:
   std::unordered_set<index_t> getType(index_t class_selector, bool single_same = false);
   bool isA(const std::string& indiv, const std::string& class_selector);
   bool isA(index_t indiv, index_t class_selector);
+  bool isA(IndividualBranch_t* indiv, const std::string& class_selector);
+  bool isA(IndividualBranch_t* indiv, index_t class_selector);
   bool relationExists(const std::string& param);
   bool relationExists(const std::string& subject, const std::string& property, const std::string& object);
 
@@ -184,6 +187,7 @@ private:
   std::string getName(IndividualBranch_t* branch, bool use_default);
   std::vector<std::string> getNames(IndividualBranch_t* branch, bool use_default);
   std::vector<std::string> getEveryNames(IndividualBranch_t* branch, bool use_default);
+  template<typename T> bool isATemplate(IndividualBranch_t* branch, const T& class_selector);
 
   void addSames(IndividualBranch_t* me, const std::vector<Single_t<std::string>>& sames, bool is_new = true);
   void addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
