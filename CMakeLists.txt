@@ -39,6 +39,20 @@ function(add_onto_library TARGET)
     target_enable_sanitizers(${TARGET})
 endfunction(add_onto_library)
 
+function(add_onto_base_executable TARGET)
+    if(NOT TARGET)
+        message(FATAL_ERROR "Expected the target name as first argument")
+    endif()
+    if(NOT ARGN)
+        message(FATAL_ERROR "Expected source file list after target name")
+    endif()
+    add_executable(${TARGET} ${ARGN})
+    target_include_directories(${TARGET} PUBLIC include)
+    set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+    target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
+    target_enable_sanitizers(${TARGET})
+endfunction(add_onto_base_executable)
+
 function(add_onto_executable TARGET)
     if(NOT TARGET)
         message(FATAL_ERROR "Expected the target name as first argument")
@@ -247,7 +261,7 @@ target_link_libraries(ontologenius_lib
 ##############################
 ## PLUGINS
 ##############################
-add_onto_library(ontologenius_reasoner_plugin
+add_onto_base_library(ontologenius_reasoner_plugin
   src/core/reasoner/plugins/ReasonerNone.cpp
   src/core/reasoner/plugins/ReasonerInverseOf.cpp
   src/core/reasoner/plugins/ReasonerSymetric.cpp
@@ -256,9 +270,12 @@ add_onto_library(ontologenius_reasoner_plugin
   src/core/reasoner/plugins/ReasonerGeneralize.cpp
   src/core/reasoner/plugins/ReasonerRangeDomain.cpp
 )
+target_include_directories(ontologenius_reasoner_plugin
+ PUBLIC ${pluginlib_INCLUDE_DIRS}
+)
 target_link_libraries(ontologenius_reasoner_plugin
  PUBLIC
-  ontologenius_core_lib
+ ontologenius_core_lib ${pluginlib_LIBRARIES}
 )
 
 ##############################
@@ -295,7 +312,7 @@ target_link_libraries(ontologenius PRIVATE ontologenius_interface)
 add_onto_executable(ontologenius_multi src/nodes/ontologenius_multi.cpp)
 target_link_libraries(ontologenius_multi PRIVATE ontologenius_interface)
 
-add_onto_executable(ontologenius_draw src/graphical/versioning/main.cpp )
+add_onto_base_executable(ontologenius_draw src/graphical/versioning/main.cpp )
 target_link_libraries(ontologenius_draw PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
 
 ##############################
