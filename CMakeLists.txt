@@ -9,6 +9,20 @@ if(WITH_CLANG_TIDY)
 endif()
 include(cmake/Sanitizers.cmake)
 
+function(add_onto_base_library TARGET)
+    if(NOT TARGET)
+        message(FATAL_ERROR "Expected the target name as first argument")
+    endif()
+    if(NOT ARGN)
+        message(FATAL_ERROR "Expected source file list after target name")
+    endif()
+    add_library(${TARGET} ${ARGN})
+    target_include_directories(${TARGET} PUBLIC include)
+    set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+    target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
+    target_enable_sanitizers(${TARGET})
+endfunction(add_onto_base_library)
+
 function(add_onto_library TARGET)
     if(NOT TARGET)
         message(FATAL_ERROR "Expected the target name as first argument")
@@ -55,7 +69,6 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-find_package(Boost REQUIRED COMPONENTS system)
 find_package(cmake_modules REQUIRED)
 find_package(TinyXML REQUIRED)
 find_package(OpenCV REQUIRED)
@@ -126,7 +139,7 @@ catkin_package(
 ## CORE
 ##############################
 
-add_onto_library(ontologenius_ontoGraphs_lib
+add_onto_base_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Branchs/ClassBranch.cpp
   src/core/ontoGraphs/Branchs/ObjectPropertyBranch.cpp
   src/core/ontoGraphs/Branchs/DataPropertyBranch.cpp
@@ -181,7 +194,7 @@ target_link_libraries(ontologenius_core_lib
 ## DRAWER
 ##############################
 
-add_onto_library(ontologenius_drawer_lib
+add_onto_base_library(ontologenius_drawer_lib
   src/graphical/versioning/TreeReader.cpp
   src/graphical/versioning/TreeDrawer.cpp
   )
