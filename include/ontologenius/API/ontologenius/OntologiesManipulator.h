@@ -4,8 +4,6 @@
 #include <vector>
 #include <string>
 
-#include <ros/ros.h>
-
 #include "ontologenius/API/ontologenius/clients/ManagerClient.h"
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 #include "ontologenius/API/ontologenius/OntologyManipulatorIndex.h"

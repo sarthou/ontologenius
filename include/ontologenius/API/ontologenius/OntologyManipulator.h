@@ -4,8 +4,6 @@
 #include <vector>
 #include <string>
 
-#include <ros/ros.h>
-
 #include "ontologenius/API/ontologenius/clients/ontologyClients/IndividualClient.h"
 #include "ontologenius/API/ontologenius/clients/ontologyClients/ObjectPropertyClient.h"
 #include "ontologenius/API/ontologenius/clients/ontologyClients/DataPropertyClient.h"
