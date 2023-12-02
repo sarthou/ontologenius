@@ -62,10 +62,10 @@ endfunction(add_onto_executable)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
+  roslib
   std_msgs
   genmsg
   message_generation
-  pluginlib
 )
 
 ## System dependencies are found with CMake's conventions
@@ -176,7 +176,7 @@ target_link_libraries(ontologenius_ontoGraphs_lib
   ${TinyXML_LIBRARIES} PkgConfig::CURL
 )
 
-add_onto_library(ontologenius_core_lib
+add_onto_base_library(ontologenius_core_lib
   src/core/feeder/Feeder.cpp
   src/core/feeder/FeedStorage.cpp
   src/core/feeder/Versionor.cpp
@@ -185,9 +185,12 @@ add_onto_library(ontologenius_core_lib
   src/core/reasoner/Reasoners.cpp
   src/core/reasoner/ConfigReader.cpp
 )
+target_include_directories(ontologenius_core_lib
+ PUBLIC ${pluginlib_INCLUDE_DIRS}
+)
 target_link_libraries(ontologenius_core_lib
  PUBLIC
-  ontologenius_ontoGraphs_lib
+  ontologenius_ontoGraphs_lib ${pluginlib_LIBRARIES}
 )
 
 ##############################
@@ -381,7 +384,7 @@ target_include_directories(ontoloGUI
   PRIVATE
     ${catkin_INCLUDE_DIRS}
 )
-add_dependencies(ontoloGUI ontologenius_gencpp)
+add_dependencies(ontoloGUI ontologenius_gencpp ${catkin_EXPORTED_TARGETS})
 target_link_libraries(ontoloGUI
     ${catkin_LIBRARIES}
     Qt5::Core
