@@ -61,6 +61,9 @@ find_package(TinyXML REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport)
+find_package(PkgConfig REQUIRED)
+
+pkg_search_module(CURL REQUIRED libcurl IMPORTED_TARGET GLOBAL)
 
 # Install python scripts using distutils
 catkin_python_setup()
@@ -82,7 +85,6 @@ catkin_python_setup()
 ## Generate services in the 'srv' folder
  add_service_files(
   FILES
-  REST.srv
   OntologeniusConversion.srv
   OntologeniusService.srv
   OntologeniusIndexService.srv
@@ -158,7 +160,7 @@ target_include_directories(ontologenius_ontoGraphs_lib
 )
 target_link_libraries(ontologenius_ontoGraphs_lib
  PUBLIC
-  ${TinyXML_LIBRARIES}
+  ${TinyXML_LIBRARIES} PkgConfig::CURL
 )
 
 add_onto_library(ontologenius_core_lib
@@ -392,10 +394,6 @@ install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   FILES_MATCHING PATTERN "*.h"
   PATTERN ".svn" EXCLUDE
-)
-
-install(PROGRAMS scripts/REST.py
-  DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
 )
 
 install(DIRECTORY launch/
