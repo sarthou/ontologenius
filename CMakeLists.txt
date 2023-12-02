@@ -278,6 +278,17 @@ target_link_libraries(ontologenius_reasoner_plugin
  ontologenius_core_lib ${pluginlib_LIBRARIES}
 )
 
+add_onto_base_library(ontologenius_operators
+  src/core/ontologyOperators/differenceFinder.cpp
+  src/core/ontologyOperators/Sparql.cpp
+  src/core/ontologyOperators/SparqlSolver.cpp
+  src/core/ontologyOperators/SparqlUtils.cpp
+)
+target_link_libraries(ontologenius_operators
+ PUBLIC
+  ontologenius_core_lib
+)
+
 ##############################
 ## INTERFACE
 ##############################
@@ -286,14 +297,10 @@ add_onto_library(ontologenius_interface
   src/interface/RosInterface.cpp
   src/interface/RosInterfaceStringHandlers.cpp
   src/interface/RosInterfaceIndexHandlers.cpp
-  src/core/ontologyOperators/differenceFinder.cpp
-  src/core/ontologyOperators/Sparql.cpp
-  src/core/ontologyOperators/SparqlSolver.cpp
-  src/core/ontologyOperators/SparqlUtils.cpp
 )
 target_link_libraries(ontologenius_interface
  PUBLIC
-  ontologenius_core_lib
+  ontologenius_core_lib ontologenius_operators
 )
 
 ##############################
