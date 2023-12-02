@@ -84,8 +84,8 @@
 
       <div class="context">
         <h1 class="title">Ontologenius launchers</h1>
-        <p>Ontologenius consists of three executables: the kernel, the REST module and a graphical interface (ontoloGUI).
-          While the first two are mandatory, the only purpose of the latter is to quickly see the effect of queries.</p>
+        <p>Ontologenius consists of two executables: the kernel and a graphical interface (ontoloGUI).
+          While the first is mandatory, the only purpose of the latter is to quickly see the effect of queries.</p>
 
         <h2><i class="fas fa-angle-right"></i> Ontologenius core</h2>
         <p>An Ontologenius core needs at least three parameters to be able to run:</p>
@@ -189,16 +189,6 @@
         </div>
 
         <p class="tip">Arguments are passed to the executable as options (-l, -i, -c). If you do not set an option, the setting will take a default value.</p>
-
-        <h2><i class="fas fa-angle-right"></i> Ontologenius REST</h2>
-
-        <p>The REST executable is actually just a python node that provides Ontologenius with a way to access the Internet to download
-          ontologies, for example.</p>
-        <p>This node does not need to be started if you do not want to load ontologies from the Internet.</p>
-
-        <div class="code_block">
-          <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_rest&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;REST.py&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> &gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
-        </div>
 
         <h2><i class="fas fa-angle-right"></i> OntoloGUI</h2>
 
