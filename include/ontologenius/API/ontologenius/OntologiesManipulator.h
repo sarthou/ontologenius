@@ -23,7 +23,7 @@ public:
 
   /// @brief Wait for ontologenius services to be advertised and available for. Blocks until it is.
   /// @param timeout is the amount of time to wait for before timing out. If timeout is -1 (default), waits until the node is shutdown.
-  void waitInit(int32_t timeout = -1);
+  bool waitInit(int32_t timeout = -1);
 
   /// @brief Gets a pointer on the OntologyManipulator instance named name.
   /// @param name is the name of the instance to get.
