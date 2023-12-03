@@ -415,6 +415,7 @@ target_link_libraries(ontoloGUI
     Qt5::Core
     Qt5::Widgets
     Qt5::PrintSupport
+    ontologenius_lib
 )
 install(TARGETS ontoloGUI RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 

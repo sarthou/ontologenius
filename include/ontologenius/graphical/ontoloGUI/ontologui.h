@@ -5,6 +5,7 @@
 #include "include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
 #include <QTextCursor>
 
+#include "ontologenius/OntologiesManipulator.h"
 #include <ros/ros.h>
 #include <vector>
 #include <string>
@@ -23,17 +24,18 @@ public:
   explicit ontoloGUI(QWidget *parent = 0);
   ~ontoloGUI();
 
-  void init(ros::NodeHandle* n);
+  void init();
   void wait();
   void start();
   void loadReasoners();
 
 private:
   Ui::ontoloGUI *ui;
-  ros::NodeHandle* n_;
 
-  std::map<std::string, ros::Publisher> publishers_;
-  std::map<std::string, ros::Subscriber> feeder_notifications_subs_;
+  onto::OntologiesManipulator ontos_;
+  onto::OntologyManipulator* onto_;
+  bool multi_usage_;
+
   std::string feeder_notifications_;
 
   std::vector<std::string> reasoners_names_;
@@ -85,7 +87,8 @@ public slots:
   void feederDelSlot();
   void feederCommitSlot();
   void feederCheckoutSlot();
-  void createPublisher(const std::string& onto_ns);
+
+  bool updateOntoPtr();
 
 signals:
   void feederSetHtmlSignal(QString);

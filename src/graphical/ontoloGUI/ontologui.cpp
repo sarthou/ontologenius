@@ -251,11 +251,20 @@ ontoloGUI::~ontoloGUI()
     delete ui;
 }
 
-void ontoloGUI::init(ros::NodeHandle* n)
+void ontoloGUI::init()
 {
-  n_ = n;
-  publishers_["_"] = n_->advertise<std_msgs::String>("ontologenius/insert", QUEU_SIZE);
-  feeder_notifications_subs_["_"] = n_->subscribe("ontologenius/feeder_notifications", QUEU_SIZE, &ontoloGUI::feederCallback, this);
+  if(ontos_.waitInit(1000) == false)
+  {
+    onto_ = new onto::OntologyManipulator();
+    multi_usage_ = false;
+  }
+  else
+  {
+    onto_ == nullptr;
+    multi_usage_ = true;
+  }
+  
+  //feeder_notifications_subs_["_"] = n_->subscribe("ontologenius/feeder_notifications", QUEU_SIZE, &ontoloGUI::feederCallback, this);
 }
 
 void ontoloGUI::wait()
@@ -332,23 +341,24 @@ void ontoloGUI::classClickedSlot()
     return;
   }
 
-  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/class" : "ontologenius/class/" + ui->OntologyName->text().toStdString();
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
+  std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
+  std::string param = ui->classParameter->text().toStdString();
+  if(updateOntoPtr() == false)
+    return;
 
-  ontologenius::OntologeniusService srv;
-  srv.request.action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
-  srv.request.param = ui->classParameter->text().toStdString();
   QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->classParameter->text();
   ui->ClassDescription->setText(text);
 
-  if(!client.call(srv))
-    displayErrorInfo(service_name + " client call failed");
+  auto res_vect = onto_->classes.call(action, param);
+  int err = onto_->classes.getErrorCode();
+  if(err == -1)
+    displayErrorInfo("client call failed");
   else
   {
     start();
-    std::string res = vector2string(srv.response.values);
-    ui->ResultArea->setText(QString::fromStdString(res));
-    if(srv.response.code == 3)
+    std::string res_str = vector2string(res_vect);
+    ui->ResultArea->setText(QString::fromStdString(res_str));
+    if(err == 3)
       displayUnClosed();
   }
 }
@@ -361,23 +371,24 @@ void ontoloGUI::objectPropertyClickedSlot()
     return;
   }
 
-  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/object_property" : "ontologenius/object_property/" + ui->OntologyName->text().toStdString();
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
+  std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
+  std::string param = ui->objectPropertyParameter->text().toStdString();
+  if(updateOntoPtr() == false)
+    return;
 
-  ontologenius::OntologeniusService srv;
-  srv.request.action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
-  srv.request.param = ui->objectPropertyParameter->text().toStdString();
   QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->objectPropertyParameter->text();
   ui->ObjectPropertyDescription->setText(text);
 
-  if(!client.call(srv))
-    displayErrorInfo(service_name + " client call failed");
+  auto res_vect = onto_->objectProperties.call(action, param);
+  int err = onto_->objectProperties.getErrorCode();
+  if(err == -1)
+    displayErrorInfo("client call failed");
   else
   {
     start();
-    std::string res = vector2string(srv.response.values);
-    ui->ResultArea->setText(QString::fromStdString(res));
-    if(srv.response.code == 3)
+    std::string res_str = vector2string(res_vect);
+    ui->ResultArea->setText(QString::fromStdString(res_str));
+    if(err == 3)
       displayUnClosed();
   }
 }
@@ -390,23 +401,24 @@ void ontoloGUI::dataPropertyClickedSlot()
     return;
   }
 
-  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/data_property" : "ontologenius/data_property/" + ui->OntologyName->text().toStdString();
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
+  std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
+  std::string param = ui->dataPropertyParameter->text().toStdString();
+  if(updateOntoPtr() == false)
+    return;
 
-  ontologenius::OntologeniusService srv;
-  srv.request.action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
-  srv.request.param = ui->dataPropertyParameter->text().toStdString();
   QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->dataPropertyParameter->text();
   ui->DataPropertyDescription->setText(text);
 
-  if(!client.call(srv))
-    displayErrorInfo(service_name + " client call failed");
+  auto res_vect = onto_->dataProperties.call(action, param);
+  int err = onto_->dataProperties.getErrorCode();
+  if(err == -1)
+    displayErrorInfo("client call failed");
   else
   {
     start();
-    std::string res = vector2string(srv.response.values);
-    ui->ResultArea->setText(QString::fromStdString(res));
-    if(srv.response.code == 3)
+    std::string res_str = vector2string(res_vect);
+    ui->ResultArea->setText(QString::fromStdString(res_str));
+    if(err == 3)
       displayUnClosed();
   }
 }
@@ -419,23 +431,24 @@ void ontoloGUI::individualClickedSlot()
     return;
   }
 
-  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/individual" : "ontologenius/individual/" + ui->OntologyName->text().toStdString();
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
-
-  ontologenius::OntologeniusService srv;
-  srv.request.action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
-  srv.request.param = ui->individualParameter->text().toStdString();
+  std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
+  std::string param = ui->individualParameter->text().toStdString();
+  if(updateOntoPtr() == false)
+    return;
+  
   QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->individualParameter->text();
   ui->IndividualDescription->setText(text);
 
-  if(!client.call(srv))
-    displayErrorInfo(service_name + " client call failed");
+  auto res_vect = onto_->individuals.call(action, param);
+  int err = onto_->individuals.getErrorCode();
+  if(err == -1)
+    displayErrorInfo("client call failed");
   else
   {
     start();
-    std::string res = vector2string(srv.response.values);
-    ui->ResultArea->setText(QString::fromStdString(res));
-    if(srv.response.code == 3)
+    std::string res_str = vector2string(res_vect);
+    ui->ResultArea->setText(QString::fromStdString(res_str));
+    if(err == 3)
       displayUnClosed();
   }
 }
@@ -448,18 +461,16 @@ void ontoloGUI::closeOntologySlot()
     return;
   }
 
-  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/actions" : "ontologenius/actions/" + ui->OntologyName->text().toStdString();
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
+  if(updateOntoPtr() == false)
+    return;
 
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "close";
-
-  if(!client.call(srv))
-    displayErrorInfo(service_name + " client call failed");
+  onto_->close();
+  int err = onto_->actions.getErrorCode();
+  if(err == -1)
+    displayErrorInfo("client call failed");
   else
   {
-    std::string res = vector2string(srv.response.values);
-    ui->ResultArea->setText(QString::fromStdString(res));
+    ui->ResultArea->setText("");
     start();
   }
 }
@@ -477,23 +488,22 @@ void ontoloGUI::ReasonerClickedSlot(int)
     return;
   }
 
-  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + ui->OntologyName->text().toStdString();
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
+  std::string param = dynamic_cast<QCheckBoxExtended*>(sender())->text().toStdString();
+  if(updateOntoPtr() == false)
+    return;
 
-  ontologenius::OntologeniusService srv;
   if(dynamic_cast<QCheckBoxExtended*>(sender())->isChecked())
-    srv.request.action = "activate";
+    onto_->reasoners.activate(param);
   else
-    srv.request.action = "deactivate";
-  srv.request.param = dynamic_cast<QCheckBoxExtended*>(sender())->text().toStdString();
+    onto_->reasoners.deactivate(param);
 
-  if(!client.call(srv))
-    displayErrorInfo(service_name + " client call failed");
+  int err = onto_->reasoners.getErrorCode();
+  if(err == -1)
+    displayErrorInfo("client call failed");
   else
   {
     start();
-    std::string res = vector2string(srv.response.values);
-    ui->ResultArea->setText(QString::fromStdString(res));
+    ui->ResultArea->setText("");
   }
 }
 
@@ -533,18 +543,18 @@ void ontoloGUI::loadReasoners()
     delete item;
   }
 
-  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + ui->OntologyName->text().toStdString();
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
+  if(updateOntoPtr() == false)
+    return;
 
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "list";
+  auto res_vect = onto_->reasoners.list();
+  int err = onto_->reasoners.getErrorCode();
 
-  if(!client.call(srv))
-    displayErrorInfo(service_name + " client call failed");
+  if(err == -1)
+    displayErrorInfo("client call failed");
   else
   {
     start();
-    reasoners_names_ = srv.response.values;
+    reasoners_names_ = res_vect;
     ui->ResultArea->setText("");
 
     constructReasonersCheckBoxs();
@@ -573,17 +583,16 @@ void ontoloGUI::updateReasonersCheckBoxs()
     return;
   }
 
-  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + ui->OntologyName->text().toStdString();
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
+  if(updateOntoPtr() == false)
+    return;
 
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "activeList";
+  auto active_reasoners = onto_->reasoners.activeList();
+  int err = onto_->reasoners.getErrorCode();
 
-  if(!client.call(srv))
-    displayErrorInfo(service_name + " client call failed");
+  if(err == -1)
+    displayErrorInfo("client call failed");
   else
   {
-    std::vector<std::string> active_reasoners = srv.response.values;
     for(int i = 1; i < ui->ReasonerListLayout->count(); ++i)
     {
       QWidget* widget = ui->ReasonerListLayout->itemAt(i)->widget();
@@ -623,17 +632,16 @@ std::string ontoloGUI::getReasonerDescription(std::string box)
     return "";
   }
 
-  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/reasoner" : "ontologenius/reasoner/" + ui->OntologyName->text().toStdString();
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
+  if(updateOntoPtr() == false)
+    return "";
 
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "getDescription";
-  srv.request.param = std::move(box);
+  auto description = onto_->reasoners.getDescription(box);
+  int err = onto_->reasoners.getErrorCode();
 
-  if(!client.call(srv))
-    displayErrorInfo(service_name + " client call failed");
+  if(err == -1)
+    displayErrorInfo("client call failed");
   else
-    return vector2string(srv.response.values);
+    return description;
 
   return "";
 }
@@ -650,13 +658,10 @@ void ontoloGUI::displayErrorInfo(const std::string& text)
 
 void ontoloGUI::displayOntologiesList()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/manage");
-
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "list";
-
+  auto res_vect = ontos_.list();
+  int err = ontos_.getErrorCode();
   std::string html;
-  if(!client.call(srv))
+  if(err == -1)
   {
     html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
             "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
@@ -666,14 +671,13 @@ void ontoloGUI::displayOntologiesList()
   }
   else
   {
-    std::string text = vector2html(srv.response.values);
+    std::string text = vector2html(res_vect);
     html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
             "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
             "p, li { white-space: pre-wrap; }"
             "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
             "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + text + "</span></p></body></html>";
   }
-
   ui->OntologiesList->setHtml(QString::fromStdString(html));
 }
 
@@ -708,44 +712,28 @@ void ontoloGUI::currentTabChangedSlot(int index)
 
 void ontoloGUI::addOntologySlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/manage");
-
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "add";
-  srv.request.param = ui->OntologyNameAddDel->text().toStdString();
+  std::string param = ui->OntologyNameAddDel->text().toStdString();
 
   std::regex base_regex("(.*)=(.*)");
   std::smatch base_match;
-  if (std::regex_match(srv.request.param, base_match, base_regex))
+  if (std::regex_match(param, base_match, base_regex))
   {
     if (base_match.size() == 3)
-    {
-      srv.request.action = "copy";
-      if(publishers_.find(base_match[1].str()) == publishers_.end())
-        publishers_[base_match[1].str()] = n_->advertise<std_msgs::String>("ontologenius/insert/" + base_match[1].str(), QUEU_SIZE);
-
-      if(feeder_notifications_subs_.find(base_match[1].str()) == feeder_notifications_subs_.end())
-        feeder_notifications_subs_[base_match[1].str()] = n_->subscribe("ontologenius/feeder_notifications", QUEU_SIZE, &ontoloGUI::feederCallback, this);
-    }
+      ontos_.copy(base_match[1].str(), base_match[2].str());
   }
   else
-  {
-    if(publishers_.find(srv.request.param) == publishers_.end())
-      publishers_[srv.request.param] = n_->advertise<std_msgs::String>("ontologenius/insert/" + srv.request.param, QUEU_SIZE);
+    ontos_.add(param);
 
-    if(feeder_notifications_subs_.find(srv.request.param) == feeder_notifications_subs_.end())
-      feeder_notifications_subs_[srv.request.param] = n_->subscribe("ontologenius/feeder_notifications", QUEU_SIZE, &ontoloGUI::feederCallback, this);
-  }
-
-  if(!client.call(srv))
+  int err = ontos_.getErrorCode();
+  if(err == -1)
     displayErrorInfo("ontologenius/manage client call failed");
   else
   {
     start();
-    if(srv.response.code == 4)
-      ui->ResultArea->setText(QString::fromStdString(srv.request.param + " already created"));
-    else if(srv.response.code == 1)
-      ui->ResultArea->setText(QString::fromStdString("fail to stop " + srv.request.param + " : please retry"));
+    if(err == 4)
+      ui->ResultArea->setText(QString::fromStdString(param + " already created"));
+    else if(err == 1)
+      ui->ResultArea->setText(QString::fromStdString("fail to stop " + param + " : please retry"));
     else
       ui->ResultArea->setText(QString::fromStdString(""));
     displayOntologiesList();
@@ -754,19 +742,17 @@ void ontoloGUI::addOntologySlot()
 
 void ontoloGUI::deleteOntologySlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/manage");
+  std::string param = ui->OntologyNameAddDel->text().toStdString();
+  ontos_.del(param);
+  int err = ontos_.getErrorCode();
 
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "delete";
-  srv.request.param = ui->OntologyNameAddDel->text().toStdString();
-
-  if(!client.call(srv))
+  if(err == -1)
     displayErrorInfo("ontologenius/manage client call failed");
   else
   {
     start();
-    if(srv.response.code == 4)
-      ui->ResultArea->setText(QString::fromStdString(srv.request.param + " don't exist"));
+    if(err == 4)
+      ui->ResultArea->setText(QString::fromStdString(param + " don't exist"));
     else
       ui->ResultArea->setText(QString::fromStdString(""));
     displayOntologiesList();
@@ -781,19 +767,19 @@ void ontoloGUI::saveOntologySlot()
     return;
   }
 
-  std::string service_name = (ui->OntologyName->text().toStdString() == "") ? "ontologenius/actions" : "ontologenius/actions/" + ui->OntologyName->text().toStdString();
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>(service_name);
+  if(updateOntoPtr() == false)
+    return;
 
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "save";
-  srv.request.param = ui->OntologSavePath->text().toStdString();
+  std::string param = ui->OntologSavePath->text().toStdString();
+  onto_->actions.save(param);
+  int err = onto_->actions.getErrorCode();
 
-  if(!client.call(srv))
-    displayErrorInfo("ontologenius/manage client call failed");
+  if(err == -1)
+    displayErrorInfo("client call failed");
   else
   {
-    if(srv.response.code == 4)
-      ui->ResultArea->setText(QString::fromStdString(srv.request.param + " don't exist"));
+    if(err == 4)
+      ui->ResultArea->setText(QString::fromStdString(param + " don't exist"));
     else
       ui->ResultArea->setText(QString::fromStdString(""));
   }
@@ -801,28 +787,27 @@ void ontoloGUI::saveOntologySlot()
 
 void ontoloGUI::differenceOntologySlot()
 {
-  ros::ServiceClient client = n_->serviceClient<ontologenius::OntologeniusService>("ontologenius/manage");
+  std::string param1 = ui->OntologyDiffName1->text().toStdString();
+  std::string param2 = ui->OntologyDiffName2->text().toStdString();
+  std::string concept = ui->OntologyDiffConcept->text().toStdString();
 
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "difference";
-  srv.request.param = ui->OntologyDiffName1->text().toStdString() + "|" +
-                      ui->OntologyDiffName2->text().toStdString() + "|" +
-                      ui->OntologyDiffConcept->text().toStdString();
+  auto diff = ontos_.getDifference(param1, param2, concept);
+  int err = ontos_.getErrorCode();
 
-  if(!client.call(srv))
+  if(err == -1)
     displayErrorInfo("ontologenius/manage client call failed");
   else
   {
     start();
-    if(srv.response.code == 4)
+    if(err == 4)
       ui->ResultArea->setText("no effect");
-    else if(srv.response.code == 0)
+    else if(err == 0)
     {
-      std::string res = vector2string(srv.response.values);
+      std::string res = vector2string(diff);
       ui->ResultArea->setText(QString::fromStdString(res));
     }
     else
-      ui->ResultArea->setText(QString::fromStdString(std::to_string(srv.response.code)));
+      ui->ResultArea->setText(QString::fromStdString(std::to_string(err)));
     displayOntologiesList();
   }
 }
@@ -863,54 +848,45 @@ void ontoloGUI::feederCallback(const std_msgs::String& msg)
 
 void ontoloGUI::feederAddSlot()
 {
-  std_msgs::String msg;
-  msg.data = "[ADD]" + ui->FeederSubject->text().toStdString() + "|" + ui->FeederProperty->text().toStdString() + "|" + ui->FeederObject->text().toStdString();
-  std::string onto_ns = ui->OntologyName->text().toStdString();
-  if(onto_ns == "")
-    onto_ns = "_";
-  createPublisher(onto_ns);
-  publishers_[onto_ns].publish(msg);
+  if(updateOntoPtr() == false)
+    return;
+  onto_->feeder.addProperty(ui->FeederSubject->text().toStdString(), ui->FeederProperty->text().toStdString(), ui->FeederObject->text().toStdString());
 }
 
 void ontoloGUI::feederDelSlot()
 {
-  std_msgs::String msg;
-  msg.data = "[DEL]" + ui->FeederSubject->text().toStdString() + "|" + ui->FeederProperty->text().toStdString() + "|" + ui->FeederObject->text().toStdString();
-  std::string onto_ns = ui->OntologyName->text().toStdString();
-  if(onto_ns == "")
-    onto_ns = "_";
-  createPublisher(onto_ns);
-  publishers_[onto_ns].publish(msg);
+  if(updateOntoPtr() == false)
+    return;
+  onto_->feeder.removeProperty(ui->FeederSubject->text().toStdString(), ui->FeederProperty->text().toStdString(), ui->FeederObject->text().toStdString());
 }
 
 void ontoloGUI::feederCommitSlot()
 {
-  std_msgs::String msg;
-  msg.data = "[commit]" + ui->FeederCommitName->text().toStdString() + "|";
-  std::string onto_ns = ui->OntologyName->text().toStdString();
-  if(onto_ns == "")
-    onto_ns = "_";
-  createPublisher(onto_ns);
-  publishers_[onto_ns].publish(msg);
+  if(updateOntoPtr() == false)
+    return;
+  onto_->feeder.commit(ui->FeederCommitName->text().toStdString());
 }
 
 void ontoloGUI::feederCheckoutSlot()
 {
-  std_msgs::String msg;
-  msg.data = "[checkout]" + ui->FeederCommitName->text().toStdString() + "|";
-  std::string onto_ns = ui->OntologyName->text().toStdString();
-  if(onto_ns == "")
-    onto_ns = "_";
-  createPublisher(onto_ns);
-  publishers_[onto_ns].publish(msg);
+  if(updateOntoPtr() == false)
+    return;
+  onto_->feeder.checkout(ui->FeederCommitName->text().toStdString());
 }
 
-void ontoloGUI::createPublisher(const std::string& onto_ns)
+bool ontoloGUI::updateOntoPtr()
 {
-  if(publishers_.find(onto_ns) == publishers_.end())
+  if(multi_usage_ == false)
+    return true;
+    
+  std::string instance_name = ui->OntologyName->text().toStdString();
+  onto_ = ontos_.get(instance_name);
+  if(onto_ == nullptr)
   {
-    publishers_[onto_ns] = n_->advertise<std_msgs::String>("ontologenius/insert/" + onto_ns, QUEU_SIZE);
-    while(ros::ok() && (publishers_[onto_ns].getNumSubscribers() == 0))
-      ros::spinOnce();
+    if(instance_name != "")
+      displayErrorInfo("Ontology " + instance_name + " does not exist");
+    return false;
   }
+  else
+    return true;
 }
