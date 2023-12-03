@@ -15,11 +15,9 @@ class ClassClient : public OntologyClient
 public:
   /// @brief Constructs a class client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
-  /// @param n is an initialized ROS node handle.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  ClassClient(ros::NodeHandle* n, const std::string& name) : OntologyClient(n, (name == "") ? "class" : "class/" + name)
-  {
-  }
+  ClassClient(const std::string& name) : OntologyClient((name == "") ? "class" : "class/" + name)
+  {}
 
   /// @brief Gives all classes below the one given in the specified parameter.
   /// @param name is a class identifier.

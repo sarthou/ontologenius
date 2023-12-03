@@ -31,12 +31,10 @@ class ClientBase
 {
 public:
   /// @brief Constructs a ROS client.
-  /// @param n is an initialized ROS node handle.
   /// @param name is the name of the ontologenius service
-  ClientBase(ros::NodeHandle* n, const std::string& name) : client(n->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name, true)), name_(name)
-  {
-    n_ = n;
-  }
+  ClientBase(const std::string& name) : name_(name),
+                                        client(n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name, true))
+  {}
 
   /// @brief Gives the total number of service calls from all ClientBase instances since the last reset.
   size_t nb() {return cpt;}
@@ -45,7 +43,6 @@ public:
   static void verbose(bool verbose) { verbose_ = verbose; }
 
 protected:
-  ros::ServiceClient client;
 
   /// @brief Calls the service set up in the constructor of ClientBase.
   /// @param srv is the request.
@@ -61,7 +58,7 @@ protected:
     {
       if(verbose_)
         std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
+      client = n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
       if(client.call(srv))
       {
         if(verbose_)
@@ -97,7 +94,7 @@ protected:
     {
       if(verbose_)
         std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
+      client = n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
       if(client.call(srv))
       {
         if(verbose_)
@@ -130,7 +127,7 @@ protected:
     {
       if(verbose_)
         std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
+      client = n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
       if(client.call(srv))
       {
         if(verbose_)
@@ -159,7 +156,7 @@ protected:
     {
       if(verbose_)
         std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
+      client = n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
       if(client.call(srv))
       {
         if(verbose_)
@@ -177,9 +174,12 @@ protected:
 
 private:
     std::string name_;
-    ros::NodeHandle* n_;
+    ros::NodeHandle n_;
     static size_t cpt;
     static bool verbose_;
+
+protected:
+  ros::ServiceClient client;
 };
 
 } // namespace onto

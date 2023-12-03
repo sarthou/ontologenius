@@ -13,9 +13,8 @@ class ConversionClient
 {
 public:
   /// @brief Constructs a ROS conversion client.
-  /// @param n is an initialized ROS node handle.
   /// @param name is the name of the ontologenius service
-  ConversionClient(ros::NodeHandle* n, const std::string& name);
+  ConversionClient(const std::string& name);
 
   void verbose(bool verbose) { verbose_ = verbose; }
 
@@ -45,7 +44,7 @@ public:
 
 private:
   std::string name_;
-  ros::NodeHandle* n_;
+  ros::NodeHandle n_;
   bool verbose_;
   ros::ServiceClient client_;
 

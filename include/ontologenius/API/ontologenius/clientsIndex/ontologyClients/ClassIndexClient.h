@@ -15,9 +15,8 @@ class ClassIndexClient : public OntologyIndexClient
 public:
   /// @brief Constructs a class client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
-  /// @param n is an initialized ROS node handle.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  ClassIndexClient(ros::NodeHandle* n, const std::string& name) : OntologyIndexClient(n, (name == "") ? "class_index" : "class_index/" + name)
+  ClassIndexClient(const std::string& name) : OntologyIndexClient((name == "") ? "class_index" : "class_index/" + name)
   {
   }
 

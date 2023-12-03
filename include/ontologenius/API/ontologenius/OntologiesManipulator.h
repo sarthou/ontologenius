@@ -16,10 +16,9 @@ namespace onto {
 class OntologiesManipulator : public ManagerClient
 {
 public:
-  /// @brief Constructs a manipulator for several instance of ontologies with a pointer to a NodeHandle n.
-  /// This pointer is necessary to create the ros services in the constructor.
-  /// @param n is an initialized ros node handle
+  /// @brief Constructs a manipulator for several instance of ontologies
   explicit OntologiesManipulator(ros::NodeHandle* n);
+  OntologiesManipulator();
   ~OntologiesManipulator();
 
   /// @brief Wait for ontologenius services to be advertised and available for. Blocks until it is.
@@ -61,7 +60,7 @@ public:
   }
 
 private:
-  ros::NodeHandle* n_; // do not move this line below
+  ros::NodeHandle n_; // do not move this line below
   std::map<std::string, OntologyManipulator*> manipulators_;
   std::map<std::string, OntologyManipulatorIndex*> manipulators_index_;
 };

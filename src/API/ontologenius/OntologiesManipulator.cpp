@@ -2,10 +2,13 @@
 
 namespace onto {
 
-OntologiesManipulator::OntologiesManipulator(ros::NodeHandle* n) : ManagerClient(n)
+OntologiesManipulator::OntologiesManipulator(ros::NodeHandle* n) : ManagerClient()
 {
-  n_ = n;
+  (void)n;
 }
+
+OntologiesManipulator::OntologiesManipulator() : ManagerClient()
+{}
 
 OntologiesManipulator::~OntologiesManipulator()
 {

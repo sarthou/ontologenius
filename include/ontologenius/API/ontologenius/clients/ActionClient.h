@@ -14,9 +14,8 @@ class ActionClient : public ClientBase
 public:
   /// @brief Constructs an action client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
-  /// @param n is an initialized ROS node handle.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  ActionClient(ros::NodeHandle* n, const std::string& name) : ClientBase(n, (name == "") ? "actions" : "actions/" + name)
+  ActionClient(const std::string& name) : ClientBase((name == "") ? "actions" : "actions/" + name)
   {
   }
 

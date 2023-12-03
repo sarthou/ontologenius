@@ -21,27 +21,24 @@ class FeederPublisher
 public:
   /// @brief Constructs a FeederPublisher.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
-  /// @param n is an initialized ROS node handle.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  FeederPublisher(ros::NodeHandle* n, const std::string& name) :
-                  n_(n),
+  FeederPublisher(const std::string& name) :
                   name_(name),
-                  pub_(n->advertise<std_msgs::String>((name == "") ? "ontologenius/insert" : "ontologenius/insert/" + name, 1000)),
-                  stamped_pub_(n->advertise<ontologenius::StampedString>((name == "") ? "ontologenius/insert_stamped" : "ontologenius/insert_stamped/" + name, 1000))
+                  pub_(n_.advertise<std_msgs::String>((name == "") ? "ontologenius/insert" : "ontologenius/insert/" + name, 1000)),
+                  stamped_pub_(n_.advertise<ontologenius::StampedString>((name == "") ? "ontologenius/insert_stamped" : "ontologenius/insert_stamped/" + name, 1000))
   {
     srand (time(NULL));
     commit_nb_ = rand() % 100000 + 1;
-    commit_sub_ = n_->subscribe(name_ == "" ? "ontologenius/end" : "ontologenius/end/" + name_, 1000, &FeederPublisher::commitCallback, this);
+    commit_sub_ = n_.subscribe(name_ == "" ? "ontologenius/end" : "ontologenius/end/" + name_, 1000, &FeederPublisher::commitCallback, this);
     updated_ = false;
   }
 
   FeederPublisher(FeederPublisher& other) :
-                  n_(other.n_),
                   name_(other.name_),
-                  pub_(other.n_->advertise<std_msgs::String>((other.name_ == "") ? "ontologenius/insert" : "ontologenius/insert/" + other.name_, 1000)),
-                  stamped_pub_(other.n_->advertise<ontologenius::StampedString>((other.name_ == "") ? "ontologenius/insert_stamped" : "ontologenius/insert_stamped/" + other.name_, 1000))
+                  pub_(n_.advertise<std_msgs::String>((other.name_ == "") ? "ontologenius/insert" : "ontologenius/insert/" + other.name_, 1000)),
+                  stamped_pub_(n_.advertise<ontologenius::StampedString>((other.name_ == "") ? "ontologenius/insert_stamped" : "ontologenius/insert_stamped/" + other.name_, 1000))
   {
-    commit_sub_ = n_->subscribe(name_ == "" ? "ontologenius/end" : "ontologenius/end/" + name_, 1000, &FeederPublisher::commitCallback, this);
+    commit_sub_ = n_.subscribe(name_ == "" ? "ontologenius/end" : "ontologenius/end/" + name_, 1000, &FeederPublisher::commitCallback, this);
     commit_nb_ = other.commit_nb_;
     updated_ = false;
   }
@@ -175,7 +172,7 @@ public:
   bool checkout(const std::string& commit_name, int32_t timeout = -1);
 
 private:
-  ros::NodeHandle* n_;
+  ros::NodeHandle n_;
   std::string name_;
   ros::Publisher pub_;
   ros::Publisher stamped_pub_;

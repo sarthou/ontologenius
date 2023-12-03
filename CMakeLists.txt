@@ -253,6 +253,7 @@ add_onto_library(ontologenius_lib
   src/API/ontologenius/OntologyManipulatorIndex.cpp
   src/API/ontologenius/OntologiesManipulator.cpp
 )
+target_include_directories(ontologenius_lib PUBLIC include/ontologenius/API)
 target_link_libraries(ontologenius_lib
  PUBLIC
   ontologenius_core_lib
