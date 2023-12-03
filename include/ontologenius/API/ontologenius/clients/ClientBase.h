@@ -49,6 +49,9 @@ public:
     srv.request.param = param;
     return call(srv);
   }
+
+  int getErrorCode() { return error_code_; }
+
 protected:
 
   /// @brief Calls the service set up in the constructor of ClientBase.
@@ -60,7 +63,10 @@ protected:
     cpt++;
 
     if(client.call(srv))
+    {
+      error_code_ = srv.response.code;
       return srv.response.values;
+    }
     else
     {
       if(verbose_)
@@ -70,12 +76,14 @@ protected:
       {
         if(verbose_)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
+        error_code_ = srv.response.code;
         return srv.response.values;
       }
       else
       {
         if(verbose_)
           std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        error_code_ = -1;
         res.push_back("ERR:SERVICE_FAIL");
         return res;
       }
@@ -92,6 +100,7 @@ protected:
 
     if(client.call(srv))
     {
+      error_code_ = srv.response.code;
       if(srv.response.values.size())
         return srv.response.values[0];
       else
@@ -106,6 +115,7 @@ protected:
       {
         if(verbose_)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
+        error_code_ = srv.response.code;
         if(srv.response.values.size())
           return srv.response.values[0];
         else
@@ -115,6 +125,7 @@ protected:
       {
         if(verbose_)
           std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        error_code_ = -1;
         res = "ERR:SERVICE_FAIL";
         return res;
       }
@@ -129,7 +140,10 @@ protected:
     cpt++;
 
     if(client.call(srv))
+    {
+      error_code_ = srv.response.code;
       return true;
+    }
     else
     {
       if(verbose_)
@@ -139,12 +153,14 @@ protected:
       {
         if(verbose_)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
+        error_code_ = srv.response.code;
         return true;
       }
       else
       {
         if(verbose_)
           std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        error_code_ = -1;
         return false;
       }
     }
@@ -158,7 +174,10 @@ protected:
     cpt++;
 
     if(client.call(srv))
+    {
+      error_code_ = srv.response.code;
       return (srv.response.code == 0);
+    }
     else
     {
       if(verbose_)
@@ -168,12 +187,14 @@ protected:
       {
         if(verbose_)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
+        error_code_ = srv.response.code;
         return (srv.response.code == 0);
       }
       else
       {
         if(verbose_)
           std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        error_code_ = -1;
         return false;
       }
     }
@@ -184,6 +205,7 @@ private:
     ros::NodeHandle n_;
     static size_t cpt;
     static bool verbose_;
+    int error_code_;
 
 protected:
   ros::ServiceClient client;
