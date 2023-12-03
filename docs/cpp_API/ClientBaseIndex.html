@@ -135,7 +135,7 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#ClientBaseIndex">ClientBaseIndex</a></b>(ros::NodeHandle* <i>n</i>, std::string <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#ClientBaseIndex">ClientBaseIndex</a></b>(std::string <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> size_t </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#nb">nb</a></b>()</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#resetNb">resetNb</a></b>()</td></tr>
             </tbody>
@@ -169,8 +169,8 @@
         <div class="func">
           <h2>Public Function Documentation</h2>
 
-          <h3 class="fn" id="ClientBaseIndex"><a name="ClientBaseIndex"></a>ClientBaseIndex::<span class="name">ClientBaseIndex</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Constructs a ROS client linked to the service <i>name</i> with a pointer to a NodeHandle <i>n</i>.</p>
+          <h3 class="fn" id="ClientBaseIndex"><a name="ClientBaseIndex"></a>ClientBaseIndex::<span class="name">ClientBaseIndex</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Constructs a ROS client linked to the service <i>name</i>.</p>
 
           <h3 class="fn" id="nb"><a name="nb"></a><span class="type">size_t</span> ClientBaseIndex::<span class="name">nb</span>()</h3>
           <p>Gives the total number of service calls from all ClientBaseIndex instances since the last reset.</p>
