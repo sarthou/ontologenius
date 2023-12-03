@@ -42,6 +42,13 @@ public:
   void resetNb() {cpt = 0;}
   static void verbose(bool verbose) { verbose_ = verbose; }
 
+  std::vector<std::string> call(const std::string& action, const std::string& param)
+  {
+    ontologenius::OntologeniusService srv;
+    srv.request.action = action;
+    srv.request.param = param;
+    return call(srv);
+  }
 protected:
 
   /// @brief Calls the service set up in the constructor of ClientBase.
