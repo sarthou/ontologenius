@@ -94,29 +94,11 @@
 
       <div class="context">
         <h1 class="title">Install Ontologenius</h1>
-        <p>Since Ontologenius is a ROS package, make sure that ROS is installed on your platform. Ontologenius is fully supported and maintained on <a class="type" href="http://wiki.ros.org/melodic/Installation">ROS Melodic Morenia</a> and <a class="type" href="http://wiki.ros.org/noetic/Installation">ROS Noetic Ninjemys</a>. Desktop ROS configuration is not required for use of ontologenius.</p>
+        <p>Since Ontologenius is a ROS package, make sure that ROS is installed on your platform. Ontologenius is fully supported and maintained on <a class="type" href="http://wiki.ros.org/noetic/Installation">ROS Noetic Ninjemys</a>. Desktop ROS configuration is not required for use of ontologenius.</p>
 
         <p>Clone the package on your catkin workspace:</p>
         <div class="code_block">
           <p>cd ~/catkin_ws/src/</br></br>git clone https://github.com/sarthou/ontologenius.git</br></br>cd ..</br></br>catkin_make</p>
-        </div>
-
-        <p>If you want to load ontologies from the internet, you will need the requests package. Ontologenius uses it to make HTTP requests.</p>
-        <p class="tip">This installation is optional</p>
-
-        <p>You can install it through pip:</p>
-        <div class="code_block">
-          <p>pip install requests --user</p>
-        </div>
-
-        <p>You can also install it from the source in the catkin_ws:</p>
-        <div class="code_block">
-          <p>git clone https://github.com/kennethreitz/requests.git</br></br>export PYTHONPATH=~/catkin_ws/devel/lib/python2.7/site-packages:$PYTHONPATH</br></br>cd requests</br></br>python setup.py install --prefix=~/catkin_ws/devel</p>
-        </div>
-
-        <p class="tip">you might have to create ~/catkin_ws/devel/lib/python2.7/site-packages</p>
-        <div class="code_block">
-          <p>mkdir ~/catkin_ws/devel/lib/python2.7/site-packages</p>
         </div>
 
         <h2>Troubles</h2>
