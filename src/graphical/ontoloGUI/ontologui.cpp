@@ -239,6 +239,7 @@ ontoloGUI::ontoloGUI(QWidget *parent) :
     QObject::connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(currentTabChangedSlot(int)));
 
     QObject::connect( this, SIGNAL( feederSetHtmlSignal(QString) ), ui->FeederInfo, SLOT( setHtml(QString) ) ,Qt::BlockingQueuedConnection);
+    QObject::connect( this, SIGNAL( feederScrollSignal(QString) ), ui->FeederInfo, SLOT( scrollToAnchor(QString) ) ,Qt::BlockingQueuedConnection);
 }
 
 ontoloGUI::~ontoloGUI()
@@ -840,11 +841,10 @@ void ontoloGUI::feederCallback(const std::string& msg)
           "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
           "p, li { whicommitte-space: pre-wrap; }"
           "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-          "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + feeder_notifications_ + "<br></span></p></body></html>";
+          "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + feeder_notifications_ + "<a name=\"scrollToMe\" href=\"#scroll\"></a> <br></span></p></body></html>";
 
-  ui->FeederInfo->moveCursor(QTextCursor::End);
   feederSetHtmlSignal(QString::fromStdString(html));
-  ui->FeederInfo->ensureCursorVisible();
+  feederScrollSignal("scrollToMe");
 }
 
 void ontoloGUI::feederAddSlot()

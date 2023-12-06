@@ -89,6 +89,7 @@ public slots:
 
 signals:
   void feederSetHtmlSignal(QString);
+  void feederScrollSignal(QString);
 };
 
 #endif // ONTOLOGUI_H
