@@ -82,7 +82,7 @@ public slots:
   void OntologyNameAddDelChangedSlot(const QString&);
   void OntologyNameChangedSlot(const QString&);
 
-  void feederCallback(const std_msgs::String& msg);
+  void feederCallback(const std::string& msg);
   void feederAddSlot();
   void feederDelSlot();
   void feederCommitSlot();

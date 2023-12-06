@@ -256,6 +256,7 @@ void ontoloGUI::init()
   if(ontos_.waitInit(1000) == false)
   {
     onto_ = new onto::OntologyManipulator();
+    onto_->feeder.registerNotificationCallback([this](auto msg){ this->feederCallback(msg); });
     multi_usage_ = false;
   }
   else
@@ -263,8 +264,6 @@ void ontoloGUI::init()
     onto_ == nullptr;
     multi_usage_ = true;
   }
-  
-  //feeder_notifications_subs_["_"] = n_->subscribe("ontologenius/feeder_notifications", QUEU_SIZE, &ontoloGUI::feederCallback, this);
 }
 
 void ontoloGUI::wait()
@@ -275,7 +274,6 @@ void ontoloGUI::wait()
                   "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
                   "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Wainting for </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">ontologenius</span></p></body></html>";
   ui->InfoArea->setHtml(html);
-  //ros::service::waitForService("ontologenius/reasoner", -1);
 }
 
 void ontoloGUI::start()
@@ -713,13 +711,17 @@ void ontoloGUI::currentTabChangedSlot(int index)
 void ontoloGUI::addOntologySlot()
 {
   std::string param = ui->OntologyNameAddDel->text().toStdString();
+  std::string onto_name = param;
 
   std::regex base_regex("(.*)=(.*)");
   std::smatch base_match;
   if (std::regex_match(param, base_match, base_regex))
   {
     if (base_match.size() == 3)
+    {
       ontos_.copy(base_match[1].str(), base_match[2].str());
+      onto_name = base_match[1].str();
+    }
   }
   else
     ontos_.add(param);
@@ -735,7 +737,11 @@ void ontoloGUI::addOntologySlot()
     else if(err == 1)
       ui->ResultArea->setText(QString::fromStdString("fail to stop " + param + " : please retry"));
     else
+    {
       ui->ResultArea->setText(QString::fromStdString(""));
+      ontos_.get(onto_name)->feeder.registerNotificationCallback([this](auto msg){ this->feederCallback(msg); });
+    }
+      
     displayOntologiesList();
   }
 }
@@ -831,9 +837,9 @@ void ontoloGUI::OntologyNameChangedSlot(const QString& text)
     ui->OntologyNameAddDel->setText(text);
 }
 
-void ontoloGUI::feederCallback(const std_msgs::String& msg)
+void ontoloGUI::feederCallback(const std::string& msg)
 {
-  feeder_notifications_ += "<p>-" + msg.data + "</p>";
+  feeder_notifications_ += "<p>-" + msg + "</p>";
 
   std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
           "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
