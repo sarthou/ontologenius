@@ -45,6 +45,7 @@
 /file_intern/*
 
 *.pyc
+catalog-v*
 
 # VsCode files
 settings.json
