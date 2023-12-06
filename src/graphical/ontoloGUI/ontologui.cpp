@@ -5,12 +5,7 @@
 
 #include <QScrollBar>
 
-#include "ontologenius/OntologeniusService.h"
-#include "std_msgs/String.h"
-
 #include <regex>
-
-#define QUEU_SIZE 1000
 
 ontoloGUI::ontoloGUI(QWidget *parent) :
     QMainWindow(parent),

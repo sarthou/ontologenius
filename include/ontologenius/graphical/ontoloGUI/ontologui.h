@@ -6,11 +6,8 @@
 #include <QTextCursor>
 
 #include "ontologenius/OntologiesManipulator.h"
-#include <ros/ros.h>
 #include <vector>
 #include <string>
-
-#include "std_msgs/String.h"
 
 namespace Ui {
 class ontoloGUI;

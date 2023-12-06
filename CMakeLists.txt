@@ -32,8 +32,8 @@ function(add_onto_library TARGET)
     endif()
     add_library(${TARGET} ${ARGN})
     add_dependencies(${TARGET} ontologenius_gencpp ${catkin_EXPORTED_TARGETS})
-    target_include_directories(${TARGET} PUBLIC include PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(${TARGET} PRIVATE ${catkin_LIBRARIES})
+    target_include_directories(${TARGET} PUBLIC include ${catkin_INCLUDE_DIRS})
+    target_link_libraries(${TARGET} PUBLIC ${catkin_LIBRARIES}) # PRIVATE has been removed fot ontoloGUI
     set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
     target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
     target_enable_sanitizers(${TARGET})
@@ -405,13 +405,7 @@ set( QT_SOURCES
 ##############################################################################
 
 add_executable(ontoloGUI ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
-target_include_directories(ontoloGUI
-  PRIVATE
-    ${catkin_INCLUDE_DIRS}
-)
-add_dependencies(ontoloGUI ontologenius_gencpp ${catkin_EXPORTED_TARGETS})
 target_link_libraries(ontoloGUI
-    ${catkin_LIBRARIES}
     Qt5::Core
     Qt5::Widgets
     Qt5::PrintSupport
