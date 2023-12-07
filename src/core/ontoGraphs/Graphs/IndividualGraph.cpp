@@ -1737,10 +1737,7 @@ void IndividualGraph::deleteIndividual(IndividualBranch_t* indiv)
 
       for(size_t i = 0; i < individuals_[indiv_i]->object_relations_.size();)
         if(individuals_[indiv_i]->object_relations_[i].second == indiv)
-        {
-          individuals_[indiv_i]->object_relations_.erase(individuals_[indiv_i]->object_relations_.begin() + i);
-          individuals_[indiv_i]->object_properties_has_induced_.erase(individuals_[indiv_i]->object_properties_has_induced_.begin() + i);
-        }
+          individuals_[indiv_i]->object_relations_.erase(i);
         else
           i++;
     }
@@ -1786,10 +1783,7 @@ void IndividualGraph::redirectDeleteIndividual(IndividualBranch_t* indiv, ClassB
 
       for(size_t i = 0; i < individuals_[indiv_i]->object_relations_.size();)
         if(individuals_[indiv_i]->object_relations_[i].second == indiv)
-        {
-          individuals_[indiv_i]->object_relations_.erase(individuals_[indiv_i]->object_relations_.begin() + i);
-          individuals_[indiv_i]->object_properties_has_induced_.erase(individuals_[indiv_i]->object_properties_has_induced_.begin() + i);
-        }
+          individuals_[indiv_i]->object_relations_.erase(i);
         else
           i++;
     }
@@ -2174,8 +2168,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
           explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
 
           object_relation.second->updated_ = true;
-          branch_from->object_relations_.erase(branch_from->object_relations_.begin() + i);
-          branch_from->object_properties_has_induced_.erase(branch_from->object_properties_has_induced_.begin() + i);
+          branch_from->object_relations_.erase(i);
           branch_from->updated_ = true;
           applied = true;
           break;
@@ -2230,7 +2223,7 @@ void IndividualGraph::removeRelation(const std::string& indiv_from, const std::s
         if(((type == "_") || (branch_from->data_relations_[i].second->type_ == type)) &&
           ((data == "_") || (branch_from->data_relations_[i].second->value_ == data)))
         {
-          branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
+          branch_from->data_relations_.erase(i);
           branch_from->updated_ = true;
         }
         else
@@ -2260,8 +2253,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
           explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
 
           indiv_on->object_relations_[i].second->updated_ = true;
-          indiv_on->object_relations_.erase(indiv_on->object_relations_.begin() + i);
-          indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
+          indiv_on->object_relations_.erase(i);
           indiv_on->updated_ = true;
         }
       else
@@ -2286,8 +2278,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
           explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
           
           indiv_on->object_relations_[i].second->updated_;
-          indiv_on->object_relations_.erase(indiv_on->object_relations_.begin() + i);
-          indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
+          indiv_on->object_relations_.erase(i);
           indiv_on->updated_ = true;
         }
   }
