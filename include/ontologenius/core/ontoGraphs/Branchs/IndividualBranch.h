@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
-#include "ontologenius/core/ontoGraphs/Branchs/Triplet.h"
+#include "ontologenius/core/ontoGraphs/Branchs/RelationsWithInductions.h"
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
