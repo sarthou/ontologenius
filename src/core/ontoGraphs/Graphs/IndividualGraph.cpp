@@ -1670,7 +1670,7 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
   if(indiv != nullptr)
   {
     auto class_branch = new ClassBranch_t(indiv->value());
-    class_branch->mothers_ = std::move(indiv->is_a_);
+    class_branch->mothers_ = std::move(indiv->is_a_.relations);
     class_branch->data_relations_.clear();
     for(auto& data_relation : indiv->data_relations_)
       class_branch->data_relations_.emplace_back(data_relation.first,data_relation.second, data_relation.probability);
