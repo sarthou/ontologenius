@@ -139,8 +139,8 @@ bool ReasonerChain::relationExists(IndividualBranch_t* indiv_on, ObjectPropertyB
 void ReasonerChain::addInduced(IndividualBranch_t* indiv, size_t index, IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
 {
   // if the induced triplet (from, prop, on) doesn't exist into the  object_property_has_induced field -> push it in the field
-  if(indiv->object_properties_has_induced_[index].exist(indiv_from, property, indiv_on) == false)
-    indiv->object_properties_has_induced_[index].push(indiv_from, property, indiv_on);
+  if(indiv->object_relations_.has_induced_object_relations[index].exist(indiv_from, property, indiv_on) == false)
+    indiv->object_relations_.has_induced_object_relations[index].push(indiv_from, property, indiv_on);
 }
 
 std::string ReasonerChain::getName()
