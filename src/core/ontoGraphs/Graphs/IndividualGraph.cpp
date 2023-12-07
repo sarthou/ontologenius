@@ -89,10 +89,7 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
   ** Object Property assertion
   **********************/
   for(auto& object_relation : individual_vector.object_relations_)
-  {
     addObjectRelation(me, object_relation);
-    me->object_properties_has_induced_.emplace_back();
-  }
 
   /**********************
   ** Data Property assertion name
