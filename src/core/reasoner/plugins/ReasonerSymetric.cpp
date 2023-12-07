@@ -21,9 +21,7 @@ void ReasonerSymetric::postReason()
           {
             try
             {
-              int index = ontology_->individual_graph_.addRelation(sym_indiv, sym_prop, indiv, 1.0, true);
-              if(index == (int)sym_indiv->object_relations_.size() - 1)
-                sym_indiv->object_properties_has_induced_.emplace_back();
+              ontology_->individual_graph_.addRelation(sym_indiv, sym_prop, indiv, 1.0, true);
               sym_indiv->nb_updates_++;
 
               explanations_.emplace_back("[ADD]" + sym_indiv->value() + "|" + sym_prop->value() + "|" + indiv->value(),
