@@ -112,52 +112,6 @@ public:
     return res;
   }
 
-  template<template<typename> typename C>
-  C<B*> intersection(const std::unordered_set<B*>& set, const C<B*>& c)
-  {
-    C<B*> res;
-    for(B* v : c)
-    {
-      if(set.find(v) != set.end())
-        std::fill_n(std::inserter(res, res.end()), 1, v);
-    }
-    return res;
-  }
-
-  template<template<typename> typename C>
-  B* firstIntersection(const std::unordered_set<B*>& set, const C<B*>& c)
-  {
-    for(B* v : c)
-    {
-      if(set.find(v) != set.end())
-        return v;
-    }
-    return nullptr;
-  }
-
-  template<template<typename> typename C>
-  C<B*> intersection(const std::unordered_set<B*>& set, const C<Single_t<B*>>& c)
-  {
-    C<B*> res;
-    for(auto& v : c)
-    {
-      if(set.find(v.elem) != set.end())
-        std::fill_n(std::inserter(res, res.end()), 1, v.elem);
-    }
-    return res;
-  }
-
-  template<template<typename> typename C>
-  B* firstIntersection(const std::unordered_set<B*>& set, const C<Single_t<B*>>& c)
-  {
-    for(auto& v : c)
-    {
-      if(set.find(v.elem) != set.end())
-        return v.elem;
-    }
-    return nullptr;
-  }
-
 protected:
   std::vector<B*> all_branchs_;
   
@@ -771,7 +725,7 @@ void OntoGraph<B>::mitigate(B* branch)
   {
     std::unordered_set<B*> up;
     getUpPtr(child.elem, up);
-    std::vector<B*> inter = intersection(up, childs);
+    std::vector<B*> inter = this->intersection(up, childs);
     if(inter.size() > 1)
     {
       this->removeFromElemVect(child.elem->mothers_, branch);
@@ -784,7 +738,7 @@ void OntoGraph<B>::mitigate(B* branch)
   {
     std::unordered_set<B*> down;
     getDownPtr(mother.elem, down);
-    std::vector<B*> inter = intersection(down, mothers);
+    std::vector<B*> inter = this->intersection(down, mothers);
     if(inter.size() > 1)
     {
       this->removeFromElemVect(branch->mothers_, mother.elem);
