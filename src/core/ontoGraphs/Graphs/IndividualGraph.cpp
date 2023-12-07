@@ -2306,16 +2306,16 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
     if(indiv_from->object_relations_[i].first == property &&
       indiv_from->object_relations_[i].second == indiv_on)
     {
-      for(size_t induced = 0; induced < indiv_from->object_properties_has_induced_[i].from_.size(); induced++)
+      for(auto& relation : indiv_from->object_properties_has_induced_[i].triplets)
       {
-        explanations.emplace_back("[DEL]" + indiv_from->object_properties_has_induced_[i].from_[induced]->value() + "|" +
-                                            indiv_from->object_properties_has_induced_[i].prop_[induced]->value() + "|" +
-                                            indiv_from->object_properties_has_induced_[i].on_[induced]->value(),
+        explanations.emplace_back("[DEL]" + relation.subject->value() + "|" +
+                                            relation.predicate->value() + "|" +
+                                            relation.object->value(),
                                    "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
 
-        auto tmp = removeRelation(indiv_from->object_properties_has_induced_[i].from_[induced],
-                                  indiv_from->object_properties_has_induced_[i].prop_[induced],
-                                  indiv_from->object_properties_has_induced_[i].on_[induced],
+        auto tmp = removeRelation(relation.subject,
+                                  relation.predicate,
+                                  relation.object,
                                   true);
         explanations.insert(explanations.end(), tmp.begin(), tmp.end());
       }
@@ -2531,11 +2531,11 @@ void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch
   for(const auto& induced : old_branch->object_properties_has_induced_)
   {
     new_branch->object_properties_has_induced_.emplace_back();
-    for(size_t i = 0; i < induced.from_.size(); i++)
+    for(size_t i = 0; i < induced.triplets.size(); i++)
     {
-      auto from = container_.find(induced.from_[i]->value());
-      auto prop = object_property_graph_->container_.find(induced.prop_[i]->value());
-      auto on = container_.find(induced.on_[i]->value());
+      auto from = container_.find(induced.triplets[i].subject->value());
+      auto prop = object_property_graph_->container_.find(induced.triplets[i].predicate->value());
+      auto on = container_.find(induced.triplets[i].object->value());
       new_branch->object_properties_has_induced_.back().push(from, prop, on);
     }
   }
