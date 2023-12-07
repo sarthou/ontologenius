@@ -2390,13 +2390,13 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
     std::unordered_set<ClassBranch_t*> up_from;
     getUpPtr(from, up_from);
 
-    ClassBranch_t* intersection = class_graph_->findIntersection(up_from, domain);
+    ClassBranch_t* intersection = class_graph_->firstIntersection(up_from, domain);
     if(intersection == nullptr)
     {
       std::unordered_set<ClassBranch_t*> disjoints;
       for(auto dom : domain)
         class_graph_->getDisjoint(dom, disjoints);
-      intersection = class_graph_->findIntersection(up_from, disjoints);
+      intersection = class_graph_->firstIntersection(up_from, disjoints);
 
       if(intersection == nullptr)
         from->flags_["domain"].push_back(prop->value());
@@ -2415,13 +2415,13 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
     std::unordered_set<ClassBranch_t*> up_on;
     getUpPtr(on, up_on);
 
-    ClassBranch_t* intersection = class_graph_->findIntersection(up_on, range);
+    ClassBranch_t* intersection = class_graph_->firstIntersection(up_on, range);
     if(intersection == nullptr)
     {
       std::unordered_set<ClassBranch_t*> disjoints;
       for(auto ran : range)
         class_graph_->getDisjoint(ran, disjoints);
-      intersection = class_graph_->findIntersection(up_on, disjoints);
+      intersection = class_graph_->firstIntersection(up_on, disjoints);
 
       if(intersection == nullptr)
         from->flags_["range"].push_back(prop->value());
@@ -2448,13 +2448,13 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataProperty
     std::unordered_set<ClassBranch_t*> up_from;
     getUpPtr(from, up_from);
 
-    ClassBranch_t* intersection = class_graph_->findIntersection(up_from, domain);
+    ClassBranch_t* intersection = class_graph_->firstIntersection(up_from, domain);
     if(intersection == nullptr)
     {
       std::unordered_set<ClassBranch_t*> disjoints;
       for(auto dom : domain)
         class_graph_->getDisjoint(dom, disjoints);
-      intersection = class_graph_->findIntersection(up_from, disjoints);
+      intersection = class_graph_->firstIntersection(up_from, disjoints);
 
       if(intersection == nullptr)
         from->flags_["range"].push_back(prop->value());

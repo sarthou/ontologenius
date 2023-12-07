@@ -10,6 +10,7 @@ size_t DataPropertyChecker::check()
   graph_size = graph_vect_.size();
 
   checkDisjoint();
+  // TODO check domains and ranges possible intersection
 
   is_analysed = true;
   printStatus();
@@ -28,7 +29,7 @@ void DataPropertyChecker::checkDisjoint()
     for(DataPropertyBranch_t* it : up)
       property_graph_->getDisjointPtr(it, disjoint);
 
-    DataPropertyBranch_t* intersection = findIntersection(up, disjoint);
+    DataPropertyBranch_t* intersection = property_graph_->firstIntersection(up, disjoint);
     if(intersection != nullptr)
       print_error("'" + property->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
   }
