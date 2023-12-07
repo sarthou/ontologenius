@@ -134,16 +134,6 @@ private:
 
   template<typename T> std::unordered_set<T> getDisjoint(ClassBranch_t* branch);
 
-  ClassBranch_t* findIntersection(const std::unordered_set<ClassBranch_t*>& base, const std::unordered_set<ClassBranch_t*>& comp)
-  {
-    for (ClassBranch_t* it : comp)
-    {
-      if(base.find(it) != base.end())
-        return it;
-    }
-    return nullptr;
-  }
-
   void cpyBranch(ClassBranch_t* old_branch, ClassBranch_t* new_branch);
 };
 
