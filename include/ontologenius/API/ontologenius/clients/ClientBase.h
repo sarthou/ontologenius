@@ -31,12 +31,12 @@ class ClientBase
 {
 public:
   /// @brief Constructs a ROS client.
-  /// @param n is an initialized ROS node handle.
   /// @param name is the name of the ontologenius service
-  ClientBase(ros::NodeHandle* n, const std::string& name) : client(n->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name, true)), name_(name)
-  {
-    n_ = n;
-  }
+  explicit ClientBase(const std::string& name) : name_(name),
+                                                 error_code_(0),
+                                                 client(n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name, true))
+                                                 
+  {}
 
   /// @brief Gives the total number of service calls from all ClientBase instances since the last reset.
   size_t nb() {return cpt;}
@@ -44,34 +44,42 @@ public:
   void resetNb() {cpt = 0;}
   static void verbose(bool verbose) { verbose_ = verbose; }
 
-protected:
-  ros::ServiceClient client;
+  int getErrorCode() { return error_code_; }
 
   /// @brief Calls the service set up in the constructor of ClientBase.
-  /// @param srv is the request.
+  /// @param action the query action.
+  /// @param param the query parameters.
   /// @return Returns a list of string. If the service call fails, the first element of the returned vector is "ERR:SERVICE_FAIL".
-  inline std::vector<std::string> call(ontologenius::OntologeniusService& srv)
+  inline std::vector<std::string> call(const std::string& action, const std::string& param)
   {
+    ontologenius::OntologeniusService srv;
+    srv.request.action = action;
+    srv.request.param = param;
     std::vector<std::string> res;
     cpt++;
 
     if(client.call(srv))
+    {
+      error_code_ = srv.response.code;
       return srv.response.values;
+    }
     else
     {
       if(verbose_)
         std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
+      client = n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
       if(client.call(srv))
       {
         if(verbose_)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
+        error_code_ = srv.response.code;
         return srv.response.values;
       }
       else
       {
         if(verbose_)
           std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        error_code_ = -1;
         res.push_back("ERR:SERVICE_FAIL");
         return res;
       }
@@ -79,15 +87,20 @@ protected:
   }
 
   /// @brief Calls the service set up in the constructor of ClientBase.
-  /// @param srv is the request.
+  /// @param action the query action.
+  /// @param param the query parameters.
   /// @return Returns a single string. If the service call fails, the returned value is "ERR:SERVICE_FAIL".
-  inline std::string callStr(ontologenius::OntologeniusService& srv)
+  inline std::string callStr(const std::string& action, const std::string& param)
   {
+    ontologenius::OntologeniusService srv;
+    srv.request.action = action;
+    srv.request.param = param;
     std::string res = "";
     cpt++;
 
     if(client.call(srv))
     {
+      error_code_ = srv.response.code;
       if(srv.response.values.size())
         return srv.response.values[0];
       else
@@ -97,11 +110,12 @@ protected:
     {
       if(verbose_)
         std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
+      client = n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
       if(client.call(srv))
       {
         if(verbose_)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
+        error_code_ = srv.response.code;
         if(srv.response.values.size())
           return srv.response.values[0];
         else
@@ -111,6 +125,7 @@ protected:
       {
         if(verbose_)
           std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        error_code_ = -1;
         res = "ERR:SERVICE_FAIL";
         return res;
       }
@@ -118,58 +133,76 @@ protected:
   }
 
   /// @brief Calls the service set up in the constructor of ClientBase.
-  /// @param srv is the request.
+  /// @param action the query action.
+  /// @param param the query parameters.
   /// @return Returns false if the service call fails.
-  inline bool callNR(ontologenius::OntologeniusService& srv)
+  inline bool callNR(const std::string& action, const std::string& param)
   {
+    ontologenius::OntologeniusService srv;
+    srv.request.action = action;
+    srv.request.param = param;
     cpt++;
 
     if(client.call(srv))
+    {
+      error_code_ = srv.response.code;
       return true;
+    }
     else
     {
       if(verbose_)
         std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
+      client = n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
       if(client.call(srv))
       {
         if(verbose_)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
+        error_code_ = srv.response.code;
         return true;
       }
       else
       {
         if(verbose_)
           std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        error_code_ = -1;
         return false;
       }
     }
   }
 
   /// @brief Calls the service set up in the constructor of ClientBase.
-  /// @param srv is the request.
+  /// @param action the query action.
+  /// @param param the query parameters.
   /// @return Returns false if the service call fails or the result code of the service is different from SUCCESS.
-  inline bool callBool(ontologenius::OntologeniusService& srv)
+  inline bool callBool(const std::string& action, const std::string& param)
   {
+    ontologenius::OntologeniusService srv;
+    srv.request.action = action;
+    srv.request.param = param;
     cpt++;
 
     if(client.call(srv))
+    {
+      error_code_ = srv.response.code;
       return (srv.response.code == 0);
+    }
     else
     {
       if(verbose_)
         std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_->serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
+      client = n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
       if(client.call(srv))
       {
         if(verbose_)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
+        error_code_ = srv.response.code;
         return (srv.response.code == 0);
       }
       else
       {
         if(verbose_)
           std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        error_code_ = -1;
         return false;
       }
     }
@@ -177,9 +210,13 @@ protected:
 
 private:
     std::string name_;
-    ros::NodeHandle* n_;
+    ros::NodeHandle n_;
     static size_t cpt;
     static bool verbose_;
+    int error_code_;
+
+protected:
+  ros::ServiceClient client;
 };
 
 } // namespace onto

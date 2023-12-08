@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>OntologyClient Class (cpp) | Ontologenius 0.3.1</title>
+  <title>OntologyClient Class (cpp) | Ontologenius 0.3.2</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -137,7 +137,7 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#OntologyClient">OntologyClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#OntologyClient">OntologyClient</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getUp">getUp</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1, const std::string&amp; <i>selector</i> = &quot;&quot;)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#isA">isA</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>base_class</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getName">getName</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
@@ -171,8 +171,8 @@
         <div class="func">
           <h2>Public Function Documentation</h2>
 
-          <h3 class="fn" id="OntologyClient"><a name="OntologyClient"></a>OntologyClient::<span class="name">OntologyClient</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Constructs an ontology client linked to the service ontologenius/<i>name</i> with a pointer to a NodeHandle <i>n</i>.</p>
+          <h3 class="fn" id="OntologyClient"><a name="OntologyClient"></a>OntologyClient::<span class="name">OntologyClient</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Constructs an ontology client linked to the service ontologenius/<i>name</i>.</p>
 
           <h3 class="fn" id="getUp"><a name="getUp"></a><span class="type">std::vector&lt;std::string&gt;</span> OntologyClient::<span class="name">getUp</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">int</span> <i>depth</i> = -1, const <span class="type">std::string</span>&amp; <i>selector</i> = &quot;&quot;)</h3>
           <p>Gives all concepts below the one given in the parameter: <i>name</i>.</p>

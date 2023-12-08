@@ -4,46 +4,28 @@ namespace onto {
 
 std::vector<std::string> ManagerClient::list()
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "list";
-
-  return call(srv);
+  return call("list", "");
 }
 
 bool ManagerClient::add(const std::string& name)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "add";
-  srv.request.param = name;
-
-  return callNR(srv);
+  return callNR("add", name);
 }
 
 bool ManagerClient::copy(const std::string& dest_name, const std::string& src_name)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "copy";
-  srv.request.param = dest_name + "=" + src_name;
-
-  return callBool(srv);
+  return callBool("copy", dest_name + "=" + src_name);
 }
 
 bool ManagerClient::del(const std::string& name)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "delete";
-  srv.request.param = name;
-
-  return callNR(srv);
+  return callNR("delete", name);
 }
 
 std::vector<std::string> ManagerClient::getDifference(const std::string& onto1, const std::string& onto2, const std::string& concept)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "difference";
-  srv.request.param = onto1 + "|" + onto2 + "|" + concept;
-
-  return call(srv);
+  std::string param = onto1 + "|" + onto2 + "|" + concept;
+  return call("difference", param);
 }
 
 } // namespace onto

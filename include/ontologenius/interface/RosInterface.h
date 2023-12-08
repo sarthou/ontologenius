@@ -59,7 +59,7 @@ public:
   void stop();
 
   /// @brief Closes the ontology to make it explorable. This is not mandatory to close it in this way. It is better to let the user do it by himself
-  void close();
+  bool close();
 
   /// @brief Tests if the interface is running. By running we meant that the threads and ROS subscribers are alive
   /// @return true is the interface is running, false otherwise

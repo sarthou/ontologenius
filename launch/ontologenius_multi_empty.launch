@@ -11,5 +11,4 @@
   <env name="LD_PRELOAD" value="$(arg tcmalloc_path)"/>
 
   <node name="ontologenius_core" pkg="ontologenius" type="ontologenius_multi" output="screen" args="-l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) -r $(arg robot_file) -h $(arg human_file) $(arg files)"> </node>
-  <node name="ontologenius_rest" pkg="ontologenius" type="REST.py" output="screen"> </node>
 </launch>

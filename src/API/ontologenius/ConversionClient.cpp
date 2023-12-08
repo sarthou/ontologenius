@@ -15,9 +15,9 @@
 
 namespace onto {
 
-ConversionClient::ConversionClient(ros::NodeHandle* n, const std::string& name) : name_((name == "") ? "/ontologenius/conversion" : "/ontologenius/conversion/" + name),
-                                                                                  n_(n), verbose_(false),
-                                                                                  client_(n->serviceClient<ontologenius::OntologeniusConversion>(name_, true))
+ConversionClient::ConversionClient(const std::string& name) : name_((name == "") ? "/ontologenius/conversion" : "/ontologenius/conversion/" + name),
+                                                              verbose_(false),
+                                                              client_(n_.serviceClient<ontologenius::OntologeniusConversion>(name_, true))
 {}
 
 std::vector<std::string> ConversionClient::individualsIndex2Id(const std::vector<int64_t>& indexes)
@@ -172,7 +172,7 @@ bool ConversionClient::call(ontologenius::OntologeniusConversion& srv)
   {
     if(verbose_)
       std::cout << COLOR_ORANGE << "Failure to call " << name_ << COLOR_OFF << std::endl;
-    client_ = n_->serviceClient<ontologenius::OntologeniusConversion>(name_, true);
+    client_ = n_.serviceClient<ontologenius::OntologeniusConversion>(name_, true);
     if(client_.call(srv))
     {
       if(verbose_)

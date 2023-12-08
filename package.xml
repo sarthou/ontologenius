@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>ontologenius</name>
-  <version>0.3.1</version>
+  <version>0.3.2</version>
   <description>The ontologenius package</description>
 
   <maintainer email="guillaume.sarthou@laas.fr">srth</maintainer>

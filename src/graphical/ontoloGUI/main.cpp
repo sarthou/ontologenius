@@ -21,6 +21,8 @@ void spinThread(bool* run)
 
 int main(int argc, char *argv[])
 {
+  ros::init(argc, argv, "ontoloGUI");
+  
     QApplication a(argc, argv);
 
     a.setStyle(new DarkStyle);
@@ -33,18 +35,15 @@ int main(int argc, char *argv[])
     ontoloGUI w;
     w.show();
 
-    ros::init(argc, argv, "ontoloGUI");
-
-    ros::NodeHandle n;
     bool run = true;
 
-    w.init(&n);
+    w.init();
     w.wait();
 
     w.start();
     w.loadReasoners();
 
-    std::thread spin_thread(spinThread,&run);
+    std::thread spin_thread(spinThread, &run);
 
     signal(SIGINT, SIG_DFL);
     auto a_exec = a.exec();

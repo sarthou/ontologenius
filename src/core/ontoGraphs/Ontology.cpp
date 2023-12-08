@@ -50,10 +50,10 @@ Ontology::~Ontology()
   save();
 }
 
-int Ontology::close()
+bool Ontology::close()
 {
   if(is_init_ == true)
-    return 0;
+    return true;
 
   class_graph_.close();
   object_property_graph_.close();
@@ -93,9 +93,9 @@ int Ontology::close()
   Display::info("**************************************");
 
   if(err)
-    return -1;
+    return false;
   else
-    return 0;
+    return true;
 }
 
 int Ontology::readFromUri(const std::string& uri)

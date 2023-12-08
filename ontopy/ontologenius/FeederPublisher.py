@@ -135,7 +135,7 @@ class FeederPublisher:
         """Removes the label name(str) in the language lang(str) the class, individual, or property concept_from(str).
            If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
         """
-        msg = '[add]' + concept_from + '|@' + lang + '|' + name
+        msg = '[del]' + concept_from + '|@' + lang + '|' + name
         if stamp == None:
             stamp = rospy.get_rostime()
         self._publish_stamped(msg, stamp)

@@ -11,5 +11,4 @@
 
   <node name="ontologenius_core" pkg="ontologenius" type="ontologenius" output="screen" args="-l $(arg language) -i $(arg intern_file) $(arg files)" launch-prefix="valgrind"> </node>
   <!-- valgrind -v - -leak-check=full - -track-origins=yes -->
-  <node name="ontologenius_rest" pkg="ontologenius" type="REST.py" output="screen"> </node>
 </launch>

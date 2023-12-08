@@ -14,6 +14,7 @@ class ClientBase:
     def __init__(self, name):
         """Constructs a ROS client linked to the service name(str)."""
         self._name = name
+        self.error_code = 0
         self._client = rospy.ServiceProxy('ontologenius/' + self._name, OntologeniusService, True)
 
     def nb(self):
@@ -38,6 +39,7 @@ class ClientBase:
         ClientBase._cpt += 1
         try:
             response = self._client(action, param)
+            self.error_code = response.code
             return response.values
         except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
             if ClientBase._verbose == True:
@@ -45,12 +47,14 @@ class ClientBase:
             self._client = rospy.ServiceProxy('ontologenius/' + self._name, OntologeniusService, True)
             try:
                 response = self._client(action, param)
+                self.error_code = response.code
                 if ClientBase._verbose == True:
                     print("Restored ontologenius/" + self._name)
                 return response.values
             except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
                 if ClientBase._verbose == True:
                     print("Failure of service restoration")
+                self.error_code = -1
                 return None
 
     def callStr(self, action, param):
@@ -61,6 +65,7 @@ class ClientBase:
         ClientBase._cpt += 1
         try:
             response = self._client(action, param)
+            self.error_code = response.code
             if len(response.values) > 0:
                 return response.values[0]
             else:
@@ -71,6 +76,7 @@ class ClientBase:
             self._client = rospy.ServiceProxy('ontologenius/' + self._name, OntologeniusService, True)
             try:
                 response = self._client(action, param)
+                self.error_code = response.code
                 if ClientBase._verbose == True:
                     print("Restored ontologenius/" + self._name)
                 if len(response.values) > 0:
@@ -80,6 +86,7 @@ class ClientBase:
             except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
                 if ClientBase._verbose == True:
                     print("Failure of service restoration")
+                self.error_code = -1
                 return None
 
     def callNR(self, action, param):
@@ -90,6 +97,7 @@ class ClientBase:
         ClientBase._cpt += 1
         try:
             response = self._client(action, param)
+            self.error_code = response.code
             return True
         except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
             if ClientBase._verbose == True:
@@ -97,12 +105,14 @@ class ClientBase:
             self._client = rospy.ServiceProxy('ontologenius/' + self._name, OntologeniusService, True)
             try:
                 response = self._client(action, param)
+                self.error_code = response.code
                 if ClientBase._verbose == True:
                     print("Restored ontologenius/" + self._name)
                 return True
             except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
                 if ClientBase._verbose == True:
                     print("Failure of service restoration")
+                self.error_code = -1
                 return False
 
     def callBool(self, action, param):
@@ -114,6 +124,7 @@ class ClientBase:
         ClientBase._cpt += 1
         try:
             response = self._client(action, param)
+            self.error_code = response.code
             return response.code == 0
         except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
             if ClientBase._verbose == True:
@@ -123,8 +134,10 @@ class ClientBase:
                 response = self._client(action, param)
                 if ClientBase._verbose == True:
                     print("Restored ontologenius/" + self._name)
+                self.error_code = response.code
                 return response.code == 0
             except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
                 if ClientBase._verbose == True:
                     print("Failure of service restoration")
+                self.error_code = -1
                 return False

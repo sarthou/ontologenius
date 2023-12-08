@@ -4,8 +4,6 @@
 #include <vector>
 #include <string>
 
-#include <ros/ros.h>
-
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/IndividualIndexClient.h"
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/ObjectPropertyIndexClient.h"
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/DataPropertyIndexClient.h"

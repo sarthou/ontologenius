@@ -4,45 +4,27 @@ namespace onto {
 
 std::vector<std::string> ReasonerClient::list()
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "list";
-
-  return call(srv);
+  return call("list", "");
 }
 
 std::vector<std::string> ReasonerClient::activeList()
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "activeList";
-
-  return call(srv);
+  return call("activeList", "");
 }
 
 bool ReasonerClient::activate(const std::string& name)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "activate";
-  srv.request.param = name;
-
-  return callNR(srv);
+  return callNR("activate", name);
 }
 
 bool ReasonerClient::deactivate(const std::string& name)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "deactivate";
-  srv.request.param = name;
-
-  return callNR(srv);
+  return callNR("deactivate", name);
 }
 
 std::string ReasonerClient::getDescription(const std::string& name)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "getDescription";
-  srv.request.param = name;
-
-  return callStr(srv);
+  return callStr("getDescription", name);
 }
 
 } // namespace onto
