@@ -20,7 +20,7 @@ public:
   }
 
   /// @brief Link all the concepts loaded from files and the Internet. Before closing an ontology, exploration requests are not allowed.
-  /// @return Returns false if the service call fails.
+  /// @return Returns false ontology closure fails or if the service call fails.
   bool close();
   /// @brief Saves the current ontology in an absolute path.
   /// @param path is the path where the ontology will be saved. It must be of the form: my/path/to/ontology.owl

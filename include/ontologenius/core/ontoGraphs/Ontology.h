@@ -18,7 +18,7 @@ public:
   Ontology(const Ontology& other);
   ~Ontology();
 
-  int close();
+  bool close();
 
   int readFromUri(const std::string& uri);
   int readFromFile(const std::string& file_name);

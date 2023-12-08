@@ -188,11 +188,13 @@ void RosInterface::release()
   feeder_mutex_.unlock();
 }
 
-void RosInterface::close()
+bool RosInterface::close()
 {
-  onto_->close();
+  if(onto_->close() == false)
+    return false;
   reasoners_.initialize();
   reasoners_.runPostReasoners();
+  return true;
 }
 
 void RosInterface::setDisplay(bool display)
@@ -238,7 +240,10 @@ bool RosInterface::actionsHandle(ontologenius::OntologeniusService::Request &req
   else if(req.action == "export")
     feeder_.exportToXml(req.param);
   else if(req.action == "close")
-    close();
+  {
+    if(close() == false)
+      res.code = REQUEST_ERROR;
+  }
   else if(req.action == "reset")
   {
     lock();

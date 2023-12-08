@@ -22,9 +22,12 @@ class ActionClient(ClientBase):
     def close(self):
         """Link all the concepts loaded from files and the Internet.
            Before closing an ontology, exploration requests are not allowed.
-           Returns False if the service call fails.
+           Returns false ontology closure fails or if the service call fails.
         """
-        return self.callNR("close", "")
+        if self.callNR("close", "") == False:
+            return False
+        else:
+            return self.error_code == 0
 
     def save(self, path):
         """Saves the current ontology in the absolute path(str) path.

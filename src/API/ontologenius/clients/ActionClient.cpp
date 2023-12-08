@@ -4,7 +4,10 @@ namespace onto {
 
 bool ActionClient::close()
 {
-  return callNR("close", "");
+  if(callNR("close", "") == false)
+    return false;
+  else
+    return (getErrorCode() == 0);
 }
 
 bool ActionClient::save(const std::string& path)

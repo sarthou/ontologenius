@@ -171,7 +171,7 @@
 
           <h3 class="fn" id="close"><a name="close"></a><span class="type">bool</span> ActionClient::<span class="name">close</span>()</h3>
           <p>Links all the concepts loaded from files and the Internet. Before closing an ontology, exploration requests are not allowed.</p>
-          <p>Returns false if the service call fails.</p>
+          <p>Returns false ontology closure fails or if the service call fails. Use getErrorCode method to get the origin.</p>
 
           <h3 class="fn" id="save"><a name="save"></a><span class="type">bool</span> ActionClient::<span class="name">save</span>(const <span class="type">std::string</span>&amp; <i>path</i>)</h3>
           <p>Saves the current ontology in the absolute <i>path</i> path. The <i>path</i> parameter must be of the form: my/path/to/ontology.owl</p>

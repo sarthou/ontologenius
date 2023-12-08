@@ -169,7 +169,7 @@
 
           <h3 class="fn" id="close"><a name="close"></a><span class="name">close</span>(self)</h3>
           <p>Link all the concepts loaded from files and the Internet. Before closing an ontology, exploration requests are not allowed.</p>
-          <p>Returns False if the service call fails.</p>
+          <p>Returns false ontology closure fails or if the service call fails. Use getErrorCode method to get the origin.</p>
 
           <h3 class="fn" id="save"><a name="save"></a><span class="name">save</span>(self, path)</h3>
           <p>Saves the current ontology in the absolute <i>path</i>(str) path. The <i>path</i>(str) parameter must be of the form: my/path/to/ontology.owl</p>
