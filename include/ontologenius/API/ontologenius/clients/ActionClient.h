@@ -15,7 +15,7 @@ public:
   /// @brief Constructs an action client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  ActionClient(const std::string& name) : ClientBase((name == "") ? "actions" : "actions/" + name)
+  explicit ActionClient(const std::string& name) : ClientBase((name == "") ? "actions" : "actions/" + name)
   {
   }
 

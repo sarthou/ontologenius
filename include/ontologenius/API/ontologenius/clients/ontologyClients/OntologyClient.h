@@ -16,7 +16,7 @@ public:
   /// @brief Constructs an ontology client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  OntologyClient(const std::string& name) : ClientBase(name)
+  explicit OntologyClient(const std::string& name) : ClientBase(name)
   {
   }
 

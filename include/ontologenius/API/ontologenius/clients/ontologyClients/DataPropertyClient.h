@@ -16,7 +16,7 @@ public:
   /// @brief Constructs a data property client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  DataPropertyClient(const std::string& name) : OntologyClient((name == "") ? "data_property" : "data_property/" + name)
+  explicit DataPropertyClient(const std::string& name) : OntologyClient((name == "") ? "data_property" : "data_property/" + name)
   {
   }
 

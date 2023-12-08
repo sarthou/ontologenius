@@ -16,7 +16,7 @@ public:
   /// @brief Constructs an object property client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  ObjectPropertyIndexClient(const std::string& name) : OntologyIndexClient((name == "") ? "object_property_index" : "object_property_index/" + name)
+  explicit ObjectPropertyIndexClient(const std::string& name) : OntologyIndexClient((name == "") ? "object_property_index" : "object_property_index/" + name)
   {
   }
 

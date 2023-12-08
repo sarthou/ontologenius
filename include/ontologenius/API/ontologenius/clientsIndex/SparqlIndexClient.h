@@ -16,8 +16,8 @@ public:
   /// @brief Constructs a sparql client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  SparqlIndexClient(const std::string& name) : name_((name == "") ? "sparql_index" : "sparql_index/" + name),
-                                               client(n_.serviceClient<ontologenius::OntologeniusSparqlIndexService>((name == "") ? "ontologenius/sparql_index" : "ontologenius/sparql_index/" + name, true))
+  explicit SparqlIndexClient(const std::string& name) : name_((name == "") ? "sparql_index" : "sparql_index/" + name),
+                                                        client(n_.serviceClient<ontologenius::OntologeniusSparqlIndexService>((name == "") ? "ontologenius/sparql_index" : "ontologenius/sparql_index/" + name, true))
                                                               
   {}
 

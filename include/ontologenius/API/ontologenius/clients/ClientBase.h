@@ -32,8 +32,10 @@ class ClientBase
 public:
   /// @brief Constructs a ROS client.
   /// @param name is the name of the ontologenius service
-  ClientBase(const std::string& name) : name_(name),
-                                        client(n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name, true))
+  explicit ClientBase(const std::string& name) : name_(name),
+                                                 error_code_(0),
+                                                 client(n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name, true))
+                                                 
   {}
 
   /// @brief Gives the total number of service calls from all ClientBase instances since the last reset.
@@ -42,23 +44,17 @@ public:
   void resetNb() {cpt = 0;}
   static void verbose(bool verbose) { verbose_ = verbose; }
 
-  std::vector<std::string> call(const std::string& action, const std::string& param)
+  int getErrorCode() { return error_code_; }
+
+  /// @brief Calls the service set up in the constructor of ClientBase.
+  /// @param action the query action.
+  /// @param param the query parameters.
+  /// @return Returns a list of string. If the service call fails, the first element of the returned vector is "ERR:SERVICE_FAIL".
+  inline std::vector<std::string> call(const std::string& action, const std::string& param)
   {
     ontologenius::OntologeniusService srv;
     srv.request.action = action;
     srv.request.param = param;
-    return call(srv);
-  }
-
-  int getErrorCode() { return error_code_; }
-
-protected:
-
-  /// @brief Calls the service set up in the constructor of ClientBase.
-  /// @param srv is the request.
-  /// @return Returns a list of string. If the service call fails, the first element of the returned vector is "ERR:SERVICE_FAIL".
-  inline std::vector<std::string> call(ontologenius::OntologeniusService& srv)
-  {
     std::vector<std::string> res;
     cpt++;
 
@@ -91,10 +87,14 @@ protected:
   }
 
   /// @brief Calls the service set up in the constructor of ClientBase.
-  /// @param srv is the request.
+  /// @param action the query action.
+  /// @param param the query parameters.
   /// @return Returns a single string. If the service call fails, the returned value is "ERR:SERVICE_FAIL".
-  inline std::string callStr(ontologenius::OntologeniusService& srv)
+  inline std::string callStr(const std::string& action, const std::string& param)
   {
+    ontologenius::OntologeniusService srv;
+    srv.request.action = action;
+    srv.request.param = param;
     std::string res = "";
     cpt++;
 
@@ -133,10 +133,14 @@ protected:
   }
 
   /// @brief Calls the service set up in the constructor of ClientBase.
-  /// @param srv is the request.
+  /// @param action the query action.
+  /// @param param the query parameters.
   /// @return Returns false if the service call fails.
-  inline bool callNR(ontologenius::OntologeniusService& srv)
+  inline bool callNR(const std::string& action, const std::string& param)
   {
+    ontologenius::OntologeniusService srv;
+    srv.request.action = action;
+    srv.request.param = param;
     cpt++;
 
     if(client.call(srv))
@@ -167,10 +171,14 @@ protected:
   }
 
   /// @brief Calls the service set up in the constructor of ClientBase.
-  /// @param srv is the request.
+  /// @param action the query action.
+  /// @param param the query parameters.
   /// @return Returns false if the service call fails or the result code of the service is different from SUCCESS.
-  inline bool callBool(ontologenius::OntologeniusService& srv)
+  inline bool callBool(const std::string& action, const std::string& param)
   {
+    ontologenius::OntologeniusService srv;
+    srv.request.action = action;
+    srv.request.param = param;
     cpt++;
 
     if(client.call(srv))

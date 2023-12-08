@@ -14,7 +14,7 @@ class ConversionClient
 public:
   /// @brief Constructs a ROS conversion client.
   /// @param name is the name of the ontologenius service
-  ConversionClient(const std::string& name);
+  explicit ConversionClient(const std::string& name);
 
   void verbose(bool verbose) { verbose_ = verbose; }
 

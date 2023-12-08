@@ -17,7 +17,7 @@ public:
   /// @brief Constructs a reasoner client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  ReasonerClient(const std::string& name) : ClientBase((name == "") ? "reasoner" : "reasoner/" + name)
+  explicit ReasonerClient(const std::string& name) : ClientBase((name == "") ? "reasoner" : "reasoner/" + name)
   {}
 
   /// @brief Gets the name of the plugins available.

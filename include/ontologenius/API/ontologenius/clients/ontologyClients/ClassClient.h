@@ -16,7 +16,7 @@ public:
   /// @brief Constructs a class client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  ClassClient(const std::string& name) : OntologyClient((name == "") ? "class" : "class/" + name)
+  explicit ClassClient(const std::string& name) : OntologyClient((name == "") ? "class" : "class/" + name)
   {}
 
   /// @brief Gives all classes below the one given in the specified parameter.
