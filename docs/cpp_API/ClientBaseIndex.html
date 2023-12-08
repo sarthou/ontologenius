@@ -47,8 +47,6 @@
           <h3>Contents</h3>
           <ul style="display: block;">
             <li class="level1"><a href="#public-functions">Public Functions</a></li>
-            <li class="level1"><a href="#reimplemented-public-functions">Reimplemented Public Functions</a></li>
-            <li class="level1"><a href="#protected-functions">Protected Functions</a></li>
             <li class="level1"><a href="#details">Detailed Description</a></li>
           </ul>
         </div>
@@ -138,21 +136,13 @@
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#ClientBaseIndex">ClientBaseIndex</a></b>(std::string <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> size_t </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#nb">nb</a></b>()</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#resetNb">resetNb</a></b>()</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <a name="protected-functions"></a>
-        <h2 id="protected-functions">Protected Functions</h2>
-        <div class="table">
-          <table class="alignedsummary">
-            <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#call">call</a></b>(ontologenius::OntologeniusIndexService&amp; <i>srv</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callIndexes">callIndexes</a></b>(ontologenius::OntologeniusIndexService&amp; <i>srv</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callStr">callStr</a></b>(ontologenius::OntologeniusIndexService&amp; <i>srv</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callIndex">callIndex</a></b>(ontologenius::OntologeniusIndexService&amp; <i>srv</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callNR">callNR</a></b>(ontologenius::OntologeniusIndexService&amp; <i>srv</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callBool">callBool</a></b>(ontologenius::OntologeniusIndexService&amp; <i>srv</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#getErrorCode">getErrorCode</a></b>()</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#call">call</a></b>(const std::string&amp; <i>action</i>, const std::string&amp; <i>param</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callIndexes">callIndexes</a></b>(const std::string&amp; <i>action</i>, const std::string&amp; <i>param</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callStr">callStr</a></b>(const std::string&amp; <i>action</i>, const std::string&amp; <i>param</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callIndex">callIndex</a></b>(const std::string&amp; <i>action</i>, const std::string&amp; <i>param</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callNR">callNR</a></b>(const std::string&amp; <i>action</i>, const std::string&amp; <i>param</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callBool">callBool</a></b>(const std::string&amp; <i>action</i>, const std::string&amp; <i>param</i>)</td></tr>
             </tbody>
           </table>
         </div>
@@ -178,30 +168,31 @@
           <h3 class="fn" id="resetNb"><a name="resetNb"></a><span class="type"></span> ClientBaseIndex::<span class="name">resetNb</span>()</h3>
           <p>Reset Call Counter for all instances of ClientBaseIndex.</p>
 
-          <h2>Protected Function Documentation</h2>
+          <h3 class="fn" id="getErrorCode"><a name="getErrorCode"></a><span class="type">int</span> ClientBaseIndex::<span class="name">getErrorCode</span>()</h3>
+          <p>Gives the error code of the last service call. Code 0 corresponds to no error. Code -1 corresponds to service call error. Code 1 corresponds to an internal error. Code 2 corresponds to unknown query. Code 3 corresponds to unclosed ontology.</p>
 
-          <h3 class="fn" id="call"><a name="call"></a>inline <span class="type">std::vector&lt;std::string&gt;</span> ClientBaseIndex::<span class="name">call</span>(<span class="type">ontologenius::OntologeniusIndexService</span>&amp; <i>srv</i>)</h3>
-          <p>Calls the service set up in the constructor of ClientBaseIndex with the request <i>srv</i></p>
-          <p>If the service call fails, the first element of the returned vector is &quot;ERR:SERVICE_FAIL&quot;.</p>
+          <h3 class="fn" id="call"><a name="call"></a>inline <span class="type">std::vector&lt;std::string&gt;</span> ClientBaseIndex::<span class="name">call</span>(const <span class="type">std::string</span>&amp; <i>action</i>, const <span class="type">std::string</span>&amp; <i>param</i>)</h3>
+          <p>Calls the service set up in the constructor of ClientBaseIndex with the request composed of an action <i>action</i> and parameters <i>param</i></p>
+          <p>If the service call fails, the first element of the returned vector is &quot;ERR:SERVICE_FAIL&quot;. Error detail can be queried using getError method.</p>
 
-          <h3 class="fn" id="callIndexes"><a name="callIndexes"></a>inline <span class="type">std::vector&lt;int64_t&gt;</span> ClientBaseIndex::<span class="name">callIndexes</span>(<span class="type">ontologenius::OntologeniusIndexService</span>&amp; <i>srv</i>)</h3>
-          <p>Calls the service set up in the constructor of ClientBaseIndex with the request <i>srv</i></p>
+          <h3 class="fn" id="callIndexes"><a name="callIndexes"></a>inline <span class="type">std::vector&lt;int64_t&gt;</span> ClientBaseIndex::<span class="name">callIndexes</span>(const <span class="type">std::string</span>&amp; <i>action</i>, const <span class="type">std::string</span>&amp; <i>param</i>)</h3>
+          <p>Calls the service set up in the constructor of ClientBaseIndex with the request composed of an action <i>action</i> and parameters <i>param</i></p>
           <p>If the service call fails, the first element of the returned vector is 0.</p>
 
-          <h3 class="fn" id="callStr"><a name="callStr"></a>inline <span class="type">std::string</span> ClientBaseIndex::<span class="name">callStr</span>(<span class="type">ontologenius::OntologeniusIndexService</span>&amp; <i>srv</i>)</h3>
-          <p>Calls the service set up in the constructor of ClientBaseIndex with the request <i>srv</i></p>
-          <p>If the service call fails, the returned value is &quot;ERR:SERVICE_FAIL&quot;.</p>
+          <h3 class="fn" id="callStr"><a name="callStr"></a>inline <span class="type">std::string</span> ClientBaseIndex::<span class="name">callStr</span>(const <span class="type">std::string</span>&amp; <i>action</i>, const <span class="type">std::string</span>&amp; <i>param</i>)</h3>
+          <p>Calls the service set up in the constructor of ClientBaseIndex with the request composed of an action <i>action</i> and parameters <i>param</i></p>
+          <p>If the service call fails, the returned value is &quot;ERR:SERVICE_FAIL&quot;. Error detail can be queried using getError method.</p>
 
-          <h3 class="fn" id="callIndex"><a name="callIndex"></a>inline <span class="type">int64_t</span> ClientBaseIndex::<span class="name">callIndex</span>(<span class="type">ontologenius::OntologeniusIndexService</span>&amp; <i>srv</i>)</h3>
-          <p>Calls the service set up in the constructor of ClientBaseIndex with the request <i>srv</i></p>
+          <h3 class="fn" id="callIndex"><a name="callIndex"></a>inline <span class="type">int64_t</span> ClientBaseIndex::<span class="name">callIndex</span>(const <span class="type">std::string</span>&amp; <i>action</i>, const <span class="type">std::string</span>&amp; <i>param</i>)</h3>
+          <p>Calls the service set up in the constructor of ClientBaseIndex with the request composed of an action <i>action</i> and parameters <i>param</i></p>
           <p>If the service call fails or has no response, the returned value is 0.</p>
 
-          <h3 class="fn" id="callNR"><a name="callNR"></a>inline <span class="type">bool</span> ClientBaseIndex::<span class="name">callNR</span>(<span class="type">ontologenius::OntologeniusIndexService</span>&amp; <i>srv</i>)</h3>
-          <p>Calls the service set up in the constructor of ClientBaseIndex with the request <i>srv</i></p>
+          <h3 class="fn" id="callNR"><a name="callNR"></a>inline <span class="type">bool</span> ClientBaseIndex::<span class="name">callNR</span>(const <span class="type">std::string</span>&amp; <i>action</i>, const <span class="type">std::string</span>&amp; <i>param</i>)</h3>
+          <p>Calls the service set up in the constructor of ClientBaseIndex with the request composed of an action <i>action</i> and parameters <i>param</i></p>
           <p>Returns false if the service call fails.</p>
 
-          <h3 class="fn" id="callBool"><a name="callBool"></a>inline <span class="type">bool</span> ClientBaseIndex::<span class="name">callBool</span>(<span class="type">ontologenius::OntologeniusIndexService</span>&amp; <i>srv</i>)</h3>
-          <p>Calls the service set up in the constructor of ClientBaseIndex with the request <i>srv</i></p>
+          <h3 class="fn" id="callBool"><a name="callBool"></a>inline <span class="type">bool</span> ClientBaseIndex::<span class="name">callBool</span>(const <span class="type">std::string</span>&amp; <i>action</i>, const <span class="type">std::string</span>&amp; <i>param</i>)</h3>
+          <p>Calls the service set up in the constructor of ClientBaseIndex with the request composed of an action <i>action</i> and parameters <i>param</i></p>
           <p>Returns false if the service call fails or the result code of the service is different from SUCCESS.</p>
 
         </div>
