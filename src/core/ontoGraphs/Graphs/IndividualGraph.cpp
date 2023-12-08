@@ -1548,10 +1548,8 @@ bool IndividualGraph::isA(const std::string& indiv, const std::string& class_sel
     std::shared_lock<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
     if(branch->same_as_.size())
     {
-      std::unordered_set<IndividualBranch_t*> sames;
-      getSame(branch, sames);
-      for(IndividualBranch_t* it : sames)
-        for(auto& is_a : it->is_a_)
+      for(auto& it : branch->same_as_)
+        for(auto& is_a : it.elem->is_a_)
           if(class_graph_->existInInheritance(is_a.elem, class_selector))
             return true;
     }
@@ -1574,10 +1572,8 @@ bool IndividualGraph::isA(index_t indiv, index_t class_selector)
     std::shared_lock<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
     if(branch->same_as_.size())
     {
-      std::unordered_set<IndividualBranch_t*> sames;
-      getSame(branch, sames);
-      for(IndividualBranch_t* it : sames)
-        for(auto& is_a : it->is_a_)
+      for(auto& it : branch->same_as_)
+        for(auto& is_a : it.elem->is_a_)
           if(class_graph_->existInInheritance(is_a.elem, class_selector))
             return true;
     }

@@ -11,7 +11,7 @@ std::pair<std::vector<std::string>, std::vector<ontologenius::OntologeniusSparql
     return {srv.response.names, srv.response.results};
   else
   {
-    client = n_->serviceClient<ontologenius::OntologeniusSparqlService>("ontologenius/" + name_, true);
+    client = n_.serviceClient<ontologenius::OntologeniusSparqlService>("ontologenius/" + name_, true);
     if(client.call(srv))
       return {srv.response.names, srv.response.results};
     else

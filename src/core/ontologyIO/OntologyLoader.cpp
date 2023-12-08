@@ -1,11 +1,11 @@
 #include "ontologenius/core/ontologyIO/OntologyLoader.h"
 
 #include "ontologenius/core/utility/error_code.h"
-#include "ontologenius/core/utility/utility.h"
 #include "ontologenius/graphical/Display.h"
 #include "ontologenius/utils/String.h"
+#include "ontologenius/utils/Commands.h"
 
-#include <ros/package.h>
+#include <curl/curl.h>
 
 namespace ontologenius {
 
@@ -158,19 +158,44 @@ bool OntologyLoader::isProtected(const std::string& page_content)
 
 int OntologyLoader::downloadFile(const std::string& uri)
 {
-  std::string response = "";
-  int err = send_request("GET", uri, "", response);
+  std::string response = downlaodFileCurl(uri);
 
   if(isProtected(response))
+  {
     Display::warning("The requested file may be protected: " + uri);
-
-  if(err == NO_ERROR)
+    return REQUEST_ERROR;
+  }
+  else
   {
     uri_to_file_.emplace(uri, response);
     return NO_ERROR;
   }
-  else
-    return REQUEST_ERROR;
+}
+
+std::string OntologyLoader::downlaodFileCurl(const std::string& uri)
+{
+  std::string res;
+  res.reserve(1024*1024);
+  CURL* curl_handle;
+  curl_global_init(CURL_GLOBAL_ALL);
+  curl_handle = curl_easy_init();
+  curl_easy_setopt(curl_handle, CURLOPT_URL, uri.c_str());
+  curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, 1L);
+  curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, 
+    +[](void *ptr, size_t size, size_t nmemb, void *stream) -> size_t // the + forces the cast into void*
+    {
+      if(stream != nullptr) {
+        ((std::string*)stream)->append((const char*)ptr, size*nmemb);
+        return size*nmemb;
+      }
+      else
+        return 0;
+    });
+  curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, &res);
+  curl_easy_perform(curl_handle);
+  curl_easy_cleanup(curl_handle);
+  curl_global_cleanup();
+  return res;
 }
 
 void OntologyLoader::loadImports(const std::vector<std::string>& imports)
@@ -181,7 +206,7 @@ void OntologyLoader::loadImports(const std::vector<std::string>& imports)
     auto with_package = resolvePath(import);
     if(with_package.first != "")
     {
-      std::string path = ros::package::getPath(with_package.first);
+      std::string path = findPackageRos1(with_package.first);
       path += "/" + with_package.second;
 
       fixPath(path);
@@ -224,8 +249,7 @@ void OntologyLoader::loadImports(const std::vector<std::string>& imports)
 
 std::pair<std::string, std::string> OntologyLoader::resolvePath(const std::string& raw_path)
 {
-  std::vector<std::string> packages;
-  ros::package::getAll(packages);
+  std::vector<std::string> packages = listPackagesRos1();
 
   auto parts = split(raw_path, "/");
   for(auto part_it = parts.begin(); part_it != parts.end(); ++part_it)

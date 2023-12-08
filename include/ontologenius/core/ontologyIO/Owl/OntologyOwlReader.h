@@ -8,8 +8,6 @@
 
 #include <tinyxml.h>
 
-#include <ros/ros.h>
-
 #include "ontologenius/core/ontologyIO/OntologyReader.h"
 
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"

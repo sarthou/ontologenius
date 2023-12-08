@@ -5,11 +5,9 @@
 #include "include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
 #include <QTextCursor>
 
-#include <ros/ros.h>
+#include "ontologenius/OntologiesManipulator.h"
 #include <vector>
 #include <string>
-
-#include "std_msgs/String.h"
 
 namespace Ui {
 class ontoloGUI;
@@ -23,17 +21,18 @@ public:
   explicit ontoloGUI(QWidget *parent = 0);
   ~ontoloGUI();
 
-  void init(ros::NodeHandle* n);
+  void init();
   void wait();
   void start();
   void loadReasoners();
 
 private:
   Ui::ontoloGUI *ui;
-  ros::NodeHandle* n_;
 
-  std::map<std::string, ros::Publisher> publishers_;
-  std::map<std::string, ros::Subscriber> feeder_notifications_subs_;
+  onto::OntologiesManipulator ontos_;
+  onto::OntologyManipulator* onto_;
+  bool multi_usage_;
+
   std::string feeder_notifications_;
 
   std::vector<std::string> reasoners_names_;
@@ -80,15 +79,17 @@ public slots:
   void OntologyNameAddDelChangedSlot(const QString&);
   void OntologyNameChangedSlot(const QString&);
 
-  void feederCallback(const std_msgs::String& msg);
+  void feederCallback(const std::string& msg);
   void feederAddSlot();
   void feederDelSlot();
   void feederCommitSlot();
   void feederCheckoutSlot();
-  void createPublisher(const std::string& onto_ns);
+
+  bool updateOntoPtr();
 
 signals:
   void feederSetHtmlSignal(QString);
+  void feederScrollSignal(QString);
 };
 
 #endif // ONTOLOGUI_H

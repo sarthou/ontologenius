@@ -15,9 +15,8 @@ class IndividualClient : public OntologyClient
 public:
   /// @brief Constructs an individual client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
-  /// @param n is an initialized ROS node handle.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  IndividualClient(ros::NodeHandle* n, const std::string& name) : OntologyClient(n, (name == "")? "individual" : "individual/" + name)
+  explicit IndividualClient(const std::string& name) : OntologyClient((name == "")? "individual" : "individual/" + name)
   {
   }
 

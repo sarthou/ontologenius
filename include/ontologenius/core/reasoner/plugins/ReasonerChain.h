@@ -219,8 +219,12 @@ private:
         if(node->prev != nullptr)
         {
           for(size_t i = 0; i < node->prev->nexts.size(); )
+          {
             if(node->prev->nexts[i] == node)
               node->prev->nexts.erase(node->prev->nexts.begin() + i);
+            else
+              i++;
+          }
         }
 
         if(node == begin)

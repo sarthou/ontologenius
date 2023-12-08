@@ -4,71 +4,45 @@ namespace onto {
 
 bool ActionClient::close()
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "close";
-
-  return callNR(srv);
+  if(callNR("close", "") == false)
+    return false;
+  else
+    return (getErrorCode() == 0);
 }
 
 bool ActionClient::save(const std::string& path)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "save";
-  srv.request.param = path;
-
-  return callNR(srv);
+  return callNR("save", path);
 }
 
 bool ActionClient::exportToXml(const std::string& path)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "export";
-  srv.request.param = path;
-
-  return callNR(srv);
+  return callNR("export", path);
 }
 
 bool ActionClient::setLang(const std::string& lang)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "setLang";
-  srv.request.param = lang;
-
-  return callNR(srv);
+  return callNR("setLang", lang);
 }
 
 std::string ActionClient::getLang()
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "getLang";
-
-  return callStr(srv);
+  return callStr("getLang", "");
 }
 
 bool ActionClient::add(const std::string& uri)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "add";
-  srv.request.param = uri;
-
-  return callNR(srv);
+  return callNR("add", uri);
 }
 
 bool ActionClient::fadd(const std::string& file)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "fadd";
-  srv.request.param = file;
-
-  return callNR(srv);
+  return callNR("fadd", file);
 }
 
 bool ActionClient::reset()
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "reset";
-
-  return callNR(srv);
+  return callNR("reset", "");
 }
 
 } // namespace onto

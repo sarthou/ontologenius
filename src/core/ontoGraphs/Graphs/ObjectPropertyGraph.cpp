@@ -29,7 +29,8 @@ ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, Class
 void ObjectPropertyGraph::close()
 {
   OntoGraph<ObjectPropertyBranch_t>::close();
-  createInvertChains();
+  //createInvertChains(); // The inverse chain is no more required
+                          // We keep this just in case
 }
 
 ObjectPropertyBranch_t* ObjectPropertyGraph::newDefaultBranch(const std::string& name)

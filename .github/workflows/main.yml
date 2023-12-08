@@ -34,7 +34,7 @@ jobs:
             sudo apt update -qq
             sudo apt install dpkg
             sudo apt install -y ros-$ROS_DISTRO-desktop qtbase5-dev qtdeclarative5-dev
-            sudo apt install -y libcppunit-dev
+            sudo apt install -y libcppunit-dev libcurl4-openssl-dev
             if [ $ROS_DISTRO != noetic ]
             then
                     sudo apt-get install python-rosdep

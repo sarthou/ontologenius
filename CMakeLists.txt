@@ -9,6 +9,20 @@ if(WITH_CLANG_TIDY)
 endif()
 include(cmake/Sanitizers.cmake)
 
+function(add_onto_base_library TARGET)
+    if(NOT TARGET)
+        message(FATAL_ERROR "Expected the target name as first argument")
+    endif()
+    if(NOT ARGN)
+        message(FATAL_ERROR "Expected source file list after target name")
+    endif()
+    add_library(${TARGET} ${ARGN})
+    target_include_directories(${TARGET} PUBLIC include)
+    set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+    target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
+    target_enable_sanitizers(${TARGET})
+endfunction(add_onto_base_library)
+
 function(add_onto_library TARGET)
     if(NOT TARGET)
         message(FATAL_ERROR "Expected the target name as first argument")
@@ -18,12 +32,26 @@ function(add_onto_library TARGET)
     endif()
     add_library(${TARGET} ${ARGN})
     add_dependencies(${TARGET} ontologenius_gencpp ${catkin_EXPORTED_TARGETS})
-    target_include_directories(${TARGET} PUBLIC include PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(${TARGET} PRIVATE ${catkin_LIBRARIES})
+    target_include_directories(${TARGET} PUBLIC include ${catkin_INCLUDE_DIRS})
+    target_link_libraries(${TARGET} PUBLIC ${catkin_LIBRARIES}) # PRIVATE has been removed fot ontoloGUI
     set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
     target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
     target_enable_sanitizers(${TARGET})
 endfunction(add_onto_library)
+
+function(add_onto_base_executable TARGET)
+    if(NOT TARGET)
+        message(FATAL_ERROR "Expected the target name as first argument")
+    endif()
+    if(NOT ARGN)
+        message(FATAL_ERROR "Expected source file list after target name")
+    endif()
+    add_executable(${TARGET} ${ARGN})
+    target_include_directories(${TARGET} PUBLIC include)
+    set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+    target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
+    target_enable_sanitizers(${TARGET})
+endfunction(add_onto_base_executable)
 
 function(add_onto_executable TARGET)
     if(NOT TARGET)
@@ -48,19 +76,21 @@ endfunction(add_onto_executable)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
+  roslib
   std_msgs
   genmsg
   message_generation
-  pluginlib
 )
 
 ## System dependencies are found with CMake's conventions
-find_package(Boost REQUIRED COMPONENTS system)
 find_package(cmake_modules REQUIRED)
 find_package(TinyXML REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport)
+find_package(PkgConfig REQUIRED)
+
+pkg_search_module(CURL REQUIRED libcurl IMPORTED_TARGET GLOBAL)
 
 # Install python scripts using distutils
 catkin_python_setup()
@@ -82,7 +112,6 @@ catkin_python_setup()
 ## Generate services in the 'srv' folder
  add_service_files(
   FILES
-  REST.srv
   OntologeniusConversion.srv
   OntologeniusService.srv
   OntologeniusIndexService.srv
@@ -124,7 +153,7 @@ catkin_package(
 ## CORE
 ##############################
 
-add_onto_library(ontologenius_ontoGraphs_lib
+add_onto_base_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Branchs/ClassBranch.cpp
   src/core/ontoGraphs/Branchs/ObjectPropertyBranch.cpp
   src/core/ontoGraphs/Branchs/DataPropertyBranch.cpp
@@ -158,10 +187,10 @@ target_include_directories(ontologenius_ontoGraphs_lib
 )
 target_link_libraries(ontologenius_ontoGraphs_lib
  PUBLIC
-  ${TinyXML_LIBRARIES}
+  ${TinyXML_LIBRARIES} PkgConfig::CURL
 )
 
-add_onto_library(ontologenius_core_lib
+add_onto_base_library(ontologenius_core_lib
   src/core/feeder/Feeder.cpp
   src/core/feeder/FeedStorage.cpp
   src/core/feeder/Versionor.cpp
@@ -170,16 +199,19 @@ add_onto_library(ontologenius_core_lib
   src/core/reasoner/Reasoners.cpp
   src/core/reasoner/ConfigReader.cpp
 )
+target_include_directories(ontologenius_core_lib
+ PUBLIC ${pluginlib_INCLUDE_DIRS}
+)
 target_link_libraries(ontologenius_core_lib
  PUBLIC
-  ontologenius_ontoGraphs_lib
+  ontologenius_ontoGraphs_lib ${pluginlib_LIBRARIES}
 )
 
 ##############################
 ## DRAWER
 ##############################
 
-add_onto_library(ontologenius_drawer_lib
+add_onto_base_library(ontologenius_drawer_lib
   src/graphical/versioning/TreeReader.cpp
   src/graphical/versioning/TreeDrawer.cpp
   )
@@ -221,6 +253,7 @@ add_onto_library(ontologenius_lib
   src/API/ontologenius/OntologyManipulatorIndex.cpp
   src/API/ontologenius/OntologiesManipulator.cpp
 )
+target_include_directories(ontologenius_lib PUBLIC include/ontologenius/API)
 target_link_libraries(ontologenius_lib
  PUBLIC
   ontologenius_core_lib
@@ -229,7 +262,7 @@ target_link_libraries(ontologenius_lib
 ##############################
 ## PLUGINS
 ##############################
-add_onto_library(ontologenius_reasoner_plugin
+add_onto_base_library(ontologenius_reasoner_plugin
   src/core/reasoner/plugins/ReasonerNone.cpp
   src/core/reasoner/plugins/ReasonerInverseOf.cpp
   src/core/reasoner/plugins/ReasonerSymetric.cpp
@@ -238,7 +271,21 @@ add_onto_library(ontologenius_reasoner_plugin
   src/core/reasoner/plugins/ReasonerGeneralize.cpp
   src/core/reasoner/plugins/ReasonerRangeDomain.cpp
 )
+target_include_directories(ontologenius_reasoner_plugin
+ PUBLIC ${pluginlib_INCLUDE_DIRS}
+)
 target_link_libraries(ontologenius_reasoner_plugin
+ PUBLIC
+ ontologenius_core_lib ${pluginlib_LIBRARIES}
+)
+
+add_onto_base_library(ontologenius_operators
+  src/core/ontologyOperators/differenceFinder.cpp
+  src/core/ontologyOperators/Sparql.cpp
+  src/core/ontologyOperators/SparqlSolver.cpp
+  src/core/ontologyOperators/SparqlUtils.cpp
+)
+target_link_libraries(ontologenius_operators
  PUBLIC
   ontologenius_core_lib
 )
@@ -251,14 +298,10 @@ add_onto_library(ontologenius_interface
   src/interface/RosInterface.cpp
   src/interface/RosInterfaceStringHandlers.cpp
   src/interface/RosInterfaceIndexHandlers.cpp
-  src/core/ontologyOperators/differenceFinder.cpp
-  src/core/ontologyOperators/Sparql.cpp
-  src/core/ontologyOperators/SparqlSolver.cpp
-  src/core/ontologyOperators/SparqlUtils.cpp
 )
 target_link_libraries(ontologenius_interface
  PUBLIC
-  ontologenius_core_lib
+  ontologenius_core_lib ontologenius_operators
 )
 
 ##############################
@@ -277,7 +320,7 @@ target_link_libraries(ontologenius PRIVATE ontologenius_interface)
 add_onto_executable(ontologenius_multi src/nodes/ontologenius_multi.cpp)
 target_link_libraries(ontologenius_multi PRIVATE ontologenius_interface)
 
-add_onto_executable(ontologenius_draw src/graphical/versioning/main.cpp )
+add_onto_base_executable(ontologenius_draw src/graphical/versioning/main.cpp )
 target_link_libraries(ontologenius_draw PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
 
 ##############################
@@ -362,16 +405,11 @@ set( QT_SOURCES
 ##############################################################################
 
 add_executable(ontoloGUI ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
-target_include_directories(ontoloGUI
-  PRIVATE
-    ${catkin_INCLUDE_DIRS}
-)
-add_dependencies(ontoloGUI ontologenius_gencpp)
 target_link_libraries(ontoloGUI
-    ${catkin_LIBRARIES}
     Qt5::Core
     Qt5::Widgets
     Qt5::PrintSupport
+    ontologenius_lib
 )
 install(TARGETS ontoloGUI RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
@@ -392,10 +430,6 @@ install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   FILES_MATCHING PATTERN "*.h"
   PATTERN ".svn" EXCLUDE
-)
-
-install(PROGRAMS scripts/REST.py
-  DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
 )
 
 install(DIRECTORY launch/

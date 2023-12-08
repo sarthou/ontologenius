@@ -4,8 +4,6 @@
 #include <vector>
 #include <string>
 
-#include <ros/ros.h>
-
 #include "ontologenius/API/ontologenius/clients/ManagerClient.h"
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 #include "ontologenius/API/ontologenius/OntologyManipulatorIndex.h"
@@ -18,15 +16,14 @@ namespace onto {
 class OntologiesManipulator : public ManagerClient
 {
 public:
-  /// @brief Constructs a manipulator for several instance of ontologies with a pointer to a NodeHandle n.
-  /// This pointer is necessary to create the ros services in the constructor.
-  /// @param n is an initialized ros node handle
+  /// @brief Constructs a manipulator for several instance of ontologies
   explicit OntologiesManipulator(ros::NodeHandle* n);
+  OntologiesManipulator();
   ~OntologiesManipulator();
 
   /// @brief Wait for ontologenius services to be advertised and available for. Blocks until it is.
   /// @param timeout is the amount of time to wait for before timing out. If timeout is -1 (default), waits until the node is shutdown.
-  void waitInit(int32_t timeout = -1);
+  bool waitInit(int32_t timeout = -1);
 
   /// @brief Gets a pointer on the OntologyManipulator instance named name.
   /// @param name is the name of the instance to get.
@@ -63,7 +60,7 @@ public:
   }
 
 private:
-  ros::NodeHandle* n_; // do not move this line below
+  ros::NodeHandle n_; // do not move this line below
   std::map<std::string, OntologyManipulator*> manipulators_;
   std::map<std::string, OntologyManipulatorIndex*> manipulators_index_;
 };
