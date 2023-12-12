@@ -31,6 +31,8 @@ rosidl_generate_interfaces(ontologenius
 
 ament_export_dependencies(rosidl_default_runtime)
 
+rosidl_get_typesupport_target(cpp_typesupport_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
+
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(cmake_modules REQUIRED)
