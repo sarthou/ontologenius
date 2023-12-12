@@ -15,8 +15,7 @@
   <depend>diagnostic_msgs</depend>
   <depend>rclcpp</depend>
   <depend>std_msgs</depend>
-  <depend>ontologenius_msgs</depend>
-  <depend>builtin_interfaces</depend>
+Mino  <depend>builtin_interfaces</depend>
   <depend>tinyxml</depend>
   <depend>cv_bridge</depend>
   <depend>pluginlib</depend>
