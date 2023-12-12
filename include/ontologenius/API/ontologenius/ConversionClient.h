@@ -3,9 +3,13 @@
 
 #include <string>
 
+#if ROS_VERSION == 1
 #include <ros/ros.h>
-
-#include "ontologenius/OntologeniusConversion.h"
+#include <ontologenius/OntologeniusConversion.h>
+#elif ROS_VERSION == 2
+#include <rclcpp/rclcpp.hpp>
+#include <ontologenius/srv/OntologeniusConversion.h>
+#endif
 
 namespace onto {
 

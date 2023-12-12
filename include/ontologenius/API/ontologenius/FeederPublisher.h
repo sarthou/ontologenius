@@ -4,9 +4,15 @@
 #include <atomic>
 #include <stdlib.h>
 
+#if ROS_VERSION == 1
 #include <ros/ros.h>
-#include "std_msgs/String.h"
-#include "ontologenius/StampedString.h"
+#include <std_msgs/String.h>
+#include <ontologenius/StampedString.h>
+#elif ROS_VERSION == 2
+#include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/string.hpp>
+#include <ontologenius/msg/StampedString.h>
+#endif
 
 namespace onto {
 

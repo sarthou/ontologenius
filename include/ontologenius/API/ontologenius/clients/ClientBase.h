@@ -4,9 +4,13 @@
 #include <vector>
 #include <string>
 
+#if ROS_VERSION == 1
 #include <ros/ros.h>
-
-#include "ontologenius/OntologeniusService.h"
+#include <ontologenius/OntologeniusService.h>
+#elif ROS_VERSION == 2
+#include <rclcpp/rclcpp.hpp>
+#include <ontologenius/srv/OntologeniusService.h>
+#endif
 
 #ifndef COLOR_OFF
 #define COLOR_OFF     "\x1B[0m"
