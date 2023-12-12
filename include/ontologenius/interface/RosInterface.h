@@ -19,7 +19,7 @@
 #include <ontologenius/OntologeniusSparqlIndexService.h>
 #include <ontologenius/OntologeniusConversion.h>
 #elif ROS_VERSION == 2
-#include <rclcpp/rclcpp.hpp
+#include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/string.hpp>
 
 #include <ontologenius/msg/StampedString.h>
