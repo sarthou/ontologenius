@@ -1,9 +1,5 @@
 #include <thread>
 
-#include <ros/callback_queue.h>
-
-#include "ontologenius/OntologeniusExplanation.h"
-
 #include "ontologenius/interface/RosInterface.h"
 
 #include "ontologenius/utils/String.h"
@@ -19,15 +15,22 @@
 namespace ontologenius {
 
 RosInterface::RosInterface(const std::string& name) :
-                                                  reasoners_(name),
-                                                  feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
-#ifdef ONTO_TEST
-                                                  end_feed_(true),
+#if ROS_VERSION == 2
+    Node(name),
 #endif
-                                                  run_(true),
-                                                  feeder_rate_(FEEDER_DEFAULT_RATE),
-                                                  feeder_end_pub_(n_.advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),
-                                                  display_(true)
+    reasoners_(name),
+    feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
+#ifdef ONTO_TEST
+    end_feed_(true),
+#endif
+    run_(true),
+    feeder_rate_(FEEDER_DEFAULT_RATE),
+#if ROS_VERSION == 1
+    feeder_end_pub_(n_.advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),
+#elif ROS_VERSION == 2
+    feeder_end_pub_(this->create_publisher<std_msgs_alias::String>(getTopicName("insert_explanations", name), 10)),
+#endif
+    display_(true)
 {
   onto_ = new Ontology();
   onto_->setDisplay(display_);
@@ -40,15 +43,22 @@ RosInterface::RosInterface(const std::string& name) :
 }
 
 RosInterface::RosInterface(RosInterface& other, const std::string& name) :
-                                                reasoners_(name),
-                                                feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
+#if ROS_VERSION == 2
+    Node(name),
+#endif
+    reasoners_(name),
+    feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
 #ifdef ONTO_TEST
                                                 end_feed_(true),
 #endif
-                                                run_(true),
-                                                feeder_rate_(FEEDER_DEFAULT_RATE),
-                                                feeder_end_pub_(n_.advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),
-                                                display_(true)
+    run_(true),
+    feeder_rate_(FEEDER_DEFAULT_RATE),
+#if ROS_VERSION == 1
+    feeder_end_pub_(n_.advertise<std_msgs::String>(getTopicName("end", name), PUB_QUEU_SIZE)),
+#elif ROS_VERSION == 2
+    feeder_end_pub_(this->create_publisher<std_msgs_alias::String>(getTopicName("insert_explanations", name), 10)),
+#endif
+    display_(true)
 {
   other.lock();
   onto_ = new Ontology(*other.onto_);

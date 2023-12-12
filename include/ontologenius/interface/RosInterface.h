@@ -7,16 +7,29 @@
 #include <atomic>
 #include <mutex>
 
+#if ROS_VERSION == 1
 #include <ros/ros.h>
 #include <ros/callback_queue.h>
-#include "std_msgs/String.h"
+#include <std_msgs/String.h>
 
-#include "ontologenius/StampedString.h"
-#include "ontologenius/OntologeniusService.h"
-#include "ontologenius/OntologeniusSparqlService.h"
-#include "ontologenius/OntologeniusIndexService.h"
-#include "ontologenius/OntologeniusSparqlIndexService.h"
-#include "ontologenius/OntologeniusConversion.h"
+#include <ontologenius/StampedString.h>
+#include <ontologenius/OntologeniusService.h>
+#include <ontologenius/OntologeniusSparqlService.h>
+#include <ontologenius/OntologeniusIndexService.h>
+#include <ontologenius/OntologeniusSparqlIndexService.h>
+#include <ontologenius/OntologeniusConversion.h>
+#elif ROS_VERSION == 2
+#include <rclcpp/rclcpp.hpp
+#include <std_msgs/msg/string.hpp>
+
+#include <ontologenius/msg/StampedString.h>
+#include <ontologenius/srv/OntologeniusService.h>
+#include <ontologenius/srv/OntologeniusSparqlService.h>
+#include <ontologenius/srv/OntologeniusIndexService.h>
+#include <ontologenius/srv/OntologeniusSparqlIndexService.h>
+#include <ontologenius/srv/OntologeniusConversion.h>
+#include <ontologenius/srv/OntologeniusExplanation.h>
+#endif
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/reasoner/Reasoners.h"
@@ -27,8 +40,15 @@
 //#define ONTO_TEST
 
 namespace ontologenius {
+#if ROS_VERSION == 1
+    namespace std_msgs_alias = std_msgs;
 
-class RosInterface
+    class RosInterface
+#elif ROS_VERSION == 2
+    namespace std_msgs_alias = std_msgs::msg;
+
+    class RosInterface : public rclcpp::Node
+#endif
 {
 public:
   /// @brief The RosInterface constructor
@@ -110,8 +130,13 @@ public:
   std::atomic<bool> run_;
   /// @brief The rate (in Hz) at which the feeder thread run. Can not be modified while the process is running
   size_t feeder_rate_;
+
   /// @brief The ROS publisher used to notify the user that no more incoming statement have to be analysed
+#if ROS_VERSION == 1
   ros::Publisher feeder_end_pub_;
+#elif ROS_VERSION == 2
+  rclcpp::Publisher<std_msgs_alias::String>::SharedPtr feeder_end_pub_;
+#endif
 
   /// @brief The mutex protecting the object feeder_
   std::mutex feeder_mutex_;
@@ -122,7 +147,7 @@ public:
   bool display_;
 
   /// @brief The ROS topic callback receiving statements not stamped
-  void knowledgeCallback(const std_msgs::String::ConstPtr& msg);
+  void knowledgeCallback(const std_msgs_msg::String::ConstPtr& msg);
   /// @brief The ROS topic callback receiving stamped statements
   void stampedKnowledgeCallback(const ontologenius::StampedString::ConstPtr& msg);
 
