@@ -1,2 +1,2 @@
 string data
-time stamp
+ontologenius/Timestamp stamp
