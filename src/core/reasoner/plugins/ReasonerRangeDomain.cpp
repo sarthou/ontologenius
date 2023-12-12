@@ -1,6 +1,10 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerRangeDomain.h"
 
+#if ROS_VERSION == 1
 #include <pluginlib/class_list_macros.h>
+#elif ROS_VERSION == 2
+#include <pluginlib/class_list_macros.hpp>
+#endif
 
 namespace ontologenius {
 
