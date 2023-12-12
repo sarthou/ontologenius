@@ -65,6 +65,6 @@ std::string ReasonerSymmetric::getDesciption()
   return "This reasoner creates the symetric properties for each individual.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ReasonerSymetric, ReasonerInterface)
+PLUGINLIB_EXPORT_CLASS(ReasonerSymmetric, ReasonerInterface)
 
 } // namespace ontologenius
