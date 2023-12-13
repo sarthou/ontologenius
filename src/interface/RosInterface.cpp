@@ -100,7 +100,7 @@ namespace ontologenius {
 
     void RosInterface::run()
     {
-        auto sub_insert = ontologenius::compat::ros::Subscriber<std_msgs_compat::String>(
+        auto sub_insert = compat::ros::Subscriber<std_msgs_compat::String>(
             getTopicName("insert"),
             PUB_QUEU_SIZE,
             &RosInterface::knowledgeCallback,
@@ -108,7 +108,7 @@ namespace ontologenius {
         );
         (void) sub_insert;
 
-        auto sub_insert_stamped = ontologenius::compat::ros::Subscriber<ontologenius::compat::OntologeniusStampedString>(
+        auto sub_insert_stamped = compat::ros::Subscriber<compat::OntologeniusStampedString>(
             getTopicName("insert_stamped"),
             PUB_QUEU_SIZE,
             &RosInterface::stampedKnowledgeCallback,
@@ -116,7 +116,7 @@ namespace ontologenius {
         );
         (void) sub_insert_stamped;
 
-        std::vector<ontologenius::compat::ros::Service<ontologenius::compat::OntologeniusService>> str_services;
+        std::vector<compat::ros::Service<compat::OntologeniusService>> str_services;
         str_services.emplace_back(getTopicName("actions"),               &RosInterface::actionsHandle, this);
         str_services.emplace_back(getTopicName("reasoner"),              &RosInterface::reasonerHandle, this);
 
@@ -125,23 +125,23 @@ namespace ontologenius {
         str_services.emplace_back(getTopicName("data_property"),         &RosInterface::dataPropertyHandle, this);
         str_services.emplace_back(getTopicName("individual"),            &RosInterface::individualHandle, this);
 
-        std::vector<ontologenius::compat::ros::Service<ontologenius::compat::OntologeniusIndexService>> idx_services;
+        std::vector<compat::ros::Service<compat::OntologeniusIndexService>> idx_services;
         idx_services.emplace_back(getTopicName("class_index"),           &RosInterface::classIndexHandle, this);
         idx_services.emplace_back(getTopicName("object_property_index"), &RosInterface::objectPropertyIndexHandle, this);
         idx_services.emplace_back(getTopicName("data_property_index"),   &RosInterface::dataPropertyIndexHandle, this);
         idx_services.emplace_back(getTopicName("individual_index"),      &RosInterface::individualIndexHandle, this);
 
-        auto srv_conversion = compat::ros::Service<ontologenius::compat::OntologeniusConversion>(
+        auto srv_conversion = compat::ros::Service<compat::OntologeniusConversion>(
             getTopicName("conversion"), &RosInterface::conversionHandle, this
         );
         (void) srv_conversion;
 
-        auto srv_sparql = compat::ros::Service<ontologenius::compat::OntologeniusSparqlService>(
+        auto srv_sparql = compat::ros::Service<compat::OntologeniusSparqlService>(
             getTopicName("sparql"), &RosInterface::sparqlHandle, this
         );
         (void) srv_sparql;
 
-        auto srv_sparql_idx = compat::ros::Service<ontologenius::compat::OntologeniusSparqlIndexService>(
+        auto srv_sparql_idx = compat::ros::Service<compat::OntologeniusSparqlIndexService>(
             getTopicName("sparql_index"), &RosInterface::sparqlIndexHandle, this
         );
         (void) srv_sparql_idx;
@@ -206,17 +206,18 @@ namespace ontologenius {
 
     void RosInterface::knowledgeCallback(const std_msgs_compat::String::ConstPtr& msg)
     {
-        // auto time = ros::Time::now();
-        // feeder_.store(msg->data, {time.sec, time.nsec});
+        auto now = compat::ros::Node::get().current_time();
+        
+        feeder_.store(msg->data, { (uint32_t) now.seconds(), (uint32_t) now.nanoseconds()});
     }
 
-    void RosInterface::stampedKnowledgeCallback(const ontologenius::compat::OntologeniusStampedString::ConstPtr& msg)
+    void RosInterface::stampedKnowledgeCallback(const compat::OntologeniusStampedString::ConstPtr& msg)
     {
         feeder_.store(msg->data, {msg->stamp.seconds, msg->stamp.nanoseconds});
     }
 
-    bool RosInterface::actionsHandle(const ontologenius::compat::ros::ServiceWrapper<ontologenius::compat::OntologeniusService::Request>& req,
-                                     const ontologenius::compat::ros::ServiceWrapper<ontologenius::compat::OntologeniusService::Response>& res)
+    bool RosInterface::actionsHandle(const compat::ros::ServiceWrapper<compat::OntologeniusService::Request>& req,
+                                     const compat::ros::ServiceWrapper<compat::OntologeniusService::Response>& res)
     {
         res->code = 0;
 
@@ -260,8 +261,8 @@ namespace ontologenius {
         return true;
     }
 
-    bool RosInterface::reasonerHandle(const ontologenius::compat::ros::ServiceWrapper<ontologenius::compat::OntologeniusService::Request> &req,
-                                      const ontologenius::compat::ros::ServiceWrapper<ontologenius::compat::OntologeniusService::Response> &res)
+    bool RosInterface::reasonerHandle(const compat::ros::ServiceWrapper<compat::OntologeniusService::Request> &req,
+                                      const compat::ros::ServiceWrapper<compat::OntologeniusService::Response> &res)
     {
         res->code = 0;
 
@@ -283,8 +284,8 @@ namespace ontologenius {
         return true;
     }
 
-    bool RosInterface::conversionHandle(const ontologenius::compat::ros::ServiceWrapper<ontologenius::compat::OntologeniusConversion::Request> &req,
-                                        const ontologenius::compat::ros::ServiceWrapper<ontologenius::compat::OntologeniusConversion::Response> &res)
+    bool RosInterface::conversionHandle(const compat::ros::ServiceWrapper<compat::OntologeniusConversion::Request> &req,
+                                        const compat::ros::ServiceWrapper<compat::OntologeniusConversion::Response> &res)
     {
         if(req->values_int.size())
         {
@@ -329,20 +330,20 @@ namespace ontologenius {
 
     void RosInterface::feedThread()
     {
-        auto pub_feeder = ontologenius::compat::ros::Publisher<std_msgs_compat::String>(getTopicName("feeder_notifications"), PUB_QUEU_SIZE);
+        auto pub_feeder = compat::ros::Publisher<std_msgs_compat::String>(getTopicName("feeder_notifications"), PUB_QUEU_SIZE);
 
         bool feeder_end = true;
 #ifdef ONTO_TEST
         end_feed_ = false;
 #endif
 
-        ontologenius::compat::ros::Rate wait(feeder_rate_);
-        while(ontologenius::compat::ros::Node::ok() && (onto_->isInit(false) == false) && (run_ == true))
+        compat::ros::Rate wait(feeder_rate_);
+        while(compat::ros::Node::ok() && (onto_->isInit(false) == false) && (run_ == true))
         {
             wait.sleep();
         }
 
-        auto& node = ontologenius::compat::ros::Node::get();
+        auto& node = compat::ros::Node::get();
 
         auto time = node.current_time();
         feeder_.store("[add]myself|", {(uint32_t) time.seconds(), (uint32_t) time.nanoseconds()});
@@ -354,7 +355,7 @@ namespace ontologenius {
 
         std_msgs_compat::String msg;
 
-        while (ontologenius::compat::ros::Node::ok() && (run_ == true))
+        while (compat::ros::Node::ok() && (run_ == true))
         {
             feeder_mutex_.lock();
             bool run = feeder_.run();
@@ -398,19 +399,19 @@ namespace ontologenius {
 
             feeder_mutex_.unlock();
 
-            if (ontologenius::compat::ros::Node::ok() && (run_ == true) && (run == false))
+            if (compat::ros::Node::ok() && (run_ == true) && (run == false))
                 wait.sleep();
         }
     }
 
     void RosInterface::periodicReasoning()
     {
-        auto pub_reasoner = ontologenius::compat::ros::Publisher<std_msgs_compat::String>(getTopicName("reasoner_notifications", name_), PUB_QUEU_SIZE);
-        auto pub_explanation = ontologenius::compat::ros::Publisher<ontologenius::compat::OntologeniusExplanation>(getTopicName("insert_explanations", name_), PUB_QUEU_SIZE);
+        auto pub_reasoner = compat::ros::Publisher<std_msgs_compat::String>(getTopicName("reasoner_notifications", name_), PUB_QUEU_SIZE);
+        auto pub_explanation = compat::ros::Publisher<compat::OntologeniusExplanation>(getTopicName("insert_explanations", name_), PUB_QUEU_SIZE);
 
-        ontologenius::compat::ros::Rate wait(10);
+        compat::ros::Rate wait(10);
 
-        while (ontologenius::compat::ros::Node::ok() && (onto_->isInit(false) == false) && (run_ == true))
+        while (compat::ros::Node::ok() && (onto_->isInit(false) == false) && (run_ == true))
         {
             wait.sleep();
         }
@@ -419,12 +420,12 @@ namespace ontologenius {
         reasoners_.getExplanations(); // flush explanations of initialization
         reasoner_mutex_.unlock();
 
-        ontologenius::compat::ros::Rate r(100);
+        compat::ros::Rate r(100);
         std_msgs_compat::String msg;
 
-        ontologenius::compat::OntologeniusExplanation expl_msg;
+        compat::OntologeniusExplanation expl_msg;
 
-        while (ontologenius::compat::ros::Node::ok() && (run_ == true))
+        while (compat::ros::Node::ok() && (run_ == true))
         {
             reasoner_mutex_.lock();
             reasoners_.runPeriodicReasoners();
@@ -453,7 +454,7 @@ namespace ontologenius {
 
             reasoner_mutex_.unlock();
 
-            if (ontologenius::compat::ros::Node::ok() && (run_ == true)) r.sleep();
+            if (compat::ros::Node::ok() && (run_ == true)) r.sleep();
         }
     }
 
