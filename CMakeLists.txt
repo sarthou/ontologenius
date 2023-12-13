@@ -13,6 +13,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(pluginlib REQUIRED)
+find_package(fmt REQUIRED)
 
 rosidl_generate_interfaces(ontologenius
         "msg/OntologeniusTimestamp.msg"
@@ -40,12 +41,14 @@ function(add_ros_deps TARGET)
             /opt/ros/humble/include/pluginlib/) # todo figure out why pluginlib is not inside pluginlib_INCLUDE_DIRS
 endfunction()
 
+# --------------------------------------------------------------
+
 add_library(ontologenius_compat "src/compat/ros.cpp")
 add_ros_deps(ontologenius_compat)
 
 target_include_directories(ontologenius_compat PUBLIC include/)
 
-install(TARGETS ontologenius_compat DESTINATION lib/${PROJECT_NAME})
+# --------------------------------------------------------------
 
 add_library(ontologenius_interface
         "src/interface/RosInterface.cpp"
@@ -55,12 +58,46 @@ add_ros_deps(ontologenius_interface)
 
 target_include_directories(ontologenius_interface PUBLIC include/)
 
+# --------------------------------------------------------------
+
+add_library(ontologenius_lib
+        # Regular clients
+        "src/API/ontologenius/clients/ontologyClients/ClassClient.cpp"
+        "src/API/ontologenius/clients/ontologyClients/DataPropertyClient.cpp"
+        "src/API/ontologenius/clients/ontologyClients/IndividualClient.cpp"
+        "src/API/ontologenius/clients/ontologyClients/ObjectPropertyClient.cpp"
+        "src/API/ontologenius/clients/ontologyClients/OntologyClient.cpp"
+        "src/API/ontologenius/clients/ActionClient.cpp"
+        "src/API/ontologenius/clients/ClientBase.cpp"
+        "src/API/ontologenius/clients/ManagerClient.cpp"
+        "src/API/ontologenius/clients/ReasonerClient.cpp"
+        "src/API/ontologenius/clients/SparqlClient.cpp"
+        # Indexed clients
+        "src/API/ontologenius/clientsIndex/ontologyClients/ClassIndexClient.cpp"
+        "src/API/ontologenius/clientsIndex/ontologyClients/DataPropertyIndexClient.cpp"
+        "src/API/ontologenius/clientsIndex/ontologyClients/IndividualIndexClient.cpp"
+        "src/API/ontologenius/clientsIndex/ontologyClients/ObjectPropertyIndexClient.cpp"
+        "src/API/ontologenius/clientsIndex/ontologyClients/OntologyIndexClient.cpp"
+        "src/API/ontologenius/clientsIndex/ClientBaseIndex.cpp"
+        "src/API/ontologenius/clientsIndex/SparqlIndexClient.cpp"
+        # Other
+        "src/API/ontologenius/ConversionClient.cpp"
+        "src/API/ontologenius/FeederPublisher.cpp"
+        "src/API/ontologenius/OntologiesManipulator.cpp"
+        "src/API/ontologenius/OntologyManipulator.cpp"
+        "src/API/ontologenius/OntologyManipulatorIndex.cpp")
+add_ros_deps(ontologenius_lib)
+
+target_include_directories(ontologenius_lib PUBLIC include/)
+
+# --------------------------------------------------------------
+
 add_executable(n1pe
         "src/n1pe/main.cpp")
 
 add_ros_deps(n1pe)
 target_include_directories(n1pe PUBLIC include/)
-target_link_libraries(n1pe "ontologenius_compat")
+target_link_libraries(n1pe "ontologenius_compat" fmt)
 
 install(TARGETS n1pe DESTINATION lib/${PROJECT_NAME})
 
