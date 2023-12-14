@@ -17,6 +17,7 @@ find_package(cmake_modules REQUIRED)
 find_package(TinyXML REQUIRED)
 find_package(TinyXML2 REQUIRED)
 find_package(fmt REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport)
 find_package(PkgConfig REQUIRED)
 
 pkg_search_module(CURL REQUIRED libcurl IMPORTED_TARGET GLOBAL)
@@ -184,11 +185,11 @@ target_link_libraries(ontologenius_core_lib PUBLIC
 
 
 
-add_executable(n1pe
+add_executable(ontologenius_single
         "src/nodes/ontologenius_single.cpp")
 
-add_ros_deps(n1pe)
-target_link_libraries(n1pe
+add_ros_deps(ontologenius_single)
+target_link_libraries(ontologenius_single
         ontologenius_compat
         ontologenius_interface
         ontologenius_lib
@@ -196,8 +197,69 @@ target_link_libraries(n1pe
         ontologenius_operators
         ontologenius_core_lib
         fmt)
-target_include_directories(n1pe PUBLIC include/)
+target_include_directories(ontologenius_single PUBLIC include/)
 
-install(TARGETS n1pe DESTINATION lib/${PROJECT_NAME})
+install(TARGETS ontologenius_single DESTINATION lib/${PROJECT_NAME})
+
+
+
+
+
+
+##############################################################################
+# Qt Environment
+##############################################################################
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+
+##############################################################################
+# Sections
+##############################################################################
+
+file(GLOB QT_FORMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ui/*.ui)
+file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}  resources/*.qrc)
+
+QT5_ADD_RESOURCES(QT_RESOURCES_CPP ${QT_RESOURCES})
+QT5_WRAP_UI(QT_FORMS_HPP ${QT_FORMS})
+
+##############################################################################
+# Sources
+##############################################################################
+
+set( QT_SOURCES
+        src/graphical/ontoloGUI/main.cpp
+        src/graphical/ontoloGUI/ontologui.cpp
+        src/graphical/ontoloGUI/DarkStyle.cpp
+        src/graphical/ontoloGUI/qpushbuttonextended.cpp
+        src/graphical/ontoloGUI/QCheckBoxExtended.cpp
+        src/graphical/ontoloGUI/QLineEditExtended.cpp
+
+        include/ontologenius/graphical/ontoloGUI/ontologui.h
+        include/ontologenius/graphical/ontoloGUI/DarkStyle.h
+        include/ontologenius/graphical/ontoloGUI/qpushbuttonextended.h
+        include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h
+        include/ontologenius/graphical/ontoloGUI/QLineEditExtended.h
+)
+##############################################################################
+# Binaries
+##############################################################################
+
+add_executable(ontoloGUI ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
+target_link_libraries(ontoloGUI
+        Qt5::Core
+        Qt5::Widgets
+        Qt5::PrintSupport
+        ontologenius_lib
+        fmt)
+target_include_directories(ontoloGUI PUBLIC
+        include/)
+install(TARGETS ontoloGUI RUNTIME DESTINATION lib/${PROJECT_NAME})
+
+
+
+
+
+
 
 ament_package()
