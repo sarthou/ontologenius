@@ -2,9 +2,11 @@
 
 namespace ontologenius::compat::ros
 {
+    std::string node_name__;
+
     Node& Node::get()
     {
-        static Node compat_node("ontologenius");
+        static Node compat_node(node_name__);
         return compat_node;
     }
 
@@ -17,8 +19,10 @@ namespace ontologenius::compat::ros
 #endif
     }
 
-    void Node::init(int argc, char **argv)
+    void Node::init(int argc, char **argv, const std::string& node_name)
     {
+        node_name__ = node_name;
+
 #if ROS_VERSION == 1
         ros::init(argc, argv, name_);
 #elif ROS_VERSION == 2
@@ -32,6 +36,15 @@ namespace ontologenius::compat::ros
         // todo: handle ROS1 shutdown
 #elif ROS_VERSION == 2
         rclcpp::shutdown();
+#endif
+    }
+
+    void Node::spin()
+    {
+#if ROS_VERSION == 1
+        // todo: handle ROS1 spin
+#elif ROS_VERSION == 2
+        rclcpp::spin(handle_);
 #endif
     }
 

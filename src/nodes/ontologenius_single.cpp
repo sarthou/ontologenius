@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 {
     signal(SIGSEGV, handler);
 
-    ontologenius::compat::ros::Node::init(argc, argv);
+    ontologenius::compat::ros::Node::init(argc, argv, "ontologenius_single");
 
     {
         ontologenius::RosInterface interface;

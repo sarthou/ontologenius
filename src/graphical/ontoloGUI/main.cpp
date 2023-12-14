@@ -6,28 +6,24 @@
 #include <csignal>
 #include <thread>
 
-#include <ros/package.h>
-#include <ros/ros.h>
+#include "ontologenius/compat/ros.h"
+
+#include <ament_index_cpp/get_package_share_directory.hpp>
 
 void spinThread(bool* run)
 {
-  ros::Rate r(100);
-  while(*run == true)
-  {
-    ros::spinOnce();
-    r.sleep();
-  }
+    ontologenius::compat::ros::Node::get().spin();
 }
 
 int main(int argc, char *argv[])
 {
-  ros::init(argc, argv, "ontoloGUI");
-  
+    ontologenius::compat::ros::Node::init(argc, argv, "ontoloGUI");
+
     QApplication a(argc, argv);
 
     a.setStyle(new DarkStyle);
 
-    std::string path = ros::package::getPath("ontologenius");
+    std::string path = ament_index_cpp::get_package_share_directory("ontologenius");
     path = path + "/docs/images/ontologenius.ico";
     QIcon icon(QString::fromStdString(path));
     a.setWindowIcon(icon);
@@ -50,6 +46,8 @@ int main(int argc, char *argv[])
 
     run = false;
     spin_thread.join();
+
+    ontologenius::compat::ros::Node::shutdown();
 
     return a_exec;
 }

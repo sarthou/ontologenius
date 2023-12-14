@@ -133,8 +133,10 @@ namespace ontologenius::compat
             static Node& get();
             static bool ok();
 
-            static void init(int argc, char **argv);
+            static void init(int argc, char **argv, const std::string& node_name);
             static void shutdown();
+
+            void spin();
 
             Time current_time();
         private:

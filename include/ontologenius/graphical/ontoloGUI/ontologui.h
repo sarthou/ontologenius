@@ -2,10 +2,10 @@
 #define ONTOLOGUI_H
 
 #include <QMainWindow>
-#include "include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
+#include "ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
 #include <QTextCursor>
 
-#include "ontologenius/OntologiesManipulator.h"
+#include "ontologenius/API/ontologenius/OntologiesManipulator.h"
 #include <vector>
 #include <string>
 

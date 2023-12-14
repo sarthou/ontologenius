@@ -1,6 +1,6 @@
-#include "include/ontologenius/graphical/ontoloGUI/ontologui.h"
-#include "include/ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
-#include "include/ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
+#include "ontologenius/graphical/ontoloGUI/ontologui.h"
+#include "ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
+#include "ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
 #include "ui_ontologui.h"
 
 #include <QScrollBar>
