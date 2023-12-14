@@ -15,6 +15,10 @@ void spinThread(bool* run)
     ontologenius::compat::ros::Node::get().spin();
 }
 
+#include <chrono>
+
+using namespace std::chrono_literals;
+
 int main(int argc, char *argv[])
 {
     ontologenius::compat::ros::Node::init(argc, argv, "ontoloGUI");
@@ -25,6 +29,7 @@ int main(int argc, char *argv[])
 
     std::string path = ament_index_cpp::get_package_share_directory("ontologenius");
     path = path + "/docs/images/ontologenius.ico";
+
     QIcon icon(QString::fromStdString(path));
     a.setWindowIcon(icon);
 

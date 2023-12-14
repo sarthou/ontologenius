@@ -102,7 +102,7 @@ namespace ontologenius::compat
         }
 
         inline bool wait_for_service(const std::string& service_name, int32_t timeout = -1) {
-            return true; // todo
+            return false; // todo
         }
 
         template <typename T>

@@ -159,6 +159,8 @@ namespace ontologenius {
             callback_queue_.callAvailable(ros::WallDuration(0.1));
         }*/
 
+        compat::ros::Node::get().spin();
+
         periodic_reasoning_thread.join();
         feed_thread.join();
     }
