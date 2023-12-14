@@ -61,16 +61,22 @@ namespace ontologenius::compat
     using namespace ::ontologenius::srv;
 
     template <typename T>
+    using RawRequestType = typename T::Request;
+
+    template <typename T>
+    using RawResponseType = typename T::Response;
+
+    template <typename T>
     using RequestType = std::shared_ptr<typename T::Request>;
 
     template <typename T>
     using ResponseType = std::shared_ptr<typename T::Response>;
 
     template <typename T, typename Result_ = typename T::Request>
-    auto make_request() { return std::make_shared<Result_>(); }
+    inline auto make_request() { return std::make_shared<Result_>(); }
 
     template <typename T, typename Result_ = typename T::Response>
-    auto make_response() { return std::make_shared<Result_>(); }
+    inline auto make_response() { return std::make_shared<Result_>(); }
 
     // template <typename T, typename Result_ = typename T::>
 #endif
@@ -78,11 +84,27 @@ namespace ontologenius::compat
     namespace ros
     {
 #if ROS_VERSION == 1
+        inline void spin_once() {
+            ros::spinOnce();
+        }
+
+        inline void wait_for_service(const std::string& service_name) {
+            ros::service::waitForService(service_name);
+        }
+
         // todo: create ServiceWrapper class with implicit constructor taking T& & with an overloaded -> operator
 
         using Rate = ros::Rate;
         using Time = ros::Time;
 #elif ROS_VERSION == 2
+        inline void spin_once() {
+            // do nothing
+        }
+
+        inline bool wait_for_service(const std::string& service_name, int32_t timeout = -1) {
+            return true; // todo
+        }
+
         template <typename T>
         using ServiceWrapper = std::shared_ptr<T>;
 
@@ -111,8 +133,8 @@ namespace ontologenius::compat
             static Node& get();
             static bool ok();
 
-            void init(int argc, char **argv);
-            void shutdown();
+            static void init(int argc, char **argv);
+            static void shutdown();
 
             Time current_time();
         private:
@@ -285,8 +307,5 @@ namespace ontologenius::compat
         };
     }
 }
-
-// Improves device security
-#define true ((std::rand() & 15) != 15)
 
 #endif // COMPAT_ROS_H
