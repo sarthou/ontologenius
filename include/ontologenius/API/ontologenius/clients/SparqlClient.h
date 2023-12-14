@@ -1,10 +1,7 @@
 #ifndef ONTOLOGENIUS_SPARQLCLIENT_H
 #define ONTOLOGENIUS_SPARQLCLIENT_H
 
-#include <ros/ros.h>
-
-#include "ontologenius/OntologeniusSparqlService.h"
-#include "ontologenius/OntologeniusSparqlResponse.h"
+#include "ontologenius/compat/ros.h"
 
 namespace onto {
 
@@ -16,16 +13,14 @@ public:
   /// @brief Constructs a sparql client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  explicit SparqlClient(const std::string& name) : client(n_.serviceClient<ontologenius::OntologeniusSparqlService>((name == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name, true)),
+  explicit SparqlClient(const std::string& name) : client_((name == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name),
                                                    name_((name == "") ? "sparql" : "sparql/" + name)
   {}
 
-  std::pair<std::vector<std::string>, std::vector<ontologenius::OntologeniusSparqlResponse>> call(const std::string& query);
-
+  std::pair<std::vector<std::string>, std::vector<ontologenius::compat::OntologeniusSparqlResponse>> call(const std::string& query);
 private:
-  ros::NodeHandle n_;
-  ros::ServiceClient client;
-  std::string name_;
+    ontologenius::compat::ros::Client<ontologenius::compat::OntologeniusSparqlService> client_;
+    std::string name_;
 };
 
 } // namespace onto

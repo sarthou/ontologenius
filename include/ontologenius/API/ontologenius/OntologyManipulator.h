@@ -19,11 +19,9 @@ namespace onto {
 class OntologyManipulator
 {
 private:
-  ros::NodeHandle n_; // do not move this line below
   std::string name_;
 
 public:
-  explicit OntologyManipulator(ros::NodeHandle* n, const std::string& name = "");
   /// @brief Constructs an ontology manipulator.Can be used in a multi-ontology mode by specifying the name of the ontology name. For classic use, do not specify the ontology name name.
   /// @param name is the instance name
   OntologyManipulator(const std::string& name = "");

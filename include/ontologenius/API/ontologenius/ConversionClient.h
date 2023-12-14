@@ -2,14 +2,9 @@
 #define ONTOLOGENIUS_CONVERTIONCLIENT_H
 
 #include <string>
+#include <fmt/core.h>
 
-#if ROS_VERSION == 1
-#include <ros/ros.h>
-#include <ontologenius/OntologeniusConversion.h>
-#elif ROS_VERSION == 2
-#include <rclcpp/rclcpp.hpp>
-#include <ontologenius/srv/OntologeniusConversion.h>
-#endif
+#include "ontologenius/compat/ros.h"
 
 namespace onto {
 
@@ -48,9 +43,9 @@ public:
 
 private:
   std::string name_;
-  ros::NodeHandle n_;
   bool verbose_;
-  ros::ServiceClient client_;
+
+  ontologenius::compat::ros::Client<ontologenius::compat::OntologeniusConversion> client_;
 
   std::vector<std::string> index2Id(const std::vector<int64_t>& indexes, int8_t source);
   std::string index2Id(int64_t index, int8_t source);
@@ -58,7 +53,10 @@ private:
   std::vector<int64_t> Id2Index(const std::vector<std::string>& ids, int8_t source);
   int64_t Id2Index(const std::string& id, int8_t source);
 
-  inline bool call(ontologenius::OntologeniusConversion& srv);
+  bool call(
+    ontologenius::compat::RequestType<ontologenius::compat::OntologeniusConversion>& req,
+    ontologenius::compat::ResponseType<ontologenius::compat::OntologeniusConversion>& res
+  );
 };
 
 } // namespace onto

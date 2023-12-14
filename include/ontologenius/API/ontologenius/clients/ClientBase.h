@@ -72,7 +72,9 @@ namespace onto {
                 case ResultTy::FAILURE:
                 {
                     fmt::print(COLOR_ORANGE "Failed to call call ontologenius/{}\n" COLOR_OFF, name_);
-
+                }
+                default:
+                {
                     return { "ERR:SERVICE_FAIL" };
                 }
             }

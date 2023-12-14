@@ -2,21 +2,28 @@
 
 namespace onto {
 
-std::pair<std::vector<std::string>, std::vector<ontologenius::OntologeniusSparqlIndexResponse>> SparqlIndexClient::call(const std::string& query)
-{
-  ontologenius::OntologeniusSparqlIndexService srv;
-  srv.request.query = query;
+    std::pair<std::vector<std::string>, std::vector<ontologenius::compat::OntologeniusSparqlIndexResponse>> SparqlIndexClient::call(const std::string& query)
+    {
+        ontologenius::compat::RequestType<ontologenius::compat::OntologeniusSparqlIndexService> req;
+        req->query = query;
 
-  if(client.call(srv))
-    return {srv.response.names, srv.response.results};
-  else
-  {
-    client = n_.serviceClient<ontologenius::OntologeniusSparqlIndexService>("ontologenius/" + name_, true);
-    if(client.call(srv))
-      return {srv.response.names, srv.response.results};
-    else
-      return {};
-  }
-}
+        ontologenius::compat::ResponseType<ontologenius::compat::OntologeniusSparqlIndexService> res;
+
+
+        using ResultTy = typename decltype(client_)::Result;
+
+        switch (client_.call(req, res)) {
+            case ResultTy::SUCCESSFUL_WITH_RETRIES:
+            case ResultTy::SUCCESSFUL:
+            {
+                return { res->names, res->results };
+            }
+            case ResultTy::FAILURE:
+            default:
+            {
+                return { };
+            }
+        }
+    }
 
 } // namespace onto
