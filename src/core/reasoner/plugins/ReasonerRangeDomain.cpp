@@ -1,6 +1,10 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerRangeDomain.h"
 
+#if ROS_VERSION == 1
 #include <pluginlib/class_list_macros.h>
+#elif ROS_VERSION == 2
+#include <pluginlib/class_list_macros.hpp>
+#endif
 
 namespace ontologenius {
 
@@ -368,6 +372,6 @@ std::string ReasonerRangeDomain::getDesciption()
   return "This is an reasoner to deduce new inheritances based on range and domain of properties.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ReasonerRangeDomain, ReasonerInterface)
+PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerRangeDomain, ontologenius::ReasonerInterface)
 
 } // namespace ontologenius
