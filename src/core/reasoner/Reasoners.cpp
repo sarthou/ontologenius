@@ -5,6 +5,8 @@
 
 #include "ontologenius/graphical/Display.h"
 
+#include <fmt/core.h>
+
 namespace ontologenius {
 
 Reasoners::Reasoners(const std::string& agent_name, Ontology* onto) : agent_name_(agent_name),
@@ -96,6 +98,8 @@ void Reasoners::load()
 
 void Reasoners::initialize()
 {
+    fmt::print("reasoners_.size() = {}\n", reasoners_.size());
+
   for(auto& it : reasoners_)
     it.second->initialize();
 }

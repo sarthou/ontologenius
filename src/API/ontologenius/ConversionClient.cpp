@@ -165,7 +165,7 @@ bool ConversionClient::call(
     compat::RequestType<compat::OntologeniusConversion> &req,
     compat::ResponseType<compat::OntologeniusConversion> &res
 ) {
-    using ResultTy = typename decltype(client_)::Result;
+    using ResultTy = typename decltype(client_)::Status;
 
     switch (client_.call(req, res)) {
         case ResultTy::SUCCESSFUL_WITH_RETRIES:
@@ -175,7 +175,7 @@ bool ConversionClient::call(
         }
         case ResultTy::FAILURE:
         {
-            fmt::print(COLOR_ORANGE "Failed to call call ontologenius/{}\n" COLOR_OFF, name_);
+            fmt::print(COLOR_ORANGE "Failed to call ontologenius/{}\n" COLOR_OFF, name_);
 
             return false;
         }

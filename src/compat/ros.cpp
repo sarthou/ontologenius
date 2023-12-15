@@ -2,6 +2,10 @@
 
 namespace ontologenius::compat::ros
 {
+    namespace implementation {
+        std::mutex spin_mutex;
+    }
+
     std::string node_name__;
 
     Node& Node::get()
@@ -15,12 +19,14 @@ namespace ontologenius::compat::ros
 #if ROS_VERSION == 1
         return ros::ok();
 #elif ROS_VERSION == 2
-        return get().running_;
+        return rclcpp::ok();
 #endif
     }
 
     void Node::init(int argc, char **argv, const std::string& node_name)
     {
+        fmt::print("[debug] Node::init\n");
+
         node_name__ = node_name;
 
 #if ROS_VERSION == 1
@@ -32,6 +38,8 @@ namespace ontologenius::compat::ros
 
     void Node::shutdown()
     {
+        fmt::print("[debug] Node::shutdown\n");
+
 #if ROS_VERSION == 1
         // todo: handle ROS1 shutdown
 #elif ROS_VERSION == 2
@@ -39,8 +47,11 @@ namespace ontologenius::compat::ros
 #endif
     }
 
+
     void Node::spin()
     {
+        fmt::print("[debug] Node::spin\n");
+
 #if ROS_VERSION == 1
         // todo: handle ROS1 spin
 #elif ROS_VERSION == 2
@@ -50,6 +61,8 @@ namespace ontologenius::compat::ros
 
     Time Node::current_time()
     {
+        fmt::print("[debug] Node::current_time\n");
+
 #if ROS_VERSION == 1
         return ros::Time::now();
 #elif ROS_VERSION == 2
@@ -64,6 +77,8 @@ namespace ontologenius::compat::ros
 #endif
           running_(true)
     {
+        fmt::print("[debug] Node::Node\n");
+
         // todo: should we put something here?
     }
 

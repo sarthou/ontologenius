@@ -13,9 +13,7 @@ OntologyManipulator::OntologyManipulator(const std::string& name) : name_(name),
                                                                     feeder(name),
                                                                     sparql(name)
 {
-    std::string service_name = (name == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name;
-
-    ontologenius::compat::ros::wait_for_service(service_name);
+    sparql.client_.wait();
 }
 
 OntologyManipulator::OntologyManipulator(const OntologyManipulator& other): name_(other.name_),
@@ -28,8 +26,7 @@ OntologyManipulator::OntologyManipulator(const OntologyManipulator& other): name
                                                                       feeder(other.name_),
                                                                       sparql(other.name_)
 {
-    std::string service_name = (name_ == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name_;
-    ontologenius::compat::ros::wait_for_service(service_name);
+    sparql.client_.wait();
 }
 
 OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): name_(other.name_),
@@ -42,8 +39,7 @@ OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): name_(oth
                                                                       feeder(other.name_),
                                                                       sparql(other.name_)
 {
-    std::string service_name = (name_ == "") ? "ontologenius/sparql" : "ontologenius/sparql/" + name_;
-    ontologenius::compat::ros::wait_for_service(service_name);
+    sparql.client_.wait();
 }
 
 } // namespace onto

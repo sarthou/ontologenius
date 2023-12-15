@@ -47,6 +47,8 @@
 #include <functional>
 #include <map>
 
+#include <fmt/core.h>
+
 namespace std_msgs_compat = std_msgs::msg;
 
 namespace ontologenius::compat
@@ -73,38 +75,32 @@ namespace ontologenius::compat
     using ResponseType = std::shared_ptr<typename T::Response>;
 
     template <typename T, typename Result_ = typename T::Request>
-    inline auto make_request() { return std::make_shared<Result_>(); }
+    inline auto make_request() {
+        fmt::print("[debug] make_request\n");
+        return std::make_shared<Result_>();
+    }
 
     template <typename T, typename Result_ = typename T::Response>
-    inline auto make_response() { return std::make_shared<Result_>(); }
+    inline auto make_response() {
+        fmt::print("[debug] make_response\n");
+        return std::make_shared<Result_>();
+    }
 
     // template <typename T, typename Result_ = typename T::>
 #endif
 
     namespace ros
     {
+        namespace implementation {
+            extern std::mutex spin_mutex;
+        }
+
 #if ROS_VERSION == 1
-        inline void spin_once() {
-            ros::spinOnce();
-        }
-
-        inline void wait_for_service(const std::string& service_name) {
-            ros::service::waitForService(service_name);
-        }
-
         // todo: create ServiceWrapper class with implicit constructor taking T& & with an overloaded -> operator
 
         using Rate = ros::Rate;
         using Time = ros::Time;
 #elif ROS_VERSION == 2
-        inline void spin_once() {
-            // do nothing
-        }
-
-        inline bool wait_for_service(const std::string& service_name, int32_t timeout = -1) {
-            return false; // todo
-        }
-
         template <typename T>
         using ServiceWrapper = std::shared_ptr<T>;
 
@@ -172,10 +168,15 @@ namespace ontologenius::compat
 
         template <typename T>
         class Publisher {
+            std::string cached_topic_name;
         public:
             Publisher(const std::string& topic_name, std::size_t queue_size) {
+                cached_topic_name = topic_name;
+                
                 auto& node = Node::get();
                 auto& node_handle = node.handle_;
+
+                fmt::print("[debug] Publisher({})::Publisher\n", cached_topic_name);
 
 #if ROS_VERSION == 1
                 handle_ = node_handle.advertise<T>(topic_name, queue_size);
@@ -189,6 +190,8 @@ namespace ontologenius::compat
                 auto& node = Node::get();
                 auto& node_handle = node.handle_;
 
+                fmt::print("[debug] Publisher({})::publish\n", cached_topic_name);
+                
 #if ROS_VERSION == 1
                 // todo
 #elif ROS_VERSION == 2
@@ -205,12 +208,17 @@ namespace ontologenius::compat
 
         template <typename T>
         class Subscriber {
+            std::string cached_topic_name;
         public:
             template<typename Ta, typename Tb>
             Subscriber(const std::string& topic_name, std::size_t queue_size, Ta&& callback, Tb&& ptr) {
+                cached_topic_name = topic_name;
+                
                 auto& node = Node::get();
                 auto& node_handle = node.handle_;
 
+                fmt::print("[debug] Subscriber({})::Subscriber\n", cached_topic_name);
+                
 #if ROS_VERSION == 1
                 handle_ = node_handle.subscribe(topic_name, queue_size, callback, ptr);
 #elif ROS_VERSION == 2
@@ -229,11 +237,32 @@ namespace ontologenius::compat
         template <typename T>
         class Service
         {
+            std::string cached_service_name_;
         public:
-            template<typename Ta, typename Tb>
-            Service(const std::string& service_name, Ta&& callback, Tb&& ptr) {
+            template<typename Ta>
+            Service(const std::string& service_name, Ta&& callback) {
+                cached_service_name_ = service_name;
+
                 auto& node = Node::get();
                 auto& node_handle = node.handle_;
+
+                fmt::print("[debug] Service({})::Service\n", cached_service_name_);
+
+#if ROS_VERSION == 1
+                handle_ = node_handle.advertiseService(service_name, callback, ptr);
+#elif ROS_VERSION == 2
+                handle_ = node_handle->create_service<T>(service_name, callback);
+#endif
+            }
+
+            template<typename Ta, typename Tb>
+            Service(const std::string& service_name, Ta&& callback, Tb&& ptr) {
+                cached_service_name_ = service_name;
+                
+                auto& node = Node::get();
+                auto& node_handle = node.handle_;
+
+                fmt::print("[debug] Service({})::Service\n", cached_service_name_);
 
 #if ROS_VERSION == 1
                 handle_ = node_handle.advertiseService(service_name, callback, ptr);
@@ -252,12 +281,17 @@ namespace ontologenius::compat
         template <typename T>
         class Client
         {
+            std::string cached_service_name_;
         public:
-            enum class Result { SUCCESSFUL, SUCCESSFUL_WITH_RETRIES, FAILURE };
+            enum class Status { SUCCESSFUL, SUCCESSFUL_WITH_RETRIES, FAILURE };
 
             Client(const std::string& service_name) {
+                cached_service_name_ = service_name;
+
                 auto& node = Node::get();
                 auto& node_handle = node.handle_;
+
+                fmt::print("[debug] Client({})::Client\n", cached_service_name_);
 
 #if ROS_VERSION == 1
                 handle_ = node_handle.serviceClient<ontologenius::compat::OntologeniusService>(service_name, true);
@@ -266,39 +300,40 @@ namespace ontologenius::compat
 #endif
             }
 
-            Result call(const ontologenius::compat::RequestType<T>& req, ontologenius::compat::ResponseType<T>& res) {
+            Status call(const ontologenius::compat::RequestType<T>& req, ontologenius::compat::ResponseType<T>& res) {
+                using namespace std::chrono_literals;
+
                 auto& node = Node::get();
                 auto& node_handle = node.handle_;
 
-                auto attempts = 0;
-                auto result = Result::FAILURE;
+                fmt::print("[debug] Client({})::call\n", cached_service_name_);
 
+                auto status = Status::FAILURE;
 #if ROS_VERSION == 1
                 T msg;
                 msg.request = req;
 
                 // todo: finish this
 #elif ROS_VERSION == 2
-                while ((result == Result::FAILURE) && attempts < 3)
-                {
-                    auto promise = handle_->async_send_request(req);
+                if (!handle_->wait_for_service(5s)) {
+                    fmt::print("[err] Service {} is unavailable.\n", cached_service_name_);
+                    return status;
+                }
 
-                    switch (rclcpp::spin_until_future_complete(node_handle, promise)) {
-                        case rclcpp::FutureReturnCode::SUCCESS: {
-                            result = (attempts > 0) ? Result::SUCCESSFUL_WITH_RETRIES : Result::SUCCESSFUL;
-                            res = promise.get();
-                            break;
-                        }
-                        // todo: maybe treat these differently?
-                        case rclcpp::FutureReturnCode::INTERRUPTED:
-                        case rclcpp::FutureReturnCode::TIMEOUT: {
-                            attempts++;
-                            break;
-                        }
-                    }
+                auto future = handle_->async_send_request(req);
+
+                if (future.wait_for(5s) == std::future_status::ready) {
+                    status = Status::SUCCESSFUL;
+                    res = future.get();
                 }
 #endif
-                return result;
+                return status;
+            }
+
+            bool wait() {
+                using namespace std::chrono_literals;
+                
+                return handle_->wait_for_service(5s);
             }
         private:
 #if ROS_VERSION == 1

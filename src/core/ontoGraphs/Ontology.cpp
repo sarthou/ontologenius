@@ -82,9 +82,9 @@ bool Ontology::close()
 
   Display::info("\n***************SUMMARY****************");
   if(is_init_)
-    Display::info("Ontology is closed :");
+    Display::info("1 Ontology is closed :");
   else
-    Display::warning("Ontology is not closed :");
+    Display::warning("2 Ontology is not closed :");
 
   class_checker.printStatus();
   object_property_checker.printStatus();

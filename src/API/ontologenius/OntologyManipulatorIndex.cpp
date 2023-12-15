@@ -14,10 +14,7 @@ OntologyManipulatorIndex::OntologyManipulatorIndex(const std::string& name) : na
                                                                     sparql(name),
                                                                     conversion(name)
 {
-    std::string service_name = (name_ == "") ? "ontologenius/conversion" : "ontologenius/conversion/" + name_;
-
-    // do we really need to wait for this? By the way `compat::ros::wait_for_service` doesn't work on ROS2 yet
-    ontologenius::compat::ros::wait_for_service(service_name);
+    conversion.client_.wait();
 }
 
 OntologyManipulatorIndex::OntologyManipulatorIndex(const OntologyManipulatorIndex& other): name_(other.name_),
@@ -31,8 +28,7 @@ OntologyManipulatorIndex::OntologyManipulatorIndex(const OntologyManipulatorInde
                                                                       sparql(other.name_),
                                                                       conversion(other.name_)
 {
-    std::string service_name = (name_ == "") ? "ontologenius/conversion" : "ontologenius/conversion/" + name_;
-    ontologenius::compat::ros::wait_for_service(service_name); // same here
+    conversion.client_.wait();
 }
 
 OntologyManipulatorIndex::OntologyManipulatorIndex(OntologyManipulatorIndex&& other): name_(other.name_),
@@ -46,8 +42,7 @@ OntologyManipulatorIndex::OntologyManipulatorIndex(OntologyManipulatorIndex&& ot
                                                                       sparql(other.name_),
                                                                       conversion(other.name_)
 {
-    std::string service_name = (name_ == "") ? "ontologenius/conversion" : "ontologenius/conversion/" + name_;
-    ontologenius::compat::ros::wait_for_service(service_name); // same here
+    conversion.client_.wait();
 }
 
 } // namespace onto

@@ -59,7 +59,7 @@ public:
 
       auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusIndexService>();
 
-      using ResultTy = typename decltype(client_)::Result;
+      using ResultTy = typename decltype(client_)::Status;
 
       switch (client_.call(req, res)) {
           case ResultTy::SUCCESSFUL_WITH_RETRIES:
@@ -93,7 +93,7 @@ public:
 
       auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusIndexService>();
 
-      using ResultTy = typename decltype(client_)::Result;
+      using ResultTy = typename decltype(client_)::Status;
 
       switch (client_.call(req, res)) {
           case ResultTy::SUCCESSFUL_WITH_RETRIES:

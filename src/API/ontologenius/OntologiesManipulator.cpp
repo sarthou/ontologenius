@@ -18,7 +18,7 @@ namespace onto {
 
     bool OntologiesManipulator::waitInit(int32_t timeout)
     {
-        return ontologenius::compat::ros::wait_for_service("ontologenius/manage", timeout);
+        return client_.wait();
     }
 
     OntologyManipulator* OntologiesManipulator::operator[](const std::string& name)
@@ -55,7 +55,6 @@ namespace onto {
                 return false;
             else
             {
-                ontologenius::compat::ros::wait_for_service("ontologenius/sparql/" + name);
                 manipulators_[name] = new OntologyManipulator(name);
                 manipulators_index_[name] = new OntologyManipulatorIndex(name);
                 return true;

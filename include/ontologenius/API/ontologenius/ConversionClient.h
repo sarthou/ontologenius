@@ -8,8 +8,13 @@
 
 namespace onto {
 
+    class OntologyManipulator;
+    class OntologyManipulatorIndex;
+
 class ConversionClient
 {
+    friend OntologyManipulator;
+    friend OntologyManipulatorIndex;
 public:
   /// @brief Constructs a ROS conversion client.
   /// @param name is the name of the ontologenius service
@@ -40,7 +45,6 @@ public:
   int64_t dataPropertiesId2Index(const std::string& id);
   int64_t objectPropertiesId2Index(const std::string& id);
   int64_t literalsId2Index(const std::string& id);
-
 private:
   std::string name_;
   bool verbose_;

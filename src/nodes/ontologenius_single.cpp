@@ -27,6 +27,8 @@ int main(int argc, char** argv)
 
     ontologenius::compat::ros::Node::init(argc, argv, "ontologenius_single");
 
+    std::thread th([]() { ontologenius::compat::ros::Node::get().spin(); });
+
     {
         ontologenius::RosInterface interface;
 
@@ -50,6 +52,8 @@ int main(int argc, char** argv)
     }
 
     ontologenius::compat::ros::Node::shutdown();
+
+    th.join();
 
     return 0;
 }

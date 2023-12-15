@@ -8,6 +8,8 @@
 #include <mutex>
 #include <thread>
 
+#include <fmt/core.h>
+
 #include "ontologenius/compat/ros.h"
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"

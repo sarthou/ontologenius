@@ -52,6 +52,8 @@ namespace onto {
         /// @return Returns a list of string. If the service call fails, the first element of the returned vector is "ERR:SERVICE_FAIL".
         inline std::vector<std::string> call(const std::string& action, const std::string& param, int16_t& code = ignore_)
         {
+            fmt::print("call action='{}' param='{}'\n", action, param);
+
             cpt++;
 
             auto req = ontologenius::compat::make_request<ontologenius::compat::OntologeniusService>();
@@ -60,10 +62,12 @@ namespace onto {
 
             auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusService>();
 
-            using ResultTy = typename decltype(client_)::Result;
+            using ResultTy = typename decltype(client_)::Status;
 
             switch (client_.call(req, res)) {
                 case ResultTy::SUCCESSFUL_WITH_RETRIES:
+                {
+                }
                 case ResultTy::SUCCESSFUL:
                 {
                     code = res->code;

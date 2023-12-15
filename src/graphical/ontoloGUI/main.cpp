@@ -49,10 +49,10 @@ int main(int argc, char *argv[])
     signal(SIGINT, SIG_DFL);
     auto a_exec = a.exec();
 
+    ontologenius::compat::ros::Node::shutdown();
+
     run = false;
     spin_thread.join();
-
-    ontologenius::compat::ros::Node::shutdown();
 
     return a_exec;
 }

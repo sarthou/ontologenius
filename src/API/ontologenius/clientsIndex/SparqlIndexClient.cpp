@@ -10,7 +10,7 @@ namespace onto {
         ontologenius::compat::ResponseType<ontologenius::compat::OntologeniusSparqlIndexService> res;
 
 
-        using ResultTy = typename decltype(client_)::Result;
+        using ResultTy = typename decltype(client_)::Status;
 
         switch (client_.call(req, res)) {
             case ResultTy::SUCCESSFUL_WITH_RETRIES:

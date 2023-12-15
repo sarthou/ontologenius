@@ -154,13 +154,6 @@ namespace ontologenius {
         else
             Display::info("Ontologenius is ready");
 
-        /*while (ros::ok() && isRunning())
-        {
-            callback_queue_.callAvailable(ros::WallDuration(0.1));
-        }*/
-
-        compat::ros::Node::get().spin();
-
         periodic_reasoning_thread.join();
         feed_thread.join();
     }
@@ -221,6 +214,8 @@ namespace ontologenius {
     bool RosInterface::actionsHandle(const compat::ros::ServiceWrapper<compat::OntologeniusService::Request>& req,
                                      const compat::ros::ServiceWrapper<compat::OntologeniusService::Response>& res)
     {
+        fmt::print("Received {}: {}\n", req->action, req->param);
+
         res->code = 0;
 
         removeUselessSpace(req->action);

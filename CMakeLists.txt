@@ -117,6 +117,25 @@ target_include_directories(ontologenius_lib PUBLIC include/)
 
 # --------------------------------------------------------------
 
+add_library(ontologenius_reasoner_plugin
+        src/core/reasoner/plugins/ReasonerNone.cpp
+        src/core/reasoner/plugins/ReasonerInverseOf.cpp
+        src/core/reasoner/plugins/ReasonerSymmetric.cpp
+        src/core/reasoner/plugins/ReasonerChain.cpp
+        src/core/reasoner/plugins/ReasonerDictionary.cpp
+        src/core/reasoner/plugins/ReasonerGeneralize.cpp
+        src/core/reasoner/plugins/ReasonerRangeDomain.cpp
+)
+target_include_directories(ontologenius_reasoner_plugin PUBLIC
+        ${pluginlib_INCLUDE_DIRS}
+        include/)
+target_link_libraries(ontologenius_reasoner_plugin
+        PUBLIC
+        ontologenius_core_lib ${pluginlib_LIBRARIES}
+)
+
+# --------------------------------------------------------------
+
 add_library(ontologenius_ontoGraphs_lib
         "src/core/ontoGraphs/Branchs/ClassBranch.cpp"
         "src/core/ontoGraphs/Branchs/ObjectPropertyBranch.cpp"
@@ -182,9 +201,6 @@ target_link_libraries(ontologenius_core_lib PUBLIC
 
 # --------------------------------------------------------------
 
-
-
-
 add_executable(ontologenius_single
         "src/nodes/ontologenius_single.cpp")
 
@@ -201,10 +217,25 @@ target_include_directories(ontologenius_single PUBLIC include/)
 
 install(TARGETS ontologenius_single DESTINATION lib/${PROJECT_NAME})
 
+# --------------------------------------------------------------
 
+add_executable(ontologenius_multi
+        "src/nodes/ontologenius_multi.cpp")
 
+add_ros_deps(ontologenius_multi)
+target_link_libraries(ontologenius_multi
+        ontologenius_compat
+        ontologenius_interface
+        ontologenius_lib
+        ontologenius_ontoGraphs_lib
+        ontologenius_operators
+        ontologenius_core_lib
+        fmt)
+target_include_directories(ontologenius_multi PUBLIC include/)
 
+install(TARGETS ontologenius_multi DESTINATION lib/${PROJECT_NAME})
 
+# --------------------------------------------------------------
 
 ##############################################################################
 # Qt Environment
