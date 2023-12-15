@@ -257,7 +257,7 @@ void ontoloGUI::init()
   }
   else
   {
-    onto_ == nullptr;
+    onto_ = nullptr;
     multi_usage_ = true;
   }
 }
@@ -471,6 +471,8 @@ void ontoloGUI::closeOntologySlot()
 
 void ontoloGUI::nameEditingFinishedSlot()
 {
+  if(updateOntoPtr() == false)
+    return;
   loadReasoners();
 }
 
@@ -884,6 +886,15 @@ bool ontoloGUI::updateOntoPtr()
   onto_ = ontos_.get(instance_name);
   if(onto_ == nullptr)
   {
+    auto intances_name = ontos_.list();
+    if(std::find(intances_name.begin(), intances_name.end(), instance_name) != intances_name.end())
+    {
+      ontos_.add(instance_name);
+      onto_ = ontos_.get(instance_name);
+      if(onto_ != nullptr)
+        return true;
+    }
+
     if(instance_name != "")
       displayErrorInfo("Ontology " + instance_name + " does not exist");
     return false;
