@@ -332,8 +332,12 @@ namespace ontologenius::compat
 
             bool wait() {
                 using namespace std::chrono_literals;
+
+                auto result = handle_->wait_for_service(3s);
+
+                fmt::print("[err] Called wait on {} and got {}\n", cached_service_name_, result);
                 
-                return handle_->wait_for_service(5s);
+                return result;
             }
         private:
 #if ROS_VERSION == 1

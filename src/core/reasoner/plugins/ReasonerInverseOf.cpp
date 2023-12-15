@@ -88,6 +88,6 @@ std::string ReasonerInverseOf::getDesciption()
   return "This reasoner creates the inverse properties for each individual.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ReasonerInverseOf, ReasonerInterface)
+PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerInverseOf, ontologenius::ReasonerInterface)
 
 } // namespace ontologenius

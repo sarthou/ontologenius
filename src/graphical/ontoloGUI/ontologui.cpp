@@ -8,8 +8,8 @@
 #include <regex>
 
 ontoloGUI::ontoloGUI(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::ontoloGUI)
+        QMainWindow(parent),
+        ui(new Ui::ontoloGUI)
 {
     ui->setupUi(this);
 
@@ -249,645 +249,649 @@ ontoloGUI::~ontoloGUI()
 
 void ontoloGUI::init()
 {
-  if(ontos_.waitInit(1000) == false)
-  {
-    onto_ = new onto::OntologyManipulator();
-    onto_->feeder.registerNotificationCallback([this](auto msg){ this->feederCallback(msg); });
-    multi_usage_ = false;
-  }
-  else
-  {
-    onto_ == nullptr;
-    multi_usage_ = true;
-  }
+    if(ontos_.waitInit(1000) == false)
+    {
+        onto_ = new onto::OntologyManipulator();
+        onto_->feeder.registerNotificationCallback([this](auto msg){ this->feederCallback(msg); });
+        multi_usage_ = false;
+        fmt::print("We're in single mode\n");
+    }
+    else
+    {
+        onto_ = nullptr;
+        multi_usage_ = true;
+        fmt::print("We're in multi mode\n");
+    }
 }
 
 void ontoloGUI::wait()
 {
-  QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-                  "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-                  "p, li { white-space: pre-wrap; }"
-                  "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-                  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Wainting for </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">ontologenius</span></p></body></html>";
-  ui->InfoArea->setHtml(html);
+    QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+                   "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+                   "p, li { white-space: pre-wrap; }"
+                   "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+                   "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Wainting for </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">ontologenius</span></p></body></html>";
+    ui->InfoArea->setHtml(html);
 }
 
 void ontoloGUI::start()
 {
-  QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-                  "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-                  "p, li { white-space: pre-wrap; }"
-                  "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-                  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600; color:#4e9a06;\">OntoloGenius</span><span style=\" font-size:12pt; color:#4e9a06;\"> detected</span></p></body></html>";
-  ui->InfoArea->setHtml(html);
+    QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+                   "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+                   "p, li { white-space: pre-wrap; }"
+                   "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+                   "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600; color:#4e9a06;\">OntoloGenius</span><span style=\" font-size:12pt; color:#4e9a06;\"> detected</span></p></body></html>";
+    ui->InfoArea->setHtml(html);
 }
 
 void ontoloGUI::ClasshoverEnterSlot()
 {
-  ui->ClassDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
+    ui->ClassDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
 void ontoloGUI::ClasshoverLeaveSlot()
 {
-  ui->ClassDescription->setText("");
+    ui->ClassDescription->setText("");
 }
 
 void ontoloGUI::objectPropertyhoverEnterSlot()
 {
-  ui->ObjectPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
+    ui->ObjectPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
 void ontoloGUI::objectPropertyhoverLeaveSlot()
 {
-  ui->ObjectPropertyDescription->setText("");
+    ui->ObjectPropertyDescription->setText("");
 }
 
 void ontoloGUI::dataPropertyhoverEnterSlot()
 {
-  ui->DataPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
+    ui->DataPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
 void ontoloGUI::dataPropertyhoverLeaveSlot()
 {
-  ui->DataPropertyDescription->setText("");
+    ui->DataPropertyDescription->setText("");
 }
 
 void ontoloGUI::IndividualCheckBoxhoverEnterSlot()
 {
-  ui->IndividualDescription->setText(dynamic_cast<QCheckBoxExtended*>(sender())->whatsThis());
+    ui->IndividualDescription->setText(dynamic_cast<QCheckBoxExtended*>(sender())->whatsThis());
 }
 
 void ontoloGUI::IndividualhoverEnterSlot()
 {
-  ui->IndividualDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
+    ui->IndividualDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
 void ontoloGUI::IndividualhoverLeaveSlot()
 {
-  ui->IndividualDescription->setText("");
+    ui->IndividualDescription->setText("");
 }
 
 void ontoloGUI::classClickedSlot()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
-  {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
-    return;
-  }
+    if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+    {
+        displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+        return;
+    }
 
-  std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
-  std::string param = ui->classParameter->text().toStdString();
-  if(updateOntoPtr() == false)
-    return;
+    std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
+    std::string param = ui->classParameter->text().toStdString();
+    if(updateOntoPtr() == false)
+        return;
 
-  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->classParameter->text();
-  ui->ClassDescription->setText(text);
+    QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->classParameter->text();
+    ui->ClassDescription->setText(text);
 
-  auto res_vect = onto_->classes.call(action, param);
-  int err = onto_->classes.getErrorCode();
-  if(err == -1)
-    displayErrorInfo("client call failed");
-  else
-  {
-    start();
-    std::string res_str = vector2string(res_vect);
-    ui->ResultArea->setText(QString::fromStdString(res_str));
-    if(err == 3)
-      displayUnClosed();
-  }
+    auto res_vect = onto_->classes.call(action, param);
+    int err = onto_->classes.getErrorCode();
+    if(err == -1)
+        displayErrorInfo("client call failed");
+    else
+    {
+        start();
+        std::string res_str = vector2string(res_vect);
+        ui->ResultArea->setText(QString::fromStdString(res_str));
+        if(err == 3)
+            displayUnClosed();
+    }
 }
 
 void ontoloGUI::objectPropertyClickedSlot()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
-  {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
-    return;
-  }
+    if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+    {
+        displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+        return;
+    }
 
-  std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
-  std::string param = ui->objectPropertyParameter->text().toStdString();
-  if(updateOntoPtr() == false)
-    return;
+    std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
+    std::string param = ui->objectPropertyParameter->text().toStdString();
+    if(updateOntoPtr() == false)
+        return;
 
-  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->objectPropertyParameter->text();
-  ui->ObjectPropertyDescription->setText(text);
+    QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->objectPropertyParameter->text();
+    ui->ObjectPropertyDescription->setText(text);
 
-  auto res_vect = onto_->objectProperties.call(action, param);
-  int err = onto_->objectProperties.getErrorCode();
-  if(err == -1)
-    displayErrorInfo("client call failed");
-  else
-  {
-    start();
-    std::string res_str = vector2string(res_vect);
-    ui->ResultArea->setText(QString::fromStdString(res_str));
-    if(err == 3)
-      displayUnClosed();
-  }
+    auto res_vect = onto_->objectProperties.call(action, param);
+    int err = onto_->objectProperties.getErrorCode();
+    if(err == -1)
+        displayErrorInfo("client call failed");
+    else
+    {
+        start();
+        std::string res_str = vector2string(res_vect);
+        ui->ResultArea->setText(QString::fromStdString(res_str));
+        if(err == 3)
+            displayUnClosed();
+    }
 }
 
 void ontoloGUI::dataPropertyClickedSlot()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
-  {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
-    return;
-  }
+    if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+    {
+        displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+        return;
+    }
 
-  std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
-  std::string param = ui->dataPropertyParameter->text().toStdString();
-  if(updateOntoPtr() == false)
-    return;
+    std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
+    std::string param = ui->dataPropertyParameter->text().toStdString();
+    if(updateOntoPtr() == false)
+        return;
 
-  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->dataPropertyParameter->text();
-  ui->DataPropertyDescription->setText(text);
+    QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->dataPropertyParameter->text();
+    ui->DataPropertyDescription->setText(text);
 
-  auto res_vect = onto_->dataProperties.call(action, param);
-  int err = onto_->dataProperties.getErrorCode();
-  if(err == -1)
-    displayErrorInfo("client call failed");
-  else
-  {
-    start();
-    std::string res_str = vector2string(res_vect);
-    ui->ResultArea->setText(QString::fromStdString(res_str));
-    if(err == 3)
-      displayUnClosed();
-  }
+    auto res_vect = onto_->dataProperties.call(action, param);
+    int err = onto_->dataProperties.getErrorCode();
+    if(err == -1)
+        displayErrorInfo("client call failed");
+    else
+    {
+        start();
+        std::string res_str = vector2string(res_vect);
+        ui->ResultArea->setText(QString::fromStdString(res_str));
+        if(err == 3)
+            displayUnClosed();
+    }
 }
 
 void ontoloGUI::individualClickedSlot()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
-  {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
-    return;
-  }
+    if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+    {
+        displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+        return;
+    }
 
-  std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
-  std::string param = ui->individualParameter->text().toStdString();
-  if(updateOntoPtr() == false)
-    return;
-  
-  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->individualParameter->text();
-  ui->IndividualDescription->setText(text);
+    std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
+    std::string param = ui->individualParameter->text().toStdString();
+    if(updateOntoPtr() == false)
+        return;
 
-  auto res_vect = onto_->individuals.call(action, param);
-  int err = onto_->individuals.getErrorCode();
-  if(err == -1)
-    displayErrorInfo("client call failed");
-  else
-  {
-    start();
-    std::string res_str = vector2string(res_vect);
-    ui->ResultArea->setText(QString::fromStdString(res_str));
-    if(err == 3)
-      displayUnClosed();
-  }
+    QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->individualParameter->text();
+    ui->IndividualDescription->setText(text);
+
+    auto res_vect = onto_->individuals.call(action, param);
+    int err = onto_->individuals.getErrorCode();
+    if(err == -1)
+        displayErrorInfo("client call failed");
+    else
+    {
+        start();
+        std::string res_str = vector2string(res_vect);
+        ui->ResultArea->setText(QString::fromStdString(res_str));
+        if(err == 3)
+            displayUnClosed();
+    }
 }
 
 void ontoloGUI::closeOntologySlot()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
-  {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
-    return;
-  }
+    if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+    {
+        displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+        return;
+    }
 
-  if(updateOntoPtr() == false)
-    return;
+    if(updateOntoPtr() == false)
+        return;
 
-  onto_->close();
-  int err = onto_->actions.getErrorCode();
-  if(err == -1)
-    displayErrorInfo("client call failed");
-  else
-  {
-    ui->ResultArea->setText("");
-    start();
-  }
+    onto_->close();
+    int err = onto_->actions.getErrorCode();
+    if(err == -1)
+        displayErrorInfo("client call failed");
+    else
+    {
+        ui->ResultArea->setText("");
+        start();
+    }
 }
 
 void ontoloGUI::nameEditingFinishedSlot()
 {
-  loadReasoners();
+    loadReasoners();
 }
 
 void ontoloGUI::ReasonerClickedSlot(int)
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
-  {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
-    return;
-  }
+    if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+    {
+        displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+        return;
+    }
 
-  std::string param = dynamic_cast<QCheckBoxExtended*>(sender())->text().toStdString();
-  if(updateOntoPtr() == false)
-    return;
+    std::string param = dynamic_cast<QCheckBoxExtended*>(sender())->text().toStdString();
+    if(updateOntoPtr() == false)
+        return;
 
-  if(dynamic_cast<QCheckBoxExtended*>(sender())->isChecked())
-    onto_->reasoners.activate(param);
-  else
-    onto_->reasoners.deactivate(param);
+    if(dynamic_cast<QCheckBoxExtended*>(sender())->isChecked())
+        onto_->reasoners.activate(param);
+    else
+        onto_->reasoners.deactivate(param);
 
-  int err = onto_->reasoners.getErrorCode();
-  if(err == -1)
-    displayErrorInfo("client call failed");
-  else
-  {
-    start();
-    ui->ResultArea->setText("");
-  }
+    int err = onto_->reasoners.getErrorCode();
+    if(err == -1)
+        displayErrorInfo("client call failed");
+    else
+    {
+        start();
+        ui->ResultArea->setText("");
+    }
 }
 
 void ontoloGUI::ReasonerhoverEnterSlot()
 {
-  size_t index = getReasonerIndex(dynamic_cast<QCheckBoxExtended*>(sender()));
-  ui->ReasonerDescription->setText(QString::fromStdString(reasoners_description_[index]));
+    size_t index = getReasonerIndex(dynamic_cast<QCheckBoxExtended*>(sender()));
+    ui->ReasonerDescription->setText(QString::fromStdString(reasoners_description_[index]));
 }
 
 void ontoloGUI::ReasonerhoverLeaveSlot()
 {
-  ui->ReasonerDescription->setText("");
+    ui->ReasonerDescription->setText("");
 }
 
 void ontoloGUI::displayUnClosed()
 {
-  QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-                  "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-                  "p, li { white-space: pre-wrap; }"
-                  "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-                  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Ontology is not </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">closed</span></p></body></html>";
-  ui->InfoArea->setHtml(html);
+    QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+                   "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+                   "p, li { white-space: pre-wrap; }"
+                   "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+                   "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Ontology is not </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">closed</span></p></body></html>";
+    ui->InfoArea->setHtml(html);
 }
 
 void ontoloGUI::loadReasoners()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
-  {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
-    return;
-  }
+    if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+    {
+        displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+        return;
+    }
 
-  QLayoutItem *item;
-  while ((item = ui->ReasonerListLayout->takeAt(1)) != nullptr)
-  {
-    delete item->widget();
-    delete item;
-  }
+    QLayoutItem *item;
+    while ((item = ui->ReasonerListLayout->takeAt(1)) != nullptr)
+    {
+        delete item->widget();
+        delete item;
+    }
 
-  if(updateOntoPtr() == false)
-    return;
+    if(updateOntoPtr() == false)
+        return;
 
-  auto res_vect = onto_->reasoners.list();
-  int err = onto_->reasoners.getErrorCode();
+    auto res_vect = onto_->reasoners.list();
+    int err = onto_->reasoners.getErrorCode();
 
-  if(err == -1)
-    displayErrorInfo("client call failed");
-  else
-  {
-    start();
-    reasoners_names_ = res_vect;
-    ui->ResultArea->setText("");
+    if(err == -1)
+        displayErrorInfo("client call failed");
+    else
+    {
+        start();
+        reasoners_names_ = res_vect;
+        ui->ResultArea->setText("");
 
-    constructReasonersCheckBoxs();
-    updateReasonersCheckBoxs();
-  }
+        constructReasonersCheckBoxs();
+        updateReasonersCheckBoxs();
+    }
 }
 
 void ontoloGUI::constructReasonersCheckBoxs()
 {
-  for(const auto& reasoners_name : reasoners_names_)
-  {
-    reasoners_description_.push_back(getReasonerDescription(reasoners_name));
-    auto box = new QCheckBoxExtended(QString::fromStdString(reasoners_name), this);
-    ui->ReasonerListLayout->addWidget(box);
-    QObject::connect(box, SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
-    QObject::connect(box, SIGNAL(hoverEnter()),this, SLOT(ReasonerhoverEnterSlot()));
-    QObject::connect(box, SIGNAL(hoverLeave()),this, SLOT(ReasonerhoverLeaveSlot()));
-  }
+    for(const auto& reasoners_name : reasoners_names_)
+    {
+        reasoners_description_.push_back(getReasonerDescription(reasoners_name));
+        auto box = new QCheckBoxExtended(QString::fromStdString(reasoners_name), this);
+        ui->ReasonerListLayout->addWidget(box);
+        QObject::connect(box, SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
+        QObject::connect(box, SIGNAL(hoverEnter()),this, SLOT(ReasonerhoverEnterSlot()));
+        QObject::connect(box, SIGNAL(hoverLeave()),this, SLOT(ReasonerhoverLeaveSlot()));
+    }
 }
 
 void ontoloGUI::updateReasonersCheckBoxs()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
-  {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
-    return;
-  }
-
-  if(updateOntoPtr() == false)
-    return;
-
-  auto active_reasoners = onto_->reasoners.activeList();
-  int err = onto_->reasoners.getErrorCode();
-
-  if(err == -1)
-    displayErrorInfo("client call failed");
-  else
-  {
-    for(int i = 1; i < ui->ReasonerListLayout->count(); ++i)
+    if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
     {
-      QWidget* widget = ui->ReasonerListLayout->itemAt(i)->widget();
-      if(widget != nullptr)
-      {
-        Qt::CheckState checked = Qt::Unchecked;
-        for(const auto& active_reasoner : active_reasoners)
-        {
-          if(dynamic_cast<QCheckBoxExtended*>(widget)->text().toStdString() == active_reasoner)
-            checked = Qt::Checked;
-        }
-        QObject::disconnect(dynamic_cast<QCheckBoxExtended*>(widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
-        dynamic_cast<QCheckBoxExtended*>(widget)->setCheckState(checked);
-        QObject::connect(dynamic_cast<QCheckBoxExtended*>(widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
-      }
+        displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+        return;
     }
-  }
+
+    if(updateOntoPtr() == false)
+        return;
+
+    auto active_reasoners = onto_->reasoners.activeList();
+    int err = onto_->reasoners.getErrorCode();
+
+    if(err == -1)
+        displayErrorInfo("client call failed");
+    else
+    {
+        for(int i = 1; i < ui->ReasonerListLayout->count(); ++i)
+        {
+            QWidget* widget = ui->ReasonerListLayout->itemAt(i)->widget();
+            if(widget != nullptr)
+            {
+                Qt::CheckState checked = Qt::Unchecked;
+                for(const auto& active_reasoner : active_reasoners)
+                {
+                    if(dynamic_cast<QCheckBoxExtended*>(widget)->text().toStdString() == active_reasoner)
+                        checked = Qt::Checked;
+                }
+                QObject::disconnect(dynamic_cast<QCheckBoxExtended*>(widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
+                dynamic_cast<QCheckBoxExtended*>(widget)->setCheckState(checked);
+                QObject::connect(dynamic_cast<QCheckBoxExtended*>(widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
+            }
+        }
+    }
 }
 
 size_t ontoloGUI::getReasonerIndex(QCheckBoxExtended* box)
 {
-  size_t index =0;
-  for(size_t i = 0; i < reasoners_names_.size(); i++)
-    if(reasoners_names_[i] == box->text().toStdString())
-    {
-      index = i;
-      break;
-    }
-  return index;
+    size_t index =0;
+    for(size_t i = 0; i < reasoners_names_.size(); i++)
+        if(reasoners_names_[i] == box->text().toStdString())
+        {
+            index = i;
+            break;
+        }
+    return index;
 }
 
 std::string ontoloGUI::getReasonerDescription(std::string box)
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
-  {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+    {
+        displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+        return "";
+    }
+
+    if(updateOntoPtr() == false)
+        return "";
+
+    auto description = onto_->reasoners.getDescription(box);
+    int err = onto_->reasoners.getErrorCode();
+
+    if(err == -1)
+        displayErrorInfo("client call failed");
+    else
+        return description;
+
     return "";
-  }
-
-  if(updateOntoPtr() == false)
-    return "";
-
-  auto description = onto_->reasoners.getDescription(box);
-  int err = onto_->reasoners.getErrorCode();
-
-  if(err == -1)
-    displayErrorInfo("client call failed");
-  else
-    return description;
-
-  return "";
 }
 
 void ontoloGUI::displayErrorInfo(const std::string& text)
 {
-  std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-                  "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-                  "p, li { white-space: pre-wrap; }"
-                  "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-                  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">" + text + "</span></p></body></html>";
-  ui->InfoArea->setHtml(QString::fromStdString(html));
+    std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+                       "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+                       "p, li { white-space: pre-wrap; }"
+                       "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+                       "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">" + text + "</span></p></body></html>";
+    ui->InfoArea->setHtml(QString::fromStdString(html));
 }
 
 void ontoloGUI::displayOntologiesList()
 {
-  auto res_vect = ontos_.list();
-  int err = ontos_.getErrorCode();
-  std::string html;
-  if(err == -1)
-  {
-    html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-            "p, li { white-space: pre-wrap; }"
-            "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-            "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">ontologenius is not running in multi mode.</span></p></body></html>";
-  }
-  else
-  {
-    std::string text = vector2html(res_vect);
-    html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-            "p, li { white-space: pre-wrap; }"
-            "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-            "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + text + "</span></p></body></html>";
-  }
-  ui->OntologiesList->setHtml(QString::fromStdString(html));
+    if(multi_usage_ == false)
+        return;
+    auto res_vect = ontos_.list();
+    int err = ontos_.getErrorCode();
+    std::string html;
+    if(err == -1)
+    {
+        html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+               "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+               "p, li { white-space: pre-wrap; }"
+               "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+               "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">ontologenius is not running in multi mode.</span></p></body></html>";
+    }
+    else
+    {
+        std::string text = vector2html(res_vect);
+        html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+               "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+               "p, li { white-space: pre-wrap; }"
+               "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+               "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + text + "</span></p></body></html>";
+    }
+    ui->OntologiesList->setHtml(QString::fromStdString(html));
 }
 
 void ontoloGUI::displayOntologiesListSlot()
 {
-  displayOntologiesList();
+    displayOntologiesList();
 }
 
 std::string ontoloGUI::vector2string(const std::vector<std::string>& vect)
 {
-  std::string res;
-  for(const auto& v : vect)
-    res += v + "\n";
-  return res;
+    std::string res;
+    for(const auto& v : vect)
+        res += v + "\n";
+    return res;
 }
 
 std::string ontoloGUI::vector2html(const std::vector<std::string>& vect)
 {
-  std::string res;
-  for(const auto& v : vect)
-    res += " - " + v + "<br>";
-  return res;
+    std::string res;
+    for(const auto& v : vect)
+        res += " - " + v + "<br>";
+    return res;
 }
 
 void ontoloGUI::currentTabChangedSlot(int index)
 {
-  if(index == 4)
-    loadReasoners();
-  else if(index == 5)
-    displayOntologiesList();
+    if(index == 4)
+        loadReasoners();
+    else if(index == 5)
+        displayOntologiesList();
 }
 
 void ontoloGUI::addOntologySlot()
 {
-  std::string param = ui->OntologyNameAddDel->text().toStdString();
-  std::string onto_name = param;
+    std::string param = ui->OntologyNameAddDel->text().toStdString();
+    std::string onto_name = param;
 
-  std::regex base_regex("(.*)=(.*)");
-  std::smatch base_match;
-  if (std::regex_match(param, base_match, base_regex))
-  {
-    if (base_match.size() == 3)
+    std::regex base_regex("(.*)=(.*)");
+    std::smatch base_match;
+    if (std::regex_match(param, base_match, base_regex))
     {
-      ontos_.copy(base_match[1].str(), base_match[2].str());
-      onto_name = base_match[1].str();
+        if (base_match.size() == 3)
+        {
+            ontos_.copy(base_match[1].str(), base_match[2].str());
+            onto_name = base_match[1].str();
+        }
     }
-  }
-  else
-    ontos_.add(param);
+    else
+        ontos_.add(param);
 
-  int err = ontos_.getErrorCode();
-  if(err == -1)
-    displayErrorInfo("ontologenius/manage client call failed");
-  else
-  {
-    start();
-    if(err == 4)
-      ui->ResultArea->setText(QString::fromStdString(param + " already created"));
-    else if(err == 1)
-      ui->ResultArea->setText(QString::fromStdString("fail to stop " + param + " : please retry"));
+    int err = ontos_.getErrorCode();
+    if(err == -1)
+        displayErrorInfo("ontologenius/manage client call failed");
     else
     {
-      ui->ResultArea->setText(QString::fromStdString(""));
-      ontos_.get(onto_name)->feeder.registerNotificationCallback([this](auto msg){ this->feederCallback(msg); });
+        start();
+        if(err == 4)
+            ui->ResultArea->setText(QString::fromStdString(param + " already created"));
+        else if(err == 1)
+            ui->ResultArea->setText(QString::fromStdString("fail to stop " + param + " : please retry"));
+        else
+        {
+            ui->ResultArea->setText(QString::fromStdString(""));
+            ontos_.get(onto_name)->feeder.registerNotificationCallback([this](auto msg){ this->feederCallback(msg); });
+        }
+
+        displayOntologiesList();
     }
-      
-    displayOntologiesList();
-  }
 }
 
 void ontoloGUI::deleteOntologySlot()
 {
-  std::string param = ui->OntologyNameAddDel->text().toStdString();
-  ontos_.del(param);
-  int err = ontos_.getErrorCode();
+    std::string param = ui->OntologyNameAddDel->text().toStdString();
+    ontos_.del(param);
+    int err = ontos_.getErrorCode();
 
-  if(err == -1)
-    displayErrorInfo("ontologenius/manage client call failed");
-  else
-  {
-    start();
-    if(err == 4)
-      ui->ResultArea->setText(QString::fromStdString(param + " don't exist"));
+    if(err == -1)
+        displayErrorInfo("ontologenius/manage client call failed");
     else
-      ui->ResultArea->setText(QString::fromStdString(""));
-    displayOntologiesList();
-  }
+    {
+        start();
+        if(err == 4)
+            ui->ResultArea->setText(QString::fromStdString(param + " don't exist"));
+        else
+            ui->ResultArea->setText(QString::fromStdString(""));
+        displayOntologiesList();
+    }
 }
 
 void ontoloGUI::saveOntologySlot()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
-  {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
-    return;
-  }
+    if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+    {
+        displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+        return;
+    }
 
-  if(updateOntoPtr() == false)
-    return;
+    if(updateOntoPtr() == false)
+        return;
 
-  std::string param = ui->OntologSavePath->text().toStdString();
-  onto_->actions.save(param);
-  int err = onto_->actions.getErrorCode();
+    std::string param = ui->OntologSavePath->text().toStdString();
+    onto_->actions.save(param);
+    int err = onto_->actions.getErrorCode();
 
-  if(err == -1)
-    displayErrorInfo("client call failed");
-  else
-  {
-    if(err == 4)
-      ui->ResultArea->setText(QString::fromStdString(param + " don't exist"));
+    if(err == -1)
+        displayErrorInfo("client call failed");
     else
-      ui->ResultArea->setText(QString::fromStdString(""));
-  }
+    {
+        if(err == 4)
+            ui->ResultArea->setText(QString::fromStdString(param + " don't exist"));
+        else
+            ui->ResultArea->setText(QString::fromStdString(""));
+    }
 }
 
 void ontoloGUI::differenceOntologySlot()
 {
-  std::string param1 = ui->OntologyDiffName1->text().toStdString();
-  std::string param2 = ui->OntologyDiffName2->text().toStdString();
-  std::string concept = ui->OntologyDiffConcept->text().toStdString();
+    std::string param1 = ui->OntologyDiffName1->text().toStdString();
+    std::string param2 = ui->OntologyDiffName2->text().toStdString();
+    std::string concept = ui->OntologyDiffConcept->text().toStdString();
 
-  auto diff = ontos_.getDifference(param1, param2, concept);
-  int err = ontos_.getErrorCode();
+    auto diff = ontos_.getDifference(param1, param2, concept);
+    int err = ontos_.getErrorCode();
 
-  if(err == -1)
-    displayErrorInfo("ontologenius/manage client call failed");
-  else
-  {
-    start();
-    if(err == 4)
-      ui->ResultArea->setText("no effect");
-    else if(err == 0)
-    {
-      std::string res = vector2string(diff);
-      ui->ResultArea->setText(QString::fromStdString(res));
-    }
+    if(err == -1)
+        displayErrorInfo("ontologenius/manage client call failed");
     else
-      ui->ResultArea->setText(QString::fromStdString(std::to_string(err)));
-    displayOntologiesList();
-  }
+    {
+        start();
+        if(err == 4)
+            ui->ResultArea->setText("no effect");
+        else if(err == 0)
+        {
+            std::string res = vector2string(diff);
+            ui->ResultArea->setText(QString::fromStdString(res));
+        }
+        else
+            ui->ResultArea->setText(QString::fromStdString(std::to_string(err)));
+        displayOntologiesList();
+    }
 }
 
 
 void ontoloGUI::OntologyNameAddDelChangedSlot(const QString& text)
 {
-  if(ui->OntologyName->text() != text)
-  {
-    size_t equal_pose = text.toStdString().find("=");
-    if(equal_pose != std::string::npos)
-      ui->OntologyName->setText(text.mid(0, equal_pose));
-    else
-      ui->OntologyName->setText(text);
-  }
+    if(ui->OntologyName->text() != text)
+    {
+        size_t equal_pose = text.toStdString().find("=");
+        if(equal_pose != std::string::npos)
+            ui->OntologyName->setText(text.mid(0, equal_pose));
+        else
+            ui->OntologyName->setText(text);
+    }
 }
 
 void ontoloGUI::OntologyNameChangedSlot(const QString& text)
 {
-  if(ui->OntologyNameAddDel->text() != text)
-    ui->OntologyNameAddDel->setText(text);
+    if(ui->OntologyNameAddDel->text() != text)
+        ui->OntologyNameAddDel->setText(text);
 }
 
 void ontoloGUI::feederCallback(const std::string& msg)
 {
-  feeder_notifications_ += "<p>-" + msg + "</p>";
+    feeder_notifications_ += "<p>-" + msg + "</p>";
 
-  std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-          "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-          "p, li { whicommitte-space: pre-wrap; }"
-          "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-          "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + feeder_notifications_ + "<a name=\"scrollToMe\" href=\"#scroll\"></a> <br></span></p></body></html>";
+    std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+                       "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+                       "p, li { whicommitte-space: pre-wrap; }"
+                       "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+                       "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + feeder_notifications_ + "<a name=\"scrollToMe\" href=\"#scroll\"></a> <br></span></p></body></html>";
 
-  feederSetHtmlSignal(QString::fromStdString(html));
-  feederScrollSignal("scrollToMe");
+    feederSetHtmlSignal(QString::fromStdString(html));
+    feederScrollSignal("scrollToMe");
 }
 
 void ontoloGUI::feederAddSlot()
 {
-  if(updateOntoPtr() == false)
-    return;
-  onto_->feeder.addProperty(ui->FeederSubject->text().toStdString(), ui->FeederProperty->text().toStdString(), ui->FeederObject->text().toStdString());
+    if(updateOntoPtr() == false)
+        return;
+    onto_->feeder.addProperty(ui->FeederSubject->text().toStdString(), ui->FeederProperty->text().toStdString(), ui->FeederObject->text().toStdString());
 }
 
 void ontoloGUI::feederDelSlot()
 {
-  if(updateOntoPtr() == false)
-    return;
-  onto_->feeder.removeProperty(ui->FeederSubject->text().toStdString(), ui->FeederProperty->text().toStdString(), ui->FeederObject->text().toStdString());
+    if(updateOntoPtr() == false)
+        return;
+    onto_->feeder.removeProperty(ui->FeederSubject->text().toStdString(), ui->FeederProperty->text().toStdString(), ui->FeederObject->text().toStdString());
 }
 
 void ontoloGUI::feederCommitSlot()
 {
-  if(updateOntoPtr() == false)
-    return;
-  onto_->feeder.commit(ui->FeederCommitName->text().toStdString());
+    if(updateOntoPtr() == false)
+        return;
+    onto_->feeder.commit(ui->FeederCommitName->text().toStdString());
 }
 
 void ontoloGUI::feederCheckoutSlot()
 {
-  if(updateOntoPtr() == false)
-    return;
-  onto_->feeder.checkout(ui->FeederCommitName->text().toStdString());
+    if(updateOntoPtr() == false)
+        return;
+    onto_->feeder.checkout(ui->FeederCommitName->text().toStdString());
 }
 
 bool ontoloGUI::updateOntoPtr()
 {
-  if(multi_usage_ == false)
-    return true;
-    
-  std::string instance_name = ui->OntologyName->text().toStdString();
-  onto_ = ontos_.get(instance_name);
-  if(onto_ == nullptr)
-  {
-    if(instance_name != "")
-      displayErrorInfo("Ontology " + instance_name + " does not exist");
-    return false;
-  }
-  else
-    return true;
+    if(multi_usage_ == false)
+        return true;
+
+    std::string instance_name = ui->OntologyName->text().toStdString();
+    onto_ = ontos_.get(instance_name);
+    if(onto_ == nullptr)
+    {
+        if(instance_name != "")
+            displayErrorInfo("Ontology " + instance_name + " does not exist");
+        return false;
+    }
+    else
+        return true;
 }

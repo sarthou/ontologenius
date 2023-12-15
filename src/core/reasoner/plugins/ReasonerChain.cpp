@@ -155,6 +155,6 @@ std::string ReasonerChain::getDesciption()
   return "This reasoner resolve the properties chains axioms.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ReasonerChain, ReasonerInterface)
+PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerChain, ontologenius::ReasonerInterface)
 
 } // namespace ontologenius

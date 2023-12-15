@@ -71,14 +71,14 @@ namespace onto {
                 case ResultTy::SUCCESSFUL:
                 {
                     code = res->code;
+                    error_code_ = res->code;
                     return res->values;
                 }
                 case ResultTy::FAILURE:
-                {
-                    fmt::print(COLOR_ORANGE "Failed to call call ontologenius/{}\n" COLOR_OFF, name_);
-                }
                 default:
                 {
+                    error_code_ = -1;
+                    fmt::print(COLOR_RED "Failed to call call ontologenius/{}\n" COLOR_OFF, name_);
                     return { "ERR:SERVICE_FAIL" };
                 }
             }

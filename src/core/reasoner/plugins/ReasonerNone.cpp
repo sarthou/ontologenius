@@ -36,6 +36,6 @@ std::string ReasonerNone::getDesciption()
   return "This is an reasoner model to show how to create your own reasoner plugin";
 }
 
-PLUGINLIB_EXPORT_CLASS(ReasonerNone, ReasonerInterface)
+PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerNone, ontologenius::ReasonerInterface)
 
 } // namespace ontologenius

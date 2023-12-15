@@ -23,6 +23,9 @@ int main(int argc, char *argv[])
 {
     ontologenius::compat::ros::Node::init(argc, argv, "ontoloGUI");
 
+    bool run = true;
+    std::thread spin_thread(spinThread, &run);
+
     QApplication a(argc, argv);
 
     a.setStyle(new DarkStyle);
@@ -36,15 +39,11 @@ int main(int argc, char *argv[])
     ontoloGUI w;
     w.show();
 
-    bool run = true;
-
     w.init();
     w.wait();
 
     w.start();
     w.loadReasoners();
-
-    std::thread spin_thread(spinThread, &run);
 
     signal(SIGINT, SIG_DFL);
     auto a_exec = a.exec();

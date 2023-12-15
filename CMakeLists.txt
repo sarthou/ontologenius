@@ -118,21 +118,25 @@ target_include_directories(ontologenius_lib PUBLIC include/)
 # --------------------------------------------------------------
 
 add_library(ontologenius_reasoner_plugin
-        src/core/reasoner/plugins/ReasonerNone.cpp
-        src/core/reasoner/plugins/ReasonerInverseOf.cpp
-        src/core/reasoner/plugins/ReasonerSymmetric.cpp
-        src/core/reasoner/plugins/ReasonerChain.cpp
-        src/core/reasoner/plugins/ReasonerDictionary.cpp
-        src/core/reasoner/plugins/ReasonerGeneralize.cpp
-        src/core/reasoner/plugins/ReasonerRangeDomain.cpp
-)
+        "src/core/reasoner/plugins/ReasonerNone.cpp"
+        "src/core/reasoner/plugins/ReasonerInverseOf.cpp"
+        "src/core/reasoner/plugins/ReasonerSymmetric.cpp"
+        "src/core/reasoner/plugins/ReasonerChain.cpp"
+        "src/core/reasoner/plugins/ReasonerDictionary.cpp"
+        "src/core/reasoner/plugins/ReasonerGeneralize.cpp"
+        "src/core/reasoner/plugins/ReasonerRangeDomain.cpp")
+
 target_include_directories(ontologenius_reasoner_plugin PUBLIC
         ${pluginlib_INCLUDE_DIRS}
         include/)
-target_link_libraries(ontologenius_reasoner_plugin
-        PUBLIC
-        ontologenius_core_lib ${pluginlib_LIBRARIES}
-)
+
+target_link_libraries(ontologenius_reasoner_plugin PUBLIC
+        ${pluginlib_LIBRARIES}
+        ontologenius_core_lib)
+
+pluginlib_export_plugin_description_file(ontologenius reasoners_plugins.xml)
+
+install(TARGETS ontologenius_reasoner_plugin DESTINATION lib/${PROJECT_NAME})
 
 # --------------------------------------------------------------
 
@@ -290,7 +294,5 @@ install(TARGETS ontoloGUI RUNTIME DESTINATION lib/${PROJECT_NAME})
 
 
 
-
-
-
+ament_export_include_directories(include)
 ament_package()

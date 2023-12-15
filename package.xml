@@ -26,7 +26,6 @@
   <member_of_group>rosidl_interface_packages</member_of_group>
 
   <export>
-    <ontologenius plugin="${prefix}/reasoners_plugins.yml"/>
     <build_type>ament_cmake</build_type>
   </export>
 </package>
