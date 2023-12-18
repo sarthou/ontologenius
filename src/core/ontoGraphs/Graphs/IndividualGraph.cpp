@@ -2072,9 +2072,9 @@ bool IndividualGraph::removeLang(const std::string& indiv, const std::string& la
     return false;
 }
 
-bool IndividualGraph::removeInheritage(const std::string& class_base, const std::string& class_inherited)
+bool IndividualGraph::removeInheritage(const std::string& indiv, const std::string& class_inherited)
 {
-  IndividualBranch_t* branch_base = findBranch(class_base);
+  IndividualBranch_t* branch_base = findBranch(indiv);
   ClassBranch_t* branch_inherited = class_graph_->findBranch(class_inherited);
 
   if(branch_base == nullptr)
@@ -2082,14 +2082,19 @@ bool IndividualGraph::removeInheritage(const std::string& class_base, const std:
   if(branch_inherited == nullptr)
     return false;
 
+  return removeInheritage(branch_base, branch_inherited);
+}
+
+bool IndividualGraph::removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch)
+{
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
   std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
 
-  removeFromElemVect(branch_base->is_a_, branch_inherited);
-  removeFromElemVect(branch_inherited->individual_childs_, branch_base);
+  removeFromElemVect(indiv->is_a_, class_branch);
+  removeFromElemVect(class_branch->individual_childs_, indiv);
 
-  branch_base->updated_ = true;
-  branch_inherited->updated_ = true;
+  indiv->updated_ = true;
+  class_branch->updated_ = true;
 
   return true;
 }

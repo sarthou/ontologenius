@@ -146,6 +146,7 @@ public:
   void addRelationInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);
   bool removeLang(const std::string& indiv, const std::string& lang, const std::string& name);
   bool removeInheritage(const std::string& indiv, const std::string& class_inherited);
+  bool removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch);
   bool addSameAs(const std::string& indiv_1, const std::string& indiv_2);
   bool removeSameAs(const std::string& indiv_1, const std::string& indiv_2);
   // removing a relation using an object property has to generate an "explanation" if it remove other relations
