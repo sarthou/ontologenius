@@ -63,10 +63,12 @@ public:
 class AnonymousClassBranch_t : public ValuedNode
 {
 public:
-  AnonymousClassBranch_t(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), ano_elem_(nullptr) {}  
+  AnonymousClassBranch_t(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), ano_elem_(nullptr), depth_(0) {}  
 
   ClassBranch_t* class_equiv_;
   AnonymousClassElement_t* ano_elem_;
+  
+  size_t depth_;
 };
 
 } // namespace ontologenius
