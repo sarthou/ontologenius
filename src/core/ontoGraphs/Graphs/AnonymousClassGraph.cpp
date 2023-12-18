@@ -168,7 +168,7 @@ AnonymousClassBranch_t* AnonymousClassGraph::add(const std::string& value, Anony
   return anonymous_branch;
 }
 
-void AnonymousClassGraph::printTreev2(AnonymousClassElement_t* ano_elem, size_t level, bool root)
+void AnonymousClassGraph::printTree(AnonymousClassElement_t* ano_elem, size_t level, bool root)
 { 
   std::string space(level*4, ' ');
   std::string tmp = "";
