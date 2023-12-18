@@ -162,7 +162,7 @@ public:
 
     AnonymousClassElement_t* createElement(ExpressionMember_t* exp_leaf);
     void update(ExpressionMember_t* exp, AnonymousClassElement_t* ano_class);
-    AnonymousClassElement_t* createTree(ExpressionMember_t* member_node);
+    AnonymousClassElement_t* createTree(ExpressionMember_t* member_node, size_t& depth);
     AnonymousClassBranch_t* add(const std::string& value, AnonymousClassVectors_t& ano_class);
     AnonymousClassElement_t* resolveTree(AnonymousClassElement_t* elem,  bool prev_and);
 
