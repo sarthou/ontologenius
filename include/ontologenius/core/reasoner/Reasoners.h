@@ -4,11 +4,7 @@
 #include <map>
 #include <string>
 
-#if ROS_VERSION == 1
-#include <pluginlib/class_loader.h>
-#elif ROS_VERSION == 2
 #include <pluginlib/class_loader.hpp>
-#endif
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/reasoner/ConfigReader.h"
