@@ -2322,21 +2322,15 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
                                   true);
         explanations.insert(explanations.end(), tmp.begin(), tmp.end());
       }
-    }
-  }
 
-  auto chains = getChains(property);
-  for(auto& chain : chains)
-  {
-    std::vector<IndividualBranch_t*> indivs_on = resolveLink(chain, indiv_on, 0);
-    for(auto indiv : indivs_on)
-    {
-      ObjectPropertyBranch_t* chained_property = chain[chain.size() - 1];
+      for(auto& relation : indiv_from->object_relations_.has_induced_inheritance_relations[i].triplets)
+      {
+        explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
+                                            relation.object->value(),
+                                   "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
 
-      explanations.emplace_back("[DEL]" + indiv_from->value() + "|" + chained_property->value() + "|" + indiv->value(),
-                                 "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
-      auto tmp = removeRelation(indiv_from, chained_property, indiv);
-      explanations.insert(explanations.end(), tmp.begin(), tmp.end());
+        removeInheritage(relation.subject, relation.object);
+      }
     }
   }
   return explanations;
