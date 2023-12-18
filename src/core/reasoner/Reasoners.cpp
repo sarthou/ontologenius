@@ -8,7 +8,7 @@
 namespace ontologenius {
 
 Reasoners::Reasoners(const std::string& agent_name, Ontology* onto) : agent_name_(agent_name),
-                                                                      loader_("ontologenius", "ReasonerInterface")
+                                                                      loader_("ontologenius", "ontologenius::ReasonerInterface")
 {
   ontology_ = onto;
 }
