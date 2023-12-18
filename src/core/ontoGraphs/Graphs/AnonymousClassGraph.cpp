@@ -127,12 +127,20 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
   return ano_element;
 }
 
-AnonymousClassElement_t* AnonymousClassGraph::createTree(ExpressionMember_t* member_node)
+AnonymousClassElement_t* AnonymousClassGraph::createTree(ExpressionMember_t* member_node, size_t& depth)
 {
+  size_t local_depth = depth +1;
   AnonymousClassElement_t* node = createElement(member_node);
-
+  
   for(auto child : member_node->child_members)
-    node->sub_elements_.push_back(createTree(child));
+  {
+    size_t child_depth = depth +1;
+    node->sub_elements_.push_back(createTree(child, child_depth));
+    if(child_depth > local_depth)
+      local_depth = child_depth;
+  }
+
+  depth = local_depth;
 
   return node;
 }
@@ -150,7 +158,9 @@ AnonymousClassBranch_t* AnonymousClassGraph::add(const std::string& value, Anony
   anonymous_branch->class_equiv_= class_branch;
   class_branch->equiv_relations_.push_back(anonymous_branch);
 
-  anonymous_branch->ano_elem_ = createTree(ano.equivalence_tree);
+  size_t depth = 0;
+  anonymous_branch->ano_elem_ = createTree(ano.equivalence_tree, depth);
+  anonymous_branch->depth_ = depth;
 
   #ifdef DEBUG
   printTree(anonymous_branch->ano_elem_, 3, true);
