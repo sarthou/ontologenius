@@ -3,14 +3,17 @@
 
 #include <string>
 
-#include <ros/ros.h>
-
-#include "ontologenius/OntologeniusConversion.h"
+#include "ontologenius/compat/ros.h"
 
 namespace onto {
 
+    class OntologyManipulator;
+    class OntologyManipulatorIndex;
+
 class ConversionClient
 {
+    friend OntologyManipulator;
+    friend OntologyManipulatorIndex;
 public:
   /// @brief Constructs a ROS conversion client.
   /// @param name is the name of the ontologenius service
@@ -41,12 +44,11 @@ public:
   int64_t dataPropertiesId2Index(const std::string& id);
   int64_t objectPropertiesId2Index(const std::string& id);
   int64_t literalsId2Index(const std::string& id);
-
 private:
   std::string name_;
-  ros::NodeHandle n_;
   bool verbose_;
-  ros::ServiceClient client_;
+
+  ontologenius::compat::onto_ros::Client<ontologenius::compat::OntologeniusConversion> client_;
 
   std::vector<std::string> index2Id(const std::vector<int64_t>& indexes, int8_t source);
   std::string index2Id(int64_t index, int8_t source);
@@ -54,7 +56,10 @@ private:
   std::vector<int64_t> Id2Index(const std::vector<std::string>& ids, int8_t source);
   int64_t Id2Index(const std::string& id, int8_t source);
 
-  inline bool call(ontologenius::OntologeniusConversion& srv);
+  bool call(
+    ontologenius::compat::RequestType<ontologenius::compat::OntologeniusConversion>& req,
+    ontologenius::compat::ResponseType<ontologenius::compat::OntologeniusConversion>& res
+  );
 };
 
 } // namespace onto

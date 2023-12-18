@@ -3,6 +3,7 @@
 namespace onto {
 
 size_t ClientBaseIndex::cpt = 0;
+int16_t ClientBaseIndex::ignore_;
 bool ClientBaseIndex::verbose_ = false;
 
 } // namespace onto

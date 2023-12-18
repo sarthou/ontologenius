@@ -1,5 +1,7 @@
 #include "ontologenius/API/ontologenius/ConversionClient.h"
 
+#include <iostream>
+
 #ifndef COLOR_OFF
 #define COLOR_OFF     "\x1B[0m"
 #endif
@@ -15,176 +17,185 @@
 
 namespace onto {
 
+using namespace ontologenius;
+using OntologeniusConversionRequestAlias = compat::RawRequestType<ontologenius::compat::OntologeniusConversion>;
+
 ConversionClient::ConversionClient(const std::string& name) : name_((name == "") ? "/ontologenius/conversion" : "/ontologenius/conversion/" + name),
                                                               verbose_(false),
-                                                              client_(n_.serviceClient<ontologenius::OntologeniusConversion>(name_, true))
+                                                              client_(name_)
 {}
 
 std::vector<std::string> ConversionClient::individualsIndex2Id(const std::vector<int64_t>& indexes)
 {
-  return index2Id(indexes, ontologenius::OntologeniusConversionRequest::INDIVIDUALS);
+  return index2Id(indexes, OntologeniusConversionRequestAlias::INDIVIDUALS);
 }
 
 std::vector<std::string> ConversionClient::classesIndex2Id(const std::vector<int64_t>& indexes)
 {
-  return index2Id(indexes, ontologenius::OntologeniusConversionRequest::CLASSES);
+  return index2Id(indexes, OntologeniusConversionRequestAlias::CLASSES);
 }
 
 std::vector<std::string> ConversionClient::dataPropertiesIndex2Id(const std::vector<int64_t>& indexes)
 {
-  return index2Id(indexes, ontologenius::OntologeniusConversionRequest::DATA_PROPERTIES);
+  return index2Id(indexes, OntologeniusConversionRequestAlias::DATA_PROPERTIES);
 }
 
 std::vector<std::string> ConversionClient::objectPropertiesIndex2Id(const std::vector<int64_t>& indexes)
 {
-  return index2Id(indexes, ontologenius::OntologeniusConversionRequest::OBJECT_PROPERTIES);
+  return index2Id(indexes, OntologeniusConversionRequestAlias::OBJECT_PROPERTIES);
 }
 
 std::vector<std::string> ConversionClient::literalsIndex2Id(const std::vector<int64_t>& indexes)
 {
-  return index2Id(indexes, ontologenius::OntologeniusConversionRequest::LITERAL);
+  return index2Id(indexes, OntologeniusConversionRequestAlias::LITERAL);
 }
 
 std::string ConversionClient::individualsIndex2Id(int64_t index)
 {
-  return index2Id(index, ontologenius::OntologeniusConversionRequest::INDIVIDUALS);
+  return index2Id(index, OntologeniusConversionRequestAlias::INDIVIDUALS);
 }
 
 std::string ConversionClient::classesIndex2Id(int64_t index)
 {
-  return index2Id(index, ontologenius::OntologeniusConversionRequest::CLASSES);
+  return index2Id(index, OntologeniusConversionRequestAlias::CLASSES);
 }
 
 std::string ConversionClient::dataPropertiesIndex2Id(int64_t index)
 {
-  return index2Id(index, ontologenius::OntologeniusConversionRequest::DATA_PROPERTIES);
+  return index2Id(index, OntologeniusConversionRequestAlias::DATA_PROPERTIES);
 }
 
 std::string ConversionClient::objectPropertiesIndex2Id(int64_t index)
 {
-  return index2Id(index, ontologenius::OntologeniusConversionRequest::OBJECT_PROPERTIES);
+  return index2Id(index, OntologeniusConversionRequestAlias::OBJECT_PROPERTIES);
 }
 
 std::string ConversionClient::literalsIndex2Id(int64_t index)
 {
-  return index2Id(index, ontologenius::OntologeniusConversionRequest::LITERAL);
+  return index2Id(index, OntologeniusConversionRequestAlias::LITERAL);
 }
 
 std::vector<int64_t> ConversionClient::individualsId2Index(const std::vector<std::string>& ids)
 {
-  return Id2Index(ids, ontologenius::OntologeniusConversionRequest::INDIVIDUALS);
+  return Id2Index(ids, OntologeniusConversionRequestAlias::INDIVIDUALS);
 }
 
 std::vector<int64_t> ConversionClient::classesId2Index(const std::vector<std::string>& ids)
 {
-  return Id2Index(ids, ontologenius::OntologeniusConversionRequest::CLASSES);
+  return Id2Index(ids, OntologeniusConversionRequestAlias::CLASSES);
 }
 
 std::vector<int64_t> ConversionClient::dataPropertiesId2Index(const std::vector<std::string>& ids)
 {
-  return Id2Index(ids, ontologenius::OntologeniusConversionRequest::DATA_PROPERTIES);
+  return Id2Index(ids, OntologeniusConversionRequestAlias::DATA_PROPERTIES);
 }
 
 std::vector<int64_t> ConversionClient::objectPropertiesId2Index(const std::vector<std::string>& ids)
 {
-  return Id2Index(ids, ontologenius::OntologeniusConversionRequest::OBJECT_PROPERTIES);
+  return Id2Index(ids, OntologeniusConversionRequestAlias::OBJECT_PROPERTIES);
 }
 
 std::vector<int64_t> ConversionClient::literalsId2Index(const std::vector<std::string>& ids)
 {
-  return Id2Index(ids, ontologenius::OntologeniusConversionRequest::LITERAL);
+  return Id2Index(ids, OntologeniusConversionRequestAlias::LITERAL);
 }
 
 int64_t ConversionClient::individualsId2Index(const std::string& id)
 {
-  return Id2Index(id, ontologenius::OntologeniusConversionRequest::INDIVIDUALS);
+  return Id2Index(id, OntologeniusConversionRequestAlias::INDIVIDUALS);
 }
 
 int64_t ConversionClient::classesId2Index(const std::string& id)
 {
-  return Id2Index(id, ontologenius::OntologeniusConversionRequest::CLASSES);
+  return Id2Index(id, OntologeniusConversionRequestAlias::CLASSES);
 }
 
 int64_t ConversionClient::dataPropertiesId2Index(const std::string& id)
 {
-  return Id2Index(id, ontologenius::OntologeniusConversionRequest::DATA_PROPERTIES);
+  return Id2Index(id, OntologeniusConversionRequestAlias::DATA_PROPERTIES);
 }
 
 int64_t ConversionClient::objectPropertiesId2Index(const std::string& id)
 {
-  return Id2Index(id, ontologenius::OntologeniusConversionRequest::OBJECT_PROPERTIES);
+  return Id2Index(id, OntologeniusConversionRequestAlias::OBJECT_PROPERTIES);
 }
 
 int64_t ConversionClient::literalsId2Index(const std::string& id)
 {
-  return Id2Index(id, ontologenius::OntologeniusConversionRequest::LITERAL);
+  return Id2Index(id, OntologeniusConversionRequestAlias::LITERAL);
 }
 
 std::vector<std::string> ConversionClient::index2Id(const std::vector<int64_t>& indexes, int8_t source)
 {
-  ontologenius::OntologeniusConversion srv;
-  srv.request.source = source;
-  srv.request.values_int = indexes;
-  if(call(srv))
-    return srv.response.values_str;
+  auto req = ontologenius::compat::make_request<ontologenius::compat::OntologeniusConversion>();
+  auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusConversion>();
+
+  [source, indexes](auto&& req)
+  {
+    req->source = source;
+    req->values_int = indexes;
+  }(ontologenius::compat::onto_ros::getServicePointer(req));
+
+  if (call(req, res))
+    return [](auto&& res)
+    {
+      return res->values_str;
+    }(ontologenius::compat::onto_ros::getServicePointer(res));
   else
-    return {};
+      return {};
 }
 
 std::string ConversionClient::index2Id(int64_t index, int8_t source)
 {
-  ontologenius::OntologeniusConversion srv;
-  srv.request.source = source;
-  srv.request.values_int = {index};
-  if(call(srv))
-    return srv.response.values_str.front();
-  else
-    return "";
+  return index2Id(std::vector<int64_t>{ index }, source)[0];
 }
 
 std::vector<int64_t> ConversionClient::Id2Index(const std::vector<std::string>& ids, int8_t source)
 {
-  ontologenius::OntologeniusConversion srv;
-  srv.request.source = source;
-  srv.request.values_str = ids;
-  if(call(srv))
-    return srv.response.values_int;
+  auto req = ontologenius::compat::make_request<ontologenius::compat::OntologeniusConversion>();
+  auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusConversion>();
+
+  [source, ids](auto&& req)
+  {
+    req->source = source;
+    req->values_str = ids;
+  }(ontologenius::compat::onto_ros::getServicePointer(req));
+
+  if (call(req, res))
+    return [](auto&& res)
+    {
+      return res->values_int;
+    }(ontologenius::compat::onto_ros::getServicePointer(res));
   else
-    return {};
+      return {};
 }
 
 int64_t ConversionClient::Id2Index(const std::string& id, int8_t source)
 {
-  ontologenius::OntologeniusConversion srv;
-  srv.request.source = source;
-  srv.request.values_str = {id};
-  if(call(srv))
-    return srv.response.values_int.front();
-  else
-    return {};
+  return Id2Index(std::vector<std::string>{ id }, source)[0];
 }
 
-bool ConversionClient::call(ontologenius::OntologeniusConversion& srv)
+bool ConversionClient::call(compat::RequestType<compat::OntologeniusConversion> &req,
+                            compat::ResponseType<compat::OntologeniusConversion> &res)
 {
-  if(client_.call(srv))
-    return true;
-  else
+  using ResultTy = typename decltype(client_)::Status;
+
+  switch (client_.call(req, res))
   {
-    if(verbose_)
-      std::cout << COLOR_ORANGE << "Failure to call " << name_ << COLOR_OFF << std::endl;
-    client_ = n_.serviceClient<ontologenius::OntologeniusConversion>(name_, true);
-    if(client_.call(srv))
+    case ResultTy::SUCCESSFUL_WITH_RETRIES:
+      [[fallthrough]];
+    case ResultTy::SUCCESSFUL:
     {
-      if(verbose_)
-        std::cout << COLOR_GREEN << "Restored " << name_ << COLOR_OFF << std::endl;
       return true;
     }
-    else
+    case ResultTy::FAILURE:
     {
       if(verbose_)
-        std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
-      return false;
+        std::cout << COLOR_RED << "Failed to call ontologenius/" << name_ << COLOR_OFF << std::endl;
+      [[fallthrough]];
     }
+    default:
+      return false;
   }
 }
 
