@@ -2217,6 +2217,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
 
 void IndividualGraph::removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data)
 {
+  std::vector<std::pair<std::string, std::string>> explanations;
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
   {
@@ -2229,6 +2230,16 @@ void IndividualGraph::removeRelation(const std::string& indiv_from, const std::s
         {
           branch_from->data_relations_.erase(i);
           branch_from->updated_ = true;
+          // add on to delete the induced inheritance relations
+          for(auto& relation : branch_from->data_relations_.has_induced_inheritance_relations[i].triplets)
+          {
+            explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
+                                                relation.object->value(),
+                                      "[DEL]" + indiv_from + "|" + property + "|" + type + "|" + data);
+
+            removeInheritage(relation.subject, relation.object);
+            
+          }
         }
         else
           i++;
