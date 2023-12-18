@@ -22,7 +22,6 @@ AnonymousClassGraph::AnonymousClassGraph(ClassGraph* class_graph, ObjectProperty
   object_property_graph_ = object_property_graph;
   data_property_graph_ = data_property_graph;
   individual_graph_ = individual_graph;
-  cpt_anonymous_classes_ = 0;
 }
 
 AnonymousClassGraph::AnonymousClassGraph(const AnonymousClassGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, 
