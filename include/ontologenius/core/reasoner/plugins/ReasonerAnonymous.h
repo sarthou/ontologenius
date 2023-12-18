@@ -5,7 +5,6 @@
 
 namespace ontologenius {
 
-class ChainTree;
 class ReasonerAno : public ReasonerInterface
 {
 public:
@@ -21,157 +20,182 @@ public:
 
   virtual bool defaultActive() override {return true;}
 private:
+  std::string computeExplanation( std::vector<InheritedRelationTriplets*>& used);
+  bool checkClassesDisjointess(IndividualBranch_t* indiv, ClassBranch_t* class_equiv);
+  int relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
 
-  bool relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
-
-  bool resolveTree(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
-  bool resolveTree(LiteralNode* literal, AnonymousClassElement_t* ano_elem);
+  bool resolveTree(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used);
+  bool resolveTree(LiteralNode* literal, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used);
   
-  bool checkRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
-  bool checkTypeRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
-  bool checkTypeRestriction(LiteralNode* literal, AnonymousClassElement_t* ano_elem);
+  bool checkRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used);
+  bool checkTypeRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used);
+  bool checkTypeRestriction(LiteralNode* literal, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used);
   bool checkIndividualRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
 
-  bool checkCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
+  bool checkCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used);
 
-  bool checkMinCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
-  bool checkMaxCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
-  bool checkExactlyCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
-  bool checkOnlyCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
-  bool checkSomeCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
-  bool checkValueCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
+  bool checkMinCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used);
+  bool checkMaxCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used);
+  bool checkExactlyCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used);
+  bool checkOnlyCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used);
+  bool checkSomeCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used);
+  bool checkValueCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used);
 
   template<typename T>
-  bool checkMinCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem)
+  std::vector<size_t> checkMinCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem , std::vector<InheritedRelationTriplets*>& used)
   {
-    size_t nb_card = 0;
+    std::vector<size_t> indexes;
 
-    for(auto& relation : relations)
+    for(size_t i = 0; i < relations.size(); i++)
     {
-      if(testPropertyInheritance(ano_elem, relation.first))
+      if(testPropertyInheritance(ano_elem, relations[i].first))
       {
         if(ano_elem->is_complex)
         {
-          if(resolveTree(relation.second, ano_elem->sub_elements_.front()))
+          if(resolveTree(relations[i].second, ano_elem->sub_elements_.front(), used))
           {
-            nb_card++;
-            if(nb_card >= ano_elem->card_.card_number_)
-              return true;
+            indexes.push_back(i);
+            if(indexes.size() >= ano_elem->card_.card_number_)
+              return indexes;
           }
         }
         else
         {
-          if(resolveTree(relation.second, ano_elem))
+          if(checkTypeRestriction(relations[i].second, ano_elem, used))
           {
-            nb_card++;
-            if(nb_card >= ano_elem->card_.card_number_)
-              return true;
+            indexes.push_back(i);
+            if(indexes.size() >= ano_elem->card_.card_number_)
+              return indexes;
           }
         }
       }
     }
-    return false;
+    used.clear();
+    return {};
   }
 
   template<typename T>
-  bool checkMaxCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem)
+  std::vector<size_t> checkMaxCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
   {
-    size_t nb_card = 0;
+    std::vector<size_t> indexes;
 
-    for(auto& relation : relations)
+    for(size_t i = 0; i < relations.size(); i++)
     {
-      if(testPropertyInheritance(ano_elem, relation.first))
+      if(testPropertyInheritance(ano_elem, relations[i].first))
       {
         if(ano_elem->is_complex)
         {
-          if(resolveTree(relation.second, ano_elem->sub_elements_.front()))
+          if(resolveTree(relations[i].second, ano_elem->sub_elements_.front(), used))
           {
-            nb_card++;
-            if(nb_card > ano_elem->card_.card_number_)
-              return false;
+            indexes.push_back(i);
+            if(indexes.size() > ano_elem->card_.card_number_)
+            {
+              used.clear();
+              return {};
+            }
           }
         }
         else
         {
-          if(resolveTree(relation.second, ano_elem))
+          if(checkTypeRestriction(relations[i].second, ano_elem, used))
           {
-            nb_card++;
-            if(nb_card > ano_elem->card_.card_number_)
-              return false;
+            indexes.push_back(i);
+            if(indexes.size() > ano_elem->card_.card_number_)
+            {
+              used.clear();
+              return {};
+            }
           }
         }
       }
     }
-    return true;
+    return indexes;
   }
 
   template<typename T>
-  bool checkExactlyCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem)
+  std::vector<size_t> checkExactlyCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
   {
-    size_t nb_card = 0;
+    std::vector<size_t> indexes;
 
-    for(auto& relation : relations)
-      if(testPropertyInheritance(ano_elem, relation.first))
+    for(size_t i = 0; i < relations.size(); i++)
+      if(testPropertyInheritance(ano_elem, relations[i].first))
       {
         if(ano_elem->is_complex)
         {
-          if(resolveTree(relation.second, ano_elem->sub_elements_.front()))
-             nb_card++;
+          if(resolveTree(relations[i].second, ano_elem->sub_elements_.front(), used))
+            indexes.push_back(i);
         }
         else
         {
-          if(checkTypeRestriction(relation.second, ano_elem))
-             nb_card++;
+          if(checkTypeRestriction(relations[i].second, ano_elem, used))
+            indexes.push_back(i);
         }
       }
 
-    if(nb_card == ano_elem->card_.card_number_)
-      return true;
+    if(indexes.size() == ano_elem->card_.card_number_)
+      return indexes;
     else
-      return false;
+    {
+      used.clear();
+      return {};
+    }
   }
 
   template<typename T>
-  bool checkOnlyCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem)
+  std::vector<size_t> checkOnlyCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
   {
+    std::vector<size_t> indexes;
+
     // need to ensure that there is at least one ?
-    for(auto& relation : relations)
+    for(size_t i = 0; i < relations.size(); i++)
     { 
-      if(testPropertyInheritance(ano_elem, relation.first))
+      if(testPropertyInheritance(ano_elem, relations[i].first))
       {
         if(ano_elem->is_complex)
         {
-          if(resolveTree(relation.second, ano_elem->sub_elements_.front()) == false)
-            return false;
+          if(resolveTree(relations[i].second, ano_elem->sub_elements_.front(), used) == false)
+          {
+            used.clear();
+            return {};
+          }
+          else
+            indexes.push_back(i);
         }
         else
         {
-          if(checkTypeRestriction(relation.second, ano_elem) == false)
-            return false;
+          if(checkTypeRestriction(relations[i].second, ano_elem, used) == false)
+          {
+            used.clear();
+            return {};
+          }
+          else
+            indexes.push_back(i);
         }
       }
     }
-    return true;
+    return indexes;
   }
 
   template<typename T>
-  bool checkSomeCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem)
+  int checkSomeCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
   {
-    for(auto& relation : relations)
-      if(testPropertyInheritance(ano_elem, relation.first))
+    for(size_t i = 0; i < relations.size(); i++)
+    {
+      if(testPropertyInheritance(ano_elem, relations[i].first))
       {
         if(ano_elem->is_complex)
         {
-          if(resolveTree(relation.second, ano_elem->sub_elements_.front()))
-            return true;
+          if(resolveTree(relations[i].second, ano_elem->sub_elements_.front(), used) == true)
+            return i;
         }
         else
         {
-          if(checkTypeRestriction(relation.second, ano_elem))
-            return true;
+          if(checkTypeRestriction(relations[i].second, ano_elem, used) == true)
+            return i;
         }
       }
-    return false;
+    }
+    return -1;
   }
 
   inline std::unordered_set<ObjectPropertyBranch_t*> getUpProperty(ObjectPropertyBranch_t* property)
