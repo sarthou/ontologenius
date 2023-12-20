@@ -221,10 +221,7 @@ bool RosInterface::actionsHandle(compat::onto_ros::ServiceWrapper<compat::Ontolo
     removeUselessSpace(req->param);
 
     if(req->action == "add")
-    {
-      // ros::service::waitForService("ontologenius/rest", -1);
       res->code = onto_->readFromUri(req->param);
-    }
     else if(req->action == "fadd")
       res->code = onto_->readFromFile(req->param);
     else if(req->action == "save")

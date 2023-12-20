@@ -14,7 +14,7 @@ OntologyManipulatorIndex::OntologyManipulatorIndex(const std::string& name) : na
                                                                     sparql(name),
                                                                     conversion(name)
 {
-  conversion.client_.wait();
+  conversion.client_.wait(-1);
 }
 
 OntologyManipulatorIndex::OntologyManipulatorIndex(const OntologyManipulatorIndex& other): name_(other.name_),
@@ -28,7 +28,7 @@ OntologyManipulatorIndex::OntologyManipulatorIndex(const OntologyManipulatorInde
                                                                       sparql(other.name_),
                                                                       conversion(other.name_)
 {
-  conversion.client_.wait();
+  conversion.client_.wait(-1);
 }
 
 OntologyManipulatorIndex::OntologyManipulatorIndex(OntologyManipulatorIndex&& other): name_(other.name_),
@@ -42,7 +42,7 @@ OntologyManipulatorIndex::OntologyManipulatorIndex(OntologyManipulatorIndex&& ot
                                                                       sparql(other.name_),
                                                                       conversion(other.name_)
 {
-  conversion.client_.wait();
+  conversion.client_.wait(-1);
 }
 
 } // namespace onto
