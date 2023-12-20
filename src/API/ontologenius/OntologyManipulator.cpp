@@ -13,7 +13,7 @@ OntologyManipulator::OntologyManipulator(const std::string& name) : name_(name),
                                                                     feeder(name),
                                                                     sparql(name)
 {
-  sparql.client_.wait();
+  sparql.client_.wait(-1);
 }
 
 OntologyManipulator::OntologyManipulator(const OntologyManipulator& other): name_(other.name_),
@@ -26,7 +26,7 @@ OntologyManipulator::OntologyManipulator(const OntologyManipulator& other): name
                                                                       feeder(other.name_),
                                                                       sparql(other.name_)
 {
-  sparql.client_.wait();
+  sparql.client_.wait(-1);
 }
 
 OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): name_(other.name_),
@@ -39,7 +39,7 @@ OntologyManipulator::OntologyManipulator(OntologyManipulator&& other): name_(oth
                                                                       feeder(other.name_),
                                                                       sparql(other.name_)
 {
-  sparql.client_.wait();
+  sparql.client_.wait(-1);
 }
 
 } // namespace onto

@@ -18,7 +18,7 @@ OntologiesManipulator::~OntologiesManipulator()
 
 bool OntologiesManipulator::waitInit(int32_t timeout)
 {
-  return client_.wait();
+  return client_.wait(timeout);
 }
 
 OntologyManipulator* OntologiesManipulator::operator[](const std::string& name)
