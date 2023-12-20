@@ -248,7 +248,7 @@ ontoloGUI::~ontoloGUI()
 
 void ontoloGUI::init()
 {
-  if(ontos_.waitInit(1000) == false)
+  if(ontos_.waitInit(1) == false)
   {
     onto_ = new onto::OntologyManipulator();
     onto_->feeder.registerNotificationCallback([this](auto msg){ this->feederCallback(msg); });
@@ -653,8 +653,6 @@ void ontoloGUI::displayErrorInfo(const std::string& text)
 
 void ontoloGUI::displayOntologiesList()
 {
-  if(multi_usage_ == false)
-      return;
   auto res_vect = ontos_.list();
   int err = ontos_.getErrorCode();
   std::string html;
@@ -703,7 +701,7 @@ void ontoloGUI::currentTabChangedSlot(int index)
 {
   if(index == 4)
     loadReasoners();
-  else if(index == 5)
+  else if(index == 6)
     displayOntologiesList();
 }
 
