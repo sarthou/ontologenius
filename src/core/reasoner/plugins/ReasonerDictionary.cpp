@@ -181,6 +181,6 @@ std::string ReasonerDictionary::getDesciption()
   return "This reasoner creates several alternative dictionaries to avoid too many restrictive labels.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerDictionary, ontologenius::ReasonerInterface)
-
 } // namespace ontologenius
+
+PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerDictionary, ontologenius::ReasonerInterface)

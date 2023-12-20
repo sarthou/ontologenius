@@ -183,6 +183,6 @@ std::string ReasonerGeneralize::getDesciption()
   return "This reasoner aims to infer new knowledge by generalizing explicit relationships between concepts.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerGeneralize, ontologenius::ReasonerInterface)
-
 } // namespace ontologenius
+
+PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerGeneralize, ontologenius::ReasonerInterface)

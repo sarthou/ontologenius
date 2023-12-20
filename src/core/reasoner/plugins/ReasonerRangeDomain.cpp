@@ -368,6 +368,6 @@ std::string ReasonerRangeDomain::getDesciption()
   return "This is an reasoner to deduce new inheritances based on range and domain of properties.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerRangeDomain, ontologenius::ReasonerInterface)
-
 } // namespace ontologenius
+
+PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerRangeDomain, ontologenius::ReasonerInterface)
