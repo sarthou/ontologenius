@@ -30,7 +30,11 @@ public:
                                       default_values_(other.default_values_)
   {}
 
-  void insert(const std::string& value) { values_.push_back(value); }
+  void insert(const std::string& value)
+  {
+    if(value.find("__") != 0)
+      values_.push_back(value);
+  }
 
   std::string getFirst()
   {
