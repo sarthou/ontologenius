@@ -1,16 +1,4 @@
-<vars>
-  <CONDITIONAL>
-      <TEST var="${env.ROS_VERSION}" value="1" type="bool"/>
-      <THEN>
-        <var name="lib_path">ontologenius_reasoner_plugin</var>
-      </THEN>
-      <ELSE>
-        <var name="lib_path">lib/libontologenius_reasoner_plugin</var>
-      </ELSE>
-  </CONDITIONAL>
-</vars>
-
-<library path="${lib_path}">
+<library path="lib/libontologenius_reasoner_plugin">
   <class type="ontologenius::ReasonerNone" base_class_type="ontologenius::ReasonerInterface">
     <description>This is a reasoner test plugin.</description>
   </class>
