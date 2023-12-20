@@ -2,72 +2,69 @@
 
 namespace ontologenius::compat::onto_ros
 {
-    std::string node_name__;
 
-    Node& Node::get()
-    {
-        static Node node(node_name__);
-        return node;
-    }
+std::string node_name__;
 
-    bool Node::ok()
-    {
+Node& Node::get()
+{
+  static Node node(node_name__);
+  return node;
+}
+
+bool Node::ok()
+{
 #if ONTO_ROS_VERSION == 1
-        return ros::ok();
+  return ros::ok();
 #elif ONTO_ROS_VERSION == 2
-        return rclcpp::ok();
+  return rclcpp::ok();
 #endif
-    }
+}
 
-    void Node::init(int argc, char **argv, const std::string& node_name)
-    {
-        node_name__ = node_name;
+void Node::init(int argc, char **argv, const std::string& node_name)
+{
+  node_name__ = node_name;
 
 #if ONTO_ROS_VERSION == 1
-        ros::init(argc, argv, node_name__);
+  ros::init(argc, argv, node_name__);
 #elif ONTO_ROS_VERSION == 2
-        rclcpp::init(argc, argv);
+  rclcpp::init(argc, argv);
 #endif
-    }
+}
 
-    void Node::shutdown()
-    {
+void Node::shutdown()
+{
 #if ONTO_ROS_VERSION == 1
-        // todo: handle ROS1 shutdown
+  ros::shutdown();
 #elif ONTO_ROS_VERSION == 2
-        rclcpp::shutdown();
+  rclcpp::shutdown();
 #endif
-    }
+}
 
-    void Node::spin()
-    {
+void Node::spin()
+{
 #if ONTO_ROS_VERSION == 1
-        // todo: handle ROS1 spin
+  ros::spin();
 #elif ONTO_ROS_VERSION == 2
-        rclcpp::spin(handle_);
+  rclcpp::spin(handle_);
 #endif
-    }
+}
 
-    Time Node::current_time()
-    {
+Time Node::current_time()
+{
 #if ONTO_ROS_VERSION == 1
-        return ros::Time::now();
+  return Time(ros::Time::now());
 #elif ONTO_ROS_VERSION == 2
-        return handle_->now();
+  return Time(handle_->now());
 #endif
-    }
+}
 
-    Node::Node(const std::string& node_name)
-        : name_(node_name),
+Node::Node(const std::string& node_name) : name_(node_name),
 #if ONTO_ROS_VERSION == 2
-          handle_(std::make_shared<rclcpp::Node>(node_name)),
+                                           handle_(std::make_shared<rclcpp::Node>(node_name)),
 #endif
-          running_(true)
-    {
-        // todo: should we put something here?
-    }
+                                           running_(true)
+{
+  // todo: should we put something here?
+}
 
-    Node::~Node() {
-
-    }
 }

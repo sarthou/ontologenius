@@ -148,10 +148,8 @@ class Time : public RosTime
 {
 public:
   Time(uint32_t sec, uint32_t nsec) : RosTime(sec, nsec) {}
-  Time(double t) : RosTime(t) {}
-  Time(const RosTime& time) : RosTime(time) {}
-
-  static Time now() { return RosTime::now(); }
+  explicit Time(double t) : RosTime(t) {}
+  explicit Time(const RosTime& time) : RosTime(time) {}
 
   uint32_t seconds() const
   {
@@ -175,6 +173,22 @@ public:
 class Node
 {
 public:
+  template <typename T>
+  friend class Publisher;
+
+  template <typename T>
+  friend class Subscriber;
+
+  template <typename T>
+  friend class Service;
+
+  template <typename T>
+  friend class Client; 
+
+  Node(Node& other) = delete;
+  Node(Node&& other) = delete;
+  ~Node() {}
+
   static Node& get();
   static bool ok();
 
@@ -198,22 +212,6 @@ private:
 #endif
 
   bool running_;
-public:
-  Node(Node& other) = delete;
-  Node(Node&& other) = delete;
-  ~Node();
-
-  template <typename T>
-  friend class Publisher;
-
-  template <typename T>
-  friend class Subscriber;
-
-  template <typename T>
-  friend class Service;
-
-  template <typename T>
-  friend class Client; 
 };
 
 template <typename T>
@@ -235,7 +233,7 @@ public:
   void publish(const T& message)
   {
 #if ONTO_ROS_VERSION == 1
-    // TODO
+    handle_.publish(message);
 #elif ONTO_ROS_VERSION == 2
     handle_->publish(message);
 #endif
@@ -320,7 +318,7 @@ public:
     auto& node = Node::get();
 
 #if ONTO_ROS_VERSION == 1
-    handle_ = node.handle_.serviceClient<ontologenius::compat::OntologeniusService>(service_name, true);
+    handle_ = node.handle_.serviceClient<T>(service_name, true);
 #elif ONTO_ROS_VERSION == 2
     handle_ = node.handle_->create_client<T>(service_name);
 #endif
@@ -332,12 +330,24 @@ public:
     auto status = Status::FAILURE;
 
 #if ONTO_ROS_VERSION == 1
-    T msg;
-    msg.request = req;
+    T srv;
+    srv.request = req;
+    if (!handle_.call(srv))
+    {
+      auto& node = Node::get();
+      handle_ = node.handle_.serviceClient<T>(name_, true);
+      if (handle_.call(srv))
+      {
+        status = Status::SUCCESSFUL_WITH_RETRIES;
+        res = srv.response;
+      }
+    }
+    else
+    {
+      status = Status::SUCCESSFUL;
+      res = srv.response;
+    }
 
-    res = msg.response;
-
-    // TODO: finish this
 #elif ONTO_ROS_VERSION == 2
     if (!handle_->wait_for_service(5s))
     {
@@ -355,7 +365,7 @@ public:
     return status;
   }
 
-  bool wait(double timeout = 3000)
+  bool wait(double timeout)
   {
 #if ONTO_ROS_VERSION == 1
     return handle_.waitForExistence(ros::Duration(timeout));
