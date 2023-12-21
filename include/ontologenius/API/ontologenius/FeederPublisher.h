@@ -29,22 +29,9 @@ public:
           stamped_pub_((name == "") ? "ontologenius/insert_stamped" : "ontologenius/insert_stamped/" + name, 1000),
           commit_sub_(name_ == "" ? "ontologenius/end" : "ontologenius/end/" + name_, 1000, &FeederPublisher::commitCallback, this),
           notif_sub_(name_ == "" ? "ontologenius/feeder_notifications" : "ontologenius/feeder_notifications/" + name_, 1000, &FeederPublisher::notificationCallback, this)
-  {
-
-  }
+  {}
 
   FeederPublisher(FeederPublisher& other) = delete;
-
-  /*FeederPublisher(FeederPublisher& other) :
-          name_(other.name_),
-          pub_(n_.advertise<std_msgs_compat::String>((other.name_ == "") ? "ontologenius/insert" : "ontologenius/insert/" + other.name_, 1000)),
-          stamped_pub_(n_.advertise<ontologenius::compat::OntologeniusStampedString>((other.name_ == "") ? "ontologenius/insert_stamped" : "ontologenius/insert_stamped/" + other.name_, 1000))
-  {
-    commit_sub_ = n_.subscribe(name_ == "" ? "ontologenius/end" : "ontologenius/end/" + name_, 1000, &FeederPublisher::commitCallback, this);
-    notif_sub_ = n_.subscribe(name_ == "" ? "ontologenius/feeder_notifications" : "ontologenius/feeder_notifications/" + name_, 1000, &FeederPublisher::notificationCallback, this);
-    commit_nb_ = other.commit_nb_;
-    updated_ = false;
-  }*/
 
   /// @brief Adds the fact that "from" is linked with "on" by the property "property".
   /// At least "from" or "on" must be already known to the system. If one of them is unknown, it will be automatically created.
@@ -143,7 +130,7 @@ public:
   void removeInverseOf(const std::string& property, const std::string& inverse_property, const ontologenius::compat::onto_ros::Time& stamp = ontologenius::compat::onto_ros::Node::get().current_time());
 
   /// @brief Returns the number of subscribers that are currently connected to the internal ROS publisher.
-  size_t getNumSubscribers() { /*return stamped_pub_.getNumSubscribers();*/ return 0; } // todo
+  size_t getNumSubscribers() { return stamped_pub_.getNumSubscribers(); }
   /// @brief Blocks while no subscribers are currently connected to the internal ROS publisher.
   void waitConnected()
   {
