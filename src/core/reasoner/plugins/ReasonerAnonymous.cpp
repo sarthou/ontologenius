@@ -7,8 +7,8 @@ namespace ontologenius {
 void ReasonerAno::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-  std::vector<InheritedRelationTriplets*> used;
-   
+  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>> used;
+  
   for(auto indiv : ontology_->individual_graph_.get())
   {
     if((indiv->updated_ == true) || (indiv->flags_.find("equiv") != indiv->flags_.end()))
@@ -108,7 +108,7 @@ int ReasonerAno::relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBr
 
 }
 
-bool ReasonerAno::resolveTree(LiteralNode* literal, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
+bool ReasonerAno::resolveTree(LiteralNode* literal, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 { 
   if(ano_elem->logical_type_ == logical_and)
   {
@@ -141,7 +141,7 @@ bool ReasonerAno::resolveTree(LiteralNode* literal, AnonymousClassElement_t* ano
   return false;
 }
 
-bool ReasonerAno::resolveTree(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
+bool ReasonerAno::resolveTree(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 {
   if(ano_elem->logical_type_ == logical_and)
   {
@@ -176,7 +176,7 @@ bool ReasonerAno::resolveTree(IndividualBranch_t* indiv, AnonymousClassElement_t
   return false;
 }
 
-bool ReasonerAno::checkRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
+bool ReasonerAno::checkRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 {
   if(ano_elem->object_property_involved_ != nullptr || ano_elem->data_property_involved_ != nullptr)
     return checkCard(indiv, ano_elem, used);
@@ -192,7 +192,7 @@ bool ReasonerAno::checkRestriction(IndividualBranch_t* indiv, AnonymousClassElem
   return false;
 }
 
-bool ReasonerAno::checkTypeRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
+bool ReasonerAno::checkTypeRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 {
   std::unordered_set<ClassBranch_t*> up;
   for(size_t i = 0 ; i < indiv->is_a_.size() ; i++)
@@ -203,7 +203,7 @@ bool ReasonerAno::checkTypeRestriction(IndividualBranch_t* indiv, AnonymousClass
     {
       if(sub_elem->get() == ano_elem->class_involved_->get())
       {
-        used.push_back(&indiv->is_a_.has_induced_inheritance_relations[i]);
+        used.emplace_back(&indiv->is_a_[i], indiv->is_a_.has_induced_inheritance_relations[i]);
         return true;
       }
     }
@@ -214,7 +214,7 @@ bool ReasonerAno::checkTypeRestriction(IndividualBranch_t* indiv, AnonymousClass
   // return (ontology_->individual_graph_.isA(indiv, ano_elem->class_involved_->get()))
 }
 
-bool ReasonerAno::checkTypeRestriction(LiteralNode* literal, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
+bool ReasonerAno::checkTypeRestriction(LiteralNode* literal, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 {
   return (literal->type_ == ano_elem->card_.card_range_->type_);
 }
@@ -231,7 +231,7 @@ bool ReasonerAno::checkIndividualRestriction(IndividualBranch_t* indiv, Anonymou
     return (indiv->get() == ano_elem->individual_involved_->get());
 }
 
-bool ReasonerAno::checkCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
+bool ReasonerAno::checkCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 {
   switch (ano_elem->card_.card_type_)
   {
@@ -253,7 +253,7 @@ bool ReasonerAno::checkCard(IndividualBranch_t* indiv, AnonymousClassElement_t* 
   }
 }
 
-bool ReasonerAno::checkMinCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
+bool ReasonerAno::checkMinCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 {
   std::vector<size_t> indexes;
   if(ano_elem->object_property_involved_ != nullptr)
@@ -262,7 +262,7 @@ bool ReasonerAno::checkMinCard(IndividualBranch_t* indiv, AnonymousClassElement_
     if(indexes.size() > 0)
     {
       for(auto index : indexes)
-        used.push_back(&indiv->object_relations_.has_induced_inheritance_relations[index]);
+        used.emplace_back(&indiv->object_relations_[index], indiv->object_relations_.has_induced_inheritance_relations[index]);
       return true;
     }
     else
@@ -277,7 +277,7 @@ bool ReasonerAno::checkMinCard(IndividualBranch_t* indiv, AnonymousClassElement_
     if(indexes.size() > 0)
     {
       for(auto index : indexes)
-        used.push_back(&indiv->data_relations_.has_induced_inheritance_relations[index]);
+        used.emplace_back(&indiv->object_relations_[index], indiv->object_relations_.has_induced_inheritance_relations[index]);
       return true;
     }
     else
@@ -293,7 +293,7 @@ bool ReasonerAno::checkMinCard(IndividualBranch_t* indiv, AnonymousClassElement_
   }
 }
 
-bool ReasonerAno::checkMaxCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
+bool ReasonerAno::checkMaxCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 {
   std::vector<size_t> indexes;
   if(ano_elem->object_property_involved_ != nullptr)
@@ -302,7 +302,7 @@ bool ReasonerAno::checkMaxCard(IndividualBranch_t* indiv, AnonymousClassElement_
     if(indexes.size() > 0)
     {
       for(auto index : indexes)
-        used.push_back(&indiv->object_relations_.has_induced_inheritance_relations[index]);
+        used.emplace_back(&indiv->object_relations_[index], indiv->object_relations_.has_induced_inheritance_relations[index]);
       return true;
     }
     else
@@ -317,7 +317,7 @@ bool ReasonerAno::checkMaxCard(IndividualBranch_t* indiv, AnonymousClassElement_
     if(indexes.size() > 0)
     {
       for(auto index : indexes)
-        used.push_back(&indiv->data_relations_.has_induced_inheritance_relations[index]);
+        used.emplace_back(&indiv->data_relations_[index], indiv->data_relations_.has_induced_inheritance_relations[index]);
       return true;
     }
     else
@@ -333,7 +333,7 @@ bool ReasonerAno::checkMaxCard(IndividualBranch_t* indiv, AnonymousClassElement_
   }
 }
 
-bool ReasonerAno::checkExactlyCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
+bool ReasonerAno::checkExactlyCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 {
   std::vector<size_t> indexes;
   if(ano_elem->object_property_involved_ != nullptr)
@@ -342,7 +342,7 @@ bool ReasonerAno::checkExactlyCard(IndividualBranch_t* indiv, AnonymousClassElem
     if(indexes.size() > 0)
     {
       for(auto index : indexes)
-        used.push_back(&indiv->object_relations_.has_induced_inheritance_relations[index]);
+        used.emplace_back(&indiv->object_relations_[index], indiv->object_relations_.has_induced_inheritance_relations[index]);
       return true;
     }
     else
@@ -357,7 +357,7 @@ bool ReasonerAno::checkExactlyCard(IndividualBranch_t* indiv, AnonymousClassElem
     if(indexes.size() > 0)
     {
       for(auto index : indexes)
-        used.push_back(&indiv->data_relations_.has_induced_inheritance_relations[index]);
+        used.emplace_back(&indiv->data_relations_[index], indiv->data_relations_.has_induced_inheritance_relations[index]);
       return true;
     }
     else
@@ -373,7 +373,7 @@ bool ReasonerAno::checkExactlyCard(IndividualBranch_t* indiv, AnonymousClassElem
   }
 }
 
-bool ReasonerAno::checkOnlyCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
+bool ReasonerAno::checkOnlyCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 {
   std::vector<size_t> indexes;
   if(ano_elem->object_property_involved_ != nullptr)
@@ -382,7 +382,7 @@ bool ReasonerAno::checkOnlyCard(IndividualBranch_t* indiv, AnonymousClassElement
     if(indexes.size() > 0)
     {
       for(auto index : indexes)
-        used.push_back(&indiv->object_relations_.has_induced_inheritance_relations[index]);
+        used.emplace_back(&indiv->object_relations_[index], indiv->object_relations_.has_induced_inheritance_relations[index]);
       return true;
     }
     else
@@ -397,7 +397,7 @@ bool ReasonerAno::checkOnlyCard(IndividualBranch_t* indiv, AnonymousClassElement
     if(indexes.size() > 0)
     {
       for(auto index : indexes)
-        used.push_back(&indiv->data_relations_.has_induced_inheritance_relations[index]);
+        used.emplace_back(&indiv->data_relations_[index], indiv->data_relations_.has_induced_inheritance_relations[index]);
       return true;
     }
     else
@@ -410,7 +410,7 @@ bool ReasonerAno::checkOnlyCard(IndividualBranch_t* indiv, AnonymousClassElement
   return false;
 }
 
-bool ReasonerAno::checkSomeCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
+bool ReasonerAno::checkSomeCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 {
   int index;
 
@@ -419,7 +419,7 @@ bool ReasonerAno::checkSomeCard(IndividualBranch_t* indiv, AnonymousClassElement
     index = checkSomeCard(indiv->object_relations_.relations, ano_elem, used);
     if(index != -1)
     {
-      used.push_back(&indiv->object_relations_.has_induced_inheritance_relations[index]);
+      used.emplace_back(&indiv->object_relations_[index], indiv->object_relations_.has_induced_inheritance_relations[index]);
       return true;
     }
     else
@@ -433,7 +433,7 @@ bool ReasonerAno::checkSomeCard(IndividualBranch_t* indiv, AnonymousClassElement
     index = checkSomeCard(indiv->data_relations_.relations, ano_elem, used);
     if(index != -1)
     {
-      used.push_back(&indiv->data_relations_.has_induced_inheritance_relations[index]);
+      used.emplace_back(&indiv->data_relations_[index], indiv->data_relations_.has_induced_inheritance_relations[index]);
       return true;
     }
     else
@@ -449,7 +449,7 @@ bool ReasonerAno::checkSomeCard(IndividualBranch_t* indiv, AnonymousClassElement
   }
 }
 
-bool ReasonerAno::checkValueCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<InheritedRelationTriplets*>& used)
+bool ReasonerAno::checkValueCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 {
   int index = -1;
   if(indiv->same_as_.size() > 0)
@@ -466,7 +466,7 @@ bool ReasonerAno::checkValueCard(IndividualBranch_t* indiv, AnonymousClassElemen
 
   if(index != -1)
   {
-    used.push_back(&indiv->object_relations_.has_induced_inheritance_relations[index]);
+    used.emplace_back(&indiv->object_relations_[index], indiv->object_relations_.has_induced_inheritance_relations[index]);
     return true;
   }
   else
