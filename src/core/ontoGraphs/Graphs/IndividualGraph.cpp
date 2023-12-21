@@ -2082,6 +2082,9 @@ bool IndividualGraph::removeInheritage(const std::string& indiv, const std::stri
   if(branch_inherited == nullptr)
     return false;
 
+  std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+  std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+
   return removeInheritage(branch_base, branch_inherited);
 }
 
