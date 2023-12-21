@@ -169,7 +169,6 @@ int main(int argc, char** argv)
   signal(SIGSEGV, handler);
   ros::init(argc, argv, "ontologenius_sparql");
 
-  ros::NodeHandle nh;
   ontologenius::Ontology* onto = nullptr;
   ontologenius::RosInterface interface;
   std::thread onto_thread;
