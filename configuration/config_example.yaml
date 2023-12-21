@@ -5,8 +5,8 @@ flow:
   - ontologenius::ReasonerInverseOf
   - ontologenius::ReasonerRangeDomain
   - ontologenius::ReasonerSymmetric
-ReasonerGeneralize:
+ontologenius::ReasonerGeneralize:
   min_count : 2
   min_percent : 0.7
-ReasonerDictionary:
+ontologenius::ReasonerDictionary:
   use_id : true
