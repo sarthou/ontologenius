@@ -186,8 +186,8 @@ private:
   void publish(const std::string& str);
   void publishStamped(const std::string& str, const ontologenius::compat::onto_ros::Time& stamp);
 
-  void commitCallback(const std_msgs_compat::String::ConstPtr& msg);
-  void notificationCallback(const std_msgs_compat::String::ConstPtr& msg);
+  void commitCallback(ontologenius::compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg);
+  void notificationCallback(ontologenius::compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg);
 };
 
 } // namespace onto

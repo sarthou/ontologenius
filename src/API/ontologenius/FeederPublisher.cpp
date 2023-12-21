@@ -180,13 +180,13 @@ void FeederPublisher::publishStamped(const std::string& str, const ontologenius:
   stamped_pub_.publish(msg);
 }
 
-void FeederPublisher::commitCallback(const std_msgs_compat::String::ConstPtr& msg)
+void FeederPublisher::commitCallback(ontologenius::compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg)
 {
   if (msg->data == "end")
     updated_ = true;
 }
 
-void FeederPublisher::notificationCallback(const std_msgs_compat::String::ConstPtr& msg)
+void FeederPublisher::notificationCallback(ontologenius::compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg)
 {
   notification_callback_(msg->data);
 }

@@ -112,6 +112,9 @@ namespace onto_ros
   template <typename T>
   using ServiceWrapper = T;
 
+  template <typename T>
+  using MessageWrapper = typename T::ConstPtr;
+
   using Rate = ros::Rate;
   using RosTime = ros::Time;
 
@@ -121,6 +124,9 @@ namespace onto_ros
 #elif ONTO_ROS_VERSION == 2
   template <typename T>
   using ServiceWrapper = std::shared_ptr<T>;
+
+  template <typename T>
+  using MessageWrapper = typename T::ConstSharedPtr;
 
   using Rate = rclcpp::Rate;
   using RosTime = rclcpp::Time;
@@ -380,7 +386,7 @@ public:
 #if ONTO_ROS_VERSION == 1
     return handle_.waitForExistence(ros::Duration(timeout));
 #elif ONTO_ROS_VERSION == 2
-    return handle_->wait_for_service(timeout);
+    return handle_->wait_for_service(std::chrono::seconds(timeout));
 #endif
   }
 

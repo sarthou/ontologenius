@@ -198,14 +198,14 @@ void RosInterface::setDisplay(bool display)
 *
 ****************/
 
-void RosInterface::knowledgeCallback(const std_msgs_compat::String::ConstPtr& msg)
+void RosInterface::knowledgeCallback(compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg)
 {
   auto now = compat::onto_ros::Node::get().current_time();
   
   feeder_.store(msg->data, { (uint32_t) now.seconds(), (uint32_t) now.nanoseconds()});
 }
 
-void RosInterface::stampedKnowledgeCallback(const compat::OntologeniusStampedString::ConstPtr& msg)
+void RosInterface::stampedKnowledgeCallback(compat::onto_ros::MessageWrapper<compat::OntologeniusStampedString> msg)
 {
   feeder_.store(msg->data, {msg->stamp.seconds, msg->stamp.nanoseconds});
 }

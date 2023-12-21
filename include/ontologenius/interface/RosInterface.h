@@ -110,9 +110,9 @@ public:
   bool display_;
 
   /// @brief The ROS topic callback receiving statements not stamped
-  void knowledgeCallback(const std_msgs_compat::String::ConstPtr& msg);
+  void knowledgeCallback(compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg);
   /// @brief The ROS topic callback receiving stamped statements
-  void stampedKnowledgeCallback(const compat::OntologeniusStampedString::ConstPtr& msg);
+  void stampedKnowledgeCallback(compat::onto_ros::MessageWrapper<compat::OntologeniusStampedString> msg);
 
   /// @brief The ROS service callback in charge of general operations on the ontology
   bool actionsHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Request>& req,
