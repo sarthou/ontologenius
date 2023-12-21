@@ -20,7 +20,7 @@ public:
 
   virtual bool defaultActive() override {return true;}
 private:
-  std::string computeExplanation( std::vector<InheritedRelationTriplets*>& used);
+  std::string computeExplanation( std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used);
   bool checkClassesDisjointess(IndividualBranch_t* indiv, ClassBranch_t* class_equiv);
   int relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
 
