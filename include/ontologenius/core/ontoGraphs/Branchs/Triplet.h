@@ -1,6 +1,8 @@
 #ifndef ONTOLOGENIUS_TRIPLET_H
 #define ONTOLOGENIUS_TRIPLET_H
 
+#include <algorithm>
+
 namespace ontologenius {
 
 template<typename S, typename P, typename O>
@@ -37,11 +39,14 @@ template<typename S, typename P, typename O>
 class Triplets : public TripletsInterface
 {
 public:
-	void push(S* subject,
-						P* predicate,
-						O* object)
+	virtual ~Triplets() = default;
+	
+	Triplet_t<S,P,O> push(S* subject,
+												P* predicate,
+												O* object)
 	{
 		triplets.emplace_back(subject, predicate, object);
+		return triplets.back();
 	}
 
 	bool exist(S* subject,
@@ -53,9 +58,45 @@ public:
 												{return triplet.equals(subject, predicate, object);})
 												!= triplets.end());
 	}
+
+	size_t find(S* subject,
+							P* predicate,
+							O* object)
+	{
+		for(size_t i = 0; i < triplets.size() ; i++)
+		{
+			if(triplets[i].equals(subject, predicate, object))
+				return i;
+		}
+		return -1;
+	}
+
 	bool eraseGeneric(void* s, void* p, void* o) override
 	{
 		return erase((S*)s, (P*)p, (O*)o);
+	}
+
+	bool erase(S* subject,
+						P* predicate,
+						O* object)
+	{
+		size_t index = this->find(subject, predicate, object);
+		if(index != size_t(-1))
+		{
+			triplets.erase(triplets.begin() + index);
+			return true;
+		}
+		else
+			return false;
+	}
+
+	bool empty()
+	{
+		for(auto& triplet : triplets)
+		{
+			triplets.erase(triplet->subject, triplet->predicate, triplet->object);
+		}
+		return true;
 	}
 
 	std::vector<Triplet_t<S,P,O>> triplets;
