@@ -62,7 +62,7 @@ void ReasonerAno::postReason()
 }
 
 
-std::string ReasonerAno::computeExplanation( std::vector<InheritedRelationTriplets*>& used)
+std::string ReasonerAno::computeExplanation( std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 {
   std::string explanation = "";
 
