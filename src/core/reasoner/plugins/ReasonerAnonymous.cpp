@@ -23,11 +23,28 @@ void ReasonerAno::postReason()
         if(checkClassesDisjointess(indiv, anonymous->class_equiv_) == false)
         {
           has_active_equiv = has_active_equiv || resolveFirstLayer(indiv, anonymous->ano_elem_);
+          tree_evaluation_result = resolveTree(indiv, anonymous->ano_elem_, used);
+          if(ontology_->individual_graph_.isA(indiv, anonymous->class_equiv_->get()) == true && tree_evaluation_result == false)
+            ontology_->individual_graph_.removeInheritage(indiv, anonymous->class_equiv_);
+          else
+          {
+            if(has_active_equiv && tree_evaluation_result)
+            {
+              if(ontology_->individual_graph_.conditionalPushBack(indiv->is_a_, ClassElement_t(anonymous->class_equiv_)))
               {
-                induced_vector->push(indiv, nullptr, anonymous->class_equiv_);
+                anonymous->class_equiv_->individual_childs_.emplace_back(indiv);
                 std::string explanation_reference = computeExplanation(used);
                 explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous->class_equiv_->value() + "|",
                                     "[ADD]" + explanation_reference);
+                for(auto& induced_vector : used)
+                {
+                  if(induced_vector.second->exist(indiv, nullptr, anonymous->class_equiv_) == false)
+                  {   
+                    induced_vector.second->push(indiv, nullptr, anonymous->class_equiv_);
+                    std::cout << "--> add trace to " << indiv->value() << " isA " << indiv->is_a_.relations.back().elem->value() << " at " << &(indiv->is_a_.relations.back().induced_inheritances_trace) << " with " << induced_vector.second << std::endl;
+                    indiv->is_a_.relations.back().induced_inheritances_trace.emplace_back(induced_vector.second);
+                  }
+                }
               }
             }
           }
