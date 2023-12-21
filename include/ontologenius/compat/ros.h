@@ -238,6 +238,16 @@ public:
     handle_->publish(message);
 #endif
   }
+
+  size_t getNumSubscribers()
+  {
+#if ONTO_ROS_VERSION == 1
+    return handle_.getNumSubscribers();
+#elif ONTO_ROS_VERSION == 2
+    return handle_->get_subscription_count();
+#endif
+  }
+
 private:
 #if ONTO_ROS_VERSION == 1
   ros::Publisher handle_;
