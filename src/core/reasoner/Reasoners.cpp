@@ -276,7 +276,7 @@ void Reasoners::runPeriodicReasoners()
 
 void Reasoners::applyConfig()
 {
-  for(auto param : config_.config_)
+  for(auto& param : config_.config_)
   {
     if(param.first == "flow")
     {
