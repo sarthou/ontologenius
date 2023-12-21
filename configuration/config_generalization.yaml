@@ -4,7 +4,7 @@ flow:
   - ontologenius::ReasonerGeneralize
   - ontologenius::ReasonerInverseOf
   - ontologenius::ReasonerRangeDomain
-  - ontologenius::ReasonerSymetric
+  - ontologenius::ReasonerSymmetric
 ReasonerGeneralize:
   min_count : 2
   min_percent : 0.6
