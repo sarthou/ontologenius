@@ -2090,10 +2090,29 @@ bool IndividualGraph::removeInheritage(const std::string& indiv, const std::stri
 
 bool IndividualGraph::removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch)
 {
-  std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-  std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+  // check how to return the explanations
+  for(size_t i = 0; i < indiv->is_a_.size(); )
+  {
+    if(indiv->is_a_[i].elem == class_branch)
+    {
+      for(auto& trace_vect : indiv->is_a_[i].induced_inheritances_trace)
+        trace_vect->eraseGeneric(indiv, nullptr, class_branch);
 
-  removeFromElemVect(indiv->is_a_, class_branch);
+      for(auto& relation : indiv->is_a_.has_induced_inheritance_relations[i]->triplets)
+      {
+        /*explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
+                                            relation.object->value(),
+                                    "[DEL]" + indiv->value() + "|isA|" + class_branch->value());*/
+        std::cout << "[DEL]" + relation.subject->value() + "|isA|" + relation.object->value() + 
+                     "[DEL]" + indiv->value() + "|isA|" + class_branch->value() << std::endl;
+        removeInheritage(relation.subject, relation.object);
+      }
+      indiv->is_a_.erase(i);
+      break;
+    }
+    else
+      i++;
+  }
   removeFromElemVect(class_branch->individual_childs_, indiv);
 
   indiv->updated_ = true;
