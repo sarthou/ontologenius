@@ -16,22 +16,13 @@ void ReasonerAno::postReason()
       bool has_active_equiv = false;
       for(auto anonymous : ontology_->anonymous_graph_.get())
       {
+        bool tree_evaluation_result = false;
         used.clear();
         used.reserve(anonymous->depth_);
        
         if(checkClassesDisjointess(indiv, anonymous->class_equiv_) == false)
         {
-          if(resolveTree(indiv, anonymous->ano_elem_, used))
-          {
-            std::cout << "Individual " << indiv->value() << " is equivalent to " << anonymous->value() << " :" << anonymous->class_equiv_->value() << std::endl;
-            std::cout << "used vector size = " << used.size() << std::endl;
-
-            if(ontology_->individual_graph_.conditionalPushBack(indiv->is_a_, ClassElement_t(anonymous->class_equiv_)))
-              anonymous->class_equiv_->individual_childs_.emplace_back(indiv);
-            
-            for(auto induced_vector : used)
-            { 
-              if(induced_vector->exist(indiv, nullptr, anonymous->class_equiv_) == false)
+          has_active_equiv = has_active_equiv || resolveFirstLayer(indiv, anonymous->ano_elem_);
               {
                 induced_vector->push(indiv, nullptr, anonymous->class_equiv_);
                 std::string explanation_reference = computeExplanation(used);
