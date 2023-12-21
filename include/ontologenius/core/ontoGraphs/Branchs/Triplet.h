@@ -26,8 +26,15 @@ struct Triplet_t
 	}
 };
 
+class TripletsInterface
+{
+public:
+	virtual ~TripletsInterface() = default;
+	virtual bool eraseGeneric(void* s, void* p, void* o) = 0;
+};
+
 template<typename S, typename P, typename O>
-class Triplets
+class Triplets : public TripletsInterface
 {
 public:
 	void push(S* subject,
@@ -45,6 +52,10 @@ public:
 												[subject, predicate, object](auto& triplet)
 												{return triplet.equals(subject, predicate, object);})
 												!= triplets.end());
+	}
+	bool eraseGeneric(void* s, void* p, void* o) override
+	{
+		return erase((S*)s, (P*)p, (O*)o);
 	}
 
 	std::vector<Triplet_t<S,P,O>> triplets;
