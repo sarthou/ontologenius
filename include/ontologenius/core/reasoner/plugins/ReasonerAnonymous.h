@@ -44,6 +44,15 @@ private:
   bool checkValueCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used);
 
   template<typename T>
+  bool checkPropertyExistence(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem)
+  {
+    for(auto& relation : relations)
+      if(testPropertyInheritance(ano_elem, relation.first))
+        return true;
+    return false;
+  }
+
+  template<typename T>
   std::vector<size_t> checkMinCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem , std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
   {
     std::vector<size_t> indexes;

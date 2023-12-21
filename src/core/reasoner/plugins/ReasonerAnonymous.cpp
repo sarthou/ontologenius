@@ -108,6 +108,25 @@ int ReasonerAno::relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBr
 
 }
 
+bool ReasonerAno::resolveFirstLayer(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem)
+{
+  if(ano_elem->logical_type_ == logical_and)
+    for(auto elem : ano_elem->sub_elements_)
+      return resolveFirstLayer(indiv, elem);
+  else if(ano_elem->logical_type_ == logical_or)
+  {
+    for(auto elem : ano_elem->sub_elements_)
+      if(resolveFirstLayer(indiv, elem) == true)
+        return true;
+    return false;
+  }
+  else if(ano_elem->logical_type_ == logical_not)
+    return !resolveFirstLayer(indiv, ano_elem->sub_elements_.front());
+  else
+    return checkRestrictionFirstLayer(indiv, ano_elem);
+  return false;
+}
+
 bool ReasonerAno::resolveTree(LiteralNode* literal, AnonymousClassElement_t* ano_elem,  std::vector<std::pair< ProbabilisticElement_t*, InheritedRelationTriplets*>>& used)
 { 
   if(ano_elem->logical_type_ == logical_and)
@@ -173,6 +192,23 @@ bool ReasonerAno::resolveTree(IndividualBranch_t* indiv, AnonymousClassElement_t
   else
     return checkRestriction(indiv, ano_elem, used);
 
+  return false;
+}
+
+bool ReasonerAno::checkRestrictionFirstLayer(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem)
+{
+  if(ano_elem->object_property_involved_ != nullptr)
+    return checkPropertyExistence(indiv->object_relations_.relations, ano_elem);
+  else if (ano_elem->data_property_involved_ != nullptr)
+    return checkPropertyExistence(indiv->data_relations_.relations, ano_elem);
+  else if(ano_elem->class_involved_ != nullptr)
+    return (ontology_->individual_graph_.isA(indiv, ano_elem->class_involved_->get()));
+  else if(ano_elem->oneof)
+  {
+    for(auto elem : ano_elem->sub_elements_)
+      if(checkIndividualRestriction(indiv, elem) == true)
+        return true;
+  }
   return false;
 }
 
