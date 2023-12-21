@@ -2252,8 +2252,7 @@ void IndividualGraph::removeRelation(const std::string& indiv_from, const std::s
         {
           branch_from->data_relations_.erase(i);
           branch_from->updated_ = true;
-          // add on to delete the induced inheritance relations
-          for(auto& relation : branch_from->data_relations_.has_induced_inheritance_relations[i].triplets)
+          for(auto& relation : branch_from->data_relations_.has_induced_inheritance_relations[i]->triplets)
           {
             explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
                                                 relation.object->value(),
@@ -2331,7 +2330,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
     if(indiv_from->object_relations_[i].first == property &&
       indiv_from->object_relations_[i].second == indiv_on)
     {
-      for(auto& relation : indiv_from->object_relations_.has_induced_object_relations[i].triplets)
+      for(auto& relation : indiv_from->object_relations_.has_induced_object_relations[i]->triplets)
       {
         explanations.emplace_back("[DEL]" + relation.subject->value() + "|" +
                                             relation.predicate->value() + "|" +
@@ -2345,7 +2344,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
         explanations.insert(explanations.end(), tmp.begin(), tmp.end());
       }
 
-      for(auto& relation : indiv_from->object_relations_.has_induced_inheritance_relations[i].triplets)
+      for(auto& relation : indiv_from->object_relations_.has_induced_inheritance_relations[i]->triplets)
       {
         explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
                                             relation.object->value(),
@@ -2549,12 +2548,12 @@ void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch
 
   for(const auto& induced : old_branch->object_relations_.has_induced_object_relations)
   {
-    for(size_t i = 0; i < induced.triplets.size(); i++)
+    for(size_t i = 0; i < induced->triplets.size(); i++)
     {
-      auto from = container_.find(induced.triplets[i].subject->value());
-      auto prop = object_property_graph_->container_.find(induced.triplets[i].predicate->value());
-      auto on = container_.find(induced.triplets[i].object->value());
-      new_branch->object_relations_.has_induced_object_relations[i].push(from, prop, on);
+      auto from = container_.find(induced->triplets[i].subject->value());
+      auto prop = object_property_graph_->container_.find(induced->triplets[i].predicate->value());
+      auto on = container_.find(induced->triplets[i].object->value());
+      new_branch->object_relations_.has_induced_object_relations[i]->push(from, prop, on);
     }
   }
 }
