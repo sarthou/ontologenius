@@ -2095,7 +2095,7 @@ bool IndividualGraph::removeInheritage(IndividualBranch_t* indiv, ClassBranch_t*
   {
     if(indiv->is_a_[i].elem == class_branch)
     {
-      for(auto& trace_vect : indiv->is_a_[i].induced_inheritances_trace)
+      for(auto& trace_vect : indiv->is_a_[i].induced_traces)
         trace_vect->eraseGeneric(indiv, nullptr, class_branch);
 
       for(auto& relation : indiv->is_a_.has_induced_inheritance_relations[i]->triplets)
