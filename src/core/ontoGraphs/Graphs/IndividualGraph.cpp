@@ -2252,8 +2252,6 @@ void IndividualGraph::removeRelation(const std::string& indiv_from, const std::s
         if(((type == "_") || (branch_from->data_relations_[i].second->type_ == type)) &&
           ((data == "_") || (branch_from->data_relations_[i].second->value_ == data)))
         {
-          branch_from->data_relations_.erase(i);
-          branch_from->updated_ = true;
           for(auto& relation : branch_from->data_relations_.has_induced_inheritance_relations[i]->triplets)
           {
             explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
@@ -2262,6 +2260,8 @@ void IndividualGraph::removeRelation(const std::string& indiv_from, const std::s
 
             removeInheritage(relation.subject, relation.object);
           }
+          branch_from->data_relations_.erase(i);
+          branch_from->updated_ = true;
         }
         else
           i++;
