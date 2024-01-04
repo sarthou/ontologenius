@@ -24,7 +24,6 @@ void AnonymousClassChecker::checkDisjoint()
 {
   for(AnonymousClassBranch_t* branch : graph_vect_)
   {
-    std::cout <<" ano branch : " << branch->value() << " with equiv to class " << branch->class_equiv_->value() << std::endl;
     current_ano_ = branch->class_equiv_->value();
     auto errs = resolveTree(branch->ano_elem_, {ClassElement_t(branch->class_equiv_)});
     for(auto& err : errs)
