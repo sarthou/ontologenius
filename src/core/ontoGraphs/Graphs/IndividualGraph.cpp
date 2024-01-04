@@ -2174,7 +2174,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
 
   for(size_t i = 0; i < branch_from->object_relations_.size();)
   {
-    auto object_relation = branch_from->object_relations_[i];
+    auto& object_relation = branch_from->object_relations_[i];
     bool applied = false;
     for(auto& down : down_properties)
     {
@@ -2184,6 +2184,9 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
         {
           if((protect_infered == true) && (object_relation.infered == false))
             break;
+
+          for(auto& trace_vect : object_relation.induced_chain_trace)
+            trace_vect->eraseGeneric(branch_from, property, branch_on);
 
           auto exp_inv = removeRelationInverse(branch_from, object_relation.first, object_relation.second);
           auto exp_sym = removeRelationSymetric(branch_from, object_relation.first, object_relation.second);
