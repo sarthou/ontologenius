@@ -2191,7 +2191,6 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
           auto exp_inv = removeRelationInverse(branch_from, object_relation.first, object_relation.second);
           auto exp_sym = removeRelationSymetric(branch_from, object_relation.first, object_relation.second);
           auto exp_ch  = removeRelationChain(branch_from, object_relation.first, object_relation.second);
-
           explanations.insert(explanations.end(), exp_inv.begin(), exp_inv.end());
           explanations.insert(explanations.end(), exp_sym.begin(), exp_sym.end());
           explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
@@ -2262,7 +2261,6 @@ void IndividualGraph::removeRelation(const std::string& indiv_from, const std::s
                                       "[DEL]" + indiv_from + "|" + property + "|" + type + "|" + data);
 
             removeInheritage(relation.subject, relation.object);
-            
           }
         }
         else
@@ -2338,8 +2336,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
         explanations.emplace_back("[DEL]" + relation.subject->value() + "|" +
                                             relation.predicate->value() + "|" +
                                             relation.object->value(),
-                                   "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
-
+                                   "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());                           
         auto tmp = removeRelation(relation.subject,
                                   relation.predicate,
                                   relation.object,
