@@ -46,7 +46,7 @@ void ReasonerAno::postReason()
                   if(induced_vector->exist(indiv, nullptr, anonymous->class_equiv_) == false)
                   {   
                     induced_vector->push(indiv, nullptr, anonymous->class_equiv_);
-                    indiv->is_a_.relations.back().induced_inheritances_trace.emplace_back(induced_vector);
+                    indiv->is_a_.relations.back().induced_traces.emplace_back(induced_vector);
                   }
                 }
               }

@@ -12,8 +12,7 @@ class ProbabilisticElement_t
 public:
   float probability;
   bool infered;
-  std::vector<TripletsInterface*> induced_inheritances_trace;
-  std::vector<TripletsInterface*> induced_chain_trace;
+  std::vector<TripletsInterface*> induced_traces;
 
   bool operator>(float prob)
   {
@@ -44,8 +43,7 @@ public:
     this->elem = elem;
     this->probability = other.probability;
     this->infered = other.infered;
-    this->induced_inheritances_trace = other.induced_inheritances_trace;
-    this->induced_chain_trace = other.induced_chain_trace;
+    this->induced_traces = other.induced_traces;
   }
 
   Single_t(const Single_t& other)
@@ -55,8 +53,7 @@ public:
     this->elem = other.elem;
     this->probability = other.probability;
     this->infered = other.infered;
-    this->induced_inheritances_trace = other.induced_inheritances_trace;
-    this->induced_chain_trace = other.induced_chain_trace;
+    this->induced_traces = other.induced_traces;
   }
 
   bool operator==(const Single_t& other)
@@ -91,8 +88,7 @@ public:
     this->second = second;
     this->probability = other.probability;
     this->infered = other.infered;
-    this->induced_inheritances_trace = other.induced_inheritances_trace;
-    this->induced_chain_trace = other.induced_chain_trace;
+    this->induced_traces = other.induced_traces;
   }
 
   Pair_t(const Pair_t& other)
@@ -103,8 +99,7 @@ public:
     this->second = other.second;
     this->probability = other.probability;
     this->infered = other.infered;
-    this->induced_inheritances_trace = other.induced_inheritances_trace;
-    this->induced_chain_trace = other.induced_chain_trace;
+    this->induced_traces = other.induced_traces;
   }
 
   bool operator==(const Pair_t& other)

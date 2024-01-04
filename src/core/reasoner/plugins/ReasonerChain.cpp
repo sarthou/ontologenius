@@ -141,7 +141,7 @@ void ReasonerChain::addInduced(IndividualBranch_t* indiv, size_t index, Individu
   if(indiv->object_relations_.has_induced_object_relations[index]->exist(indiv_from, property, indiv_on) == false)
   {
     indiv->object_relations_.has_induced_object_relations[index]->push(indiv_from, property, indiv_on);
-    indiv_from->object_relations_.relations.back().induced_chain_trace.emplace_back(indiv->object_relations_.has_induced_object_relations[index]);
+    indiv_from->object_relations_.relations.back().induced_traces.emplace_back(indiv->object_relations_.has_induced_object_relations[index]);
   }           
 }
 

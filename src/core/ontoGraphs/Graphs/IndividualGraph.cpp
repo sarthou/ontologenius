@@ -2185,7 +2185,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
           if((protect_infered == true) && (object_relation.infered == false))
             break;
 
-          for(auto& trace_vect : object_relation.induced_chain_trace)
+          for(auto& trace_vect : object_relation.induced_traces)
             trace_vect->eraseGeneric(branch_from, property, branch_on);
 
           auto exp_inv = removeRelationInverse(branch_from, object_relation.first, object_relation.second);
