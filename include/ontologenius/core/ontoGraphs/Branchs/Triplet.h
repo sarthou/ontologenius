@@ -90,15 +90,6 @@ public:
 			return false;
 	}
 
-	bool empty()
-	{
-		for(auto& triplet : triplets)
-		{
-			triplets.erase(triplet->subject, triplet->predicate, triplet->object);
-		}
-		return true;
-	}
-
 	std::vector<Triplet_t<S,P,O>> triplets;
 };
 
