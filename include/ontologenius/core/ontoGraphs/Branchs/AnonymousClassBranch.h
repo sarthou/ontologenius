@@ -53,10 +53,11 @@ public:
   CardinalityElement_t card_;
 
   std::vector<AnonymousClassElement_t*> sub_elements_;
+  std::string ano_name;
 
   AnonymousClassElement_t() : logical_type_(logical_none), oneof(false), is_complex(false), 
                               class_involved_(nullptr), object_property_involved_(nullptr), 
-                              data_property_involved_(nullptr), individual_involved_(nullptr) {}
+                              data_property_involved_(nullptr), individual_involved_(nullptr), ano_name("") {}
  
 };
 
@@ -66,8 +67,7 @@ public:
   AnonymousClassBranches_t(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), depth_(0) {}  
 
   ClassBranch_t* class_equiv_;
-  AnonymousClassElement_t* ano_elem_;
-  
+  std::vector<AnonymousClassElement_t*> ano_elems_;
   size_t depth_;
 };
 
