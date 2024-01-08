@@ -140,9 +140,7 @@ class ClassGraph;
 
 class AnonymousClassChecker;
 
-// OntoGraph and not just Graph because in Ontology.h -> need to have only arguments which have a get() and close() specification
-// class AnonymousClassGraph : public OntoGraph<AnonymousClassBranch_t>
-class AnonymousClassGraph : public Graph<AnonymousClassBranch_t>
+class AnonymousClassGraph : public Graph<AnonymousClassBranches_t>
 {
   friend ObjectPropertyGraph;
   friend DataPropertyGraph;
@@ -158,12 +156,12 @@ public:
     ~AnonymousClassGraph() {};
 
     void close() {};
-    std::vector<AnonymousClassBranch_t*> get() override { return anonymous_classes_;}
+    std::vector<AnonymousClassBranches_t*> get() override { return anonymous_classes_;}
 
     AnonymousClassElement_t* createElement(ExpressionMember_t* exp_leaf);
     void update(ExpressionMember_t* exp, AnonymousClassElement_t* ano_class);
     AnonymousClassElement_t* createTree(ExpressionMember_t* member_node, size_t& depth);
-    AnonymousClassBranch_t* add(const std::string& value, AnonymousClassVectors_t& ano_class);
+    AnonymousClassBranches_t* add(const std::string& value, AnonymousClassVectors_t& ano_class);
     AnonymousClassElement_t* resolveTree(AnonymousClassElement_t* elem,  bool prev_and);
 
     void distributeAnonymousClass(AnonymousClassBranch_t* ano_class_branch);
@@ -178,7 +176,7 @@ private:
     DataPropertyGraph* data_property_graph_;
     IndividualGraph* individual_graph_;
 
-    std::vector<AnonymousClassBranch_t*> anonymous_classes_;
+    std::vector<AnonymousClassBranches_t*> anonymous_classes_;
 };
 
 } // namespace ontologenius

@@ -69,7 +69,7 @@ void ClassOwlWriter::writeClass(ClassBranch_t* branch)
 
 void ClassOwlWriter::writeEquivalentClass(ClassBranch_t* branch)
 {
-  std::vector<AnonymousClassBranch_t*> equiv =  branch->equiv_relations_;
+  AnonymousClassBranches_t* equiv =  branch->equiv_relations_;
  
   for(auto& elem : equiv)
   {

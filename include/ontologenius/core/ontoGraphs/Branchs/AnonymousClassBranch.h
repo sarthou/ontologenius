@@ -60,10 +60,10 @@ public:
  
 };
 
-class AnonymousClassBranch_t : public ValuedNode
+class AnonymousClassBranches_t : public ValuedNode
 {
 public:
-  AnonymousClassBranch_t(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), ano_elem_(nullptr), depth_(0) {}  
+  AnonymousClassBranches_t(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), depth_(0) {}  
 
   ClassBranch_t* class_equiv_;
   AnonymousClassElement_t* ano_elem_;

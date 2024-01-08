@@ -34,7 +34,7 @@ AnonymousClassGraph::AnonymousClassGraph(const AnonymousClassGraph& other, Class
 
   for(auto branch : other.anonymous_classes_)
   {
-    auto class_branch = new AnonymousClassBranch_t(branch->value());
+    auto class_branch = new AnonymousClassBranches_t(branch->value());
     anonymous_classes_.push_back(class_branch);
   }
 }
@@ -144,7 +144,7 @@ AnonymousClassElement_t* AnonymousClassGraph::createTree(ExpressionMember_t* mem
   return node;
 }
 
-AnonymousClassBranch_t* AnonymousClassGraph::add(const std::string& value, AnonymousClassVectors_t& ano)
+AnonymousClassBranches_t* AnonymousClassGraph::add(const std::string& value, AnonymousClassVectors_t& ano)
 {   
   std::lock_guard<std::shared_timed_mutex> lock(Graph<AnonymousClassBranch_t>::mutex_);
 

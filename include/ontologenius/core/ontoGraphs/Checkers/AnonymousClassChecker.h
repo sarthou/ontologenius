@@ -7,7 +7,7 @@
 
 namespace ontologenius {
 
-class AnonymousClassChecker : public ValidityChecker<AnonymousClassBranch_t>
+class AnonymousClassChecker : public ValidityChecker<AnonymousClassBranches_t>
 {
 public:
   explicit AnonymousClassChecker(AnonymousClassGraph* graph) : ValidityChecker(graph) {ano_class_graph_ = graph;}
@@ -18,7 +18,7 @@ public:
 
   void printStatus()
   {
-      ValidityChecker<AnonymousClassBranch_t>::printStatus("anonymous_class", "anonymous_classes", graph_vect_.size());
+      ValidityChecker<AnonymousClassBranches_t>::printStatus("anonymous_class", "anonymous_classes", graph_vect_.size());
   };
 
 private:
