@@ -413,10 +413,6 @@ void RosInterface::periodicReasoning()
     wait.sleep();
   }
 
-  reasoner_mutex_.lock();
-  reasoners_.getExplanations(); // flush explanations of initialization
-  reasoner_mutex_.unlock();
-
   ros::Rate r(100);
   std_msgs::String msg;
   ontologenius::OntologeniusExplanation expl_msg;
