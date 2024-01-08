@@ -22,12 +22,15 @@ size_t AnonymousClassChecker::check()
 
 void AnonymousClassChecker::checkDisjoint()
 {
-  for(AnonymousClassBranch_t* branch : graph_vect_)
+  for(AnonymousClassBranches_t* branch_vect : graph_vect_)
   {
-    current_ano_ = branch->class_equiv_->value();
-    auto errs = resolveTree(branch->ano_elem_, {ClassElement_t(branch->class_equiv_)});
-    for(auto& err : errs)
-      print_error("In equivalence of class " + current_ano_ + ": error between class " + current_ano_ + " " + err);
+    current_ano_ = branch_vect->class_equiv_->value();
+    for(auto branch : branch_vect->ano_elems_ )
+    {
+      auto errs = resolveTree(branch, {ClassElement_t(branch_vect->class_equiv_)});
+      for(auto& err : errs)
+        print_error("In equivalence of class " + current_ano_ + ": error between class " + current_ano_ + " " + err);
+    }
   }
 }
 
