@@ -14,63 +14,67 @@ void ReasonerAno::postReason()
     if((indiv->updated_ == true) || (indiv->flags_.find("equiv") != indiv->flags_.end()))
     {
       bool has_active_equiv = false;
+
       for(auto anonymous : ontology_->anonymous_graph_.get())
       {
         bool tree_evaluation_result = false;
         bool tree_first_layer_result = false;
-        used.clear();
-        used.reserve(anonymous->depth_);
-       
-        if(checkClassesDisjointess(indiv, anonymous->class_equiv_) == false)
+        
+        for(auto anonymous_branch : anonymous->ano_elems_)
         {
-          tree_first_layer_result = resolveFirstLayer(indiv, anonymous->ano_elem_);
-          has_active_equiv = has_active_equiv || tree_first_layer_result;
-
-          if(tree_first_layer_result == true)
-            tree_evaluation_result = resolveTree(indiv, anonymous->ano_elem_, used);
-
-          if(ontology_->individual_graph_.isA(indiv, anonymous->class_equiv_->get()) == true && tree_evaluation_result == false)
-            ontology_->individual_graph_.removeInheritage(indiv, anonymous->class_equiv_);
-          else
+          used.clear();
+          used.reserve(anonymous->depth_);
+        
+          if(checkClassesDisjointess(indiv, anonymous->class_equiv_) == false)
           {
+            tree_first_layer_result = resolveFirstLayer(indiv, anonymous_branch);
+            has_active_equiv = has_active_equiv || tree_first_layer_result;
+
+            if(tree_first_layer_result == true)
+              tree_evaluation_result = resolveTree(indiv,  anonymous_branch, used);
+            
             if(has_active_equiv && tree_evaluation_result)
             {
               if(ontology_->individual_graph_.conditionalPushBack(indiv->is_a_, ClassElement_t(anonymous->class_equiv_)))
               {
                 anonymous->class_equiv_->individual_childs_.emplace_back(indiv);
-                std::string explanation_reference = computeExplanation(used);
-                explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous->class_equiv_->value() + "|",
-                                    "[ADD]" + explanation_reference);
+  
+                std::string explanation_reference = "";
                 for(auto& induced_vector : used)
                 {
-                  if(induced_vector->exist(indiv, nullptr, anonymous->class_equiv_) == false)
-                  {   
-                    induced_vector->push(indiv, nullptr, anonymous->class_equiv_);
-                    indiv->is_a_.relations.back().induced_traces.emplace_back(induced_vector);
+                  explanation_reference += induced_vector.first;
+                  // check for nullptr because OneOf returns a (string, nullptr)
+                  if(induced_vector.second != nullptr)
+                  {
+                    if(induced_vector.second->exist(indiv, nullptr, anonymous->class_equiv_) == false)
+                    {   
+                      induced_vector.second->push(indiv, nullptr, anonymous->class_equiv_);
+                      indiv->is_a_.relations.back().induced_traces.emplace_back(induced_vector.second);
+                    }
                   }
                 }
-              }
-            }
+                explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous->class_equiv_->value(),
+                                    "[ADD]" + explanation_reference);
+                // once we get a valid equivalence for a class, we break out of the loop
+                break;
+              } 
+            }    
           }
+          else
+            std::cout << "disjointness error between classes of " + indiv->value() + " and " + anonymous->class_equiv_->value() << std::endl;
         }
-        else
-          std::cout << "disjointness error between classes of " + indiv->value() + " and " + anonymous->class_equiv_->value() << std::endl;
-          //notifications_.push_back(std::make_pair(notification_error, "[FAIL][" + std::string(e.what()) + "][equiv]" + "disjointness between inheritance of" + indiv->value() + " and " + anonymous->class_equiv_->value()));
+        
+        // Manages implicitly the NOT, MIN, MAX, EXACTLY cases
+        if(tree_evaluation_result == false && anonymous->ano_elems_.size() != 0 && ontology_->individual_graph_.isA(indiv, anonymous->class_equiv_->get()) == true)
+          ontology_->individual_graph_.removeInheritage(indiv, anonymous->class_equiv_);
       }
+      
       if(has_active_equiv)
         indiv->flags_["equiv"] = {};
       else
         indiv->flags_.erase("equiv");
     }
   }
-}
-
-
-std::string ReasonerAno::computeExplanation( std::vector<InheritedRelationTriplets*>& used)
-{
-  std::string explanation = "";
-
-  return explanation;
 }
 
 bool ReasonerAno::checkClassesDisjointess(IndividualBranch_t* indiv, ClassBranch_t* class_equiv)
