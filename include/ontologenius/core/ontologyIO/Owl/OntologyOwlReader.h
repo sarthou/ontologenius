@@ -45,7 +45,7 @@ private:
   int readIndividual(TiXmlElement* rdf, const std::string& name);
 
   void readClass(TiXmlElement* elem);
-  AnonymousClassVectors_t readEquivalentClass(TiXmlElement* elem, const std::string& class_name);
+  void readEquivalentClass(AnonymousClassVectors_t& ano, TiXmlElement* elem, const std::string& class_name);
 
   ExpressionMember_t* readRestriction(TiXmlElement* elem);
   ExpressionMember_t* readClassExpression(TiXmlElement* elem);

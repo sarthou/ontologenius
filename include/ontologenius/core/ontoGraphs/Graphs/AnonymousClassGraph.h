@@ -79,10 +79,10 @@ struct ExpressionMember_t
   Restriction_t rest; // Restriction (e.g hasComponent some Camera)
   std::vector<ExpressionMember_t*> child_members;
   ExpressionMember_t* mother;
-  std::string distributed_equivalence;
+  std::string ano_name;
 
   ExpressionMember_t() : logical_type_(logical_none), oneof(false),
-                         is_complex(false), is_data_property(false), mother(nullptr) {}  
+                         is_complex(false), is_data_property(false), mother(nullptr), ano_name("") {}  
 
   std::string toString()
   {
@@ -127,9 +127,8 @@ struct ExpressionMember_t
 struct AnonymousClassVectors_t
 {
   std::string class_equiv;
-  ExpressionMember_t* equivalence_tree;
-  std::string str_equivalences;
-  std::vector<std::vector<std::string>> equiv_vect;
+  std::vector<ExpressionMember_t*> equivalence_trees;
+  std::vector<std::string> str_equivalences;
 };
 
 //for friend

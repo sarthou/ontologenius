@@ -71,18 +71,18 @@ void ClassOwlWriter::writeEquivalentClass(ClassBranch_t* branch)
 {
   AnonymousClassBranches_t* equiv =  branch->equiv_relations_;
  
-  for(auto& elem : equiv)
+  for(auto& elem : equiv->ano_elems_)
   {
     std::string tmp, field;
     field = "owl:equivalentClass";
     size_t level = 2;
  
     // single expression
-    if(elem->ano_elem_->sub_elements_.size() == 0 &&
-      elem->ano_elem_->class_involved_ != nullptr && 
-      elem->ano_elem_->object_property_involved_ == nullptr)
+    if(elem->sub_elements_.size() == 0 &&
+      elem->class_involved_ != nullptr && 
+      elem->object_property_involved_ == nullptr)
     {
-      tmp = "<" + field + " " + getResource(elem->ano_elem_) + "/>\n";
+      tmp = "<" + field + " " + getResource(elem) + "/>\n";
       writeString(tmp, level);
     }
     // Collection of expressions
@@ -91,10 +91,10 @@ void ClassOwlWriter::writeEquivalentClass(ClassBranch_t* branch)
       tmp = "<" + field + ">\n";
       writeString(tmp, level);
 
-      if(elem->ano_elem_->logical_type_ != logical_none || elem->ano_elem_->oneof == true)
-        writeClassExpression(elem->ano_elem_, level+1);
+      if(elem->logical_type_ != logical_none || elem->oneof == true)
+        writeClassExpression(elem, level+1);
       else
-        writeRestriction(elem->ano_elem_, level+1);
+        writeRestriction(elem, level+1);
 
       tmp = "</" + field + ">\n";
       writeString(tmp, level);

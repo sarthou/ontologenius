@@ -218,6 +218,7 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
 {
   std::string node_name = "";
   ObjectVectors_t object_vector;
+  AnonymousClassVectors_t ano_vector;
   const char* attr = elem->Attribute("rdf:about");
   if(attr != nullptr)
   {
@@ -239,11 +240,7 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
       else if(sub_elem_name == "onto:label")
         pushLang(object_vector.muted_dictionary_, sub_elem);
       else if(sub_elem_name == "owl:equivalentClass")
-      {
-        AnonymousClassVectors_t ano_class = readEquivalentClass(sub_elem, attr);
-        anonymous_graph_->add(node_name, ano_class);
-        push(object_vector.equivalences_, ano_class.str_equivalences , "=");
-      }
+        readEquivalentClass(ano_vector, sub_elem, attr);
       else
       {
         std::string ns = sub_elem_name.substr(0,sub_elem_name.find(':'));
@@ -265,15 +262,21 @@ void OntologyOwlReader::readClass(TiXmlElement* elem)
       }
     }
   }
+
+  if(ano_vector.equivalence_trees.size() != 0)
+  {
+    anonymous_graph_->add(node_name, ano_vector);
+    for(auto& str_elem : ano_vector.str_equivalences)
+      push(object_vector.equivalences_, str_elem , "=");
+  }
+ 
   class_graph_->add(node_name, object_vector);
   nb_loaded_elem_++;
 }
 
-AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* elem, const std::string& class_name)
+void OntologyOwlReader::readEquivalentClass(AnonymousClassVectors_t& ano, TiXmlElement* elem, const std::string& class_name)
 {
-  AnonymousClassVectors_t ano;
   ano.class_equiv = class_name;
-
   ExpressionMember_t* exp;
 
   // Class only equivalence  : Camera Eq to Component
@@ -296,10 +299,8 @@ AnonymousClassVectors_t OntologyOwlReader::readEquivalentClass(TiXmlElement* ele
       exp = readClassExpression(sub_elem);
   }
 
-  ano.equivalence_tree = exp;
-  ano.str_equivalences = exp->toString();
-
-  return ano; 
+  ano.equivalence_trees.push_back(exp);
+  ano.str_equivalences.push_back(exp->toString());
 }
 
 ExpressionMember_t* OntologyOwlReader::readRestriction(TiXmlElement* elem)
