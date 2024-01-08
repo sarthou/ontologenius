@@ -343,7 +343,10 @@ bool Feeder::applyProperty(feed_t& feed)
       else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
       {
         if(data_property == true)
-          onto_->individual_graph_.removeRelation(feed.from_, feed.prop_, type, data);
+        {
+          auto tmp = onto_->individual_graph_.removeRelation(feed.from_, feed.prop_, type, data);
+          explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+        }
         else
         {
           auto tmp = onto_->individual_graph_.removeRelation(feed.from_, feed.prop_, feed.on_);
