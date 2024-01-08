@@ -193,6 +193,10 @@ void RosInterface::close()
   onto_->close();
   reasoners_.initialize();
   reasoners_.runPostReasoners();
+
+  reasoner_mutex_.lock();
+  reasoners_.getExplanations(); // flush explanations of initialization
+  reasoner_mutex_.unlock();
 }
 
 void RosInterface::setDisplay(bool display)
