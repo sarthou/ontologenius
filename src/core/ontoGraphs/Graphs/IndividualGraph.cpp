@@ -2239,7 +2239,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
   return std::vector<std::pair<std::string, std::string>>();
 }
 
-void IndividualGraph::removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data)
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data)
 {
   std::vector<std::pair<std::string, std::string>> explanations;
   IndividualBranch_t* branch_from = findBranch(indiv_from);
@@ -2269,6 +2269,7 @@ void IndividualGraph::removeRelation(const std::string& indiv_from, const std::s
       else
         i++;
     }
+    return explanations;
   }
   else
     throw GraphException("The subject entity does not exist");
