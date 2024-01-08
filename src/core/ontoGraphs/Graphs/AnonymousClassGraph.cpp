@@ -10,10 +10,9 @@
 
 #include "ontologenius/utils/String.h"
 
-#define DEBUG
+//#define DEBUG
 
 namespace ontologenius {
-
 
 AnonymousClassGraph::AnonymousClassGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, 
                                         DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph)
@@ -128,7 +127,7 @@ AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* 
 
 AnonymousClassElement_t* AnonymousClassGraph::createTree(ExpressionMember_t* member_node, size_t& depth)
 {
-  size_t local_depth = depth +1;
+  size_t local_depth = depth + 1;
   AnonymousClassElement_t* node = createElement(member_node);
   
   for(auto child : member_node->child_members)
@@ -146,24 +145,28 @@ AnonymousClassElement_t* AnonymousClassGraph::createTree(ExpressionMember_t* mem
 
 AnonymousClassBranches_t* AnonymousClassGraph::add(const std::string& value, AnonymousClassVectors_t& ano)
 {   
-  std::lock_guard<std::shared_timed_mutex> lock(Graph<AnonymousClassBranch_t>::mutex_);
+  std::lock_guard<std::shared_timed_mutex> lock(Graph<AnonymousClassBranches_t>::mutex_);
 
-  std::string ano_name = "anonymous"+ std::to_string(anonymous_classes_.size());
-  AnonymousClassBranch_t* anonymous_branch = new AnonymousClassBranch_t(ano_name);
-
-  anonymous_classes_.push_back(anonymous_branch);
-
+  std::string ano_name = "anonymous_"+ value;
+  AnonymousClassBranches_t* anonymous_branch = new AnonymousClassBranches_t(ano_name);
   ClassBranch_t* class_branch = class_graph_->findOrCreateBranch(value);
+
   anonymous_branch->class_equiv_= class_branch;
-  class_branch->equiv_relations_.push_back(anonymous_branch);
+  anonymous_classes_.push_back(anonymous_branch);
+  class_branch->equiv_relations_ = anonymous_branch;
+  
+  for(size_t i = 0 ; i < ano.equivalence_trees.size() ; i++)
+  {
+    size_t depth = 0;
+    AnonymousClassElement_t* ano_elem = createTree(ano.equivalence_trees[i], depth);
+    ano_elem->ano_name = ano_name + "_" + std::to_string(i);
+    anonymous_branch->ano_elems_.push_back(ano_elem);
+    anonymous_branch->depth_ = depth;
 
-  size_t depth = 0;
-  anonymous_branch->ano_elem_ = createTree(ano.equivalence_tree, depth);
-  anonymous_branch->depth_ = depth;
-
-  #ifdef DEBUG
-  printTree(anonymous_branch->ano_elem_, 3, true);
-  #endif
+    #ifdef DEBUG
+    printTree(ano_elem, 3, true);
+    #endif
+  }
 
   return anonymous_branch;
 }
@@ -222,8 +225,6 @@ void AnonymousClassGraph::printTree(AnonymousClassElement_t* ano_elem, size_t le
 
   for(auto sub_elem : ano_elem->sub_elements_)
   {
-    //std::cout << "│   ";
-
     for(int i = 0; i < int(level) ; i++)
       std::cout << "│   ";
     if(sub_elem == ano_elem->sub_elements_.back())

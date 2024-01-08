@@ -163,9 +163,6 @@ public:
     AnonymousClassBranches_t* add(const std::string& value, AnonymousClassVectors_t& ano_class);
     AnonymousClassElement_t* resolveTree(AnonymousClassElement_t* elem,  bool prev_and);
 
-    void distributeAnonymousClass(AnonymousClassBranch_t* ano_class_branch);
-    void organizeAnonymousClass(AnonymousClassElement_t* ano_class_branch);
-
     void printTree(AnonymousClassElement_t* ano_elem, size_t level, bool root);
     std::string toString(CardType_t value);
     
