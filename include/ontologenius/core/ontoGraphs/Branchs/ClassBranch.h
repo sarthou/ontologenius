@@ -31,7 +31,7 @@ public:
   std::vector<ClassDataRelationElement_t> data_relations_;
   AnonymousClassBranches_t* equiv_relations_;
 
-  ClassBranch_t(const std::string& value = "") : Branch_t(value) {};
+  ClassBranch_t(const std::string& value = "") : Branch_t(value), equiv_relations_(nullptr) {};
 
   void setSteady_dictionary(const std::string& lang, const std::string& word);
   void setSteady_muted_dictionary(const std::string& lang, const std::string& word);
