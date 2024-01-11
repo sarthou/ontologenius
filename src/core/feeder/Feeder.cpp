@@ -172,36 +172,49 @@ bool Feeder::modifyObjectPropertyInheritanceInvert(feed_t& feed)
 
 bool Feeder::classIndividualIsA(feed_t& feed)
 {
-  if(feed.action_ == action_add)
+  try
   {
-    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
-      return onto_->class_graph_.addInheritage(feed.from_, feed.on_);
-    else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
-      return onto_->individual_graph_.addInheritage(feed.from_, feed.on_);
-    else if(onto_->class_graph_.findBranch(feed.on_) != nullptr)
-      return onto_->individual_graph_.addInheritageInvert(feed.from_, feed.on_);
-    else if(onto_->individual_graph_.findBranch(feed.on_) != nullptr)
-      return onto_->individual_graph_.addInheritageInvertUpgrade(feed.from_, feed.on_);
-    else
+    if(feed.action_ == action_add)
     {
-      notifications_.push_back("[FAIL][no known items in the requested inheritance]" + current_str_feed_);
-      return false;
+      if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+        return onto_->class_graph_.addInheritage(feed.from_, feed.on_);
+      else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+        return onto_->individual_graph_.addInheritage(feed.from_, feed.on_);
+      else if(onto_->class_graph_.findBranch(feed.on_) != nullptr)
+        return onto_->individual_graph_.addInheritageInvert(feed.from_, feed.on_);
+      else if(onto_->individual_graph_.findBranch(feed.on_) != nullptr)
+        return onto_->individual_graph_.addInheritageInvertUpgrade(feed.from_, feed.on_);
+      else
+      {
+        notifications_.push_back("[FAIL][no known items in the requested inheritance]" + current_str_feed_);
+        return false;
+      }
+    }
+    else if(feed.action_ == action_del)
+    {
+      if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+      {
+        auto tmp = onto_->class_graph_.removeInheritage(feed.from_, feed.on_);
+        explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+      }
+      else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+      {
+        auto tmp = onto_->individual_graph_.removeInheritage(feed.from_, feed.on_);
+        explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+      }
+      else
+      {
+        notifications_.push_back("[FAIL][unknown inherited item in the requested inheritance]" + current_str_feed_);
+        return false;
+      }
     }
   }
-  else if(feed.action_ == action_del)
+  catch(GraphException& e)
   {
-    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
-      return onto_->class_graph_.removeInheritage(feed.from_, feed.on_);
-    else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
-      return onto_->individual_graph_.removeInheritage(feed.from_, feed.on_);
-    else
-    {
-      notifications_.push_back("[FAIL][unknown inherited item in the requested inheritance]" + current_str_feed_);
-      return false;
-    }
-  }
-  else
+    notifications_.push_back("[FAIL][" + std::string(e.what()) + "]" + current_str_feed_);
     return false;
+  }
+  return true;
 }
 
 bool Feeder::addInverseOf(const feed_t& feed)
@@ -232,28 +245,40 @@ bool Feeder::addInverseOf(const feed_t& feed)
 
 bool Feeder::addSameAs(const feed_t& feed)
 {
-  if(feed.action_ == action_add)
+  try
   {
-    if(!onto_->individual_graph_.addSameAs(feed.from_, feed.on_))
+    if(feed.action_ == action_add)
     {
-      notifications_.push_back("[FAIL][no known items in the request]" + current_str_feed_);
-      return false;
+      if(!onto_->individual_graph_.addSameAs(feed.from_, feed.on_))
+      {
+        notifications_.push_back("[FAIL][no known items in the request]" + current_str_feed_);
+        return false;
+      }
+      else
+        return true;
+    }
+    else if(feed.action_ == action_del)
+    {
+      auto tmp = onto_->individual_graph_.removeSameAs(feed.from_, feed.on_);
+      if(tmp.size() == 0)
+      {
+        notifications_.push_back("[FAIL][unknown item in the request]" + current_str_feed_);
+        return false;
+      }
+      else
+      {
+        explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+        return true;
+      }
     }
     else
-      return true;
-  }
-  else if(feed.action_ == action_del)
-  {
-    if(!onto_->individual_graph_.removeSameAs(feed.from_, feed.on_))
-    {
-      notifications_.push_back("[FAIL][unknown item in the request]" + current_str_feed_);
       return false;
-    }
-    else
-      return true;
   }
-  else
+  catch(GraphException& e)
+  {
+    notifications_.push_back("[FAIL][" + std::string(e.what()) + "]" + current_str_feed_);
     return false;
+  }
 }
 
 bool Feeder::classIndividualLangage(feed_t& feed)
