@@ -97,7 +97,7 @@ public:
   void addRelation(ClassBranch_t*, const std::string& property, const std::string& type, const std::string& data);
   void addRelationInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on);
   bool removeLang(std::string& indiv, std::string& lang, std::string& name);
-  bool removeInheritage(std::string& class_base, std::string& class_inherited);
+  std::vector<std::pair<std::string, std::string>> removeInheritage(std::string& class_base, std::string& class_inherited);
   void removeRelation(const std::string& class_from, const std::string& property, const std::string& class_on);
   void removeRelation(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data);
 
