@@ -32,12 +32,12 @@ private:
   void writeRestriction(AnonymousClassElement_t* ano_elem, size_t level);
   void writeClassExpression(AnonymousClassElement_t* ano_elem, size_t level);
   void writeDatatypeExpression(AnonymousClassElement_t* ano_elem, size_t level);
-  void writeIntersection(AnonymousClassElement_t* ano_elem, size_t level);
-  void writeUnion(AnonymousClassElement_t* ano_elem, size_t level);
+  void writeIntersection(AnonymousClassElement_t* ano_elem, size_t level, bool is_data_prop = false);
+  void writeUnion(AnonymousClassElement_t* ano_elem, size_t level, bool is_data_prop = false);
   void writeOneOf(AnonymousClassElement_t* ano_elem, size_t level);
   void writeComplement(AnonymousClassElement_t* ano_elem, size_t level);
   void writeDataComplement(AnonymousClassElement_t* ano_elem, size_t level);
-  void writeComplexDescription(AnonymousClassElement_t* ano_elem, size_t level);
+  void writeComplexDescription(AnonymousClassElement_t* ano_elem, size_t level, bool is_data_prop = false);
   void writeCardinalityValue(AnonymousClassElement_t* ano_elem, size_t level);
   void writeCardinalityRange(AnonymousClassElement_t* ano_elem, size_t level, bool is_data_prop);
   void writeCardinality(AnonymousClassElement_t* ano_element, size_t level);

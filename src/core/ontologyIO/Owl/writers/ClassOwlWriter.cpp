@@ -70,34 +70,37 @@ void ClassOwlWriter::writeClass(ClassBranch_t* branch)
 void ClassOwlWriter::writeEquivalentClass(ClassBranch_t* branch)
 {
   AnonymousClassBranches_t* equiv =  branch->equiv_relations_;
- 
-  for(auto& elem : equiv->ano_elems_)
+
+  if(equiv != nullptr)
   {
-    std::string tmp, field;
-    field = "owl:equivalentClass";
-    size_t level = 2;
- 
-    // single expression
-    if(elem->sub_elements_.size() == 0 &&
-      elem->class_involved_ != nullptr && 
-      elem->object_property_involved_ == nullptr)
+    for(auto elem : equiv->ano_elems_)
     {
-      tmp = "<" + field + " " + getResource(elem) + "/>\n";
-      writeString(tmp, level);
-    }
-    // Collection of expressions
-    else
-    {
-      tmp = "<" + field + ">\n";
-      writeString(tmp, level);
-
-      if(elem->logical_type_ != logical_none || elem->oneof == true)
-        writeClassExpression(elem, level+1);
+      std::string tmp, field;
+      field = "owl:equivalentClass";
+      size_t level = 2;
+  
+      // single expression
+      if(elem->sub_elements_.size() == 0 &&
+        elem->class_involved_ != nullptr && 
+        elem->object_property_involved_ == nullptr)
+      {
+        tmp = "<" + field + " " + getResource(elem) + "/>\n";
+        writeString(tmp, level);
+      }
+      // Collection of expressions
       else
-        writeRestriction(elem, level+1);
+      {
+        tmp = "<" + field + ">\n";
+        writeString(tmp, level);
 
-      tmp = "</" + field + ">\n";
-      writeString(tmp, level);
+        if(elem->logical_type_ != logical_none || elem->oneof == true)
+          writeClassExpression(elem, level+1);
+        else
+          writeRestriction(elem, level+1);
+
+        tmp = "</" + field + ">\n";
+        writeString(tmp, level);
+      }
     }
   }
 }
@@ -169,9 +172,9 @@ void ClassOwlWriter::writeDatatypeExpression(AnonymousClassElement_t* ano_elem, 
   writeString(tmp, level);
 
   if(ano_elem->logical_type_ == logical_or)
-    writeUnion(ano_elem,level+1);
+    writeUnion(ano_elem,level+1, true);
   else if(ano_elem->logical_type_ == logical_and)
-    writeIntersection(ano_elem,level+1);
+    writeIntersection(ano_elem,level+1, true);
   else if(ano_elem->logical_type_ == logical_not)
     writeDataComplement(ano_elem,level+1);
 
@@ -179,7 +182,7 @@ void ClassOwlWriter::writeDatatypeExpression(AnonymousClassElement_t* ano_elem, 
   writeString(tmp, level);
 }
 
-void ClassOwlWriter::writeIntersection(AnonymousClassElement_t* ano_elem, size_t level)
+void ClassOwlWriter::writeIntersection(AnonymousClassElement_t* ano_elem, size_t level, bool is_data_prop)
 {
   std::string tmp, field;
   field = "owl:intersectionOf";
@@ -188,13 +191,13 @@ void ClassOwlWriter::writeIntersection(AnonymousClassElement_t* ano_elem, size_t
   writeString(tmp, level);
 
   for(auto child : ano_elem->sub_elements_)
-    writeComplexDescription(child, level+1);
+    writeComplexDescription(child, level+1, is_data_prop);
   
   tmp = "</" + field + ">\n";
   writeString(tmp, level);
 }
 
-void ClassOwlWriter::writeUnion(AnonymousClassElement_t* ano_elem, size_t level)
+void ClassOwlWriter::writeUnion(AnonymousClassElement_t* ano_elem, size_t level, bool is_data_prop)
 {
   std::string tmp;
   std::string field = "owl:unionOf";
@@ -203,7 +206,7 @@ void ClassOwlWriter::writeUnion(AnonymousClassElement_t* ano_elem, size_t level)
   writeString(tmp, level);
 
   for(auto child : ano_elem->sub_elements_)
-    writeComplexDescription(child,level+1);
+    writeComplexDescription(child,level+1, is_data_prop);
   
   tmp = "</" + field + ">\n";
   writeString(tmp, level);
@@ -271,7 +274,7 @@ void ClassOwlWriter::writeDataComplement(AnonymousClassElement_t* ano_elem, size
   }
 }
 
-void ClassOwlWriter::writeComplexDescription(AnonymousClassElement_t* ano_elem, size_t level)
+void ClassOwlWriter::writeComplexDescription(AnonymousClassElement_t* ano_elem, size_t level, bool is_data_prop)
 {
   std::string tmp;
 
@@ -287,7 +290,7 @@ void ClassOwlWriter::writeComplexDescription(AnonymousClassElement_t* ano_elem, 
   }
   else if(ano_elem->card_.card_type_ == cardinality_none)
   {
-    if(ano_elem->data_property_involved_ != nullptr)
+    if(is_data_prop)
       writeDatatypeExpression(ano_elem, level);
     else
       writeClassExpression(ano_elem, level);
@@ -398,7 +401,7 @@ void ClassOwlWriter::writeCardinality(AnonymousClassElement_t* ano_element, size
   }
   else
   {
-    field = "<owl:onDataRange";
+    field = "owl:onDataRange";
 
     if(ano_element->card_.card_range_ != nullptr)
     {
