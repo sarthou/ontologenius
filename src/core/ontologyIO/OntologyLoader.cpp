@@ -206,7 +206,7 @@ void OntologyLoader::loadImports(const std::vector<std::string>& imports)
     auto with_package = resolvePath(import);
     if(with_package.first != "")
     {
-      std::string path = findPackageRos1(with_package.first);
+      std::string path = findPackage(with_package.first);
       path += "/" + with_package.second;
 
       fixPath(path);

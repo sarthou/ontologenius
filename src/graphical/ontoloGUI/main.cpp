@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   a.setStyle(new DarkStyle);
 
   //std::string path = ament_index_cpp::get_package_share_directory("ontologenius");
-  std::string path = ontologenius::findPackageRos1("ontologenius");
+  std::string path = ontologenius::findPackage("ontologenius");
   path = path + "/docs/images/ontologenius.ico";
 
   QIcon icon(QString::fromStdString(path));

@@ -43,6 +43,26 @@ std::string findPackageRos1(const std::string& pkg_name)
     return "";
 }
 
+std::string findPackageRos2(const std::string& pkg_name)
+{
+  std::string results = execCmd("ros2 pkg prefix " + pkg_name);
+  if(results.size())
+  {
+    auto split_res = split(results, "\n");
+    return split_res.front();
+  }
+  else
+    return "";
+}
+
+std::string findPackage(const std::string& pkg_name)
+{
+  std::string res = findPackageRos1(pkg_name);
+  if(res == "")
+    res = findPackageRos2(pkg_name);
+  return res;
+}
+
 std::vector<std::string> listPackagesRos1()
 {
   std::string results = execCmd("rospack list-names");

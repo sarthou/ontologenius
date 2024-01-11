@@ -12,7 +12,7 @@ TEST(cpy_tests, reset)
   ontologenius::Ontology onto1;
   onto1.setDisplay(false);
 
-  std::string path_base = ontologenius::findPackageRos1("ontologenius");
+  std::string path_base = ontologenius::findPackage("ontologenius");
   std::string path = path_base + "/files/attribute.owl";
   onto1.readFromFile(path);
   path = path_base + "/files/positionProperty.owl";
