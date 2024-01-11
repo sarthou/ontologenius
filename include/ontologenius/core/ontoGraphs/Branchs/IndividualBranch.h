@@ -26,7 +26,7 @@ public:
   RelationsWithInductions<ClassElement_t> is_a_;
   RelationsWithInductions<IndivObjectRelationElement_t> object_relations_;
   RelationsWithInductions<IndivDataRelationElement_t> data_relations_;
-  std::vector<IndividualElement_t> same_as_;
+  RelationsWithInductions<IndividualElement_t> same_as_;
   std::vector<IndividualElement_t> distinct_;
 
   IndividualBranch_t(const std::string& value = "") : ValuedNode(value) {}

@@ -53,6 +53,18 @@ public:
 		has_induced_inheritance_relations.erase(has_induced_inheritance_relations.begin() + index);
 	}
 
+	void clear()
+	{
+		for(auto induced_object : has_induced_object_relations)
+			delete induced_object;
+		for(auto induced_inherit : has_induced_inheritance_relations)
+			delete induced_inherit;
+		
+		relations.clear();
+		has_induced_object_relations.clear();
+		has_induced_inheritance_relations.clear();
+	}
+
 	typename std::vector<T>::iterator begin() { return relations.begin(); }
 	typename std::vector<T>::iterator end() { return relations.end(); }
 	typename std::vector<T>::const_iterator cbegin() const { return relations.cbegin(); }

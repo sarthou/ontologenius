@@ -2144,26 +2144,66 @@ bool IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& i
   return true;
 }
 
-bool IndividualGraph::removeSameAs(const std::string& indiv_1, const std::string& indiv_2)
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeSameAs(const std::string& indiv_1, const std::string& indiv_2, bool protect_infered)
 {
   IndividualBranch_t* branch_1 = findBranch(indiv_1);
   IndividualBranch_t* branch_2 = findBranch(indiv_2);
 
   if((branch_1 == nullptr) || (branch_2 == nullptr))
-    return false;
+  {
+    throw GraphException("One of the two individuals used in sameAs relation does not exist");
+    return std::vector<std::pair<std::string, std::string>>();
+  }
 
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+  std::vector<std::pair<std::string, std::string>> explanations;
 
-  removeFromVect(branch_1->same_as_, IndividualElement_t(branch_2));
-  removeFromVect(branch_2->same_as_, IndividualElement_t(branch_1));
+  if(branch_1->same_as_.size() > 0)
+  {
+    for(size_t i = 0; i < branch_1->same_as_.size(); i++)
+    {
+      if(branch_1->same_as_[i].elem == branch_2)
+      {
+        if((protect_infered == true) && (branch_1->same_as_[i].infered == false))
+          break;
+        for(auto& relation : branch_1->same_as_.has_induced_inheritance_relations[i]->triplets)
+        {
+          explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
+                                              relation.object->value(),
+                                      "[DEL]" + branch_1->value() + "|sameAs|" + branch_2->value());
+          removeInheritage(relation.subject, relation.object, explanations);
+        }
+        for(size_t j = 0; j < branch_2->same_as_.size(); j++)
+        {
+          if(branch_2->same_as_[j].elem == branch_1)
+          {
+            for(auto& relation : branch_2->same_as_.has_induced_inheritance_relations[j]->triplets)
+            {
+              explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
+                                                  relation.object->value(),
+                                          "[DEL]" + branch_2->value() + "|sameAs|" + branch_1->value());
+              removeInheritage(relation.subject, relation.object, explanations);
+            }
+            branch_2->same_as_.erase(j);
+            break;
+          }
+        }
+        branch_1->same_as_.erase(i);
+        break;
+      }
+    }
+  }
 
   if(branch_1->same_as_.size() == 1)
     branch_1->same_as_.clear();
-
+    
   if(branch_2->same_as_.size() == 1)
     branch_2->same_as_.clear();
 
-  return true;
+  branch_1->updated_ = true;
+  branch_2->updated_ = true;
+
+  return explanations;
 }
 
 std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered)
