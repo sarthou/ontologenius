@@ -75,4 +75,24 @@ std::vector<std::string> listPackagesRos1()
     return {};
 }
 
+std::vector<std::string> listPackagesRos2()
+{
+  std::string results = execCmd("ros2 pkg list");
+  if(results.size())
+  {
+    auto split_res = split(results, "\n");
+    return split_res;
+  }
+  else
+    return {};
+}
+
+std::vector<std::string> listPackages()
+{
+  std::vector<std::string> res = listPackagesRos1();
+  if(res.size() == 0)
+    res = listPackagesRos2();
+  return res;
+}
+
 } // namespace ontologenius

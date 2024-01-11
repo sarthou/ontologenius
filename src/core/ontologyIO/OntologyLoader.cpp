@@ -249,7 +249,7 @@ void OntologyLoader::loadImports(const std::vector<std::string>& imports)
 
 std::pair<std::string, std::string> OntologyLoader::resolvePath(const std::string& raw_path)
 {
-  std::vector<std::string> packages = listPackagesRos1();
+  std::vector<std::string> packages = listPackages();
 
   auto parts = split(raw_path, "/");
   for(auto part_it = parts.begin(); part_it != parts.end(); ++part_it)
