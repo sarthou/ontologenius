@@ -478,6 +478,9 @@ install(TARGETS
     ontologenius_multi
     ontoloGUI
     DESTINATION lib/${PROJECT_NAME})
+
+install(DIRECTORY docs/
+    DESTINATION docs)
 endif()
 
 
