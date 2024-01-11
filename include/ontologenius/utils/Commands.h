@@ -49,7 +49,7 @@ std::string findPackageRos2(const std::string& pkg_name)
   if(results.size())
   {
     auto split_res = split(results, "\n");
-    return split_res.front();
+    return split_res.front() + "/share/" + pkg_name;
   }
   else
     return "";
