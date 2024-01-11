@@ -5,11 +5,11 @@
 
 namespace ontologenius {
 
-class ReasonerAno : public ReasonerInterface
+class ReasonerAnonymous : public ReasonerInterface
 {
 public:
-  ReasonerAno() {}
-  ~ReasonerAno() {}
+  ReasonerAnonymous() {}
+  ~ReasonerAnonymous() {}
 
   virtual void postReason() override;
 
