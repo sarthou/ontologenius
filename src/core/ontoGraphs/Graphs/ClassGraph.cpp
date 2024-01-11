@@ -1406,7 +1406,7 @@ std::vector<std::pair<std::string, std::string>> ClassGraph::removeInheritage(st
   branch_base->updated_ = true;
   branch_inherited->updated_ = true;
 
-  return true;
+  return explanations;
 }
 
 void ClassGraph::removeRelation(const std::string& class_from, const std::string& property, const std::string& class_on)
