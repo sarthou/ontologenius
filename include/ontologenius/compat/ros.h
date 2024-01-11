@@ -312,7 +312,7 @@ public:
 #if ONTO_ROS_VERSION == 1
     handle_ = node.handle_.advertiseService(service_name, callback, ptr);
 #elif ONTO_ROS_VERSION == 2
-    handle_ = node.handle_->create_service<T>(service_name, [&](compat::onto_ros::ServiceWrapper<typename T::Request> req, compat::onto_ros::ServiceWrapper<typename T::Response> res){ (ptr->*callback)(req, res); });
+    handle_ = node.handle_->create_service<T>(service_name, [ptr, callback](compat::onto_ros::ServiceWrapper<typename T::Request> req, compat::onto_ros::ServiceWrapper<typename T::Response> res){ (ptr->*callback)(req, res); });
     //handle_ = node.handle_->create_service<T>(service_name, std::bind(std::forward<Ta>(callback), ptr, std::placeholders::_1, std::placeholders::_2));
 #endif
   }
