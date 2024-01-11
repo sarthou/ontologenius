@@ -2099,11 +2099,12 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeInherita
 
 void IndividualGraph::removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch, std::vector<std::pair<std::string, std::string>>& explanations, bool protect_infered)
 {
-  // check how to return the explanations
   for(size_t i = 0; i < indiv->is_a_.size(); )
   {
     if(indiv->is_a_[i].elem == class_branch)
     {
+      if((protect_infered == true) && (indiv->is_a_[i].infered == false))
+        break;
       for(auto& trace_vect : indiv->is_a_[i].induced_traces)
         trace_vect->eraseGeneric(indiv, nullptr, class_branch);
 
