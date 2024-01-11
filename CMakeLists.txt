@@ -479,8 +479,11 @@ install(TARGETS
     ontoloGUI
     DESTINATION lib/${PROJECT_NAME})
 
-install(DIRECTORY docs/
-    DESTINATION docs)
+install(DIRECTORY launch/ros2/launch DESTINATION share/${PROJECT_NAME}/)
+
+install(DIRECTORY files DESTINATION share/${PROJECT_NAME}/)
+install(DIRECTORY docs/ DESTINATION share/${PROJECT_NAME}/)
+
 endif()
 
 
