@@ -21,7 +21,7 @@ public:
   virtual bool defaultActive() override {return true;}
 private:
   bool checkClassesDisjointess(IndividualBranch_t* indiv, ClassBranch_t* class_equiv);
-  int relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  int relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 
   bool resolveFirstLayer(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
   bool resolveTree(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
@@ -31,7 +31,7 @@ private:
   bool checkRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
   bool checkTypeRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
   bool checkTypeRestriction(LiteralNode* literal, AnonymousClassElement_t* ano_elem,  std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
-  bool checkIndividualRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
+  bool checkIndividualRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 
   bool checkCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 

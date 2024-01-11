@@ -37,6 +37,7 @@ void ReasonerAnonymous::postReason()
             {
               if(ontology_->individual_graph_.conditionalPushBack(indiv->is_a_, ClassElement_t(anonymous->class_equiv_)))
               {
+                indiv->is_a_.relations.back().infered = true;
                 anonymous->class_equiv_->individual_childs_.emplace_back(indiv);
   
                 std::string explanation_reference = "";
@@ -66,7 +67,7 @@ void ReasonerAnonymous::postReason()
         
         // Manages implicitly the NOT, MIN, MAX, EXACTLY cases
         if(tree_evaluation_result == false && anonymous->ano_elems_.size() != 0 && ontology_->individual_graph_.isA(indiv, anonymous->class_equiv_->get()) == true)
-          ontology_->individual_graph_.removeInheritage(indiv, anonymous->class_equiv_);
+           ontology_->individual_graph_.removeInheritage(indiv, anonymous->class_equiv_, explanations_);
       }
       
       if(has_active_equiv)
@@ -99,22 +100,25 @@ bool ReasonerAnonymous::checkClassesDisjointess(IndividualBranch_t* indiv, Class
 int ReasonerAnonymous::relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
 {
   std::unordered_set<ObjectPropertyBranch_t*> down_properties;
+  std::string explanation;
   ontology_->object_property_graph_.getDownPtr(property, down_properties);
 
   for(size_t i = 0 ; i < indiv_from->object_relations_.size(); i++)
   {
-    if(indiv_on->same_as_.size() > 0)
+    for(size_t j = 0 ; j < indiv_on->same_as_.size(); j++)
     {
-      for(auto same_as_on : indiv_on->same_as_)
+      if(indiv_from->object_relations_[i].second->get() == indiv_on->same_as_[j].elem->get())
       {
-        if(indiv_from->object_relations_[i].second->get() == same_as_on.elem->get())
+        if(down_properties.find(indiv_from->object_relations_[i].first) != down_properties.end())
         {
-          if(down_properties.find(indiv_from->object_relations_[i].first) != down_properties.end())
-            return i;
+          explanation = indiv_on->value() + "|sameAs|" + indiv_on->same_as_[j].elem->value() + ";";
+          used.emplace_back(explanation, indiv_on->same_as_.has_induced_inheritance_relations[j]);
+          return i;
         }
       }
     }
-    else if(indiv_from->object_relations_[i].second->get() == indiv_on->get())
+
+    if(indiv_from->object_relations_[i].second->get() == indiv_on->get())
     {
       if(down_properties.find(indiv_from->object_relations_[i].first) != down_properties.end())
         return i;
@@ -213,24 +217,69 @@ bool ReasonerAnonymous::resolveTree(IndividualBranch_t* indiv, AnonymousClassEle
 bool ReasonerAnonymous::checkRestrictionFirstLayer(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem)
 {
   if(ano_elem->object_property_involved_ != nullptr)
+  {
+    if(indiv->same_as_.size() > 0)
+    {
+      for(auto& indiv_same : indiv->same_as_)
+      {
+        if(checkPropertyExistence(indiv_same.elem->object_relations_.relations, ano_elem))
+          return true; 
+      }
+    }
     return checkPropertyExistence(indiv->object_relations_.relations, ano_elem);
+  }
   else if (ano_elem->data_property_involved_ != nullptr)
+  {
+    if(indiv->same_as_.size() > 0)
+    {
+      for(auto& indiv_same : indiv->same_as_)
+      {
+        if(checkPropertyExistence(indiv_same.elem->data_relations_.relations, ano_elem))
+          return true; 
+      }
+    }
     return checkPropertyExistence(indiv->data_relations_.relations, ano_elem);
+  }
   else if(ano_elem->class_involved_ != nullptr)
     return (ontology_->individual_graph_.isA(indiv, ano_elem->class_involved_->get()));
   else if(ano_elem->oneof)
   {
-    for(auto elem : ano_elem->sub_elements_)
-      if(checkIndividualRestriction(indiv, elem) == true)
+    for(auto indiv_elem : ano_elem->sub_elements_)
+    {
+      if(indiv->same_as_.size() != 0)
+      {
+        if(std::find_if(indiv->same_as_.begin(), indiv->same_as_.end(), 
+                      [elem = indiv_elem->individual_involved_] (auto same) { return same == elem; }
+                      ) != indiv->same_as_.end())
+                      { return true;}
+      }
+      if(indiv->get() == indiv_elem->individual_involved_->get())
         return true;
+    }
   }
   return false;
 }
 
 bool ReasonerAnonymous::checkRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
 {
+  std::string explanation;
+
   if(ano_elem->object_property_involved_ != nullptr || ano_elem->data_property_involved_ != nullptr)
+  {
+    for(size_t i = 0 ; i < indiv->same_as_.size() ; i++)
+    {
+      if(indiv->same_as_[i].elem->get() != indiv->get()) 
+      {
+        if(checkCard(indiv->same_as_[i].elem, ano_elem, used))
+        {
+          explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value() + ";";
+          used.emplace_back(explanation, indiv->same_as_.has_induced_inheritance_relations[i]);
+          return true;
+        }
+      }
+    }
     return checkCard(indiv, ano_elem, used);
+  }
   else if(ano_elem->class_involved_ != nullptr)
     return checkTypeRestriction(indiv, ano_elem, used);
   else if(ano_elem->oneof)
@@ -241,7 +290,7 @@ bool ReasonerAnonymous::checkRestriction(IndividualBranch_t* indiv, AnonymousCla
       if(one_of != "")
         one_of += ", ";
       one_of += elem->individual_involved_->value();
-      if(checkIndividualRestriction(indiv, elem) == true)
+      if(checkIndividualRestriction(indiv, elem, used) == true)
         explanation = indiv->value();
     }
     if(explanation != "")
@@ -283,14 +332,24 @@ bool ReasonerAnonymous::checkTypeRestriction(LiteralNode* literal, AnonymousClas
 
 bool ReasonerAnonymous::checkIndividualRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
 {
+  std::string explanation;
+
   if(indiv->same_as_.size() != 0)
   {
-    return (std::find_if(indiv->same_as_.begin(), indiv->same_as_.end(), 
-                      [elem = ano_elem->individual_involved_] (auto same) { return same == elem; }
-                      ) != indiv->same_as_.end());
+    for(size_t i = 0 ; i < indiv->same_as_.size() ; i++)
+    {
+      if(indiv->same_as_[i].elem->get() != indiv->get())
+      {
+        if(indiv->same_as_[i].elem->get() == ano_elem->individual_involved_->get()) 
+        {
+          explanation = indiv->same_as_[i].elem->value() + "|sameAs|" + ano_elem->individual_involved_->value() + ";";
+          used.emplace_back(explanation, indiv->same_as_.has_induced_inheritance_relations[i]);
+          return true;
+        }  
+      }   
+    }
   }
-  else
-    return (indiv->get() == ano_elem->individual_involved_->get());
+  return (indiv->get() == ano_elem->individual_involved_->get());
 }
 
 bool ReasonerAnonymous::checkCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
@@ -518,27 +577,42 @@ bool ReasonerAnonymous::checkSomeCard(IndividualBranch_t* indiv, AnonymousClassE
 bool ReasonerAnonymous::checkValueCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
 {
   int index = -1;
-  std::string explanation_same, explanation;
+  std::string explanation;
+  IndividualElement_t* same_indiv = nullptr;
 
-  if(indiv->same_as_.size() > 0)
-  {
-    for(auto& same_as : indiv->same_as_)
-    {
-      index = relationExists(same_as.elem, ano_elem->object_property_involved_, ano_elem->individual_involved_);
-      if(index != -1)
-      {
-        explanation_same = indiv->value() + "|sameAs|" + same_as.elem->value() + ";";
-        break;
-      }
-    }
-  }
-  else
-    index = relationExists(indiv, ano_elem->object_property_involved_, ano_elem->individual_involved_);
-
+  // if(indiv->same_as_.size() > 0)
+  // {
+  //   for(size_t i = 0 ; i < indiv->same_as_.size() ; i++)
+  //   {
+  //     if(indiv->same_as_[i].elem != indiv) 
+  //     {
+  //       index = relationExists(indiv->same_as_[i].elem, ano_elem->object_property_involved_, ano_elem->individual_involved_, used);
+  //       if(index != -1)
+  //       {
+  //         same_indiv = &indiv->same_as_[i];
+  //         explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value() + ";";
+  //         used.emplace_back(explanation, indiv->same_as_.has_induced_inheritance_relations[i]);
+  //         break;
+  //       }  
+  //     }
+  //   }
+  // }
+  // else
+  index = relationExists(indiv, ano_elem->object_property_involved_, ano_elem->individual_involved_, used);
+  
   if(index != -1)
   {
-    explanation = indiv->value() + "|" + ano_elem->object_property_involved_->value() + "|" + ano_elem->individual_involved_->value() + ";" + explanation_same;
-    used.emplace_back(explanation , indiv->object_relations_.has_induced_inheritance_relations[index]);
+    if(same_indiv != nullptr)
+    {
+      // std::cout << "adress checkValue 5 : " <<  (*same_indiv).elem->object_relations_.has_induced_inheritance_relations[index] << std::endl;
+      explanation = same_indiv->elem->value() + "|" + ano_elem->object_property_involved_->value() + "|" + ano_elem->individual_involved_->value() + ";";
+      used.emplace_back(explanation , (*same_indiv).elem->object_relations_.has_induced_inheritance_relations[index]);
+    }
+    else
+    {
+      explanation = indiv->value() + "|" + ano_elem->object_property_involved_->value() + "|" + ano_elem->individual_involved_->value() + ";";
+      used.emplace_back(explanation , indiv->object_relations_.has_induced_inheritance_relations[index]);
+    }
     return true;
   }
   else
