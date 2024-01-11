@@ -2072,23 +2072,32 @@ bool IndividualGraph::removeLang(const std::string& indiv, const std::string& la
     return false;
 }
 
-bool IndividualGraph::removeInheritage(const std::string& indiv, const std::string& class_inherited)
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeInheritage(const std::string& indiv, const std::string& class_inherited)
 {
   IndividualBranch_t* branch_base = findBranch(indiv);
   ClassBranch_t* branch_inherited = class_graph_->findBranch(class_inherited);
+  std::vector<std::pair<std::string, std::string>> explanations;
 
   if(branch_base == nullptr)
-    return false;
+  {
+    throw GraphException("The individual entity does not exist");
+    return std::vector<std::pair<std::string, std::string>>();
+  }
   if(branch_inherited == nullptr)
-    return false;
-
+  {
+    throw GraphException("The class_inherited entity does not exist");
+    return std::vector<std::pair<std::string, std::string>>();
+  }
+     
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
   std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
 
-  return removeInheritage(branch_base, branch_inherited);
+  removeInheritage(branch_base, branch_inherited, explanations);
+
+  return explanations;
 }
 
-bool IndividualGraph::removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch)
+void IndividualGraph::removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch, std::vector<std::pair<std::string, std::string>>& explanations, bool protect_infered)
 {
   // check how to return the explanations
   for(size_t i = 0; i < indiv->is_a_.size(); )
@@ -2100,12 +2109,10 @@ bool IndividualGraph::removeInheritage(IndividualBranch_t* indiv, ClassBranch_t*
 
       for(auto& relation : indiv->is_a_.has_induced_inheritance_relations[i]->triplets)
       {
-        /*explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
+        explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
                                             relation.object->value(),
-                                    "[DEL]" + indiv->value() + "|isA|" + class_branch->value());*/
-        std::cout << "[DEL]" + relation.subject->value() + "|isA|" + relation.object->value() + 
-                     "[DEL]" + indiv->value() + "|isA|" + class_branch->value() << std::endl;
-        removeInheritage(relation.subject, relation.object);
+                                    "[DEL]" + indiv->value() + "|isA|" + class_branch->value());
+        removeInheritage(relation.subject, relation.object, explanations, protect_infered);
       }
       indiv->is_a_.erase(i);
       break;
@@ -2118,7 +2125,6 @@ bool IndividualGraph::removeInheritage(IndividualBranch_t* indiv, ClassBranch_t*
   indiv->updated_ = true;
   class_branch->updated_ = true;
 
-  return true;
 }
 
 bool IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& indiv_2)
@@ -2298,7 +2304,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
                                                 relation.object->value(),
                                       "[DEL]" + indiv_from + "|" + property + "|" + type + "|" + data);
 
-            removeInheritage(relation.subject, relation.object);
+            removeInheritage(relation.subject, relation.object, explanations);
           }
           branch_from->data_relations_.erase(i);
           branch_from->updated_ = true;
@@ -2391,7 +2397,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
                                             relation.object->value(),
                                    "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
 
-        removeInheritage(relation.subject, relation.object);
+        removeInheritage(relation.subject, relation.object, explanations);
       }
     }
   }
