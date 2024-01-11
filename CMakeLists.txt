@@ -158,11 +158,11 @@ add_onto_library(ontologenius_ontoGraphs_lib
 )
 target_include_directories(ontologenius_ontoGraphs_lib
  PUBLIC
-  ${TinyXML_INCLUDE_DIRS}
+  ${TinyXML_INCLUDE_DIRS} ${TinyXML2_INCLUDE_DIR}
 )
 target_link_libraries(ontologenius_ontoGraphs_lib
  PUBLIC
-  ${TinyXML_LIBRARIES} PkgConfig::CURL
+  ${TinyXML_LIBRARIES} ${TinyXML2_LIBRARIES} PkgConfig::CURL
 )
 
 add_onto_library(ontologenius_core_lib

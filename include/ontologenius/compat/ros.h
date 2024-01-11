@@ -123,7 +123,7 @@ namespace onto_ros
   
 #elif ONTO_ROS_VERSION == 2
   template <typename T>
-  using ServiceWrapper = std::shared_ptr<T>;
+  using ServiceWrapper = typename T::SharedPtr; //std::shared_ptr<T>;
 
   template <typename T>
   using MessageWrapper = typename T::ConstSharedPtr;
@@ -299,7 +299,8 @@ public:
 #if ONTO_ROS_VERSION == 1
     handle_ = node.handle_.advertiseService(service_name, callback);
 #elif ONTO_ROS_VERSION == 2
-    handle_ = node.handle_->create_service<T>(service_name, callback);
+    handle_ = node.handle_->create_service<T>(service_name, [&](compat::onto_ros::ServiceWrapper<typename T::Request> req, compat::onto_ros::ServiceWrapper<typename T::Response> res){ callback(req, res); });
+    //handle_ = node.handle_->create_service<T>(service_name, callback);
 #endif
   }
 
@@ -311,7 +312,8 @@ public:
 #if ONTO_ROS_VERSION == 1
     handle_ = node.handle_.advertiseService(service_name, callback, ptr);
 #elif ONTO_ROS_VERSION == 2
-    handle_ = node.handle_->create_service<T>(service_name, std::bind(std::forward<Ta>(callback), ptr, std::placeholders::_1, std::placeholders::_2));
+    handle_ = node.handle_->create_service<T>(service_name, [&](compat::onto_ros::ServiceWrapper<typename T::Request> req, compat::onto_ros::ServiceWrapper<typename T::Response> res){ (ptr->*callback)(req, res); });
+    //handle_ = node.handle_->create_service<T>(service_name, std::bind(std::forward<Ta>(callback), ptr, std::placeholders::_1, std::placeholders::_2));
 #endif
   }
   
@@ -386,7 +388,7 @@ public:
 #if ONTO_ROS_VERSION == 1
     return handle_.waitForExistence(ros::Duration(timeout));
 #elif ONTO_ROS_VERSION == 2
-    return handle_->wait_for_service(std::chrono::seconds(timeout));
+    return handle_->wait_for_service(std::chrono::duration<double>(timeout));
 #endif
   }
 

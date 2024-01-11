@@ -108,8 +108,8 @@ std::vector<std::string> getDiff(const std::string& param, int* res_code)
   return res;
 }
 
-bool managerHandle(ontologenius::compat::RequestType<ontologenius::compat::OntologeniusService>& req,
-                   ontologenius::compat::ResponseType<ontologenius::compat::OntologeniusService>& res)
+bool managerHandle(ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::compat::OntologeniusService::Request>& req,
+                   ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::compat::OntologeniusService::Response>& res)
 {
   return [](auto&& req, auto&& res)
   {
