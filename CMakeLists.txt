@@ -529,7 +529,7 @@ endif()
 ###################################
 
 if($ENV{ROS_VERSION} STREQUAL "2")
-pluginlib_export_plugin_description_file(ontologenius reasoners_plugins.xml)
+pluginlib_export_plugin_description_file(ontologenius reasoners_plugins_ros2.xml)
 ament_export_include_directories(include)
 ament_package()
 endif()

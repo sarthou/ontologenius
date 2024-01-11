@@ -44,7 +44,7 @@
   <member_of_group condition="$ROS_VERSION == 2">rosidl_interface_packages</member_of_group>
 
   <export>
-    <ontologenius condition="$ROS_VERSION == 1" plugin="${prefix}/reasoners_plugins.xml" />
+    <ontologenius plugin="${prefix}/reasoners_plugins.xml" />
     <build_type condition="$ROS_VERSION == 2">ament_cmake</build_type>
   </export>
 
