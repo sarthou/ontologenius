@@ -482,7 +482,7 @@ install(TARGETS
 install(DIRECTORY launch/ros2/launch DESTINATION share/${PROJECT_NAME}/)
 
 install(DIRECTORY files DESTINATION share/${PROJECT_NAME}/)
-install(DIRECTORY docs/ DESTINATION share/${PROJECT_NAME}/)
+install(DIRECTORY docs DESTINATION share/${PROJECT_NAME}/)
 
 endif()
 
