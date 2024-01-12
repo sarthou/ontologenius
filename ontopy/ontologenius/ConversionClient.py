@@ -1,4 +1,4 @@
-import rospy
+from compat.ros import Ontoros, OntoService
 
 from ontologenius.srv import OntologeniusConversion
 from ontologenius.srv import OntologeniusConversionRequest
@@ -12,7 +12,7 @@ class ConversionClient:
         if name != '':
           self._name = self._name + name
         self._verbose = False
-        self._client = rospy.ServiceProxy(self._name, OntologeniusConversion, True)
+        self._client = Ontoros.createService(self._name, OntologeniusConversion)
 
     def setVerbose(self, verbose):
         """If verbose(bool) is set to True, the clients will post messages about
@@ -112,19 +112,5 @@ class ConversionClient:
           return None
 
     def _call(self, source, values_str, values_int):
-        try:
-            response = self._client(source, values_str, values_int)
-            return response
-        except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-            if self._verbose == True:
-                print("Failure to call " + self._name)
-            self._client = rospy.ServiceProxy(self._name, OntologeniusConversion, True)
-            try:
-                response = self._client(source, values_str, values_int)
-                if self._verbose == True:
-                    print("Restored " + self._name)
-                return response
-            except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-                if self._verbose == True:
-                    print("Failure of service restoration")
-                return None
+        request = OntologeniusConversionRequest(source, values_str, values_int)
+        return self._client.call(request, self._verbose)
