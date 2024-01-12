@@ -65,7 +65,9 @@ if os.environ["ROS_VERSION"] == "1":
             return OntoSubscriber(sub_name, sub_type, callback)
         
         def getRosTime():
-            return rospy.get_rostime() # TODO
+            t_msg = rospy.get_rostime()
+            stamp_msg = OntologeniusTimestamp(seconds = t_msg.secs, nanoseconds = t_msg.nsecs)
+            return stamp_msg
         
         def isShutdown():
             return rospy.is_shutdown()

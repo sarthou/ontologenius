@@ -3,10 +3,7 @@ from .compat.ros import Ontoros
 import os
 
 from std_msgs.msg import String
-if os.environ["ROS_VERSION"] == "1":
-    from ontologenius.msg import StampedString
-else:
-    from ontologenius.msg import OntologeniusStampedString as StampedString
+from ontologenius.msg import OntologeniusStampedString as StampedString
 
 import time
 import random
