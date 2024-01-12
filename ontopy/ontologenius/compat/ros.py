@@ -3,33 +3,50 @@ import os
 if os.environ["ROS_VERSION"] == "1":
     import rospy
 
-    class ontoService :
-        def __init__(self, client):
-            self.client = client
+    class OntoService :
+        def __init__(self, srv_name, srv_type):
+            self._client = rospy.ServiceProxy(srv_name, srv_type, True)
+            self.srv_name = srv_name
+            self.srv_type = srv_type
 
-        def call(params):
-            pass
+        def call(self, request, verbose):
+            try:
+                response = self._client(request)
+                return response
+            except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
+                if verbose == True:
+                    print("Failure to call " + self.srv_name)
+                self._client = rospy.ServiceProxy(self.srv_name, self.srv_type, True)
+                try:
+                    response = self._client(request)
+                    if verbose == True:
+                        print("Restored " + self.srv_name)
+                    return response
+                except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
+                    if verbose == True:
+                        print("Failure of service restoration")
+                    return None
     
-    class ontoPublisher :
-        def __init__(self, pub):
-            self.pub = pub
+    class OntoPublisher :
+        def __init__(self, pub_name, pub_type, queue_size):
+            self.pub = rospy.Publisher(pub_name, pub_type, queue_size=queue_size)
 
         def publish(self, msg):
             self.pub.publish(msg)
     
-    class ontoSubscriber :
-        def __init__(self, sub):
-            self.sub = sub
+    class OntoSubscriber :
+        def __init__(self, sub_name, sub_type, callback):
+            self.sub = rospy.Subscriber(sub_name, sub_type, callback)
 
-    class ontoros :
-        def createService(srv_name, srv_type, connected):
-            return ontoService(rospy.ServiceProxy(srv_name, srv_type, connected))
+    class Ontoros :
+        def createService(srv_name, srv_type):
+            return OntoService(srv_name, srv_type)
         
         def createPublisher(pub_name, pub_type, queue_size):
-            return ontoPublisher(rospy.Publisher(pub_name, pub_type, queue_size=queue_size))
+            return OntoPublisher(pub_name, pub_type, queue_size)
         
         def createSubscriber(sub_name, sub_type, callback):
-            return ontoSubscriber(rospy.Subscriber(sub_name, sub_type, callback))
+            return OntoSubscriber(sub_name, sub_type, callback)
         
         def getRosTime():
             return rospy.get_rostime()
