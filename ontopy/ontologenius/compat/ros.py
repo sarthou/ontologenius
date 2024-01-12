@@ -66,7 +66,6 @@ if os.environ["ROS_VERSION"] == "1":
         def isShutdown():
             return rospy.is_shutdown()
 
-    print("v1")
 elif os.environ["ROS_VERSION"] == "2":
 
     import rclpy
@@ -114,9 +113,6 @@ elif os.environ["ROS_VERSION"] == "2":
             return cls._instances[cls]
 
 
-    print("v2")
-
-
     class OntoService:
         def __init__(self, client: Client, node_: Node):
             self.client: Client = client
@@ -126,6 +122,12 @@ elif os.environ["ROS_VERSION"] == "2":
             future = self.client.call_async(request=params)
             rclpy.spin_until_future_complete(self.node_, future)
             return future.result()
+                
+        def wait(self, timeout = -1): # TODO
+            if(timeout != -1):
+                self.client.wait_for_service(self.srv_name, timeout)
+            else:
+                self.client.wait_for_service(self.srv_name)
 
 
     class OntoPublisher:
@@ -135,10 +137,16 @@ elif os.environ["ROS_VERSION"] == "2":
         def publish(self, msg):
             self.pub.publish(msg)
 
+        def getNumSubscribers(self):
+            self.pub.get_num_connections() # TODO
+
 
     class OntoSubscriber:
         def __init__(self, sub):
             self.sub: Subscription = sub
+
+        def getNumPublishers(self):
+            self.sub.get_num_connections() # TODO
 
 
     class OntoROS(Node, metaclass=SingletonMeta):
