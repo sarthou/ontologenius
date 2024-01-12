@@ -26,6 +26,12 @@ if os.environ["ROS_VERSION"] == "1":
                     if verbose == True:
                         print("Failure of service restoration")
                     return None
+                
+        def wait(self, timeout = -1):
+            if(timeout != -1):
+                rospy.wait_for_service(self.srv_name, timeout)
+            else:
+                rospy.wait_for_service(self.srv_name)
     
     class OntoPublisher :
         def __init__(self, pub_name, pub_type, queue_size):
@@ -33,10 +39,16 @@ if os.environ["ROS_VERSION"] == "1":
 
         def publish(self, msg):
             self.pub.publish(msg)
+
+        def getNumSubscribers(self):
+            self.pub.get_num_connections()
     
     class OntoSubscriber :
         def __init__(self, sub_name, sub_type, callback):
             self.sub = rospy.Subscriber(sub_name, sub_type, callback)
+
+        def getNumPublishers(self):
+            self.sub.get_num_connections()
 
     class Ontoros :
         def createService(srv_name, srv_type):

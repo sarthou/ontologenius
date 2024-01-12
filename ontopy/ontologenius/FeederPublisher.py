@@ -1,4 +1,4 @@
-import rospy
+from .compat.ros import Ontoros
 from std_msgs.msg import String
 from ontologenius.msg import StampedString
 
@@ -25,15 +25,15 @@ class FeederPublisher:
         pub_topic_name = 'ontologenius/insert'
         if self._name != '':
             pub_topic_name += '/' + self._name
-        self._pub = rospy.Publisher(pub_topic_name, String, queue_size=1000)
+        self._pub = Ontoros.createPublisher(pub_topic_name, String, queue_size=1000)
         pub_topic_name = 'ontologenius/insert_stamped'
         if self._name != '':
             pub_topic_name += '/' + self._name
-        self._stamped_pub = rospy.Publisher(pub_topic_name, StampedString, queue_size=1000)
+        self._stamped_pub = Ontoros.createPublisher(pub_topic_name, StampedString, queue_size=1000)
         sub_topic_name = 'ontologenius/end'
         if self._name != '':
             sub_topic_name += '/' + self._name
-        self._commit_sub = rospy.Subscriber(sub_topic_name, String, self.commitCallback)
+        self._commit_sub = Ontoros.createSubscriber(sub_topic_name, String, self.commitCallback)
         self._updated = False
         random.seed()
         self._commit_nb = random.randint(1, 100000)
@@ -49,7 +49,7 @@ class FeederPublisher:
         """
         msg = '[add]' + concept_from + '|' + property + '|' + concept_on
         if stamp == None:
-            stamp = rospy.get_rostime()
+            stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
     def addDataProperty(self, concept_from, property, type, data, stamp = None):
@@ -59,7 +59,7 @@ class FeederPublisher:
         """
         msg = '[add]' + concept_from + '|' + property + '|' + type + '#' + data
         if stamp == None:
-            stamp = rospy.get_rostime()
+            stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
     def addInheritage(self, concept_from, concept_on, stamp = None):
@@ -69,7 +69,7 @@ class FeederPublisher:
         """
         msg = '[add]' + concept_from + '|+|' + concept_on
         if stamp == None:
-            stamp = rospy.get_rostime()
+            stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
     def addLanguage(self, concept_from, lang, name, stamp = None):
@@ -79,7 +79,7 @@ class FeederPublisher:
         """
         msg = '[add]' + concept_from + '|@' + lang + '|' + name
         if stamp == None:
-            stamp = rospy.get_rostime()
+            stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
     def addConcept(self, concept_from, stamp = None):
@@ -88,7 +88,7 @@ class FeederPublisher:
         """
         msg = '[add]' + concept_from + '|'
         if stamp == None:
-            stamp = rospy.get_rostime()
+            stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
     def removeProperty(self, concept_from, property, stamp = None):
@@ -98,7 +98,7 @@ class FeederPublisher:
         """
         msg = '[del]' + concept_from + '|' + property + '|_'
         if stamp == None:
-            stamp = rospy.get_rostime()
+            stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
     def removeObjectProperty(self, concept_from, property, concept_on, stamp = None):
@@ -108,7 +108,7 @@ class FeederPublisher:
         """
         msg = '[del]' + concept_from + '|' + property + '|' + concept_on
         if stamp == None:
-            stamp = rospy.get_rostime()
+            stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
     def removeDataProperty(self, concept_from, property, type, data, stamp = None):
@@ -118,7 +118,7 @@ class FeederPublisher:
         """
         msg = '[del]' + concept_from + '|' + property + '|' + type + '#' + data
         if stamp == None:
-            stamp = rospy.get_rostime()
+            stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
     def removeInheritage(self, concept_from, concept_on, stamp = None):
@@ -128,7 +128,7 @@ class FeederPublisher:
         """
         msg = '[del]' + concept_from + '|+|' + concept_on
         if stamp == None:
-            stamp = rospy.get_rostime()
+            stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
     def removeLanguage(self, concept_from, lang, name, stamp = None):
@@ -137,7 +137,7 @@ class FeederPublisher:
         """
         msg = '[del]' + concept_from + '|@' + lang + '|' + name
         if stamp == None:
-            stamp = rospy.get_rostime()
+            stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
     def removeConcept(self, concept_from, stamp = None):
@@ -147,21 +147,20 @@ class FeederPublisher:
         """
         msg = '[del]' + concept_from + '|'
         if stamp == None:
-            stamp = rospy.get_rostime()
+            stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
     def getNumSubscribers(self):
         """Returns the number of subscribers (int) that are currently connected to the internal ROS publisher."""
-        return self._pub.get_num_connections()
+        return self._pub.getNumSubscribers()
 
     def getNumPublishers(self):
-        return self._commit_sub.get_num_connections()
+        return self._commit_sub.getNumPublishers()
 
     def waitConnected(self):
         """Blocks while no subscribers are currently connected to the internal ROS publisher."""
-        rate = rospy.Rate(100)
-        while not rospy.is_shutdown() and self.getNumSubscribers() == 0 and self.getNumPublishers() == 0:
-            rate.sleep()
+        while not Ontoros.isShutdown() and self.getNumSubscribers() == 0 and self.getNumPublishers() == 0:
+            time.sleep(.01)
 
     def waitUpdate(self, timeout = 100000000):
         """Waits until all changes have been applied.
@@ -173,7 +172,7 @@ class FeederPublisher:
         start_time = datetime.now()
         self._sendNop()
 
-        while not rospy.is_shutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
+        while not Ontoros.isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
             time.sleep(.001)
 
         if self._updated == True:
@@ -205,9 +204,9 @@ class FeederPublisher:
         msg = '[commit]' + commit_name + '|'
 
         start_time = datetime.now()
-        self._publish_stamped(msg, rospy.get_rostime())
+        self._publish_stamped(msg, Ontoros.getRosTime())
 
-        while not rospy.is_shutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
+        while not Ontoros.isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
             time.sleep(.001)
 
         if self._updated == True:
@@ -224,9 +223,9 @@ class FeederPublisher:
         self._updated = False
 
         start_time = datetime.now()
-        self._publish_stamped('[checkout]' + commit_name + '|', rospy.get_rostime())
+        self._publish_stamped('[checkout]' + commit_name + '|', Ontoros.getRosTime())
 
-        while not rospy.is_shutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
+        while not Ontoros.isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
             time.sleep(.001)
 
         if self._updated == True:
@@ -235,7 +234,7 @@ class FeederPublisher:
             return False
 
     def _sendNop(self):
-        self._publish_stamped('[nop]nop|', rospy.get_rostime())
+        self._publish_stamped('[nop]nop|', Ontoros.getRosTime())
 
     def _publish(self, data):
         self._pub.publish(data)
