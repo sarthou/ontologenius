@@ -1,7 +1,11 @@
 from .compat.ros import Ontoros, OntoService
+import os
 
 from ontologenius.srv import OntologeniusConversion
-from ontologenius.srv import OntologeniusConversionRequest
+if os.environ["ROS_VERSION"] == "1":
+    from ontologenius.srv import OntologeniusConversionRequest
+else:
+    from ontologenius.srv._ontologenius_conversion import OntologeniusConversion_Request as OntologeniusConversionRequest
 
 class ConversionClient:
     
@@ -112,5 +116,5 @@ class ConversionClient:
           return None
 
     def _call(self, source, values_str, values_int):
-        request = OntologeniusConversionRequest(source, values_str, values_int)
+        request = OntologeniusConversionRequest(source = source, values_str = values_str, values_int = values_int)
         return self._client.call(request, self._verbose)

@@ -1,6 +1,11 @@
 from ..compat.ros import Ontoros, OntoService
+import os
 
-from ontologenius.srv import OntologeniusSparqlIndexService, OntologeniusSparqlIndexServiceRequest
+from ontologenius.srv import OntologeniusSparqlIndexService
+if os.environ["ROS_VERSION"] == "1":
+    from ontologenius.srv import OntologeniusSparqlIndexServiceRequest
+else:
+    from ontologenius.srv._ontologenius_sparql_index_service import OntologeniusSparqlIndexService_Request as OntologeniusSparqlIndexServiceRequest
 
 class SparqlIndexClient:
     """The SparqlIndexClient class provides a ROS service to explore ontologenius with SPARQL-like queries based on indexes.
@@ -18,7 +23,7 @@ class SparqlIndexClient:
 
 
     def call(self, query):
-        request = OntologeniusSparqlIndexServiceRequest(query)
+        request = OntologeniusSparqlIndexServiceRequest(query = query)
         response = self._client.call(request)
         if(response is None):
             return None

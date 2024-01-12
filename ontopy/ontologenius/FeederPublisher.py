@@ -1,6 +1,12 @@
 from .compat.ros import Ontoros
+
+import os
+
 from std_msgs.msg import String
-from ontologenius.msg import StampedString
+if os.environ["ROS_VERSION"] == "1":
+    from ontologenius.msg import StampedString
+else:
+    from ontologenius.msg import OntologeniusStampedString as StampedString
 
 import time
 import random
@@ -240,7 +246,8 @@ class FeederPublisher:
         self._pub.publish(data)
 
     def _publish_stamped(self, data, stamp):
-        self._stamped_pub.publish(data, stamp)
+        msg = StampedString(data = data, stamp = stamp)
+        self._stamped_pub.publish(msg)
 
     def commitCallback(self, data):
         if data.data == 'end':

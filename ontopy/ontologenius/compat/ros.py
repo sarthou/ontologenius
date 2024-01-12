@@ -1,4 +1,5 @@
 import os
+from ontologenius.msg import OntologeniusTimestamp
 
 if os.environ["ROS_VERSION"] == "1":
     import rospy
@@ -50,6 +51,9 @@ if os.environ["ROS_VERSION"] == "1":
         def getNumPublishers(self):
             self.sub.get_num_connections()
 
+        def unregister(self):
+            self.sub.unregister()
+
     class Ontoros :
         def createService(srv_name, srv_type):
             return OntoService(srv_name, srv_type)
@@ -61,7 +65,7 @@ if os.environ["ROS_VERSION"] == "1":
             return OntoSubscriber(sub_name, sub_type, callback)
         
         def getRosTime():
-            return rospy.get_rostime()
+            return rospy.get_rostime() # TODO
         
         def isShutdown():
             return rospy.is_shutdown()
@@ -114,20 +118,21 @@ elif os.environ["ROS_VERSION"] == "2":
 
 
     class OntoService:
-        def __init__(self, client: Client, node_: Node):
+        def __init__(self, client: Client, name, node_: Node):
             self.client: Client = client
             self.node_: Node = node_
+            self.srv_name = name
 
-        def call(self, params: SrvTypeRequest) -> SrvTypeResponse:
+        def call(self, params: SrvTypeRequest, verbose) -> SrvTypeResponse:
             future = self.client.call_async(request=params)
             rclpy.spin_until_future_complete(self.node_, future)
             return future.result()
                 
-        def wait(self, timeout = -1): # TODO
+        def wait(self, timeout = -1):
             if(timeout != -1):
-                self.client.wait_for_service(self.srv_name, timeout)
+                self.client.wait_for_service(timeout)
             else:
-                self.client.wait_for_service(self.srv_name)
+                self.client.wait_for_service()
 
 
     class OntoPublisher:
@@ -138,7 +143,7 @@ elif os.environ["ROS_VERSION"] == "2":
             self.pub.publish(msg)
 
         def getNumSubscribers(self):
-            self.pub.get_num_connections() # TODO
+            self.pub.get_num_connections()
 
 
     class OntoSubscriber:
@@ -146,29 +151,34 @@ elif os.environ["ROS_VERSION"] == "2":
             self.sub: Subscription = sub
 
         def getNumPublishers(self):
-            self.sub.get_num_connections() # TODO
+            self.sub.get_num_connections()
+
+        def unregister(self):
+            pass
 
 
-    class OntoROS(Node, metaclass=SingletonMeta):
+    class Ontoros(Node, metaclass=SingletonMeta):
 
         def __init__(self):
             super().__init__("OntoRos")
 
         @staticmethod
-        def createService(srv_name, srv_type, connected) -> OntoService:
-            return OntoService(OntoROS().create_client(srv_name, srv_type), OntoROS())
+        def createService(srv_name, srv_type) -> OntoService:
+            return OntoService(Ontoros().create_client(srv_type, srv_name), srv_name, Ontoros())
 
         @staticmethod
         def createPublisher(pub_name, pub_type, queue_size: int) -> OntoPublisher:
-            return OntoPublisher(OntoROS().create_publisher(pub_type, pub_name, qos_profile=queue_size))
+            return OntoPublisher(Ontoros().create_publisher(pub_type, pub_name, qos_profile=queue_size))
 
         @staticmethod
         def createSubscriber(sub_name, sub_type, callback, queue_size: int = 10) -> OntoSubscriber:
-            return OntoSubscriber(OntoROS().create_subscription(sub_type, sub_name, callback, qos_profile=queue_size))
+            return OntoSubscriber(Ontoros().create_subscription(sub_type, sub_name, callback, qos_profile=queue_size))
 
         @staticmethod
         def getRosTime() -> Time:
-            return OntoROS().get_clock().now()
+            t_msg = Ontoros().get_clock().now().to_msg()
+            stamp_msg = OntologeniusTimestamp(seconds = t_msg._sec, nanoseconds = t_msg._nanosec)
+            return stamp_msg
 
         @staticmethod
         def isShutdown() -> bool:

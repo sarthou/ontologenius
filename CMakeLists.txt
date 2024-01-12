@@ -55,6 +55,13 @@ find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(TinyXML2 REQUIRED)
+find_package(ament_cmake_python REQUIRED)
+
+#install(PROGRAMS
+#        ontopy/${PROJECT_NAME}
+#        DESTINATION lib)
+
+ament_python_install_package(ontopy)
 endif()
 
 ################################################

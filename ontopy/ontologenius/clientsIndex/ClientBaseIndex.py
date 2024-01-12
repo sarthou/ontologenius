@@ -1,6 +1,11 @@
 from ..compat.ros import Ontoros, OntoService
+import os
 
-from ontologenius.srv import OntologeniusIndexService, OntologeniusIndexServiceRequest
+from ontologenius.srv import OntologeniusIndexService
+if os.environ["ROS_VERSION"] == "1":
+    from ontologenius.srv import OntologeniusIndexServiceRequest
+else:
+    from ontologenius.srv._ontologenius_index_service import OntologeniusIndexService_Request as OntologeniusIndexServiceRequest
 
 class ClientBaseIndex:
     """The ClientBaseIndex class provides an abstraction for any ROS services.
@@ -37,7 +42,7 @@ class ClientBaseIndex:
            If the service call fails, the function returns None
         """
         ClientBaseIndex._cpt += 1
-        request = OntologeniusIndexServiceRequest(action, param)
+        request = OntologeniusIndexServiceRequest(action = action, param = param)
         response = self._client.call(request, ClientBaseIndex._verbose)
         if(response is None):
             self.error_code = -1
@@ -52,7 +57,7 @@ class ClientBaseIndex:
            If the service call fails, the function returns None
         """
         ClientBaseIndex._cpt += 1
-        request = OntologeniusIndexServiceRequest(action, param)
+        request = OntologeniusIndexServiceRequest(action = action, param = param)
         response = self._client.call(request, ClientBaseIndex._verbose)
         if(response is None):
             self.error_code = -1
@@ -67,7 +72,7 @@ class ClientBaseIndex:
            If the service call fails, the function returns None
         """
         ClientBaseIndex._cpt += 1
-        request = OntologeniusIndexServiceRequest(action, param)
+        request = OntologeniusIndexServiceRequest(action = action, param = param)
         response = self._client.call(request, ClientBaseIndex._verbose)
         if(response is None):
             self.error_code = -1
@@ -85,7 +90,7 @@ class ClientBaseIndex:
            If the service call fails, the function returns None
         """
         ClientBaseIndex._cpt += 1
-        request = OntologeniusIndexServiceRequest(action, param)
+        request = OntologeniusIndexServiceRequest(action = action, param = param)
         response = self._client.call(request, ClientBaseIndex._verbose)
         if(response is None):
             self.error_code = -1
@@ -103,7 +108,7 @@ class ClientBaseIndex:
            If the service call fails, the function returns False
         """
         ClientBaseIndex._cpt += 1
-        request = OntologeniusIndexServiceRequest(action, param)
+        request = OntologeniusIndexServiceRequest(action = action, param = param)
         response = self._client.call(request, ClientBaseIndex._verbose)
         if(response is None):
             self.error_code = -1
@@ -119,7 +124,7 @@ class ClientBaseIndex:
            service is different from SUCCESS.
         """
         ClientBaseIndex._cpt += 1
-        request = OntologeniusIndexServiceRequest(action, param)
+        request = OntologeniusIndexServiceRequest(action = action, param = param)
         response = self._client.call(request, ClientBaseIndex._verbose)
         if(response is None):
             self.error_code = -1

@@ -1,6 +1,12 @@
-from ..compat.ros import Ontoros, OntoService
+from ..compat.ros import Ontoros
+import os
 
-from ontologenius.srv import OntologeniusService, OntologeniusServiceRequest
+from ontologenius.srv import OntologeniusService
+if os.environ["ROS_VERSION"] == "1":
+    from ontologenius.srv import OntologeniusServiceRequest
+else:
+    from ontologenius.srv._ontologenius_service import OntologeniusService_Request as OntologeniusServiceRequest
+
 
 class ClientBase:
     """The ClientBase class provides an abstraction for any ROS services.
@@ -37,7 +43,7 @@ class ClientBase:
            If the service call fails, the function returns None
         """
         ClientBase._cpt += 1
-        request = OntologeniusServiceRequest(action, param)
+        request = OntologeniusServiceRequest(action = action, param = param)
         response = self._client.call(request, ClientBase._verbose)
         if(response is None):
             self.error_code = -1
@@ -52,7 +58,7 @@ class ClientBase:
            If the service call fails, the function returns None
         """
         ClientBase._cpt += 1
-        request = OntologeniusServiceRequest(action, param)
+        request = OntologeniusServiceRequest(action = action, param = param)
         response = self._client.call(request, ClientBase._verbose)
         if(response is None):
             self.error_code = -1
@@ -70,7 +76,7 @@ class ClientBase:
            If the service call fails, the function returns False
         """
         ClientBase._cpt += 1
-        request = OntologeniusServiceRequest(action, param)
+        request = OntologeniusServiceRequest(action = action, param = param)
         response = self._client.call(request, ClientBase._verbose)
         if(response is None):
             self.error_code = -1
@@ -86,7 +92,7 @@ class ClientBase:
            service is different from SUCCESS.
         """
         ClientBase._cpt += 1
-        request = OntologeniusServiceRequest(action, param)
+        request = OntologeniusServiceRequest(action = action, param = param)
         response = self._client.call(request, ClientBase._verbose)
         if(response is None):
             self.error_code = -1

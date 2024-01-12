@@ -1,6 +1,11 @@
 from ..compat.ros import Ontoros, OntoService
+import os
 
-from ontologenius.srv import OntologeniusSparqlService, OntologeniusSparqlServiceRequest
+from ontologenius.srv import OntologeniusSparqlService
+if os.environ["ROS_VERSION"] == "1":
+    from ontologenius.srv import OntologeniusSparqlServiceRequest
+else:
+    from ontologenius.srv._ontologenius_sparql_service import OntologeniusSparqlService_Request as OntologeniusSparqlServiceRequest
 
 class SparqlClient:
     """The SparqlClient class provides a ROS service to explore ontologenius with SPARQL-like queries.
@@ -17,7 +22,7 @@ class SparqlClient:
         self._client = Ontoros.createService('ontologenius/' + self._name, OntologeniusSparqlService)
 
     def call(self, query):
-        request = OntologeniusSparqlServiceRequest(query)
+        request = OntologeniusSparqlServiceRequest(query = query)
         response = self._client.call(request)
         if(response is None):
             return None
