@@ -528,6 +528,18 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     target_include_directories(ontologenius_cpy_test PRIVATE ${catkin_INCLUDE_DIRS})
     target_link_libraries(ontologenius_cpy_test ontologenius_lib ${catkin_LIBRARIES})
   endif()
+
+elseif($ENV{ROS_VERSION} STREQUAL "2")
+  if(BUILD_TESTING)
+    find_package(ament_lint_auto REQUIRED)
+    find_package(ament_cmake_gtest REQUIRED)
+
+    ament_add_gtest(ontologenius_cpy_test src/tests/CI/copy_test.cpp TIMEOUT 10)
+    set_target_properties(ontologenius_cpy_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    target_include_directories(ontologenius_cpy_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(ontologenius_cpy_test ontologenius_lib ${catkin_LIBRARIES})
+
+  endif()
 endif()
 
 ###################################
