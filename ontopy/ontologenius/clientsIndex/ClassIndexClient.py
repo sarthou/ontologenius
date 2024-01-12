@@ -1,5 +1,3 @@
-import rospy
-
 from .OntologyIndexClient import OntologyIndexClient
 
 class ClassIndexClient(OntologyIndexClient):

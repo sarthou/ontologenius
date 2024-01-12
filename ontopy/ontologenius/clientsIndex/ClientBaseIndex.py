@@ -1,6 +1,6 @@
-import rospy
+from ..compat.ros import Ontoros, OntoService
 
-from ontologenius.srv import OntologeniusIndexService
+from ontologenius.srv import OntologeniusIndexService, OntologeniusIndexServiceRequest
 
 class ClientBaseIndex:
     """The ClientBaseIndex class provides an abstraction for any ROS services.
@@ -14,7 +14,7 @@ class ClientBaseIndex:
     def __init__(self, name):
         """Constructs a ROS client linked to the service name(str)."""
         self._name = name
-        self._client = rospy.ServiceProxy('ontologenius/' + self._name, OntologeniusIndexService, True)
+        self._client = Ontoros.createService('ontologenius/' + self._name, OntologeniusIndexService)
         self.error_code = 0
 
     def nb(self):
@@ -37,25 +37,14 @@ class ClientBaseIndex:
            If the service call fails, the function returns None
         """
         ClientBaseIndex._cpt += 1
-        try:
-            response = self._client(action, param)
+        request = OntologeniusIndexServiceRequest(action, param)
+        response = self._client.call(request, ClientBaseIndex._verbose)
+        if(response is None):
+            self.error_code = -1
+            return None
+        else:
             self.error_code = response.code
             return response.string_values
-        except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-            if ClientBaseIndex._verbose == True:
-                print("Failure to call ontologenius/" + self._name)
-            self._client = rospy.ServiceProxy('ontologenius/' + self._name, OntologeniusIndexService, True)
-            try:
-                response = self._client(action, param)
-                self.error_code = response.code
-                if ClientBaseIndex._verbose == True:
-                    print("Restored ontologenius/" + self._name)
-                return response.string_values
-            except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-                if ClientBaseIndex._verbose == True:
-                    print("Failure of service restoration")
-                self.error_code = -1
-                return None
 
     def callIndexes(self, action, param):
         """Call the service set up in the constructor of ClientBaseIndex with the request
@@ -63,25 +52,14 @@ class ClientBaseIndex:
            If the service call fails, the function returns None
         """
         ClientBaseIndex._cpt += 1
-        try:
-            response = self._client(action, param)
+        request = OntologeniusIndexServiceRequest(action, param)
+        response = self._client.call(request, ClientBaseIndex._verbose)
+        if(response is None):
+            self.error_code = -1
+            return None
+        else:
             self.error_code = response.code
             return response.index_values
-        except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-            if ClientBaseIndex._verbose == True:
-                print("Failure to call ontologenius/" + self._name)
-            self._client = rospy.ServiceProxy('ontologenius/' + self._name, OntologeniusIndexService, True)
-            try:
-                response = self._client(action, param)
-                self.error_code = response.code
-                if ClientBaseIndex._verbose == True:
-                    print("Restored ontologenius/" + self._name)
-                return response.index_values
-            except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-                if ClientBaseIndex._verbose == True:
-                    print("Failure of service restoration")
-                self.error_code = -1
-                return None
 
     def callStr(self, action, param):
         """Call the service set up in the constructor of ClientBaseIndex with the request
@@ -89,31 +67,17 @@ class ClientBaseIndex:
            If the service call fails, the function returns None
         """
         ClientBaseIndex._cpt += 1
-        try:
-            response = self._client(action, param)
+        request = OntologeniusIndexServiceRequest(action, param)
+        response = self._client.call(request, ClientBaseIndex._verbose)
+        if(response is None):
+            self.error_code = -1
+            return None
+        else:
             self.error_code = response.code
             if len(response.string_values) > 0:
                 return response.string_values[0]
             else:
                 return ''
-        except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-            if ClientBaseIndex._verbose == True:
-                print("Failure to call ontologenius/" + self._name)
-            self._client = rospy.ServiceProxy('ontologenius/' + self._name, OntologeniusIndexService, True)
-            try:
-                response = self._client(action, param)
-                self.error_code = response.code
-                if ClientBaseIndex._verbose == True:
-                    print("Restored ontologenius/" + self._name)
-                if len(response.string_values) > 0:
-                    return response.string_values[0]
-                else:
-                    return ''
-            except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-                if ClientBaseIndex._verbose == True:
-                    print("Failure of service restoration")
-                self.error_code = -1
-                return None
 
     def callIndex(self, action, param):
         """Call the service set up in the constructor of ClientBaseIndex with the request
@@ -121,31 +85,17 @@ class ClientBaseIndex:
            If the service call fails, the function returns None
         """
         ClientBaseIndex._cpt += 1
-        try:
-            response = self._client(action, param)
+        request = OntologeniusIndexServiceRequest(action, param)
+        response = self._client.call(request, ClientBaseIndex._verbose)
+        if(response is None):
+            self.error_code = -1
+            return None
+        else:
             self.error_code = response.code
             if len(response.index_values) > 0:
                 return response.index_values[0]
             else:
-                return ''
-        except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-            if ClientBaseIndex._verbose == True:
-                print("Failure to call ontologenius/" + self._name)
-            self._client = rospy.ServiceProxy('ontologenius/' + self._name, OntologeniusIndexService, True)
-            try:
-                response = self._client(action, param)
-                self.error_code = response.code
-                if ClientBaseIndex._verbose == True:
-                    print("Restored ontologenius/" + self._name)
-                if len(response.index_values) > 0:
-                    return response.index_values[0]
-                else:
-                    return ''
-            except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-                if ClientBaseIndex._verbose == True:
-                    print("Failure of service restoration")
-                self.error_code = -1
-                return None
+                return 0
 
     def callNR(self, action, param):
         """Call the service set up in the constructor of ClientBaseIndex with the
@@ -153,25 +103,14 @@ class ClientBaseIndex:
            If the service call fails, the function returns False
         """
         ClientBaseIndex._cpt += 1
-        try:
-            response = self._client(action, param)
+        request = OntologeniusIndexServiceRequest(action, param)
+        response = self._client.call(request, ClientBaseIndex._verbose)
+        if(response is None):
+            self.error_code = -1
+            return False
+        else:
             self.error_code = response.code
             return True
-        except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-            if ClientBaseIndex._verbose == True:
-                print("Failure to call ontologenius/" + self._name)
-            self._client = rospy.ServiceProxy('ontologenius/' + self._name, OntologeniusIndexService, True)
-            try:
-                response = self._client(action, param)
-                self.error_code = response.code
-                if ClientBaseIndex._verbose == True:
-                    print("Restored ontologenius/" + self._name)
-                return True
-            except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-                if ClientBaseIndex._verbose == True:
-                    print("Failure of service restoration")
-                self.error_code = -1
-                return False
 
     def callBool(self, action, param):
         """Call the service set up in the constructor of ClientBaseIndex with the
@@ -180,22 +119,11 @@ class ClientBaseIndex:
            service is different from SUCCESS.
         """
         ClientBaseIndex._cpt += 1
-        try:
-            response = self._client(action, param)
+        request = OntologeniusIndexServiceRequest(action, param)
+        response = self._client.call(request, ClientBaseIndex._verbose)
+        if(response is None):
+            self.error_code = -1
+            return False
+        else:
             self.error_code = response.code
             return response.code == 0
-        except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-            if ClientBaseIndex._verbose == True:
-                print("Failure to call ontologenius/" + self._name)
-            self._client = rospy.ServiceProxy('ontologenius/' + self._name, OntologeniusIndexService, True)
-            try:
-                response = self._client(action, param)
-                if ClientBaseIndex._verbose == True:
-                    print("Restored ontologenius/" + self._name)
-                self.error_code = response.code
-                return response.code == 0
-            except (rospy.ServiceException, rospy.exceptions.TransportTerminated) as e:
-                if ClientBaseIndex._verbose == True:
-                    print("Failure of service restoration")
-                self.error_code = -1
-                return False
