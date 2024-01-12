@@ -1,4 +1,4 @@
-from compat.ros import Ontoros, OntoService
+from ..compat.ros import Ontoros, OntoService
 
 from ontologenius.srv import OntologeniusSparqlService, OntologeniusSparqlServiceRequest
 
