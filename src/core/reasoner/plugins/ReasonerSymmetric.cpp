@@ -1,10 +1,10 @@
-#include "ontologenius/core/reasoner/plugins/ReasonerSymetric.h"
+#include "ontologenius/core/reasoner/plugins/ReasonerSymmetric.h"
 
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 
 namespace ontologenius {
 
-void ReasonerSymetric::postReason()
+void ReasonerSymmetric::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
@@ -40,7 +40,7 @@ void ReasonerSymetric::postReason()
   }
 }
 
-bool ReasonerSymetric::symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv)
+bool ReasonerSymmetric::symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv)
 {
   for(auto& relation : sym_indiv->object_relations_)
   {
@@ -51,16 +51,16 @@ bool ReasonerSymetric::symetricExist(IndividualBranch_t* indiv_on, ObjectPropert
   return false;
 }
 
-std::string ReasonerSymetric::getName()
+std::string ReasonerSymmetric::getName()
 {
   return "reasoner symetric";
 }
 
-std::string ReasonerSymetric::getDesciption()
+std::string ReasonerSymmetric::getDesciption()
 {
   return "This reasoner creates the symetric properties for each individual.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ReasonerSymetric, ReasonerInterface)
-
 } // namespace ontologenius
+
+PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerSymmetric, ontologenius::ReasonerInterface)

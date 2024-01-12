@@ -1,12 +1,12 @@
 flow:
-  - ReasonerChain
-  - ReasonerGeneralize
-  - ReasonerDictionary
-  - ReasonerInverseOf
-  - ReasonerRangeDomain
-  - ReasonerSymetric
-ReasonerGeneralize:
+  - ontologenius::ReasonerChain
+  - ontologenius::ReasonerGeneralize
+  - ontologenius::ReasonerDictionary
+  - ontologenius::ReasonerInverseOf
+  - ontologenius::ReasonerRangeDomain
+  - ontologenius::ReasonerSymmetric
+ontologenius::ReasonerGeneralize:
   min_count : 2
   min_percent : 0.7
-ReasonerDictionary:
+ontologenius::ReasonerDictionary:
   use_id : true

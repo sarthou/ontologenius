@@ -47,8 +47,7 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius_multi_tester");
 
-  ros::NodeHandle n;
-  onto::OntologiesManipulator onto(&n);
+  onto::OntologiesManipulator onto;
 
   std::vector<size_t> sizes;
   std::vector<double> res;

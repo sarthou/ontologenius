@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#include "ontologenius/compat/ros.h"
+
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/IndividualIndexClient.h"
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/ObjectPropertyIndexClient.h"
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/DataPropertyIndexClient.h"
@@ -20,9 +22,7 @@ namespace onto {
 class OntologyManipulatorIndex
 {
 private:
-  ros::NodeHandle n_; // do not move this line below
   std::string name_;
-
 public:
   OntologyManipulatorIndex(const std::string& name = "");
   /// @brief OntologyManipulatorIndex copy constructor

@@ -14,5 +14,5 @@
 
   <env name="LD_PRELOAD" value="$(arg tcmalloc_path)"/>
 
-  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius" output="screen" args="-l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) $(arg files)"> </node>
+  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius_single" output="screen" args="-l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) $(arg files)"> </node>
 </launch>

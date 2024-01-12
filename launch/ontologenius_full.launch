@@ -2,7 +2,7 @@
   <arg name="language" default="en"/>
   <arg name="intern_file" default="$(find ontologenius)/file_intern/ontologenius.owl"/>
   <arg name="config_file" default="none"/>
-  <arg name="display" default="true"/>
+  <arg name="display" default="false"/>
   <arg name="files" default="
   $(find ontologenius)/files/attribute.owl
   $(find ontologenius)/files/measure.owl
@@ -14,6 +14,6 @@
 
   <env name="LD_PRELOAD" value="$(arg tcmalloc_path)"/>
 
-  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius" output="screen" args="-l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) $(arg files)"> </node>
+  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius_single" output="screen" args="-l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) $(arg files)"> </node>
   <node name="ontologenius_gui" pkg="ontologenius" type="ontoloGUI" output="screen"> </node>
 </launch>

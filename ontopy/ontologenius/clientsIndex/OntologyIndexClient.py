@@ -1,5 +1,3 @@
-import rospy
-
 from .ClientBaseIndex import ClientBaseIndex
 
 class OntologyIndexClient(ClientBaseIndex):

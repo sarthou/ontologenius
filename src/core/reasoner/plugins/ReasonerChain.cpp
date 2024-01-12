@@ -1,6 +1,6 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerChain.h"
 
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 
 namespace ontologenius {
 
@@ -151,6 +151,6 @@ std::string ReasonerChain::getDesciption()
   return "This reasoner resolve the properties chains axioms.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ReasonerChain, ReasonerInterface)
-
 } // namespace ontologenius
+
+PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerChain, ontologenius::ReasonerInterface)

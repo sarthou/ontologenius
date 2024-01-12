@@ -4,9 +4,7 @@
 #include <vector>
 #include <string>
 
-#include <ros/ros.h>
-
-#include "ontologenius/OntologeniusService.h"
+#include "ontologenius/compat/ros.h"
 
 #ifndef COLOR_OFF
 #define COLOR_OFF     "\x1B[0m"
@@ -26,16 +24,17 @@ namespace onto {
 /// @brief The ClientBase class provides an abstraction for any ROS services.
 /// This class ensure a persistent connection with the service based on.
 /// The persistent connection ensures a minimal response time.
-/// A reconnection logic is implemented in the event that the persistent connection fails. 
+/// A reconnection logic is implemented in the event that the persistent connection fails.
 class ClientBase
 {
+  static int16_t ignore_;
 public:
   /// @brief Constructs a ROS client.
   /// @param name is the name of the ontologenius service
   explicit ClientBase(const std::string& name) : name_(name),
                                                  error_code_(0),
-                                                 client(n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name, true))
-                                                 
+                                                 client_("/ontologenius/" + name)
+
   {}
 
   /// @brief Gives the total number of service calls from all ClientBase instances since the last reset.
@@ -50,38 +49,46 @@ public:
   /// @param action the query action.
   /// @param param the query parameters.
   /// @return Returns a list of string. If the service call fails, the first element of the returned vector is "ERR:SERVICE_FAIL".
-  inline std::vector<std::string> call(const std::string& action, const std::string& param)
+  inline std::vector<std::string> call(const std::string& action, const std::string& param, int16_t& code = ignore_)
   {
-    ontologenius::OntologeniusService srv;
-    srv.request.action = action;
-    srv.request.param = param;
-    std::vector<std::string> res;
     cpt++;
 
-    if(client.call(srv))
+    auto req = ontologenius::compat::make_request<ontologenius::compat::OntologeniusService>();
+    auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusService>();
+
+    [action, param](auto&& req)
     {
-      error_code_ = srv.response.code;
-      return srv.response.values;
-    }
-    else
+      req->action = action;
+      req->param = param;
+    }(ontologenius::compat::onto_ros::getServicePointer(req));
+
+    using ResultTy = typename decltype(client_)::Status;
+
+    switch (client_.call(req, res))
     {
-      if(verbose_)
-        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
-      if(client.call(srv))
+      case ResultTy::SUCCESSFUL_WITH_RETRIES:
       {
         if(verbose_)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
-        error_code_ = srv.response.code;
-        return srv.response.values;
+        [[fallthrough]];
       }
-      else
+      case ResultTy::SUCCESSFUL:
       {
-        if(verbose_)
-          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
+        return [&](auto&& res)
+        {
+          code = res->code;
+          error_code_ = res->code;
+          return res->values;
+        }(ontologenius::compat::onto_ros::getServicePointer(res));
+      }
+      case ResultTy::FAILURE:
+        [[fallthrough]];
+      default:
+      {
         error_code_ = -1;
-        res.push_back("ERR:SERVICE_FAIL");
-        return res;
+        if(verbose_)
+          std::cout << COLOR_RED << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
+        return { "ERR:SERVICE_FAIL" };
       }
     }
   }
@@ -90,46 +97,10 @@ public:
   /// @param action the query action.
   /// @param param the query parameters.
   /// @return Returns a single string. If the service call fails, the returned value is "ERR:SERVICE_FAIL".
-  inline std::string callStr(const std::string& action, const std::string& param)
+  inline std::string callStr(const std::string& action, const std::string& param, int16_t& code = ignore_)
   {
-    ontologenius::OntologeniusService srv;
-    srv.request.action = action;
-    srv.request.param = param;
-    std::string res = "";
-    cpt++;
-
-    if(client.call(srv))
-    {
-      error_code_ = srv.response.code;
-      if(srv.response.values.size())
-        return srv.response.values[0];
-      else
-        return res;
-    }
-    else
-    {
-      if(verbose_)
-        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
-      if(client.call(srv))
-      {
-        if(verbose_)
-          std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
-        error_code_ = srv.response.code;
-        if(srv.response.values.size())
-          return srv.response.values[0];
-        else
-          return res;
-      }
-      else
-      {
-        if(verbose_)
-          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
-        error_code_ = -1;
-        res = "ERR:SERVICE_FAIL";
-        return res;
-      }
-    }
+    auto res = this->call(action, param, code);
+    return res.empty() ? "" : res[0];
   }
 
   /// @brief Calls the service set up in the constructor of ClientBase.
@@ -138,36 +109,7 @@ public:
   /// @return Returns false if the service call fails.
   inline bool callNR(const std::string& action, const std::string& param)
   {
-    ontologenius::OntologeniusService srv;
-    srv.request.action = action;
-    srv.request.param = param;
-    cpt++;
-
-    if(client.call(srv))
-    {
-      error_code_ = srv.response.code;
-      return true;
-    }
-    else
-    {
-      if(verbose_)
-        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
-      if(client.call(srv))
-      {
-        if(verbose_)
-          std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
-        error_code_ = srv.response.code;
-        return true;
-      }
-      else
-      {
-        if(verbose_)
-          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
-        error_code_ = -1;
-        return false;
-      }
-    }
+    return this->callStr(action, param) != "ERR:SERVICE_FAIL";
   }
 
   /// @brief Calls the service set up in the constructor of ClientBase.
@@ -176,47 +118,20 @@ public:
   /// @return Returns false if the service call fails or the result code of the service is different from SUCCESS.
   inline bool callBool(const std::string& action, const std::string& param)
   {
-    ontologenius::OntologeniusService srv;
-    srv.request.action = action;
-    srv.request.param = param;
-    cpt++;
+    int16_t code;
+    auto res = this->callStr(action, param, code);
 
-    if(client.call(srv))
-    {
-      error_code_ = srv.response.code;
-      return (srv.response.code == 0);
-    }
-    else
-    {
-      if(verbose_)
-        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_.serviceClient<ontologenius::OntologeniusService>("/ontologenius/" + name_, true);
-      if(client.call(srv))
-      {
-        if(verbose_)
-          std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
-        error_code_ = srv.response.code;
-        return (srv.response.code == 0);
-      }
-      else
-      {
-        if(verbose_)
-          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
-        error_code_ = -1;
-        return false;
-      }
-    }
+    return (res != "ERR:SERVICE_FAIL") && (code != 0);
   }
 
 private:
-    std::string name_;
-    ros::NodeHandle n_;
-    static size_t cpt;
-    static bool verbose_;
-    int error_code_;
+  std::string name_;
+  static size_t cpt;
+  static bool verbose_;
+  int error_code_;
 
 protected:
-  ros::ServiceClient client;
+  ontologenius::compat::onto_ros::Client<ontologenius::compat::OntologeniusService> client_;
 };
 
 } // namespace onto

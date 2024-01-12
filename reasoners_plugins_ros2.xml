@@ -1,0 +1,23 @@
+<library path="ontologenius_reasoner_plugin">
+  <class type="ontologenius::ReasonerNone" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner test plugin.</description>
+  </class>
+  <class type="ontologenius::ReasonerInverseOf" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner for inverse of axiom.</description>
+  </class>
+  <class type="ontologenius::ReasonerSymmetric" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner for symmetric axiom.</description>
+  </class>
+  <class type="ontologenius::ReasonerChain" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner for properties chain axiom.</description>
+  </class>
+  <class type="ontologenius::ReasonerDictionary" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner for expand dictionaries.</description>
+  </class>
+  <class type="ontologenius::ReasonerGeneralize" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner to deduce new knowledge.</description>
+  </class>
+  <class type="ontologenius::ReasonerRangeDomain" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner to deduce new inheritances based on range and domain of properties.</description>
+  </class>
+</library>

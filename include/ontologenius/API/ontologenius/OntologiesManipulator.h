@@ -17,7 +17,6 @@ class OntologiesManipulator : public ManagerClient
 {
 public:
   /// @brief Constructs a manipulator for several instance of ontologies
-  explicit OntologiesManipulator(ros::NodeHandle* n);
   OntologiesManipulator();
   ~OntologiesManipulator();
 
@@ -60,7 +59,6 @@ public:
   }
 
 private:
-  ros::NodeHandle n_; // do not move this line below
   std::map<std::string, OntologyManipulator*> manipulators_;
   std::map<std::string, OntologyManipulatorIndex*> manipulators_index_;
 };

@@ -14,7 +14,7 @@ TEST(dynamic_tests, insert)
   bool res_bool = true;
   std::string test_word = "robot";
 
-  onto_ptr->reasoners.activate("ReasonerGeneralize");
+  onto_ptr->reasoners.activate("ontologenius::ReasonerGeneralize");
 
   onto_ptr->feeder.addConcept("human");
   onto_ptr->feeder.addInheritage("man", "human");
@@ -62,8 +62,7 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius_dynamic_tester");
 
-  ros::NodeHandle n;
-  onto::OntologyManipulator onto(&n);
+  onto::OntologyManipulator onto;
   onto_ptr = &onto;
 
   ros::Rate wait(1);
