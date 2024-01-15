@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Install | Ontologenius 0.3.2</title>
+  <title>Install ROS2 | Ontologenius 0.3.2</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="images/favicon.ico" rel="shortcut icon">
@@ -58,7 +58,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="Download.html">Download</a></li>
-            <li class="level1"><a href="InstallOntologenius.html"><b>Install Ontologenius</b></a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="InstallOntologeniusROS2.html"><b>- Install with ROS2</b></a></li>
             <li class="level1"><a href="SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="python_Tutorials/Tutorials.html">Python Tutorials</a></li>
@@ -93,32 +95,30 @@
       </div>
 
       <div class="context">
-        <h1 class="title">Install Ontologenius</h1>
-        <p>Since Ontologenius is a ROS package, make sure that ROS is installed on your platform. Ontologenius is fully supported and maintained on <a class="type" href="http://wiki.ros.org/noetic/Installation">ROS Noetic Ninjemys</a>. Desktop ROS configuration is not required for use of ontologenius.</p>
+        <h1 class="title">Install Ontologenius ROS2</h1>
+        <p>Since Ontologenius is a ROS package, make sure that ROS is installed on your platform. Ontologenius is fully supported and maintained on <a class="type" href="https://docs.ros.org/en/humble/Installation.html">ROS Humble</a>. Desktop ROS configuration is not required for use of ontologenius.</p>
 
-        <p>Clone the package on your catkin workspace:</p>
+        <p>First you have to install ontologenius dependency:</p>
         <div class="code_block">
-          <p>cd ~/catkin_ws/src/</br></br>git clone https://github.com/sarthou/ontologenius.git</br></br>cd ..</br></br>catkin_make</p>
+          <p>sudo apt install ros-cmake-modules</p>
         </div>
 
-        <h2>Troubles</h2>
-        <p>If you have the following error :</p>
+        <p>Clone the package on your ros2 workspace:</p>
         <div class="code_block">
-          <p>Could not find a package configuration file provided by "qt_build" with any of the following names:<br><br>    qt_buildConfig.cmake<br>    qt_build-config.cmake</p>
+          <p>cd ~/ros2_ws/src/</br></br>git clone https://github.com/sarthou/ontologenius.git</br></br>cd ..</br></br>colcon build --symlink-install</p>
         </div>
-        <p>You just have to install qt-build:</p>
-        <div class="code_block">
-          <p>sudo apt-get install ros-DISTRO-qt-build</p>
-        </div>
+
+        <!--h2>Troubles</h2>
+        <p>If you have the following error :</p-->
 
         <h2>Test Ontologenius installation</h2>
-        <p>Just run rostest to check if all the features work well on your platform:</p>
+        <p>Just run colcon test to check if all the features work well on your platform:</p>
         <div class="code_block">
-          <p>catkin_make run_tests_ontologenius_rostest</p>
+          <p>colcon test --packages-select ontologenius</p>
         </div>
         <p class="tip">Some asynchronous mechanisms are used. A computer with little computing power can therefore affect some tests due to a slow response time.</p>
 
-        <h2>Improve performaces</h2>
+        <!--h2>Improve performaces</h2>
 
         <p>If you really need huge performaces, you can use the tcmalloc library which provide custom allocators.</p>
 
@@ -130,7 +130,7 @@
 
         <div class="code_block">
           <p>find /usr -name *tcmalloc*</p>
-        </div>
+        </div-->
 
         <nav class="course-pagination">
           <span class="course-pagination__separator"></span>

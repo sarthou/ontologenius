@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Publications | Ontologenius 0.3.2</title>
+  <title>Install ROS1 | Ontologenius 0.3.2</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="images/favicon.ico" rel="shortcut icon">
@@ -42,6 +42,16 @@
 
     <div class="content">
       <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: 0px;">
+        <!--div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="#public-functions">Public Functions</a></li>
+            <li class="level1"><a href="#reimplemented-public-functions">Reimplemented Public Functions</a></li>
+            <li class="level1"><a href="#reimplemented-protected-functions">Reimplemented Protected Functions</a></li>
+            <li class="level1"><a href="#details">Detailed Description</a></li>
+          </ul>
+        </div-->
 
         <div class="contents">
           <div id="contents-toggle" class=""></div>
@@ -49,7 +59,7 @@
           <ul style="display: block;">
             <li class="level1"><a href="Download.html">Download</a></li>
             <li class="level1">Install Ontologenius</li>
-            <li class="level2"><a href="InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="InstallOntologeniusROS1.html"><b>- Install with ROS1</b></a></li>
             <li class="level2"><a href="InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
@@ -85,63 +95,52 @@
       </div>
 
       <div class="context">
-        <h1 class="title">Publications</h1>
+        <h1 class="title">Install Ontologenius ROS1</h1>
+        <p>Since Ontologenius is a ROS package, make sure that ROS is installed on your platform. Ontologenius is fully supported and maintained on <a class="type" href="http://wiki.ros.org/noetic/Installation">ROS Noetic Ninjemys</a>. Desktop ROS configuration is not required for use of ontologenius.</p>
 
-        <p>List of publications describing parts of the system, or relevant to the project.</p>
+        <p>Clone the package on your catkin workspace:</p>
+        <div class="code_block">
+          <p>cd ~/catkin_ws/src/</br></br>git clone https://github.com/sarthou/ontologenius.git</br></br>cd ..</br></br>catkin_make</p>
+        </div>
 
-        <h2> 2021 </h2>
+        <h2>Troubles</h2>
+        <p>If you have the following error :</p>
+        <div class="code_block">
+          <p>Could not find a package configuration file provided by "qt_build" with any of the following names:<br><br>    qt_buildConfig.cmake<br>    qt_build-config.cmake</p>
+        </div>
+        <p>You just have to install qt-build:</p>
+        <div class="code_block">
+          <p>sudo apt-get install ros-DISTRO-qt-build</p>
+        </div>
 
-        <p>
-          <a href="https://hal.laas.fr/tel-03404043v2/document"  target="_blank" rel="noopener noreferrer">
-            <img src="images/pdf_icon.png " alt="[pdf]" height="30px"/>
+        <h2>Test Ontologenius installation</h2>
+        <p>Just run rostest to check if all the features work well on your platform:</p>
+        <div class="code_block">
+          <p>catkin_make run_tests_ontologenius_rostest</p>
+        </div>
+        <p class="tip">Some asynchronous mechanisms are used. A computer with little computing power can therefore affect some tests due to a slow response time.</p>
+
+        <h2>Improve performaces</h2>
+
+        <p>If you really need huge performaces, you can use the tcmalloc library which provide custom allocators.</p>
+
+        <div class="code_block">
+          <p>sudo apt install libtcmalloc-minimal4</p>
+        </div>
+
+        <p>You can now use the dedicated ontologenius launch argument by providing the path toward the tcmalloc library. To find the path use the following:</p>
+
+        <div class="code_block">
+          <p>find /usr -name *tcmalloc*</p>
+        </div>
+
+        <nav class="course-pagination">
+          <span class="course-pagination__separator"></span>
+          <a href="SetUp.html" class="course-pagination__btn">
+            <span>Set Up Your Environnement</span>
+            <i class="fas fa-angle-right"></i>
           </a>
-          Guillaume Sarthou : <b>Knowledge representation and exploitation for interactive and cognitive robots</b>.
-          Diss. Université Paul Sabatier, France, 2021.</p>
-
-        <h2> 2019 </h2>
-
-        <p>
-          <a href="https://hal.archives-ouvertes.fr/hal-02283342/document"  target="_blank" rel="noopener noreferrer">
-            <img src="images/pdf_icon.png " alt="[pdf]" height="30px"/>
-          </a>
-          Guillaume Sarthou, Aurélie Clodic and Rachid Alami. Ontologenius : <b>A long-term semantic memory for robotic agents</b>.
-          In <i>International Conference on Robot &amp; Human Interactive Communication</i> (RO-MAN). New Delhi, India, 2019.</p>
-
-        <h1 class="title">Related Publications</h1>
-
-        <p>List of publications using ontologenius.</p>
-
-        <h2> 2021 </h2>
-
-        <p>
-          <a href="https://hal.science/hal-03389504v1/preview/IROS_2021.pdf"  target="_blank" rel="noopener noreferrer">
-            <img src="images/pdf_icon.png " alt="[pdf]" height="30px"/>
-          </a>
-          Guillaume Sarthou, Guilhem Buisan, CLODIC, Aurélie Clodic, Rachid Alami : <b>Extending Referring Expression Generation through shared knowledge about 
-          past Human-Robot collaborative activity</b>. In : <i>IEEE/RSJ International Conference on Intelligent Robots and Systems</i> (IROS). 2021.</p>
-
-        <p>
-          <a href="https://hal.science/hal-03327222v1/preview/ROMAN_2021.pdf"  target="_blank" rel="noopener noreferrer">
-            <img src="images/pdf_icon.png " alt="[pdf]" height="30px"/>
-          </a>
-          Guillaume Sarthou, Amandine Mayima, Guilhem Buisan, Kathleen Belhassein, Aurélie Clodic : <b>The Director Task: a Psychology-Inspired Task to Assess Cognitive and Interactive Robot Architectures</b>.
-          In <i>International Conference on Robot &amp; Human Interactive Communication</i> (RO-MAN). 2021.</p>
-
-        <h2> 2020 </h2>
-
-        <p>
-          <a href="https://hal.science/hal-02922098v2/file/roman_2020_v2.pdf"  target="_blank" rel="noopener noreferrer">
-            <img src="images/pdf_icon.png " alt="[pdf]" height="30px"/>
-          </a>
-          Guilhem Buisan, Guillaume Sarthou, Arthur Bit-Monnot, Aurélie Clodic, Rachid Alami : <b>Efficient, Situated and Ontology based Referring Expression Generation for Human-Robot collaboration</b>.
-          In <i>International Conference on Robot &amp; Human Interactive Communication</i> (RO-MAN). Naples, Italy, 2020.</p>
-
-        <p>
-          <a href="https://hal.science/hal-02927562/document"  target="_blank" rel="noopener noreferrer">
-            <img src="images/pdf_icon.png " alt="[pdf]" height="30px"/>
-          </a>
-          Guilhem Buisan, Guillaume Sarthou, Rachid Alami : <b>Human Aware Task Planning Using Verbal Communication Feasibility and Costs</b>
-          In <i>International Conference on Social Robotics</i> (ICSR). Golden, Colorado, 2020.</p>
+        </nav>
 
       </div>
     </div>
