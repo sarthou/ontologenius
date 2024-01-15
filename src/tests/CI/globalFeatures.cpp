@@ -19,7 +19,7 @@ TEST(global_tests, reset)
   res = onto_ptr->classes.find(test_word);
   EXPECT_TRUE((res.size() == 1) && (res[0] == "centimeter"));
 
-  EXPECT_TRUE(onto_ptr->actions.reset());
+  EXPECT_TRUE(onto_ptr->actions.clear());
   EXPECT_TRUE(onto_ptr->actions.close());
 
   test_word = "affair";
@@ -30,7 +30,7 @@ TEST(global_tests, reset)
   res = onto_ptr->classes.find(test_word);
   EXPECT_FALSE((res.size() == 1) && (res[0] == "centimeter"));
 
-  EXPECT_TRUE(onto_ptr->actions.reset());
+  EXPECT_TRUE(onto_ptr->actions.clear());
   std::string path = ros::package::getPath("ontologenius");
   path+= "/files/attribute.owl";
   EXPECT_TRUE(onto_ptr->actions.fadd(path));
@@ -50,7 +50,7 @@ TEST(global_tests, language)
 {
   std::vector<std::string> res;
 
-  EXPECT_TRUE(onto_ptr->actions.reset());
+  EXPECT_TRUE(onto_ptr->actions.clear());
   std::string path = ros::package::getPath("ontologenius");
   path+= "/files/attribute.owl";
   EXPECT_TRUE(onto_ptr->actions.fadd(path));
@@ -84,7 +84,7 @@ TEST(global_tests, reasoners_effect)
 {
   std::vector<std::string> res;
 
-  EXPECT_TRUE(onto_ptr->actions.reset());
+  EXPECT_TRUE(onto_ptr->actions.clear());
 
   EXPECT_TRUE(onto_ptr->reasoners.deactivate("ontologenius::ReasonerChain"));
   EXPECT_TRUE(onto_ptr->reasoners.deactivate("ontologenius::ReasonerDictionary"));
