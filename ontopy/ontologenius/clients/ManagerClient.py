@@ -16,6 +16,13 @@ class ManagerClient(ClientBase):
         """
         ClientBase.__init__(self, "manage")
 
+    def waitInit(self, timeout = -1):
+        """Wait for ontologenius services to be advertised and available for. Blocks until it is.
+           timeout(int) is the amount of time to wait for before timing out.
+           If timeout is -1 (default), waits until the node is shutdown.
+        """
+        self._client.wait(timeout)
+
     def list(self):
         """Returns the name of the instantiated ontologies (str[])."""
         return self.call("list", "")
