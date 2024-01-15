@@ -155,7 +155,7 @@ class Time : public RosTime
 public:
   Time(uint32_t sec, uint32_t nsec) : RosTime(sec, nsec) {}
   explicit Time(double t) : RosTime(t) {}
-  explicit Time(const RosTime& time) : RosTime(time) {}
+  Time(const RosTime& time) : RosTime(time) {} // do not put it as explicit
 
   uint32_t seconds() const
   {
