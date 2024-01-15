@@ -108,6 +108,10 @@ public:
 
   /// @brief The variable used to display or not debug information. Can be changed at run time
   bool display_;
+  /// @brief represents all files provided at the initialization
+  std::vector<std::string> files_;
+  /// @brief represents the dedicated intern file
+  std::string intern_file_;
 
   /// @brief The ROS topic callback receiving statements not stamped
   void knowledgeCallback(compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg);
