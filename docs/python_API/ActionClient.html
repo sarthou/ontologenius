@@ -143,6 +143,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#add">add</a></b>(self, uri)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#fadd">fadd</a></b>(self, file)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#reset">reset</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="ActionClient.html#clear">clear</a></b>(self)</td></tr>
             </tbody>
           </table>
         </div>
@@ -199,8 +200,11 @@
             will try to identify a ROS package in the paths and will use your local package if it exists.</p>
           <p>Returns False if the service call fails.</p>
 
-
           <h3 class="fn" id="reset"><a name="reset"></a><span class="name">reset</span>(self)</h3>
+          <p>Unload all the knowledge previously loaded or learned and reload default files.</p>
+          <p>Returns False if the service call fails.</p>
+
+          <h3 class="fn" id="clear"><a name="clear"></a><span class="name">clear</span>(self)</h3>
           <p>Unload all the knowledge previously loaded or learned.</p>
           <p>Returns False if the service call fails.</p>
 
