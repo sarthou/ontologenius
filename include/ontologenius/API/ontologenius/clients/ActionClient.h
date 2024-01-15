@@ -46,9 +46,12 @@ public:
   /// @param file is the local path to the ontology file.
   /// @return Returns false if the service call fails.
   bool fadd(const std::string& file);
-  /// @brief Unloads all the knowledge previously loaded or learned.
+  /// @brief Unloads all the knowledge previously loaded or learned and reload the default files.
   /// @return Returns false if the service call fails.
   bool reset();
+  /// @brief Unloads all the knowledge previously loaded or learned.
+  /// @return Returns false if the service call fails.
+  bool clear();
 
 private:
 

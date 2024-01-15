@@ -233,7 +233,7 @@ bool RosInterface::actionsHandle(compat::onto_ros::ServiceWrapper<compat::Ontolo
       if(close() == false)
         res->code = REQUEST_ERROR;
     }
-    else if(req->action == "reset")
+    else if(req->action == "clear")
     {
       lock();
       delete onto_;
