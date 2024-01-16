@@ -110,3 +110,36 @@ function deselectTabList(tab) {
     .slice(1)  // Skip tablist
     .forEach(panel => panel.setAttribute("hidden", true));
 }
+
+/**
+ * Select grouped tabs with the same name, but no the tab
+ * with the given id.
+ * @param  {Node} name name of grouped tab to be selected
+ * @param  {Node} clickedId id of clicked tab
+ */
+function selectNamedTabs(name, clickedId=null) {
+  const groupedTabs = document.querySelectorAll(`.lang-tabs-tab[name="${name}"]`);
+  const tabLists = Array.from(groupedTabs).map(tab => tab.parentNode);
+
+  tabLists
+    .forEach(tabList => {
+      // Don't want to change the tabList containing the clicked tab
+      const clickedTab = tabList.querySelector(`[id="${clickedId}"]`);
+      if (clickedTab === null ) {
+        // Select first tab with matching name
+        const tab = tabList.querySelector(`.lang-tabs-tab[name="${name}"]`);
+        deselectTabList(tab);
+        selectTab(tab);
+      }
+    })
+}
+
+if (typeof exports === 'undefined') {
+  exports = {};
+}
+
+exports.keyTabs = keyTabs;
+exports.changeTabs = changeTabs;
+exports.selectTab = selectTab;
+exports.deselectTabList = deselectTabList;
+exports.selectNamedTabs = selectNamedTabs;
