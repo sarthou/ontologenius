@@ -146,7 +146,6 @@ public:
       }
       else
       {
-        std::cout << "arg = \'" << str_argv << "\'" << std::endl;
         if(default_param_name_ != "")
         {
           auto splitted = split(str_argv, " ");
