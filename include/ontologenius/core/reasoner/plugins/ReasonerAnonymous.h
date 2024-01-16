@@ -46,19 +46,19 @@ private:
   bool checkPropertyExistence(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem)
   {
     for(auto& relation : relations)
-      if(testPropertyInheritance(ano_elem, relation.first))
+      if(testBranchInheritanceFirstLayer(ano_elem, relation.first))
         return true;
     return false;
   }
 
   template<typename T>
-  std::vector<std::pair<std::string, size_t>>  checkMinCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem , std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  std::vector<std::pair<std::string, size_t>> checkMinCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem , std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     std::vector<std::pair<std::string, size_t>>  indexes;
     std::string explanation;
     for(size_t i = 0; i < relations.size(); i++)
     {
-      if(testPropertyInheritance(ano_elem, relations[i].first))
+      if(testBranchInheritance(ano_elem, relations[i].first, used))
       {
         if(ano_elem->is_complex)
         {
@@ -95,7 +95,7 @@ private:
 
     for(size_t i = 0; i < relations.size(); i++)
     {
-      if(testPropertyInheritance(ano_elem, relations[i].first))
+      if(testBranchInheritance(ano_elem, relations[i].first, used))
       {
         if(ano_elem->is_complex)
         {
@@ -137,7 +137,7 @@ private:
     std::string explanation;
 
     for(size_t i = 0; i < relations.size(); i++)
-      if(testPropertyInheritance(ano_elem, relations[i].first))
+      if(testBranchInheritance(ano_elem, relations[i].first, used))
       {
         if(ano_elem->is_complex)
         {
@@ -174,7 +174,7 @@ private:
     // need to ensure that there is at least one ?
     for(size_t i = 0; i < relations.size(); i++)
     { 
-      if(testPropertyInheritance(ano_elem, relations[i].first))
+      if(testBranchInheritance(ano_elem, relations[i].first, used))
       {
         if(ano_elem->is_complex)
         {
@@ -214,7 +214,7 @@ private:
 
     for(size_t i = 0; i < relations.size(); i++)
     {
-      if(testPropertyInheritance(ano_elem, relations[i].first))
+      if(testBranchInheritance(ano_elem, relations[i].first, used))
       {
         if(ano_elem->is_complex)
         {
@@ -222,11 +222,10 @@ private:
           {
             explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
             return std::make_pair(explanation, i);
-          } 
+          }
         }
         else
         {
-          
           if(checkTypeRestriction(relations[i].second, ano_elem, used) == true)
           {
             explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
@@ -249,12 +248,47 @@ private:
   }
 
   template<typename T>
-  bool testPropertyInheritance(AnonymousClassElement_t* ano_elem, T property)
+  bool testBranchInheritanceFirstLayer(AnonymousClassElement_t* ano_elem, T property)
   {
     auto up_vector = getUpProperty(property);
     for(auto property : up_vector)
       if(testProperty(ano_elem, property))
         return true;
+    return false;
+  }
+
+  template <typename T>
+  bool testBranchInheritance(AnonymousClassElement_t* ano_elem, T* branch, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  {
+    if(ano_elem->object_property_involved_ != nullptr)
+      return(existInInheritance(branch, ano_elem->object_property_involved_->get(), used));
+    else if(ano_elem->data_property_involved_ != nullptr)
+      return(existInInheritance(branch, ano_elem->data_property_involved_->get(), used));
+    else if(ano_elem->class_involved_ != nullptr)
+      return(existInInheritance(branch, ano_elem->class_involved_->get(), used));
+    else
+      return false;
+  }
+
+  template <typename T>
+  bool existInInheritance(T* branch, index_t selector, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  {
+    std::string explanation;
+
+    if(branch->get() == selector)
+      return true;
+    else
+    {
+      for(size_t i = 0;  i < branch->mothers_.size() ; i++)
+      {
+        if(existInInheritance(branch->mothers_[i].elem, selector, used))
+        {
+          explanation = branch->value() + "|isA|" +  branch->mothers_[i].elem->value() + ";";
+          used.emplace_back(explanation, branch->mothers_.has_induced_inheritance_relations[i]); 
+          return true;
+        }  
+      } 
+    }
     return false;
   }
 

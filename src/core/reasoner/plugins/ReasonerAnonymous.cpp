@@ -300,25 +300,22 @@ bool ReasonerAnonymous::checkRestriction(IndividualBranch_t* indiv, AnonymousCla
       return true;
     }
   }
+  
   used.clear();
   return false;
 }
 
 bool ReasonerAnonymous::checkTypeRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem,  std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
 {
-  std::unordered_set<ClassBranch_t*> up;
+  std::string explanation;
+
   for(size_t i = 0 ; i < indiv->is_a_.size() ; i++)
   {
-    up.clear();
-    ontology_->class_graph_.getUpPtr(indiv->is_a_[i].elem, up);
-    for(auto sub_elem : up)
+    if(existInInheritance(indiv->is_a_[i].elem, ano_elem->class_involved_->get(), used))
     {
-      if(sub_elem->get() == ano_elem->class_involved_->get())
-      {
-        std::string explanation = indiv->value() + "|isA|" + ano_elem->class_involved_->value() + ";";
-        used.emplace_back(explanation, indiv->is_a_.has_induced_inheritance_relations[i]);
-        return true;
-      }
+      explanation = indiv->value() + "|isA|" + ano_elem->class_involved_->value() + ";";
+      used.emplace_back(explanation, indiv->is_a_.has_induced_inheritance_relations[i]);
+      return true;
     }
   }
   used.clear();
@@ -349,6 +346,7 @@ bool ReasonerAnonymous::checkIndividualRestriction(IndividualBranch_t* indiv, An
       }   
     }
   }
+
   return (indiv->get() == ano_elem->individual_involved_->get());
 }
 
