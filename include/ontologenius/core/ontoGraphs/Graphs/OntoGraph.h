@@ -733,12 +733,12 @@ void OntoGraph<B>::mitigate(B* branch)
     }
   }
 
-  std::vector<Single_t<B*>> mothers = branch->mothers_;
+  RelationsWithInductions<Single_t<B*>> mothers = branch->mothers_;
   for(Single_t<B*>& mother : mothers)
   {
     std::unordered_set<B*> down;
     getDownPtr(mother.elem, down);
-    std::vector<B*> inter = this->intersection(down, mothers);
+    std::vector<B*> inter = this->intersection(down, mothers.relations);
     if(inter.size() > 1)
     {
       this->removeFromElemVect(branch->mothers_, mother.elem);

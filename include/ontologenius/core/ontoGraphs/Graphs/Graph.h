@@ -79,7 +79,7 @@ public:
       else
         i++;
   }
-
+  
   template <class T>
   inline void removeFromElemVect(std::vector<Single_t<T>>& vect, const T& value)
   {
