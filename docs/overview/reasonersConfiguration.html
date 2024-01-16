@@ -92,19 +92,19 @@
         <p>The configuration is described in a YAML file. The content should be as follows:</p>
 
         <div class="code_block">
-          <div class="terminal_line">flow:</div>
-          <div class="terminal_line">  - ontologenius::ReasonerChain</div>
-          <div class="terminal_line">  - ontologenius::ReasonerDictionary</div>
-          <div class="terminal_line">  - ontologenius::ReasonerGeneralize</div>
-          <div class="terminal_line">  - ontologenius::ReasonerInverseOf</div>
-          <div class="terminal_line">  - ontologenius::ReasonerRangeDomain</div>
-          <div class="terminal_line">  - ontologenius::ReasonerSymmetric</div>
-          <div class="terminal_line">ontologenius::ReasonerGeneralize:</div>
-          <div class="terminal_line">  min_count : 2</div>
-          <div class="terminal_line">  min_percent : 0.7</div>
-          <div class="terminal_line"># ns::AnOtherOne:</div>
-          <div class="terminal_line">#  param : value</div>
-          <div class="terminal_line">#  param : value</div>
+          <div class="terminal_line"><span class="yaml_key">flow</span>:</div>
+          <div class="terminal_line">  - <span class="yaml_string">ontologenius::ReasonerChain</span></div>
+          <div class="terminal_line">  - <span class="yaml_string">ontologenius::ReasonerDictionary</span></div>
+          <div class="terminal_line">  - <span class="yaml_string">ontologenius::ReasonerGeneralize</span></div>
+          <div class="terminal_line">  - <span class="yaml_string">ontologenius::ReasonerInverseOf</span></div>
+          <div class="terminal_line">  - <span class="yaml_string">ontologenius::ReasonerRangeDomain</span></div>
+          <div class="terminal_line">  - <span class="yaml_string">ontologenius::ReasonerSymmetric</span></div>
+          <div class="terminal_line"><span class="yaml_key">ontologenius::ReasonerGeneralize</span>:</div>
+          <div class="terminal_line">  <span class="yaml_key">min_count</span> : 2</div>
+          <div class="terminal_line">  <span class="yaml_key">min_percent</span> : 0.7</div>
+          <div class="terminal_line"><span class="yaml_comment"># ns::AnOtherOne:</span></div>
+          <div class="terminal_line"><span class="yaml_comment">#  param : value</span></div>
+          <div class="terminal_line"><span class="yaml_comment">#  param : value</span></div>
         </div>
 
         <p>To pass your configuration file to an Ontologenius executable see the
