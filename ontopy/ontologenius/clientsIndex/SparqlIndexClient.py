@@ -19,7 +19,7 @@ class SparqlIndexClient:
         self._name = 'sparql_index'
         if name != '':
             self._name = self._name + '/' + name
-        self._client = Ontoros.createService('ontologenius/' + self._name, OntologeniusSparqlIndexService, True)
+        self._client = Ontoros.createService('ontologenius/' + self._name, OntologeniusSparqlIndexService)
 
 
     def call(self, query):
