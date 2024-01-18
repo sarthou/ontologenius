@@ -219,8 +219,7 @@ add_onto_library(ontologenius_reasoner_plugin MODULE
 )
 target_include_directories(ontologenius_reasoner_plugin
  PUBLIC ${pluginlib_INCLUDE_DIRS}
-#  /opt/ros/humble/include/pluginlib/
-) # todo figure out why pluginlib is not inside pluginlib_INCLUDE_DIRS
+)
 target_link_libraries(ontologenius_reasoner_plugin
  PUBLIC
  ontologenius_core_lib ${pluginlib_LIBRARIES}
@@ -259,6 +258,7 @@ function(add_ros_library TARGET)
         ament_target_dependencies(${TARGET} PUBLIC rclcpp pluginlib builtin_interfaces std_msgs)
         target_include_directories(${TARGET} PUBLIC include)
         target_link_libraries(${TARGET} PUBLIC ${cpp_typesupport_target})
+        ament_export_libraries(${TARGET})
     endif()
     set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
     target_compile_options(${TARGET} PUBLIC -DONTO_ROS_VERSION=$ENV{ROS_VERSION})
@@ -509,6 +509,11 @@ install(TARGETS
     ontologenius_multi
     ontoloGUI
     DESTINATION lib/${PROJECT_NAME})
+
+install(TARGETS ontologenius_operators
+                ontologenius_core_lib
+                ontologenius_ontoGraphs_lib
+        DESTINATION lib)
 
 install(DIRECTORY launch/ros2/launch DESTINATION share/${PROJECT_NAME}/)
 install(DIRECTORY include/ DESTINATION include)
