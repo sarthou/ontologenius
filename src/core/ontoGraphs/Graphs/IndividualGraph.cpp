@@ -2172,8 +2172,10 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeSameAs(c
       {
         if((protect_infered == true) && (branch_1->same_as_[i].infered == false))
           break;
-        for(auto& relation : branch_1->same_as_.has_induced_inheritance_relations[i]->triplets)
+
+        while(branch_1->same_as_.has_induced_inheritance_relations[i]->triplets.size())
         {
+          auto& relation = branch_1->same_as_.has_induced_inheritance_relations[i]->triplets.front();
           explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
                                               relation.object->value(),
                                       "[DEL]" + branch_1->value() + "|sameAs|" + branch_2->value());
@@ -2183,8 +2185,12 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeSameAs(c
         {
           if(branch_2->same_as_[j].elem == branch_1)
           {
-            for(auto& relation : branch_2->same_as_.has_induced_inheritance_relations[j]->triplets)
+            if((protect_infered == true) && (branch_2->same_as_[j].infered == false))
+              break;
+
+            while(branch_2->same_as_.has_induced_inheritance_relations[j]->triplets.size())
             {
+              auto& relation = branch_2->same_as_.has_induced_inheritance_relations[j]->triplets.front();
               explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
                                                   relation.object->value(),
                                           "[DEL]" + branch_2->value() + "|sameAs|" + branch_1->value());
