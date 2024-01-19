@@ -2103,10 +2103,11 @@ void IndividualGraph::removeInheritage(IndividualBranch_t* indiv, ClassBranch_t*
   {
     if(indiv->is_a_[i].elem == class_branch)
     {
+      for(auto trace_vect : indiv->is_a_[i].induced_traces)
+        trace_vect->eraseGeneric(indiv, nullptr, class_branch);
+
       if((protect_infered == true) && (indiv->is_a_[i].infered == false))
         break;
-      for(auto& trace_vect : indiv->is_a_[i].induced_traces)
-        trace_vect->eraseGeneric(indiv, nullptr, class_branch);
 
       for(auto& relation : indiv->is_a_.has_induced_inheritance_relations[i]->triplets)
       {
@@ -2122,10 +2123,8 @@ void IndividualGraph::removeInheritage(IndividualBranch_t* indiv, ClassBranch_t*
       i++;
   }
   removeFromElemVect(class_branch->individual_childs_, indiv);
-
   indiv->updated_ = true;
   class_branch->updated_ = true;
-
 }
 
 bool IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& indiv_2)
