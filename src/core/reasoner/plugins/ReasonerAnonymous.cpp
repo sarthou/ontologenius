@@ -371,13 +371,13 @@ bool ReasonerAnonymous::checkIndividualRestriction(IndividualBranch_t* indiv, An
     {
       if(indiv->same_as_[i].elem->get() != indiv->get())
       {
-        if(indiv->same_as_[i].elem->get() == ano_elem->individual_involved_->get()) 
+        if(indiv->same_as_[i].elem->get() == ano_elem->individual_involved_->get())
         {
-          explanation = indiv->same_as_[i].elem->value() + "|sameAs|" + ano_elem->individual_involved_->value() + ";";
+          explanation = indiv->value() + "|sameAs|" + ano_elem->individual_involved_->value() + ";";
           used.emplace_back(explanation, indiv->same_as_.has_induced_inheritance_relations[i]);
           return true;
         }  
-      }   
+      }  
     }
   }
 
