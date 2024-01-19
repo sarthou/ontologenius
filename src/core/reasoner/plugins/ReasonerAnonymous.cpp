@@ -610,41 +610,13 @@ bool ReasonerAnonymous::checkValueCard(IndividualBranch_t* indiv, AnonymousClass
 {
   int index = -1;
   std::string explanation;
-  IndividualElement_t* same_indiv = nullptr;
 
-  // if(indiv->same_as_.size() > 0)
-  // {
-  //   for(size_t i = 0 ; i < indiv->same_as_.size() ; i++)
-  //   {
-  //     if(indiv->same_as_[i].elem != indiv) 
-  //     {
-  //       index = relationExists(indiv->same_as_[i].elem, ano_elem->object_property_involved_, ano_elem->individual_involved_, used);
-  //       if(index != -1)
-  //       {
-  //         same_indiv = &indiv->same_as_[i];
-  //         explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value() + ";";
-  //         used.emplace_back(explanation, indiv->same_as_.has_induced_inheritance_relations[i]);
-  //         break;
-  //       }  
-  //     }
-  //   }
-  // }
-  // else
   index = relationExists(indiv, ano_elem->object_property_involved_, ano_elem->individual_involved_, used);
   
   if(index != -1)
   {
-    if(same_indiv != nullptr)
-    {
-      // std::cout << "adress checkValue 5 : " <<  (*same_indiv).elem->object_relations_.has_induced_inheritance_relations[index] << std::endl;
-      explanation = same_indiv->elem->value() + "|" + ano_elem->object_property_involved_->value() + "|" + ano_elem->individual_involved_->value() + ";";
-      used.emplace_back(explanation , (*same_indiv).elem->object_relations_.has_induced_inheritance_relations[index]);
-    }
-    else
-    {
-      explanation = indiv->value() + "|" + ano_elem->object_property_involved_->value() + "|" + ano_elem->individual_involved_->value() + ";";
-      used.emplace_back(explanation , indiv->object_relations_.has_induced_inheritance_relations[index]);
-    }
+    explanation = indiv->value() + "|" + ano_elem->object_property_involved_->value() + "|" + ano_elem->individual_involved_->value() + ";";
+    used.emplace_back(explanation , indiv->object_relations_.has_induced_inheritance_relations[index]);
     return true;
   }
   else
