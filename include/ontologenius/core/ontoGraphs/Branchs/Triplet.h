@@ -59,6 +59,11 @@ public:
 												!= triplets.end());
 	}
 
+	size_t size()
+	{
+		return triplets.size();
+	}
+
 	size_t find(S* subject,
 							P* predicate,
 							O* object)
