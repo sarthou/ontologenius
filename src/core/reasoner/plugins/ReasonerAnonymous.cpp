@@ -318,6 +318,28 @@ bool ReasonerAnonymous::checkTypeRestriction(IndividualBranch_t* indiv, Anonymou
 {
   std::string explanation;
 
+  if(indiv->same_as_.size() > 0)
+  {
+    for(size_t i = 0 ; i < indiv->same_as_.size() ; i++)
+    {
+      if(indiv->same_as_[i].elem->get() != indiv->get())
+      {
+        for(size_t j = 0 ; j < indiv->same_as_[i].elem->is_a_.size() ; j++)
+        {
+          if(existInInheritance(indiv->same_as_[i].elem->is_a_[j].elem, ano_elem->class_involved_->get(), used))
+          {
+            explanation = indiv->same_as_[i].elem->value() + "|isA|" + ano_elem->class_involved_->value() + ";";
+            used.emplace_back(explanation, indiv->same_as_[i].elem->is_a_.has_induced_inheritance_relations[j]);
+
+            explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value() + ";";
+            used.emplace_back(explanation, indiv->same_as_.has_induced_inheritance_relations[i]);
+            return true;
+          }
+        }
+      }
+    }
+  }
+
   for(size_t i = 0 ; i < indiv->is_a_.size() ; i++)
   {
     if(existInInheritance(indiv->is_a_[i].elem, ano_elem->class_involved_->get(), used))
@@ -327,6 +349,7 @@ bool ReasonerAnonymous::checkTypeRestriction(IndividualBranch_t* indiv, Anonymou
       return true;
     }
   }
+
   used.clear();
   return false;
 }
