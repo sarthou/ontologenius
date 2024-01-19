@@ -74,7 +74,9 @@ void RosInterface::init(const std::string& lang, const std::string& intern_file,
     if(pose != std::string::npos)
       dedicated_intern_file.insert(pose, "_" + name_);
   }
+  intern_file_ = dedicated_intern_file;
 
+  files_ = files;
   if(onto_->preload(dedicated_intern_file) == false)
     for(auto& file : files)
       onto_->readFromFile(file);
@@ -234,6 +236,21 @@ bool RosInterface::actionsHandle(compat::onto_ros::ServiceWrapper<compat::Ontolo
         res->code = REQUEST_ERROR;
     }
     else if(req->action == "reset")
+    {
+      lock();
+      delete onto_;
+      onto_ = new Ontology();
+      onto_->setDisplay(display_);
+      reasoners_.link(onto_);
+      feeder_.link(onto_);
+      sparql_.link(onto_);
+      
+      if(onto_->preload(intern_file_) == false)
+        for(auto& file : files_)
+          onto_->readFromFile(file);
+      release();
+    }
+    else if(req->action == "clear")
     {
       lock();
       delete onto_;

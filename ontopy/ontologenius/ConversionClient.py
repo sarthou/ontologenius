@@ -8,13 +8,12 @@ else:
     from ontologenius.srv._ontologenius_conversion import OntologeniusConversion_Request as OntologeniusConversionRequest
 
 class ConversionClient:
-    
 
     def __init__(self, name):
         """Constructs a ROS client linked to the service name(str)."""
         self._name = 'ontologenius/conversion'
         if name != '':
-          self._name = self._name + name
+          self._name = self._name + "/" + name
         self._verbose = False
         self._client = Ontoros.createService(self._name, OntologeniusConversion)
 

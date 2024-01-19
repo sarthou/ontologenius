@@ -45,4 +45,9 @@ bool ActionClient::reset()
   return callNR("reset", "");
 }
 
+bool ActionClient::clear()
+{
+  return callNR("clear", "");
+}
+
 } // namespace onto

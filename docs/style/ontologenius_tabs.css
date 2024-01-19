@@ -1,0 +1,41 @@
+.lang-tabs {
+  margin-bottom: 1rem;
+}
+
+/*Line bellow every buttons*/
+[role="tablist"] {
+  border-bottom: 1px solid #536675;
+}
+
+.lang-tabs-tab[aria-selected="true"] {
+  font-weight: 600;
+  border: 1px solid #536675;
+  border-bottom: 1px solid white;
+  margin: -1px;
+}
+
+.lang-tabs-tab {
+  position: relative;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1D5C87;
+  line-height: 24px;
+  font-size: 16px;
+  font-weight: 400;
+  background-color: white;
+  border-radius: 10px 10px 0 0;
+  border: 0;
+  padding: 1rem 1.5rem;
+}
+
+.lang-tabs-panel {
+  position: relative;
+  padding: 1rem;
+  border: 1px solid #536675;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgb(160, 179, 191);
+  margin: 0px -1px -1px -1px;
+  border-radius: 0 0 10px 10px;
+  border-top: 0;
+  background: white;
+}

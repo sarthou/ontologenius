@@ -115,7 +115,7 @@ endif()
 
 if($ENV{ROS_VERSION} STREQUAL "1")
 catkin_package(
-  INCLUDE_DIRS include include include/ontologenius/API
+  INCLUDE_DIRS include include/ontologenius/API
   LIBRARIES ontologenius_lib ontologenius_interface
   CATKIN_DEPENDS roscpp rospy std_msgs
   DEPENDS TinyXML OpenCV
@@ -219,8 +219,7 @@ add_onto_library(ontologenius_reasoner_plugin MODULE
 )
 target_include_directories(ontologenius_reasoner_plugin
  PUBLIC ${pluginlib_INCLUDE_DIRS}
-#  /opt/ros/humble/include/pluginlib/
-) # todo figure out why pluginlib is not inside pluginlib_INCLUDE_DIRS
+)
 target_link_libraries(ontologenius_reasoner_plugin
  PUBLIC
  ontologenius_core_lib ${pluginlib_LIBRARIES}
@@ -259,10 +258,13 @@ function(add_ros_library TARGET)
         ament_target_dependencies(${TARGET} PUBLIC rclcpp pluginlib builtin_interfaces std_msgs)
         target_include_directories(${TARGET} PUBLIC include)
         target_link_libraries(${TARGET} PUBLIC ${cpp_typesupport_target})
+        ament_export_libraries(${TARGET})
     endif()
     set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
-    target_compile_options(${TARGET} PRIVATE -Wall -Wextra PUBLIC -DONTO_ROS_VERSION=$ENV{ROS_VERSION})
+    target_compile_options(${TARGET} PUBLIC -DONTO_ROS_VERSION=$ENV{ROS_VERSION})
+    target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
     target_enable_sanitizers(${TARGET})
+    
 endfunction(add_ros_library)
 
 ## Compatibility
@@ -476,8 +478,30 @@ install(DIRECTORY files/
 elseif($ENV{ROS_VERSION} STREQUAL "2")
 install(TARGETS
     ontologenius_reasoner_plugin
+    DESTINATION lib/${PROJECT_NAME})
+
+install(TARGETS
     ontologenius_lib
+    EXPORT ontologenius_lib
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+    DESTINATION lib/${PROJECT_NAME})
+
+install(TARGETS
     ontologenius_interface
+    EXPORT ontologenius_interface
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+    DESTINATION lib/${PROJECT_NAME})
+    
+install(TARGETS
+    ontologenius_compat
+    EXPORT ontologenius_compat
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
     DESTINATION lib/${PROJECT_NAME})
 
 install(TARGETS
@@ -486,10 +510,19 @@ install(TARGETS
     ontoloGUI
     DESTINATION lib/${PROJECT_NAME})
 
+install(TARGETS ontologenius_operators
+                ontologenius_core_lib
+                ontologenius_ontoGraphs_lib
+        DESTINATION lib)
+
 install(DIRECTORY launch/ros2/launch DESTINATION share/${PROJECT_NAME}/)
+install(DIRECTORY include/ DESTINATION include)
 
 install(DIRECTORY files DESTINATION share/${PROJECT_NAME}/)
 install(DIRECTORY docs DESTINATION share/${PROJECT_NAME}/)
+install(DIRECTORY configuration DESTINATION share/${PROJECT_NAME}/)
+
+ament_export_libraries(ontologenius_lib ontologenius_interface ontologenius_compat)
 
 endif()
 
@@ -555,6 +588,7 @@ endif()
 
 if($ENV{ROS_VERSION} STREQUAL "2")
 pluginlib_export_plugin_description_file(ontologenius reasoners_plugins_ros2.xml)
-ament_export_include_directories(include)
+
+ament_export_include_directories(include include/ontologenius/API)
 ament_package()
 endif()
