@@ -356,6 +356,8 @@ bool ReasonerAnonymous::checkTypeRestriction(IndividualBranch_t* indiv, Anonymou
 
 bool ReasonerAnonymous::checkTypeRestriction(LiteralNode* literal, AnonymousClassElement_t* ano_elem,  std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
 {
+  // To prevent warning of unused parameter for used
+  (void)used;
   return (literal->type_ == ano_elem->card_.card_range_->type_);
 }
 
