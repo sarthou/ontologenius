@@ -468,7 +468,7 @@ table.alignedsummary,table.propsummary {
 .xml_code div, .yaml_code div {
   color: #aeaeae
 }
-.xml_tag, .yaml_key, .py_def {
+.xml_tag, .yaml_key, .py_def, .py_key {
   color: #70b2e8;;
 }
 .cpp_return, .cpp_op {
@@ -477,7 +477,7 @@ table.alignedsummary,table.propsummary {
 .cpp_include, .py_import, .py_op, .color_purple {
   color:#f3a1d6;
 }
-.cpp_type, .py_function {
+.cpp_type {
   color:#66d9ef;
 }
 .cpp_string, .color_brown {
@@ -485,6 +485,12 @@ table.alignedsummary,table.propsummary {
 }
 .cpp_value, .py_value {
   color:#ecbd62;
+}
+.py_function {
+  color:#fff5a9;
+}
+.py_imported {
+  color:#50ffb0;
 }
 .cpp_comment, .py_comment, .yaml_comment {
   color:#6fa55d;
