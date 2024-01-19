@@ -415,7 +415,7 @@ bool ReasonerAnonymous::checkMinCard(IndividualBranch_t* indiv, AnonymousClassEl
     indexes = checkMinCard(indiv->object_relations_.relations, ano_elem, used);
     if(indexes.size() > 0)
     {
-      for(auto index : indexes)
+      for(auto& index : indexes)
         used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
       return true;
     }
@@ -430,7 +430,7 @@ bool ReasonerAnonymous::checkMinCard(IndividualBranch_t* indiv, AnonymousClassEl
     indexes = checkMinCard(indiv->data_relations_.relations, ano_elem, used);
     if(indexes.size() > 0)
     {
-      for(auto index : indexes)
+      for(auto& index : indexes)
         used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
       return true;
     }
@@ -456,7 +456,7 @@ bool ReasonerAnonymous::checkMaxCard(IndividualBranch_t* indiv, AnonymousClassEl
     indexes = checkMaxCard(indiv->object_relations_.relations, ano_elem, used);
     if(indexes.size() > 0)
     {
-      for(auto index : indexes)
+      for(auto& index : indexes)
         used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
       return true;
     }
@@ -471,7 +471,7 @@ bool ReasonerAnonymous::checkMaxCard(IndividualBranch_t* indiv, AnonymousClassEl
     indexes = checkMaxCard(indiv->data_relations_.relations, ano_elem, used);
     if(indexes.size() > 0)
     {
-      for(auto index : indexes)
+      for(auto& index : indexes)
         used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
       return true;
     }
@@ -497,7 +497,7 @@ bool ReasonerAnonymous::checkExactlyCard(IndividualBranch_t* indiv, AnonymousCla
     indexes = checkExactlyCard(indiv->object_relations_.relations, ano_elem, used);
     if(indexes.size() > 0)
     {
-      for(auto index : indexes)
+      for(auto& index : indexes)
         used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
       return true;
     }
@@ -512,7 +512,7 @@ bool ReasonerAnonymous::checkExactlyCard(IndividualBranch_t* indiv, AnonymousCla
     indexes = checkExactlyCard(indiv->data_relations_.relations, ano_elem, used);
     if(indexes.size() > 0)
     {
-      for(auto index : indexes)
+      for(auto& index : indexes)
         used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
       return true;
     }
@@ -538,7 +538,7 @@ bool ReasonerAnonymous::checkOnlyCard(IndividualBranch_t* indiv, AnonymousClassE
     indexes = checkOnlyCard(indiv->object_relations_.relations, ano_elem, used);
     if(indexes.size() > 0)
     {
-      for(auto index : indexes)
+      for(auto& index : indexes)
         used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
       return true;
     }
@@ -553,7 +553,7 @@ bool ReasonerAnonymous::checkOnlyCard(IndividualBranch_t* indiv, AnonymousClassE
     indexes = checkOnlyCard(indiv->data_relations_.relations, ano_elem, used);
     if(indexes.size() > 0)
     {
-      for(auto index : indexes)
+      for(auto& index : indexes)
         used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
       return true;
     }
@@ -576,7 +576,7 @@ bool ReasonerAnonymous::checkSomeCard(IndividualBranch_t* indiv, AnonymousClassE
     index = checkSomeCard(indiv->object_relations_.relations, ano_elem, used);
     if(index.second != -1)
     {
-     used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
+      used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
       return true;
     }
     else
