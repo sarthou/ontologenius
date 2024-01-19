@@ -15,16 +15,18 @@ void ReasonerAnonymous::postReason()
     {
       bool has_active_equiv = false;
 
+      // Loop over every classes which includes equivalence relations
       for(auto anonymous : ontology_->anonymous_graph_.get())
       {
         bool tree_evaluation_result = false;
         bool tree_first_layer_result = false;
-        
+
+        // Loop over every equivalence relations corresponding to one class
         for(auto anonymous_branch : anonymous->ano_elems_)
         {
           used.clear();
           used.reserve(anonymous->depth_);
-        
+          
           if(checkClassesDisjointess(indiv, anonymous->class_equiv_) == false)
           {
             tree_first_layer_result = resolveFirstLayer(indiv, anonymous_branch);
@@ -37,37 +39,40 @@ void ReasonerAnonymous::postReason()
             {
               if(ontology_->individual_graph_.conditionalPushBack(indiv->is_a_, ClassElement_t(anonymous->class_equiv_)))
               {
-                indiv->is_a_.relations.back().infered = true;
-                anonymous->class_equiv_->individual_childs_.emplace_back(indiv);
-  
-                std::string explanation_reference = "";
-                for(auto& induced_vector : used)
+                if(ontology_->individual_graph_.conditionalPushBack(anonymous->class_equiv_->individual_childs_, IndividualElement_t(indiv)))
                 {
-                  explanation_reference += induced_vector.first;
-                  // check for nullptr because OneOf returns a (string, nullptr)
-                  if(induced_vector.second != nullptr)
+                  indiv->is_a_.relations.back().infered = true;
+                  std::string explanation_reference = "";
+                  
+                  for(auto& induced_vector : used)
                   {
-                    if(induced_vector.second->exist(indiv, nullptr, anonymous->class_equiv_) == false)
-                    {   
-                      induced_vector.second->push(indiv, nullptr, anonymous->class_equiv_);
-                      indiv->is_a_.relations.back().induced_traces.emplace_back(induced_vector.second);
+                    explanation_reference += induced_vector.first;
+                    // check for nullptr because OneOf returns a (string, nullptr)
+                    if(induced_vector.second != nullptr)
+                    {
+                      if(induced_vector.second->exist(indiv, nullptr, anonymous->class_equiv_) == false)
+                      {
+                        induced_vector.second->push(indiv, nullptr, anonymous->class_equiv_);
+                        indiv->is_a_.relations.back().induced_traces.emplace_back(induced_vector.second);
+                      }
                     }
                   }
-                }
-                explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous->class_equiv_->value(),
-                                    "[ADD]" + explanation_reference);
-                // once we get a valid equivalence for a class, we break out of the loop
-                break;
-              } 
-            }    
+
+                  explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous->class_equiv_->value(),
+                                      "[ADD]" + explanation_reference);
+                  // once we get a valid equivalence for a class, we break out of the loop
+                  break;
+                } 
+              }
+            } 
           }
           else
             std::cout << "disjointness error between classes of " + indiv->value() + " and " + anonymous->class_equiv_->value() << std::endl;
         }
         
-        // Manages implicitly the NOT, MIN, MAX, EXACTLY cases
+        //Manages implicitly the NOT, MIN, MAX, EXACTLY cases
         if(tree_evaluation_result == false && anonymous->ano_elems_.size() != 0 && ontology_->individual_graph_.isA(indiv, anonymous->class_equiv_->get()) == true)
-           ontology_->individual_graph_.removeInheritage(indiv, anonymous->class_equiv_, explanations_);
+          ontology_->individual_graph_.removeInheritage(indiv, anonymous->class_equiv_, explanations_, true);
       }
       
       if(has_active_equiv)
@@ -223,7 +228,7 @@ bool ReasonerAnonymous::checkRestrictionFirstLayer(IndividualBranch_t* indiv, An
       for(auto& indiv_same : indiv->same_as_)
       {
         if(checkPropertyExistence(indiv_same.elem->object_relations_.relations, ano_elem))
-          return true; 
+          return true;
       }
     }
     return checkPropertyExistence(indiv->object_relations_.relations, ano_elem);
