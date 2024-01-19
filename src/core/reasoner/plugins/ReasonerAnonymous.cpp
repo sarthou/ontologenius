@@ -271,18 +271,22 @@ bool ReasonerAnonymous::checkRestriction(IndividualBranch_t* indiv, AnonymousCla
 
   if(ano_elem->object_property_involved_ != nullptr || ano_elem->data_property_involved_ != nullptr)
   {
-    for(size_t i = 0 ; i < indiv->same_as_.size() ; i++)
+    if(indiv->same_as_.size() > 0)
     {
-      if(indiv->same_as_[i].elem->get() != indiv->get()) 
+      for(size_t i = 0 ; i < indiv->same_as_.size() ; i++)
       {
-        if(checkCard(indiv->same_as_[i].elem, ano_elem, used))
+        if(indiv->same_as_[i].elem->get() != indiv->get()) 
         {
-          explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value() + ";";
-          used.emplace_back(explanation, indiv->same_as_.has_induced_inheritance_relations[i]);
-          return true;
+          if(checkCard(indiv->same_as_[i].elem, ano_elem, used))
+          {
+            explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value() + ";";
+            used.emplace_back(explanation, indiv->same_as_.has_induced_inheritance_relations[i]);
+            return true;
+          }
         }
       }
     }
+    
     return checkCard(indiv, ano_elem, used);
   }
   else if(ano_elem->class_involved_ != nullptr)
