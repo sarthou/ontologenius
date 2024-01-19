@@ -54,8 +54,9 @@ private:
   template<typename T>
   std::vector<std::pair<std::string, size_t>> checkMinCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem , std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
-    std::vector<std::pair<std::string, size_t>>  indexes;
+    std::vector<std::pair<std::string, size_t>> indexes;
     std::string explanation;
+
     for(size_t i = 0; i < relations.size(); i++)
     {
       if(testBranchInheritance(ano_elem, relations[i].first, used))
@@ -137,6 +138,7 @@ private:
     std::string explanation;
 
     for(size_t i = 0; i < relations.size(); i++)
+    {
       if(testBranchInheritance(ano_elem, relations[i].first, used))
       {
         if(ano_elem->is_complex)
@@ -156,6 +158,7 @@ private:
           }
         }
       }
+    }
 
     if(indexes.size() == ano_elem->card_.card_number_)
       return indexes;
@@ -204,6 +207,7 @@ private:
         }
       }
     }
+
     return indexes;
   }
 
