@@ -19,7 +19,8 @@ function(add_onto_library TARGET)
         message(FATAL_ERROR "Expected source file list after target name")
     endif()
     add_library(${TARGET} ${ARGN})
-    target_include_directories(${TARGET} PUBLIC include)
+    target_include_directories(${TARGET} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+                                                $<INSTALL_INTERFACE:include>)
     set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
     target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
     target_enable_sanitizers(${TARGET})
@@ -121,7 +122,7 @@ catkin_package(
   DEPENDS TinyXML OpenCV
 )
 elseif($ENV{ROS_VERSION} STREQUAL "2")
-ament_export_dependencies(rosidl_default_runtime)
+ament_export_dependencies(rosidl_default_runtime pluginlib)
 rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} rosidl_typesupport_cpp)
 endif()
 
@@ -169,7 +170,9 @@ target_include_directories(ontologenius_ontoGraphs_lib
 )
 target_link_libraries(ontologenius_ontoGraphs_lib
  PUBLIC
-  ${TinyXML_LIBRARIES} ${TinyXML2_LIBRARIES} PkgConfig::CURL
+  ${TinyXML_LIBRARIES} ${TinyXML2_LIBRARIES}
+PRIVATE
+  PkgConfig::CURL
 )
 
 add_onto_library(ontologenius_core_lib
@@ -256,7 +259,8 @@ function(add_ros_library TARGET)
         target_link_libraries(${TARGET} PUBLIC ${catkin_LIBRARIES}) # PRIVATE has been removed fot ontoloGUI
     elseif($ENV{ROS_VERSION} STREQUAL "2")
         ament_target_dependencies(${TARGET} PUBLIC rclcpp pluginlib builtin_interfaces std_msgs)
-        target_include_directories(${TARGET} PUBLIC include)
+        target_include_directories(${TARGET} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+                                                    $<INSTALL_INTERFACE:include>)
         target_link_libraries(${TARGET} PUBLIC ${cpp_typesupport_target})
         ament_export_libraries(${TARGET})
     endif()
@@ -302,7 +306,8 @@ add_ros_library(ontologenius_lib
     src/API/ontologenius/OntologyManipulatorIndex.cpp
     src/API/ontologenius/OntologiesManipulator.cpp
 )
-target_include_directories(ontologenius_lib PUBLIC include/ontologenius/API)
+target_include_directories(ontologenius_lib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/ontologenius/API>
+                                                   $<INSTALL_INTERFACE:include/ontologenius/API>)
 target_link_libraries(ontologenius_lib
     PUBLIC
     ontologenius_compat
@@ -476,29 +481,16 @@ install(DIRECTORY files/
 )
 
 elseif($ENV{ROS_VERSION} STREQUAL "2")
-install(TARGETS
-    ontologenius_reasoner_plugin
-    DESTINATION lib/${PROJECT_NAME})
 
 install(TARGETS
     ontologenius_lib
-    EXPORT ontologenius_lib
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib
-    RUNTIME DESTINATION bin
-    DESTINATION lib/${PROJECT_NAME})
-
-install(TARGETS
     ontologenius_interface
-    EXPORT ontologenius_interface
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib
-    RUNTIME DESTINATION bin
-    DESTINATION lib/${PROJECT_NAME})
-    
-install(TARGETS
     ontologenius_compat
-    EXPORT ontologenius_compat
+    ontologenius_operators
+    ontologenius_core_lib
+    ontologenius_ontoGraphs_lib
+    ontologenius_reasoner_plugin
+    EXPORT ontologenius
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin
@@ -510,11 +502,6 @@ install(TARGETS
     ontoloGUI
     DESTINATION lib/${PROJECT_NAME})
 
-install(TARGETS ontologenius_operators
-                ontologenius_core_lib
-                ontologenius_ontoGraphs_lib
-        DESTINATION lib)
-
 install(DIRECTORY launch/ros2/launch DESTINATION share/${PROJECT_NAME}/)
 install(DIRECTORY include/ DESTINATION include)
 
@@ -522,7 +509,7 @@ install(DIRECTORY files DESTINATION share/${PROJECT_NAME}/)
 install(DIRECTORY docs DESTINATION share/${PROJECT_NAME}/)
 install(DIRECTORY configuration DESTINATION share/${PROJECT_NAME}/)
 
-ament_export_libraries(ontologenius_lib ontologenius_interface ontologenius_compat)
+ament_export_targets(ontologenius)
 
 endif()
 
