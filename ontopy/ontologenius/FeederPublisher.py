@@ -37,7 +37,7 @@ class FeederPublisher:
         if self._name != '':
             sub_topic_name += '/' + self._name
         self._commit_sub = Ontoros.createSubscriber(sub_topic_name, String, self.commitCallback)
-        notif_topic_name = 'ontologenius/feeder_notifications'
+        notif_topic_name = 'ontologenius/reasoner_notifications'
         if self._name != '':
             notif_topic_name += '/' + self._name
         self._notif_sub = Ontoros.createSubscriber(notif_topic_name, String, self._notifCallback)
@@ -242,7 +242,7 @@ class FeederPublisher:
             return False
         
     def registerNotificationCallback(self, callback):
-        """Register a callback function to get notifications from the feeder.
+        """Register a callback function to get notifications from the reasoners.
            callback is the callback function taking a string.
         """
         self.user_notif_callback = callback
@@ -262,7 +262,7 @@ class FeederPublisher:
             self._updated = True
 
     def _notifCallback(self, msg):
-        if not self.user_notif_callback is None:
+        if self.user_notif_callback:
             self.user_notif_callback(msg.data)
 
     def millis_interval(self, start, end):

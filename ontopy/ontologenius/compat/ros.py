@@ -83,7 +83,6 @@ elif os.environ["ROS_VERSION"] == "2":
     from rclpy.subscription import Subscription
     from rclpy.time import Time
 
-
     class SingletonMeta(type):
         """
         This is a thread-safe implementation of Singleton.

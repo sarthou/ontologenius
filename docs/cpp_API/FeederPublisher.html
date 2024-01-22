@@ -155,7 +155,8 @@
               <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit">commit</a></b>(int32_t <i>timeout</i> = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit2">commit</a></b>(const std::string&amp; <i>commit_name</i>, int32_t <i>timeout</i> = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#checkout">checkout</a></b>(const std::string&amp; <i>commit_name</i>, int32_t <i>timeout</i> = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#registerNotificationCallback">registerNotificationCallback</a></b>(const std::function&lt;void(const std::string&amp;)&gt;&amp; <i>callback</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#registerFeederNotificationCallback">registerFeederNotificationCallback</a></b>(const std::function&lt;void(const std::string&amp;)&gt;&amp; <i>callback</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#registerReasonersNotificationCallback">registerReasonersNotificationCallback</a></b>(const std::function&lt;void(const std::string&amp;)&gt;&amp; <i>callback</i>)</td></tr>
             </tbody>
           </table>
         </div>
@@ -277,8 +278,12 @@
           <p>Returns false if the function returns on a timeout.</p>
           <p>This function can only be used on a copied ontology.</p>
 
-          <h3 class="fn" id="registerNotificationCallback"><a name="registerNotificationCallback"></a><span class="type">void</span> FeederPublisher::<span class="name">registerNotificationCallback</span>(const <span class="type">std::function</span>&lt;<span class="type">void</span>(const <span class="type">std::string</span>&amp;)&gt;&amp; <i>callback</i>)</h3>
+          <h3 class="fn" id="registerFeederNotificationCallback"><a name="registerFeederNotificationCallback"></a><span class="type">void</span> FeederPublisher::<span class="name">registerFeederNotificationCallback</span>(const <span class="type">std::function</span>&lt;<span class="type">void</span>(const <span class="type">std::string</span>&amp;)&gt;&amp; <i>callback</i>)</h3>
           <p>Register a callback function to get notifications from the feeder.</p>
+          <p>The parameter <i>callback</i> is the callback function taking a string.</p>
+
+          <h3 class="fn" id="registerReasonersNotificationCallback"><a name="registerReasonersNotificationCallback"></a><span class="type">void</span> FeederPublisher::<span class="name">registerReasonersNotificationCallback</span>(const <span class="type">std::function</span>&lt;<span class="type">void</span>(const <span class="type">std::string</span>&amp;)&gt;&amp; <i>callback</i>)</h3>
+          <p>Register a callback function to get notifications from the reasoners.</p>
           <p>The parameter <i>callback</i> is the callback function taking a string.</p>
 
         </div>

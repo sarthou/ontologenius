@@ -186,9 +186,14 @@ void FeederPublisher::commitCallback(ontologenius::compat::onto_ros::MessageWrap
     updated_ = true;
 }
 
-void FeederPublisher::notificationCallback(ontologenius::compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg)
+void FeederPublisher::feederNotificationCallback(ontologenius::compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg)
 {
-  notification_callback_(msg->data);
+  feeder_notification_callback_(msg->data);
+}
+
+void FeederPublisher::reasonersNotificationCallback(ontologenius::compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg)
+{
+  reasoners_notification_callback_(msg->data);
 }
 
 } // namespace onto

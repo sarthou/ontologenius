@@ -25,13 +25,15 @@ public:
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
   explicit FeederPublisher(const std::string& name) :
           name_(name),
-          notification_callback_([](auto& msg){ (void) msg; }),
+          feeder_notification_callback_([](auto& msg){ (void) msg; }),
+          reasoners_notification_callback_([](auto& msg){ (void) msg; }),
           commit_nb_((time(nullptr), rand() % 100000 + 1)),
           updated_(false),
           pub_(name.empty() ? "ontologenius/insert" : "ontologenius/insert/" + name, 1000),
           stamped_pub_((name == "") ? "ontologenius/insert_stamped" : "ontologenius/insert_stamped/" + name, 1000),
           commit_sub_(name_ == "" ? "ontologenius/end" : "ontologenius/end/" + name_, 1000, &FeederPublisher::commitCallback, this),
-          notif_sub_(name_ == "" ? "ontologenius/feeder_notifications" : "ontologenius/feeder_notifications/" + name_, 1000, &FeederPublisher::notificationCallback, this)
+          feeder_notif_sub_(name_ == "" ? "ontologenius/feeder_notifications" : "ontologenius/feeder_notifications/" + name_, 1000, &FeederPublisher::feederNotificationCallback, this),
+          reasoners_notif_sub_(name_ == "" ? "ontologenius/reasoner_notifications" : "ontologenius/reasoner_notifications/" + name_, 1000, &FeederPublisher::reasonersNotificationCallback, this)
   {}
 
   FeederPublisher(FeederPublisher& other) = delete;
@@ -165,11 +167,16 @@ public:
 
   /// @brief Register a callback function to get notifications from the feeder.
   /// @param callback is the callback function taking a string.
-  void registerNotificationCallback(const std::function<void(const std::string&)>& callback) { notification_callback_ = callback; }
+  void registerFeederNotificationCallback(const std::function<void(const std::string&)>& callback) { feeder_notification_callback_ = callback; }
+
+  /// @brief Register a callback function to get notifications from the reasoners.
+  /// @param callback is the callback function taking a string.
+  void registerReasonersNotificationCallback(const std::function<void(const std::string&)>& callback) { reasoners_notification_callback_ = callback; }
 
 private:
   std::string name_;
-  std::function<void(const std::string&)> notification_callback_;
+  std::function<void(const std::string&)> feeder_notification_callback_;
+  std::function<void(const std::string&)> reasoners_notification_callback_;
 
   size_t commit_nb_;
   std::atomic<bool> updated_;
@@ -177,7 +184,8 @@ private:
   onto_ros::Publisher<std_msgs_compat::String> pub_;
   onto_ros::Publisher<OntologeniusStampedString> stamped_pub_;
   onto_ros::Subscriber<std_msgs_compat::String> commit_sub_;
-  onto_ros::Subscriber<std_msgs_compat::String> notif_sub_;
+  onto_ros::Subscriber<std_msgs_compat::String> feeder_notif_sub_;
+  onto_ros::Subscriber<std_msgs_compat::String> reasoners_notif_sub_;
 
   void sendNop();
 
@@ -185,7 +193,8 @@ private:
   void publishStamped(const std::string& str, const onto_ros::Time& stamp);
 
   void commitCallback(onto_ros::MessageWrapper<std_msgs_compat::String> msg);
-  void notificationCallback(onto_ros::MessageWrapper<std_msgs_compat::String> msg);
+  void feederNotificationCallback(onto_ros::MessageWrapper<std_msgs_compat::String> msg);
+  void reasonersNotificationCallback(onto_ros::MessageWrapper<std_msgs_compat::String> msg);
 };
 
 } // namespace onto
