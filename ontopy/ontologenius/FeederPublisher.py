@@ -37,6 +37,11 @@ class FeederPublisher:
         if self._name != '':
             sub_topic_name += '/' + self._name
         self._commit_sub = Ontoros.createSubscriber(sub_topic_name, String, self.commitCallback)
+        notif_topic_name = 'ontologenius/feeder_notifications'
+        if self._name != '':
+            notif_topic_name += '/' + self._name
+        self._notif_sub = Ontoros.createSubscriber(notif_topic_name, String, self._notifCallback)
+        self.user_notif_callback = None
         self._updated = False
         random.seed()
         self._commit_nb = random.randint(1, 100000)
@@ -235,6 +240,12 @@ class FeederPublisher:
             return True
         else:
             return False
+        
+    def registerNotificationCallback(self, callback):
+        """Register a callback function to get notifications from the feeder.
+           callback is the callback function taking a string.
+        """
+        self.user_notif_callback = callback
 
     def _sendNop(self):
         self._publish_stamped('[nop]nop|', Ontoros.getRosTime())
@@ -249,6 +260,10 @@ class FeederPublisher:
     def commitCallback(self, data):
         if data.data == 'end':
             self._updated = True
+
+    def _notifCallback(self, data):
+        if not self.user_notif_callback is None:
+            self.user_notif_callback(data)
 
     def millis_interval(self, start, end):
         diff = end - start
