@@ -3,6 +3,7 @@
 
 #include <atomic>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "ontologenius/compat/ros.h"
 
@@ -136,10 +137,8 @@ public:
   /// @brief Blocks while no subscribers are currently connected to the internal ROS publisher.
   void waitConnected()
   {
-    onto_ros::Rate loop_rate(100);
-
     while(onto_ros::Node::get().ok() && (getNumSubscribers() == 0))
-      loop_rate.sleep();
+      usleep(1000);
   }
 
   /// @brief Waits until all changes have been applied.
@@ -179,9 +178,6 @@ private:
   onto_ros::Publisher<OntologeniusStampedString> stamped_pub_;
   onto_ros::Subscriber<std_msgs_compat::String> commit_sub_;
   onto_ros::Subscriber<std_msgs_compat::String> notif_sub_;
-
-
-
 
   void sendNop();
 
