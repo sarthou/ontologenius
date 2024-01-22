@@ -261,9 +261,9 @@ class FeederPublisher:
         if data.data == 'end':
             self._updated = True
 
-    def _notifCallback(self, data):
+    def _notifCallback(self, msg):
         if not self.user_notif_callback is None:
-            self.user_notif_callback(data)
+            self.user_notif_callback(msg.data)
 
     def millis_interval(self, start, end):
         diff = end - start
