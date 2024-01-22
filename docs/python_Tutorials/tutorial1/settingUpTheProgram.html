@@ -413,7 +413,7 @@
                 <div class="code_line">    <span class="py_var">_onto</span> = <span class="py_imported">OntologyManipulator</span>()</div>
                 <div class="code_line">    <span class="py_var">_onto</span>.<span class="py_function">close</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">node</span> = <span class="py_imported">OntologyManipulator</span>()</div>
+                <div class="code_line">    <span class="py_var">node</span> = <span class="py_imported">IntruderNode</span>()</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">    <span class="py_op">while</span> <span class="py_imported">rclpy</span>.<span class="py_function">ok</span>():</div>
                 <div class="code_line"><br></div>
@@ -432,8 +432,8 @@
                 <div class="code_line"><br></div>
                 <div class="code_line">        <span class="py_var">_names</span> = []</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">        <span class="py_var">node</span>.<span class="py_function">destroy_node</span>()</div>
-                <div class="code_line">        <span class="py_imported">rclpy</span>.<span class="py_function">shutdown</span>()</div>
+                <div class="code_line">    <span class="py_var">node</span>.<span class="py_function">destroy_node</span>()</div>
+                <div class="code_line">    <span class="py_imported">rclpy</span>.<span class="py_function">shutdown</span>()</div>
                 <div class="code_line"><br></div>
                 <div class="code_line"><span class="py_op">if</span> <span class="py_var">__name__</span> == <span class="py_string">"__main__"</span>:</div>
                 <div class="code_line">    <span class="py_function">main</span>()</div>
