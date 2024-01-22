@@ -462,7 +462,7 @@ table.alignedsummary,table.propsummary {
   content: counter(code_line)" ";
   color:#999999;
 }
-.cpp_code, .xml_code, .yaml_code {
+.cpp_code, .xml_code, .yaml_code, .python_code {
   border-radius: 5px;
 }
 .xml_code div, .yaml_code div {

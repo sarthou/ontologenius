@@ -144,7 +144,7 @@ elif os.environ["ROS_VERSION"] == "2":
             self.pub.publish(msg)
 
         def getNumSubscribers(self):
-            self.pub.get_num_connections()
+            self.pub.get_subscription_count()
 
 
     class OntoSubscriber:

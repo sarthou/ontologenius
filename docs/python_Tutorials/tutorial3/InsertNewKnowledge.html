@@ -177,12 +177,12 @@
                 <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
                 <div class="code_line"><span class="py_import">import</span> <span class="py_imported">re</span></div>
                 <div class="code_line"><span class="py_import">import</span> <span class="py_imported">time</span></div>
-                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">threading</span> <span class="py_import">import</span> <span class="py_imported">Threqd</span></div>
                 <div class="code_line"><span class="py_import">import</span> <span class="py_imported">rclpy</span></div>
                 <div class="code_line"><span class="py_import">from</span> <span class="py_imported">rclpy</span>.<span class="py_imported">node</span> <span class="py_import">import</span> <span class="py_imported">Node</span></div>
                 <div class="code_line"><span class="py_import">from</span> <span class="py_imported">std_msgs</span>.<span class="py_imported">msg</span> <span class="py_import">import</span> <span class="py_imported">String</span></div>
                 <div class="code_line"><br></div>
-                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontologenius</span> <span class="py_import">import</span> <span class="py_imported">OntologyManipulator</span></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontopy</span> <span class="py_import">import</span> <span class="py_imported">OntologyManipulator</span>, <span class="py_imported">Ontoros</span></div>
                 <div class="code_line"><br></div>
                 <div class="code_line"><span class="py_var">_onto</span> = <span class="py_key">None</span></div>
                 <div class="code_line"><br></div>
@@ -449,8 +449,15 @@
                 <div class="code_line">    <span class="py_var">_onto</span>.feeder.<span class="py_function">addConcept</span>(<span class="py_string">'bird'</span>)</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">    <span class="py_var">node</span> = <span class="py_imported">FeederNode</span>()</div>
+                <div class="code_line">    <span class="py_var">ontoros</span> = <span class="py_imported">Ontoros</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_imported">rclpy</span>.<span class="py_function">spin</span>(<span class="py_var">node</span>)</div>
+                <div class="code_line">    <span class="py_var">executor</span> = <span class="py_imported">rclpy</span>.executors.MultiThreadedExecutor()</div>
+                <div class="code_line">    <span class="py_var">executor</span>.<span class="py_function">add_node</span>(<span class="py_var">node</span>)</div>
+                <div class="code_line">    <span class="py_var">executor</span>.<span class="py_function">add_node</span>(<span class="py_var">ontoros</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">et</span> = <span class="py_imported">Thread</span>(<span class="py_var">target</span>=<span class="py_var">executor</span>.spin)</div>
+                <div class="code_line">    <span class="py_var">et</span>.<span class="py_function">start</span>()</div>
+                <div class="code_line">    <span class="py_var">et</span>.<span class="py_function">join</span>()</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">    <span class="py_var">node</span>.<span class="py_function">destroy_node</span>()</div>
                 <div class="code_line">    <span class="py_imported">rclpy</span>.<span class="py_function">shutdown</span>()</div>
@@ -458,6 +465,8 @@
                 <div class="code_line"><span class="py_op">if</span> <span class="py_var">__name__</span> == <span class="py_string">'__main__'</span>:</div>
                 <div class="code_line">    <span class="py_function">main</span>()</div>
               </div>
+
+              <p>The main function is a bit more complicated than usual as for the next step we will need to spin the Ontologenius API node in order to subscribe to some topics.</p>
             </div>
           </div>
         </div>
