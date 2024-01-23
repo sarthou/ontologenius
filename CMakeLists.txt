@@ -499,6 +499,7 @@ install(TARGETS
 install(TARGETS
     ontologenius_single
     ontologenius_multi
+    ontologenius_draw
     ontoloGUI
     DESTINATION lib/${PROJECT_NAME})
 
