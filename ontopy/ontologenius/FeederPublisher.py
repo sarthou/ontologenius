@@ -168,7 +168,7 @@ class FeederPublisher:
     def waitConnected(self):
         """Blocks while no subscribers are currently connected to the internal ROS publisher."""
         while not Ontoros.isShutdown() and self.getNumSubscribers() == 0 and self.getNumPublishers() == 0:
-            time.sleep(.01)
+            Ontoros().spin_once()
 
     def waitUpdate(self, timeout = 100000000):
         """Waits until all changes have been applied.
@@ -180,8 +180,8 @@ class FeederPublisher:
         start_time = datetime.now()
         self._sendNop()
 
-        while not Ontoros.isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
-            time.sleep(.001)
+        while not Ontoros().isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
+            Ontoros().spin_once()
 
         if self._updated == True:
             return True
@@ -212,10 +212,10 @@ class FeederPublisher:
         msg = '[commit]' + commit_name + '|'
 
         start_time = datetime.now()
-        self._publish_stamped(msg, Ontoros.getRosTime())
+        self._publish_stamped(msg, Ontoros().getRosTime())
 
-        while not Ontoros.isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
-            time.sleep(.001)
+        while (not Ontoros().isShutdown()) and (not self._updated) and ((self.millis_interval(start_time, datetime.now()) < timeout)) :
+            Ontoros().spin_once()
 
         if self._updated == True:
             return True
@@ -231,10 +231,10 @@ class FeederPublisher:
         self._updated = False
 
         start_time = datetime.now()
-        self._publish_stamped('[checkout]' + commit_name + '|', Ontoros.getRosTime())
+        self._publish_stamped('[checkout]' + commit_name + '|', Ontoros().getRosTime())
 
-        while not Ontoros.isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
-            time.sleep(.001)
+        while not Ontoros().isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
+            Ontoros().spin_once()
 
         if self._updated == True:
             return True
