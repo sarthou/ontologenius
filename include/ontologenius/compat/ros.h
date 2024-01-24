@@ -189,7 +189,7 @@ public:
   friend class Service;
 
   template <typename T>
-  friend class Client; 
+  friend class Client;
 
   Node(Node& other) = delete;
   Node(Node&& other) = delete;
@@ -215,6 +215,7 @@ private:
   ros::CallbackQueue callback_queue_;
 #elif ONTO_ROS_VERSION == 2
   rclcpp::Node::SharedPtr handle_;
+  std::thread ros_thread_;
 #endif
 
   bool running_;

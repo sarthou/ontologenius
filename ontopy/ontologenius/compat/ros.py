@@ -1,4 +1,5 @@
 import os
+import time
 from ontologenius.msg import OntologeniusTimestamp
 
 if os.environ["ROS_VERSION"] == "1":
@@ -71,6 +72,9 @@ if os.environ["ROS_VERSION"] == "1":
         
         def isShutdown():
             return rospy.is_shutdown()
+
+        def spin_once():
+            time.sleep(0.01)
 
 elif os.environ["ROS_VERSION"] == "2":
 
@@ -184,3 +188,7 @@ elif os.environ["ROS_VERSION"] == "2":
         @staticmethod
         def isShutdown() -> bool:
             return not rclpy.ok()
+
+        @staticmethod
+        def spin_once():
+            rclpy.spin_once(Ontoros(), timeout_sec=0.01)
