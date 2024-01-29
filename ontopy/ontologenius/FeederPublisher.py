@@ -180,8 +180,8 @@ class FeederPublisher:
         start_time = datetime.now()
         self._sendNop()
 
-        while not Ontoros().isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
-            Ontoros().spin_once()
+        while not Ontoros.isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
+            Ontoros.spin_once()
 
         if self._updated == True:
             return True
