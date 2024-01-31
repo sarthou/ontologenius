@@ -20,9 +20,9 @@ public:
   virtual bool implementPeriodicReasoning() override { return true; }
 
   virtual std::string getName() override;
-  virtual std::string getDesciption() override;
+  virtual std::string getDescription() override;
 
-  virtual bool defaultAvtive() override {return false;}
+  virtual bool defaultActive() override {return false;}
 private:
   size_t current_id_;
   size_t class_per_period_;

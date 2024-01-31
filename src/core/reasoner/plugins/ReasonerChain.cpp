@@ -146,7 +146,7 @@ std::string ReasonerChain::getName()
   return "reasoner chain";
 }
 
-std::string ReasonerChain::getDesciption()
+std::string ReasonerChain::getDescription()
 {
   return "This reasoner resolve the properties chains axioms.";
 }

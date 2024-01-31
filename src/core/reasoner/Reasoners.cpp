@@ -76,7 +76,7 @@ void Reasoners::load()
       ReasonerInterface* tmp = loader_.createUnmanagedInstance(reasoner);
       tmp->initialize(agent_name_, ontology_);
       reasoners_[reasoner] = tmp;
-      if(tmp->defaultAvtive())
+      if(tmp->defaultActive())
         active_reasoners_[reasoner] = tmp;
     }
   }
@@ -170,7 +170,7 @@ std::string Reasoners::getDescription(std::string& plugin)
 {
   if(reasoners_.find(plugin) != reasoners_.end())
   {
-    std::string description = reasoners_[plugin]->getDesciption();
+    std::string description = reasoners_[plugin]->getDescription();
     if(reasoners_[plugin]->implementPostReasoning())
       description += "\n - post reasoning";
     if(reasoners_[plugin]->implementPreReasoning())

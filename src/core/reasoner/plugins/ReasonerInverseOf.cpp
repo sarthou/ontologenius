@@ -79,7 +79,7 @@ std::string ReasonerInverseOf::getName()
   return "reasoner inverse of";
 }
 
-std::string ReasonerInverseOf::getDesciption()
+std::string ReasonerInverseOf::getDescription()
 {
   return "This reasoner creates the inverse properties for each individual.";
 }

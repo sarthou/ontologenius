@@ -70,9 +70,9 @@ public:
   virtual bool implementPeriodicReasoning() { return false; }
 
   virtual std::string getName() = 0;
-  virtual std::string getDesciption() = 0;
+  virtual std::string getDescription() = 0;
 
-  virtual bool defaultAvtive() {return false;}
+  virtual bool defaultActive() {return false;}
 
   static size_t getNbUpdates() {return nb_update_; }
   static void resetNbUpdates() {nb_update_ = 0; }
