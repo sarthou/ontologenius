@@ -1381,15 +1381,22 @@ bool ClassGraph::removeLang(std::string& indiv, std::string& lang, std::string& 
     return false;
 }
 
-bool ClassGraph::removeInheritage(std::string& class_base, std::string& class_inherited)
+std::vector<std::pair<std::string, std::string>> ClassGraph::removeInheritage(std::string& class_base, std::string& class_inherited)
 {
   ClassBranch_t* branch_base = findBranch(class_base);
   ClassBranch_t* branch_inherited = findBranch(class_inherited);
+  std::vector<std::pair<std::string, std::string>> explanations;
 
   if(branch_base == nullptr)
-    return false;
+  {
+    throw GraphException("The class_base entity does not exist");
+    return std::vector<std::pair<std::string, std::string>>();
+  }
   if(branch_inherited == nullptr)
-    return false;
+  {
+    throw GraphException("The class_inherited entity does not exist");
+    return std::vector<std::pair<std::string, std::string>>();
+  }
 
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
@@ -1399,7 +1406,7 @@ bool ClassGraph::removeInheritage(std::string& class_base, std::string& class_in
   branch_base->updated_ = true;
   branch_inherited->updated_ = true;
 
-  return true;
+  return explanations;
 }
 
 void ClassGraph::removeRelation(const std::string& class_from, const std::string& property, const std::string& class_on)

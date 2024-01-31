@@ -53,6 +53,7 @@ public:
   std::unordered_set<std::string> getDisjoint(const std::string& value);
   std::unordered_set<index_t> getDisjoint(index_t value);
   void getDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res);
+  void getLocalDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res);
 
   std::unordered_set<std::string> getRelationFrom(const std::string& _class, int depth = -1);  //C3
   std::unordered_set<index_t> getRelationFrom(index_t _class, int depth = -1);
@@ -93,7 +94,7 @@ public:
   void addRelation(ClassBranch_t*, const std::string& property, const std::string& type, const std::string& data);
   void addRelationInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on);
   bool removeLang(std::string& indiv, std::string& lang, std::string& name);
-  bool removeInheritage(std::string& class_base, std::string& class_inherited);
+  std::vector<std::pair<std::string, std::string>> removeInheritage(std::string& class_base, std::string& class_inherited);
   void removeRelation(const std::string& class_from, const std::string& property, const std::string& class_on);
   void removeRelation(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data);
 

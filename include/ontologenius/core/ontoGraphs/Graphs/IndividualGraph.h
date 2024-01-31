@@ -142,13 +142,13 @@ public:
   void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data);
   void addRelationInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);
   bool removeLang(const std::string& indiv, const std::string& lang, const std::string& name);
-  bool removeInheritage(const std::string& indiv, const std::string& class_inherited);
+  std::vector<std::pair<std::string, std::string>> removeInheritage(const std::string& indiv, const std::string& class_inherited);
+  void removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch, std::vector<std::pair<std::string, std::string>>& explanations, bool protect_infered = false);
   bool addSameAs(const std::string& indiv_1, const std::string& indiv_2);
-  bool removeSameAs(const std::string& indiv_1, const std::string& indiv_2);
-  // removing a relation using an object property has to generate an "explanation" if it remove other relations
+  std::vector<std::pair<std::string, std::string>> removeSameAs(const std::string& indiv_1, const std::string& indiv_2, bool protect_infered = false);
   std::vector<std::pair<std::string, std::string>> removeRelation(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered = false);
   std::vector<std::pair<std::string, std::string>> removeRelation(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
-  void removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
+  std::vector<std::pair<std::string, std::string>> removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
   std::vector<std::pair<std::string, std::string>> removeRelationInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
   std::vector<std::pair<std::string, std::string>> removeRelationSymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
   std::vector<std::pair<std::string, std::string>> removeRelationChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
