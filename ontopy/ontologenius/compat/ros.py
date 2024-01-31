@@ -70,6 +70,10 @@ if os.environ["ROS_VERSION"] == "1":
             stamp_msg = OntologeniusTimestamp(seconds = t_msg.secs, nanoseconds = t_msg.nsecs)
             return stamp_msg
         
+        def getStamp(time):
+            stamp_msg = OntologeniusTimestamp(seconds = time.secs, nanoseconds = time.nsecs)
+            return stamp_msg
+        
         def isShutdown():
             return rospy.is_shutdown()
 
@@ -183,6 +187,11 @@ elif os.environ["ROS_VERSION"] == "2":
         def getRosTime() -> Time:
             t_msg = Ontoros().get_clock().now().to_msg()
             stamp_msg = OntologeniusTimestamp(seconds = t_msg._sec, nanoseconds = t_msg._nanosec)
+            return stamp_msg
+        
+        @staticmethod
+        def getStamp(time):
+            stamp_msg = OntologeniusTimestamp(seconds = time._sec, nanoseconds = time._nanosec)
             return stamp_msg
 
         @staticmethod
