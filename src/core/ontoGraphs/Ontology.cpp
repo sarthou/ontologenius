@@ -6,6 +6,7 @@
 #include "ontologenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
 #include "ontologenius/core/ontoGraphs/Checkers/IndividualChecker.h"
 #include "ontologenius/core/ontoGraphs/Checkers/ObjectPropertyChecker.h"
+#include "ontologenius/core/ontoGraphs/Checkers/AnonymousClassChecker.h"
 
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
@@ -66,6 +67,7 @@ bool Ontology::close()
   ObjectPropertyChecker object_property_checker(&object_property_graph_);
   DataPropertyChecker data_property_checker(&data_property_graph_);
   IndividualChecker individual_checker(&individual_graph_);
+  AnonymousClassChecker ano_class_checker(&anonymous_graph_);
 
   size_t err = class_checker.check();
   err += object_property_checker.check();
@@ -82,6 +84,7 @@ bool Ontology::close()
 
     is_init_ = true;
   }
+  err += ano_class_checker.check();
 
   Display::info("\n***************SUMMARY****************");
   if(is_init_)
@@ -93,6 +96,8 @@ bool Ontology::close()
   object_property_checker.printStatus();
   data_property_checker.printStatus();
   individual_checker.printStatus();
+  ano_class_checker.printStatus();
+
   Display::info("**************************************");
 
   if(err)
