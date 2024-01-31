@@ -18,8 +18,8 @@ public:
 private:
   void checkDisjoint();
 
-  void checkObectPropertyDomain();
-  void checkObectPropertyRange();
+  void checkObjectPropertyDomain();
+  void checkObjectPropertyRange();
 
   void checkDataPropertyDomain();
   void checkDataPropertyRange();
