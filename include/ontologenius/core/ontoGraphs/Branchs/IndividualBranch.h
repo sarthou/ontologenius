@@ -13,7 +13,6 @@
 namespace ontologenius {
 
 // Classes predefinition
-class Triplet;
 class IndividualBranch_t;
 
 typedef Single_t<IndividualBranch_t*> IndividualElement_t;
@@ -39,34 +38,6 @@ public:
 
   int objectPropertyExist(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
   int dataPropertyExist(DataPropertyBranch_t* property, LiteralNode* data);
-};
-
-class Triplet
-{
-public:
-  void push(IndividualBranch_t* from,
-            ObjectPropertyBranch_t* prop,
-            IndividualBranch_t* on)
-  {
-    from_.push_back(from);
-    prop_.push_back(prop);
-    on_.push_back(on);
-  }
-
-  bool exist(IndividualBranch_t* from,
-            ObjectPropertyBranch_t* prop,
-            IndividualBranch_t* on)
-  {
-    for(size_t i = 0; i < from_.size(); i++)
-      if((from_[i] != from) && (prop_[i] != prop) && (on_[i] == on))
-        return true;
-  
-    return false;
-  }
-  std::vector<IndividualBranch_t*> from_;
-  std::vector<ObjectPropertyBranch_t*> prop_;
-  std::vector<IndividualBranch_t*> on_;
-
 };
 
 } // namespace ontologenius
