@@ -636,6 +636,6 @@ std::string ReasonerAnonymous::getDescription()
   return "This reasoner resolves the anonymous classes i.e the equivalence relations.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ReasonerAnonymous, ReasonerInterface)
-
 } // namespace ontologenius
+
+PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerAnonymous, ontologenius::ReasonerInterface)
