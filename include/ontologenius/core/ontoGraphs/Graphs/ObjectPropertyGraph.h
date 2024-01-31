@@ -33,6 +33,7 @@ struct ObjectPropertyVectors_t
 //for friend
 class ObjectPropertyDrawer;
 class IndividualGraph;
+class AnonymousClassGraph;
 
 //for graphs usage
 class ClassGraph;
@@ -42,6 +43,7 @@ class ObjectPropertyGraph : public OntoGraph<ObjectPropertyBranch_t>
   friend ObjectPropertyDrawer;
   friend IndividualGraph;
   friend ClassGraph;
+  friend AnonymousClassGraph;
 public:
   explicit ObjectPropertyGraph(ClassGraph* class_graph);
   ObjectPropertyGraph(const ObjectPropertyGraph& other, ClassGraph* class_graph);

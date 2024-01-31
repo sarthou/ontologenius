@@ -21,6 +21,7 @@ struct ObjectVectors_t
 
    std::vector<Pair_t<std::string, std::string>> object_relations_;
    std::vector<Pair_t<std::string, std::string>> data_relations_;
+   std::vector<std::string> equivalences_;
 };
 
 //for friend
@@ -29,6 +30,7 @@ class ObjectPropertyGraph;
 class DataPropertyGraph;
 class IndividualGraph;
 class ClassChecker;
+class AnonymousClassGraph;
 
 class ClassGraph : public OntoGraph<ClassBranch_t>
 {
@@ -36,6 +38,7 @@ class ClassGraph : public OntoGraph<ClassBranch_t>
   friend ObjectPropertyGraph;
   friend DataPropertyGraph;
   friend IndividualGraph;
+  friend AnonymousClassGraph;
 
   friend ClassChecker;
 public:

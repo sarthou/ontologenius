@@ -22,12 +22,14 @@ struct IndividualVectors_t
    std::vector<Pair_t<std::string, std::string>> data_relations_;
 
    std::vector<Single_t<std::string>> same_as_;
+   // TODO : add vector distinct
    std::map<std::string, std::vector<std::string>> dictionary_;
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
 };
 
 //for friend
 class IndividualChecker;
+class AnonymousGraph;
 
 //for graphs usage
 class ClassGraph;
@@ -37,6 +39,7 @@ class DataPropertyGraph;
 class IndividualGraph : public Graph<IndividualBranch_t>
 {
   friend IndividualChecker;
+  friend AnonymousGraph;
 public:
   IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   IndividualGraph(const IndividualGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);

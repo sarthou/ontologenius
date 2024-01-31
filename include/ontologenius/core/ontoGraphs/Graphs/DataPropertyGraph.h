@@ -31,6 +31,7 @@ struct DataPropertyVectors_t
 //for friend
 class DataPropertyDrawer;
 class IndividualGraph;
+class AnonymousClassGraph;
 
 //for graphs usage
 class ClassGraph;
@@ -40,6 +41,7 @@ class DataPropertyGraph : public OntoGraph<DataPropertyBranch_t>
   friend DataPropertyDrawer;
   friend IndividualGraph;
   friend ClassGraph;
+  friend AnonymousClassGraph;
 public:
   explicit DataPropertyGraph(ClassGraph* class_graph);
   DataPropertyGraph(const DataPropertyGraph& other, ClassGraph* class_graph);
