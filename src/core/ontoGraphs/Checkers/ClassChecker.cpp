@@ -37,18 +37,11 @@ void ClassChecker::checkDisjoint()
     ClassBranch_t* disjoint_with = nullptr;
     for(ClassBranch_t* it : up)
     {
-      std::unordered_set<ClassBranch_t*> disjoints;
-      for(auto& disjoint : it->disjoints_)
-        disjoints.insert(disjoint.elem);
-
-      ClassBranch_t* tmp_intersection = findIntersection(up, disjoints);
+      ClassBranch_t* tmp_intersection = class_graph_->firstIntersection(up, it->disjoints_);
       if(tmp_intersection != nullptr)
       {
         intersection = tmp_intersection;
-        std::unordered_set<ClassBranch_t*> intersect_disjoints;
-        for(auto& disj : intersection->disjoints_)
-          intersect_disjoints.insert(disj.elem);
-        disjoint_with = findIntersection(up, intersect_disjoints);
+        disjoint_with = class_graph_->firstIntersection(up, intersection->disjoints_);
         if(disjoint_with != nullptr)
           break;
       }
@@ -85,13 +78,13 @@ void ClassChecker::checkObjectPropertyDomain()
 
       if(domain.size() != 0)
       {
-        ClassBranch_t* intersection = findIntersection(up, domain);
+        ClassBranch_t* intersection = class_graph_->firstIntersection(up, domain);
         if(intersection == nullptr)
         {
           std::unordered_set<ClassBranch_t*> disjoints;
           for(auto dom : domain)
             class_graph_->getDisjoint(dom, disjoints);
-          intersection = findIntersection(up, disjoints);
+          intersection = class_graph_->firstIntersection(up, disjoints);
 
           if(intersection == nullptr)
           {
@@ -121,16 +114,16 @@ void ClassChecker::checkObjectPropertyRange()
       std::unordered_set<ClassBranch_t*> range;
       for(auto prop : prop_up)
         class_graph_->object_property_graph_->getRangePtr(prop, range);
-
+     
       if(range.size() != 0)
       {
-        ClassBranch_t* intersection = findIntersection(up, range);
+        ClassBranch_t* intersection = class_graph_->firstIntersection(up, range);
         if(intersection == nullptr)
         {
           std::unordered_set<ClassBranch_t*> disjoints;
           for(auto ran : range)
             class_graph_->getDisjoint(ran, disjoints);
-          intersection = findIntersection(up, disjoints);
+          intersection = class_graph_->firstIntersection(up, disjoints);
 
           if(intersection == nullptr)
           {
@@ -164,13 +157,13 @@ void ClassChecker::checkDataPropertyDomain()
 
       if(domain.size() != 0)
       {
-        ClassBranch_t* intersection = findIntersection(up, domain);
+        ClassBranch_t* intersection = class_graph_->firstIntersection(up, domain);
         if(intersection == nullptr)
         {
           std::unordered_set<ClassBranch_t*> disjoints;
           for(auto dom : domain)
             class_graph_->getDisjoint(dom, disjoints);
-          intersection = findIntersection(up, disjoints);
+          intersection = class_graph_->firstIntersection(up, disjoints);
 
           if(intersection == nullptr)
           {

@@ -10,6 +10,7 @@ size_t DataPropertyChecker::check()
   graph_size = graph_vect_.size();
 
   checkDisjoint();
+  // TODO check domains and ranges possible intersection
 
   is_analysed = true;
   printStatus();
@@ -21,18 +22,16 @@ void DataPropertyChecker::checkDisjoint()
 {
   for(auto property : graph_vect_)
   {
-    std::unordered_set<std::string> up = property_graph_->getUp(property->value());
-    std::unordered_set<std::string> disjoint;
+    std::unordered_set<DataPropertyBranch_t*> up;
+    property_graph_->getUpPtr(property, up);
+    std::unordered_set<DataPropertyBranch_t*> disjoint;
 
-    for (const std::string& it : up)
-    {
-      std::unordered_set<std::string> tmp = property_graph_->getDisjoint(it);
-      disjoint.insert(tmp.begin(), tmp.end());
-    }
+    for(DataPropertyBranch_t* it : up)
+      property_graph_->getDisjointPtr(it, disjoint);
 
-    std::string intersection = findIntersection(up, disjoint);
-    if(intersection != "")
-      print_error("'" + property->value() + "' can't be a '" + intersection + "' because of disjonction");
+    DataPropertyBranch_t* intersection = property_graph_->firstIntersection(up, disjoint);
+    if(intersection != nullptr)
+      print_error("'" + property->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
   }
 }
 

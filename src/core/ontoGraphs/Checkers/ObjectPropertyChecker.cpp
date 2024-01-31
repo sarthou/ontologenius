@@ -11,6 +11,7 @@ size_t ObjectPropertyChecker::check()
 
   checkDisjoint();
   checkCharacteristics();
+  // TODO check domains and ranges possible intersection
 
   is_analysed = true;
   printStatus();
@@ -29,7 +30,7 @@ void ObjectPropertyChecker::checkDisjoint()
     for(ObjectPropertyBranch_t* it : up)
       property_graph_->getDisjointPtr(it, disjoint);
 
-    ObjectPropertyBranch_t* intersection = findIntersection(up, disjoint);
+    ObjectPropertyBranch_t* intersection = property_graph_->firstIntersection(up, disjoint);
     if(intersection != nullptr)
       print_error("'" + property->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
   }

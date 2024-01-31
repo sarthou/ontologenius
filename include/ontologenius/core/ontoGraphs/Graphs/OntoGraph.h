@@ -118,8 +118,6 @@ protected:
   void amIA(B** me, std::map<std::string, B*>& vect, const std::string& value, bool erase = true);
 
   void mitigate(B* branch);
-  std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<B*>& vect);
-  std::vector<B*> intersection(const std::unordered_set<B*>& set, const std::vector<Single_t<B*>>& vect);
   void eraseFromVector(std::vector<B*>& vect, B* branch);
 
 private:
@@ -727,7 +725,7 @@ void OntoGraph<B>::mitigate(B* branch)
   {
     std::unordered_set<B*> up;
     getUpPtr(child.elem, up);
-    std::vector<B*> inter = intersection(up, childs);
+    std::vector<B*> inter = this->intersection(up, childs);
     if(inter.size() > 1)
     {
       this->removeFromElemVect(child.elem->mothers_, branch);
@@ -735,42 +733,18 @@ void OntoGraph<B>::mitigate(B* branch)
     }
   }
 
-  std::vector<Single_t<B*>> mothers = branch->mothers_;
+  RelationsWithInductions<Single_t<B*>> mothers = branch->mothers_;
   for(Single_t<B*>& mother : mothers)
   {
     std::unordered_set<B*> down;
     getDownPtr(mother.elem, down);
-    std::vector<B*> inter = intersection(down, mothers);
+    std::vector<B*> inter = this->intersection(down, mothers.relations);
     if(inter.size() > 1)
     {
       this->removeFromElemVect(branch->mothers_, mother.elem);
       this->removeFromElemVect(mother.elem->childs_, branch);
     }
   }
-}
-
-template <typename B>
-std::vector<B*> OntoGraph<B>::intersection(const std::unordered_set<B*>& set, const std::vector<B*>& vect)
-{
-  std::vector<B*> res;
-  for(B* v : vect)
-  {
-    if(set.find(v) != set.end())
-      res.push_back(v);
-  }
-  return res;
-}
-
-template <typename B>
-std::vector<B*> OntoGraph<B>::intersection(const std::unordered_set<B*>& set, const std::vector<Single_t<B*>>& vect)
-{
-  std::vector<B*> res;
-  for(const Single_t<B*>& v : vect)
-  {
-    if(set.find(v.elem) != set.end())
-      res.push_back(v.elem);
-  }
-  return res;
 }
 
 template <typename B>

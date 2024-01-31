@@ -131,6 +131,52 @@ public:
   void insert(std::unordered_set<index_t>& set, ValuedNode* node) { set.insert(node->get()); }
   void insert(std::unordered_set<std::string>& set, LiteralNode* node) { set.insert(node->value()); }
   void insert(std::unordered_set<index_t>& set, LiteralNode* node) { set.insert(node->get()); }
+
+  template<template<typename> class C>
+  C<B*> intersection(const std::unordered_set<B*>& set, const C<B*>& c)
+  {
+    C<B*> res;
+    for(B* v : c)
+    {
+      if(set.find(v) != set.end())
+        std::inserter(res, res.end()) = v;
+    }
+    return res;
+  }
+
+  template<template<typename> class C>
+  B* firstIntersection(const std::unordered_set<B*>& set, const C<B*>& c)
+  {
+    for(B* v : c)
+    {
+      if(set.find(v) != set.end())
+        return v;
+    }
+    return nullptr;
+  }
+
+  template<template<typename> class C>
+  C<B*> intersection(const std::unordered_set<B*>& set, const C<Single_t<B*>>& c)
+  {
+    C<B*> res;
+    for(auto& v : c)
+    {
+      if(set.find(v.elem) != set.end())
+        std::inserter(res, res.end()) = v.elem;
+    }
+    return res;
+  }
+
+  template<template<typename> class C>
+  B* firstIntersection(const std::unordered_set<B*>& set, const C<Single_t<B*>>& c)
+  {
+    for(auto& v : c)
+    {
+      if(set.find(v.elem) != set.end())
+        return v.elem;
+    }
+    return nullptr;
+  }
 };
 
 template <typename B>

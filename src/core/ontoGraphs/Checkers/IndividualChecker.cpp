@@ -42,7 +42,7 @@ void IndividualChecker::checkSame()
     for (auto same : sames)
       individual_graph_->getDistincts(same, distincts);
 
-    auto intersection = findIntersection(sames, distincts);
+    auto intersection = individual_graph_->firstIntersection(sames, distincts);
     if(intersection != nullptr)
       print_error("'" + indiv->value() + "' can't be same and distinct with '" + intersection->value() + "'");
   }
@@ -59,18 +59,11 @@ void IndividualChecker::checkDisjoint()
     ClassBranch_t* disjoint_with = nullptr;
     for(ClassBranch_t* it : up)
     {
-      std::unordered_set<ClassBranch_t*> disjoints;
-      for(auto& disjoint : it->disjoints_)
-        disjoints.insert(disjoint.elem);
-
-      ClassBranch_t* tmp_intersection = findIntersection(up, disjoints);
+      ClassBranch_t* tmp_intersection = individual_graph_->class_graph_->firstIntersection(up, it->disjoints_);
       if(tmp_intersection != nullptr)
       {
         intersection = tmp_intersection;
-        std::unordered_set<ClassBranch_t*> intersect_disjoints;
-        for(auto& disj : intersection->disjoints_)
-          intersect_disjoints.insert(disj.elem);
-        disjoint_with = findIntersection(up, intersect_disjoints);
+        disjoint_with = individual_graph_->class_graph_->firstIntersection(up, intersection->disjoints_);
         if(disjoint_with != nullptr)
           break;
       }
@@ -128,13 +121,13 @@ void IndividualChecker::checkObectPropertyDomain()
 
       if(domain.size() != 0)
       {
-        ClassBranch_t* intersection = findIntersection(up, domain);
+        ClassBranch_t* intersection = individual_graph_->class_graph_->firstIntersection(up, domain);
         if(intersection == nullptr)
         {
           std::unordered_set<ClassBranch_t*> disjoints;
           for(auto dom : domain)
             individual_graph_->class_graph_->getDisjoint(dom, disjoints);
-          intersection = findIntersection(up, disjoints);
+          intersection = individual_graph_->class_graph_->firstIntersection(up, disjoints);
 
           if(intersection == nullptr)
           {
@@ -168,13 +161,13 @@ void IndividualChecker::checkObectPropertyRange()
 
       if(range.size() != 0)
       {
-        ClassBranch_t* intersection = findIntersection(up, range);
+        ClassBranch_t* intersection = individual_graph_->class_graph_->firstIntersection(up, range);
         if(intersection == nullptr)
         {
           std::unordered_set<ClassBranch_t*> disjoints;
           for(auto ran : range)
             individual_graph_->class_graph_->getDisjoint(ran, disjoints);
-          intersection = findIntersection(up, disjoints);
+          intersection = individual_graph_->class_graph_->firstIntersection(up, disjoints);
 
           if(intersection == nullptr)
           {
@@ -208,13 +201,13 @@ void IndividualChecker::checkDataPropertyDomain()
 
       if(domain.size() != 0)
       {
-        ClassBranch_t* intersection = findIntersection(up, domain);
+        ClassBranch_t* intersection = individual_graph_->class_graph_->firstIntersection(up, domain);
         if(intersection == nullptr)
         {
           std::unordered_set<ClassBranch_t*> disjoints;
           for(auto dom : domain)
             individual_graph_->class_graph_->getDisjoint(dom, disjoints);
-          intersection = findIntersection(up, disjoints);
+          intersection = individual_graph_->class_graph_->firstIntersection(up, disjoints);
 
           if(intersection == nullptr)
           {

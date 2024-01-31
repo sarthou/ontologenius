@@ -70,25 +70,6 @@ protected:
     }
   }
 
-  template<typename T>
-  T* findIntersection(std::unordered_set<T*>& base, std::unordered_set<T*>& comp)
-  {
-    for(auto& it : comp)
-      if(base.find(it) != base.end())
-        return it;
-    
-    return nullptr;
-  }
-
-  std::string findIntersection(std::unordered_set<std::string>& base, std::unordered_set<std::string>& comp)
-  {
-    for(auto& it : comp)
-      if(base.find(it) != base.end())
-        return it;
-    
-    return "";
-  }
-
   size_t getErrors() {return nb_error_; }
   size_t getWarnings() {return nb_warn_; }
 
