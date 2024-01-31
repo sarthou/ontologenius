@@ -39,9 +39,7 @@ void ReasonerInverseOf::insertInverse(IndividualBranch_t* indiv_on, ObjectProper
 
   try
   {
-    int index = ontology_->individual_graph_.addRelation(indiv_on, inv_prop, inv_indiv, 1.0, true);
-    if(index == (int)indiv_on->object_relations_.size() - 1)
-      indiv_on->object_properties_has_induced_.emplace_back();
+    ontology_->individual_graph_.addRelation(indiv_on, inv_prop, inv_indiv, 1.0, true);
     indiv_on->nb_updates_++;
     inv_indiv->nb_updates_++;
 

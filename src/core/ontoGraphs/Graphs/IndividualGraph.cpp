@@ -89,10 +89,7 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
   ** Object Property assertion
   **********************/
   for(auto& object_relation : individual_vector.object_relations_)
-  {
     addObjectRelation(me, object_relation);
-    me->object_properties_has_induced_.emplace_back();
-  }
 
   /**********************
   ** Data Property assertion name
@@ -1673,7 +1670,7 @@ ClassBranch_t* IndividualGraph::upgradeToBranch(IndividualBranch_t* indiv)
   if(indiv != nullptr)
   {
     auto class_branch = new ClassBranch_t(indiv->value());
-    class_branch->mothers_ = std::move(indiv->is_a_);
+    class_branch->mothers_.relations = std::move(indiv->is_a_.relations);
     class_branch->data_relations_.clear();
     for(auto& data_relation : indiv->data_relations_)
       class_branch->data_relations_.emplace_back(data_relation.first,data_relation.second, data_relation.probability);
@@ -1740,10 +1737,7 @@ void IndividualGraph::deleteIndividual(IndividualBranch_t* indiv)
 
       for(size_t i = 0; i < individuals_[indiv_i]->object_relations_.size();)
         if(individuals_[indiv_i]->object_relations_[i].second == indiv)
-        {
-          individuals_[indiv_i]->object_relations_.erase(individuals_[indiv_i]->object_relations_.begin() + i);
-          individuals_[indiv_i]->object_properties_has_induced_.erase(individuals_[indiv_i]->object_properties_has_induced_.begin() + i);
-        }
+          individuals_[indiv_i]->object_relations_.erase(i);
         else
           i++;
     }
@@ -1789,10 +1783,7 @@ void IndividualGraph::redirectDeleteIndividual(IndividualBranch_t* indiv, ClassB
 
       for(size_t i = 0; i < individuals_[indiv_i]->object_relations_.size();)
         if(individuals_[indiv_i]->object_relations_[i].second == indiv)
-        {
-          individuals_[indiv_i]->object_relations_.erase(individuals_[indiv_i]->object_relations_.begin() + i);
-          individuals_[indiv_i]->object_properties_has_induced_.erase(individuals_[indiv_i]->object_properties_has_induced_.begin() + i);
-        }
+          individuals_[indiv_i]->object_relations_.erase(i);
         else
           i++;
     }
@@ -1923,8 +1914,7 @@ int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, ObjectPropertyB
     index = indiv_from->objectPropertyExist(property, indiv_on);
     if(index == -1)
     {
-      indiv_from->object_relations_.emplace_back(IndivObjectRelationElement_t(property, indiv_on));
-      indiv_from->object_properties_has_induced_.emplace_back();
+      indiv_from->object_relations_.emplace_back(property, indiv_on);
       index = indiv_from->object_relations_.size() - 1;
       indiv_on->updated_ = true;
       indiv_from->updated_ = true;
@@ -1951,7 +1941,7 @@ int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, DataPropertyBra
     index = indiv_from->dataPropertyExist(property, data);
     if(index == -1)
     {
-      indiv_from->data_relations_.emplace_back(IndivDataRelationElement_t(property, data));
+      indiv_from->data_relations_.emplace_back(property, data);
       index = indiv_from->data_relations_.size() - 1;
     }
 
@@ -2082,26 +2072,59 @@ bool IndividualGraph::removeLang(const std::string& indiv, const std::string& la
     return false;
 }
 
-bool IndividualGraph::removeInheritage(const std::string& class_base, const std::string& class_inherited)
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeInheritage(const std::string& indiv, const std::string& class_inherited)
 {
-  IndividualBranch_t* branch_base = findBranch(class_base);
+  IndividualBranch_t* branch_base = findBranch(indiv);
   ClassBranch_t* branch_inherited = class_graph_->findBranch(class_inherited);
+  std::vector<std::pair<std::string, std::string>> explanations;
 
   if(branch_base == nullptr)
-    return false;
+  {
+    throw GraphException("The individual entity does not exist");
+    return std::vector<std::pair<std::string, std::string>>();
+  }
   if(branch_inherited == nullptr)
-    return false;
-
+  {
+    throw GraphException("The class_inherited entity does not exist");
+    return std::vector<std::pair<std::string, std::string>>();
+  }
+     
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
   std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
 
-  removeFromElemVect(branch_base->is_a_, branch_inherited);
-  removeFromElemVect(branch_inherited->individual_childs_, branch_base);
+  removeInheritage(branch_base, branch_inherited, explanations);
 
-  branch_base->updated_ = true;
-  branch_inherited->updated_ = true;
+  return explanations;
+}
 
-  return true;
+void IndividualGraph::removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch, std::vector<std::pair<std::string, std::string>>& explanations, bool protect_infered)
+{
+  for(size_t i = 0; i < indiv->is_a_.size(); )
+  {
+    if(indiv->is_a_[i].elem == class_branch)
+    {
+      for(auto trace_vect : indiv->is_a_[i].induced_traces)
+        trace_vect->eraseGeneric(indiv, nullptr, class_branch);
+
+      if((protect_infered == true) && (indiv->is_a_[i].infered == false))
+        break;
+
+      for(auto& relation : indiv->is_a_.has_induced_inheritance_relations[i]->triplets)
+      {
+        explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
+                                            relation.object->value(),
+                                    "[DEL]" + indiv->value() + "|isA|" + class_branch->value());
+        removeInheritage(relation.subject, relation.object, explanations, protect_infered);
+      }
+      indiv->is_a_.erase(i);
+      break;
+    }
+    else
+      i++;
+  }
+  removeFromElemVect(class_branch->individual_childs_, indiv);
+  indiv->updated_ = true;
+  class_branch->updated_ = true;
 }
 
 bool IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& indiv_2)
@@ -2127,26 +2150,72 @@ bool IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& i
   return true;
 }
 
-bool IndividualGraph::removeSameAs(const std::string& indiv_1, const std::string& indiv_2)
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeSameAs(const std::string& indiv_1, const std::string& indiv_2, bool protect_infered)
 {
   IndividualBranch_t* branch_1 = findBranch(indiv_1);
   IndividualBranch_t* branch_2 = findBranch(indiv_2);
 
   if((branch_1 == nullptr) || (branch_2 == nullptr))
-    return false;
+  {
+    throw GraphException("One of the two individuals used in sameAs relation does not exist");
+    return std::vector<std::pair<std::string, std::string>>();
+  }
 
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+  std::vector<std::pair<std::string, std::string>> explanations;
 
-  removeFromVect(branch_1->same_as_, IndividualElement_t(branch_2));
-  removeFromVect(branch_2->same_as_, IndividualElement_t(branch_1));
+  if(branch_1->same_as_.size() > 0)
+  {
+    for(size_t i = 0; i < branch_1->same_as_.size(); i++)
+    {
+      if(branch_1->same_as_[i].elem == branch_2)
+      {
+        if((protect_infered == true) && (branch_1->same_as_[i].infered == false))
+          break;
+
+        while(branch_1->same_as_.has_induced_inheritance_relations[i]->triplets.size())
+        {
+          auto& relation = branch_1->same_as_.has_induced_inheritance_relations[i]->triplets.front();
+          explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
+                                              relation.object->value(),
+                                      "[DEL]" + branch_1->value() + "|sameAs|" + branch_2->value());
+          removeInheritage(relation.subject, relation.object, explanations);
+        }
+        for(size_t j = 0; j < branch_2->same_as_.size(); j++)
+        {
+          if(branch_2->same_as_[j].elem == branch_1)
+          {
+            if((protect_infered == true) && (branch_2->same_as_[j].infered == false))
+              break;
+
+            while(branch_2->same_as_.has_induced_inheritance_relations[j]->triplets.size())
+            {
+              auto& relation = branch_2->same_as_.has_induced_inheritance_relations[j]->triplets.front();
+              explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
+                                                  relation.object->value(),
+                                          "[DEL]" + branch_2->value() + "|sameAs|" + branch_1->value());
+              removeInheritage(relation.subject, relation.object, explanations);
+            }
+            branch_2->same_as_.erase(j);
+            break;
+          }
+        }
+        branch_1->same_as_.erase(i);
+        break;
+      }
+    }
+  }
 
   if(branch_1->same_as_.size() == 1)
     branch_1->same_as_.clear();
-
+    
   if(branch_2->same_as_.size() == 1)
     branch_2->same_as_.clear();
 
-  return true;
+  branch_1->updated_ = true;
+  branch_2->updated_ = true;
+
+  return explanations;
 }
 
 std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered)
@@ -2157,7 +2226,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
 
   for(size_t i = 0; i < branch_from->object_relations_.size();)
   {
-    auto object_relation = branch_from->object_relations_[i];
+    auto& object_relation = branch_from->object_relations_[i];
     bool applied = false;
     for(auto& down : down_properties)
     {
@@ -2168,17 +2237,18 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
           if((protect_infered == true) && (object_relation.infered == false))
             break;
 
+          for(auto& trace_vect : object_relation.induced_traces)
+            trace_vect->eraseGeneric(branch_from, property, branch_on);
+
           auto exp_inv = removeRelationInverse(branch_from, object_relation.first, object_relation.second);
           auto exp_sym = removeRelationSymetric(branch_from, object_relation.first, object_relation.second);
           auto exp_ch  = removeRelationChain(branch_from, object_relation.first, object_relation.second);
-
           explanations.insert(explanations.end(), exp_inv.begin(), exp_inv.end());
           explanations.insert(explanations.end(), exp_sym.begin(), exp_sym.end());
           explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
 
           object_relation.second->updated_ = true;
-          branch_from->object_relations_.erase(branch_from->object_relations_.begin() + i);
-          branch_from->object_properties_has_induced_.erase(branch_from->object_properties_has_induced_.begin() + i);
+          branch_from->object_relations_.erase(i);
           branch_from->updated_ = true;
           applied = true;
           break;
@@ -2221,8 +2291,9 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
   return std::vector<std::pair<std::string, std::string>>();
 }
 
-void IndividualGraph::removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data)
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data)
 {
+  std::vector<std::pair<std::string, std::string>> explanations;
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
   {
@@ -2233,7 +2304,15 @@ void IndividualGraph::removeRelation(const std::string& indiv_from, const std::s
         if(((type == "_") || (branch_from->data_relations_[i].second->type_ == type)) &&
           ((data == "_") || (branch_from->data_relations_[i].second->value_ == data)))
         {
-          branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
+          for(auto& relation : branch_from->data_relations_.has_induced_inheritance_relations[i]->triplets)
+          {
+            explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
+                                                relation.object->value(),
+                                      "[DEL]" + indiv_from + "|" + property + "|" + type + "|" + data);
+
+            removeInheritage(relation.subject, relation.object, explanations);
+          }
+          branch_from->data_relations_.erase(i);
           branch_from->updated_ = true;
         }
         else
@@ -2242,6 +2321,7 @@ void IndividualGraph::removeRelation(const std::string& indiv_from, const std::s
       else
         i++;
     }
+    return explanations;
   }
   else
     throw GraphException("The subject entity does not exist");
@@ -2263,8 +2343,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
           explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
 
           indiv_on->object_relations_[i].second->updated_ = true;
-          indiv_on->object_relations_.erase(indiv_on->object_relations_.begin() + i);
-          indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
+          indiv_on->object_relations_.erase(i);
           indiv_on->updated_ = true;
         }
       else
@@ -2289,8 +2368,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
           explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
           
           indiv_on->object_relations_[i].second->updated_;
-          indiv_on->object_relations_.erase(indiv_on->object_relations_.begin() + i);
-          indiv_on->object_properties_has_induced_.erase(indiv_on->object_properties_has_induced_.begin() + i);
+          indiv_on->object_relations_.erase(i);
           indiv_on->updated_ = true;
         }
   }
@@ -2306,34 +2384,27 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
     if(indiv_from->object_relations_[i].first == property &&
       indiv_from->object_relations_[i].second == indiv_on)
     {
-      for(size_t induced = 0; induced < indiv_from->object_properties_has_induced_[i].from_.size(); induced++)
+      for(auto& relation : indiv_from->object_relations_.has_induced_object_relations[i]->triplets)
       {
-        explanations.emplace_back("[DEL]" + indiv_from->object_properties_has_induced_[i].from_[induced]->value() + "|" +
-                                            indiv_from->object_properties_has_induced_[i].prop_[induced]->value() + "|" +
-                                            indiv_from->object_properties_has_induced_[i].on_[induced]->value(),
-                                   "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
-
-        auto tmp = removeRelation(indiv_from->object_properties_has_induced_[i].from_[induced],
-                                  indiv_from->object_properties_has_induced_[i].prop_[induced],
-                                  indiv_from->object_properties_has_induced_[i].on_[induced],
+        explanations.emplace_back("[DEL]" + relation.subject->value() + "|" +
+                                            relation.predicate->value() + "|" +
+                                            relation.object->value(),
+                                   "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());                           
+        auto tmp = removeRelation(relation.subject,
+                                  relation.predicate,
+                                  relation.object,
                                   true);
         explanations.insert(explanations.end(), tmp.begin(), tmp.end());
       }
-    }
-  }
 
-  auto chains = getChains(property);
-  for(auto& chain : chains)
-  {
-    std::vector<IndividualBranch_t*> indivs_on = resolveLink(chain, indiv_on, 0);
-    for(auto indiv : indivs_on)
-    {
-      ObjectPropertyBranch_t* chained_property = chain[chain.size() - 1];
+      for(auto& relation : indiv_from->object_relations_.has_induced_inheritance_relations[i]->triplets)
+      {
+        explanations.emplace_back("[DEL]" + relation.subject->value() + "|isA|" +
+                                            relation.object->value(),
+                                   "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
 
-      explanations.emplace_back("[DEL]" + indiv_from->value() + "|" + chained_property->value() + "|" + indiv->value(),
-                                 "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
-      auto tmp = removeRelation(indiv_from, chained_property, indiv);
-      explanations.insert(explanations.end(), tmp.begin(), tmp.end());
+        removeInheritage(relation.subject, relation.object, explanations);
+      }
     }
   }
   return explanations;
@@ -2479,7 +2550,8 @@ void IndividualGraph::deepCopy(const IndividualGraph& other)
   for(size_t i = 0; i < other.individuals_.size(); i++)
     cpyBranch(other.individuals_[i], individuals_[i]);
 
-  auto myself = container_.find("myself");
+  // Not sure if usefull or not 
+  /*auto myself = container_.find("myself");
   if(myself != nullptr)
   {
     std::unordered_set<IndividualBranch_t*> same_as;
@@ -2493,7 +2565,7 @@ void IndividualGraph::deepCopy(const IndividualGraph& other)
       me->same_as_.erase(it, me->same_as_.end());
     }
     myself->same_as_.clear();
-  }
+  }*/
 }
 
 void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch)
@@ -2528,15 +2600,14 @@ void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch
     new_branch->data_relations_.emplace_back(relation, prop, data);
   }
 
-  for(const auto& induced : old_branch->object_properties_has_induced_)
+  for(const auto& induced : old_branch->object_relations_.has_induced_object_relations)
   {
-    new_branch->object_properties_has_induced_.emplace_back();
-    for(size_t i = 0; i < induced.from_.size(); i++)
+    for(size_t i = 0; i < induced->triplets.size(); i++)
     {
-      auto from = container_.find(induced.from_[i]->value());
-      auto prop = object_property_graph_->container_.find(induced.prop_[i]->value());
-      auto on = container_.find(induced.on_[i]->value());
-      new_branch->object_properties_has_induced_.back().push(from, prop, on);
+      auto from = container_.find(induced->triplets[i].subject->value());
+      auto prop = object_property_graph_->container_.find(induced->triplets[i].predicate->value());
+      auto on = container_.find(induced->triplets[i].object->value());
+      new_branch->object_relations_.has_induced_object_relations[i]->push(from, prop, on);
     }
   }
 }

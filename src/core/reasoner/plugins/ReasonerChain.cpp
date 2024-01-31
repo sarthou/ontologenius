@@ -24,7 +24,7 @@ void ReasonerChain::postReason()
             resolveChain(it_prop, chain, indiv, indiv->object_relations_[rel_i].second);
         }
       }
-
+      // To prevent the chain to be triggered only when the first relation is added
       if(has_active_chain)
         indiv->flags_["chain"] = {};
       else
@@ -52,20 +52,20 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
   size_t indivs_size = indivs.size();
   if((chain.size() != 0) && (indivs_size != 0))
     for(size_t i = 0; i < indivs_size; i++)
+    {
       if(!relationExists(indiv, chain[chain_size], indivs[i]))
       {
         try {
-          int index = ontology_->individual_graph_.addRelation(indiv, chain[chain_size], indivs[i], 1.0, true);
-          if(index == (int)indiv->object_relations_.size() - 1)
-            indiv->object_properties_has_induced_.emplace_back();
+          ontology_->individual_graph_.addRelation(indiv, chain[chain_size], indivs[i], 1.0, true);
         }
         catch(GraphException& e)
         {
-          // We don't notify as we don't concider that as an error but rather as an impossible chain on a given individual
+          // We don't notify as we don't consider that as an error but rather as an impossible chain on a given individual
           // notifications_.push_back(std::make_pair(notification_error, "[FAIL][" + std::string(e.what()) + "][add]" + indiv->value() + "|" + chain[chain_size]->value() + "|" + indivs[i]->value()));
           continue;
         }
-
+        
+        // Compute explanation about the chain axiom used to infer a new relation
         std::string explanation_reference;
         auto link_chain = tree.getChainTo(indivs[i]);
         for(auto& lc : link_chain)
@@ -79,6 +79,7 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
         indiv->nb_updates_++;
         nb_update_++;
 
+        // Update the object_properties_has_induced field in each individual used for the infered new relation
         for(auto chain_node : link_chain)
         {
           for(size_t relation_index = 0; relation_index < chain_node->from_->object_relations_.size(); relation_index++)
@@ -86,19 +87,19 @@ void ReasonerChain::resolveChain(ObjectPropertyBranch_t* prop, std::vector<Objec
             std::unordered_set<ObjectPropertyBranch_t*> prop_down;
             ontology_->object_property_graph_.getDownPtr(chain_node->prop_, prop_down);
             for(auto& down : prop_down)
-            {
               if(chain_node->from_->object_relations_[relation_index].first == down)
                 if(chain_node->from_->object_relations_[relation_index].second == chain_node->on_)
                 {
                   addInduced(chain_node->from_, relation_index, indiv, chain[chain_size], indivs[i]);
                   break;
                 }
-            }
           }
         }
       }
+    }
 }
 
+// Build the ChainTree
 void ReasonerChain::resolveLink(ObjectPropertyBranch_t* chain_property, ChainTree* tree, size_t index)
 {
   std::unordered_set<std::string> chain_props = ontology_->object_property_graph_.getDown(chain_property->value());
