@@ -4,6 +4,7 @@ import os
 
 from std_msgs.msg import String
 from ontologenius.msg import OntologeniusStampedString as StampedString
+from ontologenius.msg import OntologeniusTimestamp as Timestamp
 
 import time
 import random
@@ -254,7 +255,10 @@ class FeederPublisher:
         self._pub.publish(data)
 
     def _publish_stamped(self, data, stamp):
-        msg = StampedString(data = data, stamp = stamp)
+        stamp_onto = stamp
+        if not isinstance(stamp_onto,Timestamp) : 
+            stamp_onto = Ontoros.getStamp(stamp_onto)
+        msg = StampedString(data = data, stamp = stamp_onto)
         self._stamped_pub.publish(msg)
 
     def commitCallback(self, data):
