@@ -15,6 +15,7 @@
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/RelationsWithInductions.h"
 
 namespace ontologenius {
 
@@ -78,13 +79,23 @@ public:
       else
         i++;
   }
-
+  
   template <class T>
   inline void removeFromElemVect(std::vector<Single_t<T>>& vect, const T& value)
   {
     for(size_t i = 0; i < vect.size();)
       if(vect[i].elem == value)
         vect.erase(vect.begin() + i);
+      else
+        i++;
+  }
+
+  template <class T>
+  inline void removeFromElemVect(RelationsWithInductions<Single_t<T>>& vect, const T& value)
+  {
+    for(size_t i = 0; i < vect.size();)
+      if(vect[i].elem == value)
+        vect.erase(i);
       else
         i++;
   }
@@ -113,7 +124,34 @@ public:
   }
 
   template<typename C>
+  inline bool conditionalPushBack(RelationsWithInductions<C>& vect, const C& data)
+  {
+    if(std::find(vect.begin(), vect.end(), data) == vect.end())
+    {
+      vect.emplace_back(data);
+      return true;
+    }
+    else
+      return false;
+  }
+
+  template<typename C>
   inline bool conditionalPushBack(std::vector<Single_t<C>>& vect, const Single_t<C>& data)
+  {
+    auto it = std::find(vect.begin(), vect.end(), data);
+    if(it == vect.end())
+    {
+      vect.emplace_back(data);
+      return true;
+    }
+    else if(it->infered && (data.infered == false))
+      it->infered = false;
+      
+    return false;
+  }
+
+  template<typename C>
+  inline bool conditionalPushBack(RelationsWithInductions<Single_t<C>>& vect, const Single_t<C>& data)
   {
     auto it = std::find(vect.begin(), vect.end(), data);
     if(it == vect.end())

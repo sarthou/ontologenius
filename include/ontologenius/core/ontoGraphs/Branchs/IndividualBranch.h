@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/RelationsWithInductions.h"
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
@@ -22,11 +23,10 @@ typedef Pair_t<DataPropertyBranch_t*, LiteralNode*> IndivDataRelationElement_t;
 class IndividualBranch_t : public ValuedNode
 {
 public:
-  std::vector<ClassElement_t> is_a_;
-  std::vector<IndivObjectRelationElement_t> object_relations_;
-  std::vector<Triplet> object_properties_has_induced_;
-  std::vector<IndivDataRelationElement_t> data_relations_;
-  std::vector<IndividualElement_t> same_as_;
+  RelationsWithInductions<ClassElement_t> is_a_;
+  RelationsWithInductions<IndivObjectRelationElement_t> object_relations_;
+  RelationsWithInductions<IndivDataRelationElement_t> data_relations_;
+  RelationsWithInductions<IndividualElement_t> same_as_;
   std::vector<IndividualElement_t> distinct_;
 
   IndividualBranch_t(const std::string& value = "") : ValuedNode(value) {}

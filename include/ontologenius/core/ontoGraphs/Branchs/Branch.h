@@ -19,7 +19,7 @@ class Branch_t : public ValuedNode
 {
 public:
   std::vector<Single_t<T*>> childs_;
-  std::vector<Single_t<T*>> mothers_;
+  RelationsWithInductions<Single_t<T*>> mothers_;
 
   explicit Branch_t(const std::string& value) : ValuedNode(value)
     {};

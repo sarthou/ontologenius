@@ -1165,7 +1165,7 @@ void ClassGraph::deleteClass(ClassBranch_t* _class)
       for(size_t i = 0; i < down->mothers_.size();)
       {
         if(down->mothers_[i].elem == _class)
-          down->mothers_.erase(down->mothers_.begin() + i);
+          down->mothers_.erase(i);
         else
           i++;
       }
@@ -1178,7 +1178,7 @@ void ClassGraph::deleteClass(ClassBranch_t* _class)
       for(size_t i = 0; i < elem->is_a_.size();)
       {
         if(elem->is_a_[i].elem == _class)
-          elem->is_a_.erase(elem->is_a_.begin() + i);
+          elem->is_a_.erase(i);
         else
           i++;
       }
