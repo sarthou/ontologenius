@@ -255,10 +255,9 @@ class FeederPublisher:
         self._pub.publish(data)
 
     def _publish_stamped(self, data, stamp):
-        if not isinstance(stamp,Timestamp) : 
-            stamp_onto = Ontoros.getStamp(stamp)
-        else:
-            stamp_onto = stamp
+        stamp_onto = stamp
+        if not isinstance(stamp_onto,Timestamp) : 
+            stamp_onto = Ontoros.getStamp(stamp_onto)
         msg = StampedString(data = data, stamp = stamp_onto)
         self._stamped_pub.publish(msg)
 
