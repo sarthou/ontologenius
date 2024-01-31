@@ -12,7 +12,7 @@ TEST(global_tests, same_as_range_restriction)
   std::vector<std::string> res;
   bool res_bool = false;
 
-  onto_ptr->reasoners.activate("ReasonerAnonymous");
+  onto_ptr->reasoners.activate("ontologenius::ReasonerAnonymous");
 
   onto_ptr->feeder.addConcept("indiv2");
   onto_ptr->feeder.addProperty("indiv2", "hasComponent", "realsense_pepper");
@@ -70,7 +70,7 @@ TEST(global_tests, trace_cleaning)
   std::vector<std::string> res;
   bool res_bool = false;
 
-  onto_ptr->reasoners.activate("ReasonerAnonymous");
+  onto_ptr->reasoners.activate("ontologenius::ReasonerAnonymous");
 
   onto_ptr->feeder.addConcept("a");
   onto_ptr->feeder.addProperty("a", "hasComponent", "b");
@@ -129,7 +129,7 @@ TEST(global_tests, cardinality_min_testing)
   std::vector<std::string> res;
   bool res_bool = false;
 
-  onto_ptr->reasoners.activate("ReasonerAnonymous");
+  onto_ptr->reasoners.activate("ontologenius::ReasonerAnonymous");
 
   onto_ptr->feeder.addProperty("pepper", "hasComponent", "bumperLeft");
   onto_ptr->feeder.addProperty("pepper", "hasComponent", "bumperRight");
@@ -169,7 +169,7 @@ TEST(global_tests, two_equivalences_deletion)
   std::vector<std::string> res;
   bool res_bool = false;
 
-  onto_ptr->reasoners.activate("ReasonerAnonymous");
+  onto_ptr->reasoners.activate("ontologenius::ReasonerAnonymous");
 
   onto_ptr->feeder.addConcept("a");
   onto_ptr->feeder.addProperty("a", "hasComponent", "b");
@@ -215,7 +215,7 @@ TEST(global_tests, same_as_one_of)
   std::vector<std::string> res;
   bool res_bool = false;
 
-  onto_ptr->reasoners.activate("ReasonerAnonymous");
+  onto_ptr->reasoners.activate("ontologenius::ReasonerAnonymous");
 
   onto_ptr->feeder.addConcept("the_builder");
   onto_ptr->feeder.addProperty("the_builder", "=", "bob");

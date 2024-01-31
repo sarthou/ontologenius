@@ -20,7 +20,7 @@
   <class type="ontologenius::ReasonerRangeDomain" base_class_type="ontologenius::ReasonerInterface">
     <description>This is a reasoner to deduce new inheritances based on range and domain of properties.</description>
   </class>
-  <class type="ReasonerAnonymous" base_class_type="ReasonerInterface">
+  <class type="ontologenius::ReasonerAnonymous" base_class_type="ontologenius::ReasonerInterface">
     <description>This is a reasoner for equivalent classes.</description>
   </class>
 </library>
