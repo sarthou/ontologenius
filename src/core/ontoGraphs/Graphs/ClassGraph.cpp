@@ -179,16 +179,34 @@ std::unordered_set<T> ClassGraph::getDisjoint(ClassBranch_t* branch)
   std::unordered_set<T> res;
 
   if(branch != nullptr)
-    for(auto& disjoint : branch->disjoints_)
-      getDown(disjoint.elem, res);
-
+  {
+    std::unordered_set<ClassBranch_t*> ups;
+    getUpPtr(branch, ups);
+    for(auto up : ups)
+      for(auto& disjoint : up->disjoints_)
+        getDown(disjoint.elem, res);
+  }
+    
   return res;
 }
 
 void ClassGraph::getDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res)
 {
-  for(auto& disjoint : branch->disjoints_)
-    getDownPtr(disjoint.elem, res);
+  if(branch != nullptr)
+  {
+    std::unordered_set<ClassBranch_t*> ups;
+    getUpPtr(branch, ups);
+    for(auto up : ups)
+      for(auto& disjoint : up->disjoints_)
+        getDownPtr(disjoint.elem, res);
+  }
+}
+
+void ClassGraph::getLocalDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res)
+{
+  if(branch != nullptr)
+    for(auto& disjoint : branch->disjoints_)
+      getDownPtr(disjoint.elem, res);
 }
 
 std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& _class, int depth)
