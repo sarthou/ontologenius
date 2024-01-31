@@ -153,6 +153,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit">commitAuto</a></b>(self, timeout = 100000000)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit2">commit</a></b>(self, commit_name, timeout = 100000000)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#checkout">checkout</a></b>(self, commit_name, timeout = 100000000)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#registerNotificationCallback">registerNotificationCallback</a></b>(self, callback)</td></tr>
             </tbody>
           </table>
         </div>
@@ -255,6 +256,10 @@
           <p>The default parameter <i>timeout</i>(int) is the expiration time in milliseconds. The default value is of 100 seconds.</p>
           <p>Returns False if the function returns on a timeout.</p>
           <p>This function can only be used on a copied ontology.</p>
+
+          <h3 class="fn" id="registerNotificationCallback"><a name="registerNotificationCallback"></a><span class="name">registerNotificationCallback</span>(self, callback)</h3>
+          <p>Register a callback function to get notifications from the reasoners.</p>
+          <p>The parameter <i>callback</i> is the callback function taking a string.</p>
 
         </div>
       </div>

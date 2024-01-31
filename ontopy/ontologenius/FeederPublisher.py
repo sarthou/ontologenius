@@ -4,6 +4,7 @@ import os
 
 from std_msgs.msg import String
 from ontologenius.msg import OntologeniusStampedString as StampedString
+from ontologenius.msg import OntologeniusTimestamp as Timestamp
 
 import time
 import random
@@ -37,6 +38,11 @@ class FeederPublisher:
         if self._name != '':
             sub_topic_name += '/' + self._name
         self._commit_sub = Ontoros.createSubscriber(sub_topic_name, String, self.commitCallback)
+        notif_topic_name = 'ontologenius/reasoner_notifications'
+        if self._name != '':
+            notif_topic_name += '/' + self._name
+        self._notif_sub = Ontoros.createSubscriber(notif_topic_name, String, self._notifCallback)
+        self.user_notif_callback = None
         self._updated = False
         random.seed()
         self._commit_nb = random.randint(1, 100000)
@@ -163,7 +169,7 @@ class FeederPublisher:
     def waitConnected(self):
         """Blocks while no subscribers are currently connected to the internal ROS publisher."""
         while not Ontoros.isShutdown() and self.getNumSubscribers() == 0 and self.getNumPublishers() == 0:
-            time.sleep(.01)
+            Ontoros.spin_once()
 
     def waitUpdate(self, timeout = 100000000):
         """Waits until all changes have been applied.
@@ -176,7 +182,7 @@ class FeederPublisher:
         self._sendNop()
 
         while not Ontoros.isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
-            time.sleep(.001)
+            Ontoros.spin_once()
 
         if self._updated == True:
             return True
@@ -209,8 +215,8 @@ class FeederPublisher:
         start_time = datetime.now()
         self._publish_stamped(msg, Ontoros.getRosTime())
 
-        while not Ontoros.isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
-            time.sleep(.001)
+        while (not Ontoros.isShutdown()) and (not self._updated) and ((self.millis_interval(start_time, datetime.now()) < timeout)) :
+            Ontoros.spin_once()
 
         if self._updated == True:
             return True
@@ -229,12 +235,18 @@ class FeederPublisher:
         self._publish_stamped('[checkout]' + commit_name + '|', Ontoros.getRosTime())
 
         while not Ontoros.isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
-            time.sleep(.001)
+            Ontoros.spin_once()
 
         if self._updated == True:
             return True
         else:
             return False
+        
+    def registerNotificationCallback(self, callback):
+        """Register a callback function to get notifications from the reasoners.
+           callback is the callback function taking a string.
+        """
+        self.user_notif_callback = callback
 
     def _sendNop(self):
         self._publish_stamped('[nop]nop|', Ontoros.getRosTime())
@@ -243,12 +255,19 @@ class FeederPublisher:
         self._pub.publish(data)
 
     def _publish_stamped(self, data, stamp):
-        msg = StampedString(data = data, stamp = stamp)
+        stamp_onto = stamp
+        if not isinstance(stamp_onto,Timestamp) : 
+            stamp_onto = Ontoros.getStamp(stamp_onto)
+        msg = StampedString(data = data, stamp = stamp_onto)
         self._stamped_pub.publish(msg)
 
     def commitCallback(self, data):
         if data.data == 'end':
             self._updated = True
+
+    def _notifCallback(self, msg):
+        if self.user_notif_callback:
+            self.user_notif_callback(msg.data)
 
     def millis_interval(self, start, end):
         diff = end - start

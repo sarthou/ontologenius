@@ -251,7 +251,7 @@ void ontoloGUI::init()
   if(ontos_.waitInit(1) == false)
   {
     onto_ = new onto::OntologyManipulator();
-    onto_->feeder.registerNotificationCallback([this](auto msg){ this->feederCallback(msg); });
+    onto_->feeder.registerFeederNotificationCallback([this](auto msg){ this->feederCallback(msg); });
     multi_usage_ = false;
   }
   else
@@ -736,7 +736,7 @@ void ontoloGUI::addOntologySlot()
     else
     {
       ui->ResultArea->setText(QString::fromStdString(""));
-      ontos_.get(onto_name)->feeder.registerNotificationCallback([this](auto msg){ this->feederCallback(msg); });
+      ontos_.get(onto_name)->feeder.registerFeederNotificationCallback([this](auto msg){ this->feederCallback(msg); });
     }
 
     displayOntologiesList();

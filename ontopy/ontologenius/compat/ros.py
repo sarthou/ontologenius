@@ -1,4 +1,5 @@
 import os
+import time
 from ontologenius.msg import OntologeniusTimestamp
 
 if os.environ["ROS_VERSION"] == "1":
@@ -69,8 +70,14 @@ if os.environ["ROS_VERSION"] == "1":
             stamp_msg = OntologeniusTimestamp(seconds = t_msg.secs, nanoseconds = t_msg.nsecs)
             return stamp_msg
         
+        def getStamp(time):
+            return OntologeniusTimestamp(seconds = time.secs, nanoseconds = time.nsecs)
+        
         def isShutdown():
             return rospy.is_shutdown()
+
+        def spin_once():
+            time.sleep(0.01)
 
 elif os.environ["ROS_VERSION"] == "2":
 
@@ -82,7 +89,6 @@ elif os.environ["ROS_VERSION"] == "2":
     from rclpy.publisher import Publisher
     from rclpy.subscription import Subscription
     from rclpy.time import Time
-
 
     class SingletonMeta(type):
         """
@@ -145,7 +151,7 @@ elif os.environ["ROS_VERSION"] == "2":
             self.pub.publish(msg)
 
         def getNumSubscribers(self):
-            self.pub.get_num_connections()
+            self.pub.get_subscription_count()
 
 
     class OntoSubscriber:
@@ -181,7 +187,15 @@ elif os.environ["ROS_VERSION"] == "2":
             t_msg = Ontoros().get_clock().now().to_msg()
             stamp_msg = OntologeniusTimestamp(seconds = t_msg._sec, nanoseconds = t_msg._nanosec)
             return stamp_msg
+        
+        @staticmethod
+        def getStamp(time):
+            return OntologeniusTimestamp(seconds = time._sec, nanoseconds = time._nanosec)
 
         @staticmethod
         def isShutdown() -> bool:
             return not rclpy.ok()
+
+        @staticmethod
+        def spin_once():
+            rclpy.spin_once(Ontoros(), timeout_sec=0.01)

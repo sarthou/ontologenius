@@ -2,8 +2,7 @@
 
 namespace ontologenius::compat::onto_ros
 {
-
-std::string node_name__;
+std::string node_name__ = "OntoRos";
 
 Node& Node::get()
 {
@@ -45,7 +44,7 @@ void Node::spin()
 #if ONTO_ROS_VERSION == 1
   ros::spin();
 #elif ONTO_ROS_VERSION == 2
-  rclcpp::spin(handle_);
+  //rclcpp::spin(handle_);
 #endif
 }
 
@@ -65,6 +64,9 @@ Node::Node(const std::string& node_name) : name_(node_name),
                                            running_(true)
 {
   // todo: should we put something here?
+#if ONTO_ROS_VERSION == 2
+  ros_thread_ = std::thread([this](){rclcpp::spin(handle_);});
+#endif
 }
 
 }
