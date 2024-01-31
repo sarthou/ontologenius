@@ -185,6 +185,11 @@ bool RosInterface::close()
     return false;
   reasoners_.initialize();
   reasoners_.runPostReasoners();
+
+  reasoner_mutex_.lock();
+  reasoners_.getExplanations(); // flush explanations of initialization
+  reasoner_mutex_.unlock();
+
   return true;
 }
 
@@ -431,10 +436,6 @@ void RosInterface::periodicReasoning()
   {
       wait.sleep();
   }
-
-  reasoner_mutex_.lock();
-  reasoners_.getExplanations(); // flush explanations of initialization
-  reasoner_mutex_.unlock();
 
   compat::onto_ros::Rate r(100);
   std_msgs_compat::String msg;
