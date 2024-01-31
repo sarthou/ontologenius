@@ -15,7 +15,7 @@ public:
   size_t check() override;
   void printStatus() override
   {
-    ValidityChecker<ObjectPropertyBranch_t>::printStatus(std::string("object property"), std::string("object properties"), graph_vect_.size());
+    ValidityChecker<ObjectPropertyBranch_t>::printStatus("object property", "object properties", graph_vect_.size());
   }
 private:
   void checkDisjoint();
