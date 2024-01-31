@@ -462,29 +462,41 @@ table.alignedsummary,table.propsummary {
   content: counter(code_line)" ";
   color:#999999;
 }
-.cpp_code, .xml_code {
+.cpp_code, .xml_code, .yaml_code, .python_code {
   border-radius: 5px;
 }
-.cpp_include, .cpp_return, .cpp_op, .xml_tag, .py_op {
+.xml_code div, .yaml_code div {
+  color: #aeaeae
+}
+.xml_tag, .yaml_key, .py_def, .py_key, .cpp_key {
+  color: #70b2e8;;
+}
+.cpp_return {
   color:#fe4481;
 }
-.cpp_included, .color_purple {
-  color:#ae81ff;
+.cpp_include, .cpp_op, .py_import, .py_op, .color_purple {
+  color:#f3a1d6;
 }
-.cpp_type, .py_function {
-  color:#66d9ef;
-}
-.cpp_string, .py_string, .color_brown {
+.color_brown {
   color:#bde674;
 }
-.cpp_value, .py_value, .xml_param {
+.cpp_value, .py_value {
   color:#ecbd62;
 }
-.cpp_comment, .py_comment {
-  color:#918e7b;
+.py_function, .cpp_function {
+  color:#fff5a9;
 }
-.xml_string {
-  color:#a7fc99;
+.py_imported, .cpp_type {
+  color:#50ffb0;
+}
+.cpp_comment, .py_comment, .yaml_comment {
+  color:#6fa55d;
+}
+.xml_param, .py_var, .cpp_var {
+  color: #8eeeff;
+}
+.xml_string, .yaml_string, .cpp_included, .py_string, .cpp_string {
+  color:#f1a985;
 }
 .color_blue {
   color:#2e2ea3;

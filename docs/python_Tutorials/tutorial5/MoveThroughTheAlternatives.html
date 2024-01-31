@@ -4,10 +4,12 @@
   <title>Explore possible futures (python) :  Move through the alternatives</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
   <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <script src="../../scripts/tabs.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -57,7 +59,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../../Download.html">Download</a></li>
-            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../Tutorials.html">Python Tutorials</a></li>
@@ -134,104 +138,203 @@
 
         <p>Create a main file and paste the following inside it:</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">import</span> rospy</div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologiesManipulator</div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">if</span> __name__ == <span class="py_string">'__main__'</span>:</div>
-          <div class="code_line">    rospy.init_node(<span class="py_string">'explore_futures'</span>)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    onto = OntologiesManipulator()</div>
-          <div class="code_line">    onto.waitInit()</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    onto.add(<span class="py_string">'bob'</span>)</div>
-          <div class="code_line">    onto.get(<span class="py_string">'bob'</span>).close()</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    onto.copy(<span class="py_string">'cpy'</span>, <span class="py_string">'bob'</span>)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    copied_onto = onto.get(<span class="py_string">'cpy'</span>)</div>
-          <div class="code_line">    copied_onto.feeder.waitConnected();</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    copied_onto.feeder.addConcept(<span class="py_string">'bob'</span>)</div>
-          <div class="code_line">    copied_onto.feeder.addInheritage(<span class="py_string">'bob'</span>, <span class="py_string">'human'</span>)</div>
-          <div class="code_line">    first_commit = copied_onto.feeder.commitAuto()</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    copied_onto.feeder.addObjectProperty(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'pasta'</span>)</div>
-          <div class="code_line">    copied_onto.feeder.addObjectProperty(<span class="py_string">'pasta'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
-          <div class="code_line">    copied_onto.feeder.commit(<span class="py_string">'after_pasta'</span>)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    copied_onto.feeder.checkout(first_commit)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    copied_onto.feeder.addObjectProperty(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'burger'</span>)</div>
-          <div class="code_line">    copied_onto.feeder.addObjectProperty(<span class="py_string">'burger'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
-          <div class="code_line">    copied_onto.feeder.commit(<span class="py_string">'after_burger'</span>)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    copied_onto.feeder.checkout(<span class="py_string">'after_pasta'</span>)</div>
-          <div class="code_line">    copied_onto.feeder.addDataProperty(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
-          <div class="code_line">    hungry_commit = copied_onto.feeder.commitAuto()</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    copied_onto.feeder.checkout(<span class="py_string">'after_pasta'</span>)</div>
-          <div class="code_line">    copied_onto.feeder.addDataProperty(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
-          <div class="code_line">    copied_onto.feeder.commitAuto()</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    copied_onto.feeder.checkout(hungry_commit)</div>
-          <div class="code_line">    hungry_state = copied_onto.individuals.getOn(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>)</div>
-          <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'-> test hungry on cpy'</span></div>
-          <div class="code_line">    <span class="py_op">for</span> state <span class="py_op">in</span> hungry_state:</div>
-          <div class="code_line">        <span class="py_op">print</span> state</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    hungry_state = onto.get(<span class="py_string">'bob'</span>).individuals.getOn(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>)</div>
-          <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'-> test hungry on bob'</span></div>
-          <div class="code_line">    <span class="py_op">for</span> state <span class="py_op">in</span> hungry_state:</div>
-          <div class="code_line">        <span class="py_op">print</span> state</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    onto.delete(<span class="py_string">'cpy'</span>)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    rospy.spin()</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">import</span> <span class="py_imported">rospy</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontologenius</span> <span class="py_import">import</span> <span class="py_imported">OntologiesManipulator</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">main</span>():</div>
+                <div class="code_line">    <span class="py_imported">rospy</span>.<span class="py_function">init_node</span>(<span class="py_string">'explore_futures'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">onto</span> = <span class="py_imported">OntologiesManipulator</span>()</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">waitInit</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'bob'</span>)</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'bob'</span>).<span class="py_function">close</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">copy</span>(<span class="py_string">'cpy'</span>, <span class="py_string">'bob'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'cpy'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">waitConnected</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addConcept</span>(<span class="py_string">'bob'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addInheritage</span>(<span class="py_string">'bob'</span>, <span class="py_string">'human'</span>)</div>
+                <div class="code_line">    <span class="py_var">first_commit</span> = <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'pasta'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'pasta'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commit</span>(<span class="py_string">'after_pasta'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_var">first_commit</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'burger'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'burger'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commit</span>(<span class="py_string">'after_burger'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_string">'after_pasta'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addDataProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
+                <div class="code_line">    <span class="py_var">hungry_commit</span> = <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_string">'after_pasta'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addDataProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_var">hungry_commit</span>)</div>
+                <div class="code_line">    <span class="py_var">hungry_state</span> = <span class="py_var">copied_onto</span>.individuals.<span class="py_function">getOn</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>)</div>
+                <div class="code_line">    <span class="py_function">print</span>(<span class="py_string">'-> test hungry on cpy'</span>)</div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">state</span> <span class="py_op">in</span> <span class="py_var">hungry_state</span>:</div>
+                <div class="code_line">        <span class="py_function">print</span>(<span class="py_var">state</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">hungry_state</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'bob'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>)</div>
+                <div class="code_line">    <span class="py_function">print</span>(<span class="py_string">'-> test hungry on bob'</span>)</div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">state</span> <span class="py_op">in</span> <span class="py_var">hungry_state</span>:</div>
+                <div class="code_line">        <span class="py_function">print</span>(<span class="py_var">state</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">delete</span>(<span class="py_string">'cpy'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_imported">rospy</span>.<span class="py_function">spin</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_op">if</span> <span class="py_var">__main__</span> == <span class="py_string">'__main__'</span>:</div>
+                <div class="code_line">    <span class="py_function">main</span>()</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">import</span> <span class="py_imported">rclpy</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontopy</span> <span class="py_import">import</span> <span class="py_imported">OntologiesManipulator</span>, <span class="py_imported">Ontoros</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">main</span>():</div>
+                <div class="code_line">    <span class="py_imported">rclpy</span>.<span class="py_function">init</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">onto</span> = <span class="py_imported">OntologiesManipulator</span>()</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">waitInit</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'bob'</span>)</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'bob'</span>).<span class="py_function">close</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">copy</span>(<span class="py_string">'cpy'</span>, <span class="py_string">'bob'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'cpy'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">waitConnected</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addConcept</span>(<span class="py_string">'bob'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addInheritage</span>(<span class="py_string">'bob'</span>, <span class="py_string">'human'</span>)</div>
+                <div class="code_line">    <span class="py_var">first_commit</span> = <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'pasta'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'pasta'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commit</span>(<span class="py_string">'after_pasta'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_var">first_commit</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'burger'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'burger'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commit</span>(<span class="py_string">'after_burger'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_string">'after_pasta'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addDataProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
+                <div class="code_line">    <span class="py_var">hungry_commit</span> = <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_string">'after_pasta'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addDataProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_var">hungry_commit</span>)</div>
+                <div class="code_line">    <span class="py_var">hungry_state</span> = <span class="py_var">copied_onto</span>.individuals.<span class="py_function">getOn</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>)</div>
+                <div class="code_line">    <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'-> test hungry on cpy'</span>)</div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">state</span> <span class="py_op">in</span> <span class="py_var">hungry_state</span>:</div>
+                <div class="code_line">        <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_var">state</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">hungry_state</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'bob'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>)</div>
+                <div class="code_line">    <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'-> test hungry on bob'</span>)</div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">state</span> <span class="py_op">in</span> <span class="py_var">hungry_state</span>:</div>
+                <div class="code_line">        <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_var">state</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">delete</span>(<span class="py_string">'cpy'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_imported">rclpy</span>.<span class="py_function">spin</span>(<span class="py_imported">Ontoros</span>())</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_op">if</span> <span class="py_var">__main__</span> == <span class="py_string">'__main__'</span>:</div>
+                <div class="code_line">    <span class="py_function">main</span>()</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>Now, let's break the code down.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 4;">
-          <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologiesManipulator</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-1-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-1-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-1-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-1-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+
+          <div aria-labelledby="tab-1-Ros1" class="lang-tabs-panel group-tab" id="panel-1-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block python_code" style="counter-reset:code_line 4;">
+                <div class="code_line"><span class="py_op">from</span> <span class="py_imported">ontologenius</span> <span class="py_op">import</span> <span class="py_imported">OntologiesManipulator</span></div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-python">
+              <div class="code_block python_code" style="counter-reset:code_line 4;">
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontopy</span> <span class="py_import">import</span> <span class="py_imported">OntologiesManipulator</span>, <span class="py_imported">Ontoros</span></div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>Since we need to manipulate multiple instances, we have to import the OntologiesManipulator object.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 12;">
-          <div class="code_line">    onto.add(<span class="py_string">'bob'</span>)</div>
-          <div class="code_line">    onto.get(<span class="py_string">'bob'</span>).close()</div>
+          <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'bob'</span>)</div>
+          <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'bob'</span>).<span class="py_function">close</span>()</div>
         </div>
 
         <p>Once we have an OntologiesManipulator object, we can use it to create an instance for our bob agent. This instance
           is the one that represents his knowledge base at present.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 15;">
-          <div class="code_line">    onto.copy(<span class="py_string">'cpy'</span>, <span class="py_string">'bob'</span>)</div>
+          <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">copy</span>(<span class="py_string">'cpy'</span>, <span class="py_string">'bob'</span>)</div>
         </div>
 
         <p>In order to create the instance that represents the possible futures, we use the copy function of the
           OntologiesManipulator object. This function creates a deep copy of an existing instance which becomes independent.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 22;">
-          <div class="code_line">    first_commit = copied_onto.feeder.commitAuto()</div>
+          <div class="code_line">    <span class="py_var">first_commit</span> = <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
         </div>
 
         <p>After making changes in our new instance, we can now commit these changes with the commitAuto function.
           It then returns the identifier of the commit that we must keep so that we can return to it later.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 26;">
-          <div class="code_line">    copied_onto.feeder.commit(<span class="py_string">'after_pasta'</span>)</div>
+          <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commit</span>(<span class="py_string">'after_pasta'</span>)</div>
         </div>
 
         <p>You can also use the commit function with a personalized commit identifier. The advantage is that you no
           longer need to store it or that you can use an identifier already existing in your program.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 28;">
-          <div class="code_line">    copied_onto.feeder.checkout(first_commit)</div>
+          <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_var">first_commit</span>)</div>
         </div>
 
         <p>If we now want to return to the state of our first commit, nothing more simple, just do a checkout with the identifier
@@ -240,24 +343,51 @@
         <p>In the following lines of the program, we simply go from one commit to another by making some modifications.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 40;">
-          <div class="code_line">    copied_onto.feeder.commitAuto()</div>
+          <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
           <div class="code_line"><br></div>
-          <div class="code_line">    copied_onto.feeder.checkout(hungry_commit)</div>
+          <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_var">hungry_commit</span>)</div>
         </div>
 
         <p>In the lines above, we execute a commit in a state where bob is not hungry.
           We then checkout the commit where he is hungry.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 43;">
-          <div class="code_line">    hungry_state = copied_onto.individuals.getOn(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>)</div>
-          <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'-> test hungry on cpy'</span></div>
-          <div class="code_line">    <span class="py_op">for</span> state <span class="py_op">in</span> hungry_state:</div>
-          <div class="code_line">        <span class="py_op">print</span> state</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    hungry_state = onto.get(<span class="py_string">'bob'</span>).individuals.getOn(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>)</div>
-          <div class="code_line">    <span class="py_op">print</span> <span class="py_string">'-> test hungry on bob'</span></div>
-          <div class="code_line">    <span class="py_op">for</span> state <span class="py_op">in</span> hungry_state:</div>
-          <div class="code_line">        <span class="py_op">print</span> state</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-2-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-2-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-2-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+
+          <div aria-labelledby="tab-2-Ros1" class="lang-tabs-panel group-tab" id="panel-2-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 43;">
+                <div class="code_line">    <span class="py_var">hungry_state</span> = <span class="py_var">copied_onto</span>.individuals.<span class="py_function">getOn</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>)</div>
+                <div class="code_line">    <span class="py_function">print</span>(<span class="py_string">'-> test hungry on cpy'</span>)</div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">state</span> <span class="py_op">in</span> <span class="py_var">hungry_state</span>:</div>
+                <div class="code_line">        <span class="py_function">print</span>(<span class="py_var">state</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">hungry_state</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'bob'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>)</div>
+                <div class="code_line">    <span class="py_function">print</span>(<span class="py_string">'-> test hungry on bob'</span>)</div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">state</span> <span class="py_op">in</span> <span class="py_var">hungry_state</span>:</div>
+                <div class="code_line">        <span class="py_function">print</span>(<span class="py_var">state</span>)</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-2-Ros2" class="lang-tabs-panel group-tab" id="panel-2-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 43;">
+                <div class="code_line">    <span class="py_var">hungry_state</span> = <span class="py_var">copied_onto</span>.individuals.<span class="py_function">getOn</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>)</div>
+                <div class="code_line">    <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'-> test hungry on cpy'</span>)</div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">state</span> <span class="py_op">in</span> <span class="py_var">hungry_state</span>:</div>
+                <div class="code_line">        <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_var">state</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">hungry_state</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'bob'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>)</div>
+                <div class="code_line">    <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'-> test hungry on bob'</span>)</div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">state</span> <span class="py_op">in</span> <span class="py_var">hungry_state</span>:</div>
+                <div class="code_line">        <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_var">state</span>)</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>With these displays, we should see the fact that bob is hungry regarding the copied instance since we checked this state.</p>
@@ -265,7 +395,7 @@
           independent of the original instance.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 53;">
-          <div class="code_line">    onto.delete(<span class="py_string">'cpy'</span>)</div>
+          <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">delete</span>(<span class="py_string">'cpy'</span>)</div>
         </div>
 
         <p>We can finally delete our copied instance because we no longer need it. By doing so, even if we had set an internal

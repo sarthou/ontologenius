@@ -1,0 +1,32 @@
+launch:
+- arg:
+    name: "language"
+    default: "en"
+- arg:
+    name: "intern_file"
+    default: "$(find-pkg-share ontologenius)/file_intern/ontologenius.owl"
+- arg:
+    name: "config_file"
+    default: "none"
+- arg:
+    name: "display"
+    default: "false"
+- arg:
+    name: "files"
+    default: "
+      $(find-pkg-share ontologenius)/files/attribute.owl
+      $(find-pkg-share ontologenius)/files/measure.owl
+      $(find-pkg-share ontologenius)/files/property.owl
+      $(find-pkg-share ontologenius)/files/positionProperty.owl
+      $(find-pkg-share ontologenius)/files/testIndividuals.owl
+      "
+- arg:
+    name: "tcmalloc_path"
+    default: ""
+
+- node:
+    pkg: "ontologenius"
+    exec: "ontologenius_single"
+    name: "ontologenius_core"
+    output: "screen"
+    args: "-l $(var language) -c $(var config_file) -i $(var intern_file) -d $(var display) $(var files)"

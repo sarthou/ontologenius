@@ -4,10 +4,12 @@
   <title>Explore possible futures (cpp) :  Move through the alternatives</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
   <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <script src="../../scripts/tabs.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -57,7 +59,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../../Download.html">Download</a></li>
-            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
@@ -135,67 +139,139 @@
 
         <p>Create a main file and paste the following inside it:</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;ros/ros.h&gt;</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologiesManipulator.h&quot;</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="cpp_type">int</span> main(<span class="cpp_type">int</span> argc, <span class="cpp_type">char</span><span class="cpp_op">**</span> argv)</div>
-          <div class="code_line">{</div>
-          <div class="code_line">  ros::init(argc, argv, <span class="cpp_string">&quot;explore_futures&quot;</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  ros::<span class="cpp_type">NodeHandle</span> n;</div>
-          <div class="code_line">  onto::<span class="cpp_type">OntologiesManipulator</span> onto(&n);</div>
-          <div class="code_line">  onto.waitInit();</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto.add(<span class="cpp_string">&quot;bob&quot;</span>);</div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;bob&quot;</span>]<span class="cpp_op">-&gt;</span>close();</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto.copy(<span class="cpp_string">&quot;cpy&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.waitConnected();</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.addConcept(<span class="cpp_string">&quot;bob&quot;</span>);</div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.addInheritage(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;human&quot;</span>);</div>
-          <div class="code_line">  std::<span class="cpp_type">string</span> first_commit <span class="cpp_op">=</span> onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit();</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.addProperty(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;pasta&quot;</span>);</div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.addProperty(<span class="cpp_string">&quot;pasta&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.checkout(first_commit);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.addProperty(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;burger&quot;</span>);</div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.addProperty(<span class="cpp_string">&quot;burger&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit(<span class="cpp_string">&quot;after_burger&quot;</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.checkout(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.addProperty(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
-          <div class="code_line">  std::<span class="cpp_type">string</span> hungry_commit <span class="cpp_op">=</span> onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit();</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.checkout(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.addProperty(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit();</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.checkout(hungry_commit);</div>
-          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; hungry_state <span class="cpp_op">=</span> onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>individuals.getOn(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>);</div>
-          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;-&gt; test hungry on cpy&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_op">auto</span> state <span class="cpp_op">:</span> hungry_state)</div>
-          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;bob isHungry &quot;</span> <span class="cpp_op">&lt;&lt;</span> state <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  hungry_state <span class="cpp_op">=</span> onto[<span class="cpp_string">&quot;bob&quot;</span>]<span class="cpp_op">-&gt;</span>individuals.getOn(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>);</div>
-          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;-&gt; test hungry on bob&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_op">auto</span> state <span class="cpp_op">:</span> hungry_state)</div>
-          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;bob isHungry &quot;</span> <span class="cpp_op">&lt;&lt;</span> state <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto.del(<span class="cpp_string">&quot;cpy&quot;</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  ros::spinOnce();</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_return">return</span> <span class="cpp_value">0</span>;</div>
-          <div class="code_line">}</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+
+          <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;ros/ros.h&gt;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologiesManipulator.h&quot;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_key">int</span> <span class="cpp_function">main</span>(<span class="cpp_key">int</span> <span class="cpp_var">argc</span>, <span class="cpp_key">char**</span> <span class="cpp_var">argv</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>, <span class="cpp_string">&quot;explore_futures&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologiesManipulator</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">waitInit</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;bob&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">copy</span>(<span class="cpp_string">&quot;cpy&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">waitConnected</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addConcept</span>(<span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addInheritage</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;human&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">first_commit</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;pasta&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;pasta&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_var">first_commit</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;burger&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;burger&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>(<span class="cpp_string">&quot;after_burger&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">hungry_commit</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_var">hungry_commit</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">hungry_state</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;-&gt; test hungry on cpy&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">state</span> : <span class="cpp_var">hungry_state</span>)</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;bob isHungry &quot;</span> &lt;&lt; <span class="cpp_var">state</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">hungry_state</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;bob&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;-&gt; test hungry on bob&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">state</span> : <span class="cpp_var">hungry_state</span>)</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;bob isHungry &quot;</span> &lt;&lt; <span class="cpp_var">state</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">del</span>(<span class="cpp_string">&quot;cpy&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;rclcpp/rclcpp.hpp&gt;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologiesManipulator.h&quot;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_key">int</span> <span class="cpp_function">main</span>(<span class="cpp_key">int</span> <span class="cpp_var">argc</span>, <span class="cpp_key">char**</span> <span class="cpp_var">argv</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologiesManipulator</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">waitInit</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;bob&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">copy</span>(<span class="cpp_string">&quot;cpy&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">waitConnected</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addConcept</span>(<span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addInheritage</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;human&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">first_commit</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;pasta&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;pasta&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_var">first_commit</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;burger&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;burger&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>(<span class="cpp_string">&quot;after_burger&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">hungry_commit</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_var">hungry_commit</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">hungry_state</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;-&gt; test hungry on cpy&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">state</span> : <span class="cpp_var">hungry_state</span>)</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;bob isHungry &quot;</span> &lt;&lt; <span class="cpp_var">state</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">hungry_state</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;bob&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;-&gt; test hungry on bob&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">state</span> : <span class="cpp_var">hungry_state</span>)</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;bob isHungry &quot;</span> &lt;&lt; <span class="cpp_var">state</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">del</span>(<span class="cpp_string">&quot;cpy&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>Now, let's break the code down.</p>
@@ -206,37 +282,37 @@
 
         <p>Since we need to manipulate multiple instances, we have to include the OntologiesManipulator header.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 14;">
-          <div class="code_line">  onto.add(<span class="cpp_string">&quot;bob&quot;</span>);</div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;bob&quot;</span>]<span class="cpp_op">-&gt;</span>close();</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 13;">
+          <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;bob&quot;</span>);</div>
+          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;bob&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
         </div>
 
         <p>Once we have an OntologiesManipulator object, we can use it to create an instance for our bob agent. This instance
           is the one that represents his knowledge base at present.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 17;">
-          <div class="code_line">  onto.copy(<span class="cpp_string">&quot;cpy&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 16;">
+          <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">copy</span>(<span class="cpp_string">&quot;cpy&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
         </div>
 
         <p>To create the instance that represents the possible futures, we use the copy function of the
           OntologiesManipulator object. This function creates a deep copy of an existing instance which becomes independent.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 23;">
-          <div class="code_line">  std::<span class="cpp_type">string</span> first_commit <span class="cpp_op">=</span> onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit();</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 22;">
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">first_commit</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
         </div>
 
         <p>After making changes in our new instance, we can now commit these changes with the commit function.
           It then returns the identifier of the commit that we must keep so that we can return to it later.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 27;">
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 26;">
+          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
         </div>
 
         <p>The commit function can also be used with a personalized commit identifier. The advantage is that you no
           longer need to store it or that you can use an identifier already existing in your program.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 29;">
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.checkout(first_commit);</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 28;">
+          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_var">first_commit</span>);</div>
         </div>
 
         <p>If we now want to return to the state of our first commit, nothing more simple, just do a checkout with the identifier
@@ -244,33 +320,33 @@
 
         <p>In the following lines of the program, we simply go from one commit to another by making some modifications.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 41;">
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.commit();</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 40;">
+          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>feeder.checkout(hungry_commit);</div>
+          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_var">hungry_commit</span>);</div>
         </div>
 
         <p>In the lines above, we execute a commit in a state where bob is not hungry.
           We then checkout the commit where he is hungry.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 44;">
-          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; hungry_state <span class="cpp_op">=</span> onto[<span class="cpp_string">&quot;cpy&quot;</span>]<span class="cpp_op">-&gt;</span>individuals.getOn(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>);</div>
-          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;-&gt; test hungry on cpy&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_op">auto</span> state <span class="cpp_op">:</span> hungry_state)</div>
-          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;bob isHungry &quot;</span> <span class="cpp_op">&lt;&lt;</span> state <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 43;">
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">hungry_state</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>);</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;-&gt; test hungry on cpy&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">state</span> : <span class="cpp_var">hungry_state</span>)</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;bob isHungry &quot;</span> &lt;&lt; <span class="cpp_var">state</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  hungry_state <span class="cpp_op">=</span> onto[<span class="cpp_string">&quot;bob&quot;</span>]<span class="cpp_op">-&gt;</span>individuals.getOn(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>);</div>
-          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;-&gt; test hungry on bob&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_op">auto</span> state <span class="cpp_op">:</span> hungry_state)</div>
-          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;bob isHungry &quot;</span> <span class="cpp_op">&lt;&lt;</span> state <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+          <div class="code_line">  <span class="cpp_var">hungry_state</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;bob&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>);</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;-&gt; test hungry on bob&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">state</span> : <span class="cpp_var">hungry_state</span>)</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;bob isHungry &quot;</span> &lt;&lt; <span class="cpp_var">state</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
         </div>
 
         <p>With these displays, we should see the fact that bob is hungry regarding the copied instance since we checked this state.</p>
         <p>Regarding the bob instance, we should have no results for the getOn request since the copied instance is
           independent of the original instance.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 54;">
-          <div class="code_line">  onto.del(<span class="cpp_string">&quot;cpy&quot;</span>);</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 53;">
+          <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">del</span>(<span class="cpp_string">&quot;cpy&quot;</span>);</div>
         </div>
 
         <p>We can finally delete our copied instance because we no longer need it. By doing so, even if we had set an internal

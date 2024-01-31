@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "ontologenius/graphical/Display.h"
+#include "ontologenius/utils/String.h"
 
 namespace ontologenius
 {
@@ -30,7 +31,11 @@ public:
                                       default_values_(other.default_values_)
   {}
 
-  void insert(const std::string& value) { values_.push_back(value); }
+  void insert(const std::string& value)
+  {
+    if(value.find("__") != 0)
+      values_.push_back(value);
+  }
 
   std::string getFirst()
   {
@@ -110,31 +115,44 @@ public:
 
     for(size_t i = 1; i < (size_t)argc; i++)
     {
-      if(argv[i][0] == '-')
+      std::string str_argv = std::string(argv[i]);
+      if(str_argv[0] == '-')
       {
+        if(str_argv == "--ros-args") // do not consider ROS arguments
+          break;
+
         std::string param_name = "";
         for(auto param : parameters_)
-          if(param.second.testOption(std::string(argv[i])))
+          if(param.second.testOption(str_argv))
           {
             param_name = param.second.name_;
             break;
           }
 
         if(param_name == "")
-          Display::warning("unknow option " + std::string(argv[i]));
+          Display::warning("unknow option " + str_argv);
         else
         {
           if(i+1 < (size_t)argc)
           {
             i++;
-            parameters_.at(param_name).insert(std::string(argv[i]));
+            str_argv = std::string(argv[i]);
+            auto splitted = split(str_argv, " ");
+            for(auto& arg : splitted)
+              if(arg != "")
+                parameters_.at(param_name).insert(arg);
           }
         }
       }
       else
       {
         if(default_param_name_ != "")
-          parameters_.at(default_param_name_).insert(std::string(argv[i]));
+        {
+          auto splitted = split(str_argv, " ");
+          for(auto& arg : splitted)
+            if(arg != "")
+              parameters_.at(default_param_name_).insert(arg);
+        }
         else
           Display::warning("No default parameter");
       }

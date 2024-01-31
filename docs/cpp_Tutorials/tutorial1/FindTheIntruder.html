@@ -4,10 +4,12 @@
   <title>Use inheritance for my first program (cpp) : Find the intruder</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
   <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <script src="../../scripts/tabs.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -59,7 +61,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../../Download.html">Download</a></li>
-            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
@@ -144,23 +148,23 @@
            classes of which our individual inherits.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt; getWordsInheritance(std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; words)</div>
+          <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt; <span class="cpp_function">getWordsInheritance</span>(<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">words</span>)</div>
           <div class="code_line">{</div>
-          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt; inheritances;</div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> words.size(); i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt; <span class="cpp_var">inheritances</span>;</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">word</span> : <span class="cpp_var">words</span>)</div>
           <div class="code_line">  {</div>
-          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; inheritance <span class="cpp_op">=</span> onto_-&gt;individuals.getUp(words[i]);</div>
-          <div class="code_line">    inheritances.push_back(inheritance);</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">inheritance</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getUp</span>(<span class="cpp_var">word</span>);</div>
+          <div class="code_line">    <span class="cpp_var">inheritances</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">inheritance</span>);</div>
           <div class="code_line">  }</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_return">return</span> inheritances;</div>
+          <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_var">inheritances</span>;</div>
           <div class="code_line">}</div>
         </div>
         <p>This function, therefore, applies the getUp method to each word found in the "words" vector and
           it returns a vector for which each cell corresponds to the vector returned by getUp.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 5;">
-          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; inheritance <span class="cpp_op">=</span> onto_-&gt;individuals.getUp(words[i]);</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">inheritance</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getUp</span>(<span class="cpp_var">word</span>);</div>
         </div>
         <p>We also notice that we are going to look for the getUp function among the individuals
           because we know that the input words will be only individuals.</p>
@@ -168,29 +172,72 @@
         <p>In order to see the effect of this function, we will add the following lines in our main function,
           just after the call to the "say" function.</p>
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt; inheritances <span class="cpp_op">=</span> getWordsInheritance(names_);</div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> inheritances.size(); i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt; <span class="cpp_var">inheritances</span> = <span class="cpp_function">getWordsInheritance</span>(<span class="cpp_var">names_</span>);</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">i</span> &lt; <span class="cpp_var">inheritances</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">i</span>++)</div>
           <div class="code_line">  {</div>
-          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> names_[i] <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot; is a : &quot;</span>;</div>
-          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> j <span class="cpp_op">=</span> <span class="cpp_value">0</span>; j <span class="cpp_op">&lt;</span> inheritances[i].size(); j<span class="cpp_op">++</span>)</div>
-          <div class="code_line">      std::cout <span class="cpp_op">&lt;&lt;</span> inheritances[i][j] <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot; &quot;</span>;</div>
-          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_var">names_</span>[<span class="cpp_var">i</span>] &lt;&lt; <span class="cpp_string">&quot; is a : &quot;</span>;</div>
+          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">type</span> : <span class="cpp_var">inheritances</span>[<span class="cpp_var">i</span>])</div>
+          <div class="code_line">      <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_var">type</span> &lt;&lt; <span class="cpp_string">&quot; &quot;</span>;</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
           <div class="code_line">  }</div>
         </div>
 
         <p>We can now recompile our project and launch it!</p>
-        <div class="code_block">
-          <div class="terminal_line">catkin_make</div>
-          <div class="terminal_line"><br></div>
-          <div class="terminal_line">roslaunch ontologenius_tutorial intruder.launch</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">catkin_make</div>
+                <div class="terminal_line"><br></div>
+                <div class="terminal_line">roslaunch ontologenius_tutorial intruder.launch</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">colcon build --symlink-install</div>
+                <div class="terminal_line"><br></div>
+                <div class="terminal_line">ros2 launch ontologenius_tutorial intruder.xml</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>In another terminal we will publish a few words to see the result:</p>
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'bob'"</div>
-          <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'alice'"</div>
-          <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'kevin'"</div>
-          <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'start'"</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-1-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-1-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-1-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-1-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-1-Ros1" class="lang-tabs-panel group-tab" id="panel-1-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'bob'"</div>
+                <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'alice'"</div>
+                <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'kevin'"</div>
+                <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'start'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 intruder/input std_msgs/msg/String "{data: 'bob'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 intruder/input std_msgs/msg/String "{data: 'alice'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 intruder/input std_msgs/msg/String "{data: 'kevin'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 intruder/input std_msgs/msg/String "{data: 'start'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>At the end of our program, you should have this:</p>
@@ -214,43 +261,43 @@
           We will not analyze this code together because it is not the center of this tutorial.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="cpp_type">void</span> deleteTheSame(std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt;<span class="cpp_op">&</span> inheritances)</div>
-            <div class="code_line">{</div>
-            <div class="code_line">  <span class="cpp_op">if</span>(inheritances.size() <span class="cpp_op">&gt;</span> <span class="cpp_value">1</span>)</div>
-            <div class="code_line">  {</div>
-            <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; sames;</div>
-            <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> words <span class="cpp_op">=</span> <span class="cpp_value">0</span>; words <span class="cpp_op">&lt;</span> inheritances[<span class="cpp_value">0</span>].size(); words<span class="cpp_op">++</span>)</div>
-            <div class="code_line">    {</div>
-            <div class="code_line">      <span class="cpp_type">bool</span> is_same <span class="cpp_op">=</span> <span class="cpp_value">true</span>;</div>
-            <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">1</span>; i <span class="cpp_op">&lt;</span> inheritances.size(); i<span class="cpp_op">++</span>)</div>
-            <div class="code_line">      {</div>
-            <div class="code_line">        std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt;::iterator it <span class="cpp_op">=</span> find(inheritances[i].begin(), inheritances[i].end(), inheritances[<span class="cpp_value">0</span>][words]);</div>
-            <div class="code_line">        <span class="cpp_op">if</span>(it == inheritances[i].end())</div>
-            <div class="code_line">          is_same <span class="cpp_op">=</span> <span class="cpp_value">false</span>;</div>
-            <div class="code_line">      }</div>
-            <div class="code_line"><br></div>
-            <div class="code_line">      <span class="cpp_op">if</span>(is_same)</div>
-            <div class="code_line">        sames.push_back(inheritances[<span class="cpp_value">0</span>][words]);</div>
-            <div class="code_line">    }</div>
-            <div class="code_line"><br></div>
-            <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> sames.size(); i<span class="cpp_op">++</span>)</div>
-            <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> vect <span class="cpp_op">=</span> <span class="cpp_value">0</span>; vect <span class="cpp_op">&lt;</span> inheritances.size(); vect<span class="cpp_op">++</span>)</div>
-            <div class="code_line">      {</div>
-            <div class="code_line">        std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt;::iterator it <span class="cpp_op">=</span> find(inheritances[vect].begin(), inheritances[vect].end(), sames[i]);</div>
-            <div class="code_line">        inheritances[vect].erase(it);</div>
-            <div class="code_line">      }</div>
-            <div class="code_line">  }</div>
-            <div class="code_line">}</div>
+          <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">deleteTheSame</span>(<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt;<span class="cpp_key">&</span> <span class="cpp_var">inheritances</span>)</div>
+          <div class="code_line">{</div>
+          <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_var">inheritances</span>.<span class="cpp_function">size</span>() &gt; <span class="cpp_value">1</span>)</div>
+          <div class="code_line">  {</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">sames</span>;</div>
+          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">words</span> = <span class="cpp_value">0</span>; <span class="cpp_var">words</span> &lt; <span class="cpp_var">inheritances</span>[<span class="cpp_value">0</span>].<span class="cpp_function">size</span>(); <span class="cpp_var">words</span>++)</div>
+          <div class="code_line">    {</div>
+          <div class="code_line">      <span class="cpp_key">bool</span> <span class="cpp_var">is_same</span> = <span class="cpp_key">true</span>;</div>
+          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">i</span> = <span class="cpp_value">1</span>; <span class="cpp_var">i</span> &lt; <span class="cpp_var">inheritances</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">i</span>++)</div>
+          <div class="code_line">      {</div>
+          <div class="code_line">        <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt;::<span class="cpp_type">iterator</span> <span class="cpp_var">it</span> = <span class="cpp_function">find</span>(<span class="cpp_var">inheritances</span>[<span class="cpp_var">i</span>].<span class="cpp_function">begin</span>(), <span class="cpp_var">inheritances</span>[<span class="cpp_var">i</span>].<span class="cpp_function">end</span>(), <span class="cpp_var">inheritances</span>.<span class="cpp_function">front</span>[<span class="cpp_var">words</span>]);</div>
+          <div class="code_line">        <span class="cpp_op">if</span>(<span class="cpp_var">it</span> == <span class="cpp_var">inheritances</span>[<span class="cpp_var">i</span>].<span class="cpp_function">end</span>())</div>
+          <div class="code_line">          <span class="cpp_var">is_same</span> = <span class="cpp_key">false</span>;</div>
+          <div class="code_line">      }</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">      <span class="cpp_op">if</span>(<span class="cpp_var">is_same</span>)</div>
+          <div class="code_line">        <span class="cpp_var">sames</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">inheritances</span>.<span class="cpp_function">front</span>()[<span class="cpp_var">words</span>]);</div>
+          <div class="code_line">    }</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">same</span> : <span class="cpp_var">sames</span>)</div>
+          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">inheritance</span> : <span class="cpp_var">inheritances</span>)</div>
+          <div class="code_line">      {</div>
+          <div class="code_line">        <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt;::<span class="cpp_type">iterator</span> <span class="cpp_var">it</span> = <span class="cpp_function">find</span>(<span class="cpp_var">inheritance</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">inheritance</span>.<span class="cpp_function">end</span>(), <span class="cpp_var">same</span>);</div>
+          <div class="code_line">        <span class="cpp_var">inheritance</span>.<span class="cpp_function">erase</span>(<span class="cpp_var">it</span>);</div>
+          <div class="code_line">      }</div>
+          <div class="code_line">  }</div>
+          <div class="code_line">}</div>
         </div>
 
         <p>Add the call to this function in the main function just after the getWordsInheritance call.</p>
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt; inheritances <span class="cpp_op">=</span> getWordsInheritance(names_);</div>
-          <div class="code_line">  deleteTheSame(inheritances);</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt; <span class="cpp_var">inheritances</span> = <span class="cpp_function">getWordsInheritance</span>(<span class="cpp_var">names_</span>);</div>
+          <div class="code_line">  <span class="cpp_function">deleteTheSame</span>(<span class="cpp_var">inheritances</span>);</div>
         </div>
 
         <p>Compile this and run the program, then in another terminal re-query the programs on the words:
-          bob alice and kevin.</p>
+          bob, alice, and kevin.</p>
         <p>This time, you should have this:</p>
         <div class="code_block">
           <div class="terminal_line">[SAY]on bob alice kevin</div>
@@ -271,10 +318,10 @@
           reason he is the intruder.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="cpp_type">struct</span> intruder_t</div>
+          <div class="code_line"><span class="cpp_key">struct</span> <span class="cpp_type">intruder_t</span></div>
           <div class="code_line">{</div>
-          <div class="code_line">  std::<span class="cpp_type">string</span> name_;</div>
-          <div class="code_line">  std::<span class="cpp_type">string</span> why_;</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">name_</span>;</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">why_</span>;</div>
           <div class="code_line">};</div>
         </div>
 
@@ -293,48 +340,48 @@
         </ul>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">std::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">struct intruder_t</span>&gt; find_intruder(std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt;<span class="cpp_op">&</span> names, std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt;<span class="cpp_op">&</span> inheritances)</div>
+          <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_key">struct</span> <span class="cpp_type">intruder_t</span>&gt; <span class="cpp_function">find_intruder</span>(<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt;<span class="cpp_key">&</span> <span class="cpp_var">names</span>, <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt;<span class="cpp_key">&</span> <span class="cpp_var">inheritances</span>)</div>
           <div class="code_line">{</div>
-          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">struct intruder_t</span>&gt; intruders;</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_key">struct</span> <span class="cpp_type">intruder_t</span>&gt; <span class="cpp_var">intruders</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> vect_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; vect_i <span class="cpp_op">&lt; </span>inheritances.size(); vect_i<span class="cpp_op">++</span>)</div>
-          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> class_i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; class_i <span class="cpp_op">&lt; </span>inheritances[vect_i].size(); class_i<span class="cpp_op">++</span>)</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">vect_i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">vect_i</span> &lt; <span class="cpp_var">inheritances</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">vect_i</span>++)</div>
+          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">class_i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">class_i</span> &lt; <span class="cpp_var">inheritances</span>[<span class="cpp_var">vect_i</span>].<span class="cpp_function">size</span>(); <span class="cpp_var">class_i</span>++)</div>
           <div class="code_line">    {</div>
-          <div class="code_line">      <span class="cpp_type">int</span> intruder_index <span class="cpp_op">=</span> <span class="cpp_value">-1</span>;</div>
+          <div class="code_line">      <span class="cpp_key">int</span> <span class="cpp_var">intruder_index</span> = <span class="cpp_value">-1</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> vect_j <span class="cpp_op">=</span> <span class="cpp_value">0</span>; vect_j <span class="cpp_op">&lt; </span>inheritances.size(); vect_j<span class="cpp_op">++</span>)</div>
-          <div class="code_line">        <span class="cpp_op">if</span>(vect_j <span class="cpp_op">!=</span> vect_i)</div>
+          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">vect_j</span> = <span class="cpp_value">0</span>; <span class="cpp_var">vect_j</span> &lt; <span class="cpp_var">inheritances</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">vect_j</span>++)</div>
+          <div class="code_line">        <span class="cpp_op">if</span>(<span class="cpp_var">vect_j</span> != <span class="cpp_var">vect_i</span>)</div>
           <div class="code_line">        {</div>
-          <div class="code_line">          std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt;::<span class="cpp_type">iterator</span> it <span class="cpp_op">=</span> find(inheritances[vect_j].begin(), inheritances[vect_j].end(), inheritances[vect_i][class_i]);</div>
-          <div class="code_line">          <span class="cpp_op">if</span>(it <span class="cpp_op">==</span> inheritances[vect_j].end())</div>
+          <div class="code_line">          <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt;::<span class="cpp_type">iterator</span> <span class="cpp_var">it</span> = <span class="cpp_function">find</span>(<span class="cpp_var">inheritances</span>[<span class="cpp_var">vect_j</span>].<span class="cpp_function">begin</span>(), <span class="cpp_var">inheritances</span>[<span class="cpp_var">vect_j</span>].<span class="cpp_function">end</span>(), <span class="cpp_var">inheritances</span>[<span class="cpp_var">vect_i</span>][<span class="cpp_var">class_i</span>]);</div>
+          <div class="code_line">          <span class="cpp_op">if</span>(<span class="cpp_var">it</span> == <span class="cpp_var">inheritances</span>[<span class="cpp_var">vect_j</span>].<span class="cpp_function">end</span>())</div>
           <div class="code_line">          {</div>
-          <div class="code_line">            <span class="cpp_op">if</span>(intruder_index <span class="cpp_op">==</span> <span class="cpp_value">-1</span>)</div>
-          <div class="code_line">              intruder_index <span class="cpp_op">=</span> vect_j;</div>
+          <div class="code_line">            <span class="cpp_op">if</span>(<span class="cpp_var">intruder_index</span> == <span class="cpp_value">-1</span>)</div>
+          <div class="code_line">              <span class="cpp_var">intruder_index</span> = <span class="cpp_var">vect_j</span>;</div>
           <div class="code_line">            <span class="cpp_op">else</span></div>
           <div class="code_line">            {</div>
-          <div class="code_line">              intruder_index <span class="cpp_op">=</span> <span class="cpp_value">-1</span>;</div>
-          <div class="code_line">              break;</div>
+          <div class="code_line">              <span class="cpp_var">intruder_index</span> = <span class="cpp_value">-1</span>;</div>
+          <div class="code_line">              <span class="cpp_op">break</span>;</div>
           <div class="code_line">            }</div>
           <div class="code_line">          }</div>
           <div class="code_line">        }</div>
           <div class="code_line"><br></div>
-          <div class="code_line">      <span class="cpp_op">if</span>(intruder_index <span class="cpp_op">!=</span> <span class="cpp_value">-1</span>)</div>
+          <div class="code_line">      <span class="cpp_op">if</span>(<span class="cpp_var">intruder_index</span> != <span class="cpp_value">-1</span>)</div>
           <div class="code_line">      {</div>
-          <div class="code_line">        <span class="cpp_type">struct intruder_t</span> intruder;</div>
-          <div class="code_line">        intruder.name_ <span class="cpp_op">=</span> names[intruder_index];</div>
-          <div class="code_line">        intruder.why_ <span class="cpp_op">=</span> inheritances[vect_i][class_i];</div>
+          <div class="code_line">        <span class="cpp_key">struct</span> <span class="cpp_type">intruder_t</span> <span class="cpp_var">intruder</span>;</div>
+          <div class="code_line">        <span class="cpp_var">intruder</span>.name_ = <span class="cpp_var">names</span>[<span class="cpp_var">intruder_index</span>];</div>
+          <div class="code_line">        <span class="cpp_var">intruder</span>.why_ = <span class="cpp_var">inheritances</span>[<span class="cpp_var">vect_i</span>][<span class="cpp_var">class_i</span>];</div>
           <div class="code_line"><br></div>
-          <div class="code_line">        <span class="cpp_type">bool</span> exist <span class="cpp_op">=</span> <span class="cpp_value">false</span>;</div>
-          <div class="code_line">        <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt; </span>intruders.size(); i++)</div>
-          <div class="code_line">          <span class="cpp_op">if</span>((intruders[i].name_ <span class="cpp_op">==</span> intruder.name_) <span class="cpp_op">&&</span> (intruders[i].why_ <span class="cpp_op">==</span> intruder.why_))</div>
-          <div class="code_line">            exist <span class="cpp_op">=</span> <span class="cpp_value">true</span>;</div>
+          <div class="code_line">        <span class="cpp_key">bool</span> <span class="cpp_var">exist</span> = <span class="cpp_key">false</span>;</div>
+          <div class="code_line">        <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">intruder_i</span> : <span class="cpp_var">intruders</span>)</div>
+          <div class="code_line">          <span class="cpp_op">if</span>((<span class="cpp_var">intruder_i</span>.name_ == <span class="cpp_var">intruder</span>.name_) <span class="cpp_op">&&</span> (<span class="cpp_var">intruder_i</span>.why_ == <span class="cpp_var">intruder</span>.why_))</div>
+          <div class="code_line">            <span class="cpp_var">exist</span> = <span class="cpp_key">true</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">        <span class="cpp_op">if</span>(exist <span class="cpp_op">==</span> <span class="cpp_value">false</span>)</div>
-          <div class="code_line">          intruders.push_back(intruder);</div>
+          <div class="code_line">        <span class="cpp_op">if</span>(<span class="cpp_var">exist</span> == <span class="cpp_key">false</span>)</div>
+          <div class="code_line">          <span class="cpp_var">intruders</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">intruder</span>);</div>
           <div class="code_line">      }</div>
           <div class="code_line">    }</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_return">return</span> intruders;</div>
+          <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_var">intruders</span>;</div>
           <div class="code_line">}</div>
         </div>
 
@@ -342,14 +389,14 @@
           with the intruder display.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">  deleteTheSame(inheritances);</div>
-          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">struct intruder_t</span>&gt; intruders <span class="cpp_op">=</span> find_intruder(names_, inheritances);</div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> intruders.size(); i<span class="cpp_op">++</span>)</div>
-          <div class="code_line">    say(<span class="cpp_string">&quot;the intruder is &quot;</span> <span class="cpp_op">+</span> intruders[i].name_ <span class="cpp_op">+</span> <span class="cpp_string">&quot; because it is the only one that is not: &quot;</span> <span class="cpp_op">+</span> intruders[i].why_);</div>
+          <div class="code_line">  <span class="cpp_function">deleteTheSame</span>(<span class="cpp_var">inheritances</span>);</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_key">struct</span> <span class="cpp_type">intruder_t</span>&gt; <span class="cpp_var">intruders</span> = <span class="cpp_function">find_intruder</span>(<span class="cpp_var">names_</span>, <span class="cpp_var">inheritances</span>);</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">intruder</span> : <span class="cpp_var">intruders</span>)</div>
+          <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_string">&quot;the intruder is &quot;</span> + <span class="cpp_var">intruder</span>.name_ + <span class="cpp_string">&quot; because it is the only one that is not: &quot;</span> + <span class="cpp_var">intruder</span>.why_);</div>
         </div>
 
         <p>Compile this and run the program, then in another terminal re-query the programs on the words:
-          bob alice and kevin.</p>
+          bob, alice, and kevin.</p>
         <p>This time, you should have this:</p>
         <div class="code_block">
           <div class="terminal_line">[SAY]on bob alice kevin</div>

@@ -1,5 +1,3 @@
-import rospy
-
 from .clients import *
 from .clientsIndex import *
 from .OntologyManipulator import OntologyManipulator
@@ -12,7 +10,7 @@ class OntologiesManipulator(ManagerClient, object):
     """
     def __init__(self):
         """Constructs a manipulator for several instances of ontologies."""
-        ManagerClient.__init__(self)
+        super(OntologiesManipulator, self).__init__()
         self.manipulators = {}
         self.manipulators_index = {}
 
@@ -21,10 +19,7 @@ class OntologiesManipulator(ManagerClient, object):
            timeout(int) is the amount of time to wait for before timing out.
            If timeout is -1 (default), waits until the node is shutdown.
         """
-        if timeout != -1:
-            rospy.wait_for_service('ontologenius/manage', timeout)
-        else:
-            rospy.wait_for_service('ontologenius/manage')
+        super(OntologiesManipulator, self).waitInit(timeout)
 
     def add(self, name):
         """Creates a new instance of OntologyManipulator and OntologyManipulatorIndex identified by the name name(str).

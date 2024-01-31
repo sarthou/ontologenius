@@ -1,6 +1,6 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerDictionary.h"
 
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 
 namespace ontologenius {
 
@@ -181,6 +181,6 @@ std::string ReasonerDictionary::getDesciption()
   return "This reasoner creates several alternative dictionaries to avoid too many restrictive labels.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ReasonerDictionary, ReasonerInterface)
-
 } // namespace ontologenius
+
+PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerDictionary, ontologenius::ReasonerInterface)

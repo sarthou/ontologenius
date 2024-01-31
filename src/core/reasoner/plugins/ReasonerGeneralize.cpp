@@ -1,6 +1,6 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerGeneralize.h"
 
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 
 namespace ontologenius {
 
@@ -183,6 +183,6 @@ std::string ReasonerGeneralize::getDesciption()
   return "This reasoner aims to infer new knowledge by generalizing explicit relationships between concepts.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ReasonerGeneralize, ReasonerInterface)
-
 } // namespace ontologenius
+
+PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerGeneralize, ontologenius::ReasonerInterface)

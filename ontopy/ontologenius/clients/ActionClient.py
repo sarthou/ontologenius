@@ -1,5 +1,3 @@
-import rospy
-
 from .ClientBase import ClientBase
 
 class ActionClient(ClientBase):
@@ -69,7 +67,13 @@ class ActionClient(ClientBase):
         return self.callNR("fadd", file)
 
     def reset(self):
-        """Unload all the knowledge previously loaded or learned.
+        """Unload all the knowledge previously loaded or learned and reload the default files.
            Returns False if the service call fails.
         """
         return self.callNR("reset", "")
+
+    def clear(self):
+        """Unload all the knowledge previously loaded or learned.
+           Returns False if the service call fails.
+        """
+        return self.callNR("clear", "")

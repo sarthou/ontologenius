@@ -1,0 +1,14 @@
+<launch>
+  <arg name="language" default="en"/>
+  <arg name="intern_file" default="none"/>
+  <arg name="config_file" default="none"/>
+  <arg name="display" default="true"/>
+  <arg name="files" default=""/>
+  <arg name="robot_file" default="none"/>
+  <arg name="human_file" default="none"/>
+  <arg name="tcmalloc_path" default=""/>
+
+  <!--env name="LD_PRELOAD" value="$(var tcmalloc_path)"/-->
+
+  <node pkg="ontologenius" name="ontologenius_core" exec="ontologenius_multi" output="screen" args="-l $(var language) -c $(var config_file) -i $(var intern_file) -d $(var display) -r $(var robot_file) -h $(var human_file) $(var files)"> </node>
+</launch>

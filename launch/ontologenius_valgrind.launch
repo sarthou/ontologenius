@@ -9,6 +9,6 @@
   $(find ontologenius)/files/testIndividuals.owl
   "/>
 
-  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius" output="screen" args="-l $(arg language) -i $(arg intern_file) $(arg files)" launch-prefix="valgrind"> </node>
+  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius_single" output="screen" args="-l $(arg language) -i $(arg intern_file) $(arg files)" launch-prefix="valgrind"> </node>
   <!-- valgrind -v - -leak-check=full - -track-origins=yes -->
 </launch>

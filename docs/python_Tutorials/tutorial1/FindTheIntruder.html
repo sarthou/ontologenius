@@ -4,10 +4,12 @@
   <title>Use inheritance for my first program (python) : Find the intruder</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
   <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <script src="../../scripts/tabs.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -59,7 +61,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../../Download.html">Download</a></li>
-            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../Tutorials.html">Python Tutorials</a></li>
@@ -143,18 +147,18 @@
            classes of which our individual inherits.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">getWordsInheritance</span>(words):</div>
-          <div class="code_line">    inheritances = []</div>
-          <div class="code_line">    <span class="py_op">for</span> word <span class="py_op">in</span> words:</div>
-          <div class="code_line">        inheritance = _onto.individuals.getUp(word)</div>
-          <div class="code_line">        inheritances.insert(len(inheritances), inheritance)</div>
-          <div class="code_line">    <span class="py_op">return</span> inheritances</div>
+          <div class="code_line"><span class="py_key">def</span> <span class="py_function">getWordsInheritance</span>(<span class="py_var">words</span>):</div>
+          <div class="code_line">    <span class="py_var">inheritances</span> = []</div>
+          <div class="code_line">    <span class="py_op">for</span> <span class="py_var">word</span> <span class="py_op">in</span> <span class="py_var">words</span>:</div>
+          <div class="code_line">        <span class="py_var">inheritance</span> = <span class="py_var">_onto</span>.<span class="py_var">individuals</span>.<span class="py_function">getUp</span>(<span class="py_var">word</span>)</div>
+          <div class="code_line">        <span class="py_var">inheritances</span>.<span class="py_function">insert</span>(<span class="py_function">len</span>(<span class="py_var">inheritances</span>), <span class="py_var">inheritance</span>)</div>
+          <div class="code_line">    <span class="py_op">return</span> <span class="py_var">inheritances</span></div>
         </div>
         <p>This function, therefore, applies the getUp method to each word found in the "words" list and
           it returns a list for which each cell corresponds to the list returned by getUp.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 3;">
-          <div class="code_line">        inheritance = _onto.individuals.getUp(word)</div>
+          <div class="code_line">        <span class="py_var">inheritance</span> = <span class="py_var">_onto</span>.<span class="py_var">individuals</span>.<span class="py_function">getUp</span>(<span class="py_var">word</span>)</div>
         </div>
         <p>We also notice that we are going to look for the getUp function among the individuals
           because we know that the input words will be only individuals.</p>
@@ -162,24 +166,66 @@
         <p>In order to see the effect of this function, we will add the following lines in our main function,
           just after the call to the "say" function.</p>
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">    inheritances = getWordsInheritance(_names)</div>
-          <div class="code_line">        <span class="py_op">for</span> i <span class="py_op">in</span> range(len(inheritances)):</div>
-          <div class="code_line">            <span class="py_op">print</span> (_names[i] + <span class="py_string">' is a:'</span>)</div>
-          <div class="code_line">            <span class="py_op">for</span> is_a <span class="py_op">in</span> inheritances[i]:</div>
-          <div class="code_line">                <span class="py_op">print</span> (<span class="py_string">'- '</span> + is_a)</div>
+          <div class="code_line">    <span class="py_var">inheritances</span> = <span class="py_function">getWordsInheritance</span>(<span class="py_var">_names</span>)</div>
+          <div class="code_line">    <span class="py_op">for</span> <span class="py_var">i</span> <span class="py_op">in</span> <span class="py_imported">range</span>(<span class="py_function">len</span>(<span class="py_var">inheritances</span>)):</div>
+          <div class="code_line">        <span class="py_function">print</span> (<span class="py_var">_names</span>[<span class="py_var">i</span>] + <span class="py_string">' is a:'</span>)</div>
+          <div class="code_line">        <span class="py_op">for</span> <span class="py_var">is_a</span> <span class="py_op">in</span> <span class="py_var">inheritances</span>[<span class="py_var">i</span>]:</div>
+          <div class="code_line">            <span class="py_function">print</span> (<span class="py_string">'- '</span> + <span class="py_var">is_a</span>)</div>
         </div>
 
         <p>We can now launch it!</p>
-        <div class="code_block">
-          <div class="terminal_line">roslaunch ontologenius_tutorial intruder.launch</div>
-        </div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">roslaunch ontologenius_tutorial intruder.launch</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">colcon build --symlink-install</div>
+                <div class="terminal_line">ros2 launch ontologenius_tutorial intruder.xml</div>
+              </div>
+            </div>
+          </div>
+        </div> 
 
         <p>In another terminal we will publish a few words to see the result:</p>
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'bob'"</div>
-          <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'alice'"</div>
-          <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'kevin'"</div>
-          <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'start'"</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-1-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-1-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-1-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-1-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-1-Ros1" class="lang-tabs-panel group-tab" id="panel-1-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'bob'"</div>
+                <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'alice'"</div>
+                <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'kevin'"</div>
+                <div class="terminal_line">rostopic pub -1 /intruder/input std_msgs/String "data: 'start'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 intruder/input std_msgs/msg/String "{data: 'bob'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 intruder/input std_msgs/msg/String "{data: 'alice'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 intruder/input std_msgs/msg/String "{data: 'kevin'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 intruder/input std_msgs/msg/String "{data: 'start'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>At the end of our program, you should have this:</p>
@@ -212,28 +258,28 @@
           We will not analyze this code together because it is not the center of this tutorial.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">deleteTheSame</span>(inheritances):</div>
-          <div class="code_line">    <span class="py_op">if</span>(len(inheritances) > <span class="py_value">1</span>):</div>
-          <div class="code_line">        sames = []</div>
-          <div class="code_line">        <span class="py_op">for</span> word <span class="py_op">in</span> inheritances[<span class="py_value">0</span>]:</div>
-          <div class="code_line">            is_same = <span class="py_value">True</span></div>
-          <div class="code_line">            <span class="py_op">for</span> i <span class="py_op">in</span> range(<span class="py_value">1</span>, len(inheritances)):</div>
-          <div class="code_line">                <span class="py_op">if not</span> word <span class="py_op">in</span> inheritances[i]:</div>
-          <div class="code_line">                    is_same = <span class="py_value">False</span></div>
+          <div class="code_line"><span class="py_key">def</span> <span class="py_function">deleteTheSame</span>(<span class="py_var">inheritances</span>):</div>
+          <div class="code_line">    <span class="py_op">if</span>(<span class="py_function">len</span>(<span class="py_var">inheritances</span>) > <span class="py_value">1</span>):</div>
+          <div class="code_line">        <span class="py_var">sames</span> = []</div>
+          <div class="code_line">        <span class="py_op">for</span> <span class="py_var">word</span> <span class="py_op">in</span> <span class="py_var">inheritances</span>[<span class="py_value">0</span>]:</div>
+          <div class="code_line">            <span class="py_var">is_same</span> = <span class="py_key">True</span></div>
+          <div class="code_line">            <span class="py_op">for</span> <span class="py_var">i</span> <span class="py_op">in</span> <span class="py_imported">range</span>(<span class="py_value">1</span>, <span class="py_function">len</span>(<span class="py_var">inheritances</span>)):</div>
+          <div class="code_line">                <span class="py_op">if</span> <span class="py_key">not</span> <span class="py_var">word</span> <span class="py_op">in</span> <span class="py_var">inheritances</span>[<span class="py_var">i</span>]:</div>
+          <div class="code_line">                    <span class="py_var">is_same</span> = <span class="py_key">False</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line">            <span class="py_op">if</span> is_same:</div>
-          <div class="code_line">                sames.insert(<span class="py_value">1</span>, word)</div>
+          <div class="code_line">            <span class="py_op">if</span> <span class="py_var">is_same</span>:</div>
+          <div class="code_line">                <span class="py_var">sames</span>.<span class="py_function">insert</span>(<span class="py_value">1</span>, <span class="py_var">word</span>)</div>
           <div class="code_line"><br></div>
-          <div class="code_line">        <span class="py_op">for</span> same <span class="py_op">in</span> sames:</div>
-          <div class="code_line">            <span class="py_op">for</span> inheritance <span class="py_op">in</span> inheritances:</div>
-          <div class="code_line">                <span class="py_op">if</span> same <span class="py_op">in</span> inheritance:</div>
-          <div class="code_line">                    inheritance.remove(same)</div>
+          <div class="code_line">        <span class="py_op">for</span> <span class="py_var">same</span> <span class="py_op">in</span> <span class="py_var">sames</span>:</div>
+          <div class="code_line">            <span class="py_op">for</span> <span class="py_var">inheritance</span> <span class="py_op">in</span> <span class="py_var">inheritances</span>:</div>
+          <div class="code_line">                <span class="py_op">if</span> <span class="py_var">same</span> <span class="py_op">in</span> <span class="py_var">inheritance</span>:</div>
+          <div class="code_line">                    <span class="py_var">inheritance</span>.<span class="py_function">remove</span>(<span class="py_var">same</span>)</div>
         </div>
 
         <p>Add the call to this function in the main function just after the getWordsInheritance call.</p>
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">        inheritances = getWordsInheritance(_names)</div>
-          <div class="code_line">        deleteTheSame(inheritances)</div>
+          <div class="code_line">        <span class="py_var">inheritances</span> = <span class="py_function">getWordsInheritance</span>(<span class="py_var">_names</span>)</div>
+          <div class="code_line">        <span class="py_function">deleteTheSame</span>(<span class="py_var">inheritances</span>)</div>
         </div>
 
         <p>Compile this and run the program, then in another terminal re-query the programs on the words:
@@ -272,42 +318,42 @@
         </ul>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">find_intruder</span>(names, inheritances):</div>
-          <div class="code_line">    intruders = []</div>
-          <div class="code_line">    <span class="py_op">for</span> inheritance_i <span class="py_op">in</span> range(len(inheritances)):</div>
-          <div class="code_line">        <span class="py_op">for</span> class_i <span class="py_op">in</span> inheritances[inheritance_i]:</div>
-          <div class="code_line">            intruder_index = -<span class="py_value">1</span></div>
+          <div class="code_line"><span class="py_key">def</span> <span class="py_function">find_intruder</span>(<span class="py_var">names</span>, <span class="py_var">inheritances</span>):</div>
+          <div class="code_line">    <span class="py_var">intruders</span> = []</div>
+          <div class="code_line">    <span class="py_op">for</span> <span class="py_var">inheritance_i</span> <span class="py_op">in</span> <span class="py_imported">range</span>(<span class="py_function">len</span>(<span class="py_var">inheritances</span>)):</div>
+          <div class="code_line">        <span class="py_op">for</span> <span class="py_var">class_i</span> <span class="py_op">in</span> <span class="py_var">inheritances</span>[<span class="py_var">inheritance_i</span>]:</div>
+          <div class="code_line">            <span class="py_var">intruder_index</span> = -<span class="py_value">1</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line">            <span class="py_op">for</span> inheritance_j <span class="py_op">in</span> range(len(inheritances)):</div>
-          <div class="code_line">                <span class="py_op">if</span> inheritance_i != inheritance_j:</div>
-          <div class="code_line">                    <span class="py_op">if</span> <span class="py_op">not</span> class_i <span class="py_op">in</span> inheritances[inheritance_j]:</div>
-          <div class="code_line">                        <span class="py_op">if</span> intruder_index == -<span class="py_value">1</span>:</div>
-          <div class="code_line">                            intruder_index = inheritance_j</div>
+          <div class="code_line">            <span class="py_op">for</span> <span class="py_var">inheritance_j</span> <span class="py_op">in</span> <span class="py_imported">range</span>(<span class="py_function">len</span>(<span class="py_var">inheritances</span>)):</div>
+          <div class="code_line">                <span class="py_op">if</span> <span class="py_var">inheritance_i</span> != <span class="py_var">inheritance_j</span>:</div>
+          <div class="code_line">                    <span class="py_op">if</span> <span class="py_key">not</span> <span class="py_var">class_i</span> <span class="py_op">in</span> <span class="py_var">inheritances</span>[<span class="py_var">inheritance_j</span>]:</div>
+          <div class="code_line">                        <span class="py_op">if</span> <span class="py_var">intruder_index</span> == -<span class="py_value">1</span>:</div>
+          <div class="code_line">                            <span class="py_var">intruder_index</span> = <span class="py_var">inheritance_j</span></div>
           <div class="code_line">                        <span class="py_op">else</span>:</div>
-          <div class="code_line">                            intruder_index = -<span class="py_value">1</span></div>
-          <div class="code_line">                            break</div>
+          <div class="code_line">                            <span class="py_var">intruder_index</span> = -<span class="py_value">1</span></div>
+          <div class="code_line">                            <span class="py_op">break</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line">            <span class="py_op">if</span> intruder_index != -<span class="py_value">1</span>:</div>
-          <div class="code_line">                new_intruder = (names[intruder_index], class_i)</div>
-          <div class="code_line">                exist = <span class="py_value">False</span></div>
-          <div class="code_line">                <span class="py_op">for</span> intruder <span class="py_op">in</span> intruders:</div>
-          <div class="code_line">                    <span class="py_op">if</span> intruder[<span class="py_value">0</span>] == new_intruder[<span class="py_value">0</span>] <span class="py_op">and</span> intruder[<span class="py_value">1</span>] == new_intruder[<span class="py_value">1</span>]:</div>
-          <div class="code_line">                        exist = <span class="py_value">True</span></div>
+          <div class="code_line">            <span class="py_op">if</span> <span class="py_var">intruder_index</span> != -<span class="py_value">1</span>:</div>
+          <div class="code_line">                <span class="py_var">new_intruder</span> = (<span class="py_var">names</span>[<span class="py_var">intruder_index</span>], <span class="py_var">class_i</span>)</div>
+          <div class="code_line">                <span class="py_var">exist</span> = <span class="py_key">False</span></div>
+          <div class="code_line">                <span class="py_op">for</span> <span class="py_var">intruder</span> <span class="py_op">in</span> <span class="py_var">intruders</span>:</div>
+          <div class="code_line">                    <span class="py_op">if</span> <span class="py_var">intruder</span>[<span class="py_value">0</span>] == <span class="py_var">new_intruder</span>[<span class="py_value">0</span>] <span class="py_key">and</span> <span class="py_var">intruder</span>[<span class="py_value">1</span>] == <span class="py_var">new_intruder</span>[<span class="py_value">1</span>]:</div>
+          <div class="code_line">                        <span class="py_var">exist</span> = <span class="py_key">True</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line">                <span class="py_op">if</span> <span class="py_op">not</span> exist:</div>
-          <div class="code_line">                    intruders.insert(<span class="py_value">1</span>, new_intruder)</div>
+          <div class="code_line">                <span class="py_op">if</span> <span class="py_key">not</span> <span class="py_var">exist</span>:</div>
+          <div class="code_line">                    <span class="py_var">intruders</span>.<span class="py_function">insert</span>(<span class="py_value">1</span>, <span class="py_var">new_intruder</span>)</div>
           <div class="code_line"><br></div>
-          <div class="code_line">    <span class="py_op">return</span> intruders</div>
+          <div class="code_line">    <span class="py_op">return</span> <span class="py_var">intruders</span></div>
         </div>
 
         <p>We can therefore call this new function in our main function and replace our old display
           with the intruder display.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">        deleteTheSame(inheritances)</div>
-          <div class="code_line">        intruders = find_intruder(_names, inheritances)</div>
-          <div class="code_line">        <span class="py_op">for</span> intruder <span class="py_op">in</span> intruders:</div>
-          <div class="code_line">            say(<span class="py_string">'the intruder is '</span> + intruder[<span class="py_value">0</span>] + <span class="py_string">' because it is the only one that is not: '</span> + intruder[<span class="py_value">1</span>])</div>
+          <div class="code_line">        <span class="py_function">deleteTheSame</span>(<span class="py_var">inheritances</span>)</div>
+          <div class="code_line">        <span class="py_var">intruders</span> = <span class="py_function">find_intruder</span>(<span class="py_var">_names</span>, <span class="py_var">inheritances</span>)</div>
+          <div class="code_line">        <span class="py_op">for</span> <span class="py_var">intruder</span> <span class="py_op">in</span> <span class="py_var">intruders</span>:</div>
+          <div class="code_line">            <span class="py_function">say</span>(<span class="py_string">'the intruder is '</span> + <span class="py_var">intruder</span>[<span class="py_value">0</span>] + <span class="py_string">' because it is the only one that is not: '</span> + <span class="py_var">intruder</span>[<span class="py_value">1</span>])</div>
         </div>
 
         <p>Run the program, then in another terminal re-query the programs on the words:

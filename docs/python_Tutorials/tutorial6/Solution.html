@@ -4,10 +4,12 @@
   <title>Speed up your algorithms (python) : Solution</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
   <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <script src="../../scripts/tabs.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -56,7 +58,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../../Download.html">Download</a></li>
-            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../Tutorials.html">Python Tutorials</a></li>
@@ -136,100 +140,215 @@
            In a more usual way using classes, you could create a map with all the "static" indexes.
        </p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">import</span> rospy</div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologyManipulatorIndex</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">_onto = <span class="py_value">None</span></div>
-          <div class="code_line">isAlong_index = <span class="py_value">0</span></div>
-          <div class="code_line">hasAlong_index = <span class="py_value">0</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">displayRoute</span>(route):</div>
-          <div class="code_line">    <span class="py_op">print</span>('Route:')</div>
-          <div class="code_line">    route_id = _onto.conversion.individualsIndexes2Ids(route)</div>
-          <div class="code_line">    <span class="py_op">for</span> point <span class="py_op">in</span> route_id:</div>
-          <div class="code_line">        <span class="py_op">print</span>('- ' + point)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">findRoutes</span>(path_from, path_to, selector):</div>
-          <div class="code_line">    global _onto</div>
-          <div class="code_line">    routes = []</div>
-          <div class="code_line">    routes.insert(<span class="py_value">0</span>, [path_from])</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    found = <span class="py_value">False</span></div>
-          <div class="code_line">    <span class="py_op">if</span> path_from == path_to:</div>
-          <div class="code_line">        found = <span class="py_value">True</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    <span class="py_op">while</span> <span class="py_op">not</span> found:</div>
-          <div class="code_line">        tmp_routes = []</div>
-          <div class="code_line">        <span class="py_op">for</span> route <span class="py_op">in</span> routes:</div>
-          <div class="code_line">            size = len(route) - <span class="py_value">1</span></div>
-          <div class="code_line">            intersections = _onto.individuals.getFrom(isAlong_index, route[size])</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">            <span class="py_op">for</span> intersection <span class="py_op">in</span> intersections:</div>
-          <div class="code_line">                paths = _onto.individuals.getOn(intersection, isAlong_index, selector)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">                <span class="py_comment"># erase paths already present in the current route</span></div>
-          <div class="code_line">                paths = [path <span class="py_op">for</span> path <span class="py_op">in</span> paths <span class="py_op">if</span> <span class="py_op">not</span> path <span class="py_op">in</span> route]</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">                <span class="py_op">for</span> path <span class="py_op">in</span> paths:</div>
-          <div class="code_line">                    tmp = list(route)</div>
-          <div class="code_line">                    tmp.insert(len(tmp), intersection)</div>
-          <div class="code_line">                    tmp.insert(len(tmp), path)</div>
-          <div class="code_line">                    tmp_routes.insert(len(tmp_routes), tmp)</div>
-          <div class="code_line">                    <span class="py_op">if</span> path == path_to:</div>
-          <div class="code_line">                        found = <span class="py_value">True</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line">        routes = list(tmp_routes)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    <span class="py_op">return</span> routes</div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">find</span>(place_from, place_to, selector):</div>
-          <div class="code_line">    global _onto</div>
-          <div class="code_line">    res_route = []</div>
-          <div class="code_line">    min_size = <span class="py_value">100</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    paths_from = _onto.individuals.getOn(place_from, isAlong_index, selector)</div>
-          <div class="code_line">    paths_to = _onto.individuals.getFrom(hasAlong_index, place_to, selector)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    <span class="py_op">for</span> path_from <span class="py_op">in</span> paths_from:</div>
-          <div class="code_line">        <span class="py_op">for</span> path_to <span class="py_op">in</span> paths_to:</div>
-          <div class="code_line">            routes = findRoutes(path_from, path_to, selector)</div>
-          <div class="code_line">            <span class="py_op">for</span> route <span class="py_op">in</span> routes:</div>
-          <div class="code_line">                <span class="py_op">if</span> route[len(route) - <span class="py_value">1</span>] == path_to:</div>
-          <div class="code_line">                    <span class="py_op">if</span> len(route) < min_size:</div>
-          <div class="code_line">                        min_size = len(route)</div>
-          <div class="code_line">                        res_route = route</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    <span class="py_op">return</span> res_route</div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">if</span> __name__ == <span class="py_string">'__main__'</span>:</div>
-          <div class="code_line">    rospy.init_node(<span class="py_string">'find_our_way'</span>)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    _onto = OntologyManipulatorIndex()</div>
-          <div class="code_line">    _onto.close()</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    isAlong_index = _onto.conversion.objectPropertiesId2Index(<span class="py_string">'isAlong'</span>)</div>
-          <div class="code_line">    hasAlong_index = _onto.conversion.objectPropertiesId2Index(<span class="py_string">'hasAlong'</span>)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    route = find(_onto.conversion.individualsId2Index(<span class="py_string">'pub'</span>),</div>
-          <div class="code_line">                 _onto.conversion.individualsId2Index(<span class="py_string">'house'</span>),</div>
-          <div class="code_line">                 _onto.conversion.classesId2Index(<span class="py_string">'path'</span>))</div>
-          <div class="code_line">    displayRoute(route)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    route = find(_onto.conversion.individualsId2Index(<span class="py_string">'house'</span>),</div>
-          <div class="code_line">                 _onto.conversion.individualsId2Index(<span class="py_string">'car'</span>),</div>
-          <div class="code_line">                 _onto.conversion.classesId2Index(<span class="py_string">'path'</span>))</div>
-          <div class="code_line">    displayRoute(route)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    route = find(_onto.conversion.individualsId2Index(<span class="py_string">'car'</span>),</div>
-          <div class="code_line">                 _onto.conversion.individualsId2Index(<span class="py_string">'house'</span>),</div>
-          <div class="code_line">                 _onto.conversion.classesId2Index(<span class="py_string">'road'</span>))</div>
-          <div class="code_line">    displayRoute(route)</div>
-          <div class="code_line"><br></div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">import</span> <span class="py_imported">rospy</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontologenius</span> <span class="py_import">import</span> <span class="py_imported">OntologyManipulatorIndex</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_var">_onto</span> = <span class="py_key">None</span></div>
+                <div class="code_line"><span class="py_var">isAlong_index</span> = <span class="py_value">0</span></div>
+                <div class="code_line"><span class="py_var">hasAlong_index</span> = <span class="py_value">0</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">displayRoute</span>(<span class="py_var">route</span>):</div>
+                <div class="code_line">    <span class="py_function">print</span>(<span class="py_string">'Route:'</span>)</div>
+                <div class="code_line">    <span class="py_var">route_id</span> = <span class="py_var">_onto</span>.conversion.<span class="py_function">individualsIndexes2Ids</span>(<span class="py_var">route</span>)</div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">point</span> <span class="py_op">in</span> <span class="py_var">route_id</span>:</div>
+                <div class="code_line">        <span class="py_function">print</span>(<span class="py_string">'- '</span> + <span class="py_var">point</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">findRoutes</span>(<span class="py_var">path_from</span>, <span class="py_var">path_to</span>, <span class="py_var">selector</span>):</div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+                <div class="code_line">    <span class="py_var">routes</span> = []</div>
+                <div class="code_line">    <span class="py_var">routes</span>.<span class="py_function">insert</span>(<span class="py_value">0</span>, [<span class="py_var">path_from</span>])</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">found</span> = <span class="py_key">False</span></div>
+                <div class="code_line">    <span class="py_op">if</span> <span class="py_var">path_from</span> == <span class="py_var">path_to</span>:</div>
+                <div class="code_line">        <span class="py_var">found</span> = <span class="py_key">True</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_op">while</span> <span class="py_op">not</span> <span class="py_var">found</span>:</div>
+                <div class="code_line">        <span class="py_var">tmp_routes</span> = []</div>
+                <div class="code_line">        <span class="py_op">for</span> <span class="py_var">route</span> <span class="py_op">in</span> <span class="py_var">routes</span>:</div>
+                <div class="code_line">            <span class="py_var">size</span> = <span class="py_function">len</span>(<span class="py_var">route</span>) - <span class="py_value">1</span></div>
+                <div class="code_line">            <span class="py_var">intersections</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getFrom</span>(<span class="py_var">isAlong_index</span>, <span class="py_var">route</span>[<span class="py_var">size</span>])</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">            <span class="py_op">for</span> <span class="py_var">intersection</span> <span class="py_op">in</span> <span class="py_var">intersections</span>:</div>
+                <div class="code_line">                <span class="py_var">paths</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getOn</span>(<span class="py_var">intersection</span>, <span class="py_var">isAlong_index</span>, <span class="py_var">selector</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">                <span class="py_comment"># erase paths already present in the current route</span></div>
+                <div class="code_line">                <span class="py_var">paths</span> = [<span class="py_var">path</span> <span class="py_op">for</span> <span class="py_var">path</span> <span class="py_op">in</span> <span class="py_var">paths</span> <span class="py_op">if</span> <span class="py_op">not</span> <span class="py_var">path</span> <span class="py_op">in</span> <span class="py_var">route</span>]</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">                <span class="py_op">for</span> <span class="py_var">path</span> <span class="py_op">in</span> <span class="py_var">paths</span>:</div>
+                <div class="code_line">                    <span class="py_var">tmp</span> = <span class="py_imported">list</span>(<span class="py_var">route</span>)</div>
+                <div class="code_line">                    <span class="py_var">tmp</span>.<span class="py_function">insert</span>(<span class="py_function">len</span>(<span class="py_var">tmp</span>), <span class="py_var">intersection</span>)</div>
+                <div class="code_line">                    <span class="py_var">tmp</span>.<span class="py_function">insert</span>(<span class="py_function">len</span>(<span class="py_var">tmp</span>), <span class="py_var">path</span>)</div>
+                <div class="code_line">                    <span class="py_var">tmp_routes</span>.<span class="py_function">insert</span>(<span class="py_function">len</span>(<span class="py_var">tmp_routes</span>), <span class="py_var">tmp</span>)</div>
+                <div class="code_line">                    <span class="py_op">if</span> <span class="py_var">path</span> == <span class="py_var">path_to</span>:</div>
+                <div class="code_line">                        <span class="py_var">found</span> = <span class="py_key">True</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_var">routes</span> = <span class="py_imported">list</span>(<span class="py_var">tmp_routes</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_op">return</span> <span class="py_var">routes</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">find</span>(<span class="py_var">place_from</span>, <span class="py_var">place_to</span>, <span class="py_var">selector</span>):</div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+                <div class="code_line">    <span class="py_var">res_route</span> = []</div>
+                <div class="code_line">    <span class="py_var">min_size</span> = <span class="py_value">100</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">paths_from</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getOn</span>(<span class="py_var">place_from</span>, <span class="py_var">isAlong_index</span>, <span class="py_var">selector</span>)</div>
+                <div class="code_line">    <span class="py_var">paths_to</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getFrom</span>(<span class="py_var">hasAlong_index</span>, <span class="py_var">place_to</span>, <span class="py_var">selector</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">path_from</span> <span class="py_op">in</span> <span class="py_var">paths_from</span>:</div>
+                <div class="code_line">        <span class="py_op">for</span> <span class="py_var">path_to</span> <span class="py_op">in</span> <span class="py_var">paths_to</span>:</div>
+                <div class="code_line">            <span class="py_var">routes</span> = <span class="py_function">findRoutes</span>(<span class="py_var">path_from</span>, <span class="py_var">path_to</span>, <span class="py_var">selector</span>)</div>
+                <div class="code_line">            <span class="py_op">for</span> <span class="py_var">route</span> <span class="py_op">in</span> <span class="py_var">routes</span>:</div>
+                <div class="code_line">                <span class="py_op">if</span> <span class="py_var">route</span>[<span class="py_function">len</span>(<span class="py_var">route</span>) - <span class="py_value">1</span>] == <span class="py_var">path_to</span>:</div>
+                <div class="code_line">                    <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">route</span>) < <span class="py_var">min_size</span>:</div>
+                <div class="code_line">                        <span class="py_var">min_size</span> = <span class="py_function">len</span>(<span class="py_var">route</span>)</div>
+                <div class="code_line">                        <span class="py_var">res_route</span> = <span class="py_var">route</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_op">return</span> <span class="py_var">res_route</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">main</span>()</span>:</div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+                <div class="code_line">    <span class="py_imported">rospy</span>.<span class="py_function">init_node</span>(<span class="py_string">'find_our_way'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">_onto</span> = <span class="py_imported">OntologyManipulatorIndex</span>()</div>
+                <div class="code_line">    <span class="py_var">_onto</span>.<span class="py_function">close</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">isAlong_index</span> = <span class="py_var">_onto</span>.conversion.<span class="py_function">objectPropertiesId2Index</span>(<span class="py_string">'isAlong'</span>)</div>
+                <div class="code_line">    <span class="py_var">hasAlong_index</span> = <span class="py_var">_onto</span>.conversion.<span class="py_function">objectPropertiesId2Index</span>(<span class="py_string">'hasAlong'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">route</span> = <span class="py_function">find</span>(<span class="py_var">_onto</span>.conversion.<span class="py_function">individualsId2Index</span>(<span class="py_string">'pub'</span>),</div>
+                <div class="code_line">                 <span class="py_var">_onto</span>.conversion.<span class="py_function">individualsId2Index</span>(<span class="py_string">'house'</span>),</div>
+                <div class="code_line">                 <span class="py_var">_onto</span>.conversion.<span class="py_function">classesId2Index</span>(<span class="py_string">'>path'</span>))</div>
+                <div class="code_line">    <span class="py_function">displayRoute</span>(<span class="py_var">route</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">route</span> = <span class="py_function">find</span>(<span class="py_var">_onto</span>.conversion.<span class="py_function">individualsId2Index</span>(<span class="py_string">'house'</span>),</div>
+                <div class="code_line">                 <span class="py_var">_onto</span>.conversion.<span class="py_function">individualsId2Index</span>(<span class="py_string">'car'</span>),</div>
+                <div class="code_line">                 <span class="py_var">_onto</span>.conversion.<span class="py_function">classesId2Index</span>(<span class="py_string">'path'</span>))</div>
+                <div class="code_line">    <span class="py_function">displayRoute</span>(<span class="py_var">route</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">route</span> = <span class="py_function">find</span>(<span class="py_var">_onto</span>.conversion.<span class="py_function">individualsId2Index</span>(<span class="py_string">'car'</span>),</div>
+                <div class="code_line">                 <span class="py_var">_onto</span>.conversion.<span class="py_function">individualsId2Index</span>(<span class="py_string">'house'</span>),</div>
+                <div class="code_line">                 <span class="py_var">_onto</span>.conversion.<span class="py_function">classesId2Index</span>(<span class="py_string">'road'</span>))</div>
+                <div class="code_line">    <span class="py_function">displayRoute</span>(<span class="py_var">route</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_op">if</span> <span class="py_var">__name__</span> == <span class="py_string">'__main__'</span>:</div>
+                <div class="code_line">    <span class="py_function">main</span>()</span>:</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">import</span> <span class="py_imported">rclpy</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontopy</span> <span class="py_import">import</span> <span class="py_imported">OntologyManipulatorIndex</span>, <span class="py_imported">Ontoros</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_var">_onto</span> = <span class="py_key">None</span></div>
+                <div class="code_line"><span class="py_var">isAlong_index</span> = <span class="py_value">0</span></div>
+                <div class="code_line"><span class="py_var">hasAlong_index</span> = <span class="py_value">0</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">displayRoute</span>(<span class="py_var">route</span>):</div>
+                <div class="code_line">    <span class="py_imported">Ontoros</span>().<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'Route:'</span>)</div>
+                <div class="code_line">    <span class="py_var">route_id</span> = <span class="py_var">_onto</span>.conversion.<span class="py_function">individualsIndexes2Ids</span>(<span class="py_var">route</span>)</div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">point</span> <span class="py_op">in</span> <span class="py_var">route_id</span>:</div>
+                <div class="code_line">        <span class="py_imported">Ontoros</span>().<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'- '</span> + <span class="py_var">point</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">findRoutes</span>(<span class="py_var">path_from</span>, <span class="py_var">path_to</span>, <span class="py_var">selector</span>):</div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+                <div class="code_line">    <span class="py_var">routes</span> = []</div>
+                <div class="code_line">    <span class="py_var">routes</span>.<span class="py_function">insert</span>(<span class="py_value">0</span>, [<span class="py_var">path_from</span>])</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">found</span> = <span class="py_key">False</span></div>
+                <div class="code_line">    <span class="py_op">if</span> <span class="py_var">path_from</span> == <span class="py_var">path_to</span>:</div>
+                <div class="code_line">        <span class="py_var">found</span> = <span class="py_key">True</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_op">while</span> <span class="py_op">not</span> <span class="py_var">found</span>:</div>
+                <div class="code_line">        <span class="py_var">tmp_routes</span> = []</div>
+                <div class="code_line">        <span class="py_op">for</span> <span class="py_var">route</span> <span class="py_op">in</span> <span class="py_var">routes</span>:</div>
+                <div class="code_line">            <span class="py_var">size</span> = <span class="py_function">len</span>(<span class="py_var">route</span>) - <span class="py_value">1</span></div>
+                <div class="code_line">            <span class="py_var">intersections</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getFrom</span>(<span class="py_var">isAlong_index</span>, <span class="py_var">route</span>[<span class="py_var">size</span>])</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">            <span class="py_op">for</span> <span class="py_var">intersection</span> <span class="py_op">in</span> <span class="py_var">intersections</span>:</div>
+                <div class="code_line">                <span class="py_var">paths</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getOn</span>(<span class="py_var">intersection</span>, <span class="py_var">isAlong_index</span>, <span class="py_var">selector</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">                <span class="py_comment"># erase paths already present in the current route</span></div>
+                <div class="code_line">                <span class="py_var">paths</span> = [<span class="py_var">path</span> <span class="py_op">for</span> <span class="py_var">path</span> <span class="py_op">in</span> <span class="py_var">paths</span> <span class="py_op">if</span> <span class="py_op">not</span> <span class="py_var">path</span> <span class="py_op">in</span> <span class="py_var">route</span>]</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">                <span class="py_op">for</span> <span class="py_var">path</span> <span class="py_op">in</span> <span class="py_var">paths</span>:</div>
+                <div class="code_line">                    <span class="py_var">tmp</span> = <span class="py_imported">list</span>(<span class="py_var">route</span>)</div>
+                <div class="code_line">                    <span class="py_var">tmp</span>.<span class="py_function">insert</span>(<span class="py_function">len</span>(<span class="py_var">tmp</span>), <span class="py_var">intersection</span>)</div>
+                <div class="code_line">                    <span class="py_var">tmp</span>.<span class="py_function">insert</span>(<span class="py_function">len</span>(<span class="py_var">tmp</span>), <span class="py_var">path</span>)</div>
+                <div class="code_line">                    <span class="py_var">tmp_routes</span>.<span class="py_function">insert</span>(<span class="py_function">len</span>(<span class="py_var">tmp_routes</span>), <span class="py_var">tmp</span>)</div>
+                <div class="code_line">                    <span class="py_op">if</span> <span class="py_var">path</span> == <span class="py_var">path_to</span>:</div>
+                <div class="code_line">                        <span class="py_var">found</span> = <span class="py_key">True</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_var">routes</span> = <span class="py_imported">list</span>(<span class="py_var">tmp_routes</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_op">return</span> <span class="py_var">routes</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">find</span>(<span class="py_var">place_from</span>, <span class="py_var">place_to</span>, <span class="py_var">selector</span>):</div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+                <div class="code_line">    <span class="py_var">res_route</span> = []</div>
+                <div class="code_line">    <span class="py_var">min_size</span> = <span class="py_value">100</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">paths_from</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getOn</span>(<span class="py_var">place_from</span>, <span class="py_var">isAlong_index</span>, <span class="py_var">selector</span>)</div>
+                <div class="code_line">    <span class="py_var">paths_to</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getFrom</span>(<span class="py_var">hasAlong_index</span>, <span class="py_var">place_to</span>, <span class="py_var">selector</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">path_from</span> <span class="py_op">in</span> <span class="py_var">paths_from</span>:</div>
+                <div class="code_line">        <span class="py_op">for</span> <span class="py_var">path_to</span> <span class="py_op">in</span> <span class="py_var">paths_to</span>:</div>
+                <div class="code_line">            <span class="py_var">routes</span> = <span class="py_function">findRoutes</span>(<span class="py_var">path_from</span>, <span class="py_var">path_to</span>, <span class="py_var">selector</span>)</div>
+                <div class="code_line">            <span class="py_op">for</span> <span class="py_var">route</span> <span class="py_op">in</span> <span class="py_var">routes</span>:</div>
+                <div class="code_line">                <span class="py_op">if</span> <span class="py_var">route</span>[<span class="py_function">len</span>(<span class="py_var">route</span>) - <span class="py_value">1</span>] == <span class="py_var">path_to</span>:</div>
+                <div class="code_line">                    <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">route</span>) < <span class="py_var">min_size</span>:</div>
+                <div class="code_line">                        <span class="py_var">min_size</span> = <span class="py_function">len</span>(<span class="py_var">route</span>)</div>
+                <div class="code_line">                        <span class="py_var">res_route</span> = <span class="py_var">route</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_op">return</span> <span class="py_var">res_route</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">main</span>()</span>:</div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+                <div class="code_line">    <span class="py_imported">rclpy</span>.<span class="py_function">init</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">_onto</span> = <span class="py_imported">OntologyManipulatorIndex</span>()</div>
+                <div class="code_line">    <span class="py_var">_onto</span>.<span class="py_function">close</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">isAlong_index</span> = <span class="py_var">_onto</span>.conversion.<span class="py_function">objectPropertiesId2Index</span>(<span class="py_string">'isAlong'</span>)</div>
+                <div class="code_line">    <span class="py_var">hasAlong_index</span> = <span class="py_var">_onto</span>.conversion.<span class="py_function">objectPropertiesId2Index</span>(<span class="py_string">'hasAlong'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">route</span> = <span class="py_function">find</span>(<span class="py_var">_onto</span>.conversion.<span class="py_function">individualsId2Index</span>(<span class="py_string">'pub'</span>),</div>
+                <div class="code_line">                 <span class="py_var">_onto</span>.conversion.<span class="py_function">individualsId2Index</span>(<span class="py_string">'house'</span>),</div>
+                <div class="code_line">                 <span class="py_var">_onto</span>.conversion.<span class="py_function">classesId2Index</span>(<span class="py_string">'>path'</span>))</div>
+                <div class="code_line">    <span class="py_function">displayRoute</span>(<span class="py_var">route</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">route</span> = <span class="py_function">find</span>(<span class="py_var">_onto</span>.conversion.<span class="py_function">individualsId2Index</span>(<span class="py_string">'house'</span>),</div>
+                <div class="code_line">                 <span class="py_var">_onto</span>.conversion.<span class="py_function">individualsId2Index</span>(<span class="py_string">'car'</span>),</div>
+                <div class="code_line">                 <span class="py_var">_onto</span>.conversion.<span class="py_function">classesId2Index</span>(<span class="py_string">'path'</span>))</div>
+                <div class="code_line">    <span class="py_function">displayRoute</span>(<span class="py_var">route</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">route</span> = <span class="py_function">find</span>(<span class="py_var">_onto</span>.conversion.<span class="py_function">individualsId2Index</span>(<span class="py_string">'car'</span>),</div>
+                <div class="code_line">                 <span class="py_var">_onto</span>.conversion.<span class="py_function">individualsId2Index</span>(<span class="py_string">'house'</span>),</div>
+                <div class="code_line">                 <span class="py_var">_onto</span>.conversion.<span class="py_function">classesId2Index</span>(<span class="py_string">'road'</span>))</div>
+                <div class="code_line">    <span class="py_function">displayRoute</span>(<span class="py_var">route</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_op">if</span> <span class="py_var">__name__</span> == <span class="py_string">'__main__'</span>:</div>
+                <div class="code_line">    <span class="py_function">main</span>()</span>:</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <nav class="course-pagination">

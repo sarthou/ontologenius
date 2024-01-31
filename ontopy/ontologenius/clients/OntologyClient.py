@@ -1,5 +1,3 @@
-import rospy
-
 from .ClientBase import ClientBase
 
 class OntologyClient(ClientBase):

@@ -4,10 +4,12 @@
   <title>Feed and generalize (cpp) : Insert new knowledge</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
   <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <script src="../../scripts/tabs.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -57,7 +59,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../../Download.html">Download</a></li>
-            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
@@ -137,33 +141,77 @@
           removes the s of the plural of a word when it is present, and especially some regular expressions
           that I will explain to you.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;regex&gt;</span></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;algorithm&gt;</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ros/ros.h&quot;</span></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;std_msgs/String.h&quot;</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologyManipulator.h&quot;</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line">onto::<span class="cpp_type">OntologyManipulator</span><span class="cpp_op">*</span> onto_;</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">std::<span class="cpp_type">regex</span> is_a(<span class="cpp_string">&quot;(a\\s|the\\s)?(\\w+)\\s(is\\sa|is\\san|are)\\s(\\w+)&quot;</span>);</div>
-          <div class="code_line">std::<span class="cpp_type">regex</span> property(<span class="cpp_string">&quot;(a\\s)?(\\w+)\\scan\\s(not\\s)?(\\w+)&quot;</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">std::<span class="cpp_type">regex</span> question(<span class="cpp_string">&quot;can\\s(a\\s)?(\\w+)\\s(\\w+)\\s?\\?&quot;</span>);</div>
-          <div class="code_line">std::<span class="cpp_type">regex</span> what_is(<span class="cpp_string">&quot;what\\s(is|are)\\s(a\\s)?(\\w+)\\s?\\?&quot;</span>);</div>
-          <div class="code_line">std::<span class="cpp_type">regex</span> is_it_a(<span class="cpp_string">&quot;(is\\sa|are)\\s(\\w+)\\s(is\\sa\\s|is\\san\\s|a\\s|an\\s)?(\\w+)\\s?\\?&quot;</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">std::<span class="cpp_type">string</span> singular(std::<span class="cpp_type">string</span> word)</div>
-          <div class="code_line">{</div>
-          <div class="code_line">  <span class="cpp_op">if</span>(word[word.size() <span class="cpp_op">-</span> <span class="cpp_value">1</span>] <span class="cpp_op">==</span> <span class="cpp_string">'s'</span>)</div>
-          <div class="code_line">    word <span class="cpp_op">=</span> word.substr(<span class="cpp_value">0</span>, word.size() <span class="cpp_op">-</span> <span class="cpp_value">1</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_return">return</span> word;</div>
-          <div class="code_line">}</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+
+          <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;regex&gt;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;algorithm&gt;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ros/ros.h&quot;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;std_msgs/String.h&quot;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologyManipulator.h&quot;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span>* <span class="cpp_var">onto_</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">regex</span> <span class="cpp_var">is_a</span>(<span class="cpp_string">&quot;(a\\s|the\\s)?(\\w+)\\s(is\\sa|is\\san|are)\\s(\\w+)&quot;</span>);</div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">regex</span> <span class="cpp_var">property</span>(<span class="cpp_string">&quot;(a\\s)?(\\w+)\\scan\\s(not\\s)?(\\w+)&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">regex</span> <span class="cpp_var">question</span>(<span class="cpp_string">&quot;can\\s(a\\s)?(\\w+)\\s(\\w+)\\s?\\?&quot;</span>);</div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">regex</span> <span class="cpp_var">what_is</span>(<span class="cpp_string">&quot;what\\s(is|are)\\s(a\\s)?(\\w+)\\s?\\?&quot;</span>);</div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">regex</span> <span class="cpp_var">is_it_a</span>(<span class="cpp_string">&quot;(is\\sa|are)\\s(\\w+)\\s(is\\sa\\s|is\\san\\s|a\\s|an\\s)?(\\w+)\\s?\\?&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_function">singular</span>(<span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">word</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_var">word</span>.<span class="cpp_function">back</span>() == <span class="cpp_string">'s'</span>)</div>
+                <div class="code_line">    <span class="cpp_var">word</span> = <span class="cpp_var">word</span>.<span class="cpp_function">substr</span>(<span class="cpp_value">0</span>, <span class="cpp_var">word</span>.<span class="cpp_function">size</span>() - <span class="cpp_value">1</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_var">word</span>;</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;regex&gt;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;algorithm&gt;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;rclcpp/rclcpp.hpp&quot;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;std_msgs/msg/string.hpp&quot;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologyManipulator.h&quot;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span>* <span class="cpp_var">onto_</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">regex</span> <span class="cpp_var">is_a</span>(<span class="cpp_string">&quot;(a\\s|the\\s)?(\\w+)\\s(is\\sa|is\\san|are)\\s(\\w+)&quot;</span>);</div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">regex</span> <span class="cpp_var">property</span>(<span class="cpp_string">&quot;(a\\s)?(\\w+)\\scan\\s(not\\s)?(\\w+)&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">regex</span> <span class="cpp_var">question</span>(<span class="cpp_string">&quot;can\\s(a\\s)?(\\w+)\\s(\\w+)\\s?\\?&quot;</span>);</div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">regex</span> <span class="cpp_var">what_is</span>(<span class="cpp_string">&quot;what\\s(is|are)\\s(a\\s)?(\\w+)\\s?\\?&quot;</span>);</div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">regex</span> <span class="cpp_var">is_it_a</span>(<span class="cpp_string">&quot;(is\\sa|are)\\s(\\w+)\\s(is\\sa\\s|is\\san\\s|a\\s|an\\s)?(\\w+)\\s?\\?&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_function">singular</span>(<span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">word</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_var">word</span>.<span class="cpp_function">back</span>() == <span class="cpp_string">'s'</span>)</div>
+                <div class="code_line">    <span class="cpp_var">word</span> = <span class="cpp_var">word</span>.<span class="cpp_function">substr</span>(<span class="cpp_value">0</span>, <span class="cpp_var">word</span>.<span class="cpp_function">size</span>() - <span class="cpp_value">1</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_var">word</span>;</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>We have described here five regexes that correspond to the five types of sentences that our chatbot
@@ -187,81 +235,160 @@
         <p>We will now write the callback function of a ROS topic that will determine the type of sentence and
           perform the actions corresponding to each type of sentence.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 27;">
-          <div class="code_line"><span class="cpp_type">void</span> inputCallback(<span class="cpp_op">const</span> std_msgs::<span class="cpp_type">String</span>::ConstPtr<span class="cpp_op">&</span> msg)</div>
-          <div class="code_line">{</div>
-          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> msg<span class="cpp_op">-></span>data <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line">  std::<span class="cpp_type">string</span> response <span class="cpp_op">=</span> <span class="cpp_string">&quot;&quot;</span>;</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  std::smatch match;</div>
-          <div class="code_line">  <span class="cpp_op">if</span>(std::regex_match(msg<span class="cpp_op">-></span>data, match, is_a))</div>
-          <div class="code_line">    onto_<span class="cpp_op">-></span>feeder.addInheritage( singular(match[<span class="cpp_value">2</span>].str()), singular(match[<span class="cpp_value">4</span>].str()) );</div>
-          <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(std::regex_match(msg<span class="cpp_op">-></span>data, match, property))</div>
-          <div class="code_line">  {</div>
-          <div class="code_line">    <span class="cpp_op">if</span>(match[<span class="cpp_value">3</span>].str() <span class="cpp_op">==</span> <span class="cpp_string">&quot;&quot;</span>)</div>
-          <div class="code_line">    {</div>
-          <div class="code_line">      onto_<span class="cpp_op">-></span>feeder.removeProperty( singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span>+singular(match[<span class="cpp_value">4</span>].str()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
-          <div class="code_line">      onto_<span class="cpp_op">-></span>feeder.addProperty( singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span>+singular(match[<span class="cpp_value">4</span>].str()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
-          <div class="code_line">    }</div>
-          <div class="code_line">    <span class="cpp_op">else</span></div>
-          <div class="code_line">    {</div>
-          <div class="code_line">      onto_<span class="cpp_op">-></span>feeder.removeProperty( singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span>+singular(match[<span class="cpp_value">4</span>].str()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
-          <div class="code_line">      onto_<span class="cpp_op">-></span>feeder.addProperty( singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span>+singular(match[<span class="cpp_value">4</span>].str()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
-          <div class="code_line">    }</div>
-          <div class="code_line">  }</div>
-          <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(std::regex_match(msg<span class="cpp_op">-&gt;</span>data, match, question))</div>
-          <div class="code_line">  {</div>
-          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getOn(singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span> <span class="cpp_op">+</span> match[<span class="cpp_value">3</span>].str());</div>
-          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
-          <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getOn(singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span> <span class="cpp_op">+</span> match[<span class="cpp_value">3</span>].str());</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    <span class="cpp_op">if</span>(res.size())</div>
-          <div class="code_line">      response <span class="cpp_op">=</span> (res[<span class="cpp_value">0</span>] <span class="cpp_op">==</span> <span class="cpp_string">&quot;bool#true&quot;</span>) ? <span class="cpp_string">&quot;yes&quot;</span> : <span class="cpp_string">&quot;no&quot;</span>;</div>
-          <div class="code_line">    <span class="cpp_op">else</span></div>
-          <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;I do not know&quot;</span>;</div>
-          <div class="code_line">  }</div>
-          <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(std::regex_match(msg<span class="cpp_op">-&gt;</span>data, match, what_is))</div>
-          <div class="code_line">  {</div>
-          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getUp( singular(match[<span class="cpp_value">3</span>].str()), <span class="cpp_value">1</span>);</div>
-          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
-          <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getUp( singular(match[<span class="cpp_value">3</span>].str()), <span class="cpp_value">1</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
-          <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;I do not know&quot;</span>;</div>
-          <div class="code_line">    <span class="cpp_op">else</span></div>
-          <div class="code_line">    {</div>
-          <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;it is a : &quot;</span>;</div>
-          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> res.size(); i<span class="cpp_op">++</span>)</div>
-          <div class="code_line">        response <span class="cpp_op">+=</span> res[i] <span class="cpp_op">+</span> <span class="cpp_string">&quot; &quot;</span>;</div>
-          <div class="code_line">    }</div>
-          <div class="code_line">  }</div>
-          <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(std::regex_match(msg<span class="cpp_op">-&gt;</span>data, match, is_it_a))</div>
-          <div class="code_line">  {</div>
-          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getUp( singular(match[<span class="cpp_value">2</span>].str()) );</div>
-          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
-          <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getUp( singular(match[<span class="cpp_value">2</span>].str()) );</div>
-          <div class="code_line">    <span class="cpp_op">if</span>(std::find(res.begin(), res.end(), singular(match[<span class="cpp_value">4</span>].str()) ) <span class="cpp_op">!=</span> res.end())</div>
-          <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;yes&quot;</span>;</div>
-          <div class="code_line">    <span class="cpp_op">else</span></div>
-          <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;no&quot;</span>;</div>
-          <div class="code_line">  }</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_op">if</span>(response <span class="cpp_op">!=</span> <span class="cpp_string">&quot;&quot;</span>)</div>
-          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;==> &quot;</span> <span class="cpp_op">&lt;&lt;</span> response <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line">}</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-1-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-1-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-1-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-1-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+
+          <div aria-labelledby="tab-1-Ros1" class="lang-tabs-panel group-tab" id="panel-1-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 27;">
+                <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">inputCallback</span>(<span class="cpp_key">const</span> <span class="cpp_type">std_msgs</span>::<span class="cpp_type">String</span>::<span class="cpp_type">ConstPtr</span><span class="cpp_key">&</span> <span class="cpp_var">msg</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_var">msg</span>-&gt;data &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">response</span> = <span class="cpp_string">&quot;&quot;</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">smatch</span> <span class="cpp_var">match</span>;</div>
+                <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">is_a</span>))</div>
+                <div class="code_line">    <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addInheritage</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) );</div>
+                <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">property</span>))</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>() == <span class="cpp_string">&quot;&quot;</span>)</div>
+                <div class="code_line">    {</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+                <div class="code_line">    }</div>
+                <div class="code_line">    <span class="cpp_op">else</span></div>
+                <div class="code_line">    {</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+                <div class="code_line">    }</div>
+                <div class="code_line">  }</div>
+                <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">question</span>))</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span> + <span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>());</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>() == <span class="cpp_value">0</span>)</div>
+                <div class="code_line">      <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;classes.<span class="cpp_function">getOn</span>(<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span> + <span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>());</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>())</div>
+                <div class="code_line">      <span class="cpp_var">response</span> = (<span class="cpp_var">res</span>[<span class="cpp_value">0</span>] == <span class="cpp_string">&quot;bool#true&quot;</span>) ? <span class="cpp_string">&quot;yes&quot;</span> : <span class="cpp_string">&quot;no&quot;</span>;</div>
+                <div class="code_line">    <span class="cpp_op">else</span></div>
+                <div class="code_line">      <span class="cpp_var">response</span> = <span class="cpp_string">&quot;I do not know&quot;</span>;</div>
+                <div class="code_line">  }</div>
+                <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">what_is</span>))</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getUp</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>()), <span class="cpp_value">1</span>);</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>() == <span class="cpp_value">0</span>)</div>
+                <div class="code_line">      <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;classes.<span class="cpp_function">getUp</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>()), <span class="cpp_value">1</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>() == <span class="cpp_value">0</span>)</div>
+                <div class="code_line">      <span class="cpp_var">response</span> = <span class="cpp_string">&quot;I do not know&quot;</span>;</div>
+                <div class="code_line">    <span class="cpp_op">else</span></div>
+                <div class="code_line">    {</div>
+                <div class="code_line">      <span class="cpp_var">response</span> = <span class="cpp_string">&quot;it is a : &quot;</span>;</div>
+                <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">word</span> : <span class="cpp_var">res</span>)</div>
+                <div class="code_line">        <span class="cpp_var">response</span> += <span class="cpp_var">word</span> + <span class="cpp_string">&quot; &quot;</span>;</div>
+                <div class="code_line">    }</div>
+                <div class="code_line">  }</div>
+                <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">is_it_a</span>))</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getUp</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()) );</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>() == <span class="cpp_value">0</span>)</div>
+                <div class="code_line">      <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;classes.<span class="cpp_function">getUp</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()) );</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">find</span>(<span class="cpp_var">res</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">res</span>.<span class="cpp_function">end</span>(), <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) ) != <span class="cpp_var">res</span>.<span class="cpp_function">end</span>())</div>
+                <div class="code_line">      <span class="cpp_var">response</span> = <span class="cpp_string">&quot;yes&quot;</span>;</div>
+                <div class="code_line">    <span class="cpp_op">else</span></div>
+                <div class="code_line">      <span class="cpp_var">response</span> = <span class="cpp_string">&quot;no&quot;</span>;</div>
+                <div class="code_line">  }</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_var">response</span> != <span class="cpp_string">&quot;&quot;</span>)</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;==> &quot;</span> &lt;&lt; <span class="cpp_var">response</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 27;">
+                <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">inputCallback</span>(<span class="cpp_key">const</span> <span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">msg</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_var">msg</span>-&gt;data &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">response</span> = <span class="cpp_string">&quot;&quot;</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">smatch</span> <span class="cpp_var">match</span>;</div>
+                <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">is_a</span>))</div>
+                <div class="code_line">    <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addInheritage</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) );</div>
+                <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">property</span>))</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>() == <span class="cpp_string">&quot;&quot;</span>)</div>
+                <div class="code_line">    {</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+                <div class="code_line">    }</div>
+                <div class="code_line">    <span class="cpp_op">else</span></div>
+                <div class="code_line">    {</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+                <div class="code_line">    }</div>
+                <div class="code_line">  }</div>
+                <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">question</span>))</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span> + <span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>());</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>() == <span class="cpp_value">0</span>)</div>
+                <div class="code_line">      <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;classes.<span class="cpp_function">getOn</span>(<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span> + <span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>());</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>())</div>
+                <div class="code_line">      <span class="cpp_var">response</span> = (<span class="cpp_var">res</span>[<span class="cpp_value">0</span>] == <span class="cpp_string">&quot;bool#true&quot;</span>) ? <span class="cpp_string">&quot;yes&quot;</span> : <span class="cpp_string">&quot;no&quot;</span>;</div>
+                <div class="code_line">    <span class="cpp_op">else</span></div>
+                <div class="code_line">      <span class="cpp_var">response</span> = <span class="cpp_string">&quot;I do not know&quot;</span>;</div>
+                <div class="code_line">  }</div>
+                <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">what_is</span>))</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getUp</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>()), <span class="cpp_value">1</span>);</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>() == <span class="cpp_value">0</span>)</div>
+                <div class="code_line">      <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;classes.<span class="cpp_function">getUp</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>()), <span class="cpp_value">1</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>() == <span class="cpp_value">0</span>)</div>
+                <div class="code_line">      <span class="cpp_var">response</span> = <span class="cpp_string">&quot;I do not know&quot;</span>;</div>
+                <div class="code_line">    <span class="cpp_op">else</span></div>
+                <div class="code_line">    {</div>
+                <div class="code_line">      <span class="cpp_var">response</span> = <span class="cpp_string">&quot;it is a : &quot;</span>;</div>
+                <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">word</span> : <span class="cpp_var">res</span>)</div>
+                <div class="code_line">        <span class="cpp_var">response</span> += <span class="cpp_var">word</span> + <span class="cpp_string">&quot; &quot;</span>;</div>
+                <div class="code_line">    }</div>
+                <div class="code_line">  }</div>
+                <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">is_it_a</span>))</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getUp</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()) );</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>() == <span class="cpp_value">0</span>)</div>
+                <div class="code_line">      <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;classes.<span class="cpp_function">getUp</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()) );</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">find</span>(<span class="cpp_var">res</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">res</span>.<span class="cpp_function">end</span>(), <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) ) != <span class="cpp_var">res</span>.<span class="cpp_function">end</span>())</div>
+                <div class="code_line">      <span class="cpp_var">response</span> = <span class="cpp_string">&quot;yes&quot;</span>;</div>
+                <div class="code_line">    <span class="cpp_op">else</span></div>
+                <div class="code_line">      <span class="cpp_var">response</span> = <span class="cpp_string">&quot;no&quot;</span>;</div>
+                <div class="code_line">  }</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_var">response</span> != <span class="cpp_string">&quot;&quot;</span>)</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;==> &quot;</span> &lt;&lt; <span class="cpp_var">response</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>Let's break down the code:</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 33;">
-          <div class="code_line">  <span class="cpp_op">if</span>(std::regex_match(msg<span class="cpp_op">-></span>data, match, is_a))</div>
+          <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">is_a</span>))</div>
         </div>
 
         <p>We test here if the sentence sent to the topic corresponds to the regexp is_a. If so, then the
            different matches will be put in the match variable. We will do the same for all the regexp.</p>
 
          <div class="code_block cpp_code" style="counter-reset:code_line 34;">
-           <div class="code_line">    onto_<span class="cpp_op">-></span>feeder.addInheritage( singular(match[<span class="cpp_value">2</span>].str()), singular(match[<span class="cpp_value">4</span>].str()) );</div>
+           <div class="code_line">    <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addInheritage</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) );</div>
          </div>
 
          <p>If the sentence matches a heritage relationship, we add the inheritance relationship via the
@@ -269,10 +396,10 @@
          <p>Note that we do not directly pass the matches in the parameters but their singular version.</p>
 
          <div class="code_block cpp_code" style="counter-reset:code_line 37;">
-           <div class="code_line">    <span class="cpp_op">if</span>(match[<span class="cpp_value">3</span>].str() <span class="cpp_op">==</span> <span class="cpp_string">&quot;&quot;</span>)</div>
+           <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>() == <span class="cpp_string">&quot;&quot;</span>)</div>
            <div class="code_line">    {</div>
-           <div class="code_line">      onto_<span class="cpp_op">-></span>feeder.removeProperty( singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span>+singular(match[<span class="cpp_value">4</span>].str()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
-           <div class="code_line">      onto_<span class="cpp_op">-></span>feeder.addProperty( singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span>+singular(match[<span class="cpp_value">4</span>].str()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+           <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+           <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
            <div class="code_line">    }</div>
         </div>
 
@@ -293,14 +420,14 @@
           times after, the property will exist and will be reused.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 50;">
-          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getOn(singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span> <span class="cpp_op">+</span> match[<span class="cpp_value">3</span>].str());</div>
-          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
-          <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getOn(singular(match[<span class="cpp_value">2</span>].str()), <span class="cpp_string">&quot;can_&quot;</span> <span class="cpp_op">+</span> match[<span class="cpp_value">3</span>].str());</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span> + <span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>());</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>() == <span class="cpp_value">0</span>)</div>
+          <div class="code_line">      <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;classes.<span class="cpp_function">getOn</span>(<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span> + <span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>());</div>
           <div class="code_line"><br></div>
-          <div class="code_line">    <span class="cpp_op">if</span>(res.size())</div>
-          <div class="code_line">      response <span class="cpp_op">=</span> (res[<span class="cpp_value">0</span>] <span class="cpp_op">==</span> <span class="cpp_string">&quot;bool#true&quot;</span>) ? <span class="cpp_string">&quot;yes&quot;</span> : <span class="cpp_string">&quot;no&quot;</span>;</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>())</div>
+          <div class="code_line">      <span class="cpp_var">response</span> = (<span class="cpp_var">res</span>[<span class="cpp_value">0</span>] == <span class="cpp_string">&quot;bool#true&quot;</span>) ? <span class="cpp_string">&quot;yes&quot;</span> : <span class="cpp_string">&quot;no&quot;</span>;</div>
           <div class="code_line">    <span class="cpp_op">else</span></div>
-          <div class="code_line">      response <span class="cpp_op">=</span> <span class="cpp_string">&quot;I do not know&quot;</span>;</div>
+          <div class="code_line">      <span class="cpp_var">response</span> = <span class="cpp_string">&quot;I do not know&quot;</span>;</div>
         </div>
 
         <p>We are trying here to answer a question such as "can a kiwi fly?" We want to know if the concept
@@ -312,9 +439,9 @@
         <p>If we got an answer, it will be in the form "type#value".</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 61;">
-          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getUp( singular(match[<span class="cpp_value">3</span>].str()), <span class="cpp_value">1</span>);</div>
-          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
-          <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getUp( singular(match[<span class="cpp_value">3</span>].str()), <span class="cpp_value">1</span>);</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getUp</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>()), <span class="cpp_value">1</span>);</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>() == <span class="cpp_value">0</span>)</div>
+          <div class="code_line">      <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;classes.<span class="cpp_function">getUp</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>()), <span class="cpp_value">1</span>);</div>
         </div>
 
         <p>Here we try to answer a question such as "what is a kiwi?" You should directly think about using
@@ -324,10 +451,10 @@
           parameter to 1, we ask to have only direct inheritances.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 76;">
-          <div class="code_line">    std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>individuals.getUp( singular(match[<span class="cpp_value">2</span>].str()));</div>
-          <div class="code_line">    <span class="cpp_op">if</span>(res.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
-          <div class="code_line">      res <span class="cpp_op">=</span> onto_<span class="cpp_op">-&gt;</span>classes.getUp( singular(match[<span class="cpp_value">2</span>].str()) );</div>
-          <div class="code_line">    <span class="cpp_op">if</span>(std::find(res.begin(), res.end(), singular(match[<span class="cpp_value">4</span>].str()) ) <span class="cpp_op">!=</span> res.end())</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getUp</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()));</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">res</span>.<span class="cpp_function">size</span>() == <span class="cpp_value">0</span>)</div>
+          <div class="code_line">      <span class="cpp_var">res</span> = <span class="cpp_var">onto_</span>-&gt;classes.<span class="cpp_function">getUp</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()) );</div>
+          <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">find</span>(<span class="cpp_var">res</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">res</span>.<span class="cpp_function">end</span>(), <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) ) != <span class="cpp_var">res</span>.<span class="cpp_function">end</span>())</div>
         </div>
 
         <p>Finally, we finish on a question of the type "is a kiwi is an animal?". To answer this,
@@ -337,27 +464,76 @@
         <p>Finally, we can write our main function which creates the ontology manipulator, close the ontology,
           and subscribes to the topic "feed_and_generalize/in".</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 89;">
-          <div class="code_line"><span class="cpp_type">int</span> main(<span class="cpp_type">int</span> argc, <span class="cpp_type">char</span><span class="cpp_op">**</span> argv)</div>
-          <div class="code_line">{</div>
-          <div class="code_line">  ros::init(argc, argv, <span class="cpp_string">&quot;feed_and_generalize&quot;</span>);</div>
-          <div class="code_line">  ros::<span class="cpp_type">NodeHandle</span> n;</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto::<span class="cpp_type">OntologyManipulator</span> onto;</div>
-          <div class="code_line">  onto_ <span class="cpp_op">=</span> <span class="cpp_op">&</span>onto;</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto.close();</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  sleep(<span class="cpp_value">1</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto.feeder.addConcept(<span class="cpp_string">&quot;bird&quot;</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  ros::<span class="cpp_type">Subscriber</span> sub <span class="cpp_op">=</span> n.subscribe(<span class="cpp_string">&quot;feed_and_generalize/in&quot;</span>, <span class="cpp_value">1000</span>, inputCallback);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  ros::spin();</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_return">return</span> <span class="cpp_value">0</span>;</div>
-          <div class="code_line">}</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-22-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-22-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-22-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-22-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+
+          <div aria-labelledby="tab-22-Ros1" class="lang-tabs-panel group-tab" id="panel-22-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 100;">
+                <div class="code_line"><span class="cpp_key">int</span> <span class="cpp_function">main</span>(<span class="cpp_key">int</span> <span class="cpp_var">argc</span>, <span class="cpp_key">char**</span> <span class="cpp_var">argv</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>, <span class="cpp_string">&quot;feed_and_generalize&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_type">NodeHandle</span> <span class="cpp_var">n</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line">  <span class="cpp_var">onto_</span> = <span class="cpp_var">onto</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_function">sleep</span>(<span class="cpp_value">1</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.feeder.<span class="cpp_function">addConcept</span>(<span class="cpp_string">&quot;bird&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_type">Subscriber</span> <span class="cpp_var">sub</span> = <span class="cpp_var">n</span>.<span class="cpp_function">subscribe</span>(<span class="cpp_string">&quot;feed_and_generalize/in&quot;</span>, <span class="cpp_value">1000</span>, <span class="cpp_function">inputCallback</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_function">spin</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-22-Ros2" class="lang-tabs-panel group-tab" id="panel-22-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 89;">
+                <div class="code_line"><span class="cpp_key">class</span> <span class="cpp_type">FeederNode</span> : <span class="cpp_key">public</span> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Node</span></div>
+                <div class="code_line">{</div>
+                <div class="code_line"><span class="cpp_key">public</span>:</div>
+                <div class="code_line">  <span class="cpp_function">FeederNode</span>() : <span class="cpp_type">Node</span>(<span class="cpp_string">&quot;feed_and_generalize&quot;</span>)</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_var">subscriber</span> = <span class="cpp_key">this</span>-><span class="cpp_function">create_subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;(<span class="cpp_string">&quot;feed_and_generalize/in&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">inputCallback</span>);</div>
+                <div class="code_line">  }</div>
+                <div class="code_line"><span class="cpp_key">private</span>:</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">subscriber</span>;</div>
+                <div class="code_line">};</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_key">int</span> <span class="cpp_function">main</span>(<span class="cpp_key">int</span> <span class="cpp_var">argc</span>, <span class="cpp_key">char**</span> <span class="cpp_var">argv</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line">  <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Node</span>::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">node</span> = <span class="cpp_type">std</span>::<span class="cpp_function">make_shared</span>&lt;<span class="cpp_type">FeederNode</span>&gt;();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_function">sleep</span>(<span class="cpp_value">1</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.feeder.<span class="cpp_function">addConcept</span>(<span class="cpp_string">&quot;bird&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_function">spin</span>(<span class="cpp_var">node</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>Before moving on, note that we add the concept "bird" before all. This is because to
@@ -365,8 +541,8 @@
           add the fact that a bird is an animal, Ontologenius must know either bird or animal and will
           automatically create the second if it does not exist yet.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 101;">
-          <div class="code_line">  onto.feeder.addConcept(<span class="cpp_string">&quot;bird&quot;</span>);</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 113;">
+          <div class="code_line">  <span class="cpp_var">onto</span>.feeder.<span class="cpp_function">addConcept</span>(<span class="cpp_string">&quot;bird&quot;</span>);</div>
         </div>
 
         <h2>Let's test!</h2>
@@ -374,18 +550,60 @@
         <p>Now that everything is ready, let's launch our program and in another terminal explain to it
           that a kiwi is a bird and that it can not fly:</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a kiwi is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a kiwi can not fly'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-2-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-2-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-2-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-2-Ros1" class="lang-tabs-panel group-tab" id="panel-2-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a kiwi is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a kiwi can not fly'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-2-Ros2" class="lang-tabs-panel group-tab" id="panel-2-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a kiwi is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a kiwi can not fly'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>We can already ask it some questions to evaluate what it knows thanks to this new information:</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'what is a kiwi?'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a kiwi fly ?'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'is a kiwi an animal?'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-3-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-3-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-3-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-3-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-3-Ros1" class="lang-tabs-panel group-tab" id="panel-3-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'what is a kiwi?'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a kiwi fly ?'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'is a kiwi an animal?'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a bird fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-3-Ros2" class="lang-tabs-panel group-tab" id="panel-3-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'what is a kiwi?'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a kiwi fly ?'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'is a kiwi an animal?'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a bird fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>It should answer you (in the terminal where the program is launched) that a kiwi is a bird and
@@ -394,9 +612,29 @@
 
         <p>We can explain to it that a bird is an animal and ask it again if a kiwi is an animal:</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'birds are animals'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'is a kiwi an animal?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-4-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-4-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-4-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-4-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-4-Ros1" class="lang-tabs-panel group-tab" id="panel-4-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'birds are animals'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'is a kiwi an animal?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-4-Ros2" class="lang-tabs-panel group-tab" id="panel-4-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'birds are animals'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'is a kiwi an animal?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>It is obvious but now our program responds to us that a kiwi is an animal as a kiwi is a bird and a
@@ -405,10 +643,31 @@
         <p>So let's learn the concept of a penguin who is a bird that can not fly and then ask it again if
           a bird can fly:</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a penguin is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a penguin can not fly'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-5-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-5-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-5-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-5-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-5-Ros1" class="lang-tabs-panel group-tab" id="panel-5-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a penguin is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a penguin can not fly'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a bird fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-5-Ros2" class="lang-tabs-panel group-tab" id="panel-5-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a penguin is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a penguin can not fly'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a bird fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>Surprisingly, our program now responds to the fact that birds can not fly, which is wrong, but
@@ -421,30 +680,72 @@
         <p>The basic principle is that Ontologenius realizes a generalization if 60% of the individuals
           inheriting from the same classes have the same property and that from two individuals.</p>
 
-        <p>Trying to remove this property with the call of the removeProperty function would have no effect
+        <p>Trying to remove this property with the call of the removeDataProperty function would have no effect
           since it would be deduced again. To make this property accurate, it should be explicitly told that
           birds can fly but we will not do that.</p>
 
         <p>Before continuing, kill Ontologenius and so your program then restarts it and ask it again if the
           birds can fly.</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-6-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-6-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-6-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-6-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-6-Ros1" class="lang-tabs-panel group-tab" id="panel-6-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a bird fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-6-Ros2" class="lang-tabs-panel group-tab" id="panel-6-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a bird fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>It should answer you again no. Yet you have stopped Ontologenius... This is where we understand its
           long-term memory principle as well as the usefulness of the internal file. When stopping Ontologenius,
            it stored all its knowledge in the internal file that is reloaded at the restart.</p>
 
-       <p>We will now teach it the principle of a parrot and a dove that are birds capable of flying and ask it again if
-         the birds can fly.</p>
+        <p>We will now teach it the principle of a parrot and a dove that are birds capable of flying and ask it again if
+          the birds can fly.</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a parrot is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a parrot can fly'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a dove is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a dove can fly'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-7-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-7-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-7-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-7-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-7-Ros1" class="lang-tabs-panel group-tab" id="panel-7-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a parrot is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a parrot can fly'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a dove is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a dove can fly'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a bird fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-7-Ros2" class="lang-tabs-panel group-tab" id="panel-7-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a parrot is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a parrot can fly'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a dove is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a dove can fly'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a bird fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>You had to suspect that the 60% condition is no longer true and our program finds itself in
@@ -452,26 +753,87 @@
 
         <p>Let's learn five new birds that can all fly to reach the threshold of 60%.</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a heron is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a heron can fly'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a gull is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a gull can fly'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-8-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-8-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-8-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-8-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-8-Ros1" class="lang-tabs-panel group-tab" id="panel-8-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a heron is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a heron can fly'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a gull is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a gull can fly'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-8-Ros2" class="lang-tabs-panel group-tab" id="panel-8-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a heron is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a heron can fly'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a gull is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a gull can fly'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>By asking it one last time if the birds can fly you should finally have a good answer from it and
           this without ever having explicitly told it.</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-9-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-9-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-9-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-9-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-9-Ros1" class="lang-tabs-panel group-tab" id="panel-9-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a bird fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-9-Ros2" class="lang-tabs-panel group-tab" id="panel-9-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a bird fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>As I did in the introduction of this tutorial, simply teach it that a phalarope is a bird and ask it
           if it can fly:</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a phalarope is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a phalarope fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-10-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-10-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-10-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-10-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-10-Ros1" class="lang-tabs-panel group-tab" id="panel-10-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a phalarope is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a phalarope fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-10-Ros2" class="lang-tabs-panel group-tab" id="panel-10-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a phalarope is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a phalarope fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>Since it has no information about this and because thinking that birds can fly in general, it
@@ -480,8 +842,27 @@
         <p>However, by asking if a kiwi can fly, you should always have the answer that not that you have
           explicitly given this knowledge.</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a kiwi fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-11-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-11-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-11-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-11-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-11-Ros1" class="lang-tabs-panel group-tab" id="panel-11-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a kiwi fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-11-Ros2" class="lang-tabs-panel group-tab" id="panel-11-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a kiwi fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>So we have seen here how to add new knowledge during the execution of the program and the impact of
@@ -490,8 +871,8 @@
         <p>If you wish, you can delete the internal file Ontologenius has created and try again by adding
           the following line just before closing the ontology in the main function.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 96;">
-          <div class="code_line">onto.reasoners.deactivate(<span class="cpp_string">&quot;ReasonerGeneralize&quot;</span>);</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 108;">
+          <div class="code_line"><span class="cpp_var">onto</span>.reasoners.<span class="cpp_function">deactivate</span>(<span class="cpp_string">&quot;ReasonerGeneralize&quot;</span>);</div>
         </div>
 
         <p>In fact, the generalization mechanism is a reasoning plugin that like all these mechanisms can be

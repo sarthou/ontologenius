@@ -3,10 +3,9 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
-#include <ros/ros.h>
-
-#include "ontologenius/OntologeniusIndexService.h"
+#include "ontologenius/compat/ros.h"
 
 #ifndef COLOR_OFF
 #define COLOR_OFF     "\x1B[0m"
@@ -29,12 +28,13 @@ namespace onto {
 /// A reconnection logic is implemented in the event that the persistent connection fails. 
 class ClientBaseIndex
 {
+  static int16_t ignore_;
 public:
   /// @brief Constructs a ROS client.
   /// @param name is the name of the ontologenius service
   explicit ClientBaseIndex(const std::string& name) : name_(name),
                                                       error_code_(0),
-                                                      client(n_.serviceClient<ontologenius::OntologeniusIndexService>("/ontologenius/" + name, true))
+                                                      client_("/ontologenius/" + name)
   {}
 
   /// @brief Gives the total number of service calls from all ClientBaseIndex instances since the last reset.
@@ -49,38 +49,46 @@ public:
   /// @param action the query action.
   /// @param param the query parameters.
   /// @return Returns a list of string. If the service call fails, the first element of the returned vector is "ERR:SERVICE_FAIL".
-  inline std::vector<std::string> call(const std::string& action, const std::string& param)
+  inline std::vector<std::string> call(const std::string& action, const std::string& param, int16_t &code = ignore_)
   {
-    ontologenius::OntologeniusIndexService srv;
-    srv.request.action = action;
-    srv.request.param = param;
-    std::vector<std::string> res;
     cpt++;
 
-    if(client.call(srv))
+    auto req = ontologenius::compat::make_request<ontologenius::compat::OntologeniusIndexService>();
+    auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusIndexService>();
+
+    [action, param](auto&& req)
     {
-      error_code_ = srv.response.code;
-      return srv.response.string_values;
-    }
-    else
-    {
-      if(verbose_)
-        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_.serviceClient<ontologenius::OntologeniusIndexService>("/ontologenius/" + name_, true);
-      if(client.call(srv))
+      req->action = action;
+      req->param = param;
+    }(ontologenius::compat::onto_ros::getServicePointer(req));
+
+    using ResultTy = typename decltype(client_)::Status;
+
+    switch (client_.call(req, res)) {
+      case ResultTy::SUCCESSFUL_WITH_RETRIES:
       {
         if(verbose_)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
-        error_code_ = srv.response.code;
-        return srv.response.string_values;
+        [[fallthrough]];
       }
-      else
+      case ResultTy::SUCCESSFUL:
+      {
+        return [&](auto&& res)
+        {
+          code = res->code;
+          error_code_ = res->code;
+          return res->string_values;
+        }(ontologenius::compat::onto_ros::getServicePointer(res));
+      }
+      case ResultTy::FAILURE:
       {
         if(verbose_)
-          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
-        res.push_back("ERR:SERVICE_FAIL");
-        error_code_ = -1;
-        return res;
+          std::cout << COLOR_ORANGE << "Failed to call call ontologenius/" << name_ << COLOR_OFF << std::endl;
+        [[fallthrough]];
+      }
+      default:
+      {
+        return { "ERR:SERVICE_FAIL" };
       }
     }
   }
@@ -89,38 +97,47 @@ public:
   /// @param action the query action.
   /// @param param the query parameters.
   /// @return Returns a list of int64. If the service call fails, the first element of the returned vector is "0".
-  inline std::vector<int64_t> callIndexes(const std::string& action, const std::string& param)
+  inline std::vector<int64_t> callIndexes(const std::string& action, const std::string& param, int16_t &code = ignore_)
   {
-    ontologenius::OntologeniusIndexService srv;
-    srv.request.action = action;
-    srv.request.param = param;
-    std::vector<int64_t> res;
     cpt++;
 
-    if(client.call(srv))
+    auto req = ontologenius::compat::make_request<ontologenius::compat::OntologeniusIndexService>();
+    auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusIndexService>();
+
+    [action, param](auto&& req)
     {
-      error_code_ = srv.response.code;
-      return srv.response.index_values;
-    }
-    else
+      req->action = action;
+      req->param = param;
+    }(ontologenius::compat::onto_ros::getServicePointer(req));
+
+    using ResultTy = typename decltype(client_)::Status;
+
+    switch (client_.call(req, res))
     {
-      if(verbose_)
-        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_.serviceClient<ontologenius::OntologeniusIndexService>("/ontologenius/" + name_, true);
-      if(client.call(srv))
+      case ResultTy::SUCCESSFUL_WITH_RETRIES:
       {
         if(verbose_)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
-        error_code_ = srv.response.code;
-        return srv.response.index_values;
+        [[fallthrough]];
       }
-      else
+      case ResultTy::SUCCESSFUL:
+      {
+        return [&](auto&& res)
+        {
+          code = res->code;
+          error_code_ = res->code;
+          return res->index_values;
+        }(ontologenius::compat::onto_ros::getServicePointer(res));
+      }
+      case ResultTy::FAILURE:
       {
         if(verbose_)
-          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
-        res.push_back(0);
-        error_code_ = -1;
-        return res;
+          std::cout << COLOR_ORANGE << "Failed to call call ontologenius/" << name_ << COLOR_OFF << std::endl;
+        [[fallthrough]];
+      }
+      default:
+      {
+        return { 0 };
       }
     }
   }
@@ -129,44 +146,10 @@ public:
   /// @param action the query action.
   /// @param param the query parameters.
   /// @return Returns a single string. If the service call fails, the returned value is "ERR:SERVICE_FAIL".
-  inline std::string callStr(const std::string& action, const std::string& param)
+  inline std::string callStr(const std::string& action, const std::string& param, int16_t& code = ignore_)
   {
-    ontologenius::OntologeniusIndexService srv;
-    srv.request.action = action;
-    srv.request.param = param;
-    cpt++;
-
-    if(client.call(srv))
-    {
-      error_code_ = srv.response.code;
-      if(srv.response.string_values.size())
-        return srv.response.string_values[0];
-      else
-        return "";
-    }
-    else
-    {
-      if(verbose_)
-        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_.serviceClient<ontologenius::OntologeniusIndexService>("/ontologenius/" + name_, true);
-      if(client.call(srv))
-      {
-        if(verbose_)
-          std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
-        error_code_ = srv.response.code;
-        if(srv.response.string_values.size())
-          return srv.response.string_values[0];
-        else
-          return "";
-      }
-      else
-      {
-        if(verbose_)
-          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
-        error_code_ = -1;
-        return "ERR:SERVICE_FAIL";
-      }
-    }
+    auto res = this->call(action, param, code);
+    return res.empty() ? "" : res[0];
   }
 
   /// @brief Calls the service set up in the constructor of ClientBaseIndex.
@@ -175,42 +158,8 @@ public:
   /// @return Returns a single int64. If the service call fails or has no response, the returned value is "0".
   inline int64_t callIndex(const std::string& action, const std::string& param)
   {
-    ontologenius::OntologeniusIndexService srv;
-    srv.request.action = action;
-    srv.request.param = param;
-    cpt++;
-
-    if(client.call(srv))
-    {
-      error_code_ = srv.response.code;
-      if(srv.response.index_values.size())
-        return srv.response.index_values[0];
-      else
-        return 0;
-    }
-    else
-    {
-      if(verbose_)
-        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_.serviceClient<ontologenius::OntologeniusIndexService>("/ontologenius/" + name_, true);
-      if(client.call(srv))
-      {
-        if(verbose_)
-          std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
-        error_code_ = srv.response.code;
-        if(srv.response.index_values.size())
-          return srv.response.index_values[0];
-        else
-          return 0;
-      }
-      else
-      {
-        if(verbose_)
-          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
-        error_code_ = -1;
-        return 0;
-      }
-    }
+    auto res = this->callIndexes(action, param);
+    return res.empty() ? 0 : res[0];
   }
 
   /// @brief Calls the service set up in the constructor of ClientBaseIndex.
@@ -219,36 +168,7 @@ public:
   /// @return Returns false if the service call fails.
   inline bool callNR(const std::string& action, const std::string& param)
   {
-    ontologenius::OntologeniusIndexService srv;
-    srv.request.action = action;
-    srv.request.param = param;
-    cpt++;
-
-    if(client.call(srv))
-    {
-      error_code_ = srv.response.code;
-      return true;
-    }
-    else
-    {
-      if(verbose_)
-        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_.serviceClient<ontologenius::OntologeniusIndexService>("/ontologenius/" + name_, true);
-      if(client.call(srv))
-      {
-        if(verbose_)
-          std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
-        error_code_ = srv.response.code;
-        return true;
-      }
-      else
-      {
-        if(verbose_)
-          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
-        error_code_ = -1;
-        return false;
-      }
-    }
+    return this->callStr(action, param) != "ERR:SERVICE_FAIL";
   }
 
   /// @brief Calls the service set up in the constructor of ClientBaseIndex.
@@ -257,42 +177,18 @@ public:
   /// @return Returns false if the service call fails or the result code of the service is different from SUCCESS.
   inline bool callBool(const std::string& action, const std::string& param)
   {
-    ontologenius::OntologeniusIndexService srv;
-    srv.request.action = action;
-    srv.request.param = param;
-    cpt++;
-
-    if(client.call(srv))
-      return (srv.response.code == 0);
-    else
-    {
-      if(verbose_)
-        std::cout << COLOR_ORANGE << "Failure to call ontologenius/" << name_ << COLOR_OFF << std::endl;
-      client = n_.serviceClient<ontologenius::OntologeniusIndexService>("/ontologenius/" + name_, true);
-      if(client.call(srv))
-      {
-        if(verbose_)
-          std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
-        return (srv.response.code == 0);
-      }
-      else
-      {
-        if(verbose_)
-          std::cout << COLOR_RED << "Failure of service restoration" << COLOR_OFF << std::endl;
-        return false;
-      }
-    }
+    int16_t code;
+    auto res = this->callStr(action, param, code);
+    return (res != "ERR:SERVICE_FAIL") && (code != 0);
   }
 
 private:
-    std::string name_;
-    ros::NodeHandle n_;
-    static size_t cpt;
-    static bool verbose_;
-    int error_code_;
-
+  std::string name_;
+  static size_t cpt;
+  static bool verbose_;
+  int error_code_;
 protected:
-  ros::ServiceClient client;
+  ontologenius::compat::onto_ros::Client<ontologenius::compat::OntologeniusIndexService> client_;
 };
 
 } // namespace onto

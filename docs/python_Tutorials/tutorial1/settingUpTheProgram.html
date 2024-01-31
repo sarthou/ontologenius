@@ -4,10 +4,12 @@
   <title>Use inheritance for my first program (python) : Setting up the program </title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
   <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <script src="../../scripts/tabs.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -59,7 +61,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../../Download.html">Download</a></li>
-            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../Tutorials.html">Python Tutorials</a></li>
@@ -156,62 +160,151 @@
 
         <p>Now we are ready! Let's open our file and start coding:</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">import</span> rospy</div>
-          <div class="code_line"><span class="py_op">from</span> std_msgs.msg <span class="py_op">import</span> String</div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologyManipulator</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">_onto = <span class="py_value">None</span></div>
-          <div class="code_line">_names = []</div>
-          <div class="code_line">_start = <span class="py_value">False</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">say</span>(text):</div>
-          <div class="code_line">    <span class="py_op">print</span>(<span class="py_string">'[SAY]'</span>  + text)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">summarize</span>(words):</div>
-          <div class="code_line">    to_say = <span class="py_string">'on '</span> </div>
-          <div class="code_line">    <span class="py_op">for</span> word <span class="py_op">in</span> words:</div>
-          <div class="code_line">        to_say = to_say + word + <span class="py_string">' '</span> </div>
-          <div class="code_line">    <span class="py_op">return</span> to_say</div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">wordCallback</span>(msg):</div>
-          <div class="code_line">    <span class="py_op">global</span> _start</div>
-          <div class="code_line">    <span class="py_op">global</span> _names</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    <span class="py_op">if</span> msg.data == <span class="py_string">'start'</span> :</div>
-          <div class="code_line">        _start = <span class="py_value">True</span></div>
-          <div class="code_line">    <span class="py_op">elif</span> <span class="py_op">not</span> msg.data <span class="py_op">in</span> _names:</div>
-          <div class="code_line">        _names.insert(<span class="py_value">1</span>, msg.data)</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">import</span> <span class="py_imported">rospy</span></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">std_msgs.msg</span> <span class="py_import">import</span> <span class="py_imported">String</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontologenius</span> <span class="py_import">import</span> <span class="py_imported">OntologyManipulator</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_var">_onto</span> = <span class="py_key">None</span></div>
+                <div class="code_line"><span class="py_var">_names</span> = []</div>
+                <div class="code_line"><span class="py_var">_start</span> = <span class="py_key">False</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">say</span>(<span class="py_var">text</span>):</div>
+                <div class="code_line">    <span class="py_function">print</span>(<span class="py_string">'[SAY]'</span>  + <span class="py_var">text</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">summarize</span>(<span class="py_var">words</span>):</div>
+                <div class="code_line">    <span class="py_var">to_say</span> = <span class="py_string">'on '</span> </div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">word</span> <span class="py_op">in</span> <span class="py_var">words</span>:</div>
+                <div class="code_line">        <span class="py_var">to_say</span> = <span class="py_var">to_say</span> + <span class="py_var">word</span> + <span class="py_string">' '</span> </div>
+                <div class="code_line">    <span class="py_op">return</span> <span class="py_var">to_say</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">wordCallback</span>(<span class="py_var">msg</span>):</div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_start</span></div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_names</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_op">if</span> <span class="py_var">msg</span>.data == <span class="py_string">'start'</span> :</div>
+                <div class="code_line">        <span class="py_var">_start</span> = <span class="py_key">True</span></div>
+                <div class="code_line">    <span class="py_op">elif</span> <span class="py_key">not</span> <span class="py_var">msg</span>.data <span class="py_key">in</span> <span class="py_var">_names</span>:</div>
+                <div class="code_line">        <span class="py_var">_names</span>.<span class="py_function">insert</span>(<span class="py_value">1</span>, <span class="py_var">msg</span>.data)</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
+                <div class="code_line"><span class="py_import">import</span> <span class="py_imported">rclpy</span></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">rclpy.node</span> <span class="py_import">import</span> <span class="py_imported">Node</span></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">std_msgs.msg</span> <span class="py_import">import</span> <span class="py_imported">String</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontopy</span> <span class="py_import">import</span> <span class="py_imported">OntologyManipulator</span>, <span class="py_imported">Ontoros</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_var">_onto</span> = <span class="py_key">None</span></div>
+                <div class="code_line"><span class="py_var">_names</span> = []</div>
+                <div class="code_line"><span class="py_var">_start</span> = <span class="py_key">False</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">say</span>(<span class="py_var">text</span>):</div>
+                <div class="code_line">    <span class="py_imported">Ontoros</span>().<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'[SAY] %s'</span> % <span class="py_var">text</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">summarize</span>(<span class="py_var">words</span>):</div>
+                <div class="code_line">    <span class="py_var">to_say</span> = <span class="py_string">'on '</span> </div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">word</span> <span class="py_op">in</span> <span class="py_var">words</span>:</div>
+                <div class="code_line">        <span class="py_var">to_say</span> = <span class="py_var">to_say</span> + <span class="py_var">word</span> + <span class="py_string">' '</span> </div>
+                <div class="code_line">    <span class="py_op">return</span> <span class="py_var">to_say</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">wordCallback</span>(<span class="py_var">msg</span>):</div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_start</span></div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_names</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_op">if</span> <span class="py_var">msg</span>.data == <span class="py_string">'start'</span> :</div>
+                <div class="code_line">        <span class="py_var">_start</span> = <span class="py_key">True</span></div>
+                <div class="code_line">    <span class="py_op">elif</span> <span class="py_key">not</span> <span class="py_var">msg</span>.data <span class="py_key">in</span> <span class="py_var">_names</span>:</div>
+                <div class="code_line">        <span class="py_var">_names</span>.<span class="py_function">insert</span>(<span class="py_value">1</span>, <span class="py_var">msg</span>.data)</div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <p>Take a break here, we have already written a lot. We will go over all this in detail to better
            understand what we have done.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 2;">
-          <div class="code_line"><span class="py_op">import</span> rospy</div>
+      <div class="lang-tabs container">
+        <div aria-label="Tabbed content" class="closeable" role="tablist">
+          <button aria-controls="panel-1-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-1-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+          <button aria-controls="panel-1-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-1-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
         </div>
-        <p>rospy is a convenience package that imports the most common
-          public pieces of the ROS system.</p>
+        
+        <div aria-labelledby="tab-1-Ros1" class="lang-tabs-panel group-tab" id="panel-1-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+          <div class="highlight-python">
+            <div class="code_block cpp_code" style="counter-reset:code_line 2;">
+              <div class="code_line"><span class="py_op">import</span> <span class="py_imported">rospy</span></div>
+            </div>
+            <p>rospy is a convenience package that imports the most common public pieces of the ROS system.</p>
+          </div>
+        </div>
+        
+        <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+          <div class="highlight-xml">
+            <div class="code_block cpp_code" style="counter-reset:code_line 1;">
+              <div class="code_line"><span class="py_op">import</span> <span class="py_imported">rclpy</span></div>
+              <div class="code_line"><span class="py_op">from</span> <span class="py_imported">rclpy.node</span> <span class="py_op">import</span> <span class="py_imported">Node</span></div>
+            </div>
+            <p>rclpy is a convenience package that imports the most common public pieces of the ROS system.</p>
+          </div>
+        </div>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 3;">
-          <div class="code_line"><span class="py_op">from</span> std_msgs.msg <span class="py_op">import</span> String</div>
-        </div>
-        <p>This imports the ROS String message, which resides in the std_msgs ROS package. We use
-          it to create a topic on which we will send the words from which our program will have to find the
-          intruder. </p>
+      </div>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 5;">
-          <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologyManipulator</div>
+      <div class="code_block cpp_code" style="counter-reset:code_line 3;">
+        <div class="code_line"><span class="py_op">from</span> <span class="py_imported">std_msgs.msg</span> <span class="py_op">import</span> <span class="py_imported">String</span></div>
+      </div>
+      <p>This imports the ROS String message, which resides in the std_msgs ROS package. We use
+        it to create a topic on which we will send the words from which our program will have to find the
+        intruder. </p>
+
+      <div class="lang-tabs container">
+        <div aria-label="Tabbed content" class="closeable" role="tablist">
+          <button aria-controls="panel-2-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-2-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+          <button aria-controls="panel-2-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
         </div>
-        <p>This imports what we call an ontology manipulator. This class is just an object to access
-          all API ROS abstraction classes so that you can query and manage Ontologenius. You can find the
-          documentation for this object on the left panel.</p>
+        
+        <div aria-labelledby="tab-2-Ros1" class="lang-tabs-panel group-tab" id="panel-2-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+          <div class="highlight-python">
+            <div class="code_block cpp_code" style="counter-reset:code_line 5;">
+              <div class="code_line"><span class="py_op">from</span> <span class="py_imported">ontologenius</span> <span class="py_op">import</span> <span class="py_imported">OntologyManipulator</span></div>
+            </div>
+          </div>
+        </div>
+        
+        <div aria-labelledby="tab-2-Ros2" class="lang-tabs-panel group-tab" id="panel-2-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+          <div class="highlight-xml">
+            <div class="code_block cpp_code" style="counter-reset:code_line 5;">
+              <div class="code_line"><span class="py_op">from</span> <span class="py_imported">ontopy</span> <span class="py_op">import</span> <span class="py_imported">OntologyManipulator</span>, <span class="py_imported">Ontoros</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <p>This imports what we call an ontology manipulator. This class is just an object to access
+        all API ROS abstraction classes so that you can query and manage Ontologenius. You can find the
+        documentation for this object on the left panel.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 7;">
-          <div class="code_line">_onto = <span class="py_value">None</span></div>
+          <div class="code_line"><span class="py_var">_onto</span> = <span class="py_key">None</span></div>
         </div>
         <p>As explained above, the ontology manipulator contains several objects to abstract ROS services.
           The set of services work in a connected mode which allows to greatly save in execution time but
@@ -223,30 +316,30 @@
           will be our ontologyManipulator but in more common use we suggest you define it in a class.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 8;">
-          <div class="code_line">_names = []</div>
+          <div class="code_line"><span class="py_var">_names</span> = []</div>
         </div>
         <p>This list will allow us to store the different words on which we will perform our search for the intruder.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 9;">
-          <div class="code_line">_start = <span class="py_value">False</span></div>
+          <div class="code_line"><span class="py_var">_start</span> = <span class="py_key">False</span></div>
         </div>
         <p>This is our synchronization variable. This variable will be False as long as we continue to collect
           words and we will put it in the True state as long as we wish to start the search for the intruder.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 11;">
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">say</span>(text):</div>
+          <div class="code_line"><span class="py_key">def</span> <span class="py_function">say</span>(<span class="py_var">text</span>):</div>
         </div>
         <p>Here, the say function is just an on-screen display, but you can customize it to use a TTS
            for example.</p>
 
          <div class="code_block cpp_code" style="counter-reset:code_line 14;">
-           <div class="code_line"><span class="py_op">def</span> <span class="py_function">summarize</span>(words):</div>
+          <div class="code_line"><span class="py_key">def</span> <span class="py_function">summarize</span>(<span class="py_var">words</span>):</div>
          </div>
          <p>Here, the summarize function concatenates several words in a single string. We created this function
            just to make our main function more readable.</p>
 
          <div class="code_block cpp_code" style="counter-reset:code_line 20;">
-           <div class="code_line"><span class="py_op">def</span> <span class="py_function">wordCallback</span>(msg):</div>
+          <div class="code_line"><span class="py_key">def</span> <span class="py_function">wordCallback</span>(<span class="py_var">msg</span>):</div>
          </div>
          <p>Here we have the callback function of our input topic. This topic thus receives strings which
            will be the words from which our program will have to find the intruder. Inside the function,
@@ -258,109 +351,288 @@
         <p><br><br>We have everything we need to start writing the main function to retrieve the list of words
           to work on and start the reasoning although we do not have it yet.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 29;">
-          <div class="code_line"><span class="py_op">if</span> __name__ == "__main__":</div>
-          <div class="code_line">    <span class="py_op">global</span> _start</div>
-          <div class="code_line">    <span class="py_op">global</span> _names</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    rospy.init_node(<span class="py_string">'intruder'</span> )</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    _onto = OntologyManipulator()</div>
-          <div class="code_line">    _onto.close()</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    rospy.Subscriber("intruder/input", String, wordCallback)</div>
-          <div class="code_line">    rate = rospy.Rate(<span class="py_value">100</span>)</div>
-          <div class="code_line">    <span class="py_op">while</span> <span class="py_op">not</span> rospy.is_shutdown():</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">        _start = <span class="py_value">False</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line">        say(<span class="py_string">'Let\'s play!'</span> )</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">        <span class="py_op">while</span> (<span class="py_op">not</span> rospy.is_shutdown()) <span class="py_op">and</span> (_start == <span class="py_value">False</span>):</div>
-          <div class="code_line">            rate.sleep()</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">        say(summarize(_names))</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">        <span class="py_comment">#</span></div>
-          <div class="code_line">        <span class="py_comment"># We will find the intruder here</span></div>
-          <div class="code_line">        <span class="py_comment">#</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line">        _names = []</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-3-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-3-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-3-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-3-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-3-Ros1" class="lang-tabs-panel group-tab" id="panel-3-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 34;">
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">main</span>():</div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_names</span></div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_start</span></div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_imported">rospy</span>.<span class="py_function">init_node</span>(<span class="py_string">'intruder'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">_onto</span> = <span class="py_imported">OntologyManipulator</span>()</div>
+                <div class="code_line">    <span class="py_var">_onto</span>.<span class="py_function">close</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_imported">rospy</span>.<span class="py_imported">Subscriber</span>(<span class="py_string">"intruder/input"</span>, <span class="py_imported">String</span>, <span class="py_function">wordCallback</span>)</div>
+                <div class="code_line">    <span class="py_var">rate</span> = <span class="py_imported">rospy</span>.<span class="py_imported">Rate</span>(<span class="py_value">100</span>)</div>
+                <div class="code_line">    <span class="py_op">while</span> <span class="py_op">not</span> <span class="py_imported">rospy</span>.<span class="py_function">is_shutdown</span>():</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_var">_start</span> = <span class="py_key">False</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_function">say</span>(<span class="py_string">'Let\'s play!'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_op">while</span> (<span class="py_key">not</span> <span class="py_imported">rospy</span>.<span class="py_function">is_shutdown</span>()) <span class="py_key">and</span> (<span class="py_var">_start</span> == <span class="py_key">False</span>):</div>
+                <div class="code_line">            <span class="py_var">rate</span>.<span class="py_function">sleep</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_function">say</span>(<span class="py_function">summarize</span>(<span class="py_var">_names</span>))</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_comment">#</span></div>
+                <div class="code_line">        <span class="py_comment"># We will find the intruder here</span></div>
+                <div class="code_line">        <span class="py_comment">#</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_var">_names</span> = []</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_op">if</span> <span class="py_var">__name__</span> == <span class="py_string">"__main__"</span>:</div>
+                <div class="code_line">    <span class="py_function">main</span>()</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-3-Ros2" class="lang-tabs-panel group-tab" id="panel-3-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block cpp_code" style="counter-reset:code_line 29;">
+                <div class="code_line"><span class="py_key">class</span> <span class="py_imported">IntruderNode</span>(<span class="py_imported">Node</span>):</div>
+                <div class="code_line">    <span class="py_key">def</span> <span class="py_function">__init__</span>(<span class="py_var">self</span>):</div>
+                <div class="code_line">        <span class="py_imported">super</span>().<span class="py_function">__init__</span>(<span class="py_string">'intruder_node'</span>)</div>
+                <div class="code_line">        <span class="py_var">self</span>.<span class="py_var">subscription</span> = <span class="py_var">self</span>.<span class="py_function">create_subscription</span>(<span class="py_imported">String</span>, <span class="py_string">&quot;intruder/input&quot;</span>, <span class="py_function">wordCallback</span>, <span class="py_value">10</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">main</span>():</div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_names</span></div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_start</span></div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_imported">rclpy</span>.<span class="py_function">init</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">_onto</span> = <span class="py_imported">OntologyManipulator</span>()</div>
+                <div class="code_line">    <span class="py_var">_onto</span>.<span class="py_function">close</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">node</span> = <span class="py_imported">IntruderNode</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_op">while</span> <span class="py_imported">rclpy</span>.<span class="py_function">ok</span>():</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_var">_start</span> = <span class="py_key">False</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_function">say</span>(<span class="py_string">'Let\'s play!'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_op">while</span> <span class="py_imported">rclpy</span>.<span class="py_function">ok</span>() <span class="py_key">and</span> (<span class="py_var">_start</span> == <span class="py_key">False</span>):</div>
+                <div class="code_line">            <span class="py_imported">rclpy</span>.<span class="py_function">spin_once</span>(<span class="py_var">node</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_function">say</span>(<span class="py_function">summarize</span>(<span class="py_var">_names</span>))</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_comment">#</span></div>
+                <div class="code_line">        <span class="py_comment"># We will find the intruder here</span></div>
+                <div class="code_line">        <span class="py_comment">#</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">        <span class="py_var">_names</span> = []</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">node</span>.<span class="py_function">destroy_node</span>()</div>
+                <div class="code_line">    <span class="py_imported">rclpy</span>.<span class="py_function">shutdown</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_op">if</span> <span class="py_var">__name__</span> == <span class="py_string">"__main__"</span>:</div>
+                <div class="code_line">    <span class="py_function">main</span>()</div>
+              </div>
+            </div>
+          </div>
+  
         </div>
 
         <p>Now, let's break the code down.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 33;">
-          <div class="code_line">    rospy.init_node(<span class="py_string">'intruder'</span> )</div>
-        </div>
-        <p>Initialize a ROS node. This node is not mandatory to use Ontologenius in python but we need it for the ROS subscriber we create after.</p>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-4-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-4-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-4-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-4-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-4-Ros1" class="lang-tabs-panel group-tab" id="panel-4-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 39;">
+                <div class="code_line">    <span class="py_imported">rospy</span>.<span class="py_function">init_node</span>(<span class="py_string">'intruder'</span>)</div>
+              </div>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 35;">
-          <div class="code_line">    _onto = OntologyManipulator()</div>
+              <p>Initialize a ROS node. This node is not mandatory to use Ontologenius in python but we need it for the ROS subscriber we create after.</p>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-4-Ros2" class="lang-tabs-panel group-tab" id="panel-4-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block cpp_code" style="counter-reset:code_line 29;">
+                <div class="code_line"><span class="py_key">class</span> <span class="py_imported">IntruderNode</span>(<span class="py_imported">Node</span>):</div>
+                <div class="code_line">    <span class="py_key">def</span> <span class="py_function">__init__</span>(<span class="py_var">self</span>):</div>
+                <div class="code_line">        <span class="py_imported">super</span>().<span class="py_function">__init__</span>(<span class="py_string">'intruder_node'</span>)</div>
+              </div>
+
+              <p>First we create a class which inherits from (or is a subclass of) Node and initialize this later.
+                 This node is not mandatory to use Ontologenius in python but we need it for the ROS subscriber we create after.</p>
+
+              <div class="code_block cpp_code" style="counter-reset:code_line 39;">
+                <div class="code_line">    <span class="py_imported">rclpy</span>.<span class="py_function">init</span>()</div>
+              </div>
+
+              <p>In a separate way, we need to initialize ROS.</p>
+            </div>
+          </div>
+  
+        </div>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 41;">
+          <div class="code_line">    <span class="py_var">_onto</span> = <span class="py_imported">OntologyManipulator</span>()</div>
         </div>
         <p>We finally come back to using Ontologenius! We create here our first ontology manipulator,
            what a great day ... This manipulator is unique to fully enjoy the benefits of connected
            services.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 36;">
-          <div class="code_line">    _onto.close()</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 42;">
+          <div class="code_line">    <span class="py_var">_onto</span>.<span class="py_function">close</span>()</div>
         </div>
         <p>The close function link all the concepts loaded from files and the Internet.
           Before closing an ontology, exploration requests are not allowed.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 38;">
-          <div class="code_line">  _onto.actions.fadd(<span class="py_string">'path/to/may/file.owl'</span>);</div>
-          <div class="code_line">  <span class="cpp_comment"># OR</span></div>
-          <div class="code_line">  _onto.actions.add(<span class="py_string">'http://path/to/my/file.owl'</span>);</div>
-          <div class="code_line">  _onto.close();</div>
+        <div class="code_block cpp_code">
+          <div class="terminal_line">  <span class="py_var">_onto</span>.actions.<span class="py_function">fadd</span>(<span class="py_string">'path/to/may/file.owl'</span>);</div>
+          <div class="terminal_line">  <span class="cpp_comment"># OR</span></div>
+          <div class="terminal_line">  <span class="py_var">_onto</span>.actions.<span class="py_function">add</span>(<span class="py_string">'http://path/to/my/file.owl'</span>);</div>
+          <div class="terminal_line">  <span class="py_var">_onto</span>.<span class="py_function">close</span>();</div>
         </div>
         <p>For the moment, we are going to consider that the ontological file we are
           going to work on is provided in the Ontologenius launcher. We will configure
           it in the next part of the tutorial. It is also possible to load files directly
           from the program (as above) but in doing so it makes our code less reusable.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 38;">
-          <div class="code_line">    rospy.Subscriber("intruder/input", String, wordCallback)</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-5-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-5-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-5-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-5-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-5-Ros1" class="lang-tabs-panel group-tab" id="panel-5-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 44;">
+                <div class="code_line">    <span class="py_imported">rospy</span>.<span class="py_imported">Subscriber</span>(<span class="py_string">"intruder/input"</span>, <span class="py_imported">String</span>, <span class="py_function">wordCallback</span>)</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-5-Ros2" class="lang-tabs-panel group-tab" id="panel-5-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block cpp_code" style="counter-reset:code_line 32;">
+                <div class="code_line">        <span class="py_var">self</span>.<span class="py_var">subscription</span> = <span class="py_var">self</span>.<span class="py_function">create_subscription</span>(<span class="py_imported">String</span>, <span class="py_string">&quot;intruder/input&quot;</span>, <span class="py_function">wordCallback</span>, <span class="py_value">10</span>)</div>
+              </div>
+            </div>
+          </div>
+  
         </div>
+
         <p>We initialise our subscriber to the topic 'intruder/input'. We also
           link this topic to our callback function.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 40;">
-          <div class="code_line">    <span class="py_op">while</span> <span class="py_op">not</span> rospy.is_shutdown():</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-6-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-6-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-6-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-6-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-6-Ros1" class="lang-tabs-panel group-tab" id="panel-6-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 46;">
+                <div class="code_line">    <span class="py_op">while</span> <span class="py_op">not</span> <span class="py_imported">rospy</span>.<span class="py_function">is_shutdown</span>():</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-6-Ros2" class="lang-tabs-panel group-tab" id="panel-6-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block cpp_code" style="counter-reset:code_line 46;">
+                <div class="code_line">    <span class="py_op">while</span> <span class="py_imported">rclpy</span>.<span class="py_function">ok</span>():</div>
+              </div>
+            </div>
+          </div>
+  
         </div>
+
         <p>Just our almost infinite loop. Escaping with a Ctrl + C.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 42;">
-          <div class="code_line">        _start = <span class="py_value">False</span></div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 39;">
+          <div class="code_line">        <span class="py_var">_start</span> = <span class="py_key">False</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line">        say(<span class="py_string">'Let\'s play!'</span> )</div>
+          <div class="code_line">        <span class="py_function">say</span>(<span class="py_string">'Let\'s play!'</span>)</div>
         </div>
         <p>We initialize the synchronization variable and inform the user that the program is ready to
           listen to the words.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 46;">
-          <div class="code_line">        <span class="py_op">while</span> (<span class="py_op">not</span> rospy.is_shutdown()) <span class="py_op">and</span> (_start == <span class="py_value">False</span>):</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-7-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-7-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-7-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-7-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-7-Ros1" class="lang-tabs-panel group-tab" id="panel-7-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 52;">
+                <div class="code_line">        <span class="py_op">while</span> (<span class="py_key">not</span> <span class="py_imported">rospy</span>.<span class="py_function">is_shutdown</span>()) <span class="py_key">and</span> (<span class="py_var">_start</span> == <span class="py_key">False</span>):</div>
+              </div>
+              <p class="tip">rate.sleep() avoids unnecessary use of the processor.</p>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-7-Ros2" class="lang-tabs-panel group-tab" id="panel-7-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block cpp_code" style="counter-reset:code_line 52;">
+                <div class="code_line">        <span class="py_op">while</span> <span class="py_imported">rclpy</span>.<span class="py_function">ok</span>() <span class="py_key">and</span> (<span class="py_var">_start</span> == <span class="py_key">False</span>):</div>
+              </div>
+            </div>
+          </div>
+  
         </div>
-        <p>We only wait for the synchronisation... </p>
-        <p class="tip">rate.sleep() avoids unnecessary use of the processor.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 49;">
-          <div class="code_line">        say(summarize(_names))</div>
+        <p>We only wait for the synchronisation... </p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 46;">
+          <div class="code_line">        <span class="py_function">say</span>(<span class="py_function">summarize</span>(<span class="py_var">_names</span>))</div>
         </div>
         <p>We recall the words on which we will make the reasoning. It is just as a result of this that
           we will implement our reasoning.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 55;">
-          <div class="code_line">        _names = []</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 52;">
+          <div class="code_line">        <span class="py_var">_names</span> = []</div>
         </div>
         <p>Our loop is over, we can erase the words we used and start over!</p>
 
         <p>Now, you just have to compile that before going on to the following. Even if we are working with python,
           this command must be executed at least once to inform ROS of the presence of the executable.</p>
-        <div class="code_block">
-          <div class="terminal_line">catkin_make</div>
-        </div>
-        <p class="tip">Do not forget that this command must be done in your catkin workspace</p>
+        
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-8-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-8-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-8-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-8-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-8-Ros1" class="lang-tabs-panel group-tab" id="panel-8-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">catkin_make</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-8-Ros2" class="lang-tabs-panel group-tab" id="panel-8-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">colcon build --symlink-install</div>
+              </div>
+            </div>
+          </div>
+  
+        </div> 
+
+        <p class="tip">Do not forget that this command must be done in your workspace</p>
 
 
         <nav class="course-pagination">

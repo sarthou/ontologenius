@@ -1,5 +1,3 @@
-import rospy
-
 from .clients import *
 from .FeederPublisher import FeederPublisher
 
@@ -20,10 +18,7 @@ class OntologyManipulator:
         self.feeder = FeederPublisher(name)
         self.sparql = SparqlClient(name)
 
-        service_name = "ontologenius/sparql"
-        if name != '':
-            service_name+= "/" + name
-        rospy.wait_for_service(service_name)
+        self.sparql._client.wait()
 
     def nb(self):
         """Gives the total number (int) of service calls from all ROS clients instances since the last reset."""

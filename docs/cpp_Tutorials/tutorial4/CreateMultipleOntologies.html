@@ -4,10 +4,12 @@
   <title>Manage multiple ontologies (cpp) : Create multiple ontologies</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
   <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <script src="../../scripts/tabs.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -57,7 +59,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../../Download.html">Download</a></li>
-            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
@@ -137,39 +141,87 @@
 
         <p>Create a main file and paste the following inside it:</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologiesManipulator.h&quot;</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="cpp_type">int</span> main(<span class="cpp_type">int</span> argc, <span class="cpp_type">char</span><span class="cpp_op">**</span> argv)</div>
-          <div class="code_line">{</div>
-          <div class="code_line">  ros::init(argc, argv, <span class="cpp_string">&quot;multiple_ontologies&quot;</span>);</div>
-          <div class="code_line">  ros::<span class="cpp_type">NodeHandle</span> n;</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto::<span class="cpp_type">OntologiesManipulator</span> onto(<span class="cpp_op">&</span>n);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto.waitInit();</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto.add(<span class="cpp_string">&quot;sally&quot;</span>);</div>
-          <div class="code_line">  onto.add(<span class="cpp_string">&quot;anne&quot;</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;sally&quot;</span>]<span class="cpp_op">-&gt;</span>close();</div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>close();</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; result <span class="cpp_op">=</span> onto[<span class="cpp_string">&quot;sally&quot;</span>]<span class="cpp_op">-&gt;</span>individuals.getOn(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
-          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;for sally, ball_1 is in:&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line">  <span class="cpp_op">for</span>(std::<span class="cpp_type">string</span> in <span class="cpp_op">:</span> result)</div>
-          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;- &quot;</span> <span class="cpp_op">&lt;&lt;</span> in <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  result <span class="cpp_op">=</span> onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>individuals.getOn(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
-          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;for anne, ball_1 is in:&quot;</span> <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line">  <span class="cpp_op">for</span>(std::<span class="cpp_type">string</span> in <span class="cpp_op">:</span> result)</div>
-          <div class="code_line">    std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;- &quot;</span> <span class="cpp_op">&lt;&lt;</span> in <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_return">return</span> <span class="cpp_value">0</span>;</div>
-          <div class="code_line">}</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+
+          <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologiesManipulator.h&quot;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_key">int</span> <span class="cpp_function">main</span>(<span class="cpp_key">int</span> <span class="cpp_var">argc</span>, <span class="cpp_key">char**</span> <span class="cpp_var">argv</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>, <span class="cpp_string">&quot;multiple_ontologies&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologiesManipulator</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">waitInit</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;sally&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;anne&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">result</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;for sally, ball_1 is in:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">in</span> : <span class="cpp_var">result</span>)</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">in</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">result</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;for anne, ball_1 is in:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">in</span> : <span class="cpp_var">result</span>)</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">in</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-python">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologiesManipulator.h&quot;</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_key">int</span> <span class="cpp_function">main</span>(<span class="cpp_key">int</span> <span class="cpp_var">argc</span>, <span class="cpp_key">char**</span> <span class="cpp_var">argv</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologiesManipulator</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">waitInit</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;sally&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;anne&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">result</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;for sally, ball_1 is in:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">in</span> : <span class="cpp_var">result</span>)</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">in</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">result</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;for anne, ball_1 is in:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">in</span> : <span class="cpp_var">result</span>)</div>
+                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">in</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>Now, let's break the code down.</p>
@@ -182,33 +234,33 @@
           ontologies and that's why we include the OntologiesManipulator header this time. This object allows us to
           dynamically create an OntologyManipulator per agent.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 10;">
-          <div class="code_line">  onto::<span class="cpp_type">OntologiesManipulator</span> onto;</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 9;">
+          <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologiesManipulator</span> <span class="cpp_var">onto</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  onto.waitInit();</div>
+          <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">waitInit</span>();</div>
         </div>
 
         <p>We start by creating an OntologiesManipulator. At the difference of the OntologyManipulator, this one needs a pointer to our NodeHandle.
           In addition, we simply call waitInit to make sure that all ROS services have been connected before starting.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 14;">
-          <div class="code_line">  onto.add(<span class="cpp_string">&quot;sally&quot;</span>);</div>
-          <div class="code_line">  onto.add(<span class="cpp_string">&quot;anne&quot;</span>);</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 13;">
+          <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;sally&quot;</span>);</div>
+          <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;anne&quot;</span>);</div>
         </div>
 
         <p>We create here two ontologies, one for Sally and one for Anne. For the rest of the program,
           we will use these identifiers to get the specific ontology we want to work on.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 17;">
-          <div class="code_line">  onto[<span class="cpp_string">&quot;sally&quot;</span>]<span class="cpp_op">-&gt;</span>close();</div>
-          <div class="code_line">  onto[<span class="cpp_string">&quot;anne&quot;</span>]<span class="cpp_op">-&gt;</span>close();</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 16;">
+          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
+          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
         </div>
 
         <p>As usual, we must close the ontology before exploring it. Here we use the [] operator that returns an OntologyManipulator
           object for a specific instance. If you prefer, you can also use the get function.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 20;">
-          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; result <span class="cpp_op">=</span> onto[<span class="cpp_string">&quot;sally&quot;</span>]<span class="cpp_op">-&gt;</span>individuals.getOn(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 19;">
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">result</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
         </div>
 
         <p>From there, you can use Ontologenius as usual.</p>

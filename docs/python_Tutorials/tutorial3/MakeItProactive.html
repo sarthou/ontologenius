@@ -57,7 +57,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../../Download.html">Download</a></li>
-            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../Tutorials.html">Python Tutorials</a></li>
@@ -144,19 +146,19 @@
         <p>Here is the callback function:</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">proactiveCallback</span>(msg):</div>
-          <div class="code_line">    match = re.search(r<span class="py_string">"^\[NEW\](\w+)>can_(\w+):bool#(\w+)$"</span>, msg.data)</div>
-          <div class="code_line">    <span class="py_op">if</span> match != <span class="py_value">None</span>:</div>
-          <div class="code_line">        <span class="py_op">if</span> match.group(<span class="py_value">3</span>) == <span class="py_string">'True'</span>:</div>
-          <div class="code_line">            <span class="py_op">print</span> <span class="py_string">'I think that a '</span> + match.group(<span class="py_value">1</span>) + <span class="py_string">' can '</span> + match.group(<span class="py_value">2</span>)</div>
+          <div class="code_line"><span class="py_key">def</span> <span class="py_function">proactiveCallback</span>(<span class="py_var">msg</span>):</div>
+          <div class="code_line">    <span class="py_var">match</span> = <span class="py_imported">re</span>.<span class="py_function">search</span>(r<span class="py_string">"^\[NEW\](\w+)>can_(\w+):bool#(\w+)$"</span>, <span class="py_var">msg</span>)</div>
+          <div class="code_line">    <span class="py_op">if</span> <span class="py_var">match</span> != <span class="py_key">None</span>:</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">3</span>) == <span class="py_string">'True'</span>:</div>
+          <div class="code_line">            <span class="py_function">say</span>(<span class="py_string">'I think that a '</span> + <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">1</span>) + <span class="py_string">' can '</span> + <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>))</div>
           <div class="code_line">        <span class="py_op">else</span>:</div>
-          <div class="code_line">            <span class="py_op">print</span> <span class="py_string">'I think that a '</span> + match.group(<span class="py_value">1</span>) + <span class="py_string">' can not '</span> + match.group(<span class="py_value">2</span>)</div>
+          <div class="code_line">            <span class="py_function">say</span>(<span class="py_string">'I think that a '</span> + <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">1</span>) + <span class="py_string">' can not '</span> + <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>))</div>
         </div>
 
-        <p>And finally, the new ros subscriber to put in the main function:</p>
+        <p>And finally, in the main function, we subscribe to the notification topic using the OntologyManipulator:</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">    rospy.Subscriber(<span class="py_string">'ontologenius/reasoner_notifications'</span>, String, proactiveCallback)</div>
+          <div class="code_line">    <span class="py_var">_onto</span>.feeder.<span class="py_function">registerNotificationCallback</span>(<span class="py_function">proactiveCallback</span>)</div>
         </div>
 
         <p>You can now delete the internal file and learn again to your program that birds can fly

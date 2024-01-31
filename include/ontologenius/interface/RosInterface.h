@@ -6,17 +6,9 @@
 #include <unordered_set>
 #include <atomic>
 #include <mutex>
+#include <thread>
 
-#include <ros/ros.h>
-#include <ros/callback_queue.h>
-#include "std_msgs/String.h"
-
-#include "ontologenius/StampedString.h"
-#include "ontologenius/OntologeniusService.h"
-#include "ontologenius/OntologeniusSparqlService.h"
-#include "ontologenius/OntologeniusIndexService.h"
-#include "ontologenius/OntologeniusSparqlIndexService.h"
-#include "ontologenius/OntologeniusConversion.h"
+#include "ontologenius/compat/ros.h"
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/reasoner/Reasoners.h"
@@ -85,10 +77,6 @@ private:
 #else
 public:
 #endif
-  /// @brief The ROS node handle. Its name is never used
-  ros::NodeHandle n_;
-  /// @brief The ROS callback queue dedicated to the given interface
-  ros::CallbackQueue callback_queue_;
   /// @brief The graph representing the ontology
   Ontology* onto_;
   /// @brief The reasoners pool. Reasoners are automatically load as plugins
@@ -110,8 +98,8 @@ public:
   std::atomic<bool> run_;
   /// @brief The rate (in Hz) at which the feeder thread run. Can not be modified while the process is running
   size_t feeder_rate_;
-  /// @brief The ROS publisher used to notify the user that no more incoming statement have to be analysed
-  ros::Publisher feeder_end_pub_;
+  
+  compat::onto_ros::Publisher<std_msgs_compat::String> feeder_end_pub_;
 
   /// @brief The mutex protecting the object feeder_
   std::mutex feeder_mutex_;
@@ -120,55 +108,59 @@ public:
 
   /// @brief The variable used to display or not debug information. Can be changed at run time
   bool display_;
+  /// @brief represents all files provided at the initialization
+  std::vector<std::string> files_;
+  /// @brief represents the dedicated intern file
+  std::string intern_file_;
 
   /// @brief The ROS topic callback receiving statements not stamped
-  void knowledgeCallback(const std_msgs::String::ConstPtr& msg);
+  void knowledgeCallback(compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg);
   /// @brief The ROS topic callback receiving stamped statements
-  void stampedKnowledgeCallback(const ontologenius::StampedString::ConstPtr& msg);
+  void stampedKnowledgeCallback(compat::onto_ros::MessageWrapper<compat::OntologeniusStampedString> msg);
 
   /// @brief The ROS service callback in charge of general operations on the ontology
-  bool actionsHandle(ontologenius::OntologeniusService::Request &req,
-                     ontologenius::OntologeniusService::Response &res);
+  bool actionsHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Request>& req,
+                     compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Response>& res);
 
   /// @brief The ROS service callback in charge of the exploration on classes
-  bool classHandle(ontologenius::OntologeniusService::Request &req,
-                   ontologenius::OntologeniusService::Response &res);
+  bool classHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Request> &req,
+                   compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Response> &res);
   /// @brief The ROS service callback in charge of the exploration on object properties
-  bool objectPropertyHandle(ontologenius::OntologeniusService::Request &req,
-                            ontologenius::OntologeniusService::Response &res);
+  bool objectPropertyHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Request> &req,
+                            compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Response> &res);
   /// @brief The ROS service callback in charge of the exploration on data properties
-  bool dataPropertyHandle(ontologenius::OntologeniusService::Request &req,
-                          ontologenius::OntologeniusService::Response &res);
+  bool dataPropertyHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Request> &req,
+                          compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Response> &res);
   /// @brief The ROS service callback in charge of the exploration on individuals
-  bool individualHandle(ontologenius::OntologeniusService::Request  &req,
-                        ontologenius::OntologeniusService::Response &res);
+  bool individualHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Request>  &req,
+                        compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Response> &res);
   /// @brief The ROS service callback in charge of the SPARQL queries
-  bool sparqlHandle(ontologenius::OntologeniusSparqlService::Request &req,
-                    ontologenius::OntologeniusSparqlService::Response &res);
+  bool sparqlHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusSparqlService::Request> &req,
+                    compat::onto_ros::ServiceWrapper<compat::OntologeniusSparqlService::Response> &res);
 
   /// @brief The ROS service callback in charge of the exploration on classes with indexes
-  bool classIndexHandle(ontologenius::OntologeniusIndexService::Request &req,
-                        ontologenius::OntologeniusIndexService::Response &res);
+  bool classIndexHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusIndexService::Request> &req,
+                        compat::onto_ros::ServiceWrapper<compat::OntologeniusIndexService::Response> &res);
   /// @brief The ROS service callback in charge of the exploration on object properties with indexes
-  bool objectPropertyIndexHandle(ontologenius::OntologeniusIndexService::Request &req,
-                                 ontologenius::OntologeniusIndexService::Response &res);
+  bool objectPropertyIndexHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusIndexService::Request> &req,
+                                 compat::onto_ros::ServiceWrapper<compat::OntologeniusIndexService::Response> &res);
   /// @brief The ROS service callback in charge of the exploration on data properties with indexes
-  bool dataPropertyIndexHandle(ontologenius::OntologeniusIndexService::Request &req,
-                               ontologenius::OntologeniusIndexService::Response &res);
+  bool dataPropertyIndexHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusIndexService::Request> &req,
+                               compat::onto_ros::ServiceWrapper<compat::OntologeniusIndexService::Response> &res);
   /// @brief The ROS service callback in charge of the exploration on individuals with indexes
-  bool individualIndexHandle(ontologenius::OntologeniusIndexService::Request  &req,
-                             ontologenius::OntologeniusIndexService::Response &res);
+  bool individualIndexHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusIndexService::Request>  &req,
+                             compat::onto_ros::ServiceWrapper<compat::OntologeniusIndexService::Response> &res);
   /// @brief The ROS service callback in charge of the SPARQL queries with indexes
-  bool sparqlIndexHandle(ontologenius::OntologeniusSparqlIndexService::Request& req,
-                         ontologenius::OntologeniusSparqlIndexService::Response& res);
+  bool sparqlIndexHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusSparqlIndexService::Request>& req,
+                         compat::onto_ros::ServiceWrapper<compat::OntologeniusSparqlIndexService::Response>& res);
 
   /// @brief The ROS service callback in charge of the reasoners
-  bool reasonerHandle(ontologenius::OntologeniusService::Request &req,
-                      ontologenius::OntologeniusService::Response &res);
+  bool reasonerHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Request> &req,
+                      compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Response> &res);
 
   /// @brief The ROS service callback in charge of the conversion from index to identifier and inverse
-  bool conversionHandle(ontologenius::OntologeniusConversion::Request &req,
-                        ontologenius::OntologeniusConversion::Response &res);
+  bool conversionHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusConversion::Request> &req,
+                        compat::onto_ros::ServiceWrapper<compat::OntologeniusConversion::Response> &res);
 
   /// @brief The thread that periodically manages the update of the ontology with the incoming instructions 
   void feedThread();

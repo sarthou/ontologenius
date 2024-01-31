@@ -4,10 +4,12 @@
   <title>Feed and generalize (python) : Insert new knowledge</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
   <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <script src="../../scripts/tabs.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -57,7 +59,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../../Download.html">Download</a></li>
-            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../Tutorials.html">Python Tutorials</a></li>
@@ -135,23 +139,63 @@
         <p>Before starting, here are some imports, an ontology manipulator object, a small function that
           removes the s of the plural of a word when it is present.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">import</span> re</div>
-          <div class="code_line"><span class="py_op">import</span> time</div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">import</span> rospy</div>
-          <div class="code_line"><span class="py_op">from</span> std_msgs.msg <span class="py_op">import</span> String</div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">from</span> ontologenius <span class="py_op">import</span> OntologyManipulator</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">_onto = <span class="py_value">None</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">singular</span>(word):</div>
-          <div class="code_line">    <span class="py_op">if</span> word[len(word) - <span class="py_value">1</span> ] == <span class="py_string">'s'</span>:</div>
-          <div class="code_line">        word = word[<span class="py_value">0</span> : len(word) - <span class="py_value">1</span>]</div>
-          <div class="code_line">    <span class="py_op">return</span> word</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block python_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">import</span> <span class="py_imported">re</span></div>
+                <div class="code_line"><span class="py_import">import</span> <span class="py_imported">time</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">import</span> <span class="py_imported">rospy</span></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">std_msgs</span>.<span class="py_imported">msg</span> <span class="py_import">import</span> <span class="py_imported">String</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontologenius</span> <span class="py_import">import</span> <span class="py_imported">OntologyManipulator</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_var">_onto</span> = <span class="py_key">None</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">singular</span>(<span class="py_var">word</span>):</div>
+                <div class="code_line">    <span class="py_op">if</span> <span class="py_var">word</span>[<span class="py_function">len</span>(<span class="py_var">word</span>) - <span class="py_value">1</span> ] == <span class="py_string">'s'</span>:</div>
+                <div class="code_line">        <span class="py_var">word</span> = <span class="py_var">word</span>[<span class="py_value">0</span> : <span class="py_function">len</span>(<span class="py_var">word</span>) - <span class="py_value">1</span>]</div>
+                <div class="code_line">    <span class="py_op">return</span> <span class="py_var">word</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">say</span>(<span class="py_var">text</span>):</div>
+                <div class="code_line">    <span class="py_function">print</span>(<span class="py_string">'[SAY]'</span>  + <span class="py_var">text</span>)</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-python">
+              <div class="code_block python_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="py_comment">#!/usr/bin/env python</span></div>
+                <div class="code_line"><span class="py_import">import</span> <span class="py_imported">re</span></div>
+                <div class="code_line"><span class="py_import">import</span> <span class="py_imported">time</span></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">threading</span> <span class="py_import">import</span> <span class="py_imported">Threqd</span></div>
+                <div class="code_line"><span class="py_import">import</span> <span class="py_imported">rclpy</span></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">rclpy</span>.<span class="py_imported">node</span> <span class="py_import">import</span> <span class="py_imported">Node</span></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">std_msgs</span>.<span class="py_imported">msg</span> <span class="py_import">import</span> <span class="py_imported">String</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontopy</span> <span class="py_import">import</span> <span class="py_imported">OntologyManipulator</span>, <span class="py_imported">Ontoros</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_var">_onto</span> = <span class="py_key">None</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">singular</span>(<span class="py_var">word</span>):</div>
+                <div class="code_line">    <span class="py_op">if</span> <span class="py_var">word</span>[<span class="py_function">len</span>(<span class="py_var">word</span>) - <span class="py_value">1</span> ] == <span class="py_string">'s'</span>:</div>
+                <div class="code_line">        <span class="py_var">word</span> = <span class="py_var">word</span>[<span class="py_value">0</span> : <span class="py_function">len</span>(<span class="py_var">word</span>) - <span class="py_value">1</span>]</div>
+                <div class="code_line">    <span class="py_op">return</span> <span class="py_var">word</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">say</span>(<span class="py_var">text</span>):</div>
+                <div class="code_line">    <span class="py_imported">Ontoros</span>().<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'[SAY] %s'</span> % <span class="py_var">text</span>)</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>In the next step, we will define five regexes that correspond to the five types of sentences that our chatbot
@@ -175,120 +219,120 @@
         <p>We will now write the callback function of a ROS topic that will determine the type of sentence and
           perform the actions corresponding to each type of sentence.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 17;">
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">testIsA</span>(text):</div>
-          <div class="code_line">    <span class="py_op">global</span> _onto</div>
-          <div class="code_line">    match = re.search(r<span class="py_string">"^(a\s|the\s)?(\w+)\s(is\sa|is\san|are)\s(\w+)$"</span>, text)</div>
-          <div class="code_line">    <span class="py_op">if</span> match != <span class="py_value">None</span>:</div>
-          <div class="code_line">        _onto.feeder.addInheritage(singular(match.group(<span class="py_value">2</span>)), singular(match.group(<span class="py_value">4</span>)))</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 20;">
+          <div class="code_line"><span class="py_key">def</span> <span class="py_function">testIsA</span>(<span class="py_var">text</span>):</div>
+          <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+          <div class="code_line">    <span class="py_var">match</span> = <span class="py_imported">re</span>.<span class="py_function">search</span>(<span class="py_key">r</span><span class="py_string">"^(a\s|the\s)?(\w+)\s(is\sa|is\san|are)\s(\w+)$"</span>, <span class="py_var">text</span>)</div>
+          <div class="code_line">    <span class="py_op">if</span> <span class="py_var">match</span> != <span class="py_key">None</span>:</div>
+          <div class="code_line">        <span class="py_var">_onto</span>.feeder.<span class="py_function">addInheritage</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">4</span>)))</div>
           <div class="code_line">        <span class="py_op">return</span> <span class="py_string">'ok'</span></div>
           <div class="code_line">    <span class="py_op">else</span>:</div>
-          <div class="code_line">        <span class="py_op">return</span> <span class="py_value">None</span></div>
+          <div class="code_line">        <span class="py_op">return</span> <span class="py_key">None</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">testProperty</span>(text):</div>
-          <div class="code_line">    <span class="py_op">global</span> _onto</div>
-          <div class="code_line">    match = re.search(r<span class="py_string">"^(a\s)?(\w+)\scan\s(not\s)?(\w+)$"</span>, text)</div>
-          <div class="code_line">    <span class="py_op">if</span> match != <span class="py_value">None</span>:</div>
-          <div class="code_line">        <span class="py_op">if</span> match.group(<span class="py_value">3</span>) == <span class="py_value">None</span>:</div>
-          <div class="code_line">            _onto.feeder.removeDataProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
-          <div class="code_line">            _onto.feeder.addDataProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
+          <div class="code_line"><span class="py_key">def</span> <span class="py_function">testProperty</span>(<span class="py_var">text</span>):</div>
+          <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+          <div class="code_line">    <span class="py_var">match</span> = <span class="py_imported">re</span>.<span class="py_function">search</span>(<span class="py_key">r</span><span class="py_string">"^(a\s)?(\w+)\scan\s(not\s)?(\w+)$"</span>, <span class="py_var">text</span>)</div>
+          <div class="code_line">    <span class="py_op">if</span> <span class="py_var">match</span> != <span class="py_key">None</span>:</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">3</span>) == <span class="py_key">None</span>:</div>
+          <div class="code_line">            <span class="py_var">_onto</span>.feeder.<span class="py_function">removeDataProperty</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
+          <div class="code_line">            <span class="py_var">_onto</span>.feeder.<span class="py_function">addDataProperty</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
           <div class="code_line">        <span class="py_op">else</span>:</div>
-          <div class="code_line">            _onto.feeder.removeDataProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
-          <div class="code_line">            _onto.feeder.addDataProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
+          <div class="code_line">            <span class="py_var">_onto</span>.feeder.<span class="py_function">removeDataProperty</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
+          <div class="code_line">            <span class="py_var">_onto</span>.feeder.<span class="py_function">addDataProperty</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
           <div class="code_line">        <span class="py_op">return</span> <span class="py_string">'ok'</span></div>
           <div class="code_line">    <span class="py_op">else</span>:</div>
-          <div class="code_line">        <span class="py_op">return</span> <span class="py_value">None</span></div>
+          <div class="code_line">        <span class="py_op">return</span> <span class="py_key">None</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">testQuestion</span>(text):</div>
-          <div class="code_line">    <span class="py_op">global</span> _onto</div>
-          <div class="code_line">    match = re.search(r<span class="py_string">"^can\s(a\s)?(\w+)\s(\w+)\s?\?$"</span>, text)</div>
-          <div class="code_line">    <span class="py_op">if</span> match != <span class="py_value">None</span>:</div>
-          <div class="code_line">        res = _onto.individuals.getOn(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">3</span>)))</div>
-          <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
-          <div class="code_line">            res = _onto.classes.getOn(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">3</span>)))</div>
+          <div class="code_line"><span class="py_key">def</span> <span class="py_function">testQuestion</span>(<span class="py_var">text</span>):</div>
+          <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+          <div class="code_line">    <span class="py_var">match</span> = <span class="py_imported">re</span>.<span class="py_function">search</span>(<span class="py_key">r</span><span class="py_string">"^can\s(a\s)?(\w+)\s(\w+)\s?\?$"</span>, <span class="py_var">text</span>)</div>
+          <div class="code_line">    <span class="py_op">if</span> <span class="py_var">match</span> != <span class="py_key">None</span>:</div>
+          <div class="code_line">        <span class="py_var">res</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getOn</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">3</span>)))</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">res</span>) == <span class="py_value">0</span>:</div>
+          <div class="code_line">            <span class="py_var">res</span> = <span class="py_var">_onto</span>.classes.<span class="py_function">getOn</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">3</span>)))</div>
           <div class="code_line"><br></div>
-          <div class="code_line">        <span class="py_op">if</span> len(res) != <span class="py_value">0</span>:</div>
-          <div class="code_line">            <span class="py_op">if</span> res[<span class="py_value">0</span>] == <span class="py_string">'bool#True'</span>:</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">res</span>) != <span class="py_value">0</span>:</div>
+          <div class="code_line">            <span class="py_op">if</span> <span class="py_var">res</span>[<span class="py_value">0</span>] == <span class="py_string">'bool#True'</span>:</div>
           <div class="code_line">                <span class="py_op">return</span> <span class="py_string">'yes'</span></div>
           <div class="code_line">            <span class="py_op">else</span>:</div>
           <div class="code_line">                <span class="py_op">return</span> <span class="py_string">'no'</span></div>
           <div class="code_line">        <span class="py_op">else</span>:</div>
           <div class="code_line">            <span class="py_op">return</span> <span class="py_string">'I do not know'</span></div>
           <div class="code_line">    <span class="py_op">else</span>:</div>
-          <div class="code_line">        <span class="py_op">return</span> <span class="py_value">None</span></div>
+          <div class="code_line">        <span class="py_op">return</span> <span class="py_key">None</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">testWhatIs</span>(text):</div>
-          <div class="code_line">    <span class="py_op">global</span> _onto</div>
-          <div class="code_line">    match = re.search(r<span class="py_string">"^what\s(is|are)\s(a\s)?(\w+)\s?\?$"</span>, text)</div>
-          <div class="code_line">    <span class="py_op">if</span> match != <span class="py_value">None</span>:</div>
-          <div class="code_line">        res = _onto.individuals.getUp(singular(match.group(<span class="py_value">3</span>)), <span class="py_value">1</span>)</div>
-          <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
-          <div class="code_line">            res = _onto.classes.getUp(singular(match.group(<span class="py_value">3</span>)), <span class="py_value">1</span>)</div>
+          <div class="code_line"><span class="py_key">def</span> <span class="py_function">testWhatIs</span>(<span class="py_var">text</span>):</div>
+          <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+          <div class="code_line">    <span class="py_var">match</span> = <span class="py_imported">re</span>.<span class="py_function">search</span>(<span class="py_key">r</span><span class="py_string">"^what\s(is|are)\s(a\s)?(\w+)\s?\?$"</span>, <span class="py_var">text</span>)</div>
+          <div class="code_line">    <span class="py_op">if</span> <span class="py_var">match</span> != <span class="py_key">None</span>:</div>
+          <div class="code_line">        <span class="py_var">res</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getUp</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">3</span>)), <span class="py_value">1</span>)</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">res</span>) == <span class="py_value">0</span>:</div>
+          <div class="code_line">            <span class="py_var">res</span> = <span class="py_var">_onto</span>.classes.<span class="py_function">getUp</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">3</span>)), <span class="py_value">1</span>)</div>
           <div class="code_line"><br></div>
-          <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">res</span>) == <span class="py_value">0</span>:</div>
           <div class="code_line">            <span class="py_op">return</span> <span class="py_string">'I do not know'</span></div>
           <div class="code_line">        <span class="py_op">else</span>:</div>
-          <div class="code_line">            <span class="py_op">return</span> <span class="py_string">'It is a : '</span> + str(res)</div>
+          <div class="code_line">            <span class="py_op">return</span> <span class="py_string">'It is a : '</span> + <span class="py_imported">str</span>(<span class="py_var">res</span>)</div>
           <div class="code_line"><br></div>
           <div class="code_line">    <span class="py_op">else</span>:</div>
-          <div class="code_line">        <span class="py_op">return</span> <span class="py_value">None</span></div>
+          <div class="code_line">        <span class="py_op">return</span> <span class="py_key">None</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">testIsItA</span>(text):</div>
-          <div class="code_line">    <span class="py_op">global</span> _onto</div>
-          <div class="code_line">    match = re.search(r<span class="py_string">"^(is\sa|are)\s(\w+)\s(is\sa\s|is\san\s|a\s|an\s)?(\w+)\s?\?$"</span>, text)</div>
-          <div class="code_line">    <span class="py_op">if</span> match != <span class="py_value">None</span>:</div>
-          <div class="code_line">        res = _onto.individuals.getUp(singular(match.group(<span class="py_value">2</span>)), selector = singular(match.group(<span class="py_value">4</span>)))</div>
-          <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
-          <div class="code_line">            res = _onto.classes.getUp(singular(match.group(<span class="py_value">2</span>)), selector = singular(match.group(<span class="py_value">4</span>)))</div>
+          <div class="code_line"><span class="py_key">def</span> <span class="py_function">testIsItA</span>(<span class="py_var">text</span>):</div>
+          <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+          <div class="code_line">    <span class="py_var">match</span> = <span class="py_imported">re</span>.<span class="py_function">search</span>(<span class="py_key">r</span><span class="py_string">"^(is\sa|are)\s(\w+)\s(is\sa\s|is\san\s|a\s|an\s)?(\w+)\s?\?$"</span>, <span class="py_var">text</span>)</div>
+          <div class="code_line">    <span class="py_op">if</span> <span class="py_var">match</span> != <span class="py_key">None</span>:</div>
+          <div class="code_line">        <span class="py_var">res</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getUp</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_var">selector</span> = <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">4</span>)))</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">res</span>) == <span class="py_value">0</span>:</div>
+          <div class="code_line">            <span class="py_var">res</span> = <span class="py_var">_onto</span>.classes.<span class="py_function">getUp</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_var">selector</span> = <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">4</span>)))</div>
           <div class="code_line"><br></div>
-          <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">res</span>) == <span class="py_value">0</span>:</div>
           <div class="code_line">            <span class="py_op">return</span> <span class="py_string">'no'</span></div>
           <div class="code_line">        <span class="py_op">else</span>:</div>
           <div class="code_line">            <span class="py_op">return</span> <span class="py_string">'yes'</span></div>
           <div class="code_line"><br></div>
           <div class="code_line">    <span class="py_op">else</span>:</div>
-          <div class="code_line">        <span class="py_op">return</span> <span class="py_value">None</span></div>
+          <div class="code_line">        <span class="py_op">return</span> <span class="py_key">None</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line"><span class="py_op">def</span> <span class="py_function">inputCallback</span>(msg):</div>
-          <div class="code_line">    <span class="py_op">print</span> msg.data</div>
+          <div class="code_line"><span class="py_key">def</span> <span class="py_function">inputCallback</span>(<span class="py_var">msg</span>):</div>
+          <div class="code_line">    <span class="py_op">say</span>(<span class="py_var">msg</span>.data)</div>
           <div class="code_line"><br></div>
-          <div class="code_line">    response = testIsA(msg.data)</div>
-          <div class="code_line">    <span class="py_op">if</span> response == <span class="py_value">None</span>:</div>
-          <div class="code_line">        response = testProperty(msg.data)</div>
-          <div class="code_line">        <span class="py_op">if</span> response == <span class="py_value">None</span>:</div>
-          <div class="code_line">            response = testQuestion(msg.data)</div>
-          <div class="code_line">            <span class="py_op">if</span> response == <span class="py_value">None</span>:</div>
-          <div class="code_line">                response = testWhatIs(msg.data)</div>
-          <div class="code_line">                <span class="py_op">if</span> response == <span class="py_value">None</span>:</div>
-          <div class="code_line">                    response = testIsItA(msg.data)</div>
-          <div class="code_line">                    <span class="py_op">if</span> response == <span class="py_value">None</span>:</div>
-          <div class="code_line">                        response = <span class="py_string">'I do not understand'</span></div>
+          <div class="code_line">    <span class="py_var">response</span> = <span class="py_function">testIsA</span>(<span class="py_var">msg</span>.data)</div>
+          <div class="code_line">    <span class="py_op">if</span> <span class="py_var">response</span> == <span class="py_key">None</span>:</div>
+          <div class="code_line">        <span class="py_var">response</span> = <span class="py_function">testProperty</span>(<span class="py_var">msg</span>.data)</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_var">response</span> == <span class="py_key">None</span>:</div>
+          <div class="code_line">            <span class="py_var">response</span> = <span class="py_function">testQuestion</span>(<span class="py_var">msg</span>.data)</div>
+          <div class="code_line">            <span class="py_op">if</span> <span class="py_var">response</span> == <span class="py_key">None</span>:</div>
+          <div class="code_line">                <span class="py_var">response</span> = <span class="py_function">testWhatIs</span>(<span class="py_var">msg</span>.data)</div>
+          <div class="code_line">                <span class="py_op">if</span> <span class="py_var">response</span> == <span class="py_key">None</span>:</div>
+          <div class="code_line">                    <span class="py_var">response</span> = <span class="py_function">testIsItA</span>(<span class="py_var">msg</span>.data)</div>
+          <div class="code_line">                    <span class="py_op">if</span> <span class="py_var">response</span> == <span class="py_key">None</span>:</div>
+          <div class="code_line">                        <span class="py_var">response</span> = <span class="py_string">'I do not understand'</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line">    <span class="py_op">if</span> response != <span class="py_string">''</span>:</div>
-          <div class="code_line">        <span class="py_op">print</span> <span class="py_string">'=> '</span> + response</div>
+          <div class="code_line">    <span class="py_op">if</span> <span class="py_var">response</span> != <span class="py_string">''</span>:</div>
+          <div class="code_line">        <span class="py_function">say</span>(<span class="py_string">'=> '</span> + <span class="py_var">response</span>)</div>
         </div>
 
         <p>Let's break down the code:</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 19;">
-          <div class="code_line">    match = re.search(r<span class="py_string">"^(a\s|the\s)?(\w+)\s(is\sa|is\san|are)\s(\w+)$"</span>, text)</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 22;">
+          <div class="code_line">    <span class="py_var">match</span> = <span class="py_imported">re</span>.<span class="py_function">search</span>(<span class="py_key">r</span><span class="py_string">"^(a\s|the\s)?(\w+)\s(is\sa|is\san|are)\s(\w+)$"</span>, <span class="py_var">text</span>)</div>
         </div>
 
         <p>We test here if the sentence sent to the topic corresponds to the first regexp. If so, then the
            different matches will be put in the match variable. We will do the same for all the regexp.</p>
 
-         <div class="code_block cpp_code" style="counter-reset:code_line 21;">
-           <div class="code_line">        _onto.feeder.addInheritage(singular(match.group(<span class="py_value">2</span>)), singular(match.group(<span class="py_value">4</span>)))</div>
+         <div class="code_block cpp_code" style="counter-reset:code_line 24;">
+           <div class="code_line">        <span class="py_var">_onto</span>.feeder.<span class="py_function">addInheritage</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">4</span>)))</div>
          </div>
 
          <p>If the sentence matches a heritage relationship, we add the inheritance relationship via the
            member feeder of the ontology manipulator.</p>
          <p>Note that we do not directly pass the matches in the parameters but their singular version.</p>
 
-         <div class="code_block cpp_code" style="counter-reset:code_line 30;">
-           <div class="code_line">        <span class="py_op">if</span> match.group(<span class="py_value">3</span>) == <span class="py_value">None</span>:</div>
-           <div class="code_line">            _onto.feeder.removeDataProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
-           <div class="code_line">            _onto.feeder.addDataProperty(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
+         <div class="code_block cpp_code" style="counter-reset:code_line 33;">
+           <div class="code_line">        <span class="py_op">if</span> <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">3</span>) == <span class="py_key">None</span>:</div>
+           <div class="code_line">            <span class="py_var">_onto</span>.feeder.<span class="py_function">removeDataProperty</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
+           <div class="code_line">            <span class="py_var">_onto</span>.feeder.<span class="py_function">addDataProperty</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">4</span>)), <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
         </div>
 
         <p>The third match must contain "not" if the sentence is in its negative form and None if it is
@@ -307,13 +351,13 @@
           property it will create it alone by determining its type with respect to the data pointed. For all
           times after, the property will exist and will be reused.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 44;">
-          <div class="code_line">        res = _onto.individuals.getOn(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">3</span>)))</div>
-          <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
-          <div class="code_line">            res = _onto.classes.getOn(singular(match.group(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + singular(match.group(<span class="py_value">3</span>)))</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 47;">
+          <div class="code_line">        <span class="py_var">res</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getOn</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">3</span>)))</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">res</span>) == <span class="py_value">0</span>:</div>
+          <div class="code_line">            <span class="py_var">res</span> = <span class="py_var">_onto</span>.classes.<span class="py_function">getOn</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_string">'can_'</span> + <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">3</span>)))</div>
           <div class="code_line"><br></div>
-          <div class="code_line">        <span class="py_op">if</span> len(res) != <span class="py_value">0</span>:</div>
-          <div class="code_line">            <span class="py_op">if</span> res[<span class="py_value">0</span>] == <span class="py_string">'bool#True'</span>:</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">res</span>) != <span class="py_value">0</span>:</div>
+          <div class="code_line">            <span class="py_op">if</span> <span class="py_var">res</span>[<span class="py_value">0</span>] == <span class="py_string">'bool#True'</span>:</div>
           <div class="code_line">                <span class="py_op">return</span> <span class="py_string">'yes'</span></div>
           <div class="code_line">            <span class="py_op">else</span>:</div>
           <div class="code_line">                <span class="py_op">return</span> <span class="py_string">'no'</span></div>
@@ -329,10 +373,10 @@
 
         <p>If we got an answer, it will be in the form "type#value".</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 62;">
-          <div class="code_line">        res = _onto.individuals.getUp(singular(match.group(<span class="py_value">3</span>)), <span class="py_value">1</span>)</div>
-          <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
-          <div class="code_line">            res = _onto.classes.getUp(singular(match.group(<span class="py_value">3</span>)), <span class="py_value">1</span>)</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 65;">
+          <div class="code_line">        <span class="py_var">res</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getUp</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">3</span>)), <span class="py_value">1</span>)</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">res</span>) == <span class="py_value">0</span>:</div>
+          <div class="code_line">            <span class="py_var">res</span> = <span class="py_var">_onto</span>.classes.<span class="py_function">getUp</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">3</span>)), <span class="py_value">1</span>)</div>
         </div>
 
         <p>Here we try to answer a question such as "what is a kiwi?" You should directly think about using
@@ -341,10 +385,10 @@
           as 1. This value corresponds to the depth of exploration of the inheritance tree. By setting this
           parameter to 1, we ask to have only direct inheritances.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 78;">
-          <div class="code_line">        res = _onto.individuals.getUp(singular(match.group(<span class="py_value">2</span>)), selector = singular(match.group(<span class="py_value">4</span>)))</div>
-          <div class="code_line">        <span class="py_op">if</span> len(res) == <span class="py_value">0</span>:</div>
-          <div class="code_line">            res = _onto.classes.getUp(singular(match.group(<span class="py_value">2</span>)), selector = singular(match.group(<span class="py_value">4</span>)))</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 81;">
+          <div class="code_line">        <span class="py_var">res</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">getUp</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_var">selector</span> = <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">4</span>)))</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">res</span>) == <span class="py_value">0</span>:</div>
+          <div class="code_line">            <span class="py_var">res</span> = <span class="py_var">_onto</span>.classes.<span class="py_function">getUp</span>(<span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>)), <span class="py_var">selector</span> = <span class="py_function">singular</span>(<span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">4</span>)))</div>
         </div>
 
         <p>Finally, we finish with a question of the type "is a kiwi is an animal?". To answer this we could recover all the heritage tree and we look if the concept of
@@ -355,21 +399,76 @@
         <p>Finally, we can write our main function which creates the ontology manipulator, close the ontology,
           and subscribes to the topic "feed_and_generalize/in".</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 108;">
-          <div class="code_line"><span class="py_op">if</span> __name__ == <span class="py_string">'__main__'</span>:</div>
-          <div class="code_line">    <span class="py_op">global</span> _onto</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    rospy.init_node(<span class="py_string">'feed_and_generalize'</span>)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    _onto = OntologyManipulator()</div>
-          <div class="code_line">    _onto.close()</div>
-          <div class="code_line">    time.sleep(<span class="py_value">1</span>)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    _onto.feeder.addConcept(<span class="py_string">'bird'</span>)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    rospy.Subscriber(<span class="py_string">'feed_and_generalize/in'</span>, String, inputCallback)</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    rospy.spin()</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-1-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-1-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-1-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-1-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-1-Ros1" class="lang-tabs-panel group-tab" id="panel-1-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block python_code" style="counter-reset:code_line 111;">
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">main</span>():</div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_imported">rospy</span>.<span class="py_function">init_node</span>(<span class="py_string">'feed_and_generalize'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">_onto</span> = <span class="py_imported">OntologyManipulator</span>()</div>
+                <div class="code_line">    <span class="py_var">_onto</span>.<span class="py_function">close</span>()</div>
+                <div class="code_line">    <span class="py_imported">time</span>.<span class="py_function">sleep</span>(<span class="py_value">1</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">_onto</span>.feeder.<span class="py_function">addConcept</span>(<span class="py_string">'bird'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_imported">rospy</span>.<span class="py_imported">Subscriber</span>(<span class="py_string">'feed_and_generalize/in'</span>, <span class="py_imported">String</span>, <span class="py_function">inputCallback</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_imported">rospy</span>.<span class="py_function">spin</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_op">if</span> <span class="py_var">__name__</span> == <span class="py_string">'__main__'</span>:</div>
+                <div class="code_line">    <span class="py_function">main</span>()</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-python">
+              <div class="code_block python_code" style="counter-reset:code_line 111;">
+                <div class="code_line"><span class="py_key">class</span> <span class="py_imported">FeederNode</span>(<span class="py_imported">Node</span>):</div>
+                <div class="code_line">    <span class="py_key">def</span> <span class="py_function">__init__</span>(<span class="py_var">self</span>):</div>
+                <div class="code_line">        <span class="py_imported">super</span>().<span class="py_function">__init__</span>(<span class="py_string">'feed_and_generalize'</span>)</div>
+                <div class="code_line">        <span class="py_var">self</span>.<span class="py_var">subscription</span> = <span class="py_var">self</span>.<span class="py_function">create_subscription</span>(<span class="py_imported">String</span>, <span class="py_string">&quot;feed_and_generalize/in&quot;</span>, <span class="py_function">inputCallback</span>, <span class="py_value">10</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_key">def</span> <span class="py_function">main</span>():</div>
+                <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_imported">rclpy</span>.<span class="py_function">init</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">_onto</span> = <span class="py_imported">OntologyManipulator</span>()</div>
+                <div class="code_line">    <span class="py_var">_onto</span>.<span class="py_function">close</span>()</div>
+                <div class="code_line">    <span class="py_imported">time</span>.<span class="py_function">sleep</span>(<span class="py_value">1</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">_onto</span>.feeder.<span class="py_function">addConcept</span>(<span class="py_string">'bird'</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">node</span> = <span class="py_imported">FeederNode</span>()</div>
+                <div class="code_line">    <span class="py_var">ontoros</span> = <span class="py_imported">Ontoros</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">executor</span> = <span class="py_imported">rclpy</span>.executors.MultiThreadedExecutor()</div>
+                <div class="code_line">    <span class="py_var">executor</span>.<span class="py_function">add_node</span>(<span class="py_var">node</span>)</div>
+                <div class="code_line">    <span class="py_var">executor</span>.<span class="py_function">add_node</span>(<span class="py_var">ontoros</span>)</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">et</span> = <span class="py_imported">Thread</span>(<span class="py_var">target</span>=<span class="py_var">executor</span>.spin)</div>
+                <div class="code_line">    <span class="py_var">et</span>.<span class="py_function">start</span>()</div>
+                <div class="code_line">    <span class="py_var">et</span>.<span class="py_function">join</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="py_var">node</span>.<span class="py_function">destroy_node</span>()</div>
+                <div class="code_line">    <span class="py_imported">rclpy</span>.<span class="py_function">shutdown</span>()</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="py_op">if</span> <span class="py_var">__name__</span> == <span class="py_string">'__main__'</span>:</div>
+                <div class="code_line">    <span class="py_function">main</span>()</div>
+              </div>
+
+              <p>The main function is a bit more complicated than usual as for the next step we will need to spin the Ontologenius API node in order to subscribe to some topics.</p>
+            </div>
+          </div>
         </div>
 
         <p>Before moving on, note that we add the concept "bird" before all. This is because to
@@ -377,8 +476,8 @@
           add the fact that a bird is an animal, Ontologenius must know either bird or animal and will
           automatically create the second if it does not exist yet.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 101;">
-          <div class="code_line">    _onto.feeder.addConcept(<span class="py_string">'bird'</span>)</div>
+        <div class="code_block cpp_code">
+          <div class="terminal_line">    <span class="py_var">_onto</span>.feeder.<span class="py_function">addConcept</span>(<span class="py_string">'bird'</span>)</div>
         </div>
 
         <h2>Let's test!</h2>
@@ -386,18 +485,60 @@
         <p>Now that everything is ready, let's launch our program and in another terminal explain to it
           that a kiwi is a bird and that it can not fly:</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a kiwi is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a kiwi can not fly'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-2-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-2-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-2-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-2-Ros1" class="lang-tabs-panel group-tab" id="panel-2-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a kiwi is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a kiwi can not fly'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-2-Ros2" class="lang-tabs-panel group-tab" id="panel-2-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a kiwi is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a kiwi can not fly'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>We can already ask it some questions to evaluate what it knows thanks to this new information:</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'what is a kiwi?'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a kiwi fly ?'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'is a kiwi an animal?'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-3-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-3-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-3-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-3-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-3-Ros1" class="lang-tabs-panel group-tab" id="panel-3-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'what is a kiwi?'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a kiwi fly ?'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'is a kiwi an animal?'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a bird fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-3-Ros2" class="lang-tabs-panel group-tab" id="panel-3-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'what is a kiwi?'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a kiwi fly ?'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'is a kiwi an animal?'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a bird fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>It should answer you (in the terminal where the program is launched) that a kiwi is a bird and
@@ -406,9 +547,29 @@
 
         <p>We can explain to it that a bird is an animal and ask it again if a kiwi is an animal:</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'birds are animals'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'is a kiwi an animal?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-4-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-4-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-4-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-4-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-4-Ros1" class="lang-tabs-panel group-tab" id="panel-4-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'birds are animals'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'is a kiwi an animal?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-4-Ros2" class="lang-tabs-panel group-tab" id="panel-4-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'birds are animals'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'is a kiwi an animal?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>It is obvious but now our program responds to us that a kiwi is an animal as a kiwi is a bird and a
@@ -417,10 +578,31 @@
         <p>So let's learn the concept of a penguin who is a bird that can not fly and then ask it again if
           a bird can fly:</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a penguin is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a penguin can not fly'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-5-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-5-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-5-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-5-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-5-Ros1" class="lang-tabs-panel group-tab" id="panel-5-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a penguin is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a penguin can not fly'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a bird fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-5-Ros2" class="lang-tabs-panel group-tab" id="panel-5-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a penguin is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a penguin can not fly'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a bird fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>Surprisingly, our program now responds to the fact that birds can not fly, which is wrong, but
@@ -440,23 +622,65 @@
         <p>Before continuing, kill Ontologenius and so your program then restarts it and ask it again if the
           birds can fly.</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-6-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-6-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-6-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-6-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-6-Ros1" class="lang-tabs-panel group-tab" id="panel-6-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a bird fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-6-Ros2" class="lang-tabs-panel group-tab" id="panel-6-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a bird fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>It should answer you again no. Yet you have stopped Ontologenius... This is where we understand its
           long-term memory principle as well as the usefulness of the internal file. When stopping Ontologenius,
            it stored all its knowledge in the internal file that is reloaded at the restart.</p>
 
-       <p>We will now teach it the principle of a parrot and a dove that are birds capable of flying and ask it again if
-         the birds can fly.</p>
+        <p>We will now teach it the principle of a parrot and a dove that are birds capable of flying and ask it again if
+          the birds can fly.</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a parrot is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a parrot can fly'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a dove is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a dove can fly'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-7-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-7-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-7-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-7-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-7-Ros1" class="lang-tabs-panel group-tab" id="panel-7-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a parrot is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a parrot can fly'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a dove is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a dove can fly'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a bird fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-7-Ros2" class="lang-tabs-panel group-tab" id="panel-7-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a parrot is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a parrot can fly'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a dove is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a dove can fly'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a bird fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>You had to suspect that the 60% condition is no longer true and our program finds itself in
@@ -464,26 +688,87 @@
 
         <p>Let's learn five new birds that can all fly to reach the threshold of 60%.</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a heron is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a heron can fly'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a gull is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a gull can fly'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-8-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-8-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-8-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-8-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-8-Ros1" class="lang-tabs-panel group-tab" id="panel-8-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a heron is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a heron can fly'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a gull is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a gull can fly'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-8-Ros2" class="lang-tabs-panel group-tab" id="panel-8-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a heron is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a heron can fly'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a gull is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a gull can fly'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>By asking it one last time if the birds can fly you should finally have a good answer from it and
           this without ever having explicitly told it.</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a bird fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-9-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-9-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-9-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-9-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-9-Ros1" class="lang-tabs-panel group-tab" id="panel-9-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a bird fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-9-Ros2" class="lang-tabs-panel group-tab" id="panel-9-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a bird fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>As I did in the introduction of this tutorial, simply teach it that a phalarope is a bird and ask it
           if it can fly:</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'a phalarope is a bird'&quot;</div>
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a phalarope fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-10-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-10-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-10-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-10-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-10-Ros1" class="lang-tabs-panel group-tab" id="panel-10-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'a phalarope is a bird'"</div>
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a phalarope fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-10-Ros2" class="lang-tabs-panel group-tab" id="panel-10-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'a phalarope is a bird'}"</div>
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a phalarope fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>Since it has no information about this and because thinking that birds can fly in general, it
@@ -492,8 +777,27 @@
         <p>However, by asking if a kiwi can fly, you should always have the answer that not that you have
           explicitly given this knowledge.</p>
 
-        <div class="code_block">
-          <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String &quot;data: 'can a kiwi fly ?'&quot;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-11-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-11-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-11-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-11-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-11-Ros1" class="lang-tabs-panel group-tab" id="panel-11-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-python">
+              <div class="code_block">
+                <div class="terminal_line">rostopic pub -1 /feed_and_generalize/in std_msgs/String "data: 'can a kiwi fly ?'"</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-11-Ros2" class="lang-tabs-panel group-tab" id="panel-11-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block">
+                <div class="terminal_line">ros2 topic pub -1 feed_and_generalize/in std_msgs/msg/String "{data: 'can a kiwi fly ?'}"</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>So we have seen here how to add new knowledge during the execution of the program and the impact of
@@ -502,8 +806,8 @@
         <p>If you wish, you can delete the internal file Ontologenius has created and try again by adding
           the following line just before closing the ontology in the main function.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 114;">
-          <div class="code_line">_onto.reasoners.deactivate(<span class="py_string">'ReasonerGeneralize'</span>);</div>
+        <div class="code_block cpp_code">
+          <div class="terminal_line">    <span class="py_var">_onto</span>.reasoners.<span class="py_function">deactivate</span>(<span class="py_string">'ReasonerGeneralize'</span>)</div>
         </div>
 
         <p>In fact, the generalization mechanism is a reasoning plugin that like all these mechanisms can be

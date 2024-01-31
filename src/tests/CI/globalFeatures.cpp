@@ -19,7 +19,7 @@ TEST(global_tests, reset)
   res = onto_ptr->classes.find(test_word);
   EXPECT_TRUE((res.size() == 1) && (res[0] == "centimeter"));
 
-  EXPECT_TRUE(onto_ptr->actions.reset());
+  EXPECT_TRUE(onto_ptr->actions.clear());
   EXPECT_TRUE(onto_ptr->actions.close());
 
   test_word = "affair";
@@ -30,7 +30,7 @@ TEST(global_tests, reset)
   res = onto_ptr->classes.find(test_word);
   EXPECT_FALSE((res.size() == 1) && (res[0] == "centimeter"));
 
-  EXPECT_TRUE(onto_ptr->actions.reset());
+  EXPECT_TRUE(onto_ptr->actions.clear());
   std::string path = ros::package::getPath("ontologenius");
   path+= "/files/attribute.owl";
   EXPECT_TRUE(onto_ptr->actions.fadd(path));
@@ -50,7 +50,7 @@ TEST(global_tests, language)
 {
   std::vector<std::string> res;
 
-  EXPECT_TRUE(onto_ptr->actions.reset());
+  EXPECT_TRUE(onto_ptr->actions.clear());
   std::string path = ros::package::getPath("ontologenius");
   path+= "/files/attribute.owl";
   EXPECT_TRUE(onto_ptr->actions.fadd(path));
@@ -84,13 +84,13 @@ TEST(global_tests, reasoners_effect)
 {
   std::vector<std::string> res;
 
-  EXPECT_TRUE(onto_ptr->actions.reset());
+  EXPECT_TRUE(onto_ptr->actions.clear());
 
-  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ReasonerChain"));
-  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ReasonerDictionary"));
-  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ReasonerInverseOf"));
-  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ReasonerNone"));
-  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ReasonerSymetric"));
+  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ontologenius::ReasonerChain"));
+  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ontologenius::ReasonerDictionary"));
+  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ontologenius::ReasonerInverseOf"));
+  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ontologenius::ReasonerNone"));
+  EXPECT_TRUE(onto_ptr->reasoners.deactivate("ontologenius::ReasonerSymmetric"));
 
   std::string path_base = ros::package::getPath("ontologenius");
   std::string path = path_base + "/files/attribute.owl";
@@ -104,12 +104,12 @@ TEST(global_tests, reasoners_effect)
 
   EXPECT_TRUE(onto_ptr->actions.close());
 
-  //ReasonerSymetric
+  //ReasonerSymmetric
 
   res = onto_ptr->individuals.getOn("redCube", "isInFrontOf");
   EXPECT_TRUE(find(res.begin(), res.end(), "blue_book") == res.end());
 
-  EXPECT_TRUE(onto_ptr->reasoners.activate("ReasonerSymetric"));
+  EXPECT_TRUE(onto_ptr->reasoners.activate("ontologenius::ReasonerSymmetric"));
 
   res = onto_ptr->individuals.getOn("redCube", "isInFrontOf");
   EXPECT_TRUE(find(res.begin(), res.end(), "blue_book") != res.end());
@@ -119,7 +119,7 @@ TEST(global_tests, reasoners_effect)
   res = onto_ptr->individuals.getOn("blueCube", "isUnder");
   EXPECT_TRUE(find(res.begin(), res.end(), "greenCube") == res.end());
 
-  EXPECT_TRUE(onto_ptr->reasoners.activate("ReasonerInverseOf"));
+  EXPECT_TRUE(onto_ptr->reasoners.activate("ontologenius::ReasonerInverseOf"));
 
   res = onto_ptr->individuals.getOn("blueCube", "isUnder");
   EXPECT_TRUE(find(res.begin(), res.end(), "greenCube") != res.end());
@@ -129,7 +129,7 @@ TEST(global_tests, reasoners_effect)
   res = onto_ptr->individuals.getOn("greenCube", "isIn");
   EXPECT_TRUE(find(res.begin(), res.end(), "big_box") == res.end());
 
-  EXPECT_TRUE(onto_ptr->reasoners.activate("ReasonerChain"));
+  EXPECT_TRUE(onto_ptr->reasoners.activate("ontologenius::ReasonerChain"));
 
   res = onto_ptr->individuals.getOn("blueCube", "isIn");
   EXPECT_TRUE(find(res.begin(), res.end(), "big_box") != res.end());
@@ -139,7 +139,7 @@ TEST(global_tests, reasoners_effect)
   res = onto_ptr->individuals.find("big box");
   EXPECT_TRUE(find(res.begin(), res.end(), "big_box") == res.end());
 
-  EXPECT_TRUE(onto_ptr->reasoners.activate("ReasonerDictionary"));
+  EXPECT_TRUE(onto_ptr->reasoners.activate("ontologenius::ReasonerDictionary"));
 
   res = onto_ptr->individuals.find("big box");
   EXPECT_TRUE(find(res.begin(), res.end(), "big_box") != res.end());
@@ -149,8 +149,7 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius_global_tester");
 
-  ros::NodeHandle n;
-  onto::OntologyManipulator onto(&n);
+  onto::OntologyManipulator onto;
   onto_ptr = &onto;
 
   onto.close();
