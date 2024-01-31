@@ -147,10 +147,12 @@ add_onto_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Graphs/ObjectPropertyGraph.cpp
   src/core/ontoGraphs/Graphs/DataPropertyGraph.cpp
   src/core/ontoGraphs/Graphs/IndividualGraph.cpp
+  src/core/ontoGraphs/Graphs/AnonymousClassGraph.cpp
   src/core/ontoGraphs/Checkers/ClassChecker.cpp
   src/core/ontoGraphs/Checkers/ObjectPropertyChecker.cpp
   src/core/ontoGraphs/Checkers/DataPropertyChecker.cpp
   src/core/ontoGraphs/Checkers/IndividualChecker.cpp
+  src/core/ontoGraphs/Checkers/AnonymousClassChecker.cpp
   src/core/ontoGraphs/Ontology.cpp
   src/core/ontologyIO/OntologyLoader.cpp
   src/core/ontologyIO/OntologyReader.cpp
@@ -219,6 +221,7 @@ add_onto_library(ontologenius_reasoner_plugin MODULE
   src/core/reasoner/plugins/ReasonerDictionary.cpp
   src/core/reasoner/plugins/ReasonerGeneralize.cpp
   src/core/reasoner/plugins/ReasonerRangeDomain.cpp
+  src/core/reasoner/plugins/ReasonerAnonymous.cpp
 )
 target_include_directories(ontologenius_reasoner_plugin
  PUBLIC ${pluginlib_INCLUDE_DIRS}
