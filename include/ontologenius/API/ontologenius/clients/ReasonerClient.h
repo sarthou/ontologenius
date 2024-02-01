@@ -16,11 +16,9 @@ class ReasonerClient : public ClientBase
 public:
   /// @brief Constructs a reasoner client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
-  /// @param n is an initialized ROS node handle.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  ReasonerClient(ros::NodeHandle* n, const std::string& name) : ClientBase(n, (name == "") ? "reasoner" : "reasoner/" + name)
-  {
-  }
+  explicit ReasonerClient(const std::string& name) : ClientBase((name == "") ? "reasoner" : "reasoner/" + name)
+  {}
 
   /// @brief Gets the name of the plugins available.
   /// @return the list as the available plugins in the form of a verctor of string.

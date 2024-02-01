@@ -4,41 +4,29 @@ namespace onto {
 
 std::vector<std::string> DataPropertyClient::getDown(const std::string& name, int depth)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "getDown";
-  srv.request.param = name;
-
+  std::string param = name;
   if(depth >= 0)
-    srv.request.param += " -d " + std::to_string(depth);
+    param += " -d " + std::to_string(depth);
 
-  return call(srv);
+  return call("getDown", param);
 }
 
 std::vector<std::string> DataPropertyClient::getDisjoint(const std::string& name)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "getDisjoint";
-  srv.request.param = name;
-
-  return call(srv);
+  std::string param = name;
+  return call("getDisjoint", param);
 }
 
 std::vector<std::string> DataPropertyClient::getDomain(const std::string& name)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "getDomain";
-  srv.request.param = name;
-
-  return call(srv);
+  std::string param = name;
+  return call("getDomain", param);
 }
 
 std::vector<std::string> DataPropertyClient::getRange(const std::string& name)
 {
-  ontologenius::OntologeniusService srv;
-  srv.request.action = "getRange";
-  srv.request.param = name;
-
-  return call(srv);
+  std::string param = name;
+  return call("getRange", param);
 }
 
 } // namespace onto

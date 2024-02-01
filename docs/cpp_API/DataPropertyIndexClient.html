@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>DataPropertyIndexClient Class (cpp) | Ontologenius 0.3.1</title>
+  <title>DataPropertyIndexClient Class (cpp) | Ontologenius 0.4.0</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -57,7 +57,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../Download.html">Download</a></li>
-            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
@@ -134,7 +136,7 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#DataPropertyIndexClient">DataPropertyIndexClient</a></b>(ros::NodeHandle* <i>n</i>, const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#DataPropertyIndexClient">DataPropertyIndexClient</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getDown">getDown</a></b>(int64_t <i>index</i>, int <i>depth</i> = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getDisjoint">getDisjoint</a></b>(int64_t <i>index</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getDomain">getDomain</a></b>(int64_t <i>index</i>)</td></tr>
@@ -168,8 +170,8 @@
         <div class="func">
           <h2>Public Function Documentation</h2>
 
-          <h3 class="fn" id="DataPropertyIndexClient"><a name="DataPropertyIndexClient"></a>DataPropertyIndexClient::<span class="name">DataPropertyIndexClient</span>(<span class="type">ros::NodeHandle</span>*<i> n</i>, const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Constructs a data property client with a pointer to a NodeHandle <i>n</i>.</p>
+          <h3 class="fn" id="DataPropertyIndexClient"><a name="DataPropertyIndexClient"></a>DataPropertyIndexClient::<span class="name">DataPropertyIndexClient</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <p>Constructs a data property client.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
 
           <h3 class="fn" id="getDown"><a name="getDown"></a><span class="type">std::vector&lt;int64_t&gt;</span> DataPropertyIndexClient::<span class="name">getDown</span>(<span class="type">int64_t</span> <i>index</i>, <span class="type">int</span> <i>depth</i> = -1)</h3>

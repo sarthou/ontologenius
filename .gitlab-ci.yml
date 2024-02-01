@@ -8,20 +8,6 @@
     - cd ..
     - catkin_make -DCMAKE_BUILD_TYPE=Release
 
-.test_script_template : &test_script_definition_py2
-  script:
-    - mkdir -p ~/ros_ws/src
-    - cd ~/ros_ws
-    - catkin_make -DCMAKE_BUILD_TYPE=Release
-    - cd src
-    - cp -r /builds/$GITLAB_USER_LOGIN/ontologenius .
-    - cd ..
-    - pip install requests --user
-    - source devel/setup.bash
-    - catkin_make -DCMAKE_BUILD_TYPE=Release
-    - source devel/setup.bash
-    - catkin_make run_tests_ontologenius_rostest -j1 -DCMAKE_BUILD_TYPE=Release && catkin_make test -j1 -DCMAKE_BUILD_TYPE=Release
-
 .test_script_template : &test_script_definition_py3
   script:
     - mkdir -p ~/ros_ws/src
@@ -36,31 +22,14 @@
     - source devel/setup.bash
     - catkin_make run_tests_ontologenius_rostest -j1 -DCMAKE_BUILD_TYPE=Release && catkin_make test -j1 -DCMAKE_BUILD_TYPE=Release
 
-.melodic_before_template : &melodic_before_definition
-  before_script:
-  - source /opt/ros/melodic/setup.bash
-  - apt-get update -qq && apt-get install -y libcppunit-1.14-0 libcppunit-dev libtinyxml-dev python-rosdep python-pip
-
 .noetic_before_template : &noetic_before_definition
   before_script:
   - source /opt/ros/noetic/setup.bash
-  - apt-get update -qq && apt-get install -y libcppunit-1.15-0 libcppunit-dev libtinyxml-dev git-all python3-rosdep python3-pip
+  - apt-get update -qq && apt-get install -y libcppunit-1.15-0 libcppunit-dev libtinyxml-dev git-all python3-rosdep python3-pip libcurl4-openssl-dev
 
 stages:
   - build
   - test
-
-run-test-melodic:
-  stage: test
-  image: ros:melodic-perception-bionic
-  <<: *melodic_before_definition
-  <<: *test_script_definition_py2
-
-run-build-melodic:
-  image: ros:melodic-perception-bionic
-  stage: build
-  <<: *melodic_before_definition
-  <<: *build_script_definition
 
 run-test-noetic:
   stage: test

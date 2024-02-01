@@ -45,6 +45,12 @@
 /file_intern/*
 
 *.pyc
+catalog-v*
 
 # VsCode files
 settings.json
+
+# Clion folders
+/.idea/
+/cmake-build-debug/
+/cmake-build-release/

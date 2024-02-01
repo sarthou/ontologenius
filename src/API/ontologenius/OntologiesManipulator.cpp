@@ -2,10 +2,8 @@
 
 namespace onto {
 
-OntologiesManipulator::OntologiesManipulator(ros::NodeHandle* n) : ManagerClient(n)
-{
-  n_ = n;
-}
+OntologiesManipulator::OntologiesManipulator() : ManagerClient()
+{}
 
 OntologiesManipulator::~OntologiesManipulator()
 {
@@ -18,9 +16,9 @@ OntologiesManipulator::~OntologiesManipulator()
       delete manipulator.second;
 }
 
-void OntologiesManipulator::waitInit(int32_t timeout)
+bool OntologiesManipulator::waitInit(int32_t timeout)
 {
-  ros::service::waitForService("ontologenius/manage", timeout);
+  return client_.wait(timeout);
 }
 
 OntologyManipulator* OntologiesManipulator::operator[](const std::string& name)
@@ -57,7 +55,6 @@ bool OntologiesManipulator::add(const std::string& name)
       return false;
     else
     {
-      ros::service::waitForService("ontologenius/sparql/" + name);
       manipulators_[name] = new OntologyManipulator(name);
       manipulators_index_[name] = new OntologyManipulatorIndex(name);
       return true;
@@ -87,7 +84,7 @@ bool OntologiesManipulator::copy(const std::string& dest_name, const std::string
 bool OntologiesManipulator::del(const std::string& name)
 {
   if(manipulators_.find(name) == manipulators_.end())
-    return true;
+      return true;
   else
   {
     if(ManagerClient::del(name) == false)

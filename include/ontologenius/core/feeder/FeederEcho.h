@@ -3,17 +3,15 @@
 
 #include <mutex>
 
-#include <ros/ros.h>
-#include "ontologenius/StampedString.h"
-#include "ontologenius/OntologeniusExplanation.h"
+#include "ontologenius/compat/ros.h"
 
 namespace ontologenius {
 
 class FeederEcho
 {
 public:
-  FeederEcho(const std::string& echo_topic, const std::string& expl_topic) : feeder_echo_pub_(n_.advertise<ontologenius::StampedString>(echo_topic, 1000)),
-                                                                             feeder_expl_pub_(n_.advertise<ontologenius::OntologeniusExplanation>(expl_topic, 1000))
+  FeederEcho(const std::string& echo_topic, const std::string& expl_topic) : feeder_echo_pub_(echo_topic, 1000),
+                                                                             feeder_explanation_pub_(expl_topic, 1000)
   {}
 
   ~FeederEcho()
@@ -21,9 +19,10 @@ public:
     mut_.lock();
     echo_messages.clear();
     expl_messages.clear();
+    // should we perhaps unlock the mutex...?
   }
 
-  void add(const std::string& data, const ros::Time& stamp = ros::Time::now())
+  void add(const std::string& data, const compat::onto_ros::Time& stamp = compat::onto_ros::Node::get().current_time())
   {
     mut_.lock();
     echo_messages.emplace_back(data, stamp);
@@ -34,7 +33,7 @@ public:
   {
     mut_.lock();
     for(auto& fact : facts)
-      echo_messages.emplace_back(fact.first, ros::Time{fact.second.sec, fact.second.nsec});
+      echo_messages.emplace_back(fact.first, compat::onto_ros::Time { (uint16_t) fact.second.sec, fact.second.nsec } );
     mut_.unlock();
   }
 
@@ -48,21 +47,22 @@ public:
   void publish()
   {
     mut_.lock();
-    ontologenius::StampedString ros_msg;
+    ontologenius::compat::OntologeniusStampedString ros_msg;
     for(auto& message : echo_messages)
     {
       ros_msg.data = message.first;
-      ros_msg.stamp = message.second;
+      ros_msg.stamp.seconds = message.second.seconds();
+      ros_msg.stamp.nanoseconds = message.second.nanoseconds();
       feeder_echo_pub_.publish(ros_msg);
     }
     echo_messages.clear();
 
-    ontologenius::OntologeniusExplanation ros_expl_msg;
+    ontologenius::compat::OntologeniusExplanation ros_explanation_msg;
     for(auto& message : expl_messages)
     {
-      ros_expl_msg.fact = message.first;
-      ros_expl_msg.cause = message.second;
-      feeder_expl_pub_.publish(ros_expl_msg);
+      ros_explanation_msg.fact = message.first;
+      ros_explanation_msg.cause = message.second;
+      feeder_explanation_pub_.publish(ros_explanation_msg);
     }
     expl_messages.clear();
     mut_.unlock();
@@ -70,10 +70,10 @@ public:
 
 private:
   std::mutex mut_;
-  ros::NodeHandle n_;
-  ros::Publisher feeder_echo_pub_;
-  ros::Publisher feeder_expl_pub_;
-  std::vector<std::pair<std::string, ros::Time>> echo_messages;
+  compat::onto_ros::Publisher<compat::OntologeniusStampedString> feeder_echo_pub_;
+  compat::onto_ros::Publisher<compat::OntologeniusExplanation> feeder_explanation_pub_;
+
+  std::vector<std::pair<std::string, compat::onto_ros::Time>> echo_messages;
   std::vector<std::pair<std::string, std::string>> expl_messages;
 };
 

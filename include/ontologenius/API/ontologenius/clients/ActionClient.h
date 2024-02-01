@@ -14,14 +14,13 @@ class ActionClient : public ClientBase
 public:
   /// @brief Constructs an action client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
-  /// @param n is an initialized ROS node handle.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  ActionClient(ros::NodeHandle* n, const std::string& name) : ClientBase(n, (name == "") ? "actions" : "actions/" + name)
+  explicit ActionClient(const std::string& name) : ClientBase((name == "") ? "actions" : "actions/" + name)
   {
   }
 
   /// @brief Link all the concepts loaded from files and the Internet. Before closing an ontology, exploration requests are not allowed.
-  /// @return Returns false if the service call fails.
+  /// @return Returns false ontology closure fails or if the service call fails.
   bool close();
   /// @brief Saves the current ontology in an absolute path.
   /// @param path is the path where the ontology will be saved. It must be of the form: my/path/to/ontology.owl
@@ -47,9 +46,12 @@ public:
   /// @param file is the local path to the ontology file.
   /// @return Returns false if the service call fails.
   bool fadd(const std::string& file);
-  /// @brief Unloads all the knowledge previously loaded or learned.
+  /// @brief Unloads all the knowledge previously loaded or learned and reload the default files.
   /// @return Returns false if the service call fails.
   bool reset();
+  /// @brief Unloads all the knowledge previously loaded or learned.
+  /// @return Returns false if the service call fails.
+  bool clear();
 
 private:
 

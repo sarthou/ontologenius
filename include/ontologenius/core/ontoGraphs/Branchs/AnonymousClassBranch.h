@@ -40,6 +40,10 @@ struct CardinalityElement_t
 class AnonymousClassElement_t
 {
 public:
+  AnonymousClassElement_t() : logical_type_(logical_none), oneof(false), is_complex(false), 
+                              class_involved_(nullptr), object_property_involved_(nullptr), 
+                              data_property_involved_(nullptr), individual_involved_(nullptr) {}
+                              
   LogicalNodeType_e logical_type_;
   bool oneof; // true = OneOf element
   bool is_complex;
@@ -54,17 +58,12 @@ public:
 
   std::vector<AnonymousClassElement_t*> sub_elements_;
   std::string ano_name;
-
-  AnonymousClassElement_t() : logical_type_(logical_none), oneof(false), is_complex(false), 
-                              class_involved_(nullptr), object_property_involved_(nullptr), 
-                              data_property_involved_(nullptr), individual_involved_(nullptr), ano_name("") {}
- 
 };
 
 class AnonymousClassBranches_t : public ValuedNode
 {
 public:
-  AnonymousClassBranches_t(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), depth_(0) {}  
+  explicit AnonymousClassBranches_t(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), depth_(0) {}  
 
   ClassBranch_t* class_equiv_;
   std::vector<AnonymousClassElement_t*> ano_elems_;

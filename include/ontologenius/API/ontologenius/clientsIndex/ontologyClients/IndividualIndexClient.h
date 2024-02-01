@@ -15,9 +15,8 @@ class IndividualIndexClient : public OntologyIndexClient
 public:
   /// @brief Constructs an individual client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
-  /// @param n is an initialized ROS node handle.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  IndividualIndexClient(ros::NodeHandle* n, const std::string& name) : OntologyIndexClient(n, (name == "")? "individual_index" : "individual_index/" + name)
+  explicit IndividualIndexClient(const std::string& name) : OntologyIndexClient((name == "")? "individual_index" : "individual_index/" + name)
   {
   }
 

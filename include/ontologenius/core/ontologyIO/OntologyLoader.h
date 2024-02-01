@@ -46,6 +46,7 @@ private:
   bool isProtected(const std::string& page_content);
 
   int downloadFile(const std::string& uri);
+  std::string downlaodFileCurl(const std::string& uri);
 
   void loadImports(const std::vector<std::string>& imports);
   std::pair<std::string, std::string> resolvePath(const std::string& raw_path);

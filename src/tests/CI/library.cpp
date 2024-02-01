@@ -104,12 +104,9 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius_library_tester");
 
-  ros::NodeHandle n;
-  onto::OntologyManipulator onto(&n);
+  onto::OntologyManipulator onto;
   onto_ptr = &onto;
 
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
-
-  return 0;
 }

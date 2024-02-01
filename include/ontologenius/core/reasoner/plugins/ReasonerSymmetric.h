@@ -1,15 +1,15 @@
-#ifndef ONTOLOGENIUS_REASONERSYMETRIC_H
-#define ONTOLOGENIUS_REASONERSYMETRIC_H
+#ifndef ONTOLOGENIUS_REASONERSYMMETRIC_H
+#define ONTOLOGENIUS_REASONERSYMMETRIC_H
 
 #include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 
 namespace ontologenius {
 
-class ReasonerSymetric : public ReasonerInterface
+class ReasonerSymmetric : public ReasonerInterface
 {
 public:
-  ReasonerSymetric() {}
-  virtual ~ReasonerSymetric() = default;
+  ReasonerSymmetric() {}
+  virtual ~ReasonerSymmetric() = default;
 
   virtual void postReason() override;
 
@@ -25,4 +25,4 @@ private:
 
 } // namespace ontologenius
 
-#endif // ONTOLOGENIUS_REASONERSYMETRIC_H
+#endif // ONTOLOGENIUS_REASONERSYMMETRIC_H

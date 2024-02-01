@@ -1,7 +1,7 @@
 #include "ontologenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/utils/Commands.h"
 
 #include <chrono>
-#include <ros/package.h>
 
 #include <gtest/gtest.h>
 
@@ -12,7 +12,7 @@ TEST(cpy_tests, reset)
   ontologenius::Ontology onto1;
   onto1.setDisplay(false);
 
-  std::string path_base = ros::package::getPath("ontologenius");
+  std::string path_base = ontologenius::findPackage("ontologenius");
   std::string path = path_base + "/files/attribute.owl";
   onto1.readFromFile(path);
   path = path_base + "/files/positionProperty.owl";
@@ -47,10 +47,6 @@ TEST(cpy_tests, reset)
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "ontologenius_cpy");
-
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
-
-  return 0;
 }

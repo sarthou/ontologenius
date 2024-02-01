@@ -136,13 +136,13 @@ TEST(requests_tests, reasoners_list_call)
   {
     res = onto_ptr->reasoners.list();
     res_bool = res_bool && ((res.size() >= 7) &&
-                            (find(res.begin(), res.end(), "ReasonerChain") != res.end()) &&
-                            (find(res.begin(), res.end(), "ReasonerDictionary") != res.end()) &&
-                            (find(res.begin(), res.end(), "ReasonerInverseOf") != res.end()) &&
-                            (find(res.begin(), res.end(), "ReasonerNone") != res.end()) &&
-                            (find(res.begin(), res.end(), "ReasonerSymetric") != res.end()) &&
-                            (find(res.begin(), res.end(), "ReasonerGeneralize") != res.end()) &&
-                            (find(res.begin(), res.end(), "ReasonerRangeDomain") != res.end()));
+                            (find(res.begin(), res.end(), "ontologenius::ReasonerChain") != res.end()) &&
+                            (find(res.begin(), res.end(), "ontologenius::ReasonerDictionary") != res.end()) &&
+                            (find(res.begin(), res.end(), "ontologenius::ReasonerInverseOf") != res.end()) &&
+                            (find(res.begin(), res.end(), "ontologenius::ReasonerNone") != res.end()) &&
+                            (find(res.begin(), res.end(), "ontologenius::ReasonerSymmetric") != res.end()) &&
+                            (find(res.begin(), res.end(), "ontologenius::ReasonerGeneralize") != res.end()) &&
+                            (find(res.begin(), res.end(), "ontologenius::ReasonerRangeDomain") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
@@ -155,15 +155,15 @@ TEST(requests_tests, reasoner_description_call)
 
   for(size_t i = 0; i < 10; i++)
   {
-    res = onto_ptr->reasoners.getDescription("ReasonerChain");
+    res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerChain");
     res_bool = res_bool && (res == "This reasoner resolve the properties chains axioms.\n - post reasoning");
-    res = onto_ptr->reasoners.getDescription("ReasonerDictionary");
+    res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerDictionary");
     res_bool = res_bool && (res == "This reasoner creates several alternative dictionaries to avoid too many restrictive labels.\n - post reasoning");
-    res = onto_ptr->reasoners.getDescription("ReasonerInverseOf");
+    res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerInverseOf");
     res_bool = res_bool && (res == "This reasoner creates the inverse properties for each individual.\n - post reasoning");
-    res = onto_ptr->reasoners.getDescription("ReasonerNone");
+    res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerNone");
     res_bool = res_bool && (res == "This is an reasoner model to show how to create your own reasoner plugin\n - post reasoning\n - pre reasoning\n - periodic reasoning");
-    res = onto_ptr->reasoners.getDescription("ReasonerSymetric");
+    res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerSymmetric");
     res_bool = res_bool && (res == "This reasoner creates the symetric properties for each individual.\n - post reasoning");
   }
 
@@ -187,14 +187,11 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius_requests_tester");
 
-  ros::NodeHandle n;
-  onto::OntologyManipulator onto(&n);
+  onto::OntologyManipulator onto;
   onto_ptr = &onto;
 
   onto.close();
 
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
-
-  return 0;
 }

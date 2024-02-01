@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>FeederPublisher Class (python) | Ontologenius 0.3.1</title>
+  <title>FeederPublisher Class (python) | Ontologenius 0.4.0</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -56,7 +56,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../Download.html">Download</a></li>
-            <li class="level1"><a href="../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
@@ -122,7 +124,8 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span>
+              <tr><td class="memItemLeft rightAlign topAlign"> Ros1 Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span></td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> Ros2 Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontopy</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -150,6 +153,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit">commitAuto</a></b>(self, timeout = 100000000)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit2">commit</a></b>(self, commit_name, timeout = 100000000)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#checkout">checkout</a></b>(self, commit_name, timeout = 100000000)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#registerNotificationCallback">registerNotificationCallback</a></b>(self, callback)</td></tr>
             </tbody>
           </table>
         </div>
@@ -252,6 +256,10 @@
           <p>The default parameter <i>timeout</i>(int) is the expiration time in milliseconds. The default value is of 100 seconds.</p>
           <p>Returns False if the function returns on a timeout.</p>
           <p>This function can only be used on a copied ontology.</p>
+
+          <h3 class="fn" id="registerNotificationCallback"><a name="registerNotificationCallback"></a><span class="name">registerNotificationCallback</span>(self, callback)</h3>
+          <p>Register a callback function to get notifications from the reasoners.</p>
+          <p>The parameter <i>callback</i> is the callback function taking a string.</p>
 
         </div>
       </div>

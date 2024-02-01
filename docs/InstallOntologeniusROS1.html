@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Install | Ontologenius 0.3.1</title>
+  <title>Install ROS1 | Ontologenius 0.4.0</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="images/favicon.ico" rel="shortcut icon">
@@ -58,7 +58,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="Download.html">Download</a></li>
-            <li class="level1"><a href="InstallOntologenius.html"><b>Install Ontologenius</b></a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="InstallOntologeniusROS1.html"><b>- Install with ROS1</b></a></li>
+            <li class="level2"><a href="InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="python_Tutorials/Tutorials.html">Python Tutorials</a></li>
@@ -93,30 +95,12 @@
       </div>
 
       <div class="context">
-        <h1 class="title">Install Ontologenius</h1>
-        <p>Since Ontologenius is a ROS package, make sure that ROS is installed on your platform. Ontologenius is fully supported and maintained on <a class="type" href="http://wiki.ros.org/melodic/Installation">ROS Melodic Morenia</a> and <a class="type" href="http://wiki.ros.org/noetic/Installation">ROS Noetic Ninjemys</a>. Desktop ROS configuration is not required for use of ontologenius.</p>
+        <h1 class="title">Install Ontologenius ROS1</h1>
+        <p>Since Ontologenius is a ROS package, make sure that ROS is installed on your platform. Ontologenius is fully supported and maintained on <a class="type" href="http://wiki.ros.org/noetic/Installation">ROS Noetic Ninjemys</a>. Desktop ROS configuration is not required for use of ontologenius.</p>
 
         <p>Clone the package on your catkin workspace:</p>
         <div class="code_block">
           <p>cd ~/catkin_ws/src/</br></br>git clone https://github.com/sarthou/ontologenius.git</br></br>cd ..</br></br>catkin_make</p>
-        </div>
-
-        <p>If you want to load ontologies from the internet, you will need the requests package. Ontologenius uses it to make HTTP requests.</p>
-        <p class="tip">This installation is optional</p>
-
-        <p>You can install it through pip:</p>
-        <div class="code_block">
-          <p>pip install requests --user</p>
-        </div>
-
-        <p>You can also install it from the source in the catkin_ws:</p>
-        <div class="code_block">
-          <p>git clone https://github.com/kennethreitz/requests.git</br></br>export PYTHONPATH=~/catkin_ws/devel/lib/python2.7/site-packages:$PYTHONPATH</br></br>cd requests</br></br>python setup.py install --prefix=~/catkin_ws/devel</p>
-        </div>
-
-        <p class="tip">you might have to create ~/catkin_ws/devel/lib/python2.7/site-packages</p>
-        <div class="code_block">
-          <p>mkdir ~/catkin_ws/devel/lib/python2.7/site-packages</p>
         </div>
 
         <h2>Troubles</h2>
@@ -136,14 +120,6 @@
         </div>
         <p class="tip">Some asynchronous mechanisms are used. A computer with little computing power can therefore affect some tests due to a slow response time.</p>
 
-        <nav class="course-pagination">
-          <span class="course-pagination__separator"></span>
-          <a href="SetUp.html" class="course-pagination__btn">
-            <span>Set Up Your Environnement</span>
-            <i class="fas fa-angle-right"></i>
-          </a>
-        </nav>
-
         <h2>Improve performaces</h2>
 
         <p>If you really need huge performaces, you can use the tcmalloc library which provide custom allocators.</p>
@@ -157,6 +133,14 @@
         <div class="code_block">
           <p>find /usr -name *tcmalloc*</p>
         </div>
+
+        <nav class="course-pagination">
+          <span class="course-pagination__separator"></span>
+          <a href="SetUp.html" class="course-pagination__btn">
+            <span>Set Up Your Environnement</span>
+            <i class="fas fa-angle-right"></i>
+          </a>
+        </nav>
 
       </div>
     </div>

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <ros/ros.h>
+#include <ontologenius/compat/ros.h>
 
 #include "ontologenius/utils/Parameters.h"
 #include "ontologenius/interface/RosInterface.h"
@@ -24,29 +24,36 @@ void handler(int sig)
 int main(int argc, char** argv)
 {
   signal(SIGSEGV, handler);
-  ros::init(argc, argv, "ontologenius");
 
-  ros::NodeHandle n;
+  ontologenius::compat::onto_ros::Node::init(argc, argv, "ontologenius_single");
 
-  ontologenius::RosInterface interface;
+  std::thread th([]() { ontologenius::compat::onto_ros::Node::get().spin(); });
 
-  ontologenius::Parameters params;
-  params.insert(ontologenius::Parameter("language", {"-l", "--lang"}, {"en"}));
-  params.insert(ontologenius::Parameter("intern_file", {"-i", "--intern_file"}, {"none"}));
-  params.insert(ontologenius::Parameter("config", {"-c", "--config"}, {"none"}));
-  params.insert(ontologenius::Parameter("display", {"-d", "--display"}, {"true"}));
-  params.insert(ontologenius::Parameter("files", {}));
+  {
+    ontologenius::RosInterface interface;
 
-  params.set(argc, argv);
-  params.display();
+    ontologenius::Parameters params;
+    params.insert(ontologenius::Parameter("language", {"-l", "--lang"}, {"en"}));
+    params.insert(ontologenius::Parameter("intern_file", {"-i", "--intern_file"}, {"none"}));
+    params.insert(ontologenius::Parameter("config", {"-c", "--config"}, {"none"}));
+    params.insert(ontologenius::Parameter("display", {"-d", "--display"}, {"true"}));
+    params.insert(ontologenius::Parameter("files", {}));
 
-  interface.setDisplay(params.at("display").getFirst() == "true");
-  interface.init(params.at("language").getFirst(),
-                 params.at("intern_file").getFirst(),
-                 params.at("files").get(),
-                 params.at("config").getFirst());
+    params.set(argc, argv);
+    params.display();
 
-  interface.run();
+    interface.setDisplay(params.at("display").getFirst() == "true");
+    interface.init(params.at("language").getFirst(),
+                    params.at("intern_file").getFirst(),
+                    params.at("files").get(),
+                    params.at("config").getFirst());
+
+    interface.run();
+  }
+
+  ontologenius::compat::onto_ros::Node::shutdown();
+
+  th.join();
 
   return 0;
 }

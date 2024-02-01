@@ -1,6 +1,6 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerInverseOf.h"
 
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 
 namespace ontologenius {
 
@@ -82,6 +82,6 @@ std::string ReasonerInverseOf::getDescription()
   return "This reasoner creates the inverse properties for each individual.";
 }
 
-PLUGINLIB_EXPORT_CLASS(ReasonerInverseOf, ReasonerInterface)
-
 } // namespace ontologenius
+
+PLUGINLIB_EXPORT_CLASS(ontologenius::ReasonerInverseOf, ontologenius::ReasonerInterface)

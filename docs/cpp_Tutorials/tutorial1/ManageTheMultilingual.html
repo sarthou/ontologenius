@@ -4,10 +4,12 @@
   <title>Use inheritance for my first program (cpp) : Manage the multilingual</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
   <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <script src="../../scripts/tabs.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -59,7 +61,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../../Download.html">Download</a></li>
-            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
@@ -169,26 +173,76 @@
         <p>We will therefore modify our callback function to realize the natural language transition
           to an identifier.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="cpp_type">void</span> wordCallback(const std_msgs::<span class="cpp_type">String</span><span class="cpp_op">&</span> msg)</div>
-          <div class="code_line">{</div>
-          <div class="code_line">    <span class="cpp_op">if</span>(msg.data <span class="cpp_op">==</span> <span class="cpp_string">&quot;start&quot;</span>)</div>
-          <div class="code_line">        start_ <span class="cpp_op">=</span> <span class="cpp_value">true</span>;</div>
-          <div class="code_line">    <span class="cpp_op">else</span></div>
-          <div class="code_line">    {</div>
-          <div class="code_line">      std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; ids <span class="cpp_op">=</span> onto_-&gt;individuals.find(msg.data);</div>
-          <div class="code_line">      <span class="cpp_op">if</span>(ids.size() <span class="cpp_op">==</span> <span class="cpp_value">0</span>)</div>
-          <div class="code_line">        say(<span class="cpp_string">&quot;this word is unknown&quot;</span>);</div>
-          <div class="code_line">      <span class="cpp_op">else</span> <span class="cpp_op">if</span>(std::find(names_.begin(), names_.end(), ids[<span class="cpp_value">0</span>]) <span class="cpp_op">==</span> names_.end())</div>
-          <div class="code_line">        names_.push_back(ids[<span class="cpp_value">0</span>]);</div>
-          <div class="code_line">    }</div>
-          <div class="code_line">}</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">wordCallback</span>(<span class="cpp_key">const</span> <span class="cpp_type">std_msgs</span>::<span class="cpp_type">String</span><span class="cpp_key">&</span> <span class="cpp_var">msg</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">msg</span>.data == <span class="cpp_string">&quot;start&quot;</span>)</div>
+                <div class="code_line">        <span class="cpp_var">start_</span> = <span class="cpp_key">true</span>;</div>
+                <div class="code_line">    <span class="cpp_op">else</span></div>
+                <div class="code_line">    {</div>
+                <div class="code_line">      <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">ids</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">find</span>(<span class="cpp_var">msg</span>.data);</div>
+                <div class="code_line">      <span class="cpp_op">if</span>(<span class="cpp_var">ids</span>.<span class="cpp_function">size</span>() == <span class="cpp_value">0</span>)</div>
+                <div class="code_line">        <span class="cpp_function">say</span>(<span class="cpp_string">&quot;this word is unknown&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_op">else</span> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">find</span>(<span class="cpp_var">names_</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>(), <span class="cpp_var">ids</span>.<span class="cpp_function">front</span>()) == <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>())</div>
+                <div class="code_line">        <span class="cpp_var">names_</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">ids</span>.<span class="cpp_function">front</span>());</div>
+                <div class="code_line">    }</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">wordCallback</span>(<span class="cpp_key">const</span> <span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">msg</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">msg</span>-&gt;data == <span class="cpp_string">&quot;start&quot;</span>)</div>
+                <div class="code_line">        <span class="cpp_var">start_</span> = <span class="cpp_key">true</span>;</div>
+                <div class="code_line">    <span class="cpp_op">else</span></div>
+                <div class="code_line">    {</div>
+                <div class="code_line">      <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">ids</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">find</span>(<span class="cpp_var">msg</span>-&gt;data);</div>
+                <div class="code_line">      <span class="cpp_op">if</span>(<span class="cpp_var">ids</span>.<span class="cpp_function">size</span>() == <span class="cpp_value">0</span>)</div>
+                <div class="code_line">        <span class="cpp_function">say</span>(<span class="cpp_string">&quot;this word is unknown&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_op">else</span> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">find</span>(<span class="cpp_var">names_</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>(), <span class="cpp_var">ids</span>.<span class="cpp_function">front</span>()) == <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>())</div>
+                <div class="code_line">        <span class="cpp_var">names_</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">ids</span>.<span class="cpp_function">front</span>());</div>
+                <div class="code_line">    }</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>The find function is applied to individuals because we want individuals to input.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 6;">
-          <div class="code_line">      std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; ids <span class="cpp_op">=</span> onto_-&gt;individuals.find(msg.data);</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-1-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-1-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-1-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-1-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-1-Ros1" class="lang-tabs-panel group-tab" id="panel-1-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 6;">
+                <div class="code_line">      <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">ids</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">find</span>(<span class="cpp_var">msg</span>.data);</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 6;">
+                <div class="code_line">      <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">ids</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">find</span>(<span class="cpp_var">msg</span>-&gt;data);</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>We can test our program again with the words: "green cup", "blue cup" and "green book". We thus
@@ -207,9 +261,9 @@
         <p>The only thing we have to change is the display line as follows:</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">    say(<span class="cpp_string">&quot;the intruder is &quot;</span> <span class="cpp_op">+</span> onto.individuals.getName(intruders[i].name_)</div>
-          <div class="code_line">        <span class="cpp_op">+</span> <span class="cpp_string">&quot; because it is the only one that is not: &quot;</span> <span class="cpp_op">+</span></div>
-          <div class="code_line">        onto.classes.getName(intruders[i].why_));</div>
+          <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_string">&quot;the intruder is &quot;</span> + <span class="cpp_var">onto</span>.individuals.<span class="cpp_function">getName</span>(<span class="cpp_var">intruder</span>.name_)</div>
+          <div class="code_line">        + <span class="cpp_string">&quot; because it is the only one that is not: &quot;</span> +</div>
+          <div class="code_line">        <span class="cpp_var">onto</span>.classes.<span class="cpp_function">getName</span>(<span class="cpp_var">intruder</span>.why_));</div>
         </div>
 
         <p>The result of our program becomes:</p>
@@ -224,15 +278,110 @@
 
         <p>We will now modify our launch file to put the working language in french.</p>
 
-        <div class="code_block xml_code" style="counter-reset:code_line 0;">
-          <div class="code_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-          <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
-          <div class="code_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius.launch&quot;</span>&gt;</div>
-          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;fr&quot;</span>/&gt;</div>
-          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;none&quot;</span>/&gt;</div>
-          <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/tutorials/tutorial_1.owl&quot;</span>/&gt;</div>
-          <div class="code_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
-          <div class="code_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-2-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-2-Ros1" name="Ros1" role="tab" tabindex="0">XML ROS1</button>
+            <button aria-controls="panel-2-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Ros2" name="Ros2" role="tab" tabindex="-1">XML ROS2</button>
+            <button aria-controls="panel-2-Python" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Python" name="Python" role="tab" tabindex="-1">Python</button>
+            <button aria-controls="panel-2-Yaml" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Yaml" name="Yaml" role="tab" tabindex="-1">YAML</button>
+          </div>
+          
+          <div aria-labelledby="tab-2-Ros1" class="lang-tabs-panel group-tab" id="panel-2-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-xml">
+              <div class="code_block xml_code">
+                <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
+                <div class="terminal_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+                <div class="terminal_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius.launch&quot;</span>&gt;</div>
+                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;none&quot;</span>/&gt;</div>
+                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;fr&quot;</span>/&gt;</div>
+                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/tutorials/tutorial_1.owl&quot;</span>/&gt;</div>
+                <div class="terminal_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
+                <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
+              </div>
+
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-2-Ros2" class="lang-tabs-panel group-tab" id="panel-2-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block xml_code">
+                <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
+                <div class="terminal_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+                <div class="terminal_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius.launch&quot;</span>&gt;</div>
+                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;none&quot;</span>/&gt;</div>
+                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;fr&quot;</span>/&gt;</div>
+                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/files/tutorials/tutorial_1.owl&quot;</span>/&gt;</div>
+                <div class="terminal_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
+                <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-2-Python" class="lang-tabs-panel group-tab" id="panel-2-Python" name="Python" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-python">
+              <div class="code_block python_code">
+                <div class="terminal_line"><span class="py_import">import</span> <span class="py_imported">os</span></div>
+                <div class="terminal_line"> </div>
+                <div class="terminal_line"><span class="py_import">from</span> <span class="py_imported">ament_index_python</span> <span class="py_import">import</span> <span class="py_function">get_package_share_directory</span></div>
+                <div class="terminal_line"> </div>
+                <div class="terminal_line"><span class="py_import">from</span> <span class="py_imported">launch</span> <span class="py_import">import</span> <span class="py_imported">LaunchDescription</span></div>
+                <div class="terminal_line"><span class="py_import">from</span> <span class="py_imported">launch</span>.<span class="py_imported">actions</span> <span class="py_import">import</span> <span class="py_imported">IncludeLaunchDescription</span></div>
+                <div class="terminal_line"><span class="py_import">from</span> <span class="py_imported">launch</span>.<span class="py_imported">launch_description_sources</span> <span class="py_import">import</span> <span class="py_imported">PythonLaunchDescriptionSource</span></div>
+                <div class="terminal_line"><span class="py_import">from</span> <span class="py_imported">launch</span>.<span class="py_imported">substitutions</span> <span class="py_import">import</span> <span class="py_imported">TextSubstitution</span></div>
+                <div class="terminal_line"><span class="py_import">from</span> <span class="py_imported">launch_ros</span>.<span class="py_imported">actions</span> <span class="py_import">import</span> <span class="py_imported">Node</span></div>
+                <div class="terminal_line"> </div>
+                <div class="terminal_line"><span class="py_def">def</span> <span class="py_function">generate_launch_description</span>():</div>
+                <div class="terminal_line"> </div>
+                <div class="terminal_line">    <span class="py_var">intruder_node</span> = <span class="py_imported">Node</span>(</div>
+                <div class="terminal_line">        <span class="py_var">package</span>=<span class="py_string">'ontologenius_tutorial'</span>,</div>
+                <div class="terminal_line">        <span class="py_var">executable</span>=<span class="py_string">'intruder'</span>,</div>
+                <div class="terminal_line">        <span class="py_var">output</span>=<span class="py_string">'screen'</span>,</div>
+                <div class="terminal_line">    )</div>
+                <div class="terminal_line"> </div>
+                <div class="terminal_line">    <span class="py_var">ontologenius_include</span> = <span class="py_imported">IncludeLaunchDescription</span>(</div>
+                <div class="terminal_line">        <span class="py_imported">PythonLaunchDescriptionSource</span>(</div>
+                <div class="terminal_line">            <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">'launch/ontologenius.py'</span>)</div>
+                <div class="terminal_line">        ),</div>
+                <div class="terminal_line">        <span class="py_var">launch_arguments</span>={</div>
+                <div class="terminal_line">            <span class="py_string">'intern_file'</span>: <span class="py_string">'none'</span>,</div>
+                <div class="terminal_line">            <span class="py_string">'language'</span>: <span class="py_string">'fr'</span>,</div>
+                <div class="terminal_line">            <span class="py_string">'files'</span>: <span class="py_imported">TextSubstitution</span>(<span class="py_var">text</span> = <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">'files/tutorials/tutorial_1.owl'</span>))</div>
+                <div class="terminal_line">        }.<span class="py_function">items</span>()</div>
+                <div class="terminal_line">    )</div>
+                <div class="terminal_line"> </div>
+                <div class="terminal_line">    <span class="py_op">return</span> <span class="py_imported">LaunchDescription</span>([</div>
+                <div class="terminal_line">        <span class="py_var">intruder_node</span>,</div>
+                <div class="terminal_line">        <span class="py_var">ontologenius_include</span></div>
+                <div class="terminal_line">    ])</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-2-Yaml" class="lang-tabs-panel group-tab" id="panel-2-Yaml" name="Yaml" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-xml">
+              <div class="code_block yaml_code">
+                <div class="terminal_line"><span class="yaml_key">launch</span>:</div>
+                <div class="terminal_line">- <span class="yaml_key">node</span>:</div>
+                <div class="terminal_line">    <span class="yaml_key">pkg</span>: <span class="yaml_string">&quot;ontologenius_tutorial&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">exec</span>: <span class="yaml_string">&quot;intruder&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">output</span>: <span class="yaml_string">&quot;screen&quot;</span></div>
+                <div class="terminal_line"> </div>
+                <div class="terminal_line">- <span class="yaml_key">include</span>:</div>
+                <div class="terminal_line">    <span class="yaml_key">file</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius.yaml&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">arg</span>:</div>
+                <div class="terminal_line">        -</div>
+                <div class="terminal_line">            <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
+                <div class="terminal_line">            <span class="yaml_key">value</span>: <span class="yaml_string">&quot;none&quot;</span></div>
+                <div class="terminal_line">        -</div>
+                <div class="terminal_line">            <span class="yaml_key">name</span>: <span class="yaml_string">&quot;language&quot;</span></div>
+                <div class="terminal_line">            <span class="yaml_key">value</span>: <span class="yaml_string">&quot;fr&quot;</span></div>
+                <div class="terminal_line">        -</div>
+                <div class="terminal_line">            <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
+                <div class="terminal_line">            <span class="yaml_key">value</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/files/tutorial_1.owl&quot;</span></div>
+              </div>
+            </div>
+          </div>
+        
         </div>
 
         <p>Well, that's it, our program will now work in French. You can test it with the words
@@ -253,14 +402,14 @@
         <p>To go further, you can add the ability to change the working language with the setLang() function.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">onto.actions.setLang(<span class="cpp_string">&quot;en&quot;</span>);</div>
+          <div class="code_line"><span class="cpp_var">onto</span>.actions.<span class="cpp_function">setLang</span>(<span class="cpp_string">&quot;en&quot;</span>);</div>
         </div>
 
         <p>You can also change the display texts according to the language used by retrieving the
           language currently used with the getLang() function.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">std::<span class="cpp_type">string</span> lang <span class="cpp_op">=</span> onto.actions.getLang();</div>
+          <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">lang</span> = <span class="cpp_var">onto</span>.actions.<span class="cpp_function">getLang</span>();</div>
         </div>
 
         <p>To obtain the identifier of a word in natural language, we used the function find, but ontologenius provides other functions to obtain an identifier from natural language.

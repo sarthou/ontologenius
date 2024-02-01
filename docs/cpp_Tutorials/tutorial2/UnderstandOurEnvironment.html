@@ -57,7 +57,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../../Download.html">Download</a></li>
-            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
@@ -143,37 +145,37 @@
           functions will only return the individuals inheriting the selector.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line">std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt; findRoutes(std::<span class="cpp_type">string</span> path_from, std::<span class="cpp_type">string</span> path_to, std::<span class="cpp_type">string</span> selector)</div>
+          <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt; <span class="cpp_function">findRoutes</span>(<span class="cpp_key">const</span> <span class="cpp_type">std</span>::<span class="cpp_type">string</span><span class="cpp_key">&amp;</span> <span class="cpp_var">path_from</span>, <span class="cpp_key">const</span> <span class="cpp_type">std</span>::<span class="cpp_type">string</span><span class="cpp_key">&amp;</span> <span class="cpp_var">path_to</span>, <span class="cpp_key">const</span> <span class="cpp_type">std</span>::<span class="cpp_type">string</span><span class="cpp_key">&amp;</span> <span class="cpp_var">selector</span>)</div>
         </div>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 22;">
-          <div class="code_line">        std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; paths <span class="cpp_op">=</span> onto_-&gt;individuals.getOn(intersections[int_i], <span class="cpp_string">&quot;isAlong&quot;</span>, selector);</div>
+          <div class="code_line">        <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">paths</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_var">intersection</span>, <span class="cpp_string">&quot;isAlong&quot;</span>, <span class="cpp_var">selector</span>);</div>
         </div>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 48;">
-          <div class="code_line">std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; find(std::<span class="cpp_type">string</span> from, std::<span class="cpp_type">string</span> to, std::<span class="cpp_type">string</span> selector)</div>
+          <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_function">find</span>(<span class="cpp_key">const</span> <span class="cpp_type">std</span>::<span class="cpp_type">string</span><span class="cpp_key">&</span> <span class="cpp_var">from</span>, <span class="cpp_key">const</span> <span class="cpp_type">std</span>::<span class="cpp_type">string</span><span class="cpp_key">&</span> <span class="cpp_var">to</span>, <span class="cpp_key">const</span> <span class="cpp_type">std</span>::<span class="cpp_type">string</span><span class="cpp_key">&</span> <span class="cpp_var">selector</span>)</div>
         </div>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 53;">
-          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; path_from <span class="cpp_op">=</span> onto_-&gt;individuals.getOn(from, <span class="cpp_string">&quot;isAlong&quot;</span>, selector);</div>
-          <div class="code_line">  std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; path_to <span class="cpp_op">=</span> onto_-&gt;individuals.getFrom(<span class="cpp_string">&quot;hasAlong&quot;</span>, to, selector);</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">paths_from</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_var">from</span>, <span class="cpp_string">&quot;isAlong&quot;</span>, <span class="cpp_var">selector</span>);</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">paths_to</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getFrom</span>(<span class="cpp_string">&quot;hasAlong&quot;</span>, <span class="cpp_var">to</span>, <span class="cpp_var">selector</span>);</div>
         </div>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 59;">
-          <div class="code_line">      std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; &gt; routes <span class="cpp_op">=</span> findRoutes(path_from[from_i], path_to[to_i], selector);</div>
+          <div class="code_line">      <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt; <span class="cpp_var">routes</span> = <span class="cpp_function">findRoutes</span>(<span class="cpp_var">path_from</span>, <span class="cpp_var">path_to</span>, <span class="cpp_var">selector</span>);</div>
         </div>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 73;">
-          <div class="code_line">std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; route;</div>
+          <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">route</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">route <span class="cpp_op">=</span> find(<span class="cpp_string">&quot;pub&quot;</span>, <span class="cpp_string">&quot;house&quot;</span>, <span class="cpp_string">&quot;path&quot;</span>);</div>
-          <div class="code_line">displayRoute(route);</div>
+          <div class="code_line"><span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_string">&quot;pub&quot;</span>, <span class="cpp_string">&quot;house&quot;</span>, <span class="cpp_string">&quot;path&quot;</span>);</div>
+          <div class="code_line"><span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
           <div class="code_line"><br></div>
-          <div class="code_line">route <span class="cpp_op">=</span> find(<span class="cpp_string">&quot;house&quot;</span>, <span class="cpp_string">&quot;car&quot;</span>, <span class="cpp_string">&quot;path&quot;</span>);</div>
-          <div class="code_line">displayRoute(route);</div>
+          <div class="code_line"><span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_string">&quot;house&quot;</span>, <span class="cpp_string">&quot;car&quot;</span>, <span class="cpp_string">&quot;path&quot;</span>);</div>
+          <div class="code_line"><span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
           <div class="code_line"><br></div>
-          <div class="code_line">route <span class="cpp_op">=</span> find(<span class="cpp_string">&quot;car&quot;</span>, <span class="cpp_string">&quot;house&quot;</span>, <span class="cpp_string">&quot;road&quot;</span>);</div>
-          <div class="code_line">displayRoute(route);</div>
+          <div class="code_line"><span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_string">&quot;car&quot;</span>, <span class="cpp_string">&quot;house&quot;</span>, <span class="cpp_string">&quot;road&quot;</span>);</div>
+          <div class="code_line"><span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
         </div>
 
         <p>Well, we have already finished. It would be almost too simple ...</p>

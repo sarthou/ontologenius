@@ -6,51 +6,54 @@
 #include <csignal>
 #include <thread>
 
-#include <ros/package.h>
-#include <ros/ros.h>
+#include "ontologenius/compat/ros.h"
+#include "ontologenius/utils/Commands.h"
+
+//#include <ament_index_cpp/get_package_share_directory.hpp>
 
 void spinThread(bool* run)
 {
-  ros::Rate r(100);
-  while(*run == true)
-  {
-    ros::spinOnce();
-    r.sleep();
-  }
+  ontologenius::compat::onto_ros::Node::get().spin();
 }
+
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+  ontologenius::compat::onto_ros::Node::init(argc, argv, "ontoloGUI");
 
-    a.setStyle(new DarkStyle);
+  bool run = true;
+  std::thread spin_thread(spinThread, &run);
 
-    std::string path = ros::package::getPath("ontologenius");
-    path = path + "/docs/images/ontologenius.ico";
-    QIcon icon(QString::fromStdString(path));
-    a.setWindowIcon(icon);
+  QApplication a(argc, argv);
 
-    ontoloGUI w;
-    w.show();
+  a.setStyle(new DarkStyle);
 
-    ros::init(argc, argv, "ontoloGUI");
+  //std::string path = ament_index_cpp::get_package_share_directory("ontologenius");
+  std::string path = ontologenius::findPackage("ontologenius");
+  path = path + "/docs/images/ontologenius.ico";
 
-    ros::NodeHandle n;
-    bool run = true;
+  QIcon icon(QString::fromStdString(path));
+  a.setWindowIcon(icon);
 
-    w.init(&n);
-    w.wait();
+  ontoloGUI w;
+  w.show();
 
-    w.start();
-    w.loadReasoners();
+  w.init();
+  w.wait();
 
-    std::thread spin_thread(spinThread,&run);
+  w.start();
+  w.loadReasoners();
 
-    signal(SIGINT, SIG_DFL);
-    auto a_exec = a.exec();
+  signal(SIGINT, SIG_DFL);
+  auto a_exec = a.exec();
 
-    run = false;
-    spin_thread.join();
+  ontologenius::compat::onto_ros::Node::shutdown();
 
-    return a_exec;
+  run = false;
+  spin_thread.join();
+
+  return a_exec;
 }

@@ -18,11 +18,9 @@ class ManagerClient : public ClientBase
 public:
   /// @brief Constructs a manager client.
   /// Can be used in a multi-ontology mode by specifying the name of the ontology name.
-  /// @param n is an initialized ROS node handle.
   /// @param name is the instance to be connected to. For classic use, name should be defined as "".
-  explicit ManagerClient(ros::NodeHandle* n) : ClientBase(n, "manage")
-  {
-  }
+  explicit ManagerClient() : ClientBase("manage")
+  {  }
 
   /// @brief Gets the name of the instantiated ontologies.
   /// @return the list as the instantiated ontologies in the form of a verctor of string.

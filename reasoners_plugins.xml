@@ -1,26 +1,26 @@
 <library path="lib/libontologenius_reasoner_plugin">
-  <class type="ReasonerNone" base_class_type="ReasonerInterface">
+  <class type="ontologenius::ReasonerNone" base_class_type="ontologenius::ReasonerInterface">
     <description>This is a reasoner test plugin.</description>
   </class>
-  <class type="ReasonerInverseOf" base_class_type="ReasonerInterface">
-    <description>This is an reasoner for invers of axiom.</description>
+  <class type="ontologenius::ReasonerInverseOf" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner for inverse of axiom.</description>
   </class>
-  <class type="ReasonerSymetric" base_class_type="ReasonerInterface">
-    <description>This is an reasoner for symetric axiom.</description>
+  <class type="ontologenius::ReasonerSymmetric" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner for symmetric axiom.</description>
   </class>
-  <class type="ReasonerChain" base_class_type="ReasonerInterface">
-    <description>This is an reasoner for properties chain axiom.</description>
+  <class type="ontologenius::ReasonerChain" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner for properties chain axiom.</description>
   </class>
-  <class type="ReasonerDictionary" base_class_type="ReasonerInterface">
-    <description>This is an reasoner for expand dictinaries.</description>
+  <class type="ontologenius::ReasonerDictionary" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner for expand dictionaries.</description>
   </class>
-  <class type="ReasonerGeneralize" base_class_type="ReasonerInterface">
-    <description>This is an reasoner to deduce new knowledge.</description>
+  <class type="ontologenius::ReasonerGeneralize" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner to deduce new knowledge.</description>
   </class>
-  <class type="ReasonerRangeDomain" base_class_type="ReasonerInterface">
-    <description>This is an reasoner to deduce new inheritances based on range and domain of properties.</description>
+  <class type="ontologenius::ReasonerRangeDomain" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner to deduce new inheritances based on range and domain of properties.</description>
   </class>
-  <class type="ReasonerAnonymous" base_class_type="ReasonerInterface">
+  <class type="ontologenius::ReasonerAnonymous" base_class_type="ontologenius::ReasonerInterface">
     <description>This is a reasoner for equivalent classes.</description>
   </class>
 </library>

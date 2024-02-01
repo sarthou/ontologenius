@@ -4,10 +4,12 @@
   <title>Use inheritance for my first program (cpp) : Setting up the program </title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
   <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <script src="../../scripts/tabs.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -59,7 +61,9 @@
           <h3>Getting Start</h3>
           <ul style="display: block;">
             <li class="level1"><a href="../../Download.html">Download</a></li>
-            <li class="level1"><a href="../../InstallOntologenius.html">Install Ontologenius</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
             <li class="level1"><a href="../../SetUp.html">Set Up Your Environnement</a></li>
             <li class="level1"><a href="../Tutorials.html">Cpp Tutorials</a></li>
             <li class="level1"><a href="../../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
@@ -147,56 +151,134 @@
 
         <p>In this part, we will code the bases of our program from which we will be able to write the more
           algorithmic part. Before that, I invite you to create a new package that we will call &quot;ontologenius_tutorial&quot;
-          and which will contain only one source file that we will name &quot;main.cpp&quot;. To be sure that your
+          and which will contain only one source file that we will name &quot;intruder.cpp&quot;. To be sure that your
           new package will be well configured to use Ontologenius, we advise you to follow this <a target="_blank" rel="noopener noreferrer" href="../../SetUp.html"><b>guide</b></a>.
           We will just rename our executable &quot;intruder&quot; because it is much more logical than &quot;my_exe&quot;.</p>
 
-        <div class="code_block">
-            <div class="terminal_line">add_executable(intruder src/main.cpp)</div>
-            <div class="terminal_line">target_link_libraries(intruder ${ontologenius_LIBRARIES})</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-22-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-22-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-22-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-22-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-22-Ros1" class="lang-tabs-panel group-tab" id="panel-22-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-cpp">
+              <div class="code_block">
+                <div class="terminal_line">add_executable(intruder src/intruder.cpp)</div>
+                <div class="terminal_line">target_link_libraries(intruder ${ontologenius_LIBRARIES})</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-22-Ros2" class="lang-tabs-panel group-tab" id="panel-22-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-cpp">
+              <div class="code_block">
+                <div class="terminal_line">add_executable(intruder src/intruder.cpp)</div>
+                <div class="terminal_line">target_link_libraries(intruder ontologenius::ontologenius_lib ${rclcpp_LIBRARIES})</div>
+                <div class="terminal_line"><br></div>
+                <div class="terminal_line">install(TARGETS intruder DESTINATION share/${PROJECT_NAME})</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>Now we are ready! Let's open our main file and start coding:</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;vector&gt;</span></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
-          <div class="code_line"><br></div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
 
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ros/ros.h&quot;</span></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;std_msgs/String.h&quot;</span></div>
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologyManipulator.h&quot;</span></div>
-          <div class="code_line"><br></div>
-
-          <div class="code_line">onto::<span class="cpp_type">OntologyManipulator</span><span class="cpp_op">*</span> onto_;</div>
-          <div class="code_line">std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; names_;</div>
-          <div class="code_line"><span class="cpp_type">bool</span> start_;</div>
-          <div class="code_line"><br></div>
-
-          <div class="code_line"><span class="cpp_type">void</span> say(std::<span class="cpp_type">string</span> text)</div>
-          <div class="code_line">{</div>
-          <div class="code_line">  std::cout <span class="cpp_op">&lt;&lt;</span> <span class="cpp_string">&quot;[SAY]&quot;</span> <span class="cpp_op">&lt;&lt;</span> text <span class="cpp_op">&lt;&lt;</span> std::endl;</div>
-          <div class="code_line">}</div>
-          <div class="code_line"><br></div>
-
-          <div class="code_line">std::<span class="cpp_type">string</span> summarize(std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; words)</div>
-          <div class="code_line">{</div>
-          <div class="code_line">  std::<span class="cpp_type">string</span> to_say <span class="cpp_op">=</span> <span class="cpp_string">&quot;on &quot;</span>;</div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> i <span class="cpp_op">=</span> <span class="cpp_value">0</span>; i <span class="cpp_op">&lt;</span> words.size(); i<span class="cpp_op">++</span>)</div>
-          <div class="code_line">    to_say <span class="cpp_op">+=</span> words[i] <span class="cpp_op">+</span> <span class="cpp_string">&quot; &quot;</span>;</div>
-          <div class="code_line">  <span class="cpp_return">return</span> to_say;</div>
-          <div class="code_line">}</div>
-          <div class="code_line"><br></div>
-
-          <div class="code_line"><span class="cpp_type">void</span> wordCallback(<span class="cpp_op">const</span> std_msgs::<span class="cpp_type">String</span><span class="cpp_op">&</span> msg)</div>
-          <div class="code_line">{</div>
-          <div class="code_line">  <span class="cpp_op">if</span>(msg.data <span class="cpp_op">==</span> <span class="cpp_string">&quot;start&quot;</span>)</div>
-          <div class="code_line">    start_ <span class="cpp_op">=</span> <span class="cpp_value">true</span>;</div>
-          <div class="code_line">  <span class="cpp_op">else if</span>(std::find(names_.begin(), names_.end(), msg.data) <span class="cpp_op">==</span> names_.end())</div>
-          <div class="code_line">    names_.push_back(msg.data);</div>
-          <div class="code_line">}</div>
-          <div class="code_line"><br></div>
+          <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;vector&gt;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
+                <div class="code_line"><br></div>
+      
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ros/ros.h&quot;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;std_msgs/String.h&quot;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologyManipulator.h&quot;</span></div>
+                <div class="code_line"><br></div>
+      
+                <div class="code_line"><span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span>* <span class="cpp_var">onto_</span>;</div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">names_</span>;</div>
+                <div class="code_line"><span class="cpp_key">bool</span> <span class="cpp_var">start_</span>;</div>
+                <div class="code_line"><br></div>
+      
+                <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">say</span>(<span class="cpp_key">const</span> <span class="cpp_type">std</span>::<span class="cpp_type">string</span><span class="cpp_key">&amp;</span> <span class="cpp_var">text</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;[SAY]&quot;</span> &lt;&lt; <span class="cpp_var">text</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">}</div>
+                <div class="code_line"><br></div>
+      
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_function">summarize</span>(<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">words</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">to_say</span> = <span class="cpp_string">&quot;on &quot;</span>;</div>
+                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">i</span> &lt; <span class="cpp_var">words</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">i</span>++)</div>
+                <div class="code_line">    <span class="cpp_var">to_say</span> += <span class="cpp_var">words</span>[<span class="cpp_var">i</span>] + <span class="cpp_string">&quot; &quot;</span>;</div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_var">to_say</span>;</div>
+                <div class="code_line">}</div>
+                <div class="code_line"><br></div>
+      
+                <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">wordCallback</span>(<span class="cpp_key">const</span> <span class="cpp_type">std_msgs</span>::<span class="cpp_type">String</span><span class="cpp_key">&</span> <span class="cpp_var">msg</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_var">msg</span>.data == <span class="cpp_string">&quot;start&quot;</span>)</div>
+                <div class="code_line">    <span class="cpp_var">start_</span> = <span class="cpp_key">true</span>;</div>
+                <div class="code_line">  <span class="cpp_op">else if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">find</span>(<span class="cpp_var">names_</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>(), <span class="cpp_var">msg</span>.data) == <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>())</div>
+                <div class="code_line">    <span class="cpp_var">names_</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">msg</span>.data);</div>
+                <div class="code_line">}</div>
+                <div class="code_line"><br></div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;iostream&gt;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;vector&gt;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
+                <div class="code_line"><br></div>
+      
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;rclcpp/rclcpp.hpp&quot;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;std_msgs/msg/string.hpp&quot;</span></div>
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologyManipulator.h&quot;</span></div>
+                <div class="code_line"><br></div>
+      
+                <div class="code_line"><span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span>* <span class="cpp_var">onto_</span>;</div>
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">names_</span>;</div>
+                <div class="code_line"><span class="cpp_key">bool</span> <span class="cpp_var">start_</span>;</div>
+                <div class="code_line"><br></div>
+      
+                <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">say</span>(<span class="cpp_key">const</span> <span class="cpp_type">std</span>::<span class="cpp_type">string</span><span class="cpp_key">&amp;</span> <span class="cpp_var">text</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;[SAY]&quot;</span> &lt;&lt; <span class="cpp_var">text</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">}</div>
+                <div class="code_line"><br></div>
+      
+                <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_function">summarize</span>(<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">words</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">to_say</span> = <span class="cpp_string">&quot;on &quot;</span>;</div>
+                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">i</span> &lt; <span class="cpp_var">words</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">i</span>++)</div>
+                <div class="code_line">    <span class="cpp_var">to_say</span> += <span class="cpp_var">words</span>[<span class="cpp_var">i</span>] + <span class="cpp_string">&quot; &quot;</span>;</div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_var">to_say</span>;</div>
+                <div class="code_line">}</div>
+                <div class="code_line"><br></div>
+      
+                <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">wordCallback</span>(<span class="cpp_key">const</span> <span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">msg</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_var">msg</span>->data == <span class="cpp_string">&quot;start&quot;</span>)</div>
+                <div class="code_line">    <span class="cpp_var">start_</span> = <span class="cpp_key">true</span>;</div>
+                <div class="code_line">  <span class="cpp_op">else if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">find</span>(<span class="cpp_var">names_</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>(), <span class="cpp_var">msg</span>->data) == <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>())</div>
+                <div class="code_line">    <span class="cpp_var">names_</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">msg</span>->data);</div>
+                <div class="code_line">}</div>
+                <div class="code_line"><br></div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>Take a break here, we have already written a lot. We will go over all this in detail to better
@@ -204,15 +286,40 @@
         <p>First of all, we have all the inclusions we need, like iostream to display messages on the screen,
           then vectors and strings to get vectors and strings ...</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 4;">
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ros/ros.h&quot;</span></div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-1-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-1-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-1-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-1-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-1-Ros1" class="lang-tabs-panel group-tab" id="panel-1-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 4;">
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ros/ros.h&quot;</span></div>
+              </div>
+              <p>ros/ros.h is a convenience include that includes all the headers necessary to use the most common public pieces of the ROS system.</p>
+
+              <div class="code_block cpp_code" style="counter-reset:code_line 5;">
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;std_msgs/String.h&quot;</span></div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 4;">
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;rclcpp/rclcpp.hpp&quot;</span></div>
+              </div>
+              <p>ros/ros.h is a convenience include that includes all the headers necessary to use the most common public pieces of the ROS system.</p>
+
+              <div class="code_block cpp_code" style="counter-reset:code_line 5;">
+                <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;std_msgs/msg/string.hpp&quot;</span></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <p>ros/ros.h is a convenience include that includes all the headers necessary to use the most common
-          public pieces of the ROS system.</p>
-        <div class="code_block cpp_code" style="counter-reset:code_line 5;">
-          <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;std_msgs/String.h&quot;</span></div>
-        </div>
-        <p>This includes the std_msgs/String message, which resides in the std_msgs ROS package. We use
+        
+        <p>This includes the ROS String message, which resides in the std_msgs ROS package. We use
           it to create a topic on which we will send the words from which our program will have to find the
           intruder. </p>
         <div class="code_block cpp_code" style="counter-reset:code_line 6;">
@@ -223,7 +330,7 @@
           documentation for this object on the left panel.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 8;">
-          <div class="code_line">onto::<span class="cpp_type">OntologyManipulator</span><span class="cpp_op">*</span> onto_;</div>
+          <div class="code_line"><span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span>* <span class="cpp_var">onto_</span>;</div>
         </div>
         <p>As explained above, the ontology manipulator contains several objects to abstract ROS services.
           The set of services work in a connected mode which allows to greatly save in execution time but
@@ -236,31 +343,51 @@
           instance of a manipulator because it needs a pointer to a NodeHandle of ROS.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 9;">
-          <div class="code_line">std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; names_;</div>
+          <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">names_</span>;</div>
         </div>
         <p>This vector will allow us to store the different words on which we will perform our search for the intruder.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 10;">
-          <div class="code_line"><span class="cpp_type">bool</span> start_;</div>
+          <div class="code_line"><span class="cpp_key">bool</span> <span class="cpp_var">start_</span>;</div>
         </div>
         <p>This is our synchronization variable. This variable will be false as long as we continue to collect
           words and we will put it in the true state as long as we wish to start the search for the intruder.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 12;">
-          <div class="code_line"><span class="cpp_type">void</span> say(std::<span class="cpp_type">string</span> text)</div>
+          <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">say</span>(<span class="cpp_key">const</span> <span class="cpp_type">std</span>::<span class="cpp_type">string</span><span class="cpp_key">&amp;</span> <span class="cpp_var">text</span>)</div>
         </div>
         <p>Here, the say function is actually just an on-screen display, but you can customize it to use a TTS
            for example.</p>
 
          <div class="code_block cpp_code" style="counter-reset:code_line 17;">
-           <div class="code_line">std::<span class="cpp_type">string</span> summarize(std::<span class="cpp_type">vector</span>&lt;std::<span class="cpp_type">string</span>&gt; words)</div>
+          <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_function">summarize</span>(<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">words</span>)</div>
          </div>
          <p>Here, the summarize function concatenates several words in a single string. We created this function
            just to make our main function more readable.</p>
 
-         <div class="code_block cpp_code" style="counter-reset:code_line 25;">
-           <div class="code_line"><span class="cpp_type">void</span> wordCallback(<span class="cpp_op">const</span> std_msgs::<span class="cpp_type">String</span><span class="cpp_op">&</span> msg)</div>
-         </div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-2-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-2-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-2-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-2-Ros1" class="lang-tabs-panel group-tab" id="panel-2-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 25;">
+                <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">wordCallback</span>(<span class="cpp_key">const</span> <span class="cpp_type">std_msgs</span>::<span class="cpp_type">String</span><span class="cpp_key">&</span> <span class="cpp_var">msg</span>)</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-2-Ros2" class="lang-tabs-panel group-tab" id="panel-2-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 25;">
+                <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">wordCallback</span>(<span class="cpp_key">const</span> <span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">msg</span>)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
          <p>Here we have the callback function of our input topic. This topic thus receives strings which
            will be the words from which our program will have to find the intruder. Inside the function,
            we can see that we use the word &quot;start&quot; as a synchronization word that will launch our reasoning.
@@ -271,122 +398,285 @@
         <p><br><br>We have everything we need to start writing the main function to retrieve the list of words
           to work on and start the reasoning although we do not have it yet.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 33;">
-          <div class="code_line"><span class="cpp_type">int</span> main(<span class="cpp_type">int</span> argc, <span class="cpp_type">char</span><span class="cpp_op">**</span> argv)</div>
-          <div class="code_line">{</div>
-          <div class="code_line">  ros::init(argc, argv, <span class="cpp_string">&quot;intruder&quot;</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  ros::<span class="cpp_type">NodeHandle</span> n;</div>
-          <div class="code_line">  onto::<span class="cpp_type">OntologyManipulator</span> onto;</div>
-          <div class="code_line">  onto_ <span class="cpp_op">= &</span>onto;</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  onto.close();</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  ros::<span class="cpp_type">Subscriber</span> sub <span class="cpp_op">=</span> n.subscribe(<span class="cpp_string">&quot;intruder/input&quot;</span>, 1, wordCallback);</div>
-          <div class="code_line">  ros::<span class="cpp_type">Rate</span> r(<span class="cpp_value">100</span>); <span class="cpp_comment"> // 10 hz</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_op">while</span>(ros::ok())</div>
-          <div class="code_line">  {</div>
-          <div class="code_line">    start_ <span class="cpp_op">=</span> <span class="cpp_value">false</span>;</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    say(<span class="cpp_string">&quot;Let's play!&quot;</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    <span class="cpp_op">while</span>((start_ <span class="cpp_op">==</span> <span class="cpp_value">false</span>) <span class="cpp_op">&&</span> ros::ok())</div>
-          <div class="code_line">    {</div>
-          <div class="code_line">      ros::spinOnce();</div>
-          <div class="code_line">      r.sleep();</div>
-          <div class="code_line">    }</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    say(summarize(names_));</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    <span class="cpp_comment">/*</span></div>
-          <div class="code_line">    <span class="cpp_comment">We will find the intruder here</span></div>
-          <div class="code_line">    <span class="cpp_comment">*/</span></div>
-          <div class="code_line"><br></div>
-          <div class="code_line">    names_.clear();</div>
-          <div class="code_line">  }</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_return">return</span> <span class="cpp_value">0</span>;</div>
-          <div class="code_line">}</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-3-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-3-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-3-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-3-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-3-Ros1" class="lang-tabs-panel group-tab" id="panel-3-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 44;">
+                <div class="code_line"><span class="cpp_key">int</span> <span class="cpp_function">main</span>(<span class="cpp_key">int</span> <span class="cpp_var">argc</span>, <span class="cpp_key">char**</span> <span class="cpp_var">argv</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>, <span class="cpp_string">&quot;intruder&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line">  <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_type">NodeHandle</span> <span class="cpp_var">n</span>;</div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_type">Subscriber</span> <span class="cpp_var">sub</span> = <span class="cpp_var">n</span>.<span class="cpp_function">subscribe</span>(<span class="cpp_string">&quot;intruder/input&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">wordCallback</span>);</div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_type">Rate</span> <span class="cpp_var">r</span>(<span class="cpp_value">100</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">while</span>(<span class="cpp_type">ros</span>::<span class="cpp_function">ok</span>())</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_var">start_</span> = <span class="cpp_key">false</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_string">&quot;Let's play!&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_op">while</span>((<span class="cpp_var">start_</span> == <span class="cpp_key">false</span>) && <span class="cpp_type">ros</span>::<span class="cpp_function">ok</span>())</div>
+                <div class="code_line">    {</div>
+                <div class="code_line">      <span class="cpp_type">ros</span>::<span class="cpp_function">spinOnce</span>();</div>
+                <div class="code_line">      <span class="cpp_var">r</span>.<span class="cpp_function">sleep</span>();</div>
+                <div class="code_line">    }</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_function">summarize</span>(<span class="cpp_var">names_</span>));</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_comment">/*</span></div>
+                <div class="code_line">    <span class="cpp_comment">We will find the intruder here</span></div>
+                <div class="code_line">    <span class="cpp_comment">*/</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_var">names_</span>.<span class="cpp_function">clear</span>();</div>
+                <div class="code_line">  }</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-3-Ros2" class="lang-tabs-panel group-tab" id="panel-3-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 33;">
+                <div class="code_line"><span class="cpp_key">class</span> <span class="cpp_type">IntruderNode</span> : <span class="cpp_key">public</span> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Node</span></div>
+                <div class="code_line">{</div>
+                <div class="code_line"><span class="cpp_key">public</span>:</div>
+                <div class="code_line">  <span class="cpp_function">IntruderNode</span>() : <span class="cpp_type">Node</span>(<span class="cpp_string">&quot;intruder_node&quot;</span>)</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_var">subscriber</span> = <span class="cpp_key">this</span>-><span class="cpp_function">create_subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;(<span class="cpp_string">&quot;intruder/input&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">wordCallback</span>);</div>
+                <div class="code_line">  }</div>
+                <div class="code_line"><span class="cpp_key">private</span>:</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">subscriber</span>;</div>
+                <div class="code_line">};</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><span class="cpp_key">int</span> <span class="cpp_function">main</span>(<span class="cpp_key">int</span> <span class="cpp_var">argc</span>, <span class="cpp_key">char**</span> <span class="cpp_var">argv</span>)</div>
+                <div class="code_line">{</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line">  <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Node</span>::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">node</span> = <span class="cpp_type">std</span>::<span class="cpp_function">make_shared</span>&lt;<span class="cpp_type">IntruderNode</span>&gt;();</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">executors</span>::<span class="cpp_type">SingleThreadedExecutor</span> <span class="cpp_var">executor</span>;</div>
+                <div class="code_line">  <span class="cpp_var">executor</span>.<span class="cpp_function">add_node</span>(<span class="cpp_var">node</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">while</span>(<span class="cpp_type">rclcpp</span>::<span class="cpp_function">ok</span>())</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_var">start_</span> = <span class="cpp_key">false</span>;</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_string">&quot;Let's play!&quot;</span>);</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_op">while</span>((<span class="cpp_var">start_</span> == <span class="cpp_key">false</span>) && <span class="cpp_type">rclcpp</span>::<span class="cpp_function">ok</span>())</div>
+                <div class="code_line">    {</div>
+                <div class="code_line">      <span class="cpp_var">executor</span>.<span class="cpp_function">spin_once</span>();</div>
+                <div class="code_line">    }</div>
+                <div class="code_line"><br></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_function">summarize</span>(<span class="cpp_var">names_</span>));</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_comment">/*</span></div>
+                <div class="code_line">    <span class="cpp_comment">We will find the intruder here</span></div>
+                <div class="code_line">    <span class="cpp_comment">*/</span></div>
+                <div class="code_line"><br></div>
+                <div class="code_line">    <span class="cpp_var">names_</span>.<span class="cpp_function">clear</span>();</div>
+                <div class="code_line">  }</div>
+                <div class="code_line"><br></div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line">}</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p>Now, let's break the code down.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 35;">
-          <div class="code_line">  ros::init(argc, argv, <span class="cpp_string">&quot;intruder&quot;</span>);</div>
-          <div class="code_line"><br></div>
-          <div class="code_line">  ros::<span class="cpp_type">NodeHandle</span> n;</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-4-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-4-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-4-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-4-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-4-Ros1" class="lang-tabs-panel group-tab" id="panel-4-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 46;">
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>, <span class="cpp_string">&quot;intruder&quot;</span>);</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-4-Ros2" class="lang-tabs-panel group-tab" id="panel-4-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 46;">
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>);</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <p>Initialize ROS and Create a handle to this process' node.</p>
+        <p>Initialize ROS.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 38;">
-          <div class="code_line">  onto::<span class="cpp_type">OntologyManipulator</span> onto;</div>
-          <div class="code_line">  onto_ <span class="cpp_op">= &</span>onto;</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 48;">
+          <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span> <span class="cpp_var">onto</span>;</div>
+          <div class="code_line">  <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
         </div>
         <p>We finally come back to using ontologenius! We create here our first manipulator ontology,
            what a great day ... This manipulator is unique to fully enjoy the benefits of connected
            services.</p>
         <p>We do not forget to initialize the pointer on the manipulator by providing the address.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 41;">
-          <div class="code_line">  onto.close();</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 51;">
+          <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
         </div>
         <p>The close function link all the concepts loaded from files and the Internet.
           Before closing an ontology, exploration requests are not allowed.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 41;">
-          <div class="code_line">  onto.actions.fadd(<span class="cpp_string">&quot;path/to/may/file.owl&quot;</span>);</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 50;">
+          <div class="code_line">  <span class="cpp_var">onto</span>.actions.<span class="cpp_function">fadd</span>(<span class="cpp_string">&quot;path/to/may/file.owl&quot;</span>);</div>
           <div class="code_line">  <span class="cpp_comment">// OR</span></div>
-          <div class="code_line">  onto.actions.add(<span class="cpp_string">&quot;http://path/to/my/file.owl&quot;</span>);</div>
-          <div class="code_line">  onto.close();</div>
+          <div class="code_line">  <span class="cpp_var">onto</span>.actions.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;http://path/to/my/file.owl&quot;</span>);</div>
+          <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
         </div>
         <p>For the moment, we are going to consider that the ontological file we are
           going to work on is provided in the ontologenius launcher. We will configure
           it in the next part of the tutorial. It is also possible to load files directly
           from the program (as above) but in doing so it makes our code less reusable.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 43;">
-          <div class="code_line">  ros::<span class="cpp_type">Subscriber</span> sub <span class="cpp_op">=</span> n.subscribe(<span class="cpp_string">&quot;intruder/input&quot;</span>, 1, wordCallback);</div>
-        </div>
-        <p>We initialise our subscriber to the topic &quot;intruder/input&quot;. We also
-          link this topic to our callback function.</p>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-5-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-5-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-5-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-5-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-5-Ros1" class="lang-tabs-panel group-tab" id="panel-5-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 54;">
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_type">Subscriber</span> <span class="cpp_var">sub</span> = <span class="cpp_var">n</span>.<span class="cpp_function">subscribe</span>(<span class="cpp_string">&quot;intruder/input&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">wordCallback</span>);</div>
+              </div>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 46;">
-          <div class="code_line">  <span class="cpp_op">while</span>(ros::ok())</div>
+              <p>We initialise our subscriber to the topic &quot;intruder/input&quot;. We also link this topic to our callback function.</p>
+
+              <div class="code_block cpp_code" style="counter-reset:code_line 57;">
+                <div class="code_line">  <span class="cpp_op">while</span>(<span class="cpp_type">ros</span>::<span class="cpp_function">ok</span>())</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-5-Ros2" class="lang-tabs-panel group-tab" id="panel-5-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 33;">
+                <div class="code_line"><span class="cpp_key">class</span> <span class="cpp_type">IntruderNode</span> : <span class="cpp_key">public</span> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Node</span></div>
+                <div class="code_line">{</div>
+                <div class="code_line"><span class="cpp_key">public</span>:</div>
+                <div class="code_line">  <span class="cpp_function">IntruderNode</span>() : <span class="cpp_type">Node</span>(<span class="cpp_string">&quot;intruder_node&quot;</span>)</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_var">subscriber</span> = <span class="cpp_key">this</span>-><span class="cpp_function">create_subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;(<span class="cpp_string">&quot;intruder/input&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">wordCallback</span>);</div>
+                <div class="code_line">  }</div>
+                <div class="code_line"><span class="cpp_key">private</span>:</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">subscriber</span>;</div>
+                <div class="code_line">};</div>
+              </div>
+
+              <p>First we create a class which inherits from Node and initialize this later. This node is not mandatory to use Ontologenius in c++ but we need it for the ROS subscriber.</p>
+              <p>We initialise our subscriber to the topic &quot;intruder/input&quot;. We also link this topic to our callback function.</p>
+
+              <div class="code_block cpp_code" style="counter-reset:code_line 53;">
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Node</span>::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">node</span> = <span class="cpp_type">std</span>::<span class="cpp_function">make_shared</span>&lt;<span class="cpp_type">IntruderNode</span>&gt;();</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">executors</span>::<span class="cpp_type">SingleThreadedExecutor</span> <span class="cpp_var">executor</span>;</div>
+                <div class="code_line">  <span class="cpp_var">executor</span>.<span class="cpp_function">add_node</span>(<span class="cpp_var">node</span>);</div>
+              </div>
+
+              <p>We instantiate our subscription node and put in in an executor to be able to use the spin_once function later.</p>
+
+              <div class="code_block cpp_code" style="counter-reset:code_line 57;">
+                <div class="code_line">  <span class="cpp_op">while</span>(<span class="cpp_type">rclcpp</span>::<span class="cpp_function">ok</span>())</div>
+              </div>
+            </div>
+          </div>
         </div>
+        
         <p>Just our almost infinite loop. Escaping with a Ctrl + C.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 48;">
-          <div class="code_line">    start_ <span class="cpp_op">=</span> <span class="cpp_value">false</span>;</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 59;">
+          <div class="code_line">    <span class="cpp_var">start_</span> = <span class="cpp_key">false</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">    say(<span class="cpp_string">&quot;Let's play!&quot;</span>);</div>
+          <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_string">&quot;Let's play!&quot;</span>);</div>
         </div>
         <p>We initialize the synchronization variable and inform the user that the program is ready to
           listen to the words.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 52;">
-          <div class="code_line">    <span class="cpp_op">while</span>((start_ <span class="cpp_op">==</span> <span class="cpp_value">false</span>) <span class="cpp_op">&&</span> ros::ok())</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-6-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-6-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-6-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-6-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-6-Ros1" class="lang-tabs-panel group-tab" id="panel-6-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 63;">
+                <div class="code_line">    <span class="cpp_op">while</span>((<span class="cpp_var">start_</span> == <span class="cpp_key">false</span>) && <span class="cpp_type">ros</span>::<span class="cpp_function">ok</span>())</div>
+              </div>
+              <p class="tip">ros::spinOnce() is there to allow us to receive messages and r.sleep() avoids unnecessary use of the processor.</p>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-6-Ros2" class="lang-tabs-panel group-tab" id="panel-6-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-cpp">
+              <div class="code_block cpp_code" style="counter-reset:code_line 63;">
+                <div class="code_line">    <span class="cpp_op">while</span>((<span class="cpp_var">start_</span> == <span class="cpp_key">false</span>) && <span class="cpp_type">rclcpp</span>::<span class="cpp_function">ok</span>())</div>
+              </div>
+            </div>
+          </div>
         </div>
         <p>We only wait for the synchronisation... </p>
-        <p class="tip">ros::spinOnce() is there to allow us to receive messages via the subject and r.sleep()
-          avoids unnecessary use of the processor.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 58;">
-          <div class="code_line">    say(summarize(names_));</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 69;">
+          <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_function">summarize</span>(<span class="cpp_var">names_</span>));</div>
         </div>
         <p>We recall the words on which we will make the reasoning. It is just as a result of this that
           we will implement our reasoning.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 64;">
-          <div class="code_line">    names_.clear();</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 75;">
+          <div class="code_line">    <span class="cpp_var">names_</span>.<span class="cpp_function">clear</span>();</div>
         </div>
         <p>Our loop is over, we can erase the words we used and start over!</p>
 
         <p>Now, you just have to compile that before going on to the following:</p>
-        <div class="code_block">
-          <div class="terminal_line">catkin_make</div>
+        <div class="lang-tabs container">
+          <div aria-label="Tabbed content" class="closeable" role="tablist">
+            <button aria-controls="panel-7-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-7-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
+            <button aria-controls="panel-7-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-7-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
+          </div>
+          
+          <div aria-labelledby="tab-7-Ros1" class="lang-tabs-panel group-tab" id="panel-7-Ros1" name="Ros1" role="tabpanel" tabindex="0">
+            <div class="highlight-cpp">
+              <div class="code_block">
+                <div class="terminal_line">catkin_make</div>
+              </div>
+            </div>
+          </div>
+          
+          <div aria-labelledby="tab-7-Ros2" class="lang-tabs-panel group-tab" id="panel-7-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
+            <div class="highlight-cpp">
+              <div class="code_block">
+                <div class="terminal_line">colcon build --symlink-install</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <p class="tip">Do not forget that this command must be done in your catkin workspace</p>
+        <p class="tip">Do not forget that this command must be done in your workspace</p>
 
 
         <nav class="course-pagination">

@@ -4,7 +4,6 @@
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/utility/error_code.h"
-#include "ontologenius/core/utility/utility.h"
 #include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
