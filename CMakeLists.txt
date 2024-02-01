@@ -217,6 +217,7 @@ add_onto_library(ontologenius_reasoner_plugin MODULE
   src/core/reasoner/plugins/ReasonerNone.cpp
   src/core/reasoner/plugins/ReasonerInverseOf.cpp
   src/core/reasoner/plugins/ReasonerSymmetric.cpp
+  src/core/reasoner/plugins/ReasonerTransitive.cpp
   src/core/reasoner/plugins/ReasonerChain.cpp
   src/core/reasoner/plugins/ReasonerDictionary.cpp
   src/core/reasoner/plugins/ReasonerGeneralize.cpp
