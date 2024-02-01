@@ -8,6 +8,9 @@
   <class type="ontologenius::ReasonerSymmetric" base_class_type="ontologenius::ReasonerInterface">
     <description>This is a reasoner for symmetric axiom.</description>
   </class>
+  <class type="ontologenius::ReasonerTransitive" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner for transitive axiom.</description>
+  </class>
   <class type="ontologenius::ReasonerChain" base_class_type="ontologenius::ReasonerInterface">
     <description>This is a reasoner for properties chain axiom.</description>
   </class>
