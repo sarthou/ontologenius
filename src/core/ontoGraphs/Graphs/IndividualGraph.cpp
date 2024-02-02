@@ -2181,6 +2181,18 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeSameAs(c
                                       "[DEL]" + branch_1->value() + "|sameAs|" + branch_2->value());
           removeInheritage(relation.subject, relation.object, explanations);
         }
+
+        while(branch_1->same_as_.has_induced_object_relations[i]->triplets.size())
+        {
+          auto& relation = branch_1->same_as_.has_induced_object_relations[i]->triplets.front();
+          explanations.emplace_back("[DEL]" + relation.subject->value() + "|" +
+                                              relation.predicate->value() + "|" +
+                                              relation.object->value(),
+                                      "[DEL]" + branch_1->value() + "|sameAs|" + branch_2->value());
+          auto tmp = removeRelation(relation.subject, relation.predicate, relation.object);
+          explanations.insert(explanations.end(), tmp.begin(), tmp.end());
+        }
+
         for(size_t j = 0; j < branch_2->same_as_.size(); j++)
         {
           if(branch_2->same_as_[j].elem == branch_1)
@@ -2196,6 +2208,18 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeSameAs(c
                                           "[DEL]" + branch_2->value() + "|sameAs|" + branch_1->value());
               removeInheritage(relation.subject, relation.object, explanations);
             }
+
+            while(branch_2->same_as_.has_induced_object_relations[i]->triplets.size())
+            {
+              auto& relation = branch_2->same_as_.has_induced_object_relations[i]->triplets.front();
+              explanations.emplace_back("[DEL]" + relation.subject->value() + "|" +
+                                                  relation.predicate->value() + "|" +
+                                                  relation.object->value(),
+                                          "[DEL]" + branch_2->value() + "|sameAs|" + branch_1->value());
+              auto tmp = removeRelation(relation.subject, relation.predicate, relation.object);
+              explanations.insert(explanations.end(), tmp.begin(), tmp.end());
+            }
+
             branch_2->same_as_.erase(j);
             break;
           }
