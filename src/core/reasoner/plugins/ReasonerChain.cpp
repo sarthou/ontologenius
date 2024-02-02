@@ -115,7 +115,7 @@ void ReasonerChain::resolveChain(IndividualBranch_t* indiv, int same_index, cons
       {
         local_used.emplace_back(individual->value() + "|" + base_property->value() + "|" + individual->object_relations_[i].second->value(), individual->object_relations_.has_induced_object_relations[i]);
         if((same_index != -1) && (individual != indiv))
-          local_used.emplace_back(indiv->value() + "|sameAs|" + individual->value(), individual->same_as_.has_induced_object_relations[same_index]);
+          local_used.emplace_back(indiv->value() + "|sameAs|" + individual->value(), indiv->same_as_.has_induced_object_relations[same_index]);
         for(auto& used : down_used)
         {
           res.push_back(used);
