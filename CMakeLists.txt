@@ -563,6 +563,11 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     set_target_properties(anonymous_class_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
     target_include_directories(anonymous_class_test PRIVATE ${catkin_INCLUDE_DIRS})
     target_link_libraries(anonymous_class_test ontologenius_lib ${catkin_LIBRARIES})
+
+    add_rostest_gtest(chain_test test/chain.test src/tests/CI/chain_test.cpp)
+    set_target_properties(chain_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    target_include_directories(chain_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(chain_test ontologenius_lib ${catkin_LIBRARIES})
   endif()
 
 elseif($ENV{ROS_VERSION} STREQUAL "2")
