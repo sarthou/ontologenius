@@ -149,10 +149,10 @@ std::vector<std::string> AnonymousClassChecker::resolveTree(AnonymousClassElemen
   { // check for the OneOf node if the classes of each individuals have no disjunction with the equivalence class
     for(auto elem : ano_elem->sub_elements_)
     {
-      auto errs = checkClassesVectorDisjointness(ranges, elem->individual_involved_->is_a_.relations);
-      if(errs.size())
+      auto local_errs = checkClassesVectorDisjointness(ranges, elem->individual_involved_->is_a_.relations);
+      if(local_errs.size())
       {
-        for(auto& err : errs)
+        for(auto& err : local_errs)
           print_error("In equivalence of class " + current_ano_ + ": individual " + elem->individual_involved_->value() +
                       " can not be equivalent to " + current_ano_ + " since it exists a " + err);
       }
@@ -201,15 +201,13 @@ std::vector<std::string> AnonymousClassChecker::checkPropertyDisjointness(Anonym
   if(ano_elem->object_property_involved_ != nullptr)
   {
     errs = checkPropertyDomainDisjointness(ano_elem->object_property_involved_, ranges);
-    for(auto& err : errs)
-      err = "and domain of property " + ano_elem->object_property_involved_->value() + " because of " + err;
+    std::transform(errs.cbegin(), errs.cend(), errs.begin(), [prop = ano_elem->object_property_involved_->value()](const auto& err) {return "and domain of property " + prop + " because of " + err;});
     checkObjectPropertyRangeDisjointness(ano_elem);
   }
   else
   {
     errs = checkPropertyDomainDisjointness(ano_elem->data_property_involved_, ranges);
-    for(auto& err : errs)
-      err = "and domain of property " + ano_elem->data_property_involved_->value() + " because of " + err;
+    std::transform(errs.cbegin(), errs.cend(), errs.begin(), [prop = ano_elem->data_property_involved_->value()](const auto& err) {return "and domain of property " + prop + " because of " + err;});
     checkDataPropertyRangeDisjointness(ano_elem);
   }
   return errs;

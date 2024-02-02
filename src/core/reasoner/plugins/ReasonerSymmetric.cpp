@@ -8,6 +8,7 @@ void ReasonerSymmetric::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
+  // not impacted by same as
   for(auto& indiv : indivs)
   {
     if(indiv->updated_ == true)

@@ -88,7 +88,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Da
     if(me->data_relations_[i] < 1.0)
       deduced_indexs.insert(i);
 
-  for(auto property : properties)
+  for(auto& property : properties)
   {
     int index = -1;
 
@@ -135,7 +135,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Ob
     if(me->object_relations_[i] < 1.0)
       deduced_indexs.insert(i);
 
-  for(auto property : properties)
+  for(auto& property : properties)
   {
     int index = -1;
 

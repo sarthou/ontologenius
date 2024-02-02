@@ -255,8 +255,8 @@ private:
   bool testBranchInheritanceFirstLayer(AnonymousClassElement_t* ano_elem, T property)
   {
     auto up_vector = getUpProperty(property);
-    for(auto property : up_vector)
-      if(testProperty(ano_elem, property))
+    for(auto up : up_vector)
+      if(testProperty(ano_elem, up))
         return true;
     return false;
   }

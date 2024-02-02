@@ -559,11 +559,11 @@ bool fullComparator(D* branch, const std::string& value, const std::string& lang
       return true;
 
   if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
-    if(std::any_of(branch->dictionary_.spoken_[lang].begin(), branch->dictionary_.spoken_[lang].end(), [value](auto word){ return word == value; }))
+    if(std::any_of(branch->dictionary_.spoken_[lang].begin(), branch->dictionary_.spoken_[lang].end(), [value](auto& word){ return word == value; }))
       return true;
 
   if(branch->dictionary_.muted_.find(lang) != branch->dictionary_.muted_.end())
-    if(std::any_of(branch->dictionary_.muted_[lang].begin(), branch->dictionary_.muted_[lang].end(), [value](auto word){ return word == value; }))
+    if(std::any_of(branch->dictionary_.muted_[lang].begin(), branch->dictionary_.muted_[lang].end(), [value](auto& word){ return word == value; }))
       return true;
 
   return false;
