@@ -65,6 +65,8 @@ public:
 		has_induced_inheritance_relations.clear();
 	}
 
+	bool empty() { return relations.empty(); }
+
 	typename std::vector<T>::iterator begin() { return relations.begin(); }
 	typename std::vector<T>::iterator end() { return relations.end(); }
 	typename std::vector<T>::const_iterator cbegin() const { return relations.cbegin(); }
