@@ -26,7 +26,7 @@ void ReasonerChain::postReason()
             has_active_chain = true;
             for(auto& chain : property->chains_)
             {
-              auto end_indivs = resolveChain(indiv->object_relations_[rel_i].second, chain, 1);
+              auto end_indivs = resolveChain(indiv->object_relations_[rel_i].second, chain, 0);
 
               if(end_indivs.size())
               {
@@ -81,35 +81,41 @@ void ReasonerChain::postReason()
 
 std::vector<std::pair<IndividualBranch_t*, UsedVector>> ReasonerChain::resolveChain(IndividualBranch_t* indiv, const std::vector<ObjectPropertyBranch_t*>& chain, size_t chain_index)
 {
-  if(chain_index >= chain.size())
+  if(chain_index >= chain.size() - 1)
     return {std::make_pair(indiv, UsedVector())};
   else
   {
     std::vector<std::pair<IndividualBranch_t*, UsedVector>> res;
     if(indiv->same_as_.empty())
-      resolveChain(indiv, chain, chain_index, res);
+      resolveChain(indiv, -1, chain, chain_index, res);
     else
     {
-      for(auto& same : indiv->same_as_)
-        resolveChain(same.elem, chain, chain_index, res);
+      for(size_t i = 0; i < indiv->same_as_.size(); i++)
+        resolveChain(indiv, i, chain, chain_index, res);
     }
 
     return res;
   }
 }
 
-void ReasonerChain::resolveChain(IndividualBranch_t* indiv, const std::vector<ObjectPropertyBranch_t*>& chain, size_t chain_index, std::vector<std::pair<IndividualBranch_t*, UsedVector>>& res)
+void ReasonerChain::resolveChain(IndividualBranch_t* indiv, int same_index, const std::vector<ObjectPropertyBranch_t*>& chain, size_t chain_index, std::vector<std::pair<IndividualBranch_t*, UsedVector>>& res)
 {
-  for(size_t i = 0; i < indiv->object_relations_.size(); i++)
+  IndividualBranch_t* individual = indiv;
+  if(same_index != -1)
+    individual = indiv->same_as_[same_index].elem;
+
+  for(size_t i = 0; i < individual->object_relations_.size(); i++)
   {
-    auto base_property = indiv->object_relations_[i].first;
+    auto base_property = individual->object_relations_[i].first;
     UsedVector local_used;
     if(existInInheritance(base_property, chain[chain_index]->get(), local_used))
     {
-      auto down_used = resolveChain(indiv->object_relations_[i].second, chain, chain_index + 1);
+      auto down_used = resolveChain(individual->object_relations_[i].second, chain, chain_index + 1);
       if(down_used.size())
       {
-        local_used.emplace_back(indiv->value() + "|" + base_property->value() + "|" + indiv->object_relations_[i].second->value(), indiv->object_relations_.has_induced_object_relations[i]);
+        local_used.emplace_back(individual->value() + "|" + base_property->value() + "|" + individual->object_relations_[i].second->value(), individual->object_relations_.has_induced_object_relations[i]);
+        if((same_index != -1) && (individual != indiv))
+          local_used.emplace_back(indiv->value() + "|sameAs|" + individual->value(), individual->same_as_.has_induced_object_relations[same_index]);
         for(auto& used : down_used)
         {
           res.push_back(used);
