@@ -24,7 +24,7 @@ public:
   virtual bool defaultActive() override {return true;}
 private:
   std::vector<std::pair<IndividualBranch_t*, UsedVector>> resolveChain(IndividualBranch_t* indiv, const std::vector<ObjectPropertyBranch_t*>& chain, size_t chain_index = 0);
-  void resolveChain(IndividualBranch_t* indiv, const std::vector<ObjectPropertyBranch_t*>& chain, size_t chain_index, std::vector<std::pair<IndividualBranch_t*, UsedVector>>& res);
+  void resolveChain(IndividualBranch_t* indiv, int same_index, const std::vector<ObjectPropertyBranch_t*>& chain, size_t chain_index, std::vector<std::pair<IndividualBranch_t*, UsedVector>>& res);
 
   bool relationExists(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* chain_prop, IndividualBranch_t* chain_indiv);
 
@@ -41,7 +41,7 @@ private:
       {
         if(existInInheritance(branch->mothers_[i].elem, selector, used))
         {
-          explanation = branch->value() + "|isA|" +  branch->mothers_[i].elem->value() + ";";
+          explanation = branch->value() + "|isA|" +  branch->mothers_[i].elem->value();
           used.emplace_back(explanation, branch->mothers_.has_induced_object_relations[i]); 
           return true;
         }  
