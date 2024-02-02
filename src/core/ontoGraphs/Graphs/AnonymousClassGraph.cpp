@@ -237,8 +237,6 @@ void AnonymousClassGraph::printTree(AnonymousClassElement_t* ano_elem, size_t le
 
 std::string AnonymousClassGraph::toString(CardType_t value)
 {
-  std::string res;
-
   switch (value)
   {
   case CardType_t::cardinality_some:

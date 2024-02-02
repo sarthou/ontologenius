@@ -307,7 +307,7 @@ bool ReasonerAnonymous::checkRestriction(IndividualBranch_t* indiv, AnonymousCla
     return checkTypeRestriction(indiv, ano_elem, used);
   else if(ano_elem->oneof)
   {
-    std::string explanation, one_of = "";
+    std::string one_of;
     for(auto elem : ano_elem->sub_elements_)
     {
       if(one_of != "")
