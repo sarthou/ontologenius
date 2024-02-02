@@ -260,16 +260,9 @@ bool Feeder::addSameAs(const feed_t& feed)
     else if(feed.action_ == action_del)
     {
       auto tmp = onto_->individual_graph_.removeSameAs(feed.from_, feed.on_);
-      if(tmp.size() == 0)
-      {
-        notifications_.push_back("[FAIL][unknown item in the request]" + current_str_feed_);
-        return false;
-      }
-      else
-      {
+      if(tmp.size() != 0)
         explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
-        return true;
-      }
+      return true;
     }
     else
       return false;
