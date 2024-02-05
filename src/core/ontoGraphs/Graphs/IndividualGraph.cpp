@@ -2127,18 +2127,25 @@ void IndividualGraph::removeInheritage(IndividualBranch_t* indiv, ClassBranch_t*
   class_branch->updated_ = true;
 }
 
-bool IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& indiv_2)
+void IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& indiv_2)
 {
   IndividualBranch_t* branch_1 = findBranch(indiv_1);
   IndividualBranch_t* branch_2 = findBranch(indiv_2);
 
   if((branch_1 == nullptr) && (branch_2 == nullptr))
-    return false;
+    throw GraphException("no known items in the request");
 
   if(branch_1 == nullptr)
     branch_1 = findOrCreateBranchSafe(indiv_1);
   else if(branch_2 == nullptr)
     branch_2 = findOrCreateBranchSafe(indiv_2);
+  else
+  {
+    std::unordered_set<IndividualBranch_t*> distincts;
+    getDistincts(branch_1, distincts);
+    if(distincts.find(branch_2) != distincts.end())
+      throw GraphException(branch_1->value() + " and " + branch_2->value() + " are distinct");
+  }
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
   conditionalPushBack(branch_1->same_as_, IndividualElement_t(branch_2));
@@ -2146,8 +2153,6 @@ bool IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& i
 
   conditionalPushBack(branch_1->same_as_, IndividualElement_t(branch_1));
   conditionalPushBack(branch_2->same_as_, IndividualElement_t(branch_2));
-
-  return true;
 }
 
 std::vector<std::pair<std::string, std::string>> IndividualGraph::removeSameAs(const std::string& indiv_1, const std::string& indiv_2, bool protect_infered)

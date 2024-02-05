@@ -249,13 +249,8 @@ bool Feeder::addSameAs(const feed_t& feed)
   {
     if(feed.action_ == action_add)
     {
-      if(!onto_->individual_graph_.addSameAs(feed.from_, feed.on_))
-      {
-        notifications_.push_back("[FAIL][no known items in the request]" + current_str_feed_);
-        return false;
-      }
-      else
-        return true;
+      onto_->individual_graph_.addSameAs(feed.from_, feed.on_);
+      return true;
     }
     else if(feed.action_ == action_del)
     {

@@ -147,7 +147,7 @@ public:
   bool removeLang(const std::string& indiv, const std::string& lang, const std::string& name);
   std::vector<std::pair<std::string, std::string>> removeInheritage(const std::string& indiv, const std::string& class_inherited);
   void removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch, std::vector<std::pair<std::string, std::string>>& explanations, bool protect_infered = false);
-  bool addSameAs(const std::string& indiv_1, const std::string& indiv_2);
+  void addSameAs(const std::string& indiv_1, const std::string& indiv_2);
   std::vector<std::pair<std::string, std::string>> removeSameAs(const std::string& indiv_1, const std::string& indiv_2, bool protect_infered = false);
   std::vector<std::pair<std::string, std::string>> removeRelation(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered = false);
   std::vector<std::pair<std::string, std::string>> removeRelation(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
