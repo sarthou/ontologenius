@@ -17,7 +17,7 @@ public:
 private:
   IndividualGraph* individual_graph_;
 
-  void checkSame();
+  void checkDisjointInheritance();
   void checkDisjoint();
   void checkReflexive();
   void checkObectPropertyDomain();
