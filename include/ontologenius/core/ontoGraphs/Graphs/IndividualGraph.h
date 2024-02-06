@@ -156,8 +156,6 @@ public:
   std::vector<std::pair<std::string, std::string>> removeRelationSymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
   template<typename T, typename C> std::vector<std::pair<std::string, std::string>> removeInductions(IndividualBranch_t* indiv_from, RelationsWithInductions<Pair_t<T, C>>& relations, size_t relation_index);
   template<typename T> std::vector<std::pair<std::string, std::string>> removeInductions(IndividualBranch_t* indiv_from, RelationsWithInductions<Single_t<T>>& relations, size_t relation_index, const std::string& property);
-  std::vector<IndividualBranch_t*> resolveLink(std::vector<ObjectPropertyBranch_t*>& chain, IndividualBranch_t* indiv_on, size_t index);
-  std::vector<std::vector<ObjectPropertyBranch_t*>> getChains(ObjectPropertyBranch_t* base_property);
 
   void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, uint32_t current_depth = 0);
   void getLowestSame(IndividualBranch_t* individual, std::unordered_set<std::string>& res);

@@ -2370,42 +2370,6 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
   return explanations;
 }
 
-std::vector<IndividualBranch_t*> IndividualGraph::resolveLink(std::vector<ObjectPropertyBranch_t*>& chain, IndividualBranch_t* indiv_on, size_t index)
-{
-  std::vector<IndividualBranch_t*> new_on;
-  if(chain.size() > 0)
-  {
-    if(index != chain.size() - 1)
-    {
-      for(auto& object_relation : indiv_on->object_relations_)
-      {
-        if(object_relation.first == chain[index])
-        {
-          std::vector<IndividualBranch_t*> tmp = resolveLink(chain, object_relation.second, index + 1);
-          new_on.insert(new_on.end(), tmp.begin(), tmp.end());
-        }
-      }
-    }
-    else
-      new_on.push_back(indiv_on);
-  }
-  return new_on;
-}
-
-std::vector<std::vector<ObjectPropertyBranch_t*>> IndividualGraph::getChains(ObjectPropertyBranch_t* base_property)
-{
-  std::vector<std::vector<ObjectPropertyBranch_t*>> chains;
-  chains.insert(chains.end(), base_property->chains_.begin(), base_property->chains_.end());
-
-  for(auto& mother : base_property->mothers_)
-  {
-    auto tmp = getChains(mother.elem);
-    chains.insert(chains.end(), tmp.begin(), tmp.end());
-  }
-
-  return chains;
-}
-
 bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectPropertyBranch_t* prop, IndividualBranch_t* on)
 {
   std::unordered_set<ObjectPropertyBranch_t*> up_properties;
