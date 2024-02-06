@@ -2268,22 +2268,22 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
   {
-    if(indiv_on != "_")
+    ObjectPropertyBranch_t* branch_property = object_property_graph_->findBranch(property);
+    if(branch_property != nullptr)
     {
-      IndividualBranch_t* branch_on = findBranch(indiv_on);
-      if(branch_on != nullptr)
+      if(indiv_on != "_")
       {
-        ObjectPropertyBranch_t* branch_property = object_property_graph_->findBranch(property);
-        if(branch_property != nullptr)
+        IndividualBranch_t* branch_on = findBranch(indiv_on);
+        if(branch_on != nullptr)
           return removeRelation(branch_from, branch_property, branch_on).first;
+        else
+          throw GraphException("The object entity does not exist");
       }
-    }
-    else
-    {
-      ObjectPropertyBranch_t* branch_property = object_property_graph_->findBranch(property);
-      if(branch_property != nullptr)
+      else
         return removeRelation(branch_from, branch_property, nullptr).first;
     }
+    else
+      throw GraphException("The property does not exist");
   }
   else
     throw GraphException("The subject entity does not exist");
@@ -2297,6 +2297,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
   IndividualBranch_t* branch_from = findBranch(indiv_from);
   if(branch_from != nullptr)
   {
+    bool fuzzy = (type == "_") || (data == "_");
     for(size_t i = 0; i < branch_from->data_relations_.size();)
     {
       if(branch_from->data_relations_[i].first->value() == property)
@@ -2304,11 +2305,14 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
         if(((type == "_") || (branch_from->data_relations_[i].second->type_ == type)) &&
           ((data == "_") || (branch_from->data_relations_[i].second->value_ == data)))
         {
-          auto tmp_expl  = removeInductions(branch_from, branch_from->data_relations_, i);
+          auto tmp_expl = removeInductions(branch_from, branch_from->data_relations_, i);
           explanations.insert(explanations.end(), tmp_expl.begin(), tmp_expl.end());
           
           branch_from->data_relations_.erase(i);
           branch_from->updated_ = true;
+
+          if(fuzzy == false)
+            return explanations;
         }
         else
           i++;
