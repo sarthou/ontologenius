@@ -133,7 +133,6 @@ public:
   IndividualBranch_t* findOrCreateBranch(const std::string& name);
   void deleteIndividual(IndividualBranch_t* indiv);
   void redirectDeleteIndividual(IndividualBranch_t* indiv, ClassBranch_t* _class);
-  bool addLang(const std::string& indiv, const std::string& lang, const std::string& name);
   bool addInheritage(const std::string& indiv, const std::string& class_inherited);
   bool addInheritage(IndividualBranch_t* branch, const std::string& class_inherited);
   bool addInheritageUnsafe(IndividualBranch_t* branch, const std::string& class_inherited);
@@ -144,7 +143,6 @@ public:
   void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on);
   void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data);
   void addRelationInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);
-  bool removeLang(const std::string& indiv, const std::string& lang, const std::string& name);
   std::vector<std::pair<std::string, std::string>> removeInheritage(const std::string& indiv, const std::string& class_inherited);
   bool removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch, std::vector<std::pair<std::string, std::string>>& explanations, bool protect_stated = false);
   void addSameAs(const std::string& indiv_1, const std::string& indiv_2);

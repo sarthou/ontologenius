@@ -73,7 +73,7 @@ private:
   bool addInverseOf(const feed_t& feed);
   bool addSameAs(const feed_t& feed);
 
-  bool classIndividualLangage(feed_t& feed);
+  bool modifyLangage(feed_t& feed);
   bool applyProperty(feed_t& feed);
 };
 

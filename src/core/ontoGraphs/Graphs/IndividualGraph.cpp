@@ -1795,21 +1795,6 @@ void IndividualGraph::redirectDeleteIndividual(IndividualBranch_t* indiv, ClassB
   }
 }
 
-bool IndividualGraph::addLang(const std::string& indiv, const std::string& lang, const std::string& name)
-{
-  IndividualBranch_t* branch = findBranch(indiv);
-  if(branch != nullptr)
-  {
-    auto lang_id = lang.substr(1);
-    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-    branch->setSteadyDictionary(lang_id, name);
-    branch->updated_ = true;
-    return true;
-  }
-  else
-    return false;
-}
-
 bool IndividualGraph::addInheritage(const std::string& indiv, const std::string& class_inherited)
 {
   IndividualBranch_t* branch = findBranch(indiv);
@@ -2051,25 +2036,6 @@ void IndividualGraph::addRelationInvert(const std::string& indiv_from, const std
   }
   else
     throw GraphException("Object entity does not exists");
-}
-
-bool IndividualGraph::removeLang(const std::string& indiv, const std::string& lang, const std::string& name)
-{
-  IndividualBranch_t* branch = findBranch(indiv);
-  if(branch != nullptr)
-  {
-    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-
-    auto lang_id = lang.substr(1);
-    removeFromDictionary(branch->dictionary_.spoken_, lang_id, name);
-    removeFromDictionary(branch->dictionary_.muted_, lang_id, name);
-    removeFromDictionary(branch->steady_dictionary_.spoken_, lang_id, name);
-    removeFromDictionary(branch->steady_dictionary_.muted_, lang_id, name);
-
-    return true;
-  }
-  else
-    return false;
 }
 
 std::vector<std::pair<std::string, std::string>> IndividualGraph::removeInheritage(const std::string& indiv, const std::string& class_inherited)

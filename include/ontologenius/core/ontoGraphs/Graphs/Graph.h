@@ -50,6 +50,11 @@ public:
   std::string getIdentifier(index_t index);
   std::vector<std::string> getIdentifiers(const std::vector<index_t>& indexes);
 
+  bool addLang(const std::string& branch_str, const std::string& lang, const std::string& name);
+  bool addLang(B* branch, const std::string& lang, const std::string& name);
+  bool removeLang(const std::string& branch_str, const std::string& lang, const std::string& name);
+  bool removeLang(B* branch, const std::string& lang, const std::string& name);
+
   BranchContainerSet<B> container_;
 
   std::string language_;
@@ -285,6 +290,53 @@ std::vector<std::string> Graph<B>::getIdentifiers(const std::vector<index_t>& in
   for(auto& index : indexes)
     res.push_back(getIdentifier(index));
   return res; 
+}
+
+template <typename B>
+bool Graph<B>::addLang(const std::string& branch_str, const std::string& lang, const std::string& name)
+{
+  B* branch = this->findBranch(branch_str);
+  return addLang(branch, lang, name);
+}
+
+template <typename B>
+bool Graph<B>::addLang(B* branch, const std::string& lang, const std::string& name)
+{
+  if(branch != nullptr)
+  {
+    std::lock_guard<std::shared_timed_mutex> lock(this->mutex_);
+    branch->setSteadyDictionary(lang.substr(1), name);
+    branch->updated_ = true;
+    return true;
+  }
+  else
+    return false;
+}
+
+template <typename B>
+bool Graph<B>::removeLang(const std::string& indiv, const std::string& lang, const std::string& name)
+{
+  B* branch = findBranch(indiv);
+  return removeLang(branch, lang, name);
+}
+
+template <typename B>
+bool Graph<B>::removeLang(B* branch, const std::string& lang, const std::string& name)
+{
+  if(branch != nullptr)
+  {
+    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+
+    auto lang_id = lang.substr(1);
+    removeFromDictionary(branch->dictionary_.spoken_, lang_id, name);
+    removeFromDictionary(branch->dictionary_.muted_, lang_id, name);
+    removeFromDictionary(branch->steady_dictionary_.spoken_, lang_id, name);
+    removeFromDictionary(branch->steady_dictionary_.muted_, lang_id, name);
+
+    return true;
+  }
+  else
+    return false;
 }
 
 } // namespace ontologenius

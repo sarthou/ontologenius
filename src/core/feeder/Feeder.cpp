@@ -71,7 +71,7 @@ bool Feeder::addFeed(feed_t& feed)
     else if((feed.prop_ == "<-") || (feed.prop_ == "owl:inverseOf"))
       return addInverseOf(feed);
     else if(feed.prop_[0] == '@')
-      return classIndividualLangage(feed);
+      return modifyLangage(feed);
     else if((feed.prop_ == "=") || (feed.prop_ == "owl:sameAs") || (feed.prop_ == "sameAs"))
       return addSameAs(feed);
     else
@@ -269,7 +269,7 @@ bool Feeder::addSameAs(const feed_t& feed)
   }
 }
 
-bool Feeder::classIndividualLangage(feed_t& feed)
+bool Feeder::modifyLangage(feed_t& feed)
 {
   if(feed.action_ == action_add)
   {
@@ -277,6 +277,10 @@ bool Feeder::classIndividualLangage(feed_t& feed)
       return onto_->class_graph_.addLang(feed.from_, feed.prop_, feed.on_);
     else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
       return onto_->individual_graph_.addLang(feed.from_, feed.prop_, feed.on_);
+    else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
+      return onto_->object_property_graph_.addLang(feed.from_, feed.prop_, feed.on_);
+    else if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
+      return onto_->data_property_graph_.addLang(feed.from_, feed.prop_, feed.on_);
     else
     {
       notifications_.push_back("[FAIL][unknown element in the requested language addition]" + current_str_feed_);
@@ -289,6 +293,10 @@ bool Feeder::classIndividualLangage(feed_t& feed)
       return onto_->class_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
     else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
       return onto_->individual_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
+    else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
+      return onto_->object_property_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
+    else if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
+      return onto_->data_property_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
     else
     {
       notifications_.push_back("[FAIL][unknown element in the requested language deletion]" + current_str_feed_);
