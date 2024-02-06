@@ -36,8 +36,8 @@ public:
   void setSteady_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
   void setSteady_muted_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
 
-  int objectPropertyExist(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
-  int dataPropertyExist(DataPropertyBranch_t* property, LiteralNode* data);
+  int objectRelationExists(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
+  int dataRelationExists(DataPropertyBranch_t* property, LiteralNode* data);
 };
 
 } // namespace ontologenius

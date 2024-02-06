@@ -1911,7 +1911,7 @@ int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, ObjectPropertyB
 
     int index = -1;
 
-    index = indiv_from->objectPropertyExist(property, indiv_on);
+    index = indiv_from->objectRelationExists(property, indiv_on);
     if(index == -1)
     {
       indiv_from->object_relations_.emplace_back(property, indiv_on);
@@ -1938,7 +1938,7 @@ int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, DataPropertyBra
   {
     int index = -1;
 
-    index = indiv_from->dataPropertyExist(property, data);
+    index = indiv_from->dataRelationExists(property, data);
     if(index == -1)
     {
       indiv_from->data_relations_.emplace_back(property, data);
