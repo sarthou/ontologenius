@@ -72,6 +72,11 @@ public:
   void getUpPtr(B* branch, std::unordered_set<B*>& res, int depth, unsigned int current_depth = 0);
   inline void getUpPtr(B* branch, std::unordered_set<B*>& res);
 
+  bool addInheritage(const std::string& branch_base, const std::string& branch_inherited);
+  bool addInheritage(B* branch, B* inherited);
+  std::vector<std::pair<std::string, std::string>> removeInheritage(const std::string& branch_base, const std::string& branch_inherited);
+  std::vector<std::pair<std::string, std::string>> removeInheritage(B* branch, B* inherited);
+
   template<typename T> std::unordered_set<T> select(const std::unordered_set<T>& on, const T& selector)
   {
     std::unordered_set<T> res;
@@ -111,6 +116,33 @@ public:
     std::transform(all_branchs_.cbegin(), all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->get(); });
     return res;
   }
+
+  /*template<typename T>
+  std::vector<std::pair<std::string, std::string>> removeInductions(B* indiv_from, RelationsWithInductions<Single_t<T>>& relations, size_t relation_index, const std::string& property)
+  {
+    std::vector<std::pair<std::string, std::string>> explanations;
+
+    auto relation = relations[relation_index];
+    auto indiv_on = relation.elem;
+
+    for(size_t i = 0; i < relations.has_induced_inheritance_relations[relation_index]->triplets.size(); )
+    {
+      auto& triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
+
+      std::vector<std::pair<std::string, std::string>> tmp;
+      if(removeInheritage(triplet.subject, triplet.object, tmp, true))
+      {
+        explanations.emplace_back("[DEL]" + triplet.subject->value() + "|isA|" +
+                                          triplet.object->value(),
+                                  "[DEL]" + indiv_from->value() + "|" + property + "|" + indiv_on->value());
+        explanations.insert(explanations.end(), tmp.begin(), tmp.end());
+      }
+      else
+        i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
+    }
+
+    return explanations;
+  }*/
 
 protected:
   std::vector<B*> all_branchs_;
@@ -549,6 +581,89 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res)
   if(res.insert(branch).second)
     for(auto& it : branch->mothers_)
       getUpPtr(it.elem, res);
+}
+
+// both branches can be created automatically
+template <typename B>
+bool OntoGraph<B>::addInheritage(const std::string& branch_base, const std::string& branch_inherited)
+{
+  B* branch = this->create(branch_base);
+  if(branch != nullptr)
+  {
+    B* inherited = this->create(branch_inherited);
+    if(inherited != nullptr)
+    {
+      std::lock_guard<std::shared_timed_mutex> lock(this->mutex_);
+      return addInheritage(branch, inherited);
+    }
+  }
+
+  return false;
+}
+
+template <typename B>
+bool OntoGraph<B>::addInheritage(B* branch, B* inherited)
+{
+  if((branch != nullptr) && (inherited != nullptr))
+  {
+    this->conditionalPushBack(branch->mothers_, Single_t<B*>(inherited));
+    this->conditionalPushBack(inherited->childs_, Single_t<B*>(branch));
+    branch->updated_ = true;
+    inherited->updated_ = true;
+    mitigate(branch);
+
+    return true; // TODO verify that multi inheritances are compatible
+  }
+  else
+    return false;
+}
+
+template <typename B>
+std::vector<std::pair<std::string, std::string>> OntoGraph<B>::removeInheritage(const std::string& branch_base, const std::string& branch_inherited)
+{
+  B* branch_base_ptr = this->findBranch(branch_base);
+  B* branch_inherited_ptr = this->findBranch(branch_inherited);
+
+  if(branch_base_ptr == nullptr)
+  {
+    throw GraphException("The concept " + branch_base + " does not exist");
+    return std::vector<std::pair<std::string, std::string>>();
+  }
+  if(branch_inherited_ptr == nullptr)
+  {
+    throw GraphException("The concept " + branch_inherited + " does not exist");
+    return std::vector<std::pair<std::string, std::string>>();
+  }
+
+  std::lock_guard<std::shared_timed_mutex> lock(this->mutex_);
+  return removeInheritage(branch_base_ptr, branch_inherited_ptr);
+}
+
+template <typename B>
+std::vector<std::pair<std::string, std::string>> OntoGraph<B>::removeInheritage(B* branch, B* inherited)
+{
+  std::vector<std::pair<std::string, std::string>> explanations;
+
+  for(size_t i = 0; i < branch->mothers_.size(); i++)
+  {
+    if(branch->mothers_[i].elem == inherited)
+    {
+      //for(auto trace_vect : branch->mothers_[i].induced_traces)
+      //  trace_vect->eraseGeneric(branch, nullptr, inherited);
+
+      //auto expl = removeInductions(branch, branch->mothers_, i, "isA");
+      //explanations.insert(explanations.end(), expl.begin(), expl.end());
+
+      branch->mothers_.erase(i);
+
+      this->removeFromElemVect(inherited->childs_, branch);
+      branch->updated_ = true;
+      inherited->updated_ = true;
+      return explanations;
+    }
+  }
+
+  return explanations;
 }
 
 template <typename D>

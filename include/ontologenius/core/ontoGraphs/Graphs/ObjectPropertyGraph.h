@@ -72,10 +72,6 @@ public:
 
   void createInvertChains();
 
-  bool add(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data);
-  bool addInvert(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data);
-  bool remove(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data);
-
   bool addInverseOf(const std::string& from, const std::string& on);
   bool removeInverseOf(const std::string& from, const std::string& on);
 

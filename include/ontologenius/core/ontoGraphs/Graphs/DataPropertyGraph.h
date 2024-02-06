@@ -66,10 +66,6 @@ public:
   std::unordered_set<std::string> getRange(const std::string& value);
   std::unordered_set<index_t> getRange(index_t value);
 
-  bool add(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
-  bool addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
-  bool remove(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
-
   index_t getLiteralIndex(const std::string& name);
   std::vector<index_t> getLiteralIndexes(const std::vector<std::string>& names);
   std::string getLiteralIdentifier(index_t index);

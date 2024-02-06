@@ -346,65 +346,6 @@ void ObjectPropertyGraph::createInvertChains()
   }
 }
 
-bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  if(relation != "")
-  {
-    if(relation[0] == '@')
-    {
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      prop->setSteadyDictionary(relation.substr(1), data);
-      prop->updated_ = true;
-    }
-    else if((relation == "+") || (relation == "isA"))
-    {
-
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      ObjectPropertyBranch_t* tmp = findOrCreateBranch(data);
-
-      conditionalPushBack(prop->mothers_, ObjectPropertyElement_t(tmp));
-      conditionalPushBack(tmp->childs_, ObjectPropertyElement_t(prop));
-      prop->updated_ = true;
-      tmp->updated_ = true;
-    }
-    else
-      return false;
-  }
-  else
-    return false;
-  return true;
-}
-
-bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  if(relation != "")
-  {
-    if((relation == "+") || (relation == "isA"))
-    {
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      ObjectPropertyBranch_t* tmp = findOrCreateBranch(data);
-
-      conditionalPushBack(tmp->mothers_, ObjectPropertyElement_t(prop));
-      conditionalPushBack(prop->childs_, ObjectPropertyElement_t(tmp));
-      prop->updated_ = true;
-      tmp->updated_ = true;
-    }
-    else
-      return false;
-  }
-  else
-    return false;
-  return true;
-}
-
-bool ObjectPropertyGraph::remove(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  (void)prop;
-  (void)relation;
-  (void)data;
-  return false;
-}
-
 bool ObjectPropertyGraph::addInverseOf(const std::string& from, const std::string& on)
 {
   std::lock_guard<std::shared_timed_mutex> lock(mutex_);

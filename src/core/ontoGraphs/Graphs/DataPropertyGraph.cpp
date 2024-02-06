@@ -323,62 +323,6 @@ std::unordered_set<index_t> DataPropertyGraph::getRange(index_t value)
   return res;
 }
 
-bool DataPropertyGraph::add(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  if(relation != "")
-  {
-    if(relation[0] == '@')
-    {
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      prop->setSteadyDictionary(relation.substr(1), data);
-      prop->updated_ = true;
-    }
-    else if((relation == "+") || (relation == "isA"))
-    {
-      DataPropertyBranch_t* tmp = create(data);
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      conditionalPushBack(prop->mothers_, DataPropertyElement_t(tmp));
-      conditionalPushBack(tmp->childs_, DataPropertyElement_t(prop));
-      prop->updated_ = true;
-      tmp->updated_ = true;
-    }
-    else
-      return false;
-  }
-  else
-    return false;
-  return true;
-}
-
-bool DataPropertyGraph::addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  if(relation != "")
-  {
-    if((relation == "+") || (relation == "isA"))
-    {
-      DataPropertyBranch_t* tmp = create(data);
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      conditionalPushBack(tmp->mothers_, DataPropertyElement_t(prop));
-      conditionalPushBack(prop->childs_, DataPropertyElement_t(tmp));
-      prop->updated_ = true;
-      tmp->updated_ = true;
-    }
-    else
-      return false;
-  }
-  else
-    return false;
-  return true;
-}
-
-bool DataPropertyGraph::remove(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  (void)prop;
-  (void)relation;
-  (void)data;
-  return false;
-}
-
 index_t DataPropertyGraph::getLiteralIndex(const std::string& name)
 {
   std::shared_lock<std::shared_timed_mutex> lock(mutex_);

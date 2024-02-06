@@ -1213,47 +1213,26 @@ int ClassGraph::deleteRelationsOnClass(ClassBranch_t* _class, std::vector<ClassB
   return class_index;
 }
 
-bool ClassGraph::addLang(const std::string& _class, std::string& lang, const std::string& name)
+bool ClassGraph::addInheritage(const std::string& branch_base, const std::string& branch_inherited)
 {
-  ClassBranch_t* branch = findBranch(_class);
+  ClassBranch_t* branch = findBranch(branch_base);
   if(branch != nullptr)
   {
-    lang = lang.substr(1);
-    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-    branch->setSteadyDictionary(lang, name);
-    branch->updated_ = true;
-    return true;
-  }
-  else
-    return false;
-}
-
-bool ClassGraph::addInheritage(std::string& class_base, std::string& class_inherited)
-{
-  ClassBranch_t* branch = findBranch(class_base);
-  if(branch != nullptr)
-  {
-    ClassBranch_t* inherited = findBranch(class_inherited);
+    ClassBranch_t* inherited = findBranch(branch_inherited);
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     if(inherited == nullptr)
     {
-      IndividualBranch_t* tmp = individual_graph_->findBranch(class_inherited);
+      IndividualBranch_t* tmp = individual_graph_->findBranch(branch_inherited);
       if(tmp != nullptr)
         inherited = individual_graph_->upgradeToBranch(tmp);
       else
       {
-        inherited = new ClassBranch_t(class_inherited);
+        inherited = new ClassBranch_t(branch_inherited);
         container_.insert(inherited);
         all_branchs_.push_back(inherited);
       }
     }
-    conditionalPushBack(branch->mothers_, ClassElement_t(inherited));
-    conditionalPushBack(inherited->childs_, ClassElement_t(branch));
-    branch->updated_ = true;
-    inherited->updated_ = true;
-    mitigate(branch);
-
-    return true; // TODO verify that multi inheritances are compatible
+    return OntoGraph::addInheritage(branch, inherited);
   }
   else
     return false;
@@ -1360,53 +1339,6 @@ void ClassGraph::addRelationInvert(const std::string& class_from, const std::str
   }
   else
     throw GraphException("Object class does not exists");
-}
-
-bool ClassGraph::removeLang(std::string& indiv, std::string& lang, std::string& name)
-{
-  ClassBranch_t* branch = findBranch(indiv);
-  if(branch != nullptr)
-  {
-    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-
-    lang = lang.substr(1);
-    removeFromDictionary(branch->dictionary_.spoken_, lang, name);
-    removeFromDictionary(branch->dictionary_.muted_, lang, name);
-    removeFromDictionary(branch->steady_dictionary_.spoken_, lang, name);
-    removeFromDictionary(branch->steady_dictionary_.muted_, lang, name);
-
-    return true;
-  }
-  else
-    return false;
-}
-
-std::vector<std::pair<std::string, std::string>> ClassGraph::removeInheritage(std::string& class_base, std::string& class_inherited)
-{
-  ClassBranch_t* branch_base = findBranch(class_base);
-  ClassBranch_t* branch_inherited = findBranch(class_inherited);
-  std::vector<std::pair<std::string, std::string>> explanations;
-
-  if(branch_base == nullptr)
-  {
-    throw GraphException("The class_base entity does not exist");
-    return std::vector<std::pair<std::string, std::string>>();
-  }
-  if(branch_inherited == nullptr)
-  {
-    throw GraphException("The class_inherited entity does not exist");
-    return std::vector<std::pair<std::string, std::string>>();
-  }
-
-  std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-
-  removeFromElemVect(branch_base->mothers_, branch_inherited);
-  removeFromElemVect(branch_inherited->childs_, branch_base);
-
-  branch_base->updated_ = true;
-  branch_inherited->updated_ = true;
-
-  return explanations;
 }
 
 void ClassGraph::removeRelation(const std::string& class_from, const std::string& property, const std::string& class_on)

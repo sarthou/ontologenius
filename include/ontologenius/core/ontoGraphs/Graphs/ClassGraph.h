@@ -90,9 +90,8 @@ public:
   void getDownIndividualPtrSafe(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res);
 
   void deleteClass(ClassBranch_t* _class);
+  bool addInheritage(const std::string& class_base, const std::string& class_inherited);
   int deleteRelationsOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect);
-  bool addLang(const std::string& _class, std::string& lang, const std::string& name);
-  bool addInheritage(std::string& class_base, std::string& class_inherited);
   void addRelation(ClassBranch_t*, const std::string& property, const std::string& class_on);
   void addRelation(ClassBranch_t*, const std::string& property, const std::string& type, const std::string& data);
   void addRelationInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on);
