@@ -146,15 +146,16 @@ public:
   void addRelationInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);
   bool removeLang(const std::string& indiv, const std::string& lang, const std::string& name);
   std::vector<std::pair<std::string, std::string>> removeInheritage(const std::string& indiv, const std::string& class_inherited);
-  void removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch, std::vector<std::pair<std::string, std::string>>& explanations, bool protect_infered = false);
+  bool removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch, std::vector<std::pair<std::string, std::string>>& explanations, bool protect_stated = false);
   void addSameAs(const std::string& indiv_1, const std::string& indiv_2);
-  std::vector<std::pair<std::string, std::string>> removeSameAs(const std::string& indiv_1, const std::string& indiv_2, bool protect_infered = false);
-  std::vector<std::pair<std::string, std::string>> removeRelation(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered = false);
+  std::vector<std::pair<std::string, std::string>> removeSameAs(const std::string& indiv_1, const std::string& indiv_2, bool protect_stated = false);
+  std::pair<std::vector<std::pair<std::string, std::string>>, bool> removeRelation(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_stated = false);
   std::vector<std::pair<std::string, std::string>> removeRelation(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
   std::vector<std::pair<std::string, std::string>> removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
   std::vector<std::pair<std::string, std::string>> removeRelationInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
   std::vector<std::pair<std::string, std::string>> removeRelationSymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
-  std::vector<std::pair<std::string, std::string>> removeRelationChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+  template<typename T, typename C> std::vector<std::pair<std::string, std::string>> removeInductions(IndividualBranch_t* indiv_from, RelationsWithInductions<Pair_t<T, C>>& relations, size_t relation_index);
+  template<typename T> std::vector<std::pair<std::string, std::string>> removeInductions(IndividualBranch_t* indiv_from, RelationsWithInductions<Single_t<T>>& relations, size_t relation_index, const std::string& property);
   std::vector<IndividualBranch_t*> resolveLink(std::vector<ObjectPropertyBranch_t*>& chain, IndividualBranch_t* indiv_on, size_t index);
   std::vector<std::vector<ObjectPropertyBranch_t*>> getChains(ObjectPropertyBranch_t* base_property);
 
@@ -302,6 +303,99 @@ std::unordered_set<T> IndividualGraph::findRegex(const std::string& regex, bool 
           insert(res, indiv);
   }
   return res;
+}
+
+template<typename T, typename C>
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeInductions(IndividualBranch_t* indiv_from, RelationsWithInductions<Pair_t<T, C>>& relations, size_t relation_index)
+{
+  std::vector<std::pair<std::string, std::string>> explanations;
+
+  auto relation = relations[relation_index];
+  auto property = relation.first;
+  auto indiv_on = relation.second;
+
+  for(size_t i = 0; i < relations.has_induced_object_relations[relation_index]->triplets.size(); )
+  {
+    auto& triplet = relations.has_induced_object_relations[relation_index]->triplets[i];                      
+    auto tmp = removeRelation(triplet.subject,
+                              triplet.predicate,
+                              triplet.object,
+                              true);
+    if(tmp.second)
+    {
+      explanations.emplace_back("[DEL]" + triplet.subject->value() + "|" +
+                                        triplet.predicate->value() + "|" +
+                                        triplet.object->value(),
+                                "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
+      explanations.insert(explanations.end(), tmp.first.begin(), tmp.first.end());
+    }
+    else
+      i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
+  }
+
+  for(size_t i = 0; i < relations.has_induced_inheritance_relations[relation_index]->triplets.size(); )
+  {
+    auto& triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
+
+    std::vector<std::pair<std::string, std::string>> tmp;
+    if(removeInheritage(triplet.subject, triplet.object, tmp, true))
+    {
+      explanations.emplace_back("[DEL]" + triplet.subject->value() + "|isA|" +
+                                        triplet.object->value(),
+                                "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
+      explanations.insert(explanations.end(), tmp.begin(), tmp.end());
+    }
+    else
+      i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
+  }
+
+  return explanations;
+}
+
+template<typename T>
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeInductions(IndividualBranch_t* indiv_from, RelationsWithInductions<Single_t<T>>& relations, size_t relation_index, const std::string& property)
+{
+  std::vector<std::pair<std::string, std::string>> explanations;
+
+  auto relation = relations[relation_index];
+  auto indiv_on = relation.elem;
+
+  for(size_t i = 0; i < relations.has_induced_object_relations[relation_index]->triplets.size(); )
+  {
+    auto& triplet = relations.has_induced_object_relations[relation_index]->triplets[i];               
+    auto tmp = removeRelation(triplet.subject,
+                              triplet.predicate,
+                              triplet.object,
+                              true);
+    if(tmp.second)
+    {
+      explanations.emplace_back("[DEL]" + triplet.subject->value() + "|" +
+                                        triplet.predicate->value() + "|" +
+                                        triplet.object->value(),
+                                "[DEL]" + indiv_from->value() + "|" + property + "|" + indiv_on->value());
+      explanations.insert(explanations.end(), tmp.first.begin(), tmp.first.end());
+    }
+    else
+      i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
+  }
+
+  for(size_t i = 0; i < relations.has_induced_inheritance_relations[relation_index]->triplets.size(); )
+  {
+    auto& triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
+
+    std::vector<std::pair<std::string, std::string>> tmp;
+    if(removeInheritage(triplet.subject, triplet.object, tmp, true))
+    {
+      explanations.emplace_back("[DEL]" + triplet.subject->value() + "|isA|" +
+                                        triplet.object->value(),
+                                "[DEL]" + indiv_from->value() + "|" + property + "|" + indiv_on->value());
+      explanations.insert(explanations.end(), tmp.begin(), tmp.end());
+    }
+    else
+      i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
+  }
+
+  return explanations;
 }
 
 } // namespace ontologenius
