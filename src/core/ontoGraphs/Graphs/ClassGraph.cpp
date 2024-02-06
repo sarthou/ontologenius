@@ -97,8 +97,8 @@ ClassBranch_t* ClassGraph::add(const std::string& value, ObjectVectors_t& object
   for(auto& data_relation : object_vector.data_relations_)
     addDataRelation(me, data_relation);
 
-  me->setSteady_dictionary(object_vector.dictionary_);
-  me->setSteady_muted_dictionary(object_vector.muted_dictionary_);
+  me->setSteadyDictionary(object_vector.dictionary_);
+  me->setSteadyMutedDictionary(object_vector.muted_dictionary_);
 
   mitigate(me);
   return me;
@@ -1220,7 +1220,7 @@ bool ClassGraph::addLang(const std::string& _class, std::string& lang, const std
   {
     lang = lang.substr(1);
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-    branch->setSteady_dictionary(lang, name);
+    branch->setSteadyDictionary(lang, name);
     branch->updated_ = true;
     return true;
   }

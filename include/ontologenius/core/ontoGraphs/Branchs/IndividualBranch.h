@@ -31,11 +31,6 @@ public:
 
   IndividualBranch_t(const std::string& value = "") : ValuedNode(value) {}
 
-  void setSteady_dictionary(const std::string& lang, const std::string& word);
-  void setSteady_muted_dictionary(const std::string& lang, const std::string& word);
-  void setSteady_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
-  void setSteady_muted_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
-
   int objectRelationExists(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
   int dataRelationExists(DataPropertyBranch_t* property, LiteralNode* data);
 };

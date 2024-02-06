@@ -46,6 +46,11 @@ public:
       vect.push_back(data);
   }
 
+  void setSteadyDictionary(const std::string& lang, const std::string& word);
+  void setSteadyMutedDictionary(const std::string& lang, const std::string& word);
+  void setSteadyDictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
+  void setSteadyMutedDictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
+
 private:
 
   index_t index_;

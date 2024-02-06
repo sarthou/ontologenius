@@ -121,8 +121,8 @@ ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, Objec
   **********************/
   me->properties_.apply(property_vectors.properties_);
   me->annotation_usage_ = me->annotation_usage_ || property_vectors.annotation_usage_;
-  me->setSteady_dictionary(property_vectors.dictionary_);
-  me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
+  me->setSteadyDictionary(property_vectors.dictionary_);
+  me->setSteadyMutedDictionary(property_vectors.muted_dictionary_);
 
   /**********************
   ** Chain axiom
@@ -353,7 +353,7 @@ bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, const std::string& r
     if(relation[0] == '@')
     {
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      prop->setSteady_dictionary(relation.substr(1), data);
+      prop->setSteadyDictionary(relation.substr(1), data);
       prop->updated_ = true;
     }
     else if((relation == "+") || (relation == "isA"))

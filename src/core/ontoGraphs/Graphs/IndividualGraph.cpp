@@ -103,8 +103,8 @@ IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVec
   **********************/
   addSames(me, individual_vector.same_as_);
 
-  me->setSteady_dictionary(individual_vector.dictionary_);
-  me->setSteady_muted_dictionary(individual_vector.muted_dictionary_);
+  me->setSteadyDictionary(individual_vector.dictionary_);
+  me->setSteadyMutedDictionary(individual_vector.muted_dictionary_);
 
   return me;
 }
@@ -1802,7 +1802,7 @@ bool IndividualGraph::addLang(const std::string& indiv, const std::string& lang,
   {
     auto lang_id = lang.substr(1);
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-    branch->setSteady_dictionary(lang_id, name);
+    branch->setSteadyDictionary(lang_id, name);
     branch->updated_ = true;
     return true;
   }
