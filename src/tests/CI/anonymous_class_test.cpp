@@ -10,28 +10,18 @@ onto::OntologyManipulator* onto_ptr;
 TEST(global_tests, same_as_range_restriction)
 {
   std::vector<std::string> res;
-  onto_ptr->reasoners.activate("ontologenius::ReasonerAnonymous");
-
-  onto_ptr->feeder.addConcept("indiv2");
-  onto_ptr->feeder.addProperty("indiv2", "hasComponent", "realsense_pepper");
-
-  onto_ptr->feeder.addProperty("realsense_d435i", "=", "realsense_pepper");
-  onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("indiv2");
   EXPECT_TRUE(find(res.begin(), res.end(), "RealSenseVisionCapability") != res.end());
 
-  onto_ptr->feeder.addProperty("indiv2", "=", "indiv1");
-  onto_ptr->feeder.waitUpdate(1000);
-
-  res = onto_ptr->individuals.getUp("indiv1");
+  res = onto_ptr->individuals.getUp("indiv1"); // indiv1 = indiv2
   EXPECT_TRUE(find(res.begin(), res.end(), "RealSenseVisionCapability") != res.end());
 
   onto_ptr->feeder.addConcept("indiv3");
   onto_ptr->feeder.addProperty("indiv3", "hasCapability", "indiv1");
   onto_ptr->feeder.waitUpdate(1000);
 
-  res = onto_ptr->individuals.getUp("indiv3");
+  res = onto_ptr->individuals.getUp("indiv3"); // indiv3 hasCapability indiv1
   EXPECT_TRUE(find(res.begin(), res.end(), "PepperVisionCapability") != res.end());
 
   onto_ptr->feeder.removeProperty("indiv3", "hasCapability", "indiv1");
@@ -58,7 +48,6 @@ TEST(global_tests, same_as_range_restriction)
 TEST(global_tests, trace_cleaning)
 {
   std::vector<std::string> res;
-  onto_ptr->reasoners.activate("ontologenius::ReasonerAnonymous");
 
   onto_ptr->feeder.addConcept("a");
   onto_ptr->feeder.addProperty("a", "hasComponent", "b");
@@ -109,15 +98,12 @@ TEST(global_tests, cardinality_min_testing)
   std::vector<std::string> res;
   bool res_bool = false;
 
-  onto_ptr->reasoners.activate("ontologenius::ReasonerAnonymous");
-
   onto_ptr->feeder.addProperty("pepper", "hasComponent", "bumperLeft");
   onto_ptr->feeder.addProperty("pepper", "hasComponent", "bumperRight");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("pepper");
-  res_bool = find(res.begin(), res.end(), "ObstacleAvoidanceCapability") != res.end();
-  EXPECT_TRUE(res_bool);
+  EXPECT_TRUE(find(res.begin(), res.end(), "ObstacleAvoidanceCapability") != res.end());
 
   onto_ptr->feeder.addConcept("bumperMiddle");
   onto_ptr->feeder.addInheritage("bumperMiddle", "Bumper");
@@ -125,29 +111,24 @@ TEST(global_tests, cardinality_min_testing)
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("pepper");
-  res_bool = find(res.begin(), res.end(), "ObstacleAvoidanceCapability") != res.end();
-  EXPECT_TRUE(res_bool);
+  EXPECT_TRUE(find(res.begin(), res.end(), "ObstacleAvoidanceCapability") != res.end());
 
   onto_ptr->feeder.removeInheritage("bumperLeft", "Bumper");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("pepper");
-  res_bool = find(res.begin(), res.end(), "ObstacleAvoidanceCapability") != res.end();
-  EXPECT_TRUE(res_bool);
+  EXPECT_TRUE(find(res.begin(), res.end(), "ObstacleAvoidanceCapability") != res.end());
 
   onto_ptr->feeder.removeInheritage("bumperRight", "Bumper");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("pepper");
-  res_bool = (find(res.begin(), res.end(), "ObstacleAvoidanceCapability") == res.end());
-  EXPECT_TRUE(res_bool);
-
+  EXPECT_TRUE(find(res.begin(), res.end(), "ObstacleAvoidanceCapability") == res.end());
 }
 
 TEST(global_tests, two_equivalences_deletion)
 {
   std::vector<std::string> res;
-  onto_ptr->reasoners.activate("ontologenius::ReasonerAnonymous");
 
   onto_ptr->feeder.addConcept("a");
   onto_ptr->feeder.addProperty("a", "hasComponent", "b");
@@ -185,7 +166,6 @@ TEST(global_tests, two_equivalences_deletion)
 TEST(global_tests, same_as_one_of)
 {
   std::vector<std::string> res;
-  onto_ptr->reasoners.activate("ontologenius::ReasonerAnonymous");
 
   onto_ptr->feeder.addConcept("the_builder");
   onto_ptr->feeder.addProperty("the_builder", "=", "bob");
@@ -221,6 +201,7 @@ int main(int argc, char** argv)
   onto::OntologyManipulator onto;
   onto_ptr = &onto;
 
+  onto_ptr->reasoners.activate("ontologenius::ReasonerAnonymous");
   onto.close();
 
   testing::InitGoogleTest(&argc, argv);
