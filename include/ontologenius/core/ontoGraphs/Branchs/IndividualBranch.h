@@ -33,6 +33,9 @@ public:
 
   int objectRelationExists(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
   int dataRelationExists(DataPropertyBranch_t* property, LiteralNode* data);
+
+  bool hasUpdatedObjectRelation();
+  bool hasUpdatedDataRelation();
 };
 
 } // namespace ontologenius

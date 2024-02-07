@@ -26,4 +26,14 @@ int IndividualBranch_t::dataRelationExists(DataPropertyBranch_t* property, Liter
   return -1;
 }
 
+bool IndividualBranch_t::hasUpdatedObjectRelation()
+{
+  return (std::find_if(object_relations_.begin(), object_relations_.end(), [](const auto& relation) { return relation.first->updated_; }) != object_relations_.end());
+}
+
+bool IndividualBranch_t::hasUpdatedDataRelation()
+{
+  return (std::find_if(data_relations_.begin(), data_relations_.end(), [](const auto& relation) { return relation.first->updated_; }) != data_relations_.end());
+}
+
 } // namespace ontologenius
