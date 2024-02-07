@@ -1117,22 +1117,23 @@ void ClassGraph::getDownIndividual(ClassBranch_t* branch, std::unordered_set<ind
   }
 }
 
-std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtrSafe(ClassBranch_t* branch)
+std::unordered_set<IndividualBranch_t*> ClassGraph::getDownIndividualPtrSafe(ClassBranch_t* branch, size_t depth)
 {
   std::unordered_set<IndividualBranch_t*> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
-
-  for(auto& indiv : branch->individual_childs_)
-    res.insert(indiv.elem);
-
+  getDownIndividualPtr(branch, res, depth);
   return res;
 }
 
-void ClassGraph::getDownIndividualPtrSafe(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res)
+void ClassGraph::getDownIndividualPtr(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res, size_t depth, size_t current_depth)
 {
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
   for(auto& indiv : branch->individual_childs_)
     res.insert(indiv.elem);
+
+  if(current_depth < depth)
+  {
+    for(auto& child : branch->childs_)
+      getDownIndividualPtr(child.elem, res, depth, current_depth + 1);
+  }
 }
 
 void ClassGraph::deleteClass(ClassBranch_t* _class)
@@ -1229,7 +1230,17 @@ bool ClassGraph::addInheritage(const std::string& branch_base, const std::string
         all_branchs_.push_back(inherited);
       }
     }
-    return OntoGraph::addInheritage(branch, inherited);
+    if(OntoGraph::addInheritage(branch, inherited))
+    {
+      std::unordered_set<IndividualBranch_t*> down_individuals;
+      std::lock_guard<std::shared_timed_mutex> lock_indiv(individual_graph_->mutex_);
+      getDownIndividualPtr(branch, down_individuals);
+      for(auto indiv : down_individuals)
+        indiv->updated_ = true;
+      return true;
+    }
+    else
+      return false;
   }
   else
     return false;
