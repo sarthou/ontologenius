@@ -947,22 +947,28 @@ std::unordered_set<std::string> IndividualGraph::getWith(const std::string& firs
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   IndividualBranch_t* indiv = container_.find(first_individual);
 
-  index_t second_individual_index = 0;
+  std::unordered_set<index_t> second_individual_index;
   auto second_individual_ptr = container_.find(second_individual);
   if(second_individual_ptr != nullptr)
-    second_individual_index = second_individual_ptr->get();
+  {
+    if(second_individual_ptr->same_as_.empty())
+      second_individual_index = {second_individual_ptr->get()};
+    else
+      second_individual_index = getSameId(second_individual_ptr);
+  }
   else
   {
     auto literal = data_property_graph_->literal_container_.find(second_individual);
     if(literal != nullptr)
-      second_individual_index = literal->get();
+      second_individual_index = {literal->get()};
     else
     {
       auto second_class_ptr = class_graph_->container_.find(second_individual);
       if(second_class_ptr != nullptr)
-        second_individual_index = second_class_ptr->get();
+        second_individual_index = {second_class_ptr->get()};
     }
   }
+  
   getWith(indiv, second_individual_index, res, depth);
   return res;
 }
@@ -972,26 +978,67 @@ std::unordered_set<index_t> IndividualGraph::getWith(index_t first_individual, i
   std::unordered_set<index_t> res;
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
   IndividualBranch_t* indiv = ordered_individuals_[first_individual];
-  getWith(indiv, second_individual, res, depth);
+  if(second_individual > 0)
+  {
+    if((size_t)second_individual >= ordered_individuals_.size())
+    {
+       getWith(indiv, {second_individual}, res, depth); // class
+    }
+    else
+    {
+      IndividualBranch_t* second = ordered_individuals_[second_individual];
+      if(second == nullptr)
+        getWith(indiv, {second_individual}, res, depth); // class
+      else if(second->same_as_.empty())
+        getWith(indiv, {second_individual}, res, depth);
+      else
+        getWith(indiv, getSameId(second), res, depth);
+    }
+  }
+  else
+    getWith(indiv, {second_individual}, res, depth); // literal
   return res;
 }
 
 template<typename T>
-void IndividualGraph::getWith(IndividualBranch_t* first_individual, index_t second_individual_index, std::unordered_set<T>& res, int depth)
+void IndividualGraph::getWith(IndividualBranch_t* first_individual, const std::unordered_set<index_t>& second_individual_index, std::unordered_set<T>& res, int depth)
 {
   if(first_individual != nullptr)
   {
-    if(second_individual_index > 0)
+    if(second_individual_index.empty())
+      return;
+
+    if(*second_individual_index.begin() > 0)
     {
-      for(IndivObjectRelationElement_t& relation : first_individual->object_relations_)
-        if(relation.second->get() == second_individual_index)
-          object_property_graph_->getUp(relation.first, res, depth);
+      if(first_individual->same_as_.empty())
+      {
+        for(IndivObjectRelationElement_t& relation : first_individual->object_relations_)
+          if(second_individual_index.find(relation.second->get()) != second_individual_index.end())
+            object_property_graph_->getUp(relation.first, res, depth);
+      }
+      else
+      {
+        for(auto& same : first_individual->same_as_)
+          for(IndivObjectRelationElement_t& relation : same.elem->object_relations_)
+            if(second_individual_index.find(relation.second->get()) != second_individual_index.end())
+              object_property_graph_->getUp(relation.first, res, depth);
+      }
     }
-    else if(second_individual_index < 0)
+    else if(*second_individual_index.begin() < 0)
     {
-      for(IndivDataRelationElement_t& relation : first_individual->data_relations_)
-        if(relation.second->get() == second_individual_index)
-          data_property_graph_->getUp(relation.first, res, depth);
+      if(first_individual->same_as_.empty())
+      {
+        for(IndivDataRelationElement_t& relation : first_individual->data_relations_)
+          if(second_individual_index.find(relation.second->get()) != second_individual_index.end())
+            data_property_graph_->getUp(relation.first, res, depth);
+      }
+      else
+      {
+        for(auto& same : first_individual->same_as_)
+          for(IndivDataRelationElement_t& relation : same.elem->data_relations_)
+            if(second_individual_index.find(relation.second->get()) != second_individual_index.end())
+              data_property_graph_->getUp(relation.first, res, depth);
+      }
     }
 
     int found_depth = -1;
@@ -1003,7 +1050,7 @@ void IndividualGraph::getWith(IndividualBranch_t* first_individual, index_t seco
     {
       std::unordered_set<ClassBranch_t*> next_step;
       for(auto up : up_set)
-        class_graph_->getWith(up, second_individual_index, res, do_not_take, current_depth, found_depth, depth, next_step);
+        class_graph_->getWith(up, *second_individual_index.begin(), res, do_not_take, current_depth, found_depth, depth, next_step); // we can take the front of second_individual_index as class does not have same_as
 
       up_set = next_step;
       current_depth++;

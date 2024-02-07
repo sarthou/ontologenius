@@ -178,7 +178,7 @@ private:
   template<typename T> void getRelatedWith(index_t individual, std::unordered_set<T>& res);
   template<typename T> void getFrom(index_t individual, const T& property, std::unordered_set<T>& res, bool single_same = false);
   template<typename T> std::unordered_set<T> getOn(IndividualBranch_t* individual, const T& property, bool single_same = false);
-  template<typename T> void getWith(IndividualBranch_t* first_individual, index_t second_individual_index, std::unordered_set<T>& res, int depth);
+  template<typename T> void getWith(IndividualBranch_t* first_individual, const std::unordered_set<index_t>& second_individual_index, std::unordered_set<T>& res, int depth);
   template<typename T> void getDomainOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth);
   template<typename T> void getRangeOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth);
   std::string getName(IndividualBranch_t* branch, bool use_default);
