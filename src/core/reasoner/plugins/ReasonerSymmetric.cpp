@@ -11,7 +11,7 @@ void ReasonerSymmetric::postReason()
   // not impacted by same as
   for(auto& indiv : indivs)
   {
-    if(indiv->updated_ == true)
+    if(indiv->updated_ == true || indiv->hasUpdatedObjectRelation())
       for(auto& relation : indiv->object_relations_)
       {
         if(relation.first->properties_.symetric_property_ == true)

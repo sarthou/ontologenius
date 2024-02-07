@@ -10,7 +10,7 @@ void ReasonerChain::postReason()
 
   std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
   for(auto indiv : indivs)
-    if((indiv->updated_ == true) || (indiv->flags_.find("chain") != indiv->flags_.end()))
+    if((indiv->updated_ == true) || (indiv->flags_.find("chain") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation())
     {
       bool has_active_chain = false;
       // /!\ Do not use a for each loop style.

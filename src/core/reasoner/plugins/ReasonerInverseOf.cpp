@@ -9,7 +9,7 @@ void ReasonerInverseOf::postReason()
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
   for(auto& indiv : indivs)
-    if(indiv->updated_ == true)
+    if(indiv->updated_ || indiv->hasUpdatedObjectRelation())
     {
       for(IndivObjectRelationElement_t& relation : indiv->object_relations_)
       {
