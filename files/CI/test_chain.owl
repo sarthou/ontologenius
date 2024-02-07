@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<rdf:RDF xmlns="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#"
-     xml:base="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50"
+<rdf:RDF xmlns="test_chain#"
+     xml:base="test_chain"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     xmlns:untitled-ontology-50="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#">
-    <owl:Ontology rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50"/>
+     xmlns:untitled-ontology-50="test_chain#">
+    <owl:Ontology rdf:about="test_chain"/>
     
 
 
@@ -22,65 +22,65 @@
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#hasIn -->
+    <!-- test_chain#hasIn -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#hasIn">
-        <owl:inverseOf rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isIn"/>
+    <owl:ObjectProperty rdf:about="test_chain#hasIn">
+        <owl:inverseOf rdf:resource="test_chain#isIn"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isIn -->
+    <!-- test_chain#isIn -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isIn">
+    <owl:ObjectProperty rdf:about="test_chain#isIn">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Box"/>
-        <owl:propertyDisjointWith rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isOn"/>
+        <rdfs:range rdf:resource="test_chain#Box"/>
+        <owl:propertyDisjointWith rdf:resource="test_chain#isOn"/>
         <owl:propertyChainAxiom rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isOn"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isIn"/>
+            <rdf:Description rdf:about="test_chain#isOn"/>
+            <rdf:Description rdf:about="test_chain#isIn"/>
         </owl:propertyChainAxiom>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isInBox -->
+    <!-- test_chain#isInBox -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isInBox">
-        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isIn"/>
+    <owl:ObjectProperty rdf:about="test_chain#isInBox">
+        <rdfs:subPropertyOf rdf:resource="test_chain#isIn"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isOn -->
+    <!-- test_chain#isOn -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isOn">
+    <owl:ObjectProperty rdf:about="test_chain#isOn">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isOnTop -->
+    <!-- test_chain#isOnTop -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isOnTop">
-        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isOn"/>
+    <owl:ObjectProperty rdf:about="test_chain#isOnTop">
+        <rdfs:subPropertyOf rdf:resource="test_chain#isOn"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#thirdChain -->
+    <!-- test_chain#thirdChain -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#thirdChain">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Cube"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Table"/>
+    <owl:ObjectProperty rdf:about="test_chain#thirdChain">
+        <rdfs:domain rdf:resource="test_chain#Cube"/>
+        <rdfs:range rdf:resource="test_chain#Table"/>
         <owl:propertyChainAxiom rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isOn"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isIn"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#isOn"/>
+            <rdf:Description rdf:about="test_chain#isOn"/>
+            <rdf:Description rdf:about="test_chain#isIn"/>
+            <rdf:Description rdf:about="test_chain#isOn"/>
         </owl:propertyChainAxiom>
     </owl:ObjectProperty>
     
@@ -97,27 +97,27 @@
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Ball -->
+    <!-- test_chain#Ball -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Ball"/>
+    <owl:Class rdf:about="test_chain#Ball"/>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Box -->
+    <!-- test_chain#Box -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Box"/>
+    <owl:Class rdf:about="test_chain#Box"/>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Cube -->
+    <!-- test_chain#Cube -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Cube"/>
+    <owl:Class rdf:about="test_chain#Cube"/>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Table -->
+    <!-- test_chain#Table -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Table"/>
+    <owl:Class rdf:about="test_chain#Table"/>
     
 
 
@@ -132,59 +132,59 @@
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#ball -->
+    <!-- test_chain#ball -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#ball">
-        <rdf:type rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Ball"/>
+    <owl:NamedIndividual rdf:about="test_chain#ball">
+        <rdf:type rdf:resource="test_chain#Ball"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#box -->
+    <!-- test_chain#box -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#box">
-        <rdf:type rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Box"/>
-        <isOn rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#table"/>
+    <owl:NamedIndividual rdf:about="test_chain#box">
+        <rdf:type rdf:resource="test_chain#Box"/>
+        <isOn rdf:resource="test_chain#table"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#cube_after -->
+    <!-- test_chain#cube_after -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#cube_after">
-        <rdf:type rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Cube"/>
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#cube_after_bis"/>
-        <isIn rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#box"/>
+    <owl:NamedIndividual rdf:about="test_chain#cube_after">
+        <rdf:type rdf:resource="test_chain#Cube"/>
+        <owl:sameAs rdf:resource="test_chain#cube_after_bis"/>
+        <isIn rdf:resource="test_chain#box"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#cube_after_bis -->
+    <!-- test_chain#cube_after_bis -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#cube_after_bis"/>
+    <owl:NamedIndividual rdf:about="test_chain#cube_after_bis"/>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#cube_base -->
+    <!-- test_chain#cube_base -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#cube_base">
-        <rdf:type rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Cube"/>
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#cube_base_bis"/>
-        <isIn rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#box"/>
+    <owl:NamedIndividual rdf:about="test_chain#cube_base">
+        <rdf:type rdf:resource="test_chain#Cube"/>
+        <owl:sameAs rdf:resource="test_chain#cube_base_bis"/>
+        <isIn rdf:resource="test_chain#box"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#cube_base_bis -->
+    <!-- test_chain#cube_base_bis -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#cube_base_bis"/>
+    <owl:NamedIndividual rdf:about="test_chain#cube_base_bis"/>
     
 
 
-    <!-- http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#table -->
+    <!-- test_chain#table -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#table">
-        <rdf:type rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#Table"/>
+    <owl:NamedIndividual rdf:about="test_chain#table">
+        <rdf:type rdf:resource="test_chain#Table"/>
     </owl:NamedIndividual>
     
 
@@ -200,8 +200,8 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <owl:distinctMembers rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#cube_after_bis"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2024/1/untitled-ontology-50#cube_base_bis"/>
+            <rdf:Description rdf:about="test_chain#cube_after_bis"/>
+            <rdf:Description rdf:about="test_chain#cube_base_bis"/>
         </owl:distinctMembers>
     </rdf:Description>
 </rdf:RDF>

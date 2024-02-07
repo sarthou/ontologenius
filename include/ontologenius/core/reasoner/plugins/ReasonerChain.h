@@ -7,7 +7,6 @@ namespace ontologenius {
 
 typedef std::vector<std::pair<std::string, ObjectRelationTriplets*>> UsedVector;
 
-class ChainTree;
 class ReasonerChain : public ReasonerInterface
 {
 public:
