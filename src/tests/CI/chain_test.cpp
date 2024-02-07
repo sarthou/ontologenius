@@ -216,7 +216,15 @@ TEST(chain_tests, chain_deletion_inheritage)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(res.empty());
 
-  onto_ptr->feeder.addInheritage("isOnTop", "isOn");
+  onto_ptr->feeder.addInheritage("isOnTop", "isOn"); // we check if adding again the relation trigger the reasoning
+  onto_ptr->feeder.waitUpdate(1000);
+
+  res = onto_ptr->individuals.getOn("ball", "isIn");
+  EXPECT_TRUE(find(res.begin(), res.end(), "box") != res.end());
+
+  res = onto_ptr->individuals.getOn("ball", "thirdChain");
+  EXPECT_TRUE(find(res.begin(), res.end(), "table") != res.end());
+
   onto_ptr->feeder.removeProperty("ball", "isOnTop", "cube_base_bis");
   onto_ptr->feeder.waitUpdate(1000);
 }
