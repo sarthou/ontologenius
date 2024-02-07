@@ -630,6 +630,11 @@ bool OntoGraph<B>::addInheritage(B* branch, B* inherited)
     inherited->updated_ = true;
     mitigate(branch);
 
+    std::unordered_set<B*> downs;
+    getDownPtr(branch, downs);
+    for(auto down : downs)
+      down->updated_ = true; // propagate update
+
     return true; // TODO verify that multi inheritances are compatible
   }
   else

@@ -86,8 +86,8 @@ public:
 
   void getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res, bool single_same = false);
   void getDownIndividual(ClassBranch_t* branch, std::unordered_set<index_t>& res, bool single_same = false);
-  std::unordered_set<IndividualBranch_t*> getDownIndividualPtrSafe(ClassBranch_t* branch);
-  void getDownIndividualPtrSafe(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res);
+  std::unordered_set<IndividualBranch_t*> getDownIndividualPtrSafe(ClassBranch_t* branch, size_t depth = -1);
+  void getDownIndividualPtr(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res, size_t depth = -1, size_t current_depth = 0);
 
   void deleteClass(ClassBranch_t* _class);
   bool addInheritage(const std::string& class_base, const std::string& class_inherited);
