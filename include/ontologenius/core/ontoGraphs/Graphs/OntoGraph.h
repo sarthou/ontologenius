@@ -10,6 +10,7 @@
 #include <regex>
 
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
 
 #include "ontologenius/core/Algorithms/LevenshteinDistance.h"
@@ -26,7 +27,7 @@ class OntoGraph : public Graph<B>
 {
   static_assert(std::is_base_of<Branch_t<B>,B>::value, "B must be derived from Branch_t<B>");
 public:
-  OntoGraph() {}
+  explicit OntoGraph(IndividualGraph* individual_graph) : individual_graph_(individual_graph) {}
   ~OntoGraph();
 
   virtual void close() override;
@@ -76,6 +77,7 @@ public:
   bool addInheritage(B* branch, B* inherited);
   std::vector<std::pair<std::string, std::string>> removeInheritage(const std::string& branch_base, const std::string& branch_inherited);
   std::vector<std::pair<std::string, std::string>> removeInheritage(B* branch, B* inherited);
+  bool removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch, std::vector<std::pair<std::string, std::string>>& explanations);
 
   template<typename T> std::unordered_set<T> select(const std::unordered_set<T>& on, const T& selector)
   {
@@ -117,7 +119,7 @@ public:
     return res;
   }
 
-  /*template<typename T>
+  template<typename T>
   std::vector<std::pair<std::string, std::string>> removeInductions(B* indiv_from, RelationsWithInductions<Single_t<T>>& relations, size_t relation_index, const std::string& property)
   {
     std::vector<std::pair<std::string, std::string>> explanations;
@@ -125,12 +127,34 @@ public:
     auto relation = relations[relation_index];
     auto indiv_on = relation.elem;
 
+    for(size_t i = 0; i < relations.has_induced_object_relations[relation_index]->triplets.size(); )
+    {
+      auto& triplet = relations.has_induced_object_relations[relation_index]->triplets[i];               
+      auto tmp = individual_graph_->removeRelation(triplet.subject,
+                                                   triplet.predicate,
+                                                   triplet.object,
+                                                   true);
+      if(tmp.second)
+      {
+        explanations.emplace_back("[DEL]" + triplet.subject->value() + "|" +
+                                          triplet.predicate->value() + "|" +
+                                          triplet.object->value(),
+                                  "[DEL]" + indiv_from->value() + "|" + property + "|" + indiv_on->value());
+        explanations.insert(explanations.end(), tmp.first.begin(), tmp.first.end());
+      }
+      else
+        i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
+    }
+
     for(size_t i = 0; i < relations.has_induced_inheritance_relations[relation_index]->triplets.size(); )
     {
       auto& triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
 
+      // DO it on object relations
+
       std::vector<std::pair<std::string, std::string>> tmp;
-      if(removeInheritage(triplet.subject, triplet.object, tmp, true))
+      std::lock_guard<std::shared_timed_mutex> lock(individual_graph_->mutex_);
+      if(individual_graph_->removeInheritage(triplet.subject, triplet.object, tmp, true))
       {
         explanations.emplace_back("[DEL]" + triplet.subject->value() + "|isA|" +
                                           triplet.object->value(),
@@ -142,15 +166,15 @@ public:
     }
 
     return explanations;
-  }*/
+  }
 
 protected:
   std::vector<B*> all_branchs_;
+  IndividualGraph* individual_graph_;
   
   void amIA(B** me, std::map<std::string, B*>& vect, const std::string& value, bool erase = true);
 
   void mitigate(B* branch);
-  void eraseFromVector(std::vector<B*>& vect, B* branch);
 
 private:
   std::string getName(B* branch, bool use_default);
@@ -280,8 +304,6 @@ std::string OntoGraph<B>::getName(index_t value, bool use_default)
 template <typename B>
 std::string OntoGraph<B>::getName(B* branch, bool use_default)
 {
-  std::string res = "";
-
   if(branch != nullptr)
   {
     if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
@@ -300,23 +322,19 @@ std::string OntoGraph<B>::getName(B* branch, bool use_default)
           size_t myIndex = dis(gen);
           std::string word = branch->dictionary_.spoken_[this->language_][myIndex];
           if(word.find("_") == std::string::npos)
-          {
-            res = word;
-            break;
-          }
+            return word;
           tested.insert(myIndex);
         }
-        if(res == "")
-          res = branch->dictionary_.spoken_[this->language_][0];
+        return branch->dictionary_.spoken_[this->language_][0];
       }
       else if(use_default)
-        res = branch->value();
+        return branch->value();
     }
     else if(use_default)
-      res = branch->value();
+      return branch->value();
   }
 
-  return res;
+  return "";
 }
 
 template <typename B>
@@ -642,17 +660,11 @@ std::vector<std::pair<std::string, std::string>> OntoGraph<B>::removeInheritage(
 template <typename B>
 std::vector<std::pair<std::string, std::string>> OntoGraph<B>::removeInheritage(B* branch, B* inherited)
 {
-  std::vector<std::pair<std::string, std::string>> explanations;
-
   for(size_t i = 0; i < branch->mothers_.size(); i++)
   {
     if(branch->mothers_[i].elem == inherited)
     {
-      //for(auto trace_vect : branch->mothers_[i].induced_traces)
-      //  trace_vect->eraseGeneric(branch, nullptr, inherited);
-
-      //auto expl = removeInductions(branch, branch->mothers_, i, "isA");
-      //explanations.insert(explanations.end(), expl.begin(), expl.end());
+      auto explanations = removeInductions(branch, branch->mothers_, i, "isA");
 
       branch->mothers_.erase(i);
 
@@ -663,7 +675,7 @@ std::vector<std::pair<std::string, std::string>> OntoGraph<B>::removeInheritage(
     }
   }
 
-  return explanations;
+  return {};
 }
 
 template <typename D>
@@ -858,19 +870,6 @@ void OntoGraph<B>::mitigate(B* branch)
     {
       this->removeFromElemVect(branch->mothers_, mother.elem);
       this->removeFromElemVect(mother.elem->childs_, branch);
-    }
-  }
-}
-
-template <typename B>
-void OntoGraph<B>::eraseFromVector(std::vector<B*>& vect, B* branch)
-{
-  for(size_t i = 0; i < vect.size(); i++)
-  {
-    if(vect[i] == branch)
-    {
-      vect.erase(vect.begin() + i);
-      break;
     }
   }
 }

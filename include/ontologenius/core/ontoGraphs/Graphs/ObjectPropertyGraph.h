@@ -45,8 +45,8 @@ class ObjectPropertyGraph : public OntoGraph<ObjectPropertyBranch_t>
   friend ClassGraph;
   friend AnonymousClassGraph;
 public:
-  explicit ObjectPropertyGraph(ClassGraph* class_graph);
-  ObjectPropertyGraph(const ObjectPropertyGraph& other, ClassGraph* class_graph);
+  explicit ObjectPropertyGraph(IndividualGraph* individual_graph, ClassGraph* class_graph);
+  ObjectPropertyGraph(const ObjectPropertyGraph& other, IndividualGraph* individual_graph, ClassGraph* class_graph);
   ~ObjectPropertyGraph() {}
 
   void deepCopy(const ObjectPropertyGraph& other);

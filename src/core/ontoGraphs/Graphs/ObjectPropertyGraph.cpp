@@ -6,12 +6,12 @@
 
 namespace ontologenius {
 
-ObjectPropertyGraph::ObjectPropertyGraph(ClassGraph* class_graph)
+ObjectPropertyGraph::ObjectPropertyGraph(IndividualGraph* individual_graph, ClassGraph* class_graph) : OntoGraph(individual_graph)
 {
   class_graph_ = class_graph;
 }
 
-ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, ClassGraph* class_graph)
+ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, IndividualGraph* individual_graph, ClassGraph* class_graph) : OntoGraph(individual_graph)
 {
   class_graph_ = class_graph;
 

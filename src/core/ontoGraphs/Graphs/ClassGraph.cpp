@@ -9,16 +9,14 @@
 
 namespace ontologenius {
 
-ClassGraph::ClassGraph(IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
+ClassGraph::ClassGraph(IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph) : OntoGraph(individual_graph)
 {
-  individual_graph_ = individual_graph;
   object_property_graph_ = object_property_graph;
   data_property_graph_ = data_property_graph;
 }
 
-ClassGraph::ClassGraph(const ClassGraph& other, IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph)
+ClassGraph::ClassGraph(const ClassGraph& other, IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph) : OntoGraph(individual_graph)
 {
-  individual_graph_ = individual_graph;
   object_property_graph_ = object_property_graph;
   data_property_graph_ = data_property_graph;
 
@@ -1141,7 +1139,6 @@ void ClassGraph::deleteClass(ClassBranch_t* _class)
 {
   if(_class != nullptr)
   {
-    //std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
     // erase indiv from parents

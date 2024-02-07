@@ -101,7 +101,6 @@ public:
 private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
-  IndividualGraph* individual_graph_;
 
   void addObjectRelation(ClassBranch_t* me, Pair_t<std::string, std::string>& relation);
   void addDataRelation(ClassBranch_t* me, Pair_t<std::string, std::string>& relation);
