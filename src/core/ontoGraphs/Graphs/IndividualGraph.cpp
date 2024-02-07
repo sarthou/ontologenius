@@ -1709,9 +1709,15 @@ void IndividualGraph::deleteIndividual(IndividualBranch_t* indiv)
   if(indiv != nullptr)
   {
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-    std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+
+    // erase indiv from same_as
+    for(auto& same : indiv->same_as_)
+      if(same.elem != indiv)
+        removeFromElemVect(same.elem->same_as_, indiv);
+    indiv->same_as_.clear();
 
     // erase indiv from parents
+    std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
     std::unordered_set<ClassBranch_t*> up_set;
     getUpPtr(indiv, up_set, 1);
 
@@ -1726,9 +1732,7 @@ void IndividualGraph::deleteIndividual(IndividualBranch_t* indiv)
       }
     }
 
-    // TODO: We should think to delete same_as relations
-
-    //erase properties applied to indiv
+    // erase relations applied toward indiv
     size_t indiv_index = 0;
     for(size_t indiv_i = 0; indiv_i < individuals_.size(); indiv_i++)
     {
