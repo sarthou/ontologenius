@@ -499,32 +499,35 @@ TEST(global_tests, individual_getRelationWith)
   bool res_bool = true;
 
   res = onto_ptr->individuals.getRelationWith(test_word);
-  res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), "integer#2") != res.end()) &&
-                          (find(res.begin(), res.end(), "man") != res.end()) &&
-                          (find(res.begin(), res.end(), "woman") != res.end()));
+  res_bool = ((res.size() == 3) &&
+            (find(res.begin(), res.end(), "integer#2") != res.end()) &&
+            (find(res.begin(), res.end(), "man") != res.end()) &&
+            (find(res.begin(), res.end(), "woman") != res.end()));
+  EXPECT_TRUE(res_bool);
 
   test_word = "kevin";
   res = onto_ptr->individuals.getRelationWith(test_word);
-  res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), "integer#0") != res.end()) &&
-                          (find(res.begin(), res.end(), "bob") != res.end()) &&
-                          (find(res.begin(), res.end(), "alice") != res.end()));
+  res_bool = ((res.size() == 3) &&
+              (find(res.begin(), res.end(), "integer#0") != res.end()) &&
+              (find(res.begin(), res.end(), "bob") != res.end()) &&
+              (find(res.begin(), res.end(), "alice") != res.end()));
+  EXPECT_TRUE(res_bool);
 
   test_word = "bob";
   res = onto_ptr->individuals.getRelationWith(test_word);
-  res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), "integer#0") != res.end()) &&
-                          (find(res.begin(), res.end(), "man") != res.end()) &&
-                          (find(res.begin(), res.end(), "woman") != res.end()));
+  res_bool = ((res.size() == 3) &&
+              (find(res.begin(), res.end(), "integer#0") != res.end()) &&
+              (find(res.begin(), res.end(), "man") != res.end()) &&
+              (find(res.begin(), res.end(), "woman") != res.end()));
+  EXPECT_TRUE(res_bool);
 
   test_word = "cube1";
   res = onto_ptr->individuals.getRelationWith(test_word);
-  res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), "integer#236") != res.end()) &&
-                          (find(res.begin(), res.end(), "big_box") != res.end()) &&
-                          (find(res.begin(), res.end(), "blueCube") != res.end()));
-
+  res_bool = ((res.size() == 4) &&
+              (find(res.begin(), res.end(), "integer#236") != res.end()) &&
+              (find(res.begin(), res.end(), "big_box") != res.end()) &&
+              (find(res.begin(), res.end(), "blueCube") != res.end()) &&
+              (find(res.begin(), res.end(), "redCube") != res.end()));
   EXPECT_TRUE(res_bool);
 }
 
@@ -720,6 +723,14 @@ TEST(global_tests, individual_getWith)
   test_word2 = "integer#2";
   res = onto_ptr->individuals.getWith(test_word, test_word2);
   res_bool = (res.size() == 0);
+  EXPECT_TRUE(res_bool);
+
+  test_word = "cube1";
+  test_word2 = "redCube";
+  res = onto_ptr->individuals.getWith(test_word, test_word2); // use same as (cube1 = greenCube)
+  res_bool = ((res.size() == 2) &&
+              (find(res.begin(), res.end(), "isPositioned") != res.end()) &&
+              (find(res.begin(), res.end(), "isOn") != res.end()));
   EXPECT_TRUE(res_bool);
 }
 
