@@ -6,14 +6,10 @@
 #include <map>
 #include <unordered_set>
 #include <stdint.h>
-#include <random>
-#include <regex>
 
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
-
-#include "ontologenius/core/Algorithms/LevenshteinDistance.h"
 
 /*
 This file use CRTP (curiously recurring template pattern)
@@ -38,18 +34,6 @@ public:
   std::unordered_set<index_t> getDownId(index_t value, int depth = -1);
   std::unordered_set<index_t> getUpId(const std::string& value, int depth = -1);
   std::unordered_set<index_t> getUpId(index_t value, int depth = -1);
-  std::string getName(const std::string& value, bool use_default = true);
-  std::string getName(index_t value, bool use_default = true);
-  std::vector<std::string> getNames(const std::string& value, bool use_default = true);
-  std::vector<std::string> getNames(index_t value, bool use_default = true);
-  std::vector<std::string> getEveryNames(const std::string& value, bool use_default = true);
-  std::vector<std::string> getEveryNames(index_t value, bool use_default = true);
-  template <typename T> std::unordered_set<T> find(const std::string& value, bool use_default = true);
-  template <typename T> std::unordered_set<T> findSub(const std::string& value, bool use_default = true);
-  template <typename T> std::unordered_set<T> findRegex(const std::string& regex, bool use_default = true);
-  std::unordered_set<std::string> findFuzzy(const std::string& value, bool use_default = true, double threshold = 0.5);
-  bool touch(const std::string& value);
-  bool touch(index_t value);
 
   bool existInInheritance(B* branch, const std::string& selector);
   bool existInInheritance(B* branch, index_t selector);
@@ -146,11 +130,6 @@ protected:
   void amIA(B** me, std::map<std::string, B*>& vect, const std::string& value, bool erase = true);
 
   void mitigate(B* branch);
-
-private:
-  std::string getName(B* branch, bool use_default);
-  std::vector<std::string> getNames(B* branch, bool use_default);
-  std::vector<std::string> getEveryNames(B* branch, bool use_default = true);
 };
 
 template <typename B>
@@ -235,143 +214,6 @@ std::unordered_set<index_t> OntoGraph<B>::getUpId(index_t value, int depth)
     getUp(branch, res, depth);
 
   return res;
-}
-
-template <typename B>
-std::string OntoGraph<B>::getName(const std::string& value, bool use_default)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  B* branch = this->container_.find(value);
-
-  return getName(branch, use_default);
-}
-
-template <typename B>
-std::string OntoGraph<B>::getName(index_t value, bool use_default)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  B* branch = this->container_.find(ValuedNode::table_.get(value));
-
-  return getName(branch, use_default);
-}
-
-template <typename B>
-std::string OntoGraph<B>::getName(B* branch, bool use_default)
-{
-  if(branch != nullptr)
-  {
-    if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
-    {
-      if(branch->dictionary_.spoken_[this->language_].size())
-      {
-        std::unordered_set<size_t> tested;
-        std::random_device rd;
-        std::mt19937 gen(rd());
-
-        size_t dic_size = branch->dictionary_.spoken_[this->language_].size();
-        std::uniform_int_distribution<> dis(0, dic_size - 1);
-
-        while(tested.size() < dic_size)
-        {
-          size_t myIndex = dis(gen);
-          std::string word = branch->dictionary_.spoken_[this->language_][myIndex];
-          if(word.find("_") == std::string::npos)
-            return word;
-          tested.insert(myIndex);
-        }
-        return branch->dictionary_.spoken_[this->language_][0];
-      }
-      else if(use_default)
-        return branch->value();
-    }
-    else if(use_default)
-      return branch->value();
-  }
-
-  return "";
-}
-
-template <typename B>
-std::vector<std::string> OntoGraph<B>::getNames(const std::string& value, bool use_default)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  B* branch = this->container_.find(value);
-  return getNames(branch, use_default);
-}
-
-template <typename B>
-std::vector<std::string> OntoGraph<B>::getNames(index_t value, bool use_default)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  B* branch = this->container_.find(ValuedNode::table_.get(value));
-  return getNames(branch, use_default);
-}
-
-template <typename B>
-std::vector<std::string> OntoGraph<B>::getNames(B* branch, bool use_default)
-{
-  std::vector<std::string> res;
-
-  if(branch != nullptr)
-  {
-    if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
-      res = branch->dictionary_.spoken_[this->language_];
-    else if(use_default)
-      res.push_back(branch->value());
-  }
-
-  return res;
-}
-
-template <typename B>
-std::vector<std::string> OntoGraph<B>::getEveryNames(const std::string& value, bool use_default)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  B* branch = this->container_.find(value);
-  return getEveryNames(branch, use_default);
-}
-
-template <typename B>
-std::vector<std::string> OntoGraph<B>::getEveryNames(index_t value, bool use_default)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  B* branch = this->container_.find(ValuedNode::table_.get(value));
-  return getEveryNames(branch, use_default);
-}
-
-template <typename B>
-std::vector<std::string> OntoGraph<B>::getEveryNames(B* branch, bool use_default)
-{
-  std::vector<std::string> res;
-  if(branch != nullptr)
-  {
-    if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
-      res = branch->dictionary_.spoken_[this->language_];
-    else if(use_default)
-      res.push_back(branch->value());
-
-    if(branch->dictionary_.muted_.find(this->language_) != branch->dictionary_.muted_.end())
-    {
-      std::vector<std::string> muted = branch->dictionary_.muted_[this->language_];
-      res.insert(res.end(), muted.begin(), muted.end());
-    }
-  }
-
-  return res;
-}
-
-template <typename B>
-bool OntoGraph<B>::touch(const std::string& value)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  return (this->container_.find(value) != nullptr);
-}
-
-template <typename B>
-bool OntoGraph<B>::touch(index_t value)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  return (this->container_.find(ValuedNode::table_.get(value)) != nullptr);
 }
 
 template <typename B>
@@ -633,172 +475,6 @@ std::vector<std::pair<std::string, std::string>> OntoGraph<B>::removeInheritage(
   }
 
   return {};
-}
-
-template <typename D>
-bool fullComparator(D* branch, const std::string& value, const std::string& lang, bool use_default)
-{
-  if(use_default)
-    if(branch->value() == value)
-      return true;
-
-  if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
-    if(std::any_of(branch->dictionary_.spoken_[lang].begin(), branch->dictionary_.spoken_[lang].end(), [value](auto& word){ return word == value; }))
-      return true;
-
-  if(branch->dictionary_.muted_.find(lang) != branch->dictionary_.muted_.end())
-    if(std::any_of(branch->dictionary_.muted_[lang].begin(), branch->dictionary_.muted_[lang].end(), [value](auto& word){ return word == value; }))
-      return true;
-
-  return false;
-}
-
-template <typename D>
-bool comparator(D* branch, const std::string& value, const std::string& lang, bool use_default)
-{
-  std::smatch match;
-
-  if(use_default)
-  {
-    std::regex regex("\\b(" + branch->value() + ")([^ ]*)");
-    if(std::regex_search(value, match, regex))
-      return true;
-  }
-
-  if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
-    for(auto& word : branch->dictionary_.spoken_[lang])
-    {
-      std::regex regex("\\b(" + word + ")([^ ]*)");
-      if(std::regex_search(value, match, regex))
-        return true;
-    }
-
-  if(branch->dictionary_.muted_.find(lang) != branch->dictionary_.muted_.end())
-    for(auto& word : branch->dictionary_.muted_[lang])
-    {
-      std::regex regex("\\b(" + word + ")([^ ]*)");
-      if(std::regex_search(value, match, regex))
-        return true;
-    }
-  return false;
-}
-
-template <typename D>
-bool comparatorRegex(D* branch, const std::string& regex, const std::string& lang, bool use_default)
-{
-  std::regex base_regex(regex);
-  std::smatch match;
-
-  if(use_default)
-  {
-    std::string tmp = branch->value();
-    if(std::regex_match(tmp, match, base_regex))
-      return true;
-  }
-
-  if(branch->dictionary_.spoken_.find(lang) != branch->dictionary_.spoken_.end())
-    for(auto& word : branch->dictionary_.spoken_[lang])
-      if(std::regex_match(word, match, base_regex))
-        return true;
-
-  if(branch->dictionary_.muted_.find(lang) != branch->dictionary_.muted_.end())
-    for(auto& word : branch->dictionary_.muted_[lang])
-      if(std::regex_match(word, match, base_regex))
-        return true;
-  return false;
-}
-
-template <typename B>
-template <typename T>
-std::unordered_set<T> OntoGraph<B>::find(const std::string& value, bool use_default)
-{
-  std::unordered_set<T> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  std::vector<B*> branchs = this->container_.find(&fullComparator<B>, value, this->language_, use_default);
-  for(auto& branch : branchs)
-    this->insert(res, branch);
-
-  return res;
-}
-
-template <typename B>
-template <typename T>
-std::unordered_set<T> OntoGraph<B>::findSub(const std::string& value, bool use_default)
-{
-  std::unordered_set<T> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  std::vector<B*> branchs = this->container_.find(&comparator<B>, value, this->language_, use_default);
-  for(auto& branch : branchs)
-    this->insert(res, branch);
-
-  return res;
-}
-
-template <typename B>
-template <typename T>
-std::unordered_set<T> OntoGraph<B>::findRegex(const std::string& regex, bool use_default)
-{
-  std::unordered_set<T> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  std::vector<B*> branchs = this->container_.find(&comparatorRegex<B>, regex, this->language_, use_default);
-  for(auto& branch : branchs)
-    this->insert(res, branch);
-
-  return res;
-}
-
-template <typename B>
-std::unordered_set<std::string> OntoGraph<B>::findFuzzy(const std::string& value, bool use_default, double threshold)
-{
-  double lower_cost = 100000;
-  double tmp_cost;
-  std::unordered_set<std::string> res;
-
-  LevenshteinDistance dist;
-
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  for(auto branch : this->all_branchs_)
-  {
-    if(use_default)
-      if((tmp_cost = dist.get(branch-> value(), value)) <= lower_cost)
-      {
-        if(tmp_cost != lower_cost)
-        {
-          lower_cost = tmp_cost;
-          res.clear();
-        }
-        res.insert(branch->value());
-      }
-
-    if(branch->dictionary_.spoken_.find(this->language_) != branch->dictionary_.spoken_.end())
-      for(auto& word : branch->dictionary_.spoken_[this->language_])
-        if((tmp_cost = dist.get(word, value)) <= lower_cost)
-        {
-          if(tmp_cost != lower_cost)
-          {
-            lower_cost = tmp_cost;
-            res.clear();
-          }
-          res.insert(word);
-        }
-
-    if(branch->dictionary_.muted_.find(this->language_) != branch->dictionary_.muted_.end())
-      for(auto& word : branch->dictionary_.muted_[this->language_])
-        if((tmp_cost = dist.get(word, value)) <= lower_cost)
-        {
-          if(tmp_cost != lower_cost)
-          {
-            lower_cost = tmp_cost;
-            res.clear();
-          }
-          res.insert(word);
-        }
-  }
-
-  if(lower_cost > threshold)
-    res.clear();
-
-  return res;
 }
 
 template <typename B>

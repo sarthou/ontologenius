@@ -83,18 +83,7 @@ public:
   std::unordered_set<index_t> getUp(index_t individual, int depth = -1);
   std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
   std::unordered_set<index_t> select(const std::unordered_set<index_t>& on, index_t class_selector);
-  std::string getName(const std::string& value, bool use_default = true);
-  std::string getName(index_t value, bool use_default = true);
-  std::vector<std::string> getNames(const std::string& value, bool use_default = true);
-  std::vector<std::string> getNames(index_t value, bool use_default = true);
-  std::vector<std::string> getEveryNames(const std::string& value, bool use_default = true);
-  std::vector<std::string> getEveryNames(index_t value, bool use_default = true);
-  template<typename T> std::unordered_set<T> find(const std::string& value, bool use_default = true);
-  template<typename T> std::unordered_set<T> findSub(const std::string& value, bool use_default = true);
-  template<typename T> std::unordered_set<T> findRegex(const std::string& regex, bool use_default = true);
-  std::unordered_set<std::string> findFuzzy(const std::string& value, bool use_default = true, double threshold = 0.5);
-  bool touch(const std::string& value);
-  bool touch(index_t value);
+  
   std::unordered_set<std::string> getType(const std::string& class_selector, bool single_same = false);
   std::unordered_set<index_t> getType(index_t class_selector, bool single_same = false);
   bool isA(const std::string& indiv, const std::string& class_selector);
@@ -156,9 +145,6 @@ private:
   template<typename T> void getWith(IndividualBranch_t* first_individual, const std::unordered_set<index_t>& second_individual_index, std::unordered_set<T>& res, int depth);
   template<typename T> void getDomainOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth);
   template<typename T> void getRangeOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth);
-  std::string getName(IndividualBranch_t* branch, bool use_default);
-  std::vector<std::string> getNames(IndividualBranch_t* branch, bool use_default);
-  std::vector<std::string> getEveryNames(IndividualBranch_t* branch, bool use_default);
   template<typename T> bool isATemplate(IndividualBranch_t* branch, const T& class_selector);
 
   void addSames(IndividualBranch_t* me, const std::vector<Single_t<std::string>>& sames, bool is_new = true);
@@ -187,94 +173,6 @@ private:
   void insertBranchInVectors(IndividualBranch_t* branch);
   void removeBranchInVectors(size_t vector_index);
 };
-
-template<typename T>
-std::unordered_set<T> IndividualGraph::find(const std::string& value, bool use_default)
-{
-  std::unordered_set<T> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  for(auto& indiv : all_branchs_)
-  {
-    if(use_default)
-      if(indiv-> value() == value)
-        insert(res, indiv);
-
-    if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
-      for(auto& word : indiv->dictionary_.spoken_[language_])
-        if(word == value)
-          insert(res, indiv);
-
-    if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
-      for(auto& word : indiv->dictionary_.muted_[language_])
-        if(word == value)
-          insert(res, indiv);
-  }
-  return res;
-}
-
-template<typename T>
-std::unordered_set<T> IndividualGraph::findSub(const std::string& value, bool use_default)
-{
-  std::unordered_set<T> res;
-  std::smatch match;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  for(auto& indiv : all_branchs_)
-  {
-    if(use_default)
-    {
-      std::regex regex("\\b(" + indiv-> value() + ")([^ ]*)");
-      if(std::regex_search(value, match, regex))
-        insert(res, indiv);
-    }
-
-    if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
-      for(auto& word : indiv->dictionary_.spoken_[language_])
-      {
-        std::regex regex("\\b(" + word + ")([^ ]*)");
-        if(std::regex_search(value, match, regex))
-          insert(res, indiv);
-      }
-
-    if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
-      for(auto& word : indiv->dictionary_.muted_[language_])
-      {
-        std::regex regex("\\b(" + word + ")([^ ]*)");
-        if(std::regex_search(value, match, regex))
-          insert(res, indiv);
-      }
-  }
-  return res;
-}
-
-template<typename T>
-std::unordered_set<T> IndividualGraph::findRegex(const std::string& regex, bool use_default)
-{
-  std::unordered_set<T> res;
-  std::regex base_regex(regex);
-  std::smatch match;
-
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  for(auto& indiv : all_branchs_)
-  {
-    if(use_default)
-    {
-      std::string tmp = indiv->value();
-      if(std::regex_match(tmp, match, base_regex))
-        insert(res, indiv);
-    }
-
-    if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
-      for(auto& word : indiv->dictionary_.spoken_[language_])
-        if(std::regex_match(word, match, base_regex))
-          insert(res, indiv);
-
-    if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
-      for(auto& word : indiv->dictionary_.muted_[language_])
-        if(std::regex_match(word, match, base_regex))
-          insert(res, indiv);
-  }
-  return res;
-}
 
 template<typename T, typename C>
 std::vector<std::pair<std::string, std::string>> IndividualGraph::removeInductions(IndividualBranch_t* indiv_from, RelationsWithInductions<Pair_t<T, C>>& relations, size_t relation_index)
