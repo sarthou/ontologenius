@@ -38,8 +38,6 @@ public:
   void setLanguage(const std::string& language) {language_ = language; }
   std::string getLanguage() {return language_; }
 
-  virtual void close() = 0;
-
   virtual std::vector<B*> get() = 0;
   virtual B* findBranch(const std::string& name);
   virtual B* findBranchUnsafe(const std::string& name);

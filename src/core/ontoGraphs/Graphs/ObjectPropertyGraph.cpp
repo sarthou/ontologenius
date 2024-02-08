@@ -26,13 +26,6 @@ ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, Indiv
   this->container_.load(all_branchs_);
 }
 
-void ObjectPropertyGraph::close()
-{
-  OntoGraph<ObjectPropertyBranch_t>::close();
-  //createInvertChains(); // The inverse chain is no more required
-                          // We keep this just in case
-}
-
 ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
@@ -301,29 +294,6 @@ void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch_t* branch, std::unord
   if(branch != nullptr)
     for(auto& range : branch->ranges_)
       class_graph_->getDownPtr(range.elem, res, depth);
-}
-
-void ObjectPropertyGraph::createInvertChains()
-{
-  for(auto branch : all_branchs_)
-  {
-    for(auto& chain : branch->chains_)
-    {
-      for(auto invert : branch->inverses_)
-      {
-        auto invert_chains = getInvertChains({invert.elem}, chain);
-        for(auto& invert_chain : invert_chains)
-        {
-          std::vector<ObjectPropertyBranch_t*> reordered_chain;
-          for(auto it = invert_chain.rbegin() + 1; it != invert_chain.rend(); ++it)
-            reordered_chain.push_back(*it);
-          reordered_chain.push_back(invert_chain.back());
-
-          reordered_chain.front()->chains_.push_back({reordered_chain.begin() + 1, reordered_chain.end()});
-        }
-      }
-    }
-  }
 }
 
 bool ObjectPropertyGraph::addInverseOf(const std::string& from, const std::string& on)

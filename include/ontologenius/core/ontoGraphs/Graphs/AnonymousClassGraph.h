@@ -154,7 +154,6 @@ public:
                         DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
     ~AnonymousClassGraph() {};
 
-    void close() {};
     std::vector<AnonymousClassBranches_t*> get() override { return anonymous_classes_;}
 
     AnonymousClassElement_t* createElement(ExpressionMember_t* exp_leaf);

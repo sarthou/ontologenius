@@ -47,9 +47,7 @@ public:
 
   void deepCopy(const IndividualGraph& other);
 
-  void close() final;
   std::vector<IndividualBranch_t*> get() override {return all_branchs_; }
-
   std::vector<IndividualBranch_t*> getSafe()
   {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);

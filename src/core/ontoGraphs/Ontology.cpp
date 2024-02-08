@@ -58,11 +58,6 @@ bool Ontology::close()
   if(is_init_ == true)
     return true;
 
-  class_graph_.close();
-  object_property_graph_.close();
-  data_property_graph_.close();
-  anonymous_graph_.close();
-
   ClassChecker class_checker(&class_graph_);
   ObjectPropertyChecker object_property_checker(&object_property_graph_);
   DataPropertyChecker data_property_checker(&data_property_graph_);
@@ -76,8 +71,6 @@ bool Ontology::close()
   if(err == 0)
   {
     loader_.loadIndividuals();
-
-    individual_graph_.close();
 
     individual_checker = IndividualChecker(&individual_graph_);
     err += individual_checker.check();

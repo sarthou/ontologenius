@@ -30,8 +30,6 @@ public:
   explicit OntoGraph(IndividualGraph* individual_graph) : individual_graph_(individual_graph) {}
   ~OntoGraph();
 
-  virtual void close() override;
-
   std::unordered_set<std::string> getDown(const std::string& value, int depth = -1);
   std::unordered_set<index_t> getDown(index_t value, int depth = -1) { return getDownId(value, depth); }
   std::unordered_set<std::string> getUp(const std::string& value, int depth = -1);
@@ -188,14 +186,6 @@ OntoGraph<B>::~OntoGraph()
     delete branch;
 
   this->all_branchs_.clear();
-}
-
-template <typename B>
-void OntoGraph<B>::close()
-{
-  std::lock_guard<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-
-  this->container_.load(this->all_branchs_);
 }
 
 template <typename B>
