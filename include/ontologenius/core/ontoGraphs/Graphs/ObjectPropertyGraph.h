@@ -53,8 +53,6 @@ public:
 
   virtual void close() override;
 
-  ObjectPropertyBranch_t* newDefaultBranch(const std::string& name);
-  ObjectPropertyBranch_t* findOrCreateBranch(const std::string& name);
   ObjectPropertyBranch_t* add(const std::string& value, ObjectPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 

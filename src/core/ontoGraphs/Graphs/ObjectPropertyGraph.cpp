@@ -33,26 +33,6 @@ void ObjectPropertyGraph::close()
                           // We keep this just in case
 }
 
-ObjectPropertyBranch_t* ObjectPropertyGraph::newDefaultBranch(const std::string& name)
-{
-  auto branch = new ObjectPropertyBranch_t(name);
-  all_branchs_.push_back(branch);
-  container_.insert(branch);
-  return branch;
-}
-
-ObjectPropertyBranch_t* ObjectPropertyGraph::findOrCreateBranch(const std::string& name)
-{
-  auto branch = this->container_.find(name);
-  if(branch == nullptr)
-  {
-    branch = new ObjectPropertyBranch_t(name);
-    all_branchs_.push_back(branch);
-    container_.insert(branch);
-  }
-  return branch;
-}
-
 ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);

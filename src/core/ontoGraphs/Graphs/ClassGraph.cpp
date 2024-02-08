@@ -31,26 +31,6 @@ ClassGraph::ClassGraph(const ClassGraph& other, IndividualGraph* individual_grap
   this->container_.load(all_branchs_);
 }
 
-ClassBranch_t* ClassGraph::newDefaultBranch(const std::string& name)
-{
-  auto branch = new ClassBranch_t(name);
-  all_branchs_.push_back(branch);
-  container_.insert(branch);
-  return branch;
-}
-
-ClassBranch_t* ClassGraph::findOrCreateBranch(const std::string& name)
-{
-  auto branch = this->container_.find(name);
-  if(branch == nullptr)
-  {
-    branch = new ClassBranch_t(name);
-    all_branchs_.push_back(branch);
-    this->container_.insert(branch);
-  }
-  return branch;
-}
-
 ClassBranch_t* ClassGraph::add(const std::string& value, ObjectVectors_t& object_vector)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);

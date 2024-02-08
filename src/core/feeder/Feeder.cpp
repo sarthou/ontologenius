@@ -88,7 +88,8 @@ bool Feeder::addDelClass(action_t& action, std::string& name)
 {
   if(action == action_add)
   {
-    onto_->class_graph_.create(name);
+    std::lock_guard<std::shared_timed_mutex> lock(onto_->class_graph_.mutex_);
+    onto_->class_graph_.findOrCreateBranch(name);
     return true;
   }
   else

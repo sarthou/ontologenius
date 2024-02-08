@@ -48,26 +48,26 @@ public:
   void deepCopy(const IndividualGraph& other);
 
   void close() final;
-  std::vector<IndividualBranch_t*> get() override {return individuals_; }
+  std::vector<IndividualBranch_t*> get() override {return all_branchs_; }
 
   std::vector<IndividualBranch_t*> getSafe()
   {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
 
-    return individuals_;
+    return all_branchs_;
   }
 
   std::vector<std::string> getAll()
   {
     std::vector<std::string> res;
-    std::transform(individuals_.cbegin(), individuals_.cend(), std::back_inserter(res), [](auto branch){ return branch->value(); });
+    std::transform(all_branchs_.cbegin(), all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->value(); });
     return res;
   }
 
   std::vector<index_t> getAllIndex()
   {
     std::vector<index_t> res;
-    std::transform(individuals_.cbegin(), individuals_.cend(), std::back_inserter(res), [](auto branch){ return branch->get(); });
+    std::transform(all_branchs_.cbegin(), all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->get(); });
     return res;
   }
 
@@ -166,7 +166,6 @@ private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
 
-  std::vector<IndividualBranch_t*> individuals_;        // contains all the active individuals
   std::vector<IndividualBranch_t*> ordered_individuals_;// contains the individuals ordered wrt their index
                                                         // unused indexes have nullptr in
 
@@ -218,7 +217,7 @@ std::unordered_set<T> IndividualGraph::find(const std::string& value, bool use_d
 {
   std::unordered_set<T> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  for(auto& indiv : individuals_)
+  for(auto& indiv : all_branchs_)
   {
     if(use_default)
       if(indiv-> value() == value)
@@ -243,7 +242,7 @@ std::unordered_set<T> IndividualGraph::findSub(const std::string& value, bool us
   std::unordered_set<T> res;
   std::smatch match;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  for(auto& indiv : individuals_)
+  for(auto& indiv : all_branchs_)
   {
     if(use_default)
     {
@@ -279,7 +278,7 @@ std::unordered_set<T> IndividualGraph::findRegex(const std::string& regex, bool 
   std::smatch match;
 
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  for(auto& indiv : individuals_)
+  for(auto& indiv : all_branchs_)
   {
     if(use_default)
     {

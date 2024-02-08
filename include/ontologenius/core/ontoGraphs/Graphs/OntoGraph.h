@@ -95,27 +95,27 @@ public:
 
   std::vector<B*> get() override
   {
-    return all_branchs_;
+    return this->all_branchs_;
   }
 
   std::vector<B*> getSafe()
   {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
 
-    return all_branchs_;
+    return this->all_branchs_;
   }
 
   std::vector<std::string> getAll()
   {
     std::vector<std::string> res;
-    std::transform(all_branchs_.cbegin(), all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->value(); });
+    std::transform(this->all_branchs_.cbegin(), this->all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->value(); });
     return res;
   }
 
   std::vector<index_t> getAllIndex()
   {
     std::vector<index_t> res;
-    std::transform(all_branchs_.cbegin(), all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->get(); });
+    std::transform(this->all_branchs_.cbegin(), this->all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->get(); });
     return res;
   }
 
@@ -169,7 +169,6 @@ public:
   }
 
 protected:
-  std::vector<B*> all_branchs_;
   IndividualGraph* individual_graph_;
   
   void amIA(B** me, std::map<std::string, B*>& vect, const std::string& value, bool erase = true);
@@ -185,10 +184,10 @@ private:
 template <typename B>
 OntoGraph<B>::~OntoGraph()
 {
-  for(auto& branch : all_branchs_)
+  for(auto& branch : this->all_branchs_)
     delete branch;
 
-  all_branchs_.clear();
+  this->all_branchs_.clear();
 }
 
 template <typename B>
@@ -196,7 +195,7 @@ void OntoGraph<B>::close()
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<B>::mutex_);
 
-  this->container_.load(all_branchs_);
+  this->container_.load(this->all_branchs_);
 }
 
 template <typename B>
@@ -605,15 +604,13 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res)
 template <typename B>
 bool OntoGraph<B>::addInheritage(const std::string& branch_base, const std::string& branch_inherited)
 {
-  B* branch = this->create(branch_base);
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+  B* branch = this->findOrCreateBranch(branch_base);
   if(branch != nullptr)
   {
-    B* inherited = this->create(branch_inherited);
+    B* inherited = this->findOrCreateBranch(branch_inherited);
     if(inherited != nullptr)
-    {
-      std::lock_guard<std::shared_timed_mutex> lock(this->mutex_);
       return addInheritage(branch, inherited);
-    }
   }
 
   return false;
@@ -805,7 +802,7 @@ std::unordered_set<std::string> OntoGraph<B>::findFuzzy(const std::string& value
   LevenshteinDistance dist;
 
   std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-  for(auto branch : all_branchs_)
+  for(auto branch : this->all_branchs_)
   {
     if(use_default)
       if((tmp_cost = dist.get(branch-> value(), value)) <= lower_cost)

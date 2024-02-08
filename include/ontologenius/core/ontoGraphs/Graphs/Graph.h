@@ -43,7 +43,8 @@ public:
   virtual std::vector<B*> get() = 0;
   virtual B* findBranch(const std::string& name);
   virtual B* findBranchUnsafe(const std::string& name);
-  virtual B* create(const std::string& name);
+  B* findOrCreateBranch(const std::string& name);
+  B* newDefaultBranch(const std::string& name);
 
   index_t getIndex(const std::string& name);
   std::vector<index_t> getIndexes(const std::vector<std::string>& names);
@@ -56,6 +57,7 @@ public:
   bool removeLang(B* branch, const std::string& lang, const std::string& name);
 
   BranchContainerSet<B> container_;
+  std::vector<B*> all_branchs_;
 
   std::string language_;
 
@@ -236,21 +238,21 @@ B* Graph<B>::findBranchUnsafe(const std::string& name)
 }
 
 template <typename B>
-B* Graph<B>::create(const std::string& name)
+B* Graph<B>::findOrCreateBranch(const std::string& name)
 {
-  B* indiv = nullptr;
-  {
-    std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-    indiv = container_.find(name);
-  }
+  B* branch = container_.find(name);
+  if(branch == nullptr)
+    branch = newDefaultBranch(name);
+  return branch;
+}
 
-  if(indiv == nullptr)
-  {
-    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-    indiv = new B(name);
-    container_.insert(indiv);
-  }
-  return indiv;
+template <typename B>
+B* Graph<B>::newDefaultBranch(const std::string& name)
+{
+  auto branch = new B(name);
+  all_branchs_.push_back(branch);
+  container_.insert(branch);
+  return branch;
 }
 
 template <typename B>
@@ -268,8 +270,7 @@ template <typename B>
 std::vector<index_t> Graph<B>::getIndexes(const std::vector<std::string>& names)
 {
   std::vector<index_t> res;
-  for(auto& name : names)
-    res.push_back(getIndex(name));
+  std::transform(names.cbegin(), names.cend(), std::back_inserter(res), [this](const auto& name){ return getIndex(name); });
   return res; 
 }
 
@@ -287,8 +288,7 @@ template <typename B>
 std::vector<std::string> Graph<B>::getIdentifiers(const std::vector<index_t>& indexes)
 {
   std::vector<std::string> res;
-  for(auto& index : indexes)
-    res.push_back(getIdentifier(index));
+  std::transform(indexes.cbegin(), indexes.cend(), std::back_inserter(res), [this](const auto& index){ return getIdentifier(index); });
   return res; 
 }
 

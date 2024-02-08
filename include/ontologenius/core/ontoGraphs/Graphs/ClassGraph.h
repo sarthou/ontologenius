@@ -46,8 +46,6 @@ public:
   ClassGraph(const ClassGraph& other, IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   ~ClassGraph() {}
 
-  ClassBranch_t* newDefaultBranch(const std::string& name);
-  ClassBranch_t* findOrCreateBranch(const std::string& name);
   ClassBranch_t* add(const std::string& value, ObjectVectors_t& object_vector);
   void add(std::vector<std::string>& disjoints);
 
