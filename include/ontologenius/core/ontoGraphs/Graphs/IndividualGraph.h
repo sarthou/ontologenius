@@ -43,31 +43,9 @@ class IndividualGraph : public Graph<IndividualBranch_t>
 public:
   IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   IndividualGraph(const IndividualGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
-  ~IndividualGraph();
+  ~IndividualGraph() {}
 
   void deepCopy(const IndividualGraph& other);
-
-  std::vector<IndividualBranch_t*> get() override {return all_branchs_; }
-  std::vector<IndividualBranch_t*> getSafe()
-  {
-    std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-
-    return all_branchs_;
-  }
-
-  std::vector<std::string> getAll()
-  {
-    std::vector<std::string> res;
-    std::transform(all_branchs_.cbegin(), all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->value(); });
-    return res;
-  }
-
-  std::vector<index_t> getAllIndex()
-  {
-    std::vector<index_t> res;
-    std::transform(all_branchs_.cbegin(), all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->get(); });
-    return res;
-  }
 
   IndividualBranch_t* add(const std::string& value, IndividualVectors_t& individual_vector);
   void add(std::vector<std::string>& distinct_);

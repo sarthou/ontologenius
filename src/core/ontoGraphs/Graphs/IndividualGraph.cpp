@@ -37,14 +37,6 @@ IndividualGraph::IndividualGraph(const IndividualGraph& other, ClassGraph* class
   container_.load(all_branchs_);
 }
 
-IndividualGraph::~IndividualGraph()
-{
-  for(auto& individual : all_branchs_)
-    delete individual;
-
-  all_branchs_.clear();
-}
-
 IndividualBranch_t* IndividualGraph::add(const std::string& value, IndividualVectors_t& individual_vector)
 {
   std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);

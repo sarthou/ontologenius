@@ -33,16 +33,30 @@ class Graph
   static_assert(std::is_base_of<ValuedNode,B>::value, "B must be derived from ValuedNode");
 public:
   Graph() : language_("en") {}
-  virtual ~Graph() {}
+  ~Graph()
+  {
+    for(auto& branch : all_branchs_)
+      delete branch;
+    all_branchs_.clear();
+  }
 
   void setLanguage(const std::string& language) {language_ = language; }
   std::string getLanguage() {return language_; }
 
-  virtual std::vector<B*> get() = 0;
+  std::vector<B*> get() { return this->all_branchs_; }
+  std::vector<B*> getSafe()
+  {
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+    return this->all_branchs_;
+  }
+
   virtual B* findBranch(const std::string& name);
   virtual B* findBranchUnsafe(const std::string& name);
   B* findOrCreateBranch(const std::string& name);
   B* newDefaultBranch(const std::string& name);
+
+  std::vector<std::string> getAll();
+  std::vector<index_t> getAllIndex();
 
   index_t getIndex(const std::string& name);
   std::vector<index_t> getIndexes(const std::vector<std::string>& names);
@@ -251,6 +265,22 @@ B* Graph<B>::newDefaultBranch(const std::string& name)
   all_branchs_.push_back(branch);
   container_.insert(branch);
   return branch;
+}
+
+template <typename B>
+std::vector<std::string> Graph<B>::getAll()
+{
+  std::vector<std::string> res;
+  std::transform(all_branchs_.cbegin(), all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->value(); });
+  return res;
+}
+
+template <typename B>
+std::vector<index_t> Graph<B>::getAllIndex()
+{
+  std::vector<index_t> res;
+  std::transform(all_branchs_.cbegin(), all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->get(); });
+  return res;
 }
 
 template <typename B>

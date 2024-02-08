@@ -28,7 +28,7 @@ class OntoGraph : public Graph<B>
   static_assert(std::is_base_of<Branch_t<B>,B>::value, "B must be derived from Branch_t<B>");
 public:
   explicit OntoGraph(IndividualGraph* individual_graph) : individual_graph_(individual_graph) {}
-  ~OntoGraph();
+  ~OntoGraph() {}
 
   std::unordered_set<std::string> getDown(const std::string& value, int depth = -1);
   std::unordered_set<index_t> getDown(index_t value, int depth = -1) { return getDownId(value, depth); }
@@ -88,32 +88,6 @@ public:
       if(tmp.find(selector) != tmp.end())
         res.insert(it);
     }
-    return res;
-  }
-
-  std::vector<B*> get() override
-  {
-    return this->all_branchs_;
-  }
-
-  std::vector<B*> getSafe()
-  {
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
-
-    return this->all_branchs_;
-  }
-
-  std::vector<std::string> getAll()
-  {
-    std::vector<std::string> res;
-    std::transform(this->all_branchs_.cbegin(), this->all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->value(); });
-    return res;
-  }
-
-  std::vector<index_t> getAllIndex()
-  {
-    std::vector<index_t> res;
-    std::transform(this->all_branchs_.cbegin(), this->all_branchs_.cend(), std::back_inserter(res), [](auto branch){ return branch->get(); });
     return res;
   }
 
@@ -178,15 +152,6 @@ private:
   std::vector<std::string> getNames(B* branch, bool use_default);
   std::vector<std::string> getEveryNames(B* branch, bool use_default = true);
 };
-
-template <typename B>
-OntoGraph<B>::~OntoGraph()
-{
-  for(auto& branch : this->all_branchs_)
-    delete branch;
-
-  this->all_branchs_.clear();
-}
 
 template <typename B>
 std::unordered_set<std::string> OntoGraph<B>::getDown(const std::string& value, int depth)
