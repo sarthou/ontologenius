@@ -210,10 +210,15 @@ public:
     return false;
   }
 
-  void insert(std::unordered_set<std::string>& set, ValuedNode* node) { set.insert(node->value()); }
-  void insert(std::unordered_set<index_t>& set, ValuedNode* node) { set.insert(node->get()); }
-  void insert(std::unordered_set<std::string>& set, LiteralNode* node) { set.insert(node->value()); }
-  void insert(std::unordered_set<index_t>& set, LiteralNode* node) { set.insert(node->get()); }
+  bool insert(std::unordered_set<std::string>& set, ValuedNode* node) { return set.insert(node->value()).second; }
+  bool insert(std::unordered_set<index_t>& set, ValuedNode* node) { return set.insert(node->get()).second; }
+  bool insert(std::unordered_set<std::string>& set, LiteralNode* node) { return set.insert(node->value()).second; }
+  bool insert(std::unordered_set<index_t>& set, LiteralNode* node) { return set.insert(node->get()).second; }
+
+  bool compare(ValuedNode* node, const std::string& name) { return node->value() == name; }
+  bool compare(ValuedNode* node, index_t index) { return node->get() == index; }
+  bool compare(LiteralNode* node, const std::string& name) { return node->value() == name; }
+  bool compare(LiteralNode* node, index_t index) { return node->get() == index; }
 
   template<template<typename> class C>
   C<B*> intersection(const std::unordered_set<B*>& set, const C<B*>& c)
