@@ -69,20 +69,16 @@ public:
   std::string getIdentifier(index_t index);
   std::vector<std::string> getIdentifiers(const std::vector<index_t>& indexes);
 
-  bool touch(const std::string& value);
-  bool touch(index_t value);
+  template <typename T> bool touch(const T& value);
 
   bool addLang(const std::string& branch_str, const std::string& lang, const std::string& name);
   bool addLang(B* branch, const std::string& lang, const std::string& name);
   bool removeLang(const std::string& branch_str, const std::string& lang, const std::string& name);
   bool removeLang(B* branch, const std::string& lang, const std::string& name);
 
-  std::string getName(const std::string& value, bool use_default = true);
-  std::string getName(index_t value, bool use_default = true);
-  std::vector<std::string> getNames(const std::string& value, bool use_default = true);
-  std::vector<std::string> getNames(index_t value, bool use_default = true);
-  std::vector<std::string> getEveryNames(const std::string& value, bool use_default = true);
-  std::vector<std::string> getEveryNames(index_t value, bool use_default = true);
+  template <typename T> std::string getName(const T& value, bool use_default = true);
+  template <typename T> std::vector<std::string> getNames(const T& value, bool use_default = true);
+  template <typename T> std::vector<std::string> getEveryNames(const T& value, bool use_default = true);
 
   template <typename T> std::unordered_set<T> find(const std::string& value, bool use_default = true);
   template <typename T> std::unordered_set<T> findSub(const std::string& value, bool use_default = true);
@@ -97,11 +93,6 @@ public:
   mutable std::shared_timed_mutex mutex_;
   //use std::lock_guard<std::shared_timed_mutex> lock(mutex_); to WRITE A DATA
   //use std::shared_lock<std::shared_timed_mutex> lock(mutex_); to READ A DATA
-
-private:
-  std::string getName(B* branch, bool use_default);
-  std::vector<std::string> getNames(B* branch, bool use_default);
-  std::vector<std::string> getEveryNames(B* branch, bool use_default = true);
 
 public:
 
@@ -367,24 +358,16 @@ std::vector<std::string> Graph<B>::getIdentifiers(const std::vector<index_t>& in
 }
 
 template <typename B>
-bool Graph<B>::touch(const std::string& value)
+template <typename T>
+bool Graph<B>::touch(const T& value)
 {
-  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-  return (this->container_.find(value) != nullptr);
+  return (findBranchSafe(value) != nullptr);
 }
-
-template <typename B>
-bool Graph<B>::touch(index_t value)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-  return (this->container_.find(ValuedNode::table_.get(value)) != nullptr);
-}
-
 
 template <typename B>
 bool Graph<B>::addLang(const std::string& branch_str, const std::string& lang, const std::string& name)
 {
-  B* branch = this->findBranch(branch_str);
+  B* branch = this->findBranchSafe(branch_str);
   return addLang(branch, lang, name);
 }
 
@@ -405,7 +388,7 @@ bool Graph<B>::addLang(B* branch, const std::string& lang, const std::string& na
 template <typename B>
 bool Graph<B>::removeLang(const std::string& indiv, const std::string& lang, const std::string& name)
 {
-  B* branch = findBranch(indiv);
+  B* branch = findBranchSafe(indiv);
   return removeLang(branch, lang, name);
 }
 
@@ -429,26 +412,12 @@ bool Graph<B>::removeLang(B* branch, const std::string& lang, const std::string&
 }
 
 template <typename B>
-std::string Graph<B>::getName(const std::string& value, bool use_default)
+template <typename T>
+std::string Graph<B>::getName(const T& value, bool use_default)
 {
   std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-  B* branch = this->container_.find(value);
+  B* branch = findBranch(value);
 
-  return getName(branch, use_default);
-}
-
-template <typename B>
-std::string Graph<B>::getName(index_t value, bool use_default)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-  B* branch = this->container_.find(ValuedNode::table_.get(value));
-
-  return getName(branch, use_default);
-}
-
-template <typename B>
-std::string Graph<B>::getName(B* branch, bool use_default)
-{
   if(branch != nullptr)
   {
     if(branch->dictionary_.spoken_.find(language_) != branch->dictionary_.spoken_.end())
@@ -483,26 +452,13 @@ std::string Graph<B>::getName(B* branch, bool use_default)
 }
 
 template <typename B>
-std::vector<std::string> Graph<B>::getNames(const std::string& value, bool use_default)
+template <typename T>
+std::vector<std::string> Graph<B>::getNames(const T& value, bool use_default)
 {
   std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-  B* branch = this->container_.find(value);
-  return getNames(branch, use_default);
-}
-
-template <typename B>
-std::vector<std::string> Graph<B>::getNames(index_t value, bool use_default)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-  B* branch = this->container_.find(ValuedNode::table_.get(value));
-  return getNames(branch, use_default);
-}
-
-template <typename B>
-std::vector<std::string> Graph<B>::getNames(B* branch, bool use_default)
-{
+  B* branch = findBranch(value);
+  
   std::vector<std::string> res;
-
   if(branch != nullptr)
   {
     if(branch->dictionary_.spoken_.find(language_) != branch->dictionary_.spoken_.end())
@@ -515,24 +471,12 @@ std::vector<std::string> Graph<B>::getNames(B* branch, bool use_default)
 }
 
 template <typename B>
-std::vector<std::string> Graph<B>::getEveryNames(const std::string& value, bool use_default)
+template <typename T>
+std::vector<std::string> Graph<B>::getEveryNames(const T& value, bool use_default)
 {
   std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-  B* branch = this->container_.find(value);
-  return getEveryNames(branch, use_default);
-}
-
-template <typename B>
-std::vector<std::string> Graph<B>::getEveryNames(index_t value, bool use_default)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-  B* branch = this->container_.find(ValuedNode::table_.get(value));
-  return getEveryNames(branch, use_default);
-}
-
-template <typename B>
-std::vector<std::string> Graph<B>::getEveryNames(B* branch, bool use_default)
-{
+  B* branch = findBranch(value);
+  
   std::vector<std::string> res;
   if(branch != nullptr)
   {
