@@ -54,8 +54,10 @@ public:
     return this->all_branchs_;
   }
 
+  virtual B* findBranchSafe(const std::string& name);
   virtual B* findBranch(const std::string& name);
-  virtual B* findBranchUnsafe(const std::string& name);
+  virtual B* findBranchSafe(index_t index);
+  virtual B* findBranch(index_t index);
   B* findOrCreateBranch(const std::string& name);
   B* newDefaultBranch(const std::string& name);
 
@@ -268,16 +270,29 @@ public:
 };
 
 template <typename B>
-B* Graph<B>::findBranch(const std::string& name)
+B* Graph<B>::findBranchSafe(const std::string& name)
 {
   std::shared_lock<std::shared_timed_mutex> lock(mutex_);
   return container_.find(name);
 }
 
 template <typename B>
-B* Graph<B>::findBranchUnsafe(const std::string& name)
+B* Graph<B>::findBranch(const std::string& name)
 {
   return container_.find(name);
+}
+
+template <typename B>
+B* Graph<B>::findBranchSafe(index_t index)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+  return container_.find(ValuedNode::table_.get(index));
+}
+
+template <typename B>
+B* Graph<B>::findBranch(index_t index)
+{
+  return container_.find(ValuedNode::table_.get(index));
 }
 
 template <typename B>
