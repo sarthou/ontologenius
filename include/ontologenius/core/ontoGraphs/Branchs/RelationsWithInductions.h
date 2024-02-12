@@ -25,8 +25,8 @@ public:
 	std::vector<ObjectRelationTriplets*> has_induced_object_relations;
 	std::vector<InheritedRelationTriplets*> has_induced_inheritance_relations;
 
-	size_t size() { return relations.size(); }
-	bool empty() { return relations.empty(); }
+	inline size_t size() { return relations.size(); }
+	inline bool empty() { return relations.empty(); }
 	T& operator[](size_t index) { return relations[index]; }
 
 	size_t push_back(T& relation)
@@ -71,10 +71,10 @@ public:
 		return std::find(relations.begin(), relations.end(), other);
 	}
 
-	typename std::vector<T>::iterator begin() { return relations.begin(); }
-	typename std::vector<T>::iterator end() { return relations.end(); }
-	typename std::vector<T>::const_iterator cbegin() const { return relations.cbegin(); }
-	typename std::vector<T>::const_iterator cend() const { return relations.cend(); } 
+	inline typename std::vector<T>::iterator begin() { return relations.begin(); }
+	inline typename std::vector<T>::iterator end() { return relations.end(); }
+	inline typename std::vector<T>::const_iterator cbegin() const { return relations.cbegin(); }
+	inline typename std::vector<T>::const_iterator cend() const { return relations.cend(); } 
 };
 
 } // namespace ontologenius
