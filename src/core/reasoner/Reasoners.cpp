@@ -213,8 +213,7 @@ void Reasoners::runPreReasoners(QueryOrigin_e origin, const std::string& action,
 
   if(nb_updates!= 0)
   {
-    computeClassesUpdates();
-    computeIndividualsUpdates();
+    computeUpdates();
 
     runPostReasoners();
   }
@@ -242,8 +241,7 @@ void Reasoners::runPostReasoners()
     nb_updates = ReasonerInterface::getNbUpdates();
     ReasonerInterface::resetNbUpdates();
 
-    computeClassesUpdates();
-    computeIndividualsUpdates();
+    computeUpdates();
   }
   while(nb_updates!= 0);
 }
@@ -305,29 +303,25 @@ void Reasoners::applyConfig()
   }
 }
 
-void Reasoners::computeIndividualsUpdates()
+void Reasoners::computeUpdates()
 {
-  std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
-  for(auto& indiv : indivs)
-    if(indiv->nb_updates_ == 0)
-      indiv->updated_ = false;
-    else
-    {
-      indiv->nb_updates_ = 0;
-      indiv->updated_ = true;
-    }
+  computeGraphUpdates(&ontology_->individual_graph_);
+  computeGraphUpdates(&ontology_->class_graph_);
+  computeGraphUpdates(&ontology_->object_property_graph_);
+  computeGraphUpdates(&ontology_->data_property_graph_);
 }
 
-void Reasoners::computeClassesUpdates()
+template<typename B>
+void Reasoners::computeGraphUpdates(Graph<B>* graph)
 {
-  std::vector<ClassBranch_t*> classes = ontology_->class_graph_.get();
-  for(auto& c : classes)
-    if(c->nb_updates_ == 0)
-      c->updated_ = false;
+  std::vector<B*> branches = graph->get();
+  for(auto& branch : branches)
+    if(branch->nb_updates_ == 0)
+      branch->updated_ = false;
     else
     {
-      c->nb_updates_ = 0;
-      c->updated_ = true;
+      branch->nb_updates_ = 0;
+      branch->updated_ = true;
     }
 }
 

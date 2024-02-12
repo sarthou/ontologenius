@@ -66,6 +66,8 @@ private:
 
   void applyConfig();
 
+  void computeUpdates();
+  template<typename B> void computeGraphUpdates(Graph<B>* graph);
   void computeIndividualsUpdates();
   void computeClassesUpdates();
   void computeIndividualsUpdatesPeriodic();
