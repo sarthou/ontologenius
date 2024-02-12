@@ -59,7 +59,7 @@ bool Feeder::addFeed(feed_t& feed)
 {
   if(feed.prop_ == "")
   {
-    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+    if(onto_->class_graph_.findBranchSafe(feed.from_) != nullptr)
       return addDelClass(feed.action_, feed.from_);
     else
       return addDelIndiv(feed.action_, feed.from_);
@@ -94,7 +94,7 @@ bool Feeder::addDelClass(action_t& action, std::string& name)
   }
   else
   {
-    ClassBranch_t* tmp = onto_->class_graph_.findBranch(name);
+    ClassBranch_t* tmp = onto_->class_graph_.findBranchSafe(name);
     onto_->class_graph_.deleteClass(tmp);
     return (tmp != nullptr);
   }
@@ -109,7 +109,7 @@ bool Feeder::addDelIndiv(action_t& action, std::string& name)
   }
   else
   {
-    IndividualBranch_t* tmp = onto_->individual_graph_.findBranch(name);
+    IndividualBranch_t* tmp = onto_->individual_graph_.findBranchSafe(name);
     onto_->individual_graph_.deleteIndividual(tmp);
     return (tmp != nullptr);
   }
@@ -121,21 +121,21 @@ bool Feeder::addInheritage(feed_t& feed)
   {
     if(feed.action_ == action_add)
     {
-      if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+      if(onto_->class_graph_.findBranchSafe(feed.from_) != nullptr)
         return onto_->class_graph_.addInheritage(feed.from_, feed.on_);
-      else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+      else if(onto_->individual_graph_.findBranchSafe(feed.from_) != nullptr)
         return onto_->individual_graph_.addInheritage(feed.from_, feed.on_);
-      else if(onto_->class_graph_.findBranch(feed.on_) != nullptr)
+      else if(onto_->class_graph_.findBranchSafe(feed.on_) != nullptr)
         return onto_->individual_graph_.addInheritageInvert(feed.from_, feed.on_);
-      else if(onto_->individual_graph_.findBranch(feed.on_) != nullptr)
+      else if(onto_->individual_graph_.findBranchSafe(feed.on_) != nullptr)
         return onto_->individual_graph_.addInheritageInvertUpgrade(feed.from_, feed.on_);
-      if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
+      if(onto_->data_property_graph_.findBranchSafe(feed.from_) != nullptr)
         return onto_->data_property_graph_.addInheritage(feed.from_, feed.on_);
-      else if(onto_->data_property_graph_.findBranch(feed.on_) != nullptr)
+      else if(onto_->data_property_graph_.findBranchSafe(feed.on_) != nullptr)
         return onto_->data_property_graph_.addInheritage(feed.from_, feed.on_);
-      else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
+      else if(onto_->object_property_graph_.findBranchSafe(feed.from_) != nullptr)
         return onto_->object_property_graph_.addInheritage(feed.from_, feed.on_);
-      else if(onto_->object_property_graph_.findBranch(feed.on_) != nullptr)
+      else if(onto_->object_property_graph_.findBranchSafe(feed.on_) != nullptr)
         return onto_->object_property_graph_.addInheritage(feed.from_, feed.on_);
       else
       {
@@ -145,22 +145,22 @@ bool Feeder::addInheritage(feed_t& feed)
     }
     else if(feed.action_ == action_del)
     {
-      if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+      if(onto_->class_graph_.findBranchSafe(feed.from_) != nullptr)
       {
         auto tmp = onto_->class_graph_.removeInheritage(feed.from_, feed.on_);
         explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
       }
-      else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+      else if(onto_->individual_graph_.findBranchSafe(feed.from_) != nullptr)
       {
         auto tmp = onto_->individual_graph_.removeInheritage(feed.from_, feed.on_);
         explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
       }
-      else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
+      else if(onto_->object_property_graph_.findBranchSafe(feed.from_) != nullptr)
       {
         auto tmp = onto_->object_property_graph_.removeInheritage(feed.from_, feed.on_);
         explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
       }
-      else if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
+      else if(onto_->data_property_graph_.findBranchSafe(feed.from_) != nullptr)
       {
         auto tmp = onto_->data_property_graph_.removeInheritage(feed.from_, feed.on_);
         explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
@@ -236,13 +236,13 @@ bool Feeder::modifyLangage(feed_t& feed)
 {
   if(feed.action_ == action_add)
   {
-    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+    if(onto_->class_graph_.findBranchSafe(feed.from_) != nullptr)
       return onto_->class_graph_.addLang(feed.from_, feed.prop_, feed.on_);
-    else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+    else if(onto_->individual_graph_.findBranchSafe(feed.from_) != nullptr)
       return onto_->individual_graph_.addLang(feed.from_, feed.prop_, feed.on_);
-    else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
+    else if(onto_->object_property_graph_.findBranchSafe(feed.from_) != nullptr)
       return onto_->object_property_graph_.addLang(feed.from_, feed.prop_, feed.on_);
-    else if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
+    else if(onto_->data_property_graph_.findBranchSafe(feed.from_) != nullptr)
       return onto_->data_property_graph_.addLang(feed.from_, feed.prop_, feed.on_);
     else
     {
@@ -252,13 +252,13 @@ bool Feeder::modifyLangage(feed_t& feed)
   }
   else if(feed.action_ == action_del)
   {
-    if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+    if(onto_->class_graph_.findBranchSafe(feed.from_) != nullptr)
       return onto_->class_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
-    else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+    else if(onto_->individual_graph_.findBranchSafe(feed.from_) != nullptr)
       return onto_->individual_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
-    else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
+    else if(onto_->object_property_graph_.findBranchSafe(feed.from_) != nullptr)
       return onto_->object_property_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
-    else if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
+    else if(onto_->data_property_graph_.findBranchSafe(feed.from_) != nullptr)
       return onto_->data_property_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
     else
     {
@@ -291,23 +291,23 @@ bool Feeder::applyProperty(feed_t& feed)
 
     if(feed.action_ == action_add)
     {
-      if((indiv_branch = onto_->individual_graph_.findBranch(feed.from_)) != nullptr)
+      if((indiv_branch = onto_->individual_graph_.findBranchSafe(feed.from_)) != nullptr)
       {
         if(data_property == true)
           onto_->individual_graph_.addRelation(indiv_branch, feed.prop_, type, data);
         else
           onto_->individual_graph_.addRelation(indiv_branch, feed.prop_, feed.on_);
       }
-      else if((class_branch = onto_->class_graph_.findBranch(feed.from_)) != nullptr)
+      else if((class_branch = onto_->class_graph_.findBranchSafe(feed.from_)) != nullptr)
       {
         if(data_property == true)
           onto_->class_graph_.addRelation(class_branch, feed.prop_, type, data);
         else
           onto_->class_graph_.addRelation(class_branch, feed.prop_, feed.on_);
       }
-      else if((class_branch = onto_->class_graph_.findBranch(feed.on_)) != nullptr)
+      else if((class_branch = onto_->class_graph_.findBranchSafe(feed.on_)) != nullptr)
         onto_->class_graph_.addRelationInvert(feed.from_, feed.prop_, class_branch);
-      else if((indiv_branch = onto_->individual_graph_.findBranch(feed.on_)) != nullptr)
+      else if((indiv_branch = onto_->individual_graph_.findBranchSafe(feed.on_)) != nullptr)
         onto_->individual_graph_.addRelationInvert(feed.from_, feed.prop_, indiv_branch);
       else
       {
@@ -317,14 +317,14 @@ bool Feeder::applyProperty(feed_t& feed)
     }
     else if(feed.action_ == action_del)
     {
-      if(onto_->class_graph_.findBranch(feed.from_) != nullptr)
+      if(onto_->class_graph_.findBranchSafe(feed.from_) != nullptr)
       {
         if(data_property == true)
           onto_->class_graph_.removeRelation(feed.from_, feed.prop_, type, data);
         else
           onto_->class_graph_.removeRelation(feed.from_, feed.prop_, feed.on_);
       }
-      else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
+      else if(onto_->individual_graph_.findBranchSafe(feed.from_) != nullptr)
       {
         if(data_property == true)
         {

@@ -1648,7 +1648,7 @@ void IndividualGraph::redirectDeleteIndividual(IndividualBranch_t* indiv, ClassB
 
 bool IndividualGraph::addInheritage(const std::string& indiv, const std::string& class_inherited)
 {
-  IndividualBranch_t* branch = findBranch(indiv);
+  IndividualBranch_t* branch = findBranchSafe(indiv);
   return addInheritage(branch, class_inherited);
 }
 
@@ -1663,10 +1663,10 @@ bool IndividualGraph::addInheritageUnsafe(IndividualBranch_t* branch, const std:
 {
   if(branch != nullptr)
   {
-    ClassBranch_t* inherited = class_graph_->findBranchUnsafe(class_inherited);
+    ClassBranch_t* inherited = class_graph_->findBranch(class_inherited);
     if(inherited == nullptr)
     {
-      IndividualBranch_t* tmp = findBranchUnsafe(class_inherited);
+      IndividualBranch_t* tmp = findBranch(class_inherited);
       if(tmp != nullptr)
         inherited = upgradeToBranch(tmp);
       else
@@ -1689,7 +1689,7 @@ bool IndividualGraph::addInheritageUnsafe(IndividualBranch_t* branch, const std:
 
 bool IndividualGraph::addInheritageInvert(const std::string& indiv, const std::string& class_inherited)
 {
-  ClassBranch_t* inherited = class_graph_->findBranch(class_inherited);
+  ClassBranch_t* inherited = class_graph_->findBranchSafe(class_inherited);
   if(inherited != nullptr)
   {
     IndividualBranch_t* branch = findOrCreateBranchSafe(indiv);
@@ -1709,7 +1709,7 @@ bool IndividualGraph::addInheritageInvert(const std::string& indiv, const std::s
 
 bool IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited)
 {
-  IndividualBranch_t* tmp = findBranch(class_inherited);
+  IndividualBranch_t* tmp = findBranchSafe(class_inherited);
   if(tmp != nullptr)
   {
     ClassBranch_t* inherited = upgradeToBranch(tmp);
@@ -1798,10 +1798,10 @@ void IndividualGraph::addRelation(IndividualBranch_t* indiv_from, const std::str
   IndividualBranch_t* branch_from = indiv_from;
   if(branch_from != nullptr)
   {
-    IndividualBranch_t* branch_on = findBranch(indiv_on);
+    IndividualBranch_t* branch_on = findBranchSafe(indiv_on);
     if(branch_on == nullptr)
     {
-      ClassBranch_t* test = class_graph_->findBranch(indiv_on);
+      ClassBranch_t* test = class_graph_->findBranchSafe(indiv_on);
       if(test != nullptr)
         throw GraphException("object entity does not exists");
 
@@ -1809,10 +1809,10 @@ void IndividualGraph::addRelation(IndividualBranch_t* indiv_from, const std::str
     }
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
-    ObjectPropertyBranch_t* branch_prop = object_property_graph_->findBranch(property);
+    ObjectPropertyBranch_t* branch_prop = object_property_graph_->findBranchSafe(property);
     if(branch_prop == nullptr)
     {
-      DataPropertyBranch_t* test = data_property_graph_->findBranch(property);
+      DataPropertyBranch_t* test = data_property_graph_->findBranchSafe(property);
       if(test != nullptr)
         throw GraphException(property + " is a data property");
 
@@ -1833,10 +1833,10 @@ void IndividualGraph::addRelation(IndividualBranch_t* indiv_from, const std::str
   {
     LiteralNode* literal = data_property_graph_->createLiteral(type + "#" + data);
 
-    DataPropertyBranch_t* branch_prop = data_property_graph_->findBranch(property);
+    DataPropertyBranch_t* branch_prop = data_property_graph_->findBranchSafe(property);
     if(branch_prop == nullptr)
     {
-      ObjectPropertyBranch_t* test = object_property_graph_->findBranch(property);
+      ObjectPropertyBranch_t* test = object_property_graph_->findBranchSafe(property);
       if(test != nullptr)
         throw GraphException(property + " is an object property");
 
@@ -1861,10 +1861,10 @@ void IndividualGraph::addRelationInvert(const std::string& indiv_from, const std
   IndividualBranch_t* branch_on = indiv_on;
   if(branch_on != nullptr)
   {
-    IndividualBranch_t* branch_from = findBranch(indiv_from);
+    IndividualBranch_t* branch_from = findBranchSafe(indiv_from);
     if(branch_from == nullptr)
     {
-      ClassBranch_t* test = class_graph_->findBranch(indiv_from);
+      ClassBranch_t* test = class_graph_->findBranchSafe(indiv_from);
       if(test != nullptr)
         throw GraphException("The individual to apply the relation does not exist");
 
@@ -1872,10 +1872,10 @@ void IndividualGraph::addRelationInvert(const std::string& indiv_from, const std
     }
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
-    ObjectPropertyBranch_t* branch_prop = object_property_graph_->findBranch(property);
+    ObjectPropertyBranch_t* branch_prop = object_property_graph_->findBranchSafe(property);
     if(branch_prop == nullptr)
     {
-      DataPropertyBranch_t* test = data_property_graph_->findBranch(property);
+      DataPropertyBranch_t* test = data_property_graph_->findBranchSafe(property);
       if(test != nullptr)
         throw GraphException(property + " is a data property");
 
@@ -1891,8 +1891,8 @@ void IndividualGraph::addRelationInvert(const std::string& indiv_from, const std
 
 std::vector<std::pair<std::string, std::string>> IndividualGraph::removeInheritage(const std::string& indiv, const std::string& class_inherited)
 {
-  IndividualBranch_t* branch_base = findBranch(indiv);
-  ClassBranch_t* branch_inherited = class_graph_->findBranch(class_inherited);
+  IndividualBranch_t* branch_base = findBranchSafe(indiv);
+  ClassBranch_t* branch_inherited = class_graph_->findBranchSafe(class_inherited);
   std::vector<std::pair<std::string, std::string>> explanations;
 
   if(branch_base == nullptr)
@@ -1942,8 +1942,8 @@ bool IndividualGraph::removeInheritage(IndividualBranch_t* indiv, ClassBranch_t*
 
 void IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& indiv_2)
 {
-  IndividualBranch_t* branch_1 = findBranch(indiv_1);
-  IndividualBranch_t* branch_2 = findBranch(indiv_2);
+  IndividualBranch_t* branch_1 = findBranchSafe(indiv_1);
+  IndividualBranch_t* branch_2 = findBranchSafe(indiv_2);
 
   if((branch_1 == nullptr) && (branch_2 == nullptr))
     throw GraphException("no known items in the request");
@@ -1970,8 +1970,8 @@ void IndividualGraph::addSameAs(const std::string& indiv_1, const std::string& i
 
 std::vector<std::pair<std::string, std::string>> IndividualGraph::removeSameAs(const std::string& indiv_1, const std::string& indiv_2, bool protect_stated)
 {
-  IndividualBranch_t* branch_1 = findBranch(indiv_1);
-  IndividualBranch_t* branch_2 = findBranch(indiv_2);
+  IndividualBranch_t* branch_1 = findBranchSafe(indiv_1);
+  IndividualBranch_t* branch_2 = findBranchSafe(indiv_2);
 
   if((branch_1 == nullptr) || (branch_2 == nullptr))
   {
@@ -2082,15 +2082,15 @@ std::pair<std::vector<std::pair<std::string, std::string>>, bool> IndividualGrap
 
 std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation(const std::string& indiv_from, const std::string& property, const std::string& indiv_on)
 {
-  IndividualBranch_t* branch_from = findBranch(indiv_from);
+  IndividualBranch_t* branch_from = findBranchSafe(indiv_from);
   if(branch_from != nullptr)
   {
-    ObjectPropertyBranch_t* branch_property = object_property_graph_->findBranch(property);
+    ObjectPropertyBranch_t* branch_property = object_property_graph_->findBranchSafe(property);
     if(branch_property != nullptr)
     {
       if(indiv_on != "_")
       {
-        IndividualBranch_t* branch_on = findBranch(indiv_on);
+        IndividualBranch_t* branch_on = findBranchSafe(indiv_on);
         if(branch_on != nullptr)
           return removeRelation(branch_from, branch_property, branch_on).first;
         else
@@ -2111,7 +2111,7 @@ std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation
 std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data)
 {
   std::vector<std::pair<std::string, std::string>> explanations;
-  IndividualBranch_t* branch_from = findBranch(indiv_from);
+  IndividualBranch_t* branch_from = findBranchSafe(indiv_from);
   if(branch_from != nullptr)
   {
     bool fuzzy = (type == "_") || (data == "_");

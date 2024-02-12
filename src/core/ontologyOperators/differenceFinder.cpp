@@ -8,13 +8,13 @@ std::vector<std::string> differenceFinder::getDiff(Ontology* onto1, Ontology* on
 {
   comparator_t comp1, comp2;
 
-  IndividualBranch_t* indiv_onto1 = onto1->individual_graph_.findBranch(concept);
-  IndividualBranch_t* indiv_onto2 = onto2->individual_graph_.findBranch(concept);
+  IndividualBranch_t* indiv_onto1 = onto1->individual_graph_.findBranchSafe(concept);
+  IndividualBranch_t* indiv_onto2 = onto2->individual_graph_.findBranchSafe(concept);
 
   if((indiv_onto1 == nullptr) && (indiv_onto2 == nullptr))
   {
-    ClassBranch_t* class_onto1 = onto1->class_graph_.findBranch(concept);
-    ClassBranch_t* class_onto2 = onto2->class_graph_.findBranch(concept);
+    ClassBranch_t* class_onto1 = onto1->class_graph_.findBranchSafe(concept);
+    ClassBranch_t* class_onto2 = onto2->class_graph_.findBranchSafe(concept);
     if(class_onto2 != nullptr)
       comp2 = toComparator(class_onto2);
     if(class_onto1 != nullptr)
@@ -23,14 +23,14 @@ std::vector<std::string> differenceFinder::getDiff(Ontology* onto1, Ontology* on
   else if(indiv_onto1 == nullptr)
   {
     comp2 = toComparator(indiv_onto2);
-    ClassBranch_t* class_onto1 = onto1->class_graph_.findBranch(concept);
+    ClassBranch_t* class_onto1 = onto1->class_graph_.findBranchSafe(concept);
     if(class_onto1 != nullptr)
       comp1 = toComparator(class_onto1);
   }
   else if(indiv_onto2 == nullptr)
   {
     comp1 = toComparator(indiv_onto1);
-    ClassBranch_t* class_onto2 = onto2->class_graph_.findBranch(concept);
+    ClassBranch_t* class_onto2 = onto2->class_graph_.findBranchSafe(concept);
     if(class_onto2 != nullptr)
       comp2 = toComparator(class_onto2);
   }

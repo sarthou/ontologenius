@@ -1193,14 +1193,14 @@ int ClassGraph::deleteRelationsOnClass(ClassBranch_t* _class, std::vector<ClassB
 
 bool ClassGraph::addInheritage(const std::string& branch_base, const std::string& branch_inherited)
 {
-  ClassBranch_t* branch = findBranch(branch_base);
+  ClassBranch_t* branch = findBranchSafe(branch_base);
   if(branch != nullptr)
   {
-    ClassBranch_t* inherited = findBranch(branch_inherited);
+    ClassBranch_t* inherited = findBranchSafe(branch_inherited);
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     if(inherited == nullptr)
     {
-      IndividualBranch_t* tmp = individual_graph_->findBranch(branch_inherited);
+      IndividualBranch_t* tmp = individual_graph_->findBranchSafe(branch_inherited);
       if(tmp != nullptr)
         inherited = individual_graph_->upgradeToBranch(tmp);
       else
@@ -1231,11 +1231,11 @@ void ClassGraph::addRelation(ClassBranch_t* class_from, const std::string& prope
   ClassBranch_t* branch_from = class_from;
   if(branch_from != nullptr)
   {
-    ClassBranch_t* branch_on = findBranch(class_on);
+    ClassBranch_t* branch_on = findBranchSafe(class_on);
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     if(branch_on == nullptr)
     {
-      IndividualBranch_t* test = individual_graph_->findBranch(class_on);
+      IndividualBranch_t* test = individual_graph_->findBranchSafe(class_on);
       if(test != nullptr)
         throw GraphException("object class does not exists");
 
@@ -1244,10 +1244,10 @@ void ClassGraph::addRelation(ClassBranch_t* class_from, const std::string& prope
       all_branchs_.push_back(branch_on);
     }
 
-    ObjectPropertyBranch_t* branch_prop = object_property_graph_->findBranch(property);
+    ObjectPropertyBranch_t* branch_prop = object_property_graph_->findBranchSafe(property);
     if(branch_prop == nullptr)
     {
-      DataPropertyBranch_t* test = data_property_graph_->findBranch(property);
+      DataPropertyBranch_t* test = data_property_graph_->findBranchSafe(property);
       if(test != nullptr)
         throw GraphException(property + " is a data property");
 
@@ -1271,10 +1271,10 @@ void ClassGraph::addRelation(ClassBranch_t* class_from, const std::string& prope
   {
     LiteralNode* literal_branch = data_property_graph_->createLiteral(type + "#" + data);
 
-    DataPropertyBranch_t* branch_prop = data_property_graph_->findBranch(property);
+    DataPropertyBranch_t* branch_prop = data_property_graph_->findBranchSafe(property);
     if(branch_prop == nullptr)
     {
-      ObjectPropertyBranch_t* test = object_property_graph_->findBranch(property);
+      ObjectPropertyBranch_t* test = object_property_graph_->findBranchSafe(property);
       if(test != nullptr)
         throw GraphException(property + " is an object property");
 
@@ -1296,11 +1296,11 @@ void ClassGraph::addRelationInvert(const std::string& class_from, const std::str
   ClassBranch_t* branch_on = class_on;
   if(branch_on != nullptr)
   {
-    ClassBranch_t* branch_from = findBranch(class_from);
+    ClassBranch_t* branch_from = findBranchSafe(class_from);
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     if(branch_from == nullptr)
     {
-      IndividualBranch_t* test = individual_graph_->findBranch(class_from);
+      IndividualBranch_t* test = individual_graph_->findBranchSafe(class_from);
       if(test != nullptr)
         throw GraphException("The class to apply the relation does not exist");
 
@@ -1309,10 +1309,10 @@ void ClassGraph::addRelationInvert(const std::string& class_from, const std::str
       all_branchs_.push_back(branch_from);
     }
 
-    ObjectPropertyBranch_t* branch_prop = object_property_graph_->findBranch(property);
+    ObjectPropertyBranch_t* branch_prop = object_property_graph_->findBranchSafe(property);
     if(branch_prop == nullptr)
     {
-      DataPropertyBranch_t* test = data_property_graph_->findBranch(property);
+      DataPropertyBranch_t* test = data_property_graph_->findBranchSafe(property);
       if(test != nullptr)
         throw GraphException(property + " is a data property");
 
@@ -1331,7 +1331,7 @@ void ClassGraph::addRelationInvert(const std::string& class_from, const std::str
 
 void ClassGraph::removeRelation(const std::string& class_from, const std::string& property, const std::string& class_on)
 {
-  ClassBranch_t* branch_from = findBranch(class_from);
+  ClassBranch_t* branch_from = findBranchSafe(class_from);
   if(branch_from != nullptr)
   {
     for(size_t i = 0; i < branch_from->object_relations_.size();)
@@ -1357,7 +1357,7 @@ void ClassGraph::removeRelation(const std::string& class_from, const std::string
 
 void ClassGraph::removeRelation(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data)
 {
-  ClassBranch_t* branch_from = findBranch(class_from);
+  ClassBranch_t* branch_from = findBranchSafe(class_from);
   if(branch_from != nullptr)
   {
     for(size_t i = 0; i < branch_from->data_relations_.size();)
