@@ -1386,6 +1386,7 @@ std::unordered_set<index_t> IndividualGraph::getType(index_t class_selector, boo
 bool IndividualGraph::isA(const std::string& indiv, const std::string& class_selector)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  std::shared_lock<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
   IndividualBranch_t* branch = container_.find(indiv);
   return isA(branch, class_selector);
 }
@@ -1393,6 +1394,7 @@ bool IndividualGraph::isA(const std::string& indiv, const std::string& class_sel
 bool IndividualGraph::isA(index_t indiv, index_t class_selector)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
+  std::shared_lock<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
   IndividualBranch_t* branch = ordered_individuals_[indiv];
   return isA(branch, class_selector);
 }
@@ -1412,7 +1414,6 @@ bool IndividualGraph::isATemplate(IndividualBranch_t* branch, const T& class_sel
 {
   if(branch != nullptr)
   {
-    std::shared_lock<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
     if(branch->same_as_.size())
     {
       for(auto& it : branch->same_as_)
