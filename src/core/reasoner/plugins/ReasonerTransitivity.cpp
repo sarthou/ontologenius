@@ -7,6 +7,7 @@ namespace ontologenius {
 void ReasonerTransitivity::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
+  std::lock_guard<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
 
   std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
   for(auto indiv : indivs)
@@ -18,16 +19,14 @@ void ReasonerTransitivity::postReason()
       for(size_t rel_i = 0; rel_i < indiv->object_relations_.size(); rel_i++)
       {
         auto base_property = indiv->object_relations_[rel_i].first;
-        std::unordered_set<ObjectPropertyBranch_t*> properties = ontology_->object_property_graph_.getUpPtrSafe(base_property);
+        std::unordered_set<ObjectPropertyBranch_t*> properties;
+        ontology_->object_property_graph_.getUpPtr(base_property, properties);
         for(ObjectPropertyBranch_t* property : properties)
         {
-          //std::cout << "test " << indiv->value() << " : " << property->value() << std::endl;
           if(property->properties_.transitive_property_)
           {
-            //std::cout << "- is transitive" << std::endl;
             has_active_transitivity = true;
             auto end_indivs = resolveChain(indiv->object_relations_[rel_i].second, property, 1);
-            //std::cout << "- end_indivs " << end_indivs.size() << std::endl;
 
             if(end_indivs.size())
             {
