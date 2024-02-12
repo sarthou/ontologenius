@@ -233,7 +233,10 @@ void OntologyTtlReader::sendToOntology(std::string& subject, const std::vector<s
     if(property == "rdf:type")
       push(individual_vector_.is_a_, object.first, 1.0, "+");
     else if(property == "owl:sameAs")
-      push(individual_vector_.same_as_, object.first, 1.0, "=");
+    {
+      if( object.first != "")
+        push(individual_vector_.same_as_, object.first, 1.0, "=");
+    }
     else if(property == "rdfs:label")
       pushLang(individual_vector_.dictionary_, object);
     else if(property == "onto:label")
