@@ -20,6 +20,8 @@ public:
 
   virtual bool defaultActive() override {return true;}
 private:
+  std::unordered_map<ClassBranch_t*, std::unordered_set<ClassBranch_t*>> disjoints_cache_;
+
   bool checkClassesDisjointess(IndividualBranch_t* indiv, ClassBranch_t* class_equiv);
   int relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 
