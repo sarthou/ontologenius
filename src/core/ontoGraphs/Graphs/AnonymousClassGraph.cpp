@@ -31,10 +31,10 @@ AnonymousClassGraph::AnonymousClassGraph(const AnonymousClassGraph& other, Class
   object_property_graph_ = object_property_graph;
   data_property_graph_ = data_property_graph;
 
-  for(auto branch : other.anonymous_classes_)
+  for(auto branch : other.all_branchs_)
   {
     auto class_branch = new AnonymousClassBranches_t(branch->value());
-    anonymous_classes_.push_back(class_branch);
+    all_branchs_.push_back(class_branch);
   }
 }
 
@@ -152,7 +152,7 @@ AnonymousClassBranches_t* AnonymousClassGraph::add(const std::string& value, Ano
   ClassBranch_t* class_branch = class_graph_->findOrCreateBranch(value);
 
   anonymous_branch->class_equiv_= class_branch;
-  anonymous_classes_.push_back(anonymous_branch);
+  all_branchs_.push_back(anonymous_branch);
   class_branch->equiv_relations_ = anonymous_branch;
   
   for(size_t i = 0 ; i < ano.equivalence_trees.size() ; i++)

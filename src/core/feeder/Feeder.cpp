@@ -71,7 +71,7 @@ bool Feeder::addFeed(feed_t& feed)
     else if((feed.prop_ == "<-") || (feed.prop_ == "owl:inverseOf"))
       return addInverseOf(feed);
     else if(feed.prop_[0] == '@')
-      return classIndividualLangage(feed);
+      return modifyLangage(feed);
     else if((feed.prop_ == "=") || (feed.prop_ == "owl:sameAs") || (feed.prop_ == "sameAs"))
       return addSameAs(feed);
     else
@@ -88,7 +88,8 @@ bool Feeder::addDelClass(action_t& action, std::string& name)
 {
   if(action == action_add)
   {
-    onto_->class_graph_.create(name);
+    std::lock_guard<std::shared_timed_mutex> lock(onto_->class_graph_.mutex_);
+    onto_->class_graph_.findOrCreateBranch(name);
     return true;
   }
   else
@@ -116,62 +117,6 @@ bool Feeder::addDelIndiv(action_t& action, std::string& name)
 
 bool Feeder::addInheritage(feed_t& feed)
 {
-  if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
-    return modifyDataPropertyInheritance(feed);
-  else if(onto_->data_property_graph_.findBranch(feed.on_) != nullptr)
-    return modifyDataPropertyInheritanceInvert(feed);
-  else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
-    return modifyObjectPropertyInheritance(feed);
-  else if(onto_->object_property_graph_.findBranch(feed.on_) != nullptr)
-    return modifyObjectPropertyInheritanceInvert(feed);
-  else
-    return classIndividualIsA(feed);
-}
-
-bool Feeder::modifyDataPropertyInheritance(feed_t& feed)
-{
-  DataPropertyBranch_t* tmp = onto_->data_property_graph_.findBranch(feed.from_);
-  if(feed.action_ == action_add)
-    return onto_->data_property_graph_.add(tmp, feed.prop_, feed.on_);
-  else
-    return onto_->data_property_graph_.remove(tmp, feed.prop_, feed.on_);
-}
-
-bool Feeder::modifyDataPropertyInheritanceInvert(feed_t& feed)
-{
-  DataPropertyBranch_t* tmp = onto_->data_property_graph_.findBranch(feed.on_);
-  if(feed.action_ == action_add)
-    return onto_->data_property_graph_.addInvert(tmp, feed.prop_, feed.from_);
-  else
-  {
-    notifications_.push_back("[FAIL][data property can not be removed by inverse]" + current_str_feed_);
-    return false;
-  }
-}
-
-bool Feeder::modifyObjectPropertyInheritance(feed_t& feed)
-{
-  ObjectPropertyBranch_t* tmp = onto_->object_property_graph_.findBranch(feed.from_);
-  if(feed.action_ == action_add)
-    return onto_->object_property_graph_.add(tmp, feed.prop_, feed.on_);
-  else
-    return onto_->object_property_graph_.remove(tmp, feed.prop_, feed.on_);
-}
-
-bool Feeder::modifyObjectPropertyInheritanceInvert(feed_t& feed)
-{
-  ObjectPropertyBranch_t* tmp = onto_->object_property_graph_.findBranch(feed.on_);
-  if(feed.action_ == action_add)
-    return onto_->object_property_graph_.addInvert(tmp, feed.prop_, feed.from_);
-  else
-  {
-    notifications_.push_back("[FAIL][object property can not be removed by inverse]" + current_str_feed_);
-    return false;
-  }
-}
-
-bool Feeder::classIndividualIsA(feed_t& feed)
-{
   try
   {
     if(feed.action_ == action_add)
@@ -184,6 +129,14 @@ bool Feeder::classIndividualIsA(feed_t& feed)
         return onto_->individual_graph_.addInheritageInvert(feed.from_, feed.on_);
       else if(onto_->individual_graph_.findBranch(feed.on_) != nullptr)
         return onto_->individual_graph_.addInheritageInvertUpgrade(feed.from_, feed.on_);
+      if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
+        return onto_->data_property_graph_.addInheritage(feed.from_, feed.on_);
+      else if(onto_->data_property_graph_.findBranch(feed.on_) != nullptr)
+        return onto_->data_property_graph_.addInheritage(feed.from_, feed.on_);
+      else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
+        return onto_->object_property_graph_.addInheritage(feed.from_, feed.on_);
+      else if(onto_->object_property_graph_.findBranch(feed.on_) != nullptr)
+        return onto_->object_property_graph_.addInheritage(feed.from_, feed.on_);
       else
       {
         notifications_.push_back("[FAIL][no known items in the requested inheritance]" + current_str_feed_);
@@ -200,6 +153,16 @@ bool Feeder::classIndividualIsA(feed_t& feed)
       else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
       {
         auto tmp = onto_->individual_graph_.removeInheritage(feed.from_, feed.on_);
+        explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+      }
+      else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
+      {
+        auto tmp = onto_->object_property_graph_.removeInheritage(feed.from_, feed.on_);
+        explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+      }
+      else if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
+      {
+        auto tmp = onto_->data_property_graph_.removeInheritage(feed.from_, feed.on_);
         explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
       }
       else
@@ -249,27 +212,15 @@ bool Feeder::addSameAs(const feed_t& feed)
   {
     if(feed.action_ == action_add)
     {
-      if(!onto_->individual_graph_.addSameAs(feed.from_, feed.on_))
-      {
-        notifications_.push_back("[FAIL][no known items in the request]" + current_str_feed_);
-        return false;
-      }
-      else
-        return true;
+      onto_->individual_graph_.addSameAs(feed.from_, feed.on_);
+      return true;
     }
     else if(feed.action_ == action_del)
     {
       auto tmp = onto_->individual_graph_.removeSameAs(feed.from_, feed.on_);
-      if(tmp.size() == 0)
-      {
-        notifications_.push_back("[FAIL][unknown item in the request]" + current_str_feed_);
-        return false;
-      }
-      else
-      {
+      if(tmp.size() != 0)
         explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
-        return true;
-      }
+      return true;
     }
     else
       return false;
@@ -281,7 +232,7 @@ bool Feeder::addSameAs(const feed_t& feed)
   }
 }
 
-bool Feeder::classIndividualLangage(feed_t& feed)
+bool Feeder::modifyLangage(feed_t& feed)
 {
   if(feed.action_ == action_add)
   {
@@ -289,6 +240,10 @@ bool Feeder::classIndividualLangage(feed_t& feed)
       return onto_->class_graph_.addLang(feed.from_, feed.prop_, feed.on_);
     else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
       return onto_->individual_graph_.addLang(feed.from_, feed.prop_, feed.on_);
+    else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
+      return onto_->object_property_graph_.addLang(feed.from_, feed.prop_, feed.on_);
+    else if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
+      return onto_->data_property_graph_.addLang(feed.from_, feed.prop_, feed.on_);
     else
     {
       notifications_.push_back("[FAIL][unknown element in the requested language addition]" + current_str_feed_);
@@ -301,6 +256,10 @@ bool Feeder::classIndividualLangage(feed_t& feed)
       return onto_->class_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
     else if(onto_->individual_graph_.findBranch(feed.from_) != nullptr)
       return onto_->individual_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
+    else if(onto_->object_property_graph_.findBranch(feed.from_) != nullptr)
+      return onto_->object_property_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
+    else if(onto_->data_property_graph_.findBranch(feed.from_) != nullptr)
+      return onto_->data_property_graph_.removeLang(feed.from_, feed.prop_, feed.on_);
     else
     {
       notifications_.push_back("[FAIL][unknown element in the requested language deletion]" + current_str_feed_);

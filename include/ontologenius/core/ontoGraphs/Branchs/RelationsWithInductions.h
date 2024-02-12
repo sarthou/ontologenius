@@ -26,6 +26,7 @@ public:
 	std::vector<InheritedRelationTriplets*> has_induced_inheritance_relations;
 
 	size_t size() { return relations.size(); }
+	bool empty() { return relations.empty(); }
 	T& operator[](size_t index) { return relations[index]; }
 
 	size_t push_back(T& relation)
@@ -65,7 +66,10 @@ public:
 		has_induced_inheritance_relations.clear();
 	}
 
-	bool empty() { return relations.empty(); }
+	typename std::vector<T>::iterator find(T other)
+	{
+		return std::find(relations.begin(), relations.end(), other);
+	}
 
 	typename std::vector<T>::iterator begin() { return relations.begin(); }
 	typename std::vector<T>::iterator end() { return relations.end(); }

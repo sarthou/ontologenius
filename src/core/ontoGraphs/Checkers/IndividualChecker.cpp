@@ -11,8 +11,8 @@ namespace ontologenius {
 size_t IndividualChecker::check()
 {
   graph_size = graph_vect_.size();
-  checkSame();
 
+  checkDisjointInheritance();
   checkDisjoint();
 
   checkReflexive();
@@ -31,24 +31,7 @@ size_t IndividualChecker::check()
   return getErrors();
 }
 
-void IndividualChecker::checkSame()
-{
-  for(IndividualBranch_t* indiv : graph_vect_)
-  {
-    std::unordered_set<IndividualBranch_t*> sames;
-    individual_graph_->getSame(indiv, sames);
-    std::unordered_set<IndividualBranch_t*> distincts;
-
-    for (auto same : sames)
-      individual_graph_->getDistincts(same, distincts);
-
-    auto intersection = individual_graph_->firstIntersection(sames, distincts);
-    if(intersection != nullptr)
-      print_error("'" + indiv->value() + "' can't be same and distinct with '" + intersection->value() + "'");
-  }
-}
-
-void IndividualChecker::checkDisjoint()
+void IndividualChecker::checkDisjointInheritance()
 {
   for(IndividualBranch_t* indiv : graph_vect_)
   {
@@ -77,6 +60,33 @@ void IndividualChecker::checkDisjoint()
         + intersection->value() + "' and '" + disjoint_with->value() + "'");
       else
         print_error("'" + indiv->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
+    }
+  }
+}
+
+void IndividualChecker::checkDisjoint()
+{
+  for(IndividualBranch_t* indiv : graph_vect_)
+  {
+    if(indiv->same_as_.size())
+    {
+      std::unordered_set<IndividualBranch_t*> sames;
+      individual_graph_->getSame(indiv, sames);
+      for(auto same : indiv->same_as_)
+      {
+        IndividualBranch_t* intersection = individual_graph_->firstIntersection(sames, same.elem->distinct_);
+        if(intersection != nullptr)
+        {
+          if(same.elem == intersection)
+            continue;
+          else if(indiv == intersection)
+            continue;
+          else if(indiv == same.elem)
+            print_error("'" + indiv->value() + "' can't be same and distinct with '" + intersection->value() + "'");
+          else
+            print_error("'" + indiv->value() + "' can't be same as '" + same.elem->value() + "' and '" + intersection->value() + "' as they are distinct");
+        }
+      }
     }
   }
 }

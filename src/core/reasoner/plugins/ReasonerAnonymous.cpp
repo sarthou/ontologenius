@@ -22,7 +22,7 @@ void ReasonerAnonymous::postReason()
 
   for(auto indiv : ontology_->individual_graph_.get())
   {
-    if((indiv->updated_ == true) || (indiv->flags_.find("equiv") != indiv->flags_.end()))
+    if((indiv->updated_ == true) || (indiv->flags_.find("equiv") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation() || indiv->hasUpdatedDataRelation())
     {
       bool has_active_equiv = false;
 
@@ -48,11 +48,10 @@ void ReasonerAnonymous::postReason()
             
             if(has_active_equiv && tree_evaluation_result)
             {
-              if(ontology_->individual_graph_.conditionalPushBack(indiv->is_a_, ClassElement_t(anonymous->class_equiv_)))
+              if(ontology_->individual_graph_.conditionalPushBack(indiv->is_a_, ClassElement_t(anonymous->class_equiv_, 1.0, true)))
               {
-                if(ontology_->individual_graph_.conditionalPushBack(anonymous->class_equiv_->individual_childs_, IndividualElement_t(indiv)))
+                if(ontology_->individual_graph_.conditionalPushBack(anonymous->class_equiv_->individual_childs_, IndividualElement_t(indiv, 1.0, true)))
                 {
-                  indiv->is_a_.relations.back().infered = true;
                   std::string explanation_reference = "";
                   
                   for(auto& induced_vector : used)
@@ -70,7 +69,7 @@ void ReasonerAnonymous::postReason()
                   }
 
                   explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous->class_equiv_->value(),
-                                      "[ADD]" + explanation_reference);
+                                             "[ADD]" + explanation_reference);
                   // once we get a valid equivalence for a class, we break out of the loop
                   break;
                 } 

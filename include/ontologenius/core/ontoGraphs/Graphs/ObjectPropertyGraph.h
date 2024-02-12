@@ -45,16 +45,12 @@ class ObjectPropertyGraph : public OntoGraph<ObjectPropertyBranch_t>
   friend ClassGraph;
   friend AnonymousClassGraph;
 public:
-  explicit ObjectPropertyGraph(ClassGraph* class_graph);
-  ObjectPropertyGraph(const ObjectPropertyGraph& other, ClassGraph* class_graph);
+  explicit ObjectPropertyGraph(IndividualGraph* individual_graph, ClassGraph* class_graph);
+  ObjectPropertyGraph(const ObjectPropertyGraph& other, IndividualGraph* individual_graph, ClassGraph* class_graph);
   ~ObjectPropertyGraph() {}
 
   void deepCopy(const ObjectPropertyGraph& other);
 
-  virtual void close() override;
-
-  ObjectPropertyBranch_t* newDefaultBranch(const std::string& name);
-  ObjectPropertyBranch_t* findOrCreateBranch(const std::string& name);
   ObjectPropertyBranch_t* add(const std::string& value, ObjectPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 
@@ -69,12 +65,6 @@ public:
   std::unordered_set<std::string> getRange(const std::string& value);
   std::unordered_set<index_t> getRange(index_t value);
   void getRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
-
-  void createInvertChains();
-
-  bool add(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data);
-  bool addInvert(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data);
-  bool remove(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data);
 
   bool addInverseOf(const std::string& from, const std::string& on);
   bool removeInverseOf(const std::string& from, const std::string& on);

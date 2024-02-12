@@ -1,5 +1,5 @@
-#ifndef ONTOLOGENIUS_REASONERCHAIN_H
-#define ONTOLOGENIUS_REASONERCHAIN_H
+#ifndef ONTOLOGENIUS_REASONERTRANSITIVITY_H
+#define ONTOLOGENIUS_REASONERTRANSITIVITY_H
 
 #include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 
@@ -7,11 +7,12 @@ namespace ontologenius {
 
 typedef std::vector<std::pair<std::string, ObjectRelationTriplets*>> UsedVector;
 
-class ReasonerChain : public ReasonerInterface
+class ChainTree;
+class ReasonerTransitivity : public ReasonerInterface
 {
 public:
-  ReasonerChain() {}
-  ~ReasonerChain() {}
+  ReasonerTransitivity() {}
+  ~ReasonerTransitivity() {}
 
   virtual void postReason() override;
 
@@ -22,10 +23,10 @@ public:
 
   virtual bool defaultActive() override {return true;}
 private:
-  std::vector<std::pair<IndividualBranch_t*, UsedVector>> resolveChain(IndividualBranch_t* indiv, const std::vector<ObjectPropertyBranch_t*>& chain, size_t chain_index = 0);
-  void resolveChain(IndividualBranch_t* indiv, int same_index, const std::vector<ObjectPropertyBranch_t*>& chain, size_t chain_index, std::vector<std::pair<IndividualBranch_t*, UsedVector>>& res);
+  std::vector<std::pair<IndividualBranch_t*, UsedVector>> resolveChain(IndividualBranch_t* indiv, ObjectPropertyBranch_t* property, size_t current_length);
+  void resolveChain(IndividualBranch_t* indiv, int same_index, ObjectPropertyBranch_t* property, size_t current_length, std::vector<std::pair<IndividualBranch_t*, UsedVector>>& res);
 
-  bool relationExists(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* chain_prop, IndividualBranch_t* chain_indiv);
+  bool relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
 
   template <typename T>
   bool existInInheritance(T* branch, index_t selector, UsedVector& used)
@@ -50,4 +51,4 @@ private:
 
 } // namespace ontologenius
 
-#endif // ONTOLOGENIUS_REASONERCHAIN_H
+#endif // ONTOLOGENIUS_REASONERTRANSITIVITY_H

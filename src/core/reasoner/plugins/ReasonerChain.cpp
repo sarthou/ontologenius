@@ -10,7 +10,7 @@ void ReasonerChain::postReason()
 
   std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
   for(auto indiv : indivs)
-    if((indiv->updated_ == true) || (indiv->flags_.find("chain") != indiv->flags_.end()))
+    if((indiv->updated_ == true) || (indiv->flags_.find("chain") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation())
     {
       bool has_active_chain = false;
       // /!\ Do not use a for each loop style.
@@ -115,7 +115,7 @@ void ReasonerChain::resolveChain(IndividualBranch_t* indiv, int same_index, cons
       {
         local_used.emplace_back(individual->value() + "|" + base_property->value() + "|" + individual->object_relations_[i].second->value(), individual->object_relations_.has_induced_object_relations[i]);
         if((same_index != -1) && (individual != indiv))
-          local_used.emplace_back(indiv->value() + "|sameAs|" + individual->value(), individual->same_as_.has_induced_object_relations[same_index]);
+          local_used.emplace_back(indiv->value() + "|sameAs|" + individual->value(), indiv->same_as_.has_induced_object_relations[same_index]);
         for(auto& used : down_used)
         {
           res.push_back(used);

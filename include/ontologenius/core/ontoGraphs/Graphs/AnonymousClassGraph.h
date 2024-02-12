@@ -152,10 +152,7 @@ public:
                         DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
     AnonymousClassGraph(const AnonymousClassGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, 
                         DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
-    ~AnonymousClassGraph() {};
-
-    void close() {};
-    std::vector<AnonymousClassBranches_t*> get() override { return anonymous_classes_;}
+    ~AnonymousClassGraph() {}
 
     AnonymousClassElement_t* createElement(ExpressionMember_t* exp_leaf);
     void update(ExpressionMember_t* exp, AnonymousClassElement_t* ano_class);
@@ -171,8 +168,6 @@ private:
     ObjectPropertyGraph* object_property_graph_;
     DataPropertyGraph* data_property_graph_;
     IndividualGraph* individual_graph_;
-
-    std::vector<AnonymousClassBranches_t*> anonymous_classes_;
 };
 
 } // namespace ontologenius

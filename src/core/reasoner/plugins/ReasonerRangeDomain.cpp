@@ -20,7 +20,7 @@ void ReasonerRangeDomain::postReasonIndividuals()
   std::map<std::string, std::vector<std::string>>::iterator it_domain;
 
   for(auto& indiv : indivs)
-    if(indiv->updated_ == true)
+    if(indiv->updated_ == true || indiv->hasUpdatedObjectRelation() || indiv->hasUpdatedDataRelation())
     {
       it_range = indiv->flags_.find("range");
       if(it_range != indiv->flags_.end())

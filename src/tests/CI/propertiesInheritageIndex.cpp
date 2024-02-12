@@ -499,32 +499,35 @@ TEST(global_tests, individual_getRelationWith)
   bool res_bool = true;
 
   res = onto_ptr->individuals.getRelationWith(test_word);
-  res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#2")) != res.end()) &&
-                          (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-                          (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  res_bool = ((res.size() == 3) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#2")) != res.end()) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("kevin");
   res = onto_ptr->individuals.getRelationWith(test_word);
-  res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#0")) != res.end()) &&
-                          (find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("bob")) != res.end()) &&
-                          (find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("alice")) != res.end()));
+  res_bool = ((res.size() == 3) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#0")) != res.end()) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("bob")) != res.end()) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("alice")) != res.end()));
+  EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("bob");
   res = onto_ptr->individuals.getRelationWith(test_word);
-  res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#0")) != res.end()) &&
-                          (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-                          (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  res_bool = ((res.size() == 3) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#0")) != res.end()) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("cube1");
   res = onto_ptr->individuals.getRelationWith(test_word);
-  res_bool = res_bool && ((res.size() == 3) &&
-                          (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#236")) != res.end()) &&
-                          (find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("big_box")) != res.end()) &&
-                          (find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("blueCube")) != res.end()));
-
+  res_bool = ((res.size() == 4) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#236")) != res.end()) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("big_box")) != res.end()) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("blueCube")) != res.end()) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("redCube")) != res.end()));
   EXPECT_TRUE(res_bool);
 }
 
@@ -720,6 +723,14 @@ TEST(global_tests, individual_getWith)
   test_word2 = onto_ptr->conversion.literalsId2Index("integer#2");
   res = onto_ptr->individuals.getWith(test_word, test_word2);
   res_bool = (res.size() == 0);
+  EXPECT_TRUE(res_bool);
+
+  test_word = onto_ptr->conversion.individualsId2Index("cube1");
+  test_word2 = onto_ptr->conversion.individualsId2Index("redCube");
+  res = onto_ptr->individuals.getWith(test_word, test_word2); // use same as (cube1 = greenCube)
+  res_bool = ((res.size() == 2) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.objectPropertiesId2Index("isPositioned")) != res.end()) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.objectPropertiesId2Index("isOn")) != res.end()));
   EXPECT_TRUE(res_bool);
 }
 

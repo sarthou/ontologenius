@@ -43,14 +43,12 @@ class DataPropertyGraph : public OntoGraph<DataPropertyBranch_t>
   friend ClassGraph;
   friend AnonymousClassGraph;
 public:
-  explicit DataPropertyGraph(ClassGraph* class_graph);
-  DataPropertyGraph(const DataPropertyGraph& other, ClassGraph* class_graph);
+  explicit DataPropertyGraph(IndividualGraph* individual_graph, ClassGraph* class_graph);
+  DataPropertyGraph(const DataPropertyGraph& other, IndividualGraph* individual_graph, ClassGraph* class_graph);
   ~DataPropertyGraph() {}
 
   void deepCopy(const DataPropertyGraph& other);
 
-  DataPropertyBranch_t* newDefaultBranch(const std::string& name);
-  DataPropertyBranch_t* findOrCreateBranch(const std::string& name);
   DataPropertyBranch_t* add(const std::string& value, DataPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
   bool addAnnotation(const std::string& value, DataPropertyVectors_t& property_vectors);
@@ -65,10 +63,6 @@ public:
   void getDomainPtr(DataPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
   std::unordered_set<std::string> getRange(const std::string& value);
   std::unordered_set<index_t> getRange(index_t value);
-
-  bool add(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
-  bool addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
-  bool remove(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
 
   index_t getLiteralIndex(const std::string& name);
   std::vector<index_t> getLiteralIndexes(const std::vector<std::string>& names);

@@ -223,6 +223,7 @@ add_onto_library(ontologenius_reasoner_plugin MODULE
   src/core/reasoner/plugins/ReasonerGeneralize.cpp
   src/core/reasoner/plugins/ReasonerRangeDomain.cpp
   src/core/reasoner/plugins/ReasonerAnonymous.cpp
+  src/core/reasoner/plugins/ReasonerTransitivity.cpp
 )
 target_include_directories(ontologenius_reasoner_plugin
  PUBLIC ${pluginlib_INCLUDE_DIRS}
@@ -564,6 +565,16 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     set_target_properties(anonymous_class_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
     target_include_directories(anonymous_class_test PRIVATE ${catkin_INCLUDE_DIRS})
     target_link_libraries(anonymous_class_test ontologenius_lib ${catkin_LIBRARIES})
+
+    add_rostest_gtest(chain_test test/chain.test src/tests/CI/chain_test.cpp)
+    set_target_properties(chain_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    target_include_directories(chain_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(chain_test ontologenius_lib ${catkin_LIBRARIES})
+
+    add_rostest_gtest(transitivity_test test/transitivity.test src/tests/CI/transitivity_test.cpp)
+    set_target_properties(transitivity_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    target_include_directories(transitivity_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(transitivity_test ontologenius_lib ${catkin_LIBRARIES})
   endif()
 
 elseif($ENV{ROS_VERSION} STREQUAL "2")

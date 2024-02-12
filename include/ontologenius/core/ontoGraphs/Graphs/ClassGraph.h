@@ -46,8 +46,6 @@ public:
   ClassGraph(const ClassGraph& other, IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   ~ClassGraph() {}
 
-  ClassBranch_t* newDefaultBranch(const std::string& name);
-  ClassBranch_t* findOrCreateBranch(const std::string& name);
   ClassBranch_t* add(const std::string& value, ObjectVectors_t& object_vector);
   void add(std::vector<std::string>& disjoints);
 
@@ -86,25 +84,21 @@ public:
 
   void getDownIndividual(ClassBranch_t* branch, std::unordered_set<std::string>& res, bool single_same = false);
   void getDownIndividual(ClassBranch_t* branch, std::unordered_set<index_t>& res, bool single_same = false);
-  std::unordered_set<IndividualBranch_t*> getDownIndividualPtrSafe(ClassBranch_t* branch);
-  void getDownIndividualPtrSafe(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res);
+  std::unordered_set<IndividualBranch_t*> getDownIndividualPtrSafe(ClassBranch_t* branch, size_t depth = -1);
+  void getDownIndividualPtr(ClassBranch_t* branch, std::unordered_set<IndividualBranch_t*>& res, size_t depth = -1, size_t current_depth = 0);
 
   void deleteClass(ClassBranch_t* _class);
+  bool addInheritage(const std::string& class_base, const std::string& class_inherited);
   int deleteRelationsOnClass(ClassBranch_t* _class, std::vector<ClassBranch_t*> vect);
-  bool addLang(const std::string& _class, std::string& lang, const std::string& name);
-  bool addInheritage(std::string& class_base, std::string& class_inherited);
   void addRelation(ClassBranch_t*, const std::string& property, const std::string& class_on);
   void addRelation(ClassBranch_t*, const std::string& property, const std::string& type, const std::string& data);
   void addRelationInvert(const std::string& class_from, const std::string& property, ClassBranch_t* class_on);
-  bool removeLang(std::string& indiv, std::string& lang, std::string& name);
-  std::vector<std::pair<std::string, std::string>> removeInheritage(std::string& class_base, std::string& class_inherited);
   void removeRelation(const std::string& class_from, const std::string& property, const std::string& class_on);
   void removeRelation(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data);
 
 private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
-  IndividualGraph* individual_graph_;
 
   void addObjectRelation(ClassBranch_t* me, Pair_t<std::string, std::string>& relation);
   void addDataRelation(ClassBranch_t* me, Pair_t<std::string, std::string>& relation);

@@ -6,12 +6,12 @@
 
 namespace ontologenius {
 
-ObjectPropertyGraph::ObjectPropertyGraph(ClassGraph* class_graph)
+ObjectPropertyGraph::ObjectPropertyGraph(IndividualGraph* individual_graph, ClassGraph* class_graph) : OntoGraph(individual_graph)
 {
   class_graph_ = class_graph;
 }
 
-ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, ClassGraph* class_graph)
+ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, IndividualGraph* individual_graph, ClassGraph* class_graph) : OntoGraph(individual_graph)
 {
   class_graph_ = class_graph;
 
@@ -24,33 +24,6 @@ ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, Class
   }
 
   this->container_.load(all_branchs_);
-}
-
-void ObjectPropertyGraph::close()
-{
-  OntoGraph<ObjectPropertyBranch_t>::close();
-  //createInvertChains(); // The inverse chain is no more required
-                          // We keep this just in case
-}
-
-ObjectPropertyBranch_t* ObjectPropertyGraph::newDefaultBranch(const std::string& name)
-{
-  auto branch = new ObjectPropertyBranch_t(name);
-  all_branchs_.push_back(branch);
-  container_.insert(branch);
-  return branch;
-}
-
-ObjectPropertyBranch_t* ObjectPropertyGraph::findOrCreateBranch(const std::string& name)
-{
-  auto branch = this->container_.find(name);
-  if(branch == nullptr)
-  {
-    branch = new ObjectPropertyBranch_t(name);
-    all_branchs_.push_back(branch);
-    container_.insert(branch);
-  }
-  return branch;
 }
 
 ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors)
@@ -121,8 +94,8 @@ ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, Objec
   **********************/
   me->properties_.apply(property_vectors.properties_);
   me->annotation_usage_ = me->annotation_usage_ || property_vectors.annotation_usage_;
-  me->setSteady_dictionary(property_vectors.dictionary_);
-  me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
+  me->setSteadyDictionary(property_vectors.dictionary_);
+  me->setSteadyMutedDictionary(property_vectors.muted_dictionary_);
 
   /**********************
   ** Chain axiom
@@ -321,88 +294,6 @@ void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch_t* branch, std::unord
   if(branch != nullptr)
     for(auto& range : branch->ranges_)
       class_graph_->getDownPtr(range.elem, res, depth);
-}
-
-void ObjectPropertyGraph::createInvertChains()
-{
-  for(auto branch : all_branchs_)
-  {
-    for(auto& chain : branch->chains_)
-    {
-      for(auto invert : branch->inverses_)
-      {
-        auto invert_chains = getInvertChains({invert.elem}, chain);
-        for(auto& invert_chain : invert_chains)
-        {
-          std::vector<ObjectPropertyBranch_t*> reordered_chain;
-          for(auto it = invert_chain.rbegin() + 1; it != invert_chain.rend(); ++it)
-            reordered_chain.push_back(*it);
-          reordered_chain.push_back(invert_chain.back());
-
-          reordered_chain.front()->chains_.push_back({reordered_chain.begin() + 1, reordered_chain.end()});
-        }
-      }
-    }
-  }
-}
-
-bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  if(relation != "")
-  {
-    if(relation[0] == '@')
-    {
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      prop->setSteady_dictionary(relation.substr(1), data);
-      prop->updated_ = true;
-    }
-    else if((relation == "+") || (relation == "isA"))
-    {
-
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      ObjectPropertyBranch_t* tmp = findOrCreateBranch(data);
-
-      conditionalPushBack(prop->mothers_, ObjectPropertyElement_t(tmp));
-      conditionalPushBack(tmp->childs_, ObjectPropertyElement_t(prop));
-      prop->updated_ = true;
-      tmp->updated_ = true;
-    }
-    else
-      return false;
-  }
-  else
-    return false;
-  return true;
-}
-
-bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  if(relation != "")
-  {
-    if((relation == "+") || (relation == "isA"))
-    {
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      ObjectPropertyBranch_t* tmp = findOrCreateBranch(data);
-
-      conditionalPushBack(tmp->mothers_, ObjectPropertyElement_t(prop));
-      conditionalPushBack(prop->childs_, ObjectPropertyElement_t(tmp));
-      prop->updated_ = true;
-      tmp->updated_ = true;
-    }
-    else
-      return false;
-  }
-  else
-    return false;
-  return true;
-}
-
-bool ObjectPropertyGraph::remove(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  (void)prop;
-  (void)relation;
-  (void)data;
-  return false;
 }
 
 bool ObjectPropertyGraph::addInverseOf(const std::string& from, const std::string& on)

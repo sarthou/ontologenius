@@ -14,8 +14,8 @@
 namespace ontologenius {
 
 Ontology::Ontology(const std::string& language) : class_graph_(&individual_graph_, &object_property_graph_, &data_property_graph_),
-                                                  object_property_graph_(&class_graph_),
-                                                  data_property_graph_(&class_graph_),
+                                                  object_property_graph_(&individual_graph_, &class_graph_),
+                                                  data_property_graph_(&individual_graph_, &class_graph_),
                                                   individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
                                                   anonymous_graph_(&class_graph_, &object_property_graph_, &data_property_graph_, &individual_graph_),
                                                   loader_((Ontology&)*this),
@@ -31,8 +31,8 @@ Ontology::Ontology(const std::string& language) : class_graph_(&individual_graph
 }
 
 Ontology::Ontology(const Ontology& other) : class_graph_(other.class_graph_, &individual_graph_, &object_property_graph_, &data_property_graph_),
-                                            object_property_graph_(other.object_property_graph_, &class_graph_),
-                                            data_property_graph_(other.data_property_graph_, &class_graph_),
+                                            object_property_graph_(other.object_property_graph_, &individual_graph_, &class_graph_),
+                                            data_property_graph_(other.data_property_graph_, &individual_graph_, &class_graph_),
                                             individual_graph_(other.individual_graph_, &class_graph_, &object_property_graph_, &data_property_graph_),
                                             anonymous_graph_(other.anonymous_graph_, &class_graph_, &object_property_graph_, &data_property_graph_, &individual_graph_),
                                             loader_((Ontology&)*this),
@@ -58,11 +58,6 @@ bool Ontology::close()
   if(is_init_ == true)
     return true;
 
-  class_graph_.close();
-  object_property_graph_.close();
-  data_property_graph_.close();
-  anonymous_graph_.close();
-
   ClassChecker class_checker(&class_graph_);
   ObjectPropertyChecker object_property_checker(&object_property_graph_);
   DataPropertyChecker data_property_checker(&data_property_graph_);
@@ -76,8 +71,6 @@ bool Ontology::close()
   if(err == 0)
   {
     loader_.loadIndividuals();
-
-    individual_graph_.close();
 
     individual_checker = IndividualChecker(&individual_graph_);
     err += individual_checker.check();

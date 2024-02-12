@@ -6,12 +6,12 @@
 
 namespace ontologenius {
 
-DataPropertyGraph::DataPropertyGraph(ClassGraph* class_graph)
+DataPropertyGraph::DataPropertyGraph(IndividualGraph* individual_graph, ClassGraph* class_graph) : OntoGraph(individual_graph)
 {
   class_graph_ = class_graph;
 }
 
-DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other, ClassGraph* class_graph)
+DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other, IndividualGraph* individual_graph, ClassGraph* class_graph) : OntoGraph(individual_graph)
 {
   class_graph_ = class_graph;
 
@@ -24,26 +24,6 @@ DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other, ClassGraph*
   }
 
   this->container_.load(all_branchs_);
-}
-
-DataPropertyBranch_t* DataPropertyGraph::newDefaultBranch(const std::string& name)
-{
-  auto branch = new DataPropertyBranch_t(name);
-  all_branchs_.push_back(branch);
-  container_.insert(branch);
-  return branch;
-}
-
-DataPropertyBranch_t* DataPropertyGraph::findOrCreateBranch(const std::string& name)
-{
-  auto branch = this->container_.find(name);
-  if(branch == nullptr)
-  {
-    branch = new DataPropertyBranch_t(name);
-    all_branchs_.push_back(branch);
-    container_.insert(branch);
-  }
-  return branch;
 }
 
 DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& property_vectors)
@@ -101,8 +81,8 @@ DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPrope
   **********************/
   me->properties_.apply(property_vectors.properties_);
   me->annotation_usage_ = me->annotation_usage_ || property_vectors.annotation_usage_;
-  me->setSteady_dictionary(property_vectors.dictionary_);
-  me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
+  me->setSteadyDictionary(property_vectors.dictionary_);
+  me->setSteadyMutedDictionary(property_vectors.muted_dictionary_);
 
   mitigate(me);
   return me;
@@ -321,62 +301,6 @@ std::unordered_set<index_t> DataPropertyGraph::getRange(index_t value)
       res.insert(range->get());
 
   return res;
-}
-
-bool DataPropertyGraph::add(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  if(relation != "")
-  {
-    if(relation[0] == '@')
-    {
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      prop->setSteady_dictionary(relation.substr(1), data);
-      prop->updated_ = true;
-    }
-    else if((relation == "+") || (relation == "isA"))
-    {
-      DataPropertyBranch_t* tmp = create(data);
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      conditionalPushBack(prop->mothers_, DataPropertyElement_t(tmp));
-      conditionalPushBack(tmp->childs_, DataPropertyElement_t(prop));
-      prop->updated_ = true;
-      tmp->updated_ = true;
-    }
-    else
-      return false;
-  }
-  else
-    return false;
-  return true;
-}
-
-bool DataPropertyGraph::addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  if(relation != "")
-  {
-    if((relation == "+") || (relation == "isA"))
-    {
-      DataPropertyBranch_t* tmp = create(data);
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      conditionalPushBack(tmp->mothers_, DataPropertyElement_t(prop));
-      conditionalPushBack(prop->childs_, DataPropertyElement_t(tmp));
-      prop->updated_ = true;
-      tmp->updated_ = true;
-    }
-    else
-      return false;
-  }
-  else
-    return false;
-  return true;
-}
-
-bool DataPropertyGraph::remove(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  (void)prop;
-  (void)relation;
-  (void)data;
-  return false;
 }
 
 index_t DataPropertyGraph::getLiteralIndex(const std::string& name)
