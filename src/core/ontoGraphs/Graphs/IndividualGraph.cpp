@@ -115,6 +115,7 @@ void IndividualGraph::add(std::vector<std::string>& distinct)
           {
             conditionalPushBack(me->distinct_, IndividualElement_t(individual));
             i_find_my_distinct = true;
+            break;
           }
 
         //I create my distinct
@@ -1731,41 +1732,37 @@ bool IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const
 
 int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba, bool infered)
 {
-  if(checkRangeAndDomain(indiv_from, property, indiv_on))
+  if(object_property_graph_->isIrreflexive(property))
   {
-    if(object_property_graph_->isIrreflexive(property))
-    {
-      auto ids = getSameId(indiv_from);
-      if(ids.find(indiv_on->get()) != ids.end())
-        throw GraphException("Inconsistency prevented regarding irreflexivity of the property");
-    }
-
-    if(object_property_graph_->isAsymetric(property))
-    {
-      if(relationExists(indiv_on, property, indiv_from))
-        throw GraphException("Inconsistency prevented regarding asymetry of the property");
-    }
-
-    int index = -1;
-
-    index = indiv_from->objectRelationExists(property, indiv_on);
-    if(index == -1)
-    {
-      indiv_from->object_relations_.emplace_back(property, indiv_on);
-      index = indiv_from->object_relations_.size() - 1;
-      indiv_on->updated_ = true;
-      indiv_from->updated_ = true;
-    }
-
-    indiv_from->object_relations_[index].probability = proba;
-    indiv_from->object_relations_[index].infered = infered;
-
-    return index;
+    auto ids = getSameId(indiv_from);
+    if(ids.find(indiv_on->get()) != ids.end())
+      throw GraphException("Inconsistency prevented regarding irreflexivity of the property");
   }
-  else
-    throw GraphException("Inconsistency prevented regarding the range or domain of the property");
 
-  return -1;
+  if(object_property_graph_->isAsymetric(property))
+  {
+    if(relationExists(indiv_on, property, indiv_from))
+      throw GraphException("Inconsistency prevented regarding asymetry of the property");
+  }
+
+  int index = -1;
+
+  index = indiv_from->objectRelationExists(property, indiv_on);
+  if(index == -1)
+  {
+    if(checkRangeAndDomain(indiv_from, property, indiv_on) == false)
+      throw GraphException("Inconsistency prevented regarding the range or domain of the property");
+
+    indiv_from->object_relations_.emplace_back(property, indiv_on);
+    index = indiv_from->object_relations_.size() - 1;
+    indiv_on->updated_ = true;
+    indiv_from->updated_ = true;
+  }
+
+  indiv_from->object_relations_[index].probability = proba;
+  indiv_from->object_relations_[index].infered = infered;
+
+  return index;
 }
 
 
@@ -2197,11 +2194,15 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
   std::unordered_set<ObjectPropertyBranch_t*> up_properties;
   object_property_graph_->getUpPtr(prop, up_properties);
 
-  //DOMAIN
   std::unordered_set<ClassBranch_t*> domain;
+  std::unordered_set<ClassBranch_t*> range;
   for(auto up_property : up_properties)
+  {
     object_property_graph_->getDomainPtr(up_property, domain);
+    object_property_graph_->getRangePtr(up_property, range);
+  }
 
+  //DOMAIN
   if(domain.size() != 0)
   {
     std::unordered_set<ClassBranch_t*> up_from;
@@ -2223,10 +2224,6 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
   }
 
   //RANGE
-  std::unordered_set<ClassBranch_t*> range;
-  for(auto up_property : up_properties)
-    object_property_graph_->getRangePtr(up_property, range);
-
   if(range.size() != 0)
   {
     std::unordered_set<ClassBranch_t*> up_on;
