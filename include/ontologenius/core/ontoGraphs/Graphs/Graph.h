@@ -217,6 +217,9 @@ public:
   C<B*> intersection(const std::unordered_set<B*>& set, const C<B*>& c)
   {
     C<B*> res;
+    if(set.empty())
+      return res;
+      
     for(B* v : c)
     {
       if(set.find(v) != set.end())
@@ -228,6 +231,9 @@ public:
   template<template<typename> class C>
   B* firstIntersection(const std::unordered_set<B*>& set, const C<B*>& c)
   {
+    if(set.empty())
+      return nullptr;
+      
     for(B* v : c)
     {
       if(set.find(v) != set.end())
@@ -240,6 +246,9 @@ public:
   C<B*> intersection(const std::unordered_set<B*>& set, const C<Single_t<B*>>& c)
   {
     C<B*> res;
+    if(set.empty())
+      return res;
+      
     for(auto& v : c)
     {
       if(set.find(v.elem) != set.end())
@@ -251,6 +260,9 @@ public:
   template<template<typename> class C>
   B* firstIntersection(const std::unordered_set<B*>& set, const C<Single_t<B*>>& c)
   {
+    if(set.empty())
+      return nullptr;
+
     for(auto& v : c)
     {
       if(set.find(v.elem) != set.end())
