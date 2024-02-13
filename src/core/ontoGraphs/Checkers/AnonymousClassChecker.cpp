@@ -38,12 +38,16 @@ std::string AnonymousClassChecker::checkClassesDisjointness(ClassBranch_t* class
 {
   std::string err;
   std::unordered_set<ClassBranch_t*> disjoints;
-  std::unordered_set<ClassBranch_t*> ups;
-
-  ano_class_graph_->class_graph_->getUpPtr(class_right, ups);
+  
   ano_class_graph_->class_graph_->getDisjoint(class_left, disjoints);
 
-  ClassBranch_t* first_crash = ano_class_graph_->class_graph_->firstIntersection(ups, disjoints);
+  ClassBranch_t* first_crash = nullptr;
+  if(disjoints.size())
+  {
+    std::unordered_set<ClassBranch_t*> ups;
+    ano_class_graph_->class_graph_->getUpPtr(class_right, ups);
+    first_crash = ano_class_graph_->class_graph_->firstIntersection(ups, disjoints);
+  }
 
   if(first_crash != nullptr)
   {

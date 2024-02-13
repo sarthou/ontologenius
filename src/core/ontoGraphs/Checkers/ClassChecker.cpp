@@ -63,9 +63,6 @@ void ClassChecker::checkObjectPropertyDomain()
 {
   for(auto& _class : graph_vect_)
   {
-    std::unordered_set<ClassBranch_t*> up;
-    class_graph_->getUpPtr(_class, up);
-
     std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
 
     for(ClassObjectRelationElement_t& object_relation : _class->object_relations_)
@@ -78,6 +75,9 @@ void ClassChecker::checkObjectPropertyDomain()
 
       if(domain.size() != 0)
       {
+        std::unordered_set<ClassBranch_t*> up;
+        class_graph_->getUpPtr(_class, up);
+
         ClassBranch_t* intersection = class_graph_->firstIntersection(up, domain);
         if(intersection == nullptr)
         {
@@ -105,8 +105,7 @@ void ClassChecker::checkObjectPropertyRange()
   {
     for(ClassObjectRelationElement_t& object_relation : _class->object_relations_)
     {
-      std::unordered_set<ClassBranch_t*> up;
-      class_graph_->getUpPtr(object_relation.second, up);
+      
 
       std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
       std::unordered_set<ObjectPropertyBranch_t*> prop_up;
@@ -117,6 +116,9 @@ void ClassChecker::checkObjectPropertyRange()
      
       if(range.size() != 0)
       {
+        std::unordered_set<ClassBranch_t*> up;
+        class_graph_->getUpPtr(object_relation.second, up);
+
         ClassBranch_t* intersection = class_graph_->firstIntersection(up, range);
         if(intersection == nullptr)
         {
