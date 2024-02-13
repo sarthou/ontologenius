@@ -31,6 +31,9 @@ void ReasonerInverseOf::insertInverse(IndividualBranch_t* indiv_on, ObjectProper
   {
     if(prop.second == inv_indiv)
     {
+      if(prop.first == inv_prop)
+        return;
+        
       auto up_properties = ontology_->object_property_graph_.getUpPtrSafe(prop.first);
       if(std::find(up_properties.begin(), up_properties.end(), inv_prop) != up_properties.end())
         return;
