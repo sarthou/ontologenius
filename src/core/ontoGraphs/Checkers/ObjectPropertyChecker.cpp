@@ -11,6 +11,7 @@ size_t ObjectPropertyChecker::check()
 
   checkDisjoint();
   checkCharacteristics();
+  removeLoops();
   // TODO check domains and ranges possible intersection
 
   is_analysed = true;
@@ -47,6 +48,21 @@ void ObjectPropertyChecker::checkCharacteristics()
 
     if(properties.reflexive_property_ && properties.irreflexive_property_)
       print_error("'" + property->value() + "' can't be a 'reflexive' and 'irreflexive'");
+  }
+}
+
+void ObjectPropertyChecker::removeLoops()
+{
+  for(auto property : graph_vect_)
+  {
+    if(property->properties_.transitive_property_)
+    {
+      for(auto& inverse : property->inverses_)
+      {
+        if(inverse.elem->properties_.transitive_property_)
+          inverse.elem->properties_.transitive_property_ = false;
+      }
+    }
   }
 }
 
