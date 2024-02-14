@@ -4,6 +4,7 @@
 #include <string>
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 
@@ -53,6 +54,8 @@ public:
   virtual void initialize() {} // This function is called once the ontology is closed 
   virtual void setParameter(const std::string& name, const std::string& value)
   {
+    Display::warning("[Reasoners][" + getName() + "] does not take any parameter");
+    std::cout << name << " : " << value << std::endl;
     (void)name;
     (void)value;
   }
