@@ -316,8 +316,7 @@ index_t DataPropertyGraph::getLiteralIndex(const std::string& name)
 std::vector<index_t> DataPropertyGraph::getLiteralIndexes(const std::vector<std::string>& names)
 {
   std::vector<index_t> res;
-  for(auto& name : names)
-    res.push_back(getLiteralIndex(name));
+  std::transform(names.cbegin(), names.cend(), std::back_inserter(res), [this](const auto& name){ return getLiteralIndex(name); });
   return res; 
 }
 
@@ -333,8 +332,7 @@ std::string DataPropertyGraph::getLiteralIdentifier(index_t index)
 std::vector<std::string> DataPropertyGraph::getLiteralIdentifiers(const std::vector<index_t>& indexes)
 {
   std::vector<std::string> res;
-  for(auto& index : indexes)
-    res.push_back(getLiteralIdentifier(index));
+  std::transform(indexes.cbegin(), indexes.cend(), std::back_inserter(res), [this](const auto& index){ return getLiteralIdentifier(index); });
   return res; 
 }
 

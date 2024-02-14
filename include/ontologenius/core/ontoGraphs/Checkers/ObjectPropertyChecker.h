@@ -20,6 +20,7 @@ public:
 private:
   void checkDisjoint();
   void checkCharacteristics();
+  void removeLoops();
 
   ObjectPropertyGraph* property_graph_;
 };

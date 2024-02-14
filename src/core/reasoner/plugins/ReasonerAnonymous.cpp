@@ -18,6 +18,8 @@ void ReasonerAnonymous::setParameter(const std::string& name, const std::string&
 void ReasonerAnonymous::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
+  std::shared_lock<std::shared_timed_mutex> lock_class(ontology_->class_graph_.mutex_);
+  std::shared_lock<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
   std::vector<std::pair<std::string, InheritedRelationTriplets*>> used;
 
   for(auto indiv : ontology_->individual_graph_.get())
@@ -95,21 +97,30 @@ void ReasonerAnonymous::postReason()
 
 bool ReasonerAnonymous::checkClassesDisjointess(IndividualBranch_t* indiv, ClassBranch_t* class_equiv)
 {
+  auto it = disjoints_cache_.find(class_equiv);
   std::unordered_set<ClassBranch_t*> disjoints;
-  std::unordered_set<ClassBranch_t*> ups;
 
-  // same_as impact ?
-  for(auto is_a : indiv->is_a_)
+  if(it != disjoints_cache_.end())
   {
-    disjoints.clear();
-    ups.clear();
-    ontology_->class_graph_.getUpPtr(is_a.elem, ups);
-    ontology_->class_graph_.getDisjoint(class_equiv, disjoints);
-
-    if(ontology_->class_graph_.firstIntersection(ups, disjoints) != nullptr)
-      return true;
+    if(it->second.empty())
+      return false;
+    else
+      disjoints = it->second;
   }
-  return false;
+  else
+  {
+    ontology_->class_graph_.getDisjoint(class_equiv, disjoints);
+    disjoints_cache_[class_equiv] = disjoints;
+  }
+  
+  if(disjoints.size())
+  {
+    std::unordered_set<ClassBranch_t*> ups;
+    ontology_->individual_graph_.getUpPtr(indiv, ups);
+    return (ontology_->class_graph_.firstIntersection(ups, disjoints) != nullptr);
+  }
+  else
+    return false;
 }
 
 int ReasonerAnonymous::relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
@@ -118,9 +129,11 @@ int ReasonerAnonymous::relationExists(IndividualBranch_t* indiv_from, ObjectProp
   std::string explanation;
   ontology_->object_property_graph_.getDownPtr(property, down_properties);
 
-  for(size_t i = 0 ; i < indiv_from->object_relations_.size(); i++)
+  size_t relation_size = indiv_from->object_relations_.size();
+  size_t same_size = indiv_on->same_as_.size();
+  for(size_t i = 0 ; i < relation_size; i++)
   {
-    for(size_t j = 0 ; j < indiv_on->same_as_.size(); j++)
+    for(size_t j = 0 ; j < same_size; j++)
     {
       if(indiv_from->object_relations_[i].second->get() == indiv_on->same_as_[j].elem->get())
       {
@@ -236,7 +249,7 @@ bool ReasonerAnonymous::checkRestrictionFirstLayer(IndividualBranch_t* indiv, An
 {
   if(ano_elem->object_property_involved_ != nullptr)
   {
-    if(indiv->same_as_.size() > 0)
+    if(indiv->same_as_.size() != 0)
     {
       for(auto& indiv_same : indiv->same_as_)
       {
@@ -248,7 +261,7 @@ bool ReasonerAnonymous::checkRestrictionFirstLayer(IndividualBranch_t* indiv, An
   }
   else if (ano_elem->data_property_involved_ != nullptr)
   {
-    if(indiv->same_as_.size() > 0)
+    if(indiv->same_as_.size() != 0)
     {
       for(auto& indiv_same : indiv->same_as_)
       {
@@ -284,9 +297,10 @@ bool ReasonerAnonymous::checkRestriction(IndividualBranch_t* indiv, AnonymousCla
 
   if(ano_elem->object_property_involved_ != nullptr || ano_elem->data_property_involved_ != nullptr)
   {
-    if(indiv->same_as_.size() > 0)
+    if(indiv->same_as_.size() != 0)
     {
-      for(size_t i = 0 ; i < indiv->same_as_.size() ; i++)
+      size_t same_size = indiv->same_as_.size();
+      for(size_t i = 0 ; i < same_size; i++)
       {
         if(indiv->same_as_[i].elem->get() != indiv->get()) 
         {
@@ -333,11 +347,13 @@ bool ReasonerAnonymous::checkTypeRestriction(IndividualBranch_t* indiv, Anonymou
 
   if(indiv->same_as_.size() > 0)
   {
-    for(size_t i = 0 ; i < indiv->same_as_.size() ; i++)
+    size_t same_size = indiv->same_as_.size();
+    for(size_t i = 0 ; i < same_size; i++)
     {
       if(indiv->same_as_[i].elem->get() != indiv->get())
       {
-        for(size_t j = 0 ; j < indiv->same_as_[i].elem->is_a_.size() ; j++)
+        size_t is_a_size = indiv->same_as_[i].elem->is_a_.size();
+        for(size_t j = 0; j < is_a_size; j++)
         {
           if(existInInheritance(indiv->same_as_[i].elem->is_a_[j].elem, ano_elem->class_involved_->get(), used))
           {
@@ -352,14 +368,17 @@ bool ReasonerAnonymous::checkTypeRestriction(IndividualBranch_t* indiv, Anonymou
       }
     }
   }
-
-  for(size_t i = 0 ; i < indiv->is_a_.size() ; i++)
+  else
   {
-    if(existInInheritance(indiv->is_a_[i].elem, ano_elem->class_involved_->get(), used))
+    size_t is_a_size = indiv->is_a_.size();
+    for(size_t i = 0 ; i < is_a_size; i++)
     {
-      explanation = indiv->value() + "|isA|" + ano_elem->class_involved_->value() + ";";
-      used.emplace_back(explanation, indiv->is_a_.has_induced_inheritance_relations[i]);
-      return true;
+      if(existInInheritance(indiv->is_a_[i].elem, ano_elem->class_involved_->get(), used))
+      {
+        explanation = indiv->value() + "|isA|" + ano_elem->class_involved_->value() + ";";
+        used.emplace_back(explanation, indiv->is_a_.has_induced_inheritance_relations[i]);
+        return true;
+      }
     }
   }
 
@@ -380,7 +399,8 @@ bool ReasonerAnonymous::checkIndividualRestriction(IndividualBranch_t* indiv, An
 
   if(indiv->same_as_.size() != 0)
   {
-    for(size_t i = 0 ; i < indiv->same_as_.size() ; i++)
+    size_t same_size = indiv->same_as_.size();
+    for(size_t i = 0 ; i < same_size; i++)
     {
       if(indiv->same_as_[i].elem->get() != indiv->get())
       {

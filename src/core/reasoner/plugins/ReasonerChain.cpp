@@ -2,11 +2,12 @@
 
 #include <pluginlib/class_list_macros.hpp>
 
-namespace ontologenius {
+namespace ontologenius { // std::unordered_set::~unordered_set
 
 void ReasonerChain::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
+  std::lock_guard<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
 
   std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
   for(auto indiv : indivs)
@@ -18,7 +19,8 @@ void ReasonerChain::postReason()
       for(size_t rel_i = 0; rel_i < indiv->object_relations_.size(); rel_i++)
       {
         auto base_property = indiv->object_relations_[rel_i].first;
-        std::unordered_set<ObjectPropertyBranch_t*> properties = ontology_->object_property_graph_.getUpPtrSafe(base_property);
+        std::unordered_set<ObjectPropertyBranch_t*> properties;
+        ontology_->object_property_graph_.getUpPtr(base_property, properties);
         for(ObjectPropertyBranch_t* property : properties)
         {
           if(property->chains_.size() != 0)
