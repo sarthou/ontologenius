@@ -295,7 +295,8 @@ void Reasoners::applyConfig()
       for(auto elem : param.second.subelem.value())
       {
         if(elem.second.data && elem.second.data.value().size())
-          reasoners_[param.first]->setParameter(elem.first, elem.second.data.value()[0]);
+          for(auto reasoner_param : elem.second.data.value())
+            reasoners_[param.first]->setParameter(elem.first, reasoner_param);
       }
     }
     else
