@@ -255,8 +255,6 @@ std::unordered_set<index_t> ObjectPropertyGraph::getDomain(index_t value)
 
 void ObjectPropertyGraph::getDomainPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth)
 {
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
-
   if(branch != nullptr)
     for(auto& domain : branch->domains_)
       class_graph_->getDownPtr(domain.elem, res, depth);
@@ -290,7 +288,6 @@ std::unordered_set<index_t> ObjectPropertyGraph::getRange(index_t value)
 
 void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth)
 {
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
   if(branch != nullptr)
     for(auto& range : branch->ranges_)
       class_graph_->getDownPtr(range.elem, res, depth);
