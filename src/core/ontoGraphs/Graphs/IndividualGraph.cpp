@@ -2292,23 +2292,6 @@ void IndividualGraph::deepCopy(const IndividualGraph& other)
 {
   for(size_t i = 0; i < other.all_branchs_.size(); i++)
     cpyBranch(other.all_branchs_[i], all_branchs_[i]);
-
-  // Not sure if usefull or not 
-  /*auto myself = container_.find("myself");
-  if(myself != nullptr)
-  {
-    std::unordered_set<IndividualBranch_t*> same_as;
-    getSame(myself, same_as);
-    for(auto me : same_as)
-    {
-      auto it = std::remove_if (me->same_as_.begin(), me->same_as_.end(), [myself](const IndividualElement_t& elem)
-      {
-          return elem.elem == myself;
-      });
-      me->same_as_.erase(it, me->same_as_.end());
-    }
-    myself->same_as_.clear();
-  }*/
 }
 
 void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch_t* new_branch)
@@ -2321,7 +2304,12 @@ void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch
   new_branch->steady_dictionary_ = old_branch->steady_dictionary_;
 
   for(const auto& is_a : old_branch->is_a_)
-    new_branch->is_a_.emplace_back(is_a, class_graph_->container_.find(is_a.elem->value()));
+  {
+    if(is_a.infered && is_a.induced_traces.size())
+      new_branch->updated_ = true;
+    else
+      new_branch->is_a_.emplace_back(is_a, class_graph_->container_.find(is_a.elem->value()));
+  }
 
   for(const auto& same : old_branch->same_as_)
     new_branch->same_as_.emplace_back(same, container_.find(same.elem->value()));
@@ -2331,9 +2319,15 @@ void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch
 
   for(const auto& relation : old_branch->object_relations_)
   {
-    auto prop = object_property_graph_->container_.find(relation.first->value());
-    auto on = container_.find(relation.second->value());
-    new_branch->object_relations_.emplace_back(relation, prop, on);
+    // infered relations using traces should not be copied but recomputed
+    if(relation.infered && relation.induced_traces.size())
+      new_branch->updated_ = true;
+    else
+    {
+      auto prop = object_property_graph_->container_.find(relation.first->value());
+      auto on = container_.find(relation.second->value());
+      new_branch->object_relations_.emplace_back(relation, prop, on);
+    }
   }
 
   for(const auto& relation : old_branch->data_relations_)
@@ -2341,17 +2335,6 @@ void IndividualGraph::cpyBranch(IndividualBranch_t* old_branch, IndividualBranch
     auto prop = data_property_graph_->container_.find(relation.first->value());
     auto data = relation.second;
     new_branch->data_relations_.emplace_back(relation, prop, data);
-  }
-
-  for(const auto& induced : old_branch->object_relations_.has_induced_object_relations)
-  {
-    for(size_t i = 0; i < induced->triplets.size(); i++)
-    {
-      auto from = container_.find(induced->triplets[i].subject->value());
-      auto prop = object_property_graph_->container_.find(induced->triplets[i].predicate->value());
-      auto on = container_.find(induced->triplets[i].object->value());
-      new_branch->object_relations_.has_induced_object_relations[i]->push(from, prop, on);
-    }
   }
 }
 

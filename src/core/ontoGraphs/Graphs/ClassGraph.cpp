@@ -1499,7 +1499,13 @@ void ClassGraph::cpyBranch(ClassBranch_t* old_branch, ClassBranch_t* new_branch)
     new_branch->childs_.emplace_back(child, container_.find(child.elem->value()));
 
   for(const auto& mother : old_branch->mothers_)
-    new_branch->mothers_.emplace_back(mother, container_.find(mother.elem->value()));
+  {
+    // infered inheritance using traces should not be copied but recomputed
+    if(mother.infered && mother.induced_traces.size())
+      new_branch->updated_ = true;
+    else
+      new_branch->mothers_.emplace_back(mother, container_.find(mother.elem->value()));
+  }
 
   for(const auto& disjoint : old_branch->disjoints_)
     new_branch->disjoints_.emplace_back(disjoint, container_.find(disjoint.elem->value()));
