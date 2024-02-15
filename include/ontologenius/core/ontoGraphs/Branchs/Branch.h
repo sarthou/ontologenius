@@ -21,8 +21,7 @@ public:
   std::vector<Single_t<T*>> childs_;
   RelationsWithInductions<Single_t<T*>> mothers_;
 
-  explicit Branch_t(const std::string& value) : ValuedNode(value)
-    {};
+  explicit Branch_t(const std::string& value) : ValuedNode(value) {}
 };
 
 } // namespace ontologenius
