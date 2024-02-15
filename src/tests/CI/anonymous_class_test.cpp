@@ -96,7 +96,6 @@ TEST(global_tests, trace_cleaning)
 TEST(global_tests, cardinality_min_testing)
 {
   std::vector<std::string> res;
-  bool res_bool = false;
 
   onto_ptr->feeder.addProperty("pepper", "hasComponent", "bumperLeft");
   onto_ptr->feeder.addProperty("pepper", "hasComponent", "bumperRight");
