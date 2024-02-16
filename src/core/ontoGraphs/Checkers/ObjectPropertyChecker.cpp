@@ -26,12 +26,8 @@ void ObjectPropertyChecker::checkDisjoint()
   {
     std::unordered_set<ObjectPropertyBranch_t*> up;
     property_graph_->getUpPtr(property, up);
-    std::unordered_set<ObjectPropertyBranch_t*> disjoint;
 
-    for(ObjectPropertyBranch_t* it : up)
-      property_graph_->getDisjointPtr(it, disjoint);
-
-    ObjectPropertyBranch_t* intersection = property_graph_->firstIntersection(up, disjoint);
+    auto intersection = property_graph_->isDisjoint(up, up);
     if(intersection != nullptr)
       print_error("'" + property->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
   }

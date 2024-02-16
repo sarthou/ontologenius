@@ -42,6 +42,7 @@ void ReasonerChain::postReason()
                   {
                     try {
                       ontology_->individual_graph_.addRelation(indiv, chain.back(), used.first, 1.0, true);
+                      indiv->nb_updates_++;
                     }
                     catch(GraphException& e)
                     {
@@ -63,6 +64,7 @@ void ReasonerChain::postReason()
                       }
                     }
 
+                    nb_update_++;
                     explanations_.emplace_back("[ADD]" + indiv->value() + "|" + chain.back()->value() + "|" + used.first->value(),
                                                "[ADD]" + explanation_reference);
                   }

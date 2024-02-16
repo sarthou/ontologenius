@@ -40,6 +40,7 @@ void ReasonerTransitivity::postReason()
                 {
                   try {
                     ontology_->individual_graph_.addRelation(indiv, property, used.first, 1.0, true);
+                    indiv->nb_updates_++;
                   }
                   catch(GraphException& e)
                   {
@@ -61,6 +62,7 @@ void ReasonerTransitivity::postReason()
                     }
                   }
 
+                  nb_update_++;
                   explanations_.emplace_back("[ADD]" + indiv->value() + "|" + property->value() + "|" + used.first->value(),
                                               "[ADD]" + explanation_reference);
                 }

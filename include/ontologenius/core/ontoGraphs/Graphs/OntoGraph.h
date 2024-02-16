@@ -47,6 +47,11 @@ public:
   void getUpPtr(B* branch, std::unordered_set<B*>& res, int depth, unsigned int current_depth = 0);
   inline void getUpPtr(B* branch, std::unordered_set<B*>& res);
 
+  template <typename T> std::unordered_set<T> getDisjoint(const T& value);
+  void getDisjoint(B* branch, std::unordered_set<B*>& res);
+  B* isDisjoint(const std::unordered_set<B*>& set_base, B* branch);
+  B* isDisjoint(const std::unordered_set<B*>& set_base, const std::unordered_set<B*>& ups);
+
   bool addInheritage(const std::string& branch_base, const std::string& branch_inherited);
   bool addInheritage(B* branch, B* inherited);
   std::vector<std::pair<std::string, std::string>> removeInheritage(const std::string& branch_base, const std::string& branch_inherited);
@@ -315,6 +320,58 @@ void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res)
   if(res.insert(branch).second)
     for(auto& it : branch->mothers_)
       getUpPtr(it.elem, res);
+}
+
+template <typename B>
+template <typename T>
+std::unordered_set<T> OntoGraph<B>::getDisjoint(const T& value)
+{
+  std::unordered_set<T> res;
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+
+  B* branch = this->findBranch(value);
+  if(branch != nullptr)
+  {
+    std::unordered_set<B*> ups;
+    getUpPtr(branch, ups);
+    for(auto up : ups)
+      for(auto& disjoint : up->disjoints_)
+        getDown(disjoint.elem, res);
+  } 
+
+  return res;
+}
+
+template <typename B>
+void OntoGraph<B>::getDisjoint(B* branch, std::unordered_set<B*>& res)
+{
+  std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+
+  if(branch != nullptr)
+  {
+    std::unordered_set<B*> ups;
+    getUpPtr(branch, ups);
+    for(auto up : ups)
+      for(auto& disjoint : up->disjoints_)
+        getDownPtr(disjoint.elem, res);
+  }
+}
+
+template <typename B>
+B* OntoGraph<B>::isDisjoint(const std::unordered_set<B*>& set_base, B* branch)
+{
+  std::unordered_set<B*> ups;
+  getUpPtr(branch, ups);
+  return isDisjoint(set_base, ups);
+}
+
+template <typename B>
+B* OntoGraph<B>::isDisjoint(const std::unordered_set<B*>& set_base, const std::unordered_set<B*>& ups)
+{
+  std::unordered_set<B*> disjoints;
+  for(auto elem : set_base)
+    getDisjoint(elem, disjoints);
+  return this->firstIntersection(ups, disjoints);
 }
 
 // both branches can be created automatically

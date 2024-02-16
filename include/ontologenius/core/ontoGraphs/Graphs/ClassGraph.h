@@ -51,9 +51,6 @@ public:
 
   void deepCopy(const ClassGraph& other);
 
-  std::unordered_set<std::string> getDisjoint(const std::string& value);
-  std::unordered_set<index_t> getDisjoint(index_t value);
-  void getDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res);
   void getLocalDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res);
 
   std::unordered_set<std::string> getRelationFrom(const std::string& _class, int depth = -1);  //C3
@@ -126,8 +123,6 @@ private:
 
   bool checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t* prop, ClassBranch_t* on);
   bool checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* prop, LiteralNode* data);
-
-  template<typename T> std::unordered_set<T> getDisjoint(ClassBranch_t* branch);
 
   void cpyBranch(ClassBranch_t* old_branch, ClassBranch_t* new_branch);
 };

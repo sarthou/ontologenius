@@ -151,56 +151,6 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
   }
 }
 
-std::unordered_set<std::string> ObjectPropertyGraph::getDisjoint(const std::string& value)
-{
-  std::unordered_set<std::string> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
-
-  ObjectPropertyBranch_t* branch = container_.find(value);
-  if(branch != nullptr)
-  {
-    std::unordered_set<ObjectPropertyBranch_t*> ups;
-    getUpPtr(branch, ups);
-    for(auto up : ups)
-      for(auto& disjoint : up->disjoints_)
-        getDown(disjoint.elem, res);
-  }
-    
-  return res;
-}
-
-std::unordered_set<index_t> ObjectPropertyGraph::getDisjoint(index_t value)
-{
-  std::unordered_set<index_t> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
-
-  ObjectPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
-  if(branch != nullptr)
-  {
-    std::unordered_set<ObjectPropertyBranch_t*> ups;
-    getUpPtr(branch, ups);
-    for(auto up : ups)
-      for(auto& disjoint : up->disjoints_)
-        getDown(disjoint.elem, res);
-  }
-
-  return res;
-}
-
-void ObjectPropertyGraph::getDisjointPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
-
-  if(branch != nullptr)
-  {
-    std::unordered_set<ObjectPropertyBranch_t*> ups;
-    getUpPtr(branch, ups);
-    for(auto up : ups)
-      for(auto& disjoint : up->disjoints_)
-        getDownPtr(disjoint.elem, res);
-  }
-}
-
 std::unordered_set<std::string> ObjectPropertyGraph::getInverse(const std::string& value)
 {
   std::unordered_set<std::string> res;
