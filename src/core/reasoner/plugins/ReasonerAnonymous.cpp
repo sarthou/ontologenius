@@ -43,6 +43,8 @@ void ReasonerAnonymous::postReason()
               {
                 if(ontology_->individual_graph_.conditionalPushBack(anonymous->class_equiv_->individual_childs_, IndividualElement_t(indiv, 1.0, true)))
                 {
+                  indiv->nb_updates_++;
+                  anonymous->class_equiv_->nb_updates_++;
                   std::string explanation_reference = "";
                   
                   for(auto& induced_vector : used)
@@ -59,6 +61,7 @@ void ReasonerAnonymous::postReason()
                     }
                   }
 
+                  nb_update_++;
                   explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous->class_equiv_->value(),
                                              "[ADD]" + explanation_reference);
                   // once we get a valid equivalence for a class, we break out of the loop
