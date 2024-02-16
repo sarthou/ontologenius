@@ -24,12 +24,8 @@ void DataPropertyChecker::checkDisjoint()
   {
     std::unordered_set<DataPropertyBranch_t*> up;
     property_graph_->getUpPtr(property, up);
-    std::unordered_set<DataPropertyBranch_t*> disjoint;
 
-    for(DataPropertyBranch_t* it : up)
-      property_graph_->getDisjoint(it, disjoint);
-
-    DataPropertyBranch_t* intersection = property_graph_->firstIntersection(up, disjoint);
+    auto intersection = property_graph_->isDisjoint(up, up);
     if(intersection != nullptr)
       print_error("'" + property->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
   }

@@ -2211,11 +2211,7 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
     ClassBranch_t* intersection = class_graph_->firstIntersection(up_from, domain);
     if(intersection == nullptr)
     {
-      std::unordered_set<ClassBranch_t*> disjoints;
-      for(auto dom : domain)
-        class_graph_->getDisjoint(dom, disjoints);
-      intersection = class_graph_->firstIntersection(up_from, disjoints);
-
+      intersection = class_graph_->isDisjoint(domain, up_from);
       if(intersection == nullptr)
         from->flags_["domain"].push_back(prop->value());
       else
@@ -2232,11 +2228,7 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, ObjectProper
     ClassBranch_t* intersection = class_graph_->firstIntersection(up_on, range);
     if(intersection == nullptr)
     {
-      std::unordered_set<ClassBranch_t*> disjoints;
-      for(auto ran : range)
-        class_graph_->getDisjoint(ran, disjoints);
-      intersection = class_graph_->firstIntersection(up_on, disjoints);
-
+      intersection = class_graph_->isDisjoint(range, up_on);
       if(intersection == nullptr)
         from->flags_["range"].push_back(prop->value());
       else
@@ -2265,11 +2257,7 @@ bool IndividualGraph::checkRangeAndDomain(IndividualBranch_t* from, DataProperty
     ClassBranch_t* intersection = class_graph_->firstIntersection(up_from, domain);
     if(intersection == nullptr)
     {
-      std::unordered_set<ClassBranch_t*> disjoints;
-      for(auto dom : domain)
-        class_graph_->getDisjoint(dom, disjoints);
-      intersection = class_graph_->firstIntersection(up_from, disjoints);
-
+      intersection = class_graph_->isDisjoint(domain, up_from);
       if(intersection == nullptr)
         from->flags_["range"].push_back(prop->value());
       else

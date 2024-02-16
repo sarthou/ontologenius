@@ -49,6 +49,7 @@ public:
 
   template <typename T> std::unordered_set<T> getDisjoint(const T& value);
   void getDisjoint(B* branch, std::unordered_set<B*>& res);
+  B* isDisjoint(const std::unordered_set<B*>& set_base, const std::unordered_set<B*>& ups);
 
   bool addInheritage(const std::string& branch_base, const std::string& branch_inherited);
   bool addInheritage(B* branch, B* inherited);
@@ -353,6 +354,15 @@ void OntoGraph<B>::getDisjoint(B* branch, std::unordered_set<B*>& res)
       for(auto& disjoint : up->disjoints_)
         getDownPtr(disjoint.elem, res);
   }
+}
+
+template <typename B>
+B* OntoGraph<B>::isDisjoint(const std::unordered_set<B*>& set_base, const std::unordered_set<B*>& ups)
+{
+  std::unordered_set<B*> disjoints;
+  for(auto elem : set_base)
+    getDisjoint(elem, disjoints);
+  return this->firstIntersection(ups, disjoints);
 }
 
 // both branches can be created automatically
