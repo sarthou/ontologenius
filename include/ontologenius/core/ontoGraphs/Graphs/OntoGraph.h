@@ -413,7 +413,7 @@ void OntoGraph<B>::mitigate(B* branch)
     }
   }
 
-  RelationsWithInductions<Single_t<B*>> mothers = branch->mothers_;
+  RelationsWithInductions<Single_t<B*>>& mothers = branch->mothers_;
   for(Single_t<B*>& mother : mothers)
   {
     std::unordered_set<B*> down;

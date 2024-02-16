@@ -179,7 +179,7 @@ public:
   {
     int16_t code;
     auto res = this->callStr(action, param, code);
-    return (res != "ERR:SERVICE_FAIL") && (code != 0);
+    return (res != "ERR:SERVICE_FAIL") && (code == 0);
   }
 
 private:

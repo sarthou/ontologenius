@@ -25,6 +25,10 @@ public:
 	std::vector<ObjectRelationTriplets*> has_induced_object_relations;
 	std::vector<InheritedRelationTriplets*> has_induced_inheritance_relations;
 
+	RelationsWithInductions() = default;
+	RelationsWithInductions(const RelationsWithInductions& other) = delete;
+	~RelationsWithInductions() { clear(); }
+
 	inline size_t size() { return relations.size(); }
 	inline bool empty() { return relations.empty(); }
 	T& operator[](size_t index) { return relations[index]; }
