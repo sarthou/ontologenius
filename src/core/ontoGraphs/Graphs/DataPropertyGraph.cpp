@@ -191,57 +191,6 @@ LiteralNode* DataPropertyGraph::createLiteralUnsafe(const std::string& value)
   return literal;
 }
 
-std::unordered_set<std::string> DataPropertyGraph::getDisjoint(const std::string& value)
-{
-  std::unordered_set<std::string> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
-
-  DataPropertyBranch_t* branch = container_.find(value);
-  if(branch != nullptr)
-  {
-    std::unordered_set<DataPropertyBranch_t*> ups;
-    getUpPtr(branch, ups);
-    for(auto up : ups)
-      for(auto& disjoint : up->disjoints_)
-        getDown(disjoint.elem, res);
-  }
-    
-
-  return res;
-}
-
-std::unordered_set<index_t> DataPropertyGraph::getDisjoint(index_t value)
-{
-  std::unordered_set<index_t> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
-
-  DataPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
-  if(branch != nullptr)
-  {
-    std::unordered_set<DataPropertyBranch_t*> ups;
-    getUpPtr(branch, ups);
-    for(auto up : ups)
-      for(auto& disjoint : up->disjoints_)
-        getDown(disjoint.elem, res);
-  }
-
-  return res;
-}
-
-void DataPropertyGraph::getDisjointPtr(DataPropertyBranch_t* branch, std::unordered_set<DataPropertyBranch_t*>& res)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
-
-  if(branch != nullptr)
-  {
-    std::unordered_set<DataPropertyBranch_t*> ups;
-    getUpPtr(branch, ups);
-    for(auto up : ups)
-      for(auto& disjoint : up->disjoints_)
-        getDownPtr(disjoint.elem, res);
-  }
-}
-
 std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& value)
 {
   std::unordered_set<std::string> res;

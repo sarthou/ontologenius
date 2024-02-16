@@ -54,9 +54,6 @@ public:
   ObjectPropertyBranch_t* add(const std::string& value, ObjectPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
 
-  std::unordered_set<std::string> getDisjoint(const std::string& value);
-  std::unordered_set<index_t> getDisjoint(index_t value);
-  void getDisjointPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res);
   std::unordered_set<std::string> getInverse(const std::string& value);
   std::unordered_set<index_t> getInverse(index_t value);
   std::unordered_set<std::string> getDomain(const std::string& value);
