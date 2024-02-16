@@ -33,7 +33,7 @@ public:
   {
     mut_.lock();
     for(auto& fact : facts)
-      echo_messages.emplace_back(fact.first, compat::onto_ros::Time { (uint16_t) fact.second.sec, fact.second.nsec } );
+      echo_messages.emplace_back(fact.first, compat::onto_ros::Time { fact.second.sec, fact.second.nsec } );
     mut_.unlock();
   }
 
