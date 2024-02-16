@@ -26,7 +26,6 @@ class ClassBranch_t : public Branch_t<ClassBranch_t>
 {
 public:
   std::vector<IndividualElement_t> individual_childs_;
-  std::vector<ClassElement_t> disjoints_;
   std::vector<ClassObjectRelationElement_t> object_relations_;
   std::vector<ClassDataRelationElement_t> data_relations_;
   AnonymousClassBranches_t* equiv_relations_;
