@@ -64,10 +64,10 @@ void ReasonerAnonymous::postReason()
                   nb_update_++;
                   explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous->class_equiv_->value(),
                                              "[ADD]" + explanation_reference);
-                  // once we get a valid equivalence for a class, we break out of the loop
-                  break;
                 } 
               }
+              // once we get a valid equivalence for a class, we break out of the loop
+              break;
             } 
           }
           else
@@ -76,7 +76,11 @@ void ReasonerAnonymous::postReason()
         
         //Manages implicitly the NOT, MIN, MAX, EXACTLY cases
         if(tree_evaluation_result == false && anonymous->ano_elems_.size() != 0 && ontology_->individual_graph_.isA(indiv, anonymous->class_equiv_->get()) == true)
+        {
+          indiv->nb_updates_++;
+          anonymous->class_equiv_->nb_updates_++;
           ontology_->individual_graph_.removeInheritage(indiv, anonymous->class_equiv_, explanations_, true);
+        }
       }
       
       if(has_active_equiv)
