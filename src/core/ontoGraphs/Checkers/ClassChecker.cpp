@@ -33,22 +33,11 @@ void ClassChecker::checkDisjoint()
     std::unordered_set<ClassBranch_t*> up;
     class_graph_->getUpPtr(branch, up);
 
-    ClassBranch_t* intersection = nullptr;
-    ClassBranch_t* disjoint_with = nullptr;
-    for(ClassBranch_t* it : up)
-    {
-      ClassBranch_t* tmp_intersection = class_graph_->firstIntersection(up, it->disjoints_);
-      if(tmp_intersection != nullptr)
-      {
-        intersection = tmp_intersection;
-        disjoint_with = class_graph_->firstIntersection(up, intersection->disjoints_);
-        if(disjoint_with != nullptr)
-          break;
-      }
-    }
-
+    auto intersection = class_graph_->isDisjoint(up, up);
     if(intersection != nullptr)
     {
+      ClassBranch_t* disjoint_with = class_graph_->firstIntersection(up, intersection->disjoints_);
+
       if(disjoint_with != nullptr)
         print_error("'" + branch->value() + "' can't be a '" + intersection->value() + "' and a '"
         + disjoint_with->value() + "' because of disjonction between classes '"
