@@ -141,8 +141,8 @@
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#ObjectPropertyClient">ObjectPropertyClient</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getDown">getDown</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getDisjoint">getDisjoint</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getDomain">getDomain</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getRange">getRange</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getDomain">getDomain</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getRange">getRange</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getInverse">getInverse</a></b>(const std::string&amp; <i>name</i>)</td></tr>
             </tbody>
           </table>
@@ -179,11 +179,15 @@
           <h3 class="fn" id="getDisjoint"><a name="getDisjoint"></a><span class="type">std::vector&lt;std::string&gt;</span> ObjectPropertyClient::<span class="name">getDisjoint</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Gives all the disjoint properties of the property <i>name</i>.</p>
 
-          <h3 class="fn" id="getDomain"><a name="getDomain"></a><span class="type">std::vector&lt;std::string&gt;</span> ObjectPropertyClient::<span class="name">getDomain</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <h3 class="fn" id="getDomain"><a name="getDomain"></a><span class="type">std::vector&lt;std::string&gt;</span> ObjectPropertyClient::<span class="name">getDomain</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">int</span> <i>depth</i> = -1)</h3>
           <p>Gives all the domain classes of the property <i>name</i>.</p>
+          <p>The optional <i>depth</i> parameter can be set to limit tree propagation to a specific value.
+             The default value -1 represents no propagation limitation while the value 0 corresponds to the direct domains.</p>
 
-          <h3 class="fn" id="getRange"><a name="getRange"></a><span class="type">std::vector&lt;std::string&gt;</span> ObjectPropertyClient::<span class="name">getRange</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <h3 class="fn" id="getRange"><a name="getRange"></a><span class="type">std::vector&lt;std::string&gt;</span> ObjectPropertyClient::<span class="name">getRange</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">int</span> <i>depth</i> = -1)</h3>
           <p>Gives all the ranges classes of the property <i>name</i>.</p>
+          <p>The optional <i>depth</i> parameter can be set to limit tree propagation to a specific value.
+             The default value -1 represents no propagation limitation while the value 0 corresponds to the direct ranges.</p>
 
           <h3 class="fn" id="getInverse"><a name="getInverse"></a><span class="type">std::vector&lt;std::string&gt;</span> ObjectPropertyClient::<span class="name">getInverse</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Gives all the inverses properties of the property <i>name</i>.</p>
