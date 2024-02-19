@@ -51,8 +51,6 @@ public:
 
   void deepCopy(const ClassGraph& other);
 
-  void getLocalDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res);
-
   std::unordered_set<std::string> getRelationFrom(const std::string& _class, int depth = -1);  //C3
   std::unordered_set<index_t> getRelationFrom(index_t _class, int depth = -1);
   std::unordered_set<std::string> getRelatedFrom(const std::string& property);     //C3

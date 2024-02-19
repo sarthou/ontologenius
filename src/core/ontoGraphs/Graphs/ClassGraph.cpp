@@ -137,13 +137,6 @@ void ClassGraph::addDataRelation(ClassBranch_t* me, Pair_t<std::string, std::str
 *
 *********/
 
-void ClassGraph::getLocalDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*>& res)
-{
-  if(branch != nullptr)
-    for(auto& disjoint : branch->disjoints_)
-      getDownPtr(disjoint.elem, res);
-}
-
 std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& _class, int depth)
 {
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch_t>::mutex_);
