@@ -64,6 +64,8 @@ void ClassChecker::checkObjectPropertyDomain()
   for(auto& _class : graph_vect_)
   {
     std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
+    std::unordered_set<ClassBranch_t*> up;
+    class_graph_->getUpPtr(_class, up);
 
     for(ClassObjectRelationElement_t& object_relation : _class->object_relations_)
     {
@@ -75,14 +77,10 @@ void ClassChecker::checkObjectPropertyDomain()
 
       if(domain.size() != 0)
       {
-        std::unordered_set<ClassBranch_t*> up;
-        class_graph_->getUpPtr(_class, up);
-
-        ClassBranch_t* intersection = class_graph_->firstIntersection(up, domain);
-        if(intersection == nullptr)
+        auto intersection = class_graph_->checkDomainOrRange(domain, up);
+        if(intersection.first == false)
         {
-          intersection = class_graph_->isDisjoint(domain, up);
-          if(intersection == nullptr)
+          if(intersection.second == nullptr)
           {
             _class->flags_["domain"].push_back(object_relation.first->value());
             print_warning("'" + _class->value() + "' is not in domain of '" + object_relation.first->value() + "'");
@@ -101,8 +99,6 @@ void ClassChecker::checkObjectPropertyRange()
   {
     for(ClassObjectRelationElement_t& object_relation : _class->object_relations_)
     {
-      
-
       std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
       std::unordered_set<ObjectPropertyBranch_t*> prop_up;
       class_graph_->object_property_graph_->getUpPtr(object_relation.first, prop_up);
@@ -115,11 +111,10 @@ void ClassChecker::checkObjectPropertyRange()
         std::unordered_set<ClassBranch_t*> up;
         class_graph_->getUpPtr(object_relation.second, up);
 
-        ClassBranch_t* intersection = class_graph_->firstIntersection(up, range);
-        if(intersection == nullptr)
+        auto intersection = class_graph_->checkDomainOrRange(range, up);
+        if(intersection.first == false)
         {
-          intersection = class_graph_->isDisjoint(range, up);
-          if(intersection == nullptr)
+          if(intersection.second == nullptr)
           {
             _class->flags_["range"].push_back(object_relation.first->value());
             print_warning("'" + object_relation.second->value() + "' is not in range of '" + object_relation.first->value() + "'");
@@ -151,13 +146,12 @@ void ClassChecker::checkDataPropertyDomain()
 
       if(domain.size() != 0)
       {
-        ClassBranch_t* intersection = class_graph_->firstIntersection(up, domain);
-        if(intersection == nullptr)
+        auto intersection = class_graph_->checkDomainOrRange(domain, up);
+        if(intersection.first == false)
         {
-          intersection = class_graph_->isDisjoint(domain, up);
-          if(intersection == nullptr)
+          if(intersection.second == nullptr)
           {
-            _class->flags_["range"].push_back(relation.first->value());
+            _class->flags_["domain"].push_back(relation.first->value());
             print_warning("'" + _class->value() + "' is not in domain of '" + relation.first->value() + "'");
           }
           else

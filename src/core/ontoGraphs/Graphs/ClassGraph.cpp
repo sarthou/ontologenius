@@ -1338,6 +1338,22 @@ void ClassGraph::removeRelation(const std::string& class_from, const std::string
     throw GraphException("The subject class does not exist");
 }
 
+std::pair<bool, ClassBranch_t*> ClassGraph::checkDomainOrRange(const std::unordered_set<ClassBranch_t*>& domain_or_range, const std::unordered_set<ClassBranch_t*>& classes)
+{
+  ClassBranch_t* intersection = firstIntersection(classes, domain_or_range);
+  if(intersection == nullptr)
+  {
+    // since we cannot prove that it is part of the domain or range,
+    // we check if at least it is dijoint or not.
+    // intersection will be non-empty if there is a conflict
+    intersection = isDisjoint(domain_or_range, classes);
+    return {false, intersection};
+  }
+  else
+    return {true, nullptr}; // the class is part of the domain or range as an intersection exists
+                            // TODO if multiple domain or range we have to check all of them to be true
+}
+
 bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t* prop, ClassBranch_t* on)
 {
   std::unordered_set<ObjectPropertyBranch_t*> up_properties;
@@ -1345,19 +1361,22 @@ bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t
 
   //DOMAIN
   std::unordered_set<ClassBranch_t*> domain;
+  std::unordered_set<ClassBranch_t*> range;
   for(auto up_property : up_properties)
+  {
     object_property_graph_->getDomainPtr(up_property, domain);
+    object_property_graph_->getRangePtr(up_property, range);
+  }
 
   if(domain.size() != 0)
   {
     std::unordered_set<ClassBranch_t*> up_from;
     getUpPtr(from, up_from);
 
-    ClassBranch_t* intersection = firstIntersection(up_from, domain);
-    if(intersection == nullptr)
+    auto intersection = checkDomainOrRange(domain, up_from);
+    if(intersection.first == false)
     {
-      intersection = isDisjoint(domain, up_from);
-      if(intersection == nullptr)
+      if(intersection.second == nullptr)
         from->flags_["domain"].push_back(prop->value());
       else
         return false;
@@ -1365,20 +1384,15 @@ bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t
   }
 
   //RANGE
-  std::unordered_set<ClassBranch_t*> range;
-  for(auto up_property : up_properties)
-    object_property_graph_->getRangePtr(up_property, range);
-
   if(range.size() != 0)
   {
     std::unordered_set<ClassBranch_t*> up_on;
     getUpPtr(on, up_on);
 
-    ClassBranch_t* intersection = firstIntersection(up_on, range);
-    if(intersection == nullptr)
+    auto intersection = checkDomainOrRange(range, up_on);
+    if(intersection.first == false)
     {
-      intersection = isDisjoint(range, up_on);
-      if(intersection == nullptr)
+      if(intersection.second == nullptr)
         from->flags_["range"].push_back(prop->value());
       else
         return false;
@@ -1403,12 +1417,11 @@ bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* 
     std::unordered_set<ClassBranch_t*> up_from;
     getUpPtr(from, up_from);
 
-    ClassBranch_t* intersection = firstIntersection(up_from, domain);
-    if(intersection == nullptr)
+    auto intersection = checkDomainOrRange(domain, up_from);
+    if(intersection.first == false)
     {
-      intersection = isDisjoint(domain, up_from);
-      if(intersection == nullptr)
-        from->flags_["range"].push_back(prop->value());
+      if(intersection.second == nullptr)
+        from->flags_["domain"].push_back(prop->value());
       else
         return false;
     }

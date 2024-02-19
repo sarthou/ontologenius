@@ -131,11 +131,10 @@ void IndividualChecker::checkObectPropertyDomain()
 
       if(domain.size() != 0)
       {
-        ClassBranch_t* intersection = individual_graph_->class_graph_->firstIntersection(up, domain);
-        if(intersection == nullptr)
+        auto intersection = individual_graph_->class_graph_->checkDomainOrRange(domain, up);
+        if(intersection.first == false)
         {
-          intersection = individual_graph_->class_graph_->isDisjoint(domain, up);
-          if(intersection == nullptr)
+          if(intersection.second == nullptr)
           {
             indiv->flags_["domain"].push_back(object_relation.first->value());
             print_warning("Individual '" + indiv->value() + "' is not in domain of object property '" + object_relation.first->value() + "'");
@@ -167,11 +166,10 @@ void IndividualChecker::checkObectPropertyRange()
 
       if(range.size() != 0)
       {
-        ClassBranch_t* intersection = individual_graph_->class_graph_->firstIntersection(up, range);
-        if(intersection == nullptr)
+        auto intersection = individual_graph_->class_graph_->checkDomainOrRange(range, up);
+        if(intersection.first == false)
         {
-          intersection = individual_graph_->class_graph_->isDisjoint(range, up);
-          if(intersection == nullptr)
+          if(intersection.second == nullptr)
           {
             indiv->flags_["range"].push_back(object_relation.first->value());
             print_warning("Individual '" + object_relation.second->value() + "' is not in range of object property '" + object_relation.first->value() + "'");
@@ -203,13 +201,12 @@ void IndividualChecker::checkDataPropertyDomain()
 
       if(domain.size() != 0)
       {
-        ClassBranch_t* intersection = individual_graph_->class_graph_->firstIntersection(up, domain);
-        if(intersection == nullptr)
+        auto intersection = individual_graph_->class_graph_->checkDomainOrRange(domain, up);
+        if(intersection.first == false)
         {
-          intersection = individual_graph_->class_graph_->isDisjoint(domain, up);
-          if(intersection == nullptr)
+          if(intersection.second == nullptr)
           {
-            indiv->flags_["range"].push_back(relation.first->value());
+            indiv->flags_["domain"].push_back(relation.first->value());
             print_warning("Individual '" + indiv->value() + "' is not in domain of data property '" + relation.first->value() + "'");
           }
           else
