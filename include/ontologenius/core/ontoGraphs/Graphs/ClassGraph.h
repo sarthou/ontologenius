@@ -93,6 +93,8 @@ public:
   void removeRelation(const std::string& class_from, const std::string& property, const std::string& class_on);
   void removeRelation(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data);
 
+  std::pair<bool, ClassBranch_t*> checkDomainOrRange(const std::unordered_set<ClassBranch_t*>& domain_or_range, const std::unordered_set<ClassBranch_t*>& classes);
+
 private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
