@@ -55,8 +55,8 @@ public:
   LiteralNode* createLiteral(const std::string& value);
   LiteralNode* createLiteralUnsafe(const std::string& value);
 
-  std::unordered_set<std::string> getDomain(const std::string& value);
-  std::unordered_set<index_t> getDomain(index_t value);
+  std::unordered_set<std::string> getDomain(const std::string& value, size_t depth = -1);
+  std::unordered_set<index_t> getDomain(index_t value, size_t depth = -1);
   void getDomainPtr(DataPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
   std::unordered_set<std::string> getRange(const std::string& value);
   std::unordered_set<index_t> getRange(index_t value);

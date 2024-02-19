@@ -33,13 +33,19 @@ public:
   /// @brief Gives all the domain classes of the object property specified in the parameter.
   /// @param index is an object property identifier.
   /// @return a vector of identifiers of classes.
-  std::vector<int64_t> getDomain(int64_t index);
+  std::vector<int64_t> getDomain(int64_t index, int depth = -1);
   /// @brief Gives all the ranges classes of the object property specified in the parameter.
   /// @param index is an object property identifier.
+  /// @param depth can be set to limit tree propagation to a specific value.
+  /// The default value -1 represents no propagation limitation while the value 0
+  /// corresponds to the direct domains
   /// @return a vector of identifiers of classes.
-  std::vector<int64_t> getRange(int64_t index);
+  std::vector<int64_t> getRange(int64_t index, int depth = -1);
   /// @brief Gives all the inverses properties of the one specified in the parameter.
   /// @param index is an object property identifier.
+  /// @param depth can be set to limit tree propagation to a specific value.
+  /// The default value -1 represents no propagation limitation while the value 0
+  /// corresponds to the direct ranges
   /// @return a vector of identifiers of object properties.
   std::vector<int64_t> getInverse(int64_t index);
 

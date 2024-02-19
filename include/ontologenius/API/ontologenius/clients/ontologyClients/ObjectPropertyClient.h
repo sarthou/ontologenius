@@ -32,12 +32,18 @@ public:
   std::vector<std::string> getDisjoint(const std::string& name);
   /// @brief Gives all the domain classes of the object property specified in the parameter.
   /// @param name is an object property identifier.
+  /// @param depth can be set to limit tree propagation to a specific value.
+  /// The default value -1 represents no propagation limitation while the value 0
+  /// corresponds to the direct domains
   /// @return a vector of identifiers of classes.
-  std::vector<std::string> getDomain(const std::string& name);
+  std::vector<std::string> getDomain(const std::string& name, int depth = -1);
   /// @brief Gives all the ranges classes of the object property specified in the parameter.
   /// @param name is an object property identifier.
+  /// @param depth can be set to limit tree propagation to a specific value.
+  /// The default value -1 represents no propagation limitation while the value 0
+  /// corresponds to the direct ranges
   /// @return a vector of identifiers of classes.
-  std::vector<std::string> getRange(const std::string& name);
+  std::vector<std::string> getRange(const std::string& name, int depth = -1);
   /// @brief Gives all the inverses properties of the one specified in the parameter.
   /// @param name is an object property identifier.
   /// @return a vector of identifiers of object properties.

@@ -56,11 +56,11 @@ public:
 
   std::unordered_set<std::string> getInverse(const std::string& value);
   std::unordered_set<index_t> getInverse(index_t value);
-  std::unordered_set<std::string> getDomain(const std::string& value);
-  std::unordered_set<index_t> getDomain(index_t value);
+  std::unordered_set<std::string> getDomain(const std::string& value, size_t depth = -1);
+  std::unordered_set<index_t> getDomain(index_t value, size_t depth = -1);
   void getDomainPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
-  std::unordered_set<std::string> getRange(const std::string& value);
-  std::unordered_set<index_t> getRange(index_t value);
+  std::unordered_set<std::string> getRange(const std::string& value, size_t depth = -1);
+  std::unordered_set<index_t> getRange(index_t value, size_t depth = -1);
   void getRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
 
   bool addInverseOf(const std::string& from, const std::string& on);

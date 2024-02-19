@@ -191,7 +191,7 @@ LiteralNode* DataPropertyGraph::createLiteralUnsafe(const std::string& value)
   return literal;
 }
 
-std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& value)
+std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& value, size_t depth)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
@@ -199,12 +199,12 @@ std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& 
   DataPropertyBranch_t* branch = container_.find(value);
   if(branch != nullptr)
     for(auto& domain : branch->domains_)
-      class_graph_->getDownSafe(domain.elem, res);
+      class_graph_->getDownSafe(domain.elem, res, depth);
 
   return res;
 }
 
-std::unordered_set<index_t> DataPropertyGraph::getDomain(index_t value)
+std::unordered_set<index_t> DataPropertyGraph::getDomain(index_t value, size_t depth)
 {
   std::unordered_set<index_t> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
@@ -212,7 +212,7 @@ std::unordered_set<index_t> DataPropertyGraph::getDomain(index_t value)
   DataPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
   if(branch != nullptr)
     for(auto& domain : branch->domains_)
-      class_graph_->getDownSafe(domain.elem, res);
+      class_graph_->getDownSafe(domain.elem, res, depth);
 
   return res;
 }
