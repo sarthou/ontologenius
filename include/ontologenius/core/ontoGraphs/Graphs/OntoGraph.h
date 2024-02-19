@@ -49,6 +49,7 @@ public:
 
   template <typename T> std::unordered_set<T> getDisjoint(const T& value);
   void getDisjoint(B* branch, std::unordered_set<B*>& res);
+  void getLocalDisjoint(B* branch, std::unordered_set<B*>& res);
   B* isDisjoint(const std::unordered_set<B*>& set_base, B* branch);
   B* isDisjoint(const std::unordered_set<B*>& set_base, const std::unordered_set<B*>& ups);
 
@@ -358,6 +359,19 @@ void OntoGraph<B>::getDisjoint(B* branch, std::unordered_set<B*>& res)
 }
 
 template <typename B>
+void OntoGraph<B>::getLocalDisjoint(B* branch, std::unordered_set<B*>& res)
+{
+  if(branch != nullptr)
+  {
+    std::unordered_set<B*> ups;
+    getUpPtr(branch, ups);
+    for(auto up : ups)
+      for(auto& disjoint : up->disjoints_)
+        res.insert(disjoint.elem);
+  }
+}
+
+template <typename B>
 B* OntoGraph<B>::isDisjoint(const std::unordered_set<B*>& set_base, B* branch)
 {
   std::unordered_set<B*> ups;
@@ -370,7 +384,7 @@ B* OntoGraph<B>::isDisjoint(const std::unordered_set<B*>& set_base, const std::u
 {
   std::unordered_set<B*> disjoints;
   for(auto elem : set_base)
-    getDisjoint(elem, disjoints);
+    getLocalDisjoint(elem, disjoints);
   return this->firstIntersection(ups, disjoints);
 }
 
