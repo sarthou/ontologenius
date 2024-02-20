@@ -76,8 +76,6 @@ private:
 
   void cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch);
   void cpyChainOfBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch);
-
-  std::vector<std::vector<ObjectPropertyBranch_t*>> getInvertChains(const std::vector<ObjectPropertyBranch_t*>& partial_res, const std::vector<ObjectPropertyBranch_t*>& chain);
 };
 
 } // namespace ontologenius

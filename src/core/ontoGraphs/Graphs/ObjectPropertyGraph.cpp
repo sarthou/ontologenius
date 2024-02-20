@@ -394,24 +394,4 @@ void ObjectPropertyGraph::cpyChainOfBranch(ObjectPropertyBranch_t* old_branch, O
   }
 }
 
-std::vector<std::vector<ObjectPropertyBranch_t*>> ObjectPropertyGraph::getInvertChains(const std::vector<ObjectPropertyBranch_t*>& partial_res, const std::vector<ObjectPropertyBranch_t*>& chain)
-{
-  std::vector<std::vector<ObjectPropertyBranch_t*>> res;
-
-  for(auto invert : chain.front()->inverses_)
-  {
-    std::vector<ObjectPropertyBranch_t*> invert_chain = partial_res;
-    invert_chain.push_back(invert.elem);
-    if(chain.size() > 1)
-    {
-      auto local_res = getInvertChains(invert_chain, {chain.begin() + 1, chain.end()});
-      res.insert(res.end(), local_res.begin(), local_res.end());
-    }
-    else
-      res.emplace_back(invert_chain);
-  }
-
-  return res;
-}
-
 } // namespace ontologenius
