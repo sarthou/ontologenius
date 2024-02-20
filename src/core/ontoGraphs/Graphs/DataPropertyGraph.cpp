@@ -197,9 +197,9 @@ std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& 
   std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
 
   DataPropertyBranch_t* branch = container_.find(value);
+  std::unordered_set<DataPropertyBranch_t*> up_trace;
   if(branch != nullptr)
-    for(auto& domain : branch->domains_)
-      class_graph_->getDownSafe(domain.elem, res, depth);
+    getDomain(branch, depth, res, up_trace);
 
   return res;
 }
@@ -210,20 +210,39 @@ std::unordered_set<index_t> DataPropertyGraph::getDomain(index_t value, size_t d
   std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
 
   DataPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  std::unordered_set<DataPropertyBranch_t*> up_trace;
   if(branch != nullptr)
-    for(auto& domain : branch->domains_)
-      class_graph_->getDownSafe(domain.elem, res, depth);
+    getDomain(branch, depth, res, up_trace);
 
   return res;
 }
 
 void DataPropertyGraph::getDomainPtr(DataPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth)
 {
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
-
+  std::unordered_set<DataPropertyBranch_t*> up_trace;
   if(branch != nullptr)
-    for(auto& domain : branch->domains_)
-      class_graph_->getDownPtr(domain.elem, res, depth);
+    getDomainPtr(branch, depth, res, up_trace);
+}
+
+template<typename T>
+void DataPropertyGraph::getDomain(DataPropertyBranch_t* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<DataPropertyBranch_t*>& up_trace)
+{
+  for(auto& domain : branch->domains_)
+    class_graph_->getDown(domain.elem, res, depth);
+
+  for(auto& mother : branch->mothers_)
+    if(up_trace.insert(mother.elem).second)
+      getDomain(mother.elem, depth, res, up_trace);
+}
+
+void DataPropertyGraph::getDomainPtr(DataPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& res, std::unordered_set<DataPropertyBranch_t*>& up_trace)
+{
+  for(auto& domain : branch->domains_)
+    class_graph_->getDownPtr(domain.elem, res, depth);
+
+  for(auto& mother : branch->mothers_)
+    if(up_trace.insert(mother.elem).second)
+      getDomainPtr(mother.elem, depth, res, up_trace);
 }
 
 std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& value)

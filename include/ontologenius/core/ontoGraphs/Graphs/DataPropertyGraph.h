@@ -70,6 +70,9 @@ private:
   ClassGraph* class_graph_;
   BranchContainerSet<LiteralNode> literal_container_;
 
+  template<typename T> void getDomain(DataPropertyBranch_t* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<DataPropertyBranch_t*>& up_trace);
+  void getDomainPtr(DataPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& res, std::unordered_set<DataPropertyBranch_t*>& up_trace);
+
   void cpyBranch(DataPropertyBranch_t* old_branch, DataPropertyBranch_t* new_branch);
 };
 

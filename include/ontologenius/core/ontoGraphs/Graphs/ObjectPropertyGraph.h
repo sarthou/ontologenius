@@ -62,6 +62,7 @@ public:
   std::unordered_set<std::string> getRange(const std::string& value, size_t depth = -1);
   std::unordered_set<index_t> getRange(index_t value, size_t depth = -1);
   void getRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
+  void getDomainAndRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& domains, std::unordered_set<ClassBranch_t*>& ranges, size_t depth = -1);
 
   bool addInverseOf(const std::string& from, const std::string& on);
   bool removeInverseOf(const std::string& from, const std::string& on);
@@ -73,6 +74,12 @@ public:
 
 private:
   ClassGraph* class_graph_;
+
+  template<typename T> void getDomain(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<ObjectPropertyBranch_t*>& up_trace);
+  void getDomainPtr(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& res, std::unordered_set<ObjectPropertyBranch_t*>& up_trace);
+  template<typename T> void getRange(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<ObjectPropertyBranch_t*>& up_trace);
+  void getRangePtr(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& res, std::unordered_set<ObjectPropertyBranch_t*>& up_trace);
+  void getDomainAndRangePtr(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& domains, std::unordered_set<ClassBranch_t*>& ranges, std::unordered_set<ObjectPropertyBranch_t*>& up_trace);
 
   void cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch);
   void cpyChainOfBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch);
