@@ -123,11 +123,8 @@ void IndividualChecker::checkObectPropertyDomain()
 
     for(IndivObjectRelationElement_t& object_relation : indiv->object_relations_)
     {
-      std::unordered_set<ObjectPropertyBranch_t*> prop_up;
-      individual_graph_->object_property_graph_->getUpPtr(object_relation.first, prop_up);
       std::unordered_set<ClassBranch_t*> domain;
-      for(auto prop : prop_up)
-        individual_graph_->object_property_graph_->getDomainPtr(prop, domain);
+      individual_graph_->object_property_graph_->getDomainPtr(object_relation.first, domain, 0);
 
       if(domain.size() != 0)
       {
@@ -155,17 +152,14 @@ void IndividualChecker::checkObectPropertyRange()
   {
     for(IndivObjectRelationElement_t& object_relation : indiv->object_relations_)
     {
-      std::unordered_set<ClassBranch_t*> up;
-      individual_graph_->getUpPtr(object_relation.second, up);
-
-      std::unordered_set<ObjectPropertyBranch_t*> prop_up;
-      individual_graph_->object_property_graph_->getUpPtr(object_relation.first, prop_up);
       std::unordered_set<ClassBranch_t*> range;
-      for(auto prop : prop_up)
-        individual_graph_->object_property_graph_->getRangePtr(prop, range);
+      individual_graph_->object_property_graph_->getRangePtr(object_relation.first, range, 0);
 
       if(range.size() != 0)
       {
+        std::unordered_set<ClassBranch_t*> up;
+        individual_graph_->getUpPtr(object_relation.second, up);
+
         auto intersection = individual_graph_->class_graph_->checkDomainOrRange(range, up);
         if(intersection.first == false)
         {
@@ -193,11 +187,8 @@ void IndividualChecker::checkDataPropertyDomain()
 
     for(IndivDataRelationElement_t& relation : indiv->data_relations_)
     {
-      std::unordered_set<DataPropertyBranch_t*> prop_up;
-      individual_graph_->data_property_graph_->getUpPtr(relation.first, prop_up);
       std::unordered_set<ClassBranch_t*> domain;
-      for(auto prop : prop_up)
-        individual_graph_->data_property_graph_->getDomainPtr(prop, domain);
+      individual_graph_->data_property_graph_->getDomainPtr(relation.first, domain, 0);
 
       if(domain.size() != 0)
       {

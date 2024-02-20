@@ -50,19 +50,16 @@ void ClassChecker::checkDisjoint()
 
 void ClassChecker::checkObjectPropertyDomain()
 {
+  std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
   for(auto& _class : graph_vect_)
   {
-    std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
     std::unordered_set<ClassBranch_t*> up;
     class_graph_->getUpPtr(_class, up);
 
     for(ClassObjectRelationElement_t& object_relation : _class->object_relations_)
     {
-      std::unordered_set<ObjectPropertyBranch_t*> prop_up;
-      class_graph_->object_property_graph_->getUpPtr(object_relation.first, prop_up);
       std::unordered_set<ClassBranch_t*> domain;
-      for(auto prop : prop_up)
-        class_graph_->object_property_graph_->getDomainPtr(prop, domain);
+      class_graph_->object_property_graph_->getDomainPtr(object_relation.first, domain, 0);
 
       if(domain.size() != 0)
       {
@@ -84,16 +81,14 @@ void ClassChecker::checkObjectPropertyDomain()
 
 void ClassChecker::checkObjectPropertyRange()
 {
+  std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
+
   for(auto& _class : graph_vect_)
   {
     for(ClassObjectRelationElement_t& object_relation : _class->object_relations_)
     {
-      std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
-      std::unordered_set<ObjectPropertyBranch_t*> prop_up;
-      class_graph_->object_property_graph_->getUpPtr(object_relation.first, prop_up);
       std::unordered_set<ClassBranch_t*> range;
-      for(auto prop : prop_up)
-        class_graph_->object_property_graph_->getRangePtr(prop, range);
+      class_graph_->object_property_graph_->getRangePtr(object_relation.first, range, 0);
      
       if(range.size() != 0)
       {
@@ -118,20 +113,17 @@ void ClassChecker::checkObjectPropertyRange()
 
 void ClassChecker::checkDataPropertyDomain()
 {
+  std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
+
   for(auto& _class : graph_vect_)
   {
     std::unordered_set<ClassBranch_t*> up;
     class_graph_->getUpPtr(_class, up);
 
-    std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
-
     for(ClassDataRelationElement_t& relation : _class->data_relations_)
     {
-      std::unordered_set<DataPropertyBranch_t*> prop_up;
-      class_graph_->data_property_graph_->getUpPtr(relation.first, prop_up);
       std::unordered_set<ClassBranch_t*> domain;
-      for(auto prop : prop_up)
-        class_graph_->data_property_graph_->getDomainPtr(prop, domain);
+      class_graph_->data_property_graph_->getDomainPtr(relation.first, domain, 0);
 
       if(domain.size() != 0)
       {

@@ -1349,18 +1349,11 @@ std::pair<bool, ClassBranch_t*> ClassGraph::checkDomainOrRange(const std::unorde
 
 bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t* prop, ClassBranch_t* on)
 {
-  std::unordered_set<ObjectPropertyBranch_t*> up_properties;
-  object_property_graph_->getUpPtr(prop, up_properties);
-
-  //DOMAIN
   std::unordered_set<ClassBranch_t*> domain;
   std::unordered_set<ClassBranch_t*> range;
-  for(auto up_property : up_properties)
-  {
-    object_property_graph_->getDomainPtr(up_property, domain);
-    object_property_graph_->getRangePtr(up_property, range);
-  }
+  object_property_graph_->getDomainAndRangePtr(prop, domain, range, 0);
 
+  //DOMAIN
   if(domain.size() != 0)
   {
     std::unordered_set<ClassBranch_t*> up_from;
@@ -1397,13 +1390,9 @@ bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, ObjectPropertyBranch_t
 
 bool ClassGraph::checkRangeAndDomain(ClassBranch_t* from, DataPropertyBranch_t* prop, LiteralNode* data)
 {
-  std::unordered_set<DataPropertyBranch_t*> up_properties;
-  data_property_graph_->getUpPtr(prop, up_properties);
-
   //DOMAIN
   std::unordered_set<ClassBranch_t*> domain;
-  for(auto up_property : up_properties)
-    data_property_graph_->getDomainPtr(up_property, domain);
+  data_property_graph_->getDomainPtr(prop, domain, 0);
 
   if(domain.size() != 0)
   {
