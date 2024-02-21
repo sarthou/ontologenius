@@ -47,8 +47,8 @@ public:
   void setLanguage(const std::string& language) {language_ = language; }
   std::string getLanguage() {return language_; }
 
-  std::vector<B*> get() { return this->all_branchs_; }
-  std::vector<B*> getSafe()
+  const std::vector<B*>& get() { return this->all_branchs_; }
+  const std::vector<B*>& getSafe()
   {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
     return this->all_branchs_;
