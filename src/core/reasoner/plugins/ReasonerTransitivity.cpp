@@ -19,10 +19,11 @@ void ReasonerTransitivity::postReason()
       {
         auto base_property = indiv->object_relations_[rel_i].first;
         std::unordered_set<ObjectPropertyBranch_t*> properties;
-        ontology_->object_property_graph_.getUpPtr(base_property, properties);
+        getUpPtrTransitive(base_property, properties);
+        //ontology_->object_property_graph_.getUpPtr(base_property, properties); // dedicated getUp with transitive
         for(ObjectPropertyBranch_t* property : properties)
         {
-          if(property->properties_.transitive_property_)
+          //if(property->properties_.transitive_property_)
           {
             has_active_transitivity = true;
             auto end_indivs = resolveChain(indiv->object_relations_[rel_i].second, property, 1);
@@ -77,6 +78,16 @@ void ReasonerTransitivity::postReason()
       else
         indiv->flags_.erase("transi");
     }
+}
+
+void ReasonerTransitivity::getUpPtrTransitive(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*> res)
+{
+  if(branch->properties_.transitive_property_)
+    if(res.insert(branch).second == false)
+      return;
+
+  for(auto& mother : branch->mothers_)
+    getUpPtrTransitive(mother.elem, res);
 }
 
 std::vector<std::pair<IndividualBranch_t*, UsedVector>> ReasonerTransitivity::resolveChain(IndividualBranch_t* indiv, ObjectPropertyBranch_t* property, size_t current_length)
