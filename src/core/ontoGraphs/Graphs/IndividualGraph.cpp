@@ -1415,17 +1415,12 @@ bool IndividualGraph::isATemplate(IndividualBranch_t* branch, const T& class_sel
 {
   if(branch != nullptr)
   {
-    if(branch->same_as_.size())
-    {
-      for(auto& it : branch->same_as_)
-        for(auto& is_a : it.elem->is_a_)
-          if(class_graph_->existInInheritance(is_a.elem, class_selector))
-            return true;
-    }
+    if(branch->same_as_.empty())
+      return std::any_of(branch->is_a_.cbegin(), branch->is_a_.cend(), [this, class_selector](const auto& is_a){ return class_graph_->existInInheritance(is_a.elem, class_selector); });
     else
     {
-      for(auto& is_a : branch->is_a_)
-        if(class_graph_->existInInheritance(is_a.elem, class_selector))
+      for(auto& it : branch->same_as_)
+        if(std::any_of(it.elem->is_a_.cbegin(), it.elem->is_a_.cend(), [this, class_selector](const auto& is_a){ return class_graph_->existInInheritance(is_a.elem, class_selector); }))
           return true;
     }
   }
