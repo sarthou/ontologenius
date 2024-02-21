@@ -211,12 +211,7 @@ bool OntoGraph<B>::existInInheritance(B* branch, const T& selector)
   if(this->compare(branch, selector))
     return true;
   else
-  {
-    for(auto& mother : branch->mothers_)
-      if(existInInheritance(mother.elem, selector))
-        return true;
-  }
-  return false;
+    return std::any_of(branch->mothers_.begin(), branch->mothers_.end(), [selector, this](const auto& mother){ return existInInheritance(mother.elem, selector); } );
 }
 
 template <typename B>
