@@ -356,7 +356,11 @@ std::string OntologyTtlReader::getSubject(const std::string& element)
   {
     if(element[0] == '<')
     {
-      size_t pose = element.find_last_of("#/");
+      size_t pose = element.rfind('/');
+      size_t dash_pose = element.find('#', pose);
+      if(dash_pose != std::string::npos)
+        pose = dash_pose;
+
       if(pose != std::string::npos)
         return element.substr(pose + 1, element.size() - pose -2);
       else
@@ -410,17 +414,15 @@ std::pair<std::string, std::string> OntologyTtlReader::getObject(const std::stri
   {
     if(element[0] == '<')
     {
-      size_t pose = element.rfind('#');
+      size_t pose = element.rfind('/');
+      size_t dash_pose = element.find('#', pose);
+      if(dash_pose != std::string::npos)
+        pose = dash_pose;
+
       if(pose != std::string::npos)
         object.first = element.substr(pose + 1, element.size() - pose -2);
       else
-      {
-        pose = element.rfind('/');
-        if(pose != std::string::npos)
-          object.first = element.substr(pose + 1, element.size() - pose -2);
-        else
-          object.first = element.substr(1, element.size() - 2);
-      }
+        object.first = element.substr(1, element.size() - 2);
 
       return object;
     }
