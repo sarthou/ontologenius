@@ -9,8 +9,7 @@ void ReasonerChain::postReason()
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   std::lock_guard<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
 
-  std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
-  for(auto indiv : indivs)
+  for(auto indiv : ontology_->individual_graph_.get())
     if((indiv->updated_ == true) || (indiv->flags_.find("chain") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation())
     {
       bool has_active_chain = false;
@@ -41,7 +40,7 @@ void ReasonerChain::postReason()
                   if(!relationExists(indiv, chain.back(), used.first))
                   {
                     try {
-                      ontology_->individual_graph_.addRelation(indiv, chain.back(), used.first, 1.0, true);
+                      ontology_->individual_graph_.addRelation(indiv, chain.back(), used.first, 1.0, true, false);
                       indiv->nb_updates_++;
                     }
                     catch(GraphException& e)

@@ -9,8 +9,7 @@ void ReasonerTransitivity::postReason()
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
   std::lock_guard<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
 
-  std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
-  for(auto indiv : indivs)
+  for(auto indiv : ontology_->individual_graph_.get())
     if((indiv->updated_ == true) || (indiv->flags_.find("transi") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation())
     {
       bool has_active_transitivity = false;
@@ -39,7 +38,7 @@ void ReasonerTransitivity::postReason()
                 if(!relationExists(indiv, property, used.first))
                 {
                   try {
-                    ontology_->individual_graph_.addRelation(indiv, property, used.first, 1.0, true);
+                    ontology_->individual_graph_.addRelation(indiv, property, used.first, 1.0, true, false);
                     indiv->nb_updates_++;
                   }
                   catch(GraphException& e)

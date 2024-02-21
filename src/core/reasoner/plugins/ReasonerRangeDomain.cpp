@@ -14,12 +14,11 @@ void ReasonerRangeDomain::postReason()
 void ReasonerRangeDomain::postReasonIndividuals()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-  std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
 
   std::map<std::string, std::vector<std::string>>::iterator it_range;
   std::map<std::string, std::vector<std::string>>::iterator it_domain;
 
-  for(auto& indiv : indivs)
+  for(auto& indiv : ontology_->individual_graph_.get())
     if(indiv->updated_ == true || indiv->hasUpdatedObjectRelation() || indiv->hasUpdatedDataRelation())
     {
       it_range = indiv->flags_.find("range");
