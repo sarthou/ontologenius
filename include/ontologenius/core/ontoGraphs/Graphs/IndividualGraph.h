@@ -103,7 +103,7 @@ public:
   bool addInheritageUnsafe(IndividualBranch_t* branch, const std::string& class_inherited);
   bool addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
   bool addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
-  int addRelation(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba = 1.0, bool infered = false);
+  int addRelation(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba = 1.0, bool infered = false, bool check_existance = true);
   int addRelation(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, LiteralNode* data, double proba = 1.0, bool infered = false);
   void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on);
   void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data);

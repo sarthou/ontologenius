@@ -1725,7 +1725,7 @@ bool IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const
     return false;
 }
 
-int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba, bool infered)
+int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba, bool infered, bool check_existance)
 {
   if(object_property_graph_->isIrreflexive(property))
   {
@@ -1741,8 +1741,8 @@ int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, ObjectPropertyB
   }
 
   int index = -1;
-
-  index = indiv_from->objectRelationExists(property, indiv_on);
+  if(check_existance)
+    index = indiv_from->objectRelationExists(property, indiv_on);
   if(index == -1)
   {
     if(checkRangeAndDomain(indiv_from, property, indiv_on) == false)
@@ -1759,7 +1759,6 @@ int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, ObjectPropertyB
 
   return index;
 }
-
 
 int IndividualGraph::addRelation(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, LiteralNode* data, double proba, bool infered)
 {
