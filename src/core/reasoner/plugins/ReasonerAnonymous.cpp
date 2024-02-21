@@ -21,21 +21,24 @@ void ReasonerAnonymous::postReason()
       for(auto anonymous : ontology_->anonymous_graph_.get())
       {
         bool tree_evaluation_result = false;
-        bool tree_first_layer_result = false;
+        bool is_already_a = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous](const auto& is_a){ return is_a.elem == anonymous->class_equiv_; });
 
-        // Loop over every equivalence relations corresponding to one class
-        for(auto anonymous_branch : anonymous->ano_elems_)
+        if(is_already_a || checkClassesDisjointess(indiv, anonymous->class_equiv_) == false)
         {
-          used.clear();
-          used.reserve(anonymous->depth_);
-          
-          if(checkClassesDisjointess(indiv, anonymous->class_equiv_) == false)
+          // Loop over every equivalence relations corresponding to one class
+          for(auto anonymous_branch : anonymous->ano_elems_)
           {
-            tree_first_layer_result = resolveFirstLayer(indiv, anonymous_branch);
+            bool tree_first_layer_result = true;
+            if(is_already_a == false)
+              tree_first_layer_result = resolveFirstLayer(indiv, anonymous_branch);
             has_active_equiv = has_active_equiv || tree_first_layer_result;
 
             if(tree_first_layer_result == true)
+            {
+              used.clear();
+              used.reserve(anonymous->depth_);
               tree_evaluation_result = resolveTree(indiv,  anonymous_branch, used);
+            }
             
             if(has_active_equiv && tree_evaluation_result)
             {
@@ -70,8 +73,6 @@ void ReasonerAnonymous::postReason()
               break;
             } 
           }
-          else
-            std::cout << "disjointness error between classes of " + indiv->value() + " and " + anonymous->class_equiv_->value() << std::endl;
         }
         
         //Manages implicitly the NOT, MIN, MAX, EXACTLY cases
