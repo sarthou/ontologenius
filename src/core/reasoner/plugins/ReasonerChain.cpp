@@ -19,54 +19,51 @@ void ReasonerChain::postReason()
       {
         auto base_property = indiv->object_relations_[rel_i].first;
         std::unordered_set<ObjectPropertyBranch_t*> properties;
-        ontology_->object_property_graph_.getUpPtr(base_property, properties);
+        getUpPtrChain(base_property, properties);
         for(ObjectPropertyBranch_t* property : properties)
         {
-          if(property->chains_.size() != 0)
+          has_active_chain = true;
+          for(auto& chain : property->chains_)
           {
-            has_active_chain = true;
-            for(auto& chain : property->chains_)
+            auto end_indivs = resolveChain(indiv->object_relations_[rel_i].second, chain, 0);
+
+            if(end_indivs.size())
             {
-              auto end_indivs = resolveChain(indiv->object_relations_[rel_i].second, chain, 0);
-
-              if(end_indivs.size())
+              UsedVector local_used;
+              if(property != base_property)
+                existInInheritance(base_property, property->get(), local_used);
+              local_used.emplace_back(indiv->value() + "|" + base_property->value() + "|" + indiv->object_relations_[rel_i].second->value(), indiv->object_relations_.has_induced_object_relations[rel_i]);
+              for(auto& used : end_indivs)
               {
-                UsedVector local_used;
-                if(property != base_property)
-                  existInInheritance(base_property, property->get(), local_used);
-                local_used.emplace_back(indiv->value() + "|" + base_property->value() + "|" + indiv->object_relations_[rel_i].second->value(), indiv->object_relations_.has_induced_object_relations[rel_i]);
-                for(auto& used : end_indivs)
+                if(!relationExists(indiv, chain.back(), used.first))
                 {
-                  if(!relationExists(indiv, chain.back(), used.first))
-                  {
-                    try {
-                      ontology_->individual_graph_.addRelation(indiv, chain.back(), used.first, 1.0, true, false);
-                      indiv->nb_updates_++;
-                    }
-                    catch(GraphException& e)
-                    {
-                      // We don't notify as we don't consider that as an error but rather as an impossible chain on a given individual
-                      continue;
-                    }
-
-                    used.second.insert(used.second.end(), local_used.begin(), local_used.end());
-                    std::string explanation_reference = "";
-                    for(auto it = used.second.rbegin(); it != used.second.rend(); ++it)
-                    {
-                      if(explanation_reference != "") explanation_reference += ", ";
-                      explanation_reference += it->first;
-
-                      if(it->second->exist(indiv, chain.back(), used.first) == false)
-                      {
-                        it->second->push(indiv, chain.back(), used.first);
-                        indiv->object_relations_.relations.back().induced_traces.emplace_back(it->second);
-                      }
-                    }
-
-                    nb_update_++;
-                    explanations_.emplace_back("[ADD]" + indiv->value() + "|" + chain.back()->value() + "|" + used.first->value(),
-                                               "[ADD]" + explanation_reference);
+                  try {
+                    ontology_->individual_graph_.addRelation(indiv, chain.back(), used.first, 1.0, true, false);
+                    indiv->nb_updates_++;
                   }
+                  catch(GraphException& e)
+                  {
+                    // We don't notify as we don't consider that as an error but rather as an impossible chain on a given individual
+                    continue;
+                  }
+
+                  used.second.insert(used.second.end(), local_used.begin(), local_used.end());
+                  std::string explanation_reference = "";
+                  for(auto it = used.second.rbegin(); it != used.second.rend(); ++it)
+                  {
+                    if(explanation_reference != "") explanation_reference += ", ";
+                    explanation_reference += it->first;
+
+                    if(it->second->exist(indiv, chain.back(), used.first) == false)
+                    {
+                      it->second->push(indiv, chain.back(), used.first);
+                      indiv->object_relations_.relations.back().induced_traces.emplace_back(it->second);
+                    }
+                  }
+
+                  nb_update_++;
+                  explanations_.emplace_back("[ADD]" + indiv->value() + "|" + chain.back()->value() + "|" + used.first->value(),
+                                              "[ADD]" + explanation_reference);
                 }
               }
             }
@@ -80,6 +77,16 @@ void ReasonerChain::postReason()
       else
         indiv->flags_.erase("chain");
     }
+}
+
+void ReasonerChain::getUpPtrChain(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*> res)
+{
+  if(branch->chains_.size())
+    if(res.insert(branch).second == false)
+      return;
+
+  for(auto& mother : branch->mothers_)
+    getUpPtrChain(mother.elem, res);
 }
 
 std::vector<std::pair<IndividualBranch_t*, UsedVector>> ReasonerChain::resolveChain(IndividualBranch_t* indiv, const std::vector<ObjectPropertyBranch_t*>& chain, size_t chain_index)

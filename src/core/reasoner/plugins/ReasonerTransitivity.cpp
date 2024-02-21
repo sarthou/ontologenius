@@ -20,52 +20,48 @@ void ReasonerTransitivity::postReason()
         auto base_property = indiv->object_relations_[rel_i].first;
         std::unordered_set<ObjectPropertyBranch_t*> properties;
         getUpPtrTransitive(base_property, properties);
-        //ontology_->object_property_graph_.getUpPtr(base_property, properties); // dedicated getUp with transitive
         for(ObjectPropertyBranch_t* property : properties)
         {
-          //if(property->properties_.transitive_property_)
+          has_active_transitivity = true;
+          auto end_indivs = resolveChain(indiv->object_relations_[rel_i].second, property, 1);
+
+          if(end_indivs.size())
           {
-            has_active_transitivity = true;
-            auto end_indivs = resolveChain(indiv->object_relations_[rel_i].second, property, 1);
-
-            if(end_indivs.size())
+            UsedVector local_used;
+            if(property != base_property)
+              existInInheritance(base_property, property->get(), local_used);
+            local_used.emplace_back(indiv->value() + "|" + base_property->value() + "|" + indiv->object_relations_[rel_i].second->value(), indiv->object_relations_.has_induced_object_relations[rel_i]);
+            for(auto& used : end_indivs)
             {
-              UsedVector local_used;
-              if(property != base_property)
-                existInInheritance(base_property, property->get(), local_used);
-              local_used.emplace_back(indiv->value() + "|" + base_property->value() + "|" + indiv->object_relations_[rel_i].second->value(), indiv->object_relations_.has_induced_object_relations[rel_i]);
-              for(auto& used : end_indivs)
+              if(!relationExists(indiv, property, used.first))
               {
-                if(!relationExists(indiv, property, used.first))
-                {
-                  try {
-                    ontology_->individual_graph_.addRelation(indiv, property, used.first, 1.0, true, false);
-                    indiv->nb_updates_++;
-                  }
-                  catch(GraphException& e)
-                  {
-                    // We don't notify as we don't consider that as an error but rather as an impossible chain on a given individual
-                    continue;
-                  }
-
-                  used.second.insert(used.second.end(), local_used.begin(), local_used.end());
-                  std::string explanation_reference = "";
-                  for(auto it = used.second.rbegin(); it != used.second.rend(); ++it)
-                  {
-                    if(explanation_reference != "") explanation_reference += ", ";
-                    explanation_reference += it->first;
-
-                    if(it->second->exist(indiv, property, used.first) == false)
-                    {
-                      it->second->push(indiv, property, used.first);
-                      indiv->object_relations_.relations.back().induced_traces.emplace_back(it->second);
-                    }
-                  }
-
-                  nb_update_++;
-                  explanations_.emplace_back("[ADD]" + indiv->value() + "|" + property->value() + "|" + used.first->value(),
-                                              "[ADD]" + explanation_reference);
+                try {
+                  ontology_->individual_graph_.addRelation(indiv, property, used.first, 1.0, true, false);
+                  indiv->nb_updates_++;
                 }
+                catch(GraphException& e)
+                {
+                  // We don't notify as we don't consider that as an error but rather as an impossible chain on a given individual
+                  continue;
+                }
+
+                used.second.insert(used.second.end(), local_used.begin(), local_used.end());
+                std::string explanation_reference = "";
+                for(auto it = used.second.rbegin(); it != used.second.rend(); ++it)
+                {
+                  if(explanation_reference != "") explanation_reference += ", ";
+                  explanation_reference += it->first;
+
+                  if(it->second->exist(indiv, property, used.first) == false)
+                  {
+                    it->second->push(indiv, property, used.first);
+                    indiv->object_relations_.relations.back().induced_traces.emplace_back(it->second);
+                  }
+                }
+
+                nb_update_++;
+                explanations_.emplace_back("[ADD]" + indiv->value() + "|" + property->value() + "|" + used.first->value(),
+                                            "[ADD]" + explanation_reference);
               }
             }
           }
