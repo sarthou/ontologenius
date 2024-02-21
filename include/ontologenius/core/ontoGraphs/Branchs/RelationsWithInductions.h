@@ -78,7 +78,9 @@ public:
 	inline typename std::vector<T>::iterator begin() { return relations.begin(); }
 	inline typename std::vector<T>::iterator end() { return relations.end(); }
 	inline typename std::vector<T>::const_iterator cbegin() const { return relations.cbegin(); }
-	inline typename std::vector<T>::const_iterator cend() const { return relations.cend(); } 
+	inline typename std::vector<T>::const_iterator cend() const { return relations.cend(); }
+	inline typename std::vector<T>::reverse_iterator rbegin() { return relations.rbegin(); }
+	inline typename std::vector<T>::reverse_iterator rend() { return relations.rend(); }
 };
 
 } // namespace ontologenius
