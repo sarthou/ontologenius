@@ -18,7 +18,6 @@ public:
   ValidityChecker(Graph<B>* graph)
   {
     graph_vect_ = graph->get();
-    graph_size = graph_vect_.size();
     nb_error_ = 0;
     nb_warn_ = 0;
     is_analysed = false;
@@ -30,7 +29,6 @@ public:
 protected:
   std::vector<B*> graph_vect_;
   bool is_analysed;
-  size_t graph_size;
 
   void print_error(std::string err)
   {

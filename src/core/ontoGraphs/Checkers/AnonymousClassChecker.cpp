@@ -10,7 +10,6 @@ namespace ontologenius {
 size_t AnonymousClassChecker::check()
 {
   std::shared_lock<std::shared_timed_mutex> lock(ano_class_graph_->mutex_);
-  graph_size = graph_vect_.size();
   
   checkDisjoint();
 

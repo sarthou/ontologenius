@@ -17,16 +17,15 @@ public:
 private:
   IndividualGraph* individual_graph_;
 
-  void checkDisjointInheritance();
-  void checkDisjoint();
-  void checkReflexive();
-  void checkObectPropertyDomain();
-  void checkObectPropertyRange();
+  void checkDisjointInheritance(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*> ups);
 
-  void checkDataPropertyDomain();
-  void checkDataPropertyRange();
+  void checkDisjoint(IndividualBranch_t* indiv);
+  void checkReflexive(IndividualBranch_t* indiv);
 
-  void checkAssymetric();
+  void checkObectRelations(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*> up_from);
+  void checkDataRelations(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*> up_from);
+
+  void checkAssymetric(IndividualBranch_t* indiv);
 
   bool symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv);
 };

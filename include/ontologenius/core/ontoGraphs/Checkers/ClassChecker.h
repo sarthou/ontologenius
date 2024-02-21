@@ -16,13 +16,13 @@ public:
   void printStatus(){ValidityChecker<ClassBranch_t>::printStatus("class", "classes", graph_vect_.size());}
 
 private:
-  void checkDisjoint();
+  void checkDisjoint(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*> up);
 
-  void checkObjectPropertyDomain();
-  void checkObjectPropertyRange();
+  void checkObjectPropertyDomain(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*> up);
+  void checkObjectPropertyRange(ClassBranch_t* branch);
 
-  void checkDataPropertyDomain();
-  void checkDataPropertyRange();
+  void checkDataPropertyDomain(ClassBranch_t* branch, std::unordered_set<ClassBranch_t*> up);
+  void checkDataPropertyRange(ClassBranch_t* branch);
 
   ClassGraph* class_graph_;
 };
