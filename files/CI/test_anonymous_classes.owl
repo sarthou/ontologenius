@@ -837,7 +837,6 @@
     <owl:NamedIndividual rdf:about="test_anonymous#tag_1">
         <rdf:type rdf:resource="test_anonymous#ARTag"/>
     </owl:NamedIndividual>
-    
 
 
     <!-- test_anonymous#touch_area_back -->

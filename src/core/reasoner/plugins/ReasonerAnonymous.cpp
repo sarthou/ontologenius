@@ -4,6 +4,17 @@
 
 namespace ontologenius {
 
+ReasonerAnonymous::ReasonerAnonymous()
+{
+  standard_mode_ = false;
+}
+
+void ReasonerAnonymous::setParameter(const std::string& name, const std::string& value)
+{
+  if(name == "standard_mode" && value == "true")
+    standard_mode_ = true;
+}
+
 void ReasonerAnonymous::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
@@ -230,8 +241,11 @@ bool ReasonerAnonymous::resolveTree(IndividualBranch_t* indiv, AnonymousClassEle
   }
   else if(ano_elem->logical_type_ == logical_not)
   {
-    // do smth with used (maybe pass a tmp_used)
-    return !resolveTree(indiv, ano_elem->sub_elements_.front(), used);
+     // do smth with used (maybe pass a tmp_used)
+    if(standard_mode_== true)
+      return false;
+    else
+      return !resolveTree(indiv, ano_elem->sub_elements_.front(), used);
   }
   else
     return checkRestriction(indiv, ano_elem, used);
@@ -418,13 +432,25 @@ bool ReasonerAnonymous::checkCard(IndividualBranch_t* indiv, AnonymousClassEleme
     case CardType_t::cardinality_some:
       return checkSomeCard(indiv, ano_elem, used);
     case CardType_t::cardinality_min:
-      return checkMinCard(indiv, ano_elem, used);
+      if(standard_mode_== true)
+        return false;
+      else
+        return checkMinCard(indiv, ano_elem, used);
     case CardType_t::cardinality_max:
-      return checkMaxCard(indiv, ano_elem, used);
+      if(standard_mode_== true)
+        return false;
+      else
+        return checkMaxCard(indiv, ano_elem, used);
     case CardType_t::cardinality_exactly:
-      return checkExactlyCard(indiv, ano_elem, used);
+      if(standard_mode_== true)
+        return false;
+      else
+        return checkExactlyCard(indiv, ano_elem, used);
     case CardType_t::cardinality_only:
-      return checkOnlyCard(indiv, ano_elem, used);
+      if(standard_mode_== true)
+        return false;
+      else
+        return checkOnlyCard(indiv, ano_elem, used);
     case CardType_t::cardinality_value:
       return checkValueCard(indiv, ano_elem, used);
     default:

@@ -49,8 +49,9 @@ catalog-v*
 
 # VsCode files
 settings.json
+launch.json
 
-# Clion folders
-/.idea/
-/cmake-build-debug/
-/cmake-build-release/
+# CMake
+*.cmake
+*.bin
+build/

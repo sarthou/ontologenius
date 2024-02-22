@@ -8,10 +8,11 @@ namespace ontologenius {
 class ReasonerAnonymous : public ReasonerInterface
 {
 public:
-  ReasonerAnonymous() {}
-  ~ReasonerAnonymous() {}
+  ReasonerAnonymous();
+  virtual ~ReasonerAnonymous() = default;
 
   virtual void postReason() override;
+  virtual void setParameter(const std::string& name, const std::string& value) override;
 
   virtual bool implementPostReasoning() override { return true; }
 
@@ -20,6 +21,8 @@ public:
 
   virtual bool defaultActive() override {return true;}
 private:
+  bool standard_mode_;
+
   std::unordered_map<ClassBranch_t*, std::unordered_set<ClassBranch_t*>> disjoints_cache_;
 
   bool checkClassesDisjointess(IndividualBranch_t* indiv, ClassBranch_t* class_equiv);
