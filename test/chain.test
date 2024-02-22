@@ -1,0 +1,9 @@
+<launch>
+  <include file="$(find ontologenius)/launch/ontologenius.launch">
+    <arg name="intern_file" default="none"/>
+    <arg name="display" default="false"/>
+    <arg name="files" default="$(find ontologenius)/files/CI/test_chain.owl"/>
+  </include>
+  <arg name='TESTDURATION' value='60' />
+  <test pkg="ontologenius" type="chain_test" test-name="chain_test" time-limit="$(arg TESTDURATION)" retry="0" />
+</launch>

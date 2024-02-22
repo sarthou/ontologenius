@@ -51,6 +51,10 @@ namespace ontologenius {
       return begin;
   }
 
+  inline bool isIn(const std::string& substring, const std::string& string)
+  {
+    return (string.find(substring) != std::string::npos);
+  }
 } // namespace ontologenius
 
 #endif // ONTOLOGENIUS_STRING_H

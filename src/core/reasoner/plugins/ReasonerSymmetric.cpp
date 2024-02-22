@@ -7,10 +7,10 @@ namespace ontologenius {
 void ReasonerSymmetric::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-  std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
-  for(auto& indiv : indivs)
+  // not impacted by same as
+  for(auto& indiv : ontology_->individual_graph_.get())
   {
-    if(indiv->updated_ == true)
+    if(indiv->updated_ == true || indiv->hasUpdatedObjectRelation())
       for(auto& relation : indiv->object_relations_)
       {
         if(relation.first->properties_.symetric_property_ == true)
@@ -21,9 +21,7 @@ void ReasonerSymmetric::postReason()
           {
             try
             {
-              int index = ontology_->individual_graph_.addRelation(sym_indiv, sym_prop, indiv, 1.0, true);
-              if(index == (int)sym_indiv->object_relations_.size() - 1)
-                sym_indiv->object_properties_has_induced_.emplace_back();
+              ontology_->individual_graph_.addRelation(sym_indiv, sym_prop, indiv, 1.0, true, false);
               sym_indiv->nb_updates_++;
 
               explanations_.emplace_back("[ADD]" + sym_indiv->value() + "|" + sym_prop->value() + "|" + indiv->value(),
@@ -56,7 +54,7 @@ std::string ReasonerSymmetric::getName()
   return "reasoner symetric";
 }
 
-std::string ReasonerSymmetric::getDesciption()
+std::string ReasonerSymmetric::getDescription()
 {
   return "This reasoner creates the symetric properties for each individual.";
 }

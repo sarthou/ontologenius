@@ -17,9 +17,12 @@ std::vector<std::string> DataPropertyClient::getDisjoint(const std::string& name
   return call("getDisjoint", param);
 }
 
-std::vector<std::string> DataPropertyClient::getDomain(const std::string& name)
+std::vector<std::string> DataPropertyClient::getDomain(const std::string& name, int depth)
 {
   std::string param = name;
+  if(depth >= 0)
+    param += " -d " + std::to_string(depth);
+
   return call("getDomain", param);
 }
 

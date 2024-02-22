@@ -16,29 +16,27 @@ public:
   virtual bool implementPostReasoning() override { return true; }
 
   virtual std::string getName() override;
-  virtual std::string getDesciption() override;
+  virtual std::string getDescription() override;
 
-  virtual bool defaultAvtive() override {return true;}
+  virtual bool defaultActive() override {return true;}
 private:
 
   void postReasonIndividuals();
   void deduceRange(IndividualBranch_t* branch, const std::string& prop);
   void deduceDomain(IndividualBranch_t* branch, const std::string& prop);
 
-  void deduceObjRange(IndividualBranch_t* branch, size_t index);
-  void deduceDatRange(IndividualBranch_t* branch, size_t index);
-  void deduceObjDomain(IndividualBranch_t* branch, size_t index);
-  void deduceDatDomain(IndividualBranch_t* branch, size_t index);
+  void deduceObjRange(IndivObjectRelationElement_t& relation);
+  void deduceObjDomain(IndividualBranch_t* branch, IndivObjectRelationElement_t& relation);
+  void deduceDatDomain(IndividualBranch_t* branch, IndivDataRelationElement_t& relation);
 
 
   void postReasonClasses();
   void deduceRange(ClassBranch_t* branch, const std::string& prop);
   void deduceDomain(ClassBranch_t* branch, const std::string& prop);
 
-  void deduceObjRange(ClassBranch_t* branch, size_t index);
-  void deduceDatRange(ClassBranch_t* branch, size_t index);
-  void deduceObjDomain(ClassBranch_t* branch, size_t index);
-  void deduceDatDomain(ClassBranch_t* branch, size_t index);
+  void deduceObjRange(ClassObjectRelationElement_t& relation);
+  void deduceObjDomain(ClassBranch_t* branch, ClassObjectRelationElement_t& relation);
+  void deduceDatDomain(ClassBranch_t* branch, ClassDataRelationElement_t& relation);
 };
 
 } // namespace ontologenius

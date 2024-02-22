@@ -7,9 +7,8 @@ namespace ontologenius {
 void ReasonerInverseOf::postReason()
 {
   std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-  std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
-  for(auto& indiv : indivs)
-    if(indiv->updated_ == true)
+  for(auto& indiv : ontology_->individual_graph_.get())
+    if(indiv->updated_ || indiv->hasUpdatedObjectRelation())
     {
       for(IndivObjectRelationElement_t& relation : indiv->object_relations_)
       {
@@ -27,11 +26,14 @@ void ReasonerInverseOf::postReason()
 
 void ReasonerInverseOf::insertInverse(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* base_prop, ObjectPropertyBranch_t* inv_prop, IndividualBranch_t* inv_indiv)
 {
-  for(auto& prop : indiv_on->object_relations_)
+  for(auto it = indiv_on->object_relations_.rbegin(); it != indiv_on->object_relations_.rend(); ++it)
   {
-    if(prop.second == inv_indiv)
+    if(it->second == inv_indiv)
     {
-      auto up_properties = ontology_->object_property_graph_.getUpPtrSafe(prop.first);
+      if(it->first == inv_prop)
+        return;
+        
+      auto up_properties = ontology_->object_property_graph_.getUpPtrSafe(it->first);
       if(std::find(up_properties.begin(), up_properties.end(), inv_prop) != up_properties.end())
         return;
     }  
@@ -39,11 +41,8 @@ void ReasonerInverseOf::insertInverse(IndividualBranch_t* indiv_on, ObjectProper
 
   try
   {
-    int index = ontology_->individual_graph_.addRelation(indiv_on, inv_prop, inv_indiv, 1.0, true);
-    if(index == (int)indiv_on->object_relations_.size() - 1)
-      indiv_on->object_properties_has_induced_.emplace_back();
+    ontology_->individual_graph_.addRelation(indiv_on, inv_prop, inv_indiv, 1.0, true, false);
     indiv_on->nb_updates_++;
-    inv_indiv->nb_updates_++;
 
     explanations_.emplace_back("[ADD]" + indiv_on->value() + "|" + inv_prop->value() + "|" + inv_indiv->value(),
                               "[ADD]" + inv_indiv->value() + "|" + base_prop->value() + "|" + indiv_on->value());
@@ -79,7 +78,7 @@ std::string ReasonerInverseOf::getName()
   return "reasoner inverse of";
 }
 
-std::string ReasonerInverseOf::getDesciption()
+std::string ReasonerInverseOf::getDescription()
 {
   return "This reasoner creates the inverse properties for each individual.";
 }

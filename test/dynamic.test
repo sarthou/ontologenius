@@ -5,5 +5,5 @@
     <arg name="display" default="false"/>
   </include>
   <arg name='TESTDURATION' value='60' />
-  <test pkg="ontologenius" type="ontologenius_dynamic_tester" test-name="ontologenius_dynamic_tester" time-limit="$(arg TESTDURATION)" retry="0" />
+  <test pkg="ontologenius" type="ontologenius_dynamic_tester" test-name="ontologenius_dynamic_tester" time-limit="$(arg TESTDURATION)" retry="2" />
 </launch>

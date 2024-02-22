@@ -176,7 +176,7 @@ std::string ReasonerDictionary::getName()
   return "reasoner dictionary";
 }
 
-std::string ReasonerDictionary::getDesciption()
+std::string ReasonerDictionary::getDescription()
 {
   return "This reasoner creates several alternative dictionaries to avoid too many restrictive labels.";
 }

@@ -13,12 +13,13 @@
 
 namespace ontologenius {
 
-OntologyOwlWriter::OntologyOwlWriter(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph) : file_(nullptr)
+OntologyOwlWriter::OntologyOwlWriter(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph) : file_(nullptr)
 {
   class_graph_ = class_graph;
   object_property_graph_ = object_property_graph;
   data_property_graph_ = data_property_graph;
   individual_graph_ = individual_graph;
+  anonymous_graph_ = anonymous_graph;
 }
 
 OntologyOwlWriter::OntologyOwlWriter(Ontology& onto)
@@ -27,6 +28,7 @@ OntologyOwlWriter::OntologyOwlWriter(Ontology& onto)
   object_property_graph_ = &onto.object_property_graph_;
   individual_graph_ = &onto.individual_graph_;
   data_property_graph_ = &onto.data_property_graph_;
+  anonymous_graph_ = &onto.anonymous_graph_;
 }
 
 void OntologyOwlWriter::write(const std::string& file_name)

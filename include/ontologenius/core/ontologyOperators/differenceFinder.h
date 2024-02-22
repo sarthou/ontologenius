@@ -89,6 +89,30 @@ private:
     std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.second->value(); });
     return res;
   }
+
+  template<typename T>
+  std::vector<std::string> toValued(const RelationsWithInductions<Single_t<T>>& vect)
+  {
+    std::vector<std::string> res;
+    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.elem->value(); });
+    return res;
+  }
+
+  template<typename T, typename U>
+  std::vector<std::string> toValuedFirst(const RelationsWithInductions<Pair_t<T, U>>& vect)
+  {
+    std::vector<std::string> res;
+    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.first->value(); });
+    return res;
+  }
+
+  template<typename T, typename U>
+  std::vector<std::string> toValuedSecond(const RelationsWithInductions<Pair_t<T, U>>& vect)
+  {
+    std::vector<std::string> res;
+    std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it){ return it.second->value(); });
+    return res;
+  }
 };
 
 } // namespace ontologenius

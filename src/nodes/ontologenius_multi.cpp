@@ -157,7 +157,7 @@ bool managerHandle(ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::
           std::string base_name = base_match[2].str();
           std::string copy_name = base_match[1].str();
           auto it = interfaces_.find(base_name);
-          if(it == interfaces_.end()) // if interface to copy do not exist
+          if(it == interfaces_.end()) // if interface to copy does not exist
             res->code = NO_EFFECT;
           else
           {

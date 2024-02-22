@@ -31,6 +31,7 @@ struct DataPropertyVectors_t
 //for friend
 class DataPropertyDrawer;
 class IndividualGraph;
+class AnonymousClassGraph;
 
 //for graphs usage
 class ClassGraph;
@@ -40,32 +41,25 @@ class DataPropertyGraph : public OntoGraph<DataPropertyBranch_t>
   friend DataPropertyDrawer;
   friend IndividualGraph;
   friend ClassGraph;
+  friend AnonymousClassGraph;
 public:
-  explicit DataPropertyGraph(ClassGraph* class_graph);
-  DataPropertyGraph(const DataPropertyGraph& other, ClassGraph* class_graph);
+  explicit DataPropertyGraph(IndividualGraph* individual_graph, ClassGraph* class_graph);
+  DataPropertyGraph(const DataPropertyGraph& other, IndividualGraph* individual_graph, ClassGraph* class_graph);
   ~DataPropertyGraph() {}
 
   void deepCopy(const DataPropertyGraph& other);
 
-  DataPropertyBranch_t* newDefaultBranch(const std::string& name);
-  DataPropertyBranch_t* findOrCreateBranch(const std::string& name);
   DataPropertyBranch_t* add(const std::string& value, DataPropertyVectors_t& property_vectors);
   void add(std::vector<std::string>& disjoints);
   bool addAnnotation(const std::string& value, DataPropertyVectors_t& property_vectors);
   LiteralNode* createLiteral(const std::string& value);
   LiteralNode* createLiteralUnsafe(const std::string& value);
 
-  std::unordered_set<std::string> getDisjoint(const std::string& value);
-  std::unordered_set<index_t> getDisjoint(index_t value);
-  std::unordered_set<std::string> getDomain(const std::string& value);
-  std::unordered_set<index_t> getDomain(index_t value);
+  std::unordered_set<std::string> getDomain(const std::string& value, size_t depth = -1);
+  std::unordered_set<index_t> getDomain(index_t value, size_t depth = -1);
   void getDomainPtr(DataPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
   std::unordered_set<std::string> getRange(const std::string& value);
   std::unordered_set<index_t> getRange(index_t value);
-
-  bool add(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
-  bool addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
-  bool remove(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data);
 
   index_t getLiteralIndex(const std::string& name);
   std::vector<index_t> getLiteralIndexes(const std::vector<std::string>& names);
@@ -75,6 +69,9 @@ public:
 private:
   ClassGraph* class_graph_;
   BranchContainerSet<LiteralNode> literal_container_;
+
+  template<typename T> void getDomain(DataPropertyBranch_t* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<DataPropertyBranch_t*>& up_trace);
+  void getDomainPtr(DataPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& res, std::unordered_set<DataPropertyBranch_t*>& up_trace);
 
   void cpyBranch(DataPropertyBranch_t* old_branch, DataPropertyBranch_t* new_branch);
 };
