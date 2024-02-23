@@ -5,6 +5,7 @@
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 
 namespace ontologenius {
 
@@ -13,7 +14,7 @@ class Ontology;
 class OntologyReader
 {
 public:
-  OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
+  OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
   explicit OntologyReader(Ontology& onto);
   ~OntologyReader() {}
 
@@ -26,6 +27,7 @@ protected:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
   IndividualGraph* individual_graph_;
+  AnonymousClassGraph* anonymous_graph_;
 
   int nb_loaded_elem_;
   bool display_;

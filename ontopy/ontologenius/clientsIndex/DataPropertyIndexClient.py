@@ -32,9 +32,14 @@ class DataPropertyIndexClient(OntologyIndexClient):
         """Gives all the disjoint properties (integer[]) of the property index(integer)."""
         return self.call("getDisjoint", str(index))
 
-    def getDomain(self, index):
-        """Gives all the domain classes (integer[]) of the property index(integer)."""
-        return self.call("getDomain", str(index))
+    def getDomain(self, index, depth = -1):
+        """Gives all the domain classes (integer[]) of the property index(integer).
+           The optional depth(int) parameter can be set to limit tree propagation to a specific value.
+           The default value -1 represents no propagation limitation while the value 0 corresponds to the direct domains."""
+        param = str(index)
+        if depth >= 0:
+            param += " -d " + str(depth)
+        return self.call("getDomain", param)
 
     def getRange(self, index):
         """Gives all the ranges types (integer[]) of the property index(integer)."""

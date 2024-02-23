@@ -17,12 +17,12 @@ public:
 
 protected:
 
-  void writeDisjointWith(PropertyBranch_t<T>* branch);
+  void writeDisjointWith(Branch_t<T>* branch);
   void writeProperties(PropertyBranch_t<T>* branch);
 };
 
 template <typename T>
-void PropertiesOwlWriter<T>::writeDisjointWith(PropertyBranch_t<T>* branch)
+void PropertiesOwlWriter<T>::writeDisjointWith(Branch_t<T>* branch)
 {
   for(auto& disjoint : branch->disjoints_)
     if(disjoint.infered == false)

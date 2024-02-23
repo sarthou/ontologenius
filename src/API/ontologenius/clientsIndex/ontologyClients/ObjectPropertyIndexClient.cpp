@@ -17,15 +17,21 @@ std::vector<int64_t> ObjectPropertyIndexClient::getDisjoint(int64_t index)
   return callIndexes("getDisjoint", param);
 }
 
-std::vector<int64_t> ObjectPropertyIndexClient::getDomain(int64_t index)
+std::vector<int64_t> ObjectPropertyIndexClient::getDomain(int64_t index, int depth)
 {
   std::string param = std::to_string(index);
+  if(depth >= 0)
+    param += " -d " + std::to_string(depth);
+
   return callIndexes("getDomain", param);
 }
 
-std::vector<int64_t> ObjectPropertyIndexClient::getRange(int64_t index)
+std::vector<int64_t> ObjectPropertyIndexClient::getRange(int64_t index, int depth)
 {
   std::string param = std::to_string(index);
+  if(depth >= 0)
+    param += " -d " + std::to_string(depth);
+
   return callIndexes("getRange", param);
 }
 

@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="test_chain#"
+     xml:base="test_chain"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:untitled-ontology-50="test_chain#">
+    <owl:Ontology rdf:about="test_chain"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- test_chain#hasIn -->
+
+    <owl:ObjectProperty rdf:about="test_chain#hasIn">
+        <owl:inverseOf rdf:resource="test_chain#isIn"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- test_chain#isIn -->
+
+    <owl:ObjectProperty rdf:about="test_chain#isIn">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:range rdf:resource="test_chain#Box"/>
+        <owl:propertyDisjointWith rdf:resource="test_chain#isOn"/>
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description rdf:about="test_chain#isOn"/>
+            <rdf:Description rdf:about="test_chain#isIn"/>
+        </owl:propertyChainAxiom>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- test_chain#isInBox -->
+
+    <owl:ObjectProperty rdf:about="test_chain#isInBox">
+        <rdfs:subPropertyOf rdf:resource="test_chain#isIn"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- test_chain#isOn -->
+
+    <owl:ObjectProperty rdf:about="test_chain#isOn">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- test_chain#isOnTop -->
+
+    <owl:ObjectProperty rdf:about="test_chain#isOnTop">
+        <rdfs:subPropertyOf rdf:resource="test_chain#isOn"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- test_chain#thirdChain -->
+
+    <owl:ObjectProperty rdf:about="test_chain#thirdChain">
+        <rdfs:domain rdf:resource="test_chain#Cube"/>
+        <rdfs:range rdf:resource="test_chain#Table"/>
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description rdf:about="test_chain#isOn"/>
+            <rdf:Description rdf:about="test_chain#isIn"/>
+            <rdf:Description rdf:about="test_chain#isOn"/>
+        </owl:propertyChainAxiom>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- test_chain#Ball -->
+
+    <owl:Class rdf:about="test_chain#Ball"/>
+    
+
+
+    <!-- test_chain#Box -->
+
+    <owl:Class rdf:about="test_chain#Box"/>
+    
+
+
+    <!-- test_chain#Cube -->
+
+    <owl:Class rdf:about="test_chain#Cube"/>
+    
+
+
+    <!-- test_chain#Table -->
+
+    <owl:Class rdf:about="test_chain#Table"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- test_chain#ball -->
+
+    <owl:NamedIndividual rdf:about="test_chain#ball">
+        <rdf:type rdf:resource="test_chain#Ball"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_chain#box -->
+
+    <owl:NamedIndividual rdf:about="test_chain#box">
+        <rdf:type rdf:resource="test_chain#Box"/>
+        <isOn rdf:resource="test_chain#table"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_chain#cube_after -->
+
+    <owl:NamedIndividual rdf:about="test_chain#cube_after">
+        <rdf:type rdf:resource="test_chain#Cube"/>
+        <owl:sameAs rdf:resource="test_chain#cube_after_bis"/>
+        <isIn rdf:resource="test_chain#box"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_chain#cube_after_bis -->
+
+    <owl:NamedIndividual rdf:about="test_chain#cube_after_bis"/>
+    
+
+
+    <!-- test_chain#cube_base -->
+
+    <owl:NamedIndividual rdf:about="test_chain#cube_base">
+        <rdf:type rdf:resource="test_chain#Cube"/>
+        <owl:sameAs rdf:resource="test_chain#cube_base_bis"/>
+        <isIn rdf:resource="test_chain#box"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_chain#cube_base_bis -->
+
+    <owl:NamedIndividual rdf:about="test_chain#cube_base_bis"/>
+    
+
+
+    <!-- test_chain#table -->
+
+    <owl:NamedIndividual rdf:about="test_chain#table">
+        <rdf:type rdf:resource="test_chain#Table"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="test_chain#cube_after_bis"/>
+            <rdf:Description rdf:about="test_chain#cube_base_bis"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+

@@ -24,11 +24,6 @@ public:
   std::vector<LiteralNode*> ranges_;
 
   DataPropertyBranch_t(const std::string& value = "") : Branch_t(value) {};
-
-  void setSteady_dictionary(const std::string& lang, const std::string& word);
-  void setSteady_muted_dictionary(const std::string& lang, const std::string& word);
-  void setSteady_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
-  void setSteady_muted_dictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
 };
 
 } // namespace ontologenius

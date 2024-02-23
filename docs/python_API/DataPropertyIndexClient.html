@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>DataPropertyIndexClient Class (python) | Ontologenius 0.4.0</title>
+  <title>DataPropertyIndexClient Class (python) | Ontologenius 0.4.1</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -140,7 +140,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#__init__">__init__</a></b>(self, name)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getDown">getDown</a></b>(self, index, depth = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getDisjoint">getDisjoint</a></b>(self, index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getDomain">getDomain</a></b>(self, index)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getDomain">getDomain</a></b>(self, index, depth = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> integer[] </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyIndexClient.html#getRange">getRange</a></b>(self, index)</td></tr>
             </tbody>
           </table>
@@ -181,8 +181,10 @@
           <h3 class="fn" id="getDisjoint"><a name="getDisjoint"></a><span class="name">getDisjoint</span>(self, index)</h3>
           <p>Gives all the disjoint properties (integer[]) of the property <i>index</i> (integer).</p>
 
-          <h3 class="fn" id="getDomain"><a name="getDomain"></a><span class="name">getDomain</span>(self, index)</h3>
+          <h3 class="fn" id="getDomain"><a name="getDomain"></a><span class="name">getDomain</span>(self, index, depth = -1)</h3>
           <p>Gives all the domain classes (integer[]) of the property <i>index</i>(integer).</p>
+          <p>The optional depth(int) parameter can be set to limit tree propagation to a specific value.
+             The default value -1 represents no propagation limitation while the value 0 corresponds to the direct domains.</p>
 
           <h3 class="fn" id="getRange"><a name="getRange"></a><span class="name">getRange</span>(self, index)</h3>
           <p>Gives all the ranges types (integer[]) of the property <i>index</i>(integer).</p>

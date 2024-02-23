@@ -4,6 +4,7 @@
 #include <string>
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 
@@ -50,29 +51,51 @@ public:
     agent_name_ = agent_name;
     ontology_ = onto;
   }
-  virtual void initialize() {} // This function is called once the ontology is closed 
+
+  /// @brief This function is called once the ontology is closed.
+  ///        This function allow user for initialization requiring the ontology
+  virtual void initialize() {}
+
+  /// @brief This function provides the parameters defined in the configuration file.
+  ///        If a parameter use a list, this function will be called once for each 
+  ///        value in the list, with the same parameter name.
   virtual void setParameter(const std::string& name, const std::string& value)
   {
+    Display::warning("[Reasoners][" + getName() + "] does not take any parameter");
+    std::cout << name << " : " << value << std::endl;
     (void)name;
     (void)value;
   }
 
+  /// @brief This function is called when a query is submitted.
+  /// @param query_info provides information about the submitted query
+  /// @return true if modifications have been made onto the ontology
   virtual bool preReason(const QueryInfo_t& query_info)
   {
     (void)query_info;
     return false;
   }
+
+  /// @brief This function is called after modifications of the ontology.
   virtual void postReason() {}
+
+  /// @brief This function is called at 100 Hz.
   virtual bool periodicReason() { return false; }
 
+  /// @brief This function has to be overloaded if the reasoner implements post-reasoning
+  /// @return true if the reasoner implements post-reasoning
   virtual bool implementPostReasoning() { return false; }
+  /// @brief This function has to be overloaded if the reasoner implements pre-reasoning
+  /// @return true if the reasoner implements pre-reasoning
   virtual bool implementPreReasoning() { return false; }
+  /// @brief This function has to be overloaded if the reasoner implements periodic-reasoning
+  /// @return true if the reasoner implements periodic-reasoning
   virtual bool implementPeriodicReasoning() { return false; }
 
   virtual std::string getName() = 0;
-  virtual std::string getDesciption() = 0;
+  virtual std::string getDescription() = 0;
 
-  virtual bool defaultAvtive() {return false;}
+  virtual bool defaultActive() {return false;}
 
   static size_t getNbUpdates() {return nb_update_; }
   static void resetNbUpdates() {nb_update_ = 0; }

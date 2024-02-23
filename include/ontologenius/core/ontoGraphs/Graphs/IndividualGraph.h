@@ -22,12 +22,14 @@ struct IndividualVectors_t
    std::vector<Pair_t<std::string, std::string>> data_relations_;
 
    std::vector<Single_t<std::string>> same_as_;
+   // TODO : add vector distinct
    std::map<std::string, std::vector<std::string>> dictionary_;
    std::map<std::string, std::vector<std::string>> muted_dictionary_;
 };
 
 //for friend
 class IndividualChecker;
+class AnonymousGraph;
 
 //for graphs usage
 class ClassGraph;
@@ -37,36 +39,13 @@ class DataPropertyGraph;
 class IndividualGraph : public Graph<IndividualBranch_t>
 {
   friend IndividualChecker;
+  friend AnonymousGraph;
 public:
   IndividualGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
   IndividualGraph(const IndividualGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
-  ~IndividualGraph();
+  ~IndividualGraph() {}
 
   void deepCopy(const IndividualGraph& other);
-
-  void close() final;
-  std::vector<IndividualBranch_t*> get() override {return individuals_; }
-
-  std::vector<IndividualBranch_t*> getSafe()
-  {
-    std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-
-    return individuals_;
-  }
-
-  std::vector<std::string> getAll()
-  {
-    std::vector<std::string> res;
-    std::transform(individuals_.cbegin(), individuals_.cend(), std::back_inserter(res), [](auto branch){ return branch->value(); });
-    return res;
-  }
-
-  std::vector<index_t> getAllIndex()
-  {
-    std::vector<index_t> res;
-    std::transform(individuals_.cbegin(), individuals_.cend(), std::back_inserter(res), [](auto branch){ return branch->get(); });
-    return res;
-  }
 
   IndividualBranch_t* add(const std::string& value, IndividualVectors_t& individual_vector);
   void add(std::vector<std::string>& distinct_);
@@ -104,22 +83,13 @@ public:
   std::unordered_set<index_t> getUp(index_t individual, int depth = -1);
   std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
   std::unordered_set<index_t> select(const std::unordered_set<index_t>& on, index_t class_selector);
-  std::string getName(const std::string& value, bool use_default = true);
-  std::string getName(index_t value, bool use_default = true);
-  std::vector<std::string> getNames(const std::string& value, bool use_default = true);
-  std::vector<std::string> getNames(index_t value, bool use_default = true);
-  std::vector<std::string> getEveryNames(const std::string& value, bool use_default = true);
-  std::vector<std::string> getEveryNames(index_t value, bool use_default = true);
-  template<typename T> std::unordered_set<T> find(const std::string& value, bool use_default = true);
-  template<typename T> std::unordered_set<T> findSub(const std::string& value, bool use_default = true);
-  template<typename T> std::unordered_set<T> findRegex(const std::string& regex, bool use_default = true);
-  std::unordered_set<std::string> findFuzzy(const std::string& value, bool use_default = true, double threshold = 0.5);
-  bool touch(const std::string& value);
-  bool touch(index_t value);
+  
   std::unordered_set<std::string> getType(const std::string& class_selector, bool single_same = false);
   std::unordered_set<index_t> getType(index_t class_selector, bool single_same = false);
   bool isA(const std::string& indiv, const std::string& class_selector);
   bool isA(index_t indiv, index_t class_selector);
+  bool isA(IndividualBranch_t* indiv, const std::string& class_selector);
+  bool isA(IndividualBranch_t* indiv, index_t class_selector);
   bool relationExists(const std::string& param);
   bool relationExists(const std::string& subject, const std::string& property, const std::string& object);
 
@@ -128,30 +98,27 @@ public:
   IndividualBranch_t* findOrCreateBranch(const std::string& name);
   void deleteIndividual(IndividualBranch_t* indiv);
   void redirectDeleteIndividual(IndividualBranch_t* indiv, ClassBranch_t* _class);
-  bool addLang(const std::string& indiv, const std::string& lang, const std::string& name);
   bool addInheritage(const std::string& indiv, const std::string& class_inherited);
   bool addInheritage(IndividualBranch_t* branch, const std::string& class_inherited);
   bool addInheritageUnsafe(IndividualBranch_t* branch, const std::string& class_inherited);
   bool addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
   bool addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
-  int addRelation(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba = 1.0, bool infered = false);
+  int addRelation(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, double proba = 1.0, bool infered = false, bool check_existance = true);
   int addRelation(IndividualBranch_t* indiv_from, DataPropertyBranch_t* property, LiteralNode* data, double proba = 1.0, bool infered = false);
   void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& indiv_on);
   void addRelation(IndividualBranch_t* indiv_from, const std::string& property, const std::string& type, const std::string& data);
   void addRelationInvert(const std::string& indiv_from, const std::string& property, IndividualBranch_t* indiv_on);
-  bool removeLang(const std::string& indiv, const std::string& lang, const std::string& name);
-  bool removeInheritage(const std::string& indiv, const std::string& class_inherited);
-  bool addSameAs(const std::string& indiv_1, const std::string& indiv_2);
-  bool removeSameAs(const std::string& indiv_1, const std::string& indiv_2);
-  // removing a relation using an object property has to generate an "explanation" if it remove other relations
-  std::vector<std::pair<std::string, std::string>> removeRelation(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_infered = false);
+  std::vector<std::pair<std::string, std::string>> removeInheritage(const std::string& indiv, const std::string& class_inherited);
+  bool removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch, std::vector<std::pair<std::string, std::string>>& explanations, bool protect_stated = false);
+  void addSameAs(const std::string& indiv_1, const std::string& indiv_2);
+  std::vector<std::pair<std::string, std::string>> removeSameAs(const std::string& indiv_1, const std::string& indiv_2, bool protect_stated = false);
+  std::pair<std::vector<std::pair<std::string, std::string>>, bool> removeRelation(IndividualBranch_t* branch_from, ObjectPropertyBranch_t* property, IndividualBranch_t* branch_on, bool protect_stated = false);
   std::vector<std::pair<std::string, std::string>> removeRelation(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
-  void removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
+  std::vector<std::pair<std::string, std::string>> removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
   std::vector<std::pair<std::string, std::string>> removeRelationInverse(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
   std::vector<std::pair<std::string, std::string>> removeRelationSymetric(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
-  std::vector<std::pair<std::string, std::string>> removeRelationChain(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
-  std::vector<IndividualBranch_t*> resolveLink(std::vector<ObjectPropertyBranch_t*>& chain, IndividualBranch_t* indiv_on, size_t index);
-  std::vector<std::vector<ObjectPropertyBranch_t*>> getChains(ObjectPropertyBranch_t* base_property);
+  template<typename T, typename C> std::vector<std::pair<std::string, std::string>> removeInductions(IndividualBranch_t* indiv_from, RelationsWithInductions<Pair_t<T, C>>& relations, size_t relation_index);
+  template<typename T> std::vector<std::pair<std::string, std::string>> removeInductions(IndividualBranch_t* indiv_from, RelationsWithInductions<Single_t<T>>& relations, size_t relation_index, const std::string& property);
 
   void getUpPtr(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*>& res, int depth = -1, uint32_t current_depth = 0);
   void getLowestSame(IndividualBranch_t* individual, std::unordered_set<std::string>& res);
@@ -164,7 +131,6 @@ private:
   ObjectPropertyGraph* object_property_graph_;
   DataPropertyGraph* data_property_graph_;
 
-  std::vector<IndividualBranch_t*> individuals_;        // contains all the active individuals
   std::vector<IndividualBranch_t*> ordered_individuals_;// contains the individuals ordered wrt their index
                                                         // unused indexes have nullptr in
 
@@ -176,12 +142,10 @@ private:
   template<typename T> void getRelatedWith(index_t individual, std::unordered_set<T>& res);
   template<typename T> void getFrom(index_t individual, const T& property, std::unordered_set<T>& res, bool single_same = false);
   template<typename T> std::unordered_set<T> getOn(IndividualBranch_t* individual, const T& property, bool single_same = false);
-  template<typename T> void getWith(IndividualBranch_t* first_individual, index_t second_individual_index, std::unordered_set<T>& res, int depth);
+  template<typename T> void getWith(IndividualBranch_t* first_individual, const std::unordered_set<index_t>& second_individual_index, std::unordered_set<T>& res, int depth);
   template<typename T> void getDomainOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth);
   template<typename T> void getRangeOf(IndividualBranch_t* individual, std::unordered_set<T>& res, int depth);
-  std::string getName(IndividualBranch_t* branch, bool use_default);
-  std::vector<std::string> getNames(IndividualBranch_t* branch, bool use_default);
-  std::vector<std::string> getEveryNames(IndividualBranch_t* branch, bool use_default);
+  template<typename T> bool isATemplate(IndividualBranch_t* branch, const T& class_selector);
 
   void addSames(IndividualBranch_t* me, const std::vector<Single_t<std::string>>& sames, bool is_new = true);
   void addObjectRelation(IndividualBranch_t* me, Pair_t<std::string, std::string>& relation);
@@ -210,92 +174,97 @@ private:
   void removeBranchInVectors(size_t vector_index);
 };
 
-template<typename T>
-std::unordered_set<T> IndividualGraph::find(const std::string& value, bool use_default)
+template<typename T, typename C>
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeInductions(IndividualBranch_t* indiv_from, RelationsWithInductions<Pair_t<T, C>>& relations, size_t relation_index)
 {
-  std::unordered_set<T> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  for(auto& indiv : individuals_)
+  std::vector<std::pair<std::string, std::string>> explanations;
+
+  auto relation = relations[relation_index];
+  auto property = relation.first;
+  auto indiv_on = relation.second;
+
+  for(size_t i = 0; i < relations.has_induced_object_relations[relation_index]->triplets.size(); )
   {
-    if(use_default)
-      if(indiv-> value() == value)
-        insert(res, indiv);
-
-    if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
-      for(auto& word : indiv->dictionary_.spoken_[language_])
-        if(word == value)
-          insert(res, indiv);
-
-    if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
-      for(auto& word : indiv->dictionary_.muted_[language_])
-        if(word == value)
-          insert(res, indiv);
+    auto& triplet = relations.has_induced_object_relations[relation_index]->triplets[i];                      
+    auto tmp = removeRelation(triplet.subject,
+                              triplet.predicate,
+                              triplet.object,
+                              true);
+    if(tmp.second)
+    {
+      explanations.emplace_back("[DEL]" + triplet.subject->value() + "|" +
+                                        triplet.predicate->value() + "|" +
+                                        triplet.object->value(),
+                                "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
+      explanations.insert(explanations.end(), tmp.first.begin(), tmp.first.end());
+    }
+    else
+      i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
   }
-  return res;
+
+  for(size_t i = 0; i < relations.has_induced_inheritance_relations[relation_index]->triplets.size(); )
+  {
+    auto& triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
+
+    std::vector<std::pair<std::string, std::string>> tmp;
+    if(removeInheritage(triplet.subject, triplet.object, tmp, true))
+    {
+      explanations.emplace_back("[DEL]" + triplet.subject->value() + "|isA|" +
+                                        triplet.object->value(),
+                                "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
+      explanations.insert(explanations.end(), tmp.begin(), tmp.end());
+    }
+    else
+      i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
+  }
+
+  return explanations;
 }
 
 template<typename T>
-std::unordered_set<T> IndividualGraph::findSub(const std::string& value, bool use_default)
+std::vector<std::pair<std::string, std::string>> IndividualGraph::removeInductions(IndividualBranch_t* indiv_from, RelationsWithInductions<Single_t<T>>& relations, size_t relation_index, const std::string& property)
 {
-  std::unordered_set<T> res;
-  std::smatch match;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  for(auto& indiv : individuals_)
+  std::vector<std::pair<std::string, std::string>> explanations;
+
+  auto relation = relations[relation_index];
+  auto indiv_on = relation.elem;
+
+  for(size_t i = 0; i < relations.has_induced_object_relations[relation_index]->triplets.size(); )
   {
-    if(use_default)
+    auto& triplet = relations.has_induced_object_relations[relation_index]->triplets[i];               
+    auto tmp = removeRelation(triplet.subject,
+                              triplet.predicate,
+                              triplet.object,
+                              true);
+    if(tmp.second)
     {
-      std::regex regex("\\b(" + indiv-> value() + ")([^ ]*)");
-      if(std::regex_search(value, match, regex))
-        insert(res, indiv);
+      explanations.emplace_back("[DEL]" + triplet.subject->value() + "|" +
+                                        triplet.predicate->value() + "|" +
+                                        triplet.object->value(),
+                                "[DEL]" + indiv_from->value() + "|" + property + "|" + indiv_on->value());
+      explanations.insert(explanations.end(), tmp.first.begin(), tmp.first.end());
     }
-
-    if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
-      for(auto& word : indiv->dictionary_.spoken_[language_])
-      {
-        std::regex regex("\\b(" + word + ")([^ ]*)");
-        if(std::regex_search(value, match, regex))
-          insert(res, indiv);
-      }
-
-    if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
-      for(auto& word : indiv->dictionary_.muted_[language_])
-      {
-        std::regex regex("\\b(" + word + ")([^ ]*)");
-        if(std::regex_search(value, match, regex))
-          insert(res, indiv);
-      }
+    else
+      i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
   }
-  return res;
-}
 
-template<typename T>
-std::unordered_set<T> IndividualGraph::findRegex(const std::string& regex, bool use_default)
-{
-  std::unordered_set<T> res;
-  std::regex base_regex(regex);
-  std::smatch match;
-
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch_t>::mutex_);
-  for(auto& indiv : individuals_)
+  for(size_t i = 0; i < relations.has_induced_inheritance_relations[relation_index]->triplets.size(); )
   {
-    if(use_default)
+    auto& triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
+
+    std::vector<std::pair<std::string, std::string>> tmp;
+    if(removeInheritage(triplet.subject, triplet.object, tmp, true))
     {
-      std::string tmp = indiv->value();
-      if(std::regex_match(tmp, match, base_regex))
-        insert(res, indiv);
+      explanations.emplace_back("[DEL]" + triplet.subject->value() + "|isA|" +
+                                        triplet.object->value(),
+                                "[DEL]" + indiv_from->value() + "|" + property + "|" + indiv_on->value());
+      explanations.insert(explanations.end(), tmp.begin(), tmp.end());
     }
-
-    if(indiv->dictionary_.spoken_.find(language_) != indiv->dictionary_.spoken_.end())
-      for(auto& word : indiv->dictionary_.spoken_[language_])
-        if(std::regex_match(word, match, base_regex))
-          insert(res, indiv);
-
-    if(indiv->dictionary_.muted_.find(language_) != indiv->dictionary_.muted_.end())
-      for(auto& word : indiv->dictionary_.muted_[language_])
-        if(std::regex_match(word, match, base_regex))
-          insert(res, indiv);
+    else
+      i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
   }
-  return res;
+
+  return explanations;
 }
 
 } // namespace ontologenius

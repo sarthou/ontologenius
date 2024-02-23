@@ -11,10 +11,12 @@ namespace ontologenius {
 OntologyTtlReader::OntologyTtlReader(ClassGraph* class_graph,
                                      ObjectPropertyGraph* object_property_graph,
                                      DataPropertyGraph* data_property_graph,
-                                     IndividualGraph* individual_graph) : OntologyReader(class_graph,
+                                     IndividualGraph* individual_graph,
+                                     AnonymousClassGraph* anonymous_graph) : OntologyReader(class_graph,
                                                                                          object_property_graph,
                                                                                          data_property_graph,
-                                                                                         individual_graph),
+                                                                                         individual_graph,
+                                                                                         anonymous_graph),
                                                                           double_reg_("^[-+]?\\d+\\.\\d+[eE][-+]?\\d+$"),
                                                                           decimal_reg_("^[-+]?\\d*\\.\\d+$"),
                                                                           integer_reg_("^[-+]?\\d+$")
@@ -231,7 +233,10 @@ void OntologyTtlReader::sendToOntology(std::string& subject, const std::vector<s
     if(property == "rdf:type")
       push(individual_vector_.is_a_, object.first, 1.0, "+");
     else if(property == "owl:sameAs")
-      push(individual_vector_.same_as_, object.first, 1.0, "=");
+    {
+      if( object.first != "")
+        push(individual_vector_.same_as_, object.first, 1.0, "=");
+    }
     else if(property == "rdfs:label")
       pushLang(individual_vector_.dictionary_, object);
     else if(property == "onto:label")
@@ -351,7 +356,11 @@ std::string OntologyTtlReader::getSubject(const std::string& element)
   {
     if(element[0] == '<')
     {
-      size_t pose = element.find_last_of("#/");
+      size_t pose = element.rfind('/');
+      size_t dash_pose = element.find('#', pose);
+      if(dash_pose != std::string::npos)
+        pose = dash_pose;
+
       if(pose != std::string::npos)
         return element.substr(pose + 1, element.size() - pose -2);
       else
@@ -405,17 +414,15 @@ std::pair<std::string, std::string> OntologyTtlReader::getObject(const std::stri
   {
     if(element[0] == '<')
     {
-      size_t pose = element.rfind('#');
+      size_t pose = element.rfind('/');
+      size_t dash_pose = element.find('#', pose);
+      if(dash_pose != std::string::npos)
+        pose = dash_pose;
+
       if(pose != std::string::npos)
         object.first = element.substr(pose + 1, element.size() - pose -2);
       else
-      {
-        pose = element.rfind('/');
-        if(pose != std::string::npos)
-          object.first = element.substr(pose + 1, element.size() - pose -2);
-        else
-          object.first = element.substr(1, element.size() - 2);
-      }
+        object.first = element.substr(1, element.size() - 2);
 
       return object;
     }

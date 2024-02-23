@@ -137,9 +137,9 @@ bool RosInterface::objectPropertyIndexHandle(compat::onto_ros::ServiceWrapper<co
       else if(req->action == "getInverse")
         set_res_index = onto_->object_property_graph_.getInverse(params.main_index);
       else if(req->action == "getDomain")
-        set_res_index = onto_->object_property_graph_.getDomain(params.main_index);
+        set_res_index = onto_->object_property_graph_.getDomain(params.main_index, params.depth);
       else if(req->action == "getRange")
-        set_res_index = onto_->object_property_graph_.getRange(params.main_index);
+        set_res_index = onto_->object_property_graph_.getRange(params.main_index, params.depth);
       else if(req->action == "getName")
       {
         auto tmp = onto_->object_property_graph_.getName(params.main_index, params.take_id);
@@ -218,7 +218,7 @@ bool RosInterface::dataPropertyIndexHandle(compat::onto_ros::ServiceWrapper<comp
       else if(req->action == "getDisjoint")
         set_res_index = onto_->data_property_graph_.getDisjoint(params.main_index);
       else if(req->action == "getDomain")
-        set_res_index = onto_->data_property_graph_.getDomain(params.main_index);
+        set_res_index = onto_->data_property_graph_.getDomain(params.main_index, params.depth);
       else if(req->action == "getRange")
         set2vector(onto_->data_property_graph_.getRange(params.main_index), res->index_values);
       else if(req->action == "getName")

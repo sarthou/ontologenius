@@ -6,12 +6,12 @@
 
 namespace ontologenius {
 
-ObjectPropertyGraph::ObjectPropertyGraph(ClassGraph* class_graph)
+ObjectPropertyGraph::ObjectPropertyGraph(IndividualGraph* individual_graph, ClassGraph* class_graph) : OntoGraph(individual_graph)
 {
   class_graph_ = class_graph;
 }
 
-ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, ClassGraph* class_graph)
+ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, IndividualGraph* individual_graph, ClassGraph* class_graph) : OntoGraph(individual_graph)
 {
   class_graph_ = class_graph;
 
@@ -24,33 +24,6 @@ ObjectPropertyGraph::ObjectPropertyGraph(const ObjectPropertyGraph& other, Class
   }
 
   this->container_.load(all_branchs_);
-}
-
-void ObjectPropertyGraph::close()
-{
-  OntoGraph<ObjectPropertyBranch_t>::close();
-  //createInvertChains(); // The inverse chain is no more required
-                          // We keep this just in case
-}
-
-ObjectPropertyBranch_t* ObjectPropertyGraph::newDefaultBranch(const std::string& name)
-{
-  auto branch = new ObjectPropertyBranch_t(name);
-  all_branchs_.push_back(branch);
-  container_.insert(branch);
-  return branch;
-}
-
-ObjectPropertyBranch_t* ObjectPropertyGraph::findOrCreateBranch(const std::string& name)
-{
-  auto branch = this->container_.find(name);
-  if(branch == nullptr)
-  {
-    branch = new ObjectPropertyBranch_t(name);
-    all_branchs_.push_back(branch);
-    container_.insert(branch);
-  }
-  return branch;
 }
 
 ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors)
@@ -121,8 +94,8 @@ ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, Objec
   **********************/
   me->properties_.apply(property_vectors.properties_);
   me->annotation_usage_ = me->annotation_usage_ || property_vectors.annotation_usage_;
-  me->setSteady_dictionary(property_vectors.dictionary_);
-  me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
+  me->setSteadyDictionary(property_vectors.dictionary_);
+  me->setSteadyMutedDictionary(property_vectors.muted_dictionary_);
 
   /**********************
   ** Chain axiom
@@ -178,42 +151,6 @@ void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
   }
 }
 
-std::unordered_set<std::string> ObjectPropertyGraph::getDisjoint(const std::string& value)
-{
-  std::unordered_set<std::string> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
-
-  ObjectPropertyBranch_t* branch = container_.find(value);
-  if(branch != nullptr)
-    for(auto& disjoint : branch->disjoints_)
-      getDown(disjoint.elem, res);
-
-  return res;
-}
-
-std::unordered_set<index_t> ObjectPropertyGraph::getDisjoint(index_t value)
-{
-  std::unordered_set<index_t> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
-
-  ObjectPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
-  if(branch != nullptr)
-    for(auto& disjoint : branch->disjoints_)
-      getDown(disjoint.elem, res);
-
-  return res;
-}
-
-
-void ObjectPropertyGraph::getDisjointPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res)
-{
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
-
-  if(branch != nullptr)
-    for(auto& disjoint : branch->disjoints_)
-      getDownPtr(disjoint.elem, res);
-}
-
 std::unordered_set<std::string> ObjectPropertyGraph::getInverse(const std::string& value)
 {
   std::unordered_set<std::string> res;
@@ -240,155 +177,132 @@ std::unordered_set<index_t> ObjectPropertyGraph::getInverse(index_t value)
   return res;
 }
 
-std::unordered_set<std::string> ObjectPropertyGraph::getDomain(const std::string& value)
+std::unordered_set<std::string> ObjectPropertyGraph::getDomain(const std::string& value, size_t depth)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
 
   ObjectPropertyBranch_t* branch = container_.find(value);
+  std::unordered_set<ObjectPropertyBranch_t*> up_trace;
   if(branch != nullptr)
-    for(auto& domain : branch->domains_)
-      class_graph_->getDown(domain.elem, res);
+    getDomain(branch, depth, res, up_trace);
 
   return res;
 }
 
-std::unordered_set<index_t> ObjectPropertyGraph::getDomain(index_t value)
+std::unordered_set<index_t> ObjectPropertyGraph::getDomain(index_t value, size_t depth)
 {
   std::unordered_set<index_t> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
 
   ObjectPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  std::unordered_set<ObjectPropertyBranch_t*> up_trace;
   if(branch != nullptr)
-    for(auto& domain : branch->domains_)
-      class_graph_->getDown(domain.elem, res);
+    getDomain(branch, depth, res, up_trace);
 
   return res;
 }
 
 void ObjectPropertyGraph::getDomainPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth)
 {
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
-
+  std::unordered_set<ObjectPropertyBranch_t*> up_trace;
   if(branch != nullptr)
-    for(auto& domain : branch->domains_)
-      class_graph_->getDownPtr(domain.elem, res, depth);
+    getDomainPtr(branch, depth, res, up_trace);
 }
 
-std::unordered_set<std::string> ObjectPropertyGraph::getRange(const std::string& value)
+template<typename T>
+void ObjectPropertyGraph::getDomain(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<ObjectPropertyBranch_t*>& up_trace)
+{
+  for(auto& domain : branch->domains_)
+    class_graph_->getDown(domain.elem, res, depth);
+
+  for(auto& mother : branch->mothers_)
+    if(up_trace.insert(mother.elem).second)
+      getDomain(mother.elem, depth, res, up_trace);
+}
+
+void ObjectPropertyGraph::getDomainPtr(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& res, std::unordered_set<ObjectPropertyBranch_t*>& up_trace)
+{
+  for(auto& domain : branch->domains_)
+    class_graph_->getDownPtr(domain.elem, res, depth);
+
+  for(auto& mother : branch->mothers_)
+    if(up_trace.insert(mother.elem).second)
+      getDomainPtr(mother.elem, depth, res, up_trace);
+}
+
+std::unordered_set<std::string> ObjectPropertyGraph::getRange(const std::string& value, size_t depth)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
 
   ObjectPropertyBranch_t* branch = container_.find(value);
+  std::unordered_set<ObjectPropertyBranch_t*> up_trace;
   if(branch != nullptr)
-    for(auto& range : branch->ranges_)
-      class_graph_->getDown(range.elem, res);
+    getRange(branch, depth, res, up_trace);
 
   return res;
 }
 
-std::unordered_set<index_t> ObjectPropertyGraph::getRange(index_t value)
+std::unordered_set<index_t> ObjectPropertyGraph::getRange(index_t value, size_t depth)
 {
   std::unordered_set<index_t> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
 
   ObjectPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  std::unordered_set<ObjectPropertyBranch_t*> up_trace;
   if(branch != nullptr)
-    for(auto& range : branch->ranges_)
-      class_graph_->getDown(range.elem, res);
+    getRange(branch, depth, res, up_trace);
 
   return res;
 }
 
 void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth)
 {
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+  std::unordered_set<ObjectPropertyBranch_t*> up_trace;
   if(branch != nullptr)
-    for(auto& range : branch->ranges_)
-      class_graph_->getDownPtr(range.elem, res, depth);
+    getRangePtr(branch, depth, res, up_trace);
 }
 
-void ObjectPropertyGraph::createInvertChains()
+template<typename T>
+void ObjectPropertyGraph::getRange(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<ObjectPropertyBranch_t*>& up_trace)
 {
-  for(auto branch : all_branchs_)
-  {
-    for(auto& chain : branch->chains_)
-    {
-      for(auto invert : branch->inverses_)
-      {
-        auto invert_chains = getInvertChains({invert.elem}, chain);
-        for(auto& invert_chain : invert_chains)
-        {
-          std::vector<ObjectPropertyBranch_t*> reordered_chain;
-          for(auto it = invert_chain.rbegin() + 1; it != invert_chain.rend(); ++it)
-            reordered_chain.push_back(*it);
-          reordered_chain.push_back(invert_chain.back());
+  for(auto& range : branch->ranges_)
+    class_graph_->getDown(range.elem, res, depth);
 
-          reordered_chain.front()->chains_.push_back({reordered_chain.begin() + 1, reordered_chain.end()});
-        }
-      }
-    }
-  }
+  for(auto& mother : branch->mothers_)
+    if(up_trace.insert(mother.elem).second)
+      getRange(mother.elem, depth, res, up_trace);
 }
 
-bool ObjectPropertyGraph::add(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
+void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& res, std::unordered_set<ObjectPropertyBranch_t*>& up_trace)
 {
-  if(relation != "")
-  {
-    if(relation[0] == '@')
-    {
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      prop->setSteady_dictionary(relation.substr(1), data);
-      prop->updated_ = true;
-    }
-    else if((relation == "+") || (relation == "isA"))
-    {
+  for(auto& range : branch->ranges_)
+    class_graph_->getDownPtr(range.elem, res, depth);
 
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      ObjectPropertyBranch_t* tmp = findOrCreateBranch(data);
-
-      conditionalPushBack(prop->mothers_, ObjectPropertyElement_t(tmp));
-      conditionalPushBack(tmp->childs_, ObjectPropertyElement_t(prop));
-      prop->updated_ = true;
-      tmp->updated_ = true;
-    }
-    else
-      return false;
-  }
-  else
-    return false;
-  return true;
+  for(auto& mother : branch->mothers_)
+    if(up_trace.insert(mother.elem).second)
+      getRangePtr(mother.elem, depth, res, up_trace);
 }
 
-bool ObjectPropertyGraph::addInvert(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
+void ObjectPropertyGraph::getDomainAndRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& domains, std::unordered_set<ClassBranch_t*>& ranges, size_t depth)
 {
-  if(relation != "")
-  {
-    if((relation == "+") || (relation == "isA"))
-    {
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      ObjectPropertyBranch_t* tmp = findOrCreateBranch(data);
-
-      conditionalPushBack(tmp->mothers_, ObjectPropertyElement_t(prop));
-      conditionalPushBack(prop->childs_, ObjectPropertyElement_t(tmp));
-      prop->updated_ = true;
-      tmp->updated_ = true;
-    }
-    else
-      return false;
-  }
-  else
-    return false;
-  return true;
+  std::unordered_set<ObjectPropertyBranch_t*> up_trace;
+  if(branch != nullptr)
+    getDomainAndRangePtr(branch, depth, domains, ranges, up_trace);
 }
 
-bool ObjectPropertyGraph::remove(ObjectPropertyBranch_t* prop, const std::string& relation, const std::string& data)
+void ObjectPropertyGraph::getDomainAndRangePtr(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& domains, std::unordered_set<ClassBranch_t*>& ranges, std::unordered_set<ObjectPropertyBranch_t*>& up_trace)
 {
-  (void)prop;
-  (void)relation;
-  (void)data;
-  return false;
+  for(auto& domain : branch->domains_)
+    class_graph_->getDownPtr(domain.elem, domains, depth);
+
+  for(auto& range : branch->ranges_)
+    class_graph_->getDownPtr(range.elem, ranges, depth);
+
+  for(auto& mother : branch->mothers_)
+    if(up_trace.insert(mother.elem).second)
+      getDomainAndRangePtr(mother.elem, depth, domains, ranges, up_trace);
 }
 
 bool ObjectPropertyGraph::addInverseOf(const std::string& from, const std::string& on)
@@ -540,26 +454,6 @@ void ObjectPropertyGraph::cpyChainOfBranch(ObjectPropertyBranch_t* old_branch, O
     std::transform(chain.cbegin(), chain.cend(), std::back_inserter(tmp), [this](const auto& link){ return this->container_.find(link->value()); });
     new_branch->chains_.push_back(std::move(tmp));
   }
-}
-
-std::vector<std::vector<ObjectPropertyBranch_t*>> ObjectPropertyGraph::getInvertChains(const std::vector<ObjectPropertyBranch_t*>& partial_res, const std::vector<ObjectPropertyBranch_t*>& chain)
-{
-  std::vector<std::vector<ObjectPropertyBranch_t*>> res;
-
-  for(auto invert : chain.front()->inverses_)
-  {
-    std::vector<ObjectPropertyBranch_t*> invert_chain = partial_res;
-    invert_chain.push_back(invert.elem);
-    if(chain.size() > 1)
-    {
-      auto local_res = getInvertChains(invert_chain, {chain.begin() + 1, chain.end()});
-      res.insert(res.end(), local_res.begin(), local_res.end());
-    }
-    else
-      res.emplace_back(invert_chain);
-  }
-
-  return res;
 }
 
 } // namespace ontologenius

@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ObjectPropertyClient Class (python) | Ontologenius 0.4.0</title>
+  <title>ObjectPropertyClient Class (python) | Ontologenius 0.4.1</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -140,8 +140,8 @@
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#__init__">__init__</a></b>(self, name)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getDown">getDown</a></b>(self, name, depth = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getDisjoint">getDisjoint</a></b>(self, name)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getDomain">getDomain</a></b>(self, name)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getRange">getRange</a></b>(self, name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getDomain">getDomain</a></b>(self, name, depth = -1)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getRange">getRange</a></b>(self, name, depth = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ObjectPropertyClient.html#getInverse">getInverse</a></b>(self, name)</td></tr>
             </tbody>
           </table>
@@ -178,11 +178,15 @@
           <h3 class="fn" id="getDisjoint"><a name="getDisjoint"></a><span class="name">getDisjoint</span>(self, name)</h3>
           <p>Gives all the disjoint properties (str[]) of the property <i>name</i>(str).</p>
 
-          <h3 class="fn" id="getDomain"><a name="getDomain"></a><span class="name">getDomain</span>(self, name)</h3>
+          <h3 class="fn" id="getDomain"><a name="getDomain"></a><span class="name">getDomain</span>(self, name, depth = -1)</h3>
           <p>Gives all the domain classes (str[]) of the property <i>name</i>(str).</p>
+          <p>The optional depth(int) parameter can be set to limit tree propagation to a specific value.
+             The default value -1 represents no propagation limitation while the value 0 corresponds to the direct domains.</p>
 
-          <h3 class="fn" id="getRange"><a name="getRange"></a><span class="name">getRange</span>(self, name)</h3>
+          <h3 class="fn" id="getRange"><a name="getRange"></a><span class="name">getRange</span>(self, name, depth = -1)</h3>
           <p>Gives all the ranges classes (str[]) of the property <i>name</i>(str).</p>
+          <p>The optional depth(int) parameter can be set to limit tree propagation to a specific value.
+             The default value -1 represents no propagation limitation while the value 0 corresponds to the direct ranges.</p>
 
           <h3 class="fn" id="getInverse"><a name="getInverse"></a><span class="name">getInverse</span>(self, name)</h3>
           <p>Gives all the inverses properties (str[]) of the property <i>name</i>(str).</p>

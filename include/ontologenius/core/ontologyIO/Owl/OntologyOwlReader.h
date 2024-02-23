@@ -15,6 +15,7 @@
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
+#include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 namespace ontologenius {
 
 class Ontology;
@@ -22,9 +23,8 @@ class Ontology;
 class OntologyOwlReader : public OntologyReader
 {
 public:
-  OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph) :
-                    OntologyReader(class_graph, object_property_graph, data_property_graph, individual_graph) {}
-  explicit OntologyOwlReader(Ontology& onto) : OntologyReader(onto) {}
+  OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
+  explicit OntologyOwlReader(Ontology& onto);
   ~OntologyOwlReader() {}
 
   int readFromUri(std::string content, const std::string& uri, bool individual = false);
@@ -38,10 +38,28 @@ public:
   bool empty() {return (nb_loaded_elem_ == 0); }
 
 private:
+  std::unordered_map<std::string, std::string> card_map_;
   int read(TiXmlElement* rdf, const std::string& name);
   int readIndividual(TiXmlElement* rdf, const std::string& name);
 
   void readClass(TiXmlElement* elem);
+  void readEquivalentClass(AnonymousClassVectors_t& ano, TiXmlElement* elem, const std::string& class_name);
+
+  ExpressionMember_t* readRestriction(TiXmlElement* elem);
+  ExpressionMember_t* readClassExpression(TiXmlElement* elem);
+  ExpressionMember_t* readDatatypeExpression(TiXmlElement* elem);
+  ExpressionMember_t* readIntersection(TiXmlElement* elem);
+  ExpressionMember_t* readUnion(TiXmlElement* elem);
+  ExpressionMember_t* readOneOf(TiXmlElement* elem);
+  ExpressionMember_t* readComplement(TiXmlElement* elem);
+  ExpressionMember_t* readComplexDescription(TiXmlElement* elem);
+  ExpressionMember_t* readResource(TiXmlElement* elem, const std::string& attribute_name = "rdf:resource");
+  
+  void addChildMember(ExpressionMember_t* parent, ExpressionMember_t* child, TiXmlElement* used_elem);
+
+  bool readCardinalityRange(TiXmlElement* elem, ExpressionMember_t* exp);
+  void readCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp);
+
   void readIndividual(TiXmlElement* elem);
   void readDescription(TiXmlElement* elem);
   void readIndividualDescription(TiXmlElement* elem);
@@ -61,6 +79,7 @@ private:
   inline float getProbability(TiXmlElement* elem);
   inline std::string getAttribute(TiXmlElement* elem, const std::string& attribute);
   inline bool testAttribute(TiXmlElement* subElem, const std::string& attribute);
+  inline int getNbChildren(TiXmlElement* elem);
 
   std::string toString(TiXmlElement* subElem, std::string attribute = "rdf:resource")
   {
@@ -81,7 +100,7 @@ void OntologyOwlReader::push(std::vector<std::string>& vect, TiXmlElement* subEl
   {
     vect.push_back(data);
     if(symbole != "" && display_)
-      std::cout << "│   │   ├── " << symbole << data << std::endl;
+      std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
   }
 }
 
@@ -92,10 +111,21 @@ void OntologyOwlReader::push(std::vector<Single_t<std::string>>& vect, TiXmlElem
   {
     vect.push_back(Single_t<std::string>(data, probability));
     if(symbole != "" && display_)
-      std::cout << "│   │   ├── " << symbole << data << std::endl;
+      std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
   }
 }
 
+void OntologyOwlReader::push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole)
+{
+  std::string data = elem;
+  if(data != "")
+  {
+    vect.push_back(data);
+    if(symbole != "" && display_)
+      std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
+  }
+
+}
 std::string OntologyOwlReader::getName(const std::string& uri)
 {
   size_t pos = uri.find("#");
@@ -135,6 +165,13 @@ bool OntologyOwlReader::testAttribute(TiXmlElement* subElem, const std::string& 
     return false;
 }
 
+int OntologyOwlReader::getNbChildren(TiXmlElement* elem)
+{
+  int cpt = 0;
+  for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+    cpt++;
+  return cpt;
+}
 } // namespace ontologenius
 
 #endif // ONTOLOGENIUS_ONTOLOGYOWLREADER_H

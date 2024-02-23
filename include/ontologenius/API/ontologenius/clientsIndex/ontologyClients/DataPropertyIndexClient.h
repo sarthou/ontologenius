@@ -32,8 +32,11 @@ public:
   std::vector<int64_t> getDisjoint(int64_t index);
   /// @brief Gives all the domain classes of the specified property.
   /// @param index is a data property identifier.
+  /// @param depth can be set to limit tree propagation to a specific value.
+  /// The default value -1 represents no propagation limitation while the value 0
+  /// corresponds to the direct domains
   /// @return a vector of identifiers of classes.
-  std::vector<int64_t> getDomain(int64_t index);
+  std::vector<int64_t> getDomain(int64_t index, int depth = -1);
   /// @brief Gives all the range classes of the specified property.
   /// @param index is a data property identifier.
   /// @return a vector of identifiers of classes.

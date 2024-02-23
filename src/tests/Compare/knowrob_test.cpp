@@ -64,7 +64,7 @@ void insertN(ontologenius::RosInterface* interface, size_t n)
 bool doQuery(ontologenius::Ontology* onto, size_t n)
 {
   int rnd = rand() % n;
-  ontologenius::ClassBranch_t* cup = onto->class_graph_.findBranch("Cup");
+  ontologenius::ClassBranch_t* cup = onto->class_graph_.findBranchSafe("Cup");
   ontologenius::IndividualBranch_t* cup_i = cup->individual_childs_[rnd].elem;
   auto VP_i = onto->individual_graph_.getOn(cup_i->value(), "Vp_has_obj");
   if(VP_i.size())

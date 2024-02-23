@@ -5,8 +5,12 @@ flow:
   - ontologenius::ReasonerInverseOf
   - ontologenius::ReasonerRangeDomain
   - ontologenius::ReasonerSymmetric
+  - ontologenius::ReasonerAnonymous
+  - ontologenius::ReasonerTransitivity
 ontologenius::ReasonerGeneralize:
   min_count : 2
   min_percent : 0.7
 ontologenius::ReasonerDictionary:
   use_id : true
+ontologenius::ReasonerAnonymous:
+  standard_mode : true

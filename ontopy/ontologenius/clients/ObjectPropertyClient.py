@@ -33,13 +33,23 @@ class ObjectPropertyClient(OntologyClient):
         """Gives all the disjoint properties (str[]) of the property name(str)."""
         return self.call("getDisjoint", name)
 
-    def getDomain(self, name):
-        """Gives all the domain classes (str[]) of the property name(str)."""
-        return self.call("getDomain", name)
+    def getDomain(self, name, depth = -1):
+        """Gives all the domain classes (str[]) of the property name(str).
+           The optional depth(int) parameter can be set to limit tree propagation to a specific value.
+           The default value -1 represents no propagation limitation while the value 0 corresponds to the direct domains."""
+        param = name
+        if depth >= 0:
+            param += " -d " + str(depth)
+        return self.call("getDomain", param)
 
-    def getRange(self, name):
-        """Gives all the ranges classes (str[]) of the property name(str)."""
-        return self.call("getRange", name)
+    def getRange(self, name, depth = -1):
+        """Gives all the ranges classes (str[]) of the property name(str).
+           The optional depth(int) parameter can be set to limit tree propagation to a specific value.
+           The default value -1 represents no propagation limitation while the value 0 corresponds to the direct ranges."""
+        param = name
+        if depth >= 0:
+            param += " -d " + str(depth)
+        return self.call("getRange", param)
 
     def getInverse(self, name):
         """Gives all the inverses properties (str[]) of the property name(str)."""

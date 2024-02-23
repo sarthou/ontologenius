@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>DataPropertyClient Class (cpp) | Ontologenius 0.4.0</title>
+  <title>DataPropertyClient Class (cpp) | Ontologenius 0.4.1</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -139,7 +139,7 @@
               <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyClient.html#DataPropertyClient">DataPropertyClient</a></b>(const std::string&amp; <i>name</i>)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyClient.html#getDown">getDown</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyClient.html#getDisjoint">getDisjoint</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyClient.html#getDomain">getDomain</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyClient.html#getDomain">getDomain</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td></tr>
               <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="DataPropertyClient.html#getRange">getRange</a></b>(const std::string&amp; <i>name</i>)</td></tr>
             </tbody>
           </table>
@@ -176,8 +176,10 @@
           <h3 class="fn" id="getDisjoint"><a name="getDisjoint"></a><span class="type">std::vector&lt;std::string&gt;</span> DataPropertyClient::<span class="name">getDisjoint</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Gives all the disjoint properties of the property <i>name</i>.</p>
 
-          <h3 class="fn" id="getDomain"><a name="getDomain"></a><span class="type">std::vector&lt;std::string&gt;</span> DataPropertyClient::<span class="name">getDomain</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <h3 class="fn" id="getDomain"><a name="getDomain"></a><span class="type">std::vector&lt;std::string&gt;</span> DataPropertyClient::<span class="name">getDomain</span>(const <span class="type">std::string</span>&amp; <i>name</i>, <span class="type">int</span> <i>depth</i> = -1)</h3>
           <p>Gives all the domain classes of the property <i>name</i>.</p>
+          <p>The optional <i>depth</i> parameter can be set to limit tree propagation to a specific value.
+             The default value -1 represents no propagation limitation while the value 0 corresponds to the direct domains.</p>
 
           <h3 class="fn" id="getRange"><a name="getRange"></a><span class="type">std::vector&lt;std::string&gt;</span> DataPropertyClient::<span class="name">getRange</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Gives all the ranges types of the property <i>name</i>.</p>

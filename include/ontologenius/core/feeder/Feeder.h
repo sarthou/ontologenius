@@ -65,15 +65,10 @@ private:
   bool addDelIndiv(action_t& action, std::string& name);
 
   bool addInheritage(feed_t& feed);
-  bool modifyDataPropertyInheritance(feed_t& feed);
-  bool modifyDataPropertyInheritanceInvert(feed_t& feed);
-  bool modifyObjectPropertyInheritance(feed_t& feed);
-  bool modifyObjectPropertyInheritanceInvert(feed_t& feed);
-  bool classIndividualIsA(feed_t& feed);
   bool addInverseOf(const feed_t& feed);
   bool addSameAs(const feed_t& feed);
 
-  bool classIndividualLangage(feed_t& feed);
+  bool modifyLangage(feed_t& feed);
   bool applyProperty(feed_t& feed);
 };
 

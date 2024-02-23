@@ -6,12 +6,12 @@
 
 namespace ontologenius {
 
-DataPropertyGraph::DataPropertyGraph(ClassGraph* class_graph)
+DataPropertyGraph::DataPropertyGraph(IndividualGraph* individual_graph, ClassGraph* class_graph) : OntoGraph(individual_graph)
 {
   class_graph_ = class_graph;
 }
 
-DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other, ClassGraph* class_graph)
+DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other, IndividualGraph* individual_graph, ClassGraph* class_graph) : OntoGraph(individual_graph)
 {
   class_graph_ = class_graph;
 
@@ -24,26 +24,6 @@ DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other, ClassGraph*
   }
 
   this->container_.load(all_branchs_);
-}
-
-DataPropertyBranch_t* DataPropertyGraph::newDefaultBranch(const std::string& name)
-{
-  auto branch = new DataPropertyBranch_t(name);
-  all_branchs_.push_back(branch);
-  container_.insert(branch);
-  return branch;
-}
-
-DataPropertyBranch_t* DataPropertyGraph::findOrCreateBranch(const std::string& name)
-{
-  auto branch = this->container_.find(name);
-  if(branch == nullptr)
-  {
-    branch = new DataPropertyBranch_t(name);
-    all_branchs_.push_back(branch);
-    container_.insert(branch);
-  }
-  return branch;
 }
 
 DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& property_vectors)
@@ -101,8 +81,8 @@ DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPrope
   **********************/
   me->properties_.apply(property_vectors.properties_);
   me->annotation_usage_ = me->annotation_usage_ || property_vectors.annotation_usage_;
-  me->setSteady_dictionary(property_vectors.dictionary_);
-  me->setSteady_muted_dictionary(property_vectors.muted_dictionary_);
+  me->setSteadyDictionary(property_vectors.dictionary_);
+  me->setSteadyMutedDictionary(property_vectors.muted_dictionary_);
 
   mitigate(me);
   return me;
@@ -211,65 +191,58 @@ LiteralNode* DataPropertyGraph::createLiteralUnsafe(const std::string& value)
   return literal;
 }
 
-std::unordered_set<std::string> DataPropertyGraph::getDisjoint(const std::string& value)
+std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& value, size_t depth)
 {
   std::unordered_set<std::string> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
 
   DataPropertyBranch_t* branch = container_.find(value);
+  std::unordered_set<DataPropertyBranch_t*> up_trace;
   if(branch != nullptr)
-    for(auto& disjoint : branch->disjoints_)
-      getDown(disjoint.elem, res);
+    getDomain(branch, depth, res, up_trace);
 
   return res;
 }
 
-std::unordered_set<index_t> DataPropertyGraph::getDisjoint(index_t value)
+std::unordered_set<index_t> DataPropertyGraph::getDomain(index_t value, size_t depth)
 {
   std::unordered_set<index_t> res;
   std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
 
   DataPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+  std::unordered_set<DataPropertyBranch_t*> up_trace;
   if(branch != nullptr)
-    for(auto& disjoint : branch->disjoints_)
-      getDown(disjoint.elem, res);
-
-  return res;
-}
-
-std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& value)
-{
-  std::unordered_set<std::string> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
-
-  DataPropertyBranch_t* branch = container_.find(value);
-  if(branch != nullptr)
-    for(auto& domain : branch->domains_)
-      class_graph_->getDownSafe(domain.elem, res);
-
-  return res;
-}
-
-std::unordered_set<index_t> DataPropertyGraph::getDomain(index_t value)
-{
-  std::unordered_set<index_t> res;
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
-
-  DataPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
-  if(branch != nullptr)
-    for(auto& domain : branch->domains_)
-      class_graph_->getDownSafe(domain.elem, res);
+    getDomain(branch, depth, res, up_trace);
 
   return res;
 }
 
 void DataPropertyGraph::getDomainPtr(DataPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth)
 {
-  std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
-
+  std::unordered_set<DataPropertyBranch_t*> up_trace;
   if(branch != nullptr)
-    for(auto& domain : branch->domains_)
-      class_graph_->getDownPtr(domain.elem, res, depth);
+    getDomainPtr(branch, depth, res, up_trace);
+}
+
+template<typename T>
+void DataPropertyGraph::getDomain(DataPropertyBranch_t* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<DataPropertyBranch_t*>& up_trace)
+{
+  for(auto& domain : branch->domains_)
+    class_graph_->getDown(domain.elem, res, depth);
+
+  for(auto& mother : branch->mothers_)
+    if(up_trace.insert(mother.elem).second)
+      getDomain(mother.elem, depth, res, up_trace);
+}
+
+void DataPropertyGraph::getDomainPtr(DataPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& res, std::unordered_set<DataPropertyBranch_t*>& up_trace)
+{
+  for(auto& domain : branch->domains_)
+    class_graph_->getDownPtr(domain.elem, res, depth);
+
+  for(auto& mother : branch->mothers_)
+    if(up_trace.insert(mother.elem).second)
+      getDomainPtr(mother.elem, depth, res, up_trace);
 }
 
 std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& value)
@@ -298,62 +271,6 @@ std::unordered_set<index_t> DataPropertyGraph::getRange(index_t value)
   return res;
 }
 
-bool DataPropertyGraph::add(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  if(relation != "")
-  {
-    if(relation[0] == '@')
-    {
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      prop->setSteady_dictionary(relation.substr(1), data);
-      prop->updated_ = true;
-    }
-    else if((relation == "+") || (relation == "isA"))
-    {
-      DataPropertyBranch_t* tmp = create(data);
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      conditionalPushBack(prop->mothers_, DataPropertyElement_t(tmp));
-      conditionalPushBack(tmp->childs_, DataPropertyElement_t(prop));
-      prop->updated_ = true;
-      tmp->updated_ = true;
-    }
-    else
-      return false;
-  }
-  else
-    return false;
-  return true;
-}
-
-bool DataPropertyGraph::addInvert(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  if(relation != "")
-  {
-    if((relation == "+") || (relation == "isA"))
-    {
-      DataPropertyBranch_t* tmp = create(data);
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      conditionalPushBack(tmp->mothers_, DataPropertyElement_t(prop));
-      conditionalPushBack(prop->childs_, DataPropertyElement_t(tmp));
-      prop->updated_ = true;
-      tmp->updated_ = true;
-    }
-    else
-      return false;
-  }
-  else
-    return false;
-  return true;
-}
-
-bool DataPropertyGraph::remove(DataPropertyBranch_t* prop, const std::string& relation, const std::string& data)
-{
-  (void)prop;
-  (void)relation;
-  (void)data;
-  return false;
-}
-
 index_t DataPropertyGraph::getLiteralIndex(const std::string& name)
 {
   std::shared_lock<std::shared_timed_mutex> lock(mutex_);
@@ -367,8 +284,7 @@ index_t DataPropertyGraph::getLiteralIndex(const std::string& name)
 std::vector<index_t> DataPropertyGraph::getLiteralIndexes(const std::vector<std::string>& names)
 {
   std::vector<index_t> res;
-  for(auto& name : names)
-    res.push_back(getLiteralIndex(name));
+  std::transform(names.cbegin(), names.cend(), std::back_inserter(res), [this](const auto& name){ return getLiteralIndex(name); });
   return res; 
 }
 
@@ -384,8 +300,7 @@ std::string DataPropertyGraph::getLiteralIdentifier(index_t index)
 std::vector<std::string> DataPropertyGraph::getLiteralIdentifiers(const std::vector<index_t>& indexes)
 {
   std::vector<std::string> res;
-  for(auto& index : indexes)
-    res.push_back(getLiteralIdentifier(index));
+  std::transform(indexes.cbegin(), indexes.cend(), std::back_inserter(res), [this](const auto& index){ return getLiteralIdentifier(index); });
   return res; 
 }
 

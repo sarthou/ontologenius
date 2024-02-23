@@ -37,7 +37,7 @@ bool ReasonerGeneralize::periodicReason()
       std::unordered_set<ClassBranch_t*> down_set = ontology_->class_graph_.getDownPtrSafe(classes[current_id_], 1);
       down_set.erase(classes[current_id_]);
 
-      std::unordered_set<IndividualBranch_t*> indiv_down_set = ontology_->class_graph_.getDownIndividualPtrSafe(classes[current_id_]);
+      std::unordered_set<IndividualBranch_t*> indiv_down_set = ontology_->class_graph_.getDownIndividualPtrSafe(classes[current_id_], 0);
       std::shared_lock<std::shared_timed_mutex> lock_indiv_shared(ontology_->individual_graph_.mutex_);
       std::shared_lock<std::shared_timed_mutex> lock_shared(ontology_->class_graph_.mutex_);
 
@@ -88,7 +88,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Da
     if(me->data_relations_[i] < 1.0)
       deduced_indexs.insert(i);
 
-  for(auto property : properties)
+  for(auto& property : properties)
   {
     int index = -1;
 
@@ -135,7 +135,7 @@ void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<Ob
     if(me->object_relations_[i] < 1.0)
       deduced_indexs.insert(i);
 
-  for(auto property : properties)
+  for(auto& property : properties)
   {
     int index = -1;
 
@@ -178,7 +178,7 @@ std::string ReasonerGeneralize::getName()
   return "reasoner generalize";
 }
 
-std::string ReasonerGeneralize::getDesciption()
+std::string ReasonerGeneralize::getDescription()
 {
   return "This reasoner aims to infer new knowledge by generalizing explicit relationships between concepts.";
 }

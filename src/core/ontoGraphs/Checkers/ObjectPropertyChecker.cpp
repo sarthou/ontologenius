@@ -7,10 +7,10 @@ namespace ontologenius {
 size_t ObjectPropertyChecker::check()
 {
   std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
-  graph_size = graph_vect_.size();
 
   checkDisjoint();
   checkCharacteristics();
+  removeLoops();
 
   is_analysed = true;
   printStatus();
@@ -24,14 +24,19 @@ void ObjectPropertyChecker::checkDisjoint()
   {
     std::unordered_set<ObjectPropertyBranch_t*> up;
     property_graph_->getUpPtr(property, up);
-    std::unordered_set<ObjectPropertyBranch_t*> disjoint;
 
-    for(ObjectPropertyBranch_t* it : up)
-      property_graph_->getDisjointPtr(it, disjoint);
-
-    ObjectPropertyBranch_t* intersection = findIntersection(up, disjoint);
+    auto intersection = property_graph_->isDisjoint(up, up);
     if(intersection != nullptr)
-      print_error("'" + property->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
+    {
+      ObjectPropertyBranch_t* disjoint_with = property_graph_->firstIntersection(up, intersection->disjoints_);
+
+      if(disjoint_with != nullptr)
+        print_error("'" + property->value() + "' can't be a '" + intersection->value() + "' and a '"
+        + disjoint_with->value() + "' because of disjonction between properties '"
+        + intersection->value() + "' and '" + disjoint_with->value() + "'");
+      else
+        print_error("'" + property->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
+    }
   }
 }
 
@@ -46,6 +51,21 @@ void ObjectPropertyChecker::checkCharacteristics()
 
     if(properties.reflexive_property_ && properties.irreflexive_property_)
       print_error("'" + property->value() + "' can't be a 'reflexive' and 'irreflexive'");
+  }
+}
+
+void ObjectPropertyChecker::removeLoops()
+{
+  for(auto property : graph_vect_)
+  {
+    if(property->properties_.transitive_property_)
+    {
+      for(auto& inverse : property->inverses_)
+      {
+        if(inverse.elem->properties_.transitive_property_)
+          inverse.elem->properties_.transitive_property_ = false;
+      }
+    }
   }
 }
 

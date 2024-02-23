@@ -19,10 +19,10 @@ class Branch_t : public ValuedNode
 {
 public:
   std::vector<Single_t<T*>> childs_;
-  std::vector<Single_t<T*>> mothers_;
+  RelationsWithInductions<Single_t<T*>> mothers_;
+  std::vector<Single_t<T*>> disjoints_;
 
-  explicit Branch_t(const std::string& value) : ValuedNode(value)
-    {};
+  explicit Branch_t(const std::string& value) : ValuedNode(value) {}
 };
 
 } // namespace ontologenius

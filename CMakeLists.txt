@@ -147,10 +147,12 @@ add_onto_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Graphs/ObjectPropertyGraph.cpp
   src/core/ontoGraphs/Graphs/DataPropertyGraph.cpp
   src/core/ontoGraphs/Graphs/IndividualGraph.cpp
+  src/core/ontoGraphs/Graphs/AnonymousClassGraph.cpp
   src/core/ontoGraphs/Checkers/ClassChecker.cpp
   src/core/ontoGraphs/Checkers/ObjectPropertyChecker.cpp
   src/core/ontoGraphs/Checkers/DataPropertyChecker.cpp
   src/core/ontoGraphs/Checkers/IndividualChecker.cpp
+  src/core/ontoGraphs/Checkers/AnonymousClassChecker.cpp
   src/core/ontoGraphs/Ontology.cpp
   src/core/ontologyIO/OntologyLoader.cpp
   src/core/ontologyIO/OntologyReader.cpp
@@ -219,6 +221,8 @@ add_onto_library(ontologenius_reasoner_plugin MODULE
   src/core/reasoner/plugins/ReasonerDictionary.cpp
   src/core/reasoner/plugins/ReasonerGeneralize.cpp
   src/core/reasoner/plugins/ReasonerRangeDomain.cpp
+  src/core/reasoner/plugins/ReasonerAnonymous.cpp
+  src/core/reasoner/plugins/ReasonerTransitivity.cpp
 )
 target_include_directories(ontologenius_reasoner_plugin
  PUBLIC ${pluginlib_INCLUDE_DIRS}
@@ -555,6 +559,21 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     set_target_properties(ontologenius_cpy_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
     target_include_directories(ontologenius_cpy_test PRIVATE ${catkin_INCLUDE_DIRS})
     target_link_libraries(ontologenius_cpy_test ontologenius_lib ${catkin_LIBRARIES})
+
+    add_rostest_gtest(anonymous_class_test test/anonymous_class.test src/tests/CI/anonymous_class_test.cpp)
+    set_target_properties(anonymous_class_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    target_include_directories(anonymous_class_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(anonymous_class_test ontologenius_lib ${catkin_LIBRARIES})
+
+    add_rostest_gtest(chain_test test/chain.test src/tests/CI/chain_test.cpp)
+    set_target_properties(chain_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    target_include_directories(chain_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(chain_test ontologenius_lib ${catkin_LIBRARIES})
+
+    add_rostest_gtest(transitivity_test test/transitivity.test src/tests/CI/transitivity_test.cpp)
+    set_target_properties(transitivity_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    target_include_directories(transitivity_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(transitivity_test ontologenius_lib ${catkin_LIBRARIES})
   endif()
 
 elseif($ENV{ROS_VERSION} STREQUAL "2")
@@ -579,4 +598,5 @@ pluginlib_export_plugin_description_file(ontologenius reasoners_plugins_ros2.xml
 
 ament_export_include_directories(include include/ontologenius/API)
 ament_package()
+  
 endif()

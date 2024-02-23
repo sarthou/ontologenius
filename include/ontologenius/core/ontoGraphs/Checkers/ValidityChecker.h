@@ -18,7 +18,6 @@ public:
   ValidityChecker(Graph<B>* graph)
   {
     graph_vect_ = graph->get();
-    graph_size = graph_vect_.size();
     nb_error_ = 0;
     nb_warn_ = 0;
     is_analysed = false;
@@ -30,7 +29,6 @@ public:
 protected:
   std::vector<B*> graph_vect_;
   bool is_analysed;
-  size_t graph_size;
 
   void print_error(std::string err)
   {
@@ -68,25 +66,6 @@ protected:
       Display::error(type + " not analysis", false);
       std::cout << " : " << nb << " " << types << " to analyze" << std::endl;
     }
-  }
-
-  template<typename T>
-  T* findIntersection(std::unordered_set<T*>& base, std::unordered_set<T*>& comp)
-  {
-    for(auto& it : comp)
-      if(base.find(it) != base.end())
-        return it;
-    
-    return nullptr;
-  }
-
-  std::string findIntersection(std::unordered_set<std::string>& base, std::unordered_set<std::string>& comp)
-  {
-    for(auto& it : comp)
-      if(base.find(it) != base.end())
-        return it;
-    
-    return "";
   }
 
   size_t getErrors() {return nb_error_; }

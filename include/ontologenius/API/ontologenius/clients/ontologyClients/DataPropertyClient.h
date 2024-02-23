@@ -32,8 +32,11 @@ public:
   std::vector<std::string> getDisjoint(const std::string& name);
   /// @brief Gives all the domain classes of the specified property.
   /// @param name is a data property identifier.
+  /// @param depth can be set to limit tree propagation to a specific value.
+  /// The default value -1 represents no propagation limitation while the value 0
+  /// corresponds to the direct domains
   /// @return a vector of identifiers of classes.
-  std::vector<std::string> getDomain(const std::string& name);
+  std::vector<std::string> getDomain(const std::string& name, int depth = -1);
   /// @brief Gives all the range classes of the specified property.
   /// @param name is a data property identifier.
   /// @return a vector of identifiers of classes.

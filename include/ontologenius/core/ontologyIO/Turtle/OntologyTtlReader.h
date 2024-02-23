@@ -15,7 +15,7 @@ namespace ontologenius {
 class OntologyTtlReader : public OntologyReader
 {
 public:
-  OntologyTtlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
+  OntologyTtlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
   explicit OntologyTtlReader(Ontology& onto);
   ~OntologyTtlReader() {}
 

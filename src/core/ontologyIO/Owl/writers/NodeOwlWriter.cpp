@@ -11,12 +11,12 @@ void NodeOwlWriter::writeDictionary(ValuedNode* node)
   {
     for(size_t i = 0; i < it.second.size(); i++)
     {
-      std::string tmp = "        <rdfs:label xml:lang=\"" +
+      std::string tmp = "<rdfs:label xml:lang=\"" +
                         it.first +
                         "\">" +
                         it.second[i] +
                         + "</rdfs:label>\n";
-      writeString(tmp);
+      writeString(tmp, 2);
     }
   }
 }
@@ -27,20 +27,24 @@ void NodeOwlWriter::writeMutedDictionary(ValuedNode* node)
   {
     for(size_t i = 0; i < it.second.size(); i++)
     {
-      std::string tmp = "        <onto:label xml:lang=\"" +
+      std::string tmp = "<onto:label xml:lang=\"" +
                         it.first +
                         "\">" +
                         it.second[i] +
                         + "</onto:label>\n";
-      writeString(tmp);
+      writeString(tmp, 2);
     }
   }
 }
 
-void NodeOwlWriter::writeString(const std::string& text)
+void NodeOwlWriter::writeString(const std::string& text, size_t level)
 {
   if(file_ != nullptr)
-    fwrite(text.c_str(), sizeof(char), text.size(), file_);
+  {
+    std::string str(level*4, ' ');
+    str += text;
+    fwrite(str.c_str(), sizeof(char), str.size(), file_);
+  }
 }
 
 } // namespace ontologenius

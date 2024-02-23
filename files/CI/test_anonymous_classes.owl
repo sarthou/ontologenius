@@ -1,0 +1,905 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="test_anonymous#"
+     xml:base="test_anonymous"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="test_anonymous"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- test_anonymous#hasABeatingHeart -->
+
+    <owl:ObjectProperty rdf:about="test_anonymous#hasABeatingHeart"/>
+    
+
+
+    <!-- test_anonymous#hasAvailableComponent -->
+
+    <owl:ObjectProperty rdf:about="test_anonymous#hasAvailableComponent"/>
+    
+
+
+    <!-- test_anonymous#hasCamera -->
+
+    <owl:ObjectProperty rdf:about="test_anonymous#hasCamera"/>
+    
+
+
+    <!-- test_anonymous#hasCapability -->
+
+    <owl:ObjectProperty rdf:about="test_anonymous#hasCapability"/>
+    
+
+
+    <!-- test_anonymous#hasComponent -->
+
+    <owl:ObjectProperty rdf:about="test_anonymous#hasComponent"/>
+    
+
+
+    <!-- test_anonymous#hasLidar -->
+
+    <owl:ObjectProperty rdf:about="test_anonymous#hasLidar"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- test_anonymous#data1 -->
+
+    <owl:DatatypeProperty rdf:about="test_anonymous#data1">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- test_anonymous#data2 -->
+
+    <owl:DatatypeProperty rdf:about="test_anonymous#data2">
+        <rdfs:subPropertyOf rdf:resource="test_anonymous#data1"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- test_anonymous#data3 -->
+
+    <owl:DatatypeProperty rdf:about="test_anonymous#data3">
+        <rdfs:subPropertyOf rdf:resource="test_anonymous#data1"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- test_anonymous#data4 -->
+
+    <owl:DatatypeProperty rdf:about="test_anonymous#data4">
+        <rdfs:subPropertyOf rdf:resource="test_anonymous#data3"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- test_anonymous#hasROSNode -->
+
+    <owl:DatatypeProperty rdf:about="test_anonymous#hasROSNode">
+        <rdfs:subPropertyOf rdf:resource="test_anonymous#has_node"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- test_anonymous#hasString -->
+
+    <owl:DatatypeProperty rdf:about="test_anonymous#hasString">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- test_anonymous#has_node -->
+
+    <owl:DatatypeProperty rdf:about="test_anonymous#has_node"/>
+    
+
+
+    <!-- test_anonymous#isOnTheGround -->
+
+    <owl:DatatypeProperty rdf:about="test_anonymous#isOnTheGround"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- test_anonymous#ARTag -->
+
+    <owl:Class rdf:about="test_anonymous#ARTag">
+        <rdfs:subClassOf rdf:resource="test_anonymous#Component"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#Agent -->
+
+    <owl:Class rdf:about="test_anonymous#Agent">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#isOnTheGround"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#AgentCapability -->
+
+    <owl:Class rdf:about="test_anonymous#AgentCapability"/>
+    
+
+
+    <!-- test_anonymous#Bob -->
+
+    <owl:Class rdf:about="test_anonymous#Bob">
+        <owl:equivalentClass rdf:resource="test_anonymous#PhD"/>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="test_anonymous#bob"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Agent"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#BobInstances -->
+
+    <owl:Class rdf:about="test_anonymous#BobInstances">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="test_anonymous#bob"/>
+                    <rdf:Description rdf:about="test_anonymous#bob_capa"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#AgentCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#Bumper -->
+
+    <owl:Class rdf:about="test_anonymous#Bumper">
+        <rdfs:subClassOf rdf:resource="test_anonymous#Component"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#Camera -->
+
+    <owl:Class rdf:about="test_anonymous#Camera">
+        <rdfs:subClassOf rdf:resource="test_anonymous#Component"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#Capability -->
+
+    <owl:Class rdf:about="test_anonymous#Capability"/>
+    
+
+
+    <!-- test_anonymous#CommunicationCapa -->
+
+    <owl:Class rdf:about="test_anonymous#CommunicationCapa">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="test_anonymous#hasAvailableComponent"/>
+                                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:maxQualifiedCardinality>
+                                <owl:onClass rdf:resource="test_anonymous#TouchSensor"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="test_anonymous#has_node"/>
+                                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Capability"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#Component -->
+
+    <owl:Class rdf:about="test_anonymous#Component"/>
+    
+
+
+    <!-- test_anonymous#Cube -->
+
+    <owl:Class rdf:about="test_anonymous#Cube">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:complementOf>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="test_anonymous#has_node"/>
+                        <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+                    </owl:Restriction>
+                </owl:complementOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Object"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#Heart -->
+
+    <owl:Class rdf:about="test_anonymous#Heart"/>
+    
+
+
+    <!-- test_anonymous#Human -->
+
+    <owl:Class rdf:about="test_anonymous#Human">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#isOnTheGround"/>
+                <owl:allValuesFrom>
+                    <rdfs:Datatype>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://www.w3.org/2001/XMLSchema#boolean"/>
+                            <rdfs:Datatype>
+                                <owl:datatypeComplementOf rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+                            </rdfs:Datatype>
+                        </owl:intersectionOf>
+                    </rdfs:Datatype>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Agent"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#InfraredCamera -->
+
+    <owl:Class rdf:about="test_anonymous#InfraredCamera">
+        <rdfs:subClassOf rdf:resource="test_anonymous#Camera"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#LegDetectionAlgo -->
+
+    <owl:Class rdf:about="test_anonymous#LegDetectionAlgo">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#has_node"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">3</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#SoftwareComponent"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#Lidar -->
+
+    <owl:Class rdf:about="test_anonymous#Lidar">
+        <rdfs:subClassOf rdf:resource="test_anonymous#Component"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#LocalizeCapability -->
+
+    <owl:Class rdf:about="test_anonymous#LocalizeCapability">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="test_anonymous#hasCamera"/>
+                                <owl:someValuesFrom rdf:resource="test_anonymous#Camera"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                                <owl:someValuesFrom rdf:resource="test_anonymous#Lidar"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Capability"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#ManipulationCapa -->
+
+    <owl:Class rdf:about="test_anonymous#ManipulationCapa">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:maxQualifiedCardinality>
+                <owl:onClass>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="test_anonymous#hasAvailableComponent"/>
+                                <owl:someValuesFrom rdf:resource="test_anonymous#Lidar"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="test_anonymous#has_node"/>
+                                <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:onClass>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Capability"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#MotionTracklAlgo -->
+
+    <owl:Class rdf:about="test_anonymous#MotionTracklAlgo">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#has_node"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minQualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#SoftwareComponent"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#NotARealsenseOwner -->
+
+    <owl:Class rdf:about="test_anonymous#NotARealsenseOwner">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasCamera"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:complementOf>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                                <owl:hasValue rdf:resource="test_anonymous#realsense"/>
+                            </owl:Restriction>
+                        </owl:complementOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#Object -->
+
+    <owl:Class rdf:about="test_anonymous#Object">
+        <rdfs:subClassOf rdf:resource="test_anonymous#AgentCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#ObstacleAvoidanceCapability -->
+
+    <owl:Class rdf:about="test_anonymous#ObstacleAvoidanceCapability">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="test_anonymous#Bumper"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Capability"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#OtherThanAgent -->
+
+    <owl:Class rdf:about="test_anonymous#OtherThanAgent">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:complementOf rdf:resource="test_anonymous#Agent"/>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#PepperVisionCapability -->
+
+    <owl:Class rdf:about="test_anonymous#PepperVisionCapability">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasCapability"/>
+                <owl:someValuesFrom rdf:resource="test_anonymous#RealSenseVisionCapability"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Capability"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#PhD -->
+
+    <owl:Class rdf:about="test_anonymous#PhD"/>
+    
+
+
+    <!-- test_anonymous#RGBDCamera -->
+
+    <owl:Class rdf:about="test_anonymous#RGBDCamera">
+        <rdfs:subClassOf rdf:resource="test_anonymous#Camera"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#RGBDVisionCapability -->
+
+    <owl:Class rdf:about="test_anonymous#RGBDVisionCapability">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                <owl:allValuesFrom rdf:resource="test_anonymous#RGBDCamera"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Capability"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#RGBVisionCapa -->
+
+    <owl:Class rdf:about="test_anonymous#RGBVisionCapa">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                <owl:someValuesFrom rdf:resource="test_anonymous#Camera"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                <owl:hasValue rdf:resource="test_anonymous#realsense"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Capability"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#RealSenseVisionCapability -->
+
+    <owl:Class rdf:about="test_anonymous#RealSenseVisionCapability">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                <owl:hasValue rdf:resource="test_anonymous#realsense_d435i"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#Realsense -->
+
+    <owl:Class rdf:about="test_anonymous#Realsense">
+        <rdfs:subClassOf rdf:resource="test_anonymous#Camera"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#RealsenseOwner -->
+
+    <owl:Class rdf:about="test_anonymous#RealsenseOwner">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasCamera"/>
+                <owl:hasValue rdf:resource="test_anonymous#realsense"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#Robot -->
+
+    <owl:Class rdf:about="test_anonymous#Robot">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                <owl:someValuesFrom>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="test_anonymous#has_node"/>
+                        <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+                    </owl:Restriction>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Agent"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#SoftwareComponent -->
+
+    <owl:Class rdf:about="test_anonymous#SoftwareComponent">
+        <rdfs:subClassOf rdf:resource="test_anonymous#Component"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#Table -->
+
+    <owl:Class rdf:about="test_anonymous#Table">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="test_anonymous#ARTag"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Object"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#TouchCapability -->
+
+    <owl:Class rdf:about="test_anonymous#TouchCapability">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">3</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="test_anonymous#TouchSensor"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Capability"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#TouchSensor -->
+
+    <owl:Class rdf:about="test_anonymous#TouchSensor">
+        <rdfs:subClassOf rdf:resource="test_anonymous#Component"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#TouchSensorGroup -->
+
+    <owl:Class rdf:about="test_anonymous#TouchSensorGroup">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#hasComponent"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">3</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="test_anonymous#TouchSensor"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#Component"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#YoloAlgo -->
+
+    <owl:Class rdf:about="test_anonymous#YoloAlgo">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#has_node"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="test_anonymous#SoftwareComponent"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#2DLidar -->
+
+    <owl:Class rdf:about="test_anonymous#2DLidar">
+        <rdfs:subClassOf rdf:resource="test_anonymous#Lidar"/>
+    </owl:Class>
+    
+
+
+    <!-- test_anonymous#3DLidar -->
+
+    <owl:Class rdf:about="test_anonymous#3DLidar">
+        <rdfs:subClassOf rdf:resource="test_anonymous#Lidar"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- test_anonymous#bob -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#bob">
+        <isOnTheGround rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isOnTheGround>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#bob_capa -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#bob_capa"/>
+    
+
+
+    <!-- test_anonymous#bumperLeft -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#bumperLeft">
+        <rdf:type rdf:resource="test_anonymous#Bumper"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#bumperRight -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#bumperRight">
+        <rdf:type rdf:resource="test_anonymous#Bumper"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#cube_1 -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#cube_1">
+        <has_node rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</has_node>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#indiv1 -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#indiv1">
+        <owl:sameAs rdf:resource="test_anonymous#indiv2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#indiv2 -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#indiv2">
+        <hasComponent rdf:resource="test_anonymous#realsense_pepper"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#indiv3 -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#indiv3">
+        <hasCapability rdf:resource="test_anonymous#indiv1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#kinect -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#kinect">
+        <has_node rdf:datatype="http://www.w3.org/2001/XMLSchema#string"></has_node>
+        <has_node rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</has_node>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#lidar_1 -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#lidar_1">
+        <rdf:type rdf:resource="test_anonymous#Lidar"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#pepper -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#pepper">
+        <hasCamera rdf:resource="test_anonymous#realsense"/>
+        <hasComponent rdf:resource="test_anonymous#touch_area_back"/>
+        <hasComponent rdf:resource="test_anonymous#touch_area_front"/>
+        <hasComponent rdf:resource="test_anonymous#touch_area_mid"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#pepper_capa -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#pepper_capa">
+        <hasCamera rdf:resource="test_anonymous#lidar_1"/>
+        <hasCamera rdf:resource="test_anonymous#realsense"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#pr2 -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#pr2">
+        <hasCamera rdf:resource="test_anonymous#vision_module"/>
+        <hasComponent rdf:resource="test_anonymous#realsense"/>
+        <hasComponent rdf:resource="test_anonymous#vision_module"/>
+        <isOnTheGround rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isOnTheGround>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#pr2_capa -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#pr2_capa"/>
+    
+
+
+    <!-- test_anonymous#realsense -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#realsense">
+        <has_node rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</has_node>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#realsense_d435i -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#realsense_d435i">
+        <owl:sameAs rdf:resource="test_anonymous#realsense_pepper"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#realsense_pepper -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#realsense_pepper"/>
+    
+
+
+    <!-- test_anonymous#software_module -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#software_module">
+        <has_node rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</has_node>
+        <has_node rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</has_node>
+        <has_node rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</has_node>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#table_1 -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#table_1">
+        <hasComponent rdf:resource="test_anonymous#tag_1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#tag_1 -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#tag_1">
+        <rdf:type rdf:resource="test_anonymous#ARTag"/>
+    </owl:NamedIndividual>
+
+
+    <!-- test_anonymous#touch_area_back -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#touch_area_back">
+        <rdf:type rdf:resource="test_anonymous#TouchSensor"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#touch_area_front -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#touch_area_front">
+        <rdf:type rdf:resource="test_anonymous#TouchSensor"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#touch_area_mid -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#touch_area_mid">
+        <rdf:type rdf:resource="test_anonymous#TouchSensor"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- test_anonymous#vision_module -->
+
+    <owl:NamedIndividual rdf:about="test_anonymous#vision_module">
+        <hasCamera rdf:resource="test_anonymous#kinect"/>
+        <hasComponent rdf:resource="test_anonymous#kinect"/>
+        <hasROSNode rdf:datatype="http://www.w3.org/2001/XMLSchema#string">node1</hasROSNode>
+        <!-- <hasROSNode rdf:datatype="http://www.w3.org/2001/XMLSchema#string">node2</hasROSNode> -->
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="test_anonymous#bumperLeft"/>
+            <rdf:Description rdf:about="test_anonymous#bumperRight"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="test_anonymous#touch_area_back"/>
+            <rdf:Description rdf:about="test_anonymous#touch_area_front"/>
+            <rdf:Description rdf:about="test_anonymous#touch_area_mid"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
