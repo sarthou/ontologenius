@@ -22,7 +22,7 @@ public:
 
   virtual bool defaultActive() override {return true;}
 private:
-  void getUpPtrChain(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*> res);
+  void getUpPtrChain(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res);
 
   std::vector<std::pair<IndividualBranch_t*, UsedVector>> resolveChain(IndividualBranch_t* indiv, const std::vector<ObjectPropertyBranch_t*>& chain, size_t chain_index = 0);
   void resolveChain(IndividualBranch_t* indiv, int same_index, const std::vector<ObjectPropertyBranch_t*>& chain, size_t chain_index, std::vector<std::pair<IndividualBranch_t*, UsedVector>>& res);

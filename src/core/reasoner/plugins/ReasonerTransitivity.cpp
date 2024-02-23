@@ -76,7 +76,7 @@ void ReasonerTransitivity::postReason()
     }
 }
 
-void ReasonerTransitivity::getUpPtrTransitive(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*> res)
+void ReasonerTransitivity::getUpPtrTransitive(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res)
 {
   if(branch->properties_.transitive_property_)
     if(res.insert(branch).second == false)

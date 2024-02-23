@@ -79,7 +79,7 @@ void ReasonerChain::postReason()
     }
 }
 
-void ReasonerChain::getUpPtrChain(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*> res)
+void ReasonerChain::getUpPtrChain(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res)
 {
   if(branch->chains_.size())
     if(res.insert(branch).second == false)
