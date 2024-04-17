@@ -57,13 +57,13 @@ public:
   /// @param stamp is the time at which the added relation become true.
   /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
   void addProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const onto_ros::Time& stamp = onto_ros::Node::get().current_time());
-  /// @brief Adds the inheratage: "from" is a "on". "from" and "on" could by a class, an individual or a property.
-  /// At least from or on must be already known to the system. If one of them is unknown, it will be automatically created.
-  /// @param from is the parent concept. It could by a class, an individual or a property.
-  /// @param on is the child concept. It could by a class, an individual or a property.
+  /// @brief Adds the inheratage: "child" is a "mother". "child" and "mother" could by a class, an individual, or a property.
+  /// At least child or child must be already known to the system. If one of them is unknown, it will be automatically created.
+  /// @param child is the child concept. It could by a class, an individual, or a property.
+  /// @param mother is the parent concept. It could by a class, or an individual.
   /// @param stamp is the time at which the added relation become true.
   /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
-  void addInheritage(const std::string& from, const std::string& on, const onto_ros::Time& stamp = onto_ros::Node::get().current_time());
+  void addInheritage(const std::string& child, const std::string& mother, const onto_ros::Time& stamp = onto_ros::Node::get().current_time());
   /// @brief Adds the label "name" in the language "lang" to the class, individual, or property "from".
   /// "from" must be already known to the system.
   /// @param from is the concept (individual, class, property) to which add a name in natural language.
