@@ -1,57 +1,56 @@
 #ifndef ONTOLOGENIUS_TREEDRAWER_H
 #define ONTOLOGENIUS_TREEDRAWER_H
 
-#include "ontologenius/graphical/versioning/TreeReader.h"
-
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/highgui/highgui_c.h>
-
 #include <map>
+#include <opencv2/highgui/highgui_c.h>
+#include <opencv2/imgcodecs.hpp>
+
+#include "ontologenius/graphical/versioning/TreeReader.h"
 
 namespace ontologenius {
 
-class Node_t
-{
-public:
-  size_t row_;
-  size_t column_;
+  class Node_t
+  {
+  public:
+    size_t row_;
+    size_t column_;
 
-  static size_t current_row;
-  static size_t current_column;
+    static size_t current_row;
+    static size_t current_column;
 
-  bool is_data_;
-  std::string text_;
+    bool is_data_;
+    std::string text_;
 
-  Node_t* prev_;
-  std::vector<Node_t*> nexts_;
-};
+    Node_t* prev_;
+    std::vector<Node_t*> nexts_;
+  };
 
-class TreeDrawer
-{
-public:
-  TreeDrawer() : image_(nullptr) {}
-  ~TreeDrawer();
+  class TreeDrawer
+  {
+  public:
+    TreeDrawer() : image_(nullptr) {}
+    ~TreeDrawer();
 
-  void draw(const std::string& file_name, commit_t* root, bool commit_only = false);
+    void draw(const std::string& file_name, commit_t* root, bool commit_only = false);
 
-private:
-  std::vector<Node_t*> nodes_;
-  std::map<int, Node_t*> commit_nodes_;
-  IplImage* image_;
+  private:
+    std::vector<Node_t*> nodes_;
+    std::map<int, Node_t*> commit_nodes_;
+    IplImage* image_;
 
-  Node_t* createNode(commit_t* commit, bool commit_only);
+    Node_t* createNode(commit_t* commit, bool commit_only);
 
-  void drawNode(Node_t* node);
-  void drawNodeText(Node_t* node);
-  void drawLink(Node_t* node_from, Node_t* node_to);
-  void drawElipseRight(size_t x, size_t y);
-  void drawElipseBottom(size_t x, size_t y);
+    void drawNode(Node_t* node);
+    void drawNodeText(Node_t* node);
+    void drawLink(Node_t* node_from, Node_t* node_to);
+    void drawElipseRight(size_t x, size_t y);
+    void drawElipseBottom(size_t x, size_t y);
 
-  void drawDelim();
+    void drawDelim();
 
-  size_t getCorrectedRow(int id);
-  void shiftRows(size_t row, size_t shift);
-};
+    size_t getCorrectedRow(int id);
+    void shiftRows(size_t row, size_t shift);
+  };
 
 } // namespace ontologenius
 

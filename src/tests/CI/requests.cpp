@@ -1,8 +1,6 @@
-#include <sstream>
-
-#include <ros/ros.h>
-
 #include <gtest/gtest.h>
+#include <ros/ros.h>
+#include <sstream>
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 

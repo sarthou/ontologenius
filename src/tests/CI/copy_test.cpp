@@ -1,9 +1,8 @@
+#include <chrono>
+#include <gtest/gtest.h>
+
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/utils/Commands.h"
-
-#include <chrono>
-
-#include <gtest/gtest.h>
 
 using namespace std::chrono;
 

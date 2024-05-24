@@ -2,9 +2,8 @@
 #define ONTOLOGENIUS_REASONERS_H
 
 #include <map>
-#include <string>
-
 #include <pluginlib/class_loader.hpp>
+#include <string>
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/reasoner/ConfigReader.h"
@@ -12,69 +11,70 @@
 
 namespace ontologenius {
 
-class Reasoners
-{
-public:
-  explicit Reasoners(const std::string& agent_name, Ontology* onto = nullptr);
-  ~Reasoners();
-
-  void link(Ontology* onto);
-
-  void configure(const std::string& config_path);
-  void load();
-  void initialize();
-  std::string list();
-  std::vector<std::string> listVector();
-  std::vector<std::string> activeListVector();
-
-  int activate(const std::string& plugin);
-  int deactivate(const std::string& plugin);
-  std::string getDescription(std::string& plugin);
-
-  void runPreReasoners(QueryOrigin_e origin, const std::string& action, const std::string& param);
-  void runPostReasoners();
-  void runPeriodicReasoners();
-
-  std::vector<std::pair<ReasonerNotificationStatus_e, std::string>> getNotifications()
+  class Reasoners
   {
-    auto tmp = std::move(notifications_);
-    notifications_.clear();
-    return tmp;
-  }
+  public:
+    explicit Reasoners(const std::string& agent_name, Ontology* onto = nullptr);
+    ~Reasoners();
 
-  std::vector<std::pair<std::string, std::string>> getExplanations()
-  {
-    explanations_mutex_.lock();
-    auto tmp = std::move(explanations_);
-    explanations_.clear();
-    explanations_mutex_.unlock();
-    return tmp;
-  }
+    void link(Ontology* onto);
 
-private:
-  std::string agent_name_;
-  Ontology* ontology_;
-  ConfigReader config_;
-  std::map<std::string, ReasonerInterface*> reasoners_;
-  std::map<std::string, ReasonerInterface*> active_reasoners_;
-  std::vector<std::pair<ReasonerNotificationStatus_e, std::string>> notifications_;
-  // Here the explanations are about relations added through FOL
-  std::vector<std::pair<std::string, std::string>> explanations_;
-  std::mutex explanations_mutex_;
+    void configure(const std::string& config_path);
+    void load();
+    void initialize();
+    std::string list();
+    std::vector<std::string> listVector();
+    std::vector<std::string> activeListVector();
 
-  pluginlib::ClassLoader<ReasonerInterface> loader_;
+    int activate(const std::string& plugin);
+    int deactivate(const std::string& plugin);
+    std::string getDescription(std::string& plugin);
 
-  void applyConfig();
+    void runPreReasoners(QueryOrigin_e origin, const std::string& action, const std::string& param);
+    void runPostReasoners();
+    void runPeriodicReasoners();
 
-  void computeUpdates();
-  template<typename B> void computeGraphUpdates(Graph<B>* graph);
-  void computeIndividualsUpdates();
-  void computeClassesUpdates();
-  void computeIndividualsUpdatesPeriodic();
-  void resetIndividualsUpdates();
+    std::vector<std::pair<ReasonerNotificationStatus_e, std::string>> getNotifications()
+    {
+      auto tmp = std::move(notifications_);
+      notifications_.clear();
+      return tmp;
+    }
 
-  QueryInfo_t extractQueryInfo(QueryOrigin_e origin, const std::string& action, const std::string& param);
-};
+    std::vector<std::pair<std::string, std::string>> getExplanations()
+    {
+      explanations_mutex_.lock();
+      auto tmp = std::move(explanations_);
+      explanations_.clear();
+      explanations_mutex_.unlock();
+      return tmp;
+    }
+
+  private:
+    std::string agent_name_;
+    Ontology* ontology_;
+    ConfigReader config_;
+    std::map<std::string, ReasonerInterface*> reasoners_;
+    std::map<std::string, ReasonerInterface*> active_reasoners_;
+    std::vector<std::pair<ReasonerNotificationStatus_e, std::string>> notifications_;
+    // Here the explanations are about relations added through FOL
+    std::vector<std::pair<std::string, std::string>> explanations_;
+    std::mutex explanations_mutex_;
+
+    pluginlib::ClassLoader<ReasonerInterface> loader_;
+
+    void applyConfig();
+
+    void computeUpdates();
+    template<typename B>
+    void computeGraphUpdates(Graph<B>* graph);
+    void computeIndividualsUpdates();
+    void computeClassesUpdates();
+    void computeIndividualsUpdatesPeriodic();
+    void resetIndividualsUpdates();
+
+    QueryInfo_t extractQueryInfo(QueryOrigin_e origin, const std::string& action, const std::string& param);
+  };
 
 } // namespace ontologenius
 

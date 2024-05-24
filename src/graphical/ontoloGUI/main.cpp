@@ -1,15 +1,13 @@
-#include "include/ontologenius/graphical/ontoloGUI/DarkStyle.h"
-#include "include/ontologenius/graphical/ontoloGUI/ontologui.h"
-
 #include <QApplication>
-
 #include <csignal>
 #include <thread>
 
+#include "include/ontologenius/graphical/ontoloGUI/DarkStyle.h"
+#include "include/ontologenius/graphical/ontoloGUI/ontologui.h"
 #include "ontologenius/compat/ros.h"
 #include "ontologenius/utils/Commands.h"
 
-//#include <ament_index_cpp/get_package_share_directory.hpp>
+// #include <ament_index_cpp/get_package_share_directory.hpp>
 
 void spinThread(bool* run)
 {
@@ -20,7 +18,7 @@ void spinThread(bool* run)
 
 using namespace std::chrono_literals;
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   ontologenius::compat::onto_ros::Node::init(argc, argv, "ontoloGUI");
 
@@ -31,7 +29,7 @@ int main(int argc, char *argv[])
 
   a.setStyle(new DarkStyle);
 
-  //std::string path = ament_index_cpp::get_package_share_directory("ontologenius");
+  // std::string path = ament_index_cpp::get_package_share_directory("ontologenius");
   std::string path = ontologenius::findPackage("ontologenius");
   path = path + "/docs/images/ontologenius.ico";
 

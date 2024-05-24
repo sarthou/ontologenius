@@ -1,5 +1,5 @@
-#include "ontologenius/graphical/versioning/TreeReader.h"
 #include "ontologenius/graphical/versioning/TreeDrawer.h"
+#include "ontologenius/graphical/versioning/TreeReader.h"
 
 std::string getFileName(const std::string& xml_path)
 {

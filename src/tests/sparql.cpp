@@ -1,27 +1,26 @@
-#include <vector>
-#include <string>
-#include <map>
-#include <thread>
-
-#include "ontologenius/core/ontologyOperators/SparqlSolver.h"
 #include "ontologenius/core/ontologyOperators/Sparql.h"
-#include "ontologenius/core/ontoGraphs/Ontology.h"
-#include "ontologenius/interface/RosInterface.h"
 
-#include "time.h"
 #include <chrono>
-
-#include <stdio.h>
 #include <execinfo.h>
+#include <map>
 #include <signal.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string>
+#include <thread>
 #include <unistd.h>
+#include <vector>
+
+#include "ontologenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/ontologyOperators/SparqlSolver.h"
+#include "ontologenius/interface/RosInterface.h"
+#include "time.h"
 
 using namespace std::chrono;
 
 void handler(int sig)
 {
-  void *array[10];
+  void* array[10];
   size_t size;
 
   size = backtrace(array, 10);
@@ -31,8 +30,8 @@ void handler(int sig)
   exit(1);
 }
 
-template <typename Map>
-bool mapCompare (Map const &lhs, Map const &rhs)
+template<typename Map>
+bool mapCompare(Map const& lhs, Map const& rhs)
 {
   // No predicate needed because there is operator== for pairs already.
   return lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin());
@@ -78,7 +77,7 @@ std::map<std::string, std::string> runSparqlSolverFirst(ontologenius::SparqlSolv
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-  std::cout << "SparqlSolver has found first solution in " << time_span.count()*1000 << "ms" << std::endl;
+  std::cout << "SparqlSolver has found first solution in " << time_span.count() * 1000 << "ms" << std::endl;
 
   return solutions;
 }
@@ -96,7 +95,7 @@ std::vector<std::map<std::string, std::string>> runSparqlSolver(ontologenius::Sp
   }
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-  std::cout << "SparqlSolver has found " << solutions.size() << " solutions in " << time_span.count()*1000 << "ms" << std::endl;
+  std::cout << "SparqlSolver has found " << solutions.size() << " solutions in " << time_span.count() * 1000 << "ms" << std::endl;
 
   return solutions;
 }
@@ -108,7 +107,7 @@ std::vector<std::vector<std::string>> runSparqlBase(ontologenius::Sparql& solver
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
-  std::cout << "Sparql has found " << solutions.second.size() << " solutions in " << time_span.count()*1000 << "ms" << std::endl;
+  std::cout << "Sparql has found " << solutions.second.size() << " solutions in " << time_span.count() * 1000 << "ms" << std::endl;
 
   return solutions.second;
 }
@@ -120,7 +119,7 @@ std::vector<std::vector<ontologenius::index_t>> runSparqlBaseIndex(ontologenius:
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
-  std::cout << "Sparql index has found " << solutions.second.size() << " solutions in " << time_span.count()*1000 << "ms" << std::endl;
+  std::cout << "Sparql index has found " << solutions.second.size() << " solutions in " << time_span.count() * 1000 << "ms" << std::endl;
 
   return solutions.second;
 }
@@ -128,8 +127,7 @@ std::vector<std::vector<ontologenius::index_t>> runSparqlBaseIndex(ontologenius:
 void configureInterface(ontologenius::RosInterface& interface)
 {
   std::vector<std::string> files = {
-    "/home/gsarthou/Robots/Pr2/Dacobot/catkin_ws/src/dt_resources/ontologies/dt_setup_1.owl"
-  };
+    "/home/gsarthou/Robots/Pr2/Dacobot/catkin_ws/src/dt_resources/ontologies/dt_setup_1.owl"};
 
   interface.setDisplay(false);
   interface.init("en", "none", files, "none");
@@ -140,8 +138,7 @@ void configureInterfaceTaboo(ontologenius::RosInterface& interface)
   std::vector<std::string> files = {
     "/home/gsarthou/Robots/Pr2/Dacobot/catkin_ws/src/referring_expression_generation/resources/ontology/tests/linkdmdb/linkdmdb_upper.owl",
     "/home/gsarthou/Robots/Pr2/Dacobot/catkin_ws/src/referring_expression_generation/resources/ontology/tests/linkdmdb/linkdmdb.ttl",
-    "/home/gsarthou/Robots/Pr2/Dacobot/catkin_ws/src/referring_expression_generation/resources/ontology/tests/linkdmdb/foaf.owl"
-  };
+    "/home/gsarthou/Robots/Pr2/Dacobot/catkin_ws/src/referring_expression_generation/resources/ontology/tests/linkdmdb/foaf.owl"};
   std::string config = "/home/gsarthou/Robots/Pr2/Dacobot/catkin_ws/src/referring_expression_generation/resources/conf/no_generalization.yaml";
 
   interface.setDisplay(false);
@@ -161,8 +158,10 @@ void testInsertIndex(size_t nb)
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
-  std::cout << "Insertion of " << nb << " long in " << time_span.count()*1000 << "ms" << std::endl;
+  std::cout << "Insertion of " << nb << " long in " << time_span.count() * 1000 << "ms" << std::endl;
 }
+
+using namespace ontologenius;
 
 int main(int argc, char** argv)
 {
@@ -178,9 +177,9 @@ int main(int argc, char** argv)
   onto_thread = std::thread(&ontologenius::RosInterface::run, &interface);
   interface.close();
 
-  //std::string query = "SELECT * WHERE {?0 isA Container. ?0 hasIn ?1. ?0 isOnTopOf ?2. ?1 isA Cube. ?1 hasFigure ?3. ?3 isA Circle}";
-  //std::string query = "SELECT * WHERE {?0 isA movie_director. ?0 movie_performance ?2. ?2 isA movie_performance}";
-  //std::string query = "?0 isA movie_director, ?0 movie_performance ?8, ?8 isA movie_performance, ?8 performance_actor string#Dany Boon";
+  // std::string query = "SELECT * WHERE {?0 isA Container. ?0 hasIn ?1. ?0 isOnTopOf ?2. ?1 isA Cube. ?1 hasFigure ?3. ?3 isA Circle}";
+  // std::string query = "SELECT * WHERE {?0 isA movie_director. ?0 movie_performance ?2. ?2 isA movie_performance}";
+  // std::string query = "?0 isA movie_director, ?0 movie_performance ?8, ?8 isA movie_performance, ?8 performance_actor string#Dany Boon";
   std::string query = "SELECT * WHERE {?0 isA movie_actor}";
 
   ontologenius::SparqlSolver sparql;
@@ -208,9 +207,9 @@ int main(int argc, char** argv)
 
     usleep(1000000);
 
-    query = "SELECT * WHERE {?0 isA " + std::to_string(onto->class_graph_.getIndex("movie_director")) + 
-            ". ?0 " + std::to_string(onto->class_graph_.getIndex("movie_performance")) + 
-            " ?2. ?2 isA " + std::to_string(onto->class_graph_.getIndex("movie_performance")) + 
+    query = "SELECT * WHERE {?0 isA " + std::to_string(onto->class_graph_.getIndex("movie_director")) +
+            ". ?0 " + std::to_string(onto->class_graph_.getIndex("movie_performance")) +
+            " ?2. ?2 isA " + std::to_string(onto->class_graph_.getIndex("movie_performance")) +
             "}";
     solution_index = runSparqlBaseIndex(sparql_base, query);
   }

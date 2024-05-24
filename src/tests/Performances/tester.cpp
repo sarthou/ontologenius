@@ -1,9 +1,8 @@
 #include <chrono>
-#include <cstdlib>     /* srand, rand */
-#include <ctime>       /* time */
-#include <unordered_set>
-
+#include <cstdlib> /* srand, rand */
+#include <ctime>   /* time */
 #include <ros/ros.h>
+#include <unordered_set>
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/reasoner/Reasoners.h"
@@ -20,7 +19,7 @@ std::string set2string(const std::unordered_set<std::string>& word_set)
 
 std::vector<std::string> generate_sequence(ontologenius::ClassGraph& onto)
 {
-  srand (time(NULL));
+  srand(time(NULL));
 
   std::vector<ontologenius::ClassBranch_t*> base = onto.get();
   size_t max_index = base.size();
@@ -45,14 +44,14 @@ std::vector<std::string> generate_sequence(ontologenius::ClassGraph& onto)
   vect20.resize(10);
   vect20[0] = _1_10_1;
   vect20[1] = _1_10_2;
-  vect20.insert(vect20.end(), vect20.begin(), vect20.end());//20
+  vect20.insert(vect20.end(), vect20.begin(), vect20.end()); // 20
   vect20[2] = _1_20_1;
   vect20[12] = _1_20_2;
   std::vector<std::string> vect100 = vect20;
-  vect100.insert(vect100.end(), vect20.begin(), vect20.end());//40
-  vect100.insert(vect100.end(), vect20.begin(), vect20.end());//60
-  vect100.insert(vect100.end(), vect20.begin(), vect20.end());//80
-  vect100.insert(vect100.end(), vect20.begin(), vect20.end());//100
+  vect100.insert(vect100.end(), vect20.begin(), vect20.end()); // 40
+  vect100.insert(vect100.end(), vect20.begin(), vect20.end()); // 60
+  vect100.insert(vect100.end(), vect20.begin(), vect20.end()); // 80
+  vect100.insert(vect100.end(), vect20.begin(), vect20.end()); // 100
   for(int i = 3; i < 100; i += 25)
     vect100[i] = _1_25_1;
   for(int i = 13; i < 100; i += 25)
@@ -114,9 +113,9 @@ int main(int argc, char** argv)
   onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/property.owl");
   onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/measure.owl");*/
 
-  //onto.readFromFile("/home/gsarthou/Downloads/owl-export-unversioned.owl");
+  // onto.readFromFile("/home/gsarthou/Downloads/owl-export-unversioned.owl");
   onto.readFromFile("/home/gsarthou/openrobots/share/ontologies/testsuite.owl");
-  //onto.readFromUri("https://raw.githubusercontent.com/severin-lemaignan/oro-server/master/testing/testsuite.oro.owl");
+  // onto.readFromUri("https://raw.githubusercontent.com/severin-lemaignan/oro-server/master/testing/testsuite.oro.owl");
 
   high_resolution_clock::time_point t3 = high_resolution_clock::now();
   duration<double> time_span2 = duration_cast<duration<double>>(t3 - t1);

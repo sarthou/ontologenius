@@ -3,39 +3,39 @@
 
 #include <unordered_map>
 
-#include "ontologenius/core/feeder/Version_node.h"
 #include "ontologenius/core/feeder/FeedStorage.h"
+#include "ontologenius/core/feeder/Version_node.h"
 
 namespace ontologenius {
 
-class Versionor
-{
-public:
-  explicit Versionor(FeedStorage* storage);
-  Versionor(const Versionor& other) = delete;
-  ~Versionor();
-  
-  Versionor& operator=(const Versionor& other) = delete;
+  class Versionor
+  {
+  public:
+    explicit Versionor(FeedStorage* storage);
+    Versionor(const Versionor& other) = delete;
+    ~Versionor();
 
-  void activate(bool activated) { activated_ = activated; }
+    Versionor& operator=(const Versionor& other) = delete;
 
-  void insert(feed_t data);
-  bool commit(const std::string& id);
-  bool checkout(const std::string& id);
+    void activate(bool activated) { activated_ = activated; }
 
-  void print() { nodes_["0"]->print(); }
-  void exportToXml(const std::string& path);
+    void insert(feed_t data);
+    bool commit(const std::string& id);
+    bool checkout(const std::string& id);
 
-private:
-  bool activated_;
-  FeedStorage* storage_;
-  size_t order_;
+    void print() { nodes_["0"]->print(); }
+    void exportToXml(const std::string& path);
 
-  std::unordered_map<std::string, Version_node*> nodes_;
-  Version_node* current_node_;
+  private:
+    bool activated_;
+    FeedStorage* storage_;
+    size_t order_;
 
-  std::vector<Version_node*> getPrevs(Version_node* from_node);
-};
+    std::unordered_map<std::string, Version_node*> nodes_;
+    Version_node* current_node_;
+
+    std::vector<Version_node*> getPrevs(Version_node* from_node);
+  };
 
 } // namespace ontologenius
 

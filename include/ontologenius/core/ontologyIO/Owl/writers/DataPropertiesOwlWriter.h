@@ -7,25 +7,25 @@
 
 namespace ontologenius {
 
-class DataPropertyGraph;
-class DataPropertyBranch_t;
+  class DataPropertyGraph;
+  class DataPropertyBranch_t;
 
-class DataPropertiesOwlWriter : public PropertiesOwlWriter<DataPropertyBranch_t>
-{
-public:
-  DataPropertiesOwlWriter(DataPropertyGraph* property_graph, const std::string& ns);
-  ~DataPropertiesOwlWriter() {};
+  class DataPropertiesOwlWriter : public PropertiesOwlWriter<DataPropertyBranch_t>
+  {
+  public:
+    DataPropertiesOwlWriter(DataPropertyGraph* property_graph, const std::string& ns);
+    ~DataPropertiesOwlWriter(){};
 
-  void write(FILE* file);
+    void write(FILE* file);
 
-private:
-  DataPropertyGraph* property_graph_;
+  private:
+    DataPropertyGraph* property_graph_;
 
-  void writeProperty(DataPropertyBranch_t* branch);
-  void writeSubPropertyOf(DataPropertyBranch_t* branch);
-  void writeRange(DataPropertyBranch_t* branch);
-  void writeDomain(DataPropertyBranch_t* branch);
-};
+    void writeProperty(DataPropertyBranch_t* branch);
+    void writeSubPropertyOf(DataPropertyBranch_t* branch);
+    void writeRange(DataPropertyBranch_t* branch);
+    void writeDomain(DataPropertyBranch_t* branch);
+  };
 
 } // namespace ontologenius
 

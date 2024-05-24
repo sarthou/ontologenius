@@ -2,11 +2,10 @@
 #include <chrono>
 #include <cmath>
 #include <cstdio>
-#include <cstdlib>     /* srand, rand */
+#include <cstdlib> /* srand, rand */
 #include <ctime>
-#include <unordered_set>
-
 #include <ros/ros.h>
+#include <unordered_set>
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
@@ -38,9 +37,9 @@ double R1()
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
   std::cout << "Found " << res.size() << " individuals." << std::endl;
-  std::cout << "Reasoning level 1: " << 1 << " statements retrieved in " << time_span.count()*1000 << "ms (" << 1 / time_span.count() << " stmt/sec)." << std::endl;
+  std::cout << "Reasoning level 1: " << 1 << " statements retrieved in " << time_span.count() * 1000 << "ms (" << 1 / time_span.count() << " stmt/sec)." << std::endl;
 
-  return time_span.count()*1000;
+  return time_span.count() * 1000;
 }
 
 double R2()
@@ -60,9 +59,9 @@ double R2()
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
   std::cout << "Found " << res.size() << " individuals." << std::endl;
-  std::cout << "Reasoning level 2: " << 1 << " statements retrieved in " << time_span.count()*1000 << "ms (" << 1 / time_span.count() << " stmt/sec)." << std::endl;
+  std::cout << "Reasoning level 2: " << 1 << " statements retrieved in " << time_span.count() * 1000 << "ms (" << 1 / time_span.count() << " stmt/sec)." << std::endl;
 
-  return time_span.count()*1000;
+  return time_span.count() * 1000;
 }
 
 double R3()
@@ -76,9 +75,9 @@ double R3()
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
   std::cout << "Found " << res.size() << " individuals." << std::endl;
-  std::cout << "Reasoning level 3: " << 1 << " statements retrieved in " << time_span.count()*1000 << "ms (" << 1 / time_span.count() << " stmt/sec)." << std::endl;
+  std::cout << "Reasoning level 3: " << 1 << " statements retrieved in " << time_span.count() * 1000 << "ms (" << 1 / time_span.count() << " stmt/sec)." << std::endl;
 
-  return time_span.count()*1000;
+  return time_span.count() * 1000;
 }
 
 int main(int argc, char** argv)
@@ -91,7 +90,7 @@ int main(int argc, char** argv)
   onto.verbose(true);
 
   std::vector<size_t> nb_words = {100, 500, 1000, 5000, 10000, 50000, 100000, 450000};
-  std::vector<std::vector<double> > res;
+  std::vector<std::vector<double>> res;
   ros::Rate wait(0.2);
 
   for(auto& nb_word : nb_words)

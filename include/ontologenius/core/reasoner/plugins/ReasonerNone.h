@@ -5,24 +5,23 @@
 
 namespace ontologenius {
 
-class ReasonerNone : public ReasonerInterface
-{
-public:
-  ReasonerNone() {}
-  virtual ~ReasonerNone() = default;
+  class ReasonerNone : public ReasonerInterface
+  {
+  public:
+    ReasonerNone() {}
+    virtual ~ReasonerNone() = default;
 
-  virtual bool preReason(const QueryInfo_t& query_info) override;
-  virtual void postReason() override;
-  virtual bool periodicReason() override;
+    virtual bool preReason(const QueryInfo_t& query_info) override;
+    virtual void postReason() override;
+    virtual bool periodicReason() override;
 
-  virtual bool implementPreReasoning() override { return true; }
-  virtual bool implementPostReasoning() override { return true; }
-  virtual bool implementPeriodicReasoning() override { return true; }
+    virtual bool implementPreReasoning() override { return true; }
+    virtual bool implementPostReasoning() override { return true; }
+    virtual bool implementPeriodicReasoning() override { return true; }
 
-  virtual std::string getName() override;
-  virtual std::string getDescription() override;
-private:
-};
+    virtual std::string getName() override;
+    virtual std::string getDescription() override;
+  };
 
 } // namespace ontologenius
 

@@ -2,23 +2,23 @@
 #define ONTOLOGUI_H
 
 #include <QMainWindow>
-#include "include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
 #include <QTextCursor>
-
-#include "ontologenius/OntologiesManipulator.h"
-#include <vector>
 #include <string>
+#include <vector>
+
+#include "include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
+#include "ontologenius/OntologiesManipulator.h"
 
 namespace Ui {
-class ontoloGUI;
+  class ontoloGUI;
 }
 
 class ontoloGUI : public QMainWindow
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-  explicit ontoloGUI(QWidget *parent = 0);
+  explicit ontoloGUI(QWidget* parent = 0);
   ~ontoloGUI();
 
   void init();
@@ -27,7 +27,7 @@ public:
   void loadReasoners();
 
 private:
-  Ui::ontoloGUI *ui;
+  Ui::ontoloGUI* ui;
 
   onto::OntologiesManipulator ontos_;
   onto::OntologyManipulator* onto_;

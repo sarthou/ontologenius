@@ -2,37 +2,34 @@
 
 namespace onto {
 
-std::pair<std::vector<std::string>, std::vector<ontologenius::compat::OntologeniusSparqlIndexResponse>> SparqlIndexClient::call(const std::string& query)
-{
-  auto req = ontologenius::compat::make_request<ontologenius::compat::OntologeniusSparqlIndexService>();
-  auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusSparqlIndexService>();
-
-  [query](auto&& req)
+  std::pair<std::vector<std::string>, std::vector<ontologenius::compat::OntologeniusSparqlIndexResponse>> SparqlIndexClient::call(const std::string& query)
   {
-    req->query = query;
-  }(ontologenius::compat::onto_ros::getServicePointer(req));
+    auto req = ontologenius::compat::make_request<ontologenius::compat::OntologeniusSparqlIndexService>();
+    auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusSparqlIndexService>();
 
-  using ResultTy = typename decltype(client_)::Status;
+    [query](auto&& req) {
+      req->query = query;
+    }(ontologenius::compat::onto_ros::getServicePointer(req));
 
-  switch (client_.call(req, res))
-  {
+    using ResultTy = typename decltype(client_)::Status;
+
+    switch(client_.call(req, res))
+    {
     case ResultTy::SUCCESSFUL_WITH_RETRIES:
       [[fallthrough]];
     case ResultTy::SUCCESSFUL:
     {
-      return [](auto&& res) -> std::pair<std::vector<std::string>, std::vector<ontologenius::compat::OntologeniusSparqlIndexResponse>>
-      {
-        return { res->names, res->results };
+      return [](auto&& res) -> std::pair<std::vector<std::string>, std::vector<ontologenius::compat::OntologeniusSparqlIndexResponse>> {
+        return {res->names, res->results};
       }(ontologenius::compat::onto_ros::getServicePointer(res));
-        
     }
     case ResultTy::FAILURE:
       [[fallthrough]];
     default:
     {
-      return { };
+      return {};
+    }
     }
   }
-}
 
 } // namespace onto

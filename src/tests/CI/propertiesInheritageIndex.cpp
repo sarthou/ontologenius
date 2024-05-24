@@ -1,7 +1,6 @@
-#include <ros/ros.h>
-#include <ros/package.h>
-
 #include <gtest/gtest.h>
+#include <ros/package.h>
+#include <ros/ros.h>
 
 #include "ontologenius/API/ontologenius/OntologyManipulatorIndex.h"
 
@@ -263,36 +262,36 @@ TEST(global_tests, class_getOn)
 
   res = onto_ptr->classes.getOn(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#0")) != res.end()));
+              (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#0")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.classesId2Index("child");
   test_word2 = onto_ptr->conversion.dataPropertiesId2Index("hasLeg");
   res = onto_ptr->classes.getOn(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#2")) != res.end()));
+              (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#2")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.classesId2Index("woman");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasFather");
   res = onto_ptr->classes.getOn(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()));
+              (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.classesId2Index("human");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasMother");
   res = onto_ptr->classes.getOn(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+              (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.classesId2Index("human");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasParent");
   res = onto_ptr->classes.getOn(test_word, test_word2);
   res_bool = ((res.size() == 2) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()));
+              (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.classesId2Index("cube");
@@ -347,10 +346,10 @@ TEST(global_tests, class_getWith)
 }
 
 /*******************
-*
-* INDIVIDUALS
-*
-********************/
+ *
+ * INDIVIDUALS
+ *
+ ********************/
 
 TEST(global_tests, individual_getRelationFrom)
 {
@@ -631,44 +630,44 @@ TEST(global_tests, individual_getOn)
 
   res = onto_ptr->individuals.getOn(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#0")) != res.end()));
+              (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#0")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("kevin");
   test_word2 = onto_ptr->conversion.dataPropertiesId2Index("hasLeg");
   res = onto_ptr->individuals.getOn(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#0")) != res.end()));
+              (find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#0")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("alice");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasFather");
   res = onto_ptr->individuals.getOn(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()));
+              (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("bob");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasMother");
   res = onto_ptr->individuals.getOn(test_word, test_word2);
   res_bool = ((res.size() == 1) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+              (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("alice");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasParent");
   res = onto_ptr->individuals.getOn(test_word, test_word2);
   res_bool = ((res.size() == 2) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()));
+              (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("kevin");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasParent");
   res = onto_ptr->individuals.getOn(test_word, test_word2);
   res_bool = ((res.size() == 2) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("alice")) != res.end()) &&
-             (find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("bob")) != res.end()));
+              (find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("alice")) != res.end()) &&
+              (find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("bob")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.classesId2Index("man");

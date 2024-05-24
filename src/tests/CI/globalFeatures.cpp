@@ -1,7 +1,6 @@
-#include <ros/ros.h>
-#include <ros/package.h>
-
 #include <gtest/gtest.h>
+#include <ros/package.h>
+#include <ros/ros.h>
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
@@ -32,7 +31,7 @@ TEST(global_tests, reset)
 
   EXPECT_TRUE(onto_ptr->actions.clear());
   std::string path = ros::package::getPath("ontologenius");
-  path+= "/files/attribute.owl";
+  path += "/files/attribute.owl";
   EXPECT_TRUE(onto_ptr->actions.fadd(path));
 
   EXPECT_TRUE(onto_ptr->actions.close());
@@ -52,7 +51,7 @@ TEST(global_tests, language)
 
   EXPECT_TRUE(onto_ptr->actions.clear());
   std::string path = ros::package::getPath("ontologenius");
-  path+= "/files/attribute.owl";
+  path += "/files/attribute.owl";
   EXPECT_TRUE(onto_ptr->actions.fadd(path));
 
   EXPECT_TRUE(onto_ptr->actions.close());
@@ -104,7 +103,7 @@ TEST(global_tests, reasoners_effect)
 
   EXPECT_TRUE(onto_ptr->actions.close());
 
-  //ReasonerSymmetric
+  // ReasonerSymmetric
 
   res = onto_ptr->individuals.getOn("redCube", "isInFrontOf");
   EXPECT_TRUE(find(res.begin(), res.end(), "blue_book") == res.end());
@@ -114,7 +113,7 @@ TEST(global_tests, reasoners_effect)
   res = onto_ptr->individuals.getOn("redCube", "isInFrontOf");
   EXPECT_TRUE(find(res.begin(), res.end(), "blue_book") != res.end());
 
-  //ReasonerInverseOf
+  // ReasonerInverseOf
 
   res = onto_ptr->individuals.getOn("blueCube", "isUnder");
   EXPECT_TRUE(find(res.begin(), res.end(), "greenCube") == res.end());
@@ -124,7 +123,7 @@ TEST(global_tests, reasoners_effect)
   res = onto_ptr->individuals.getOn("blueCube", "isUnder");
   EXPECT_TRUE(find(res.begin(), res.end(), "greenCube") != res.end());
 
-  //ReasonerChain
+  // ReasonerChain
 
   res = onto_ptr->individuals.getOn("greenCube", "isIn");
   EXPECT_TRUE(find(res.begin(), res.end(), "big_box") == res.end());
@@ -134,7 +133,7 @@ TEST(global_tests, reasoners_effect)
   res = onto_ptr->individuals.getOn("blueCube", "isIn");
   EXPECT_TRUE(find(res.begin(), res.end(), "big_box") != res.end());
 
-  //ReasonerDictionary
+  // ReasonerDictionary
 
   res = onto_ptr->individuals.find("big box");
   EXPECT_TRUE(find(res.begin(), res.end(), "big_box") == res.end());

@@ -15,10 +15,10 @@
 #define _DarkStyle_HPP
 
 #include <QApplication>
+#include <QFile>
+#include <QFont>
 #include <QProxyStyle>
 #include <QStyleFactory>
-#include <QFont>
-#include <QFile>
 
 class DarkStyle : public QProxyStyle
 {
@@ -26,15 +26,15 @@ class DarkStyle : public QProxyStyle
 
 public:
   DarkStyle();
-  explicit DarkStyle(QStyle *style);
+  explicit DarkStyle(QStyle* style);
 
-  QStyle *baseStyle() const;
+  QStyle* baseStyle() const;
 
-  void polish(QPalette &palette) override;
-  void polish(QApplication *app) override;
+  void polish(QPalette& palette) override;
+  void polish(QApplication* app) override;
 
 private:
-  QStyle *styleBase(QStyle *style  = NULL) const;
+  QStyle* styleBase(QStyle* style = NULL) const;
 };
 
-#endif  // _DarkStyle_HPP
+#endif // _DarkStyle_HPP

@@ -5,20 +5,20 @@
 
 class QPushButtonExtended : public QPushButton
 {
-    Q_OBJECT
+  Q_OBJECT
 public:
-    explicit QPushButtonExtended(QWidget *parent=0);
-    virtual ~QPushButtonExtended() {}
+  explicit QPushButtonExtended(QWidget* parent = 0);
+  virtual ~QPushButtonExtended() {}
 
 protected:
-    void hoverEnter(QHoverEvent *event);
-    void hoverLeave(QHoverEvent *event);
-    void hoverMove(QHoverEvent *event);
-    bool event(QEvent *event);
+  void hoverEnter(QHoverEvent* event);
+  void hoverLeave(QHoverEvent* event);
+  void hoverMove(QHoverEvent* event);
+  bool event(QEvent* event);
 
 Q_SIGNALS:
-    void hoverEnter();
-    void hoverLeave();
+  void hoverEnter();
+  void hoverLeave();
 
 public slots:
 };

@@ -1,14 +1,14 @@
 #include "ontologenius/core/ontologyOperators/SparqlSolver.h"
 
-#include "ontologenius/utils/String.h"
-#include "ontologenius/graphical/Display.h"
-
-#include "time.h"
 #include <chrono>
+
+#include "ontologenius/graphical/Display.h"
+#include "ontologenius/utils/String.h"
+#include "time.h"
 using namespace std::chrono;
 
-namespace ontologenius
-{
+namespace ontologenius {
+  
   SparqlSolver::SparqlSolver() : onto_(nullptr),
                                  sparql_pattern_("SELECT\\s*(DISTINCT)?\\s*([^\n]+)([\\s\n]*)WHERE([\\s\n]*)(.*)"),
                                  error_("")
@@ -22,7 +22,7 @@ namespace ontologenius
 
     std::smatch match;
     bool has_matched = std::regex_match(query_, match, sparql_pattern_);
-    if (has_matched)
+    if(has_matched)
     {
       std::string vars = match[2].str();
       removeChar(vars, {'\n', '\r'});
@@ -59,7 +59,7 @@ namespace ontologenius
     stepDown(initial_solution, index);
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
     duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "took " << time_span.count()*1000 << "ms" << std::endl;
+    std::cout << "took " << time_span.count() * 1000 << "ms" << std::endl;
 
     return SparqlSolver::iterator(initial_solution, this);
   }
@@ -79,7 +79,7 @@ namespace ontologenius
 
     for(auto& block : blocks)
     {
-       auto triplets = getTriplets(block.raw, ".");
+      auto triplets = getTriplets(block.raw, ".");
       if(error_ != "")
         return initial_solution;
 
@@ -109,7 +109,7 @@ namespace ontologenius
 
     return initial_solution;
   }
- 
+
   void SparqlSolver::insertConstraints(const std::vector<strTriplet_t>& triplets, SparqlSolution_t& solution, SparqlOperator_e sparql_operator)
   {
     for(auto& triplet : triplets)
@@ -216,8 +216,8 @@ namespace ontologenius
 
       if(is_last == false)
       {
-        stepDown(solution, index+1);
-        auto next_var = solution.ordered_variables_[index+1];
+        stepDown(solution, index + 1);
+        auto next_var = solution.ordered_variables_[index + 1];
         if(solution.solution_full_[next_var] != "")
           return;
       }
@@ -324,7 +324,7 @@ namespace ontologenius
             return getName(triplet);
         }
         else
-        { 
+        {
           var_it = binding.find(triplet.object.name);
           if(var_it != binding.end())
           {
@@ -366,7 +366,7 @@ namespace ontologenius
         else
           return getOn(triplet);
       }
-      else 
+      else
       {
         var_it = binding.find(triplet.object.name);
         if(var_it != binding.end())
@@ -513,7 +513,7 @@ namespace ontologenius
         {
           first_block_pose = tmp_pose;
           first_block = id;
-        } 
+        }
       }
 
       for(auto& key : operators_)
@@ -552,8 +552,7 @@ namespace ontologenius
         query = query.substr(min_pose);
       }
       removeUselessSpace(query);
-    }
-    while(query != "");
+    } while(query != "");
 
     return res;
   }
@@ -564,7 +563,7 @@ namespace ontologenius
     std::vector<strTriplet_t> sub_queries_triplet;
     try
     {
-      std::transform(sub_queries.cbegin(), sub_queries.cend(), std::back_inserter(sub_queries_triplet), [](const auto& sub_query){ return getTriplet<std::string>(sub_query); });
+      std::transform(sub_queries.cbegin(), sub_queries.cend(), std::back_inserter(sub_queries_triplet), [](const auto& sub_query) { return getTriplet<std::string>(sub_query); });
     }
     catch(const std::string& msg)
     {

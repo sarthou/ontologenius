@@ -5,23 +5,24 @@
 
 namespace ontologenius {
 
-class ReasonerSymmetric : public ReasonerInterface
-{
-public:
-  ReasonerSymmetric() {}
-  virtual ~ReasonerSymmetric() = default;
+  class ReasonerSymmetric : public ReasonerInterface
+  {
+  public:
+    ReasonerSymmetric() {}
+    virtual ~ReasonerSymmetric() = default;
 
-  virtual void postReason() override;
+    virtual void postReason() override;
 
-  virtual bool implementPostReasoning() override { return true; }
+    virtual bool implementPostReasoning() override { return true; }
 
-  virtual std::string getName() override;
-  virtual std::string getDescription() override;
+    virtual std::string getName() override;
+    virtual std::string getDescription() override;
 
-  virtual bool defaultActive() override {return true;}
-private:
-  bool symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv);
-};
+    virtual bool defaultActive() override { return true; }
+
+  private:
+    bool symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv);
+  };
 
 } // namespace ontologenius
 

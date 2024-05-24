@@ -5,50 +5,51 @@
 
 namespace ontologenius {
 
-typedef std::vector<std::pair<std::string, ObjectRelationTriplets*>> UsedVector;
+  typedef std::vector<std::pair<std::string, ObjectRelationTriplets*>> UsedVector;
 
-class ChainTree;
-class ReasonerTransitivity : public ReasonerInterface
-{
-public:
-  ReasonerTransitivity() {}
-  ~ReasonerTransitivity() {}
-
-  virtual void postReason() override;
-
-  virtual bool implementPostReasoning() override { return true; }
-
-  virtual std::string getName() override;
-  virtual std::string getDescription() override;
-
-  virtual bool defaultActive() override {return true;}
-private:
-  void getUpPtrTransitive(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res);
-  std::vector<std::pair<IndividualBranch_t*, UsedVector>> resolveChain(IndividualBranch_t* indiv, ObjectPropertyBranch_t* property, size_t current_length);
-  void resolveChain(IndividualBranch_t* indiv, int same_index, ObjectPropertyBranch_t* property, size_t current_length, std::vector<std::pair<IndividualBranch_t*, UsedVector>>& res);
-
-  bool relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
-
-  template <typename T>
-  bool existInInheritance(T* branch, index_t selector, UsedVector& used)
+  class ChainTree;
+  class ReasonerTransitivity : public ReasonerInterface
   {
-    if(branch->get() == selector)
-      return true;
-    else
+  public:
+    ReasonerTransitivity() {}
+    ~ReasonerTransitivity() {}
+
+    virtual void postReason() override;
+
+    virtual bool implementPostReasoning() override { return true; }
+
+    virtual std::string getName() override;
+    virtual std::string getDescription() override;
+
+    virtual bool defaultActive() override { return true; }
+
+  private:
+    void getUpPtrTransitive(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res);
+    std::vector<std::pair<IndividualBranch_t*, UsedVector>> resolveChain(IndividualBranch_t* indiv, ObjectPropertyBranch_t* property, size_t current_length);
+    void resolveChain(IndividualBranch_t* indiv, int same_index, ObjectPropertyBranch_t* property, size_t current_length, std::vector<std::pair<IndividualBranch_t*, UsedVector>>& res);
+
+    bool relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on);
+
+    template<typename T>
+    bool existInInheritance(T* branch, index_t selector, UsedVector& used)
     {
-      for(size_t i = 0;  i < branch->mothers_.size() ; i++)
+      if(branch->get() == selector)
+        return true;
+      else
       {
-        if(existInInheritance(branch->mothers_[i].elem, selector, used))
+        for(size_t i = 0; i < branch->mothers_.size(); i++)
         {
-          std::string explanation = branch->value() + "|isA|" +  branch->mothers_[i].elem->value();
-          used.emplace_back(explanation, branch->mothers_.has_induced_object_relations[i]); 
-          return true;
-        }  
-      } 
+          if(existInInheritance(branch->mothers_[i].elem, selector, used))
+          {
+            std::string explanation = branch->value() + "|isA|" + branch->mothers_[i].elem->value();
+            used.emplace_back(explanation, branch->mothers_.has_induced_object_relations[i]);
+            return true;
+          }
+        }
+      }
+      return false;
     }
-    return false;
-  }
-};
+  };
 
 } // namespace ontologenius
 

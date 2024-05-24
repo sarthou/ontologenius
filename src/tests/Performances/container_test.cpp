@@ -1,11 +1,10 @@
 #include <chrono>
 #include <cmath>
-#include <cstdlib>     /* srand, rand */
-#include <ctime>       /* time */
 #include <cstdio>
-#include <unordered_set>
-
+#include <cstdlib> /* srand, rand */
+#include <ctime>   /* time */
 #include <ros/ros.h>
+#include <unordered_set>
 
 #include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerDyn.h"
 #include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerMap.h"
@@ -28,17 +27,18 @@ public:
 
   std::string readLine()
   {
-    char * line = nullptr;
+    char* line = nullptr;
     if(getline(&line, &len, file_) != -1)
     {
-        cpt++;
-        return std::string(line);
+      cpt++;
+      return std::string(line);
     }
     else
       return "";
   }
 
-  size_t getNbLine() {return cpt; }
+  size_t getNbLine() { return cpt; }
+
 private:
   size_t len;
   size_t cpt;
@@ -81,8 +81,7 @@ void readFullWords()
       ontologenius::ValuedNode* tmp = new ontologenius::ValuedNode(res);
       full_words.push_back(tmp);
     }
-  }
-  while(oef == false);
+  } while(oef == false);
   std::cout << reader.getNbLine() << std::endl;
 }
 
@@ -156,7 +155,10 @@ int main(int argc, char** argv)
 
   for(size_t i = 1; i <= 5; i++)
   {
-    std::cout << "########" << std::endl << "#  " << i <<"  #" << std::endl << "########" << std::endl << std::endl;
+    std::cout << "########" << std::endl
+              << "#  " << i << "  #" << std::endl
+              << "########" << std::endl
+              << std::endl;
     ontologenius::BranchContainerDyn<ontologenius::ValuedNode> container_dyn;
     ontologenius::BranchContainerMap<ontologenius::ValuedNode> container_map;
 
@@ -170,7 +172,7 @@ int main(int argc, char** argv)
       double time_span_dyn = findAllNTime(&container_dyn, vect, N);
       double time_span_map = findAllNTime(&container_map, vect, N);
 
-      std::cout << i << " " << j << " " << time_span_dyn << " " << time_span_map << " " << vect.size()*N << " " << time_span_dyn*vect.size()*N << " " << time_span_map*vect.size()*N << std::endl;
+      std::cout << i << " " << j << " " << time_span_dyn << " " << time_span_map << " " << vect.size() * N << " " << time_span_dyn * vect.size() * N << " " << time_span_map * vect.size() * N << std::endl;
     }
 
     size_t size = full_words.size() * i / 100;

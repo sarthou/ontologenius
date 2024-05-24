@@ -1,24 +1,21 @@
-#include <regex>
-#include <thread>
-
-#include <stdio.h>
 #include <execinfo.h>
+#include <regex>
 #include <signal.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <thread>
 #include <unistd.h>
 
 #include "ontologenius/compat/ros.h"
-
-#include "ontologenius/utils/Parameters.h"
-#include "ontologenius/interface/RosInterface.h"
 #include "ontologenius/core/ontologyOperators/differenceFinder.h"
 #include "ontologenius/core/utility/error_code.h"
-
 #include "ontologenius/graphical/Display.h"
+#include "ontologenius/interface/RosInterface.h"
+#include "ontologenius/utils/Parameters.h"
 
 void handler(int sig)
 {
-  void *array[10];
+  void* array[10];
   size_t size;
 
   size = backtrace(array, 10);
@@ -31,10 +28,10 @@ void handler(int sig)
 void removeUselessSpace(std::string& text)
 {
   while((text[0] == ' ') && (text.size() != 0))
-    text.erase(0,1);
+    text.erase(0, 1);
 
   while((text[text.size() - 1] == ' ') && (text.size() != 0))
-    text.erase(text.size() - 1,1);
+    text.erase(text.size() - 1, 1);
 }
 
 std::map<std::string, ontologenius::RosInterface*> interfaces_;
@@ -72,9 +69,9 @@ std::vector<std::string> getDiff(const std::string& param, int* res_code)
   ontologenius::differenceFinder diff;
   std::regex base_regex("(.*)\\|(.*)\\|(.*)");
   std::smatch base_match;
-  if (std::regex_match(param, base_match, base_regex))
+  if(std::regex_match(param, base_match, base_regex))
   {
-    if (base_match.size() == 4)
+    if(base_match.size() == 4)
     {
       std::string onto1 = base_match[1].str();
       ontologenius::Ontology* onto1_ptr;
@@ -111,8 +108,7 @@ std::vector<std::string> getDiff(const std::string& param, int* res_code)
 bool managerHandle(ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::compat::OntologeniusService::Request>& req,
                    ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::compat::OntologeniusService::Response>& res)
 {
-  return [](auto&& req, auto&& res)
-  {
+  return [](auto&& req, auto&& res) {
     res->code = 0;
 
     removeUselessSpace(req->action);
@@ -122,7 +118,7 @@ bool managerHandle(ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::
     {
       auto it = interfaces_.find(req->param);
       if(it != interfaces_.end())
-          res->code = NO_EFFECT;
+        res->code = NO_EFFECT;
       else
       {
         auto tmp = new ontologenius::RosInterface(req->param);
@@ -150,9 +146,9 @@ bool managerHandle(ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::
     {
       std::regex base_regex("(.*)=(.*)");
       std::smatch base_match;
-      if (std::regex_match(req->param, base_match, base_regex))
+      if(std::regex_match(req->param, base_match, base_regex))
       {
-        if (base_match.size() == 3)
+        if(base_match.size() == 3)
         {
           std::string base_name = base_match[2].str();
           std::string copy_name = base_match[1].str();
@@ -235,12 +231,13 @@ int main(int argc, char** argv)
   ontologenius::compat::onto_ros::Node::get().spin();
 
   std::vector<std::string> interfaces_names;
-  std::transform(interfaces_.cbegin(), interfaces_.cend(), std::back_inserter(interfaces_names), [](const auto& it){ return it.first; });
+  std::transform(interfaces_.cbegin(), interfaces_.cend(), std::back_inserter(interfaces_names), [](const auto& it) { return it.first; });
 
   for(auto& interfaces_name : interfaces_names)
     deleteInterface(interfaces_name);
 
-  while (ontologenius::compat::onto_ros::Node::get().ok()) usleep(1);
+  while(ontologenius::compat::onto_ros::Node::get().ok())
+    usleep(1);
 
   ontologenius::compat::onto_ros::Node::shutdown();
 

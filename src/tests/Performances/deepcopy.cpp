@@ -1,8 +1,7 @@
-#include <iostream>
 #include <chrono>
-#include <cstdlib>     /* srand, rand */
-#include <ctime>       /* time */
-
+#include <cstdlib> /* srand, rand */
+#include <ctime>   /* time */
+#include <iostream>
 #include <ros/ros.h>
 
 #include "ontologenius/API/ontologenius/OntologiesManipulator.h"
@@ -52,7 +51,7 @@ int main(int argc, char** argv)
   std::vector<size_t> sizes;
   std::vector<double> res;
 
-  for(size_t i = 100; i <= 1000000; i= i*10)
+  for(size_t i = 100; i <= 1000000; i = i * 10)
   {
     std::string base_name = "base" + std::to_string(i);
     onto.add(base_name);

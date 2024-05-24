@@ -5,25 +5,25 @@
 
 namespace ontologenius {
 
-class ReasonerInverseOf : public ReasonerInterface
-{
-public:
-  ReasonerInverseOf() {}
-  virtual ~ReasonerInverseOf() = default;
+  class ReasonerInverseOf : public ReasonerInterface
+  {
+  public:
+    ReasonerInverseOf() {}
+    virtual ~ReasonerInverseOf() = default;
 
-  virtual void postReason() override;
+    virtual void postReason() override;
 
-  virtual bool implementPostReasoning() override { return true; }
+    virtual bool implementPostReasoning() override { return true; }
 
-  virtual std::string getName() override;
-  virtual std::string getDescription() override;
+    virtual std::string getName() override;
+    virtual std::string getDescription() override;
 
-  virtual bool defaultActive() override {return true;}
-private:
+    virtual bool defaultActive() override { return true; }
 
-  void insertInverse(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* base_prop, ObjectPropertyBranch_t* inv_prop, IndividualBranch_t* inv_indiv);
-  std::vector<ObjectPropertyElement_t> getLowestInvert(ObjectPropertyBranch_t* base_prop);
-};
+  private:
+    void insertInverse(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* base_prop, ObjectPropertyBranch_t* inv_prop, IndividualBranch_t* inv_indiv);
+    std::vector<ObjectPropertyElement_t> getLowestInvert(ObjectPropertyBranch_t* base_prop);
+  };
 
 } // namespace ontologenius
 

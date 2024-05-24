@@ -1,17 +1,16 @@
-#include <stdio.h>
 #include <execinfo.h>
+#include <ontologenius/compat/ros.h>
 #include <signal.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <ontologenius/compat/ros.h>
-
-#include "ontologenius/utils/Parameters.h"
 #include "ontologenius/interface/RosInterface.h"
+#include "ontologenius/utils/Parameters.h"
 
 void handler(int sig)
 {
-  void *array[10];
+  void* array[10];
   size_t size;
 
   size = backtrace(array, 10);
@@ -44,9 +43,9 @@ int main(int argc, char** argv)
 
     interface.setDisplay(params.at("display").getFirst() == "true");
     interface.init(params.at("language").getFirst(),
-                    params.at("intern_file").getFirst(),
-                    params.at("files").get(),
-                    params.at("config").getFirst());
+                   params.at("intern_file").getFirst(),
+                   params.at("files").get(),
+                   params.at("config").getFirst());
 
     interface.run();
   }
