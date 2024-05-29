@@ -9,7 +9,7 @@ class QCheckBoxExtended : public QCheckBox
 public:
   explicit QCheckBoxExtended(QWidget* parent = 0);
   explicit QCheckBoxExtended(const QString& text, QWidget* parent = 0);
-  virtual ~QCheckBoxExtended() {}
+  virtual ~QCheckBoxExtended() = default;
 
 protected:
   void hoverEnter(QHoverEvent* event);

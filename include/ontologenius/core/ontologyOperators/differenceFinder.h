@@ -25,7 +25,7 @@ namespace ontologenius {
   class differenceFinder
   {
   public:
-    differenceFinder() {}
+    differenceFinder() = default;
 
     std::vector<std::string> getDiff(Ontology* onto1, Ontology* onto2, const std::string& concept);
 

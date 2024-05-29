@@ -47,7 +47,7 @@ namespace ontologenius {
   public:
     explicit ObjectPropertyGraph(IndividualGraph* individual_graph, ClassGraph* class_graph);
     ObjectPropertyGraph(const ObjectPropertyGraph& other, IndividualGraph* individual_graph, ClassGraph* class_graph);
-    ~ObjectPropertyGraph() {}
+    ~ObjectPropertyGraph() = default;
 
     void deepCopy(const ObjectPropertyGraph& other);
 

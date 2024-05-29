@@ -10,7 +10,7 @@ namespace ontologenius {
   {
   public:
     explicit ObjectPropertyChecker(ObjectPropertyGraph* graph) : ValidityChecker(graph) { property_graph_ = graph; }
-    ~ObjectPropertyChecker() {}
+    ~ObjectPropertyChecker() = default;
 
     size_t check() override;
     void printStatus() override

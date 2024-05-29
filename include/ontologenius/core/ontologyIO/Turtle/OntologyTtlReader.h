@@ -16,7 +16,7 @@ namespace ontologenius {
   public:
     OntologyTtlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
     explicit OntologyTtlReader(Ontology& onto);
-    ~OntologyTtlReader() {}
+    ~OntologyTtlReader() = default;
 
     int readFromUri(std::string& content, const std::string& uri);
     int readFromFile(const std::string& fileName);

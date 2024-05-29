@@ -12,9 +12,9 @@ namespace ontologenius {
   class BranchContainerMap : public BranchContainerBase<B>
   {
   public:
-    BranchContainerMap() {}
+    BranchContainerMap() = default;
     BranchContainerMap(const BranchContainerMap& base);
-    virtual ~BranchContainerMap() {} // B* is destructed by ontograph
+    virtual ~BranchContainerMap() = default; // B* is destructed by ontograph
 
     virtual B* find(const std::string& word) override;
     virtual std::vector<B*> find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default) override;

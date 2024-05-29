@@ -11,8 +11,8 @@ namespace ontologenius {
   class ReasonerTransitivity : public ReasonerInterface
   {
   public:
-    ReasonerTransitivity() {}
-    ~ReasonerTransitivity() {}
+    ReasonerTransitivity() = default;
+    ~ReasonerTransitivity() = default;
 
     virtual void postReason() override;
 

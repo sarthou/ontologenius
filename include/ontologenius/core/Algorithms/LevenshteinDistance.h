@@ -8,7 +8,7 @@ namespace ontologenius {
   class LevenshteinDistance
   {
   public:
-    LevenshteinDistance() {}
+    LevenshteinDistance() = default;
 
     double get(const std::string& s1, const std::string& s2)
     {

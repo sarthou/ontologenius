@@ -10,7 +10,7 @@ namespace ontologenius {
   {
   public:
     explicit DataPropertyChecker(DataPropertyGraph* graph) : ValidityChecker(graph) { property_graph_ = graph; }
-    ~DataPropertyChecker() {}
+    ~DataPropertyChecker() = default;
 
     size_t check() override;
     void printStatus() { ValidityChecker<DataPropertyBranch_t>::printStatus(std::string("data property"), std::string("data properties"), graph_vect_.size()); }

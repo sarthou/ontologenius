@@ -19,8 +19,8 @@ namespace ontologenius {
   class Computer
   {
   public:
-    Computer() {}
-    ~Computer() {}
+    Computer() = default;
+    ~Computer() = default;
 
     bool compute(std::string equation, ClassGraph& onto);
 

@@ -23,7 +23,7 @@ namespace ontologenius {
       nb_warn_ = 0;
       is_analysed = false;
     }
-    virtual ~ValidityChecker() {}
+    virtual ~ValidityChecker() = default;
 
     virtual size_t check() = 0;
 

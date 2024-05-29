@@ -18,7 +18,7 @@ namespace ontologenius {
   public:
     OntologyOwlWriter(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
     explicit OntologyOwlWriter(Ontology& onto);
-    ~OntologyOwlWriter() {}
+    ~OntologyOwlWriter() = default;
 
     void setFileName(const std::string& name) { file_name_ = name; }
     std::string getFileName() { return file_name_; }

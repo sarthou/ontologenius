@@ -8,7 +8,7 @@ class QLineEditExtended : public QLineEdit
   Q_OBJECT
 public:
   explicit QLineEditExtended(QWidget* parent = 0);
-  virtual ~QLineEditExtended() {}
+  virtual ~QLineEditExtended() = default;
 
 protected:
   void hoverEnter(QHoverEvent* event);

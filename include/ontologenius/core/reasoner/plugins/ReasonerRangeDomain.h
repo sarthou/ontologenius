@@ -8,7 +8,7 @@ namespace ontologenius {
   class ReasonerRangeDomain : public ReasonerInterface
   {
   public:
-    ReasonerRangeDomain() {}
+    ReasonerRangeDomain() = default;
     virtual ~ReasonerRangeDomain() = default;
 
     virtual void postReason() override;

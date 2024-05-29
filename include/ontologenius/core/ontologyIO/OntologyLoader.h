@@ -17,7 +17,7 @@ namespace ontologenius {
   public:
     OntologyLoader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
     explicit OntologyLoader(Ontology& onto);
-    ~OntologyLoader() {}
+    ~OntologyLoader() = default;
 
     int loadFile(std::string file);
     int loadUri(std::string uri);

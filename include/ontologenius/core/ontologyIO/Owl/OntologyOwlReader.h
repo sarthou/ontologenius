@@ -23,7 +23,7 @@ namespace ontologenius {
   public:
     OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
     explicit OntologyOwlReader(Ontology& onto);
-    ~OntologyOwlReader() {}
+    ~OntologyOwlReader() = default;
 
     int readFromUri(std::string content, const std::string& uri, bool individual = false);
     int readFromFile(const std::string& fileName, bool individual = false);
@@ -94,10 +94,10 @@ namespace ontologenius {
   void OntologyOwlReader::push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole, const std::string& attribute)
   {
     std::string data = getAttribute(subElem, attribute);
-    if(data != "")
+    if(data.empty() == false)
     {
       vect.push_back(data);
-      if(symbole != "" && display_)
+      if(symbole.empty() == false && display_)
         std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
     }
   }
@@ -105,10 +105,10 @@ namespace ontologenius {
   void OntologyOwlReader::push(std::vector<Single_t<std::string>>& vect, TiXmlElement* subElem, float probability, const std::string& symbole, const std::string& attribute)
   {
     std::string data = getAttribute(subElem, attribute);
-    if(data != "")
+    if(data.empty() == false)
     {
       vect.push_back(Single_t<std::string>(data, probability));
-      if(symbole != "" && display_)
+      if(symbole.empty() == false && display_)
         std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
     }
   }
@@ -116,10 +116,10 @@ namespace ontologenius {
   void OntologyOwlReader::push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole)
   {
     std::string data = elem;
-    if(data != "")
+    if(data.empty() == false)
     {
       vect.push_back(data);
-      if(symbole != "" && display_)
+      if(symbole.empty() == false && display_)
         std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
     }
   }

@@ -8,7 +8,7 @@ namespace ontologenius {
   class ReasonerSymmetric : public ReasonerInterface
   {
   public:
-    ReasonerSymmetric() {}
+    ReasonerSymmetric() = default;
     virtual ~ReasonerSymmetric() = default;
 
     virtual void postReason() override;

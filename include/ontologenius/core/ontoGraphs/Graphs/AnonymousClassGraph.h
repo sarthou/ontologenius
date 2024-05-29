@@ -153,7 +153,7 @@ namespace ontologenius {
                         DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
     AnonymousClassGraph(const AnonymousClassGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph,
                         DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
-    ~AnonymousClassGraph() {}
+    ~AnonymousClassGraph() = default;
 
     AnonymousClassElement_t* createElement(ExpressionMember_t* exp_leaf);
     void update(ExpressionMember_t* exp, AnonymousClassElement_t* ano_class);

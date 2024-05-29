@@ -8,7 +8,7 @@ namespace ontologenius {
   class ReasonerInverseOf : public ReasonerInterface
   {
   public:
-    ReasonerInverseOf() {}
+    ReasonerInverseOf() = default;
     virtual ~ReasonerInverseOf() = default;
 
     virtual void postReason() override;

@@ -8,7 +8,7 @@ namespace ontologenius {
   class ReasonerNone : public ReasonerInterface
   {
   public:
-    ReasonerNone() {}
+    ReasonerNone() = default;
     virtual ~ReasonerNone() = default;
 
     virtual bool preReason(const QueryInfo_t& query_info) override;

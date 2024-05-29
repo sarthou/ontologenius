@@ -10,7 +10,7 @@ namespace ontologenius {
   {
   public:
     explicit IndividualChecker(IndividualGraph* graph) : ValidityChecker(graph) { individual_graph_ = graph; }
-    ~IndividualChecker() {}
+    ~IndividualChecker() = default;
 
     size_t check() override;
     void printStatus() { ValidityChecker<IndividualBranch_t>::printStatus("individual", "individuals", graph_vect_.size()); }

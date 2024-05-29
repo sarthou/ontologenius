@@ -10,8 +10,8 @@ namespace ontologenius {
   class ReasonerChain : public ReasonerInterface
   {
   public:
-    ReasonerChain() {}
-    ~ReasonerChain() {}
+    ReasonerChain() = default;
+    ~ReasonerChain() = default;
 
     virtual void postReason() override;
 

@@ -16,7 +16,7 @@ namespace ontologenius {
   public:
     OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
     explicit OntologyReader(Ontology& onto);
-    ~OntologyReader() {}
+    ~OntologyReader() = default;
 
     void setDisplay(bool display) { display_ = display; }
     int getNbLoadedElements() { return nb_loaded_elem_; }
@@ -35,14 +35,14 @@ namespace ontologenius {
     void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole)
     {
       vect.emplace_back(elem);
-      if(display_ && symbole != "")
+      if(display_ && symbole.empty() == false)
         std::cout << "│   │   ├── " << symbole << elem << std::endl;
     }
 
     void push(std::vector<bool>& vect, bool elem, const std::string& symbole)
     {
       vect.push_back(elem);
-      if(display_ && symbole != "")
+      if(display_ && symbole.empty() == false)
       {
         if(elem == true)
           std::cout << "│   │   ├── " << symbole << " true" << std::endl;
@@ -56,10 +56,10 @@ namespace ontologenius {
       vect.emplace_back(elem);
       if(display_)
       {
-        if(symbole1 != "")
+        if(symbole1.empty() == false)
           std::cout << "│   │   ├── " << symbole1 << elem.first << std::endl;
 
-        if(symbole2 != "")
+        if(symbole2.empty() == false)
           std::cout << "│   │   ├── " << symbole2 << elem.second << std::endl;
       }
     }

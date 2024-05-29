@@ -8,7 +8,7 @@ class QPushButtonExtended : public QPushButton
   Q_OBJECT
 public:
   explicit QPushButtonExtended(QWidget* parent = 0);
-  virtual ~QPushButtonExtended() {}
+  virtual ~QPushButtonExtended() = default;
 
 protected:
   void hoverEnter(QHoverEvent* event);
