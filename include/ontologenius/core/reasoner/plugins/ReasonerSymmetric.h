@@ -9,16 +9,16 @@ namespace ontologenius {
   {
   public:
     ReasonerSymmetric() = default;
-    virtual ~ReasonerSymmetric() = default;
+    ~ReasonerSymmetric() override = default;
 
-    virtual void postReason() override;
+    void postReason() override;
 
-    virtual bool implementPostReasoning() override { return true; }
+    bool implementPostReasoning() override { return true; }
 
-    virtual std::string getName() override;
-    virtual std::string getDescription() override;
+    std::string getName() override;
+    std::string getDescription() override;
 
-    virtual bool defaultActive() override { return true; }
+    bool defaultActive() override { return true; }
 
   private:
     bool symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv);

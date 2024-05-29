@@ -9,18 +9,18 @@ namespace ontologenius {
   {
   public:
     ReasonerNone() = default;
-    virtual ~ReasonerNone() = default;
+    ~ReasonerNone() override = default;
 
-    virtual bool preReason(const QueryInfo_t& query_info) override;
-    virtual void postReason() override;
-    virtual bool periodicReason() override;
+    bool preReason(const QueryInfo_t& query_info) override;
+    void postReason() override;
+    bool periodicReason() override;
 
-    virtual bool implementPreReasoning() override { return true; }
-    virtual bool implementPostReasoning() override { return true; }
-    virtual bool implementPeriodicReasoning() override { return true; }
+    bool implementPreReasoning() override { return true; }
+    bool implementPostReasoning() override { return true; }
+    bool implementPeriodicReasoning() override { return true; }
 
-    virtual std::string getName() override;
-    virtual std::string getDescription() override;
+    std::string getName() override;
+    std::string getDescription() override;
   };
 
 } // namespace ontologenius

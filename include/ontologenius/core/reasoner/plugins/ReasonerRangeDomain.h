@@ -9,16 +9,16 @@ namespace ontologenius {
   {
   public:
     ReasonerRangeDomain() = default;
-    virtual ~ReasonerRangeDomain() = default;
+    ~ReasonerRangeDomain() override = default;
 
-    virtual void postReason() override;
+    void postReason() override;
 
-    virtual bool implementPostReasoning() override { return true; }
+    bool implementPostReasoning() override { return true; }
 
-    virtual std::string getName() override;
-    virtual std::string getDescription() override;
+    std::string getName() override;
+    std::string getDescription() override;
 
-    virtual bool defaultActive() override { return true; }
+    bool defaultActive() override { return true; }
 
   private:
     void postReasonIndividuals();

@@ -9,18 +9,18 @@ namespace ontologenius {
   {
   public:
     ReasonerDictionary() { use_id_ = false; }
-    virtual ~ReasonerDictionary() = default;
+    ~ReasonerDictionary() override = default;
 
     void setParameter(const std::string& name, const std::string& value) override;
 
-    virtual void postReason() override;
+    void postReason() override;
 
-    virtual bool implementPostReasoning() override { return true; }
+    bool implementPostReasoning() override { return true; }
 
-    virtual std::string getName() override;
-    virtual std::string getDescription() override;
+    std::string getName() override;
+    std::string getDescription() override;
 
-    virtual bool defaultActive() override { return true; }
+    bool defaultActive() override { return true; }
 
   private:
     bool use_id_;

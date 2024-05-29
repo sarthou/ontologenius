@@ -11,18 +11,18 @@ namespace ontologenius {
   {
   public:
     ReasonerGeneralize();
-    virtual ~ReasonerGeneralize() = default;
+    ~ReasonerGeneralize() override = default;
 
-    virtual void setParameter(const std::string& name, const std::string& value) override;
+    void setParameter(const std::string& name, const std::string& value) override;
 
-    virtual bool periodicReason() override;
+    bool periodicReason() override;
 
-    virtual bool implementPeriodicReasoning() override { return true; }
+    bool implementPeriodicReasoning() override { return true; }
 
-    virtual std::string getName() override;
-    virtual std::string getDescription() override;
+    std::string getName() override;
+    std::string getDescription() override;
 
-    virtual bool defaultActive() override { return false; }
+    bool defaultActive() override { return false; }
 
   private:
     size_t current_id_;
