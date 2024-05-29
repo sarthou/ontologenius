@@ -11,9 +11,9 @@ namespace ontologenius {
   {
     order_ = 0;
     storage_ = storage;
-    auto first_node = new Version_node(order_, "0");
+    auto* first_node = new VersionNode(order_, "0");
     order_++;
-    current_node_ = new Version_node(order_, first_node);
+    current_node_ = new VersionNode(order_, first_node);
     order_++;
     nodes_[first_node->getId()] = first_node;
     activated_ = false;
@@ -49,9 +49,9 @@ namespace ontologenius {
     if(nodes_.find(id) != nodes_.end())
       return false;
 
-    Version_node* old_node = current_node_;
+    VersionNode* old_node = current_node_;
     old_node->setId(id);
-    current_node_ = new Version_node(order_, old_node);
+    current_node_ = new VersionNode(order_, old_node);
     order_++;
     nodes_[old_node->getId()] = old_node;
     return true;
@@ -69,9 +69,9 @@ namespace ontologenius {
     if(node_it == nodes_.end())
       return false;
 
-    std::vector<Version_node*> goal_prevs = getPrevs(node_it->second);
-    std::vector<Version_node*> current_prevs;
-    Version_node* pivot = current_node_;
+    std::vector<VersionNode*> goal_prevs = getPrevs(node_it->second);
+    std::vector<VersionNode*> current_prevs;
+    VersionNode* pivot = current_node_;
     while(std::find(goal_prevs.begin(), goal_prevs.end(), pivot) == goal_prevs.end())
     {
       current_prevs.push_back(pivot);
@@ -114,7 +114,7 @@ namespace ontologenius {
       current_node_ = nullptr;
     }
 
-    current_node_ = new Version_node(order_, node_it->second);
+    current_node_ = new VersionNode(order_, node_it->second);
     order_++;
     if(storage_ != nullptr)
       storage_->add(datas);
@@ -147,10 +147,10 @@ namespace ontologenius {
     fclose(file);
   }
 
-  std::vector<Version_node*> Versionor::getPrevs(Version_node* from_node)
+  std::vector<VersionNode*> Versionor::getPrevs(VersionNode* from_node)
   {
-    std::vector<Version_node*> goal_prevs;
-    Version_node* tmp_prev = from_node;
+    std::vector<VersionNode*> goal_prevs;
+    VersionNode* tmp_prev = from_node;
     while(tmp_prev != nullptr)
     {
       goal_prevs.push_back(tmp_prev);

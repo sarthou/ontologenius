@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 #include "ontologenius/core/feeder/FeedStorage.h"
-#include "ontologenius/core/feeder/Version_node.h"
+#include "ontologenius/core/feeder/VersionNode.h"
 
 namespace ontologenius {
 
@@ -31,10 +31,10 @@ namespace ontologenius {
     FeedStorage* storage_;
     size_t order_;
 
-    std::unordered_map<std::string, Version_node*> nodes_;
-    Version_node* current_node_;
+    std::unordered_map<std::string, VersionNode*> nodes_;
+    VersionNode* current_node_;
 
-    std::vector<Version_node*> getPrevs(Version_node* from_node);
+    std::vector<VersionNode*> getPrevs(VersionNode* from_node);
   };
 
 } // namespace ontologenius

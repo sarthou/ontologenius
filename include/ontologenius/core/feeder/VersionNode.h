@@ -9,20 +9,20 @@
 
 namespace ontologenius {
 
-  class Version_node
+  class VersionNode
   {
   public:
-    explicit Version_node(size_t order, Version_node* prev = nullptr);
-    Version_node(size_t order, const std::string& id);
+    explicit VersionNode(size_t order, VersionNode* prev = nullptr);
+    VersionNode(size_t order, const std::string& id);
 
     void insert(const feed_t& data) { datas_.push_back(data); }
     void setId(const std::string& id) { id_ = id; }
-    void addNext(Version_node* next) { nexts_.push_back(next); }
+    void addNext(VersionNode* next) { nexts_.push_back(next); }
 
     std::string getId() { return id_; }
     bool defined() { return id_.empty() == false; }
-    Version_node* getPrev() { return prev_; }
-    std::vector<Version_node*> getNexts() { return nexts_; }
+    VersionNode* getPrev() { return prev_; }
+    std::vector<VersionNode*> getNexts() { return nexts_; }
 
     std::vector<feed_t> getDatasDirect();
     std::vector<feed_t> getDatasInvert();
@@ -40,8 +40,8 @@ namespace ontologenius {
     size_t order_id_;
     static size_t global_order_id_;
 
-    Version_node* prev_;
-    std::vector<Version_node*> nexts_;
+    VersionNode* prev_;
+    std::vector<VersionNode*> nexts_;
 
     std::vector<feed_t> datas_;
 

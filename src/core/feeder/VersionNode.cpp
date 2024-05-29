@@ -1,12 +1,12 @@
-#include "ontologenius/core/feeder/Version_node.h"
-
 #include <numeric>
+
+#include "ontologenius/core/feeder/VersionNode.h"
 
 namespace ontologenius {
 
-  size_t Version_node::global_order_id_ = 0;
+  size_t VersionNode::global_order_id_ = 0;
 
-  Version_node::Version_node(size_t order, Version_node* prev)
+  VersionNode::VersionNode(size_t order, VersionNode* prev)
   {
     prev_ = prev;
     if(prev_ != nullptr)
@@ -15,17 +15,17 @@ namespace ontologenius {
     order_id_ = order;
   }
 
-  Version_node::Version_node(size_t order, const std::string& id) : id_(id),
-                                                                    order_id_(order),
-                                                                    prev_(nullptr)
+  VersionNode::VersionNode(size_t order, const std::string& id) : id_(id),
+                                                                  order_id_(order),
+                                                                  prev_(nullptr)
   {}
 
-  std::vector<feed_t> Version_node::getDatasDirect()
+  std::vector<feed_t> VersionNode::getDatasDirect()
   {
     return datas_;
   }
 
-  std::vector<feed_t> Version_node::getDatasInvert()
+  std::vector<feed_t> VersionNode::getDatasInvert()
   {
     std::vector<feed_t> datas = datas_;
     std::reverse(datas.begin(), datas.end());
@@ -34,12 +34,12 @@ namespace ontologenius {
     return datas;
   }
 
-  void Version_node::appendDatasDirect(std::vector<feed_t>& datas)
+  void VersionNode::appendDatasDirect(std::vector<feed_t>& datas)
   {
     datas.insert(datas.end(), datas_.begin(), datas_.end());
   }
 
-  void Version_node::appendDatasInvert(std::vector<feed_t>& datas)
+  void VersionNode::appendDatasInvert(std::vector<feed_t>& datas)
   {
     std::vector<feed_t> tmp_datas = datas_;
     for(auto& data : tmp_datas)
@@ -47,7 +47,7 @@ namespace ontologenius {
     datas.insert(datas.end(), tmp_datas.rbegin(), tmp_datas.rend());
   }
 
-  void Version_node::unlinkFromPrev()
+  void VersionNode::unlinkFromPrev()
   {
     if(prev_ != nullptr)
     {
@@ -56,7 +56,7 @@ namespace ontologenius {
     }
   }
 
-  void Version_node::print(int level)
+  void VersionNode::print(int level)
   {
     for(auto& data : datas_)
       std::cout << getSpaces(level) << std::string((data.action_ == action_add) ? "+" : "-") << data.from_ << ":" << data.prop_ << ":" << data.on_ << std::endl;
@@ -66,7 +66,7 @@ namespace ontologenius {
       next->print(level);
   }
 
-  std::string Version_node::toXml(int level)
+  std::string VersionNode::toXml(int level)
   {
     std::string xml;
     xml += getSpaces(level) + "<Node id=\"" + id_ + "\">\n";
@@ -77,7 +77,7 @@ namespace ontologenius {
     return xml;
   }
 
-  std::string Version_node::getSpaces(int nb, const std::string& symbol)
+  std::string VersionNode::getSpaces(int nb, const std::string& symbol)
   {
     std::string res;
     for(int i = 0; i < nb; i++)
@@ -85,7 +85,7 @@ namespace ontologenius {
     return res;
   }
 
-  std::string Version_node::dataToXml(const feed_t& data)
+  std::string VersionNode::dataToXml(const feed_t& data)
   {
     std::string xml = "<Data action=\"" + std::string((data.action_ == action_add) ? "add" : "del") +
                       "\">" + data.from_ + "|" + data.prop_ + "|" + data.on_ +
@@ -93,7 +93,7 @@ namespace ontologenius {
     return xml;
   }
 
-  std::string Version_node::orderIdToXml()
+  std::string VersionNode::orderIdToXml()
   {
     std::string xml = "<Order>" + std::to_string(order_id_) + "</Order>";
     return xml;
