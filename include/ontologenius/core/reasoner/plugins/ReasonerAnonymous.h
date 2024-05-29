@@ -9,17 +9,17 @@ namespace ontologenius {
   {
   public:
     ReasonerAnonymous();
-    virtual ~ReasonerAnonymous() = default;
+    ~ReasonerAnonymous() override = default;
 
-    virtual void postReason() override;
-    virtual void setParameter(const std::string& name, const std::string& value) override;
+    void postReason() override;
+    void setParameter(const std::string& name, const std::string& value) override;
 
-    virtual bool implementPostReasoning() override { return true; }
+    bool implementPostReasoning() override { return true; }
 
-    virtual std::string getName() override;
-    virtual std::string getDescription() override;
+    std::string getName() override;
+    std::string getDescription() override;
 
-    virtual bool defaultActive() override { return true; }
+    bool defaultActive() override { return true; }
 
   private:
     bool standard_mode_;
