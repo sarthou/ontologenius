@@ -45,7 +45,6 @@ SpaceBeforeParensOptions:
 SpacesInContainerLiterals: false
 TabWidth: 2
 BracedInitializerIndentWidth: 2
-BreakTemplateDeclarationsStyle: MultiLine
 NamespaceIndentation: All
 IncludeCategories:
   - Regex:           '^\<.*\>'
