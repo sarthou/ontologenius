@@ -6,20 +6,21 @@
 
 namespace ontologenius {
 
-  DataPropertyGraph::DataPropertyGraph(IndividualGraph* individual_graph, ClassGraph* class_graph) : OntoGraph(individual_graph)
-  {
-    class_graph_ = class_graph;
-  }
+  DataPropertyGraph::DataPropertyGraph(IndividualGraph* individual_graph,
+                                       ClassGraph* class_graph) : OntoGraph(individual_graph),
+                                                                  class_graph_(class_graph)
+  {}
 
-  DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other, IndividualGraph* individual_graph, ClassGraph* class_graph) : OntoGraph(individual_graph)
+  DataPropertyGraph::DataPropertyGraph(const DataPropertyGraph& other,
+                                       IndividualGraph* individual_graph,
+                                       ClassGraph* class_graph) : OntoGraph(individual_graph),
+                                                                  class_graph_(class_graph)
   {
-    class_graph_ = class_graph;
-
     language_ = other.language_;
 
     for(const auto& branch : other.all_branchs_)
     {
-      auto prop_branch = new DataPropertyBranch_t(branch->value());
+      auto* prop_branch = new DataPropertyBranch_t(branch->value());
       all_branchs_.push_back(prop_branch);
     }
 
@@ -145,7 +146,7 @@ namespace ontologenius {
         }
 
         // My ranges are not classes so there are data and I should exists
-        if((range_branch == nullptr) && (property_vectors.ranges_.size()))
+        if((range_branch == nullptr) && (property_vectors.ranges_.empty() == false))
         {
           add(value, property_vectors);
           return true;
@@ -274,7 +275,7 @@ namespace ontologenius {
   index_t DataPropertyGraph::getLiteralIndex(const std::string& name)
   {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-    auto branch = literal_container_.find(name);
+    auto* branch = literal_container_.find(name);
     if(branch != nullptr)
       return branch->get();
     else

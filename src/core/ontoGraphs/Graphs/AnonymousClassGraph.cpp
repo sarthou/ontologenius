@@ -30,9 +30,9 @@ namespace ontologenius {
     object_property_graph_ = object_property_graph;
     data_property_graph_ = data_property_graph;
 
-    for(auto branch : other.all_branchs_)
+    for(auto* branch : other.all_branchs_)
     {
-      auto class_branch = new AnonymousClassBranches_t(branch->value());
+      auto* class_branch = new AnonymousClassBranches_t(branch->value());
       all_branchs_.push_back(class_branch);
     }
   }
@@ -129,7 +129,7 @@ namespace ontologenius {
     size_t local_depth = depth + 1;
     AnonymousClassElement_t* node = createElement(member_node);
 
-    for(auto child : member_node->child_members)
+    for(auto* child : member_node->child_members)
     {
       size_t child_depth = depth + 1;
       node->sub_elements_.push_back(createTree(child, child_depth));
@@ -173,7 +173,7 @@ namespace ontologenius {
   void AnonymousClassGraph::printTree(AnonymousClassElement_t* ano_elem, size_t level, bool root)
   {
     std::string space(level * 4, ' ');
-    std::string tmp = "";
+    std::string tmp;
 
     if(root)
       std::cout << space;
@@ -222,7 +222,7 @@ namespace ontologenius {
 
     std::cout << tmp << std::endl;
 
-    for(auto sub_elem : ano_elem->sub_elements_)
+    for(auto* sub_elem : ano_elem->sub_elements_)
     {
       for(int i = 0; i < int(level); i++)
         std::cout << "│   ";
