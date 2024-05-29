@@ -19,7 +19,7 @@ std::string set2string(const std::unordered_set<std::string>& word_set)
 
 std::vector<std::string> generate_sequence(ontologenius::ClassGraph& onto)
 {
-  srand(time(NULL));
+  srand(time(nullptr));
 
   std::vector<ontologenius::ClassBranch_t*> base = onto.get();
   size_t max_index = base.size();

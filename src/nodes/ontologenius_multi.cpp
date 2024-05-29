@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 #include "ontologenius/compat/ros.h"
-#include "ontologenius/core/ontologyOperators/differenceFinder.h"
+#include "ontologenius/core/ontologyOperators/DifferenceFinder.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
 #include "ontologenius/interface/RosInterface.h"
@@ -66,7 +66,7 @@ std::vector<std::string> getDiff(const std::string& param, int* res_code)
 {
   std::vector<std::string> res;
 
-  ontologenius::differenceFinder diff;
+  ontologenius::DifferenceFinder diff;
   std::regex base_regex("(.*)\\|(.*)\\|(.*)");
   std::smatch base_match;
   if(std::regex_match(param, base_match, base_regex))

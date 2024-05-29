@@ -16,7 +16,7 @@ namespace ontologenius {
       throw std::runtime_error("popen() failed!");
     try
     {
-      while(fgets(buffer, sizeof buffer, pipe) != NULL)
+      while(fgets(buffer, sizeof buffer, pipe) != nullptr)
         result += buffer;
     }
     catch(...)

@@ -34,7 +34,7 @@ public:
   void polish(QApplication* app) override;
 
 private:
-  QStyle* styleBase(QStyle* style = NULL) const;
+  QStyle* styleBase(QStyle* style = nullptr) const;
 };
 
 #endif // _DarkStyle_HPP

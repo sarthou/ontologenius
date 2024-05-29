@@ -79,11 +79,10 @@ namespace ontologenius {
     inline bool testAttribute(TiXmlElement* subElem, const std::string& attribute);
     inline int getNbChildren(TiXmlElement* elem);
 
-    std::string toString(TiXmlElement* subElem, std::string attribute = "rdf:resource")
+    std::string toString(TiXmlElement* subElem, const std::string& attribute = "rdf:resource")
     {
-      const char* subAttr;
-      subAttr = subElem->Attribute(attribute.c_str());
-      if(subAttr != NULL)
+      const char* subAttr = subElem->Attribute(attribute.c_str());
+      if(subAttr != nullptr)
         return getName(std::string(subAttr));
       return "";
     }
@@ -107,7 +106,7 @@ namespace ontologenius {
     std::string data = getAttribute(subElem, attribute);
     if(data.empty() == false)
     {
-      vect.push_back(Single_t<std::string>(data, probability));
+      vect.emplace_back(data, probability);
       if(symbole.empty() == false && display_)
         std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
     }
@@ -115,17 +114,17 @@ namespace ontologenius {
 
   void OntologyOwlReader::push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole)
   {
-    std::string data = elem;
+    const std::string& data = elem;
     if(data.empty() == false)
     {
       vect.push_back(data);
-      if(symbole.empty() == false && display_)
+      if((symbole.empty() == false) && display_)
         std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
     }
   }
   std::string OntologyOwlReader::getName(const std::string& uri)
   {
-    size_t pos = uri.find("#");
+    size_t pos = uri.find('#');
     std::string result = uri.substr(pos + 1);
     return result;
   }
@@ -134,9 +133,8 @@ namespace ontologenius {
   {
     float proba = 1.0;
 
-    const char* subAttr;
-    subAttr = elem->Attribute("onto:probability");
-    if(subAttr != NULL)
+    const char* subAttr = elem->Attribute("onto:probability");
+    if(subAttr != nullptr)
       proba = std::stof(std::string(subAttr));
 
     return proba;
@@ -144,9 +142,8 @@ namespace ontologenius {
 
   inline std::string OntologyOwlReader::getAttribute(TiXmlElement* elem, const std::string& attribute)
   {
-    const char* subAttr;
-    subAttr = elem->Attribute(attribute.c_str());
-    if(subAttr != NULL)
+    const char* subAttr = elem->Attribute(attribute.c_str());
+    if(subAttr != nullptr)
       return getName(std::string(subAttr));
     else
       return "";
@@ -154,9 +151,8 @@ namespace ontologenius {
 
   bool OntologyOwlReader::testAttribute(TiXmlElement* subElem, const std::string& attribute)
   {
-    const char* subAttr;
-    subAttr = subElem->Attribute(attribute.c_str());
-    if(subAttr != NULL)
+    const char* subAttr = subElem->Attribute(attribute.c_str());
+    if(subAttr != nullptr)
       return true;
     else
       return false;
