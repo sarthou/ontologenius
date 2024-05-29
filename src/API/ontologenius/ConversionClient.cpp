@@ -77,52 +77,52 @@ namespace onto {
 
   std::vector<int64_t> ConversionClient::individualsId2Index(const std::vector<std::string>& ids)
   {
-    return Id2Index(ids, OntologeniusConversionRequestAlias::INDIVIDUALS);
+    return id2Index(ids, OntologeniusConversionRequestAlias::INDIVIDUALS);
   }
 
   std::vector<int64_t> ConversionClient::classesId2Index(const std::vector<std::string>& ids)
   {
-    return Id2Index(ids, OntologeniusConversionRequestAlias::CLASSES);
+    return id2Index(ids, OntologeniusConversionRequestAlias::CLASSES);
   }
 
   std::vector<int64_t> ConversionClient::dataPropertiesId2Index(const std::vector<std::string>& ids)
   {
-    return Id2Index(ids, OntologeniusConversionRequestAlias::DATA_PROPERTIES);
+    return id2Index(ids, OntologeniusConversionRequestAlias::DATA_PROPERTIES);
   }
 
   std::vector<int64_t> ConversionClient::objectPropertiesId2Index(const std::vector<std::string>& ids)
   {
-    return Id2Index(ids, OntologeniusConversionRequestAlias::OBJECT_PROPERTIES);
+    return id2Index(ids, OntologeniusConversionRequestAlias::OBJECT_PROPERTIES);
   }
 
   std::vector<int64_t> ConversionClient::literalsId2Index(const std::vector<std::string>& ids)
   {
-    return Id2Index(ids, OntologeniusConversionRequestAlias::LITERAL);
+    return id2Index(ids, OntologeniusConversionRequestAlias::LITERAL);
   }
 
   int64_t ConversionClient::individualsId2Index(const std::string& id)
   {
-    return Id2Index(id, OntologeniusConversionRequestAlias::INDIVIDUALS);
+    return id2Index(id, OntologeniusConversionRequestAlias::INDIVIDUALS);
   }
 
   int64_t ConversionClient::classesId2Index(const std::string& id)
   {
-    return Id2Index(id, OntologeniusConversionRequestAlias::CLASSES);
+    return id2Index(id, OntologeniusConversionRequestAlias::CLASSES);
   }
 
   int64_t ConversionClient::dataPropertiesId2Index(const std::string& id)
   {
-    return Id2Index(id, OntologeniusConversionRequestAlias::DATA_PROPERTIES);
+    return id2Index(id, OntologeniusConversionRequestAlias::DATA_PROPERTIES);
   }
 
   int64_t ConversionClient::objectPropertiesId2Index(const std::string& id)
   {
-    return Id2Index(id, OntologeniusConversionRequestAlias::OBJECT_PROPERTIES);
+    return id2Index(id, OntologeniusConversionRequestAlias::OBJECT_PROPERTIES);
   }
 
   int64_t ConversionClient::literalsId2Index(const std::string& id)
   {
-    return Id2Index(id, OntologeniusConversionRequestAlias::LITERAL);
+    return id2Index(id, OntologeniusConversionRequestAlias::LITERAL);
   }
 
   std::vector<std::string> ConversionClient::index2Id(const std::vector<int64_t>& indexes, int8_t source)
@@ -148,7 +148,7 @@ namespace onto {
     return index2Id(std::vector<int64_t>{index}, source)[0];
   }
 
-  std::vector<int64_t> ConversionClient::Id2Index(const std::vector<std::string>& ids, int8_t source)
+  std::vector<int64_t> ConversionClient::id2Index(const std::vector<std::string>& ids, int8_t source)
   {
     auto req = ontologenius::compat::make_request<ontologenius::compat::OntologeniusConversion>();
     auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusConversion>();
@@ -166,9 +166,9 @@ namespace onto {
       return {};
   }
 
-  int64_t ConversionClient::Id2Index(const std::string& id, int8_t source)
+  int64_t ConversionClient::id2Index(const std::string& id, int8_t source)
   {
-    return Id2Index(std::vector<std::string>{id}, source)[0];
+    return id2Index(std::vector<std::string>{id}, source)[0];
   }
 
   bool ConversionClient::call(compat::RequestType<compat::OntologeniusConversion>& req,
