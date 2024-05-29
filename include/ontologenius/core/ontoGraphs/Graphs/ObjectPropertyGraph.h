@@ -1,8 +1,8 @@
 #ifndef ONTOLOGENIUS_OBJECTROPERTYGRAPH_H
 #define ONTOLOGENIUS_OBJECTROPERTYGRAPH_H
 
+#include <cstdint>
 #include <map>
-#include <stdint.h>
 #include <string>
 #include <unordered_set>
 #include <vector>

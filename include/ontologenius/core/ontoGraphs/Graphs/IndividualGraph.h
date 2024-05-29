@@ -1,9 +1,9 @@
 #ifndef ONTOLOGENIUS_INDIVIDUALGRAPH_H
 #define ONTOLOGENIUS_INDIVIDUALGRAPH_H
 
+#include <cstdint>
 #include <map>
 #include <regex>
-#include <stdint.h>
 #include <string>
 #include <unordered_set>
 #include <vector>

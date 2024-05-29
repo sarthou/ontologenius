@@ -1,8 +1,8 @@
 #ifndef ONTOLOGENIUS_CLASSGRAPH_H
 #define ONTOLOGENIUS_CLASSGRAPH_H
 
+#include <cstdint>
 #include <map>
-#include <stdint.h>
 #include <string>
 #include <unordered_set>
 #include <vector>
