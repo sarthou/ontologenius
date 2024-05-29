@@ -9,7 +9,7 @@
 namespace ontologenius {
 
   template<typename B>
-  struct NodeSetCompare
+  struct NodeSetCompare_t
   {
     using is_transparent = std::true_type;
 
@@ -35,16 +35,16 @@ namespace ontologenius {
   public:
     BranchContainerSet() = default;
     BranchContainerSet(const BranchContainerSet& base);
-    virtual ~BranchContainerSet() = default; // B* is destructed by ontograph
+    ~BranchContainerSet() override = default; // B* is destructed by ontograph
 
-    virtual B* find(const std::string& word) override;
-    virtual std::vector<B*> find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default) override;
-    virtual void load(std::vector<B*>& vect) override;
-    virtual void insert(B* branch) override;
-    virtual void erase(B* branch) override;
+    B* find(const std::string& word) override;
+    std::vector<B*> find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default) override;
+    void load(std::vector<B*>& vect) override;
+    void insert(B* branch) override;
+    void erase(B* branch) override;
 
   private:
-    std::set<B*, NodeSetCompare<B>> nodes_;
+    std::set<B*, NodeSetCompare_t<B>> nodes_;
   };
 
   template<typename B>

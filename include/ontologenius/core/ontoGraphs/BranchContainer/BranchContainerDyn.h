@@ -1,9 +1,9 @@
 #ifndef ONTOLOGENIUS_BRANCHCONTAINERDYN_H
 #define ONTOLOGENIUS_BRANCHCONTAINERDYN_H
 
+#include <cmath>
 #include <iostream>
 #include <map>
-#include <math.h>
 
 #include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerBase.h"
 
@@ -44,16 +44,16 @@ namespace ontologenius {
 
     BranchContainerDyn& operator=(const BranchContainerDyn& other) = delete;
 
-    virtual ~BranchContainerDyn()
+    ~BranchContainerDyn() override
     {
       delete nodes_;
     }
 
-    virtual B* find(const std::string& word) override;
-    virtual std::vector<B*> find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default) override;
-    virtual void load(std::vector<B*>& vect) override;
-    virtual void insert(B* branch) override;
-    virtual void erase(B* branch) override;
+    B* find(const std::string& word) override;
+    std::vector<B*> find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default) override;
+    void load(std::vector<B*>& vect) override;
+    void insert(B* branch) override;
+    void erase(B* branch) override;
 
   private:
     BranchNode_t<B>* nodes_;
