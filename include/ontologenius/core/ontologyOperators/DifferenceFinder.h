@@ -22,10 +22,10 @@ namespace ontologenius {
     std::vector<std::string> mothers_;
   };
 
-  class differenceFinder
+  class DifferenceFinder
   {
   public:
-    differenceFinder() = default;
+    DifferenceFinder() = default;
 
     std::vector<std::string> getDiff(Ontology* onto1, Ontology* onto2, const std::string& concept);
 

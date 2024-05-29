@@ -230,7 +230,7 @@ target_link_libraries(ontologenius_reasoner_plugin
 
 # # OPERATORS
 add_onto_library(ontologenius_operators
-  src/core/ontologyOperators/differenceFinder.cpp
+  src/core/ontologyOperators/DifferenceFinder.cpp
   src/core/ontologyOperators/Sparql.cpp
   src/core/ontologyOperators/SparqlSolver.cpp
   src/core/ontologyOperators/SparqlUtils.cpp

@@ -1,10 +1,10 @@
-#include "ontologenius/core/ontologyOperators/differenceFinder.h"
+#include "ontologenius/core/ontologyOperators/DifferenceFinder.h"
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 
 namespace ontologenius {
 
-  std::vector<std::string> differenceFinder::getDiff(Ontology* onto1, Ontology* onto2, const std::string& concept)
+  std::vector<std::string> DifferenceFinder::getDiff(Ontology* onto1, Ontology* onto2, const std::string& concept)
   {
     comparator_t comp1, comp2;
 
@@ -43,7 +43,7 @@ namespace ontologenius {
     return compare(comp1, comp2);
   }
 
-  std::vector<std::string> differenceFinder::compare(comparator_t& comp1, comparator_t& comp2)
+  std::vector<std::string> DifferenceFinder::compare(comparator_t& comp1, comparator_t& comp2)
   {
     std::vector<std::string> res;
 
@@ -54,7 +54,7 @@ namespace ontologenius {
     return res;
   }
 
-  void differenceFinder::compareObjects(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res)
+  void DifferenceFinder::compareObjects(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res)
   {
     std::vector<size_t> explored_indexs;
 
@@ -93,7 +93,7 @@ namespace ontologenius {
     }
   }
 
-  void differenceFinder::compareDatas(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res)
+  void DifferenceFinder::compareDatas(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res)
   {
     std::vector<size_t> explored_indexs;
 
@@ -132,7 +132,7 @@ namespace ontologenius {
     }
   }
 
-  void differenceFinder::compareMothers(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res)
+  void DifferenceFinder::compareMothers(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res)
   {
     std::vector<size_t> explored_indexs;
 
@@ -163,7 +163,7 @@ namespace ontologenius {
     }
   }
 
-  comparator_t differenceFinder::toComparator(IndividualBranch_t* indiv)
+  comparator_t DifferenceFinder::toComparator(IndividualBranch_t* indiv)
   {
     comparator_t comp;
     comp.concept_ = indiv->value();
@@ -175,7 +175,7 @@ namespace ontologenius {
     return comp;
   }
 
-  comparator_t differenceFinder::toComparator(ClassBranch_t* class_)
+  comparator_t DifferenceFinder::toComparator(ClassBranch_t* class_)
   {
     comparator_t comp;
     comp.concept_ = class_->value();
