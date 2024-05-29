@@ -4,14 +4,11 @@
 
 namespace ontologenius {
 
-  ReasonerGeneralize::ReasonerGeneralize()
-  {
-    current_id_ = 0;
-    class_per_period_ = 25;
-
-    min_count_ = 2;
-    min_percent_ = 0.6;
-  }
+  ReasonerGeneralize::ReasonerGeneralize() : current_id_(0),
+                                             class_per_period_(25),
+                                             min_count_(0),
+                                             min_percent_(0.6)
+  {}
 
   void ReasonerGeneralize::setParameter(const std::string& name, const std::string& value)
   {

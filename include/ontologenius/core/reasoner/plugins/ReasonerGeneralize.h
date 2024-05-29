@@ -5,6 +5,9 @@
 
 #include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 
+#define DEFAULT_MIN_COUNT 2
+#define DEFAULT_MIN_PERCEPT 0.75
+
 namespace ontologenius {
 
   class ReasonerGeneralize : public ReasonerInterface
@@ -45,10 +48,10 @@ namespace ontologenius {
   class PropertiesCounter
   {
   public:
-    PropertiesCounter(int min_count = 2, float min_percent = 0.75)
+    PropertiesCounter(int min_count = DEFAULT_MIN_COUNT, float min_percent = DEFAULT_MIN_PERCEPT)
     {
-      this->min_count = min_count;
-      this->min_percent = min_percent;
+      min_count_ = min_count;
+      min_percent_ = min_percent;
     }
 
     void add(B propertie, P data);
@@ -59,8 +62,8 @@ namespace ontologenius {
     std::vector<P> datas_;
     std::vector<size_t> counts_;
 
-    size_t min_count;
-    double min_percent;
+    size_t min_count_;
+    double min_percent_;
   };
 
   template<typename B, typename P>
@@ -71,7 +74,7 @@ namespace ontologenius {
       if(properties_[i] == propertie)
         indexs.push_back(i);
 
-    if(indexs.size() == 0)
+    if(indexs.empty())
     {
       properties_.push_back(propertie);
       datas_.push_back(data);
@@ -80,10 +83,10 @@ namespace ontologenius {
     else
     {
       int index = -1;
-      for(size_t i = 0; i < indexs.size(); i++)
-        if(datas_[indexs[i]] == data)
+      for(auto idx : indexs)
+        if(datas_[idx] == data)
         {
-          index = indexs[i];
+          index = idx;
           break;
         }
 
@@ -136,8 +139,8 @@ namespace ontologenius {
       for(size_t i = 0; i < properties_set.size(); i++)
       {
         for(size_t j = 0; j < index_set[i].size(); j++)
-          if(counts_[index_set[i][j]] >= min_count)
-            if(counts_[index_set[i][j]] / (double)counts_set[i] >= min_percent)
+          if(counts_[index_set[i][j]] >= min_count_)
+            if(counts_[index_set[i][j]] / (double)counts_set[i] >= min_percent_)
               res.emplace_back(properties_set[i], datas_[index_set[i][j]], counts_[index_set[i][j]] / (double)counts_set[i]);
       }
     }
