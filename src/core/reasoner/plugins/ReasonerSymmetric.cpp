@@ -2,13 +2,15 @@
 
 #include <pluginlib/class_list_macros.hpp>
 
+#include <shared_mutex>
+
 namespace ontologenius {
 
   void ReasonerSymmetric::postReason()
   {
     std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
     // not impacted by same as
-    for(auto& indiv : ontology_->individual_graph_.get())
+    for(const auto& indiv : ontology_->individual_graph_.get())
     {
       if(indiv->updated_ == true || indiv->hasUpdatedObjectRelation())
         for(auto& relation : indiv->object_relations_)

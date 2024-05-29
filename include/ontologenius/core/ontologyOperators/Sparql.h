@@ -35,7 +35,7 @@ namespace ontologenius {
     template<typename T>
     std::vector<std::vector<T>> resolve(const std::vector<SparqlTriplet_t<T>>& query, const std::vector<T>& accu);
     template<typename T>
-    void resolveSubQuery(SparqlTriplet_t<T> triplet, const std::vector<T>& accu, int64_t& var_name, std::unordered_set<T>& values);
+    void resolveSubQuery(SparqlTriplet_t<T> triplet, const std::vector<T>& accu, int64_t& var_index, std::unordered_set<T>& values);
 
     template<typename T>
     std::unordered_set<T> getOn(const SparqlTriplet_t<T>& triplet, const T& selector);

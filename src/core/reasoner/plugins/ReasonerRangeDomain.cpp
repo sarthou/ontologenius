@@ -5,6 +5,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <shared_mutex>
 
 namespace ontologenius {
 
@@ -22,7 +23,7 @@ namespace ontologenius {
     std::map<std::string, std::vector<std::string>>::iterator it_range;
     std::map<std::string, std::vector<std::string>>::iterator it_domain;
 
-    for(auto& indiv : ontology_->individual_graph_.get())
+    for(const auto& indiv : ontology_->individual_graph_.get())
       if(indiv->updated_ == true || indiv->hasUpdatedObjectRelation() || indiv->hasUpdatedDataRelation())
       {
         it_range = indiv->flags_.find("range");
@@ -67,13 +68,13 @@ namespace ontologenius {
     std::unordered_set<ObjectPropertyBranch*> props = {relation.first};
     while(ranges.empty())
     {
-      for(auto prop : props)
+      for(auto* prop : props)
         ontology_->object_property_graph_.getRangePtr(prop, ranges, 0);
 
       if(ranges.empty())
       {
         std::unordered_set<ObjectPropertyBranch*> prop_up;
-        for(auto prop : props)
+        for(auto* prop : props)
         {
           ontology_->object_property_graph_.getUpPtr(prop, prop_up, 1);
           prop_up.erase(prop);
@@ -86,7 +87,7 @@ namespace ontologenius {
       }
     }
 
-    for(auto range : ranges)
+    for(auto* range : ranges)
     {
       std::unordered_set<ClassBranch*> up;
       if(relation.second->same_as_.empty())
@@ -115,13 +116,13 @@ namespace ontologenius {
     std::unordered_set<ObjectPropertyBranch*> props = {relation.first};
     while(domains.empty())
     {
-      for(auto prop : props)
+      for(auto* prop : props)
         ontology_->object_property_graph_.getDomainPtr(prop, domains, 0);
 
       if(domains.empty())
       {
         std::unordered_set<ObjectPropertyBranch*> prop_up;
-        for(auto prop : props)
+        for(auto* prop : props)
         {
           ontology_->object_property_graph_.getUpPtr(prop, prop_up, 1);
           prop_up.erase(prop);
@@ -134,7 +135,7 @@ namespace ontologenius {
       }
     }
 
-    for(auto domain : domains)
+    for(auto* domain : domains)
     {
       std::unordered_set<ClassBranch*> up;
       if(branch->same_as_.empty())
@@ -163,13 +164,13 @@ namespace ontologenius {
     std::unordered_set<DataPropertyBranch*> props = {relation.first};
     while(domains.empty())
     {
-      for(auto prop : props)
+      for(auto* prop : props)
         ontology_->data_property_graph_.getDomainPtr(prop, domains, 0);
 
       if(domains.empty())
       {
         std::unordered_set<DataPropertyBranch*> prop_up;
-        for(auto prop : props)
+        for(auto* prop : props)
         {
           ontology_->data_property_graph_.getUpPtr(prop, prop_up, 1);
           prop_up.erase(prop);
@@ -182,7 +183,7 @@ namespace ontologenius {
       }
     }
 
-    for(auto domain : domains)
+    for(auto* domain : domains)
     {
       std::unordered_set<ClassBranch*> up;
       if(branch->same_as_.empty())
@@ -213,7 +214,7 @@ namespace ontologenius {
     std::map<std::string, std::vector<std::string>>::iterator it_range;
     std::map<std::string, std::vector<std::string>>::iterator it_domain;
 
-    for(auto _class : classes)
+    for(auto* _class : classes)
       if(_class->updated_ == true)
       {
         it_range = _class->flags_.find("range");
@@ -258,13 +259,13 @@ namespace ontologenius {
     std::unordered_set<ObjectPropertyBranch*> props = {relation.first};
     while(ranges.empty())
     {
-      for(auto prop : props)
+      for(auto* prop : props)
         ontology_->object_property_graph_.getRangePtr(prop, ranges, 0);
 
       if(ranges.empty())
       {
         std::unordered_set<ObjectPropertyBranch*> prop_up;
-        for(auto prop : props)
+        for(auto* prop : props)
         {
           ontology_->object_property_graph_.getUpPtr(prop, prop_up, 1);
           prop_up.erase(prop);
@@ -277,7 +278,7 @@ namespace ontologenius {
       }
     }
 
-    for(auto range : ranges)
+    for(auto* range : ranges)
     {
       std::unordered_set<ClassBranch*> up;
       ontology_->class_graph_.getUpPtr(relation.second, up);
@@ -299,13 +300,13 @@ namespace ontologenius {
     std::unordered_set<ObjectPropertyBranch*> props = {relation.first};
     while(domains.empty())
     {
-      for(auto prop : props)
+      for(auto* prop : props)
         ontology_->object_property_graph_.getDomainPtr(prop, domains, 0);
 
       if(domains.empty())
       {
         std::unordered_set<ObjectPropertyBranch*> prop_up;
-        for(auto prop : props)
+        for(auto* prop : props)
         {
           ontology_->object_property_graph_.getUpPtr(prop, prop_up, 1);
           prop_up.erase(prop);
@@ -318,7 +319,7 @@ namespace ontologenius {
       }
     }
 
-    for(auto domain : domains)
+    for(auto* domain : domains)
     {
       std::unordered_set<ClassBranch*> up;
       ontology_->class_graph_.getUpPtr(branch, up);
@@ -340,13 +341,13 @@ namespace ontologenius {
     std::unordered_set<DataPropertyBranch*> props = {relation.first};
     while(domains.empty())
     {
-      for(auto prop : props)
+      for(auto* prop : props)
         ontology_->data_property_graph_.getDomainPtr(prop, domains, 0);
 
       if(domains.empty())
       {
         std::unordered_set<DataPropertyBranch*> prop_up;
-        for(auto prop : props)
+        for(auto* prop : props)
         {
           ontology_->data_property_graph_.getUpPtr(prop, prop_up, 1);
           prop_up.erase(prop);
@@ -359,7 +360,7 @@ namespace ontologenius {
       }
     }
 
-    for(auto domain : domains)
+    for(auto* domain : domains)
     {
       std::unordered_set<ClassBranch*> up;
       ontology_->class_graph_.getUpPtr(branch, up);

@@ -1,6 +1,8 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerDictionary.h"
 
 #include <pluginlib/class_list_macros.hpp>
+#include <shared_mutex>
+#include <string>
 
 namespace ontologenius {
 
@@ -15,28 +17,28 @@ namespace ontologenius {
     {
       std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
       std::vector<IndividualBranch*> indivs = ontology_->individual_graph_.get();
-      for(auto elem : indivs)
+      for(auto* elem : indivs)
         updateDictionary(elem);
     }
 
     {
       std::vector<ClassBranch*> classes = ontology_->class_graph_.getSafe();
       std::lock_guard<std::shared_timed_mutex> lock(ontology_->class_graph_.mutex_);
-      for(auto elem : classes)
+      for(auto* elem : classes)
         updateDictionary(elem);
     }
 
     {
       std::vector<DataPropertyBranch*> data_properties = ontology_->data_property_graph_.getSafe();
       std::lock_guard<std::shared_timed_mutex> lock(ontology_->data_property_graph_.mutex_);
-      for(auto elem : data_properties)
+      for(auto* elem : data_properties)
         updateDictionary(elem);
     }
 
     {
       std::vector<ObjectPropertyBranch*> object_properties = ontology_->object_property_graph_.getSafe();
       std::lock_guard<std::shared_timed_mutex> lock(ontology_->object_property_graph_.mutex_);
-      for(auto elem : object_properties)
+      for(auto* elem : object_properties)
         updateDictionary(elem);
     }
   }

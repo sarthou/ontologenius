@@ -2,6 +2,11 @@
 
 #include <pluginlib/class_list_macros.hpp>
 
+#include <vector>
+#include <unordered_set>
+#include <map>
+#include <shared_mutex>
+
 namespace ontologenius {
 
   void ReasonerTransitivity::postReason()

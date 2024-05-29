@@ -1,13 +1,15 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerInverseOf.h"
 
 #include <pluginlib/class_list_macros.hpp>
+#include <shared_mutex>
+#include <string>
 
 namespace ontologenius {
 
   void ReasonerInverseOf::postReason()
   {
     std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-    for(auto& indiv : ontology_->individual_graph_.get())
+    for(const auto& indiv : ontology_->individual_graph_.get())
       if(indiv->updated_ || indiv->hasUpdatedObjectRelation())
       {
         for(IndivObjectRelationElement& relation : indiv->object_relations_)

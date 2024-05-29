@@ -1,6 +1,10 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerChain.h"
 
 #include <pluginlib/class_list_macros.hpp>
+#include <shared_mutex>
+#include <string>
+#include <unordered_set>
+#include <vector>
 
 namespace ontologenius {
 
@@ -9,7 +13,7 @@ namespace ontologenius {
     std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
     std::lock_guard<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
 
-    for(auto indiv : ontology_->individual_graph_.get())
+    for(auto* indiv : ontology_->individual_graph_.get())
       if((indiv->updated_ == true) || (indiv->flags_.find("chain") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation())
       {
         bool has_active_chain = false;

@@ -1,14 +1,21 @@
 #include "ontologenius/core/ontologyOperators/Sparql.h"
 
+#include <cstdint>
+#include <regex>
+#include <string>
+#include <unordered_set>
+#include <utility>
+#include <vector>
+
+#include "ontologenius/core/ontoGraphs/Branchs/WordTable.h" // for index_t
+#include "ontologenius/core/ontologyOperators/SparqlUtils.h"
 #include "ontologenius/utils/String.h"
 
 namespace ontologenius {
 
-  Sparql::Sparql() : sparql_pattern_("SELECT\\s*(DISTINCT)?\\s*([^\n]+)([\\s\n]*)WHERE([\\s\n]*)(.*)")
+  Sparql::Sparql() : onto_(nullptr),
+                     sparql_pattern_("SELECT\\s*(DISTINCT)?\\s*([^\n]+)([\\s\n]*)WHERE([\\s\n]*)(.*)")
   {
-    onto_ = nullptr;
-    error_ = "";
-
     operators_["NOT EXISTS"] = sparql_not_exists;
   }
 
@@ -70,6 +77,7 @@ namespace ontologenius {
 
         std::vector<int64_t> var_index = convertVariables<T>(vars_to_return);
         std::vector<std::string> ordered_vars;
+        ordered_vars.reserve(var_index.size());
         for(auto index : var_index)
           ordered_vars.push_back(Resource_t<T>::to_variables[index]);
         return {ordered_vars, res};
@@ -127,7 +135,7 @@ namespace ontologenius {
   std::vector<std::vector<T>> Sparql::resolve(const std::vector<SparqlTriplet_t<T>>& query, const std::vector<T>& accu)
   {
     std::unordered_set<T> values;
-    int64_t var_index;
+    int64_t var_index = 0;
     resolveSubQuery(query[0], accu, var_index, values);
 
     if(values.empty())
@@ -373,7 +381,7 @@ namespace ontologenius {
 
   std::string Sparql::getPattern(const std::string& text)
   {
-    size_t begin_of_pattern = text.find("{");
+    size_t begin_of_pattern = text.find('{');
     std::string res;
     getIn(begin_of_pattern, res, text, '{', '}');
     return res;
@@ -389,7 +397,7 @@ namespace ontologenius {
     size_t cpt = 0;
     size_t bracket_pose = 0;
 
-    while((bracket_pose = query.find("{", bracket_pose)) != std::string::npos)
+    while((bracket_pose = query.find('{', bracket_pose)) != std::string::npos)
     {
       std::string text_in;
       size_t end_pose = getIn(bracket_pose, text_in, query, '{', '}');
@@ -408,11 +416,11 @@ namespace ontologenius {
     do
     {
       size_t first_block_pose = std::string::npos;
-      std::string first_block = "";
+      std::string first_block;
       size_t first_keyword_pose = std::string::npos;
-      std::string first_keyword = "";
+      std::string first_keyword;
 
-      for(auto& id : blocks_id)
+      for(const auto& id : blocks_id)
       {
         size_t tmp_pose = query.find(id);
         if(tmp_pose < first_block_pose)

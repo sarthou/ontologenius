@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <execinfo.h>
 #include <ontologenius/compat/ros.h>
+#include <thread>
 #include <unistd.h>
 
 #include "ontologenius/interface/RosInterface.h"
@@ -11,9 +12,7 @@
 void handler(int sig)
 {
   void* array[10];
-  size_t size;
-
-  size = backtrace(array, 10);
+  auto size = backtrace(array, 10);
 
   fprintf(stderr, "Error: signal %d:\n", sig);
   backtrace_symbols_fd(array, size, STDERR_FILENO);

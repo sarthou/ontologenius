@@ -1,6 +1,7 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerGeneralize.h"
 
 #include <pluginlib/class_list_macros.hpp>
+#include <shared_mutex>
 
 namespace ontologenius {
 

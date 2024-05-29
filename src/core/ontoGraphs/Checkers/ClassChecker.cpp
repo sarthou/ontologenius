@@ -1,7 +1,11 @@
 #include "ontologenius/core/ontoGraphs/Checkers/ClassChecker.h"
 
 #include <algorithm>
+#include <cstddef>
+#include <shared_mutex>
+#include <unordered_set>
 
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 
@@ -12,16 +16,16 @@ namespace ontologenius {
     std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
     std::unordered_set<ClassBranch*> up;
 
-    for(auto& _class : graph_vect_)
+    for(auto& class_check : graph_vect_)
     {
-      class_graph_->getUpPtr(_class, up);
+      class_graph_->getUpPtr(class_check, up);
 
-      checkDisjoint(_class, up);
-      checkObjectPropertyDomain(_class, up);
-      checkObjectPropertyRange(_class);
+      checkDisjoint(class_check, up);
+      checkObjectPropertyDomain(class_check, up);
+      checkObjectPropertyRange(class_check);
 
-      checkDataPropertyDomain(_class, up);
-      checkDataPropertyRange(_class);
+      checkDataPropertyDomain(class_check, up);
+      checkDataPropertyRange(class_check);
 
       up.clear();
     }
@@ -34,7 +38,7 @@ namespace ontologenius {
 
   void ClassChecker::checkDisjoint(ClassBranch* branch, std::unordered_set<ClassBranch*> up)
   {
-    auto intersection = class_graph_->isDisjoint(up, up);
+    auto* intersection = class_graph_->isDisjoint(up, up);
     if(intersection != nullptr)
     {
       ClassBranch* disjoint_with = class_graph_->firstIntersection(up, intersection->disjoints_);
@@ -48,7 +52,7 @@ namespace ontologenius {
 
   void ClassChecker::checkObjectPropertyDomain(ClassBranch* branch, std::unordered_set<ClassBranch*> up)
   {
-    for(ClassObjectRelationElement& object_relation : branch->object_relations_)
+    for(const ClassObjectRelationElement& object_relation : branch->object_relations_)
     {
       std::unordered_set<ClassBranch*> domain;
       class_graph_->object_property_graph_->getDomainPtr(object_relation.first, domain, 0);
@@ -72,7 +76,7 @@ namespace ontologenius {
 
   void ClassChecker::checkObjectPropertyRange(ClassBranch* branch)
   {
-    for(ClassObjectRelationElement& object_relation : branch->object_relations_)
+    for(const ClassObjectRelationElement& object_relation : branch->object_relations_)
     {
       std::unordered_set<ClassBranch*> range;
       class_graph_->object_property_graph_->getRangePtr(object_relation.first, range, 0);
@@ -99,7 +103,7 @@ namespace ontologenius {
 
   void ClassChecker::checkDataPropertyDomain(ClassBranch* branch, std::unordered_set<ClassBranch*> up)
   {
-    for(ClassDataRelationElement& relation : branch->data_relations_)
+    for(const ClassDataRelationElement& relation : branch->data_relations_)
     {
       std::unordered_set<ClassBranch*> domain;
       class_graph_->data_property_graph_->getDomainPtr(relation.first, domain, 0);
@@ -123,7 +127,7 @@ namespace ontologenius {
 
   void ClassChecker::checkDataPropertyRange(ClassBranch* branch)
   {
-    for(ClassDataRelationElement& relation : branch->data_relations_)
+    for(const ClassDataRelationElement& relation : branch->data_relations_)
     {
       std::unordered_set<std::string> range = class_graph_->data_property_graph_->getRange(relation.first->value());
       if(range.empty() == false)

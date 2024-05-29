@@ -1,13 +1,14 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerAnonymous.h"
 
 #include <pluginlib/class_list_macros.hpp>
+#include <shared_mutex>
+#include <string>
+#include <unordered_set>
 
 namespace ontologenius {
 
-  ReasonerAnonymous::ReasonerAnonymous()
-  {
-    standard_mode_ = false;
-  }
+  ReasonerAnonymous::ReasonerAnonymous() : standard_mode_(false)
+  {}
 
   void ReasonerAnonymous::setParameter(const std::string& name, const std::string& value)
   {
@@ -22,7 +23,7 @@ namespace ontologenius {
     std::shared_lock<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
     std::vector<std::pair<std::string, InheritedRelationTriplets*>> used;
 
-    for(auto indiv : ontology_->individual_graph_.get())
+    for(auto* indiv : ontology_->individual_graph_.get())
     {
       if((indiv->updated_ == true) || (indiv->flags_.find("equiv") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation() || indiv->hasUpdatedDataRelation())
       {
@@ -455,7 +456,7 @@ namespace ontologenius {
     case CardType_t::cardinality_value:
       return checkValueCard(indiv, ano_elem, used);
     default:
-      std::cout << ("Cardinality type outside of [min, max, exactly, only, value, some] -> ") << std::endl;
+      Display::error("Cardinality type outside of [min, max, exactly, only, value, some]");
       return false;
     }
   }
