@@ -67,7 +67,7 @@ namespace ontologenius {
 
     readTriplets(raw_turtle);
 
-    if(previous_subject_ != "")
+    if(previous_subject_.empty() == false)
     {
       individual_graph_->add(previous_subject_, individual_vector_);
       nb_loaded_elem_++;
@@ -143,7 +143,7 @@ namespace ontologenius {
 
       i = nextNonBlanckCharacter(raw_turtle, i);
       current_subject = getElement(raw_turtle, i);
-      if(current_subject == "")
+      if(current_subject.empty())
         break;
 
       bool repeated_property = false;
@@ -154,7 +154,7 @@ namespace ontologenius {
         else
           i = nextNonBlanckCharacter(raw_turtle, i);
         current_property = getElement(raw_turtle, i);
-        if(current_property == "")
+        if(current_property.empty())
         {
           Display::error("[Turtle parsing] fail to parse ttl file around the subject '" + current_subject + "'");
           return;
@@ -168,7 +168,7 @@ namespace ontologenius {
           else
             i = nextNonBlanckCharacter(raw_turtle, i);
           current_object = getElement(raw_turtle, i);
-          if(current_object == "")
+          if(current_object.empty())
           {
             Display::error("[Turtle parsing] fail to parse ttl file around the object of the triplet '" + current_subject + " " + current_property + "'");
             return;
@@ -211,7 +211,7 @@ namespace ontologenius {
     subject = getSubject(subject);
     if(subject != previous_subject_)
     {
-      if(previous_subject_ != "")
+      if(previous_subject_.empty() == false)
       {
         individual_graph_->add(previous_subject_, individual_vector_);
         nb_loaded_elem_++;
@@ -232,14 +232,14 @@ namespace ontologenius {
         push(individual_vector_.is_a_, object.first, 1.0, "+");
       else if(property == "owl:sameAs")
       {
-        if(object.first != "")
+        if(object.first.empty() == false)
           push(individual_vector_.same_as_, object.first, 1.0, "=");
       }
       else if(property == "rdfs:label")
         pushLang(individual_vector_.dictionary_, object);
       else if(property == "onto:label")
         pushLang(individual_vector_.muted_dictionary_, object);
-      else if(object.second == "")
+      else if(object.second.empty())
         OntologyReader::push(individual_vector_.object_relations_, Pair_t<std::string, std::string>(property, object.first, 1.0), "$", "^");
       else
       {
@@ -349,7 +349,7 @@ namespace ontologenius {
 
   std::string OntologyTtlReader::getSubject(const std::string& element)
   {
-    if(element != "")
+    if(element.empty() == false)
     {
       if(element[0] == '<')
       {
@@ -407,7 +407,7 @@ namespace ontologenius {
   {
     std::pair<std::string, std::string> object;
 
-    if(element != "")
+    if(element.empty() == false)
     {
       if(element[0] == '<')
       {
@@ -449,7 +449,7 @@ namespace ontologenius {
       }
     }
 
-    if(object.second == "")
+    if(object.second.empty())
     {
       if((object.first == "true") || (object.first == "false"))
         object.second = "boolean";
@@ -471,19 +471,19 @@ namespace ontologenius {
   void OntologyTtlReader::push(std::vector<Single_t<std::string>>& vect, const std::string& element, float probability, const std::string& symbole)
   {
     vect.emplace_back(element, probability);
-    if(display_ && symbole != "")
+    if(display_ && symbole.empty() == false)
       std::cout << "│   │   ├── " << symbole << element << std::endl;
   }
 
   void OntologyTtlReader::pushLang(std::map<std::string, std::vector<std::string>>& dictionary, const std::pair<std::string, std::string>& label)
   {
     std::string lang = "en";
-    if((label.second != "") && (label.second != "string"))
+    if((label.second.empty() == false) && (label.second != "string"))
       lang = label.second.substr(1);
 
     dictionary[lang].emplace_back(label.first);
 
-    if(display_ && (label.first != ""))
+    if(display_ && (label.first.empty() == false))
       std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang][dictionary[lang].size() - 1] << std::endl;
   }
 

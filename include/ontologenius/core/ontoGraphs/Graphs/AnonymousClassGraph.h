@@ -15,11 +15,11 @@ namespace ontologenius {
     std::string toString()
     {
       std::string res;
-      if(cardinality_type != "")
+      if(cardinality_type.empty() == false)
         res += cardinality_type + " ";
-      if(cardinality_number != "")
+      if(cardinality_number.empty() == false)
         res += cardinality_number + " ";
-      if(cardinality_range != "")
+      if(cardinality_range.empty() == false)
         res += cardinality_range;
       return res;
     }
@@ -54,15 +54,15 @@ namespace ontologenius {
     std::vector<std::string> toVector()
     {
       std::vector<std::string> result;
-      if(property != "")
+      if(property.empty() == false)
         result.push_back(property);
-      if(card.cardinality_type != "")
+      if(card.cardinality_type.empty() == false)
         result.push_back(card.cardinality_type);
-      if(card.cardinality_number != "")
+      if(card.cardinality_number.empty() == false)
         result.push_back(card.cardinality_number);
-      if(card.cardinality_range != "")
+      if(card.cardinality_range.empty() == false)
         result.push_back(card.cardinality_range);
-      if(restriction_range != "")
+      if(restriction_range.empty() == false)
         result.push_back(restriction_range);
 
       return result;
@@ -97,7 +97,7 @@ namespace ontologenius {
         std::string inner;
         for(auto child : child_members)
         {
-          if(inner != "")
+          if(inner.empty() == false)
           {
             if(logical_type_ == logical_and)
               inner += " and ";

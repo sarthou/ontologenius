@@ -39,7 +39,7 @@ namespace ontologenius {
 
     drawDelim();
 
-    if(file_name != "")
+    if(file_name.empty() == false)
     {
       std::cout << "Save image " << file_name << std::endl;
 

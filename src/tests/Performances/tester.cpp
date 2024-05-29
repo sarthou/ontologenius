@@ -76,7 +76,7 @@ std::vector<std::string> generate_sequence(ontologenius::ClassGraph& onto)
     vect10000.insert(vect10000.end(), vect100.begin(), vect100.end());
 
   for(size_t i = 0; i < vect10000.size(); i++)
-    if(vect10000[i] == "")
+    if(vect10000[i].empty())
       vect10000[i] = base[rand() % max_index]->value();
 
   return vect10000;

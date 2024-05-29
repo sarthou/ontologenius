@@ -5,7 +5,7 @@ namespace onto {
   std::vector<std::string> OntologyClient::getUp(const std::string& name, int depth, const std::string& selector)
   {
     std::string param = name;
-    if(selector != "")
+    if(selector.empty() == false)
       param += " -s " + selector;
 
     if(depth >= 0)
@@ -55,7 +55,7 @@ namespace onto {
     std::string param = name;
     if(take_id == false)
       param += " -i false";
-    if(selector != "")
+    if(selector.empty() == false)
       param += " -s " + selector;
 
     return call("find", param);
@@ -66,7 +66,7 @@ namespace onto {
     std::string param = name;
     if(take_id == false)
       param += " -i false";
-    if(selector != "")
+    if(selector.empty() == false)
       param += " -s " + selector;
 
     return call("findSub", param);
@@ -77,7 +77,7 @@ namespace onto {
     std::string param = regex;
     if(take_id == false)
       param += " -i false";
-    if(selector != "")
+    if(selector.empty() == false)
       param += " -s " + selector;
 
     return call("findRegex", param);
@@ -88,7 +88,7 @@ namespace onto {
     std::string param = name + " -t " + std::to_string(threshold);
     if(take_id == false)
       param += " -i false";
-    if(selector != "")
+    if(selector.empty() == false)
       param += " -s " + selector;
 
     return call("findFuzzy", param);
@@ -97,7 +97,7 @@ namespace onto {
   bool OntologyClient::exist(const std::string& name)
   {
     std::string param = name;
-    return (callStr("exist", param) != "");
+    return (callStr("exist", param).empty() == false);
   }
 
 } // namespace onto

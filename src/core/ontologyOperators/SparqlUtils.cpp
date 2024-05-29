@@ -6,8 +6,8 @@ namespace ontologenius {
 
   template<>
   index_t getDefaultSelector<index_t>() { return 0; }
-  
-  bool isSelectorDefined(const std::string& value) { return (value != ""); }
+
+  bool isSelectorDefined(const std::string& value) { return (value.empty() == false); }
 
   template<>
   index_t convertResourceValue<index_t>(const std::string& value)

@@ -20,7 +20,7 @@ namespace onto {
   using namespace ontologenius;
   using OntologeniusConversionRequestAlias = compat::RawRequestType<ontologenius::compat::OntologeniusConversion>;
 
-  ConversionClient::ConversionClient(const std::string& name) : name_((name == "") ? "/ontologenius/conversion" : "/ontologenius/conversion/" + name),
+  ConversionClient::ConversionClient(const std::string& name) : name_((name.empty()) ? "/ontologenius/conversion" : "/ontologenius/conversion/" + name),
                                                                 verbose_(false),
                                                                 client_(name_)
   {}

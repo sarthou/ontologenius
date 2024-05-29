@@ -2175,7 +2175,6 @@ namespace ontologenius {
           auto exp_ch = removeInductions(indiv_on, indiv_on->object_relations_, i);
           explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
 
-          indiv_on->object_relations_[i].second->updated_;
           indiv_on->object_relations_.erase(i);
           indiv_on->updated_ = true;
         }

@@ -204,7 +204,7 @@ namespace ontologenius {
     {
       bool loaded = true;
       auto with_package = resolvePath(import);
-      if(with_package.first != "")
+      if(with_package.first.empty() == false)
       {
         std::string path = findPackage(with_package.first);
         path += "/" + with_package.second;

@@ -57,14 +57,14 @@ namespace ontologenius {
 
   bool Feeder::addFeed(feed_t& feed)
   {
-    if(feed.prop_ == "")
+    if(feed.prop_.empty())
     {
       if(onto_->class_graph_.findBranchSafe(feed.from_) != nullptr)
         return addDelClass(feed.action_, feed.from_);
       else
         return addDelIndiv(feed.action_, feed.from_);
     }
-    else if(feed.on_ != "")
+    else if(feed.on_.empty() == false)
     {
       if((feed.prop_ == "+") || (feed.prop_ == "rdfs:subClassOf") || (feed.prop_ == "isA"))
         return addInheritage(feed);

@@ -835,7 +835,7 @@ namespace ontologenius {
   std::string OntologyOwlReader::readSomeValuesFrom(TiXmlElement* elem)
   {
     std::string value = getAttribute(elem, "rdf:resource");
-    if(value == "")
+    if(value.empty())
       for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
       {
         std::string restriction_name = sub_elem->Value();
@@ -869,7 +869,7 @@ namespace ontologenius {
       else
         property = "";
 
-      if(property != "" && display_)
+      if(property.empty() == false && display_)
         std::cout << "│   │   ├── " << symbole << property << std::endl;
     }
   }
@@ -888,7 +888,7 @@ namespace ontologenius {
       {
         dictionary[lang].push_back(std::string(value));
 
-        if((lang != "") && (std::string(value) != "") && display_)
+        if((lang.empty() == false) && (std::string(value).empty() == false) && display_)
           std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang][dictionary[lang].size() - 1] << std::endl;
       }
     }

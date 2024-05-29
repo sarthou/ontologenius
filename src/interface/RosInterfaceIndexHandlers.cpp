@@ -34,7 +34,7 @@ namespace ontologenius {
         else if(req->action == "getName")
         {
           auto tmp = onto_->class_graph_.getName(params.main_index, params.take_id);
-          if(tmp != "")
+          if(tmp.empty() == false)
             res->string_values.push_back(tmp);
         }
         else if(req->action == "getNames")
@@ -140,7 +140,7 @@ namespace ontologenius {
         else if(req->action == "getName")
         {
           auto tmp = onto_->object_property_graph_.getName(params.main_index, params.take_id);
-          if(tmp != "")
+          if(tmp.empty() == false)
             res->string_values.push_back(tmp);
         }
         else if(req->action == "getNames")
@@ -220,7 +220,7 @@ namespace ontologenius {
         else if(req->action == "getName")
         {
           auto tmp = onto_->data_property_graph_.getName(params.main_index, params.take_id);
-          if(tmp != "")
+          if(tmp.empty() == false)
             res->string_values.push_back(tmp);
         }
         else if(req->action == "getNames")
@@ -317,7 +317,7 @@ namespace ontologenius {
         else if(req->action == "getName")
         {
           auto tmp = onto_->individual_graph_.getName(params.main_index, params.take_id);
-          if(tmp != "")
+          if(tmp.empty() == false)
             res->string_values.push_back(tmp);
         }
         else if(req->action == "getNames")

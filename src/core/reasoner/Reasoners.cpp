@@ -55,7 +55,7 @@ namespace ontologenius {
 
   void Reasoners::configure(const std::string& config_path)
   {
-    if((config_path != "") && (config_path != "none"))
+    if((config_path.empty() == false) && (config_path != "none"))
     {
       if(config_.read(config_path) == false)
         Display::error("Fail to load configuration file: " + config_path);

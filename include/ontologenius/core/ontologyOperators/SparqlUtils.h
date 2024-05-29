@@ -121,7 +121,7 @@ namespace ontologenius {
     triplet_t<T> res;
     for(const auto& x : resources)
     {
-      if(x != "")
+      if(x.empty() == false)
       {
         resource_t<T> resource = getResource<T>(x);
         switch(cpt)

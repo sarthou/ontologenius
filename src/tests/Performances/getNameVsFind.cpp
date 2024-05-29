@@ -14,13 +14,13 @@
 class FileReader
 {
 public:
-  FileReader(const std::string& path)
+  explicit FileReader(const std::string& path)
   {
     len = cpt = 0;
     file_ = nullptr;
     init(path, "r");
   }
-  
+
   ~FileReader()
   {
     if(file_ != nullptr)
@@ -79,7 +79,7 @@ std::vector<std::string> readNbWords(size_t nb)
   do
   {
     std::string word = reader.readLine();
-    if(word == "")
+    if(word.empty())
       oef = true;
     else
     {
@@ -145,6 +145,7 @@ double find(const std::vector<std::string>& words, bool individual)
         syn += none.size();
       }
   }
+  (void)syn;
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);

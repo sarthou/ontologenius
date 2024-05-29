@@ -139,7 +139,7 @@ namespace ontologenius {
 
     std::string tmp_name = writer.getFileName();
 
-    if(file_name != "")
+    if(file_name.empty() == false)
       writer.setFileName(file_name);
 
     writer.write();

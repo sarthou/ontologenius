@@ -49,19 +49,19 @@ namespace ontologenius {
       removeChar(pattern, {'\n', '\r'});
 
       auto blocks = getBlocks(pattern);
-      if(error_ != "")
+      if(error_.empty() == false)
         return {{}, {}};
 
       for(auto& block : blocks)
       {
         auto triplets = getTriplets<T>(block.raw, ".");
-        if(error_ != "")
+        if(error_.empty() == false)
           return {{}, {}};
 
         res = resolve(triplets, block.op, res);
       }
 
-      filter(res, vars_to_return, match[1].str() != "");
+      filter(res, vars_to_return, match[1].str().empty() == false);
 
       if(vars_to_return.size())
       {
@@ -458,7 +458,7 @@ namespace ontologenius {
         query = query.substr(min_pose);
       }
       removeUselessSpace(query);
-    } while(query != "");
+    } while(query.empty() == false);
 
     return res;
   }

@@ -58,7 +58,7 @@ namespace ontologenius {
   {
     std::vector<size_t> explored_indexs;
 
-    if(comp1.concept_ != "")
+    if(comp1.concept_.empty() == false)
     {
       for(size_t i = 0; i < comp1.object_properties_name_.size(); i++)
       {
@@ -83,7 +83,7 @@ namespace ontologenius {
       }
     }
 
-    if(comp2.concept_ != "")
+    if(comp2.concept_.empty() == false)
     {
       for(size_t i = 0; i < comp2.object_properties_name_.size(); i++)
       {
@@ -97,7 +97,7 @@ namespace ontologenius {
   {
     std::vector<size_t> explored_indexs;
 
-    if(comp1.concept_ != "")
+    if(comp1.concept_.empty() == false)
     {
       for(size_t i = 0; i < comp1.data_properties_name_.size(); i++)
       {
@@ -122,7 +122,7 @@ namespace ontologenius {
       }
     }
 
-    if(comp2.concept_ != "")
+    if(comp2.concept_.empty() == false)
     {
       for(size_t i = 0; i < comp2.data_properties_name_.size(); i++)
       {
@@ -136,7 +136,7 @@ namespace ontologenius {
   {
     std::vector<size_t> explored_indexs;
 
-    if(comp1.concept_ != "")
+    if(comp1.concept_.empty() == false)
     {
       for(size_t i = 0; i < comp1.mothers_.size(); i++)
       {
@@ -153,7 +153,7 @@ namespace ontologenius {
       }
     }
 
-    if(comp2.concept_ != "")
+    if(comp2.concept_.empty() == false)
     {
       for(size_t i = 0; i < comp2.mothers_.size(); i++)
       {

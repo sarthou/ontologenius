@@ -44,7 +44,7 @@ namespace ontologenius {
     if(!activated_)
       return false;
 
-    if(id == "")
+    if(id.empty())
       return false;
     if(nodes_.find(id) != nodes_.end())
       return false;
@@ -62,7 +62,7 @@ namespace ontologenius {
     if(!activated_)
       return false;
 
-    if(id == "")
+    if(id.empty())
       return false;
 
     auto node_it = nodes_.find(id);
@@ -129,7 +129,7 @@ namespace ontologenius {
 
     std::string xml = nodes_["0"]->toXml();
 
-    if(path == "")
+    if(path.empty())
     {
       std::cout << xml;
       return;

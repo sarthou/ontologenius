@@ -34,7 +34,7 @@ namespace ontologenius {
         else if(req->action == "getName")
         {
           auto tmp = onto_->class_graph_.getName(params(), params.take_id);
-          if(tmp != "")
+          if(tmp.empty() == false)
             res->values.push_back(tmp);
         }
         else if(req->action == "getNames")
@@ -86,7 +86,7 @@ namespace ontologenius {
         else
           res->code = UNKNOW_ACTION;
 
-        if(params.selector != "")
+        if(params.selector.empty() == false)
         {
           if((req->action == "getUp") || (req->action == "getDown") ||
              (req->action == "getDisjoint") || (req->action == "getOn") ||
@@ -140,7 +140,7 @@ namespace ontologenius {
         else if(req->action == "getName")
         {
           auto tmp = onto_->object_property_graph_.getName(params(), params.take_id);
-          if(tmp != "")
+          if(tmp.empty() == false)
             res->values.push_back(tmp);
         }
         else if(req->action == "getNames")
@@ -170,7 +170,7 @@ namespace ontologenius {
         else
           res->code = UNKNOW_ACTION;
 
-        if(params.selector != "")
+        if(params.selector.empty() == false)
         {
           if((req->action == "getUp") || (req->action == "getDown") ||
              (req->action == "getDisjoint") || (req->action == "getInverse"))
@@ -220,7 +220,7 @@ namespace ontologenius {
         else if(req->action == "getName")
         {
           auto tmp = onto_->data_property_graph_.getName(params(), params.take_id);
-          if(tmp != "")
+          if(tmp.empty() == false)
             res->values.push_back(tmp);
         }
         else if(req->action == "getNames")
@@ -250,7 +250,7 @@ namespace ontologenius {
         else
           res->code = UNKNOW_ACTION;
 
-        if(params.selector != "")
+        if(params.selector.empty() == false)
         {
           if((req->action == "getUp") || (req->action == "getDown") || (req->action == "getDisjoint"))
             set_res = onto_->data_property_graph_.select(set_res, params.selector);
@@ -317,7 +317,7 @@ namespace ontologenius {
         else if(req->action == "getName")
         {
           auto tmp = onto_->individual_graph_.getName(params(), params.take_id);
-          if(tmp != "")
+          if(tmp.empty() == false)
             res->values.push_back(tmp);
         }
         else if(req->action == "getNames")
@@ -354,7 +354,7 @@ namespace ontologenius {
         else
           res->code = UNKNOW_ACTION;
 
-        if(params.selector != "")
+        if(params.selector.empty() == false)
         {
           if(req->action == "getUp")
             set_res = onto_->class_graph_.select(set_res, params.selector);

@@ -77,7 +77,7 @@ namespace ontologenius {
     if(elem_value == "Node")
     {
       std::string id = getAttribute(elem, "id");
-      if(id != "")
+      if(id.empty() == false)
       {
         auto current = new commit_t(id);
         std::cout << "create commit " << id << std::endl;

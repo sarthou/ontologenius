@@ -40,7 +40,7 @@ namespace ontologenius {
           initial_solution.solution_ = initial_solution.solution_full_;
           break;
         }
-        else if(var != "")
+        else if(var.empty() == false)
           initial_solution.solution_[var.substr(1)] = "";
       }
     }
@@ -74,19 +74,19 @@ namespace ontologenius {
     SparqlSolution_t initial_solution;
 
     auto blocks = getBlocks(pattern);
-    if(error_ != "")
+    if(error_.empty() == false)
       return initial_solution;
 
     for(auto& block : blocks)
     {
       auto triplets = getTriplets(block.raw, ".");
-      if(error_ != "")
+      if(error_.empty() == false)
         return initial_solution;
 
       insertConstraints(triplets, initial_solution, block.op);
     }
 
-    if(error_ == "")
+    if(error_.empty())
       for(auto& constraint : initial_solution.variable_constraints_)
         initial_solution.solution_full_[constraint.first] = "";
 
@@ -103,7 +103,7 @@ namespace ontologenius {
     else
       error_ = "The query is malformed";
 
-    if(error_ == "")
+    if(error_.empty())
       for(auto& constraint : initial_solution.variable_constraints_)
         initial_solution.solution_full_[constraint.first] = "";
 
@@ -167,7 +167,7 @@ namespace ontologenius {
           break;
         }
 
-      if(selected_var != "")
+      if(selected_var.empty() == false)
       {
         variables_links.erase(selected_var);
         for(auto& variable : variables_links)
@@ -218,7 +218,7 @@ namespace ontologenius {
       {
         stepDown(solution, index + 1);
         auto next_var = solution.ordered_variables_[index + 1];
-        if(solution.solution_full_[next_var] != "")
+        if(solution.solution_full_[next_var].empty() == false)
           return;
       }
       else
@@ -236,7 +236,7 @@ namespace ontologenius {
       if(solution.candidates_[variable].size() != 0)
       {
         stepDown(solution, i);
-        if(solution.solution_full_[variable] != "")
+        if(solution.solution_full_[variable].empty() == false)
           break;
       }
       else
@@ -387,7 +387,7 @@ namespace ontologenius {
   std::unordered_set<std::string> SparqlSolver::getOn(const strTriplet_t& triplet, const std::string& selector)
   {
     auto res = onto_->individual_graph_.getOn(triplet.subject.name, triplet.predicat.name);
-    if(selector == "")
+    if(selector.empty())
       return res;
     else if(std::find(res.begin(), res.end(), selector) != res.end())
       return std::unordered_set<std::string>({selector});
@@ -397,7 +397,7 @@ namespace ontologenius {
 
   std::unordered_set<std::string> SparqlSolver::getFrom(const strTriplet_t& triplet, const std::string& selector)
   {
-    if(selector == "")
+    if(selector.empty())
       return onto_->individual_graph_.getFrom(triplet.object.name, triplet.predicat.name);
     else
     {
@@ -412,7 +412,7 @@ namespace ontologenius {
 
   std::unordered_set<std::string> SparqlSolver::getUp(const strTriplet_t& triplet, const std::string& selector)
   {
-    if(selector == "")
+    if(selector.empty())
       return onto_->individual_graph_.getUp(triplet.subject.name);
     else
     {
@@ -426,7 +426,7 @@ namespace ontologenius {
 
   std::unordered_set<std::string> SparqlSolver::getType(const strTriplet_t& triplet, const std::string& selector)
   {
-    if(selector == "")
+    if(selector.empty())
       return onto_->individual_graph_.getType(triplet.object.name);
     else
     {
@@ -441,7 +441,7 @@ namespace ontologenius {
   std::unordered_set<std::string> SparqlSolver::find(const strTriplet_t& triplet, const std::string& selector)
   {
     auto res = onto_->individual_graph_.find<std::string>(triplet.object.name);
-    if(selector == "")
+    if(selector.empty())
       return res;
     else if(std::find(res.begin(), res.end(), selector) != res.end())
       return std::unordered_set<std::string>({selector});
@@ -452,7 +452,7 @@ namespace ontologenius {
   std::unordered_set<std::string> SparqlSolver::getName(const strTriplet_t& triplet, const std::string& selector)
   {
     auto res = onto_->individual_graph_.getNames(triplet.subject.name);
-    if(selector == "")
+    if(selector.empty())
     {
       std::unordered_set<std::string> set_res;
       for(auto& r : res)
@@ -552,7 +552,7 @@ namespace ontologenius {
         query = query.substr(min_pose);
       }
       removeUselessSpace(query);
-    } while(query != "");
+    } while(query.empty() == false);
 
     return res;
   }

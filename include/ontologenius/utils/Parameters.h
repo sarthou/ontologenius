@@ -130,7 +130,7 @@ namespace ontologenius {
               break;
             }
 
-          if(param_name == "")
+          if(param_name.empty())
             Display::warning("unknow option " + str_argv);
           else
           {
@@ -140,18 +140,18 @@ namespace ontologenius {
               str_argv = std::string(argv[i]);
               auto splitted = split(str_argv, " ");
               for(auto& arg : splitted)
-                if(arg != "")
+                if(arg.empty() == false)
                   parameters_.at(param_name).insert(arg);
             }
           }
         }
         else
         {
-          if(default_param_name_ != "")
+          if(default_param_name_.empty() == false)
           {
             auto splitted = split(str_argv, " ");
             for(auto& arg : splitted)
-              if(arg != "")
+              if(arg.empty() == false)
                 parameters_.at(default_param_name_).insert(arg);
           }
           else

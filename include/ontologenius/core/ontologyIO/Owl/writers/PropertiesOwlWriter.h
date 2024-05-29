@@ -53,7 +53,7 @@ namespace ontologenius {
     if(branch->properties_.irreflexive_property_ == true)
       tmp += "        <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#IrreflexiveProperty\"/>\n\r";
 
-    if(tmp != "")
+    if(tmp.empty() == false)
       writeString(tmp);
   }
 

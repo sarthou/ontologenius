@@ -70,7 +70,7 @@ namespace ontologenius {
         exp_str = class_right->value() + " is a " + explanation_2->value();
       if(class_left != explanation_1)
       {
-        if(exp_str != "")
+        if(exp_str.empty() == false)
           exp_str += " and ";
         exp_str += class_left->value() + " is a " + explanation_1->value();
       }
@@ -78,7 +78,7 @@ namespace ontologenius {
       if(explanation_1 == nullptr)
         err = "disjointness between " + class_left->value() + " and " + class_right->value() +
               " over " + first_crash->value();
-      else if(exp_str != "")
+      else if(exp_str.empty() == false)
         err = "disjointness between " + class_left->value() + " and " + class_right->value() +
               " because " + explanation_1->value() + " and " + explanation_2->value() + " are disjoint" +
               " and " + exp_str;
@@ -97,7 +97,7 @@ namespace ontologenius {
       for(auto& elem_left : classes_left)
       {
         std::string err = checkClassesDisjointness(elem_left.elem, elem_right.elem);
-        if(err != "")
+        if(err.empty() == false)
           errs.push_back(err);
       }
     return errs;
@@ -128,7 +128,7 @@ namespace ontologenius {
         std::string exp = "";
         for(auto& type : types)
         {
-          if(exp != "")
+          if(exp.empty() == false)
             exp += ", ";
           exp += type;
         }
@@ -188,7 +188,7 @@ namespace ontologenius {
       for(auto& elem : ranges)
       {
         std::string err = checkClassesDisjointness(ano_elem->class_involved_, elem.elem);
-        if(err != "")
+        if(err.empty() == false)
         {
           err = "and class " + ano_elem->class_involved_->value() + " because of " + err;
           errs.push_back(err);
@@ -236,7 +236,7 @@ namespace ontologenius {
         }
       }
 
-      if(origin != "")
+      if(origin.empty() == false)
       {
         if(cpt == index)
           return {origin, property};
@@ -302,7 +302,7 @@ namespace ontologenius {
       for(auto& range_elem : ano_elem->object_property_involved_->ranges_)
       {
         std::string err = checkClassesDisjointness(range_elem.elem, ano_elem->class_involved_);
-        if(err != "")
+        if(err.empty() == false)
           print_error("In equivalence of class " + current_ano_ + ": error between range of property " + ano_elem->object_property_involved_->value() +
                       " and class " + ano_elem->class_involved_->value() + " because of " + err);
       }

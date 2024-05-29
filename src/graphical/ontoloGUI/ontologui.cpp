@@ -896,7 +896,7 @@ bool ontoloGUI::updateOntoPtr()
         return true;
     }
 
-    if(instance_name != "")
+    if(instance_name.empty() == false)
       displayErrorInfo("Ontology " + instance_name + " does not exist");
     return false;
   }

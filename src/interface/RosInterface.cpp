@@ -66,7 +66,7 @@ namespace ontologenius {
   {
     onto_->setLanguage(lang);
     std::string dedicated_intern_file = intern_file;
-    if(name_ != "")
+    if(name_.empty() == false)
     {
       size_t pose = dedicated_intern_file.find(".owl");
       if(pose != std::string::npos)
@@ -144,7 +144,7 @@ namespace ontologenius {
     std::thread feed_thread(&RosInterface::feedThread, this);
     std::thread periodic_reasoning_thread(&RosInterface::periodicReasoning, this);
 
-    if(name_ != "")
+    if(name_.empty() == false)
       Display::info(name_ + " is ready");
     else
       Display::info("Ontologenius is ready");
@@ -360,7 +360,7 @@ namespace ontologenius {
 
     auto time = node.current_time();
     feeder_.store("[add]myself|", {(uint32_t)time.seconds(), (uint32_t)time.nanoseconds()});
-    if(name_ != "")
+    if(name_.empty() == false)
       feeder_.store("[add]myself|=|" + name_, {(uint32_t)time.seconds(), (uint32_t)time.nanoseconds()});
     feeder_mutex_.lock();
     feeder_.run();
@@ -381,7 +381,7 @@ namespace ontologenius {
         for(auto notif : notifications)
         {
           Display::error("[Feeder]" + notif);
-          if(name_ != "")
+          if(name_.empty() == false)
             notif = "[" + name_ + "]" + notif;
           msg.data = notif;
           pub_feeder.publish(msg);

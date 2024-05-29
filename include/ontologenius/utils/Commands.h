@@ -59,7 +59,7 @@ namespace ontologenius {
   std::string findPackage(const std::string& pkg_name)
   {
     std::string res = findPackageRos1(pkg_name);
-    if(res == "")
+    if(res.empty())
       res = findPackageRos2(pkg_name);
     return res;
   }

@@ -20,7 +20,7 @@ namespace ontologenius {
     void addNext(Version_node* next) { nexts_.push_back(next); }
 
     std::string getId() { return id_; }
-    bool defined() { return id_ != ""; }
+    bool defined() { return id_.empty() == false; }
     Version_node* getPrev() { return prev_; }
     std::vector<Version_node*> getNexts() { return nexts_; }
 

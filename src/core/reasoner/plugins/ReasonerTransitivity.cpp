@@ -50,7 +50,7 @@ namespace ontologenius {
                   std::string explanation_reference = "";
                   for(auto it = used.second.rbegin(); it != used.second.rend(); ++it)
                   {
-                    if(explanation_reference != "")
+                    if(explanation_reference.empty() == false)
                       explanation_reference += ", ";
                     explanation_reference += it->first;
 

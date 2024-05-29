@@ -76,7 +76,7 @@ namespace ontologenius {
 
       bool is_empty() const
       {
-        if(std::any_of(current_solution_.solution_full_.begin(), current_solution_.solution_full_.end(), [](auto it) { return it.second != ""; }))
+        if(std::any_of(current_solution_.solution_full_.begin(), current_solution_.solution_full_.end(), [](auto it) { return it.second.empty() == false; }))
           return false;
         return true;
       }

@@ -332,13 +332,13 @@ namespace ontologenius {
       std::string one_of;
       for(auto elem : ano_elem->sub_elements_)
       {
-        if(one_of != "")
+        if(one_of.empty() == false)
           one_of += ", ";
         one_of += elem->individual_involved_->value();
         if(checkIndividualRestriction(indiv, elem, used) == true)
           explanation = indiv->value();
       }
-      if(explanation != "")
+      if(explanation.empty() == false)
       {
         explanation += "|isOneOf|(" + one_of + ")";
         used.emplace_back(explanation, nullptr);
@@ -455,7 +455,7 @@ namespace ontologenius {
     case CardType_t::cardinality_value:
       return checkValueCard(indiv, ano_elem, used);
     default:
-      std::cout << ("Cardinality type outside of [min, max, exactly, only, value, some] -> " + ano_elem->card_.card_type_) << std::endl;
+      std::cout << ("Cardinality type outside of [min, max, exactly, only, value, some] -> ") << std::endl;
       return false;
     }
   }

@@ -5,7 +5,7 @@ namespace onto {
   std::vector<std::string> IndividualClient::getOn(const std::string& name, const std::string& property, const std::string& selector)
   {
     std::string param = name + ":" + property;
-    if(selector != "")
+    if(selector.empty() == false)
       param += " -s " + selector;
 
     return call("getOn", param);
@@ -14,7 +14,7 @@ namespace onto {
   std::vector<std::string> IndividualClient::getFrom(const std::string& property, const std::string& name, const std::string& selector)
   {
     std::string param = name + ":" + property;
-    if(selector != "")
+    if(selector.empty() == false)
       param += " -s " + selector;
 
     return call("getFrom", param);
@@ -23,7 +23,7 @@ namespace onto {
   std::vector<std::string> IndividualClient::getWith(const std::string& indiv_from, const std::string& indiv_to, const std::string& selector, int depth)
   {
     std::string param = indiv_from + ":" + indiv_to;
-    if(selector != "")
+    if(selector.empty() == false)
       param += " -s " + selector;
 
     if(depth >= 0)
@@ -77,7 +77,7 @@ namespace onto {
   std::vector<std::string> IndividualClient::getDomainOf(const std::string& name, const std::string& selector, int depth)
   {
     std::string param = name;
-    if(selector != "")
+    if(selector.empty() == false)
       param += " -s " + selector;
 
     if(depth >= 0)
@@ -89,7 +89,7 @@ namespace onto {
   std::vector<std::string> IndividualClient::getRangeOf(const std::string& name, const std::string& selector, int depth)
   {
     std::string param = name;
-    if(selector != "")
+    if(selector.empty() == false)
       param += " -s " + selector;
 
     if(depth >= 0)

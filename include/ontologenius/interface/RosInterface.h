@@ -194,7 +194,7 @@ namespace ontologenius {
     /// @param onto_name is the name of the ontology to which the topic should be related to
     std::string getTopicName(const std::string& topic_name, const std::string& onto_name)
     {
-      return (onto_name == "") ? "ontologenius/" + topic_name : "ontologenius/" + topic_name + "/" + onto_name;
+      return (onto_name.empty()) ? "ontologenius/" + topic_name : "ontologenius/" + topic_name + "/" + onto_name;
     }
   };
 
