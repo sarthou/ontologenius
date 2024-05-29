@@ -1,11 +1,11 @@
 #include "ontologenius/core/ontologyOperators/Sparql.h"
 
 #include <chrono>
+#include <csignal>
+#include <cstdio>
+#include <cstdlib>
 #include <execinfo.h>
 #include <map>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string>
 #include <thread>
 #include <unistd.h>

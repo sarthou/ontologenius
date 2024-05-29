@@ -2,7 +2,7 @@
 #define ONTOLOGENIUS_FEEDERPUBLISHER_H
 
 #include <atomic>
-#include <stdlib.h>
+#include <cstdlib>
 #include <unistd.h>
 
 #include "ontologenius/compat/ros.h"

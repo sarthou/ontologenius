@@ -1,8 +1,8 @@
+#include <csignal>
+#include <cstdio>
+#include <cstdlib>
 #include <execinfo.h>
 #include <regex>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <thread>
 #include <unistd.h>
 
