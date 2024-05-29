@@ -15,7 +15,7 @@ namespace ontologenius {
     std::experimental::optional<std::vector<std::string>> data;
     std::experimental::optional<std::map<std::string, ConfigElement>> subelem;
 
-    ConfigElement operator[](std::string name)
+    ConfigElement operator[](const std::string& name)
     {
       if(subelem)
       {
@@ -54,7 +54,7 @@ namespace ontologenius {
         return ConfigElement();
     }
 
-    std::vector<std::string> getKeys()
+    std::vector<std::string> getKeys() const
     {
       std::vector<std::string> res;
       std::transform(config_.cbegin(), config_.cend(),

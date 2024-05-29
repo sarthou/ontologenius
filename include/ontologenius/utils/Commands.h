@@ -1,5 +1,5 @@
+#include <cstdio>
 #include <stdexcept>
-#include <stdio.h>
 #include <string>
 
 #include "ontologenius/utils/String.h"

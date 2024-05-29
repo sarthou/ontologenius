@@ -23,15 +23,17 @@ namespace ontologenius {
     double threshold;
     bool take_id;
 
-    InterfaceParams() : main_index(0), optional_index(0), depth(-1), selector_index(0), threshold(-1), take_id(true) {}
+    InterfaceParams() : main_index(0), optional_index(0),
+                        depth(-1), selector_index(0),
+                        threshold(-1), take_id(true) {}
 
-    std::string operator()() { return base; }
+    std::string operator()() const { return base; }
 
     void extractStringParams(const std::string& param)
     {
       std::vector<std::string> str_params = split(param, " ");
 
-      if(str_params.size())
+      if(str_params.empty() == false)
         base = str_params[0];
 
       for(size_t i = 1; i < str_params.size(); i++)
@@ -66,12 +68,12 @@ namespace ontologenius {
 
           take_id = tmp;
         }
-        else if(str_params[i].size() && str_params[i][0] == '-')
+        else if((str_params[i].empty() == false) && (str_params[i][0] == '-'))
         {
           Display::warning("[WARNING] unknow parameter \"" + str_params[i] + "\"");
           i++;
         }
-        else if(str_params[i].size())
+        else if(str_params[i].empty() == false)
           base += " " + str_params[i];
       }
     }
@@ -80,7 +82,7 @@ namespace ontologenius {
     {
       std::vector<std::string> str_params = split(param, " ");
 
-      if(str_params.size())
+      if(str_params.empty() == false)
         base = str_params[0];
 
       if(sscanf(str_params[0].c_str(), "%ld:%ld", &main_index, &optional_index) < 1)
@@ -120,12 +122,12 @@ namespace ontologenius {
 
           take_id = tmp;
         }
-        else if(str_params[i].size() && str_params[i][0] == '-')
+        else if((str_params[i].empty() == false) && str_params[i][0] == '-')
         {
           Display::warning("[WARNING] unknow parameter \"" + str_params[i] + "\"");
           i++;
         }
-        else if(str_params[i].size())
+        else if(str_params[i].empty() == false)
           base += " " + str_params[i];
       }
     }
