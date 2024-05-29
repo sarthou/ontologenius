@@ -14,7 +14,7 @@ namespace ontologenius {
   {
   public:
     ObjectPropertiesOwlWriter(ObjectPropertyGraph* property_graph, const std::string& ns);
-    ~ObjectPropertiesOwlWriter(){};
+    ~ObjectPropertiesOwlWriter() = default;
 
     void write(FILE* file);
 

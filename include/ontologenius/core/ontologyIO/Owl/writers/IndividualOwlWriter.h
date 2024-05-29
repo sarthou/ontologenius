@@ -15,7 +15,7 @@ namespace ontologenius {
   {
   public:
     IndividualOwlWriter(IndividualGraph* individual_graph, const std::string& ns);
-    ~IndividualOwlWriter(){};
+    ~IndividualOwlWriter() = default;
 
     void write(FILE* file);
     void writeGeneralAxioms(FILE* file);

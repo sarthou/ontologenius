@@ -12,7 +12,7 @@ namespace ontologenius {
   {
   public:
     NodeOwlWriter() { file_ = nullptr; };
-    ~NodeOwlWriter(){};
+    ~NodeOwlWriter() = default;
 
     FILE* file_;
     std::string ns_;

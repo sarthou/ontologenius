@@ -17,7 +17,7 @@ namespace ontologenius {
   {
   public:
     ClassOwlWriter(ClassGraph* class_graph, const std::string& ns);
-    ~ClassOwlWriter(){};
+    ~ClassOwlWriter() = default;
 
     void write(FILE* file);
     void writeGeneralAxioms(FILE* file);

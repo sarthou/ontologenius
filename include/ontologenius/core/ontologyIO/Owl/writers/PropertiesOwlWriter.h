@@ -12,8 +12,8 @@ namespace ontologenius {
   class PropertiesOwlWriter : public NodeOwlWriter
   {
   public:
-    PropertiesOwlWriter(){};
-    ~PropertiesOwlWriter(){};
+    PropertiesOwlWriter() = default;
+    ~PropertiesOwlWriter() = default;
 
   protected:
     void writeDisjointWith(Branch_t<T>* branch);
