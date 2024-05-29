@@ -4,8 +4,8 @@
 
 namespace ontologenius {
 
-  FeedStorage::FeedStorage() : base_regex(R"(^\[(\w+)\](.*)\|(.*)\|(.*)$)"),
-                               simple_regex(R"(^\[(\w+)\](.*)\|$)")
+  FeedStorage::FeedStorage() : base_regex_(R"(^\[(\w+)\](.*)\|(.*)\|(.*)$)"),
+                               simple_regex_(R"(^\[(\w+)\](.*)\|$)")
   {
     queue_choice_ = true;
   }
@@ -15,7 +15,7 @@ namespace ontologenius {
     std::smatch base_match;
     feed_t feed;
     feed.stamp = stamp;
-    if(std::regex_match(regex, base_match, base_regex))
+    if(std::regex_match(regex, base_match, base_regex_))
     {
       if(base_match.size() == 5)
       {
@@ -37,7 +37,7 @@ namespace ontologenius {
         feed.on_ = base_match[4].str();
       }
     }
-    else if(std::regex_match(regex, base_match, simple_regex))
+    else if(std::regex_match(regex, base_match, simple_regex_))
     {
       if(base_match.size() == 3)
       {
@@ -71,9 +71,9 @@ namespace ontologenius {
 
     mutex_.lock();
     if(queue_choice_ == true)
-      fifo_1.push(feed);
+      fifo_1_.push(feed);
     else
-      fifo_2.push(feed);
+      fifo_2_.push(feed);
     mutex_.unlock();
   }
 
@@ -83,12 +83,12 @@ namespace ontologenius {
     if(queue_choice_ == true)
     {
       for(auto& data : datas)
-        fifo_1.push(data);
+        fifo_1_.push(data);
     }
     else
     {
       for(auto& data : datas)
-        fifo_2.push(data);
+        fifo_2_.push(data);
     }
     mutex_.unlock();
   }
@@ -99,17 +99,17 @@ namespace ontologenius {
     mutex_.lock();
     if(queue_choice_ == true)
     {
-      fifo_2 = std::queue<feed_t>();
+      fifo_2_ = std::queue<feed_t>();
       queue_choice_ = false;
-      tmp = std::move(fifo_1);
-      fifo_1 = std::queue<feed_t>();
+      tmp = std::move(fifo_1_);
+      fifo_1_ = std::queue<feed_t>();
     }
     else
     {
-      fifo_1 = std::queue<feed_t>();
+      fifo_1_ = std::queue<feed_t>();
       queue_choice_ = true;
-      tmp = std::move(fifo_2);
-      fifo_2 = std::queue<feed_t>();
+      tmp = std::move(fifo_2_);
+      fifo_2_ = std::queue<feed_t>();
     }
     mutex_.unlock();
     return tmp;

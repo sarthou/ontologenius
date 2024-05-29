@@ -61,8 +61,8 @@ namespace ontologenius {
 
     bool addFeed(feed_t& feed);
 
-    bool addDelClass(action_t& action, std::string& name);
-    bool addDelIndiv(action_t& action, std::string& name);
+    bool addDelClass(action_e& action, std::string& name);
+    bool addDelIndiv(action_e& action, std::string& name);
 
     bool addInheritage(feed_t& feed);
     bool addInverseOf(const feed_t& feed);

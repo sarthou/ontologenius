@@ -8,7 +8,7 @@
 
 namespace ontologenius {
 
-  enum action_t
+  enum action_e
   {
     action_add,
     action_del,
@@ -28,7 +28,7 @@ namespace ontologenius {
 
   struct feed_t
   {
-    action_t action_;
+    action_e action_;
     RosTime_t stamp;
     std::string from_;
     std::string prop_;
@@ -46,17 +46,17 @@ namespace ontologenius {
     void add(const std::string& regex, const RosTime_t& stamp);
     void add(std::vector<feed_t>& datas);
     std::queue<feed_t> get();
-    size_t size() { return fifo_1.size() + fifo_2.size(); }
+    size_t size() { return fifo_1_.size() + fifo_2_.size(); }
 
   private:
-    std::regex base_regex;
-    std::regex simple_regex;
+    std::regex base_regex_;
+    std::regex simple_regex_;
 
     std::mutex mutex_;
 
     bool queue_choice_;
-    std::queue<feed_t> fifo_1;
-    std::queue<feed_t> fifo_2;
+    std::queue<feed_t> fifo_1_;
+    std::queue<feed_t> fifo_2_;
   };
 
 } // namespace ontologenius

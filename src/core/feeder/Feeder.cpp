@@ -84,7 +84,7 @@ namespace ontologenius {
     }
   }
 
-  bool Feeder::addDelClass(action_t& action, std::string& name)
+  bool Feeder::addDelClass(action_e& action, std::string& name)
   {
     if(action == action_add)
     {
@@ -100,7 +100,7 @@ namespace ontologenius {
     }
   }
 
-  bool Feeder::addDelIndiv(action_t& action, std::string& name)
+  bool Feeder::addDelIndiv(action_e& action, std::string& name)
   {
     if(action == action_add)
     {
