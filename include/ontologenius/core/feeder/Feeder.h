@@ -59,17 +59,17 @@ namespace ontologenius {
 
     std::string current_str_feed_;
 
-    bool addFeed(feed_t& feed);
+    bool addFeed(Feed_t& feed);
 
-    bool addDelClass(action_e& action, std::string& name);
-    bool addDelIndiv(action_e& action, std::string& name);
+    bool addDelClass(Action_e& action, std::string& name);
+    bool addDelIndiv(Action_e& action, std::string& name);
 
-    bool addInheritage(feed_t& feed);
-    bool addInverseOf(const feed_t& feed);
-    bool addSameAs(const feed_t& feed);
+    bool addInheritage(Feed_t& feed);
+    bool addInverseOf(const Feed_t& feed);
+    bool addSameAs(const Feed_t& feed);
 
-    bool modifyLangage(feed_t& feed);
-    bool applyProperty(feed_t& feed);
+    bool modifyLangage(Feed_t& feed);
+    bool applyProperty(Feed_t& feed);
   };
 
 } // namespace ontologenius

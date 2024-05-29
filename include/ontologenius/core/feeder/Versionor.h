@@ -19,7 +19,7 @@ namespace ontologenius {
 
     void activate(bool activated) { activated_ = activated; }
 
-    void insert(feed_t data);
+    void insert(Feed_t data);
     bool commit(const std::string& id);
     bool checkout(const std::string& id);
 

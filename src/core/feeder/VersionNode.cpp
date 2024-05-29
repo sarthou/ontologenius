@@ -1,10 +1,8 @@
-#include <numeric>
-
 #include "ontologenius/core/feeder/VersionNode.h"
 
-namespace ontologenius {
+#include <numeric>
 
-  size_t VersionNode::global_order_id_ = 0;
+namespace ontologenius {
 
   VersionNode::VersionNode(size_t order, VersionNode* prev)
   {
@@ -20,28 +18,28 @@ namespace ontologenius {
                                                                   prev_(nullptr)
   {}
 
-  std::vector<feed_t> VersionNode::getDatasDirect()
+  std::vector<Feed_t> VersionNode::getDatasDirect()
   {
     return datas_;
   }
 
-  std::vector<feed_t> VersionNode::getDatasInvert()
+  std::vector<Feed_t> VersionNode::getDatasInvert()
   {
-    std::vector<feed_t> datas = datas_;
+    std::vector<Feed_t> datas = datas_;
     std::reverse(datas.begin(), datas.end());
     for(auto& data : datas)
       data.action_ = (data.action_ == action_add) ? action_del : action_add;
     return datas;
   }
 
-  void VersionNode::appendDatasDirect(std::vector<feed_t>& datas)
+  void VersionNode::appendDatasDirect(std::vector<Feed_t>& datas)
   {
     datas.insert(datas.end(), datas_.begin(), datas_.end());
   }
 
-  void VersionNode::appendDatasInvert(std::vector<feed_t>& datas)
+  void VersionNode::appendDatasInvert(std::vector<Feed_t>& datas)
   {
-    std::vector<feed_t> tmp_datas = datas_;
+    std::vector<Feed_t> tmp_datas = datas_;
     for(auto& data : tmp_datas)
       data.action_ = (data.action_ == action_add) ? action_del : action_add;
     datas.insert(datas.end(), tmp_datas.rbegin(), tmp_datas.rend());
@@ -71,7 +69,7 @@ namespace ontologenius {
     std::string xml;
     xml += getSpaces(level) + "<Node id=\"" + id_ + "\">\n";
     xml += getSpaces(level + 1) + orderIdToXml() + "\n";
-    xml = std::accumulate(datas_.begin(), datas_.end(), xml, [level, this](auto base, const feed_t& data) { return base + this->getSpaces(level + 1) + this->dataToXml(data) + "\n"; });
+    xml = std::accumulate(datas_.begin(), datas_.end(), xml, [level, this](auto base, const Feed_t& data) { return base + this->getSpaces(level + 1) + this->dataToXml(data) + "\n"; });
     xml = std::accumulate(nexts_.begin(), nexts_.end(), xml, [level](auto base, auto next) { return base + next->toXml(level + 1); });
     xml += getSpaces(level) + "</Node>\n";
     return xml;
@@ -85,7 +83,7 @@ namespace ontologenius {
     return res;
   }
 
-  std::string VersionNode::dataToXml(const feed_t& data)
+  std::string VersionNode::dataToXml(const Feed_t& data)
   {
     std::string xml = "<Data action=\"" + std::string((data.action_ == action_add) ? "add" : "del") +
                       "\">" + data.from_ + "|" + data.prop_ + "|" + data.on_ +

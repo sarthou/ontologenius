@@ -15,7 +15,7 @@ namespace ontologenius {
     explicit VersionNode(size_t order, VersionNode* prev = nullptr);
     VersionNode(size_t order, const std::string& id);
 
-    void insert(const feed_t& data) { datas_.push_back(data); }
+    void insert(const Feed_t& data) { datas_.push_back(data); }
     void setId(const std::string& id) { id_ = id; }
     void addNext(VersionNode* next) { nexts_.push_back(next); }
 
@@ -24,11 +24,11 @@ namespace ontologenius {
     VersionNode* getPrev() { return prev_; }
     std::vector<VersionNode*> getNexts() { return nexts_; }
 
-    std::vector<feed_t> getDatasDirect();
-    std::vector<feed_t> getDatasInvert();
+    std::vector<Feed_t> getDatasDirect();
+    std::vector<Feed_t> getDatasInvert();
 
-    void appendDatasDirect(std::vector<feed_t>& datas);
-    void appendDatasInvert(std::vector<feed_t>& datas);
+    void appendDatasDirect(std::vector<Feed_t>& datas);
+    void appendDatasInvert(std::vector<Feed_t>& datas);
 
     void unlinkFromPrev();
 
@@ -38,15 +38,14 @@ namespace ontologenius {
   private:
     std::string id_;
     size_t order_id_;
-    static size_t global_order_id_;
 
     VersionNode* prev_;
     std::vector<VersionNode*> nexts_;
 
-    std::vector<feed_t> datas_;
+    std::vector<Feed_t> datas_;
 
     std::string getSpaces(int nb, const std::string& symbol = "  ");
-    std::string dataToXml(const feed_t& data);
+    std::string dataToXml(const Feed_t& data);
     std::string orderIdToXml();
   };
 

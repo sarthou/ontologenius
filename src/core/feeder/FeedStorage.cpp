@@ -13,7 +13,7 @@ namespace ontologenius {
   void FeedStorage::add(const std::string& regex, const RosTime_t& stamp)
   {
     std::smatch base_match;
-    feed_t feed;
+    Feed_t feed;
     feed.stamp = stamp;
     if(std::regex_match(regex, base_match, base_regex_))
     {
@@ -77,7 +77,7 @@ namespace ontologenius {
     mutex_.unlock();
   }
 
-  void FeedStorage::add(std::vector<feed_t>& datas)
+  void FeedStorage::add(std::vector<Feed_t>& datas)
   {
     mutex_.lock();
     if(queue_choice_ == true)
@@ -93,23 +93,23 @@ namespace ontologenius {
     mutex_.unlock();
   }
 
-  std::queue<feed_t> FeedStorage::get()
+  std::queue<Feed_t> FeedStorage::get()
   {
-    std::queue<feed_t> tmp;
+    std::queue<Feed_t> tmp;
     mutex_.lock();
     if(queue_choice_ == true)
     {
-      fifo_2_ = std::queue<feed_t>();
+      fifo_2_ = std::queue<Feed_t>();
       queue_choice_ = false;
       tmp = std::move(fifo_1_);
-      fifo_1_ = std::queue<feed_t>();
+      fifo_1_ = std::queue<Feed_t>();
     }
     else
     {
-      fifo_1_ = std::queue<feed_t>();
+      fifo_1_ = std::queue<Feed_t>();
       queue_choice_ = true;
       tmp = std::move(fifo_2_);
-      fifo_2_ = std::queue<feed_t>();
+      fifo_2_ = std::queue<Feed_t>();
     }
     mutex_.unlock();
     return tmp;

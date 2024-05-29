@@ -18,12 +18,12 @@ namespace ontologenius {
       return false;
 
     bool has_run = false;
-    std::queue<feed_t> feeds = feed_storage_.get();
+    std::queue<Feed_t> feeds = feed_storage_.get();
 
     while(feeds.empty() == false)
     {
       has_run = true;
-      feed_t feed = feeds.front();
+      Feed_t feed = feeds.front();
       feeds.pop();
 
       if(feed.action_ == action_add)
@@ -55,7 +55,7 @@ namespace ontologenius {
     return has_run;
   }
 
-  bool Feeder::addFeed(feed_t& feed)
+  bool Feeder::addFeed(Feed_t& feed)
   {
     if(feed.prop_.empty())
     {
@@ -84,7 +84,7 @@ namespace ontologenius {
     }
   }
 
-  bool Feeder::addDelClass(action_e& action, std::string& name)
+  bool Feeder::addDelClass(Action_e& action, std::string& name)
   {
     if(action == action_add)
     {
@@ -100,7 +100,7 @@ namespace ontologenius {
     }
   }
 
-  bool Feeder::addDelIndiv(action_e& action, std::string& name)
+  bool Feeder::addDelIndiv(Action_e& action, std::string& name)
   {
     if(action == action_add)
     {
@@ -115,7 +115,7 @@ namespace ontologenius {
     }
   }
 
-  bool Feeder::addInheritage(feed_t& feed)
+  bool Feeder::addInheritage(Feed_t& feed)
   {
     try
     {
@@ -180,7 +180,7 @@ namespace ontologenius {
     return true;
   }
 
-  bool Feeder::addInverseOf(const feed_t& feed)
+  bool Feeder::addInverseOf(const Feed_t& feed)
   {
     if(feed.action_ == action_add)
     {
@@ -206,7 +206,7 @@ namespace ontologenius {
       return false;
   }
 
-  bool Feeder::addSameAs(const feed_t& feed)
+  bool Feeder::addSameAs(const Feed_t& feed)
   {
     try
     {
@@ -232,7 +232,7 @@ namespace ontologenius {
     }
   }
 
-  bool Feeder::modifyLangage(feed_t& feed)
+  bool Feeder::modifyLangage(Feed_t& feed)
   {
     if(feed.action_ == action_add)
     {
@@ -270,7 +270,7 @@ namespace ontologenius {
       return false;
   }
 
-  bool Feeder::applyProperty(feed_t& feed)
+  bool Feeder::applyProperty(Feed_t& feed)
   {
     size_t pose = feed.on_.find('#');
     std::string type = "";

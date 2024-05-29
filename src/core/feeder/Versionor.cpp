@@ -30,7 +30,7 @@ namespace ontologenius {
         delete it.second;
   }
 
-  void Versionor::insert(feed_t data)
+  void Versionor::insert(Feed_t data)
   {
     if(activated_)
     {
@@ -85,7 +85,7 @@ namespace ontologenius {
 
     current_prevs.push_back(pivot);
 
-    std::vector<feed_t> datas;
+    std::vector<Feed_t> datas;
     for(auto& current_prev : current_prevs)
     {
       if(current_prev == pivot)

@@ -8,7 +8,7 @@
 
 namespace ontologenius {
 
-  enum action_e
+  enum Action_e
   {
     action_add,
     action_del,
@@ -26,16 +26,16 @@ namespace ontologenius {
     RosTime_t(uint32_t seconds, uint32_t n_seconds) : sec(seconds), nsec(n_seconds) {}
   };
 
-  struct feed_t
+  struct Feed_t
   {
-    action_e action_;
+    Action_e action_;
     RosTime_t stamp;
     std::string from_;
     std::string prop_;
     std::string on_;
     bool checkout_;
 
-    feed_t() : action_(action_nop), checkout_(false) {}
+    Feed_t() : action_(action_nop), checkout_(false) {}
   };
 
   class FeedStorage
@@ -44,8 +44,8 @@ namespace ontologenius {
     FeedStorage();
 
     void add(const std::string& regex, const RosTime_t& stamp);
-    void add(std::vector<feed_t>& datas);
-    std::queue<feed_t> get();
+    void add(std::vector<Feed_t>& datas);
+    std::queue<Feed_t> get();
     size_t size() { return fifo_1_.size() + fifo_2_.size(); }
 
   private:
@@ -55,8 +55,8 @@ namespace ontologenius {
     std::mutex mutex_;
 
     bool queue_choice_;
-    std::queue<feed_t> fifo_1_;
-    std::queue<feed_t> fifo_2_;
+    std::queue<Feed_t> fifo_1_;
+    std::queue<Feed_t> fifo_2_;
   };
 
 } // namespace ontologenius
