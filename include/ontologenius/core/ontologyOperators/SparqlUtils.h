@@ -55,8 +55,7 @@ namespace ontologenius {
     Resource_t<T> predicat;
     Resource_t<T> object;
   };
-  typedef SparqlTriplet_t<std::string> strTriplet_t;
-  ;
+  using strTriplet_t = SparqlTriplet_t<std::string>;
 
   void removeUselessSpace(std::string& text);
   void removeChar(std::string& text, const std::vector<char>& delim);
@@ -165,7 +164,7 @@ namespace ontologenius {
   std::vector<int64_t> convertVariables(const std::vector<std::string>& var_names)
   {
     std::vector<int64_t> res;
-    for(auto& var : var_names)
+    for(const auto& var : var_names)
       res.push_back(Resource_t<T>::variables[var]);
     std::sort(res.begin(), res.end());
     return res;
@@ -180,7 +179,7 @@ namespace ontologenius {
   template<typename T>
   void filter(std::vector<std::map<std::string, T>>& res, const std::vector<std::string>& vars, bool distinct)
   {
-    if(vars.size())
+    if(vars.empty() == false)
     {
       if(vars[0] == "*")
         return;
@@ -199,7 +198,7 @@ namespace ontologenius {
   template<typename T>
   void filter(std::vector<std::vector<T>>& res, const std::vector<std::string>& vars, bool distinct)
   {
-    if(vars.size())
+    if(vars.empty() == false)
     {
       if(vars[0] == "*")
         return;

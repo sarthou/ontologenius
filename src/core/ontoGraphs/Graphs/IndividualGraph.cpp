@@ -292,10 +292,10 @@ namespace ontologenius {
   {
     if(class_branch != nullptr)
     {
-      for(const ClassObjectRelationElement_t& relation : class_branch->object_relations_)
+      for(const ClassObjectRelationElement& relation : class_branch->object_relations_)
         object_property_graph_->getUp(relation.first, res, depth);
 
-      for(const ClassDataRelationElement_t& relation : class_branch->data_relations_)
+      for(const ClassDataRelationElement& relation : class_branch->data_relations_)
         data_property_graph_->getUp(relation.first, res, depth);
     }
   }
@@ -622,7 +622,7 @@ namespace ontologenius {
     {
       if(data > 0)
       {
-        for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
+        for(ClassObjectRelationElement& relation : class_branch->object_relations_)
         {
           if(relation.second->get() == data)
             if(took.find(relation.first->get()) == took.end())
@@ -632,7 +632,7 @@ namespace ontologenius {
       }
       else
       {
-        for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
+        for(ClassDataRelationElement& relation : class_branch->data_relations_)
         {
           if(relation.second->get() == data)
             if(took.find(relation.first->get()) == took.end())
@@ -769,7 +769,7 @@ namespace ontologenius {
 
       if(down_classes.empty() == false)
       {
-        for(const ClassObjectRelationElement_t& relation : class_branch->object_relations_)
+        for(const ClassObjectRelationElement& relation : class_branch->object_relations_)
           for(index_t id : object_properties)
             if(relation.first->get() == id)
             {
@@ -779,7 +779,7 @@ namespace ontologenius {
             }
       }
       else if(data < 0)
-        for(const ClassDataRelationElement_t& relation : class_branch->data_relations_)
+        for(const ClassDataRelationElement& relation : class_branch->data_relations_)
           for(index_t id : data_properties)
             if(relation.first->get() == id)
             {
@@ -1118,7 +1118,7 @@ namespace ontologenius {
     current_depth++;
     if(indiv != nullptr)
     {
-      if(indiv->same_as_.size())
+      if(indiv->same_as_.empty() == false)
       {
         for(auto& it : indiv->same_as_)
           for(auto& is_a : it.elem->is_a_)
@@ -1139,7 +1139,7 @@ namespace ontologenius {
       if(depth != 1)
       {
         current_depth++;
-        if(indiv->same_as_.size())
+        if(indiv->same_as_.empty() == false)
         {
           for(auto& it : indiv->same_as_)
             for(auto& is_a : it.elem->is_a_)
@@ -1153,7 +1153,7 @@ namespace ontologenius {
       }
       else
       {
-        if(indiv->same_as_.size())
+        if(indiv->same_as_.empty() == false)
         {
           for(auto& it : indiv->same_as_)
             for(auto& is_a : it.elem->is_a_)
@@ -1308,10 +1308,10 @@ namespace ontologenius {
         classes.insert(it);
     }
 
-    if(classes.size())
+    if(classes.empty() == false)
     {
       std::unordered_set<std::string> tmp_res = class_graph_->select(classes, class_selector);
-      if(tmp_res.size())
+      if(tmp_res.empty() == false)
         res.insert(tmp_res.begin(), tmp_res.end());
     }
 

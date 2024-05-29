@@ -17,7 +17,7 @@ namespace ontologenius {
         // /!\ The vector object_relations_ is modified by resolveChain
         for(size_t rel_i = 0; rel_i < indiv->object_relations_.size(); rel_i++)
         {
-          auto base_property = indiv->object_relations_[rel_i].first;
+          auto* base_property = indiv->object_relations_[rel_i].first;
           std::unordered_set<ObjectPropertyBranch*> properties;
           getUpPtrChain(base_property, properties);
           for(ObjectPropertyBranch* property : properties)
@@ -27,7 +27,7 @@ namespace ontologenius {
             {
               auto end_indivs = resolveChain(indiv->object_relations_[rel_i].second, chain, 0);
 
-              if(end_indivs.size())
+              if(end_indivs.empty() == false)
               {
                 UsedVector local_used;
                 if(property != base_property)
@@ -49,7 +49,7 @@ namespace ontologenius {
                     }
 
                     used.second.insert(used.second.end(), local_used.begin(), local_used.end());
-                    std::string explanation_reference = "";
+                    std::string explanation_reference;
                     for(auto it = used.second.rbegin(); it != used.second.rend(); ++it)
                     {
                       if(explanation_reference.empty() == false)
@@ -83,7 +83,7 @@ namespace ontologenius {
 
   void ReasonerChain::getUpPtrChain(ObjectPropertyBranch* branch, std::unordered_set<ObjectPropertyBranch*>& res)
   {
-    if(branch->chains_.size())
+    if(branch->chains_.empty() == false)
       if(res.insert(branch).second == false)
         return;
 
@@ -118,12 +118,12 @@ namespace ontologenius {
 
     for(size_t i = 0; i < individual->object_relations_.size(); i++)
     {
-      auto base_property = individual->object_relations_[i].first;
+      auto* base_property = individual->object_relations_[i].first;
       UsedVector local_used;
       if(existInInheritance(base_property, chain[chain_index]->get(), local_used))
       {
         auto down_used = resolveChain(individual->object_relations_[i].second, chain, chain_index + 1);
-        if(down_used.size())
+        if(down_used.empty() == false)
         {
           local_used.emplace_back(individual->value() + "|" + base_property->value() + "|" + individual->object_relations_[i].second->value(), individual->object_relations_.has_induced_object_relations[i]);
           if((same_index != -1) && (individual != indiv))

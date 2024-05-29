@@ -30,7 +30,7 @@ namespace ontologenius {
               }
               catch(GraphException& e)
               {
-                notifications_.push_back(std::make_pair(notification_error, "[FAIL][" + std::string(e.what()) + "][add]" + sym_indiv->value() + "|" + sym_prop->value() + "|" + indiv->value()));
+                notifications_.emplace_back(notification_error, "[FAIL][" + std::string(e.what()) + "][add]" + sym_indiv->value() + "|" + sym_prop->value() + "|" + indiv->value());
               }
             }
           }

@@ -1,6 +1,7 @@
 #include "ontologenius/core/reasoner/Reasoners.h"
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "ontologenius/graphical/Display.h"
@@ -8,10 +9,9 @@
 namespace ontologenius {
 
   Reasoners::Reasoners(const std::string& agent_name, Ontology* onto) : agent_name_(agent_name),
+                                                                        ontology_(onto),
                                                                         loader_("ontologenius", "ontologenius::ReasonerInterface")
-  {
-    ontology_ = onto;
-  }
+  {}
 
   Reasoners::~Reasoners()
   {
@@ -293,7 +293,7 @@ namespace ontologenius {
       {
         for(auto elem : param.second.subelem.value())
         {
-          if(elem.second.data && elem.second.data.value().size())
+          if(elem.second.data && (elem.second.data.value().empty() == false))
             for(auto reasoner_param : elem.second.data.value())
               reasoners_[param.first]->setParameter(elem.first, reasoner_param);
         }

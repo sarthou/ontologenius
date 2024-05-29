@@ -11,7 +11,7 @@ using namespace std::chrono;
 
 std::string set2string(const std::unordered_set<std::string>& word_set)
 {
-  std::string result = "";
+  std::string result;
   for(const std::string& it : word_set)
     result += it + " ";
   return result;

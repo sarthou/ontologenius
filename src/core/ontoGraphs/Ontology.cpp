@@ -1,6 +1,8 @@
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 
+#include <cstddef>
 #include <iostream>
+#include <string>
 
 #include "ontologenius/core/ontoGraphs/Checkers/AnonymousClassChecker.h"
 #include "ontologenius/core/ontoGraphs/Checkers/ClassChecker.h"
@@ -11,7 +13,6 @@
 #include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
-
   Ontology::Ontology(const std::string& language) : class_graph_(&individual_graph_, &object_property_graph_, &data_property_graph_),
                                                     object_property_graph_(&individual_graph_, &class_graph_),
                                                     data_property_graph_(&individual_graph_, &class_graph_),
@@ -92,7 +93,7 @@ namespace ontologenius {
 
     Display::info("**************************************");
 
-    if(err)
+    if(err != 0)
       return false;
     else
       return true;

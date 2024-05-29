@@ -2,6 +2,10 @@
 
 #include <pluginlib/class_list_macros.hpp>
 
+#include <map>
+#include <vector>
+#include <string>
+
 namespace ontologenius {
 
   void ReasonerRangeDomain::postReason()
@@ -248,7 +252,7 @@ namespace ontologenius {
         deduceDatDomain(branch, relation);
   }
 
-  void ReasonerRangeDomain::deduceObjRange(ClassObjectRelationElement_t& relation)
+  void ReasonerRangeDomain::deduceObjRange(ClassObjectRelationElement& relation)
   {
     std::unordered_set<ClassBranch*> ranges;
     std::unordered_set<ObjectPropertyBranch*> props = {relation.first};
@@ -289,7 +293,7 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerRangeDomain::deduceObjDomain(ClassBranch* branch, ClassObjectRelationElement_t& relation)
+  void ReasonerRangeDomain::deduceObjDomain(ClassBranch* branch, ClassObjectRelationElement& relation)
   {
     std::unordered_set<ClassBranch*> domains;
     std::unordered_set<ObjectPropertyBranch*> props = {relation.first};
@@ -330,7 +334,7 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerRangeDomain::deduceDatDomain(ClassBranch* branch, ClassDataRelationElement_t& relation)
+  void ReasonerRangeDomain::deduceDatDomain(ClassBranch* branch, ClassDataRelationElement& relation)
   {
     std::unordered_set<ClassBranch*> domains;
     std::unordered_set<DataPropertyBranch*> props = {relation.first};

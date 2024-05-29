@@ -8,10 +8,10 @@
 
 namespace ontologenius {
 
-  class comparator_t
+  class Comparator
   {
   public:
-    comparator_t() : concept_("") {}
+    Comparator() : concept_("") {}
     std::string concept_;
     std::vector<std::string> object_properties_name_;
     std::vector<std::string> object_properties_on_;
@@ -30,13 +30,13 @@ namespace ontologenius {
     std::vector<std::string> getDiff(Ontology* onto1, Ontology* onto2, const std::string& concept);
 
   private:
-    comparator_t toComparator(IndividualBranch* indiv);
-    comparator_t toComparator(ClassBranch* class_);
+    Comparator toComparator(IndividualBranch* indiv);
+    Comparator toComparator(ClassBranch* class_);
 
-    std::vector<std::string> compare(comparator_t& comp1, comparator_t& comp2);
-    void compareObjects(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res);
-    void compareDatas(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res);
-    void compareMothers(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res);
+    std::vector<std::string> compare(Comparator& comp1, Comparator& comp2);
+    void compareObjects(Comparator& comp1, Comparator& comp2, std::vector<std::string>& res);
+    void compareDatas(Comparator& comp1, Comparator& comp2, std::vector<std::string>& res);
+    void compareMothers(Comparator& comp1, Comparator& comp2, std::vector<std::string>& res);
 
     std::vector<std::string> toValued(const std::vector<ObjectPropertyBranch*>& vect)
     {

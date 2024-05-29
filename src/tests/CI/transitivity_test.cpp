@@ -4,6 +4,8 @@
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
+#define WAIT_TIME 1000
+
 onto::OntologyManipulator* onto_ptr;
 
 TEST(chain_tests, transitivity_base)
@@ -14,14 +16,14 @@ TEST(chain_tests, transitivity_base)
   onto_ptr->feeder.addConcept("a");
   onto_ptr->feeder.addProperty("a", "topTransitiveProperty", "b");
   onto_ptr->feeder.addProperty("b", "topTransitiveProperty", "c");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
   EXPECT_TRUE(find(res.begin(), res.end(), "b") != res.end());
   EXPECT_TRUE(find(res.begin(), res.end(), "c") != res.end());
 
   onto_ptr->feeder.addProperty("c", "topTransitiveProperty", "d");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
   EXPECT_TRUE(find(res.begin(), res.end(), "b") != res.end());
@@ -43,14 +45,14 @@ TEST(chain_tests, transitivity_heritance)
   onto_ptr->feeder.addConcept("a");
   onto_ptr->feeder.addProperty("a", "transitiveProperty", "b");
   onto_ptr->feeder.addProperty("b", "transitiveProperty", "c");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
   EXPECT_TRUE(find(res.begin(), res.end(), "b") != res.end());
   EXPECT_TRUE(find(res.begin(), res.end(), "c") != res.end());
 
   onto_ptr->feeder.addProperty("c", "transitiveProperty", "d");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
   EXPECT_TRUE(find(res.begin(), res.end(), "b") != res.end());
@@ -73,7 +75,7 @@ TEST(chain_tests, transitivity_sames)
   onto_ptr->feeder.addProperty("a", "topTransitiveProperty", "b");
   onto_ptr->feeder.addProperty("b", "=", "b_bis");
   onto_ptr->feeder.addProperty("b_bis", "topTransitiveProperty", "c");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
   EXPECT_TRUE(find(res.begin(), res.end(), "b") != res.end());
@@ -82,7 +84,7 @@ TEST(chain_tests, transitivity_sames)
 
   onto_ptr->feeder.addProperty("c", "=", "c_bis");
   onto_ptr->feeder.addProperty("c_bis", "topTransitiveProperty", "d");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
   EXPECT_TRUE(find(res.begin(), res.end(), "b_bis") != res.end());
@@ -108,7 +110,7 @@ TEST(chain_tests, transitivity_deletion)
   onto_ptr->feeder.addProperty("a", "topTransitiveProperty", "b");
   onto_ptr->feeder.addProperty("b", "topTransitiveProperty", "c");
   onto_ptr->feeder.addProperty("c", "topTransitiveProperty", "d");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
   EXPECT_TRUE(find(res.begin(), res.end(), "b") != res.end());
@@ -116,7 +118,7 @@ TEST(chain_tests, transitivity_deletion)
   EXPECT_TRUE(find(res.begin(), res.end(), "d") != res.end());
 
   onto_ptr->feeder.removeProperty("a", "topTransitiveProperty", "b");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
   EXPECT_TRUE(res.empty());
@@ -139,7 +141,7 @@ TEST(chain_tests, transitivity_deletion_same_as)
   onto_ptr->feeder.addProperty("b_bis", "topTransitiveProperty", "c");
   onto_ptr->feeder.addProperty("c", "=", "c_bis");
   onto_ptr->feeder.addProperty("c_bis", "topTransitiveProperty", "d");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
   EXPECT_TRUE(find(res.begin(), res.end(), "b_bis") != res.end());
@@ -154,7 +156,7 @@ TEST(chain_tests, transitivity_deletion_same_as)
   EXPECT_TRUE(find(res.begin(), res.end(), "d") != res.end());
 
   onto_ptr->feeder.removeProperty("b", "=", "b_bis");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
   EXPECT_FALSE(find(res.begin(), res.end(), "b_bis") != res.end());
@@ -178,7 +180,7 @@ TEST(chain_tests, transitivity_deletion_inheritage)
   onto_ptr->feeder.addProperty("a", "transitiveProperty", "b");
   onto_ptr->feeder.addProperty("b", "transitiveProperty", "c");
   onto_ptr->feeder.addProperty("c", "transitiveProperty", "d");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
   EXPECT_TRUE(find(res.begin(), res.end(), "b") != res.end());
@@ -190,7 +192,7 @@ TEST(chain_tests, transitivity_deletion_inheritage)
   EXPECT_TRUE(find(res.begin(), res.end(), "d") != res.end());
 
   onto_ptr->feeder.removeInheritage("transitiveProperty", "topTransitiveProperty");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "transitiveProperty");
   EXPECT_TRUE(find(res.begin(), res.end(), "b") != res.end());

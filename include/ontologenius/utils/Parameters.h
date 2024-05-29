@@ -40,7 +40,7 @@ namespace ontologenius {
 
     std::string getFirst()
     {
-      if(values_.size() == 0)
+      if(values_.empty())
         return (default_values_.size() ? default_values_[0] : "");
       else
         return (values_.size() ? values_[0] : "");
@@ -48,7 +48,7 @@ namespace ontologenius {
 
     std::vector<std::string> get()
     {
-      if(values_.size() == 0)
+      if(values_.empty())
         return default_values_;
       else
         return values_;
@@ -63,7 +63,7 @@ namespace ontologenius {
     {
       Display::info(name_ + ":");
 
-      if(values_.size())
+      if(values_.empty() == false)
       {
         for(auto value : values_)
           Display::info("\t- " + value);
@@ -89,7 +89,7 @@ namespace ontologenius {
     void insert(const Parameter& param)
     {
       parameters_.insert(std::pair<std::string, Parameter>(param.name_, param));
-      if(param.options_.size() == 0)
+      if(param.options_.empty())
         default_param_name_ = param.name_;
     }
 
@@ -108,7 +108,7 @@ namespace ontologenius {
     {
       process_name_ = std::string(argv[0]);
       size_t pose;
-      while((pose = process_name_.find("/")) != std::string::npos)
+      while((pose = process_name_.find('/')) != std::string::npos)
       {
         process_name_ = process_name_.substr(pose + 1);
       }

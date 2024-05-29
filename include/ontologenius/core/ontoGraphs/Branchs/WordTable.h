@@ -8,7 +8,7 @@
 
 namespace ontologenius {
 
-  typedef int64_t index_t;
+  using index_t = int64_t;
 
   class WordTable
   {

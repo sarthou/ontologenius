@@ -65,7 +65,7 @@ bool doQuery(ontologenius::Ontology* onto, size_t n)
   ontologenius::ClassBranch* cup = onto->class_graph_.findBranchSafe("Cup");
   ontologenius::IndividualBranch* cup_i = cup->individual_childs_[rnd].elem;
   auto VP_i = onto->individual_graph_.getOn(cup_i->value(), "Vp_has_obj");
-  if(VP_i.size())
+  if(VP_i.empty() == false)
   {
     auto pose = onto->individual_graph_.getOn(*(VP_i.begin()), "occursAt");
     return (pose.empty() == false);

@@ -13,8 +13,8 @@ namespace ontologenius {
   class DataPropertyBranch;
   class ClassBranch;
 
-  typedef SingleElement<DataPropertyBranch*> DataPropertyElement;
-  typedef SingleElement<ClassBranch*> ClassElement;
+  using DataPropertyElement = SingleElement<DataPropertyBranch*>;
+  using ClassElement = SingleElement<ClassBranch*>;
 
   class DataPropertyBranch : public Branch<DataPropertyBranch>,
                              public PropertyBranch<DataPropertyBranch>

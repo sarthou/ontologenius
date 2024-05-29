@@ -33,9 +33,9 @@ namespace ontologenius {
     void deduceRange(ClassBranch* branch, const std::string& prop);
     void deduceDomain(ClassBranch* branch, const std::string& prop);
 
-    void deduceObjRange(ClassObjectRelationElement_t& relation);
-    void deduceObjDomain(ClassBranch* branch, ClassObjectRelationElement_t& relation);
-    void deduceDatDomain(ClassBranch* branch, ClassDataRelationElement_t& relation);
+    void deduceObjRange(ClassObjectRelationElement& relation);
+    void deduceObjDomain(ClassBranch* branch, ClassObjectRelationElement& relation);
+    void deduceDatDomain(ClassBranch* branch, ClassDataRelationElement& relation);
   };
 
 } // namespace ontologenius

@@ -79,7 +79,7 @@ namespace ontologenius {
         size_t level = 2;
 
         // single expression
-        if(elem->sub_elements_.size() == 0 &&
+        if(elem->sub_elements_.empty() &&
            elem->class_involved_ != nullptr &&
            elem->object_property_involved_ == nullptr)
         {
@@ -277,7 +277,7 @@ namespace ontologenius {
   {
     std::string tmp;
 
-    if(ano_elem->sub_elements_.size() == 0)
+    if(ano_elem->sub_elements_.empty())
     {
       if(ano_elem->object_property_involved_ == nullptr && ano_elem->data_property_involved_ == nullptr)
       {
@@ -557,7 +557,7 @@ namespace ontologenius {
 
   void ClassOwlWriter::writeObjectProperties(ClassBranch* branch)
   {
-    for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+    for(ClassObjectRelationElement& relation : branch->object_relations_)
       if(relation.infered == false)
       {
         std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
@@ -573,7 +573,7 @@ namespace ontologenius {
 
   void ClassOwlWriter::writeDataProperties(ClassBranch* branch)
   {
-    for(ClassDataRelationElement_t& relation : branch->data_relations_)
+    for(ClassDataRelationElement& relation : branch->data_relations_)
       if(relation.infered == false)
       {
         std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";

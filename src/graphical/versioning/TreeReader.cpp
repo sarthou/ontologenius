@@ -123,10 +123,10 @@ namespace ontologenius {
 
   std::string TreeReader::getAttribute(TiXmlElement* sub_elem, const std::string& attribute)
   {
-    const char* subAttr;
-    subAttr = sub_elem->Attribute(attribute.c_str());
-    if(subAttr != nullptr)
-      return std::string(subAttr);
+    const char* sub_attr;
+    sub_attr = sub_elem->Attribute(attribute.c_str());
+    if(sub_attr != nullptr)
+      return std::string(sub_attr);
     return "";
   }
 

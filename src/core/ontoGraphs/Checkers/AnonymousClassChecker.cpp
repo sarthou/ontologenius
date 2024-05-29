@@ -41,7 +41,7 @@ namespace ontologenius {
     ano_class_graph_->class_graph_->getDisjoint(class_left, disjoints);
 
     ClassBranch* first_crash = nullptr;
-    if(disjoints.size())
+    if(disjoints.empty() == false)
     {
       std::unordered_set<ClassBranch*> ups;
       ano_class_graph_->class_graph_->getUpPtr(class_right, ups);
@@ -118,7 +118,7 @@ namespace ontologenius {
         else
         {
           auto tmp = resolveTreeDataTypes(sub_elem);
-          if(tmp.size())
+          if(tmp.empty() == false)
             errs.insert(errs.end(), tmp.begin(), tmp.end());
         }
       }
@@ -145,7 +145,7 @@ namespace ontologenius {
     if(ano_elem->logical_type_ == logical_none && ano_elem->oneof == false)
     {
       auto tmp = checkExpressionDisjointess(ano_elem, ranges);
-      if(tmp.size())
+      if(tmp.empty() == false)
         errs.insert(errs.end(), tmp.begin(), tmp.end());
     }
     else if(ano_elem->oneof == true)
@@ -153,7 +153,7 @@ namespace ontologenius {
       for(auto elem : ano_elem->sub_elements_)
       {
         auto local_errs = checkClassesVectorDisjointness(ranges, elem->individual_involved_->is_a_.relations);
-        if(local_errs.size())
+        if(local_errs.empty() == false)
         {
           for(auto& err : local_errs)
             print_error("In equivalence of class " + current_ano_ + ": individual " + elem->individual_involved_->value() +
@@ -169,7 +169,7 @@ namespace ontologenius {
       for(auto sub_elem : ano_elem->sub_elements_)
       {
         auto tmp = resolveTree(sub_elem, ranges);
-        if(tmp.size())
+        if(tmp.empty() == false)
           errs.insert(errs.end(), tmp.begin(), tmp.end());
       }
     }
@@ -268,7 +268,7 @@ namespace ontologenius {
       for(size_t j = i + 1; j < all_domains.size(); j++)
       {
         auto errs = checkClassesVectorDisjointness(all_domains[i], all_domains[j]);
-        if(errs.size())
+        if(errs.empty() == false)
         {
           auto origin_left = getDomainOrigin(ano_elem, i);
           auto origin_right = getDomainOrigin(ano_elem, j);

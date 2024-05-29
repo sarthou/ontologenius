@@ -63,7 +63,7 @@ namespace ontologenius {
 
       filter(res, vars_to_return, match[1].str().empty() == false);
 
-      if(vars_to_return.size())
+      if(vars_to_return.empty() == false)
       {
         if(vars_to_return[0] == "*")
           return {Resource_t<T>::to_variables, res};
@@ -80,7 +80,7 @@ namespace ontologenius {
     else
     {
       auto triplets = getTriplets<T>(query, ",");
-      if(triplets.size())
+      if(triplets.empty() == false)
       {
         auto values = resolve(triplets, std::vector<T>(Resource_t<T>::to_variables.size(), getDefaultSelector<T>()));
         return {Resource_t<T>::to_variables, std::move(values)};
@@ -97,12 +97,12 @@ namespace ontologenius {
   std::vector<std::vector<T>> Sparql::resolve(std::vector<SparqlTriplet_t<T>> query, SparqlOperator_e op, const std::vector<std::vector<T>>& prev_res)
   {
     std::vector<std::vector<T>> res;
-    if(prev_res.size())
+    if(prev_res.empty() == false)
     {
       for(auto& prev : prev_res)
       {
         std::vector<std::vector<T>> local_res;
-        if(query.size())
+        if(query.empty() == false)
           local_res = resolve(query, prev);
 
         switch(op)
@@ -130,7 +130,7 @@ namespace ontologenius {
     int64_t var_index;
     resolveSubQuery(query[0], accu, var_index, values);
 
-    if(values.size() == 0)
+    if(values.empty())
       return {};
 
     if(query.size() > 1)

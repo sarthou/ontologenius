@@ -172,10 +172,10 @@ namespace ontologenius {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
     if(class_branch != nullptr)
     {
-      for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
+      for(ClassObjectRelationElement& relation : class_branch->object_relations_)
         object_property_graph_->getUp(relation.first, res, depth);
 
-      for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
+      for(ClassDataRelationElement& relation : class_branch->data_relations_)
         data_property_graph_->getUp(relation.first, res, depth);
     }
   }
@@ -208,12 +208,12 @@ namespace ontologenius {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
     for(auto& branch : all_branchs_)
     {
-      for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+      for(ClassObjectRelationElement& relation : branch->object_relations_)
         for(index_t id : object_properties)
           if(relation.first->get() == id)
             getDown(branch, res);
 
-      for(ClassDataRelationElement_t& relation : branch->data_relations_)
+      for(ClassDataRelationElement& relation : branch->data_relations_)
         for(index_t id : data_properties)
           if(relation.first->get() == id)
             getDown(branch, res);
@@ -227,7 +227,7 @@ namespace ontologenius {
 
     getRelationOnObjectProperties(_class, res, depth);
 
-    if(res.size() == 0)
+    if(res.empty())
       getRelationOnDataProperties(_class, res, depth);
 
     return res;
@@ -252,7 +252,7 @@ namespace ontologenius {
     ClassBranch* class_branch = container_.find(_class);
     if(class_branch != nullptr)
       for(auto& branch : all_branchs_)
-        for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+        for(ClassObjectRelationElement& relation : branch->object_relations_)
           if(relation.second == class_branch)
             object_property_graph_->getUp(relation.first, res, depth);
   }
@@ -263,7 +263,7 @@ namespace ontologenius {
 
     if(literal != nullptr)
       for(auto& branch : all_branchs_)
-        for(ClassDataRelationElement_t& relation : branch->data_relations_)
+        for(ClassDataRelationElement& relation : branch->data_relations_)
           if(relation.second == literal)
             data_property_graph_->getUpSafe(relation.first, res, depth);
   }
@@ -274,7 +274,7 @@ namespace ontologenius {
 
     if(literal != nullptr)
       for(auto& branch : all_branchs_)
-        for(ClassDataRelationElement_t& relation : branch->data_relations_)
+        for(ClassDataRelationElement& relation : branch->data_relations_)
           if(relation.second == literal)
             data_property_graph_->getUpSafe(relation.first, res, depth);
   }
@@ -289,12 +289,12 @@ namespace ontologenius {
 
     for(auto& branch : all_branchs_)
     {
-      for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+      for(ClassObjectRelationElement& relation : branch->object_relations_)
         for(index_t id : object_properties)
           if(relation.first->get() == id)
             res.insert(relation.second->value());
 
-      for(ClassDataRelationElement_t& relation : branch->data_relations_)
+      for(ClassDataRelationElement& relation : branch->data_relations_)
         for(index_t id : data_properties)
           if(relation.first->get() == id)
             res.insert(relation.second->value());
@@ -313,12 +313,12 @@ namespace ontologenius {
 
     for(auto& branch : all_branchs_)
     {
-      for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+      for(ClassObjectRelationElement& relation : branch->object_relations_)
         for(index_t id : object_properties)
           if(relation.first->get() == id)
             res.insert(relation.second->get());
 
-      for(ClassDataRelationElement_t& relation : branch->data_relations_)
+      for(ClassDataRelationElement& relation : branch->data_relations_)
         for(index_t id : data_properties)
           if(relation.first->get() == id)
             res.insert(relation.second->get());
@@ -333,7 +333,7 @@ namespace ontologenius {
 
     for(auto& branch : all_branchs_)
     {
-      for(ClassDataRelationElement_t& relation : branch->data_relations_)
+      for(ClassDataRelationElement& relation : branch->data_relations_)
         for(index_t id : data_properties)
           if(relation.first->get() == id)
             res.insert(relation.second->value());
@@ -346,7 +346,7 @@ namespace ontologenius {
 
     for(auto& branch : all_branchs_)
     {
-      for(ClassDataRelationElement_t& relation : branch->data_relations_)
+      for(ClassDataRelationElement& relation : branch->data_relations_)
         for(index_t id : data_properties)
           if(relation.first->get() == id)
             res.insert(relation.second->get());
@@ -392,7 +392,7 @@ namespace ontologenius {
 
     if(class_branch != nullptr)
     {
-      for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
+      for(ClassObjectRelationElement& relation : class_branch->object_relations_)
       {
         auto it = properties.find(relation.first->get());
         if(it != properties.end())
@@ -412,7 +412,7 @@ namespace ontologenius {
         }
       }
 
-      for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
+      for(ClassDataRelationElement& relation : class_branch->data_relations_)
       {
         auto it = properties.find(relation.first->get());
         if(it != properties.end())
@@ -446,7 +446,7 @@ namespace ontologenius {
 
     if(class_branch != nullptr)
     {
-      for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
+      for(ClassObjectRelationElement& relation : class_branch->object_relations_)
       {
         auto it = properties.find(relation.first->get());
         if(it != properties.end())
@@ -466,7 +466,7 @@ namespace ontologenius {
         }
       }
 
-      for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
+      for(ClassDataRelationElement& relation : class_branch->data_relations_)
       {
         auto it = properties.find(relation.first->get());
         if(it != properties.end())
@@ -505,12 +505,12 @@ namespace ontologenius {
     for(auto& branch : all_branchs_)
     {
       if(class_branch != nullptr)
-        for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+        for(ClassObjectRelationElement& relation : branch->object_relations_)
           if(relation.second->value() == _class)
             objectGetRelatedWith(branch, relation.first->get(), class_branch->get(), res, do_not_take);
 
       if(literal != nullptr)
-        for(ClassDataRelationElement_t& relation : branch->data_relations_)
+        for(ClassDataRelationElement& relation : branch->data_relations_)
           if(relation.second == literal)
             dataGetRelatedWith(branch, relation.first->get(), literal, res, do_not_take);
     }
@@ -534,7 +534,7 @@ namespace ontologenius {
       if(class_branch != nullptr)
         for(auto& branch : all_branchs_)
         {
-          for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+          for(ClassObjectRelationElement& relation : branch->object_relations_)
             if(relation.second->get() == _class)
               objectGetRelatedWith(branch, relation.first->get(), class_branch->get(), res, do_not_take);
         }
@@ -546,7 +546,7 @@ namespace ontologenius {
       if(literal != nullptr)
         for(auto& branch : all_branchs_)
         {
-          for(ClassDataRelationElement_t& relation : branch->data_relations_)
+          for(ClassDataRelationElement& relation : branch->data_relations_)
             if(relation.second == literal)
               dataGetRelatedWith(branch, relation.first->get(), literal, res, do_not_take);
         }
@@ -574,7 +574,7 @@ namespace ontologenius {
         {
           bool found = false;
 
-          for(ClassDataRelationElement_t& relation : down->data_relations_)
+          for(ClassDataRelationElement& relation : down->data_relations_)
             if(relation.first->get() == property)
               if(relation.second != data)
               {
@@ -603,7 +603,7 @@ namespace ontologenius {
         if(down != class_branch)
         {
           bool found = false;
-          for(ClassObjectRelationElement_t& relation : down->object_relations_)
+          for(ClassObjectRelationElement& relation : down->object_relations_)
             if(relation.first->get() == property)
               if(relation.second->get() != _class)
               {
@@ -645,7 +645,7 @@ namespace ontologenius {
 
     for(auto& branch : all_branchs_)
     {
-      for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+      for(ClassObjectRelationElement& relation : branch->object_relations_)
         for(index_t class_id : down_classes)
           if(relation.second->get() == class_id)
             for(index_t id : object_properties)
@@ -653,7 +653,7 @@ namespace ontologenius {
                 objectGetRelatedWith(branch, relation.first->get(), class_id, res, do_not_take);
 
       if(literal != nullptr)
-        for(ClassDataRelationElement_t& relation : branch->data_relations_)
+        for(ClassDataRelationElement& relation : branch->data_relations_)
           if(relation.second == literal)
             for(index_t id : data_properties)
               if(relation.first->get() == id)
@@ -682,7 +682,7 @@ namespace ontologenius {
 
       for(auto& branch : all_branchs_)
       {
-        for(ClassObjectRelationElement_t& relation : branch->object_relations_)
+        for(ClassObjectRelationElement& relation : branch->object_relations_)
           for(index_t class_id : down_classes)
             if(relation.second->get() == class_id)
               for(index_t id : object_properties)
@@ -696,7 +696,7 @@ namespace ontologenius {
 
       for(auto& branch : all_branchs_)
       {
-        for(ClassDataRelationElement_t& relation : branch->data_relations_)
+        for(ClassDataRelationElement& relation : branch->data_relations_)
           if(relation.second == literal)
             for(index_t id : data_properties)
               if(relation.first->get() == id)
@@ -764,16 +764,16 @@ namespace ontologenius {
 
       std::unordered_set<T> tmp_res;
 
-      if(object_properties.size())
+      if(object_properties.empty() == false)
       {
-        for(ClassObjectRelationElement_t& relation : class_branch->object_relations_)
+        for(ClassObjectRelationElement& relation : class_branch->object_relations_)
           for(index_t id : object_properties)
             if(relation.first->get() == id)
               insert(tmp_res, relation.second);
       }
-      else if(data_properties.size())
+      else if(data_properties.empty() == false)
       {
-        for(ClassDataRelationElement_t& relation : class_branch->data_relations_)
+        for(ClassDataRelationElement& relation : class_branch->data_relations_)
           for(index_t id : data_properties)
             if(relation.first->get() == id)
               insert(tmp_res, relation.second);
@@ -891,7 +891,7 @@ namespace ontologenius {
 
       if(second_class > 0)
       {
-        for(ClassObjectRelationElement_t& relation : first_class->object_relations_)
+        for(ClassObjectRelationElement& relation : first_class->object_relations_)
         {
           if(relation.second->get() == second_class)
             if(do_not_take.find(relation.first->get()) == do_not_take.end())
@@ -902,7 +902,7 @@ namespace ontologenius {
       }
       else
       {
-        for(ClassDataRelationElement_t& relation : first_class->data_relations_)
+        for(ClassDataRelationElement& relation : first_class->data_relations_)
         {
           if(relation.second->get() == second_class)
             if(do_not_take.find(relation.first->get()) == do_not_take.end())
@@ -1205,7 +1205,7 @@ namespace ontologenius {
       }
 
       if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
-        conditionalPushBack(branch_from->object_relations_, ClassObjectRelationElement_t(branch_prop, branch_on));
+        conditionalPushBack(branch_from->object_relations_, ClassObjectRelationElement(branch_prop, branch_on));
       else
         throw GraphException("Inconsistency prevented regarding the range or domain of the property");
     }
@@ -1232,7 +1232,7 @@ namespace ontologenius {
       }
 
       if(checkRangeAndDomain(branch_from, branch_prop, literal_branch))
-        conditionalPushBack(branch_from->data_relations_, ClassDataRelationElement_t(branch_prop, literal_branch));
+        conditionalPushBack(branch_from->data_relations_, ClassDataRelationElement(branch_prop, literal_branch));
       else
         throw GraphException("Inconsistency prevented regarding the range or domain of the property");
     }
@@ -1270,7 +1270,7 @@ namespace ontologenius {
       }
 
       if(checkRangeAndDomain(branch_from, branch_prop, branch_on))
-        conditionalPushBack(branch_from->object_relations_, ClassObjectRelationElement_t(branch_prop, branch_on));
+        conditionalPushBack(branch_from->object_relations_, ClassObjectRelationElement(branch_prop, branch_on));
       else
         throw GraphException("Inconsistency prevented regarding the range or domain of the property");
     }
@@ -1440,7 +1440,7 @@ namespace ontologenius {
     for(const auto& mother : old_branch->mothers_)
     {
       // infered inheritance using traces should not be copied but recomputed
-      if(mother.infered && mother.induced_traces.size())
+      if(mother.infered && (mother.induced_traces.empty() == false))
         new_branch->updated_ = true;
       else
         new_branch->mothers_.emplace_back(mother, container_.find(mother.elem->value()));

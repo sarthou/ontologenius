@@ -46,7 +46,7 @@ namespace ontologenius {
     index_t get() const { return -index_; }
     void set(const std::string& value)
     {
-      size_t pose = value.find("#");
+      size_t pose = value.find('#');
       type_ = value.substr(0, pose);
       value_ = value.substr(pose + 1);
     }

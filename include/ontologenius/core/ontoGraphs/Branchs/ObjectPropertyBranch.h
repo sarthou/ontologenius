@@ -12,8 +12,8 @@ namespace ontologenius {
   class ObjectPropertyBranch;
   class ClassBranch;
 
-  typedef SingleElement<ObjectPropertyBranch*> ObjectPropertyElement;
-  typedef SingleElement<ClassBranch*> ClassElement;
+  using ObjectPropertyElement = SingleElement<ObjectPropertyBranch*>;
+  using ClassElement = SingleElement<ClassBranch*>;
 
   class ObjectPropertyBranch : public Branch<ObjectPropertyBranch>,
                                public PropertyBranch<ObjectPropertyBranch>

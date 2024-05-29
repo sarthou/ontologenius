@@ -102,7 +102,7 @@ namespace ontologenius {
     **********************/
     for(auto& chain_i : property_vectors.chains_)
     {
-      if(chain_i.size() == 0)
+      if(chain_i.empty())
         continue;
 
       std::vector<ObjectPropertyBranch*> chain;

@@ -50,13 +50,13 @@ namespace ontologenius {
     }
     catch(GraphException& e)
     {
-      notifications_.push_back(std::make_pair(notification_error, "[FAIL][" + std::string(e.what()) + "][add]" + indiv_on->value() + "|" + inv_prop->value() + "|" + inv_indiv->value()));
+      notifications_.emplace_back(notification_error, "[FAIL][" + std::string(e.what()) + "][add]" + indiv_on->value() + "|" + inv_prop->value() + "|" + inv_indiv->value());
     }
   }
 
   std::vector<ObjectPropertyElement> ReasonerInverseOf::getLowestInvert(ObjectPropertyBranch* base_prop)
   {
-    if(base_prop->inverses_.size())
+    if(base_prop->inverses_.empty() == false)
       return base_prop->inverses_;
     else
     {
@@ -65,7 +65,7 @@ namespace ontologenius {
       for(auto& up : base_prop->mothers_)
       {
         auto tmp = getLowestInvert(up.elem);
-        if(tmp.size())
+        if(tmp.empty() == false)
           res.insert(res.end(), tmp.begin(), tmp.end());
       }
 

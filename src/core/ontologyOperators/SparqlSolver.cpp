@@ -98,7 +98,7 @@ namespace ontologenius {
     SparqlSolution_t initial_solution;
 
     auto triplets = getTriplets(query_, ",");
-    if(triplets.size())
+    if(triplets.empty() == false)
       insertConstraints(triplets, initial_solution, sparql_none);
     else
       error_ = "The query is malformed";
@@ -156,11 +156,11 @@ namespace ontologenius {
       variables_links.insert({variable.first, variable.second.linked_variales_});
 
     solution.ordered_variables_.reserve(variables_links.size());
-    while(variables_links.size())
+    while(variables_links.empty() == false)
     {
-      std::string selected_var = "";
+      std::string selected_var;
       for(auto& variable : variables_links)
-        if(variable.second.size() == 0)
+        if(variable.second.empty())
         {
           solution.ordered_variables_.emplace_back(variable.first);
           selected_var = variable.first;
@@ -183,12 +183,12 @@ namespace ontologenius {
     auto variable = solution.ordered_variables_[index];
     auto& candidates = solution.candidates_[variable];
 
-    if(candidates.size() == 0)
+    if(candidates.empty())
     {
       auto& constraints = solution.variable_constraints_.at(variable).constraints_;
       for(auto& constraint : constraints)
       {
-        if(candidates.size() == 0)
+        if(candidates.empty())
           candidates = solveTriplet(constraint.triplet_, solution.solution_full_);
         else
         {
@@ -203,7 +203,7 @@ namespace ontologenius {
           solution.solution_full_[variable] = "";
         }
 
-        if(candidates.size() == 0)
+        if(candidates.empty())
           break;
       }
     }

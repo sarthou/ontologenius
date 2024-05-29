@@ -9,7 +9,7 @@ namespace ontologenius {
   std::string execCmd(std::string cmd)
   {
     char buffer[128];
-    std::string result = "";
+    std::string result;
     cmd.append(" 2>&1");
     FILE* pipe = popen(cmd.c_str(), "r");
     if(!pipe)
@@ -35,7 +35,7 @@ namespace ontologenius {
   std::string findPackageRos1(const std::string& pkg_name)
   {
     std::string results = execCmd("rospack find " + pkg_name);
-    if(results.size())
+    if(results.empty() == false)
     {
       auto split_res = split(results, "\n");
       return split_res.front();
@@ -47,7 +47,7 @@ namespace ontologenius {
   std::string findPackageRos2(const std::string& pkg_name)
   {
     std::string results = execCmd("ros2 pkg prefix " + pkg_name);
-    if(results.size())
+    if(results.empty() == false)
     {
       auto split_res = split(results, "\n");
       return split_res.front() + "/share/" + pkg_name;
@@ -67,7 +67,7 @@ namespace ontologenius {
   std::vector<std::string> listPackagesRos1()
   {
     std::string results = execCmd("rospack list-names");
-    if(results.size())
+    if(results.empty() == false)
     {
       auto split_res = split(results, "\n");
       return split_res;
@@ -79,7 +79,7 @@ namespace ontologenius {
   std::vector<std::string> listPackagesRos2()
   {
     std::string results = execCmd("ros2 pkg list");
-    if(results.size())
+    if(results.empty() == false)
     {
       auto split_res = split(results, "\n");
       return split_res;
@@ -91,7 +91,7 @@ namespace ontologenius {
   std::vector<std::string> listPackages()
   {
     std::vector<std::string> res = listPackagesRos1();
-    if(res.size() == 0)
+    if(res.empty())
       res = listPackagesRos2();
     return res;
   }

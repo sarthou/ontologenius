@@ -299,7 +299,7 @@ namespace ontologenius {
                                       compat::onto_ros::ServiceWrapper<compat::OntologeniusConversion::Response>& res)
   {
     return [this](auto&& req, auto&& res) {
-      if(req->values_int.size())
+      if(req->values_int.empty() == false)
       {
         if(req->source == req->INDIVIDUALS)
           res->values_str = onto_->individual_graph_.getIdentifiers(req->values_int);
@@ -315,7 +315,7 @@ namespace ontologenius {
           return false;
       }
 
-      if(req->values_str.size())
+      if(req->values_str.empty() == false)
       {
         if(req->source == req->INDIVIDUALS)
           res->values_int = onto_->individual_graph_.getIndexes(req->values_str);

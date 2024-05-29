@@ -6,7 +6,7 @@ namespace ontologenius {
 
   std::vector<std::string> DifferenceFinder::getDiff(Ontology* onto1, Ontology* onto2, const std::string& concept)
   {
-    comparator_t comp1, comp2;
+    Comparator comp1, comp2;
 
     IndividualBranch* indiv_onto1 = onto1->individual_graph_.findBranchSafe(concept);
     IndividualBranch* indiv_onto2 = onto2->individual_graph_.findBranchSafe(concept);
@@ -43,7 +43,7 @@ namespace ontologenius {
     return compare(comp1, comp2);
   }
 
-  std::vector<std::string> DifferenceFinder::compare(comparator_t& comp1, comparator_t& comp2)
+  std::vector<std::string> DifferenceFinder::compare(Comparator& comp1, Comparator& comp2)
   {
     std::vector<std::string> res;
 
@@ -54,7 +54,7 @@ namespace ontologenius {
     return res;
   }
 
-  void DifferenceFinder::compareObjects(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res)
+  void DifferenceFinder::compareObjects(Comparator& comp1, Comparator& comp2, std::vector<std::string>& res)
   {
     std::vector<size_t> explored_indexs;
 
@@ -93,7 +93,7 @@ namespace ontologenius {
     }
   }
 
-  void DifferenceFinder::compareDatas(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res)
+  void DifferenceFinder::compareDatas(Comparator& comp1, Comparator& comp2, std::vector<std::string>& res)
   {
     std::vector<size_t> explored_indexs;
 
@@ -132,7 +132,7 @@ namespace ontologenius {
     }
   }
 
-  void DifferenceFinder::compareMothers(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res)
+  void DifferenceFinder::compareMothers(Comparator& comp1, Comparator& comp2, std::vector<std::string>& res)
   {
     std::vector<size_t> explored_indexs;
 
@@ -147,7 +147,7 @@ namespace ontologenius {
             found_indexs.push_back(j);
           }
 
-        if(found_indexs.size() == 0)
+        if(found_indexs.empty())
           res.push_back("[+]" + comp1.concept_ + "|isA|" + comp1.mothers_[i]);
         explored_indexs.insert(explored_indexs.end(), found_indexs.begin(), found_indexs.end());
       }
@@ -163,9 +163,9 @@ namespace ontologenius {
     }
   }
 
-  comparator_t DifferenceFinder::toComparator(IndividualBranch* indiv)
+  Comparator DifferenceFinder::toComparator(IndividualBranch* indiv)
   {
-    comparator_t comp;
+    Comparator comp;
     comp.concept_ = indiv->value();
     comp.object_properties_name_ = toValuedFirst(indiv->object_relations_);
     comp.object_properties_on_ = toValuedSecond(indiv->object_relations_);
@@ -175,9 +175,9 @@ namespace ontologenius {
     return comp;
   }
 
-  comparator_t DifferenceFinder::toComparator(ClassBranch* class_)
+  Comparator DifferenceFinder::toComparator(ClassBranch* class_)
   {
-    comparator_t comp;
+    Comparator comp;
     comp.concept_ = class_->value();
 
     comp.object_properties_name_ = toValuedFirst(class_->object_relations_);

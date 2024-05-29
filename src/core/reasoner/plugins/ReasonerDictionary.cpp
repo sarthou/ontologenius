@@ -50,13 +50,13 @@ namespace ontologenius {
       split(node);
       createLowerCase(node);
       replaceQuote(node);
-      node->flags_["dico"].push_back("true");
+      node->flags_["dico"].emplace_back("true");
     }
   }
 
   void ReasonerDictionary::setId(ValuedNode* node)
   {
-    if(node->dictionary_.spoken_["en"].size() == 0)
+    if(node->dictionary_.spoken_["en"].empty())
       node->dictionary_.spoken_["en"] = std::vector<std::string>(1, node->value());
   }
 
@@ -82,7 +82,7 @@ namespace ontologenius {
 
       for(auto& word : it.second)
       {
-        std::string tmp = "";
+        std::string tmp;
         tmp += word[0];
         for(size_t char_i = 1; char_i < word.size(); char_i++)
         {
@@ -104,9 +104,9 @@ namespace ontologenius {
     {
       for(auto& word : it.second)
       {
-        if(word.size())
+        if(word.empty() == false)
         {
-          std::string tmp = "";
+          std::string tmp;
           tmp.resize(word.size());
           std::transform(word.begin(), word.end(), tmp.begin(), ::tolower);
           if(std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())
@@ -120,7 +120,7 @@ namespace ontologenius {
       std::vector<std::string>* muted = &node->dictionary_.muted_[it.first];
       for(auto& word : it.second)
       {
-        std::string tmp = "";
+        std::string tmp;
         tmp.resize(word.size());
         std::transform(word.begin(), word.end(), tmp.begin(), ::tolower);
         if(std::find(it.second.begin(), it.second.end(), tmp) == it.second.end())

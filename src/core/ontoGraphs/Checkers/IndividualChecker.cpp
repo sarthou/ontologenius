@@ -60,7 +60,7 @@ namespace ontologenius {
 
   void IndividualChecker::checkDisjoint(IndividualBranch* indiv)
   {
-    if(indiv->same_as_.size())
+    if(indiv->same_as_.empty() == false)
     {
       std::unordered_set<IndividualBranch*> sames;
       individual_graph_->getSame(indiv, sames);

@@ -17,7 +17,7 @@ namespace onto {
   bool OntologyIndexClient::isA(int64_t index, int64_t base_class)
   {
     std::vector<int64_t> res = getUp(index, -1, base_class);
-    if(res.size() == 0)
+    if(res.empty())
       return false;
     else
       return true;

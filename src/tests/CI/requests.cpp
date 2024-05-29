@@ -4,6 +4,8 @@
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
+#define NB_TRY 10
+
 onto::OntologyManipulator* onto_ptr;
 
 TEST(requests_tests, getName_call)
@@ -12,7 +14,7 @@ TEST(requests_tests, getName_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->classes.getName(test_word);
     res_bool = res_bool && (res == "human");
@@ -27,7 +29,7 @@ TEST(requests_tests, find_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->classes.find(test_word);
     res_bool = res_bool && ((res.size() == 1) && (res[0] == "human"));
@@ -42,7 +44,7 @@ TEST(requests_tests, getUp_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->classes.getUp(test_word);
     res_bool = res_bool && ((res.size() == 8) &&
@@ -65,7 +67,7 @@ TEST(requests_tests, getDown_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->classes.getDown(test_word);
     res_bool = res_bool && ((res.size() == 4) &&
@@ -84,7 +86,7 @@ TEST(requests_tests, getDisjoint_call)
   std::string test_word = "woman";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->classes.getDisjoint(test_word);
     res_bool = res_bool && ((res.size() == 63) &&
@@ -100,7 +102,7 @@ TEST(requests_tests, depth_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->classes.getUp(test_word, 1);
     res_bool = res_bool && ((res.size() == 3) &&
@@ -117,7 +119,7 @@ TEST(requests_tests, select_true_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res_bool = res_bool && onto_ptr->classes.isA(test_word, "entity");
   }
@@ -130,7 +132,7 @@ TEST(requests_tests, reasoners_list_call)
   std::vector<std::string> res;
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->reasoners.list();
     res_bool = res_bool && ((res.size() >= 7) &&
@@ -151,7 +153,7 @@ TEST(requests_tests, reasoner_description_call)
   std::string res;
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerChain");
     res_bool = res_bool && (res == "This reasoner resolve the properties chains axioms.\n - post reasoning");
@@ -173,7 +175,7 @@ TEST(requests_tests, select_false_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res_bool = res_bool && (!onto_ptr->classes.isA(test_word, "animal"));
   }

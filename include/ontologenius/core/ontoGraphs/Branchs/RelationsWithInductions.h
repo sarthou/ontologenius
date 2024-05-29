@@ -11,10 +11,10 @@ namespace ontologenius {
   class ObjectPropertyBranch;
   class ClassBranch;
 
-  typedef Triplet_t<IndividualBranch, ObjectPropertyBranch, IndividualBranch> ObjectRelationTriplet_t;
-  typedef Triplets<IndividualBranch, ObjectPropertyBranch, IndividualBranch> ObjectRelationTriplets;
-  typedef Triplet_t<IndividualBranch, void, ClassBranch> InheritedRelationTriplet_t;
-  typedef Triplets<IndividualBranch, void, ClassBranch> InheritedRelationTriplets;
+  using ObjectRelationTriplet_t = Triplet_t<IndividualBranch, ObjectPropertyBranch, IndividualBranch>;
+  using ObjectRelationTriplets = Triplets<IndividualBranch, ObjectPropertyBranch, IndividualBranch>;
+  using InheritedRelationTriplet_t = Triplet_t<IndividualBranch, void, ClassBranch>;
+  using InheritedRelationTriplets = Triplets<IndividualBranch, void, ClassBranch>;
 
   template<typename T>
   class RelationsWithInductions
@@ -28,8 +28,8 @@ namespace ontologenius {
     RelationsWithInductions(const RelationsWithInductions& other) = delete;
     ~RelationsWithInductions() { clear(); }
 
-    inline size_t size() { return relations.size(); }
-    inline bool empty() { return relations.empty(); }
+    inline size_t size() const { return relations.size(); }
+    inline bool empty() const { return relations.empty(); }
     T& operator[](size_t index) { return relations[index]; }
 
     size_t push_back(T& relation)
@@ -59,9 +59,9 @@ namespace ontologenius {
 
     void clear()
     {
-      for(auto induced_object : has_induced_object_relations)
+      for(auto* induced_object : has_induced_object_relations)
         delete induced_object;
-      for(auto induced_inherit : has_induced_inheritance_relations)
+      for(auto* induced_inherit : has_induced_inheritance_relations)
         delete induced_inherit;
 
       relations.clear();

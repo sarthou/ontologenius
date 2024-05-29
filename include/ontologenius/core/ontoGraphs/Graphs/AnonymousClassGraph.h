@@ -88,7 +88,7 @@ namespace ontologenius {
     {
       std::string str_equivalence;
 
-      if(child_members.size() == 0)
+      if(child_members.empty())
         str_equivalence = rest.toString();
       else if(logical_type_ == logical_not)
         str_equivalence = "not (" + child_members.front()->toString() + ")";

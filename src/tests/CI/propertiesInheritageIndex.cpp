@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <ros/package.h>
 #include <ros/ros.h>
+#include <vector>
 
 #include "ontologenius/API/ontologenius/OntologyManipulatorIndex.h"
 
@@ -29,7 +30,7 @@ TEST(global_tests, class_getRelationFrom)
 
   test_word = onto_ptr->conversion.classesId2Index("cube");
   res = onto_ptr->classes.getRelationFrom(test_word);
-  res_bool = res_bool && (res.size() == 0);
+  res_bool = res_bool && (res.empty());
 
   EXPECT_TRUE(res_bool);
 }
@@ -65,7 +66,7 @@ TEST(global_tests, class_getRelatedFrom)
 
   test_word = onto_ptr->conversion.objectPropertiesId2Index("isOn");
   res = onto_ptr->classes.getRelatedFrom(test_word);
-  res_bool = res_bool && (res.size() == 0);
+  res_bool = res_bool && (res.empty());
 
   EXPECT_TRUE(res_bool);
 }
@@ -93,7 +94,7 @@ TEST(global_tests, class_getRelationOn)
 
   test_word = onto_ptr->conversion.classesId2Index("human");
   res = onto_ptr->classes.getRelationOn(test_word);
-  res_bool = res_bool && (res.size() == 0);
+  res_bool = res_bool && (res.empty());
 
   EXPECT_TRUE(res_bool);
 }
@@ -127,7 +128,7 @@ TEST(global_tests, class_getRelatedOn)
 
   test_word = onto_ptr->conversion.objectPropertiesId2Index("isOn");
   res = onto_ptr->classes.getRelatedOn(test_word);
-  res_bool = res_bool && (res.size() == 0);
+  res_bool = res_bool && (res.empty());
 
   EXPECT_TRUE(res_bool);
 }
@@ -160,7 +161,7 @@ TEST(global_tests, class_getRelationWith)
 
   test_word = onto_ptr->conversion.classesId2Index("cube");
   res = onto_ptr->classes.getRelationWith(test_word);
-  res_bool = res_bool && (res.size() == 0);
+  res_bool = res_bool && (res.empty());
 
   EXPECT_TRUE(res_bool);
 }
@@ -200,7 +201,7 @@ TEST(global_tests, class_getRelatedWith)
 
   test_word = onto_ptr->conversion.classesId2Index("human");
   res = onto_ptr->classes.getRelatedWith(test_word);
-  res_bool = res_bool && (res.size() == 0);
+  res_bool = res_bool && (res.empty());
 
   EXPECT_TRUE(res_bool);
 }
@@ -249,7 +250,7 @@ TEST(global_tests, class_getFrom)
   test_word = onto_ptr->conversion.classesId2Index("man");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasMother");
   res = onto_ptr->classes.getFrom(test_word2, test_word);
-  res_bool = (res.size() == 0);
+  res_bool = (res.empty());
   EXPECT_TRUE(res_bool);
 }
 
@@ -297,7 +298,7 @@ TEST(global_tests, class_getOn)
   test_word = onto_ptr->conversion.classesId2Index("cube");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("isOn");
   res = onto_ptr->classes.getOn(test_word, test_word2);
-  res_bool = (res.size() == 0);
+  res_bool = (res.empty());
   EXPECT_TRUE(res_bool);
 }
 
@@ -335,12 +336,12 @@ TEST(global_tests, class_getWith)
   test_word = onto_ptr->conversion.classesId2Index("human");
   test_word2 = onto_ptr->conversion.classesId2Index("human");
   res = onto_ptr->classes.getWith(test_word, test_word2);
-  res_bool = res_bool && (res.size() == 0);
+  res_bool = res_bool && (res.empty());
 
   test_word = onto_ptr->conversion.classesId2Index("man");
   test_word2 = onto_ptr->conversion.literalsId2Index("integer#2");
   res = onto_ptr->classes.getWith(test_word, test_word2);
-  res_bool = res_bool && (res.size() == 0);
+  res_bool = res_bool && (res.empty());
 
   EXPECT_TRUE(res_bool);
 }
@@ -383,7 +384,7 @@ TEST(global_tests, individual_getRelationFrom)
 
   test_word = onto_ptr->conversion.classesId2Index("man");
   res = onto_ptr->individuals.getRelationFrom(test_word);
-  res_bool = res_bool && (res.size() == 0);
+  res_bool = res_bool && (res.empty());
 
   EXPECT_TRUE(res_bool);
 }
@@ -417,7 +418,7 @@ TEST(global_tests, individual_getRelatedFrom)
 
   test_word = onto_ptr->conversion.classesId2Index("human");
   res = onto_ptr->individuals.getRelatedFrom(test_word);
-  res_bool = res_bool && (res.size() == 0);
+  res_bool = res_bool && (res.empty());
 
   EXPECT_TRUE(res_bool);
 }
@@ -451,7 +452,7 @@ TEST(global_tests, individual_getRelationOn)
 
   test_word = onto_ptr->conversion.classesId2Index("human");
   res = onto_ptr->individuals.getRelationOn(test_word);
-  res_bool = res_bool && (res.size() == 0);
+  res_bool = res_bool && (res.empty());
 
   EXPECT_TRUE(res_bool);
 }
@@ -562,7 +563,7 @@ TEST(global_tests, individual_getRelatedWith)
 
   test_word = onto_ptr->conversion.classesId2Index("human");
   res = onto_ptr->individuals.getRelatedWith(test_word);
-  res_bool = res_bool && (res.size() == 0);
+  res_bool = res_bool && (res.empty());
 
   EXPECT_TRUE(res_bool);
 }
@@ -617,7 +618,7 @@ TEST(global_tests, individual_getFrom)
   test_word = onto_ptr->conversion.classesId2Index("man");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasMother");
   res = onto_ptr->individuals.getFrom(test_word2, test_word);
-  res_bool = (res.size() == 0);
+  res_bool = (res.empty());
   EXPECT_TRUE(res_bool);
 }
 
@@ -673,7 +674,7 @@ TEST(global_tests, individual_getOn)
   test_word = onto_ptr->conversion.classesId2Index("man");
   test_word2 = onto_ptr->conversion.dataPropertiesId2Index("hasLeg");
   res = onto_ptr->individuals.getOn(test_word, test_word2);
-  res_bool = (res.size() == 0);
+  res_bool = (res.empty());
   EXPECT_TRUE(res_bool);
 }
 
@@ -715,13 +716,13 @@ TEST(global_tests, individual_getWith)
   test_word = onto_ptr->conversion.individualsId2Index("alice");
   test_word2 = onto_ptr->conversion.classesId2Index("human");
   res = onto_ptr->individuals.getWith(test_word, test_word2);
-  res_bool = (res.size() == 0);
+  res_bool = (res.empty());
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("bob");
   test_word2 = onto_ptr->conversion.literalsId2Index("integer#2");
   res = onto_ptr->individuals.getWith(test_word, test_word2);
-  res_bool = (res.size() == 0);
+  res_bool = (res.empty());
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("cube1");

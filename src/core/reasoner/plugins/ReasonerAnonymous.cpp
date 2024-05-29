@@ -121,7 +121,7 @@ namespace ontologenius {
       disjoints_cache_[class_equiv] = disjoints;
     }
 
-    if(disjoints.size())
+    if(disjoints.empty() == false)
     {
       std::unordered_set<ClassBranch*> ups;
       ontology_->individual_graph_.getUpPtr(indiv, ups);
@@ -149,7 +149,7 @@ namespace ontologenius {
           {
             explanation = indiv_on->value() + "|sameAs|" + indiv_on->same_as_[j].elem->value() + ";";
             used.emplace_back(explanation, indiv_on->same_as_.has_induced_inheritance_relations[j]);
-            return i;
+            return (int)i;
           }
         }
       }
@@ -157,7 +157,7 @@ namespace ontologenius {
       if(indiv_from->object_relations_[i].second->get() == indiv_on->get())
       {
         if(down_properties.find(indiv_from->object_relations_[i].first) != down_properties.end())
-          return i;
+          return (int)i;
       }
     }
     return -1;
@@ -166,11 +166,11 @@ namespace ontologenius {
   bool ReasonerAnonymous::resolveFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem)
   {
     if(ano_elem->logical_type_ == logical_and)
-      for(auto elem : ano_elem->sub_elements_)
+      for(auto* elem : ano_elem->sub_elements_)
         return resolveFirstLayer(indiv, elem);
     else if(ano_elem->logical_type_ == logical_or)
     {
-      for(auto elem : ano_elem->sub_elements_)
+      for(auto* elem : ano_elem->sub_elements_)
         if(resolveFirstLayer(indiv, elem) == true)
           return true;
       return false;
@@ -186,7 +186,7 @@ namespace ontologenius {
   {
     if(ano_elem->logical_type_ == logical_and)
     {
-      for(auto elem : ano_elem->sub_elements_)
+      for(auto* elem : ano_elem->sub_elements_)
       {
         if(resolveTree(literal, elem, used) == false)
         {
@@ -198,7 +198,7 @@ namespace ontologenius {
     }
     else if(ano_elem->logical_type_ == logical_or)
     {
-      for(auto elem : ano_elem->sub_elements_)
+      for(auto* elem : ano_elem->sub_elements_)
       {
         if(resolveTree(literal, elem, used))
           return true;
@@ -219,7 +219,7 @@ namespace ontologenius {
   {
     if(ano_elem->logical_type_ == logical_and)
     {
-      for(auto elem : ano_elem->sub_elements_)
+      for(auto* elem : ano_elem->sub_elements_)
       {
         if(resolveTree(indiv, elem, used) == false)
         {
@@ -231,7 +231,7 @@ namespace ontologenius {
     }
     else if(ano_elem->logical_type_ == logical_or)
     {
-      for(auto elem : ano_elem->sub_elements_)
+      for(auto* elem : ano_elem->sub_elements_)
       {
         if(resolveTree(indiv, elem, used))
           return true;
@@ -283,7 +283,7 @@ namespace ontologenius {
       return (ontology_->individual_graph_.isA(indiv, ano_elem->class_involved_->get()));
     else if(ano_elem->oneof)
     {
-      for(auto indiv_elem : ano_elem->sub_elements_)
+      for(auto* indiv_elem : ano_elem->sub_elements_)
       {
         if(indiv->same_as_.empty() == false)
         {
@@ -330,7 +330,7 @@ namespace ontologenius {
     else if(ano_elem->oneof)
     {
       std::string one_of;
-      for(auto elem : ano_elem->sub_elements_)
+      for(auto* elem : ano_elem->sub_elements_)
       {
         if(one_of.empty() == false)
           one_of += ", ";
@@ -354,7 +354,7 @@ namespace ontologenius {
   {
     std::string explanation;
 
-    if(indiv->same_as_.size() > 0)
+    if(indiv->same_as_.empty() == 0)
     {
       size_t same_size = indiv->same_as_.size();
       for(size_t i = 0; i < same_size; i++)
@@ -467,7 +467,7 @@ namespace ontologenius {
     if(ano_elem->object_property_involved_ != nullptr)
     {
       indexes = checkMinCard(indiv->object_relations_.relations, ano_elem, used);
-      if(indexes.size() > 0)
+      if(indexes.empty() == false)
       {
         for(auto& index : indexes)
           used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
@@ -482,7 +482,7 @@ namespace ontologenius {
     else if(ano_elem->data_property_involved_ != nullptr)
     {
       indexes = checkMinCard(indiv->data_relations_.relations, ano_elem, used);
-      if(indexes.size() > 0)
+      if(indexes.empty() == false)
       {
         for(auto& index : indexes)
           used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
@@ -508,7 +508,7 @@ namespace ontologenius {
     if(ano_elem->object_property_involved_ != nullptr)
     {
       indexes = checkMaxCard(indiv->object_relations_.relations, ano_elem, used);
-      if(indexes.size() > 0)
+      if(indexes.empty() == false)
       {
         for(auto& index : indexes)
           used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
@@ -523,7 +523,7 @@ namespace ontologenius {
     else if(ano_elem->data_property_involved_ != nullptr)
     {
       indexes = checkMaxCard(indiv->data_relations_.relations, ano_elem, used);
-      if(indexes.size() > 0)
+      if(indexes.empty() == false)
       {
         for(auto& index : indexes)
           used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
@@ -549,7 +549,7 @@ namespace ontologenius {
     if(ano_elem->object_property_involved_ != nullptr)
     {
       indexes = checkExactlyCard(indiv->object_relations_.relations, ano_elem, used);
-      if(indexes.size() > 0)
+      if(indexes.empty() == false)
       {
         for(auto& index : indexes)
           used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
@@ -564,7 +564,7 @@ namespace ontologenius {
     else if(ano_elem->data_property_involved_ != nullptr)
     {
       indexes = checkExactlyCard(indiv->data_relations_.relations, ano_elem, used);
-      if(indexes.size() > 0)
+      if(indexes.empty() == false)
       {
         for(auto& index : indexes)
           used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
@@ -590,7 +590,7 @@ namespace ontologenius {
     if(ano_elem->object_property_involved_ != nullptr)
     {
       indexes = checkOnlyCard(indiv->object_relations_.relations, ano_elem, used);
-      if(indexes.size() > 0)
+      if(indexes.empty() == false)
       {
         for(auto& index : indexes)
           used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
@@ -605,7 +605,7 @@ namespace ontologenius {
     else if(ano_elem->data_property_involved_ != nullptr)
     {
       indexes = checkOnlyCard(indiv->data_relations_.relations, ano_elem, used);
-      if(indexes.size() > 0)
+      if(indexes.empty() == false)
       {
         for(auto& index : indexes)
           used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);

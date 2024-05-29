@@ -97,7 +97,7 @@ namespace ontologenius {
             set_res_index = onto_->object_property_graph_.select(set_res_index, params.selector_index);
         }
 
-        if(res->index_values.size() == 0)
+        if(res->index_values.empty())
           set2vector(set_res_index, res->index_values);
       }
 
@@ -179,7 +179,7 @@ namespace ontologenius {
             set_res_index = onto_->class_graph_.select(set_res_index, params.selector_index);
         }
 
-        if(res->index_values.size() == 0)
+        if(res->index_values.empty())
           set2vector(set_res_index, res->index_values);
       }
 
@@ -258,7 +258,7 @@ namespace ontologenius {
             set_res_index = onto_->class_graph_.select(set_res_index, params.selector_index);
         }
 
-        if(res->index_values.size() == 0)
+        if(res->index_values.empty())
           set2vector(set_res_index, res->index_values);
       }
 
@@ -366,7 +366,7 @@ namespace ontologenius {
             set_res_index = onto_->individual_graph_.select(set_res_index, params.selector_index);
         }
 
-        if(res->index_values.size() == 0)
+        if(res->index_values.empty())
           set2vector(set_res_index, res->index_values);
       }
 
@@ -380,7 +380,7 @@ namespace ontologenius {
     return [this](auto&& req, auto&& res) {
       std::pair<std::vector<std::string>, std::vector<std::vector<index_t>>> results = sparql_.runIndex(req->query);
 
-      if(results.second.size())
+      if(results.second.empty() == false)
         res->names = results.first;
 
       for(auto& result : results.second)

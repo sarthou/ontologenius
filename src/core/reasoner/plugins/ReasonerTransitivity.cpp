@@ -9,7 +9,7 @@ namespace ontologenius {
     std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
     std::lock_guard<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
 
-    for(auto indiv : ontology_->individual_graph_.get())
+    for(auto* indiv : ontology_->individual_graph_.get())
       if((indiv->updated_ == true) || (indiv->flags_.find("transi") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation())
       {
         bool has_active_transitivity = false;
@@ -17,7 +17,7 @@ namespace ontologenius {
         // /!\ The vector object_relations_ is modified by resolveChain
         for(size_t rel_i = 0; rel_i < indiv->object_relations_.size(); rel_i++)
         {
-          auto base_property = indiv->object_relations_[rel_i].first;
+          auto* base_property = indiv->object_relations_[rel_i].first;
           std::unordered_set<ObjectPropertyBranch*> properties;
           getUpPtrTransitive(base_property, properties);
           for(ObjectPropertyBranch* property : properties)
@@ -25,7 +25,7 @@ namespace ontologenius {
             has_active_transitivity = true;
             auto end_indivs = resolveChain(indiv->object_relations_[rel_i].second, property, 1);
 
-            if(end_indivs.size())
+            if(end_indivs.empty() == false)
             {
               UsedVector local_used;
               if(property != base_property)
@@ -47,7 +47,7 @@ namespace ontologenius {
                   }
 
                   used.second.insert(used.second.end(), local_used.begin(), local_used.end());
-                  std::string explanation_reference = "";
+                  std::string explanation_reference;
                   for(auto it = used.second.rbegin(); it != used.second.rend(); ++it)
                   {
                     if(explanation_reference.empty() == false)
@@ -116,12 +116,12 @@ namespace ontologenius {
 
     for(size_t i = 0; i < individual->object_relations_.size(); i++)
     {
-      auto base_property = individual->object_relations_[i].first;
+      auto* base_property = individual->object_relations_[i].first;
       UsedVector local_used;
       if(existInInheritance(base_property, property->get(), local_used))
       {
         auto down_used = resolveChain(individual->object_relations_[i].second, property, current_length + 1);
-        if(down_used.size())
+        if(down_used.empty() == false)
         {
           local_used.emplace_back(individual->value() + "|" + base_property->value() + "|" + individual->object_relations_[i].second->value(), individual->object_relations_.has_induced_object_relations[i]);
           if((same_index != -1) && (individual != indiv))

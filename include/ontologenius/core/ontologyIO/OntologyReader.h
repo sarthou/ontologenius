@@ -19,8 +19,8 @@ namespace ontologenius {
     ~OntologyReader() = default;
 
     void setDisplay(bool display) { display_ = display; }
-    int getNbLoadedElements() { return nb_loaded_elem_; }
-    bool empty() { return (nb_loaded_elem_ == 0); }
+    int getNbLoadedElements() const { return nb_loaded_elem_; }
+    bool empty() const { return (nb_loaded_elem_ == 0); }
 
   protected:
     ClassGraph* class_graph_;
@@ -32,14 +32,14 @@ namespace ontologenius {
     int nb_loaded_elem_;
     bool display_;
 
-    void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole)
+    void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole) const
     {
       vect.emplace_back(elem);
       if(display_ && symbole.empty() == false)
         std::cout << "│   │   ├── " << symbole << elem << std::endl;
     }
 
-    void push(std::vector<bool>& vect, bool elem, const std::string& symbole)
+    void push(std::vector<bool>& vect, bool elem, const std::string& symbole) const
     {
       vect.push_back(elem);
       if(display_ && symbole.empty() == false)
@@ -51,7 +51,7 @@ namespace ontologenius {
       }
     }
 
-    void push(std::vector<PairElement<std::string, std::string>>& vect, const PairElement<std::string, std::string>& elem, const std::string& symbole1, const std::string& symbole2)
+    void push(std::vector<PairElement<std::string, std::string>>& vect, const PairElement<std::string, std::string>& elem, const std::string& symbole1, const std::string& symbole2) const
     {
       vect.emplace_back(elem);
       if(display_)

@@ -26,14 +26,14 @@ namespace ontologenius {
     ~OntologyOwlReader() = default;
 
     int readFromUri(std::string content, const std::string& uri, bool individual = false);
-    int readFromFile(const std::string& fileName, bool individual = false);
+    int readFromFile(const std::string& file_name, bool individual = false);
 
     std::vector<std::string> getImportsFromRaw(std::string content);
     std::vector<std::string> getImportsFromFile(const std::string& file_name);
 
     void setDisplay(bool display) { display_ = display; }
     void displayIndividualRules();
-    bool empty() { return (nb_loaded_elem_ == 0); }
+    bool empty() const { return (nb_loaded_elem_ == 0); }
 
   private:
     std::unordered_map<std::string, std::string> card_map_;
@@ -81,9 +81,9 @@ namespace ontologenius {
 
     std::string toString(TiXmlElement* subElem, const std::string& attribute = "rdf:resource")
     {
-      const char* subAttr = subElem->Attribute(attribute.c_str());
-      if(subAttr != nullptr)
-        return getName(std::string(subAttr));
+      const char* sub_attr = subElem->Attribute(attribute.c_str());
+      if(sub_attr != nullptr)
+        return getName(std::string(sub_attr));
       return "";
     }
 
@@ -133,26 +133,26 @@ namespace ontologenius {
   {
     float proba = 1.0;
 
-    const char* subAttr = elem->Attribute("onto:probability");
-    if(subAttr != nullptr)
-      proba = std::stof(std::string(subAttr));
+    const char* sub_attr = elem->Attribute("onto:probability");
+    if(sub_attr != nullptr)
+      proba = std::stof(std::string(sub_attr));
 
     return proba;
   }
 
   inline std::string OntologyOwlReader::getAttribute(TiXmlElement* elem, const std::string& attribute)
   {
-    const char* subAttr = elem->Attribute(attribute.c_str());
-    if(subAttr != nullptr)
-      return getName(std::string(subAttr));
+    const char* sub_attr = elem->Attribute(attribute.c_str());
+    if(sub_attr != nullptr)
+      return getName(std::string(sub_attr));
     else
       return "";
   }
 
   bool OntologyOwlReader::testAttribute(TiXmlElement* subElem, const std::string& attribute)
   {
-    const char* subAttr = subElem->Attribute(attribute.c_str());
-    if(subAttr != nullptr)
+    const char* sub_attr = subElem->Attribute(attribute.c_str());
+    if(sub_attr != nullptr)
       return true;
     else
       return false;

@@ -15,9 +15,9 @@ namespace ontologenius {
   // Classes predefinition
   class IndividualBranch;
 
-  typedef SingleElement<IndividualBranch*> IndividualElement;
-  typedef PairElement<ObjectPropertyBranch*, IndividualBranch*> IndivObjectRelationElement;
-  typedef PairElement<DataPropertyBranch*, LiteralNode*> IndivDataRelationElement;
+  using IndividualElement = SingleElement<IndividualBranch*>;
+  using IndivObjectRelationElement = PairElement<ObjectPropertyBranch*, IndividualBranch*>;
+  using IndivDataRelationElement = PairElement<DataPropertyBranch*, LiteralNode*>;
 
   class IndividualBranch : public ValuedNode
   {

@@ -53,7 +53,7 @@ TEST(dynamic_tests, insert)
   wait.sleep();
 
   res = onto_ptr->classes.getOn("woman", "hasLeg");
-  res_bool = (res.size() == 0);
+  res_bool = (res.empty());
   EXPECT_TRUE(res_bool);
 }
 
