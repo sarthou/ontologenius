@@ -8,7 +8,7 @@
 using namespace std::chrono;
 
 namespace ontologenius {
-  
+
   SparqlSolver::SparqlSolver() : onto_(nullptr),
                                  sparql_pattern_("SELECT\\s*(DISTINCT)?\\s*([^\n]+)([\\s\n]*)WHERE([\\s\n]*)(.*)"),
                                  error_("")
@@ -233,7 +233,7 @@ namespace ontologenius {
     for(int i = solution.ordered_variables_.size() - 1; i >= 0; i--)
     {
       auto variable = solution.ordered_variables_[i];
-      if(solution.candidates_[variable].size() != 0)
+      if(solution.candidates_[variable].empty() == false)
       {
         stepDown(solution, i);
         if(solution.solution_full_[variable].empty() == false)
