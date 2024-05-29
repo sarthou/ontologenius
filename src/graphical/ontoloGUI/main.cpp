@@ -1,22 +1,18 @@
 #include <QApplication>
+#include <QIcon>
+#include <QString>
 #include <csignal>
 #include <thread>
 
-#include "include/ontologenius/graphical/ontoloGUI/DarkStyle.h"
-#include "include/ontologenius/graphical/ontoloGUI/ontologui.h"
 #include "ontologenius/compat/ros.h"
+#include "ontologenius/graphical/ontoloGUI/DarkStyle.h"
+#include "ontologenius/graphical/ontoloGUI/ontologui.h"
 #include "ontologenius/utils/Commands.h"
 
-// #include <ament_index_cpp/get_package_share_directory.hpp>
-
-void spinThread(bool* run)
+void spinThread(bool* /*run*/)
 {
   ontologenius::compat::onto_ros::Node::get().spin();
 }
-
-#include <chrono>
-
-using namespace std::chrono_literals;
 
 int main(int argc, char* argv[])
 {
@@ -25,16 +21,16 @@ int main(int argc, char* argv[])
   bool run = true;
   std::thread spin_thread(spinThread, &run);
 
-  QApplication a(argc, argv);
+  const QApplication a(argc, argv);
 
-  a.setStyle(new DarkStyle);
+  QApplication::setStyle(new DarkStyle);
 
   // std::string path = ament_index_cpp::get_package_share_directory("ontologenius");
   std::string path = ontologenius::findPackage("ontologenius");
   path = path + "/docs/images/ontologenius.ico";
 
-  QIcon icon(QString::fromStdString(path));
-  a.setWindowIcon(icon);
+  const QIcon icon(QString::fromStdString(path));
+  QApplication::setWindowIcon(icon);
 
   ontoloGUI w;
   w.show();
@@ -46,7 +42,7 @@ int main(int argc, char* argv[])
   w.loadReasoners();
 
   signal(SIGINT, SIG_DFL);
-  auto a_exec = a.exec();
+  auto a_exec = QApplication::exec();
 
   ontologenius::compat::onto_ros::Node::shutdown();
 

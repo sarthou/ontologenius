@@ -42,23 +42,23 @@ private:
   void constructReasonersCheckBoxs();
   void updateReasonersCheckBoxs();
   size_t getReasonerIndex(QCheckBoxExtended* box);
-  std::string getReasonerDescription(std::string box);
+  std::string getReasonerDescription(const std::string& box);
   void displayOntologiesList();
   void displayErrorInfo(const std::string& text);
 
-  std::string vector2string(const std::vector<std::string>& vect);
-  std::string vector2html(const std::vector<std::string>& vect);
+  static std::string vector2string(const std::vector<std::string>& vect);
+  static std::string vector2html(const std::vector<std::string>& vect);
 
 public slots:
-  void ClasshoverEnterSlot();
-  void ClasshoverLeaveSlot();
+  void classhoverEnterSlot();
+  void classhoverLeaveSlot();
   void objectPropertyhoverEnterSlot();
   void objectPropertyhoverLeaveSlot();
   void dataPropertyhoverEnterSlot();
   void dataPropertyhoverLeaveSlot();
-  void IndividualCheckBoxhoverEnterSlot();
-  void IndividualhoverEnterSlot();
-  void IndividualhoverLeaveSlot();
+  void individualCheckBoxhoverEnterSlot();
+  void individualhoverEnterSlot();
+  void individualhoverLeaveSlot();
 
   void classClickedSlot();
   void objectPropertyClickedSlot();
@@ -66,9 +66,9 @@ public slots:
   void individualClickedSlot();
   void closeOntologySlot();
   void nameEditingFinishedSlot();
-  void ReasonerClickedSlot(int);
-  void ReasonerhoverEnterSlot();
-  void ReasonerhoverLeaveSlot();
+  void reasonerClickedSlot(int);
+  void reasonerhoverEnterSlot();
+  void reasonerhoverLeaveSlot();
   void currentTabChangedSlot(int);
 
   void displayOntologiesListSlot();
@@ -76,8 +76,8 @@ public slots:
   void deleteOntologySlot();
   void saveOntologySlot();
   void differenceOntologySlot();
-  void OntologyNameAddDelChangedSlot(const QString&);
-  void OntologyNameChangedSlot(const QString&);
+  void ontologyNameAddDelChangedSlot(const QString&);
+  void ontologyNameChangedSlot(const QString&);
 
   void feederCallback(const std::string& msg);
   void feederAddSlot();
