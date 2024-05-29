@@ -31,29 +31,29 @@ namespace ontologenius {
     std::pair<std::vector<std::string>, std::vector<std::vector<T>>> run(const std::string& query);
 
     template<typename T>
-    std::vector<std::vector<T>> resolve(std::vector<triplet_t<T>> query, SparqlOperator_e op, const std::vector<std::vector<T>>& prev_res);
+    std::vector<std::vector<T>> resolve(std::vector<SparqlTriplet_t<T>> query, SparqlOperator_e op, const std::vector<std::vector<T>>& prev_res);
     template<typename T>
-    std::vector<std::vector<T>> resolve(const std::vector<triplet_t<T>>& query, const std::vector<T>& accu);
+    std::vector<std::vector<T>> resolve(const std::vector<SparqlTriplet_t<T>>& query, const std::vector<T>& accu);
     template<typename T>
-    void resolveSubQuery(triplet_t<T> triplet, const std::vector<T>& accu, int64_t& var_name, std::unordered_set<T>& values);
+    void resolveSubQuery(SparqlTriplet_t<T> triplet, const std::vector<T>& accu, int64_t& var_name, std::unordered_set<T>& values);
 
     template<typename T>
-    std::unordered_set<T> getOn(const triplet_t<T>& triplet, const T& selector);
+    std::unordered_set<T> getOn(const SparqlTriplet_t<T>& triplet, const T& selector);
     template<typename T>
-    std::unordered_set<T> getFrom(const triplet_t<T>& triplet, const T& selector);
+    std::unordered_set<T> getFrom(const SparqlTriplet_t<T>& triplet, const T& selector);
     template<typename T>
-    std::unordered_set<T> getUp(const triplet_t<T>& triplet, const T& selector);
+    std::unordered_set<T> getUp(const SparqlTriplet_t<T>& triplet, const T& selector);
     template<typename T>
-    std::unordered_set<T> getType(const triplet_t<T>& triplet, const T& selector);
+    std::unordered_set<T> getType(const SparqlTriplet_t<T>& triplet, const T& selector);
     template<typename T>
-    std::unordered_set<T> find(const triplet_t<T>& triplet, const T& selector);
+    std::unordered_set<T> find(const SparqlTriplet_t<T>& triplet, const T& selector);
     template<typename T>
-    std::unordered_set<std::string> getName(const triplet_t<T>& triplet, const std::string& selector);
+    std::unordered_set<std::string> getName(const SparqlTriplet_t<T>& triplet, const std::string& selector);
 
     std::string getPattern(const std::string& text);
     std::vector<SparqlBlock_t> getBlocks(std::string query);
     template<typename T>
-    std::vector<triplet_t<T>> getTriplets(const std::string& query, const std::string& delim);
+    std::vector<SparqlTriplet_t<T>> getTriplets(const std::string& query, const std::string& delim);
 
     template<typename T>
     void mergeNoOp(const std::vector<T>& base, std::vector<std::vector<T>>& res);

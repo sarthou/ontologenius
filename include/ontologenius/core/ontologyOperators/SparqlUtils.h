@@ -26,9 +26,9 @@ namespace ontologenius {
   };
 
   template<typename T>
-  struct resource_t
+  struct Resource_t
   {
-    resource_t() : variable_id(-1),
+    Resource_t() : variable_id(-1),
                    is_variable(false),
                    regex(false) {}
 
@@ -43,19 +43,19 @@ namespace ontologenius {
   };
 
   template<typename T>
-  std::unordered_map<std::string, int64_t> resource_t<T>::variables;
+  std::unordered_map<std::string, int64_t> Resource_t<T>::variables;
 
   template<typename T>
-  std::vector<std::string> resource_t<T>::to_variables;
+  std::vector<std::string> Resource_t<T>::to_variables;
 
   template<typename T>
-  struct triplet_t
+  struct SparqlTriplet_t
   {
-    resource_t<T> subject;
-    resource_t<T> predicat;
-    resource_t<T> object;
+    Resource_t<T> subject;
+    Resource_t<T> predicat;
+    Resource_t<T> object;
   };
-  typedef triplet_t<std::string> strTriplet_t;
+  typedef SparqlTriplet_t<std::string> strTriplet_t;
   ;
 
   void removeUselessSpace(std::string& text);
@@ -80,23 +80,23 @@ namespace ontologenius {
   index_t convertResourceValue<index_t>(const std::string& value);
 
   template<typename T>
-  resource_t<T> getResource(std::string resource_txt)
+  Resource_t<T> getResource(std::string resource_txt)
   {
     removeUselessSpace(resource_txt);
 
-    resource_t<T> res;
+    Resource_t<T> res;
 
     if(resource_txt[0] == '?')
     {
       res.is_variable = true;
       resource_txt = resource_txt.substr(1);
-      auto var_it = resource_t<T>::variables.find(resource_txt);
-      if(var_it == resource_t<T>::variables.end())
+      auto var_it = Resource_t<T>::variables.find(resource_txt);
+      if(var_it == Resource_t<T>::variables.end())
       {
-        int64_t index = resource_t<T>::variables.size();
-        resource_t<T>::variables[resource_txt] = index;
+        int64_t index = Resource_t<T>::variables.size();
+        Resource_t<T>::variables[resource_txt] = index;
         res.variable_id = index;
-        resource_t<T>::to_variables.push_back(resource_txt);
+        Resource_t<T>::to_variables.push_back(resource_txt);
       }
       else
         res.variable_id = var_it->second;
@@ -113,17 +113,17 @@ namespace ontologenius {
   }
 
   template<typename T>
-  triplet_t<T> getTriplet(const std::string& triplet_txt)
+  SparqlTriplet_t<T> getTriplet(const std::string& triplet_txt)
   {
     std::vector<std::string> resources = split(triplet_txt, " ");
 
     size_t cpt = 0;
-    triplet_t<T> res;
+    SparqlTriplet_t<T> res;
     for(const auto& x : resources)
     {
       if(x.empty() == false)
       {
-        resource_t<T> resource = getResource<T>(x);
+        Resource_t<T> resource = getResource<T>(x);
         switch(cpt)
         {
         case 0: res.subject = resource; break;
@@ -143,7 +143,7 @@ namespace ontologenius {
   }
 
   template<typename T>
-  std::string toString(const triplet_t<T>& triplet)
+  std::string toString(const SparqlTriplet_t<T>& triplet)
   {
     return (triplet.subject.is_variable ? "?" : "") + triplet.subject.name + " " +
            (triplet.predicat.is_variable ? "?" : "") + triplet.predicat.name + " " +
@@ -166,7 +166,7 @@ namespace ontologenius {
   {
     std::vector<int64_t> res;
     for(auto& var : var_names)
-      res.push_back(resource_t<T>::variables[var]);
+      res.push_back(Resource_t<T>::variables[var]);
     std::sort(res.begin(), res.end());
     return res;
   }
