@@ -53,7 +53,7 @@ namespace ontologenius {
       std::unordered_set<ClassBranch_t*> domain;
       class_graph_->object_property_graph_->getDomainPtr(object_relation.first, domain, 0);
 
-      if(domain.size() != 0)
+      if(domain.empty() == false)
       {
         auto intersection = class_graph_->checkDomainOrRange(domain, up);
         if(intersection.first == false)
@@ -77,7 +77,7 @@ namespace ontologenius {
       std::unordered_set<ClassBranch_t*> range;
       class_graph_->object_property_graph_->getRangePtr(object_relation.first, range, 0);
 
-      if(range.size() != 0)
+      if(range.empty() == false)
       {
         std::unordered_set<ClassBranch_t*> up;
         class_graph_->getUpPtr(object_relation.second, up);
@@ -104,7 +104,7 @@ namespace ontologenius {
       std::unordered_set<ClassBranch_t*> domain;
       class_graph_->data_property_graph_->getDomainPtr(relation.first, domain, 0);
 
-      if(domain.size() != 0)
+      if(domain.empty() == false)
       {
         auto intersection = class_graph_->checkDomainOrRange(domain, up);
         if(intersection.first == false)
@@ -126,7 +126,7 @@ namespace ontologenius {
     for(ClassDataRelationElement_t& relation : branch->data_relations_)
     {
       std::unordered_set<std::string> range = class_graph_->data_property_graph_->getRange(relation.first->value());
-      if(range.size() != 0)
+      if(range.empty() == false)
       {
         auto intersection = range.find(relation.second->type_);
         if(intersection == range.end())

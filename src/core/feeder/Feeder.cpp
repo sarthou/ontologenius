@@ -218,7 +218,7 @@ namespace ontologenius {
       else if(feed.action_ == action_del)
       {
         auto tmp = onto_->individual_graph_.removeSameAs(feed.from_, feed.on_);
-        if(tmp.size() != 0)
+        if(tmp.empty() == false)
           explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
         return true;
       }

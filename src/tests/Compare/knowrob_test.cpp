@@ -68,7 +68,7 @@ bool doQuery(ontologenius::Ontology* onto, size_t n)
   if(VP_i.size())
   {
     auto pose = onto->individual_graph_.getOn(*(VP_i.begin()), "occursAt");
-    return (pose.size() != 0);
+    return (pose.empty() == false);
   }
   std::cout << "no VP" << std::endl;
   return false;

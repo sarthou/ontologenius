@@ -151,7 +151,7 @@ namespace ontologenius {
           new_accu[var_index] = value;
 
         std::vector<std::vector<T>> local_res = resolve(new_query, new_accu);
-        if(local_res.size() != 0)
+        if(local_res.empty() == false)
         {
           for(auto& lr : local_res)
           {

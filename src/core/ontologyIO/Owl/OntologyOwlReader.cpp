@@ -267,7 +267,7 @@ namespace ontologenius {
       }
     }
 
-    if(ano_vector.equivalence_trees.size() != 0)
+    if(ano_vector.equivalence_trees.empty() == false)
     {
       anonymous_graph_->add(node_name, ano_vector);
       for(auto& str_elem : ano_vector.str_equivalences)

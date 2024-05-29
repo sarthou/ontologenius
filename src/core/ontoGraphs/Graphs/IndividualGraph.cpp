@@ -2189,7 +2189,7 @@ namespace ontologenius {
     object_property_graph_->getDomainAndRangePtr(prop, domain, range, 0);
 
     // DOMAIN
-    if(domain.size() != 0)
+    if(domain.empty() == false)
     {
       std::unordered_set<ClassBranch_t*> up_from;
       getUpPtr(from, up_from);
@@ -2205,7 +2205,7 @@ namespace ontologenius {
     }
 
     // RANGE
-    if(range.size() != 0)
+    if(range.empty() == false)
     {
       std::unordered_set<ClassBranch_t*> up_on;
       getUpPtr(on, up_on);
@@ -2229,7 +2229,7 @@ namespace ontologenius {
     std::unordered_set<ClassBranch_t*> domain;
     data_property_graph_->getDomainPtr(prop, domain, 0);
 
-    if(domain.size() != 0)
+    if(domain.empty() == false)
     {
       std::unordered_set<ClassBranch_t*> up_from;
       getUpPtr(from, up_from);
@@ -2246,7 +2246,7 @@ namespace ontologenius {
 
     // RANGE
     std::unordered_set<std::string> range = data_property_graph_->getRange(prop->value());
-    if(range.size() != 0)
+    if(range.empty() == false)
     {
       if(range.find(data->type_) == range.end())
         return false;

@@ -78,7 +78,7 @@ namespace ontologenius {
       }
     }
 
-    return (notifications_.size() != 0);
+    return (notifications_.empty() == false);
   }
 
   void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<DataPropertyBranch_t*, LiteralNode*, float>> properties)
@@ -116,7 +116,7 @@ namespace ontologenius {
       }
     }
 
-    if(deduced_indexs.size() != 0)
+    if(deduced_indexs.empty() == false)
     {
       size_t deleted = 0;
       for(auto i : deduced_indexs)
@@ -161,7 +161,7 @@ namespace ontologenius {
       }
     }
 
-    if(deduced_indexs.size() != 0)
+    if(deduced_indexs.empty() == false)
     {
       size_t deleted = 0;
       for(auto i : deduced_indexs)

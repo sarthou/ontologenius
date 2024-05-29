@@ -27,10 +27,10 @@ void handler(int sig)
 
 void removeUselessSpace(std::string& text)
 {
-  while((text[0] == ' ') && (text.size() != 0))
+  while((text[0] == ' ') && (text.empty() == false))
     text.erase(0, 1);
 
-  while((text[text.size() - 1] == ' ') && (text.size() != 0))
+  while((text[text.size() - 1] == ' ') && (text.empty() == false))
     text.erase(text.size() - 1, 1);
 }
 

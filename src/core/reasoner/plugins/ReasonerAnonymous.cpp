@@ -87,7 +87,7 @@ namespace ontologenius {
           }
 
           // Manages implicitly the NOT, MIN, MAX, EXACTLY cases
-          if(tree_evaluation_result == false && anonymous->ano_elems_.size() != 0 && ontology_->individual_graph_.isA(indiv, anonymous->class_equiv_->get()) == true)
+          if(tree_evaluation_result == false && anonymous->ano_elems_.empty() == false && ontology_->individual_graph_.isA(indiv, anonymous->class_equiv_->get()) == true)
           {
             indiv->nb_updates_++;
             anonymous->class_equiv_->nb_updates_++;
@@ -257,7 +257,7 @@ namespace ontologenius {
   {
     if(ano_elem->object_property_involved_ != nullptr)
     {
-      if(indiv->same_as_.size() != 0)
+      if(indiv->same_as_.empty() == false)
       {
         for(auto& indiv_same : indiv->same_as_)
         {
@@ -269,7 +269,7 @@ namespace ontologenius {
     }
     else if(ano_elem->data_property_involved_ != nullptr)
     {
-      if(indiv->same_as_.size() != 0)
+      if(indiv->same_as_.empty() == false)
       {
         for(auto& indiv_same : indiv->same_as_)
         {
@@ -285,7 +285,7 @@ namespace ontologenius {
     {
       for(auto indiv_elem : ano_elem->sub_elements_)
       {
-        if(indiv->same_as_.size() != 0)
+        if(indiv->same_as_.empty() == false)
         {
           if(std::find_if(indiv->same_as_.begin(), indiv->same_as_.end(),
                           [elem = indiv_elem->individual_involved_](auto same) { return same == elem; }) != indiv->same_as_.end())
@@ -306,7 +306,7 @@ namespace ontologenius {
 
     if(ano_elem->object_property_involved_ != nullptr || ano_elem->data_property_involved_ != nullptr)
     {
-      if(indiv->same_as_.size() != 0)
+      if(indiv->same_as_.empty() == false)
       {
         size_t same_size = indiv->same_as_.size();
         for(size_t i = 0; i < same_size; i++)
@@ -406,7 +406,7 @@ namespace ontologenius {
   {
     std::string explanation;
 
-    if(indiv->same_as_.size() != 0)
+    if(indiv->same_as_.empty() == false)
     {
       size_t same_size = indiv->same_as_.size();
       for(size_t i = 0; i < same_size; i++)

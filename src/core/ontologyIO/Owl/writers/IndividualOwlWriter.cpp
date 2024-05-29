@@ -130,7 +130,7 @@ namespace ontologenius {
 
     for(auto& individual : individuals)
     {
-      if(individual->distinct_.size() != 0)
+      if(individual->distinct_.empty() == false)
       {
         if(std::find(distincts_done.begin(), distincts_done.end(), individual->value()) == distincts_done.end())
         {
