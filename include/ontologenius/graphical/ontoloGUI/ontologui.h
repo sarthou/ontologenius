@@ -10,16 +10,16 @@
 #include "ontologenius/OntologiesManipulator.h"
 
 namespace Ui {
-  class ontoloGUI;
+  class OntoloGUI;
 }
 
-class ontoloGUI : public QMainWindow
+class OntoloGUI : public QMainWindow
 {
   Q_OBJECT
 
 public:
-  explicit ontoloGUI(QWidget* parent = 0);
-  ~ontoloGUI();
+  explicit OntoloGUI(QWidget* parent = nullptr);
+  ~OntoloGUI() override;
 
   void init();
   void wait();
@@ -27,7 +27,7 @@ public:
   void loadReasoners();
 
 private:
-  Ui::ontoloGUI* ui;
+  Ui::OntoloGUI* ui;
 
   onto::OntologiesManipulator ontos_;
   onto::OntologyManipulator* onto_;

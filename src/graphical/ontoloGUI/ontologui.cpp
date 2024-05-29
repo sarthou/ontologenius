@@ -10,8 +10,8 @@
 #include "ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
 #include "ui_ontologui.h"
 
-ontoloGUI::ontoloGUI(QWidget* parent) : QMainWindow(parent),
-                                        ui(new Ui::ontoloGUI)
+OntoloGUI::OntoloGUI(QWidget* parent) : QMainWindow(parent),
+                                        ui(new Ui::OntoloGUI)
 {
   ui->setupUi(this);
 
@@ -244,12 +244,12 @@ ontoloGUI::ontoloGUI(QWidget* parent) : QMainWindow(parent),
   QObject::connect(this, SIGNAL(feederScrollSignal(QString)), ui->FeederInfo, SLOT(scrollToAnchor(QString)), Qt::BlockingQueuedConnection);
 }
 
-ontoloGUI::~ontoloGUI()
+OntoloGUI::~OntoloGUI()
 {
   delete ui;
 }
 
-void ontoloGUI::init()
+void OntoloGUI::init()
 {
   if(ontos_.waitInit(1) == false)
   {
@@ -264,7 +264,7 @@ void ontoloGUI::init()
   }
 }
 
-void ontoloGUI::wait()
+void OntoloGUI::wait()
 {
   const QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
                        "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
@@ -274,7 +274,7 @@ void ontoloGUI::wait()
   ui->InfoArea->setHtml(html);
 }
 
-void ontoloGUI::start()
+void OntoloGUI::start()
 {
   const QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
                        "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
@@ -284,52 +284,52 @@ void ontoloGUI::start()
   ui->InfoArea->setHtml(html);
 }
 
-void ontoloGUI::classhoverEnterSlot()
+void OntoloGUI::classhoverEnterSlot()
 {
   ui->ClassDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
-void ontoloGUI::classhoverLeaveSlot()
+void OntoloGUI::classhoverLeaveSlot()
 {
   ui->ClassDescription->setText("");
 }
 
-void ontoloGUI::objectPropertyhoverEnterSlot()
+void OntoloGUI::objectPropertyhoverEnterSlot()
 {
   ui->ObjectPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
-void ontoloGUI::objectPropertyhoverLeaveSlot()
+void OntoloGUI::objectPropertyhoverLeaveSlot()
 {
   ui->ObjectPropertyDescription->setText("");
 }
 
-void ontoloGUI::dataPropertyhoverEnterSlot()
+void OntoloGUI::dataPropertyhoverEnterSlot()
 {
   ui->DataPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
-void ontoloGUI::dataPropertyhoverLeaveSlot()
+void OntoloGUI::dataPropertyhoverLeaveSlot()
 {
   ui->DataPropertyDescription->setText("");
 }
 
-void ontoloGUI::individualCheckBoxhoverEnterSlot()
+void OntoloGUI::individualCheckBoxhoverEnterSlot()
 {
   ui->IndividualDescription->setText(dynamic_cast<QCheckBoxExtended*>(sender())->whatsThis());
 }
 
-void ontoloGUI::individualhoverEnterSlot()
+void OntoloGUI::individualhoverEnterSlot()
 {
   ui->IndividualDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
-void ontoloGUI::individualhoverLeaveSlot()
+void OntoloGUI::individualhoverLeaveSlot()
 {
   ui->IndividualDescription->setText("");
 }
 
-void ontoloGUI::classClickedSlot()
+void OntoloGUI::classClickedSlot()
 {
   if(ui->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
@@ -359,7 +359,7 @@ void ontoloGUI::classClickedSlot()
   }
 }
 
-void ontoloGUI::objectPropertyClickedSlot()
+void OntoloGUI::objectPropertyClickedSlot()
 {
   if(ui->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
@@ -389,7 +389,7 @@ void ontoloGUI::objectPropertyClickedSlot()
   }
 }
 
-void ontoloGUI::dataPropertyClickedSlot()
+void OntoloGUI::dataPropertyClickedSlot()
 {
   if(ui->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
@@ -419,7 +419,7 @@ void ontoloGUI::dataPropertyClickedSlot()
   }
 }
 
-void ontoloGUI::individualClickedSlot()
+void OntoloGUI::individualClickedSlot()
 {
   if(ui->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
@@ -449,7 +449,7 @@ void ontoloGUI::individualClickedSlot()
   }
 }
 
-void ontoloGUI::closeOntologySlot()
+void OntoloGUI::closeOntologySlot()
 {
   if(ui->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
@@ -471,14 +471,14 @@ void ontoloGUI::closeOntologySlot()
   }
 }
 
-void ontoloGUI::nameEditingFinishedSlot()
+void OntoloGUI::nameEditingFinishedSlot()
 {
   if(updateOntoPtr() == false)
     return;
   loadReasoners();
 }
 
-void ontoloGUI::reasonerClickedSlot(int /*unused*/)
+void OntoloGUI::reasonerClickedSlot(int /*unused*/)
 {
   if(ui->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
@@ -505,18 +505,18 @@ void ontoloGUI::reasonerClickedSlot(int /*unused*/)
   }
 }
 
-void ontoloGUI::reasonerhoverEnterSlot()
+void OntoloGUI::reasonerhoverEnterSlot()
 {
   const size_t index = getReasonerIndex(dynamic_cast<QCheckBoxExtended*>(sender()));
   ui->ReasonerDescription->setText(QString::fromStdString(reasoners_description_[index]));
 }
 
-void ontoloGUI::reasonerhoverLeaveSlot()
+void OntoloGUI::reasonerhoverLeaveSlot()
 {
   ui->ReasonerDescription->setText("");
 }
 
-void ontoloGUI::displayUnClosed()
+void OntoloGUI::displayUnClosed()
 {
   const QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
                        "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
@@ -526,7 +526,7 @@ void ontoloGUI::displayUnClosed()
   ui->InfoArea->setHtml(html);
 }
 
-void ontoloGUI::loadReasoners()
+void OntoloGUI::loadReasoners()
 {
   if(ui->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
@@ -560,7 +560,7 @@ void ontoloGUI::loadReasoners()
   }
 }
 
-void ontoloGUI::constructReasonersCheckBoxs()
+void OntoloGUI::constructReasonersCheckBoxs()
 {
   for(const auto& reasoners_name : reasoners_names_)
   {
@@ -573,7 +573,7 @@ void ontoloGUI::constructReasonersCheckBoxs()
   }
 }
 
-void ontoloGUI::updateReasonersCheckBoxs()
+void OntoloGUI::updateReasonersCheckBoxs()
 {
   if(ui->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
@@ -610,7 +610,7 @@ void ontoloGUI::updateReasonersCheckBoxs()
   }
 }
 
-size_t ontoloGUI::getReasonerIndex(QCheckBoxExtended* box)
+size_t OntoloGUI::getReasonerIndex(QCheckBoxExtended* box)
 {
   size_t index = 0;
   for(size_t i = 0; i < reasoners_names_.size(); i++)
@@ -622,7 +622,7 @@ size_t ontoloGUI::getReasonerIndex(QCheckBoxExtended* box)
   return index;
 }
 
-std::string ontoloGUI::getReasonerDescription(const std::string& box)
+std::string OntoloGUI::getReasonerDescription(const std::string& box)
 {
   if(ui->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
@@ -644,7 +644,7 @@ std::string ontoloGUI::getReasonerDescription(const std::string& box)
   return "";
 }
 
-void ontoloGUI::displayErrorInfo(const std::string& text)
+void OntoloGUI::displayErrorInfo(const std::string& text)
 {
   const std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
                            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
@@ -655,7 +655,7 @@ void ontoloGUI::displayErrorInfo(const std::string& text)
   ui->InfoArea->setHtml(QString::fromStdString(html));
 }
 
-void ontoloGUI::displayOntologiesList()
+void OntoloGUI::displayOntologiesList()
 {
   auto res_vect = ontos_.list();
   const int err = ontos_.getErrorCode();
@@ -681,12 +681,12 @@ void ontoloGUI::displayOntologiesList()
   ui->OntologiesList->setHtml(QString::fromStdString(html));
 }
 
-void ontoloGUI::displayOntologiesListSlot()
+void OntoloGUI::displayOntologiesListSlot()
 {
   displayOntologiesList();
 }
 
-std::string ontoloGUI::vector2string(const std::vector<std::string>& vect)
+std::string OntoloGUI::vector2string(const std::vector<std::string>& vect)
 {
   std::string res;
   for(const auto& v : vect)
@@ -694,7 +694,7 @@ std::string ontoloGUI::vector2string(const std::vector<std::string>& vect)
   return res;
 }
 
-std::string ontoloGUI::vector2html(const std::vector<std::string>& vect)
+std::string OntoloGUI::vector2html(const std::vector<std::string>& vect)
 {
   std::string res;
   for(const auto& v : vect)
@@ -702,7 +702,7 @@ std::string ontoloGUI::vector2html(const std::vector<std::string>& vect)
   return res;
 }
 
-void ontoloGUI::currentTabChangedSlot(int index)
+void OntoloGUI::currentTabChangedSlot(int index)
 {
   if(index == 4)
     loadReasoners();
@@ -710,7 +710,7 @@ void ontoloGUI::currentTabChangedSlot(int index)
     displayOntologiesList();
 }
 
-void ontoloGUI::addOntologySlot()
+void OntoloGUI::addOntologySlot()
 {
   const std::string param = ui->OntologyNameAddDel->text().toStdString();
   std::string onto_name = param;
@@ -748,7 +748,7 @@ void ontoloGUI::addOntologySlot()
   }
 }
 
-void ontoloGUI::deleteOntologySlot()
+void OntoloGUI::deleteOntologySlot()
 {
   const std::string param = ui->OntologyNameAddDel->text().toStdString();
   ontos_.del(param);
@@ -767,7 +767,7 @@ void ontoloGUI::deleteOntologySlot()
   }
 }
 
-void ontoloGUI::saveOntologySlot()
+void OntoloGUI::saveOntologySlot()
 {
   if(ui->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
@@ -793,7 +793,7 @@ void ontoloGUI::saveOntologySlot()
   }
 }
 
-void ontoloGUI::differenceOntologySlot()
+void OntoloGUI::differenceOntologySlot()
 {
   const std::string param1 = ui->OntologyDiffName1->text().toStdString();
   const std::string param2 = ui->OntologyDiffName2->text().toStdString();
@@ -820,7 +820,7 @@ void ontoloGUI::differenceOntologySlot()
   }
 }
 
-void ontoloGUI::ontologyNameAddDelChangedSlot(const QString& text)
+void OntoloGUI::ontologyNameAddDelChangedSlot(const QString& text)
 {
   if(ui->OntologyName->text() != text)
   {
@@ -832,13 +832,13 @@ void ontoloGUI::ontologyNameAddDelChangedSlot(const QString& text)
   }
 }
 
-void ontoloGUI::ontologyNameChangedSlot(const QString& text)
+void OntoloGUI::ontologyNameChangedSlot(const QString& text)
 {
   if(ui->OntologyNameAddDel->text() != text)
     ui->OntologyNameAddDel->setText(text);
 }
 
-void ontoloGUI::feederCallback(const std::string& msg)
+void OntoloGUI::feederCallback(const std::string& msg)
 {
   feeder_notifications_ += "<p>-" + msg + "</p>";
 
@@ -853,35 +853,35 @@ void ontoloGUI::feederCallback(const std::string& msg)
   feederScrollSignal("scrollToMe");
 }
 
-void ontoloGUI::feederAddSlot()
+void OntoloGUI::feederAddSlot()
 {
   if(updateOntoPtr() == false)
     return;
   onto_->feeder.addProperty(ui->FeederSubject->text().toStdString(), ui->FeederProperty->text().toStdString(), ui->FeederObject->text().toStdString());
 }
 
-void ontoloGUI::feederDelSlot()
+void OntoloGUI::feederDelSlot()
 {
   if(updateOntoPtr() == false)
     return;
   onto_->feeder.removeProperty(ui->FeederSubject->text().toStdString(), ui->FeederProperty->text().toStdString(), ui->FeederObject->text().toStdString());
 }
 
-void ontoloGUI::feederCommitSlot()
+void OntoloGUI::feederCommitSlot()
 {
   if(updateOntoPtr() == false)
     return;
   onto_->feeder.commit(ui->FeederCommitName->text().toStdString());
 }
 
-void ontoloGUI::feederCheckoutSlot()
+void OntoloGUI::feederCheckoutSlot()
 {
   if(updateOntoPtr() == false)
     return;
   onto_->feeder.checkout(ui->FeederCommitName->text().toStdString());
 }
 
-bool ontoloGUI::updateOntoPtr()
+bool OntoloGUI::updateOntoPtr()
 {
   if(multi_usage_ == false)
     return true;

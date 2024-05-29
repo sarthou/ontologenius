@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
   const QIcon icon(QString::fromStdString(path));
   QApplication::setWindowIcon(icon);
 
-  ontoloGUI w;
+  OntoloGUI w;
   w.show();
 
   w.init();
