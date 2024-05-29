@@ -19,28 +19,28 @@ namespace ontologenius {
 
     for(const auto& branch : other.all_branchs_)
     {
-      auto prop_branch = new ObjectPropertyBranch_t(branch->value());
+      auto prop_branch = new ObjectPropertyBranch(branch->value());
       all_branchs_.push_back(prop_branch);
     }
 
     this->container_.load(all_branchs_);
   }
 
-  ObjectPropertyBranch_t* ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors)
+  ObjectPropertyBranch* ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors)
   {
-    std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
     /**********************
     ** Mothers
     **********************/
-    ObjectPropertyBranch_t* me = findOrCreateBranch(value);
+    ObjectPropertyBranch* me = findOrCreateBranch(value);
 
     // for all my mothers
     for(auto& mother : property_vectors.mothers_)
     {
-      ObjectPropertyBranch_t* mother_branch = findOrCreateBranch(mother.elem);
+      ObjectPropertyBranch* mother_branch = findOrCreateBranch(mother.elem);
 
-      conditionalPushBack(mother_branch->childs_, ObjectPropertyElement_t(me, mother.probability, true));
-      conditionalPushBack(me->mothers_, ObjectPropertyElement_t(mother_branch, mother.probability));
+      conditionalPushBack(mother_branch->childs_, ObjectPropertyElement(me, mother.probability, true));
+      conditionalPushBack(me->mothers_, ObjectPropertyElement(mother_branch, mother.probability));
     }
 
     /**********************
@@ -49,10 +49,10 @@ namespace ontologenius {
     // for all my disjoints
     for(auto& disjoint : property_vectors.disjoints_)
     {
-      ObjectPropertyBranch_t* disjoint_branch = findOrCreateBranch(disjoint.elem);
+      ObjectPropertyBranch* disjoint_branch = findOrCreateBranch(disjoint.elem);
 
-      conditionalPushBack(me->disjoints_, ObjectPropertyElement_t(disjoint_branch, disjoint.probability));
-      conditionalPushBack(disjoint_branch->disjoints_, ObjectPropertyElement_t(me, disjoint.probability, true));
+      conditionalPushBack(me->disjoints_, ObjectPropertyElement(disjoint_branch, disjoint.probability));
+      conditionalPushBack(disjoint_branch->disjoints_, ObjectPropertyElement(me, disjoint.probability, true));
     }
 
     /**********************
@@ -61,10 +61,10 @@ namespace ontologenius {
     // for all my inverses
     for(auto& inverse : property_vectors.inverses_)
     {
-      ObjectPropertyBranch_t* inverse_branch = findOrCreateBranch(inverse.elem);
+      ObjectPropertyBranch* inverse_branch = findOrCreateBranch(inverse.elem);
 
-      conditionalPushBack(me->inverses_, ObjectPropertyElement_t(inverse_branch, inverse.probability));
-      conditionalPushBack(inverse_branch->inverses_, ObjectPropertyElement_t(me, inverse.probability, true));
+      conditionalPushBack(me->inverses_, ObjectPropertyElement(inverse_branch, inverse.probability));
+      conditionalPushBack(inverse_branch->inverses_, ObjectPropertyElement(me, inverse.probability, true));
     }
 
     /**********************
@@ -73,9 +73,9 @@ namespace ontologenius {
     // for all my domains
     for(auto& domain : property_vectors.domains_)
     {
-      ClassBranch_t* domain_branch = class_graph_->findOrCreateBranch(domain.elem);
+      ClassBranch* domain_branch = class_graph_->findOrCreateBranch(domain.elem);
 
-      conditionalPushBack(me->domains_, ClassElement_t(domain_branch, domain.probability));
+      conditionalPushBack(me->domains_, ClassElement(domain_branch, domain.probability));
     }
 
     /**********************
@@ -84,9 +84,9 @@ namespace ontologenius {
     // for all my ranges
     for(auto& range : property_vectors.ranges_)
     {
-      ClassBranch_t* range_branch = class_graph_->findOrCreateBranch(range.elem);
+      ClassBranch* range_branch = class_graph_->findOrCreateBranch(range.elem);
 
-      conditionalPushBack(me->ranges_, ClassElement_t(range_branch, range.probability));
+      conditionalPushBack(me->ranges_, ClassElement(range_branch, range.probability));
     }
 
     /**********************
@@ -105,12 +105,12 @@ namespace ontologenius {
       if(chain_i.size() == 0)
         continue;
 
-      std::vector<ObjectPropertyBranch_t*> chain;
-      ObjectPropertyBranch_t* first = nullptr;
+      std::vector<ObjectPropertyBranch*> chain;
+      ObjectPropertyBranch* first = nullptr;
 
       for(auto& link : chain_i)
       {
-        ObjectPropertyBranch_t* next = findOrCreateBranch(link);
+        ObjectPropertyBranch* next = findOrCreateBranch(link);
 
         if(first == nullptr)
           first = next;
@@ -129,12 +129,12 @@ namespace ontologenius {
 
   void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
   {
-    std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
     for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
     {
       // I need to find myself
-      ObjectPropertyBranch_t* me = findOrCreateBranch(disjoints[disjoints_i]);
+      ObjectPropertyBranch* me = findOrCreateBranch(disjoints[disjoints_i]);
 
       // for all my disjoints ...
       for(size_t disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
@@ -142,10 +142,10 @@ namespace ontologenius {
         //... excepted me
         if(disjoints_i != disjoints_j)
         {
-          ObjectPropertyBranch_t* disjoint_branch = findOrCreateBranch(disjoints[disjoints_j]);
+          ObjectPropertyBranch* disjoint_branch = findOrCreateBranch(disjoints[disjoints_j]);
 
-          conditionalPushBack(me->disjoints_, ObjectPropertyElement_t(disjoint_branch));
-          conditionalPushBack(disjoint_branch->disjoints_, ObjectPropertyElement_t(me, 1.0, true));
+          conditionalPushBack(me->disjoints_, ObjectPropertyElement(disjoint_branch));
+          conditionalPushBack(disjoint_branch->disjoints_, ObjectPropertyElement(me, 1.0, true));
         }
       }
     }
@@ -154,9 +154,9 @@ namespace ontologenius {
   std::unordered_set<std::string> ObjectPropertyGraph::getInverse(const std::string& value)
   {
     std::unordered_set<std::string> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
-    ObjectPropertyBranch_t* branch = container_.find(value);
+    ObjectPropertyBranch* branch = container_.find(value);
     if(branch != nullptr)
       for(auto& inverse : branch->inverses_)
         getDown(inverse.elem, res);
@@ -167,9 +167,9 @@ namespace ontologenius {
   std::unordered_set<index_t> ObjectPropertyGraph::getInverse(index_t value)
   {
     std::unordered_set<index_t> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
-    ObjectPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+    ObjectPropertyBranch* branch = container_.find(ValuedNode::table_.get(value));
     if(branch != nullptr)
       for(auto& inverse : branch->inverses_)
         getDown(inverse.elem, res);
@@ -180,10 +180,10 @@ namespace ontologenius {
   std::unordered_set<std::string> ObjectPropertyGraph::getDomain(const std::string& value, size_t depth)
   {
     std::unordered_set<std::string> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
-    ObjectPropertyBranch_t* branch = container_.find(value);
-    std::unordered_set<ObjectPropertyBranch_t*> up_trace;
+    ObjectPropertyBranch* branch = container_.find(value);
+    std::unordered_set<ObjectPropertyBranch*> up_trace;
     if(branch != nullptr)
       getDomain(branch, depth, res, up_trace);
 
@@ -193,25 +193,25 @@ namespace ontologenius {
   std::unordered_set<index_t> ObjectPropertyGraph::getDomain(index_t value, size_t depth)
   {
     std::unordered_set<index_t> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
-    ObjectPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
-    std::unordered_set<ObjectPropertyBranch_t*> up_trace;
+    ObjectPropertyBranch* branch = container_.find(ValuedNode::table_.get(value));
+    std::unordered_set<ObjectPropertyBranch*> up_trace;
     if(branch != nullptr)
       getDomain(branch, depth, res, up_trace);
 
     return res;
   }
 
-  void ObjectPropertyGraph::getDomainPtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth)
+  void ObjectPropertyGraph::getDomainPtr(ObjectPropertyBranch* branch, std::unordered_set<ClassBranch*>& res, size_t depth)
   {
-    std::unordered_set<ObjectPropertyBranch_t*> up_trace;
+    std::unordered_set<ObjectPropertyBranch*> up_trace;
     if(branch != nullptr)
       getDomainPtr(branch, depth, res, up_trace);
   }
 
   template<typename T>
-  void ObjectPropertyGraph::getDomain(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<ObjectPropertyBranch_t*>& up_trace)
+  void ObjectPropertyGraph::getDomain(ObjectPropertyBranch* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<ObjectPropertyBranch*>& up_trace)
   {
     for(auto& domain : branch->domains_)
       class_graph_->getDown(domain.elem, res, depth);
@@ -221,7 +221,7 @@ namespace ontologenius {
         getDomain(mother.elem, depth, res, up_trace);
   }
 
-  void ObjectPropertyGraph::getDomainPtr(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& res, std::unordered_set<ObjectPropertyBranch_t*>& up_trace)
+  void ObjectPropertyGraph::getDomainPtr(ObjectPropertyBranch* branch, size_t depth, std::unordered_set<ClassBranch*>& res, std::unordered_set<ObjectPropertyBranch*>& up_trace)
   {
     for(auto& domain : branch->domains_)
       class_graph_->getDownPtr(domain.elem, res, depth);
@@ -234,10 +234,10 @@ namespace ontologenius {
   std::unordered_set<std::string> ObjectPropertyGraph::getRange(const std::string& value, size_t depth)
   {
     std::unordered_set<std::string> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
-    ObjectPropertyBranch_t* branch = container_.find(value);
-    std::unordered_set<ObjectPropertyBranch_t*> up_trace;
+    ObjectPropertyBranch* branch = container_.find(value);
+    std::unordered_set<ObjectPropertyBranch*> up_trace;
     if(branch != nullptr)
       getRange(branch, depth, res, up_trace);
 
@@ -247,25 +247,25 @@ namespace ontologenius {
   std::unordered_set<index_t> ObjectPropertyGraph::getRange(index_t value, size_t depth)
   {
     std::unordered_set<index_t> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch_t>::mutex_);
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
-    ObjectPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
-    std::unordered_set<ObjectPropertyBranch_t*> up_trace;
+    ObjectPropertyBranch* branch = container_.find(ValuedNode::table_.get(value));
+    std::unordered_set<ObjectPropertyBranch*> up_trace;
     if(branch != nullptr)
       getRange(branch, depth, res, up_trace);
 
     return res;
   }
 
-  void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth)
+  void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch* branch, std::unordered_set<ClassBranch*>& res, size_t depth)
   {
-    std::unordered_set<ObjectPropertyBranch_t*> up_trace;
+    std::unordered_set<ObjectPropertyBranch*> up_trace;
     if(branch != nullptr)
       getRangePtr(branch, depth, res, up_trace);
   }
 
   template<typename T>
-  void ObjectPropertyGraph::getRange(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<ObjectPropertyBranch_t*>& up_trace)
+  void ObjectPropertyGraph::getRange(ObjectPropertyBranch* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<ObjectPropertyBranch*>& up_trace)
   {
     for(auto& range : branch->ranges_)
       class_graph_->getDown(range.elem, res, depth);
@@ -275,7 +275,7 @@ namespace ontologenius {
         getRange(mother.elem, depth, res, up_trace);
   }
 
-  void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& res, std::unordered_set<ObjectPropertyBranch_t*>& up_trace)
+  void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch* branch, size_t depth, std::unordered_set<ClassBranch*>& res, std::unordered_set<ObjectPropertyBranch*>& up_trace)
   {
     for(auto& range : branch->ranges_)
       class_graph_->getDownPtr(range.elem, res, depth);
@@ -285,14 +285,14 @@ namespace ontologenius {
         getRangePtr(mother.elem, depth, res, up_trace);
   }
 
-  void ObjectPropertyGraph::getDomainAndRangePtr(ObjectPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& domains, std::unordered_set<ClassBranch_t*>& ranges, size_t depth)
+  void ObjectPropertyGraph::getDomainAndRangePtr(ObjectPropertyBranch* branch, std::unordered_set<ClassBranch*>& domains, std::unordered_set<ClassBranch*>& ranges, size_t depth)
   {
-    std::unordered_set<ObjectPropertyBranch_t*> up_trace;
+    std::unordered_set<ObjectPropertyBranch*> up_trace;
     if(branch != nullptr)
       getDomainAndRangePtr(branch, depth, domains, ranges, up_trace);
   }
 
-  void ObjectPropertyGraph::getDomainAndRangePtr(ObjectPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& domains, std::unordered_set<ClassBranch_t*>& ranges, std::unordered_set<ObjectPropertyBranch_t*>& up_trace)
+  void ObjectPropertyGraph::getDomainAndRangePtr(ObjectPropertyBranch* branch, size_t depth, std::unordered_set<ClassBranch*>& domains, std::unordered_set<ClassBranch*>& ranges, std::unordered_set<ObjectPropertyBranch*>& up_trace)
   {
     for(auto& domain : branch->domains_)
       class_graph_->getDownPtr(domain.elem, domains, depth);
@@ -308,8 +308,8 @@ namespace ontologenius {
   bool ObjectPropertyGraph::addInverseOf(const std::string& from, const std::string& on)
   {
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-    ObjectPropertyBranch_t* from_branch = container_.find(from);
-    ObjectPropertyBranch_t* on_branch = container_.find(on);
+    ObjectPropertyBranch* from_branch = container_.find(from);
+    ObjectPropertyBranch* on_branch = container_.find(on);
     if((from_branch == nullptr) && (on_branch == nullptr))
       return false;
     else
@@ -320,18 +320,18 @@ namespace ontologenius {
         on_branch = newDefaultBranch(on);
     }
 
-    conditionalPushBack(from_branch->inverses_, ObjectPropertyElement_t(on_branch, 1.0));
-    conditionalPushBack(on_branch->inverses_, ObjectPropertyElement_t(from_branch, 1.0, true));
+    conditionalPushBack(from_branch->inverses_, ObjectPropertyElement(on_branch, 1.0));
+    conditionalPushBack(on_branch->inverses_, ObjectPropertyElement(from_branch, 1.0, true));
     return true;
   }
 
   bool ObjectPropertyGraph::removeInverseOf(const std::string& from, const std::string& on)
   {
-    ObjectPropertyBranch_t* from_branch = container_.find(from);
+    ObjectPropertyBranch* from_branch = container_.find(from);
     if(from_branch == nullptr)
       return false;
 
-    ObjectPropertyBranch_t* on_branch = container_.find(on);
+    ObjectPropertyBranch* on_branch = container_.find(on);
     if(on_branch == nullptr)
       return false;
 
@@ -357,14 +357,14 @@ namespace ontologenius {
 
   bool ObjectPropertyGraph::isIrreflexive(const std::string& prop)
   {
-    ObjectPropertyBranch_t* branch = container_.find(prop);
+    ObjectPropertyBranch* branch = container_.find(prop);
     if(branch == nullptr)
       return false;
     else
       return isIrreflexive(branch);
   }
 
-  bool ObjectPropertyGraph::isIrreflexive(ObjectPropertyBranch_t* prop)
+  bool ObjectPropertyGraph::isIrreflexive(ObjectPropertyBranch* prop)
   {
     if(prop->properties_.irreflexive_property_)
       return true;
@@ -382,14 +382,14 @@ namespace ontologenius {
 
   bool ObjectPropertyGraph::isAsymetric(const std::string& prop)
   {
-    ObjectPropertyBranch_t* branch = container_.find(prop);
+    ObjectPropertyBranch* branch = container_.find(prop);
     if(branch == nullptr)
       return false;
     else
       return isAsymetric(branch);
   }
 
-  bool ObjectPropertyGraph::isAsymetric(ObjectPropertyBranch_t* prop)
+  bool ObjectPropertyGraph::isAsymetric(ObjectPropertyBranch* prop)
   {
     if(prop->properties_.antisymetric_property_)
       return true;
@@ -414,7 +414,7 @@ namespace ontologenius {
     }
   }
 
-  void ObjectPropertyGraph::cpyBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch)
+  void ObjectPropertyGraph::cpyBranch(ObjectPropertyBranch* old_branch, ObjectPropertyBranch* new_branch)
   {
     new_branch->nb_updates_ = old_branch->nb_updates_;
     new_branch->updated_ = old_branch->updated_;
@@ -446,11 +446,11 @@ namespace ontologenius {
     new_branch->str_chains_ = old_branch->str_chains_;
   }
 
-  void ObjectPropertyGraph::cpyChainOfBranch(ObjectPropertyBranch_t* old_branch, ObjectPropertyBranch_t* new_branch)
+  void ObjectPropertyGraph::cpyChainOfBranch(ObjectPropertyBranch* old_branch, ObjectPropertyBranch* new_branch)
   {
     for(const auto& chain : old_branch->chains_)
     {
-      std::vector<ObjectPropertyBranch_t*> tmp;
+      std::vector<ObjectPropertyBranch*> tmp;
       std::transform(chain.cbegin(), chain.cend(), std::back_inserter(tmp), [this](const auto& link) { return this->container_.find(link->value()); });
       new_branch->chains_.push_back(std::move(tmp));
     }

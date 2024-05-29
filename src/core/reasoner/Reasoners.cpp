@@ -327,7 +327,7 @@ namespace ontologenius {
 
   void Reasoners::computeIndividualsUpdatesPeriodic()
   {
-    std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.getSafe();
+    std::vector<IndividualBranch*> indivs = ontology_->individual_graph_.getSafe();
     for(auto& indiv : indivs)
       if(indiv->nb_updates_ != 0)
       {
@@ -338,7 +338,7 @@ namespace ontologenius {
 
   void Reasoners::resetIndividualsUpdates()
   {
-    std::vector<IndividualBranch_t*> indivs = ontology_->individual_graph_.get();
+    std::vector<IndividualBranch*> indivs = ontology_->individual_graph_.get();
     for(auto& indiv : indivs)
     {
       indiv->nb_updates_ = 0;

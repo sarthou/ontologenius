@@ -4,7 +4,7 @@
 
 namespace ontologenius {
 
-  int IndividualBranch_t::objectRelationExists(ObjectPropertyBranch_t* property, IndividualBranch_t* individual)
+  int IndividualBranch::objectRelationExists(ObjectPropertyBranch* property, IndividualBranch* individual)
   {
     for(size_t i = 0; i < object_relations_.size(); i++)
     {
@@ -15,7 +15,7 @@ namespace ontologenius {
     return -1;
   }
 
-  int IndividualBranch_t::dataRelationExists(DataPropertyBranch_t* property, LiteralNode* data)
+  int IndividualBranch::dataRelationExists(DataPropertyBranch* property, LiteralNode* data)
   {
     for(size_t i = 0; i < data_relations_.size(); i++)
     {
@@ -26,12 +26,12 @@ namespace ontologenius {
     return -1;
   }
 
-  bool IndividualBranch_t::hasUpdatedObjectRelation()
+  bool IndividualBranch::hasUpdatedObjectRelation()
   {
     return (std::find_if(object_relations_.begin(), object_relations_.end(), [](const auto& relation) { return relation.first->updated_; }) != object_relations_.end());
   }
 
-  bool IndividualBranch_t::hasUpdatedDataRelation()
+  bool IndividualBranch::hasUpdatedDataRelation()
   {
     return (std::find_if(data_relations_.begin(), data_relations_.end(), [](const auto& relation) { return relation.first->updated_; }) != data_relations_.end());
   }

@@ -15,8 +15,8 @@ namespace ontologenius {
         {
           if(relation.first->properties_.symetric_property_ == true)
           {
-            IndividualBranch_t* sym_indiv = relation.second;
-            ObjectPropertyBranch_t* sym_prop = relation.first;
+            IndividualBranch* sym_indiv = relation.second;
+            ObjectPropertyBranch* sym_prop = relation.first;
             if(!symetricExist(indiv, sym_prop, sym_indiv))
             {
               try
@@ -38,7 +38,7 @@ namespace ontologenius {
     }
   }
 
-  bool ReasonerSymmetric::symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv)
+  bool ReasonerSymmetric::symetricExist(IndividualBranch* indiv_on, ObjectPropertyBranch* sym_prop, IndividualBranch* sym_indiv)
   {
     for(auto& relation : sym_indiv->object_relations_)
     {

@@ -21,13 +21,13 @@ namespace ontologenius {
     ObjectPropertyGraph* object_property_graph_;
     DataPropertyGraph* data_property_graph_;
 
-    void writeAnnotation(ObjectPropertyBranch_t* branch);
-    void writeAnnotation(DataPropertyBranch_t* branch);
-    void writeSubPropertyOf(ObjectPropertyBranch_t* branch);
-    void writeSubPropertyOf(DataPropertyBranch_t* branch);
+    void writeAnnotation(ObjectPropertyBranch* branch);
+    void writeAnnotation(DataPropertyBranch* branch);
+    void writeSubPropertyOf(ObjectPropertyBranch* branch);
+    void writeSubPropertyOf(DataPropertyBranch* branch);
     void writeRange(const std::vector<LiteralNode*>& ranges);
-    void writeRange(const std::vector<ClassElement_t>& ranges);
-    void writeDomain(const std::vector<ClassElement_t>& domains);
+    void writeRange(const std::vector<ClassElement>& ranges);
+    void writeDomain(const std::vector<ClassElement>& domains);
   };
 
 } // namespace ontologenius

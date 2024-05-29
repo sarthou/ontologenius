@@ -24,32 +24,32 @@ namespace ontologenius {
   private:
     bool standard_mode_;
 
-    std::unordered_map<ClassBranch_t*, std::unordered_set<ClassBranch_t*>> disjoints_cache_;
+    std::unordered_map<ClassBranch*, std::unordered_set<ClassBranch*>> disjoints_cache_;
 
-    bool checkClassesDisjointess(IndividualBranch_t* indiv, ClassBranch_t* class_equiv);
-    int relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkClassesDisjointess(IndividualBranch* indiv, ClassBranch* class_equiv);
+    int relationExists(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 
-    bool resolveFirstLayer(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
-    bool resolveTree(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
-    bool resolveTree(LiteralNode* literal, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool resolveFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem);
+    bool resolveTree(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool resolveTree(LiteralNode* literal, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 
-    bool checkRestrictionFirstLayer(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem);
-    bool checkRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
-    bool checkTypeRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
-    bool checkTypeRestriction(LiteralNode* literal, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
-    bool checkIndividualRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkRestrictionFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem);
+    bool checkRestriction(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkTypeRestriction(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkTypeRestriction(LiteralNode* literal, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkIndividualRestriction(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 
-    bool checkCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 
-    bool checkMinCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
-    bool checkMaxCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
-    bool checkExactlyCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
-    bool checkOnlyCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
-    bool checkSomeCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
-    bool checkValueCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkMinCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkMaxCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkExactlyCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkOnlyCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkSomeCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkValueCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 
     template<typename T>
-    bool checkPropertyExistence(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem)
+    bool checkPropertyExistence(const std::vector<T>& relations, AnonymousClassElement* ano_elem)
     {
       for(auto& relation : relations)
         if(testBranchInheritanceFirstLayer(ano_elem, relation.first))
@@ -58,7 +58,7 @@ namespace ontologenius {
     }
 
     template<typename T>
-    std::vector<std::pair<std::string, size_t>> checkMinCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+    std::vector<std::pair<std::string, size_t>> checkMinCard(const std::vector<T>& relations, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
     {
       std::vector<std::pair<std::string, size_t>> indexes;
       std::string explanation;
@@ -95,7 +95,7 @@ namespace ontologenius {
     }
 
     template<typename T>
-    std::vector<std::pair<std::string, size_t>> checkMaxCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+    std::vector<std::pair<std::string, size_t>> checkMaxCard(const std::vector<T>& relations, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
     {
       std::vector<std::pair<std::string, size_t>> indexes;
       std::string explanation;
@@ -138,7 +138,7 @@ namespace ontologenius {
     }
 
     template<typename T>
-    std::vector<std::pair<std::string, size_t>> checkExactlyCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+    std::vector<std::pair<std::string, size_t>> checkExactlyCard(const std::vector<T>& relations, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
     {
       std::vector<std::pair<std::string, size_t>> indexes;
       std::string explanation;
@@ -176,7 +176,7 @@ namespace ontologenius {
     }
 
     template<typename T>
-    std::vector<std::pair<std::string, size_t>> checkOnlyCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+    std::vector<std::pair<std::string, size_t>> checkOnlyCard(const std::vector<T>& relations, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
     {
       std::vector<std::pair<std::string, size_t>> indexes;
       std::string explanation;
@@ -218,7 +218,7 @@ namespace ontologenius {
     }
 
     template<typename T>
-    std::pair<std::string, int> checkSomeCard(const std::vector<T>& relations, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+    std::pair<std::string, int> checkSomeCard(const std::vector<T>& relations, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
     {
       std::string explanation;
 
@@ -247,18 +247,18 @@ namespace ontologenius {
       return std::make_pair("", -1);
     }
 
-    inline std::unordered_set<ObjectPropertyBranch_t*> getUpProperty(ObjectPropertyBranch_t* property)
+    inline std::unordered_set<ObjectPropertyBranch*> getUpProperty(ObjectPropertyBranch* property)
     {
       return ontology_->object_property_graph_.getUpPtrSafe(property);
     }
 
-    inline std::unordered_set<DataPropertyBranch_t*> getUpProperty(DataPropertyBranch_t* property)
+    inline std::unordered_set<DataPropertyBranch*> getUpProperty(DataPropertyBranch* property)
     {
       return ontology_->data_property_graph_.getUpPtrSafe(property);
     }
 
     template<typename T>
-    bool testBranchInheritanceFirstLayer(AnonymousClassElement_t* ano_elem, T property)
+    bool testBranchInheritanceFirstLayer(AnonymousClassElement* ano_elem, T property)
     {
       auto up_vector = getUpProperty(property);
       for(auto up : up_vector)
@@ -268,7 +268,7 @@ namespace ontologenius {
     }
 
     template<typename T>
-    bool testBranchInheritance(AnonymousClassElement_t* ano_elem, T* branch, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+    bool testBranchInheritance(AnonymousClassElement* ano_elem, T* branch, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
     {
       if(ano_elem->object_property_involved_ != nullptr)
         return (existInInheritance(branch, ano_elem->object_property_involved_->get(), used));
@@ -302,12 +302,12 @@ namespace ontologenius {
       return false;
     }
 
-    inline bool testProperty(AnonymousClassElement_t* ano_elem, ObjectPropertyBranch_t* property)
+    inline bool testProperty(AnonymousClassElement* ano_elem, ObjectPropertyBranch* property)
     {
       return ano_elem->object_property_involved_ == property;
     }
 
-    inline bool testProperty(AnonymousClassElement_t* ano_elem, DataPropertyBranch_t* property)
+    inline bool testProperty(AnonymousClassElement* ano_elem, DataPropertyBranch* property)
     {
       return ano_elem->data_property_involved_ == property;
     }

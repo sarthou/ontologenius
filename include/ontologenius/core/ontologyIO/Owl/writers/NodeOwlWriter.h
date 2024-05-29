@@ -23,13 +23,13 @@ namespace ontologenius {
     void writeString(const std::string& text, size_t level = 0);
 
     template<typename T>
-    std::string getProba(Single_t<T>& element)
+    std::string getProba(SingleElement<T>& element)
     {
       return (element < 1.0) ? " onto:probability=\"" + std::to_string(element.probability) + "\"" : "";
     }
 
     template<typename T, typename U>
-    std::string getProba(Pair_t<T, U>& element)
+    std::string getProba(PairElement<T, U>& element)
     {
       return (element < 1.0) ? " onto:probability=\"" + std::to_string(element.probability) + "\"" : "";
     }

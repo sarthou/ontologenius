@@ -18,14 +18,14 @@ namespace ontologenius {
 
     std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
 
-    std::vector<DataPropertyBranch_t*> properties = property_graph_->get();
+    std::vector<DataPropertyBranch*> properties = property_graph_->get();
     for(auto property : properties)
       writeProperty(property);
 
     file_ = nullptr;
   }
 
-  void DataPropertiesOwlWriter::writeProperty(DataPropertyBranch_t* branch)
+  void DataPropertiesOwlWriter::writeProperty(DataPropertyBranch* branch)
   {
     std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
     <owl:DatatypeProperty rdf:about=\"" +
@@ -45,7 +45,7 @@ namespace ontologenius {
     writeString(tmp);
   }
 
-  void DataPropertiesOwlWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
+  void DataPropertiesOwlWriter::writeSubPropertyOf(DataPropertyBranch* branch)
   {
     for(auto& mother : branch->mothers_)
       if(mother.infered == false)
@@ -58,7 +58,7 @@ namespace ontologenius {
       }
   }
 
-  void DataPropertiesOwlWriter::writeRange(DataPropertyBranch_t* branch)
+  void DataPropertiesOwlWriter::writeRange(DataPropertyBranch* branch)
   {
     for(auto& range : branch->ranges_)
     {
@@ -71,7 +71,7 @@ namespace ontologenius {
     }
   }
 
-  void DataPropertiesOwlWriter::writeDomain(DataPropertyBranch_t* branch)
+  void DataPropertiesOwlWriter::writeDomain(DataPropertyBranch* branch)
   {
     for(auto& domain : branch->domains_)
       if(domain.infered == false)

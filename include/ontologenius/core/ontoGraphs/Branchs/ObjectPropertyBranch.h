@@ -9,23 +9,23 @@
 namespace ontologenius {
 
   // Classes predefinition
-  class ObjectPropertyBranch_t;
-  class ClassBranch_t;
+  class ObjectPropertyBranch;
+  class ClassBranch;
 
-  typedef Single_t<ObjectPropertyBranch_t*> ObjectPropertyElement_t;
-  typedef Single_t<ClassBranch_t*> ClassElement_t;
+  typedef SingleElement<ObjectPropertyBranch*> ObjectPropertyElement;
+  typedef SingleElement<ClassBranch*> ClassElement;
 
-  class ObjectPropertyBranch_t : public Branch_t<ObjectPropertyBranch_t>,
-                                 public PropertyBranch_t<ObjectPropertyBranch_t>
+  class ObjectPropertyBranch : public Branch<ObjectPropertyBranch>,
+                               public PropertyBranch<ObjectPropertyBranch>
   {
   public:
-    std::vector<ObjectPropertyElement_t> inverses_;
-    std::vector<ClassElement_t> domains_;
-    std::vector<ClassElement_t> ranges_;
-    std::vector<std::vector<ObjectPropertyBranch_t*>> chains_;
+    std::vector<ObjectPropertyElement> inverses_;
+    std::vector<ClassElement> domains_;
+    std::vector<ClassElement> ranges_;
+    std::vector<std::vector<ObjectPropertyBranch*>> chains_;
     std::vector<std::vector<std::string>> str_chains_;
 
-    ObjectPropertyBranch_t(const std::string& value = "") : Branch_t(value){};
+    ObjectPropertyBranch(const std::string& value = "") : Branch(value){};
   };
 
 } // namespace ontologenius

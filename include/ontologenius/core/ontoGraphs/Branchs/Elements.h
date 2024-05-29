@@ -7,7 +7,7 @@
 
 namespace ontologenius {
 
-  class ProbabilisticElement_t
+  class ProbabilisticElement
   {
   public:
     float probability;
@@ -26,26 +26,26 @@ namespace ontologenius {
   };
 
   template<typename T>
-  class Single_t : public ProbabilisticElement_t
+  class SingleElement : public ProbabilisticElement
   {
   public:
     T elem;
 
-    explicit Single_t(const T& elem, float probability = 1.0, bool infered = false)
+    explicit SingleElement(const T& elem, float probability = 1.0, bool infered = false)
     {
       this->elem = elem;
       this->probability = probability;
       this->infered = infered;
     }
 
-    Single_t(const Single_t& other, const T& elem)
+    SingleElement(const SingleElement& other, const T& elem)
     {
       this->elem = elem;
       this->probability = other.probability;
       this->infered = other.infered;
     }
 
-    Single_t(const Single_t& other)
+    SingleElement(const SingleElement& other)
     {
       // A copy constructor with a pointer is dangerous, never delete it
       // it should be managed by a Graph class
@@ -55,7 +55,7 @@ namespace ontologenius {
       this->induced_traces = other.induced_traces;
     }
 
-    bool operator==(const Single_t& other)
+    bool operator==(const SingleElement& other)
     {
       return (elem == other.elem);
     }
@@ -67,13 +67,13 @@ namespace ontologenius {
   };
 
   template<typename T, typename U>
-  class Pair_t : public ProbabilisticElement_t
+  class PairElement : public ProbabilisticElement
   {
   public:
     T first;
     U second;
 
-    Pair_t(const T& first, const U& second, float probability = 1.0, bool infered = false)
+    PairElement(const T& first, const U& second, float probability = 1.0, bool infered = false)
     {
       this->first = first;
       this->second = second;
@@ -81,7 +81,7 @@ namespace ontologenius {
       this->infered = infered;
     }
 
-    Pair_t(const Pair_t& other, const T& first, const U& second)
+    PairElement(const PairElement& other, const T& first, const U& second)
     {
       this->first = first;
       this->second = second;
@@ -89,7 +89,7 @@ namespace ontologenius {
       this->infered = other.infered;
     }
 
-    Pair_t(const Pair_t& other)
+    PairElement(const PairElement& other)
     {
       // A copy constructor with a pointer is dangerous, never delete it
       // it should be managed by a Graph class
@@ -100,7 +100,7 @@ namespace ontologenius {
       this->induced_traces = other.induced_traces;
     }
 
-    bool operator==(const Pair_t& other)
+    bool operator==(const PairElement& other)
     {
       return ((first == other.first) && (second == other.second));
     }

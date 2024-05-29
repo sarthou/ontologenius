@@ -240,11 +240,11 @@ namespace ontologenius {
       else if(property == "onto:label")
         pushLang(individual_vector_.muted_dictionary_, object);
       else if(object.second.empty())
-        OntologyReader::push(individual_vector_.object_relations_, Pair_t<std::string, std::string>(property, object.first, 1.0), "$", "^");
+        OntologyReader::push(individual_vector_.object_relations_, PairElement<std::string, std::string>(property, object.first, 1.0), "$", "^");
       else
       {
         LiteralNode data(object.second, object.first);
-        OntologyReader::push(individual_vector_.data_relations_, Pair_t<std::string, std::string>(property, data.toString(), 1.0), "$", "^");
+        OntologyReader::push(individual_vector_.data_relations_, PairElement<std::string, std::string>(property, data.toString(), 1.0), "$", "^");
       }
     }
   }
@@ -468,7 +468,7 @@ namespace ontologenius {
     return object;
   }
 
-  void OntologyTtlReader::push(std::vector<Single_t<std::string>>& vect, const std::string& element, float probability, const std::string& symbole)
+  void OntologyTtlReader::push(std::vector<SingleElement<std::string>>& vect, const std::string& element, float probability, const std::string& symbole)
   {
     vect.emplace_back(element, probability);
     if(display_ && symbole.empty() == false)

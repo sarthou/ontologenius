@@ -94,7 +94,7 @@ namespace ontologenius {
     }
     else
     {
-      ClassBranch_t* tmp = onto_->class_graph_.findBranchSafe(name);
+      ClassBranch* tmp = onto_->class_graph_.findBranchSafe(name);
       onto_->class_graph_.deleteClass(tmp);
       return (tmp != nullptr);
     }
@@ -109,7 +109,7 @@ namespace ontologenius {
     }
     else
     {
-      IndividualBranch_t* tmp = onto_->individual_graph_.findBranchSafe(name);
+      IndividualBranch* tmp = onto_->individual_graph_.findBranchSafe(name);
       onto_->individual_graph_.deleteIndividual(tmp);
       return (tmp != nullptr);
     }
@@ -284,8 +284,8 @@ namespace ontologenius {
       data_property = true;
     }
 
-    IndividualBranch_t* indiv_branch = nullptr;
-    ClassBranch_t* class_branch = nullptr;
+    IndividualBranch* indiv_branch = nullptr;
+    ClassBranch* class_branch = nullptr;
 
     try
     {

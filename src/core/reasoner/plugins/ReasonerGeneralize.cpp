@@ -21,7 +21,7 @@ namespace ontologenius {
 
   bool ReasonerGeneralize::periodicReason()
   {
-    std::vector<ClassBranch_t*> classes = ontology_->class_graph_.getSafe();
+    std::vector<ClassBranch*> classes = ontology_->class_graph_.getSafe();
 
     if(classes.size() > 0)
     {
@@ -31,15 +31,15 @@ namespace ontologenius {
       size_t first_id = current_id_;
       for(size_t i = 0; i < class_per_period_; i++)
       {
-        std::unordered_set<ClassBranch_t*> down_set = ontology_->class_graph_.getDownPtrSafe(classes[current_id_], 1);
+        std::unordered_set<ClassBranch*> down_set = ontology_->class_graph_.getDownPtrSafe(classes[current_id_], 1);
         down_set.erase(classes[current_id_]);
 
-        std::unordered_set<IndividualBranch_t*> indiv_down_set = ontology_->class_graph_.getDownIndividualPtrSafe(classes[current_id_], 0);
+        std::unordered_set<IndividualBranch*> indiv_down_set = ontology_->class_graph_.getDownIndividualPtrSafe(classes[current_id_], 0);
         std::shared_lock<std::shared_timed_mutex> lock_indiv_shared(ontology_->individual_graph_.mutex_);
         std::shared_lock<std::shared_timed_mutex> lock_shared(ontology_->class_graph_.mutex_);
 
-        PropertiesCounter<DataPropertyBranch_t*, LiteralNode*> data_counter(min_count_, min_percent_);
-        PropertiesCounter<ObjectPropertyBranch_t*, ClassBranch_t*> object_counter;
+        PropertiesCounter<DataPropertyBranch*, LiteralNode*> data_counter(min_count_, min_percent_);
+        PropertiesCounter<ObjectPropertyBranch*, ClassBranch*> object_counter;
 
         for(auto down : down_set)
         {
@@ -78,7 +78,7 @@ namespace ontologenius {
     return (notifications_.empty() == false);
   }
 
-  void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<DataPropertyBranch_t*, LiteralNode*, float>> properties)
+  void ReasonerGeneralize::setDeduced(ClassBranch* me, std::vector<std::tuple<DataPropertyBranch*, LiteralNode*, float>> properties)
   {
     std::unordered_set<size_t> deduced_indexs;
     for(size_t i = 0; i < me->data_relations_.size(); i++)
@@ -125,7 +125,7 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerGeneralize::setDeduced(ClassBranch_t* me, std::vector<std::tuple<ObjectPropertyBranch_t*, ClassBranch_t*, float>> properties)
+  void ReasonerGeneralize::setDeduced(ClassBranch* me, std::vector<std::tuple<ObjectPropertyBranch*, ClassBranch*, float>> properties)
   {
     std::unordered_set<size_t> deduced_indexs;
     for(size_t i = 0; i < me->object_relations_.size(); i++)

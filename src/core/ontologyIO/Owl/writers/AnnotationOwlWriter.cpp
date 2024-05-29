@@ -16,7 +16,7 @@ namespace ontologenius {
     {
       std::shared_lock<std::shared_timed_mutex> lock(object_property_graph_->mutex_);
 
-      std::vector<ObjectPropertyBranch_t*> properties = object_property_graph_->get();
+      std::vector<ObjectPropertyBranch*> properties = object_property_graph_->get();
       for(auto& property : properties)
         if(property->annotation_usage_)
           writeAnnotation(property);
@@ -25,7 +25,7 @@ namespace ontologenius {
     {
       std::shared_lock<std::shared_timed_mutex> lock(data_property_graph_->mutex_);
 
-      std::vector<DataPropertyBranch_t*> properties = data_property_graph_->get();
+      std::vector<DataPropertyBranch*> properties = data_property_graph_->get();
       for(auto& property : properties)
         if(property->annotation_usage_)
           writeAnnotation(property);
@@ -34,7 +34,7 @@ namespace ontologenius {
     file_ = nullptr;
   }
 
-  void AnnotationOwlWriter::writeAnnotation(ObjectPropertyBranch_t* branch)
+  void AnnotationOwlWriter::writeAnnotation(ObjectPropertyBranch* branch)
   {
     std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
     <owl:AnnotationProperty rdf:about=\"" +
@@ -49,7 +49,7 @@ namespace ontologenius {
     writeString(tmp);
   }
 
-  void AnnotationOwlWriter::writeAnnotation(DataPropertyBranch_t* branch)
+  void AnnotationOwlWriter::writeAnnotation(DataPropertyBranch* branch)
   {
     std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
     <owl:AnnotationProperty rdf:about=\"" +
@@ -64,7 +64,7 @@ namespace ontologenius {
     writeString(tmp);
   }
 
-  void AnnotationOwlWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
+  void AnnotationOwlWriter::writeSubPropertyOf(ObjectPropertyBranch* branch)
   {
     for(auto& mother : branch->mothers_)
       if(mother.infered == false)
@@ -77,7 +77,7 @@ namespace ontologenius {
       }
   }
 
-  void AnnotationOwlWriter::writeSubPropertyOf(DataPropertyBranch_t* branch)
+  void AnnotationOwlWriter::writeSubPropertyOf(DataPropertyBranch* branch)
   {
     for(auto& mother : branch->mothers_)
       if(mother.infered == false)
@@ -103,7 +103,7 @@ namespace ontologenius {
     }
   }
 
-  void AnnotationOwlWriter::writeRange(const std::vector<ClassElement_t>& ranges)
+  void AnnotationOwlWriter::writeRange(const std::vector<ClassElement>& ranges)
   {
     for(auto range : ranges)
       if(range.infered == false)
@@ -116,7 +116,7 @@ namespace ontologenius {
       }
   }
 
-  void AnnotationOwlWriter::writeDomain(const std::vector<ClassElement_t>& domains)
+  void AnnotationOwlWriter::writeDomain(const std::vector<ClassElement>& domains)
   {
     for(auto domain : domains)
       if(domain.infered == false)

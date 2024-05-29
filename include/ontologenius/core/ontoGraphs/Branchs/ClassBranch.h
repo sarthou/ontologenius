@@ -10,26 +10,26 @@
 namespace ontologenius {
 
   // Classes predefinition
-  class ObjectPropertyBranch_t;
-  class DataPropertyBranch_t;
-  class IndividualBranch_t;
-  class ClassBranch_t;
-  class AnonymousClassBranches_t;
+  class ObjectPropertyBranch;
+  class DataPropertyBranch;
+  class IndividualBranch;
+  class ClassBranch;
+  class AnonymousClassBranch;
 
-  typedef Single_t<IndividualBranch_t*> IndividualElement_t;
-  typedef Single_t<ClassBranch_t*> ClassElement_t;
-  typedef Pair_t<ObjectPropertyBranch_t*, ClassBranch_t*> ClassObjectRelationElement_t;
-  typedef Pair_t<DataPropertyBranch_t*, LiteralNode*> ClassDataRelationElement_t;
+  typedef SingleElement<IndividualBranch*> IndividualElement;
+  typedef SingleElement<ClassBranch*> ClassElement;
+  typedef PairElement<ObjectPropertyBranch*, ClassBranch*> ClassObjectRelationElement_t;
+  typedef PairElement<DataPropertyBranch*, LiteralNode*> ClassDataRelationElement_t;
 
-  class ClassBranch_t : public Branch_t<ClassBranch_t>
+  class ClassBranch : public Branch<ClassBranch>
   {
   public:
-    std::vector<IndividualElement_t> individual_childs_;
+    std::vector<IndividualElement> individual_childs_;
     std::vector<ClassObjectRelationElement_t> object_relations_;
     std::vector<ClassDataRelationElement_t> data_relations_;
-    AnonymousClassBranches_t* equiv_relations_;
+    AnonymousClassBranch* equiv_relations_;
 
-    ClassBranch_t(const std::string& value = "") : Branch_t(value), equiv_relations_(nullptr){};
+    ClassBranch(const std::string& value = "") : Branch(value), equiv_relations_(nullptr){};
   };
 
 } // namespace ontologenius

@@ -21,7 +21,7 @@ std::vector<std::string> generate_sequence(ontologenius::ClassGraph& onto)
 {
   srand(time(nullptr));
 
-  std::vector<ontologenius::ClassBranch_t*> base = onto.get();
+  std::vector<ontologenius::ClassBranch*> base = onto.get();
   size_t max_index = base.size();
 
   std::string _1_10_1 = base[rand() % max_index]->value();

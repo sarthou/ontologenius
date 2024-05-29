@@ -7,14 +7,14 @@
 
 namespace ontologenius {
 
-  class IndividualBranch_t;
-  class ObjectPropertyBranch_t;
-  class ClassBranch_t;
+  class IndividualBranch;
+  class ObjectPropertyBranch;
+  class ClassBranch;
 
-  typedef Triplet_t<IndividualBranch_t, ObjectPropertyBranch_t, IndividualBranch_t> ObjectRelationTriplet_t;
-  typedef Triplets<IndividualBranch_t, ObjectPropertyBranch_t, IndividualBranch_t> ObjectRelationTriplets;
-  typedef Triplet_t<IndividualBranch_t, void, ClassBranch_t> InheritedRelationTriplet_t;
-  typedef Triplets<IndividualBranch_t, void, ClassBranch_t> InheritedRelationTriplets;
+  typedef Triplet_t<IndividualBranch, ObjectPropertyBranch, IndividualBranch> ObjectRelationTriplet_t;
+  typedef Triplets<IndividualBranch, ObjectPropertyBranch, IndividualBranch> ObjectRelationTriplets;
+  typedef Triplet_t<IndividualBranch, void, ClassBranch> InheritedRelationTriplet_t;
+  typedef Triplets<IndividualBranch, void, ClassBranch> InheritedRelationTriplets;
 
   template<typename T>
   class RelationsWithInductions

@@ -24,7 +24,7 @@ namespace ontologenius {
 
     std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
 
-    std::vector<ClassBranch_t*> classes = class_graph_->get();
+    std::vector<ClassBranch*> classes = class_graph_->get();
 
     for(auto& classe : classes)
       writeClass(classe);
@@ -38,13 +38,13 @@ namespace ontologenius {
 
     std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
 
-    std::vector<ClassBranch_t*> classes = class_graph_->get();
+    std::vector<ClassBranch*> classes = class_graph_->get();
     writeDisjointWith(classes);
 
     file_ = nullptr;
   }
 
-  void ClassOwlWriter::writeClass(ClassBranch_t* branch)
+  void ClassOwlWriter::writeClass(ClassBranch* branch)
   {
     std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
     <owl:Class rdf:about=\"" +
@@ -66,9 +66,9 @@ namespace ontologenius {
     writeString(tmp);
   }
 
-  void ClassOwlWriter::writeEquivalentClass(ClassBranch_t* branch)
+  void ClassOwlWriter::writeEquivalentClass(ClassBranch* branch)
   {
-    AnonymousClassBranches_t* equiv = branch->equiv_relations_;
+    AnonymousClassBranch* equiv = branch->equiv_relations_;
 
     if(equiv != nullptr)
     {
@@ -104,7 +104,7 @@ namespace ontologenius {
     }
   }
 
-  void ClassOwlWriter::writeRestriction(AnonymousClassElement_t* ano_elem, size_t level)
+  void ClassOwlWriter::writeRestriction(AnonymousClassElement* ano_elem, size_t level)
   {
     std::string tmp, field, subfield;
 
@@ -139,7 +139,7 @@ namespace ontologenius {
     writeString(tmp, level);
   }
 
-  void ClassOwlWriter::writeClassExpression(AnonymousClassElement_t* ano_elem, size_t level)
+  void ClassOwlWriter::writeClassExpression(AnonymousClassElement* ano_elem, size_t level)
   {
     std::string tmp, field;
 
@@ -161,7 +161,7 @@ namespace ontologenius {
     writeString(tmp, level);
   }
 
-  void ClassOwlWriter::writeDatatypeExpression(AnonymousClassElement_t* ano_elem, size_t level)
+  void ClassOwlWriter::writeDatatypeExpression(AnonymousClassElement* ano_elem, size_t level)
   {
     std::string tmp, field;
 
@@ -181,7 +181,7 @@ namespace ontologenius {
     writeString(tmp, level);
   }
 
-  void ClassOwlWriter::writeIntersection(AnonymousClassElement_t* ano_elem, size_t level, bool is_data_prop)
+  void ClassOwlWriter::writeIntersection(AnonymousClassElement* ano_elem, size_t level, bool is_data_prop)
   {
     std::string tmp, field;
     field = "owl:intersectionOf";
@@ -196,7 +196,7 @@ namespace ontologenius {
     writeString(tmp, level);
   }
 
-  void ClassOwlWriter::writeUnion(AnonymousClassElement_t* ano_elem, size_t level, bool is_data_prop)
+  void ClassOwlWriter::writeUnion(AnonymousClassElement* ano_elem, size_t level, bool is_data_prop)
   {
     std::string tmp;
     std::string field = "owl:unionOf";
@@ -211,7 +211,7 @@ namespace ontologenius {
     writeString(tmp, level);
   }
 
-  void ClassOwlWriter::writeOneOf(AnonymousClassElement_t* ano_elem, size_t level)
+  void ClassOwlWriter::writeOneOf(AnonymousClassElement* ano_elem, size_t level)
   {
     std::string tmp, field;
     field = "owl:oneOf";
@@ -229,7 +229,7 @@ namespace ontologenius {
     writeString(tmp, level);
   }
 
-  void ClassOwlWriter::writeComplement(AnonymousClassElement_t* ano_elem, size_t level)
+  void ClassOwlWriter::writeComplement(AnonymousClassElement* ano_elem, size_t level)
   {
     std::string tmp;
     std::string field = "owl:complementOf";
@@ -251,7 +251,7 @@ namespace ontologenius {
     }
   }
 
-  void ClassOwlWriter::writeDataComplement(AnonymousClassElement_t* ano_elem, size_t level)
+  void ClassOwlWriter::writeDataComplement(AnonymousClassElement* ano_elem, size_t level)
   {
     std::string tmp, field;
     field = "owl:datatypeComplementOf";
@@ -273,7 +273,7 @@ namespace ontologenius {
     }
   }
 
-  void ClassOwlWriter::writeComplexDescription(AnonymousClassElement_t* ano_elem, size_t level, bool is_data_prop)
+  void ClassOwlWriter::writeComplexDescription(AnonymousClassElement* ano_elem, size_t level, bool is_data_prop)
   {
     std::string tmp;
 
@@ -298,7 +298,7 @@ namespace ontologenius {
       writeRestriction(ano_elem, level);
   }
 
-  void ClassOwlWriter::writeCardinalityValue(AnonymousClassElement_t* ano_elem, size_t level)
+  void ClassOwlWriter::writeCardinalityValue(AnonymousClassElement* ano_elem, size_t level)
   {
     std::string tmp, field;
 
@@ -330,7 +330,7 @@ namespace ontologenius {
     writeCardinality(ano_elem, level);
   }
 
-  void ClassOwlWriter::writeCardinalityRange(AnonymousClassElement_t* ano_elem, size_t level, bool is_data_prop)
+  void ClassOwlWriter::writeCardinalityRange(AnonymousClassElement* ano_elem, size_t level, bool is_data_prop)
   {
     std::string tmp, field;
 
@@ -374,7 +374,7 @@ namespace ontologenius {
     }
   }
 
-  void ClassOwlWriter::writeCardinality(AnonymousClassElement_t* ano_element, size_t level)
+  void ClassOwlWriter::writeCardinality(AnonymousClassElement* ano_element, size_t level)
   {
     std::string tmp, field;
 
@@ -420,7 +420,7 @@ namespace ontologenius {
     }
   }
 
-  std::string ClassOwlWriter::getResource(AnonymousClassElement_t* ano_elem, const std::string& attribute_name, bool used_property)
+  std::string ClassOwlWriter::getResource(AnonymousClassElement* ano_elem, const std::string& attribute_name, bool used_property)
   {
     if(used_property == true)
     {
@@ -443,7 +443,7 @@ namespace ontologenius {
       return "";
   }
 
-  void ClassOwlWriter::writeSubClassOf(ClassBranch_t* branch)
+  void ClassOwlWriter::writeSubClassOf(ClassBranch* branch)
   {
     for(auto& mother : branch->mothers_)
       if(mother.infered == false)
@@ -457,7 +457,7 @@ namespace ontologenius {
       }
   }
 
-  void ClassOwlWriter::writeDisjointWith(ClassBranch_t* branch)
+  void ClassOwlWriter::writeDisjointWith(ClassBranch* branch)
   {
     if(branch->disjoints_.size() < 2)
       for(auto& disjoint : branch->disjoints_)
@@ -471,14 +471,14 @@ namespace ontologenius {
         }
   }
 
-  void ClassOwlWriter::writeDisjointWith(std::vector<ClassBranch_t*>& classes)
+  void ClassOwlWriter::writeDisjointWith(std::vector<ClassBranch*>& classes)
   {
     std::string start = "    <rdf:Description>\n\
         <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#AllDisjointClasses\"/>\n";
 
     std::string end = "    </rdf:Description>\n";
 
-    std::set<std::set<ClassBranch_t*>> disjoints_vects;
+    std::set<std::set<ClassBranch*>> disjoints_vects;
 
     for(auto& classe : classes)
     {
@@ -508,9 +508,9 @@ namespace ontologenius {
     }
   }
 
-  void ClassOwlWriter::getDisjointsSets(ClassBranch_t* base, std::set<std::set<ClassBranch_t*>>& res)
+  void ClassOwlWriter::getDisjointsSets(ClassBranch* base, std::set<std::set<ClassBranch*>>& res)
   {
-    std::set<ClassBranch_t*> restriction_set;
+    std::set<ClassBranch*> restriction_set;
 
     for(auto& disjoint : base->disjoints_)
       restriction_set.insert(disjoint.elem);
@@ -518,21 +518,21 @@ namespace ontologenius {
 
     for(auto& disjoint : base->disjoints_)
     {
-      std::set<ClassBranch_t*> base_set;
+      std::set<ClassBranch*> base_set;
       base_set.insert(base);
       base_set.insert(disjoint.elem);
       getDisjointsSets(disjoint.elem, base_set, restriction_set, res);
     }
   }
 
-  void ClassOwlWriter::getDisjointsSets(ClassBranch_t* last, const std::set<ClassBranch_t*>& base_set, const std::set<ClassBranch_t*>& restriction_set, std::set<std::set<ClassBranch_t*>>& res)
+  void ClassOwlWriter::getDisjointsSets(ClassBranch* last, const std::set<ClassBranch*>& base_set, const std::set<ClassBranch*>& restriction_set, std::set<std::set<ClassBranch*>>& res)
   {
-    std::set<ClassBranch_t*> local_disjoints;
+    std::set<ClassBranch*> local_disjoints;
     for(auto& disjoint : last->disjoints_)
       local_disjoints.insert(disjoint.elem);
-    std::vector<ClassBranch_t*> new_restriction_vect;
+    std::vector<ClassBranch*> new_restriction_vect;
     std::set_intersection(restriction_set.begin(), restriction_set.end(), local_disjoints.begin(), local_disjoints.end(), std::back_inserter(new_restriction_vect));
-    std::set<ClassBranch_t*> new_restriction_set;
+    std::set<ClassBranch*> new_restriction_set;
     for(auto& it : new_restriction_vect)
       new_restriction_set.insert(it);
 
@@ -543,7 +543,7 @@ namespace ontologenius {
       {
         if(base_set.find(disjoint.elem) == base_set.end())
         {
-          std::set<ClassBranch_t*> new_set = base_set;
+          std::set<ClassBranch*> new_set = base_set;
           new_set.insert(disjoint.elem);
           getDisjointsSets(disjoint.elem, new_set, new_restriction_set, res);
           leaf = false;
@@ -555,7 +555,7 @@ namespace ontologenius {
       res.insert(base_set);
   }
 
-  void ClassOwlWriter::writeObjectProperties(ClassBranch_t* branch)
+  void ClassOwlWriter::writeObjectProperties(ClassBranch* branch)
   {
     for(ClassObjectRelationElement_t& relation : branch->object_relations_)
       if(relation.infered == false)
@@ -571,7 +571,7 @@ namespace ontologenius {
       }
   }
 
-  void ClassOwlWriter::writeDataProperties(ClassBranch_t* branch)
+  void ClassOwlWriter::writeDataProperties(ClassBranch* branch)
   {
     for(ClassDataRelationElement_t& relation : branch->data_relations_)
       if(relation.infered == false)

@@ -21,8 +21,8 @@ namespace ontologenius {
     bool defaultActive() override { return true; }
 
   private:
-    void insertInverse(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* base_prop, ObjectPropertyBranch_t* inv_prop, IndividualBranch_t* inv_indiv);
-    std::vector<ObjectPropertyElement_t> getLowestInvert(ObjectPropertyBranch_t* base_prop);
+    void insertInverse(IndividualBranch* indiv_on, ObjectPropertyBranch* base_prop, ObjectPropertyBranch* inv_prop, IndividualBranch* inv_indiv);
+    std::vector<ObjectPropertyElement> getLowestInvert(ObjectPropertyBranch* base_prop);
   };
 
 } // namespace ontologenius

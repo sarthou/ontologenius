@@ -16,12 +16,12 @@ namespace ontologenius {
     ~PropertiesOwlWriter() = default;
 
   protected:
-    void writeDisjointWith(Branch_t<T>* branch);
-    void writeProperties(PropertyBranch_t<T>* branch);
+    void writeDisjointWith(Branch<T>* branch);
+    void writeProperties(PropertyBranch<T>* branch);
   };
 
   template<typename T>
-  void PropertiesOwlWriter<T>::writeDisjointWith(Branch_t<T>* branch)
+  void PropertiesOwlWriter<T>::writeDisjointWith(Branch<T>* branch)
   {
     for(auto& disjoint : branch->disjoints_)
       if(disjoint.infered == false)
@@ -35,7 +35,7 @@ namespace ontologenius {
   }
 
   template<typename T>
-  void PropertiesOwlWriter<T>::writeProperties(PropertyBranch_t<T>* branch)
+  void PropertiesOwlWriter<T>::writeProperties(PropertyBranch<T>* branch)
   {
     std::string tmp;
     if(branch->properties_.functional_property_ == true)

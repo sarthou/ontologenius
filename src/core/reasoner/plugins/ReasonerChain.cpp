@@ -18,9 +18,9 @@ namespace ontologenius {
         for(size_t rel_i = 0; rel_i < indiv->object_relations_.size(); rel_i++)
         {
           auto base_property = indiv->object_relations_[rel_i].first;
-          std::unordered_set<ObjectPropertyBranch_t*> properties;
+          std::unordered_set<ObjectPropertyBranch*> properties;
           getUpPtrChain(base_property, properties);
-          for(ObjectPropertyBranch_t* property : properties)
+          for(ObjectPropertyBranch* property : properties)
           {
             has_active_chain = true;
             for(auto& chain : property->chains_)
@@ -81,7 +81,7 @@ namespace ontologenius {
       }
   }
 
-  void ReasonerChain::getUpPtrChain(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res)
+  void ReasonerChain::getUpPtrChain(ObjectPropertyBranch* branch, std::unordered_set<ObjectPropertyBranch*>& res)
   {
     if(branch->chains_.size())
       if(res.insert(branch).second == false)
@@ -91,13 +91,13 @@ namespace ontologenius {
       getUpPtrChain(mother.elem, res);
   }
 
-  std::vector<std::pair<IndividualBranch_t*, UsedVector>> ReasonerChain::resolveChain(IndividualBranch_t* indiv, const std::vector<ObjectPropertyBranch_t*>& chain, size_t chain_index)
+  std::vector<std::pair<IndividualBranch*, UsedVector>> ReasonerChain::resolveChain(IndividualBranch* indiv, const std::vector<ObjectPropertyBranch*>& chain, size_t chain_index)
   {
     if(chain_index >= chain.size() - 1)
       return {std::make_pair(indiv, UsedVector())};
     else
     {
-      std::vector<std::pair<IndividualBranch_t*, UsedVector>> res;
+      std::vector<std::pair<IndividualBranch*, UsedVector>> res;
       if(indiv->same_as_.empty())
         resolveChain(indiv, -1, chain, chain_index, res);
       else
@@ -110,9 +110,9 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerChain::resolveChain(IndividualBranch_t* indiv, int same_index, const std::vector<ObjectPropertyBranch_t*>& chain, size_t chain_index, std::vector<std::pair<IndividualBranch_t*, UsedVector>>& res)
+  void ReasonerChain::resolveChain(IndividualBranch* indiv, int same_index, const std::vector<ObjectPropertyBranch*>& chain, size_t chain_index, std::vector<std::pair<IndividualBranch*, UsedVector>>& res)
   {
-    IndividualBranch_t* individual = indiv;
+    IndividualBranch* individual = indiv;
     if(same_index != -1)
       individual = indiv->same_as_[same_index].elem;
 
@@ -138,13 +138,13 @@ namespace ontologenius {
     }
   }
 
-  bool ReasonerChain::relationExists(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* chain_prop, IndividualBranch_t* chain_indiv)
+  bool ReasonerChain::relationExists(IndividualBranch* indiv_on, ObjectPropertyBranch* chain_prop, IndividualBranch* chain_indiv)
   {
     for(auto& relation : indiv_on->object_relations_)
     {
       if(relation.second->get() == chain_indiv->get())
       {
-        std::unordered_set<ObjectPropertyBranch_t*> down_properties;
+        std::unordered_set<ObjectPropertyBranch*> down_properties;
         ontology_->object_property_graph_.getDownPtr(chain_prop, down_properties);
         if(down_properties.find(relation.first) != down_properties.end())
           return true;

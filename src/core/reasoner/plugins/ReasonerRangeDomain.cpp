@@ -39,14 +39,14 @@ namespace ontologenius {
       }
   }
 
-  void ReasonerRangeDomain::deduceRange(IndividualBranch_t* branch, const std::string& prop)
+  void ReasonerRangeDomain::deduceRange(IndividualBranch* branch, const std::string& prop)
   {
     for(auto& relation : branch->object_relations_)
       if(relation.first->value() == prop)
         deduceObjRange(relation);
   }
 
-  void ReasonerRangeDomain::deduceDomain(IndividualBranch_t* branch, const std::string& prop)
+  void ReasonerRangeDomain::deduceDomain(IndividualBranch* branch, const std::string& prop)
   {
     for(auto& relation : branch->object_relations_)
       if(relation.first->value() == prop)
@@ -57,10 +57,10 @@ namespace ontologenius {
         deduceDatDomain(branch, relation);
   }
 
-  void ReasonerRangeDomain::deduceObjRange(IndivObjectRelationElement_t& relation)
+  void ReasonerRangeDomain::deduceObjRange(IndivObjectRelationElement& relation)
   {
-    std::unordered_set<ClassBranch_t*> ranges;
-    std::unordered_set<ObjectPropertyBranch_t*> props = {relation.first};
+    std::unordered_set<ClassBranch*> ranges;
+    std::unordered_set<ObjectPropertyBranch*> props = {relation.first};
     while(ranges.empty())
     {
       for(auto prop : props)
@@ -68,7 +68,7 @@ namespace ontologenius {
 
       if(ranges.empty())
       {
-        std::unordered_set<ObjectPropertyBranch_t*> prop_up;
+        std::unordered_set<ObjectPropertyBranch*> prop_up;
         for(auto prop : props)
         {
           ontology_->object_property_graph_.getUpPtr(prop, prop_up, 1);
@@ -84,7 +84,7 @@ namespace ontologenius {
 
     for(auto range : ranges)
     {
-      std::unordered_set<ClassBranch_t*> up;
+      std::unordered_set<ClassBranch*> up;
       if(relation.second->same_as_.empty())
         ontology_->individual_graph_.getUpPtr(relation.second, up);
       else
@@ -105,10 +105,10 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerRangeDomain::deduceObjDomain(IndividualBranch_t* branch, IndivObjectRelationElement_t& relation)
+  void ReasonerRangeDomain::deduceObjDomain(IndividualBranch* branch, IndivObjectRelationElement& relation)
   {
-    std::unordered_set<ClassBranch_t*> domains;
-    std::unordered_set<ObjectPropertyBranch_t*> props = {relation.first};
+    std::unordered_set<ClassBranch*> domains;
+    std::unordered_set<ObjectPropertyBranch*> props = {relation.first};
     while(domains.empty())
     {
       for(auto prop : props)
@@ -116,7 +116,7 @@ namespace ontologenius {
 
       if(domains.empty())
       {
-        std::unordered_set<ObjectPropertyBranch_t*> prop_up;
+        std::unordered_set<ObjectPropertyBranch*> prop_up;
         for(auto prop : props)
         {
           ontology_->object_property_graph_.getUpPtr(prop, prop_up, 1);
@@ -132,7 +132,7 @@ namespace ontologenius {
 
     for(auto domain : domains)
     {
-      std::unordered_set<ClassBranch_t*> up;
+      std::unordered_set<ClassBranch*> up;
       if(branch->same_as_.empty())
         ontology_->individual_graph_.getUpPtr(branch, up);
       else
@@ -153,10 +153,10 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerRangeDomain::deduceDatDomain(IndividualBranch_t* branch, IndivDataRelationElement_t& relation)
+  void ReasonerRangeDomain::deduceDatDomain(IndividualBranch* branch, IndivDataRelationElement& relation)
   {
-    std::unordered_set<ClassBranch_t*> domains;
-    std::unordered_set<DataPropertyBranch_t*> props = {relation.first};
+    std::unordered_set<ClassBranch*> domains;
+    std::unordered_set<DataPropertyBranch*> props = {relation.first};
     while(domains.empty())
     {
       for(auto prop : props)
@@ -164,7 +164,7 @@ namespace ontologenius {
 
       if(domains.empty())
       {
-        std::unordered_set<DataPropertyBranch_t*> prop_up;
+        std::unordered_set<DataPropertyBranch*> prop_up;
         for(auto prop : props)
         {
           ontology_->data_property_graph_.getUpPtr(prop, prop_up, 1);
@@ -180,7 +180,7 @@ namespace ontologenius {
 
     for(auto domain : domains)
     {
-      std::unordered_set<ClassBranch_t*> up;
+      std::unordered_set<ClassBranch*> up;
       if(branch->same_as_.empty())
         ontology_->individual_graph_.getUpPtr(branch, up);
       else
@@ -204,7 +204,7 @@ namespace ontologenius {
   void ReasonerRangeDomain::postReasonClasses()
   {
     std::lock_guard<std::shared_timed_mutex> lock(ontology_->class_graph_.mutex_);
-    std::vector<ClassBranch_t*> classes = ontology_->class_graph_.get();
+    std::vector<ClassBranch*> classes = ontology_->class_graph_.get();
 
     std::map<std::string, std::vector<std::string>>::iterator it_range;
     std::map<std::string, std::vector<std::string>>::iterator it_domain;
@@ -230,14 +230,14 @@ namespace ontologenius {
       }
   }
 
-  void ReasonerRangeDomain::deduceRange(ClassBranch_t* branch, const std::string& prop)
+  void ReasonerRangeDomain::deduceRange(ClassBranch* branch, const std::string& prop)
   {
     for(auto& relation : branch->object_relations_)
       if(relation.first->value() == prop)
         deduceObjRange(relation);
   }
 
-  void ReasonerRangeDomain::deduceDomain(ClassBranch_t* branch, const std::string& prop)
+  void ReasonerRangeDomain::deduceDomain(ClassBranch* branch, const std::string& prop)
   {
     for(auto& relation : branch->object_relations_)
       if(relation.first->value() == prop)
@@ -250,8 +250,8 @@ namespace ontologenius {
 
   void ReasonerRangeDomain::deduceObjRange(ClassObjectRelationElement_t& relation)
   {
-    std::unordered_set<ClassBranch_t*> ranges;
-    std::unordered_set<ObjectPropertyBranch_t*> props = {relation.first};
+    std::unordered_set<ClassBranch*> ranges;
+    std::unordered_set<ObjectPropertyBranch*> props = {relation.first};
     while(ranges.empty())
     {
       for(auto prop : props)
@@ -259,7 +259,7 @@ namespace ontologenius {
 
       if(ranges.empty())
       {
-        std::unordered_set<ObjectPropertyBranch_t*> prop_up;
+        std::unordered_set<ObjectPropertyBranch*> prop_up;
         for(auto prop : props)
         {
           ontology_->object_property_graph_.getUpPtr(prop, prop_up, 1);
@@ -275,7 +275,7 @@ namespace ontologenius {
 
     for(auto range : ranges)
     {
-      std::unordered_set<ClassBranch_t*> up;
+      std::unordered_set<ClassBranch*> up;
       ontology_->class_graph_.getUpPtr(relation.second, up);
       if(up.find(range) == up.end())
       {
@@ -289,10 +289,10 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerRangeDomain::deduceObjDomain(ClassBranch_t* branch, ClassObjectRelationElement_t& relation)
+  void ReasonerRangeDomain::deduceObjDomain(ClassBranch* branch, ClassObjectRelationElement_t& relation)
   {
-    std::unordered_set<ClassBranch_t*> domains;
-    std::unordered_set<ObjectPropertyBranch_t*> props = {relation.first};
+    std::unordered_set<ClassBranch*> domains;
+    std::unordered_set<ObjectPropertyBranch*> props = {relation.first};
     while(domains.empty())
     {
       for(auto prop : props)
@@ -300,7 +300,7 @@ namespace ontologenius {
 
       if(domains.empty())
       {
-        std::unordered_set<ObjectPropertyBranch_t*> prop_up;
+        std::unordered_set<ObjectPropertyBranch*> prop_up;
         for(auto prop : props)
         {
           ontology_->object_property_graph_.getUpPtr(prop, prop_up, 1);
@@ -316,7 +316,7 @@ namespace ontologenius {
 
     for(auto domain : domains)
     {
-      std::unordered_set<ClassBranch_t*> up;
+      std::unordered_set<ClassBranch*> up;
       ontology_->class_graph_.getUpPtr(branch, up);
       if(up.find(domain) == up.end())
       {
@@ -330,10 +330,10 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerRangeDomain::deduceDatDomain(ClassBranch_t* branch, ClassDataRelationElement_t& relation)
+  void ReasonerRangeDomain::deduceDatDomain(ClassBranch* branch, ClassDataRelationElement_t& relation)
   {
-    std::unordered_set<ClassBranch_t*> domains;
-    std::unordered_set<DataPropertyBranch_t*> props = {relation.first};
+    std::unordered_set<ClassBranch*> domains;
+    std::unordered_set<DataPropertyBranch*> props = {relation.first};
     while(domains.empty())
     {
       for(auto prop : props)
@@ -341,7 +341,7 @@ namespace ontologenius {
 
       if(domains.empty())
       {
-        std::unordered_set<DataPropertyBranch_t*> prop_up;
+        std::unordered_set<DataPropertyBranch*> prop_up;
         for(auto prop : props)
         {
           ontology_->data_property_graph_.getUpPtr(prop, prop_up, 1);
@@ -357,7 +357,7 @@ namespace ontologenius {
 
     for(auto domain : domains)
     {
-      std::unordered_set<ClassBranch_t*> up;
+      std::unordered_set<ClassBranch*> up;
       ontology_->class_graph_.getUpPtr(branch, up);
       if(up.find(domain) == up.end())
       {

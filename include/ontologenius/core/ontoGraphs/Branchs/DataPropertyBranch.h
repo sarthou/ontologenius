@@ -10,20 +10,20 @@
 namespace ontologenius {
 
   // Classes predefinition
-  class DataPropertyBranch_t;
-  class ClassBranch_t;
+  class DataPropertyBranch;
+  class ClassBranch;
 
-  typedef Single_t<DataPropertyBranch_t*> DataPropertyElement_t;
-  typedef Single_t<ClassBranch_t*> ClassElement_t;
+  typedef SingleElement<DataPropertyBranch*> DataPropertyElement;
+  typedef SingleElement<ClassBranch*> ClassElement;
 
-  class DataPropertyBranch_t : public Branch_t<DataPropertyBranch_t>,
-                               public PropertyBranch_t<DataPropertyBranch_t>
+  class DataPropertyBranch : public Branch<DataPropertyBranch>,
+                             public PropertyBranch<DataPropertyBranch>
   {
   public:
-    std::vector<ClassElement_t> domains_;
+    std::vector<ClassElement> domains_;
     std::vector<LiteralNode*> ranges_;
 
-    DataPropertyBranch_t(const std::string& value = "") : Branch_t(value){};
+    DataPropertyBranch(const std::string& value = "") : Branch(value){};
   };
 
 } // namespace ontologenius

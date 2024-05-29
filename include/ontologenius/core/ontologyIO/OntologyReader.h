@@ -51,7 +51,7 @@ namespace ontologenius {
       }
     }
 
-    void push(std::vector<Pair_t<std::string, std::string>>& vect, const Pair_t<std::string, std::string>& elem, const std::string& symbole1, const std::string& symbole2)
+    void push(std::vector<PairElement<std::string, std::string>>& vect, const PairElement<std::string, std::string>& elem, const std::string& symbole1, const std::string& symbole2)
     {
       vect.emplace_back(elem);
       if(display_)

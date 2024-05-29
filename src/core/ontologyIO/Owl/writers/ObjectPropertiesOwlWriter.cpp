@@ -18,14 +18,14 @@ namespace ontologenius {
 
     std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
 
-    std::vector<ObjectPropertyBranch_t*> properties = property_graph_->get();
+    std::vector<ObjectPropertyBranch*> properties = property_graph_->get();
     for(auto& property : properties)
       writeProperty(property);
 
     file_ = nullptr;
   }
 
-  void ObjectPropertiesOwlWriter::writeProperty(ObjectPropertyBranch_t* branch)
+  void ObjectPropertiesOwlWriter::writeProperty(ObjectPropertyBranch* branch)
   {
     std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
     <owl:ObjectProperty rdf:about=\"" +
@@ -47,7 +47,7 @@ namespace ontologenius {
     writeString(tmp);
   }
 
-  void ObjectPropertiesOwlWriter::writeSubPropertyOf(ObjectPropertyBranch_t* branch)
+  void ObjectPropertiesOwlWriter::writeSubPropertyOf(ObjectPropertyBranch* branch)
   {
     for(auto& mother : branch->mothers_)
       if(mother.infered == false)
@@ -60,7 +60,7 @@ namespace ontologenius {
       }
   }
 
-  void ObjectPropertiesOwlWriter::writeInverseOf(ObjectPropertyBranch_t* branch)
+  void ObjectPropertiesOwlWriter::writeInverseOf(ObjectPropertyBranch* branch)
   {
     for(auto& inverse : branch->inverses_)
       if(inverse.infered == false)
@@ -73,7 +73,7 @@ namespace ontologenius {
       }
   }
 
-  void ObjectPropertiesOwlWriter::writeRange(ObjectPropertyBranch_t* branch)
+  void ObjectPropertiesOwlWriter::writeRange(ObjectPropertyBranch* branch)
   {
     for(auto& range : branch->ranges_)
       if(range.infered == false)
@@ -86,7 +86,7 @@ namespace ontologenius {
       }
   }
 
-  void ObjectPropertiesOwlWriter::writeDomain(ObjectPropertyBranch_t* branch)
+  void ObjectPropertiesOwlWriter::writeDomain(ObjectPropertyBranch* branch)
   {
     for(auto& domain : branch->domains_)
       if(domain.infered == false)
@@ -99,7 +99,7 @@ namespace ontologenius {
       }
   }
 
-  void ObjectPropertiesOwlWriter::writeChain(ObjectPropertyBranch_t* branch)
+  void ObjectPropertiesOwlWriter::writeChain(ObjectPropertyBranch* branch)
   {
     for(auto& chain : branch->str_chains_)
     {

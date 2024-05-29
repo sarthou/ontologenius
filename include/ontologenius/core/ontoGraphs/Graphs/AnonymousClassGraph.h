@@ -139,7 +139,7 @@ namespace ontologenius {
 
   class AnonymousClassChecker;
 
-  class AnonymousClassGraph : public Graph<AnonymousClassBranches_t>
+  class AnonymousClassGraph : public Graph<AnonymousClassBranch>
   {
     friend ObjectPropertyGraph;
     friend DataPropertyGraph;
@@ -155,13 +155,13 @@ namespace ontologenius {
                         DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
     ~AnonymousClassGraph() = default;
 
-    AnonymousClassElement_t* createElement(ExpressionMember_t* exp_leaf);
-    void update(ExpressionMember_t* exp, AnonymousClassElement_t* ano_class);
-    AnonymousClassElement_t* createTree(ExpressionMember_t* member_node, size_t& depth);
-    AnonymousClassBranches_t* add(const std::string& value, AnonymousClassVectors_t& ano_class);
-    AnonymousClassElement_t* resolveTree(AnonymousClassElement_t* elem, bool prev_and);
+    AnonymousClassElement* createElement(ExpressionMember_t* exp_leaf);
+    void update(ExpressionMember_t* exp, AnonymousClassElement* ano_class);
+    AnonymousClassElement* createTree(ExpressionMember_t* member_node, size_t& depth);
+    AnonymousClassBranch* add(const std::string& value, AnonymousClassVectors_t& ano_class);
+    AnonymousClassElement* resolveTree(AnonymousClassElement* elem, bool prev_and);
 
-    void printTree(AnonymousClassElement_t* ano_elem, size_t level, bool root);
+    void printTree(AnonymousClassElement* ano_elem, size_t level, bool root);
     std::string toString(CardType_t value);
 
   private:

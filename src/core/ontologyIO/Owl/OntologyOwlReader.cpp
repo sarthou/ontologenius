@@ -252,14 +252,14 @@ namespace ontologenius {
           {
             std::string property = sub_elem_name.substr(sub_elem_name.find(':') + 1);
             if(testAttribute(sub_elem, "rdf:resource"))
-              OntologyReader::push(object_vector.object_relations_, Pair_t<std::string, std::string>(property, toString(sub_elem), probability), "$", "^");
+              OntologyReader::push(object_vector.object_relations_, PairElement<std::string, std::string>(property, toString(sub_elem), probability), "$", "^");
             else if(testAttribute(sub_elem, "rdf:datatype"))
             {
               const char* value = sub_elem->GetText();
               if(value != nullptr)
               {
                 LiteralNode data(toString(sub_elem, "rdf:datatype"), std::string(value));
-                OntologyReader::push(object_vector.data_relations_, Pair_t<std::string, std::string>(property, data.value(), probability), "$", "^");
+                OntologyReader::push(object_vector.data_relations_, PairElement<std::string, std::string>(property, data.value(), probability), "$", "^");
               }
             }
           }
@@ -582,14 +582,14 @@ namespace ontologenius {
             {
               std::string property = sub_elem_name.substr(sub_elem_name.find(':') + 1);
               if(testAttribute(sub_elem, "rdf:resource"))
-                OntologyReader::push(individual_vector.object_relations_, Pair_t<std::string, std::string>(property, toString(sub_elem), probability), "$", "^");
+                OntologyReader::push(individual_vector.object_relations_, PairElement<std::string, std::string>(property, toString(sub_elem), probability), "$", "^");
               else if(testAttribute(sub_elem, "rdf:datatype"))
               {
                 const char* value = sub_elem->GetText();
                 if(value != nullptr)
                 {
                   LiteralNode data(toString(sub_elem, "rdf:datatype"), std::string(value));
-                  OntologyReader::push(individual_vector.data_relations_, Pair_t<std::string, std::string>(property, data.toString(), probability), "$", "^");
+                  OntologyReader::push(individual_vector.data_relations_, PairElement<std::string, std::string>(property, data.toString(), probability), "$", "^");
                 }
               }
             }
@@ -755,7 +755,7 @@ namespace ontologenius {
     std::string node_name = "";
     DataPropertyVectors_t property_vector; // we use a DataPropertyVectors_t that is sufficient to represent an annotation property
     property_vector.annotation_usage_ = true;
-    std::vector<Single_t<std::string>> ranges_;
+    std::vector<SingleElement<std::string>> ranges_;
     const char* attr = elem->Attribute("rdf:about");
     if(attr != nullptr)
     {

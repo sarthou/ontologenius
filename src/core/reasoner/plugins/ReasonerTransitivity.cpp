@@ -18,9 +18,9 @@ namespace ontologenius {
         for(size_t rel_i = 0; rel_i < indiv->object_relations_.size(); rel_i++)
         {
           auto base_property = indiv->object_relations_[rel_i].first;
-          std::unordered_set<ObjectPropertyBranch_t*> properties;
+          std::unordered_set<ObjectPropertyBranch*> properties;
           getUpPtrTransitive(base_property, properties);
-          for(ObjectPropertyBranch_t* property : properties)
+          for(ObjectPropertyBranch* property : properties)
           {
             has_active_transitivity = true;
             auto end_indivs = resolveChain(indiv->object_relations_[rel_i].second, property, 1);
@@ -78,7 +78,7 @@ namespace ontologenius {
       }
   }
 
-  void ReasonerTransitivity::getUpPtrTransitive(ObjectPropertyBranch_t* branch, std::unordered_set<ObjectPropertyBranch_t*>& res)
+  void ReasonerTransitivity::getUpPtrTransitive(ObjectPropertyBranch* branch, std::unordered_set<ObjectPropertyBranch*>& res)
   {
     if(branch->properties_.transitive_property_)
       if(res.insert(branch).second == false)
@@ -88,9 +88,9 @@ namespace ontologenius {
       getUpPtrTransitive(mother.elem, res);
   }
 
-  std::vector<std::pair<IndividualBranch_t*, UsedVector>> ReasonerTransitivity::resolveChain(IndividualBranch_t* indiv, ObjectPropertyBranch_t* property, size_t current_length)
+  std::vector<std::pair<IndividualBranch*, UsedVector>> ReasonerTransitivity::resolveChain(IndividualBranch* indiv, ObjectPropertyBranch* property, size_t current_length)
   {
-    std::vector<std::pair<IndividualBranch_t*, UsedVector>> res;
+    std::vector<std::pair<IndividualBranch*, UsedVector>> res;
 
     if(indiv->same_as_.empty())
     {
@@ -108,9 +108,9 @@ namespace ontologenius {
     return res;
   }
 
-  void ReasonerTransitivity::resolveChain(IndividualBranch_t* indiv, int same_index, ObjectPropertyBranch_t* property, size_t current_length, std::vector<std::pair<IndividualBranch_t*, UsedVector>>& res)
+  void ReasonerTransitivity::resolveChain(IndividualBranch* indiv, int same_index, ObjectPropertyBranch* property, size_t current_length, std::vector<std::pair<IndividualBranch*, UsedVector>>& res)
   {
-    IndividualBranch_t* individual = indiv;
+    IndividualBranch* individual = indiv;
     if(same_index != -1)
       individual = indiv->same_as_[same_index].elem;
 
@@ -136,13 +136,13 @@ namespace ontologenius {
     }
   }
 
-  bool ReasonerTransitivity::relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on)
+  bool ReasonerTransitivity::relationExists(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on)
   {
     for(auto& relation : indiv_from->object_relations_)
     {
       if(relation.second->get() == indiv_on->get())
       {
-        std::unordered_set<ObjectPropertyBranch_t*> down_properties;
+        std::unordered_set<ObjectPropertyBranch*> down_properties;
         ontology_->object_property_graph_.getDownPtr(property, down_properties);
         if(down_properties.find(relation.first) != down_properties.end())
           return true;

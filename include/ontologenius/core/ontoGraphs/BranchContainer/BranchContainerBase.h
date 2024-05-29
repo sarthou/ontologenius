@@ -9,7 +9,7 @@ namespace ontologenius {
   class ValuedNode;
   class LiteralNode;
   template<typename T>
-  struct Branch_t;
+  struct Branch;
 
   template<typename B>
   class BranchContainerBase

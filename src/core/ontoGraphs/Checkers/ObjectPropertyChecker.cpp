@@ -22,13 +22,13 @@ namespace ontologenius {
   {
     for(auto property : graph_vect_)
     {
-      std::unordered_set<ObjectPropertyBranch_t*> up;
+      std::unordered_set<ObjectPropertyBranch*> up;
       property_graph_->getUpPtr(property, up);
 
       auto intersection = property_graph_->isDisjoint(up, up);
       if(intersection != nullptr)
       {
-        ObjectPropertyBranch_t* disjoint_with = property_graph_->firstIntersection(up, intersection->disjoints_);
+        ObjectPropertyBranch* disjoint_with = property_graph_->firstIntersection(up, intersection->disjoints_);
 
         if(disjoint_with != nullptr)
           print_error("'" + property->value() + "' can't be a '" + intersection->value() + "' and a '" + disjoint_with->value() + "' because of disjonction between properties '" + intersection->value() + "' and '" + disjoint_with->value() + "'");

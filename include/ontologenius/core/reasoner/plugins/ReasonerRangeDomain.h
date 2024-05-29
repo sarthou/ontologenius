@@ -22,20 +22,20 @@ namespace ontologenius {
 
   private:
     void postReasonIndividuals();
-    void deduceRange(IndividualBranch_t* branch, const std::string& prop);
-    void deduceDomain(IndividualBranch_t* branch, const std::string& prop);
+    void deduceRange(IndividualBranch* branch, const std::string& prop);
+    void deduceDomain(IndividualBranch* branch, const std::string& prop);
 
-    void deduceObjRange(IndivObjectRelationElement_t& relation);
-    void deduceObjDomain(IndividualBranch_t* branch, IndivObjectRelationElement_t& relation);
-    void deduceDatDomain(IndividualBranch_t* branch, IndivDataRelationElement_t& relation);
+    void deduceObjRange(IndivObjectRelationElement& relation);
+    void deduceObjDomain(IndividualBranch* branch, IndivObjectRelationElement& relation);
+    void deduceDatDomain(IndividualBranch* branch, IndivDataRelationElement& relation);
 
     void postReasonClasses();
-    void deduceRange(ClassBranch_t* branch, const std::string& prop);
-    void deduceDomain(ClassBranch_t* branch, const std::string& prop);
+    void deduceRange(ClassBranch* branch, const std::string& prop);
+    void deduceDomain(ClassBranch* branch, const std::string& prop);
 
     void deduceObjRange(ClassObjectRelationElement_t& relation);
-    void deduceObjDomain(ClassBranch_t* branch, ClassObjectRelationElement_t& relation);
-    void deduceDatDomain(ClassBranch_t* branch, ClassDataRelationElement_t& relation);
+    void deduceObjDomain(ClassBranch* branch, ClassObjectRelationElement_t& relation);
+    void deduceDatDomain(ClassBranch* branch, ClassDataRelationElement_t& relation);
   };
 
 } // namespace ontologenius

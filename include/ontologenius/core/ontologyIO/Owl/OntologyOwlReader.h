@@ -69,7 +69,7 @@ namespace ontologenius {
 
     inline void push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
     inline void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole = "");
-    inline void push(std::vector<Single_t<std::string>>& vect, TiXmlElement* subElem, float probability, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
+    inline void push(std::vector<SingleElement<std::string>>& vect, TiXmlElement* subElem, float probability, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
     inline void push(std::vector<bool>& vect, bool elem, const std::string& symbole = "");
     void push(Properties_t& properties, TiXmlElement* subElem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
     void pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem);
@@ -101,7 +101,7 @@ namespace ontologenius {
     }
   }
 
-  void OntologyOwlReader::push(std::vector<Single_t<std::string>>& vect, TiXmlElement* subElem, float probability, const std::string& symbole, const std::string& attribute)
+  void OntologyOwlReader::push(std::vector<SingleElement<std::string>>& vect, TiXmlElement* subElem, float probability, const std::string& symbole, const std::string& attribute)
   {
     std::string data = getAttribute(subElem, attribute);
     if(data.empty() == false)

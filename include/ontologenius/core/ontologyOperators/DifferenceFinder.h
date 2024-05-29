@@ -30,36 +30,36 @@ namespace ontologenius {
     std::vector<std::string> getDiff(Ontology* onto1, Ontology* onto2, const std::string& concept);
 
   private:
-    comparator_t toComparator(IndividualBranch_t* indiv);
-    comparator_t toComparator(ClassBranch_t* class_);
+    comparator_t toComparator(IndividualBranch* indiv);
+    comparator_t toComparator(ClassBranch* class_);
 
     std::vector<std::string> compare(comparator_t& comp1, comparator_t& comp2);
     void compareObjects(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res);
     void compareDatas(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res);
     void compareMothers(comparator_t& comp1, comparator_t& comp2, std::vector<std::string>& res);
 
-    std::vector<std::string> toValued(const std::vector<ObjectPropertyBranch_t*>& vect)
+    std::vector<std::string> toValued(const std::vector<ObjectPropertyBranch*>& vect)
     {
       std::vector<std::string> res;
       std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it->value(); });
       return res;
     }
 
-    std::vector<std::string> toValued(const std::vector<DataPropertyBranch_t*>& vect)
+    std::vector<std::string> toValued(const std::vector<DataPropertyBranch*>& vect)
     {
       std::vector<std::string> res;
       std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it->value(); });
       return res;
     }
 
-    std::vector<std::string> toValued(const std::vector<IndividualBranch_t*>& vect)
+    std::vector<std::string> toValued(const std::vector<IndividualBranch*>& vect)
     {
       std::vector<std::string> res;
       std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it->value(); });
       return res;
     }
 
-    std::vector<std::string> toValued(const std::vector<ClassBranch_t*>& vect)
+    std::vector<std::string> toValued(const std::vector<ClassBranch*>& vect)
     {
       std::vector<std::string> res;
       std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it->value(); });
@@ -67,7 +67,7 @@ namespace ontologenius {
     }
 
     template<typename T>
-    std::vector<std::string> toValued(const std::vector<Single_t<T>>& vect)
+    std::vector<std::string> toValued(const std::vector<SingleElement<T>>& vect)
     {
       std::vector<std::string> res;
       std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it.elem->value(); });
@@ -75,7 +75,7 @@ namespace ontologenius {
     }
 
     template<typename T, typename U>
-    std::vector<std::string> toValuedFirst(const std::vector<Pair_t<T, U>>& vect)
+    std::vector<std::string> toValuedFirst(const std::vector<PairElement<T, U>>& vect)
     {
       std::vector<std::string> res;
       std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it.first->value(); });
@@ -83,7 +83,7 @@ namespace ontologenius {
     }
 
     template<typename T, typename U>
-    std::vector<std::string> toValuedSecond(const std::vector<Pair_t<T, U>>& vect)
+    std::vector<std::string> toValuedSecond(const std::vector<PairElement<T, U>>& vect)
     {
       std::vector<std::string> res;
       std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it.second->value(); });
@@ -91,7 +91,7 @@ namespace ontologenius {
     }
 
     template<typename T>
-    std::vector<std::string> toValued(const RelationsWithInductions<Single_t<T>>& vect)
+    std::vector<std::string> toValued(const RelationsWithInductions<SingleElement<T>>& vect)
     {
       std::vector<std::string> res;
       std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it.elem->value(); });
@@ -99,7 +99,7 @@ namespace ontologenius {
     }
 
     template<typename T, typename U>
-    std::vector<std::string> toValuedFirst(const RelationsWithInductions<Pair_t<T, U>>& vect)
+    std::vector<std::string> toValuedFirst(const RelationsWithInductions<PairElement<T, U>>& vect)
     {
       std::vector<std::string> res;
       std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it.first->value(); });
@@ -107,7 +107,7 @@ namespace ontologenius {
     }
 
     template<typename T, typename U>
-    std::vector<std::string> toValuedSecond(const RelationsWithInductions<Pair_t<T, U>>& vect)
+    std::vector<std::string> toValuedSecond(const RelationsWithInductions<PairElement<T, U>>& vect)
     {
       std::vector<std::string> res;
       std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it.second->value(); });

@@ -40,13 +40,13 @@ namespace ontologenius {
   };
 
   template<typename B>
-  class PropertyBranch_t
+  class PropertyBranch
   {
   public:
     Properties_t properties_;
     bool annotation_usage_;
 
-    PropertyBranch_t() : annotation_usage_(false) {}
+    PropertyBranch() : annotation_usage_(false) {}
   };
 
 } // namespace ontologenius

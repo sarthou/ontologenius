@@ -8,13 +8,13 @@ namespace ontologenius {
   {
     comparator_t comp1, comp2;
 
-    IndividualBranch_t* indiv_onto1 = onto1->individual_graph_.findBranchSafe(concept);
-    IndividualBranch_t* indiv_onto2 = onto2->individual_graph_.findBranchSafe(concept);
+    IndividualBranch* indiv_onto1 = onto1->individual_graph_.findBranchSafe(concept);
+    IndividualBranch* indiv_onto2 = onto2->individual_graph_.findBranchSafe(concept);
 
     if((indiv_onto1 == nullptr) && (indiv_onto2 == nullptr))
     {
-      ClassBranch_t* class_onto1 = onto1->class_graph_.findBranchSafe(concept);
-      ClassBranch_t* class_onto2 = onto2->class_graph_.findBranchSafe(concept);
+      ClassBranch* class_onto1 = onto1->class_graph_.findBranchSafe(concept);
+      ClassBranch* class_onto2 = onto2->class_graph_.findBranchSafe(concept);
       if(class_onto2 != nullptr)
         comp2 = toComparator(class_onto2);
       if(class_onto1 != nullptr)
@@ -23,14 +23,14 @@ namespace ontologenius {
     else if(indiv_onto1 == nullptr)
     {
       comp2 = toComparator(indiv_onto2);
-      ClassBranch_t* class_onto1 = onto1->class_graph_.findBranchSafe(concept);
+      ClassBranch* class_onto1 = onto1->class_graph_.findBranchSafe(concept);
       if(class_onto1 != nullptr)
         comp1 = toComparator(class_onto1);
     }
     else if(indiv_onto2 == nullptr)
     {
       comp1 = toComparator(indiv_onto1);
-      ClassBranch_t* class_onto2 = onto2->class_graph_.findBranchSafe(concept);
+      ClassBranch* class_onto2 = onto2->class_graph_.findBranchSafe(concept);
       if(class_onto2 != nullptr)
         comp2 = toComparator(class_onto2);
     }
@@ -163,7 +163,7 @@ namespace ontologenius {
     }
   }
 
-  comparator_t DifferenceFinder::toComparator(IndividualBranch_t* indiv)
+  comparator_t DifferenceFinder::toComparator(IndividualBranch* indiv)
   {
     comparator_t comp;
     comp.concept_ = indiv->value();
@@ -175,7 +175,7 @@ namespace ontologenius {
     return comp;
   }
 
-  comparator_t DifferenceFinder::toComparator(ClassBranch_t* class_)
+  comparator_t DifferenceFinder::toComparator(ClassBranch* class_)
   {
     comparator_t comp;
     comp.concept_ = class_->value();

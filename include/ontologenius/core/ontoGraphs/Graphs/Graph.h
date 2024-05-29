@@ -126,7 +126,7 @@ namespace ontologenius {
     }
 
     template<class T>
-    inline void removeFromElemVect(std::vector<Single_t<T>>& vect, const T& value)
+    inline void removeFromElemVect(std::vector<SingleElement<T>>& vect, const T& value)
     {
       for(size_t i = 0; i < vect.size();)
         if(vect[i].elem == value)
@@ -136,7 +136,7 @@ namespace ontologenius {
     }
 
     template<class T>
-    inline void removeFromElemVect(RelationsWithInductions<Single_t<T>>& vect, const T& value)
+    inline void removeFromElemVect(RelationsWithInductions<SingleElement<T>>& vect, const T& value)
     {
       for(size_t i = 0; i < vect.size();)
         if(vect[i].elem == value)
@@ -181,7 +181,7 @@ namespace ontologenius {
     }
 
     template<typename C>
-    inline bool conditionalPushBack(std::vector<Single_t<C>>& vect, const Single_t<C>& data)
+    inline bool conditionalPushBack(std::vector<SingleElement<C>>& vect, const SingleElement<C>& data)
     {
       auto it = std::find(vect.begin(), vect.end(), data);
       if(it == vect.end())
@@ -196,7 +196,7 @@ namespace ontologenius {
     }
 
     template<typename C>
-    inline bool conditionalPushBack(RelationsWithInductions<Single_t<C>>& vect, const Single_t<C>& data)
+    inline bool conditionalPushBack(RelationsWithInductions<SingleElement<C>>& vect, const SingleElement<C>& data)
     {
       auto it = std::find(vect.begin(), vect.end(), data);
       if(it == vect.end())
@@ -250,7 +250,7 @@ namespace ontologenius {
     }
 
     template<template<typename> class C>
-    C<B*> intersection(const std::unordered_set<B*>& set, const C<Single_t<B*>>& c)
+    C<B*> intersection(const std::unordered_set<B*>& set, const C<SingleElement<B*>>& c)
     {
       C<B*> res;
       if(set.empty())
@@ -265,7 +265,7 @@ namespace ontologenius {
     }
 
     template<template<typename> class C>
-    B* firstIntersection(const std::unordered_set<B*>& set, const C<Single_t<B*>>& c)
+    B* firstIntersection(const std::unordered_set<B*>& set, const C<SingleElement<B*>>& c)
     {
       if(set.empty())
         return nullptr;

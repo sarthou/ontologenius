@@ -45,7 +45,7 @@ namespace ontologenius {
     std::string getProperty(const std::string& element);
     std::pair<std::string, std::string> getObject(const std::string& element);
 
-    inline void push(std::vector<Single_t<std::string>>& vect, const std::string& element, float probability, const std::string& symbole);
+    inline void push(std::vector<SingleElement<std::string>>& vect, const std::string& element, float probability, const std::string& symbole);
     inline void pushLang(std::map<std::string, std::vector<std::string>>& dictionary, const std::pair<std::string, std::string>& label);
   };
 

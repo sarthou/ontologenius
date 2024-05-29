@@ -10,7 +10,7 @@ namespace ontologenius {
     for(auto& indiv : ontology_->individual_graph_.get())
       if(indiv->updated_ || indiv->hasUpdatedObjectRelation())
       {
-        for(IndivObjectRelationElement_t& relation : indiv->object_relations_)
+        for(IndivObjectRelationElement& relation : indiv->object_relations_)
         {
           auto inverts = getLowestInvert(relation.first);
           for(auto& invert : inverts)
@@ -24,7 +24,7 @@ namespace ontologenius {
       }
   }
 
-  void ReasonerInverseOf::insertInverse(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* base_prop, ObjectPropertyBranch_t* inv_prop, IndividualBranch_t* inv_indiv)
+  void ReasonerInverseOf::insertInverse(IndividualBranch* indiv_on, ObjectPropertyBranch* base_prop, ObjectPropertyBranch* inv_prop, IndividualBranch* inv_indiv)
   {
     for(auto it = indiv_on->object_relations_.rbegin(); it != indiv_on->object_relations_.rend(); ++it)
     {
@@ -54,13 +54,13 @@ namespace ontologenius {
     }
   }
 
-  std::vector<ObjectPropertyElement_t> ReasonerInverseOf::getLowestInvert(ObjectPropertyBranch_t* base_prop)
+  std::vector<ObjectPropertyElement> ReasonerInverseOf::getLowestInvert(ObjectPropertyBranch* base_prop)
   {
     if(base_prop->inverses_.size())
       return base_prop->inverses_;
     else
     {
-      std::vector<ObjectPropertyElement_t> res;
+      std::vector<ObjectPropertyElement> res;
 
       for(auto& up : base_prop->mothers_)
       {

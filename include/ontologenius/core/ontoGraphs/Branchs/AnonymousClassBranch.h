@@ -37,10 +37,10 @@ namespace ontologenius {
     LiteralNode* card_range_ = nullptr;
   };
 
-  class AnonymousClassElement_t
+  class AnonymousClassElement
   {
   public:
-    AnonymousClassElement_t() : logical_type_(logical_none), oneof(false), is_complex(false),
+    AnonymousClassElement() : logical_type_(logical_none), oneof(false), is_complex(false),
                                 class_involved_(nullptr), object_property_involved_(nullptr),
                                 data_property_involved_(nullptr), individual_involved_(nullptr) {}
 
@@ -49,24 +49,24 @@ namespace ontologenius {
     bool is_complex;
 
     // pointers to the concepts used in the equivalence relation
-    ClassBranch_t* class_involved_;
-    ObjectPropertyBranch_t* object_property_involved_;
-    DataPropertyBranch_t* data_property_involved_;
-    IndividualBranch_t* individual_involved_;
+    ClassBranch* class_involved_;
+    ObjectPropertyBranch* object_property_involved_;
+    DataPropertyBranch* data_property_involved_;
+    IndividualBranch* individual_involved_;
 
     CardinalityElement_t card_;
 
-    std::vector<AnonymousClassElement_t*> sub_elements_;
+    std::vector<AnonymousClassElement*> sub_elements_;
     std::string ano_name;
   };
 
-  class AnonymousClassBranches_t : public ValuedNode
+  class AnonymousClassBranch : public ValuedNode
   {
   public:
-    explicit AnonymousClassBranches_t(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), depth_(0) {}
+    explicit AnonymousClassBranch(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), depth_(0) {}
 
-    ClassBranch_t* class_equiv_;
-    std::vector<AnonymousClassElement_t*> ano_elems_;
+    ClassBranch* class_equiv_;
+    std::vector<AnonymousClassElement*> ano_elems_;
     size_t depth_;
   };
 

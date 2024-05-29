@@ -21,7 +21,7 @@ namespace ontologenius {
   template<typename B>
   class OntoGraph : public Graph<B>
   {
-    static_assert(std::is_base_of<Branch_t<B>, B>::value, "B must be derived from Branch_t<B>");
+    static_assert(std::is_base_of<Branch<B>, B>::value, "B must be derived from Branch<B>");
 
   public:
     explicit OntoGraph(IndividualGraph* individual_graph) : individual_graph_(individual_graph) {}
@@ -67,7 +67,7 @@ namespace ontologenius {
     bool addInheritage(B* branch, B* inherited);
     std::vector<std::pair<std::string, std::string>> removeInheritage(const std::string& branch_base, const std::string& branch_inherited);
     std::vector<std::pair<std::string, std::string>> removeInheritage(B* branch, B* inherited);
-    bool removeInheritage(IndividualBranch_t* indiv, ClassBranch_t* class_branch, std::vector<std::pair<std::string, std::string>>& explanations);
+    bool removeInheritage(IndividualBranch* indiv, ClassBranch* class_branch, std::vector<std::pair<std::string, std::string>>& explanations);
 
     template<typename T>
     std::unordered_set<T> select(const std::unordered_set<T>& on, const T& selector)
@@ -85,7 +85,7 @@ namespace ontologenius {
     }
 
     template<typename T>
-    std::vector<std::pair<std::string, std::string>> removeInductions(B* indiv_from, RelationsWithInductions<Single_t<T>>& relations, size_t relation_index, const std::string& property)
+    std::vector<std::pair<std::string, std::string>> removeInductions(B* indiv_from, RelationsWithInductions<SingleElement<T>>& relations, size_t relation_index, const std::string& property)
     {
       std::vector<std::pair<std::string, std::string>> explanations;
 
@@ -415,8 +415,8 @@ namespace ontologenius {
   {
     if((branch != nullptr) && (inherited != nullptr))
     {
-      this->conditionalPushBack(branch->mothers_, Single_t<B*>(inherited));
-      this->conditionalPushBack(inherited->childs_, Single_t<B*>(branch));
+      this->conditionalPushBack(branch->mothers_, SingleElement<B*>(inherited));
+      this->conditionalPushBack(inherited->childs_, SingleElement<B*>(branch));
       branch->updated_ = true;
       inherited->updated_ = true;
       mitigate(branch);
@@ -477,8 +477,8 @@ namespace ontologenius {
   template<typename B>
   void OntoGraph<B>::mitigate(B* branch)
   {
-    std::vector<Single_t<B*>> childs = branch->childs_;
-    for(Single_t<B*>& child : childs)
+    std::vector<SingleElement<B*>> childs = branch->childs_;
+    for(SingleElement<B*>& child : childs)
     {
       std::unordered_set<B*> up;
       getUpPtr(child.elem, up);
@@ -490,8 +490,8 @@ namespace ontologenius {
       }
     }
 
-    RelationsWithInductions<Single_t<B*>>& mothers = branch->mothers_;
-    for(Single_t<B*>& mother : mothers)
+    RelationsWithInductions<SingleElement<B*>>& mothers = branch->mothers_;
+    for(SingleElement<B*>& mother : mothers)
     {
       std::unordered_set<B*> down;
       getDownPtr(mother.elem, down);

@@ -20,28 +20,28 @@ namespace ontologenius {
 
     for(const auto& branch : other.all_branchs_)
     {
-      auto* prop_branch = new DataPropertyBranch_t(branch->value());
+      auto* prop_branch = new DataPropertyBranch(branch->value());
       all_branchs_.push_back(prop_branch);
     }
 
     this->container_.load(all_branchs_);
   }
 
-  DataPropertyBranch_t* DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& property_vectors)
+  DataPropertyBranch* DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& property_vectors)
   {
-    std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
     /**********************
     ** Mothers
     **********************/
-    DataPropertyBranch_t* me = findOrCreateBranch(value);
+    DataPropertyBranch* me = findOrCreateBranch(value);
 
     // for all my mothers
     for(auto& mother : property_vectors.mothers_)
     {
-      DataPropertyBranch_t* mother_branch = findOrCreateBranch(mother.elem);
+      DataPropertyBranch* mother_branch = findOrCreateBranch(mother.elem);
 
-      conditionalPushBack(mother_branch->childs_, DataPropertyElement_t(me, mother.probability, true));
-      conditionalPushBack(me->mothers_, DataPropertyElement_t(mother_branch, mother.probability));
+      conditionalPushBack(mother_branch->childs_, DataPropertyElement(me, mother.probability, true));
+      conditionalPushBack(me->mothers_, DataPropertyElement(mother_branch, mother.probability));
     }
 
     /**********************
@@ -50,10 +50,10 @@ namespace ontologenius {
     // for all my disjoints
     for(auto& disjoint : property_vectors.disjoints_)
     {
-      DataPropertyBranch_t* disjoint_branch = findOrCreateBranch(disjoint.elem);
+      DataPropertyBranch* disjoint_branch = findOrCreateBranch(disjoint.elem);
 
-      conditionalPushBack(me->disjoints_, DataPropertyElement_t(disjoint_branch, disjoint.probability));
-      conditionalPushBack(disjoint_branch->disjoints_, DataPropertyElement_t(me, disjoint.probability, true));
+      conditionalPushBack(me->disjoints_, DataPropertyElement(disjoint_branch, disjoint.probability));
+      conditionalPushBack(disjoint_branch->disjoints_, DataPropertyElement(me, disjoint.probability, true));
     }
 
     /**********************
@@ -62,9 +62,9 @@ namespace ontologenius {
     // for all my domains
     for(auto& domain : property_vectors.domains_)
     {
-      ClassBranch_t* domain_branch = class_graph_->findOrCreateBranch(domain.elem);
+      ClassBranch* domain_branch = class_graph_->findOrCreateBranch(domain.elem);
 
-      conditionalPushBack(me->domains_, ClassElement_t(domain_branch, domain.probability));
+      conditionalPushBack(me->domains_, ClassElement(domain_branch, domain.probability));
     }
 
     /**********************
@@ -91,12 +91,12 @@ namespace ontologenius {
 
   void DataPropertyGraph::add(std::vector<std::string>& disjoints)
   {
-    std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
     for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
     {
       // I need to find myself
-      DataPropertyBranch_t* me = findOrCreateBranch(disjoints[disjoints_i]);
+      DataPropertyBranch* me = findOrCreateBranch(disjoints[disjoints_i]);
 
       // for all my disjoints ...
       for(size_t disjoints_j = 0; disjoints_j < disjoints.size(); disjoints_j++)
@@ -104,10 +104,10 @@ namespace ontologenius {
         //... excepted me
         if(disjoints_i != disjoints_j)
         {
-          DataPropertyBranch_t* disjoint_branch = findOrCreateBranch(disjoints[disjoints_j]);
+          DataPropertyBranch* disjoint_branch = findOrCreateBranch(disjoints[disjoints_j]);
 
-          conditionalPushBack(me->disjoints_, DataPropertyElement_t(disjoint_branch));
-          conditionalPushBack(disjoint_branch->disjoints_, DataPropertyElement_t(me, 1.0, true));
+          conditionalPushBack(me->disjoints_, DataPropertyElement(disjoint_branch));
+          conditionalPushBack(disjoint_branch->disjoints_, DataPropertyElement(me, 1.0, true));
         }
       }
     }
@@ -118,10 +118,10 @@ namespace ontologenius {
     /**********************
     ** Mothers
     **********************/
-    DataPropertyBranch_t* me = this->container_.find(value);
+    DataPropertyBranch* me = this->container_.find(value);
     if(me == nullptr)
     {
-      DataPropertyBranch_t* mother_branch = nullptr;
+      DataPropertyBranch* mother_branch = nullptr;
       for(auto& mother : property_vectors.mothers_)
       {
         mother_branch = this->container_.find(mother.elem);
@@ -137,7 +137,7 @@ namespace ontologenius {
       }
       else
       {
-        ClassBranch_t* range_branch = nullptr;
+        ClassBranch* range_branch = nullptr;
         for(auto& range : property_vectors.ranges_)
         {
           range_branch = class_graph_->container_.find(range);
@@ -195,10 +195,10 @@ namespace ontologenius {
   std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& value, size_t depth)
   {
     std::unordered_set<std::string> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
-    DataPropertyBranch_t* branch = container_.find(value);
-    std::unordered_set<DataPropertyBranch_t*> up_trace;
+    DataPropertyBranch* branch = container_.find(value);
+    std::unordered_set<DataPropertyBranch*> up_trace;
     if(branch != nullptr)
       getDomain(branch, depth, res, up_trace);
 
@@ -208,25 +208,25 @@ namespace ontologenius {
   std::unordered_set<index_t> DataPropertyGraph::getDomain(index_t value, size_t depth)
   {
     std::unordered_set<index_t> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
-    DataPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
-    std::unordered_set<DataPropertyBranch_t*> up_trace;
+    DataPropertyBranch* branch = container_.find(ValuedNode::table_.get(value));
+    std::unordered_set<DataPropertyBranch*> up_trace;
     if(branch != nullptr)
       getDomain(branch, depth, res, up_trace);
 
     return res;
   }
 
-  void DataPropertyGraph::getDomainPtr(DataPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth)
+  void DataPropertyGraph::getDomainPtr(DataPropertyBranch* branch, std::unordered_set<ClassBranch*>& res, size_t depth)
   {
-    std::unordered_set<DataPropertyBranch_t*> up_trace;
+    std::unordered_set<DataPropertyBranch*> up_trace;
     if(branch != nullptr)
       getDomainPtr(branch, depth, res, up_trace);
   }
 
   template<typename T>
-  void DataPropertyGraph::getDomain(DataPropertyBranch_t* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<DataPropertyBranch_t*>& up_trace)
+  void DataPropertyGraph::getDomain(DataPropertyBranch* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<DataPropertyBranch*>& up_trace)
   {
     for(auto& domain : branch->domains_)
       class_graph_->getDown(domain.elem, res, depth);
@@ -236,7 +236,7 @@ namespace ontologenius {
         getDomain(mother.elem, depth, res, up_trace);
   }
 
-  void DataPropertyGraph::getDomainPtr(DataPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& res, std::unordered_set<DataPropertyBranch_t*>& up_trace)
+  void DataPropertyGraph::getDomainPtr(DataPropertyBranch* branch, size_t depth, std::unordered_set<ClassBranch*>& res, std::unordered_set<DataPropertyBranch*>& up_trace)
   {
     for(auto& domain : branch->domains_)
       class_graph_->getDownPtr(domain.elem, res, depth);
@@ -249,9 +249,9 @@ namespace ontologenius {
   std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& value)
   {
     std::unordered_set<std::string> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
-    DataPropertyBranch_t* branch = container_.find(value);
+    DataPropertyBranch* branch = container_.find(value);
     if(branch != nullptr)
       for(auto& range : branch->ranges_)
         res.insert(range->type_);
@@ -262,9 +262,9 @@ namespace ontologenius {
   std::unordered_set<index_t> DataPropertyGraph::getRange(index_t value)
   {
     std::unordered_set<index_t> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch_t>::mutex_);
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
-    DataPropertyBranch_t* branch = container_.find(ValuedNode::table_.get(value));
+    DataPropertyBranch* branch = container_.find(ValuedNode::table_.get(value));
     if(branch != nullptr)
       for(auto& range : branch->ranges_)
         res.insert(range->get());
@@ -311,7 +311,7 @@ namespace ontologenius {
       cpyBranch(other.all_branchs_[i], all_branchs_[i]);
   }
 
-  void DataPropertyGraph::cpyBranch(DataPropertyBranch_t* old_branch, DataPropertyBranch_t* new_branch)
+  void DataPropertyGraph::cpyBranch(DataPropertyBranch* old_branch, DataPropertyBranch* new_branch)
   {
     new_branch->nb_updates_ = old_branch->nb_updates_;
     new_branch->updated_ = old_branch->updated_;

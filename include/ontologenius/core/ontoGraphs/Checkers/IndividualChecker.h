@@ -6,29 +6,29 @@
 
 namespace ontologenius {
 
-  class IndividualChecker : public ValidityChecker<IndividualBranch_t>
+  class IndividualChecker : public ValidityChecker<IndividualBranch>
   {
   public:
     explicit IndividualChecker(IndividualGraph* graph) : ValidityChecker(graph) { individual_graph_ = graph; }
     ~IndividualChecker() = default;
 
     size_t check() override;
-    void printStatus() { ValidityChecker<IndividualBranch_t>::printStatus("individual", "individuals", graph_vect_.size()); }
+    void printStatus() { ValidityChecker<IndividualBranch>::printStatus("individual", "individuals", graph_vect_.size()); }
 
   private:
     IndividualGraph* individual_graph_;
 
-    void checkDisjointInheritance(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*> ups);
+    void checkDisjointInheritance(IndividualBranch* indiv, std::unordered_set<ClassBranch*> ups);
 
-    void checkDisjoint(IndividualBranch_t* indiv);
-    void checkReflexive(IndividualBranch_t* indiv);
+    void checkDisjoint(IndividualBranch* indiv);
+    void checkReflexive(IndividualBranch* indiv);
 
-    void checkObectRelations(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*> up_from);
-    void checkDataRelations(IndividualBranch_t* indiv, std::unordered_set<ClassBranch_t*> up_from);
+    void checkObectRelations(IndividualBranch* indiv, std::unordered_set<ClassBranch*> up_from);
+    void checkDataRelations(IndividualBranch* indiv, std::unordered_set<ClassBranch*> up_from);
 
-    void checkAssymetric(IndividualBranch_t* indiv);
+    void checkAssymetric(IndividualBranch* indiv);
 
-    bool symetricExist(IndividualBranch_t* indiv_on, ObjectPropertyBranch_t* sym_prop, IndividualBranch_t* sym_indiv);
+    bool symetricExist(IndividualBranch* indiv_on, ObjectPropertyBranch* sym_prop, IndividualBranch* sym_indiv);
   };
 
 } // namespace ontologenius

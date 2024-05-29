@@ -6,7 +6,7 @@
 
 namespace ontologenius {
 
-  class ObjectPropertyChecker : public ValidityChecker<ObjectPropertyBranch_t>
+  class ObjectPropertyChecker : public ValidityChecker<ObjectPropertyBranch>
   {
   public:
     explicit ObjectPropertyChecker(ObjectPropertyGraph* graph) : ValidityChecker(graph) { property_graph_ = graph; }
@@ -15,7 +15,7 @@ namespace ontologenius {
     size_t check() override;
     void printStatus() override
     {
-      ValidityChecker<ObjectPropertyBranch_t>::printStatus("object property", "object properties", graph_vect_.size());
+      ValidityChecker<ObjectPropertyBranch>::printStatus("object property", "object properties", graph_vect_.size());
     }
 
   private:

@@ -21,42 +21,42 @@ namespace ontologenius {
 
   void AnonymousClassChecker::checkDisjoint()
   {
-    for(AnonymousClassBranches_t* branch_vect : graph_vect_)
+    for(AnonymousClassBranch* branch_vect : graph_vect_)
     {
       current_ano_ = branch_vect->class_equiv_->value();
       for(auto branch : branch_vect->ano_elems_)
       {
-        auto errs = resolveTree(branch, {ClassElement_t(branch_vect->class_equiv_)});
+        auto errs = resolveTree(branch, {ClassElement(branch_vect->class_equiv_)});
         for(auto& err : errs)
           print_error("In equivalence of class " + current_ano_ + ": error between class " + current_ano_ + " " + err);
       }
     }
   }
 
-  std::string AnonymousClassChecker::checkClassesDisjointness(ClassBranch_t* class_left, ClassBranch_t* class_right)
+  std::string AnonymousClassChecker::checkClassesDisjointness(ClassBranch* class_left, ClassBranch* class_right)
   {
     std::string err;
-    std::unordered_set<ClassBranch_t*> disjoints;
+    std::unordered_set<ClassBranch*> disjoints;
 
     ano_class_graph_->class_graph_->getDisjoint(class_left, disjoints);
 
-    ClassBranch_t* first_crash = nullptr;
+    ClassBranch* first_crash = nullptr;
     if(disjoints.size())
     {
-      std::unordered_set<ClassBranch_t*> ups;
+      std::unordered_set<ClassBranch*> ups;
       ano_class_graph_->class_graph_->getUpPtr(class_right, ups);
       first_crash = ano_class_graph_->class_graph_->firstIntersection(ups, disjoints);
     }
 
     if(first_crash != nullptr)
     {
-      std::unordered_set<ClassBranch_t*> intersection_ups;
+      std::unordered_set<ClassBranch*> intersection_ups;
       ano_class_graph_->class_graph_->getUpPtr(first_crash, intersection_ups);
-      std::unordered_set<ClassBranch_t*> left_ups;
+      std::unordered_set<ClassBranch*> left_ups;
       ano_class_graph_->class_graph_->getUpPtr(class_left, left_ups);
 
-      ClassBranch_t* explanation_1 = nullptr;
-      ClassBranch_t* explanation_2 = nullptr;
+      ClassBranch* explanation_1 = nullptr;
+      ClassBranch* explanation_2 = nullptr;
       for(auto up : intersection_ups)
       {
         explanation_2 = up;
@@ -90,7 +90,7 @@ namespace ontologenius {
     return err;
   }
 
-  std::vector<std::string> AnonymousClassChecker::checkClassesVectorDisjointness(const std::vector<ClassElement_t>& classes_left, const std::vector<ClassElement_t>& class_right)
+  std::vector<std::string> AnonymousClassChecker::checkClassesVectorDisjointness(const std::vector<ClassElement>& classes_left, const std::vector<ClassElement>& class_right)
   {
     std::vector<std::string> errs;
     for(auto& elem_right : class_right)
@@ -103,7 +103,7 @@ namespace ontologenius {
     return errs;
   }
 
-  std::vector<std::string> AnonymousClassChecker::resolveTreeDataTypes(AnonymousClassElement_t* ano_elem)
+  std::vector<std::string> AnonymousClassChecker::resolveTreeDataTypes(AnonymousClassElement* ano_elem)
   {
     std::vector<std::string> errs;
     std::unordered_set<std::string> types;
@@ -139,7 +139,7 @@ namespace ontologenius {
     return errs;
   }
 
-  std::vector<std::string> AnonymousClassChecker::resolveTree(AnonymousClassElement_t* ano_elem, const std::vector<ClassElement_t>& ranges)
+  std::vector<std::string> AnonymousClassChecker::resolveTree(AnonymousClassElement* ano_elem, const std::vector<ClassElement>& ranges)
   {
     std::vector<std::string> errs;
     if(ano_elem->logical_type_ == logical_none && ano_elem->oneof == false)
@@ -176,7 +176,7 @@ namespace ontologenius {
     return errs;
   }
 
-  std::vector<std::string> AnonymousClassChecker::checkExpressionDisjointess(AnonymousClassElement_t* ano_elem, const std::vector<ClassElement_t>& ranges)
+  std::vector<std::string> AnonymousClassChecker::checkExpressionDisjointess(AnonymousClassElement* ano_elem, const std::vector<ClassElement>& ranges)
   {
     std::vector<std::string> errs;
     // object or data property restriction
@@ -198,7 +198,7 @@ namespace ontologenius {
     return errs;
   }
 
-  std::vector<std::string> AnonymousClassChecker::checkPropertyDisjointness(AnonymousClassElement_t* ano_elem, const std::vector<ClassElement_t>& ranges)
+  std::vector<std::string> AnonymousClassChecker::checkPropertyDisjointness(AnonymousClassElement* ano_elem, const std::vector<ClassElement>& ranges)
   {
     std::vector<std::string> errs;
     if(ano_elem->object_property_involved_ != nullptr)
@@ -216,7 +216,7 @@ namespace ontologenius {
     return errs;
   }
 
-  std::pair<std::string, bool> getDomainOrigin(AnonymousClassElement_t* ano_elem, size_t index)
+  std::pair<std::string, bool> getDomainOrigin(AnonymousClassElement* ano_elem, size_t index)
   {
     size_t cpt = 0;
     for(auto sub_elem : ano_elem->sub_elements_)
@@ -247,9 +247,9 @@ namespace ontologenius {
   }
 
   // check for dijsunctions between elements in a AND node (Property -> domains_ , Class -> isA, ) ((obj->domains_) and (B->isA))
-  void AnonymousClassChecker::checkIntersectionDomainsDisjointess(AnonymousClassElement_t* ano_elem)
+  void AnonymousClassChecker::checkIntersectionDomainsDisjointess(AnonymousClassElement* ano_elem)
   {
-    std::vector<std::vector<ClassElement_t>> all_domains;
+    std::vector<std::vector<ClassElement>> all_domains;
 
     for(auto sub_elem : ano_elem->sub_elements_)
     {
@@ -260,7 +260,7 @@ namespace ontologenius {
         else if(sub_elem->data_property_involved_ != nullptr)
           all_domains.push_back(sub_elem->data_property_involved_->domains_);
         else if(sub_elem->class_involved_ != nullptr)
-          all_domains.push_back({ClassElement_t(sub_elem->class_involved_)});
+          all_domains.push_back({ClassElement(sub_elem->class_involved_)});
       }
     }
 
@@ -281,7 +281,7 @@ namespace ontologenius {
       }
   }
 
-  void AnonymousClassChecker::checkObjectPropertyRangeDisjointness(AnonymousClassElement_t* ano_elem)
+  void AnonymousClassChecker::checkObjectPropertyRangeDisjointness(AnonymousClassElement* ano_elem)
   {
     if(ano_elem->is_complex == true)
     {
@@ -309,7 +309,7 @@ namespace ontologenius {
     }
   }
 
-  void AnonymousClassChecker::checkDataPropertyRangeDisjointness(AnonymousClassElement_t* ano_elem)
+  void AnonymousClassChecker::checkDataPropertyRangeDisjointness(AnonymousClassElement* ano_elem)
   {
     if(ano_elem->is_complex == true)
     {

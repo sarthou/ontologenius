@@ -19,7 +19,7 @@ namespace ontologenius {
 
     std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
 
-    std::vector<IndividualBranch_t*> individuals = individual_graph_->get();
+    std::vector<IndividualBranch*> individuals = individual_graph_->get();
     for(auto& individual : individuals)
       writeIndividual(individual);
 
@@ -32,13 +32,13 @@ namespace ontologenius {
 
     std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
 
-    std::vector<IndividualBranch_t*> individuals = individual_graph_->get();
+    std::vector<IndividualBranch*> individuals = individual_graph_->get();
     writeDistincts(individuals);
 
     file_ = nullptr;
   }
 
-  void IndividualOwlWriter::writeIndividual(IndividualBranch_t* branch)
+  void IndividualOwlWriter::writeIndividual(IndividualBranch* branch)
   {
     std::string tmp = "    <!-- " + ns_ + "#" + branch->value() + " -->\n\n\
     <owl:NamedIndividual rdf:about=\"" +
@@ -57,7 +57,7 @@ namespace ontologenius {
     writeString(tmp);
   }
 
-  void IndividualOwlWriter::writeType(IndividualBranch_t* branch)
+  void IndividualOwlWriter::writeType(IndividualBranch* branch)
   {
     for(auto& mother : branch->is_a_)
       if(mother.infered == false)
@@ -71,9 +71,9 @@ namespace ontologenius {
       }
   }
 
-  void IndividualOwlWriter::writeObjectProperties(IndividualBranch_t* branch)
+  void IndividualOwlWriter::writeObjectProperties(IndividualBranch* branch)
   {
-    for(IndivObjectRelationElement_t& relation : branch->object_relations_)
+    for(IndivObjectRelationElement& relation : branch->object_relations_)
       if(relation.infered == false)
       {
         std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
@@ -87,9 +87,9 @@ namespace ontologenius {
       }
   }
 
-  void IndividualOwlWriter::writeDataProperties(IndividualBranch_t* branch)
+  void IndividualOwlWriter::writeDataProperties(IndividualBranch* branch)
   {
-    for(IndivDataRelationElement_t& relation : branch->data_relations_)
+    for(IndivDataRelationElement& relation : branch->data_relations_)
       if(relation.infered == false)
       {
         std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
@@ -108,7 +108,7 @@ namespace ontologenius {
         writeString(tmp);
       }
   }
-  void IndividualOwlWriter::writeSameAs(IndividualBranch_t* branch)
+  void IndividualOwlWriter::writeSameAs(IndividualBranch* branch)
   {
     for(auto& same_as : branch->same_as_)
       if(same_as.infered == false)
@@ -119,7 +119,7 @@ namespace ontologenius {
       }
   }
 
-  void IndividualOwlWriter::writeDistincts(std::vector<IndividualBranch_t*>& individuals)
+  void IndividualOwlWriter::writeDistincts(std::vector<IndividualBranch*>& individuals)
   {
     std::vector<std::string> distincts_done;
 
@@ -157,7 +157,7 @@ namespace ontologenius {
     }
   }
 
-  void IndividualOwlWriter::getDistincts(IndividualBranch_t* individual, std::vector<std::string>& distincts_current)
+  void IndividualOwlWriter::getDistincts(IndividualBranch* individual, std::vector<std::string>& distincts_current)
   {
     if(std::find(distincts_current.begin(), distincts_current.end(), individual->value()) == distincts_current.end())
     {

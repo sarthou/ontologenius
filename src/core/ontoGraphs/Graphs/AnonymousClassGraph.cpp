@@ -32,14 +32,14 @@ namespace ontologenius {
 
     for(auto* branch : other.all_branchs_)
     {
-      auto* class_branch = new AnonymousClassBranches_t(branch->value());
+      auto* class_branch = new AnonymousClassBranch(branch->value());
       all_branchs_.push_back(class_branch);
     }
   }
 
-  AnonymousClassElement_t* AnonymousClassGraph::createElement(ExpressionMember_t* exp)
+  AnonymousClassElement* AnonymousClassGraph::createElement(ExpressionMember_t* exp)
   {
-    AnonymousClassElement_t* ano_element = new AnonymousClassElement_t();
+    AnonymousClassElement* ano_element = new AnonymousClassElement();
     std::vector<std::string> vect_equiv = exp->rest.toVector();
     ano_element->is_complex = exp->is_complex;
 
@@ -124,10 +124,10 @@ namespace ontologenius {
     return ano_element;
   }
 
-  AnonymousClassElement_t* AnonymousClassGraph::createTree(ExpressionMember_t* member_node, size_t& depth)
+  AnonymousClassElement* AnonymousClassGraph::createTree(ExpressionMember_t* member_node, size_t& depth)
   {
     size_t local_depth = depth + 1;
-    AnonymousClassElement_t* node = createElement(member_node);
+    AnonymousClassElement* node = createElement(member_node);
 
     for(auto* child : member_node->child_members)
     {
@@ -142,13 +142,13 @@ namespace ontologenius {
     return node;
   }
 
-  AnonymousClassBranches_t* AnonymousClassGraph::add(const std::string& value, AnonymousClassVectors_t& ano)
+  AnonymousClassBranch* AnonymousClassGraph::add(const std::string& value, AnonymousClassVectors_t& ano)
   {
-    std::lock_guard<std::shared_timed_mutex> lock(Graph<AnonymousClassBranches_t>::mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock(Graph<AnonymousClassBranch>::mutex_);
 
     std::string ano_name = "anonymous_" + value;
-    AnonymousClassBranches_t* anonymous_branch = new AnonymousClassBranches_t(ano_name);
-    ClassBranch_t* class_branch = class_graph_->findOrCreateBranch(value);
+    AnonymousClassBranch* anonymous_branch = new AnonymousClassBranch(ano_name);
+    ClassBranch* class_branch = class_graph_->findOrCreateBranch(value);
 
     anonymous_branch->class_equiv_ = class_branch;
     all_branchs_.push_back(anonymous_branch);
@@ -157,7 +157,7 @@ namespace ontologenius {
     for(size_t i = 0; i < ano.equivalence_trees.size(); i++)
     {
       size_t depth = 0;
-      AnonymousClassElement_t* ano_elem = createTree(ano.equivalence_trees[i], depth);
+      AnonymousClassElement* ano_elem = createTree(ano.equivalence_trees[i], depth);
       ano_elem->ano_name = ano_name + "_" + std::to_string(i);
       anonymous_branch->ano_elems_.push_back(ano_elem);
       anonymous_branch->depth_ = depth;
@@ -170,7 +170,7 @@ namespace ontologenius {
     return anonymous_branch;
   }
 
-  void AnonymousClassGraph::printTree(AnonymousClassElement_t* ano_elem, size_t level, bool root)
+  void AnonymousClassGraph::printTree(AnonymousClassElement* ano_elem, size_t level, bool root)
   {
     std::string space(level * 4, ' ');
     std::string tmp;

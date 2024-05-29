@@ -15,9 +15,9 @@ namespace ontologenius {
 
   struct DataPropertyVectors_t
   {
-    std::vector<Single_t<std::string>> mothers_;
-    std::vector<Single_t<std::string>> disjoints_;
-    std::vector<Single_t<std::string>> domains_;
+    std::vector<SingleElement<std::string>> mothers_;
+    std::vector<SingleElement<std::string>> disjoints_;
+    std::vector<SingleElement<std::string>> domains_;
     std::vector<std::string> ranges_;
     Properties_t properties_;
     std::map<std::string, std::vector<std::string>> dictionary_;
@@ -35,7 +35,7 @@ namespace ontologenius {
   // for graphs usage
   class ClassGraph;
 
-  class DataPropertyGraph : public OntoGraph<DataPropertyBranch_t>
+  class DataPropertyGraph : public OntoGraph<DataPropertyBranch>
   {
     friend DataPropertyDrawer;
     friend IndividualGraph;
@@ -49,7 +49,7 @@ namespace ontologenius {
 
     void deepCopy(const DataPropertyGraph& other);
 
-    DataPropertyBranch_t* add(const std::string& value, DataPropertyVectors_t& property_vectors);
+    DataPropertyBranch* add(const std::string& value, DataPropertyVectors_t& property_vectors);
     void add(std::vector<std::string>& disjoints);
     bool addAnnotation(const std::string& value, DataPropertyVectors_t& property_vectors);
     LiteralNode* createLiteral(const std::string& value);
@@ -57,7 +57,7 @@ namespace ontologenius {
 
     std::unordered_set<std::string> getDomain(const std::string& value, size_t depth = -1);
     std::unordered_set<index_t> getDomain(index_t value, size_t depth = -1);
-    void getDomainPtr(DataPropertyBranch_t* branch, std::unordered_set<ClassBranch_t*>& res, size_t depth = -1);
+    void getDomainPtr(DataPropertyBranch* branch, std::unordered_set<ClassBranch*>& res, size_t depth = -1);
     std::unordered_set<std::string> getRange(const std::string& value);
     std::unordered_set<index_t> getRange(index_t value);
 
@@ -71,10 +71,10 @@ namespace ontologenius {
     BranchContainerSet<LiteralNode> literal_container_;
 
     template<typename T>
-    void getDomain(DataPropertyBranch_t* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<DataPropertyBranch_t*>& up_trace);
-    void getDomainPtr(DataPropertyBranch_t* branch, size_t depth, std::unordered_set<ClassBranch_t*>& res, std::unordered_set<DataPropertyBranch_t*>& up_trace);
+    void getDomain(DataPropertyBranch* branch, size_t depth, std::unordered_set<T>& res, std::unordered_set<DataPropertyBranch*>& up_trace);
+    void getDomainPtr(DataPropertyBranch* branch, size_t depth, std::unordered_set<ClassBranch*>& res, std::unordered_set<DataPropertyBranch*>& up_trace);
 
-    void cpyBranch(DataPropertyBranch_t* old_branch, DataPropertyBranch_t* new_branch);
+    void cpyBranch(DataPropertyBranch* old_branch, DataPropertyBranch* new_branch);
   };
 
 } // namespace ontologenius

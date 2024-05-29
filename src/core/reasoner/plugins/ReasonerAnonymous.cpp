@@ -53,9 +53,9 @@ namespace ontologenius {
 
               if(has_active_equiv && tree_evaluation_result)
               {
-                if(ontology_->individual_graph_.conditionalPushBack(indiv->is_a_, ClassElement_t(anonymous->class_equiv_, 1.0, true)))
+                if(ontology_->individual_graph_.conditionalPushBack(indiv->is_a_, ClassElement(anonymous->class_equiv_, 1.0, true)))
                 {
-                  if(ontology_->individual_graph_.conditionalPushBack(anonymous->class_equiv_->individual_childs_, IndividualElement_t(indiv, 1.0, true)))
+                  if(ontology_->individual_graph_.conditionalPushBack(anonymous->class_equiv_->individual_childs_, IndividualElement(indiv, 1.0, true)))
                   {
                     indiv->nb_updates_++;
                     anonymous->class_equiv_->nb_updates_++;
@@ -103,10 +103,10 @@ namespace ontologenius {
     }
   }
 
-  bool ReasonerAnonymous::checkClassesDisjointess(IndividualBranch_t* indiv, ClassBranch_t* class_equiv)
+  bool ReasonerAnonymous::checkClassesDisjointess(IndividualBranch* indiv, ClassBranch* class_equiv)
   {
     auto it = disjoints_cache_.find(class_equiv);
-    std::unordered_set<ClassBranch_t*> disjoints;
+    std::unordered_set<ClassBranch*> disjoints;
 
     if(it != disjoints_cache_.end())
     {
@@ -123,7 +123,7 @@ namespace ontologenius {
 
     if(disjoints.size())
     {
-      std::unordered_set<ClassBranch_t*> ups;
+      std::unordered_set<ClassBranch*> ups;
       ontology_->individual_graph_.getUpPtr(indiv, ups);
       return (ontology_->class_graph_.firstIntersection(ups, disjoints) != nullptr);
     }
@@ -131,9 +131,9 @@ namespace ontologenius {
       return false;
   }
 
-  int ReasonerAnonymous::relationExists(IndividualBranch_t* indiv_from, ObjectPropertyBranch_t* property, IndividualBranch_t* indiv_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  int ReasonerAnonymous::relationExists(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
-    std::unordered_set<ObjectPropertyBranch_t*> down_properties;
+    std::unordered_set<ObjectPropertyBranch*> down_properties;
     std::string explanation;
     ontology_->object_property_graph_.getDownPtr(property, down_properties);
 
@@ -163,7 +163,7 @@ namespace ontologenius {
     return -1;
   }
 
-  bool ReasonerAnonymous::resolveFirstLayer(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem)
+  bool ReasonerAnonymous::resolveFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem)
   {
     if(ano_elem->logical_type_ == logical_and)
       for(auto elem : ano_elem->sub_elements_)
@@ -182,7 +182,7 @@ namespace ontologenius {
     return false;
   }
 
-  bool ReasonerAnonymous::resolveTree(LiteralNode* literal, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::resolveTree(LiteralNode* literal, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     if(ano_elem->logical_type_ == logical_and)
     {
@@ -215,7 +215,7 @@ namespace ontologenius {
     return false;
   }
 
-  bool ReasonerAnonymous::resolveTree(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::resolveTree(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     if(ano_elem->logical_type_ == logical_and)
     {
@@ -253,7 +253,7 @@ namespace ontologenius {
     return false;
   }
 
-  bool ReasonerAnonymous::checkRestrictionFirstLayer(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem)
+  bool ReasonerAnonymous::checkRestrictionFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem)
   {
     if(ano_elem->object_property_involved_ != nullptr)
     {
@@ -300,7 +300,7 @@ namespace ontologenius {
     return false;
   }
 
-  bool ReasonerAnonymous::checkRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkRestriction(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     std::string explanation;
 
@@ -350,7 +350,7 @@ namespace ontologenius {
     return false;
   }
 
-  bool ReasonerAnonymous::checkTypeRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkTypeRestriction(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     std::string explanation;
 
@@ -395,14 +395,14 @@ namespace ontologenius {
     return false;
   }
 
-  bool ReasonerAnonymous::checkTypeRestriction(LiteralNode* literal, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkTypeRestriction(LiteralNode* literal, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     // To prevent warning of unused parameter for used
     (void)used;
     return (literal->type_ == ano_elem->card_.card_range_->type_);
   }
 
-  bool ReasonerAnonymous::checkIndividualRestriction(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkIndividualRestriction(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     std::string explanation;
 
@@ -426,7 +426,7 @@ namespace ontologenius {
     return (indiv->get() == ano_elem->individual_involved_->get());
   }
 
-  bool ReasonerAnonymous::checkCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     switch(ano_elem->card_.card_type_)
     {
@@ -460,7 +460,7 @@ namespace ontologenius {
     }
   }
 
-  bool ReasonerAnonymous::checkMinCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkMinCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     std::vector<std::pair<std::string, size_t>> indexes;
 
@@ -501,7 +501,7 @@ namespace ontologenius {
     }
   }
 
-  bool ReasonerAnonymous::checkMaxCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkMaxCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     std::vector<std::pair<std::string, size_t>> indexes;
 
@@ -542,7 +542,7 @@ namespace ontologenius {
     }
   }
 
-  bool ReasonerAnonymous::checkExactlyCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkExactlyCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     std::vector<std::pair<std::string, size_t>> indexes;
 
@@ -583,7 +583,7 @@ namespace ontologenius {
     }
   }
 
-  bool ReasonerAnonymous::checkOnlyCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkOnlyCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     std::vector<std::pair<std::string, size_t>> indexes;
 
@@ -621,7 +621,7 @@ namespace ontologenius {
     return false;
   }
 
-  bool ReasonerAnonymous::checkSomeCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkSomeCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     std::pair<std::string, int> index;
 
@@ -660,7 +660,7 @@ namespace ontologenius {
     }
   }
 
-  bool ReasonerAnonymous::checkValueCard(IndividualBranch_t* indiv, AnonymousClassElement_t* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkValueCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     int index = -1;
     std::string explanation;
