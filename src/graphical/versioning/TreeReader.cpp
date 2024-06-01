@@ -1,45 +1,48 @@
 #include "ontologenius/graphical/versioning/TreeReader.h"
 
+#include <cstddef>
 #include <fstream>
+#include <iostream>
+#include <string>
 
 namespace ontologenius {
 
-  size_t commit_t::global_width = 1;
-  size_t commit_t::global_height = 0;
+  size_t Commit::global_width = 1;
+  size_t Commit::global_height = 0;
 
-  commit_t::commit_t(const std::string& id) : id_(id), order_(-1)
+  Commit::Commit(const std::string& id) : id_(id), order_(-1)
   {
     global_height++;
   }
 
-  commit_t::~commit_t()
+  Commit::~Commit()
   {
     for(auto& next : nexts_)
       delete next;
   }
 
-  void commit_t::setOrderId(size_t order)
+  void Commit::setOrderId(size_t order)
   {
-    order_ = order;
+    order_ = (int)order;
   }
 
-  void commit_t::insertData(const std::string& data)
+  void Commit::insertData(const std::string& data)
   {
     datas_.push_back(data);
     global_height++;
   }
 
-  void commit_t::insertNext(commit_t* next)
+  void Commit::insertNext(Commit* next)
   {
     nexts_.push_back(next);
     if(nexts_.size() > 1)
       global_width++;
   }
 
-  commit_t* TreeReader::read(const std::string& file_name)
+  Commit* TreeReader::read(const std::string& file_name)
   {
-    std::string response = "";
-    std::string tmp = "";
+    std::string response;
+    std::string tmp;
     std::ifstream f(file_name);
 
     if(!f.is_open())
@@ -60,7 +63,7 @@ namespace ontologenius {
     return readNode(xml);
   }
 
-  commit_t* TreeReader::readNode(TiXmlElement* elem)
+  Commit* TreeReader::readNode(TiXmlElement* elem)
   {
     if(elem == nullptr)
     {
@@ -71,7 +74,7 @@ namespace ontologenius {
     return readNode(elem, nullptr);
   }
 
-  commit_t* TreeReader::readNode(TiXmlElement* elem, commit_t* prev)
+  Commit* TreeReader::readNode(TiXmlElement* elem, Commit* prev)
   {
     std::string elem_value = elem->Value();
     if(elem_value == "Node")
@@ -79,7 +82,7 @@ namespace ontologenius {
       std::string id = getAttribute(elem, "id");
       if(id.empty() == false)
       {
-        auto current = new commit_t(id);
+        auto* current = new Commit(id);
         std::cout << "create commit " << id << std::endl;
         for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
         {
@@ -87,8 +90,7 @@ namespace ontologenius {
           if(elem_value == "Data")
           {
             std::string data = "[" + getAttribute(sub_elem, "action") + "]";
-            const char* value;
-            value = sub_elem->GetText();
+            const char* value = sub_elem->GetText();
             if(value != nullptr)
             {
               data += std::string(value);
@@ -100,8 +102,7 @@ namespace ontologenius {
             readNode(sub_elem, current);
           else if(elem_value == "Order")
           {
-            const char* value;
-            value = sub_elem->GetText();
+            const char* value = sub_elem->GetText();
             if(value != nullptr)
             {
               size_t order = std::stoi(std::string(value));
@@ -123,8 +124,7 @@ namespace ontologenius {
 
   std::string TreeReader::getAttribute(TiXmlElement* sub_elem, const std::string& attribute)
   {
-    const char* sub_attr;
-    sub_attr = sub_elem->Attribute(attribute.c_str());
+    const char* sub_attr = sub_elem->Attribute(attribute.c_str());
     if(sub_attr != nullptr)
       return std::string(sub_attr);
     return "";

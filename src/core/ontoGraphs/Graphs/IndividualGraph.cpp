@@ -1,9 +1,16 @@
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
 #include <algorithm>
+#include <map>
+#include <string>
+#include <unordered_set>
+#include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 
 namespace ontologenius {
@@ -392,7 +399,7 @@ namespace ontologenius {
           if(relation.second->get() == individual)
             data_property_graph_->getUpSafe(relation.first, res, depth);
 
-      class_graph_->getRelationOnDataProperties(LiteralNode::table_.get(-individual), res, depth);
+      class_graph_->getRelationOnDataProperties(LiteralNode::table.get(-individual), res, depth);
     }
 
     return res;
@@ -971,10 +978,8 @@ namespace ontologenius {
       else
       {
         IndividualBranch* second = ordered_individuals_[second_individual];
-        if(second == nullptr)
+        if((second == nullptr) || (second->same_as_.empty()))
           getWith(indiv, {second_individual}, res, depth); // class
-        else if(second->same_as_.empty())
-          getWith(indiv, {second_individual}, res, depth);
         else
           getWith(indiv, getSameId(second), res, depth);
       }
@@ -1372,7 +1377,7 @@ namespace ontologenius {
     std::shared_lock<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
 
     std::unordered_set<index_t> res;
-    ClassBranch* class_branch = class_graph_->container_.find(ValuedNode::table_.get(class_selector));
+    ClassBranch* class_branch = class_graph_->container_.find(ValuedNode::table.get(class_selector));
     if(class_branch != nullptr)
     {
       std::unordered_set<ClassBranch*> down_set;
@@ -1597,7 +1602,7 @@ namespace ontologenius {
     }
   }
 
-  void IndividualGraph::redirectDeleteIndividual(IndividualBranch* indiv, ClassBranch* _class)
+  void IndividualGraph::redirectDeleteIndividual(IndividualBranch* indiv, ClassBranch* class_branch)
   {
     if(indiv != nullptr)
     {
@@ -1606,7 +1611,7 @@ namespace ontologenius {
 
       // erase indiv from parents
       std::unordered_set<ClassBranch*> up_set;
-      class_graph_->getUpPtr(_class, up_set, 1);
+      class_graph_->getUpPtr(class_branch, up_set, 1);
 
       for(auto* up : up_set)
       {
@@ -1615,7 +1620,7 @@ namespace ontologenius {
           if(up->individual_childs_[i] == indiv)
           {
             up->individual_childs_.erase(up->individual_childs_.begin() + i);
-            up->childs_.emplace_back(_class);
+            up->childs_.emplace_back(class_branch);
           }
           else
             i++;
@@ -1974,7 +1979,7 @@ namespace ontologenius {
     std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     std::vector<std::pair<std::string, std::string>> explanations;
 
-    if(branch_1->same_as_.size() > 0)
+    if(branch_1->same_as_.empty() == false)
     {
       for(size_t i = 0; i < branch_1->same_as_.size(); i++)
       {

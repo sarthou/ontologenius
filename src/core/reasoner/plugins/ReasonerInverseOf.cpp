@@ -1,8 +1,10 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerInverseOf.h"
 
+#include <mutex>
 #include <pluginlib/class_list_macros.hpp>
 #include <shared_mutex>
 #include <string>
+#include <vector>
 
 namespace ontologenius {
 
@@ -12,7 +14,7 @@ namespace ontologenius {
     for(const auto& indiv : ontology_->individual_graph_.get())
       if(indiv->updated_ || indiv->hasUpdatedObjectRelation())
       {
-        for(IndivObjectRelationElement& relation : indiv->object_relations_)
+        for(const IndivObjectRelationElement& relation : indiv->object_relations_)
         {
           auto inverts = getLowestInvert(relation.first);
           for(auto& invert : inverts)
@@ -48,7 +50,7 @@ namespace ontologenius {
 
       explanations_.emplace_back("[ADD]" + indiv_on->value() + "|" + inv_prop->value() + "|" + inv_indiv->value(),
                                  "[ADD]" + inv_indiv->value() + "|" + base_prop->value() + "|" + indiv_on->value());
-      nb_update_++;
+      nb_update++;
     }
     catch(GraphException& e)
     {

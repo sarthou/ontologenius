@@ -1,6 +1,8 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/IndividualOwlWriter.h"
 
 #include <algorithm>
+#include <shared_mutex>
+#include <string>
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"

@@ -9,7 +9,7 @@
 
 namespace ontologenius {
 
-  class Node_t
+  class DrawerNode
   {
   public:
     size_t row_;
@@ -21,8 +21,8 @@ namespace ontologenius {
     bool is_data_;
     std::string text_;
 
-    Node_t* prev_;
-    std::vector<Node_t*> nexts_;
+    DrawerNode* prev_;
+    std::vector<DrawerNode*> nexts_;
   };
 
   class TreeDrawer
@@ -31,18 +31,18 @@ namespace ontologenius {
     TreeDrawer() : image_(nullptr) {}
     ~TreeDrawer();
 
-    void draw(const std::string& file_name, commit_t* root, bool commit_only = false);
+    void draw(const std::string& file_name, Commit* root, bool commit_only = false);
 
   private:
-    std::vector<Node_t*> nodes_;
-    std::map<int, Node_t*> commit_nodes_;
+    std::vector<DrawerNode*> nodes_;
+    std::map<int, DrawerNode*> commit_nodes_;
     IplImage* image_;
 
-    Node_t* createNode(commit_t* commit, bool commit_only);
+    DrawerNode* createNode(Commit* commit, bool commit_only);
 
-    void drawNode(Node_t* node);
-    void drawNodeText(Node_t* node);
-    void drawLink(Node_t* node_from, Node_t* node_to);
+    void drawNode(DrawerNode* node);
+    void drawNodeText(DrawerNode* node);
+    void drawLink(DrawerNode* node_from, DrawerNode* node_to);
     void drawElipseRight(size_t x, size_t y);
     void drawElipseBottom(size_t x, size_t y);
 

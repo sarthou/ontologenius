@@ -1,6 +1,10 @@
 #include "ontologenius/core/ontoGraphs/Checkers/IndividualChecker.h"
 
 #include <algorithm>
+#include <cstddef>
+#include <shared_mutex>
+#include <string>
+#include <unordered_set>
 
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
@@ -52,9 +56,9 @@ namespace ontologenius {
     if(intersection != nullptr)
     {
       if(disjoint_with != nullptr)
-        print_error("'" + indiv->value() + "' can't be a '" + intersection->value() + "' and a '" + disjoint_with->value() + "' because of disjonction between classes '" + intersection->value() + "' and '" + disjoint_with->value() + "'");
+        printError("'" + indiv->value() + "' can't be a '" + intersection->value() + "' and a '" + disjoint_with->value() + "' because of disjonction between classes '" + intersection->value() + "' and '" + disjoint_with->value() + "'");
       else
-        print_error("'" + indiv->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
+        printError("'" + indiv->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
     }
   }
 
@@ -74,9 +78,9 @@ namespace ontologenius {
           else if(indiv == intersection)
             continue;
           else if(indiv == same.elem)
-            print_error("'" + indiv->value() + "' can't be same and distinct with '" + intersection->value() + "'");
+            printError("'" + indiv->value() + "' can't be same and distinct with '" + intersection->value() + "'");
           else
-            print_error("'" + indiv->value() + "' can't be same as '" + same.elem->value() + "' and '" + intersection->value() + "' as they are distinct");
+            printError("'" + indiv->value() + "' can't be same as '" + same.elem->value() + "' and '" + intersection->value() + "' as they are distinct");
         }
       }
     }
@@ -89,17 +93,17 @@ namespace ontologenius {
       if(object_relation.first->properties_.reflexive_property_)
       {
         if(indiv->get() != object_relation.second->get())
-          print_error("'" + object_relation.first->value() + "' is reflexive so can't be from '" + indiv->value() + "' to '" + object_relation.second->value() + "'");
+          printError("'" + object_relation.first->value() + "' is reflexive so can't be from '" + indiv->value() + "' to '" + object_relation.second->value() + "'");
       }
       else if(object_relation.first->properties_.irreflexive_property_)
       {
         if(indiv->get() == object_relation.second->get())
-          print_error("'" + object_relation.first->value() + "' is irreflexive so can't be from '" + indiv->value() + "' to '" + object_relation.second->value() + "'");
+          printError("'" + object_relation.first->value() + "' is irreflexive so can't be from '" + indiv->value() + "' to '" + object_relation.second->value() + "'");
       }
     }
   }
 
-  void IndividualChecker::checkObectRelations(IndividualBranch* indiv, std::unordered_set<ClassBranch*> up_from)
+  void IndividualChecker::checkObectRelations(IndividualBranch* indiv, const std::unordered_set<ClassBranch*>& up_from)
   {
     for(IndivObjectRelationElement& object_relation : indiv->object_relations_)
     {
@@ -115,10 +119,10 @@ namespace ontologenius {
           if(intersection.second == nullptr)
           {
             indiv->flags_["domain"].push_back(object_relation.first->value());
-            print_warning("Individual '" + indiv->value() + "' is not in domain of object property '" + object_relation.first->value() + "'");
+            printWarning("Individual '" + indiv->value() + "' is not in domain of object property '" + object_relation.first->value() + "'");
           }
           else
-            print_error("Individual '" + indiv->value() + "' can not be in domain of object property '" + object_relation.first->value() + "'");
+            printError("Individual '" + indiv->value() + "' can not be in domain of object property '" + object_relation.first->value() + "'");
         }
       }
 
@@ -133,16 +137,16 @@ namespace ontologenius {
           if(intersection.second == nullptr)
           {
             indiv->flags_["range"].push_back(object_relation.first->value());
-            print_warning("Individual '" + object_relation.second->value() + "' is not in range of object property '" + object_relation.first->value() + "'");
+            printWarning("Individual '" + object_relation.second->value() + "' is not in range of object property '" + object_relation.first->value() + "'");
           }
           else
-            print_error("Individual '" + object_relation.second->value() + "' can not be in range of object property '" + object_relation.first->value() + "'");
+            printError("Individual '" + object_relation.second->value() + "' can not be in range of object property '" + object_relation.first->value() + "'");
         }
       }
     }
   }
 
-  void IndividualChecker::checkDataRelations(IndividualBranch* indiv, std::unordered_set<ClassBranch*> up_from)
+  void IndividualChecker::checkDataRelations(IndividualBranch* indiv, const std::unordered_set<ClassBranch*>& up_from)
   {
     for(IndivDataRelationElement& relation : indiv->data_relations_)
     {
@@ -157,10 +161,10 @@ namespace ontologenius {
           if(intersection.second == nullptr)
           {
             indiv->flags_["domain"].push_back(relation.first->value());
-            print_warning("Individual '" + indiv->value() + "' is not in domain of data property '" + relation.first->value() + "'");
+            printWarning("Individual '" + indiv->value() + "' is not in domain of data property '" + relation.first->value() + "'");
           }
           else
-            print_error("Individual '" + indiv->value() + "' can not be in domain of data property '" + relation.first->value() + "'");
+            printError("Individual '" + indiv->value() + "' can not be in domain of data property '" + relation.first->value() + "'");
         }
       }
 
@@ -169,7 +173,7 @@ namespace ontologenius {
       {
         auto intersection = range.find(relation.second->type_);
         if(intersection == range.end())
-          print_error("Individual '" + relation.second->type_ + "' is not in range of '" + relation.first->value() + "'");
+          printError("Individual '" + relation.second->type_ + "' is not in range of '" + relation.first->value() + "'");
       }
     }
   }
@@ -180,7 +184,7 @@ namespace ontologenius {
     {
       if(object_relation.first->properties_.antisymetric_property_)
         if(symetricExist(indiv, object_relation.first, object_relation.second))
-          print_error("'" + object_relation.first->value() + "' is antisymetric so can't be from '" + indiv->value() + "' to '" + object_relation.second->value() + "' and inverse");
+          printError("'" + object_relation.first->value() + "' is antisymetric so can't be from '" + indiv->value() + "' to '" + object_relation.second->value() + "' and inverse");
     }
   }
 

@@ -31,7 +31,7 @@ namespace ontologenius {
 
   private:
     Comparator toComparator(IndividualBranch* indiv);
-    Comparator toComparator(ClassBranch* class_);
+    Comparator toComparator(ClassBranch* class_branch);
 
     std::vector<std::string> compare(Comparator& comp1, Comparator& comp2);
     void compareObjects(Comparator& comp1, Comparator& comp2, std::vector<std::string>& res);

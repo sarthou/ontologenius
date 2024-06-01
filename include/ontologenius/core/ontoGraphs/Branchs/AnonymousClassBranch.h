@@ -10,7 +10,7 @@
 
 namespace ontologenius {
 
-  enum CardType_t
+  enum CardType_e
   {
     cardinality_none,
     cardinality_some,
@@ -32,7 +32,7 @@ namespace ontologenius {
 
   struct CardinalityElement_t
   {
-    CardType_t card_type_ = cardinality_none;
+    CardType_e card_type_ = cardinality_none;
     size_t card_number_ = 0;
     LiteralNode* card_range_ = nullptr;
   };
@@ -41,8 +41,8 @@ namespace ontologenius {
   {
   public:
     AnonymousClassElement() : logical_type_(logical_none), oneof(false), is_complex(false),
-                                class_involved_(nullptr), object_property_involved_(nullptr),
-                                data_property_involved_(nullptr), individual_involved_(nullptr) {}
+                              class_involved_(nullptr), object_property_involved_(nullptr),
+                              data_property_involved_(nullptr), individual_involved_(nullptr) {}
 
     LogicalNodeType_e logical_type_;
     bool oneof; // true = OneOf element

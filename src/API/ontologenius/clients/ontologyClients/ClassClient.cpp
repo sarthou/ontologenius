@@ -1,5 +1,8 @@
 #include "ontologenius/API/ontologenius/clients/ontologyClients/ClassClient.h"
 
+#include <string>
+#include <vector>
+
 namespace onto {
 
   std::vector<std::string> ClassClient::getDown(const std::string& name, int depth, const std::string& selector)
@@ -15,8 +18,7 @@ namespace onto {
 
   std::vector<std::string> ClassClient::getDisjoint(const std::string& name)
   {
-    std::string param = name;
-    return call("getDisjoint", param);
+    return call("getDisjoint", name);
   }
 
   std::vector<std::string> ClassClient::getOn(const std::string& name, const std::string& property, const std::string& selector)
@@ -37,9 +39,9 @@ namespace onto {
     return call("getFrom", param);
   }
 
-  std::vector<std::string> ClassClient::getWith(const std::string& indiv_1, const std::string& indiv_2, const std::string& selector, int depth)
+  std::vector<std::string> ClassClient::getWith(const std::string& class_from, const std::string& class_to, const std::string& selector, int depth)
   {
-    std::string param = indiv_1 + ":" + indiv_2;
+    std::string param = class_from + ":" + class_to;
     if(selector.empty() == false)
       param += " -s " + selector;
 
@@ -51,20 +53,17 @@ namespace onto {
 
   std::vector<std::string> ClassClient::getRelatedFrom(const std::string& property)
   {
-    std::string param = property;
-    return call("getRelatedFrom", param);
+    return call("getRelatedFrom", property);
   }
 
   std::vector<std::string> ClassClient::getRelatedOn(const std::string& property)
   {
-    std::string param = property;
-    return call("getRelatedOn", param);
+    return call("getRelatedOn", property);
   }
 
   std::vector<std::string> ClassClient::getRelatedWith(const std::string& name)
   {
-    std::string param = name;
-    return call("getRelatedWith", param);
+    return call("getRelatedWith", name);
   }
 
   std::vector<std::string> ClassClient::getRelationFrom(const std::string& name, int depth)
@@ -87,8 +86,7 @@ namespace onto {
 
   std::vector<std::string> ClassClient::getRelationWith(const std::string& name)
   {
-    std::string param = name;
-    return call("getRelationWith", param);
+    return call("getRelationWith", name);
   }
 
   std::vector<std::string> ClassClient::getDomainOf(const std::string& name, const std::string& selector, int depth)

@@ -1,6 +1,7 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/NodeOwlWriter.h"
 
-#include <map>
+#include <cstddef>
+#include <string>
 #include <vector>
 
 namespace ontologenius {

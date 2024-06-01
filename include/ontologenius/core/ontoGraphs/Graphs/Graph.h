@@ -21,9 +21,11 @@
 
 namespace ontologenius {
 
-  struct GraphException : public std::exception
+  class GraphException : public std::exception
   {
     std::string msg_;
+
+  public:
     explicit GraphException(const std::string& msg) : msg_(msg) {}
     const char* what() const throw()
     {
@@ -46,7 +48,7 @@ namespace ontologenius {
     }
 
     void setLanguage(const std::string& language) { language_ = language; }
-    std::string getLanguage() { return language_; }
+    std::string getLanguage() const { return language_; }
 
     const std::vector<B*>& get() { return this->all_branchs_; }
     const std::vector<B*>& getSafe()
@@ -102,7 +104,6 @@ namespace ontologenius {
     // use std::lock_guard<std::shared_timed_mutex> lock(mutex_); to WRITE A DATA
     // use std::shared_lock<std::shared_timed_mutex> lock(mutex_); to READ A DATA
 
-  public:
     inline void removeFromDictionary(std::map<std::string, std::vector<std::string>>& dictionary, const std::string& lang, const std::string& word)
     {
       if(dictionary.find(lang) != dictionary.end())
@@ -296,13 +297,13 @@ namespace ontologenius {
   B* Graph<B>::findBranchSafe(index_t index)
   {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-    return container_.find(ValuedNode::table_.get(index));
+    return container_.find(ValuedNode::table.get(index));
   }
 
   template<typename B>
   B* Graph<B>::findBranch(index_t index)
   {
-    return container_.find(ValuedNode::table_.get(index));
+    return container_.find(ValuedNode::table.get(index));
   }
 
   template<typename B>
@@ -362,8 +363,8 @@ namespace ontologenius {
   std::string Graph<B>::getIdentifier(index_t index)
   {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-    if((index > 0) && (index < (index_t)ValuedNode::table_.size()))
-      return ValuedNode::table_[index];
+    if((index > 0) && (index < (index_t)ValuedNode::table.size()))
+      return ValuedNode::table[index];
     else
       return "";
   }
@@ -405,9 +406,9 @@ namespace ontologenius {
   }
 
   template<typename B>
-  bool Graph<B>::removeLang(const std::string& indiv, const std::string& lang, const std::string& name)
+  bool Graph<B>::removeLang(const std::string& branch_str, const std::string& lang, const std::string& name)
   {
-    B* branch = findBranchSafe(indiv);
+    B* branch = findBranchSafe(branch_str);
     return removeLang(branch, lang, name);
   }
 
@@ -452,11 +453,11 @@ namespace ontologenius {
 
           while(tested.size() < dic_size)
           {
-            size_t myIndex = dis(gen);
-            std::string word = branch->dictionary_.spoken_[language_][myIndex];
-            if(word.find("_") == std::string::npos)
+            size_t rand_index = dis(gen);
+            std::string word = branch->dictionary_.spoken_[language_][rand_index];
+            if(word.find('_') == std::string::npos)
               return word;
-            tested.insert(myIndex);
+            tested.insert(rand_index);
           }
           return branch->dictionary_.spoken_[language_][0];
         }
@@ -630,7 +631,7 @@ namespace ontologenius {
   std::unordered_set<std::string> Graph<B>::findFuzzy(const std::string& value, bool use_default, double threshold)
   {
     double lower_cost = 100000;
-    double tmp_cost;
+    double tmp_cost = NAN;
     std::unordered_set<std::string> res;
 
     LevenshteinDistance dist;

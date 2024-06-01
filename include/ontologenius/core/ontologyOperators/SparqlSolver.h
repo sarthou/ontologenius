@@ -43,19 +43,19 @@ namespace ontologenius {
 
     std::string getError() { return error_; }
 
-    class iterator
+    class Iterator
     {
     public:
-      explicit iterator(const SparqlSolution_t& intial_solution, SparqlSolver* solver = nullptr) : current_solution_(intial_solution)
+      explicit Iterator(const SparqlSolution_t& intial_solution, SparqlSolver* solver = nullptr) : current_solution_(intial_solution)
       {
         solver_ = solver;
       }
-      iterator(const iterator& other) = default;
+      Iterator(const Iterator& other) = default;
 
-      operator bool() const { return !is_empty(); }
+      operator bool() const { return !isEmpty(); }
 
-      bool operator==(const iterator& other) const { return (current_solution_.solution_full_ == other.current_solution_.solution_full_); }
-      bool operator!=(const iterator& other) const { return (current_solution_.solution_full_ != other.current_solution_.solution_full_); }
+      bool operator==(const Iterator& other) const { return (current_solution_.solution_full_ == other.current_solution_.solution_full_); }
+      bool operator!=(const Iterator& other) const { return (current_solution_.solution_full_ != other.current_solution_.solution_full_); }
 
       std::map<std::string, std::string>& operator*()
       {
@@ -64,7 +64,7 @@ namespace ontologenius {
         return current_solution_.solution_;
       }
 
-      iterator& operator++()
+      Iterator& operator++()
       {
         stepForward();
         return (*this);
@@ -74,7 +74,7 @@ namespace ontologenius {
       SparqlSolution_t current_solution_;
       SparqlSolver* solver_;
 
-      bool is_empty() const
+      bool isEmpty() const
       {
         if(std::any_of(current_solution_.solution_full_.begin(), current_solution_.solution_full_.end(), [](auto it) { return it.second.empty() == false; }))
           return false;
@@ -93,10 +93,10 @@ namespace ontologenius {
       }
     };
 
-    iterator begin();
-    const iterator cbegin();
-    iterator end() { return iterator(empty_solution_); }
-    const iterator cend() { return iterator(empty_solution_); }
+    Iterator begin();
+    const Iterator cbegin();
+    Iterator end() { return Iterator(empty_solution_); }
+    const Iterator cend() { return Iterator(empty_solution_); }
 
   private:
     ontologenius::Ontology* onto_;

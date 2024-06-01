@@ -1,6 +1,8 @@
 #include <chrono>
 #include <gtest/gtest.h>
 
+#include <string>
+
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/utils/Commands.h"
 

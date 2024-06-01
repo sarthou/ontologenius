@@ -10,10 +10,10 @@ namespace ontologenius {
   {
   public:
     explicit IndividualChecker(IndividualGraph* graph) : ValidityChecker(graph) { individual_graph_ = graph; }
-    ~IndividualChecker() = default;
+    ~IndividualChecker() override = default;
 
     size_t check() override;
-    void printStatus() { ValidityChecker<IndividualBranch>::printStatus("individual", "individuals", graph_vect_.size()); }
+    void printStatus() override { ValidityChecker<IndividualBranch>::printStatus("individual", "individuals", graph_vect_.size()); }
 
   private:
     IndividualGraph* individual_graph_;
@@ -23,8 +23,8 @@ namespace ontologenius {
     void checkDisjoint(IndividualBranch* indiv);
     void checkReflexive(IndividualBranch* indiv);
 
-    void checkObectRelations(IndividualBranch* indiv, std::unordered_set<ClassBranch*> up_from);
-    void checkDataRelations(IndividualBranch* indiv, std::unordered_set<ClassBranch*> up_from);
+    void checkObectRelations(IndividualBranch* indiv, const std::unordered_set<ClassBranch*>& up_from);
+    void checkDataRelations(IndividualBranch* indiv, const std::unordered_set<ClassBranch*>& up_from);
 
     void checkAssymetric(IndividualBranch* indiv);
 

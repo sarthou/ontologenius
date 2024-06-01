@@ -12,7 +12,7 @@ namespace ontologenius {
     std::string cardinality_number;
     std::string cardinality_range;
 
-    std::string toString()
+    std::string toString() const
     {
       std::string res;
       if(cardinality_type.empty() == false)
@@ -24,7 +24,7 @@ namespace ontologenius {
       return res;
     }
 
-    std::vector<std::string> toVector()
+    std::vector<std::string> toVector() const
     {
       return {cardinality_range, cardinality_number, cardinality_type};
     }
@@ -36,7 +36,7 @@ namespace ontologenius {
     std::string property;
     std::string restriction_range;
 
-    std::string toString()
+    std::string toString() const
     {
       std::string res;
 
@@ -51,7 +51,7 @@ namespace ontologenius {
       return res;
     }
 
-    std::vector<std::string> toVector()
+    std::vector<std::string> toVector() const
     {
       std::vector<std::string> result;
       if(property.empty() == false)
@@ -82,9 +82,10 @@ namespace ontologenius {
     std::string ano_name;
 
     ExpressionMember_t() : logical_type_(logical_none), oneof(false),
-                           is_complex(false), is_data_property(false), mother(nullptr), ano_name("") {}
+                           is_complex(false), is_data_property(false), 
+                           mother(nullptr), ano_name("") {}
 
-    std::string toString()
+    std::string toString() const
     {
       std::string str_equivalence;
 
@@ -95,7 +96,7 @@ namespace ontologenius {
       else
       {
         std::string inner;
-        for(auto child : child_members)
+        for(auto* child : child_members)
         {
           if(inner.empty() == false)
           {
@@ -161,8 +162,8 @@ namespace ontologenius {
     AnonymousClassBranch* add(const std::string& value, AnonymousClassVectors_t& ano_class);
     AnonymousClassElement* resolveTree(AnonymousClassElement* elem, bool prev_and);
 
-    void printTree(AnonymousClassElement* ano_elem, size_t level, bool root);
-    std::string toString(CardType_t value);
+    void printTree(AnonymousClassElement* ano_elem, size_t level, bool root) const;
+    std::string toString(CardType_e value) const;
 
   private:
     ClassGraph* class_graph_;

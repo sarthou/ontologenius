@@ -1,5 +1,6 @@
 #include "ontologenius/core/ontologyOperators/Sparql.h"
 
+#include <cstddef>
 #include <cstdint>
 #include <regex>
 #include <string>

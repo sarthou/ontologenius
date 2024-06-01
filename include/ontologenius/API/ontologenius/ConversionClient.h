@@ -20,7 +20,7 @@ namespace onto {
     /// @param name is the name of the ontologenius service
     explicit ConversionClient(const std::string& name);
 
-    void verbose(bool verbose) { verbose_ = verbose; }
+    void verbose(bool verbose) { client_verbose_ = verbose; }
 
     std::vector<std::string> individualsIndex2Id(const std::vector<int64_t>& indexes);
     std::vector<std::string> classesIndex2Id(const std::vector<int64_t>& indexes);
@@ -48,7 +48,7 @@ namespace onto {
 
   private:
     std::string name_;
-    bool verbose_;
+    bool client_verbose_;
 
     ontologenius::compat::onto_ros::Client<ontologenius::compat::OntologeniusConversion> client_;
 

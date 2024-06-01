@@ -1,5 +1,9 @@
 #include "ontologenius/API/ontologenius/clientsIndex/SparqlIndexClient.h"
 
+#include <string>
+#include <vector>
+#include <utility>
+
 namespace onto {
 
   std::pair<std::vector<std::string>, std::vector<ontologenius::compat::OntologeniusSparqlIndexResponse>> SparqlIndexClient::call(const std::string& query)

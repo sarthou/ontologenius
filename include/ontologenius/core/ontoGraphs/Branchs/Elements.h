@@ -14,12 +14,12 @@ namespace ontologenius {
     bool infered;
     std::vector<TripletsInterface*> induced_traces;
 
-    bool operator>(float prob)
+    bool operator>(float prob) const
     {
       return (probability > prob);
     }
 
-    bool operator<(float prob)
+    bool operator<(float prob) const
     {
       return (probability < prob);
     }
@@ -55,12 +55,12 @@ namespace ontologenius {
       this->induced_traces = other.induced_traces;
     }
 
-    bool operator==(const SingleElement& other)
+    bool operator==(const SingleElement& other) const
     {
       return (elem == other.elem);
     }
 
-    bool operator==(const T& other)
+    bool operator==(const T& other) const
     {
       return (elem == other);
     }
@@ -100,7 +100,7 @@ namespace ontologenius {
       this->induced_traces = other.induced_traces;
     }
 
-    bool operator==(const PairElement& other)
+    bool operator==(const PairElement& other) const
     {
       return ((first == other.first) && (second == other.second));
     }

@@ -14,16 +14,16 @@ namespace ontologenius {
     std::string value_;
     std::string type_;
 
-    static WordTable table_;
+    static WordTable table;
 
     LiteralNode(const std::string& type, const std::string& value) : value_(value), type_(type)
     {
-      index_ = table_.add(type + "#" + value);
+      index_ = table.add(type + "#" + value);
     }
 
     explicit LiteralNode(const std::string& value)
     {
-      index_ = table_.add(value);
+      index_ = table.add(value);
       set(value);
     }
 
@@ -42,7 +42,7 @@ namespace ontologenius {
     }
 
     std::string toString() const { return (type_ + "#" + value_); }
-    const std::string& value() const { return table_[index_]; }
+    const std::string& value() const { return table[index_]; }
     index_t get() const { return -index_; }
     void set(const std::string& value)
     {

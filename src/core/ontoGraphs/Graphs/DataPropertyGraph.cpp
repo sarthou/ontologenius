@@ -1,6 +1,11 @@
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
-#include <iostream>
+#include <cstddef>
+#include <mutex>
+#include <shared_mutex>
+#include <string>
+#include <unordered_set>
+#include <vector>
 
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
@@ -210,7 +215,7 @@ namespace ontologenius {
     std::unordered_set<index_t> res;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
-    DataPropertyBranch* branch = container_.find(ValuedNode::table_.get(value));
+    DataPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
     std::unordered_set<DataPropertyBranch*> up_trace;
     if(branch != nullptr)
       getDomain(branch, depth, res, up_trace);
@@ -264,7 +269,7 @@ namespace ontologenius {
     std::unordered_set<index_t> res;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
-    DataPropertyBranch* branch = container_.find(ValuedNode::table_.get(value));
+    DataPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
     if(branch != nullptr)
       for(auto& range : branch->ranges_)
         res.insert(range->get());
@@ -292,8 +297,8 @@ namespace ontologenius {
   std::string DataPropertyGraph::getLiteralIdentifier(index_t index)
   {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-    if((index < 0) && (index > (index_t)LiteralNode::table_.size()))
-      return LiteralNode::table_[-index];
+    if((index < 0) && (index > (index_t)LiteralNode::table.size()))
+      return LiteralNode::table[-index];
     else
       return "";
   }

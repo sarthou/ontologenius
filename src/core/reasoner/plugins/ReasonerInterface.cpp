@@ -6,6 +6,6 @@
 
 namespace ontologenius {
 
-  size_t ReasonerInterface::nb_update_ = 0;
+  size_t ReasonerInterface::nb_update = 0;
 
 } // namespace ontologenius

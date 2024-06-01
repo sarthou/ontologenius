@@ -52,40 +52,40 @@ namespace ontologenius {
 
     void deepCopy(const ClassGraph& other);
 
-    std::unordered_set<std::string> getRelationFrom(const std::string& _class, int depth = -1); // C3
-    std::unordered_set<index_t> getRelationFrom(index_t _class, int depth = -1);
+    std::unordered_set<std::string> getRelationFrom(const std::string& class_name, int depth = -1); // C3
+    std::unordered_set<index_t> getRelationFrom(index_t class_id, int depth = -1);
     std::unordered_set<std::string> getRelatedFrom(const std::string& property); // C3
     std::unordered_set<index_t> getRelatedFrom(index_t property);
-    std::unordered_set<std::string> getRelationOn(const std::string& _class, int depth = -1); // C4
-    std::unordered_set<index_t> getRelationOn(index_t _class, int depth);
+    std::unordered_set<std::string> getRelationOn(const std::string& class_name, int depth = -1); // C4
+    std::unordered_set<index_t> getRelationOn(index_t class_id, int depth);
     std::unordered_set<std::string> getRelatedOn(const std::string& property); // C3
     std::unordered_set<index_t> getRelatedOn(index_t property);
-    std::unordered_set<std::string> getRelationWith(const std::string& _class); // C3
-    std::unordered_set<index_t> getRelationWith(index_t _class);
-    std::unordered_set<std::string> getRelatedWith(const std::string& _class); // C3
-    std::unordered_set<index_t> getRelatedWith(index_t _class);
+    std::unordered_set<std::string> getRelationWith(const std::string& class_name); // C3
+    std::unordered_set<index_t> getRelationWith(index_t class_id);
+    std::unordered_set<std::string> getRelatedWith(const std::string& class_name); // C3
+    std::unordered_set<index_t> getRelatedWith(index_t class_id);
     std::unordered_set<std::string> getFrom(const std::string& param);
-    std::unordered_set<std::string> getFrom(const std::string& _class, const std::string& property);
-    std::unordered_set<index_t> getFrom(index_t _class, index_t property);
+    std::unordered_set<std::string> getFrom(const std::string& class_name, const std::string& property);
+    std::unordered_set<index_t> getFrom(index_t class_id, index_t property);
     std::unordered_set<std::string> getOn(const std::string& param);
-    std::unordered_set<std::string> getOn(const std::string& _class, const std::string& property);
-    std::unordered_set<index_t> getOn(index_t _class, index_t property);
+    std::unordered_set<std::string> getOn(const std::string& class_name, const std::string& property);
+    std::unordered_set<index_t> getOn(index_t class_id, index_t property);
     std::unordered_set<std::string> getWith(const std::string& param, int depth = -1);
     std::unordered_set<std::string> getWith(const std::string& first_class, const std::string& second_class, int depth = -1);
     std::unordered_set<index_t> getWith(index_t first_class, index_t second_class, int depth = -1);
-    std::unordered_set<std::string> getDomainOf(const std::string& _class, int depth = -1);
-    std::unordered_set<index_t> getDomainOf(index_t _class, int depth = -1);
-    std::unordered_set<std::string> getRangeOf(const std::string& _class, int depth = -1);
-    std::unordered_set<index_t> getRangeOf(index_t _class, int depth = -1);
+    std::unordered_set<std::string> getDomainOf(const std::string& class_name, int depth = -1);
+    std::unordered_set<index_t> getDomainOf(index_t class_id, int depth = -1);
+    std::unordered_set<std::string> getRangeOf(const std::string& class_name, int depth = -1);
+    std::unordered_set<index_t> getRangeOf(index_t class_id, int depth = -1);
 
     void getDownIndividual(ClassBranch* branch, std::unordered_set<std::string>& res, bool single_same = false);
     void getDownIndividual(ClassBranch* branch, std::unordered_set<index_t>& res, bool single_same = false);
     std::unordered_set<IndividualBranch*> getDownIndividualPtrSafe(ClassBranch* branch, size_t depth = -1);
     void getDownIndividualPtr(ClassBranch* branch, std::unordered_set<IndividualBranch*>& res, size_t depth = -1, size_t current_depth = 0);
 
-    void deleteClass(ClassBranch* _class);
-    bool addInheritage(const std::string& class_base, const std::string& class_inherited);
-    int deleteRelationsOnClass(ClassBranch* _class, std::vector<ClassBranch*> vect);
+    void deleteClass(ClassBranch* class_branch);
+    bool addInheritage(const std::string& branch_base, const std::string& branch_inherited);
+    int deleteRelationsOnClass(ClassBranch* class_branch, std::vector<ClassBranch*> vect);
     void addRelation(ClassBranch*, const std::string& property, const std::string& class_on);
     void addRelation(ClassBranch*, const std::string& property, const std::string& type, const std::string& data);
     void addRelationInvert(const std::string& class_from, const std::string& property, ClassBranch* class_on);
@@ -108,9 +108,9 @@ namespace ontologenius {
     template<typename T>
     void getRelatedFrom(const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, std::unordered_set<T>& res);
     template<typename T>
-    void getRelationOnObjectProperties(const std::string& _class, std::unordered_set<T>& res, int depth);
-    void getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth);
-    void getRelationOnDataProperties(const std::string& _class, std::unordered_set<index_t>& res, int depth);
+    void getRelationOnObjectProperties(const std::string& class_name, std::unordered_set<T>& res, int depth);
+    void getRelationOnDataProperties(const std::string& class_name, std::unordered_set<std::string>& res, int depth);
+    void getRelationOnDataProperties(const std::string& class_name, std::unordered_set<index_t>& res, int depth);
     void getRelatedOnDataProperties(const std::string& property, std::unordered_set<std::string>& res);
     void getRelatedOnDataProperties(index_t property, std::unordered_set<index_t>& res);
     void getRelationWith(ClassBranch* class_branch, std::map<index_t, int>& properties, std::vector<int>& depths, std::vector<std::string>& res, int depth);
@@ -118,7 +118,7 @@ namespace ontologenius {
     template<typename T>
     void dataGetRelatedWith(ClassBranch* class_branch, index_t property, LiteralNode* data, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take);
     template<typename T>
-    void objectGetRelatedWith(ClassBranch* class_branch, index_t property, index_t _class, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take);
+    void objectGetRelatedWith(ClassBranch* class_branch, index_t property, index_t class_id, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take);
     template<typename T>
     void getOn(ClassBranch* class_branch, std::unordered_set<index_t>& object_properties, std::unordered_set<index_t>& data_properties, std::unordered_set<T>& res, uint32_t current_depth, int& found_depth);
     void getWith(ClassBranch* first_class, index_t second_class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch*>& next_step);

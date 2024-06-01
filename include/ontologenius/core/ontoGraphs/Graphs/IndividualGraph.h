@@ -97,7 +97,7 @@ namespace ontologenius {
     IndividualBranch* findOrCreateBranchSafe(const std::string& name);
     IndividualBranch* findOrCreateBranch(const std::string& name);
     void deleteIndividual(IndividualBranch* indiv);
-    void redirectDeleteIndividual(IndividualBranch* indiv, ClassBranch* _class);
+    void redirectDeleteIndividual(IndividualBranch* indiv, ClassBranch* class_branch);
     bool addInheritage(const std::string& indiv, const std::string& class_inherited);
     bool addInheritage(IndividualBranch* branch, const std::string& class_inherited);
     bool addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited);

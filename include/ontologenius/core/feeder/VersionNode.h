@@ -45,8 +45,8 @@ namespace ontologenius {
     std::vector<Feed_t> datas_;
 
     std::string getSpaces(int nb, const std::string& symbol = "  ");
-    std::string dataToXml(const Feed_t& data);
-    std::string orderIdToXml();
+    std::string dataToXml(const Feed_t& data) const;
+    std::string orderIdToXml() const;
   };
 
 } // namespace ontologenius

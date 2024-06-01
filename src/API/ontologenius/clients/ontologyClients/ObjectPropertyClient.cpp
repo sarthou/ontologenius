@@ -1,5 +1,8 @@
 #include "ontologenius/API/ontologenius/clients/ontologyClients/ObjectPropertyClient.h"
 
+#include <string>
+#include <vector>
+
 namespace onto {
 
   std::vector<std::string> ObjectPropertyClient::getDown(const std::string& name, int depth)
@@ -13,8 +16,7 @@ namespace onto {
 
   std::vector<std::string> ObjectPropertyClient::getDisjoint(const std::string& name)
   {
-    std::string param = name;
-    return call("getDisjoint", param);
+    return call("getDisjoint", name);
   }
 
   std::vector<std::string> ObjectPropertyClient::getDomain(const std::string& name, int depth)
@@ -37,8 +39,7 @@ namespace onto {
 
   std::vector<std::string> ObjectPropertyClient::getInverse(const std::string& name)
   {
-    std::string param = name;
-    return call("getInverse", param);
+    return call("getInverse", name);
   }
 
 } // namespace onto

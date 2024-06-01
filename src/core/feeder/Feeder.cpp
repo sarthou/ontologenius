@@ -1,6 +1,9 @@
 #include "ontologenius/core/feeder/Feeder.h"
 
-#include <iostream>
+#include <cstddef>
+#include <mutex>
+#include <shared_mutex>
+#include <string>
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 
@@ -273,8 +276,8 @@ namespace ontologenius {
   bool Feeder::applyProperty(Feed_t& feed)
   {
     size_t pose = feed.on_.find('#');
-    std::string type = "";
-    std::string data = "";
+    std::string type;
+    std::string data;
     bool data_property = false;
 
     if(pose != std::string::npos)

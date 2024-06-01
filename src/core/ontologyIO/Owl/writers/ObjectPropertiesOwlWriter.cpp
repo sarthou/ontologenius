@@ -1,6 +1,8 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/ObjectPropertiesOwlWriter.h"
 
+#include <shared_mutex>
 #include <vector>
+#include <string>
 
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 

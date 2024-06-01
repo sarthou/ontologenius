@@ -1,6 +1,7 @@
 #include "ontologenius/core/ontologyIO/Owl/OntologyOwlWriter.h"
 
 #include <iostream>
+#include <string>
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/ontologyIO/Owl/writers/AnnotationOwlWriter.h"

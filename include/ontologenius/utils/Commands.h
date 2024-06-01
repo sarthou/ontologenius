@@ -12,7 +12,7 @@ namespace ontologenius {
     std::string result;
     cmd.append(" 2>&1");
     FILE* pipe = popen(cmd.c_str(), "r");
-    if(!pipe)
+    if(pipe == nullptr)
       throw std::runtime_error("popen() failed!");
     try
     {

@@ -1,30 +1,44 @@
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
 #include <algorithm>
-#include <iostream>
+#include <cstddef>
+#include <mutex>
+#include <shared_mutex>
+#include <string>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
+#include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/OntoGraph.h"
 
 namespace ontologenius {
 
-  ClassGraph::ClassGraph(IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph) : OntoGraph(individual_graph)
-  {
-    object_property_graph_ = object_property_graph;
-    data_property_graph_ = data_property_graph;
-  }
+  ClassGraph::ClassGraph(IndividualGraph* individual_graph,
+                         ObjectPropertyGraph* object_property_graph,
+                         DataPropertyGraph* data_property_graph) : OntoGraph(individual_graph),
+                                                                   object_property_graph_(object_property_graph),
+                                                                   data_property_graph_(data_property_graph)
+  {}
 
-  ClassGraph::ClassGraph(const ClassGraph& other, IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph) : OntoGraph(individual_graph)
+  ClassGraph::ClassGraph(const ClassGraph& other,
+                         IndividualGraph* individual_graph,
+                         ObjectPropertyGraph* object_property_graph,
+                         DataPropertyGraph* data_property_graph) : OntoGraph(individual_graph),
+                                                                   object_property_graph_(object_property_graph),
+                                                                   data_property_graph_(data_property_graph)
   {
-    object_property_graph_ = object_property_graph;
-    data_property_graph_ = data_property_graph;
-
     language_ = other.language_;
 
-    for(auto branch : other.all_branchs_)
+    for(auto* branch : other.all_branchs_)
     {
-      auto class_branch = new ClassBranch(branch->value());
+      auto* class_branch = new ClassBranch(branch->value());
       all_branchs_.push_back(class_branch);
     }
 
@@ -127,7 +141,7 @@ namespace ontologenius {
     DataPropertyBranch* property_branch = data_property_graph_->findOrCreateBranch(relation.first);
     property_branch->annotation_usage_ = true;
 
-    auto literal = data_property_graph_->createLiteral(relation.second);
+    auto* literal = data_property_graph_->createLiteral(relation.second);
     me->data_relations_.emplace_back(property_branch, literal, relation.probability);
   }
 
@@ -137,17 +151,17 @@ namespace ontologenius {
    *
    *********/
 
-  std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& _class, int depth)
+  std::unordered_set<std::string> ClassGraph::getRelationFrom(const std::string& class_name, int depth)
   {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
-    ClassBranch* class_branch = container_.find(_class);
+    ClassBranch* class_branch = container_.find(class_name);
     return getRelationFrom<std::string>(class_branch, depth);
   }
 
-  std::unordered_set<index_t> ClassGraph::getRelationFrom(index_t _class, int depth)
+  std::unordered_set<index_t> ClassGraph::getRelationFrom(index_t class_id, int depth)
   {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
-    ClassBranch* class_branch = container_.find(ValuedNode::table_.get(_class));
+    ClassBranch* class_branch = container_.find(ValuedNode::table.get(class_id));
     return getRelationFrom<index_t>(class_branch, depth);
   }
 
@@ -155,7 +169,7 @@ namespace ontologenius {
   std::unordered_set<T> ClassGraph::getRelationFrom(ClassBranch* class_branch, int depth)
   {
     std::unordered_set<T> res;
-    ;
+
     if(class_branch != nullptr)
     {
       std::unordered_set<ClassBranch*> up_classes = getUpPtrSafe(class_branch);
@@ -172,10 +186,10 @@ namespace ontologenius {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
     if(class_branch != nullptr)
     {
-      for(ClassObjectRelationElement& relation : class_branch->object_relations_)
+      for(const ClassObjectRelationElement& relation : class_branch->object_relations_)
         object_property_graph_->getUp(relation.first, res, depth);
 
-      for(ClassDataRelationElement& relation : class_branch->data_relations_)
+      for(const ClassDataRelationElement& relation : class_branch->data_relations_)
         data_property_graph_->getUp(relation.first, res, depth);
     }
   }
@@ -208,58 +222,58 @@ namespace ontologenius {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
     for(auto& branch : all_branchs_)
     {
-      for(ClassObjectRelationElement& relation : branch->object_relations_)
+      for(const ClassObjectRelationElement& relation : branch->object_relations_)
         for(index_t id : object_properties)
           if(relation.first->get() == id)
             getDown(branch, res);
 
-      for(ClassDataRelationElement& relation : branch->data_relations_)
+      for(const ClassDataRelationElement& relation : branch->data_relations_)
         for(index_t id : data_properties)
           if(relation.first->get() == id)
             getDown(branch, res);
     }
   }
 
-  std::unordered_set<std::string> ClassGraph::getRelationOn(const std::string& _class, int depth)
+  std::unordered_set<std::string> ClassGraph::getRelationOn(const std::string& class_name, int depth)
   {
     std::unordered_set<std::string> res;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
 
-    getRelationOnObjectProperties(_class, res, depth);
+    getRelationOnObjectProperties(class_name, res, depth);
 
     if(res.empty())
-      getRelationOnDataProperties(_class, res, depth);
+      getRelationOnDataProperties(class_name, res, depth);
 
     return res;
   }
 
-  std::unordered_set<index_t> ClassGraph::getRelationOn(index_t _class, int depth)
+  std::unordered_set<index_t> ClassGraph::getRelationOn(index_t class_id, int depth)
   {
     std::unordered_set<index_t> res;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
 
-    if(_class > 0)
-      getRelationOnObjectProperties(ValuedNode::table_.get(_class), res, depth);
+    if(class_id > 0)
+      getRelationOnObjectProperties(ValuedNode::table.get(class_id), res, depth);
     else
-      getRelationOnDataProperties(LiteralNode::table_.get(-_class), res, depth);
+      getRelationOnDataProperties(LiteralNode::table.get(-class_id), res, depth);
 
     return res;
   }
 
   template<typename T>
-  void ClassGraph::getRelationOnObjectProperties(const std::string& _class, std::unordered_set<T>& res, int depth)
+  void ClassGraph::getRelationOnObjectProperties(const std::string& class_name, std::unordered_set<T>& res, int depth)
   {
-    ClassBranch* class_branch = container_.find(_class);
+    ClassBranch* class_branch = container_.find(class_name);
     if(class_branch != nullptr)
       for(auto& branch : all_branchs_)
-        for(ClassObjectRelationElement& relation : branch->object_relations_)
+        for(const ClassObjectRelationElement& relation : branch->object_relations_)
           if(relation.second == class_branch)
             object_property_graph_->getUp(relation.first, res, depth);
   }
 
-  void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::unordered_set<std::string>& res, int depth)
+  void ClassGraph::getRelationOnDataProperties(const std::string& class_name, std::unordered_set<std::string>& res, int depth)
   {
-    LiteralNode* literal = data_property_graph_->literal_container_.find(_class);
+    LiteralNode* literal = data_property_graph_->literal_container_.find(class_name);
 
     if(literal != nullptr)
       for(auto& branch : all_branchs_)
@@ -268,13 +282,13 @@ namespace ontologenius {
             data_property_graph_->getUpSafe(relation.first, res, depth);
   }
 
-  void ClassGraph::getRelationOnDataProperties(const std::string& _class, std::unordered_set<index_t>& res, int depth)
+  void ClassGraph::getRelationOnDataProperties(const std::string& class_name, std::unordered_set<index_t>& res, int depth)
   {
-    LiteralNode* literal = data_property_graph_->literal_container_.find(_class);
+    LiteralNode* literal = data_property_graph_->literal_container_.find(class_name);
 
     if(literal != nullptr)
       for(auto& branch : all_branchs_)
-        for(ClassDataRelationElement& relation : branch->data_relations_)
+        for(const ClassDataRelationElement& relation : branch->data_relations_)
           if(relation.second == literal)
             data_property_graph_->getUpSafe(relation.first, res, depth);
   }
@@ -313,12 +327,12 @@ namespace ontologenius {
 
     for(auto& branch : all_branchs_)
     {
-      for(ClassObjectRelationElement& relation : branch->object_relations_)
+      for(const ClassObjectRelationElement& relation : branch->object_relations_)
         for(index_t id : object_properties)
           if(relation.first->get() == id)
             res.insert(relation.second->get());
 
-      for(ClassDataRelationElement& relation : branch->data_relations_)
+      for(const ClassDataRelationElement& relation : branch->data_relations_)
         for(index_t id : data_properties)
           if(relation.first->get() == id)
             res.insert(relation.second->get());
@@ -353,10 +367,10 @@ namespace ontologenius {
     }
   }
 
-  std::unordered_set<std::string> ClassGraph::getRelationWith(const std::string& _class)
+  std::unordered_set<std::string> ClassGraph::getRelationWith(const std::string& class_name)
   {
     std::unordered_set<std::string> res;
-    ClassBranch* class_branch = container_.find(_class);
+    ClassBranch* class_branch = container_.find(class_name);
     if(class_branch != nullptr)
     {
       std::map<index_t, int> properties;
@@ -369,10 +383,10 @@ namespace ontologenius {
     return res;
   }
 
-  std::unordered_set<index_t> ClassGraph::getRelationWith(index_t _class)
+  std::unordered_set<index_t> ClassGraph::getRelationWith(index_t class_id)
   {
     std::unordered_set<index_t> res;
-    ClassBranch* class_branch = container_.find(ValuedNode::table_.get(_class));
+    ClassBranch* class_branch = container_.find(ValuedNode::table.get(class_id));
     if(class_branch != nullptr)
     {
       std::map<index_t, int> properties;
@@ -493,20 +507,20 @@ namespace ontologenius {
     }
   }
 
-  std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& _class)
+  std::unordered_set<std::string> ClassGraph::getRelatedWith(const std::string& class_name)
   {
     std::unordered_set<std::string> res;
     std::unordered_set<index_t> do_not_take;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
 
-    LiteralNode* literal = data_property_graph_->literal_container_.find(_class);
-    ClassBranch* class_branch = container_.find(_class);
+    LiteralNode* literal = data_property_graph_->literal_container_.find(class_name);
+    ClassBranch* class_branch = container_.find(class_name);
 
     for(auto& branch : all_branchs_)
     {
       if(class_branch != nullptr)
         for(ClassObjectRelationElement& relation : branch->object_relations_)
-          if(relation.second->value() == _class)
+          if(relation.second->value() == class_name)
             objectGetRelatedWith(branch, relation.first->get(), class_branch->get(), res, do_not_take);
 
       if(literal != nullptr)
@@ -516,32 +530,32 @@ namespace ontologenius {
     }
 
     for(auto i : do_not_take)
-      res.erase(ValuedNode::table_[i]);
+      res.erase(ValuedNode::table[i]);
 
     return res;
   }
 
-  std::unordered_set<index_t> ClassGraph::getRelatedWith(index_t _class)
+  std::unordered_set<index_t> ClassGraph::getRelatedWith(index_t class_id)
   {
     std::unordered_set<index_t> res;
     std::unordered_set<index_t> do_not_take;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
 
-    if(_class > 0)
+    if(class_id > 0)
     {
-      ClassBranch* class_branch = container_.find(ValuedNode::table_.get(_class));
+      ClassBranch* class_branch = container_.find(ValuedNode::table.get(class_id));
 
       if(class_branch != nullptr)
         for(auto& branch : all_branchs_)
         {
           for(ClassObjectRelationElement& relation : branch->object_relations_)
-            if(relation.second->get() == _class)
+            if(relation.second->get() == class_id)
               objectGetRelatedWith(branch, relation.first->get(), class_branch->get(), res, do_not_take);
         }
     }
     else
     {
-      LiteralNode* literal = data_property_graph_->literal_container_.find(LiteralNode::table_.get(-_class));
+      LiteralNode* literal = data_property_graph_->literal_container_.find(LiteralNode::table.get(-class_id));
 
       if(literal != nullptr)
         for(auto& branch : all_branchs_)
@@ -589,7 +603,7 @@ namespace ontologenius {
   }
 
   template<typename T>
-  void ClassGraph::objectGetRelatedWith(ClassBranch* class_branch, index_t property, index_t _class, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take)
+  void ClassGraph::objectGetRelatedWith(ClassBranch* class_branch, index_t property, index_t class_id, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take)
   {
     if(class_branch != nullptr)
     {
@@ -605,43 +619,43 @@ namespace ontologenius {
           bool found = false;
           for(ClassObjectRelationElement& relation : down->object_relations_)
             if(relation.first->get() == property)
-              if(relation.second->get() != _class)
+              if(relation.second->get() != class_id)
               {
                 found = true;
                 getDown(down, do_not_take);
               }
 
           if(found == false)
-            objectGetRelatedWith(down, property, _class, res, do_not_take);
+            objectGetRelatedWith(down, property, class_id, res, do_not_take);
         }
     }
   }
 
   std::unordered_set<std::string> ClassGraph::getFrom(const std::string& param)
   {
-    std::string _class;
+    std::string class_name;
     std::string property;
     size_t pose = param.find(':');
     if(pose != std::string::npos)
     {
-      _class = param.substr(0, pose);
+      class_name = param.substr(0, pose);
       property = param.substr(pose + 1);
-      return getFrom(_class, property);
+      return getFrom(class_name, property);
     }
     return {};
   }
 
-  std::unordered_set<std::string> ClassGraph::getFrom(const std::string& _class, const std::string& property)
+  std::unordered_set<std::string> ClassGraph::getFrom(const std::string& class_name, const std::string& property)
   {
     std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
     std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
-    std::unordered_set<index_t> down_classes = getDownId(_class);
+    std::unordered_set<index_t> down_classes = getDownId(class_name);
 
     std::unordered_set<std::string> res;
     std::unordered_set<index_t> do_not_take;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
 
-    LiteralNode* literal = data_property_graph_->literal_container_.find(_class);
+    LiteralNode* literal = data_property_graph_->literal_container_.find(class_name);
 
     for(auto& branch : all_branchs_)
     {
@@ -661,13 +675,13 @@ namespace ontologenius {
     }
 
     for(auto i : do_not_take)
-      if(res.find(ValuedNode::table_[i]) != res.end())
-        res.erase(ValuedNode::table_[i]);
+      if(res.find(ValuedNode::table[i]) != res.end())
+        res.erase(ValuedNode::table[i]);
 
     return res;
   }
 
-  std::unordered_set<index_t> ClassGraph::getFrom(index_t _class, index_t property)
+  std::unordered_set<index_t> ClassGraph::getFrom(index_t class_id, index_t property)
   {
     std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
     std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
@@ -676,9 +690,9 @@ namespace ontologenius {
     std::unordered_set<index_t> do_not_take;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
 
-    if(_class > 0)
+    if(class_id > 0)
     {
-      std::unordered_set<index_t> down_classes = getDownId(_class);
+      std::unordered_set<index_t> down_classes = getDownId(class_id);
 
       for(auto& branch : all_branchs_)
       {
@@ -692,7 +706,7 @@ namespace ontologenius {
     }
     else
     {
-      LiteralNode* literal = data_property_graph_->literal_container_.find(LiteralNode::table_.get(-_class));
+      LiteralNode* literal = data_property_graph_->literal_container_.find(LiteralNode::table.get(-class_id));
 
       for(auto& branch : all_branchs_)
       {
@@ -712,19 +726,19 @@ namespace ontologenius {
 
   std::unordered_set<std::string> ClassGraph::getOn(const std::string& param)
   {
-    std::string _class;
+    std::string class_name;
     std::string property;
     size_t pose = param.find(':');
     if(pose != std::string::npos)
     {
-      _class = param.substr(0, pose);
+      class_name = param.substr(0, pose);
       property = param.substr(pose + 1);
-      return getOn(_class, property);
+      return getOn(class_name, property);
     }
     return {};
   }
 
-  std::unordered_set<std::string> ClassGraph::getOn(const std::string& _class, const std::string& property)
+  std::unordered_set<std::string> ClassGraph::getOn(const std::string& class_name, const std::string& property)
   {
     std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
     std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
@@ -733,13 +747,13 @@ namespace ontologenius {
     std::unordered_set<std::string> res;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
 
-    ClassBranch* class_branch = container_.find(_class);
+    ClassBranch* class_branch = container_.find(class_name);
     getOn(class_branch, object_properties, data_properties, res, 0, found_depth);
 
     return res;
   }
 
-  std::unordered_set<index_t> ClassGraph::getOn(index_t _class, index_t property)
+  std::unordered_set<index_t> ClassGraph::getOn(index_t class_id, index_t property)
   {
     std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
     std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
@@ -748,7 +762,7 @@ namespace ontologenius {
     std::unordered_set<index_t> res;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
 
-    ClassBranch* class_branch = container_.find(ValuedNode::table_.get(_class));
+    ClassBranch* class_branch = container_.find(ValuedNode::table.get(class_id));
     getOn(class_branch, object_properties, data_properties, res, 0, found_depth);
 
     return res;
@@ -783,7 +797,7 @@ namespace ontologenius {
 
       if(tmp_res.empty() == false)
       {
-        if(data_properties.size())
+        if(data_properties.empty() == false)
         {
           res = std::move(tmp_res);
           found_depth = current_depth;
@@ -824,21 +838,21 @@ namespace ontologenius {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
 
     index_t second_class_index = 0;
-    auto second_class_ptr = container_.find(second_class);
+    auto* second_class_ptr = container_.find(second_class);
     if(second_class_ptr != nullptr)
       second_class_index = second_class_ptr->get();
     else
     {
-      auto literal = data_property_graph_->literal_container_.find(second_class);
+      auto* literal = data_property_graph_->literal_container_.find(second_class);
       if(literal != nullptr)
         second_class_index = literal->get();
     }
 
     up_set.insert(container_.find(first_class));
-    while(up_set.size() > 0)
+    while(up_set.empty() == false)
     {
       std::unordered_set<ClassBranch*> next_step;
-      for(auto up : up_set)
+      for(auto* up : up_set)
         getWith(up, second_class_index, res, do_not_take, current_depth, found_depth, depth, next_step);
 
       up_set = std::move(next_step);
@@ -858,11 +872,11 @@ namespace ontologenius {
     std::unordered_set<ClassBranch*> up_set;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
 
-    up_set.insert(container_.find(ValuedNode::table_.get(first_class)));
-    while(up_set.size() > 0)
+    up_set.insert(container_.find(ValuedNode::table.get(first_class)));
+    while(up_set.empty() == false)
     {
       std::unordered_set<ClassBranch*> next_step;
-      for(auto up : up_set)
+      for(auto* up : up_set)
         getWith(up, second_class, res, do_not_take, current_depth, found_depth, depth, next_step);
 
       up_set = std::move(next_step);
@@ -925,33 +939,33 @@ namespace ontologenius {
     }
   }
 
-  std::unordered_set<std::string> ClassGraph::getDomainOf(const std::string& _class, int depth)
+  std::unordered_set<std::string> ClassGraph::getDomainOf(const std::string& class_name, int depth)
   {
-    ClassBranch* branch = container_.find(_class);
+    ClassBranch* branch = container_.find(class_name);
     std::unordered_set<std::string> res;
     getDomainOf(branch, res, depth);
     return res;
   }
 
-  std::unordered_set<index_t> ClassGraph::getDomainOf(index_t _class, int depth)
+  std::unordered_set<index_t> ClassGraph::getDomainOf(index_t class_id, int depth)
   {
-    ClassBranch* branch = container_.find(ValuedNode::table_.get(_class));
+    ClassBranch* branch = container_.find(ValuedNode::table.get(class_id));
     std::unordered_set<index_t> res;
     getDomainOf(branch, res, depth);
     return res;
   }
 
-  std::unordered_set<std::string> ClassGraph::getRangeOf(const std::string& _class, int depth)
+  std::unordered_set<std::string> ClassGraph::getRangeOf(const std::string& class_name, int depth)
   {
-    ClassBranch* branch = container_.find(_class);
+    ClassBranch* branch = container_.find(class_name);
     std::unordered_set<std::string> res;
     getRangeOf(branch, res, depth);
     return res;
   }
 
-  std::unordered_set<index_t> ClassGraph::getRangeOf(index_t _class, int depth)
+  std::unordered_set<index_t> ClassGraph::getRangeOf(index_t class_id, int depth)
   {
-    ClassBranch* branch = container_.find(ValuedNode::table_.get(_class));
+    ClassBranch* branch = container_.find(ValuedNode::table.get(class_id));
     std::unordered_set<index_t> res;
     getRangeOf(branch, res, depth);
     return res;
@@ -1065,20 +1079,20 @@ namespace ontologenius {
     }
   }
 
-  void ClassGraph::deleteClass(ClassBranch* _class)
+  void ClassGraph::deleteClass(ClassBranch* class_branch)
   {
-    if(_class != nullptr)
+    if(class_branch != nullptr)
     {
       std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
       // erase indiv from parents
       std::unordered_set<ClassBranch*> up_set;
-      getUpPtr(_class, up_set, 1);
-      for(auto up : up_set)
+      getUpPtr(class_branch, up_set, 1);
+      for(auto* up : up_set)
       {
         for(size_t i = 0; i < up->childs_.size();)
         {
-          if(up->childs_[i].elem == _class)
+          if(up->childs_[i].elem == class_branch)
             up->childs_.erase(up->childs_.begin() + i);
           else
             i++;
@@ -1086,12 +1100,12 @@ namespace ontologenius {
       }
 
       std::unordered_set<ClassBranch*> down_set;
-      getDownPtr(_class, down_set, 1);
-      for(auto down : down_set)
+      getDownPtr(class_branch, down_set, 1);
+      for(auto* down : down_set)
       {
         for(size_t i = 0; i < down->mothers_.size();)
         {
-          if(down->mothers_[i].elem == _class)
+          if(down->mothers_[i].elem == class_branch)
             down->mothers_.erase(i);
           else
             i++;
@@ -1099,40 +1113,40 @@ namespace ontologenius {
       }
 
       IndividualBranch* elem = nullptr;
-      for(auto& indiv : _class->individual_childs_)
+      for(auto& indiv : class_branch->individual_childs_)
       {
         elem = indiv.elem;
         for(size_t i = 0; i < elem->is_a_.size();)
         {
-          if(elem->is_a_[i].elem == _class)
+          if(elem->is_a_[i].elem == class_branch)
             elem->is_a_.erase(i);
           else
             i++;
         }
       }
 
-      // erase properties applied to _class
-      int index = deleteRelationsOnClass(_class, all_branchs_);
+      // erase properties applied to class_branch
+      int index = deleteRelationsOnClass(class_branch, all_branchs_);
 
       // delete indiv
       if(index > 0)
         all_branchs_.erase(all_branchs_.begin() + index);
 
-      container_.erase(_class);
-      delete _class;
+      container_.erase(class_branch);
+      delete class_branch;
     }
   }
 
-  int ClassGraph::deleteRelationsOnClass(ClassBranch* _class, std::vector<ClassBranch*> vect)
+  int ClassGraph::deleteRelationsOnClass(ClassBranch* class_branch, std::vector<ClassBranch*> vect)
   {
     int class_index = -1;
     for(size_t class_i = 0; class_i < vect.size(); class_i++)
     {
-      if(vect[class_i] == _class)
-        class_index = class_i;
+      if(vect[class_i] == class_branch)
+        class_index = (int)class_i;
 
       for(size_t i = 0; i < vect[class_i]->object_relations_.size();)
-        if(vect[class_i]->object_relations_[i].second == _class)
+        if(vect[class_i]->object_relations_[i].second == class_branch)
           vect[class_i]->object_relations_.erase(vect[class_i]->object_relations_.begin() + i);
         else
           i++;
@@ -1164,7 +1178,7 @@ namespace ontologenius {
         std::unordered_set<IndividualBranch*> down_individuals;
         std::lock_guard<std::shared_timed_mutex> lock_indiv(individual_graph_->mutex_);
         getDownIndividualPtr(branch, down_individuals);
-        for(auto indiv : down_individuals)
+        for(auto* indiv : down_individuals)
           indiv->updated_ = true;
         return true;
       }
@@ -1454,15 +1468,15 @@ namespace ontologenius {
 
     for(const auto& relation : old_branch->object_relations_)
     {
-      auto prop = object_property_graph_->container_.find(relation.first->value());
-      auto on = container_.find(relation.second->value());
+      auto* prop = object_property_graph_->container_.find(relation.first->value());
+      auto* on = container_.find(relation.second->value());
       new_branch->object_relations_.emplace_back(relation, prop, on);
     }
 
     for(const auto& relation : old_branch->data_relations_)
     {
-      auto prop = data_property_graph_->container_.find(relation.first->value());
-      auto data = relation.second;
+      auto* prop = data_property_graph_->container_.find(relation.first->value());
+      auto* data = relation.second;
       new_branch->data_relations_.emplace_back(relation, prop, data);
     }
   }

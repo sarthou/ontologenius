@@ -1,6 +1,7 @@
 #include "ontologenius/API/ontologenius/FeederPublisher.h"
 
 #include <chrono>
+#include <string>
 #include <unistd.h>
 
 namespace onto {

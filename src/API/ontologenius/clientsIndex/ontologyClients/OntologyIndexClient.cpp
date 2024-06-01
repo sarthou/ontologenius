@@ -1,5 +1,8 @@
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/OntologyIndexClient.h"
 
+#include <string>
+#include <vector>
+
 namespace onto {
 
   std::vector<int64_t> OntologyIndexClient::getUp(int64_t index, int depth, int64_t selector)

@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 #include <ros/ros.h>
+#include <string>
+#include <vector>
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 

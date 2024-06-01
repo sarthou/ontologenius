@@ -1,5 +1,7 @@
 #include "ontologenius/interface/RosInterface.h"
 
+#include <string>
+
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
 #include "ontologenius/utils/String.h"
@@ -76,7 +78,7 @@ namespace ontologenius {
 
     files_ = files;
     if(onto_->preload(dedicated_intern_file) == false)
-      for(auto& file : files)
+      for(const auto& file : files)
         onto_->readFromFile(file);
 
     reasoners_.configure(config_path);

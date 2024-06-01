@@ -1,9 +1,12 @@
 #include "ontologenius/core/reasoner/Reasoners.h"
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstddef>
 
+#include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
@@ -146,7 +149,7 @@ namespace ontologenius {
 
   int Reasoners::deactivate(const std::string& plugin)
   {
-    if(active_reasoners_.erase(plugin))
+    if(active_reasoners_.erase(plugin) != 0)
     {
       Display::success(plugin + " has been deactivated");
       return 0;
@@ -194,7 +197,7 @@ namespace ontologenius {
 
     for(auto& it : active_reasoners_)
     {
-      if(it.second)
+      if(it.second != nullptr)
       {
         if(it.second->preReason(query_info))
         {
@@ -294,7 +297,7 @@ namespace ontologenius {
         for(auto elem : param.second.subelem.value())
         {
           if(elem.second.data && (elem.second.data.value().empty() == false))
-            for(auto reasoner_param : elem.second.data.value())
+            for(const auto& reasoner_param : elem.second.data.value())
               reasoners_[param.first]->setParameter(elem.first, reasoner_param);
         }
       }

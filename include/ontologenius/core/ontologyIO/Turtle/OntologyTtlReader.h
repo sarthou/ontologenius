@@ -19,7 +19,7 @@ namespace ontologenius {
     ~OntologyTtlReader() = default;
 
     int readFromUri(std::string& content, const std::string& uri);
-    int readFromFile(const std::string& fileName);
+    int readFromFile(const std::string& file_name);
 
   private:
     std::string previous_subject_;

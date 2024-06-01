@@ -1,5 +1,9 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/AnnotationOwlWriter.h"
 
+#include <shared_mutex>
+#include <string>
+#include <vector>
+
 namespace ontologenius {
 
   AnnotationOwlWriter::AnnotationOwlWriter(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, const std::string& ns)
@@ -92,7 +96,7 @@ namespace ontologenius {
 
   void AnnotationOwlWriter::writeRange(const std::vector<LiteralNode*>& ranges)
   {
-    for(auto& range : ranges)
+    for(const auto& range : ranges)
     {
       std::string tmp = "        <rdfs:range rdf:resource=\"" +
                         range->getNs() +

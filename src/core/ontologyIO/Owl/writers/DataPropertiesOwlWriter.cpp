@@ -1,14 +1,16 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/DataPropertiesOwlWriter.h"
 
+#include <shared_mutex>
+#include <string>
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
 namespace ontologenius {
 
-  DataPropertiesOwlWriter::DataPropertiesOwlWriter(DataPropertyGraph* property_graph, const std::string& ns)
+  DataPropertiesOwlWriter::DataPropertiesOwlWriter(DataPropertyGraph* property_graph,
+                                                   const std::string& ns) : property_graph_(property_graph)
   {
-    property_graph_ = property_graph;
     ns_ = ns;
   }
 
@@ -19,7 +21,7 @@ namespace ontologenius {
     std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
 
     std::vector<DataPropertyBranch*> properties = property_graph_->get();
-    for(auto property : properties)
+    for(auto* property : properties)
       writeProperty(property);
 
     file_ = nullptr;

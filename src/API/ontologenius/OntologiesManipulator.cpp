@@ -1,19 +1,19 @@
 #include "ontologenius/API/ontologenius/OntologiesManipulator.h"
 
-namespace onto {
+#include <string>
 
-  OntologiesManipulator::OntologiesManipulator() : ManagerClient()
-  {}
+#include "ontologenius/API/ontologenius/OntologyManipulator.h"
+#include "ontologenius/API/ontologenius/OntologyManipulatorIndex.h"
+
+namespace onto {
 
   OntologiesManipulator::~OntologiesManipulator()
   {
     for(auto& manipulator : manipulators_)
-      if(manipulator.second != nullptr)
-        delete manipulator.second;
+      delete manipulator.second;
 
     for(auto& manipulator : manipulators_index_)
-      if(manipulator.second != nullptr)
-        delete manipulator.second;
+      delete manipulator.second;
   }
 
   bool OntologiesManipulator::waitInit(int32_t timeout)
@@ -72,9 +72,9 @@ namespace onto {
         return false;
       else
       {
-        auto tmp = new OntologyManipulator(dest_name);
+        auto* tmp = new OntologyManipulator(dest_name);
         manipulators_[dest_name] = tmp;
-        auto tmp_index = new OntologyManipulatorIndex(dest_name);
+        auto* tmp_index = new OntologyManipulatorIndex(dest_name);
         manipulators_index_[dest_name] = tmp_index;
         return true;
       }

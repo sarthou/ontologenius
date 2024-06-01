@@ -1,5 +1,8 @@
 #include "ontologenius/API/ontologenius/clients/ManagerClient.h"
 
+#include <vector>
+#include <string>
+
 namespace onto {
 
   std::vector<std::string> ManagerClient::list()

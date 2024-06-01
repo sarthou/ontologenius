@@ -1,8 +1,9 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerSymmetric.h"
 
+#include <mutex>
 #include <pluginlib/class_list_macros.hpp>
-
 #include <shared_mutex>
+#include <string>
 
 namespace ontologenius {
 
@@ -28,7 +29,7 @@ namespace ontologenius {
 
                 explanations_.emplace_back("[ADD]" + sym_indiv->value() + "|" + sym_prop->value() + "|" + indiv->value(),
                                            "[ADD]" + indiv->value() + "|" + sym_prop->value() + "|" + sym_indiv->value());
-                nb_update_++;
+                nb_update++;
               }
               catch(GraphException& e)
               {

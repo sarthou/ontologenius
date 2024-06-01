@@ -1,6 +1,9 @@
 #ifndef ONTOLOGENIUS_FEEDER_H
 #define ONTOLOGENIUS_FEEDER_H
 
+#include <string>
+#include <vector>
+
 #include "ontologenius/core/feeder/FeedStorage.h"
 #include "ontologenius/core/feeder/Versionor.h"
 

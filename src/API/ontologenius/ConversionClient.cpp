@@ -1,6 +1,8 @@
 #include "ontologenius/API/ontologenius/ConversionClient.h"
 
 #include <iostream>
+#include <string>
+#include <vector>
 
 #ifndef COLOR_OFF
 #define COLOR_OFF "\x1B[0m"
@@ -21,7 +23,7 @@ namespace onto {
   using OntologeniusConversionRequestAlias = compat::RawRequestType<ontologenius::compat::OntologeniusConversion>;
 
   ConversionClient::ConversionClient(const std::string& name) : name_((name.empty()) ? "/ontologenius/conversion" : "/ontologenius/conversion/" + name),
-                                                                verbose_(false),
+                                                                client_verbose_(false),
                                                                 client_(name_)
   {}
 
@@ -186,7 +188,7 @@ namespace onto {
     }
     case ResultTy::FAILURE:
     {
-      if(verbose_)
+      if(client_verbose_)
         std::cout << COLOR_RED << "Failed to call ontologenius/" << name_ << COLOR_OFF << std::endl;
       [[fallthrough]];
     }

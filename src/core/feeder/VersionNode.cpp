@@ -1,6 +1,9 @@
 #include "ontologenius/core/feeder/VersionNode.h"
 
+#include <cstddef>
 #include <numeric>
+#include <string>
+#include <vector>
 
 namespace ontologenius {
 
@@ -83,7 +86,7 @@ namespace ontologenius {
     return res;
   }
 
-  std::string VersionNode::dataToXml(const Feed_t& data)
+  std::string VersionNode::dataToXml(const Feed_t& data) const
   {
     std::string xml = "<Data action=\"" + std::string((data.action_ == action_add) ? "add" : "del") +
                       "\">" + data.from_ + "|" + data.prop_ + "|" + data.on_ +
@@ -91,7 +94,7 @@ namespace ontologenius {
     return xml;
   }
 
-  std::string VersionNode::orderIdToXml()
+  std::string VersionNode::orderIdToXml() const
   {
     std::string xml = "<Order>" + std::to_string(order_id_) + "</Order>";
     return xml;

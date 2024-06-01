@@ -27,7 +27,7 @@ public:
   void loadReasoners();
 
 private:
-  Ui::OntoloGUI* ui;
+  Ui::OntoloGUI* ui_;
 
   onto::OntologiesManipulator ontos_;
   onto::OntologyManipulator* onto_;

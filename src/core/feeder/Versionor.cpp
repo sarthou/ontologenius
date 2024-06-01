@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <iostream>
+#include <string>
+#include <vector>
 
 #include "ontologenius/graphical/Display.h"
 
@@ -26,8 +28,7 @@ namespace ontologenius {
         delete current_node_;
 
     for(auto& it : nodes_)
-      if(it.second != nullptr)
-        delete it.second;
+      delete it.second;
   }
 
   void Versionor::insert(Feed_t data)

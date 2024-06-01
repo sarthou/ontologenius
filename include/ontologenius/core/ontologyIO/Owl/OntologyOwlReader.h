@@ -67,21 +67,21 @@ namespace ontologenius {
     void readCollection(std::vector<std::string>& vect, TiXmlElement* elem, const std::string& symbol, size_t level = 1);
     std::string readSomeValuesFrom(TiXmlElement* elem);
 
-    inline void push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
+    inline void push(std::vector<std::string>& vect, TiXmlElement* sub_elem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
     inline void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole = "");
-    inline void push(std::vector<SingleElement<std::string>>& vect, TiXmlElement* subElem, float probability, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
+    inline void push(std::vector<SingleElement<std::string>>& vect, TiXmlElement* sub_elem, float probability, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
     inline void push(std::vector<bool>& vect, bool elem, const std::string& symbole = "");
-    void push(Properties_t& properties, TiXmlElement* subElem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
-    void pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* subElem);
+    void push(Properties_t& properties, TiXmlElement* sub_elem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
+    void pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* sub_elem);
     inline std::string getName(const std::string& uri);
     inline float getProbability(TiXmlElement* elem);
     inline std::string getAttribute(TiXmlElement* elem, const std::string& attribute);
-    inline bool testAttribute(TiXmlElement* subElem, const std::string& attribute);
+    inline bool testAttribute(TiXmlElement* sub_elem, const std::string& attribute);
     inline int getNbChildren(TiXmlElement* elem);
 
-    std::string toString(TiXmlElement* subElem, const std::string& attribute = "rdf:resource")
+    std::string toString(TiXmlElement* sub_elem, const std::string& attribute = "rdf:resource")
     {
-      const char* sub_attr = subElem->Attribute(attribute.c_str());
+      const char* sub_attr = sub_elem->Attribute(attribute.c_str());
       if(sub_attr != nullptr)
         return getName(std::string(sub_attr));
       return "";
@@ -90,9 +90,9 @@ namespace ontologenius {
     void removeDocType(std::string& txt);
   };
 
-  void OntologyOwlReader::push(std::vector<std::string>& vect, TiXmlElement* subElem, const std::string& symbole, const std::string& attribute)
+  void OntologyOwlReader::push(std::vector<std::string>& vect, TiXmlElement* sub_elem, const std::string& symbole, const std::string& attribute)
   {
-    std::string data = getAttribute(subElem, attribute);
+    std::string data = getAttribute(sub_elem, attribute);
     if(data.empty() == false)
     {
       vect.push_back(data);
@@ -101,9 +101,9 @@ namespace ontologenius {
     }
   }
 
-  void OntologyOwlReader::push(std::vector<SingleElement<std::string>>& vect, TiXmlElement* subElem, float probability, const std::string& symbole, const std::string& attribute)
+  void OntologyOwlReader::push(std::vector<SingleElement<std::string>>& vect, TiXmlElement* sub_elem, float probability, const std::string& symbole, const std::string& attribute)
   {
-    std::string data = getAttribute(subElem, attribute);
+    std::string data = getAttribute(sub_elem, attribute);
     if(data.empty() == false)
     {
       vect.emplace_back(data, probability);
@@ -149,9 +149,9 @@ namespace ontologenius {
       return "";
   }
 
-  bool OntologyOwlReader::testAttribute(TiXmlElement* subElem, const std::string& attribute)
+  bool OntologyOwlReader::testAttribute(TiXmlElement* sub_elem, const std::string& attribute)
   {
-    const char* sub_attr = subElem->Attribute(attribute.c_str());
+    const char* sub_attr = sub_elem->Attribute(attribute.c_str());
     if(sub_attr != nullptr)
       return true;
     else

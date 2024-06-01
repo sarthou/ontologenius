@@ -1,7 +1,18 @@
 #include "ontologenius/core/ontologyIO/Turtle/OntologyTtlReader.h"
 
+#include <array>
+#include <cstddef>
 #include <fstream>
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
 
+#include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
@@ -17,15 +28,15 @@ namespace ontologenius {
                                                                                               data_property_graph,
                                                                                               individual_graph,
                                                                                               anonymous_graph),
-                                                                               double_reg_("^[-+]?\\d+\\.\\d+[eE][-+]?\\d+$"),
-                                                                               decimal_reg_("^[-+]?\\d*\\.\\d+$"),
-                                                                               integer_reg_("^[-+]?\\d+$")
+                                                                               double_reg_(R"(^[-+]?\d+\.\d+[eE][-+]?\d+$)"),
+                                                                               decimal_reg_(R"(^[-+]?\d*\.\d+$)"),
+                                                                               integer_reg_(R"(^[-+]?\d+$)")
   {}
 
   OntologyTtlReader::OntologyTtlReader(Ontology& onto) : OntologyReader(onto),
-                                                         double_reg_("^[-+]?\\d+\\.\\d+[eE][-+]?\\d+$"),
-                                                         decimal_reg_("^[-+]?\\d*\\.\\d+$"),
-                                                         integer_reg_("^[-+]?\\d+$")
+                                                         double_reg_(R"(^[-+]?\d+\.\d+[eE][-+]?\d+$)"),
+                                                         decimal_reg_(R"(^[-+]?\d*\.\d+$)"),
+                                                         integer_reg_(R"(^[-+]?\d+$)")
   {}
 
   int OntologyTtlReader::readFromUri(std::string& content, const std::string& uri)
@@ -223,7 +234,7 @@ namespace ontologenius {
         std::cout << "│   ├──" << subject << std::endl;
     }
 
-    for(auto& triplet : triplets)
+    for(const auto& triplet : triplets)
     {
       auto object = getObject(triplet[2]);
       auto property = getProperty(triplet[1]);

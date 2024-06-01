@@ -3,6 +3,7 @@
 #include <QString>
 #include <csignal>
 #include <thread>
+#include <string>
 
 #include "ontologenius/compat/ros.h"
 #include "ontologenius/graphical/ontoloGUI/DarkStyle.h"

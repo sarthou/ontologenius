@@ -2,7 +2,9 @@
 #include <cstdlib> /* srand, rand */
 #include <ctime>   /* time */
 #include <ros/ros.h>
+#include <string>
 #include <unordered_set>
+#include <vector>
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/reasoner/Reasoners.h"

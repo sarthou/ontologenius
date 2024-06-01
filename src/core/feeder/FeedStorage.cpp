@@ -1,6 +1,8 @@
 #include "ontologenius/core/feeder/FeedStorage.h"
 
 #include <iostream>
+#include <string>
+#include <vector>
 
 namespace ontologenius {
 

@@ -1,5 +1,8 @@
 #include "ontologenius/API/ontologenius/clients/ontologyClients/IndividualClient.h"
 
+#include <string>
+#include <vector>
+
 namespace onto {
 
   std::vector<std::string> IndividualClient::getOn(const std::string& name, const std::string& property, const std::string& selector)
@@ -34,20 +37,17 @@ namespace onto {
 
   std::vector<std::string> IndividualClient::getRelatedFrom(const std::string& property)
   {
-    std::string param = property;
-    return call("getRelatedFrom", param);
+    return call("getRelatedFrom", property);
   }
 
   std::vector<std::string> IndividualClient::getRelatedOn(const std::string& property)
   {
-    std::string param = property;
-    return call("getRelatedOn", param);
+    return call("getRelatedOn", property);
   }
 
   std::vector<std::string> IndividualClient::getRelatedWith(const std::string& name)
   {
-    std::string param = name;
-    return call("getRelatedWith", param);
+    return call("getRelatedWith", name);
   }
 
   std::vector<std::string> IndividualClient::getRelationFrom(const std::string& name, int depth)
@@ -70,8 +70,7 @@ namespace onto {
 
   std::vector<std::string> IndividualClient::getRelationWith(const std::string& name)
   {
-    std::string param = name;
-    return call("getRelationWith", param);
+    return call("getRelationWith", name);
   }
 
   std::vector<std::string> IndividualClient::getDomainOf(const std::string& name, const std::string& selector, int depth)
@@ -100,20 +99,17 @@ namespace onto {
 
   std::vector<std::string> IndividualClient::getType(const std::string& name)
   {
-    std::string param = name;
-    return call("getType", param);
+    return call("getType", name);
   }
 
   std::vector<std::string> IndividualClient::getSame(const std::string& name)
   {
-    std::string param = name;
-    return call("getSame", param);
+    return call("getSame", name);
   }
 
   std::vector<std::string> IndividualClient::getDistincts(const std::string& name)
   {
-    std::string param = name;
-    return call("getDistincts", param);
+    return call("getDistincts", name);
   }
 
 } // namespace onto

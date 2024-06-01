@@ -89,7 +89,7 @@ std::vector<std::map<std::string, std::string>> runSparqlSolver(ontologenius::Sp
   std::vector<std::map<std::string, std::string>> solutions;
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
-  for(ontologenius::SparqlSolver::iterator it = solver.begin(); it != solver.end(); ++it)
+  for(ontologenius::SparqlSolver::Iterator it = solver.begin(); it != solver.end(); ++it)
   {
     solutions.push_back(*it);
   }

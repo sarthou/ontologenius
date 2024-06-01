@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <shared_mutex>
+#include <string>
 #include <unordered_set>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
@@ -36,7 +37,7 @@ namespace ontologenius {
     return getErrors();
   }
 
-  void ClassChecker::checkDisjoint(ClassBranch* branch, std::unordered_set<ClassBranch*> up)
+  void ClassChecker::checkDisjoint(ClassBranch* branch, const std::unordered_set<ClassBranch*>& up)
   {
     auto* intersection = class_graph_->isDisjoint(up, up);
     if(intersection != nullptr)
@@ -44,13 +45,13 @@ namespace ontologenius {
       ClassBranch* disjoint_with = class_graph_->firstIntersection(up, intersection->disjoints_);
 
       if(disjoint_with != nullptr)
-        print_error("'" + branch->value() + "' can't be a '" + intersection->value() + "' and a '" + disjoint_with->value() + "' because of disjonction between classes '" + intersection->value() + "' and '" + disjoint_with->value() + "'");
+        printError("'" + branch->value() + "' can't be a '" + intersection->value() + "' and a '" + disjoint_with->value() + "' because of disjonction between classes '" + intersection->value() + "' and '" + disjoint_with->value() + "'");
       else
-        print_error("'" + branch->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
+        printError("'" + branch->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
     }
   }
 
-  void ClassChecker::checkObjectPropertyDomain(ClassBranch* branch, std::unordered_set<ClassBranch*> up)
+  void ClassChecker::checkObjectPropertyDomain(ClassBranch* branch, const std::unordered_set<ClassBranch*>& up)
   {
     for(const ClassObjectRelationElement& object_relation : branch->object_relations_)
     {
@@ -65,10 +66,10 @@ namespace ontologenius {
           if(intersection.second == nullptr)
           {
             branch->flags_["domain"].push_back(object_relation.first->value());
-            print_warning("'" + branch->value() + "' is not in domain of '" + object_relation.first->value() + "'");
+            printWarning("'" + branch->value() + "' is not in domain of '" + object_relation.first->value() + "'");
           }
           else
-            print_error("'" + branch->value() + "' can not be in domain of '" + object_relation.first->value() + "'");
+            printError("'" + branch->value() + "' can not be in domain of '" + object_relation.first->value() + "'");
         }
       }
     }
@@ -92,16 +93,16 @@ namespace ontologenius {
           if(intersection.second == nullptr)
           {
             branch->flags_["range"].push_back(object_relation.first->value());
-            print_warning("'" + object_relation.second->value() + "' is not in range of '" + object_relation.first->value() + "'");
+            printWarning("'" + object_relation.second->value() + "' is not in range of '" + object_relation.first->value() + "'");
           }
           else
-            print_error("'" + object_relation.second->value() + "' can not be in range of '" + object_relation.first->value() + "'");
+            printError("'" + object_relation.second->value() + "' can not be in range of '" + object_relation.first->value() + "'");
         }
       }
     }
   }
 
-  void ClassChecker::checkDataPropertyDomain(ClassBranch* branch, std::unordered_set<ClassBranch*> up)
+  void ClassChecker::checkDataPropertyDomain(ClassBranch* branch, const std::unordered_set<ClassBranch*>& up)
   {
     for(const ClassDataRelationElement& relation : branch->data_relations_)
     {
@@ -116,10 +117,10 @@ namespace ontologenius {
           if(intersection.second == nullptr)
           {
             branch->flags_["domain"].push_back(relation.first->value());
-            print_warning("'" + branch->value() + "' is not in domain of '" + relation.first->value() + "'");
+            printWarning("'" + branch->value() + "' is not in domain of '" + relation.first->value() + "'");
           }
           else
-            print_error("'" + branch->value() + "' can not be in domain of '" + relation.first->value() + "'");
+            printError("'" + branch->value() + "' can not be in domain of '" + relation.first->value() + "'");
         }
       }
     }
@@ -134,7 +135,7 @@ namespace ontologenius {
       {
         auto intersection = range.find(relation.second->type_);
         if(intersection == range.end())
-          print_error("'" + relation.second->type_ + "' is not in range of '" + relation.first->value() + "'");
+          printError("'" + relation.second->type_ + "' is not in range of '" + relation.first->value() + "'");
       }
     }
   }

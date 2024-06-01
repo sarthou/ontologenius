@@ -1,5 +1,14 @@
 #include "ontologenius/core/ontoGraphs/Checkers/AnonymousClassChecker.h"
 
+#include <cstddef>
+#include <shared_mutex>
+#include <string>
+#include <unordered_set>
+#include <utility>
+#include <vector>
+
+#include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
@@ -24,11 +33,11 @@ namespace ontologenius {
     for(AnonymousClassBranch* branch_vect : graph_vect_)
     {
       current_ano_ = branch_vect->class_equiv_->value();
-      for(auto branch : branch_vect->ano_elems_)
+      for(auto* branch : branch_vect->ano_elems_)
       {
         auto errs = resolveTree(branch, {ClassElement(branch_vect->class_equiv_)});
         for(auto& err : errs)
-          print_error("In equivalence of class " + current_ano_ + ": error between class " + current_ano_ + " " + err);
+          printError("In equivalence of class " + current_ano_ + ": error between class " + current_ano_ + " " + err);
       }
     }
   }
@@ -57,7 +66,7 @@ namespace ontologenius {
 
       ClassBranch* explanation_1 = nullptr;
       ClassBranch* explanation_2 = nullptr;
-      for(auto up : intersection_ups)
+      for(auto* up : intersection_ups)
       {
         explanation_2 = up;
         explanation_1 = ano_class_graph_->class_graph_->firstIntersection(left_ups, up->disjoints_);
@@ -65,7 +74,7 @@ namespace ontologenius {
           break;
       }
 
-      std::string exp_str = "";
+      std::string exp_str;
       if(class_right != explanation_2)
         exp_str = class_right->value() + " is a " + explanation_2->value();
       if(class_left != explanation_1)
@@ -93,8 +102,8 @@ namespace ontologenius {
   std::vector<std::string> AnonymousClassChecker::checkClassesVectorDisjointness(const std::vector<ClassElement>& classes_left, const std::vector<ClassElement>& class_right)
   {
     std::vector<std::string> errs;
-    for(auto& elem_right : class_right)
-      for(auto& elem_left : classes_left)
+    for(const auto& elem_right : class_right)
+      for(const auto& elem_left : classes_left)
       {
         std::string err = checkClassesDisjointness(elem_left.elem, elem_right.elem);
         if(err.empty() == false)
@@ -111,7 +120,7 @@ namespace ontologenius {
     if(ano_elem->logical_type_ == logical_and)
     {
       // check that there is at each level only the same type of literal type :  (boolean and string) -> error / (boolean and not(string)) -> ok
-      for(auto sub_elem : ano_elem->sub_elements_)
+      for(auto* sub_elem : ano_elem->sub_elements_)
       {
         if(sub_elem->logical_type_ == logical_none)
           types.insert(sub_elem->card_.card_range_->type_);
@@ -125,7 +134,7 @@ namespace ontologenius {
 
       if(types.size() > 1)
       {
-        std::string exp = "";
+        std::string exp;
         for(auto& type : types)
         {
           if(exp.empty() == false)
@@ -150,14 +159,14 @@ namespace ontologenius {
     }
     else if(ano_elem->oneof == true)
     { // check for the OneOf node if the classes of each individuals have no disjunction with the equivalence class
-      for(auto elem : ano_elem->sub_elements_)
+      for(auto* elem : ano_elem->sub_elements_)
       {
         auto local_errs = checkClassesVectorDisjointness(ranges, elem->individual_involved_->is_a_.relations);
         if(local_errs.empty() == false)
         {
           for(auto& err : local_errs)
-            print_error("In equivalence of class " + current_ano_ + ": individual " + elem->individual_involved_->value() +
-                        " can not be equivalent to " + current_ano_ + " since it exists a " + err);
+            printError("In equivalence of class " + current_ano_ + ": individual " + elem->individual_involved_->value() +
+                       " can not be equivalent to " + current_ano_ + " since it exists a " + err);
         }
       }
     }
@@ -166,7 +175,7 @@ namespace ontologenius {
       if(ano_elem->logical_type_ == logical_and)
         checkIntersectionDomainsDisjointess(ano_elem);
 
-      for(auto sub_elem : ano_elem->sub_elements_)
+      for(auto* sub_elem : ano_elem->sub_elements_)
       {
         auto tmp = resolveTree(sub_elem, ranges);
         if(tmp.empty() == false)
@@ -185,7 +194,7 @@ namespace ontologenius {
     // class only restriction
     else if(ano_elem->class_involved_ != nullptr)
     {
-      for(auto& elem : ranges)
+      for(const auto& elem : ranges)
       {
         std::string err = checkClassesDisjointness(ano_elem->class_involved_, elem.elem);
         if(err.empty() == false)
@@ -219,7 +228,7 @@ namespace ontologenius {
   std::pair<std::string, bool> getDomainOrigin(AnonymousClassElement* ano_elem, size_t index)
   {
     size_t cpt = 0;
-    for(auto sub_elem : ano_elem->sub_elements_)
+    for(auto* sub_elem : ano_elem->sub_elements_)
     {
       std::string origin;
       bool property = true;
@@ -251,7 +260,7 @@ namespace ontologenius {
   {
     std::vector<std::vector<ClassElement>> all_domains;
 
-    for(auto sub_elem : ano_elem->sub_elements_)
+    for(auto* sub_elem : ano_elem->sub_elements_)
     {
       if(sub_elem->logical_type_ == logical_none)
       {
@@ -275,8 +284,8 @@ namespace ontologenius {
           std::string err_left = (origin_left.second ? "domain of property " : "class ") + origin_left.first;
           std::string err_right = (origin_right.second ? "domain of property " : "class ") + origin_right.first;
           for(auto& err : errs)
-            print_error("In equivalence of class " + current_ano_ + ": error between " + err_left + " and " + err_right +
-                        " because of " + err);
+            printError("In equivalence of class " + current_ano_ + ": error between " + err_left + " and " + err_right +
+                       " because of " + err);
         }
       }
   }
@@ -287,15 +296,15 @@ namespace ontologenius {
     {
       auto errs = resolveTree(ano_elem->sub_elements_.front(), ano_elem->object_property_involved_->ranges_);
       for(auto& err : errs)
-        print_error("In equivalence of class " + current_ano_ + ": error between range of property " +
-                    ano_elem->object_property_involved_->value() + " " + err);
+        printError("In equivalence of class " + current_ano_ + ": error between range of property " +
+                   ano_elem->object_property_involved_->value() + " " + err);
     }
     else if(ano_elem->card_.card_type_ == cardinality_value)
     {
       auto errs = checkClassesVectorDisjointness(ano_elem->object_property_involved_->ranges_, ano_elem->individual_involved_->is_a_.relations);
       for(auto& err : errs)
-        print_error("In equivalence of class " + current_ano_ + ": error between range of property " + ano_elem->object_property_involved_->value() +
-                    " and inheritence of individual " + ano_elem->individual_involved_->value() + " because of " + err);
+        printError("In equivalence of class " + current_ano_ + ": error between range of property " + ano_elem->object_property_involved_->value() +
+                   " and inheritence of individual " + ano_elem->individual_involved_->value() + " because of " + err);
     }
     else
     {
@@ -303,8 +312,8 @@ namespace ontologenius {
       {
         std::string err = checkClassesDisjointness(range_elem.elem, ano_elem->class_involved_);
         if(err.empty() == false)
-          print_error("In equivalence of class " + current_ano_ + ": error between range of property " + ano_elem->object_property_involved_->value() +
-                      " and class " + ano_elem->class_involved_->value() + " because of " + err);
+          printError("In equivalence of class " + current_ano_ + ": error between range of property " + ano_elem->object_property_involved_->value() +
+                     " and class " + ano_elem->class_involved_->value() + " because of " + err);
       }
     }
   }
@@ -315,8 +324,8 @@ namespace ontologenius {
     {
       auto errs = resolveTreeDataTypes(ano_elem->sub_elements_.front());
       for(auto& err : errs)
-        print_error("In equivalence of class " + current_ano_ + ": in ranges of data property " +
-                    ano_elem->data_property_involved_->value() + ". " + err);
+        printError("In equivalence of class " + current_ano_ + ": in ranges of data property " +
+                   ano_elem->data_property_involved_->value() + ". " + err);
     }
   }
 

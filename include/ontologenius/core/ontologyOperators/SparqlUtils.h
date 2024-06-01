@@ -153,11 +153,11 @@ namespace ontologenius {
   void removeDuplicate(std::vector<std::map<std::string, T>>& vect)
   {
     std::sort(vect.begin(), vect.end());
-    auto equalLambda = [](const std::map<std::string, T>& lm, const std::map<std::string, T>& rm) {
+    auto equal_lambda = [](const std::map<std::string, T>& lm, const std::map<std::string, T>& rm) {
       return lm.size() == rm.size() && std::equal(lm.begin(), lm.end(), rm.begin());
     };
 
-    vect.erase(unique(vect.begin(), vect.end(), equalLambda), vect.end());
+    vect.erase(unique(vect.begin(), vect.end(), equal_lambda), vect.end());
   }
 
   template<typename T>

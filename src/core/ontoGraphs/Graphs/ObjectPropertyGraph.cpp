@@ -1,6 +1,11 @@
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 
-#include <iostream>
+#include <cstddef>
+#include <mutex>
+#include <shared_mutex>
+#include <string>
+#include <unordered_set>
+#include <vector>
 
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
@@ -19,7 +24,7 @@ namespace ontologenius {
 
     for(const auto& branch : other.all_branchs_)
     {
-      auto prop_branch = new ObjectPropertyBranch(branch->value());
+      auto* prop_branch = new ObjectPropertyBranch(branch->value());
       all_branchs_.push_back(prop_branch);
     }
 
@@ -169,7 +174,7 @@ namespace ontologenius {
     std::unordered_set<index_t> res;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
-    ObjectPropertyBranch* branch = container_.find(ValuedNode::table_.get(value));
+    ObjectPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
     if(branch != nullptr)
       for(auto& inverse : branch->inverses_)
         getDown(inverse.elem, res);
@@ -195,7 +200,7 @@ namespace ontologenius {
     std::unordered_set<index_t> res;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
-    ObjectPropertyBranch* branch = container_.find(ValuedNode::table_.get(value));
+    ObjectPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
     std::unordered_set<ObjectPropertyBranch*> up_trace;
     if(branch != nullptr)
       getDomain(branch, depth, res, up_trace);
@@ -249,7 +254,7 @@ namespace ontologenius {
     std::unordered_set<index_t> res;
     std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
-    ObjectPropertyBranch* branch = container_.find(ValuedNode::table_.get(value));
+    ObjectPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
     std::unordered_set<ObjectPropertyBranch*> up_trace;
     if(branch != nullptr)
       getRange(branch, depth, res, up_trace);

@@ -1,8 +1,19 @@
 #include "ontologenius/core/ontologyIO/Owl/OntologyOwlReader.h"
 
+#include <cstddef>
 #include <fstream>
+#include <iostream>
+#include <string>
+#include <tinyxml.h>
+#include <vector>
 
+#include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/ontologyIO/OntologyReader.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
 #include "ontologenius/utils/String.h"
@@ -50,8 +61,8 @@ namespace ontologenius {
 
   int OntologyOwlReader::readFromFile(const std::string& file_name, bool individual)
   {
-    std::string response = "";
-    std::string tmp = "";
+    std::string response;
+    std::string tmp;
     std::ifstream f(file_name);
 
     if(!f.is_open())
@@ -90,7 +101,7 @@ namespace ontologenius {
       return {};
     else
     {
-      auto ontology_elem = rdf->FirstChildElement("owl:Ontology");
+      auto* ontology_elem = rdf->FirstChildElement("owl:Ontology");
       for(TiXmlElement* elem = ontology_elem->FirstChildElement("owl:imports"); elem != nullptr; elem = elem->NextSiblingElement("owl:imports"))
         imports.emplace_back(elem->Attribute("rdf:resource"));
     }
@@ -100,8 +111,8 @@ namespace ontologenius {
 
   std::vector<std::string> OntologyOwlReader::getImportsFromFile(const std::string& file_name)
   {
-    std::string raw_file = "";
-    std::string tmp = "";
+    std::string raw_file;
+    std::string tmp;
     std::ifstream f(file_name);
 
     if(!f.is_open())
@@ -220,7 +231,7 @@ namespace ontologenius {
 
   void OntologyOwlReader::readClass(TiXmlElement* elem)
   {
-    std::string node_name = "";
+    std::string node_name;
     ObjectVectors_t object_vector;
     AnonymousClassVectors_t ano_vector;
     const char* attr = elem->Attribute("rdf:about");
@@ -281,7 +292,7 @@ namespace ontologenius {
   void OntologyOwlReader::readEquivalentClass(AnonymousClassVectors_t& ano, TiXmlElement* elem, const std::string& class_name)
   {
     ano.class_equiv = class_name;
-    ExpressionMember_t* exp;
+    ExpressionMember_t* exp = nullptr;
 
     // Class only equivalence  : Camera Eq to Component
     if(elem->FirstChild() == nullptr)
@@ -554,7 +565,7 @@ namespace ontologenius {
     std::string elem_name = elem->Value();
     if(elem_name == "owl:NamedIndividual")
     {
-      std::string node_name = "";
+      std::string node_name;
       IndividualVectors_t individual_vector;
       const char* attr = elem->Attribute("rdf:about");
       if(attr != nullptr)
@@ -610,7 +621,7 @@ namespace ontologenius {
     for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
       std::string sub_elem_name = sub_elem->Value();
-      const char* sub_attr;
+      const char* sub_attr = nullptr;
       if(sub_elem_name == "rdf:type")
       {
         sub_attr = sub_elem->Attribute("rdf:resource");
@@ -648,7 +659,7 @@ namespace ontologenius {
       for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
       {
         std::string sub_elem_name = sub_elem->Value();
-        const char* sub_attr;
+        const char* sub_attr = nullptr;
         if(sub_elem_name == "rdf:type")
         {
           sub_attr = sub_elem->Attribute("rdf:resource");
@@ -672,7 +683,7 @@ namespace ontologenius {
 
   void OntologyOwlReader::readObjectProperty(TiXmlElement* elem)
   {
-    std::string node_name = "";
+    std::string node_name;
     ObjectPropertyVectors_t property_vector;
     property_vector.annotation_usage_ = false;
     const char* attr = elem->Attribute("rdf:about");
@@ -717,7 +728,7 @@ namespace ontologenius {
 
   void OntologyOwlReader::readDataProperty(TiXmlElement* elem)
   {
-    std::string node_name = "";
+    std::string node_name;
     DataPropertyVectors_t property_vector;
     property_vector.annotation_usage_ = false;
     const char* attr = elem->Attribute("rdf:about");
@@ -752,10 +763,10 @@ namespace ontologenius {
 
   void OntologyOwlReader::readAnnotationProperty(TiXmlElement* elem)
   {
-    std::string node_name = "";
+    std::string node_name;
     DataPropertyVectors_t property_vector; // we use a DataPropertyVectors_t that is sufficient to represent an annotation property
     property_vector.annotation_usage_ = true;
-    std::vector<SingleElement<std::string>> ranges_;
+    std::vector<SingleElement<std::string>> ranges;
     const char* attr = elem->Attribute("rdf:about");
     if(attr != nullptr)
     {
@@ -776,7 +787,7 @@ namespace ontologenius {
         else if(sub_elem_name == "rdfs:range")
         {
           push(property_vector.ranges_, sub_elem, "<");
-          push(ranges_, sub_elem, probability);
+          push(ranges, sub_elem, probability);
         }
         else if(sub_elem_name == "rdfs:label")
           pushLang(property_vector.dictionary_, sub_elem);
@@ -792,7 +803,7 @@ namespace ontologenius {
       object_property_vector.mothers_ = property_vector.mothers_;
       object_property_vector.disjoints_ = property_vector.disjoints_;
       object_property_vector.domains_ = property_vector.domains_;
-      object_property_vector.ranges_ = ranges_;
+      object_property_vector.ranges_ = ranges;
       object_property_vector.dictionary_ = property_vector.dictionary_;
       object_property_vector.muted_dictionary_ = property_vector.muted_dictionary_;
       object_property_vector.annotation_usage_ = true;
@@ -847,8 +858,7 @@ namespace ontologenius {
 
   void OntologyOwlReader::push(Properties_t& properties, TiXmlElement* sub_elem, const std::string& symbole, const std::string& attribute)
   {
-    const char* sub_attr;
-    sub_attr = sub_elem->Attribute(attribute.c_str());
+    const char* sub_attr = sub_elem->Attribute(attribute.c_str());
     if(sub_attr != nullptr)
     {
       std::string property = getName(std::string(sub_attr));
@@ -876,14 +886,12 @@ namespace ontologenius {
 
   void OntologyOwlReader::pushLang(std::map<std::string, std::vector<std::string>>& dictionary, TiXmlElement* sub_elem)
   {
-    const char* sub_attr;
-    sub_attr = sub_elem->Attribute("xml:lang");
+    const char* sub_attr = sub_elem->Attribute("xml:lang");
     if(sub_attr != nullptr)
     {
       std::string lang = std::string(sub_attr);
 
-      const char* value;
-      value = sub_elem->GetText();
+      const char* value = sub_elem->GetText();
       if(value != nullptr)
       {
         dictionary[lang].push_back(std::string(value));

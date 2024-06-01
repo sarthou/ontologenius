@@ -1,3 +1,7 @@
+#include <cstddef>
+#include <iostream>
+#include <string>
+
 #include "ontologenius/graphical/versioning/TreeDrawer.h"
 #include "ontologenius/graphical/versioning/TreeReader.h"
 
@@ -55,10 +59,10 @@ int main(int argc, char** argv)
   }
 
   ontologenius::TreeReader reader;
-  ontologenius::commit_t* commit = reader.read(path);
+  ontologenius::Commit* commit = reader.read(path);
 
-  std::cout << "width = " << ontologenius::commit_t::global_width << std::endl;
-  std::cout << "height = " << ontologenius::commit_t::global_height << std::endl;
+  std::cout << "width = " << ontologenius::Commit::global_width << std::endl;
+  std::cout << "height = " << ontologenius::Commit::global_height << std::endl;
 
   ontologenius::TreeDrawer drawer;
   drawer.draw(getFileName(path), commit, commit_only);
@@ -66,8 +70,7 @@ int main(int argc, char** argv)
   if(commit_only == false)
     std::cout << "--> You can get only the commit graph with the option -c <--" << std::endl;
 
-  if(commit != nullptr)
-    delete commit;
+  delete commit;
 
   return 0;
 }

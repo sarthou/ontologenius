@@ -1,9 +1,13 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerAnonymous.h"
 
+#include <cstddef>
+#include <mutex>
 #include <pluginlib/class_list_macros.hpp>
 #include <shared_mutex>
 #include <string>
 #include <unordered_set>
+#include <utility>
+#include <vector>
 
 namespace ontologenius {
 
@@ -30,7 +34,7 @@ namespace ontologenius {
         bool has_active_equiv = false;
 
         // Loop over every classes which includes equivalence relations
-        for(auto anonymous : ontology_->anonymous_graph_.get())
+        for(auto* anonymous : ontology_->anonymous_graph_.get())
         {
           bool tree_evaluation_result = false;
           bool is_already_a = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous](const auto& is_a) { return is_a.elem == anonymous->class_equiv_; });
@@ -38,7 +42,7 @@ namespace ontologenius {
           if(is_already_a || checkClassesDisjointess(indiv, anonymous->class_equiv_) == false)
           {
             // Loop over every equivalence relations corresponding to one class
-            for(auto anonymous_branch : anonymous->ano_elems_)
+            for(auto* anonymous_branch : anonymous->ano_elems_)
             {
               bool tree_first_layer_result = true;
               if(is_already_a == false)
@@ -60,7 +64,7 @@ namespace ontologenius {
                   {
                     indiv->nb_updates_++;
                     anonymous->class_equiv_->nb_updates_++;
-                    std::string explanation_reference = "";
+                    std::string explanation_reference;
 
                     for(auto& induced_vector : used)
                     {
@@ -76,7 +80,7 @@ namespace ontologenius {
                       }
                     }
 
-                    nb_update_++;
+                    nb_update++;
                     explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous->class_equiv_->value(),
                                                "[ADD]" + explanation_reference);
                   }
@@ -355,7 +359,7 @@ namespace ontologenius {
   {
     std::string explanation;
 
-    if(indiv->same_as_.empty() == 0)
+    if(indiv->same_as_.empty() == false)
     {
       size_t same_size = indiv->same_as_.size();
       for(size_t i = 0; i < same_size; i++)
@@ -431,29 +435,29 @@ namespace ontologenius {
   {
     switch(ano_elem->card_.card_type_)
     {
-    case CardType_t::cardinality_some:
+    case CardType_e::cardinality_some:
       return checkSomeCard(indiv, ano_elem, used);
-    case CardType_t::cardinality_min:
+    case CardType_e::cardinality_min:
       if(standard_mode_ == true)
         return false;
       else
         return checkMinCard(indiv, ano_elem, used);
-    case CardType_t::cardinality_max:
+    case CardType_e::cardinality_max:
       if(standard_mode_ == true)
         return false;
       else
         return checkMaxCard(indiv, ano_elem, used);
-    case CardType_t::cardinality_exactly:
+    case CardType_e::cardinality_exactly:
       if(standard_mode_ == true)
         return false;
       else
         return checkExactlyCard(indiv, ano_elem, used);
-    case CardType_t::cardinality_only:
+    case CardType_e::cardinality_only:
       if(standard_mode_ == true)
         return false;
       else
         return checkOnlyCard(indiv, ano_elem, used);
-    case CardType_t::cardinality_value:
+    case CardType_e::cardinality_value:
       return checkValueCard(indiv, ano_elem, used);
     default:
       Display::error("Cardinality type outside of [min, max, exactly, only, value, some]");

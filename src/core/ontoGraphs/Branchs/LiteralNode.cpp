@@ -2,6 +2,6 @@
 
 namespace ontologenius {
 
-  WordTable LiteralNode::table_;
+  WordTable LiteralNode::table;
 
 } // namespace ontologenius

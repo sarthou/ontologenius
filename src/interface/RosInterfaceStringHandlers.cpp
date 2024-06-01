@@ -1,5 +1,8 @@
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "ontologenius/core/utility/error_code.h"
-#include "ontologenius/graphical/Display.h"
 #include "ontologenius/interface/InterfaceParams.h"
 #include "ontologenius/interface/RosInterface.h"
 

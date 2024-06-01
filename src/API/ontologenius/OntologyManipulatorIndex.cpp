@@ -1,6 +1,6 @@
 #include "ontologenius/API/ontologenius/OntologyManipulatorIndex.h"
 
-#include "ontologenius/graphical/Display.h"
+#include <string>
 
 namespace onto {
 

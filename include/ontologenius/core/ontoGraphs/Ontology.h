@@ -25,9 +25,9 @@ namespace ontologenius {
     bool preload(const std::string& file_name);
     void save(const std::string& file_name = "");
 
-    bool isInit(bool print = true);
+    bool isInit(bool print = true) const;
     void setLanguage(const std::string& language);
-    std::string getLanguage();
+    std::string getLanguage() const;
 
     void setDisplay(bool display);
 
@@ -39,7 +39,7 @@ namespace ontologenius {
 
   private:
     OntologyLoader loader_;
-    OntologyOwlWriter writer;
+    OntologyOwlWriter writer_;
 
     bool is_preloaded_;
     bool is_init_;

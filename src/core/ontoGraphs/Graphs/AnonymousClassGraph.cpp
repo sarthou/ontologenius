@@ -1,8 +1,13 @@
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 
-#include <algorithm>
+#include <cstddef>
 #include <iostream>
+#include <mutex>
+#include <shared_mutex>
+#include <string>
+#include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
@@ -13,23 +18,25 @@
 
 namespace ontologenius {
 
-  AnonymousClassGraph::AnonymousClassGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph,
-                                           DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph)
-  {
-    class_graph_ = class_graph;
-    object_property_graph_ = object_property_graph;
-    data_property_graph_ = data_property_graph;
-    individual_graph_ = individual_graph;
-  }
+  AnonymousClassGraph::AnonymousClassGraph(ClassGraph* class_graph,
+                                           ObjectPropertyGraph* object_property_graph,
+                                           DataPropertyGraph* data_property_graph,
+                                           IndividualGraph* individual_graph) : class_graph_(class_graph),
+                                                                                object_property_graph_(object_property_graph),
+                                                                                data_property_graph_(data_property_graph),
+                                                                                individual_graph_(individual_graph)
+  {}
 
-  AnonymousClassGraph::AnonymousClassGraph(const AnonymousClassGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph,
-                                           DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph)
-  {
-    class_graph_ = class_graph;
-    individual_graph_ = individual_graph;
-    object_property_graph_ = object_property_graph;
-    data_property_graph_ = data_property_graph;
+  AnonymousClassGraph::AnonymousClassGraph(const AnonymousClassGraph& other,
+                                           ClassGraph* class_graph,
+                                           ObjectPropertyGraph* object_property_graph,
+                                           DataPropertyGraph* data_property_graph,
+                                           IndividualGraph* individual_graph) : class_graph_(class_graph),
+                                                                                object_property_graph_(object_property_graph),
+                                                                                data_property_graph_(data_property_graph),
+                                                                                individual_graph_(individual_graph)
 
+  {
     for(auto* branch : other.all_branchs_)
     {
       auto* class_branch = new AnonymousClassBranch(branch->value());
@@ -170,7 +177,7 @@ namespace ontologenius {
     return anonymous_branch;
   }
 
-  void AnonymousClassGraph::printTree(AnonymousClassElement* ano_elem, size_t level, bool root)
+  void AnonymousClassGraph::printTree(AnonymousClassElement* ano_elem, size_t level, bool root) const
   {
     std::string space(level * 4, ' ');
     std::string tmp;
@@ -191,7 +198,7 @@ namespace ontologenius {
       tmp += ano_elem->object_property_involved_->value();
       tmp += " " + toString(ano_elem->card_.card_type_);
 
-      if(ano_elem->card_.card_type_ == ontologenius::CardType_t::cardinality_value)
+      if(ano_elem->card_.card_type_ == ontologenius::CardType_e::cardinality_value)
         tmp += " " + ano_elem->individual_involved_->value();
       else
       {
@@ -234,23 +241,23 @@ namespace ontologenius {
     }
   }
 
-  std::string AnonymousClassGraph::toString(CardType_t value)
+  std::string AnonymousClassGraph::toString(CardType_e value) const
   {
     switch(value)
     {
-    case CardType_t::cardinality_some:
+    case CardType_e::cardinality_some:
       return "some";
-    case CardType_t::cardinality_only:
+    case CardType_e::cardinality_only:
       return "only";
-    case CardType_t::cardinality_min:
+    case CardType_e::cardinality_min:
       return "min";
-    case CardType_t::cardinality_max:
+    case CardType_e::cardinality_max:
       return "max";
-    case CardType_t::cardinality_exactly:
+    case CardType_e::cardinality_exactly:
       return "exactly";
-    case CardType_t::cardinality_value:
+    case CardType_e::cardinality_value:
       return "value";
-    case CardType_t::cardinality_error:
+    case CardType_e::cardinality_error:
       return "error";
     default:
       return "";

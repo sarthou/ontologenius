@@ -97,8 +97,8 @@ namespace ontologenius {
 
     virtual bool defaultActive() { return false; }
 
-    static size_t getNbUpdates() { return nb_update_; }
-    static void resetNbUpdates() { nb_update_ = 0; }
+    static size_t getNbUpdates() { return nb_update; }
+    static void resetNbUpdates() { nb_update = 0; }
 
     std::vector<std::pair<ReasonerNotificationStatus_e, std::string>> getNotifications()
     {
@@ -123,7 +123,7 @@ namespace ontologenius {
     std::vector<std::pair<ReasonerNotificationStatus_e, std::string>> notifications_;
     std::vector<std::pair<std::string, std::string>> explanations_;
 
-    static size_t nb_update_;
+    static size_t nb_update;
   };
 
 } // namespace ontologenius

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include <ros/package.h>
-#include <ros/ros.h>
+#include <vector>
+#include <string>
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 

@@ -1,6 +1,9 @@
+#include <cstddef>
 #include <gtest/gtest.h>
 #include <ros/ros.h>
 #include <sstream>
+#include <string>
+#include <vector>
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 

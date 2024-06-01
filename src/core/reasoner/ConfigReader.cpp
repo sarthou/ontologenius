@@ -1,10 +1,12 @@
 #include "ontologenius/core/reasoner/ConfigReader.h"
 
+#include <cstddef>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <regex>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace ontologenius {
@@ -99,7 +101,7 @@ namespace ontologenius {
 
   void ConfigReader::display(const std::map<std::string, ConfigElement>& config, size_t nb)
   {
-    for(auto& c : config)
+    for(const auto& c : config)
       displayElement(c, nb);
   }
 
@@ -112,7 +114,7 @@ namespace ontologenius {
       if(it.second.data.value().size() > 1)
       {
         std::cout << std::endl;
-        for(auto& d : it.second.data.value())
+        for(const auto& d : it.second.data.value())
         {
           displayTab(nb + 1);
           std::cout << "- " << d << std::endl;

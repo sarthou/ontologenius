@@ -3,6 +3,10 @@
 #include "ontologenius/interface/InterfaceParams.h"
 #include "ontologenius/interface/RosInterface.h"
 
+#include <string>
+#include <vector>
+#include <utility>
+
 namespace ontologenius {
 
   bool RosInterface::classIndexHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusIndexService::Request>& req,

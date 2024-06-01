@@ -1,7 +1,17 @@
 #include "ontologenius/core/ontologyIO/OntologyLoader.h"
 
+#include <algorithm>
+#include <cstddef>
 #include <curl/curl.h>
+#include <string>
+#include <utility>
+#include <vector>
 
+#include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
 #include "ontologenius/utils/Commands.h"
@@ -121,8 +131,8 @@ namespace ontologenius {
 
   void OntologyLoader::fixUrl(std::string& url)
   {
-    size_t dot_pose = url.find_last_of(".");
-    size_t pose = url.find_last_of("/");
+    size_t dot_pose = url.find_last_of('.');
+    size_t pose = url.find_last_of('/');
     if(dot_pose < pose)
       url += ".owl";
 
@@ -144,7 +154,7 @@ namespace ontologenius {
 
   void OntologyLoader::fixPath(std::string& path)
   {
-    size_t dot_pose = path.find_last_of(".");
+    size_t dot_pose = path.find_last_of('.');
     if(dot_pose == std::string::npos)
       path += ".owl";
   }
@@ -177,9 +187,8 @@ namespace ontologenius {
   {
     std::string res;
     res.reserve(1024 * 1024);
-    CURL* curl_handle;
     curl_global_init(CURL_GLOBAL_ALL);
-    curl_handle = curl_easy_init();
+    CURL* curl_handle = curl_easy_init();
     curl_easy_setopt(curl_handle, CURLOPT_URL, uri.c_str());
     curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, 1L);
     curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, +[](void* ptr, size_t size, size_t nmemb, void* stream) -> size_t // the + forces the cast into void*
@@ -200,7 +209,7 @@ namespace ontologenius {
 
   void OntologyLoader::loadImports(const std::vector<std::string>& imports)
   {
-    for(auto& import : imports)
+    for(const auto& import : imports)
     {
       bool loaded = true;
       auto with_package = resolvePath(import);
@@ -252,38 +261,38 @@ namespace ontologenius {
     std::vector<std::string> packages = listPackages();
 
     auto parts = split(raw_path, "/");
-    for(auto part_it = parts.begin(); part_it != parts.end(); ++part_it)
+    for(const auto& part : parts)
     {
-      auto package_it = std::find(packages.begin(), packages.end(), *part_it);
+      auto package_it = std::find(packages.begin(), packages.end(), part);
       if(package_it != packages.end())
       {
-        size_t package_pose = raw_path.find(*part_it);
-        std::string rest = raw_path.substr(package_pose + (*part_it).size() + 1);
+        size_t package_pose = raw_path.find(part);
+        std::string rest = raw_path.substr(package_pose + part.size() + 1);
 
         // The following is used to remove extras added by github and gitlab
 
         size_t useless_pose = rest.find("blob/");
         if(useless_pose != std::string::npos)
         {
-          useless_pose = rest.find("/", useless_pose + std::string("blob/").size() + 1);
+          useless_pose = rest.find('/', useless_pose + std::string("blob/").size() + 1);
           rest = rest.substr(useless_pose + 1);
         }
 
         useless_pose = rest.find("raw/");
         if(useless_pose != std::string::npos)
         {
-          useless_pose = rest.find("/", useless_pose + std::string("raw/").size() + 1);
+          useless_pose = rest.find('/', useless_pose + std::string("raw/").size() + 1);
           rest = rest.substr(useless_pose + 1);
         }
 
         useless_pose = rest.find("raw.githubusercontent.com/");
         if(useless_pose != std::string::npos)
         {
-          useless_pose = rest.find("/");
+          useless_pose = rest.find('/');
           rest = rest.substr(useless_pose + 1);
         }
 
-        return {*part_it, rest};
+        return {part, rest};
       }
     }
 

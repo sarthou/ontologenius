@@ -28,7 +28,7 @@ namespace onto {
   /// A reconnection logic is implemented in the event that the persistent connection fails.
   class ClientBaseIndex
   {
-    static int16_t ignore_;
+    static int16_t ignore;
 
   public:
     /// @brief Constructs a ROS client.
@@ -42,7 +42,7 @@ namespace onto {
     size_t nb() { return cpt; }
     /// @brief Reset Call Counter for all instances of ClientBaseIndex.
     void resetNb() { cpt = 0; }
-    static void verbose(bool verbose) { verbose_ = verbose; }
+    static void verbose(bool verbose) { client_verbose = verbose; }
 
     int getErrorCode() const { return error_code_; }
 
@@ -50,7 +50,7 @@ namespace onto {
     /// @param action the query action.
     /// @param param the query parameters.
     /// @return Returns a list of string. If the service call fails, the first element of the returned vector is "ERR:SERVICE_FAIL".
-    inline std::vector<std::string> call(const std::string& action, const std::string& param, int16_t& code = ignore_)
+    inline std::vector<std::string> call(const std::string& action, const std::string& param, int16_t& code = ignore)
     {
       cpt++;
 
@@ -68,7 +68,7 @@ namespace onto {
       {
       case ResultTy::SUCCESSFUL_WITH_RETRIES:
       {
-        if(verbose_)
+        if(client_verbose)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
         [[fallthrough]];
       }
@@ -82,7 +82,7 @@ namespace onto {
       }
       case ResultTy::FAILURE:
       {
-        if(verbose_)
+        if(client_verbose)
           std::cout << COLOR_ORANGE << "Failed to call call ontologenius/" << name_ << COLOR_OFF << std::endl;
         [[fallthrough]];
       }
@@ -97,7 +97,7 @@ namespace onto {
     /// @param action the query action.
     /// @param param the query parameters.
     /// @return Returns a list of int64. If the service call fails, the first element of the returned vector is "0".
-    inline std::vector<int64_t> callIndexes(const std::string& action, const std::string& param, int16_t& code = ignore_)
+    inline std::vector<int64_t> callIndexes(const std::string& action, const std::string& param, int16_t& code = ignore)
     {
       cpt++;
 
@@ -115,7 +115,7 @@ namespace onto {
       {
       case ResultTy::SUCCESSFUL_WITH_RETRIES:
       {
-        if(verbose_)
+        if(client_verbose)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
         [[fallthrough]];
       }
@@ -129,7 +129,7 @@ namespace onto {
       }
       case ResultTy::FAILURE:
       {
-        if(verbose_)
+        if(client_verbose)
           std::cout << COLOR_ORANGE << "Failed to call call ontologenius/" << name_ << COLOR_OFF << std::endl;
         [[fallthrough]];
       }
@@ -144,7 +144,7 @@ namespace onto {
     /// @param action the query action.
     /// @param param the query parameters.
     /// @return Returns a single string. If the service call fails, the returned value is "ERR:SERVICE_FAIL".
-    inline std::string callStr(const std::string& action, const std::string& param, int16_t& code = ignore_)
+    inline std::string callStr(const std::string& action, const std::string& param, int16_t& code = ignore)
     {
       auto res = this->call(action, param, code);
       return res.empty() ? "" : res[0];
@@ -183,7 +183,7 @@ namespace onto {
   private:
     std::string name_;
     static size_t cpt;
-    static bool verbose_;
+    static bool client_verbose;
     int error_code_;
 
   protected:

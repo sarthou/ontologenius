@@ -1,6 +1,9 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/ClassOwlWriter.h"
 
 #include <algorithm>
+#include <string>
+#include <vector>
+#include <shared_mutex>
 
 #include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
@@ -72,7 +75,7 @@ namespace ontologenius {
 
     if(equiv != nullptr)
     {
-      for(auto elem : equiv->ano_elems_)
+      for(auto* elem : equiv->ano_elems_)
       {
         std::string tmp, field;
         field = "owl:equivalentClass";
@@ -189,7 +192,7 @@ namespace ontologenius {
     tmp = "<" + field + " " + "rdf:parseType=\"Collection\">\n";
     writeString(tmp, level);
 
-    for(auto child : ano_elem->sub_elements_)
+    for(auto* child : ano_elem->sub_elements_)
       writeComplexDescription(child, level + 1, is_data_prop);
 
     tmp = "</" + field + ">\n";
@@ -204,7 +207,7 @@ namespace ontologenius {
     tmp = "<" + field + " " + "rdf:parseType=\"Collection\">\n";
     writeString(tmp, level);
 
-    for(auto child : ano_elem->sub_elements_)
+    for(auto* child : ano_elem->sub_elements_)
       writeComplexDescription(child, level + 1, is_data_prop);
 
     tmp = "</" + field + ">\n";
@@ -219,7 +222,7 @@ namespace ontologenius {
     tmp = "<" + field + " " + "rdf:parseType=\"Collection\">\n";
     writeString(tmp, level);
 
-    for(auto child : ano_elem->sub_elements_)
+    for(auto* child : ano_elem->sub_elements_)
     {
       tmp = "<rdf:Description " + getResource(child, "rdf:about") + "/>\n";
       writeString(tmp, level + 1);
@@ -486,12 +489,12 @@ namespace ontologenius {
         getDisjointsSets(classe, disjoints_vects);
     }
 
-    for(auto& disjoints_set : disjoints_vects)
+    for(const auto& disjoints_set : disjoints_vects)
     {
       std::string tmp;
       tmp += "        <owl:members rdf:parseType=\"Collection\">\n";
 
-      for(auto& disj : disjoints_set)
+      for(const auto& disj : disjoints_set)
       {
         tmp += "             <rdf:Description rdf:about=\"" + ns_ + "#" +
                disj->value() +
@@ -499,7 +502,7 @@ namespace ontologenius {
       }
 
       tmp += "        </owl:members>\n";
-      if(disjoints_set.size() > 0)
+      if(disjoints_set.empty() == false)
       {
         writeString(start);
         writeString(tmp);
@@ -557,7 +560,7 @@ namespace ontologenius {
 
   void ClassOwlWriter::writeObjectProperties(ClassBranch* branch)
   {
-    for(ClassObjectRelationElement& relation : branch->object_relations_)
+    for(const ClassObjectRelationElement& relation : branch->object_relations_)
       if(relation.infered == false)
       {
         std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
@@ -573,7 +576,7 @@ namespace ontologenius {
 
   void ClassOwlWriter::writeDataProperties(ClassBranch* branch)
   {
-    for(ClassDataRelationElement& relation : branch->data_relations_)
+    for(const ClassDataRelationElement& relation : branch->data_relations_)
       if(relation.infered == false)
       {
         std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";

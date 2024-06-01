@@ -10,18 +10,18 @@ namespace ontologenius {
   {
   public:
     explicit ClassChecker(ClassGraph* graph) : ValidityChecker(graph) { class_graph_ = graph; }
-    ~ClassChecker() = default;
+    ~ClassChecker() override = default;
 
     size_t check() override;
-    void printStatus() { ValidityChecker<ClassBranch>::printStatus("class", "classes", graph_vect_.size()); }
+    void printStatus() override { ValidityChecker<ClassBranch>::printStatus("class", "classes", graph_vect_.size()); }
 
   private:
-    void checkDisjoint(ClassBranch* branch, std::unordered_set<ClassBranch*> up);
+    void checkDisjoint(ClassBranch* branch, const std::unordered_set<ClassBranch*>& up);
 
-    void checkObjectPropertyDomain(ClassBranch* branch, std::unordered_set<ClassBranch*> up);
+    void checkObjectPropertyDomain(ClassBranch* branch, const std::unordered_set<ClassBranch*>& up);
     void checkObjectPropertyRange(ClassBranch* branch);
 
-    void checkDataPropertyDomain(ClassBranch* branch, std::unordered_set<ClassBranch*> up);
+    void checkDataPropertyDomain(ClassBranch* branch, const std::unordered_set<ClassBranch*>& up);
     void checkDataPropertyRange(ClassBranch* branch);
 
     ClassGraph* class_graph_;

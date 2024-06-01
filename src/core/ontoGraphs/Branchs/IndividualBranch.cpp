@@ -1,6 +1,7 @@
 #include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 
 #include <algorithm>
+#include <cstddef>
 
 namespace ontologenius {
 

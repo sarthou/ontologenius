@@ -7,20 +7,18 @@ class QLineEditExtended : public QLineEdit
 {
   Q_OBJECT
 public:
-  explicit QLineEditExtended(QWidget* parent = 0);
-  virtual ~QLineEditExtended() = default;
+  explicit QLineEditExtended(QWidget* parent = nullptr);
+  ~QLineEditExtended() override = default;
 
 protected:
   void hoverEnter(QHoverEvent* event);
   void hoverLeave(QHoverEvent* event);
   void hoverMove(QHoverEvent* event);
-  bool event(QEvent* event);
+  bool event(QEvent* event) override;
 
 Q_SIGNALS:
   void hoverEnter();
   void hoverLeave();
-
-public slots:
 };
 
 #endif // QLINEEDITEXTENDED_H

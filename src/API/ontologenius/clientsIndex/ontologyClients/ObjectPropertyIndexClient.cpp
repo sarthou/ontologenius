@@ -1,5 +1,8 @@
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/ObjectPropertyIndexClient.h"
 
+#include <string>
+#include <vector>
+
 namespace onto {
 
   std::vector<int64_t> ObjectPropertyIndexClient::getDown(int64_t index, int depth)

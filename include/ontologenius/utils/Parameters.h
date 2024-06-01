@@ -1,6 +1,7 @@
 #ifndef ONTOLOGENIUS_PARAMETERS_H
 #define ONTOLOGENIUS_PARAMETERS_H
 
+#include <algorithm>
 #include <iostream>
 #include <map>
 #include <string>
@@ -41,12 +42,12 @@ namespace ontologenius {
     std::string getFirst()
     {
       if(values_.empty())
-        return (default_values_.size() ? default_values_[0] : "");
+        return ((default_values_.empty() == false) ? default_values_[0] : "");
       else
-        return (values_.size() ? values_[0] : "");
+        return ((values_.empty() == false) ? values_[0] : "");
     }
 
-    std::vector<std::string> get()
+    std::vector<std::string> get() const
     {
       if(values_.empty())
         return default_values_;
@@ -59,18 +60,18 @@ namespace ontologenius {
       return std::any_of(options_.begin(), options_.end(), [option](auto op) { return option == op; });
     }
 
-    void display()
+    void display() const
     {
       Display::info(name_ + ":");
 
       if(values_.empty() == false)
       {
-        for(auto value : values_)
+        for(const auto& value : values_)
           Display::info("\t- " + value);
       }
       else
       {
-        for(auto value : default_values_)
+        for(const auto& value : default_values_)
           Display::info("\t- " + value);
       }
     }
@@ -96,7 +97,7 @@ namespace ontologenius {
     /// @brief Returns the parameter object related to the name provided in argument
     /// @param parameter is the name of the parameter to get
     /// @return A copy of the parameter object
-    Parameter at(const std::string& parameter)
+    Parameter at(const std::string& parameter) const
     {
       return parameters_.at(parameter);
     }
@@ -107,7 +108,7 @@ namespace ontologenius {
     void set(int argc, char** argv)
     {
       process_name_ = std::string(argv[0]);
-      size_t pose;
+      size_t pose = 0;
       while((pose = process_name_.find('/')) != std::string::npos)
       {
         process_name_ = process_name_.substr(pose + 1);
@@ -122,7 +123,7 @@ namespace ontologenius {
           if(str_argv == "--ros-args") // do not consider ROS arguments
             break;
 
-          std::string param_name = "";
+          std::string param_name;
           for(auto param : parameters_)
             if(param.second.testOption(str_argv))
             {
@@ -161,14 +162,14 @@ namespace ontologenius {
     }
 
     /// @brief Displays the parameters names and setted values
-    void display()
+    void display() const
     {
       std::string delim = "****************";
       std::string delim_gap;
       for(size_t i = 0; i < process_name_.size(); i++)
         delim_gap += "*";
       Display::info(delim + process_name_ + delim);
-      for(auto param : parameters_)
+      for(const auto& param : parameters_)
         param.second.display();
       Display::info(delim + delim_gap + delim);
     }

@@ -1,22 +1,25 @@
 #include "ontologenius/core/ontologyOperators/SparqlSolver.h"
 
 #include <chrono>
+#include <ctime>
+#include <regex>
+#include <string>
+#include <unordered_set>
+#include <vector>
 
-#include "ontologenius/graphical/Display.h"
 #include "ontologenius/utils/String.h"
-#include "time.h"
+
 using namespace std::chrono;
 
 namespace ontologenius {
 
   SparqlSolver::SparqlSolver() : onto_(nullptr),
-                                 sparql_pattern_("SELECT\\s*(DISTINCT)?\\s*([^\n]+)([\\s\n]*)WHERE([\\s\n]*)(.*)"),
-                                 error_("")
+                                 sparql_pattern_("SELECT\\s*(DISTINCT)?\\s*([^\n]+)([\\s\n]*)WHERE([\\s\n]*)(.*)")
   {
     operators_["NOT EXISTS"] = sparql_not_exists;
   }
 
-  SparqlSolver::iterator SparqlSolver::begin()
+  SparqlSolver::Iterator SparqlSolver::begin()
   {
     SparqlSolution_t initial_solution;
 
@@ -61,10 +64,10 @@ namespace ontologenius {
     duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
     std::cout << "took " << time_span.count() * 1000 << "ms" << std::endl;
 
-    return SparqlSolver::iterator(initial_solution, this);
+    return SparqlSolver::Iterator(initial_solution, this);
   }
 
-  const SparqlSolver::iterator SparqlSolver::cbegin()
+  const SparqlSolver::Iterator SparqlSolver::cbegin()
   {
     return begin();
   }
@@ -112,7 +115,7 @@ namespace ontologenius {
 
   void SparqlSolver::insertConstraints(const std::vector<strTriplet_t>& triplets, SparqlSolution_t& solution, SparqlOperator_e sparql_operator)
   {
-    for(auto& triplet : triplets)
+    for(const auto& triplet : triplets)
     {
       if(triplet.object.is_variable)
       {
@@ -193,10 +196,10 @@ namespace ontologenius {
         else
         {
           std::unordered_set<std::string> valids;
-          for(auto& candidate : candidates)
+          for(const auto& candidate : candidates)
           {
             solution.solution_full_[variable] = candidate;
-            if(solveTriplet(constraint.triplet_, solution.solution_full_).size())
+            if(solveTriplet(constraint.triplet_, solution.solution_full_).empty() == false)
               valids.insert(candidate);
           }
           candidates = std::move(valids);
@@ -209,7 +212,7 @@ namespace ontologenius {
     }
 
     bool is_last = (index >= (int)(solution.ordered_variables_.size() - 1));
-    while(candidates.size())
+    while(candidates.empty() == false)
     {
       solution.solution_full_[variable] = *candidates.begin();
       candidates.erase(candidates.begin());
@@ -230,7 +233,7 @@ namespace ontologenius {
 
   void SparqlSolver::nextSolution(SparqlSolution_t& solution)
   {
-    for(int i = solution.ordered_variables_.size() - 1; i >= 0; i--)
+    for(int i = (int)solution.ordered_variables_.size() - 1; i >= 0; i--)
     {
       auto variable = solution.ordered_variables_[i];
       if(solution.candidates_[variable].empty() == false)
@@ -467,7 +470,7 @@ namespace ontologenius {
 
   std::string SparqlSolver::getPattern(const std::string& text)
   {
-    size_t begin_of_pattern = text.find("{");
+    size_t begin_of_pattern = text.find('{');
     std::string res;
     getIn(begin_of_pattern, res, text, '{', '}');
     return res;
@@ -483,7 +486,7 @@ namespace ontologenius {
     size_t cpt = 0;
     size_t bracket_pose = 0;
 
-    while((bracket_pose = query.find("{", bracket_pose)) != std::string::npos)
+    while((bracket_pose = query.find('{', bracket_pose)) != std::string::npos)
     {
       std::string text_in;
       size_t end_pose = getIn(bracket_pose, text_in, query, '{', '}');
@@ -502,11 +505,11 @@ namespace ontologenius {
     do
     {
       size_t first_block_pose = std::string::npos;
-      std::string first_block = "";
+      std::string first_block;
       size_t first_keyword_pose = std::string::npos;
-      std::string first_keyword = "";
+      std::string first_keyword;
 
-      for(auto& id : blocks_id)
+      for(const auto& id : blocks_id)
       {
         size_t tmp_pose = query.find(id);
         if(tmp_pose < first_block_pose)

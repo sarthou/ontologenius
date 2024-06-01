@@ -1,8 +1,12 @@
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 
+#include <map>
+#include <string>
+#include <vector>
+
 namespace ontologenius {
 
-  WordTable ValuedNode::table_;
+  WordTable ValuedNode::table;
 
   void ValuedNode::setSteadyDictionary(const std::string& lang, const std::string& word)
   {

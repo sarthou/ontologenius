@@ -1,5 +1,8 @@
 #include "ontologenius/API/ontologenius/clients/ontologyClients/DataPropertyClient.h"
 
+#include <vector>
+#include <string>
+
 namespace onto {
 
   std::vector<std::string> DataPropertyClient::getDown(const std::string& name, int depth)
@@ -13,8 +16,7 @@ namespace onto {
 
   std::vector<std::string> DataPropertyClient::getDisjoint(const std::string& name)
   {
-    std::string param = name;
-    return call("getDisjoint", param);
+    return call("getDisjoint", name);
   }
 
   std::vector<std::string> DataPropertyClient::getDomain(const std::string& name, int depth)
@@ -28,8 +30,7 @@ namespace onto {
 
   std::vector<std::string> DataPropertyClient::getRange(const std::string& name)
   {
-    std::string param = name;
-    return call("getRange", param);
+    return call("getRange", name);
   }
 
 } // namespace onto

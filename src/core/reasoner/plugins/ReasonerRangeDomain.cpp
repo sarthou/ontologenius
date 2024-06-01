@@ -1,11 +1,12 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerRangeDomain.h"
 
-#include <pluginlib/class_list_macros.hpp>
-
 #include <map>
-#include <vector>
-#include <string>
+#include <mutex>
+#include <pluginlib/class_list_macros.hpp>
 #include <shared_mutex>
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace ontologenius {
 
@@ -105,7 +106,7 @@ namespace ontologenius {
 
         relation.second->nb_updates_++;
         range->nb_updates_++;
-        nb_update_++;
+        nb_update++;
       }
     }
   }
@@ -153,7 +154,7 @@ namespace ontologenius {
 
         branch->nb_updates_++;
         domain->nb_updates_++;
-        nb_update_++;
+        nb_update++;
       }
     }
   }
@@ -201,7 +202,7 @@ namespace ontologenius {
 
         branch->nb_updates_++;
         domain->nb_updates_++;
-        nb_update_++;
+        nb_update++;
       }
     }
   }
@@ -214,23 +215,23 @@ namespace ontologenius {
     std::map<std::string, std::vector<std::string>>::iterator it_range;
     std::map<std::string, std::vector<std::string>>::iterator it_domain;
 
-    for(auto* _class : classes)
-      if(_class->updated_ == true)
+    for(auto* class_branch : classes)
+      if(class_branch->updated_ == true)
       {
-        it_range = _class->flags_.find("range");
-        if(it_range != _class->flags_.end())
+        it_range = class_branch->flags_.find("range");
+        if(it_range != class_branch->flags_.end())
         {
           for(const std::string& prop : it_range->second)
-            deduceRange(_class, prop);
-          _class->flags_.erase("range");
+            deduceRange(class_branch, prop);
+          class_branch->flags_.erase("range");
         }
 
-        it_domain = _class->flags_.find("domain");
-        if(it_domain != _class->flags_.end())
+        it_domain = class_branch->flags_.find("domain");
+        if(it_domain != class_branch->flags_.end())
         {
           for(const std::string& prop : it_domain->second)
-            deduceDomain(_class, prop);
-          _class->flags_.erase("domain");
+            deduceDomain(class_branch, prop);
+          class_branch->flags_.erase("domain");
         }
       }
   }
@@ -289,7 +290,7 @@ namespace ontologenius {
 
         relation.second->nb_updates_++;
         range->nb_updates_++;
-        nb_update_++;
+        nb_update++;
       }
     }
   }
@@ -330,7 +331,7 @@ namespace ontologenius {
 
         branch->nb_updates_++;
         domain->nb_updates_++;
-        nb_update_++;
+        nb_update++;
       }
     }
   }
@@ -371,7 +372,7 @@ namespace ontologenius {
 
         branch->nb_updates_++;
         domain->nb_updates_++;
-        nb_update_++;
+        nb_update++;
       }
     }
   }

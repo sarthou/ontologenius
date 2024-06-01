@@ -1,5 +1,9 @@
 #include "ontologenius/core/ontologyOperators/DifferenceFinder.h"
 
+#include <cstddef>
+#include <string>
+#include <vector>
+
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 
 namespace ontologenius {
@@ -175,17 +179,17 @@ namespace ontologenius {
     return comp;
   }
 
-  Comparator DifferenceFinder::toComparator(ClassBranch* class_)
+  Comparator DifferenceFinder::toComparator(ClassBranch* class_branch)
   {
     Comparator comp;
-    comp.concept_ = class_->value();
+    comp.concept_ = class_branch->value();
 
-    comp.object_properties_name_ = toValuedFirst(class_->object_relations_);
-    comp.object_properties_on_ = toValuedSecond(class_->object_relations_);
+    comp.object_properties_name_ = toValuedFirst(class_branch->object_relations_);
+    comp.object_properties_on_ = toValuedSecond(class_branch->object_relations_);
 
-    comp.data_properties_name_ = toValuedFirst(class_->data_relations_);
-    comp.data_properties_data_ = toValuedSecond(class_->data_relations_);
-    comp.mothers_ = toValued(class_->mothers_);
+    comp.data_properties_name_ = toValuedFirst(class_branch->data_relations_);
+    comp.data_properties_data_ = toValuedSecond(class_branch->data_relations_);
+    comp.mothers_ = toValued(class_branch->mothers_);
     return comp;
   }
 

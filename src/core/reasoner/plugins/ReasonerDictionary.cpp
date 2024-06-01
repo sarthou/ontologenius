@@ -1,8 +1,11 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerDictionary.h"
 
+#include <cstddef>
+#include <mutex>
 #include <pluginlib/class_list_macros.hpp>
 #include <shared_mutex>
 #include <string>
+#include <vector>
 
 namespace ontologenius {
 

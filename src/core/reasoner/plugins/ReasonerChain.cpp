@@ -1,9 +1,12 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerChain.h"
 
+#include <cstddef>
+#include <mutex>
 #include <pluginlib/class_list_macros.hpp>
 #include <shared_mutex>
 #include <string>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 namespace ontologenius {
@@ -67,7 +70,7 @@ namespace ontologenius {
                       }
                     }
 
-                    nb_update_++;
+                    nb_update++;
                     explanations_.emplace_back("[ADD]" + indiv->value() + "|" + chain.back()->value() + "|" + used.first->value(),
                                                "[ADD]" + explanation_reference);
                   }

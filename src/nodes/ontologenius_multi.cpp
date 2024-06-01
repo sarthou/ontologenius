@@ -1,14 +1,18 @@
+#include <algorithm>
 #include <csignal>
 #include <cstdio>
 #include <cstdlib>
 #include <execinfo.h>
+#include <iostream>
 #include <map>
 #include <regex>
 #include <string>
 #include <thread>
 #include <unistd.h>
+#include <vector>
 
 #include "ontologenius/compat/ros.h"
+#include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/ontologyOperators/DifferenceFinder.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
@@ -34,29 +38,29 @@ void removeUselessSpace(std::string& text)
     text.erase(text.size() - 1, 1);
 }
 
-std::map<std::string, ontologenius::RosInterface*> interfaces_;
-std::map<std::string, std::thread> interfaces_threads_;
+std::map<std::string, ontologenius::RosInterface*> interfaces;
+std::map<std::string, std::thread> interfaces_threads;
 
 ontologenius::Parameters params;
 
 bool deleteInterface(const std::string& name)
 {
-  interfaces_[name]->stop();
+  interfaces[name]->stop();
   usleep(200000);
   try
   {
-    interfaces_threads_[name].join();
+    interfaces_threads[name].join();
   }
   catch(std::runtime_error& ex)
   {
     ontologenius::Display::error("An error was caught while joining the interface thread : " + std::string(ex.what()));
     ontologenius::Display::warning("The thread will be detached");
-    interfaces_threads_[name].detach();
+    interfaces_threads[name].detach();
   }
 
-  interfaces_threads_.erase(name);
-  delete interfaces_[name];
-  interfaces_.erase(name);
+  interfaces_threads.erase(name);
+  delete interfaces[name];
+  interfaces.erase(name);
 
   std::cout << name << " STOPED" << std::endl;
   return true;
@@ -74,26 +78,26 @@ std::vector<std::string> getDiff(const std::string& param, int* res_code)
     if(base_match.size() == 4)
     {
       std::string onto1 = base_match[1].str();
-      ontologenius::Ontology* onto1_ptr;
-      auto it = interfaces_.find(onto1);
-      if(it == interfaces_.end())
+      ontologenius::Ontology* onto1_ptr = nullptr;
+      auto it = interfaces.find(onto1);
+      if(it == interfaces.end())
       {
         *res_code = NO_EFFECT;
         return res;
       }
       else
-        onto1_ptr = interfaces_[onto1]->getOntology();
+        onto1_ptr = interfaces[onto1]->getOntology();
 
       std::string onto2 = base_match[2].str();
-      ontologenius::Ontology* onto2_ptr;
-      it = interfaces_.find(onto2);
-      if(it == interfaces_.end())
+      ontologenius::Ontology* onto2_ptr = nullptr;
+      it = interfaces.find(onto2);
+      if(it == interfaces.end())
       {
         *res_code = NO_EFFECT;
         return res;
       }
       else
-        onto2_ptr = interfaces_[onto2]->getOntology();
+        onto2_ptr = interfaces[onto2]->getOntology();
 
       std::string concept = base_match[3].str();
       res = diff.getDiff(onto1_ptr, onto2_ptr, concept);
@@ -116,13 +120,13 @@ bool managerHandle(ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::
 
     if(req->action == "add")
     {
-      auto it = interfaces_.find(req->param);
-      if(it != interfaces_.end())
+      auto it = interfaces.find(req->param);
+      if(it != interfaces.end())
         res->code = NO_EFFECT;
       else
       {
-        auto tmp = new ontologenius::RosInterface(req->param);
-        interfaces_[req->param] = tmp;
+        auto* tmp = new ontologenius::RosInterface(req->param);
+        interfaces[req->param] = tmp;
 
         auto files = params.at("files").get();
         if((req->param.find("robot") != std::string::npos) && (params.at("robot_file").getFirst() != "none"))
@@ -137,7 +141,7 @@ bool managerHandle(ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::
                   params.at("config").getFirst());
 
         std::thread th(&ontologenius::RosInterface::run, tmp);
-        interfaces_threads_[req->param] = std::move(th);
+        interfaces_threads[req->param] = std::move(th);
 
         std::cout << req->param << " STARTED" << std::endl;
       }
@@ -152,31 +156,31 @@ bool managerHandle(ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::
         {
           std::string base_name = base_match[2].str();
           std::string copy_name = base_match[1].str();
-          auto it = interfaces_.find(base_name);
-          if(it == interfaces_.end()) // if interface to copy does not exist
+          auto it = interfaces.find(base_name);
+          if(it == interfaces.end()) // if interface to copy does not exist
             res->code = NO_EFFECT;
           else
           {
-            auto base_onto = it->second->getOntology();
+            auto* base_onto = it->second->getOntology();
             if(base_onto == nullptr)
               ontologenius::Display::error("You are trying to copy a malformed ontology");
             else if(!base_onto->isInit())
               ontologenius::Display::error("You are trying to copy an unclosed ontology ");
             else
             {
-              it = interfaces_.find(copy_name);
-              if(it != interfaces_.end()) // if copy already exist
+              it = interfaces.find(copy_name);
+              if(it != interfaces.end()) // if copy already exist
                 res->code = NO_EFFECT;
               else
               {
-                auto tmp = new ontologenius::RosInterface(*(interfaces_[base_name]), copy_name);
-                interfaces_[copy_name] = tmp;
+                auto* tmp = new ontologenius::RosInterface(*(interfaces[base_name]), copy_name);
+                interfaces[copy_name] = tmp;
                 tmp->setDisplay(params.at("display").getFirst() == "true");
                 tmp->init(params.at("language").getFirst(),
                           params.at("config").getFirst());
 
                 std::thread th(&ontologenius::RosInterface::run, tmp);
-                interfaces_threads_[copy_name] = std::move(th);
+                interfaces_threads[copy_name] = std::move(th);
 
                 std::cout << copy_name << " STARTED" << std::endl;
               }
@@ -187,15 +191,15 @@ bool managerHandle(ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::
     }
     else if(req->action == "delete")
     {
-      auto it = interfaces_.find(req->param);
-      if(it == interfaces_.end())
+      auto it = interfaces.find(req->param);
+      if(it == interfaces.end())
         res->code = NO_EFFECT;
       else if(deleteInterface(req->param) == false)
         res->code = REQUEST_ERROR;
     }
     else if(req->action == "list")
     {
-      for(auto& it : interfaces_)
+      for(auto& it : interfaces)
         res->values.push_back(it.first);
     }
     else if(req->action == "difference")
@@ -231,7 +235,7 @@ int main(int argc, char** argv)
   ontologenius::compat::onto_ros::Node::get().spin();
 
   std::vector<std::string> interfaces_names;
-  std::transform(interfaces_.cbegin(), interfaces_.cend(), std::back_inserter(interfaces_names), [](const auto& it) { return it.first; });
+  std::transform(interfaces.cbegin(), interfaces.cend(), std::back_inserter(interfaces_names), [](const auto& it) { return it.first; });
 
   for(auto& interfaces_name : interfaces_names)
     deleteInterface(interfaces_name);

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <ros/package.h>
 #include <ros/ros.h>
+#include <string>
+#include <vector>
 
 #include "ontologenius/API/ontologenius/OntologiesManipulator.h"
 

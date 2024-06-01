@@ -1,6 +1,8 @@
 #include "ontologenius/core/ontologyOperators/SparqlUtils.h"
 
 #include <algorithm>
+#include <string>
+#include <vector>
 
 namespace ontologenius {
 

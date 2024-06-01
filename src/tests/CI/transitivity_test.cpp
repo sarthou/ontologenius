@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 #include <ros/package.h>
 #include <ros/ros.h>
-
+#include <string>
+#include <vector>
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
 #define WAIT_TIME 1000

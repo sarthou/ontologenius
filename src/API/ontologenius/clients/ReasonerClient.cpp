@@ -1,5 +1,8 @@
 #include "ontologenius/API/ontologenius/clients/ReasonerClient.h"
 
+#include <string>
+#include <vector>
+
 namespace onto {
 
   std::vector<std::string> ReasonerClient::list()

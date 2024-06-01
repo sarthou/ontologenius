@@ -2,6 +2,9 @@
 #include <ros/package.h>
 #include <ros/ros.h>
 
+#include <string>
+#include <vector>
+
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
 onto::OntologyManipulator* onto_ptr;

@@ -17,7 +17,7 @@ class OntologiesManipulator : public ManagerClient
 {
 public:
   /// @brief Constructs a manipulator for several instance of ontologies
-  OntologiesManipulator();
+  OntologiesManipulator() = default;
   ~OntologiesManipulator();
 
   /// @brief Wait for ontologenius services to be advertised and available for. Blocks until it is.

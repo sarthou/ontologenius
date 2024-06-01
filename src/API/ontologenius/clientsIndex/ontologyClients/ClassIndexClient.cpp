@@ -1,5 +1,8 @@
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/ClassIndexClient.h"
 
+#include <string>
+#include <vector>
+
 namespace onto {
 
   std::vector<int64_t> ClassIndexClient::getDown(int64_t index, int depth, int64_t selector)
@@ -37,9 +40,9 @@ namespace onto {
     return callIndexes("getFrom", param);
   }
 
-  std::vector<int64_t> ClassIndexClient::getWith(int64_t indiv_1, int64_t indiv_2, int64_t selector, int depth)
+  std::vector<int64_t> ClassIndexClient::getWith(int64_t class_from, int64_t class_to, int64_t selector, int depth)
   {
-    std::string param = std::to_string(indiv_1) + ":" + std::to_string(indiv_2);
+    std::string param = std::to_string(class_from) + ":" + std::to_string(class_to);
     if(selector != 0)
       param += " -s " + std::to_string(selector);
 

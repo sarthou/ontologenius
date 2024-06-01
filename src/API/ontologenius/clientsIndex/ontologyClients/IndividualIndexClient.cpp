@@ -1,5 +1,8 @@
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/IndividualIndexClient.h"
 
+#include <string>
+#include <vector>
+
 namespace onto {
 
   std::vector<int64_t> IndividualIndexClient::getOn(int64_t index, int64_t property, int64_t selector)

@@ -1,7 +1,6 @@
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 
 #include <cstddef>
-#include <iostream>
 #include <string>
 
 #include "ontologenius/core/ontoGraphs/Checkers/AnonymousClassChecker.h"
@@ -19,7 +18,7 @@ namespace ontologenius {
                                                     individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
                                                     anonymous_graph_(&class_graph_, &object_property_graph_, &data_property_graph_, &individual_graph_),
                                                     loader_((Ontology&)*this),
-                                                    writer((Ontology&)*this)
+                                                    writer_((Ontology&)*this)
   {
     is_init_ = false;
     is_preloaded_ = false;
@@ -27,7 +26,7 @@ namespace ontologenius {
     object_property_graph_.setLanguage(language);
     data_property_graph_.setLanguage(language);
     individual_graph_.setLanguage(language);
-    writer.setFileName("none");
+    writer_.setFileName("none");
   }
 
   Ontology::Ontology(const Ontology& other) : class_graph_(other.class_graph_, &individual_graph_, &object_property_graph_, &data_property_graph_),
@@ -36,7 +35,7 @@ namespace ontologenius {
                                               individual_graph_(other.individual_graph_, &class_graph_, &object_property_graph_, &data_property_graph_),
                                               anonymous_graph_(other.anonymous_graph_, &class_graph_, &object_property_graph_, &data_property_graph_, &individual_graph_),
                                               loader_((Ontology&)*this),
-                                              writer((Ontology&)*this)
+                                              writer_((Ontology&)*this)
   {
     class_graph_.deepCopy(other.class_graph_);
     object_property_graph_.deepCopy(other.object_property_graph_);
@@ -45,7 +44,7 @@ namespace ontologenius {
 
     is_init_ = true;
     is_preloaded_ = true;
-    writer.setFileName("none");
+    writer_.setFileName("none");
   }
 
   Ontology::~Ontology()
@@ -111,7 +110,7 @@ namespace ontologenius {
 
   bool Ontology::preload(const std::string& file_name)
   {
-    writer.setFileName(file_name);
+    writer_.setFileName(file_name);
     if(file_name != "none")
     {
       if(loader_.loadFile(file_name) == NO_ERROR)
@@ -138,17 +137,17 @@ namespace ontologenius {
       return;
     }
 
-    std::string tmp_name = writer.getFileName();
+    std::string tmp_name = writer_.getFileName();
 
     if(file_name.empty() == false)
-      writer.setFileName(file_name);
+      writer_.setFileName(file_name);
 
-    writer.write();
+    writer_.write();
 
-    writer.setFileName(tmp_name);
+    writer_.setFileName(tmp_name);
   }
 
-  bool Ontology::isInit(bool print)
+  bool Ontology::isInit(bool print) const
   {
     if(is_init_ == false)
       if(print == true)
@@ -164,7 +163,7 @@ namespace ontologenius {
     individual_graph_.setLanguage(language);
   }
 
-  std::string Ontology::getLanguage()
+  std::string Ontology::getLanguage() const
   {
     return class_graph_.getLanguage();
   }

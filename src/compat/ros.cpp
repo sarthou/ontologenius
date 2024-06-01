@@ -1,13 +1,15 @@
 #include "ontologenius/compat/ros.h"
 
+#include <string>
+
 namespace ontologenius::compat::onto_ros {
 
-  std::string node_name__ = "OntoRos";
+  std::string ros_node_name = "OntoRos";
 
   Node& Node::get()
   {
-    static Node node(node_name__);
-    return node;
+    static Node node_(ros_node_name);
+    return node_;
   }
 
   bool Node::ok()
@@ -21,10 +23,10 @@ namespace ontologenius::compat::onto_ros {
 
   void Node::init(int argc, char** argv, const std::string& node_name)
   {
-    node_name__ = node_name;
+    ros_node_name = node_name;
 
 #if ONTO_ROS_VERSION == 1
-    ros::init(argc, argv, node_name__);
+    ros::init(argc, argv, ros_node_name);
 #elif ONTO_ROS_VERSION == 2
     rclcpp::init(argc, argv);
 #endif

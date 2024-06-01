@@ -39,7 +39,7 @@ namespace ontologenius {
   class Triplets : public TripletsInterface
   {
   public:
-    virtual ~Triplets() = default;
+    ~Triplets() override = default;
 
     Triplet_t<S, P, O> push(S* subject,
                             P* predicate,

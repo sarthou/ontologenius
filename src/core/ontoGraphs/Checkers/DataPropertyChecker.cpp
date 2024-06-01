@@ -1,6 +1,10 @@
 #include "ontologenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
 
+#include <cstddef>
+#include <shared_mutex>
 #include <unordered_set>
+
+#include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 
 namespace ontologenius {
 
@@ -18,20 +22,20 @@ namespace ontologenius {
 
   void DataPropertyChecker::checkDisjoint()
   {
-    for(auto property : graph_vect_)
+    for(auto* property : graph_vect_)
     {
       std::unordered_set<DataPropertyBranch*> up;
       property_graph_->getUpPtr(property, up);
 
-      auto intersection = property_graph_->isDisjoint(up, up);
+      auto* intersection = property_graph_->isDisjoint(up, up);
       if(intersection != nullptr)
       {
         DataPropertyBranch* disjoint_with = property_graph_->firstIntersection(up, intersection->disjoints_);
 
         if(disjoint_with != nullptr)
-          print_error("'" + property->value() + "' can't be a '" + intersection->value() + "' and a '" + disjoint_with->value() + "' because of disjonction between properties '" + intersection->value() + "' and '" + disjoint_with->value() + "'");
+          printError("'" + property->value() + "' can't be a '" + intersection->value() + "' and a '" + disjoint_with->value() + "' because of disjonction between properties '" + intersection->value() + "' and '" + disjoint_with->value() + "'");
         else
-          print_error("'" + property->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
+          printError("'" + property->value() + "' can't be a '" + intersection->value() + "' because of disjonction");
       }
     }
   }

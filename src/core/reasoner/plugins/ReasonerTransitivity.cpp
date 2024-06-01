@@ -1,11 +1,14 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerTransitivity.h"
 
-#include <pluginlib/class_list_macros.hpp>
-
-#include <vector>
-#include <unordered_set>
+#include <cstddef>
 #include <map>
+#include <mutex>
+#include <pluginlib/class_list_macros.hpp>
 #include <shared_mutex>
+#include <string>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
 namespace ontologenius {
 
@@ -66,7 +69,7 @@ namespace ontologenius {
                     }
                   }
 
-                  nb_update_++;
+                  nb_update++;
                   explanations_.emplace_back("[ADD]" + indiv->value() + "|" + property->value() + "|" + used.first->value(),
                                              "[ADD]" + explanation_reference);
                 }
