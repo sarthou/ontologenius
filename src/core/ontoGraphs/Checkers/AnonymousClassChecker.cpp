@@ -1,5 +1,6 @@
 #include "ontologenius/core/ontoGraphs/Checkers/AnonymousClassChecker.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <shared_mutex>
 #include <string>

@@ -9,6 +9,9 @@
 #include <utility>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+
 namespace ontologenius {
 
   void ReasonerChain::postReason()

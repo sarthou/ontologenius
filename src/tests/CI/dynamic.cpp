@@ -1,6 +1,8 @@
+#include <algorithm>
 #include <gtest/gtest.h>
-#include <vector>
+#include <ros/rate.h>
 #include <string>
+#include <vector>
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
@@ -25,15 +27,15 @@ TEST(dynamic_tests, insert)
 
   res = onto_ptr->classes.getUp(test_word);
   res_bool = ((res.size() == 2) &&
-              (find(res.begin(), res.end(), "robot") != res.end()) &&
-              (find(res.begin(), res.end(), "agent") != res.end()));
+              (std::find(res.begin(), res.end(), "robot") != res.end()) &&
+              (std::find(res.begin(), res.end(), "agent") != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = "pepper";
   res = onto_ptr->individuals.getUp(test_word);
   res_bool = ((res.size() == 2) &&
-              (find(res.begin(), res.end(), "robot") != res.end()) &&
-              (find(res.begin(), res.end(), "agent") != res.end()));
+              (std::find(res.begin(), res.end(), "robot") != res.end()) &&
+              (std::find(res.begin(), res.end(), "agent") != res.end()));
   EXPECT_TRUE(res_bool);
 
   onto_ptr->feeder.addInheritage("alice", "woman");
@@ -45,7 +47,7 @@ TEST(dynamic_tests, insert)
 
   res = onto_ptr->classes.getOn("woman", "hasLeg");
   res_bool = ((res.size() == 1) &&
-              (find(res.begin(), res.end(), "int#2") != res.end()));
+              (std::find(res.begin(), res.end(), "int#2") != res.end()));
   EXPECT_TRUE(res_bool);
 
   onto_ptr->feeder.removeProperty("alice", "hasLeg", "int", "2");

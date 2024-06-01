@@ -8,6 +8,7 @@
 
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/reasoner/Reasoners.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
 using namespace std::chrono;
 

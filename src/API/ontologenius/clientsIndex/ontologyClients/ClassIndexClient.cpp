@@ -1,5 +1,6 @@
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/ClassIndexClient.h"
 
+#include <cstdint>
 #include <string>
 #include <vector>
 

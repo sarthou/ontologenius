@@ -3,10 +3,12 @@
 #include <cstddef>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <string>
 #include <tinyxml.h>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
@@ -242,9 +244,9 @@ namespace ontologenius {
         std::cout << "│   ├──" << node_name << std::endl;
       for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
       {
-        std::string sub_elem_name = sub_elem->Value();
+        const std::string sub_elem_name = sub_elem->Value();
 
-        float probability = getProbability(sub_elem);
+        const float probability = getProbability(sub_elem);
 
         if(sub_elem_name == "rdfs:subClassOf")
           push(object_vector.mothers_, sub_elem, probability, "+");
@@ -258,10 +260,10 @@ namespace ontologenius {
           readEquivalentClass(ano_vector, sub_elem, attr);
         else
         {
-          std::string ns = sub_elem_name.substr(0, sub_elem_name.find(':'));
+          const std::string ns = sub_elem_name.substr(0, sub_elem_name.find(':'));
           if((ns != "owl") && (ns != "rdf") && (ns != "rdfs"))
           {
-            std::string property = sub_elem_name.substr(sub_elem_name.find(':') + 1);
+            const std::string property = sub_elem_name.substr(sub_elem_name.find(':') + 1);
             if(testAttribute(sub_elem, "rdf:resource"))
               OntologyReader::push(object_vector.object_relations_, PairElement<std::string, std::string>(property, toString(sub_elem), probability), "$", "^");
             else if(testAttribute(sub_elem, "rdf:datatype"))
@@ -269,7 +271,7 @@ namespace ontologenius {
               const char* value = sub_elem->GetText();
               if(value != nullptr)
               {
-                LiteralNode data(toString(sub_elem, "rdf:datatype"), std::string(value));
+                const LiteralNode data(toString(sub_elem, "rdf:datatype"), std::string(value));
                 OntologyReader::push(object_vector.data_relations_, PairElement<std::string, std::string>(property, data.value(), probability), "$", "^");
               }
             }

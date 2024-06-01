@@ -1,5 +1,6 @@
 #include "ontologenius/API/ontologenius/OntologiesManipulator.h"
 
+#include <cstdint>
 #include <string>
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"

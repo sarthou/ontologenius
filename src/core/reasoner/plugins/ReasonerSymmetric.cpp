@@ -5,6 +5,8 @@
 #include <shared_mutex>
 #include <string>
 
+#include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
+
 namespace ontologenius {
 
   void ReasonerSymmetric::postReason()

@@ -2,7 +2,9 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <map>
 #include <regex>
+#include <set>
 #include <string>
 #include <unordered_set>
 #include <utility>

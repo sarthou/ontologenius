@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
@@ -51,14 +52,14 @@ TEST(requests_tests, getUp_call)
   {
     res = onto_ptr->classes.getUp(test_word);
     res_bool = res_bool && ((res.size() == 8) &&
-                            (find(res.begin(), res.end(), "entity") != res.end()) &&
-                            (find(res.begin(), res.end(), "animate") != res.end()) &&
-                            (find(res.begin(), res.end(), "activity") != res.end()) &&
-                            (find(res.begin(), res.end(), "attribute") != res.end()) &&
-                            (find(res.begin(), res.end(), "human") != res.end()) &&
-                            (find(res.begin(), res.end(), "agent") != res.end()) &&
-                            (find(res.begin(), res.end(), "vitality") != res.end()) &&
-                            (find(res.begin(), res.end(), "living") != res.end()));
+                            (std::find(res.begin(), res.end(), "entity") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "animate") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "activity") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "attribute") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "human") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "agent") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "vitality") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "living") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
@@ -74,10 +75,10 @@ TEST(requests_tests, getDown_call)
   {
     res = onto_ptr->classes.getDown(test_word);
     res_bool = res_bool && ((res.size() == 4) &&
-                            (find(res.begin(), res.end(), "human") != res.end()) &&
-                            (find(res.begin(), res.end(), "woman") != res.end()) &&
-                            (find(res.begin(), res.end(), "man") != res.end()) &&
-                            (find(res.begin(), res.end(), "child") != res.end()));
+                            (std::find(res.begin(), res.end(), "human") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "woman") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "man") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "child") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
@@ -93,7 +94,7 @@ TEST(requests_tests, getDisjoint_call)
   {
     res = onto_ptr->classes.getDisjoint(test_word);
     res_bool = res_bool && ((res.size() == 63) &&
-                            (find(res.begin(), res.end(), "man") != res.end()));
+                            (std::find(res.begin(), res.end(), "man") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
@@ -109,9 +110,9 @@ TEST(requests_tests, depth_call)
   {
     res = onto_ptr->classes.getUp(test_word, 1);
     res_bool = res_bool && ((res.size() == 3) &&
-                            (find(res.begin(), res.end(), "human") != res.end()) &&
-                            (find(res.begin(), res.end(), "agent") != res.end()) &&
-                            (find(res.begin(), res.end(), "living") != res.end()));
+                            (std::find(res.begin(), res.end(), "human") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "agent") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "living") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
@@ -139,13 +140,13 @@ TEST(requests_tests, reasoners_list_call)
   {
     res = onto_ptr->reasoners.list();
     res_bool = res_bool && ((res.size() >= 7) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerChain") != res.end()) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerDictionary") != res.end()) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerInverseOf") != res.end()) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerNone") != res.end()) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerSymmetric") != res.end()) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerGeneralize") != res.end()) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerRangeDomain") != res.end()));
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerChain") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerDictionary") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerInverseOf") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerNone") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerSymmetric") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerGeneralize") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerRangeDomain") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);

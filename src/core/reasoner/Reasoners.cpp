@@ -1,11 +1,12 @@
 #include "ontologenius/core/reasoner/Reasoners.h"
 
 #include <algorithm>
+#include <cstddef>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <cstddef>
 
+#include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/graphical/Display.h"
 

@@ -5,6 +5,7 @@
 #include <shared_mutex>
 #include <string>
 
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 
 namespace ontologenius {

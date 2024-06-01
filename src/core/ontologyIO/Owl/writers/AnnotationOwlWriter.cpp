@@ -4,6 +4,10 @@
 #include <string>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+
 namespace ontologenius {
 
   AnnotationOwlWriter::AnnotationOwlWriter(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, const std::string& ns)
@@ -18,9 +22,9 @@ namespace ontologenius {
     file_ = file;
 
     {
-      std::shared_lock<std::shared_timed_mutex> lock(object_property_graph_->mutex_);
+      const std::shared_lock<std::shared_timed_mutex> lock(object_property_graph_->mutex_);
 
-      std::vector<ObjectPropertyBranch*> properties = object_property_graph_->get();
+      const std::vector<ObjectPropertyBranch*> properties = object_property_graph_->get();
       for(auto& property : properties)
         if(property->annotation_usage_)
           writeAnnotation(property);

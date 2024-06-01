@@ -5,12 +5,14 @@
 #include <cstdio>
 #include <cstdlib>
 #include <execinfo.h>
-#include <map>
+#include <iostream>
 #include <string>
 #include <thread>
 #include <unistd.h>
+#include <unordered_set>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/ontologyOperators/SparqlSolver.h"
 #include "ontologenius/interface/RosInterface.h"
@@ -46,10 +48,10 @@ void compareSolutions(const std::vector<std::map<std::string, std::string>>& sol
   }
 
   size_t nb_diff = 0;
-  for(auto& s1 : sol1)
+  for(const auto& s1 : sol1)
   {
     bool found = false;
-    for(auto& s2 : sol2)
+    for(const auto& s2 : sol2)
     {
       if(mapCompare(s1, s2))
       {

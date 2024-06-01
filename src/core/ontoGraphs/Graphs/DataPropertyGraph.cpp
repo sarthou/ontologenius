@@ -1,5 +1,6 @@
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <mutex>
 #include <shared_mutex>
@@ -7,6 +8,9 @@
 #include <unordered_set>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 
 namespace ontologenius {

@@ -1,6 +1,7 @@
 #include "ontologenius/API/ontologenius/FeederPublisher.h"
 
 #include <chrono>
+#include <cstdint>
 #include <string>
 #include <unistd.h>
 

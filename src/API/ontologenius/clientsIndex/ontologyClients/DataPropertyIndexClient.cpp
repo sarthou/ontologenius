@@ -1,5 +1,6 @@
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/DataPropertyIndexClient.h"
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -16,7 +17,7 @@ namespace onto {
 
   std::vector<int64_t> DataPropertyIndexClient::getDisjoint(int64_t index)
   {
-    std::string param = std::to_string(index);
+    const std::string param = std::to_string(index);
     return callIndexes("getDisjoint", param);
   }
 
@@ -31,7 +32,7 @@ namespace onto {
 
   std::vector<int64_t> DataPropertyIndexClient::getRange(int64_t index)
   {
-    std::string param = std::to_string(index);
+    const std::string param = std::to_string(index);
     return callIndexes("getRange", param);
   }
 

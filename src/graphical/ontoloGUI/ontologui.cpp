@@ -8,6 +8,7 @@
 #include <regex>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
 #include "ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"

@@ -5,8 +5,11 @@
 #include <pluginlib/class_list_macros.hpp>
 #include <shared_mutex>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
+
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
 namespace ontologenius {
 

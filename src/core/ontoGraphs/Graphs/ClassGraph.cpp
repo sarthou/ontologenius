@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <map>
 #include <mutex>
 #include <shared_mutex>
 #include <string>
@@ -11,6 +12,7 @@
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"

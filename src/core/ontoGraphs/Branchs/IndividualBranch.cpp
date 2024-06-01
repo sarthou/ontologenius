@@ -3,6 +3,10 @@
 #include <algorithm>
 #include <cstddef>
 
+#include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+
 namespace ontologenius {
 
   int IndividualBranch::objectRelationExists(ObjectPropertyBranch* property, IndividualBranch* individual)

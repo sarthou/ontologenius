@@ -1,5 +1,6 @@
 #include "ontologenius/API/ontologenius/ConversionClient.h"
 
+#include <cstdint>
 #include <iostream>
 #include <string>
 #include <vector>

@@ -1,5 +1,5 @@
+#include <algorithm>
 #include <gtest/gtest.h>
-#include <iostream>
 #include <ros/package.h>
 #include <ros/ros.h>
 #include <string>
@@ -30,8 +30,8 @@ TEST(multi_tests, create)
 
   res = (*onto_ptr)["paul"]->classes.getUp(test_word);
   res_bool = ((res.size() == 2) &&
-              (find(res.begin(), res.end(), "robot") != res.end()) &&
-              (find(res.begin(), res.end(), "agent") != res.end()));
+              (std::find(res.begin(), res.end(), "robot") != res.end()) &&
+              (std::find(res.begin(), res.end(), "agent") != res.end()));
   EXPECT_TRUE(res_bool);
 
   EXPECT_TRUE(onto_ptr->get("paul") != nullptr);
@@ -73,14 +73,14 @@ TEST(multi_tests, differences)
 
   res = onto_ptr->getDifference("paul", "bob", "pepper");
   res_bool = ((res.size() == 2) &&
-              (find(res.begin(), res.end(), "[+]pepper|isA|robot") != res.end()) &&
-              (find(res.begin(), res.end(), "[-]pepper|isA|human") != res.end()));
+              (std::find(res.begin(), res.end(), "[+]pepper|isA|robot") != res.end()) &&
+              (std::find(res.begin(), res.end(), "[-]pepper|isA|human") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->getDifference("bob", "paul", "pepper");
   res_bool = ((res.size() == 2) &&
-              (find(res.begin(), res.end(), "[-]pepper|isA|robot") != res.end()) &&
-              (find(res.begin(), res.end(), "[+]pepper|isA|human") != res.end()));
+              (std::find(res.begin(), res.end(), "[-]pepper|isA|robot") != res.end()) &&
+              (std::find(res.begin(), res.end(), "[+]pepper|isA|human") != res.end()));
   EXPECT_TRUE(res_bool);
 
   EXPECT_TRUE(onto_ptr->get("paul") != nullptr);

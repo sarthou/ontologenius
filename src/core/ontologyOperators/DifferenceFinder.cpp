@@ -1,9 +1,11 @@
 #include "ontologenius/core/ontologyOperators/DifferenceFinder.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <string>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 
 namespace ontologenius {

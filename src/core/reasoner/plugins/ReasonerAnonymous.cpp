@@ -1,5 +1,6 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerAnonymous.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <mutex>
 #include <pluginlib/class_list_macros.hpp>
@@ -8,6 +9,9 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 
 namespace ontologenius {
 
@@ -22,9 +26,9 @@ namespace ontologenius {
 
   void ReasonerAnonymous::postReason()
   {
-    std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-    std::shared_lock<std::shared_timed_mutex> lock_class(ontology_->class_graph_.mutex_);
-    std::shared_lock<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
+    const std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock_class(ontology_->class_graph_.mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
     std::vector<std::pair<std::string, InheritedRelationTriplets*>> used;
 
     for(auto* indiv : ontology_->individual_graph_.get())

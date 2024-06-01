@@ -8,6 +8,9 @@
 #include <unordered_set>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
+
 namespace ontologenius {
 
   ReasonerGeneralize::ReasonerGeneralize() : current_id_(0),
@@ -18,7 +21,7 @@ namespace ontologenius {
 
   void ReasonerGeneralize::setParameter(const std::string& name, const std::string& value)
   {
-    std::string::size_type sz;
+    std::string::size_type sz = 0;
     if(name == "min_count")
       min_count_ = std::stoi(value, &sz);
     else if(name == "min_percent")

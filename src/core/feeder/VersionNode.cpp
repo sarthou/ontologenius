@@ -1,5 +1,6 @@
 #include "ontologenius/core/feeder/VersionNode.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <numeric>
 #include <string>

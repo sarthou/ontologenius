@@ -1,9 +1,13 @@
 #include "ontologenius/core/ontologyOperators/SparqlSolver.h"
 
+#include <algorithm>
 #include <chrono>
 #include <ctime>
+#include <iostream>
+#include <map>
 #include <regex>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
