@@ -25,6 +25,7 @@ function(add_onto_library TARGET)
     $<INSTALL_INTERFACE:include>)
   set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
   target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
+  target_compile_options(${TARGET} PRIVATE $<$<CXX_COMPILER_ID:Clang>:-frelaxed-template-template-args>)
   target_enable_sanitizers(${TARGET})
 endfunction(add_onto_library)
 

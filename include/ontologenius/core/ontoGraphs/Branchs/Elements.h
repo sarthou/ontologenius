@@ -2,8 +2,9 @@
 #define ONTOLOGENIUS_ELEMENTS_H
 
 #include <iostream>
-#include <ontologenius/core/ontoGraphs/Branchs/RelationsWithInductions.h>
 #include <vector>
+
+#include "ontologenius/core/ontoGraphs/Branchs/RelationsWithInductions.h"
 
 namespace ontologenius {
 
@@ -55,6 +56,15 @@ namespace ontologenius {
       this->induced_traces = other.induced_traces;
     }
 
+    SingleElement& operator=(const SingleElement& other)
+    {
+      this->elem = other.elem;
+      this->probability = other.probability;
+      this->infered = other.infered;
+      this->induced_traces = other.induced_traces;
+      return *this;
+    }
+
     bool operator==(const SingleElement& other) const
     {
       return (elem == other.elem);
@@ -98,6 +108,19 @@ namespace ontologenius {
       this->probability = other.probability;
       this->infered = other.infered;
       this->induced_traces = other.induced_traces;
+    }
+
+    PairElement& operator=(const PairElement& other) = delete;
+    {
+      // A copy constructor with a pointer is dangerous, never delete it
+      // it should be managed by a Graph class
+      this->first = other.first;
+      this->second = other.second;
+      this->probability = other.probability;
+      this->infered = other.infered;
+      this->induced_traces = other.induced_traces;
+
+      return *this;
     }
 
     bool operator==(const PairElement& other) const
