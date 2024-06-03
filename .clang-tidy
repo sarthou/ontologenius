@@ -109,4 +109,7 @@ CheckOptions:
   - key: misc-const-correctness.AnalyzeValues,                 
     value: false     
   - key: misc-include-cleaner.DeduplicateFindings,             
-    value: false     
+    value: false
+
+ExtraArgs:
+  -frelaxed-template-template-args
