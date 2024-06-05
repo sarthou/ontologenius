@@ -215,7 +215,7 @@ namespace ontologenius {
       }
     }
 
-    bool is_last = (index >= (int)(solution.ordered_variables_.size() - 1));
+    const bool is_last = (index >= (int)(solution.ordered_variables_.size() - 1));
     while(candidates.empty() == false)
     {
       solution.solution_full_[variable] = *candidates.begin();
@@ -474,7 +474,7 @@ namespace ontologenius {
 
   std::string SparqlSolver::getPattern(const std::string& text)
   {
-    size_t begin_of_pattern = text.find('{');
+    const size_t begin_of_pattern = text.find('{');
     std::string res;
     getIn(begin_of_pattern, res, text, '{', '}');
     return res;
@@ -493,13 +493,13 @@ namespace ontologenius {
     while((bracket_pose = query.find('{', bracket_pose)) != std::string::npos)
     {
       std::string text_in;
-      size_t end_pose = getIn(bracket_pose, text_in, query, '{', '}');
+      const size_t end_pose = getIn(bracket_pose, text_in, query, '{', '}');
       if((end_pose == std::string::npos) || (end_pose == bracket_pose))
       {
         error_ = "Unclosed bracket in: " + query;
         return res;
       }
-      std::string mark = "__" + std::to_string(cpt);
+      const std::string mark = "__" + std::to_string(cpt);
       blocks_id.insert(mark);
       tmp_blocks.insert({mark, text_in});
       query.replace(bracket_pose, end_pose - bracket_pose + 1, mark);
@@ -515,7 +515,7 @@ namespace ontologenius {
 
       for(const auto& id : blocks_id)
       {
-        size_t tmp_pose = query.find(id);
+        const size_t tmp_pose = query.find(id);
         if(tmp_pose < first_block_pose)
         {
           first_block_pose = tmp_pose;
@@ -525,7 +525,7 @@ namespace ontologenius {
 
       for(auto& key : operators_)
       {
-        size_t tmp_pose = query.find(key.first);
+        const size_t tmp_pose = query.find(key.first);
         if(tmp_pose < first_keyword_pose)
         {
           first_keyword_pose = tmp_pose;
@@ -551,7 +551,7 @@ namespace ontologenius {
       }
       else
       {
-        size_t min_pose = std::min(query.size(), std::min(first_keyword_pose, first_block_pose));
+        const size_t min_pose = std::min(query.size(), std::min(first_keyword_pose, first_block_pose));
         SparqlBlock_t block;
         block.raw = query.substr(0, min_pose);
         block.op = sparql_none;
@@ -566,7 +566,7 @@ namespace ontologenius {
 
   std::vector<strTriplet_t> SparqlSolver::getTriplets(const std::string& query, const std::string& delim)
   {
-    std::vector<std::string> sub_queries = split(query, delim);
+    const std::vector<std::string> sub_queries = split(query, delim);
     std::vector<strTriplet_t> sub_queries_triplet;
     try
     {

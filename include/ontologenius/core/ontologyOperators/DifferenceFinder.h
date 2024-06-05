@@ -11,7 +11,6 @@ namespace ontologenius {
   class Comparator
   {
   public:
-    Comparator() : concept_("") {}
     std::string concept_;
     std::vector<std::string> object_properties_name_;
     std::vector<std::string> object_properties_on_;

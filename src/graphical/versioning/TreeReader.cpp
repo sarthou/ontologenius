@@ -79,7 +79,7 @@ namespace ontologenius {
     std::string elem_value = elem->Value();
     if(elem_value == "Node")
     {
-      std::string id = getAttribute(elem, "id");
+      const std::string id = getAttribute(elem, "id");
       if(id.empty() == false)
       {
         auto* current = new Commit(id);
@@ -105,7 +105,7 @@ namespace ontologenius {
             const char* value = sub_elem->GetText();
             if(value != nullptr)
             {
-              size_t order = std::stoi(std::string(value));
+              const size_t order = std::stoi(std::string(value));
               current->setOrderId(order);
             }
           }

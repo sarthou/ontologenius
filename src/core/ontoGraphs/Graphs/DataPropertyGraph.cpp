@@ -38,7 +38,7 @@ namespace ontologenius {
 
   DataPropertyBranch* DataPropertyGraph::add(const std::string& value, DataPropertyVectors_t& property_vectors)
   {
-    std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
+    const std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
     /**********************
     ** Mothers
     **********************/
@@ -100,7 +100,7 @@ namespace ontologenius {
 
   void DataPropertyGraph::add(std::vector<std::string>& disjoints)
   {
-    std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
+    const std::lock_guard<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
     for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
     {
@@ -175,13 +175,13 @@ namespace ontologenius {
   {
     LiteralNode* literal = nullptr;
     {
-      std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+      const std::shared_lock<std::shared_timed_mutex> lock(mutex_);
       literal = literal_container_.find(value);
     }
 
     if(literal == nullptr)
     {
-      std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+      const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
       literal = new LiteralNode(value);
       literal_container_.insert(literal);
     }
@@ -204,7 +204,7 @@ namespace ontologenius {
   std::unordered_set<std::string> DataPropertyGraph::getDomain(const std::string& value, size_t depth)
   {
     std::unordered_set<std::string> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
     DataPropertyBranch* branch = container_.find(value);
     std::unordered_set<DataPropertyBranch*> up_trace;
@@ -217,7 +217,7 @@ namespace ontologenius {
   std::unordered_set<index_t> DataPropertyGraph::getDomain(index_t value, size_t depth)
   {
     std::unordered_set<index_t> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
     DataPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
     std::unordered_set<DataPropertyBranch*> up_trace;
@@ -258,7 +258,7 @@ namespace ontologenius {
   std::unordered_set<std::string> DataPropertyGraph::getRange(const std::string& value)
   {
     std::unordered_set<std::string> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
     DataPropertyBranch* branch = container_.find(value);
     if(branch != nullptr)
@@ -271,7 +271,7 @@ namespace ontologenius {
   std::unordered_set<index_t> DataPropertyGraph::getRange(index_t value)
   {
     std::unordered_set<index_t> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
     DataPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
     if(branch != nullptr)
@@ -283,7 +283,7 @@ namespace ontologenius {
 
   index_t DataPropertyGraph::getLiteralIndex(const std::string& name)
   {
-    std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(mutex_);
     auto* branch = literal_container_.find(name);
     if(branch != nullptr)
       return branch->get();
@@ -300,7 +300,7 @@ namespace ontologenius {
 
   std::string DataPropertyGraph::getLiteralIdentifier(index_t index)
   {
-    std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(mutex_);
     if((index < 0) && (index > (index_t)LiteralNode::table.size()))
       return LiteralNode::table[-index];
     else

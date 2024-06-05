@@ -1,9 +1,10 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/ClassOwlWriter.h"
 
 #include <algorithm>
+#include <set>
+#include <shared_mutex>
 #include <string>
 #include <vector>
-#include <shared_mutex>
 
 #include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
@@ -25,9 +26,9 @@ namespace ontologenius {
   {
     file_ = file;
 
-    std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
 
-    std::vector<ClassBranch*> classes = class_graph_->get();
+    const std::vector<ClassBranch*> classes = class_graph_->get();
 
     for(auto& classe : classes)
       writeClass(classe);
@@ -39,7 +40,7 @@ namespace ontologenius {
   {
     file_ = file;
 
-    std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
 
     std::vector<ClassBranch*> classes = class_graph_->get();
     writeDisjointWith(classes);
@@ -79,7 +80,7 @@ namespace ontologenius {
       {
         std::string tmp, field;
         field = "owl:equivalentClass";
-        size_t level = 2;
+        const size_t level = 2;
 
         // single expression
         if(elem->sub_elements_.empty() &&
@@ -202,7 +203,7 @@ namespace ontologenius {
   void ClassOwlWriter::writeUnion(AnonymousClassElement* ano_elem, size_t level, bool is_data_prop)
   {
     std::string tmp;
-    std::string field = "owl:unionOf";
+    const std::string field = "owl:unionOf";
 
     tmp = "<" + field + " " + "rdf:parseType=\"Collection\">\n";
     writeString(tmp, level);
@@ -216,8 +217,8 @@ namespace ontologenius {
 
   void ClassOwlWriter::writeOneOf(AnonymousClassElement* ano_elem, size_t level)
   {
-    std::string tmp, field;
-    field = "owl:oneOf";
+    std::string tmp;
+    const std::string field = "owl:oneOf";
 
     tmp = "<" + field + " " + "rdf:parseType=\"Collection\">\n";
     writeString(tmp, level);
@@ -235,7 +236,7 @@ namespace ontologenius {
   void ClassOwlWriter::writeComplement(AnonymousClassElement* ano_elem, size_t level)
   {
     std::string tmp;
-    std::string field = "owl:complementOf";
+    const std::string field = "owl:complementOf";
 
     if(ano_elem->sub_elements_.front()->class_involved_ != nullptr && ano_elem->object_property_involved_ == nullptr)
     {
@@ -256,8 +257,8 @@ namespace ontologenius {
 
   void ClassOwlWriter::writeDataComplement(AnonymousClassElement* ano_elem, size_t level)
   {
-    std::string tmp, field;
-    field = "owl:datatypeComplementOf";
+    std::string tmp;
+    const std::string field = "owl:datatypeComplementOf";
 
     if(ano_elem->sub_elements_.front()->card_.card_range_ != nullptr)
     {
@@ -451,11 +452,11 @@ namespace ontologenius {
     for(auto& mother : branch->mothers_)
       if(mother.infered == false)
       {
-        std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
-        std::string tmp = "        <rdfs:subClassOf" +
-                          proba +
-                          " rdf:resource=\"" + ns_ + "#" +
-                          mother.elem->value() + "\"/>\n";
+        const std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
+        const std::string tmp = "        <rdfs:subClassOf" +
+                                proba +
+                                " rdf:resource=\"" + ns_ + "#" +
+                                mother.elem->value() + "\"/>\n";
         writeString(tmp);
       }
   }
@@ -466,20 +467,20 @@ namespace ontologenius {
       for(auto& disjoint : branch->disjoints_)
         if(disjoint.infered == false)
         {
-          std::string tmp = "        <owl:disjointWith" +
-                            getProba(disjoint) +
-                            " rdf:resource=\"" + ns_ + "#" +
-                            disjoint.elem->value() + "\"/>\n";
+          const std::string tmp = "        <owl:disjointWith" +
+                                  getProba(disjoint) +
+                                  " rdf:resource=\"" + ns_ + "#" +
+                                  disjoint.elem->value() + "\"/>\n";
           writeString(tmp);
         }
   }
 
   void ClassOwlWriter::writeDisjointWith(std::vector<ClassBranch*>& classes)
   {
-    std::string start = "    <rdf:Description>\n\
+    const std::string start = "    <rdf:Description>\n\
         <rdf:type rdf:resource=\"http://www.w3.org/2002/07/owl#AllDisjointClasses\"/>\n";
 
-    std::string end = "    </rdf:Description>\n";
+    const std::string end = "    </rdf:Description>\n";
 
     std::set<std::set<ClassBranch*>> disjoints_vects;
 
@@ -563,13 +564,13 @@ namespace ontologenius {
     for(const ClassObjectRelationElement& relation : branch->object_relations_)
       if(relation.infered == false)
       {
-        std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
-        std::string tmp = "        <" +
-                          relation.first->value() +
-                          proba +
-                          " rdf:resource=\"" + ns_ + "#" +
-                          relation.second->value() +
-                          "\"/>\n";
+        const std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
+        const std::string tmp = "        <" +
+                                relation.first->value() +
+                                proba +
+                                " rdf:resource=\"" + ns_ + "#" +
+                                relation.second->value() +
+                                "\"/>\n";
         writeString(tmp);
       }
   }
@@ -579,19 +580,19 @@ namespace ontologenius {
     for(const ClassDataRelationElement& relation : branch->data_relations_)
       if(relation.infered == false)
       {
-        std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
-        std::string tmp = "        <" +
-                          relation.first->value() +
-                          proba +
-                          " rdf:datatype=\"" +
-                          relation.second->getNs() +
-                          "#" +
-                          relation.second->type_ +
-                          "\">" +
-                          relation.second->value_ +
-                          "</" +
-                          relation.first->value() +
-                          ">\n";
+        const std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
+        const std::string tmp = "        <" +
+                                relation.first->value() +
+                                proba +
+                                " rdf:datatype=\"" +
+                                relation.second->getNs() +
+                                "#" +
+                                relation.second->type_ +
+                                "\">" +
+                                relation.second->value_ +
+                                "</" +
+                                relation.first->value() +
+                                ">\n";
         writeString(tmp);
       }
   }

@@ -41,7 +41,7 @@ namespace ontologenius {
         auto imports = owl_reader_.getImportsFromFile(file);
         loadImports(imports);
 
-        int err = owl_reader_.readFromFile(file);
+        const int err = owl_reader_.readFromFile(file);
         if(err == NO_ERROR)
           files_.push_back(file);
         return err;
@@ -63,7 +63,7 @@ namespace ontologenius {
     {
       loading_uri_.push_back(uri);
 
-      int download_err = downloadFile(uri);
+      const int download_err = downloadFile(uri);
       if(download_err == NO_ERROR)
       {
         if(uri.find(".ttl") == std::string::npos)
@@ -71,7 +71,7 @@ namespace ontologenius {
           auto imports = owl_reader_.getImportsFromRaw(uri_to_file_[uri]);
           loadImports(imports);
 
-          int err = owl_reader_.readFromUri(uri_to_file_[uri], uri);
+          const int err = owl_reader_.readFromUri(uri_to_file_[uri], uri);
           if(err == NO_ERROR)
             uri_.push_back(uri);
           return err;
@@ -131,7 +131,7 @@ namespace ontologenius {
 
   void OntologyLoader::fixUrl(std::string& url)
   {
-    size_t dot_pose = url.find_last_of('.');
+    const size_t dot_pose = url.find_last_of('.');
     size_t pose = url.find_last_of('/');
     if(dot_pose < pose)
       url += ".owl";
@@ -140,7 +140,7 @@ namespace ontologenius {
     if(pose != std::string::npos)
     {
       url.replace(pose, std::string("github.").size(), "raw.githubusercontent.");
-      size_t blob_pose = url.find("blob/");
+      const size_t blob_pose = url.find("blob/");
       url.erase(blob_pose, std::string("blob/").size());
     }
 
@@ -154,7 +154,7 @@ namespace ontologenius {
 
   void OntologyLoader::fixPath(std::string& path)
   {
-    size_t dot_pose = path.find_last_of('.');
+    const size_t dot_pose = path.find_last_of('.');
     if(dot_pose == std::string::npos)
       path += ".owl";
   }
@@ -169,7 +169,7 @@ namespace ontologenius {
 
   int OntologyLoader::downloadFile(const std::string& uri)
   {
-    std::string response = downlaodFileCurl(uri);
+    const std::string response = downlaodFileCurl(uri);
 
     if(isProtected(response))
     {
@@ -266,7 +266,7 @@ namespace ontologenius {
       auto package_it = std::find(packages.begin(), packages.end(), part);
       if(package_it != packages.end())
       {
-        size_t package_pose = raw_path.find(part);
+        const size_t package_pose = raw_path.find(part);
         std::string rest = raw_path.substr(package_pose + part.size() + 1);
 
         // The following is used to remove extras added by github and gitlab

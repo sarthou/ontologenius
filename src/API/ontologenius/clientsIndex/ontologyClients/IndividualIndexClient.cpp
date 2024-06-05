@@ -1,8 +1,8 @@
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/IndividualIndexClient.h"
 
+#include <cstdint>
 #include <string>
 #include <vector>
-#include <cstdint>
 
 namespace onto {
 
@@ -38,19 +38,19 @@ namespace onto {
 
   std::vector<int64_t> IndividualIndexClient::getRelatedFrom(int64_t property)
   {
-    std::string param = std::to_string(property);
+    const std::string param = std::to_string(property);
     return callIndexes("getRelatedFrom", param);
   }
 
   std::vector<int64_t> IndividualIndexClient::getRelatedOn(int64_t property)
   {
-    std::string param = std::to_string(property);
+    const std::string param = std::to_string(property);
     return callIndexes("getRelatedOn", param);
   }
 
   std::vector<int64_t> IndividualIndexClient::getRelatedWith(int64_t index)
   {
-    std::string param = std::to_string(index);
+    const std::string param = std::to_string(index);
     return callIndexes("getRelatedWith", param);
   }
 
@@ -74,7 +74,7 @@ namespace onto {
 
   std::vector<int64_t> IndividualIndexClient::getRelationWith(int64_t index)
   {
-    std::string param = std::to_string(index);
+    const std::string param = std::to_string(index);
     return callIndexes("getRelationWith", param);
   }
 
@@ -104,19 +104,19 @@ namespace onto {
 
   std::vector<int64_t> IndividualIndexClient::getType(int64_t index)
   {
-    std::string param = std::to_string(index);
+    const std::string param = std::to_string(index);
     return callIndexes("getType", param);
   }
 
   std::vector<int64_t> IndividualIndexClient::getSame(int64_t index)
   {
-    std::string param = std::to_string(index);
+    const std::string param = std::to_string(index);
     return callIndexes("getSame", param);
   }
 
   std::vector<int64_t> IndividualIndexClient::getDistincts(int64_t index)
   {
-    std::string param = std::to_string(index);
+    const std::string param = std::to_string(index);
     return callIndexes("getDistincts", param);
   }
 

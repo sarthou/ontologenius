@@ -128,7 +128,7 @@ namespace ontologenius {
     if(!activated_)
       return;
 
-    std::string xml = nodes_["0"]->toXml();
+    const std::string xml = nodes_["0"]->toXml();
 
     if(path.empty())
     {

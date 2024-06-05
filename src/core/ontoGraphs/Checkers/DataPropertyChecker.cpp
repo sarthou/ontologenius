@@ -10,7 +10,7 @@ namespace ontologenius {
 
   size_t DataPropertyChecker::check()
   {
-    std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
 
     checkDisjoint();
 

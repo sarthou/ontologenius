@@ -306,7 +306,7 @@ namespace ontologenius {
     else
     {
       TiXmlElement* sub_elem = elem->FirstChildElement(); // should be the only child element
-      std::string sub_elem_name = sub_elem->Value();
+      const std::string sub_elem_name = sub_elem->Value();
 
       // Restriction equivalence : Camera Eq to hasComponent some Component
       if(sub_elem_name == "owl:Restriction")
@@ -326,7 +326,7 @@ namespace ontologenius {
 
     for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
-      std::string sub_elem_name = sub_elem->Value();
+      const std::string sub_elem_name = sub_elem->Value();
 
       if(sub_elem_name == "owl:onProperty")
         exp->rest.property = getName(sub_elem->Attribute("rdf:resource"));
@@ -351,7 +351,7 @@ namespace ontologenius {
         // <owl:onClass rdf:resource="test_bastien#Lidar"/>
         if(resource != nullptr)
         {
-          std::string attr_class = sub_elem->Attribute("rdf:resource");
+          const std::string attr_class = sub_elem->Attribute("rdf:resource");
           if(isIn("http://www.w3.org/", attr_class))
           {
             exp->rest.restriction_range = attr_class;
@@ -381,7 +381,7 @@ namespace ontologenius {
   {
     for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
-      std::string sub_elem_name = sub_elem->Value();
+      const std::string sub_elem_name = sub_elem->Value();
       if(sub_elem_name == "owl:unionOf")
         return readUnion(sub_elem);
       else if(sub_elem_name == "owl:intersectionOf")
@@ -400,7 +400,7 @@ namespace ontologenius {
     for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
       ExpressionMember_t* exp = nullptr;
-      std::string sub_elem_name = sub_elem->Value();
+      const std::string sub_elem_name = sub_elem->Value();
       if(sub_elem_name == "owl:unionOf")
         exp = readUnion(sub_elem);
       else if(sub_elem_name == "owl:intersectionOf")
@@ -483,7 +483,7 @@ namespace ontologenius {
     if(elem == nullptr)
       return nullptr;
 
-    std::string elem_name = elem->Value();
+    const std::string elem_name = elem->Value();
     if(elem_name == "owl:Class")
       return readClassExpression(elem);
     else if(elem_name == "rdfs:Datatype")
@@ -505,7 +505,7 @@ namespace ontologenius {
     {
       exp = new ExpressionMember_t();
 
-      std::string attr_class = elem->Attribute(attribute_name.c_str());
+      const std::string attr_class = elem->Attribute(attribute_name.c_str());
       if(isIn("http://www.w3.org/", attr_class))
       {
         exp->rest.restriction_range = attr_class;
@@ -531,7 +531,7 @@ namespace ontologenius {
 
   void OntologyOwlReader::readCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp)
   {
-    std::string sub_elem_name = elem->Value();
+    const std::string sub_elem_name = elem->Value();
 
     exp->rest.card.cardinality_type = card_map_[sub_elem_name];
 
@@ -541,14 +541,14 @@ namespace ontologenius {
 
   bool OntologyOwlReader::readCardinalityRange(TiXmlElement* elem, ExpressionMember_t* exp)
   {
-    std::string sub_elem_name = elem->Value();
+    const std::string sub_elem_name = elem->Value();
 
     const char* resource = elem->Attribute("rdf:resource");
     exp->rest.card.cardinality_type = card_map_[sub_elem_name];
 
     if(resource != nullptr)
     {
-      std::string s = resource;
+      const std::string s = resource;
       if(isIn("http://www.w3.org/", s))
       {
         exp->rest.card.cardinality_range = resource;
@@ -564,7 +564,7 @@ namespace ontologenius {
 
   void OntologyOwlReader::readIndividual(TiXmlElement* elem)
   {
-    std::string elem_name = elem->Value();
+    const std::string elem_name = elem->Value();
     if(elem_name == "owl:NamedIndividual")
     {
       std::string node_name;
@@ -577,8 +577,8 @@ namespace ontologenius {
           std::cout << "│   ├──" << node_name << std::endl;
         for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
         {
-          std::string sub_elem_name = sub_elem->Value();
-          float probability = getProbability(sub_elem);
+          const std::string sub_elem_name = sub_elem->Value();
+          const float probability = getProbability(sub_elem);
 
           if(sub_elem_name == "rdf:type")
             push(individual_vector.is_a_, sub_elem, probability, "+");
@@ -590,10 +590,10 @@ namespace ontologenius {
             pushLang(individual_vector.muted_dictionary_, sub_elem);
           else
           {
-            std::string ns = sub_elem_name.substr(0, sub_elem_name.find(':'));
+            const std::string ns = sub_elem_name.substr(0, sub_elem_name.find(':'));
             if((ns != "owl") && (ns != "rdf") && (ns != "rdfs"))
             {
-              std::string property = sub_elem_name.substr(sub_elem_name.find(':') + 1);
+              const std::string property = sub_elem_name.substr(sub_elem_name.find(':') + 1);
               if(testAttribute(sub_elem, "rdf:resource"))
                 OntologyReader::push(individual_vector.object_relations_, PairElement<std::string, std::string>(property, toString(sub_elem), probability), "$", "^");
               else if(testAttribute(sub_elem, "rdf:datatype"))
@@ -601,7 +601,7 @@ namespace ontologenius {
                 const char* value = sub_elem->GetText();
                 if(value != nullptr)
                 {
-                  LiteralNode data(toString(sub_elem, "rdf:datatype"), std::string(value));
+                  const LiteralNode data(toString(sub_elem, "rdf:datatype"), std::string(value));
                   OntologyReader::push(individual_vector.data_relations_, PairElement<std::string, std::string>(property, data.toString(), probability), "$", "^");
                 }
               }
@@ -622,7 +622,7 @@ namespace ontologenius {
 
     for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
-      std::string sub_elem_name = sub_elem->Value();
+      const std::string sub_elem_name = sub_elem->Value();
       const char* sub_attr = nullptr;
       if(sub_elem_name == "rdf:type")
       {
@@ -653,14 +653,14 @@ namespace ontologenius {
 
   void OntologyOwlReader::readIndividualDescription(TiXmlElement* elem)
   {
-    std::string elem_name = elem->Value();
+    const std::string elem_name = elem->Value();
     if(elem_name == "rdf:Description")
     {
       std::vector<std::string> distincts;
       bool is_distinct_all = false;
       for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
       {
-        std::string sub_elem_name = sub_elem->Value();
+        const std::string sub_elem_name = sub_elem->Value();
         const char* sub_attr = nullptr;
         if(sub_elem_name == "rdf:type")
         {
@@ -696,8 +696,8 @@ namespace ontologenius {
         std::cout << "│   ├──" << node_name << std::endl;
       for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
       {
-        std::string sub_elem_name = sub_elem->Value();
-        float probability = getProbability(sub_elem);
+        const std::string sub_elem_name = sub_elem->Value();
+        const float probability = getProbability(sub_elem);
 
         if(sub_elem_name == "rdfs:subPropertyOf")
           push(property_vector.mothers_, sub_elem, probability, "+");
@@ -741,8 +741,8 @@ namespace ontologenius {
         std::cout << "│   ├──" << node_name << std::endl;
       for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
       {
-        std::string sub_elem_name = sub_elem->Value();
-        float probability = getProbability(sub_elem);
+        const std::string sub_elem_name = sub_elem->Value();
+        const float probability = getProbability(sub_elem);
 
         if(sub_elem_name == "rdfs:subPropertyOf")
           push(property_vector.mothers_, sub_elem, probability, "+");
@@ -777,8 +777,8 @@ namespace ontologenius {
         std::cout << "│   ├──" << node_name << std::endl;
       for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
       {
-        std::string sub_elem_name = sub_elem->Value();
-        float probability = getProbability(sub_elem);
+        const std::string sub_elem_name = sub_elem->Value();
+        const float probability = getProbability(sub_elem);
 
         if(sub_elem_name == "rdfs:subPropertyOf")
           push(property_vector.mothers_, sub_elem, probability, "+");
@@ -821,7 +821,7 @@ namespace ontologenius {
   {
     for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
-      std::string sub_elem_name = sub_elem->Value();
+      const std::string sub_elem_name = sub_elem->Value();
       if(sub_elem_name == "rdf:Description")
       {
         const char* sub_attr = sub_elem->Attribute("rdf:about");
@@ -851,7 +851,7 @@ namespace ontologenius {
     if(value.empty())
       for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
       {
-        std::string restriction_name = sub_elem->Value();
+        const std::string restriction_name = sub_elem->Value();
         if(restriction_name == "rdfs:Datatype" && display_)
           std::cout << restriction_name << std::endl;
       }
@@ -891,12 +891,12 @@ namespace ontologenius {
     const char* sub_attr = sub_elem->Attribute("xml:lang");
     if(sub_attr != nullptr)
     {
-      std::string lang = std::string(sub_attr);
+      const std::string lang = std::string(sub_attr);
 
       const char* value = sub_elem->GetText();
       if(value != nullptr)
       {
-        dictionary[lang].push_back(std::string(value));
+        dictionary[lang].emplace_back(value);
 
         if((lang.empty() == false) && (std::string(value).empty() == false) && display_)
           std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang][dictionary[lang].size() - 1] << std::endl;

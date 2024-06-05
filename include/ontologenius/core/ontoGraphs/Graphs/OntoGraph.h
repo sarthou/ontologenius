@@ -222,7 +222,7 @@ namespace ontologenius {
     if(this->compare(branch, selector))
       return true;
     else
-      return std::any_of(branch->mothers_.begin(), branch->mothers_.end(), [selector, this](const auto& mother) { return existInInheritance(mother.elem, selector); });
+      return std::any_of(branch->mothers_.begin(), branch->mothers_.end(), [selector, this](const auto& mother) { return this->existInInheritance(mother.elem, selector); });
   }
 
   template<typename B>
@@ -441,12 +441,10 @@ namespace ontologenius {
     if(branch_base_ptr == nullptr)
     {
       throw GraphException("The concept " + branch_base + " does not exist");
-      return std::vector<std::pair<std::string, std::string>>();
     }
-    if(branch_inherited_ptr == nullptr)
+    else if(branch_inherited_ptr == nullptr)
     {
       throw GraphException("The concept " + branch_inherited + " does not exist");
-      return std::vector<std::pair<std::string, std::string>>();
     }
 
     std::lock_guard<std::shared_timed_mutex> lock(this->mutex_);

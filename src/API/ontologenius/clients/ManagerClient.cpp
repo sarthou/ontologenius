@@ -1,7 +1,7 @@
 #include "ontologenius/API/ontologenius/clients/ManagerClient.h"
 
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace onto {
 
@@ -27,7 +27,7 @@ namespace onto {
 
   std::vector<std::string> ManagerClient::getDifference(const std::string& onto1, const std::string& onto2, const std::string& concept)
   {
-    std::string param = onto1 + "|" + onto2 + "|" + concept;
+    const std::string param = onto1 + "|" + onto2 + "|" + concept;
     return call("difference", param);
   }
 

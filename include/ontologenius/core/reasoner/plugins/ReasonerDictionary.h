@@ -8,7 +8,7 @@ namespace ontologenius {
   class ReasonerDictionary : public ReasonerInterface
   {
   public:
-    ReasonerDictionary() { use_id_ = false; }
+    ReasonerDictionary() : use_id_(false) {}
     ~ReasonerDictionary() override = default;
 
     void setParameter(const std::string& name, const std::string& value) override;

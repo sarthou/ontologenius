@@ -31,9 +31,9 @@ namespace ontologenius {
     }
 
     {
-      std::shared_lock<std::shared_timed_mutex> lock(data_property_graph_->mutex_);
+      const std::shared_lock<std::shared_timed_mutex> lock(data_property_graph_->mutex_);
 
-      std::vector<DataPropertyBranch*> properties = data_property_graph_->get();
+      const std::vector<DataPropertyBranch*> properties = data_property_graph_->get();
       for(auto& property : properties)
         if(property->annotation_usage_)
           writeAnnotation(property);
@@ -77,10 +77,10 @@ namespace ontologenius {
     for(auto& mother : branch->mothers_)
       if(mother.infered == false)
       {
-        std::string tmp = "        <rdfs:subPropertyOf" +
-                          getProba(mother) +
-                          " rdf:resource=\"" + ns_ + "#" +
-                          mother.elem->value() + "\"/>\n";
+        const std::string tmp = "        <rdfs:subPropertyOf" +
+                                getProba(mother) +
+                                " rdf:resource=\"" + ns_ + "#" +
+                                mother.elem->value() + "\"/>\n";
         writeString(tmp);
       }
   }
@@ -90,10 +90,10 @@ namespace ontologenius {
     for(auto& mother : branch->mothers_)
       if(mother.infered == false)
       {
-        std::string tmp = "        <rdfs:subPropertyOf" +
-                          getProba(mother) +
-                          " rdf:resource=\"" + ns_ + "#" +
-                          mother.elem->value() + "\"/>\n";
+        const std::string tmp = "        <rdfs:subPropertyOf" +
+                                getProba(mother) +
+                                " rdf:resource=\"" + ns_ + "#" +
+                                mother.elem->value() + "\"/>\n";
         writeString(tmp);
       }
   }
@@ -102,11 +102,11 @@ namespace ontologenius {
   {
     for(const auto& range : ranges)
     {
-      std::string tmp = "        <rdfs:range rdf:resource=\"" +
-                        range->getNs() +
-                        "#" +
-                        range->type_ +
-                        +"\"/>\n";
+      const std::string tmp = "        <rdfs:range rdf:resource=\"" +
+                              range->getNs() +
+                              "#" +
+                              range->type_ +
+                              +"\"/>\n";
       writeString(tmp);
     }
   }
@@ -116,10 +116,10 @@ namespace ontologenius {
     for(auto range : ranges)
       if(range.infered == false)
       {
-        std::string tmp = "        <rdfs:range" +
-                          getProba(range) +
-                          " rdf:resource=\"" + ns_ + "#" +
-                          range.elem->value() + "\"/>\n";
+        const std::string tmp = "        <rdfs:range" +
+                                getProba(range) +
+                                " rdf:resource=\"" + ns_ + "#" +
+                                range.elem->value() + "\"/>\n";
         writeString(tmp);
       }
   }
@@ -129,10 +129,10 @@ namespace ontologenius {
     for(auto domain : domains)
       if(domain.infered == false)
       {
-        std::string tmp = "        <rdfs:domain" +
-                          getProba(domain) +
-                          " rdf:resource=\"" + ns_ + "#" +
-                          domain.elem->value() + "\"/>\n";
+        const std::string tmp = "        <rdfs:domain" +
+                                getProba(domain) +
+                                " rdf:resource=\"" + ns_ + "#" +
+                                domain.elem->value() + "\"/>\n";
         writeString(tmp);
       }
   }

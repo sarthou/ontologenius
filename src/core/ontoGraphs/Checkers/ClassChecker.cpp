@@ -1,6 +1,5 @@
 #include "ontologenius/core/ontoGraphs/Checkers/ClassChecker.h"
 
-#include <algorithm>
 #include <cstddef>
 #include <shared_mutex>
 #include <string>
@@ -14,7 +13,7 @@ namespace ontologenius {
 
   size_t ClassChecker::check()
   {
-    std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(class_graph_->mutex_);
     std::unordered_set<ClassBranch*> up;
 
     for(auto& class_check : graph_vect_)

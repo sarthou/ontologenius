@@ -46,10 +46,10 @@ namespace ontologenius {
     class Iterator
     {
     public:
-      explicit Iterator(const SparqlSolution_t& intial_solution, SparqlSolver* solver = nullptr) : current_solution_(intial_solution)
-      {
-        solver_ = solver;
-      }
+      explicit Iterator(const SparqlSolution_t& intial_solution,
+                        SparqlSolver* solver = nullptr) : current_solution_(intial_solution),
+                                                          solver_(solver)
+      {}
       Iterator(const Iterator& other) = default;
 
       operator bool() const { return !isEmpty(); }

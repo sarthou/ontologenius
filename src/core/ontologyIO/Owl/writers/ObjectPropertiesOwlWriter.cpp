@@ -1,16 +1,16 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/ObjectPropertiesOwlWriter.h"
 
 #include <shared_mutex>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 
 namespace ontologenius {
 
-  ObjectPropertiesOwlWriter::ObjectPropertiesOwlWriter(ObjectPropertyGraph* property_graph, const std::string& ns)
+  ObjectPropertiesOwlWriter::ObjectPropertiesOwlWriter(ObjectPropertyGraph* property_graph,
+                                                       const std::string& ns) : property_graph_(property_graph)
   {
-    property_graph_ = property_graph;
     ns_ = ns;
   }
 
@@ -18,9 +18,9 @@ namespace ontologenius {
   {
     file_ = file;
 
-    std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
 
-    std::vector<ObjectPropertyBranch*> properties = property_graph_->get();
+    const std::vector<ObjectPropertyBranch*> properties = property_graph_->get();
     for(auto& property : properties)
       writeProperty(property);
 
@@ -54,10 +54,10 @@ namespace ontologenius {
     for(auto& mother : branch->mothers_)
       if(mother.infered == false)
       {
-        std::string tmp = "        <rdfs:subPropertyOf" +
-                          getProba(mother) +
-                          " rdf:resource=\"" + ns_ + "#" +
-                          mother.elem->value() + "\"/>\n";
+        const std::string tmp = "        <rdfs:subPropertyOf" +
+                                getProba(mother) +
+                                " rdf:resource=\"" + ns_ + "#" +
+                                mother.elem->value() + "\"/>\n";
         writeString(tmp);
       }
   }
@@ -67,10 +67,10 @@ namespace ontologenius {
     for(auto& inverse : branch->inverses_)
       if(inverse.infered == false)
       {
-        std::string tmp = "        <owl:inverseOf" +
-                          getProba(inverse) +
-                          " rdf:resource=\"" + ns_ + "#" +
-                          inverse.elem->value() + "\"/>\n";
+        const std::string tmp = "        <owl:inverseOf" +
+                                getProba(inverse) +
+                                " rdf:resource=\"" + ns_ + "#" +
+                                inverse.elem->value() + "\"/>\n";
         writeString(tmp);
       }
   }
@@ -80,10 +80,10 @@ namespace ontologenius {
     for(auto& range : branch->ranges_)
       if(range.infered == false)
       {
-        std::string tmp = "        <rdfs:range" +
-                          getProba(range) +
-                          " rdf:resource=\"" + ns_ + "#" +
-                          range.elem->value() + "\"/>\n";
+        const std::string tmp = "        <rdfs:range" +
+                                getProba(range) +
+                                " rdf:resource=\"" + ns_ + "#" +
+                                range.elem->value() + "\"/>\n";
         writeString(tmp);
       }
   }
@@ -93,10 +93,10 @@ namespace ontologenius {
     for(auto& domain : branch->domains_)
       if(domain.infered == false)
       {
-        std::string tmp = "        <rdfs:domain" +
-                          getProba(domain) +
-                          " rdf:resource=\"" + ns_ + "#" +
-                          domain.elem->value() + "\"/>\n";
+        const std::string tmp = "        <rdfs:domain" +
+                                getProba(domain) +
+                                " rdf:resource=\"" + ns_ + "#" +
+                                domain.elem->value() + "\"/>\n";
         writeString(tmp);
       }
   }

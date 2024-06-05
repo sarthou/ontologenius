@@ -39,13 +39,13 @@ namespace ontologenius {
   {
     std::map<std::string, ConfigElement> res;
 
-    std::regex element_regex(R"(^\s*([^\s]*)\s*:\s*([^\n]*)\s*$)"); // in case of bug, previous regex was (^\s*([^\s]*)\s*:\s*([^\n\s]*)\s*$)
-    std::regex list_regex(R"(^\s*-\s*(.*)\s*$)");
+    const std::regex element_regex(R"(^\s*([^\s]*)\s*:\s*([^\n]*)\s*$)"); // in case of bug, previous regex was (^\s*([^\s]*)\s*:\s*([^\n\s]*)\s*$)
+    const std::regex list_regex(R"(^\s*-\s*(.*)\s*$)");
     std::smatch match;
 
     std::string config_name;
 
-    size_t nb_spaces_base = countSpaces(lines[current_line]);
+    const size_t nb_spaces_base = countSpaces(lines[current_line]);
 
     do
     {
@@ -58,7 +58,7 @@ namespace ontologenius {
         {
           config_name = match[1].str();
           res[config_name] = ConfigElement();
-          size_t next_nb_spaces = countSpaces(lines[current_line + 1]);
+          const size_t next_nb_spaces = countSpaces(lines[current_line + 1]);
           if(next_nb_spaces > nb_spaces_base)
           {
             if(std::regex_match(lines[current_line + 1], match, list_regex))
@@ -138,7 +138,7 @@ namespace ontologenius {
 
   void ConfigReader::removeComment(std::string& line)
   {
-    size_t pose = line.find('#');
+    const size_t pose = line.find('#');
     if(pose != std::string::npos)
       line = line.substr(0, pose);
   }

@@ -16,8 +16,8 @@ namespace ontologenius {
 
   void ReasonerChain::postReason()
   {
-    std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-    std::lock_guard<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
+    const std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
+    const std::lock_guard<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
 
     for(auto* indiv : ontology_->individual_graph_.get())
       if((indiv->updated_ == true) || (indiv->flags_.find("chain") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation())

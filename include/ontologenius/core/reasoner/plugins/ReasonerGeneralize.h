@@ -105,7 +105,7 @@ namespace ontologenius {
   std::vector<std::tuple<B, P, float>> PropertiesCounter<B, P>::get()
   {
     std::vector<std::tuple<B, P, float>> res;
-    if(properties_.size() > 0)
+    if(properties_.empty() == false)
     {
       std::vector<B> properties_set;
       std::vector<std::vector<size_t>> index_set;

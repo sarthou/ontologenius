@@ -75,7 +75,7 @@ void DarkStyle::polish(QApplication* app)
   if(qf_darkstyle.open(QIODevice::ReadOnly | QIODevice::Text))
   {
     // set stylesheet
-    QString qs_stylesheet = QString::fromLatin1(qf_darkstyle.readAll());
+    const QString qs_stylesheet = QString::fromLatin1(qf_darkstyle.readAll());
     app->setStyleSheet(qs_stylesheet);
     qf_darkstyle.close();
   }

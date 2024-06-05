@@ -194,7 +194,7 @@ namespace ontologenius {
   {
     size_t nb_updates = 0;
 
-    QueryInfo_t query_info = extractQueryInfo(origin, action, param);
+    const QueryInfo_t query_info = extractQueryInfo(origin, action, param);
 
     for(auto& it : active_reasoners_)
     {
@@ -257,7 +257,7 @@ namespace ontologenius {
     {
       if(it.second != nullptr)
       {
-        bool this_has_run = it.second->periodicReason();
+        const bool this_has_run = it.second->periodicReason();
         if(this_has_run)
         {
           has_run = true;
@@ -318,7 +318,7 @@ namespace ontologenius {
   template<typename B>
   void Reasoners::computeGraphUpdates(Graph<B>* graph)
   {
-    std::vector<B*> branches = graph->get();
+    const std::vector<B*> branches = graph->get();
     for(auto& branch : branches)
       if(branch->nb_updates_ == 0)
         branch->updated_ = false;
@@ -331,8 +331,8 @@ namespace ontologenius {
 
   void Reasoners::computeIndividualsUpdatesPeriodic()
   {
-    std::vector<IndividualBranch*> indivs = ontology_->individual_graph_.getSafe();
-    for(auto& indiv : indivs)
+    const std::vector<IndividualBranch*> indivs = ontology_->individual_graph_.getSafe();
+    for(auto* indiv : indivs)
       if(indiv->nb_updates_ != 0)
       {
         indiv->nb_updates_ = 0;
@@ -342,8 +342,8 @@ namespace ontologenius {
 
   void Reasoners::resetIndividualsUpdates()
   {
-    std::vector<IndividualBranch*> indivs = ontology_->individual_graph_.get();
-    for(auto& indiv : indivs)
+    const std::vector<IndividualBranch*> indivs = ontology_->individual_graph_.get();
+    for(auto* indiv : indivs)
     {
       indiv->nb_updates_ = 0;
       indiv->updated_ = true;
@@ -383,7 +383,7 @@ namespace ontologenius {
     else if(action == "getOn")
     {
       query_info.query_type = query_relation;
-      size_t pose = param.find(':');
+      const size_t pose = param.find(':');
       if(pose != std::string::npos)
       {
         query_info.subject = param.substr(0, pose);
@@ -393,7 +393,7 @@ namespace ontologenius {
     else if(action == "getFrom")
     {
       query_info.query_type = query_relation;
-      size_t pose = param.find(':');
+      const size_t pose = param.find(':');
       if(pose != std::string::npos)
       {
         query_info.object = param.substr(0, pose);
@@ -403,7 +403,7 @@ namespace ontologenius {
     else if(action == "getWith")
     {
       query_info.query_type = query_relation;
-      size_t pose = param.find(':');
+      const size_t pose = param.find(':');
       if(pose != std::string::npos)
       {
         query_info.subject = param.substr(0, pose);

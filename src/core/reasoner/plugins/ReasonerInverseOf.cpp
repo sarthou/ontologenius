@@ -41,7 +41,7 @@ namespace ontologenius {
           return;
 
         auto up_properties = ontology_->object_property_graph_.getUpPtrSafe(it->first);
-        if(std::find(up_properties.begin(), up_properties.end(), inv_prop) != up_properties.end())
+        if(up_properties.find(inv_prop) != up_properties.end())
           return;
       }
     }

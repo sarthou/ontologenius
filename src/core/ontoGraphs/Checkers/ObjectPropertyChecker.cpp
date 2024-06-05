@@ -10,7 +10,7 @@ namespace ontologenius {
 
   size_t ObjectPropertyChecker::check()
   {
-    std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
 
     checkDisjoint();
     checkCharacteristics();
@@ -46,7 +46,7 @@ namespace ontologenius {
   {
     for(auto* property : graph_vect_)
     {
-      Properties_t properties = property->properties_;
+      const Properties_t properties = property->properties_;
 
       if(properties.symetric_property_ && properties.antisymetric_property_)
         printError("'" + property->value() + "' can't be a 'symetric' and 'antisymetric'");

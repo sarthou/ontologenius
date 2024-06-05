@@ -92,7 +92,7 @@ namespace ontologenius {
   {
     if(action == action_add)
     {
-      std::lock_guard<std::shared_timed_mutex> lock(onto_->class_graph_.mutex_);
+      const std::lock_guard<std::shared_timed_mutex> lock(onto_->class_graph_.mutex_);
       onto_->class_graph_.findOrCreateBranch(name);
       return true;
     }
@@ -276,7 +276,7 @@ namespace ontologenius {
 
   bool Feeder::applyProperty(Feed_t& feed)
   {
-    size_t pose = feed.on_.find('#');
+    const size_t pose = feed.on_.find('#');
     std::string type;
     std::string data;
     bool data_property = false;

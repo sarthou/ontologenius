@@ -4,11 +4,11 @@
 #include <QObject>
 #include <QScrollBar>
 #include <QWidget>
+#include <algorithm>
 #include <cstddef>
 #include <regex>
 #include <string>
 #include <vector>
-#include <algorithm>
 
 #include "ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
 #include "ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
@@ -815,7 +815,7 @@ void OntoloGUI::differenceOntologySlot()
       ui_->ResultArea->setText("no effect");
     else if(err == 0)
     {
-      std::string res = vector2string(diff);
+      const std::string res = vector2string(diff);
       ui_->ResultArea->setText(QString::fromStdString(res));
     }
     else
@@ -828,7 +828,7 @@ void OntoloGUI::ontologyNameAddDelChangedSlot(const QString& text)
 {
   if(ui_->OntologyName->text() != text)
   {
-    size_t equal_pose = text.toStdString().find('=');
+    const size_t equal_pose = text.toStdString().find('=');
     if(equal_pose != std::string::npos)
       ui_->OntologyName->setText(text.mid(0, equal_pose));
     else

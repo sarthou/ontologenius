@@ -19,7 +19,7 @@ namespace onto {
 
   bool OntologyClient::isA(const std::string& name, const std::string& base_class)
   {
-    std::vector<std::string> res = getUp(name, -1, base_class);
+    const std::vector<std::string> res = getUp(name, -1, base_class);
     if(res.empty())
       return false;
     else

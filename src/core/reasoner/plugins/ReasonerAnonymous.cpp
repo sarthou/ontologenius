@@ -41,7 +41,7 @@ namespace ontologenius {
         for(auto* anonymous : ontology_->anonymous_graph_.get())
         {
           bool tree_evaluation_result = false;
-          bool is_already_a = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous](const auto& is_a) { return is_a.elem == anonymous->class_equiv_; });
+          const bool is_already_a = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous](const auto& is_a) { return is_a.elem == anonymous->class_equiv_; });
 
           if(is_already_a || checkClassesDisjointess(indiv, anonymous->class_equiv_) == false)
           {
@@ -146,8 +146,8 @@ namespace ontologenius {
     std::string explanation;
     ontology_->object_property_graph_.getDownPtr(property, down_properties);
 
-    size_t relation_size = indiv_from->object_relations_.size();
-    size_t same_size = indiv_on->same_as_.size();
+    const size_t relation_size = indiv_from->object_relations_.size();
+    const size_t same_size = indiv_on->same_as_.size();
     for(size_t i = 0; i < relation_size; i++)
     {
       for(size_t j = 0; j < same_size; j++)
@@ -317,7 +317,7 @@ namespace ontologenius {
     {
       if(indiv->same_as_.empty() == false)
       {
-        size_t same_size = indiv->same_as_.size();
+        const size_t same_size = indiv->same_as_.size();
         for(size_t i = 0; i < same_size; i++)
         {
           if(indiv->same_as_[i].elem->get() != indiv->get())
@@ -365,12 +365,12 @@ namespace ontologenius {
 
     if(indiv->same_as_.empty() == false)
     {
-      size_t same_size = indiv->same_as_.size();
+      const size_t same_size = indiv->same_as_.size();
       for(size_t i = 0; i < same_size; i++)
       {
         if(indiv->same_as_[i].elem->get() != indiv->get())
         {
-          size_t is_a_size = indiv->same_as_[i].elem->is_a_.size();
+          const size_t is_a_size = indiv->same_as_[i].elem->is_a_.size();
           for(size_t j = 0; j < is_a_size; j++)
           {
             if(existInInheritance(indiv->same_as_[i].elem->is_a_[j].elem, ano_elem->class_involved_->get(), used))
@@ -388,7 +388,7 @@ namespace ontologenius {
     }
     else
     {
-      size_t is_a_size = indiv->is_a_.size();
+      const size_t is_a_size = indiv->is_a_.size();
       for(size_t i = 0; i < is_a_size; i++)
       {
         if(existInInheritance(indiv->is_a_[i].elem, ano_elem->class_involved_->get(), used))
@@ -417,7 +417,7 @@ namespace ontologenius {
 
     if(indiv->same_as_.empty() == false)
     {
-      size_t same_size = indiv->same_as_.size();
+      const size_t same_size = indiv->same_as_.size();
       for(size_t i = 0; i < same_size; i++)
       {
         if(indiv->same_as_[i].elem->get() != indiv->get())

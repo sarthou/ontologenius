@@ -30,8 +30,8 @@ namespace ontologenius {
   {
     createNode(root, commit_only);
 
-    int width = (int)(DrawerNode::current_column + 1) * SPACE + TEXT_WIDTH;
-    int height = (int)(DrawerNode::current_row + 1) * SPACE;
+    const int width = (int)(DrawerNode::current_column + 1) * SPACE + TEXT_WIDTH;
+    const int height = (int)(DrawerNode::current_row + 1) * SPACE;
 
     std::cout << "image size = " << width << " : " << height << std::endl;
     image_ = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
@@ -134,8 +134,8 @@ namespace ontologenius {
 
   void TreeDrawer::drawNode(DrawerNode* node)
   {
-    int x = SPACE / 2 + (int)node->column_ * SPACE;
-    int y = SPACE / 2 + (int)node->row_ * SPACE;
+    const int x = SPACE / 2 + (int)node->column_ * SPACE;
+    const int y = SPACE / 2 + (int)node->row_ * SPACE;
 
     auto color_1 = cvScalar(89, 26, 16);
     auto color_2 = cvScalar(149, 86, 86);
@@ -151,8 +151,8 @@ namespace ontologenius {
 
   void TreeDrawer::drawNodeText(DrawerNode* node)
   {
-    int width_base = (int)(DrawerNode::current_column + 1) * SPACE;
-    int y = SPACE / 2 + (int)node->row_ * SPACE;
+    const int width_base = (int)(DrawerNode::current_column + 1) * SPACE;
+    const int y = SPACE / 2 + (int)node->row_ * SPACE;
 
     auto color = cvScalar(89, 26, 16);
     if(node->is_data_ == false)
@@ -166,11 +166,11 @@ namespace ontologenius {
 
   void TreeDrawer::drawLink(DrawerNode* node_from, DrawerNode* node_to)
   {
-    int x_from = SPACE / 2 + (int)node_from->column_ * SPACE;
-    int y_from = SPACE / 2 + (int)node_from->row_ * SPACE;
+    const int x_from = SPACE / 2 + (int)node_from->column_ * SPACE;
+    const int y_from = SPACE / 2 + (int)node_from->row_ * SPACE;
 
-    int x_to = SPACE / 2 + (int)node_to->column_ * SPACE;
-    int y_to = SPACE / 2 + (int)node_to->row_ * SPACE;
+    const int x_to = SPACE / 2 + (int)node_to->column_ * SPACE;
+    const int y_to = SPACE / 2 + (int)node_to->row_ * SPACE;
 
     if(node_from->column_ == node_to->column_)
     {
@@ -204,8 +204,8 @@ namespace ontologenius {
 
   void TreeDrawer::drawDelim()
   {
-    int width = (int)(DrawerNode::current_column + 1) * SPACE;
-    int height = (int)(DrawerNode::current_row + 1) * SPACE;
+    const int width = (int)(DrawerNode::current_column + 1) * SPACE;
+    const int height = (int)(DrawerNode::current_row + 1) * SPACE;
     cvLine(image_, cvPoint(width, 0),
            cvPoint(width, height),
            cvScalar(50, 50, 50), 3);
@@ -218,7 +218,7 @@ namespace ontologenius {
 
     for(auto& node : commit_nodes_)
     {
-      int delta = id - node.first;
+      const int delta = id - node.first;
       if(delta > 0)
       {
         if((size_t)delta < min_delta)

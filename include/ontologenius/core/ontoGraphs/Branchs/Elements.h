@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/RelationsWithInductions.h"
+#include "ontologenius/core/ontoGraphs/Branchs/Triplet.h"
 
 namespace ontologenius {
 
@@ -110,7 +111,7 @@ namespace ontologenius {
       this->induced_traces = other.induced_traces;
     }
 
-    PairElement& operator=(const PairElement& other) = delete;
+    PairElement& operator=(const PairElement& other)
     {
       // A copy constructor with a pointer is dangerous, never delete it
       // it should be managed by a Graph class

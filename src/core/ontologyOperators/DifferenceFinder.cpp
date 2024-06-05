@@ -76,7 +76,7 @@ namespace ontologenius {
           }
 
         bool same = false;
-        for(size_t index : found_indexs)
+        for(const size_t index : found_indexs)
         {
           if(comp1.object_properties_on_[i] == comp2.object_properties_on_[index])
             same = true;
@@ -115,7 +115,7 @@ namespace ontologenius {
           }
 
         bool same = false;
-        for(size_t index : found_indexs)
+        for(const size_t index : found_indexs)
         {
           if(comp1.data_properties_data_[i] == comp2.data_properties_data_[index])
             same = true;

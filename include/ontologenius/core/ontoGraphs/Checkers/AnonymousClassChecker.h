@@ -1,6 +1,10 @@
 #ifndef ONTOLOGENIUS_ANONYMOUSCLASSCHECKER_H
 #define ONTOLOGENIUS_ANONYMOUSCLASSCHECKER_H
 
+#include <vector>
+
+#include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Checkers/ValidityChecker.h"
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 

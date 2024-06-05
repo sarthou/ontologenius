@@ -1,6 +1,5 @@
 #include "ontologenius/core/ontoGraphs/Checkers/IndividualChecker.h"
 
-#include <algorithm>
 #include <cstddef>
 #include <shared_mutex>
 #include <string>
@@ -15,7 +14,7 @@ namespace ontologenius {
 
   size_t IndividualChecker::check()
   {
-    std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
     std::unordered_set<ClassBranch*> ups;
 
     for(IndividualBranch* indiv : graph_vect_)
@@ -74,9 +73,7 @@ namespace ontologenius {
         IndividualBranch* intersection = individual_graph_->firstIntersection(sames, same.elem->distinct_);
         if(intersection != nullptr)
         {
-          if(same.elem == intersection)
-            continue;
-          else if(indiv == intersection)
+          if((same.elem == intersection) || (indiv == intersection))
             continue;
           else if(indiv == same.elem)
             printError("'" + indiv->value() + "' can't be same and distinct with '" + intersection->value() + "'");
@@ -89,7 +86,7 @@ namespace ontologenius {
 
   void IndividualChecker::checkReflexive(IndividualBranch* indiv)
   {
-    for(IndivObjectRelationElement& object_relation : indiv->object_relations_)
+    for(const IndivObjectRelationElement& object_relation : indiv->object_relations_)
     {
       if(object_relation.first->properties_.reflexive_property_)
       {
@@ -106,7 +103,7 @@ namespace ontologenius {
 
   void IndividualChecker::checkObectRelations(IndividualBranch* indiv, const std::unordered_set<ClassBranch*>& up_from)
   {
-    for(IndivObjectRelationElement& object_relation : indiv->object_relations_)
+    for(const IndivObjectRelationElement& object_relation : indiv->object_relations_)
     {
       std::unordered_set<ClassBranch*> domain;
       std::unordered_set<ClassBranch*> range;
@@ -149,7 +146,7 @@ namespace ontologenius {
 
   void IndividualChecker::checkDataRelations(IndividualBranch* indiv, const std::unordered_set<ClassBranch*>& up_from)
   {
-    for(IndivDataRelationElement& relation : indiv->data_relations_)
+    for(const IndivDataRelationElement& relation : indiv->data_relations_)
     {
       std::unordered_set<ClassBranch*> domain;
       individual_graph_->data_property_graph_->getDomainPtr(relation.first, domain, 0);
@@ -181,7 +178,7 @@ namespace ontologenius {
 
   void IndividualChecker::checkAssymetric(IndividualBranch* indiv)
   {
-    for(IndivObjectRelationElement& object_relation : indiv->object_relations_)
+    for(const IndivObjectRelationElement& object_relation : indiv->object_relations_)
     {
       if(object_relation.first->properties_.antisymetric_property_)
         if(symetricExist(indiv, object_relation.first, object_relation.second))
@@ -191,7 +188,7 @@ namespace ontologenius {
 
   bool IndividualChecker::symetricExist(IndividualBranch* indiv_on, ObjectPropertyBranch* sym_prop, IndividualBranch* sym_indiv)
   {
-    for(IndivObjectRelationElement& object_relation : sym_indiv->object_relations_)
+    for(const IndivObjectRelationElement& object_relation : sym_indiv->object_relations_)
     {
       if(object_relation.first->get() == sym_prop->get())
         if(object_relation.second->get() == indiv_on->get())

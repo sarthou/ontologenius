@@ -2,19 +2,20 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <iostream>
 #include <numeric>
 #include <string>
 #include <vector>
 
+#include "ontologenius/core/feeder/FeedStorage.h"
+
 namespace ontologenius {
 
-  VersionNode::VersionNode(size_t order, VersionNode* prev)
+  VersionNode::VersionNode(size_t order, VersionNode* prev) : order_id_(order),
+                                                              prev_(prev)
   {
-    prev_ = prev;
     if(prev_ != nullptr)
       prev_->addNext(this);
-    id_ = "";
-    order_id_ = order;
   }
 
   VersionNode::VersionNode(size_t order, const std::string& id) : id_(id),

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <regex>
 #include <string>
 #include <utility>
 #include <vector>
@@ -119,7 +120,7 @@ namespace ontologenius {
         }
         else if(raw_turtle[i] == '#')
         {
-          size_t j = raw_turtle.find('\n', i + 1);
+          const size_t j = raw_turtle.find('\n', i + 1);
           raw_turtle.erase(i, j - i);
           i--;
         }
@@ -256,7 +257,7 @@ namespace ontologenius {
         OntologyReader::push(individual_vector_.object_relations_, PairElement<std::string, std::string>(property, object.first, 1.0), "$", "^");
       else
       {
-        LiteralNode data(object.second, object.first);
+        const LiteralNode data(object.second, object.first);
         OntologyReader::push(individual_vector_.data_relations_, PairElement<std::string, std::string>(property, data.toString(), 1.0), "$", "^");
       }
     }
@@ -297,7 +298,7 @@ namespace ontologenius {
     char next_to_find = 0x00;
     bool is_multi_line = false;
 
-    char first_char = text[pose];
+    const char first_char = text[pose];
     if(first_char == '<')
       return text.find('>', pose + 1);
     else if(first_char == '"')
@@ -367,7 +368,7 @@ namespace ontologenius {
       if(element[0] == '<')
       {
         size_t pose = element.rfind('/');
-        size_t dash_pose = element.find('#', pose);
+        const size_t dash_pose = element.find('#', pose);
         if(dash_pose != std::string::npos)
           pose = dash_pose;
 
@@ -378,7 +379,7 @@ namespace ontologenius {
       }
       else
       {
-        size_t pose = element.rfind(':');
+        const size_t pose = element.rfind(':');
         if(pose != std::string::npos)
           return element.substr(pose + 1, element.size() - pose - 1);
         else
@@ -425,7 +426,7 @@ namespace ontologenius {
       if(element[0] == '<')
       {
         size_t pose = element.rfind('/');
-        size_t dash_pose = element.find('#', pose);
+        const size_t dash_pose = element.find('#', pose);
         if(dash_pose != std::string::npos)
           pose = dash_pose;
 
@@ -438,7 +439,7 @@ namespace ontologenius {
       }
       else if((element[0] == '"') || (element[0] == '\''))
       {
-        size_t end_pose = endOfBlock(element, 0);
+        const size_t end_pose = endOfBlock(element, 0);
         object.first = element.substr(1, end_pose - 1); // todo manage multiline
         if(end_pose == element.size() - 1)
           object.second = "string";
@@ -446,13 +447,13 @@ namespace ontologenius {
           object.second = element.substr(end_pose + 1);
         else if(element[end_pose + 1] == '^')
         {
-          std::string type = element.substr(end_pose + 3);
+          const std::string type = element.substr(end_pose + 3);
           object.second = getSubject(type);
         }
       }
       else
       {
-        size_t pose = element.rfind(':');
+        const size_t pose = element.rfind(':');
         if(pose != std::string::npos)
           object.first = element.substr(pose + 1, element.size() - pose - 1);
         else

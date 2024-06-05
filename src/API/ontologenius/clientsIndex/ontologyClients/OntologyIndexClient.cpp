@@ -1,8 +1,8 @@
 #include "ontologenius/API/ontologenius/clientsIndex/ontologyClients/OntologyIndexClient.h"
 
+#include <cstdint>
 #include <string>
 #include <vector>
-#include <cstdint>
 
 namespace onto {
 
@@ -20,7 +20,7 @@ namespace onto {
 
   bool OntologyIndexClient::isA(int64_t index, int64_t base_class)
   {
-    std::vector<int64_t> res = getUp(index, -1, base_class);
+    const std::vector<int64_t> res = getUp(index, -1, base_class);
     if(res.empty())
       return false;
     else
@@ -100,7 +100,7 @@ namespace onto {
 
   bool OntologyIndexClient::exist(int64_t index)
   {
-    std::string param = std::to_string(index);
+    const std::string param = std::to_string(index);
     return (callIndex("exist", param) != 0);
   }
 

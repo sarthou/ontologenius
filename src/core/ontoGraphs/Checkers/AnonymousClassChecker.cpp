@@ -19,7 +19,7 @@ namespace ontologenius {
 
   size_t AnonymousClassChecker::check()
   {
-    std::shared_lock<std::shared_timed_mutex> lock(ano_class_graph_->mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(ano_class_graph_->mutex_);
 
     checkDisjoint();
 
@@ -106,7 +106,7 @@ namespace ontologenius {
     for(const auto& elem_right : class_right)
       for(const auto& elem_left : classes_left)
       {
-        std::string err = checkClassesDisjointness(elem_left.elem, elem_right.elem);
+        const std::string err = checkClassesDisjointness(elem_left.elem, elem_right.elem);
         if(err.empty() == false)
           errs.push_back(err);
       }
@@ -136,7 +136,7 @@ namespace ontologenius {
       if(types.size() > 1)
       {
         std::string exp;
-        for(auto& type : types)
+        for(const auto& type : types)
         {
           if(exp.empty() == false)
             exp += ", ";
@@ -197,12 +197,9 @@ namespace ontologenius {
     {
       for(const auto& elem : ranges)
       {
-        std::string err = checkClassesDisjointness(ano_elem->class_involved_, elem.elem);
+        const std::string err = checkClassesDisjointness(ano_elem->class_involved_, elem.elem);
         if(err.empty() == false)
-        {
-          err = "and class " + ano_elem->class_involved_->value() + " because of " + err;
-          errs.push_back(err);
-        }
+          errs.emplace_back("and class " + ano_elem->class_involved_->value() + " because of " + err);
       }
     }
     return errs;
@@ -282,10 +279,11 @@ namespace ontologenius {
         {
           auto origin_left = getDomainOrigin(ano_elem, i);
           auto origin_right = getDomainOrigin(ano_elem, j);
-          std::string err_left = (origin_left.second ? "domain of property " : "class ") + origin_left.first;
-          std::string err_right = (origin_right.second ? "domain of property " : "class ") + origin_right.first;
+          const std::string err_left = (origin_left.second ? "domain of property " : "class ") + origin_left.first;
+          const std::string err_right = (origin_right.second ? "domain of property " : "class ") + origin_right.first;
           for(auto& err : errs)
-            printError("In equivalence of class " + current_ano_ + ": error between " + err_left + " and " + err_right +
+            printError("In equivalence of class " + current_ano_ + ": error between " +
+                       err_left + " and " + err_right +
                        " because of " + err);
         }
       }
@@ -311,7 +309,7 @@ namespace ontologenius {
     {
       for(auto& range_elem : ano_elem->object_property_involved_->ranges_)
       {
-        std::string err = checkClassesDisjointness(range_elem.elem, ano_elem->class_involved_);
+        const std::string err = checkClassesDisjointness(range_elem.elem, ano_elem->class_involved_);
         if(err.empty() == false)
           printError("In equivalence of class " + current_ano_ + ": error between range of property " + ano_elem->object_property_involved_->value() +
                      " and class " + ano_elem->class_involved_->value() + " because of " + err);

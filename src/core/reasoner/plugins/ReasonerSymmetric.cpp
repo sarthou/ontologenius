@@ -11,7 +11,7 @@ namespace ontologenius {
 
   void ReasonerSymmetric::postReason()
   {
-    std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
+    const std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
     // not impacted by same as
     for(const auto& indiv : ontology_->individual_graph_.get())
     {

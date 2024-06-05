@@ -137,7 +137,7 @@ namespace ontologenius {
       return;
     }
 
-    std::string tmp_name = writer_.getFileName();
+    const std::string tmp_name = writer_.getFileName();
 
     if(file_name.empty() == false)
       writer_.setFileName(file_name);

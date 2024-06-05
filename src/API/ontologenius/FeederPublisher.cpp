@@ -9,37 +9,37 @@ namespace onto {
 
   void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& on, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    std::string msg = "[add]" + from + "|" + property + "|" + on;
+    const std::string msg = "[add]" + from + "|" + property + "|" + on;
     publishStamped(msg, stamp);
   }
 
   void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    std::string msg = "[add]" + from + "|" + property + "|" + type + "#" + value;
+    const std::string msg = "[add]" + from + "|" + property + "|" + type + "#" + value;
     publishStamped(msg, stamp);
   }
 
   void FeederPublisher::addInheritage(const std::string& from, const std::string& on, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    std::string msg = "[add]" + from + "|+|" + on;
+    const std::string msg = "[add]" + from + "|+|" + on;
     publishStamped(msg, stamp);
   }
 
   void FeederPublisher::addLanguage(const std::string& from, const std::string& lang, const std::string& name, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    std::string msg = "[add]" + from + "|@" + lang + "|" + name;
+    const std::string msg = "[add]" + from + "|@" + lang + "|" + name;
     publishStamped(msg, stamp);
   }
 
   void FeederPublisher::addConcept(const std::string& from, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    std::string msg = "[add]" + from + "|";
+    const std::string msg = "[add]" + from + "|";
     publishStamped(msg, stamp);
   }
 
   void FeederPublisher::addInverseOf(const std::string& property, const std::string& inverse_property, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    std::string msg = "[add]" + property + "|<-|" + inverse_property;
+    const std::string msg = "[add]" + property + "|<-|" + inverse_property;
     publishStamped(msg, stamp);
   }
 
@@ -53,37 +53,37 @@ namespace onto {
 
   void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& on, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    std::string msg = "[del]" + from + "|" + property + "|" + on;
+    const std::string msg = "[del]" + from + "|" + property + "|" + on;
     publishStamped(msg, stamp);
   }
 
   void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    std::string msg = "[del]" + from + "|" + property + "|" + type + "#" + value;
+    const std::string msg = "[del]" + from + "|" + property + "|" + type + "#" + value;
     publishStamped(msg, stamp);
   }
 
   void FeederPublisher::removeInheritage(const std::string& from, const std::string& on, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    std::string msg = "[del]" + from + "|+|" + on;
+    const std::string msg = "[del]" + from + "|+|" + on;
     publishStamped(msg, stamp);
   }
 
   void FeederPublisher::removeLanguage(const std::string& from, const std::string& lang, const std::string& name, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    std::string msg = "[del]" + from + "|@" + lang + "|" + name;
+    const std::string msg = "[del]" + from + "|@" + lang + "|" + name;
     publishStamped(msg, stamp);
   }
 
   void FeederPublisher::removeConcept(const std::string& from, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    std::string msg = "[del]" + from + "|";
+    const std::string msg = "[del]" + from + "|";
     publishStamped(msg, stamp);
   }
 
   void FeederPublisher::removeInverseOf(const std::string& property, const std::string& inverse_property, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    std::string msg = "[del]" + property + "|<-|" + inverse_property;
+    const std::string msg = "[del]" + property + "|<-|" + inverse_property;
     publishStamped(msg, stamp);
   }
 
@@ -120,7 +120,7 @@ namespace onto {
 
   bool FeederPublisher::commit(const std::string& commit_name, int32_t timeout)
   {
-    std::string msg = "[commit]" + commit_name + "|";
+    const std::string msg = "[commit]" + commit_name + "|";
     updated_ = false;
 
     std::chrono::time_point<std::chrono::system_clock> start;
@@ -141,7 +141,7 @@ namespace onto {
 
   bool FeederPublisher::checkout(const std::string& commit_name, int32_t timeout)
   {
-    std::string msg = "[checkout]" + commit_name + "|";
+    const std::string msg = "[checkout]" + commit_name + "|";
 
     updated_ = false;
 

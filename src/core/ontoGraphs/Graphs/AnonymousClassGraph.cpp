@@ -65,10 +65,10 @@ namespace ontologenius {
     // class, indiv or literal node only
     if(vect_equiv.size() == 1)
     {
-      std::string equiv = vect_equiv.front();
+      const std::string equiv = vect_equiv.front();
       if(isIn("http://www.w3.org/", equiv))
       {
-        std::string type = split(equiv, "#").back();
+        const std::string type = split(equiv, "#").back();
         LiteralNode* literal = data_property_graph_->createLiteral(type + "#");
         ano_element->card_.card_range_ = literal;
       }
@@ -85,7 +85,7 @@ namespace ontologenius {
     }
     else
     {
-      std::string property = vect_equiv.front();
+      const std::string property = vect_equiv.front();
 
       if(vect_equiv[1] == "some")
         ano_element->card_.card_type_ = cardinality_some;
@@ -118,7 +118,7 @@ namespace ontologenius {
         if(isIn("http://www.w3.org/", vect_equiv.back()))
         {
           ano_element->data_property_involved_ = data_property_graph_->findOrCreateBranch(property);
-          std::string type = split(vect_equiv.back(), "#").back();
+          const std::string type = split(vect_equiv.back(), "#").back();
           LiteralNode* literal = data_property_graph_->createLiteral(type + "#");
           ano_element->card_.card_range_ = literal;
         }
@@ -153,9 +153,9 @@ namespace ontologenius {
 
   AnonymousClassBranch* AnonymousClassGraph::add(const std::string& value, AnonymousClassVectors_t& ano)
   {
-    std::lock_guard<std::shared_timed_mutex> lock(Graph<AnonymousClassBranch>::mutex_);
+    const std::lock_guard<std::shared_timed_mutex> lock(Graph<AnonymousClassBranch>::mutex_);
 
-    std::string ano_name = "anonymous_" + value;
+    const std::string ano_name = "anonymous_" + value;
     AnonymousClassBranch* anonymous_branch = new AnonymousClassBranch(ano_name);
     ClassBranch* class_branch = class_graph_->findOrCreateBranch(value);
 
@@ -181,7 +181,7 @@ namespace ontologenius {
 
   void AnonymousClassGraph::printTree(AnonymousClassElement* ano_elem, size_t level, bool root) const
   {
-    std::string space(level * 4, ' ');
+    const std::string space(level * 4, ' ');
     std::string tmp;
 
     if(root)

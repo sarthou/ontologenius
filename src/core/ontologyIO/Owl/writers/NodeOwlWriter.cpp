@@ -12,11 +12,11 @@ namespace ontologenius {
     {
       for(size_t i = 0; i < it.second.size(); i++)
       {
-        std::string tmp = "<rdfs:label xml:lang=\"" +
-                          it.first +
-                          "\">" +
-                          it.second[i] +
-                          +"</rdfs:label>\n";
+        const std::string tmp = "<rdfs:label xml:lang=\"" +
+                                it.first +
+                                "\">" +
+                                it.second[i] +
+                                +"</rdfs:label>\n";
         writeString(tmp, 2);
       }
     }
@@ -28,11 +28,11 @@ namespace ontologenius {
     {
       for(size_t i = 0; i < it.second.size(); i++)
       {
-        std::string tmp = "<onto:label xml:lang=\"" +
-                          it.first +
-                          "\">" +
-                          it.second[i] +
-                          +"</onto:label>\n";
+        const std::string tmp = "<onto:label xml:lang=\"" +
+                                it.first +
+                                "\">" +
+                                it.second[i] +
+                                +"</onto:label>\n";
         writeString(tmp, 2);
       }
     }

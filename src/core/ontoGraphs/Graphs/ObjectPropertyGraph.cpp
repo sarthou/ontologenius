@@ -36,7 +36,7 @@ namespace ontologenius {
 
   ObjectPropertyBranch* ObjectPropertyGraph::add(const std::string& value, ObjectPropertyVectors_t& property_vectors)
   {
-    std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
+    const std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
     /**********************
     ** Mothers
     **********************/
@@ -137,7 +137,7 @@ namespace ontologenius {
 
   void ObjectPropertyGraph::add(std::vector<std::string>& disjoints)
   {
-    std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
+    const std::lock_guard<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
     for(size_t disjoints_i = 0; disjoints_i < disjoints.size(); disjoints_i++)
     {
@@ -162,7 +162,7 @@ namespace ontologenius {
   std::unordered_set<std::string> ObjectPropertyGraph::getInverse(const std::string& value)
   {
     std::unordered_set<std::string> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
     ObjectPropertyBranch* branch = container_.find(value);
     if(branch != nullptr)
@@ -175,7 +175,7 @@ namespace ontologenius {
   std::unordered_set<index_t> ObjectPropertyGraph::getInverse(index_t value)
   {
     std::unordered_set<index_t> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
     ObjectPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
     if(branch != nullptr)
@@ -188,7 +188,7 @@ namespace ontologenius {
   std::unordered_set<std::string> ObjectPropertyGraph::getDomain(const std::string& value, size_t depth)
   {
     std::unordered_set<std::string> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
     ObjectPropertyBranch* branch = container_.find(value);
     std::unordered_set<ObjectPropertyBranch*> up_trace;
@@ -201,7 +201,7 @@ namespace ontologenius {
   std::unordered_set<index_t> ObjectPropertyGraph::getDomain(index_t value, size_t depth)
   {
     std::unordered_set<index_t> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
     ObjectPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
     std::unordered_set<ObjectPropertyBranch*> up_trace;
@@ -242,7 +242,7 @@ namespace ontologenius {
   std::unordered_set<std::string> ObjectPropertyGraph::getRange(const std::string& value, size_t depth)
   {
     std::unordered_set<std::string> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
     ObjectPropertyBranch* branch = container_.find(value);
     std::unordered_set<ObjectPropertyBranch*> up_trace;
@@ -255,7 +255,7 @@ namespace ontologenius {
   std::unordered_set<index_t> ObjectPropertyGraph::getRange(index_t value, size_t depth)
   {
     std::unordered_set<index_t> res;
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
     ObjectPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
     std::unordered_set<ObjectPropertyBranch*> up_trace;
@@ -315,7 +315,7 @@ namespace ontologenius {
 
   bool ObjectPropertyGraph::addInverseOf(const std::string& from, const std::string& on)
   {
-    std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+    const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     ObjectPropertyBranch* from_branch = container_.find(from);
     ObjectPropertyBranch* on_branch = container_.find(on);
     if((from_branch == nullptr) && (on_branch == nullptr))
