@@ -5,6 +5,7 @@
 #include <unordered_set>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/PropertyBranch.h"
 
 namespace ontologenius {
 

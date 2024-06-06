@@ -3,6 +3,8 @@
 #include <pluginlib/class_list_macros.hpp>
 #include <string>
 
+#include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
+
 namespace ontologenius {
 
   bool ReasonerNone::preReason(const QueryInfo_t& query_info)

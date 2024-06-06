@@ -1,7 +1,7 @@
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
-#include <unordered_set>
 
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/interface/InterfaceParams.h"
@@ -382,7 +382,7 @@ namespace ontologenius {
                                   compat::onto_ros::ServiceWrapper<compat::OntologeniusSparqlService::Response>& res)
   {
     return [this](auto&& req, auto&& res) {
-      std::pair<std::vector<std::string>, std::vector<std::vector<std::string>>> results = sparql_.runStr(req->query);
+      const std::pair<std::vector<std::string>, std::vector<std::vector<std::string>>> results = sparql_.runStr(req->query);
 
       if(results.second.empty() == false)
         res->names = results.first;

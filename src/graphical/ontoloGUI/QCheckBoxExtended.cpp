@@ -1,8 +1,13 @@
 #include "include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
 
-#include <QEvent>
 #include <QHoverEvent>
-#include <QWidget>
+
+#include "qcheckbox.h"
+#include "qcoreevent.h"
+#include "qfont.h"
+#include "qnamespace.h"
+#include "qstring.h"
+#include "qwidget.h"
 
 QCheckBoxExtended::QCheckBoxExtended(QWidget* parent) : QCheckBox(parent)
 {

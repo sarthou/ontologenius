@@ -10,6 +10,7 @@
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
+#include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 
 namespace ontologenius {
 

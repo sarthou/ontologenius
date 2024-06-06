@@ -2,13 +2,14 @@
 #include <QIcon>
 #include <QString>
 #include <csignal>
-#include <thread>
 #include <string>
+#include <thread>
 
 #include "ontologenius/compat/ros.h"
 #include "ontologenius/graphical/ontoloGUI/DarkStyle.h"
 #include "ontologenius/graphical/ontoloGUI/ontologui.h"
 #include "ontologenius/utils/Commands.h"
+#include "qcoreapplication.h"
 
 void spinThread(bool* /*run*/)
 {

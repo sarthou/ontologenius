@@ -5,6 +5,7 @@
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 #include "ontologenius/API/ontologenius/OntologyManipulatorIndex.h"
+#include "ontologenius/API/ontologenius/clients/ManagerClient.h"
 
 namespace onto {
 

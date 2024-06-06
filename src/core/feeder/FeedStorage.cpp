@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <queue>
 #include <regex>
 #include <string>
 #include <vector>

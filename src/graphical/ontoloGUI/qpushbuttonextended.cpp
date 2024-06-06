@@ -1,8 +1,13 @@
 #include "include/ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
 
-#include <QEvent>
 #include <QHoverEvent>
-#include <QWidget>
+
+#include "qcoreevent.h"
+#include "qfont.h"
+#include "qnamespace.h"
+#include "qpushbutton.h"
+#include "qstring.h"
+#include "qwidget.h"
 
 QPushButtonExtended::QPushButtonExtended(QWidget* parent) : QPushButton(parent)
 {

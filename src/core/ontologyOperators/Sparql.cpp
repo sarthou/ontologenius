@@ -12,6 +12,7 @@
 
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h" // for index_t
 #include "ontologenius/core/ontologyOperators/SparqlUtils.h"
+#include "ontologenius/graphical/Display.h"
 #include "ontologenius/utils/String.h"
 
 namespace ontologenius {

@@ -384,7 +384,7 @@ namespace ontologenius {
                                        compat::onto_ros::ServiceWrapper<compat::OntologeniusSparqlIndexService::Response>& res)
   {
     return [this](auto&& req, auto&& res) {
-      std::pair<std::vector<std::string>, std::vector<std::vector<index_t>>> results = sparql_.runIndex(req->query);
+      const std::pair<std::vector<std::string>, std::vector<std::vector<index_t>>> results = sparql_.runIndex(req->query);
 
       if(results.second.empty() == false)
         res->names = results.first;

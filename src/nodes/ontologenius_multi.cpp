@@ -22,7 +22,7 @@
 void handler(int sig)
 {
   void* array[10];
-  size_t size = backtrace(array, 10);
+  const size_t size = backtrace(array, 10);
 
   fprintf(stderr, "Error: signal %d:\n", sig);
   backtrace_symbols_fd(array, size, STDERR_FILENO);
@@ -71,13 +71,13 @@ std::vector<std::string> getDiff(const std::string& param, int* res_code)
   std::vector<std::string> res;
 
   ontologenius::DifferenceFinder diff;
-  std::regex base_regex("(.*)\\|(.*)\\|(.*)");
+  const std::regex base_regex("(.*)\\|(.*)\\|(.*)");
   std::smatch base_match;
   if(std::regex_match(param, base_match, base_regex))
   {
     if(base_match.size() == 4)
     {
-      std::string onto1 = base_match[1].str();
+      const std::string onto1 = base_match[1].str();
       ontologenius::Ontology* onto1_ptr = nullptr;
       auto it = interfaces.find(onto1);
       if(it == interfaces.end())
@@ -88,7 +88,7 @@ std::vector<std::string> getDiff(const std::string& param, int* res_code)
       else
         onto1_ptr = interfaces[onto1]->getOntology();
 
-      std::string onto2 = base_match[2].str();
+      const std::string onto2 = base_match[2].str();
       ontologenius::Ontology* onto2_ptr = nullptr;
       it = interfaces.find(onto2);
       if(it == interfaces.end())
@@ -99,7 +99,7 @@ std::vector<std::string> getDiff(const std::string& param, int* res_code)
       else
         onto2_ptr = interfaces[onto2]->getOntology();
 
-      std::string concept = base_match[3].str();
+      const std::string concept = base_match[3].str();
       res = diff.getDiff(onto1_ptr, onto2_ptr, concept);
     }
   }
@@ -148,14 +148,14 @@ bool managerHandle(ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::
     }
     else if(req->action == "copy")
     {
-      std::regex base_regex("(.*)=(.*)");
+      const std::regex base_regex("(.*)=(.*)");
       std::smatch base_match;
       if(std::regex_match(req->param, base_match, base_regex))
       {
         if(base_match.size() == 3)
         {
-          std::string base_name = base_match[2].str();
-          std::string copy_name = base_match[1].str();
+          const std::string base_name = base_match[2].str();
+          const std::string copy_name = base_match[1].str();
           auto it = interfaces.find(base_name);
           if(it == interfaces.end()) // if interface to copy does not exist
             res->code = NO_EFFECT;
@@ -231,7 +231,7 @@ int main(int argc, char** argv)
   params.set(argc, argv);
   params.display();
 
-  ontologenius::compat::onto_ros::Service<ontologenius::compat::OntologeniusService> service("ontologenius/manage", managerHandle);
+  const ontologenius::compat::onto_ros::Service<ontologenius::compat::OntologeniusService> service("ontologenius/manage", managerHandle);
   ontologenius::compat::onto_ros::Node::get().spin();
 
   std::vector<std::string> interfaces_names;

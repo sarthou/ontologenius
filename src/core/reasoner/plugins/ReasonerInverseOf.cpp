@@ -1,6 +1,5 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerInverseOf.h"
 
-#include <algorithm>
 #include <mutex>
 #include <pluginlib/class_list_macros.hpp>
 #include <shared_mutex>
@@ -8,6 +7,8 @@
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
+#include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 
 namespace ontologenius {
 

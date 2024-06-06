@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
+
 namespace ontologenius {
 
   WordTable ValuedNode::table;

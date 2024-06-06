@@ -7,10 +7,14 @@
 #include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 
 namespace ontologenius {
 
-  AnnotationOwlWriter::AnnotationOwlWriter(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, const std::string& ns)
+  AnnotationOwlWriter::AnnotationOwlWriter(ObjectPropertyGraph* object_property_graph,
+                                           DataPropertyGraph* data_property_graph,
+                                           const std::string& ns)
   {
     object_property_graph_ = object_property_graph;
     data_property_graph_ = data_property_graph;
@@ -25,7 +29,7 @@ namespace ontologenius {
       const std::shared_lock<std::shared_timed_mutex> lock(object_property_graph_->mutex_);
 
       const std::vector<ObjectPropertyBranch*> properties = object_property_graph_->get();
-      for(auto& property : properties)
+      for(auto* property : properties)
         if(property->annotation_usage_)
           writeAnnotation(property);
     }
@@ -34,7 +38,7 @@ namespace ontologenius {
       const std::shared_lock<std::shared_timed_mutex> lock(data_property_graph_->mutex_);
 
       const std::vector<DataPropertyBranch*> properties = data_property_graph_->get();
-      for(auto& property : properties)
+      for(auto* property : properties)
         if(property->annotation_usage_)
           writeAnnotation(property);
     }

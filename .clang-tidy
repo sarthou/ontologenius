@@ -112,4 +112,4 @@ CheckOptions:
     value: false
 
 ExtraArgs:
-  -frelaxed-template-template-args
+  - '-frelaxed-template-template-args'

@@ -1,8 +1,12 @@
 #include "include/ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
 
-#include <QEvent>
 #include <QHoverEvent>
-#include <QWidget>
+
+#include "qcoreevent.h"
+#include "qlineedit.h"
+#include "qnamespace.h"
+#include "qstring.h"
+#include "qwidget.h"
 
 QLineEditExtended::QLineEditExtended(QWidget* parent) : QLineEdit(parent)
 {

@@ -3,7 +3,6 @@
 #include <QMainWindow>
 #include <QObject>
 #include <QScrollBar>
-#include <QWidget>
 #include <algorithm>
 #include <cstddef>
 #include <regex>
@@ -13,6 +12,11 @@
 #include "ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
 #include "ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
 #include "ui_ontologui.h"
+// Qt includes
+#include "qcoreevent.h"
+#include "qobjectdefs.h"
+#include "qstring.h"
+#include "qwidget.h"
 
 OntoloGUI::OntoloGUI(QWidget* parent) : QMainWindow(parent),
                                         ui_(new Ui::OntoloGUI)

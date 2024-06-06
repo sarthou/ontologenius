@@ -1,6 +1,9 @@
 #include "ontologenius/interface/RosInterface.h"
 
+#include <iostream>
 #include <string>
+#include <unordered_set>
+#include <vector>
 
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
@@ -70,7 +73,7 @@ namespace ontologenius {
     std::string dedicated_intern_file = intern_file;
     if(name_.empty() == false)
     {
-      size_t pose = dedicated_intern_file.find(".owl");
+      const size_t pose = dedicated_intern_file.find(".owl");
       if(pose != std::string::npos)
         dedicated_intern_file.insert(pose, "_" + name_);
     }
@@ -131,7 +134,7 @@ namespace ontologenius {
     idx_services.emplace_back(getTopicName("data_property_index"), &RosInterface::dataPropertyIndexHandle, this);
     idx_services.emplace_back(getTopicName("individual_index"), &RosInterface::individualIndexHandle, this);
 
-    compat::onto_ros::Service<compat::OntologeniusConversion> srv_conversion(
+    const compat::onto_ros::Service<compat::OntologeniusConversion> srv_conversion(
       getTopicName("conversion"), &RosInterface::conversionHandle, this);
     (void)srv_conversion;
 
@@ -373,13 +376,13 @@ namespace ontologenius {
     while(compat::onto_ros::Node::ok() && (run_ == true))
     {
       feeder_mutex_.lock();
-      bool run = feeder_.run();
+      const bool run = feeder_.run();
       if((run == true) && (run_ == true))
       {
         if(feeder_end == true)
           feeder_end = false;
 
-        std::vector<std::string> notifications = feeder_.getNotifications();
+        const std::vector<std::string> notifications = feeder_.getNotifications();
         for(auto notif : notifications)
         {
           Display::error("[Feeder]" + notif);

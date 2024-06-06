@@ -10,8 +10,12 @@
 #include <utility>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/RelationsWithInductions.h"
+#include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
+#include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 

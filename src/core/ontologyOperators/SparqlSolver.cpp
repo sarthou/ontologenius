@@ -28,13 +28,13 @@ namespace ontologenius {
     SparqlSolution_t initial_solution;
 
     std::smatch match;
-    bool has_matched = std::regex_match(query_, match, sparql_pattern_);
+    const bool has_matched = std::regex_match(query_, match, sparql_pattern_);
     if(has_matched)
     {
       std::string vars = match[2].str();
       removeChar(vars, {'\n', '\r'});
       removeUselessSpace(vars);
-      std::vector<std::string> vars_to_return = split(vars, " ");
+      const std::vector<std::string> vars_to_return = split(vars, " ");
 
       std::string pattern = getPattern(match[5].str());
       removeChar(pattern, {'\n', '\r'});
@@ -61,11 +61,11 @@ namespace ontologenius {
     empty_solution_ = initial_solution;
 
     orderVariables(initial_solution);
-    int index = 0;
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+    const int index = 0;
+    const high_resolution_clock::time_point t1 = high_resolution_clock::now();
     stepDown(initial_solution, index);
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+    const high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    const duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
     std::cout << "took " << time_span.count() * 1000 << "ms" << std::endl;
 
     return SparqlSolver::Iterator(initial_solution, this);

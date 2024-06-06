@@ -1,10 +1,19 @@
 #include "ontologenius/core/ontologyIO/OntologyReader.h"
 
+#include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 
 namespace ontologenius {
 
-  OntologyReader::OntologyReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph)
+  OntologyReader::OntologyReader(ClassGraph* class_graph,
+                                 ObjectPropertyGraph* object_property_graph,
+                                 DataPropertyGraph* data_property_graph,
+                                 IndividualGraph* individual_graph,
+                                 AnonymousClassGraph* anonymous_graph)
   {
     class_graph_ = class_graph;
     object_property_graph_ = object_property_graph;
