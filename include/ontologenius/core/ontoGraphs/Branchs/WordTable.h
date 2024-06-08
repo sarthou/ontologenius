@@ -21,7 +21,7 @@ namespace ontologenius {
     inline index_t add(const std::string& value)
     {
       table_.push_back(value);
-      return table_.size() - 1;
+      return (index_t)table_.size() - 1;
     }
 
     inline std::string& get(index_t index)

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <iterator>
 #include <mutex>
 #include <shared_mutex>
 #include <string>
@@ -10,6 +11,7 @@
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
@@ -250,7 +252,7 @@ namespace ontologenius {
   void DataPropertyGraph::getDomainPtr(DataPropertyBranch* branch, size_t depth, std::unordered_set<ClassBranch*>& res, std::unordered_set<DataPropertyBranch*>& up_trace)
   {
     for(auto& domain : branch->domains_)
-      class_graph_->getDownPtr(domain.elem, res, depth);
+      class_graph_->getDownPtr(domain.elem, res, (int)depth);
 
     for(auto& mother : branch->mothers_)
       if(up_trace.insert(mother.elem).second)

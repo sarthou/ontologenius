@@ -1,5 +1,6 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/AnnotationOwlWriter.h"
 
+#include <cstdio>
 #include <shared_mutex>
 #include <string>
 #include <vector>
@@ -14,10 +15,9 @@ namespace ontologenius {
 
   AnnotationOwlWriter::AnnotationOwlWriter(ObjectPropertyGraph* object_property_graph,
                                            DataPropertyGraph* data_property_graph,
-                                           const std::string& ns)
+                                           const std::string& ns) : object_property_graph_(object_property_graph),
+                                                                    data_property_graph_(data_property_graph)
   {
-    object_property_graph_ = object_property_graph;
-    data_property_graph_ = data_property_graph;
     ns_ = ns;
   }
 

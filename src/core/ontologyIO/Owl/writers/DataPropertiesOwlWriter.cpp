@@ -1,5 +1,6 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/DataPropertiesOwlWriter.h"
 
+#include <cstdio>
 #include <shared_mutex>
 #include <string>
 #include <vector>

@@ -1,12 +1,15 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/ClassOwlWriter.h"
 
 #include <algorithm>
+#include <cstdio>
+#include <iterator>
 #include <set>
 #include <shared_mutex>
 #include <string>
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
@@ -16,9 +19,8 @@
 
 namespace ontologenius {
 
-  ClassOwlWriter::ClassOwlWriter(ClassGraph* class_graph, const std::string& ns)
+  ClassOwlWriter::ClassOwlWriter(ClassGraph* class_graph, const std::string& ns) : class_graph_(class_graph)
   {
-    class_graph_ = class_graph;
     ns_ = ns;
   }
 
@@ -30,7 +32,7 @@ namespace ontologenius {
 
     const std::vector<ClassBranch*> classes = class_graph_->get();
 
-    for(auto& classe : classes)
+    for(auto* classe : classes)
       writeClass(classe);
 
     file_ = nullptr;

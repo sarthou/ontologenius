@@ -15,7 +15,7 @@ namespace ontologenius {
     {
       if(object_relations_[i].second == individual)
         if(object_relations_[i].first == property)
-          return i;
+          return (int)i;
     }
     return -1;
   }
@@ -26,7 +26,7 @@ namespace ontologenius {
     {
       if(data_relations_[i].second == data)
         if(data_relations_[i].first == property)
-          return i;
+          return (int)i;
     }
     return -1;
   }

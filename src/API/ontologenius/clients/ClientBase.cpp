@@ -1,6 +1,7 @@
 #include "ontologenius/API/ontologenius/clients/ClientBase.h"
 
 #include <cstddef>
+#include <cstdint>
 
 namespace onto {
 

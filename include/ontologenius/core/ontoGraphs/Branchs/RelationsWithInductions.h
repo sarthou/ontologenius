@@ -52,9 +52,9 @@ namespace ontologenius {
     {
       relations.erase(relations.begin() + index);
       delete has_induced_object_relations.at(index);
-      has_induced_object_relations.erase(has_induced_object_relations.begin() + index);
+      has_induced_object_relations.erase(has_induced_object_relations.begin() + (int)index);
       delete has_induced_inheritance_relations.at(index);
-      has_induced_inheritance_relations.erase(has_induced_inheritance_relations.begin() + index);
+      has_induced_inheritance_relations.erase(has_induced_inheritance_relations.begin() + (int)index);
     }
 
     void clear()

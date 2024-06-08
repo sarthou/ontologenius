@@ -27,11 +27,7 @@ namespace ontologenius {
                                                                      default_values_(default_values)
     {}
 
-    Parameter(const Parameter& other) : name_(other.name_),
-                                        options_(other.options_),
-                                        values_(other.values_),
-                                        default_values_(other.default_values_)
-    {}
+    Parameter(const Parameter& other) = default;
 
     void insert(const std::string& value)
     {

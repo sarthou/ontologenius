@@ -12,16 +12,17 @@
 #include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
+
   Ontology::Ontology(const std::string& language) : class_graph_(&individual_graph_, &object_property_graph_, &data_property_graph_),
                                                     object_property_graph_(&individual_graph_, &class_graph_),
                                                     data_property_graph_(&individual_graph_, &class_graph_),
                                                     individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
                                                     anonymous_graph_(&class_graph_, &object_property_graph_, &data_property_graph_, &individual_graph_),
                                                     loader_((Ontology&)*this),
-                                                    writer_((Ontology&)*this)
+                                                    writer_((Ontology&)*this),
+                                                    is_preloaded_(false),
+                                                    is_init_(false)
   {
-    is_init_ = false;
-    is_preloaded_ = false;
     class_graph_.setLanguage(language);
     object_property_graph_.setLanguage(language);
     data_property_graph_.setLanguage(language);
@@ -35,15 +36,15 @@ namespace ontologenius {
                                               individual_graph_(other.individual_graph_, &class_graph_, &object_property_graph_, &data_property_graph_),
                                               anonymous_graph_(other.anonymous_graph_, &class_graph_, &object_property_graph_, &data_property_graph_, &individual_graph_),
                                               loader_((Ontology&)*this),
-                                              writer_((Ontology&)*this)
+                                              writer_((Ontology&)*this),
+                                              is_preloaded_(true),
+                                              is_init_(true)
   {
     class_graph_.deepCopy(other.class_graph_);
     object_property_graph_.deepCopy(other.object_property_graph_);
     data_property_graph_.deepCopy(other.data_property_graph_);
     individual_graph_.deepCopy(other.individual_graph_);
 
-    is_init_ = true;
-    is_preloaded_ = true;
     writer_.setFileName("none");
   }
 

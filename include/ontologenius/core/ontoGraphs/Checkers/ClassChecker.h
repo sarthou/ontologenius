@@ -9,7 +9,7 @@ namespace ontologenius {
   class ClassChecker : public ValidityChecker<ClassBranch>
   {
   public:
-    explicit ClassChecker(ClassGraph* graph) : ValidityChecker(graph) { class_graph_ = graph; }
+    explicit ClassChecker(ClassGraph* graph) : ValidityChecker(graph), class_graph_(graph) {}
     ~ClassChecker() override = default;
 
     size_t check() override;

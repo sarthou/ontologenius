@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
@@ -17,6 +18,7 @@
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/ontologyIO/OntologyReader.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
 
@@ -63,7 +65,7 @@ namespace ontologenius {
     std::string response;
     response.resize(size);
     f.seekg(0);
-    f.read(&response[0], size);
+    f.read(response.data(), size);
     f.close();
 
     return read(response, file_name);
@@ -184,7 +186,8 @@ namespace ontologenius {
           current_object = getElement(raw_turtle, i);
           if(current_object.empty())
           {
-            Display::error("[Turtle parsing] fail to parse ttl file around the object of the triplet '" + current_subject + " " + current_property + "'");
+            const std::string err = "[Turtle parsing] fail to parse ttl file around the object of the triplet '" + current_subject + " " + current_property + "'";
+            Display::error(err);
             return;
           }
 
@@ -333,7 +336,7 @@ namespace ontologenius {
 
   std::string OntologyTtlReader::getElement(const std::string& text, size_t pose)
   {
-    size_t end_pose;
+    size_t end_pose = 0;
     if(text[pose] == '<')
       end_pose = endOfBlock(text, pose);
     else if((text[pose] == '"') || (text[pose] == '\''))
@@ -409,9 +412,7 @@ namespace ontologenius {
       return "rdfs:label";
     else if(element == "owl:sameAs")
       return "owl:sameAs";
-    else if(element == "onto:label")
-      return element;
-    else if(element == ":")
+    else if((element == "onto:label") || (element == ":"))
       return element;
     else
       return getSubject(element);
@@ -440,7 +441,7 @@ namespace ontologenius {
       else if((element[0] == '"') || (element[0] == '\''))
       {
         const size_t end_pose = endOfBlock(element, 0);
-        object.first = element.substr(1, end_pose - 1); // todo manage multiline
+        object.first = element.substr(1, end_pose - 1); // TODO manage multiline
         if(end_pose == element.size() - 1)
           object.second = "string";
         else if(element[end_pose + 1] == '@')

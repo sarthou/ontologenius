@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdint>
 #include <map>
 #include <mutex>
 #include <shared_mutex>
@@ -13,6 +14,7 @@
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
@@ -422,7 +424,7 @@ namespace ontologenius {
         }
         else
         {
-          properties[relation.first->get()] = res.size();
+          properties[relation.first->get()] = (int)res.size();
           depths.push_back(depth);
           res.push_back(relation.second->value());
         }
@@ -442,7 +444,7 @@ namespace ontologenius {
         }
         else
         {
-          properties[relation.first->get()] = res.size();
+          properties[relation.first->get()] = (int)res.size();
           depths.push_back(depth);
           res.push_back(relation.second->value());
         }
@@ -476,7 +478,7 @@ namespace ontologenius {
         }
         else
         {
-          properties[relation.first->get()] = res.size();
+          properties[relation.first->get()] = (int)res.size();
           depths.push_back(depth);
           res.push_back(relation.second->get());
         }
@@ -496,7 +498,7 @@ namespace ontologenius {
         }
         else
         {
-          properties[relation.first->get()] = res.size();
+          properties[relation.first->get()] = (int)res.size();
           depths.push_back(depth);
           res.push_back(relation.second->get());
         }
@@ -802,7 +804,7 @@ namespace ontologenius {
         if(data_properties.empty() == false)
         {
           res = std::move(tmp_res);
-          found_depth = current_depth;
+          found_depth = (int)current_depth;
           return;
         }
         else
@@ -932,7 +934,7 @@ namespace ontologenius {
         if(current_depth < (uint32_t)found_depth)
         {
           res = std::move(tmp_res);
-          found_depth = current_depth;
+          found_depth = (int)current_depth;
           return;
         }
 
@@ -1034,7 +1036,7 @@ namespace ontologenius {
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<ClassBranch>::mutex_);
     if(single_same)
     {
-      res.reserve(res.size() + branch->individual_childs_.size() * 1.5);
+      res.reserve(res.size() + (size_t)((double)branch->individual_childs_.size() * 1.5));
       for(auto& indiv : branch->individual_childs_)
         individual_graph_->getLowestSame(indiv.elem, res);
     }
@@ -1056,7 +1058,7 @@ namespace ontologenius {
     }
     else
     {
-      res.reserve(res.size() + branch->individual_childs_.size() * 1.5);
+      res.reserve(res.size() + (size_t)((double)branch->individual_childs_.size() * 1.5));
       for(auto& indiv : branch->individual_childs_)
         individual_graph_->getSame(indiv.elem, res);
     }
@@ -1095,7 +1097,7 @@ namespace ontologenius {
         for(size_t i = 0; i < up->childs_.size();)
         {
           if(up->childs_[i].elem == class_branch)
-            up->childs_.erase(up->childs_.begin() + i);
+            up->childs_.erase(up->childs_.begin() + (int)i);
           else
             i++;
         }
@@ -1149,7 +1151,7 @@ namespace ontologenius {
 
       for(size_t i = 0; i < vect[class_i]->object_relations_.size();)
         if(vect[class_i]->object_relations_[i].second == class_branch)
-          vect[class_i]->object_relations_.erase(vect[class_i]->object_relations_.begin() + i);
+          vect[class_i]->object_relations_.erase(vect[class_i]->object_relations_.begin() + (int)i);
         else
           i++;
     }
@@ -1306,7 +1308,7 @@ namespace ontologenius {
           if((class_on == "_") || (branch_from->object_relations_[i].second->value() == class_on))
           {
             branch_from->object_relations_[i].second->updated_ = true;
-            branch_from->object_relations_.erase(branch_from->object_relations_.begin() + i);
+            branch_from->object_relations_.erase(branch_from->object_relations_.begin() + (int)i);
             branch_from->updated_ = true;
           }
           else
@@ -1332,7 +1334,7 @@ namespace ontologenius {
           if(((type == "_") || (branch_from->data_relations_[i].second->type_ == type)) &&
              ((data == "_") || (branch_from->data_relations_[i].second->value_ == data)))
           {
-            branch_from->data_relations_.erase(branch_from->data_relations_.begin() + i);
+            branch_from->data_relations_.erase(branch_from->data_relations_.begin() + (int)i);
             branch_from->updated_ = true;
           }
           else

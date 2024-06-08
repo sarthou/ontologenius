@@ -1,12 +1,15 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/NodeOwlWriter.h"
 
 #include <cstddef>
+#include <cstdio>
 #include <string>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
+
 namespace ontologenius {
 
-  void NodeOwlWriter::writeDictionary(ValuedNode* node)
+  void NodeOwlWriter::writeDictionary(ValuedNode* node) const
   {
     for(auto& it : node->steady_dictionary_.spoken_)
     {
@@ -22,7 +25,7 @@ namespace ontologenius {
     }
   }
 
-  void NodeOwlWriter::writeMutedDictionary(ValuedNode* node)
+  void NodeOwlWriter::writeMutedDictionary(ValuedNode* node) const
   {
     for(auto& it : node->steady_dictionary_.muted_)
     {
@@ -38,7 +41,7 @@ namespace ontologenius {
     }
   }
 
-  void NodeOwlWriter::writeString(const std::string& text, size_t level)
+  void NodeOwlWriter::writeString(const std::string& text, size_t level) const
   {
     if(file_ != nullptr)
     {

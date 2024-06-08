@@ -1,14 +1,17 @@
 #include <algorithm>
+#include <array>
 #include <csignal>
 #include <cstdio>
 #include <cstdlib>
 #include <execinfo.h>
 #include <iostream>
+#include <iterator>
 #include <map>
 #include <regex>
 #include <string>
 #include <thread>
 #include <unistd.h>
+#include <utility>
 #include <vector>
 
 #include "ontologenius/compat/ros.h"
@@ -21,11 +24,11 @@
 
 void handler(int sig)
 {
-  void* array[10];
-  const size_t size = backtrace(array, 10);
+  std::array<void*, 10> array;
+  const int size = backtrace(array.data(), 10);
 
   fprintf(stderr, "Error: signal %d:\n", sig);
-  backtrace_symbols_fd(array, size, STDERR_FILENO);
+  backtrace_symbols_fd(array.data(), size, STDERR_FILENO);
   exit(1);
 }
 

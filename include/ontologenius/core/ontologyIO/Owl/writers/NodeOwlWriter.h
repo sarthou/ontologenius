@@ -11,16 +11,16 @@ namespace ontologenius {
   class NodeOwlWriter
   {
   public:
-    NodeOwlWriter() { file_ = nullptr; };
+    NodeOwlWriter() : file_(nullptr) {}
     ~NodeOwlWriter() = default;
 
     FILE* file_;
     std::string ns_;
 
-    void writeDictionary(ValuedNode* node);
-    void writeMutedDictionary(ValuedNode* node);
+    void writeDictionary(ValuedNode* node) const;
+    void writeMutedDictionary(ValuedNode* node) const;
 
-    void writeString(const std::string& text, size_t level = 0);
+    void writeString(const std::string& text, size_t level = 0) const;
 
     template<typename T>
     std::string getProba(SingleElement<T>& element)

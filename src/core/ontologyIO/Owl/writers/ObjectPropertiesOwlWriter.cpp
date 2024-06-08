@@ -1,5 +1,6 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/ObjectPropertiesOwlWriter.h"
 
+#include <cstdio>
 #include <shared_mutex>
 #include <string>
 #include <vector>
@@ -21,7 +22,7 @@ namespace ontologenius {
     const std::shared_lock<std::shared_timed_mutex> lock(property_graph_->mutex_);
 
     const std::vector<ObjectPropertyBranch*> properties = property_graph_->get();
-    for(auto& property : properties)
+    for(auto* property : properties)
       writeProperty(property);
 
     file_ = nullptr;

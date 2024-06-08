@@ -1,13 +1,23 @@
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
 #include <algorithm>
+#include <cstddef>
+#include <cstdint>
+#include <iterator>
 #include <map>
 #include <shared_mutex>
 #include <string>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
@@ -1576,7 +1586,7 @@ namespace ontologenius {
         for(size_t i = 0; i < up->individual_childs_.size();)
         {
           if(up->individual_childs_[i] == indiv)
-            up->individual_childs_.erase(up->individual_childs_.begin() + i);
+            up->individual_childs_.erase(up->individual_childs_.begin() + (int)i);
           else
             i++;
         }
@@ -1620,7 +1630,7 @@ namespace ontologenius {
         {
           if(up->individual_childs_[i] == indiv)
           {
-            up->individual_childs_.erase(up->individual_childs_.begin() + i);
+            up->individual_childs_.erase(up->individual_childs_.begin() + (int)i);
             up->childs_.emplace_back(class_branch);
           }
           else
@@ -2320,7 +2330,7 @@ namespace ontologenius {
   void IndividualGraph::removeBranchInVectors(size_t vector_index)
   {
     const index_t index = all_branchs_[vector_index]->get();
-    all_branchs_.erase(all_branchs_.begin() + vector_index);
+    all_branchs_.erase(all_branchs_.begin() + (int)vector_index);
     ordered_individuals_[index] = nullptr;
   }
 

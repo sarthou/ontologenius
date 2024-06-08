@@ -36,7 +36,7 @@ namespace ontologenius {
     void add(const std::vector<std::pair<std::string, RosTime_t>>& facts)
     {
       mut_.lock();
-      for(auto& fact : facts)
+      for(const auto& fact : facts)
         echo_messages_.emplace_back(fact.first, compat::onto_ros::Time{fact.second.sec, fact.second.nsec});
       mut_.unlock();
     }

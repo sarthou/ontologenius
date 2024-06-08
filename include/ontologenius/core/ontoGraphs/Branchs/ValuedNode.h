@@ -17,11 +17,8 @@ namespace ontologenius {
     bool updated_;
     std::map<std::string, std::vector<std::string>> flags_;
 
-    UpdatableNode()
-    {
-      updated_ = true;
-      nb_updates_ = 0;
-    }
+    UpdatableNode() : nb_updates_(0), updated_(true)
+    {}
   };
 
   class Dictionary
@@ -34,7 +31,7 @@ namespace ontologenius {
   class ValuedNode : public UpdatableNode
   {
   public:
-    explicit ValuedNode(const std::string& value) { index_ = table.add(value); }
+    explicit ValuedNode(const std::string& value) : index_(table.add(value)) {}
 
     const index_t& get() const { return index_; }
     const std::string& value() const { return table[index_]; }

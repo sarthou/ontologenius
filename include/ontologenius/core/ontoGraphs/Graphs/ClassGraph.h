@@ -45,7 +45,7 @@ namespace ontologenius {
   public:
     ClassGraph(IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
     ClassGraph(const ClassGraph& other, IndividualGraph* individual_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph);
-    ~ClassGraph() = default;
+    ~ClassGraph() override = default;
 
     ClassBranch* add(const std::string& value, ObjectVectors_t& object_vector);
     void add(std::vector<std::string>& disjoints);

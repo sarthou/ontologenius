@@ -4,6 +4,8 @@
 #include <utility>
 #include <vector>
 
+#include "ontologenius/compat/ros.h"
+
 namespace onto {
 
   std::pair<std::vector<std::string>, std::vector<ontologenius::compat::OntologeniusSparqlResponse>> SparqlClient::call(const std::string& query)

@@ -3,12 +3,15 @@
 #include <algorithm>
 #include <cstddef>
 #include <iostream>
+#include <iterator>
+#include <pluginlib/exceptions.hpp>
 #include <string>
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 #include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {

@@ -5,6 +5,8 @@
 #include <string>
 #include <unistd.h>
 
+#include "ontologenius/compat/ros.h"
+
 namespace onto {
 
   void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& on, const ontologenius::compat::onto_ros::Time& stamp)

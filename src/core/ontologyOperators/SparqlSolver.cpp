@@ -4,13 +4,16 @@
 #include <chrono>
 #include <ctime>
 #include <iostream>
+#include <iterator>
 #include <map>
 #include <regex>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
+#include "ontologenius/core/ontologyOperators/SparqlUtils.h"
 #include "ontologenius/utils/String.h"
 
 using namespace std::chrono;
@@ -40,7 +43,7 @@ namespace ontologenius {
       removeChar(pattern, {'\n', '\r'});
 
       initial_solution = getInitialSolutionStandard(pattern);
-      for(auto& var : vars_to_return)
+      for(const auto& var : vars_to_return)
       {
         if(var == "*")
         {
@@ -396,7 +399,7 @@ namespace ontologenius {
     auto res = onto_->individual_graph_.getOn(triplet.subject.name, triplet.predicat.name);
     if(selector.empty())
       return res;
-    else if(std::find(res.begin(), res.end(), selector) != res.end())
+    else if(res.find(selector) != res.end())
       return std::unordered_set<std::string>({selector});
     else
       return std::unordered_set<std::string>();
@@ -410,7 +413,7 @@ namespace ontologenius {
     {
       // Here we revert the problem as we know what we are expecting for.
       auto res = onto_->individual_graph_.getOn(selector, triplet.predicat.name);
-      if(std::find(res.begin(), res.end(), triplet.object.name) != res.end())
+      if(res.find(triplet.object.name) != res.end())
         return std::unordered_set<std::string>({selector});
       else
         return std::unordered_set<std::string>();
@@ -424,7 +427,7 @@ namespace ontologenius {
     else
     {
       auto is = onto_->individual_graph_.getUp(triplet.subject.name);
-      if(std::find(is.begin(), is.end(), selector) != is.end())
+      if(is.find(selector) != is.end())
         return std::unordered_set<std::string>({selector});
       else
         return std::unordered_set<std::string>();
@@ -438,7 +441,7 @@ namespace ontologenius {
     else
     {
       auto types = onto_->individual_graph_.getUp(selector);
-      if(std::find(types.begin(), types.end(), triplet.object.name) != types.end())
+      if(types.find(triplet.object.name) != types.end())
         return std::unordered_set<std::string>({selector});
       else
         return std::unordered_set<std::string>();
@@ -450,7 +453,7 @@ namespace ontologenius {
     auto res = onto_->individual_graph_.find<std::string>(triplet.object.name);
     if(selector.empty())
       return res;
-    else if(std::find(res.begin(), res.end(), selector) != res.end())
+    else if(res.find(selector) != res.end())
       return std::unordered_set<std::string>({selector});
     else
       return std::unordered_set<std::string>();

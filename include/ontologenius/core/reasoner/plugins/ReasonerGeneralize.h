@@ -48,11 +48,10 @@ namespace ontologenius {
   class PropertiesCounter
   {
   public:
-    PropertiesCounter(int min_count = DEFAULT_MIN_COUNT, float min_percent = DEFAULT_MIN_PERCEPT)
-    {
-      min_count_ = min_count;
-      min_percent_ = min_percent;
-    }
+    PropertiesCounter(int min_count = DEFAULT_MIN_COUNT,
+                      float min_percent = DEFAULT_MIN_PERCEPT) : min_count_(min_count),
+                                                                 min_percent_(min_percent)
+    {}
 
     void add(B propertie, P data);
     std::vector<std::tuple<B, P, float>> get();
@@ -86,7 +85,7 @@ namespace ontologenius {
       for(auto idx : indexs)
         if(datas_[idx] == data)
         {
-          index = idx;
+          index = (int)idx;
           break;
         }
 
@@ -117,7 +116,7 @@ namespace ontologenius {
         for(size_t j = 0; j < properties_set.size(); j++)
           if(properties_set[j] == properties_[i])
           {
-            index = j;
+            index = (int)j;
             break;
           }
 

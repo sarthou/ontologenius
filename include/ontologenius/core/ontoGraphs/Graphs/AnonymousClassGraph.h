@@ -82,8 +82,8 @@ namespace ontologenius {
     std::string ano_name;
 
     ExpressionMember_t() : logical_type_(logical_none), oneof(false),
-                           is_complex(false), is_data_property(false), 
-                           mother(nullptr), ano_name("") {}
+                           is_complex(false), is_data_property(false),
+                           mother(nullptr) {}
 
     std::string toString() const
     {
@@ -154,7 +154,7 @@ namespace ontologenius {
                         DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
     AnonymousClassGraph(const AnonymousClassGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph,
                         DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
-    ~AnonymousClassGraph() = default;
+    ~AnonymousClassGraph() override = default;
 
     AnonymousClassElement* createElement(ExpressionMember_t* exp_leaf);
     void update(ExpressionMember_t* exp, AnonymousClassElement* ano_class);

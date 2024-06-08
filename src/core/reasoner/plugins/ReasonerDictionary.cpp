@@ -1,6 +1,7 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerDictionary.h"
 
 #include <algorithm>
+#include <cctype>
 #include <cstddef>
 #include <mutex>
 #include <pluginlib/class_list_macros.hpp>
@@ -9,6 +10,7 @@
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 #include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 
 namespace ontologenius {

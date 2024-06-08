@@ -13,7 +13,7 @@ namespace ontologenius {
   class AnonymousClassChecker : public ValidityChecker<AnonymousClassBranch>
   {
   public:
-    explicit AnonymousClassChecker(AnonymousClassGraph* graph) : ValidityChecker(graph) { ano_class_graph_ = graph; }
+    explicit AnonymousClassChecker(AnonymousClassGraph* graph) : ValidityChecker(graph), ano_class_graph_(graph) {}
     ~AnonymousClassChecker() override = default;
 
     size_t check() override;

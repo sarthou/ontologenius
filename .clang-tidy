@@ -2,6 +2,7 @@ Checks: >
   -*,
   bugprone-*,
   -bugprone-easily-swappable-parameters,
+  -bugprone-branch-clone,
   cppcoreguidelines-avoid-goto,
   cppcoreguidelines-init-variables,
   cppcoreguidelines-no-malloc,
@@ -43,6 +44,7 @@ Checks: >
   performance-for-range-copy,
   performance-implicit-conversion-in-loop,
   performance-inefficient-*,
+  -performance-inefficient-string-concatenation,
   performance-move-const-arg,
   performance-no-automatic-move,
   performance-noexcept-destructor,
@@ -111,5 +113,5 @@ CheckOptions:
   - key: misc-include-cleaner.DeduplicateFindings,             
     value: false
 
-ExtraArgs:
+ExtraArgsBefore:
   - '-frelaxed-template-template-args'

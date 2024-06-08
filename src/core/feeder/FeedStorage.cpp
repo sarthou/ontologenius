@@ -5,15 +5,15 @@
 #include <queue>
 #include <regex>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace ontologenius {
 
   FeedStorage::FeedStorage() : base_regex_(R"(^\[(\w+)\](.*)\|(.*)\|(.*)$)"),
-                               simple_regex_(R"(^\[(\w+)\](.*)\|$)")
-  {
-    queue_choice_ = true;
-  }
+                               simple_regex_(R"(^\[(\w+)\](.*)\|$)"),
+                               queue_choice_(true)
+  {}
 
   void FeedStorage::add(const std::string& regex, const RosTime_t& stamp)
   {

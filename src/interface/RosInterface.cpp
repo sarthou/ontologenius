@@ -1,13 +1,14 @@
 #include "ontologenius/interface/RosInterface.h"
 
+#include <cstddef>
 #include <iostream>
 #include <string>
 #include <unordered_set>
 #include <vector>
 
+#include "ontologenius/compat/ros.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
-#include "ontologenius/utils/String.h"
 
 #define PUB_QUEU_SIZE 1000
 #define SUB_QUEU_SIZE 10000
@@ -17,38 +18,39 @@
 
 namespace ontologenius {
 
-  RosInterface::RosInterface(const std::string& name) : reasoners_(name),
+  RosInterface::RosInterface(const std::string& name) : onto_(new Ontology()),
+                                                        reasoners_(name),
                                                         feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
 #ifdef ONTO_TEST
                                                         end_feed_(true),
 #endif
+                                                        name_(name),
                                                         run_(true),
                                                         feeder_rate_(FEEDER_DEFAULT_RATE),
                                                         feeder_end_pub_(getTopicName("end", name), PUB_QUEU_SIZE),
                                                         display_(true)
   {
-    onto_ = new Ontology();
     onto_->setDisplay(display_);
     reasoners_.link(onto_);
     feeder_.link(onto_);
     sparql_.link(onto_);
 
-    name_ = name;
     // n_.setCallbackQueue(&callback_queue_);
   }
 
-  RosInterface::RosInterface(RosInterface& other, const std::string& name) : reasoners_(name),
+  RosInterface::RosInterface(RosInterface& other, const std::string& name) : onto_(new Ontology(*other.onto_)),
+                                                                             reasoners_(name),
                                                                              feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
 #ifdef ONTO_TEST
                                                                              end_feed_(true),
 #endif
+                                                                             name_(name),
                                                                              run_(true),
                                                                              feeder_rate_(FEEDER_DEFAULT_RATE),
                                                                              feeder_end_pub_(getTopicName("end", name), PUB_QUEU_SIZE),
                                                                              display_(true)
   {
     other.lock();
-    onto_ = new Ontology(*other.onto_);
     onto_->setDisplay(display_);
     other.release();
 
@@ -57,7 +59,6 @@ namespace ontologenius {
     feeder_.setVersioning(true);
     sparql_.link(onto_);
 
-    name_ = name;
     // n_.setCallbackQueue(&callback_queue_);
   }
 
@@ -355,7 +356,7 @@ namespace ontologenius {
     end_feed_ = false;
 #endif
 
-    compat::onto_ros::Rate wait(feeder_rate_);
+    compat::onto_ros::Rate wait((double)feeder_rate_);
     while(compat::onto_ros::Node::ok() && (onto_->isInit(false) == false) && (run_ == true))
     {
       wait.sleep();

@@ -112,7 +112,7 @@ namespace ontologenius {
     else
     {
       for(size_t i = 0; i < indiv->same_as_.size(); i++)
-        resolveChain(indiv, i, property, current_length, res);
+        resolveChain(indiv, (int)i, property, current_length, res);
     }
 
     if(current_length >= 2)

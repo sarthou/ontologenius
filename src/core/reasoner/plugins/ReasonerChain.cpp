@@ -115,7 +115,7 @@ namespace ontologenius {
       else
       {
         for(size_t i = 0; i < indiv->same_as_.size(); i++)
-          resolveChain(indiv, i, chain, chain_index, res);
+          resolveChain(indiv, (int)i, chain, chain_index, res);
       }
 
       return res;

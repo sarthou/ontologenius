@@ -3,6 +3,7 @@
 #include <utility>
 #include <vector>
 
+#include "ontologenius/compat/ros.h"
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
@@ -32,9 +33,9 @@ namespace ontologenius {
         std::unordered_set<index_t> set_res_index;
 
         if(req->action == "getDown")
-          set_res_index = onto_->class_graph_.getDown(params.main_index, params.depth);
+          set_res_index = onto_->class_graph_.getDown(params.main_index, (int)params.depth);
         else if(req->action == "getUp")
-          set_res_index = onto_->class_graph_.getUp(params.main_index, params.depth);
+          set_res_index = onto_->class_graph_.getUp(params.main_index, (int)params.depth);
         else if(req->action == "getDisjoint")
           set_res_index = onto_->class_graph_.getDisjoint(params.main_index);
         else if(req->action == "getName")
@@ -48,11 +49,11 @@ namespace ontologenius {
         else if(req->action == "getEveryNames")
           res->string_values = onto_->class_graph_.getEveryNames(params.main_index, params.take_id);
         else if(req->action == "getRelationFrom")
-          set_res_index = onto_->class_graph_.getRelationFrom(params.main_index, params.depth);
+          set_res_index = onto_->class_graph_.getRelationFrom(params.main_index, (int)params.depth);
         else if(req->action == "getRelatedFrom")
           set_res_index = onto_->class_graph_.getRelatedFrom(params.main_index);
         else if(req->action == "getRelationOn")
-          set_res_index = onto_->class_graph_.getRelationOn(params.main_index, params.depth);
+          set_res_index = onto_->class_graph_.getRelationOn(params.main_index, (int)params.depth);
         else if(req->action == "getRelatedOn")
           set_res_index = onto_->class_graph_.getRelatedOn(params.main_index);
         else if(req->action == "getRelationWith")
@@ -64,11 +65,11 @@ namespace ontologenius {
         else if(req->action == "getFrom")
           set_res_index = onto_->class_graph_.getFrom(params.main_index, params.optional_index);
         else if(req->action == "getWith")
-          set_res_index = onto_->class_graph_.getWith(params.main_index, params.optional_index, params.depth);
+          set_res_index = onto_->class_graph_.getWith(params.main_index, params.optional_index, (int)params.depth);
         else if(req->action == "getDomainOf")
-          set_res_index = onto_->class_graph_.getDomainOf(params.main_index, params.depth);
+          set_res_index = onto_->class_graph_.getDomainOf(params.main_index, (int)params.depth);
         else if(req->action == "getRangeOf")
-          set_res_index = onto_->class_graph_.getRangeOf(params.main_index, params.depth);
+          set_res_index = onto_->class_graph_.getRangeOf(params.main_index, (int)params.depth);
         else if(req->action == "find")
           set2vector(onto_->class_graph_.find<index_t>(params(), params.take_id), res->index_values);
         else if(req->action == "findSub")
@@ -132,9 +133,9 @@ namespace ontologenius {
         std::unordered_set<index_t> set_res_index;
 
         if(req->action == "getDown")
-          set_res_index = onto_->object_property_graph_.getDown(params.main_index, params.depth);
+          set_res_index = onto_->object_property_graph_.getDown(params.main_index, (int)params.depth);
         else if(req->action == "getUp")
-          set_res_index = onto_->object_property_graph_.getUp(params.main_index, params.depth);
+          set_res_index = onto_->object_property_graph_.getUp(params.main_index, (int)params.depth);
         else if(req->action == "getDisjoint")
           set_res_index = onto_->object_property_graph_.getDisjoint(params.main_index);
         else if(req->action == "getInverse")
@@ -214,9 +215,9 @@ namespace ontologenius {
         std::unordered_set<index_t> set_res_index;
 
         if(req->action == "getDown")
-          set_res_index = onto_->data_property_graph_.getDown(params.main_index, params.depth);
+          set_res_index = onto_->data_property_graph_.getDown(params.main_index, (int)params.depth);
         else if(req->action == "getUp")
-          set_res_index = onto_->data_property_graph_.getUp(params.main_index, params.depth);
+          set_res_index = onto_->data_property_graph_.getUp(params.main_index, (int)params.depth);
         else if(req->action == "getDisjoint")
           set_res_index = onto_->data_property_graph_.getDisjoint(params.main_index);
         else if(req->action == "getDomain")
@@ -297,11 +298,11 @@ namespace ontologenius {
         else if(req->action == "getDistincts")
           set_res_index = onto_->individual_graph_.getDistincts(params.main_index);
         else if(req->action == "getRelationFrom")
-          set_res_index = onto_->individual_graph_.getRelationFrom(params.main_index, params.depth);
+          set_res_index = onto_->individual_graph_.getRelationFrom(params.main_index, (int)params.depth);
         else if(req->action == "getRelatedFrom")
           set_res_index = onto_->individual_graph_.getRelatedFrom(params.main_index);
         else if(req->action == "getRelationOn")
-          set_res_index = onto_->individual_graph_.getRelationOn(params.main_index, params.depth);
+          set_res_index = onto_->individual_graph_.getRelationOn(params.main_index, (int)params.depth);
         else if(req->action == "getRelatedOn")
           set_res_index = onto_->individual_graph_.getRelatedOn(params.main_index);
         else if(req->action == "getRelationWith")
@@ -309,17 +310,17 @@ namespace ontologenius {
         else if(req->action == "getRelatedWith")
           set_res_index = onto_->individual_graph_.getRelatedWith(params.main_index);
         else if(req->action == "getUp")
-          set_res_index = onto_->individual_graph_.getUp(params.main_index, params.depth);
+          set_res_index = onto_->individual_graph_.getUp(params.main_index, (int)params.depth);
         else if(req->action == "getOn")
           set_res_index = onto_->individual_graph_.getOn(params.main_index, params.optional_index);
         else if(req->action == "getFrom")
           set_res_index = onto_->individual_graph_.getFrom(params.main_index, params.optional_index);
         else if(req->action == "getWith")
-          set_res_index = onto_->individual_graph_.getWith(params.main_index, params.optional_index, params.depth);
+          set_res_index = onto_->individual_graph_.getWith(params.main_index, params.optional_index, (int)params.depth);
         else if(req->action == "getDomainOf")
-          set_res_index = onto_->individual_graph_.getDomainOf(params.main_index, params.depth);
+          set_res_index = onto_->individual_graph_.getDomainOf(params.main_index, (int)params.depth);
         else if(req->action == "getRangeOf")
-          set_res_index = onto_->individual_graph_.getRangeOf(params.main_index, params.depth);
+          set_res_index = onto_->individual_graph_.getRangeOf(params.main_index, (int)params.depth);
         else if(req->action == "getName")
         {
           auto tmp = onto_->individual_graph_.getName(params.main_index, params.take_id);
@@ -389,10 +390,10 @@ namespace ontologenius {
       if(results.second.empty() == false)
         res->names = results.first;
 
-      for(auto& result : results.second)
+      for(const auto& result : results.second)
       {
         compat::OntologeniusSparqlIndexResponse tmp;
-        for(auto& r : result)
+        for(const auto& r : result)
           tmp.values.push_back(r);
 
         res->results.push_back(tmp);

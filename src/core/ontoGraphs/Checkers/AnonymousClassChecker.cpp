@@ -281,10 +281,10 @@ namespace ontologenius {
           auto origin_right = getDomainOrigin(ano_elem, j);
           const std::string err_left = (origin_left.second ? "domain of property " : "class ") + origin_left.first;
           const std::string err_right = (origin_right.second ? "domain of property " : "class ") + origin_right.first;
-          for(auto& err : errs)
-            printError("In equivalence of class " + current_ano_ + ": error between " +
-                       err_left + " and " + err_right +
-                       " because of " + err);
+          const std::string err_base = "In equivalence of class " + current_ano_ + ": error between " +
+                                       err_left + " and " + err_right + " because of ";
+          for(const auto& err : errs)
+            printError(err_base + err);
         }
       }
   }
@@ -294,14 +294,14 @@ namespace ontologenius {
     if(ano_elem->is_complex == true)
     {
       auto errs = resolveTree(ano_elem->sub_elements_.front(), ano_elem->object_property_involved_->ranges_);
-      for(auto& err : errs)
+      for(const auto& err : errs)
         printError("In equivalence of class " + current_ano_ + ": error between range of property " +
                    ano_elem->object_property_involved_->value() + " " + err);
     }
     else if(ano_elem->card_.card_type_ == cardinality_value)
     {
       auto errs = checkClassesVectorDisjointness(ano_elem->object_property_involved_->ranges_, ano_elem->individual_involved_->is_a_.relations);
-      for(auto& err : errs)
+      for(const auto& err : errs)
         printError("In equivalence of class " + current_ano_ + ": error between range of property " + ano_elem->object_property_involved_->value() +
                    " and inheritence of individual " + ano_elem->individual_involved_->value() + " because of " + err);
     }

@@ -1,24 +1,26 @@
 #include "ontologenius/core/feeder/Versionor.h"
 
 #include <algorithm>
+#include <cstdio>
 #include <iostream>
 #include <string>
 #include <vector>
 
+#include "ontologenius/core/feeder/FeedStorage.h"
+#include "ontologenius/core/feeder/VersionNode.h"
 #include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 
-  Versionor::Versionor(FeedStorage* storage)
+  Versionor::Versionor(FeedStorage* storage) : activated_(false),
+                                               storage_(storage),
+                                               order_(0)
   {
-    order_ = 0;
-    storage_ = storage;
     auto* first_node = new VersionNode(order_, "0");
     order_++;
     current_node_ = new VersionNode(order_, first_node);
     order_++;
     nodes_[first_node->getId()] = first_node;
-    activated_ = false;
   }
 
   Versionor::~Versionor()

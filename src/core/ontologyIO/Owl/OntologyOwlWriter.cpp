@@ -1,5 +1,6 @@
 #include "ontologenius/core/ontologyIO/Owl/OntologyOwlWriter.h"
 
+#include <cstdio>
 #include <iostream>
 #include <string>
 
@@ -18,23 +19,21 @@ namespace ontologenius {
                                        ObjectPropertyGraph* object_property_graph,
                                        DataPropertyGraph* data_property_graph,
                                        IndividualGraph* individual_graph,
-                                       AnonymousClassGraph* anonymous_graph) : file_(nullptr)
-  {
-    class_graph_ = class_graph;
-    object_property_graph_ = object_property_graph;
-    data_property_graph_ = data_property_graph;
-    individual_graph_ = individual_graph;
-    anonymous_graph_ = anonymous_graph;
-  }
+                                       AnonymousClassGraph* anonymous_graph) : class_graph_(class_graph),
+                                                                               object_property_graph_(object_property_graph),
+                                                                               data_property_graph_(data_property_graph),
+                                                                               individual_graph_(individual_graph),
+                                                                               anonymous_graph_(anonymous_graph),
+                                                                               file_(nullptr)
+  {}
 
-  OntologyOwlWriter::OntologyOwlWriter(Ontology& onto)
-  {
-    class_graph_ = &onto.class_graph_;
-    object_property_graph_ = &onto.object_property_graph_;
-    individual_graph_ = &onto.individual_graph_;
-    data_property_graph_ = &onto.data_property_graph_;
-    anonymous_graph_ = &onto.anonymous_graph_;
-  }
+  OntologyOwlWriter::OntologyOwlWriter(Ontology& onto) : class_graph_(&onto.class_graph_),
+                                                         object_property_graph_(&onto.object_property_graph_),
+                                                         data_property_graph_(&onto.data_property_graph_),
+                                                         individual_graph_(&onto.individual_graph_),
+                                                         anonymous_graph_(&onto.anonymous_graph_),
+                                                         file_(nullptr)
+  {}
 
   void OntologyOwlWriter::write(const std::string& file_name)
   {

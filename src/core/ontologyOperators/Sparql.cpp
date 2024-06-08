@@ -1,5 +1,6 @@
 #include "ontologenius/core/ontologyOperators/Sparql.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <map>
@@ -482,7 +483,7 @@ namespace ontologenius {
     std::vector<SparqlTriplet_t<T>> sub_queries_triplet;
     try
     {
-      for(auto& q : sub_queries)
+      for(const auto& q : sub_queries)
         sub_queries_triplet.push_back(getTriplet<T>(q));
     }
     catch(const std::string& msg)

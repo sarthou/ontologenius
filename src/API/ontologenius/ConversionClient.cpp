@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "ontologenius/compat/ros.h"
+
 #ifndef COLOR_OFF
 #define COLOR_OFF "\x1B[0m"
 #endif

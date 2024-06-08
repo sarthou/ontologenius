@@ -25,7 +25,7 @@ namespace ontologenius {
 
   public:
     explicit OntoGraph(IndividualGraph* individual_graph) : individual_graph_(individual_graph) {}
-    ~OntoGraph() = default;
+    ~OntoGraph() override = default;
 
     template<typename T>
     std::unordered_set<T> getDown(const T& value, int depth = -1);

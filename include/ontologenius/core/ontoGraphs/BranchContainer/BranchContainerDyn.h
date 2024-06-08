@@ -16,7 +16,7 @@ namespace ontologenius {
     std::string id;
     T* branch;
 
-    BranchNode_t() : next(nullptr), id(""), branch(nullptr) {}
+    BranchNode_t() : next(nullptr), branch(nullptr) {}
     ~BranchNode_t()
     {
       // T* branch is destructed by ontograph
@@ -32,14 +32,11 @@ namespace ontologenius {
   class BranchContainerDyn : public BranchContainerBase<B>
   {
   public:
-    BranchContainerDyn() : nodes_(nullptr),
-                           nodes_end_(nullptr),
+    BranchContainerDyn() : nodes_(new BranchNode_t<B>),
+                           nodes_end_(nodes_),
                            buffer_size_(0),
                            nb_elem_(0)
-    {
-      nodes_ = new BranchNode_t<B>;
-      nodes_end_ = nodes_;
-    }
+    {}
     BranchContainerDyn(const BranchContainerDyn& base);
 
     BranchContainerDyn& operator=(const BranchContainerDyn& other) = delete;

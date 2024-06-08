@@ -1,5 +1,6 @@
 #include "ontologenius/core/ontologyOperators/Sparql.h"
 
+#include <array>
 #include <chrono>
 #include <csignal>
 #include <cstdio>
@@ -22,13 +23,13 @@ using namespace std::chrono;
 
 void handler(int sig)
 {
-  void* array[10];
+  std::array<void*, 10> array;
   size_t size;
 
-  size = backtrace(array, 10);
+  size = backtrace(array.data(), 10);
 
   fprintf(stderr, "Error: signal %d:\n", sig);
-  backtrace_symbols_fd(array, size, STDERR_FILENO);
+  backtrace_symbols_fd(array.data(), size, STDERR_FILENO);
   exit(1);
 }
 

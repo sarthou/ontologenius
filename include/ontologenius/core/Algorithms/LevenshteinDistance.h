@@ -16,9 +16,9 @@ namespace ontologenius {
       const size_t n(s2.size());
 
       if(m == 0)
-        return n;
+        return (double)n;
       if(n == 0)
-        return m;
+        return (double)m;
 
       size_t* costs = new size_t[n + 1];
 
@@ -50,7 +50,7 @@ namespace ontologenius {
       size_t result = costs[n];
       delete[] costs;
 
-      return result / (double)n;
+      return (double)result / (double)n;
     }
   };
 

@@ -27,7 +27,7 @@ namespace ontologenius {
 
   public:
     explicit GraphException(const std::string& msg) : msg_(msg) {}
-    const char* what() const throw()
+    const char* what() const noexcept override
     {
       return msg_.c_str();
     }
@@ -40,7 +40,7 @@ namespace ontologenius {
 
   public:
     Graph() : language_("en") {}
-    ~Graph()
+    virtual ~Graph()
     {
       for(auto& branch : all_branchs_)
         delete branch;
@@ -110,7 +110,7 @@ namespace ontologenius {
       {
         for(size_t i = 0; i < dictionary[lang].size();)
           if(dictionary[lang][i] == word)
-            dictionary[lang].erase(dictionary[lang].begin() + i);
+            dictionary[lang].erase(dictionary[lang].begin() + (int)i);
           else
             i++;
       }
@@ -449,7 +449,7 @@ namespace ontologenius {
           std::mt19937 gen(rd());
 
           size_t dic_size = branch->dictionary_.spoken_[language_].size();
-          std::uniform_int_distribution<> dis(0, dic_size - 1);
+          std::uniform_int_distribution<> dis(0, (int)dic_size - 1);
 
           while(tested.size() < dic_size)
           {

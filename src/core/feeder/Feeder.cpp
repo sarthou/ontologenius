@@ -6,17 +6,17 @@
 #include <shared_mutex>
 #include <string>
 
+#include "ontologenius/core/feeder/FeedStorage.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 
 namespace ontologenius {
 
-  Feeder::Feeder(Ontology* onto, bool versioning) : versionor_(&feed_storage_)
-  {
-    onto_ = onto;
-    do_versioning_ = versioning;
-  }
+  Feeder::Feeder(Ontology* onto, bool versioning) : versionor_(&feed_storage_),
+                                                    onto_(onto),
+                                                    do_versioning_(versioning)
+  {}
 
   bool Feeder::run()
   {
@@ -135,13 +135,11 @@ namespace ontologenius {
           return onto_->individual_graph_.addInheritageInvert(feed.from_, feed.on_);
         else if(onto_->individual_graph_.findBranchSafe(feed.on_) != nullptr)
           return onto_->individual_graph_.addInheritageInvertUpgrade(feed.from_, feed.on_);
-        if(onto_->data_property_graph_.findBranchSafe(feed.from_) != nullptr)
+        else if((onto_->data_property_graph_.findBranchSafe(feed.from_) != nullptr) ||
+                (onto_->data_property_graph_.findBranchSafe(feed.on_) != nullptr))
           return onto_->data_property_graph_.addInheritage(feed.from_, feed.on_);
-        else if(onto_->data_property_graph_.findBranchSafe(feed.on_) != nullptr)
-          return onto_->data_property_graph_.addInheritage(feed.from_, feed.on_);
-        else if(onto_->object_property_graph_.findBranchSafe(feed.from_) != nullptr)
-          return onto_->object_property_graph_.addInheritage(feed.from_, feed.on_);
-        else if(onto_->object_property_graph_.findBranchSafe(feed.on_) != nullptr)
+        else if((onto_->object_property_graph_.findBranchSafe(feed.from_) != nullptr) ||
+                (onto_->object_property_graph_.findBranchSafe(feed.on_) != nullptr))
           return onto_->object_property_graph_.addInheritage(feed.from_, feed.on_);
         else
         {

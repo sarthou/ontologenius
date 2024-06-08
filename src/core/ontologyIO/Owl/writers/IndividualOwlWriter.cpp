@@ -1,17 +1,19 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/IndividualOwlWriter.h"
 
 #include <algorithm>
+#include <cstdio>
 #include <shared_mutex>
 #include <string>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 
 namespace ontologenius {
 
-  IndividualOwlWriter::IndividualOwlWriter(IndividualGraph* individual_graph, const std::string& ns)
+  IndividualOwlWriter::IndividualOwlWriter(IndividualGraph* individual_graph,
+                                           const std::string& ns) : individual_graph_(individual_graph)
   {
-    individual_graph_ = individual_graph;
     ns_ = ns;
   }
 
@@ -22,7 +24,7 @@ namespace ontologenius {
     const std::shared_lock<std::shared_timed_mutex> lock(individual_graph_->mutex_);
 
     const std::vector<IndividualBranch*> individuals = individual_graph_->get();
-    for(auto& individual : individuals)
+    for(auto* individual : individuals)
       writeIndividual(individual);
 
     file_ = nullptr;

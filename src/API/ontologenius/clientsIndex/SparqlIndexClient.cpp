@@ -1,8 +1,10 @@
 #include "ontologenius/API/ontologenius/clientsIndex/SparqlIndexClient.h"
 
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
+
+#include "ontologenius/compat/ros.h"
 
 namespace onto {
 
