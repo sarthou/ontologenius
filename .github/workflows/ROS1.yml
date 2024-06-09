@@ -11,12 +11,12 @@ jobs:
         include:
           #- operating-system: ubuntu-18.04
           #  ros_distro: melodic
-          #  disto: bionic
+          #  distro: bionic
           - operating-system: ubuntu-20.04
             ros_distro: noetic
-            disto: focal
+            distro: focal
     env:
-      ROS_CI_DESKTOP: ${{ matrix.disto }}
+      ROS_CI_DESKTOP: ${{ matrix.distro }}
       CI_SOURCE_PATH: $(pwd)
       # Set the python path manually to include /usr/-/python2.7/dist-packages
       # as this is where apt-get installs python packages.

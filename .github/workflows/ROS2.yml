@@ -10,15 +10,16 @@ jobs:
         include:
           - operating-system: ubuntu-22.04
             ros_distro: humble
-            disto: jammy
+            distro: jammy
           - operating-system: ubuntu-22.04
             ros_distro: iron
-            disto: jammy
+            distro: jammy
     env:
-      ROS_CI_DESKTOP: ${{ matrix.disto }}
+      ROS_CI_DESKTOP: ${{ matrix.distro }}
       CI_SOURCE_PATH: $(pwd)
       ROS_DISTRO: ${{ matrix.ros_distro }}
     steps:
+      - uses: actions/checkout@v4
       - name: Setup ROS
         uses: ros-tooling/setup-ros@v0.7
         with:
