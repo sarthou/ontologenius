@@ -32,7 +32,7 @@ namespace ontologenius {
     inline bool empty() const { return relations.empty(); }
     T& operator[](size_t index) { return relations[index]; }
 
-    size_t push_back(T& relation)
+    size_t pushBack(T& relation)
     {
       relations.emplace_back(relation);
       has_induced_object_relations.emplace_back(new ObjectRelationTriplets);

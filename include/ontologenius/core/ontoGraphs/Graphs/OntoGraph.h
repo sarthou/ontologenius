@@ -90,7 +90,7 @@ namespace ontologenius {
       std::vector<std::pair<std::string, std::string>> explanations;
 
       auto relation = relations[relation_index];
-      auto indiv_on = relation.elem;
+      auto* indiv_on = relation.elem;
 
       for(size_t i = 0; i < relations.has_induced_object_relations[relation_index]->triplets.size();)
       {
@@ -389,7 +389,7 @@ namespace ontologenius {
   B* OntoGraph<B>::isDisjoint(const std::unordered_set<B*>& set_base, const std::unordered_set<B*>& ups)
   {
     std::unordered_set<B*> disjoints;
-    for(auto elem : set_base)
+    for(auto* elem : set_base)
       getLocalDisjoint(elem, disjoints);
     return this->firstIntersection(ups, disjoints);
   }
@@ -423,7 +423,7 @@ namespace ontologenius {
 
       std::unordered_set<B*> downs;
       getDownPtr(branch, downs);
-      for(auto down : downs)
+      for(auto* down : downs)
         down->updated_ = true; // propagate update
 
       return true; // TODO verify that multi inheritances are compatible

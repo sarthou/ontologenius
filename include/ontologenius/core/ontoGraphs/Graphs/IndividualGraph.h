@@ -242,7 +242,7 @@ namespace ontologenius {
     std::vector<std::pair<std::string, std::string>> explanations;
 
     auto relation = relations[relation_index];
-    auto indiv_on = relation.elem;
+    auto* indiv_on = relation.elem;
 
     for(size_t i = 0; i < relations.has_induced_object_relations[relation_index]->triplets.size();)
     {

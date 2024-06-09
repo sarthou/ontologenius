@@ -86,8 +86,8 @@ namespace ontologenius {
     void deleteClass(ClassBranch* class_branch);
     bool addInheritage(const std::string& branch_base, const std::string& branch_inherited);
     int deleteRelationsOnClass(ClassBranch* class_branch, std::vector<ClassBranch*> vect);
-    void addRelation(ClassBranch*, const std::string& property, const std::string& class_on);
-    void addRelation(ClassBranch*, const std::string& property, const std::string& type, const std::string& data);
+    void addRelation(ClassBranch* class_from, const std::string& property, const std::string& class_on);
+    void addRelation(ClassBranch* class_from, const std::string& property, const std::string& type, const std::string& data);
     void addRelationInvert(const std::string& class_from, const std::string& property, ClassBranch* class_on);
     void removeRelation(const std::string& class_from, const std::string& property, const std::string& class_on);
     void removeRelation(const std::string& class_from, const std::string& property, const std::string& type, const std::string& data);
