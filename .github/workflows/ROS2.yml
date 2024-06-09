@@ -1,6 +1,14 @@
 name: ROS2 CI
 
-on: [push, workflow_dispatch]
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - 'resources/*'
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'resources/*'
 
 jobs:
   build:

@@ -1,6 +1,26 @@
 name: Clang linter
 
-on: [push, workflow_dispatch]
+on:
+  push:
+    branches:
+      - master
+      - dev
+    paths-ignore:
+      - 'docs/**'
+      - 'resources/*'
+      - 'ui/*'
+      - 'files/*'
+      - 'configuration/*'
+  pull_request:
+    branches:
+      - master
+      - dev
+    paths-ignore:
+      - 'docs/**'
+      - 'resources/*'
+      - 'ui/*'
+      - 'files/*'
+      - 'configuration/*'
 
 jobs:
   build:
