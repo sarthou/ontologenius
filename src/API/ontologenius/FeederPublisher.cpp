@@ -184,18 +184,18 @@ namespace onto {
     stamped_pub_.publish(msg);
   }
 
-  void FeederPublisher::commitCallback(ontologenius::compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg)
+  void FeederPublisher::commitCallback(const ontologenius::compat::onto_ros::MessageWrapper<std_msgs_compat::String>& msg)
   {
     if(msg->data == "end")
       updated_ = true;
   }
 
-  void FeederPublisher::feederNotificationCallback(ontologenius::compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg)
+  void FeederPublisher::feederNotificationCallback(const ontologenius::compat::onto_ros::MessageWrapper<std_msgs_compat::String>& msg)
   {
     feeder_notification_callback_(msg->data);
   }
 
-  void FeederPublisher::reasonersNotificationCallback(ontologenius::compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg)
+  void FeederPublisher::reasonersNotificationCallback(const ontologenius::compat::onto_ros::MessageWrapper<std_msgs_compat::String>& msg)
   {
     reasoners_notification_callback_(msg->data);
   }

@@ -113,9 +113,9 @@ namespace ontologenius {
     std::string intern_file_;
 
     /// @brief The ROS topic callback receiving statements not stamped
-    void knowledgeCallback(compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg);
+    void knowledgeCallback(const compat::onto_ros::MessageWrapper<std_msgs_compat::String>& msg);
     /// @brief The ROS topic callback receiving stamped statements
-    void stampedKnowledgeCallback(compat::onto_ros::MessageWrapper<compat::OntologeniusStampedString> msg);
+    void stampedKnowledgeCallback(const compat::onto_ros::MessageWrapper<compat::OntologeniusStampedString>& msg);
 
     /// @brief The ROS service callback in charge of general operations on the ontology
     bool actionsHandle(compat::onto_ros::ServiceWrapper<compat::OntologeniusService::Request>& req,

@@ -191,9 +191,9 @@ namespace onto {
     void publish(const std::string& str);
     void publishStamped(const std::string& str, const onto_ros::Time& stamp);
 
-    void commitCallback(onto_ros::MessageWrapper<std_msgs_compat::String> msg);
-    void feederNotificationCallback(onto_ros::MessageWrapper<std_msgs_compat::String> msg);
-    void reasonersNotificationCallback(onto_ros::MessageWrapper<std_msgs_compat::String> msg);
+    void commitCallback(const onto_ros::MessageWrapper<std_msgs_compat::String>& msg);
+    void feederNotificationCallback(const onto_ros::MessageWrapper<std_msgs_compat::String>& msg);
+    void reasonersNotificationCallback(const onto_ros::MessageWrapper<std_msgs_compat::String>& msg);
   };
 
 } // namespace onto

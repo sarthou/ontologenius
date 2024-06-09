@@ -7,6 +7,8 @@
 # e.g. run-clang-tidy . build test,other c,cpp file
 
 import os, sys, subprocess, multiprocessing
+import json
+
 manager = multiprocessing.Manager()
 failedfiles = manager.list()
 
@@ -18,19 +20,22 @@ builddir = os.path.abspath(sys.argv[2])
 print("Build directory: " + builddir)
 # If exclude dirs is not empty, split it into a tuple
 excludedirs = ()
-if sys.argv[3]:
+if len(sys.argv) > 3 and sys.argv[3]:
     excludedirs = tuple([os.path.join(sourcedir, s) for s in sys.argv[3].split(',')])
 # If the build directory is not the same as the source directory, exclude it
 if not sourcedir == builddir:
     excludedirs = excludedirs + (builddir,)
+
 print("Exclude directories: " + str(excludedirs))
 # Split extensions into a tuple
-extensions = tuple([("." + s) for s in sys.argv[4].split(',')])
+extensions = ()
+if(len(sys.argv) >= 4):
+    extensions = tuple([("." + s) for s in sys.argv[4].split(',')])
 print("Extensions: " + str(extensions))
 
 def runclangtidy(filepath):
     print("Checking: " + filepath)
-    proc = subprocess.Popen(f'clang-tidy --quiet -p {builddir} {filepath}', shell=True)
+    proc = subprocess.Popen(f'clang-tidy --quiet -warnings-as-errors=* -p {builddir} {filepath}', shell=True)
     if proc.wait() != 0:
         failedfiles.append(filepath)
 
@@ -44,10 +49,26 @@ def collectfiles(dir, exclude, exts):
                 collectedfiles.append(filepath)
     return collectedfiles
 
+def collectcompiledfiles(dir, builddir):
+    collectedfiles = []
+    if(builddir):
+        compile_file = open(builddir + '/compile_commands.json')
+        if compile_file is not None:
+            compile_data = json.load(compile_file)
+            for line in compile_data:
+                filepath = line["file"]
+                if dir in filepath and not builddir in filepath:
+                    collectedfiles.append(filepath)
+
+    return collectedfiles
+
 # Define the pool AFTER the global variables and subprocess function because WTF python
 # See: https://stackoverflow.com/questions/41385708/multiprocessing-example-giving-attributeerror
 pool = multiprocessing.Pool()
-pool.map(runclangtidy, collectfiles(sourcedir, excludedirs, extensions))
+files = collectcompiledfiles(sourcedir, builddir)
+if len(files) == 0:
+    files = collectfiles(sourcedir, excludedirs, extensions)
+pool.map(runclangtidy, files)
 pool.close()
 pool.join()
 if len(failedfiles) > 0:

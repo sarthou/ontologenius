@@ -208,14 +208,14 @@ namespace ontologenius {
    *
    ****************/
 
-  void RosInterface::knowledgeCallback(compat::onto_ros::MessageWrapper<std_msgs_compat::String> msg)
+  void RosInterface::knowledgeCallback(const compat::onto_ros::MessageWrapper<std_msgs_compat::String>& msg)
   {
     auto now = compat::onto_ros::Node::get().current_time();
 
     feeder_.store(msg->data, {(uint32_t)now.seconds(), (uint32_t)now.nanoseconds()});
   }
 
-  void RosInterface::stampedKnowledgeCallback(compat::onto_ros::MessageWrapper<compat::OntologeniusStampedString> msg)
+  void RosInterface::stampedKnowledgeCallback(const compat::onto_ros::MessageWrapper<compat::OntologeniusStampedString>& msg)
   {
     feeder_.store(msg->data, {msg->stamp.seconds, msg->stamp.nanoseconds});
   }
