@@ -60,6 +60,7 @@ elseif($ENV{ROS_VERSION} STREQUAL "2")
   find_package(rclcpp REQUIRED)
   find_package(TinyXML2 REQUIRED)
   find_package(ament_cmake_python REQUIRED)
+  find_package(std_msgs REQUIRED)
 
   # install(PROGRAMS
   # ontopy/${PROJECT_NAME}
