@@ -22,6 +22,7 @@ Checks: >
   misc-uniqueptr-reset-release,
   misc-unused-*,
   modernize-avoid-*,
+  -modernize-avoid-bind,
   modernize-concat-nested-namespaces,
   modernize-deprecated-*,
   modernize-loop-convert,

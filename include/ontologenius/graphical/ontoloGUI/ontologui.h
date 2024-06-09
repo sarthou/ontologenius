@@ -66,18 +66,18 @@ public slots:
   void individualClickedSlot();
   void closeOntologySlot();
   void nameEditingFinishedSlot();
-  void reasonerClickedSlot(int);
+  void reasonerClickedSlot(int /*unused*/);
   void reasonerhoverEnterSlot();
   void reasonerhoverLeaveSlot();
-  void currentTabChangedSlot(int);
+  void currentTabChangedSlot(int index);
 
   void displayOntologiesListSlot();
   void addOntologySlot();
   void deleteOntologySlot();
   void saveOntologySlot();
   void differenceOntologySlot();
-  void ontologyNameAddDelChangedSlot(const QString&);
-  void ontologyNameChangedSlot(const QString&);
+  void ontologyNameAddDelChangedSlot(const QString& text);
+  void ontologyNameChangedSlot(const QString& text);
 
   void feederCallback(const std::string& msg);
   void feederAddSlot();
@@ -88,8 +88,8 @@ public slots:
   bool updateOntoPtr();
 
 signals:
-  void feederSetHtmlSignal(QString);
-  void feederScrollSignal(QString);
+  void feederSetHtmlSignal(QString t1);
+  void feederScrollSignal(QString t1);
 };
 
 #endif // ONTOLOGUI_H

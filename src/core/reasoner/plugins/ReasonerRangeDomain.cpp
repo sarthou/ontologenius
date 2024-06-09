@@ -106,7 +106,7 @@ namespace ontologenius {
 
       if(up.find(range) == up.end())
       {
-        relation.second->is_a_.emplace_back(range, 1.0, true);
+        relation.second->is_a_.emplaceBack(range, 1.0, true);
         range->individual_childs_.emplace_back(relation.second, 1.0, true);
 
         relation.second->nb_updates_++;
@@ -154,7 +154,7 @@ namespace ontologenius {
 
       if(up.find(domain) == up.end())
       {
-        branch->is_a_.emplace_back(domain, 1.0, true);
+        branch->is_a_.emplaceBack(domain, 1.0, true);
         domain->individual_childs_.emplace_back(branch, 1.0, true);
 
         branch->nb_updates_++;
@@ -202,7 +202,7 @@ namespace ontologenius {
 
       if(up.find(domain) == up.end())
       {
-        branch->is_a_.emplace_back(domain, 1.0, true);
+        branch->is_a_.emplaceBack(domain, 1.0, true);
         domain->individual_childs_.emplace_back(branch, 1.0, true);
 
         branch->nb_updates_++;
@@ -290,7 +290,7 @@ namespace ontologenius {
       ontology_->class_graph_.getUpPtr(relation.second, up);
       if(up.find(range) == up.end())
       {
-        relation.second->mothers_.emplace_back(range, 1.0, true);
+        relation.second->mothers_.emplaceBack(range, 1.0, true);
         range->childs_.emplace_back(relation.second, 1.0, true);
 
         relation.second->nb_updates_++;
@@ -331,7 +331,7 @@ namespace ontologenius {
       ontology_->class_graph_.getUpPtr(branch, up);
       if(up.find(domain) == up.end())
       {
-        branch->mothers_.emplace_back(domain, 1.0, true);
+        branch->mothers_.emplaceBack(domain, 1.0, true);
         domain->childs_.emplace_back(branch, 1.0, true);
 
         branch->nb_updates_++;
@@ -372,7 +372,7 @@ namespace ontologenius {
       ontology_->class_graph_.getUpPtr(branch, up);
       if(up.find(domain) == up.end())
       {
-        branch->mothers_.emplace_back(domain, 1.0, true);
+        branch->mothers_.emplaceBack(domain, 1.0, true);
         domain->childs_.emplace_back(branch, 1.0, true);
 
         branch->nb_updates_++;

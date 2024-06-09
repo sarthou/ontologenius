@@ -337,7 +337,7 @@ namespace ontologenius {
       new_branch->childs_.emplace_back(child, container_.find(child.elem->value()));
 
     for(const auto& mother : old_branch->mothers_)
-      new_branch->mothers_.emplace_back(mother, container_.find(mother.elem->value()));
+      new_branch->mothers_.emplaceBack(mother, container_.find(mother.elem->value()));
 
     new_branch->ranges_ = old_branch->ranges_;
 

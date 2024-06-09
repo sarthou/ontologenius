@@ -1461,7 +1461,7 @@ namespace ontologenius {
       if(mother.infered && (mother.induced_traces.empty() == false))
         new_branch->updated_ = true;
       else
-        new_branch->mothers_.emplace_back(mother, container_.find(mother.elem->value()));
+        new_branch->mothers_.emplaceBack(mother, container_.find(mother.elem->value()));
     }
 
     for(const auto& disjoint : old_branch->disjoints_)

@@ -76,7 +76,7 @@ namespace ontologenius {
 
       if(is_new)
       {
-        me->is_a_.emplace_back(mother_branch);
+        me->is_a_.emplaceBack(mother_branch);
         mother_branch->individual_childs_.emplace_back(me);
       }
       else
@@ -166,7 +166,7 @@ namespace ontologenius {
         for(auto& my_other_same : same->same_as_)
         {
           if(conditionalPushBack(me->same_as_, IndividualElement(my_other_same.elem, 1.0, true)))
-            my_other_same.elem->same_as_.emplace_back(me, 1.0, true);
+            my_other_same.elem->same_as_.emplaceBack(me, 1.0, true);
         }
 
         if(is_new == false)
@@ -174,12 +174,12 @@ namespace ontologenius {
           for(auto& my_other_same : me->same_as_)
           {
             if(conditionalPushBack(same->same_as_, IndividualElement(my_other_same.elem, 1.0, true)))
-              my_other_same.elem->same_as_.emplace_back(same, 1.0, true);
+              my_other_same.elem->same_as_.emplaceBack(same, 1.0, true);
           }
         }
 
         if(conditionalPushBack(me->same_as_, IndividualElement(same)))
-          same->same_as_.emplace_back(me, 1.0, true);
+          same->same_as_.emplaceBack(me, 1.0, true);
 
         conditionalPushBack(same->same_as_, IndividualElement(same, 1.0, true));
       }
@@ -193,14 +193,14 @@ namespace ontologenius {
           // my same is new but I'm not
           for(auto& my_other_same : me->same_as_)
           {
-            my_other_same.elem->same_as_.emplace_back(my_same, 1.0, true);
-            my_same->same_as_.emplace_back(my_other_same.elem, 1.0, true);
+            my_other_same.elem->same_as_.emplaceBack(my_same, 1.0, true);
+            my_same->same_as_.emplaceBack(my_other_same.elem, 1.0, true);
           }
         }
 
-        me->same_as_.emplace_back(my_same);
-        my_same->same_as_.emplace_back(me, 1.0, true);
-        my_same->same_as_.emplace_back(my_same, 1.0, true);
+        me->same_as_.emplaceBack(my_same);
+        my_same->same_as_.emplaceBack(me, 1.0, true);
+        my_same->same_as_.emplaceBack(my_same, 1.0, true);
         insertBranchInVectors(my_same);
         container_.insert(my_same);
       }
@@ -215,7 +215,7 @@ namespace ontologenius {
     ObjectPropertyBranch* property_branch = object_property_graph_->findOrCreateBranch(relation.first);
     IndividualBranch* indiv_branch = findOrCreateBranch(relation.second);
 
-    me->object_relations_.emplace_back(property_branch, indiv_branch, relation.probability);
+    me->object_relations_.emplaceBack(property_branch, indiv_branch, relation.probability);
   }
 
   void IndividualGraph::addDataRelation(IndividualBranch* me, PairElement<std::string, std::string>& relation)
@@ -223,7 +223,7 @@ namespace ontologenius {
     DataPropertyBranch* property_branch = data_property_graph_->findOrCreateBranch(relation.first);
     LiteralNode* literal = data_property_graph_->createLiteral(relation.second);
 
-    me->data_relations_.emplace_back(property_branch, literal, relation.probability);
+    me->data_relations_.emplaceBack(property_branch, literal, relation.probability);
   }
 
   /*********
@@ -1764,7 +1764,7 @@ namespace ontologenius {
       if(checkRangeAndDomain(indiv_from, property, indiv_on) == false)
         throw GraphException("Inconsistency prevented regarding the range or domain of the property");
 
-      indiv_from->object_relations_.emplace_back(property, indiv_on);
+      indiv_from->object_relations_.emplaceBack(property, indiv_on);
       index = (int)indiv_from->object_relations_.size() - 1;
       indiv_on->updated_ = true;
       indiv_from->updated_ = true;
@@ -1785,7 +1785,7 @@ namespace ontologenius {
       index = indiv_from->dataRelationExists(property, data);
       if(index == -1)
       {
-        indiv_from->data_relations_.emplace_back(property, data);
+        indiv_from->data_relations_.emplaceBack(property, data);
         index = (int)indiv_from->data_relations_.size() - 1;
       }
 
@@ -2289,11 +2289,11 @@ namespace ontologenius {
       if(is_a.infered && (is_a.induced_traces.empty() == false))
         new_branch->updated_ = true;
       else
-        new_branch->is_a_.emplace_back(is_a, class_graph_->container_.find(is_a.elem->value()));
+        new_branch->is_a_.emplaceBack(is_a, class_graph_->container_.find(is_a.elem->value()));
     }
 
     for(const auto& same : old_branch->same_as_)
-      new_branch->same_as_.emplace_back(same, container_.find(same.elem->value()));
+      new_branch->same_as_.emplaceBack(same, container_.find(same.elem->value()));
 
     for(const auto& distinct : old_branch->distinct_)
       new_branch->distinct_.emplace_back(distinct, container_.find(distinct.elem->value()));
@@ -2307,7 +2307,7 @@ namespace ontologenius {
       {
         auto* prop = object_property_graph_->container_.find(relation.first->value());
         auto* on = container_.find(relation.second->value());
-        new_branch->object_relations_.emplace_back(relation, prop, on);
+        new_branch->object_relations_.emplaceBack(relation, prop, on);
       }
     }
 
@@ -2315,7 +2315,7 @@ namespace ontologenius {
     {
       auto* prop = data_property_graph_->container_.find(relation.first->value());
       auto* data = relation.second;
-      new_branch->data_relations_.emplace_back(relation, prop, data);
+      new_branch->data_relations_.emplaceBack(relation, prop, data);
     }
   }
 

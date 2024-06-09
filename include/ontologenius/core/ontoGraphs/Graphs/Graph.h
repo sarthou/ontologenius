@@ -174,7 +174,7 @@ namespace ontologenius {
     {
       if(std::find(vect.begin(), vect.end(), data) == vect.end())
       {
-        vect.emplace_back(data);
+        vect.emplaceBack(data);
         return true;
       }
       else
@@ -202,7 +202,7 @@ namespace ontologenius {
       auto it = std::find(vect.begin(), vect.end(), data);
       if(it == vect.end())
       {
-        vect.emplace_back(data);
+        vect.emplaceBack(data);
         return true;
       }
       else if(it->infered && (data.infered == false))

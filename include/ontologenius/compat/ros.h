@@ -152,8 +152,8 @@ namespace ontologenius::compat {
     class Time : public RosTime
     {
     public:
-      Time(uint32_t sec, uint32_t nsec) : RosTime(sec, nsec) {}
-      explicit Time(double t) : RosTime(t) {}
+      Time(uint32_t sec, uint32_t nsec) : RosTime((int32_t)sec, (int32_t)nsec) {}
+      explicit Time(int64_t t) : RosTime(t) {}
       Time(const RosTime& time) : RosTime(time) {} // do not put it as explicit
 
       uint32_t seconds() const
@@ -161,7 +161,7 @@ namespace ontologenius::compat {
 #if ONTO_ROS_VERSION == 1
         return sec;
 #elif ONTO_ROS_VERSION == 2
-        return RosTime::seconds();
+        return (uint32_t)RosTime::seconds();
 #endif
       }
 

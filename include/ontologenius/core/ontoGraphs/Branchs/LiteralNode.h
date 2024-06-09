@@ -21,9 +21,8 @@ namespace ontologenius {
       index_ = table.add(type + "#" + value);
     }
 
-    explicit LiteralNode(const std::string& value) : index_(0)
+    explicit LiteralNode(const std::string& value) : index_(table.add(value))
     {
-      index_ = table.add(value);
       set(value);
     }
 

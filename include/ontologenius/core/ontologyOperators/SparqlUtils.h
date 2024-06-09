@@ -164,6 +164,7 @@ namespace ontologenius {
   std::vector<int64_t> convertVariables(const std::vector<std::string>& var_names)
   {
     std::vector<int64_t> res;
+    res.reserve(var_names.size());
     for(const auto& var : var_names)
       res.push_back(Resource_t<T>::variables[var]);
     std::sort(res.begin(), res.end());

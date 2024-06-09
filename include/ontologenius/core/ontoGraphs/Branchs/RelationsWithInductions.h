@@ -41,7 +41,7 @@ namespace ontologenius {
     }
 
     template<class... Args>
-    T& emplace_back(Args&&... args)
+    T& emplaceBack(Args&&... args)
     {
       has_induced_object_relations.emplace_back(new ObjectRelationTriplets);
       has_induced_inheritance_relations.emplace_back(new InheritedRelationTriplets);
