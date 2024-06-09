@@ -44,4 +44,4 @@ jobs:
           cd ~/ros2_ws/src
           ln -s ~/work  # $CI_SOURCE_PATH
           cd ..
-          ccolcon build --symlink-install
+          colcon build --symlink-install
