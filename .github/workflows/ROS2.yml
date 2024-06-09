@@ -11,21 +11,21 @@ jobs:
           - operating-system: ubuntu-22.04
             ros_distro: humble
             disto: jammy
+          - operating-system: ubuntu-22.04
+            ros_distro: iron
+            disto: jammy
     env:
       ROS_CI_DESKTOP: ${{ matrix.disto }}
       CI_SOURCE_PATH: $(pwd)
       ROSINSTALL_FILE: $CI_SOURCE_PATH/dependencies.rosinstall
       CATKIN_OPTIONS: $CI_SOURCE_PATH/catkin.options
       ROS_PARALLEL_JOBS: '-j8 -l6'
-      # Set the python path manually to include /usr/-/python2.7/dist-packages
-      # as this is where apt-get installs python packages.
       ROS_DISTRO: ${{ matrix.ros_distro }}
     steps:
-      - uses: actions/checkout@v1
       - name: Setup ROS
         uses: ros-tooling/setup-ros@v0.7
         with:
-          required-ros-distributions: $ROS_DISTRO
+          required-ros-distributions: ${{ matrix.ros_distro }}
 
       - name: Install deps
         run: |
