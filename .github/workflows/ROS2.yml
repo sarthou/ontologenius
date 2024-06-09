@@ -19,7 +19,6 @@ jobs:
       CI_SOURCE_PATH: $(pwd)
       ROS_DISTRO: ${{ matrix.ros_distro }}
     steps:
-      - uses: actions/checkout@v4
       - name: Setup ROS
         uses: ros-tooling/setup-ros@v0.7
         with:
@@ -31,18 +30,26 @@ jobs:
             sudo apt install -y qtbase5-dev qtdeclarative5-dev
             sudo apt install -y libcppunit-dev libcurl4-openssl-dev
             sudo apt-get install python3-rosdep
+            sudo apt install ros-cmake-modules
             source /opt/ros/$ROS_DISTRO/setup.bash
 
-      - name: build
+      - name: Setup Workspace
         run: |
           source /opt/ros/$ROS_DISTRO/setup.bash
           cmake --version
-          mkdir -p ~/ros2_ws/src
-          cd ~/ros2_ws
+          cd ~/work
+          mkdir -p ros2_ws/src
+          cd ros2_ws
           colcon build --symlink-install
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ros2_ws/src
+
+      - name: Build
+        run: |
+          cd ~/work/ros2_ws
           source install/setup.bash
           export ROS_LOCALHOST_ONLY=1
-          cd ~/ros2_ws/src
-          ln -s ~/work  # $CI_SOURCE_PATH
-          cd ..
           colcon build --symlink-install
