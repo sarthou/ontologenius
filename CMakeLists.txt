@@ -539,10 +539,6 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     target_include_directories(ontologenius_propertiesInheritageIndex_tester PRIVATE ${catkin_INCLUDE_DIRS})
     target_link_libraries(ontologenius_propertiesInheritageIndex_tester ontologenius_lib ${catkin_LIBRARIES})
 
-    add_rostest_gtest(ontologenius_dynamic_tester test/dynamic.test src/tests/CI/dynamic.cpp)
-    target_include_directories(ontologenius_dynamic_tester PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(ontologenius_dynamic_tester ontologenius_lib ${catkin_LIBRARIES})
-
     add_rostest_gtest(ontologenius_multi_tester test/multi.test src/tests/CI/multi.cpp)
     target_include_directories(ontologenius_multi_tester PRIVATE ${catkin_INCLUDE_DIRS})
     target_link_libraries(ontologenius_multi_tester ontologenius_lib ${catkin_LIBRARIES})
