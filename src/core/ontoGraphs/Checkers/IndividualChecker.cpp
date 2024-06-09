@@ -37,7 +37,7 @@ namespace ontologenius {
     return getErrors();
   }
 
-  void IndividualChecker::checkDisjointInheritance(IndividualBranch* indiv, std::unordered_set<ClassBranch*> ups)
+  void IndividualChecker::checkDisjointInheritance(IndividualBranch* indiv, const std::unordered_set<ClassBranch*>& ups)
   {
     ClassBranch* intersection = nullptr;
     ClassBranch* disjoint_with = nullptr;

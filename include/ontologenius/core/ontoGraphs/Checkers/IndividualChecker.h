@@ -18,7 +18,7 @@ namespace ontologenius {
   private:
     IndividualGraph* individual_graph_;
 
-    void checkDisjointInheritance(IndividualBranch* indiv, std::unordered_set<ClassBranch*> ups);
+    void checkDisjointInheritance(IndividualBranch* indiv, const std::unordered_set<ClassBranch*>& ups);
 
     void checkDisjoint(IndividualBranch* indiv);
     void checkReflexive(IndividualBranch* indiv);

@@ -6,10 +6,9 @@
 #include <vector>
 
 #include "ontologenius/compat/ros.h"
+#include "ontologenius/core/feeder/FeedStorage.h"
 
 namespace ontologenius {
-
-  struct RosTime_t;
 
   class FeederEcho
   {

@@ -1,6 +1,7 @@
 #include "ontologenius/core/feeder/FeedStorage.h"
 
 #include <algorithm>
+#include <cctype>
 #include <iostream>
 #include <queue>
 #include <regex>

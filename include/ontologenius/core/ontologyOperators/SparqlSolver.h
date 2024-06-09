@@ -94,9 +94,7 @@ namespace ontologenius {
     };
 
     Iterator begin();
-    const Iterator cbegin();
     Iterator end() { return Iterator(empty_solution_); }
-    const Iterator cend() { return Iterator(empty_solution_); }
 
   private:
     ontologenius::Ontology* onto_;

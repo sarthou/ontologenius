@@ -6,17 +6,17 @@
 #include <string>
 #include <vector>
 
+#include "ontologenius/OntologyManipulator.h"
 #include "ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
 #include "ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
 #include "ui_ontologui.h"
 // Qt includes
-#include "qcheckbox.h"
 #include "qcoreevent.h"
 #include "qlayoutitem.h"
 #include "qmainwindow.h"
+#include "qnamespace.h"
 #include "qobject.h"
 #include "qobjectdefs.h"
-#include "qscrollbar.h"
 #include "qstring.h"
 #include "qwidget.h"
 

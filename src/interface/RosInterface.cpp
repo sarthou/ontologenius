@@ -1,12 +1,15 @@
 #include "ontologenius/interface/RosInterface.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <string>
+#include <thread>
 #include <unordered_set>
 #include <vector>
 
 #include "ontologenius/compat/ros.h"
+#include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
 
@@ -365,9 +368,9 @@ namespace ontologenius {
     auto& node = compat::onto_ros::Node::get();
 
     auto time = node.current_time();
-    feeder_.store("[add]myself|", {(uint32_t)time.seconds(), (uint32_t)time.nanoseconds()});
+    feeder_.store("[add]myself|", {time.seconds(), time.nanoseconds()});
     if(name_.empty() == false)
-      feeder_.store("[add]myself|=|" + name_, {(uint32_t)time.seconds(), (uint32_t)time.nanoseconds()});
+      feeder_.store("[add]myself|=|" + name_, {time.seconds(), time.nanoseconds()});
     feeder_mutex_.lock();
     feeder_.run();
     feeder_mutex_.unlock();

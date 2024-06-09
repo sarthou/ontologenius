@@ -138,7 +138,7 @@ namespace onto {
     /// @brief Blocks while no subscribers are currently connected to the internal ROS publisher.
     void waitConnected()
     {
-      while(onto_ros::Node::get().ok() && (getNumSubscribers() == 0))
+      while(onto_ros::Node::ok() && (getNumSubscribers() == 0))
         usleep(1000);
     }
 

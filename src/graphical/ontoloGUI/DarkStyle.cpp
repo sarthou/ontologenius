@@ -13,6 +13,16 @@
 
 #include "include/ontologenius/graphical/ontoloGUI/DarkStyle.h"
 
+#include "qapplication.h"
+#include "qfont.h"
+#include "qiodevice.h"
+#include "qnamespace.h"
+#include "qpalette.h"
+#include "qproxystyle.h"
+#include "qstring.h"
+#include "qstyle.h"
+#include "qstylefactory.h"
+
 #ifndef QStringLiteral
 #define QStringLiteral(str) QString(str)
 #endif

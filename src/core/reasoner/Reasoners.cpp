@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "class_loader/exceptions.hpp"
 #include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"

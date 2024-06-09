@@ -354,6 +354,7 @@ function(add_ros_executable TARGET)
   endif()
 
   set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+  target_compile_options(${TARGET} PUBLIC -DONTO_ROS_VERSION=$ENV{ROS_VERSION})
   target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
   target_enable_sanitizers(${TARGET})
 endfunction(add_ros_executable)
@@ -442,6 +443,7 @@ set(QT_SOURCES
 # #############################################################################
 add_executable(ontoloGUI ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
 set_target_properties(ontoloGUI PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+target_compile_options(ontoloGUI PUBLIC -DONTO_ROS_VERSION=$ENV{ROS_VERSION})
 target_link_libraries(ontoloGUI
   Qt5::Core
   Qt5::Widgets

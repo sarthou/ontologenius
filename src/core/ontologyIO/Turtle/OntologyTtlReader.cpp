@@ -347,7 +347,7 @@ namespace ontologenius {
         end_pose += 2;
         if(text[end_pose + 1] == '<')
           end_pose = endOfBlock(text, end_pose + 1);
-        else if((text[pose] != '"') || (text[pose] != '\''))
+        else if((text[pose] != '"') && (text[pose] != '\''))
           end_pose = nextBlanckCharacter(text, end_pose) - 1;
         else
           return "";

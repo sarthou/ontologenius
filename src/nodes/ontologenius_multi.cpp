@@ -243,7 +243,7 @@ int main(int argc, char** argv)
   for(auto& interfaces_name : interfaces_names)
     deleteInterface(interfaces_name);
 
-  while(ontologenius::compat::onto_ros::Node::get().ok())
+  while(ontologenius::compat::onto_ros::Node::ok())
     usleep(1);
 
   ontologenius::compat::onto_ros::Node::shutdown();

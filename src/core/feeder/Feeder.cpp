@@ -295,28 +295,41 @@ namespace ontologenius {
     {
       if(feed.action_ == action_add)
       {
-        if((indiv_branch = onto_->individual_graph_.findBranchSafe(feed.from_)) != nullptr)
+        indiv_branch = onto_->individual_graph_.findBranchSafe(feed.from_);
+        if(indiv_branch != nullptr)
         {
           if(data_property == true)
             onto_->individual_graph_.addRelation(indiv_branch, feed.prop_, type, data);
           else
             onto_->individual_graph_.addRelation(indiv_branch, feed.prop_, feed.on_);
         }
-        else if((class_branch = onto_->class_graph_.findBranchSafe(feed.from_)) != nullptr)
-        {
-          if(data_property == true)
-            onto_->class_graph_.addRelation(class_branch, feed.prop_, type, data);
-          else
-            onto_->class_graph_.addRelation(class_branch, feed.prop_, feed.on_);
-        }
-        else if((class_branch = onto_->class_graph_.findBranchSafe(feed.on_)) != nullptr)
-          onto_->class_graph_.addRelationInvert(feed.from_, feed.prop_, class_branch);
-        else if((indiv_branch = onto_->individual_graph_.findBranchSafe(feed.on_)) != nullptr)
-          onto_->individual_graph_.addRelationInvert(feed.from_, feed.prop_, indiv_branch);
         else
         {
-          notifications_.push_back("[FAIL][unknown concept to apply property]" + current_str_feed_);
-          return false;
+          class_branch = onto_->class_graph_.findBranchSafe(feed.from_);
+          if(class_branch != nullptr)
+          {
+            if(data_property == true)
+              onto_->class_graph_.addRelation(class_branch, feed.prop_, type, data);
+            else
+              onto_->class_graph_.addRelation(class_branch, feed.prop_, feed.on_);
+          }
+          else
+          {
+            class_branch = onto_->class_graph_.findBranchSafe(feed.on_);
+            if(class_branch != nullptr)
+              onto_->class_graph_.addRelationInvert(feed.from_, feed.prop_, class_branch);
+            else
+            {
+              indiv_branch = onto_->individual_graph_.findBranchSafe(feed.on_);
+              if(indiv_branch != nullptr)
+                onto_->individual_graph_.addRelationInvert(feed.from_, feed.prop_, indiv_branch);
+              else
+              {
+                notifications_.push_back("[FAIL][unknown concept to apply property]" + current_str_feed_);
+                return false;
+              }
+            }
+          }
         }
       }
       else if(feed.action_ == action_del)

@@ -16,12 +16,12 @@ namespace ontologenius {
 
     static WordTable table;
 
-    LiteralNode(const std::string& type, const std::string& value) : value_(value), type_(type)
+    LiteralNode(const std::string& type, const std::string& value) : value_(value), type_(type), index_(0)
     {
       index_ = table.add(type + "#" + value);
     }
 
-    explicit LiteralNode(const std::string& value)
+    explicit LiteralNode(const std::string& value) : index_(0)
     {
       index_ = table.add(value);
       set(value);

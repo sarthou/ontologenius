@@ -1,3 +1,4 @@
+#include <array>
 #include <cstdio>
 #include <stdexcept>
 #include <string>
@@ -8,7 +9,7 @@ namespace ontologenius {
 
   std::string execCmd(std::string cmd)
   {
-    char buffer[128];
+    std::array<char, 128> buffer;
     std::string result;
     cmd.append(" 2>&1");
     FILE* pipe = popen(cmd.c_str(), "r");
@@ -16,8 +17,8 @@ namespace ontologenius {
       throw std::runtime_error("popen() failed!");
     try
     {
-      while(fgets(buffer, sizeof buffer, pipe) != nullptr)
-        result += buffer;
+      while(fgets(buffer.data(), sizeof buffer, pipe) != nullptr)
+        result += buffer.data();
     }
     catch(...)
     {

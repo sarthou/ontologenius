@@ -74,11 +74,6 @@ namespace ontologenius {
     return SparqlSolver::Iterator(initial_solution, this);
   }
 
-  const SparqlSolver::Iterator SparqlSolver::cbegin()
-  {
-    return begin();
-  }
-
   SparqlSolution_t SparqlSolver::getInitialSolutionStandard(const std::string& pattern)
   {
     SparqlSolution_t initial_solution;
