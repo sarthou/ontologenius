@@ -1,4 +1,4 @@
-name: ROS CI
+name: ROS1 CI
 
 on: [push, workflow_dispatch]
 
@@ -27,7 +27,7 @@ jobs:
       ROS_DISTRO: ${{ matrix.ros_distro }}
     steps:
       - uses: actions/checkout@v1
-      - name: Install ROS
+      - name: Install ROS1
         run: |
             sudo sh -c "echo \"deb http://packages.ros.org/ros/ubuntu $ROS_CI_DESKTOP main\" > /etc/apt/sources.list.d/ros-latest.list"
             sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
@@ -35,22 +35,11 @@ jobs:
             sudo apt install dpkg
             sudo apt install -y ros-$ROS_DISTRO-desktop qtbase5-dev qtdeclarative5-dev
             sudo apt install -y libcppunit-dev libcurl4-openssl-dev
-            if [ $ROS_DISTRO != noetic ]
-            then
-                    sudo apt-get install python-rosdep
-            else
-                    sudo apt-get install python3-rosdep
-            fi
+            sudo apt-get install python3-rosdep
 
             source /opt/ros/$ROS_DISTRO/setup.bash
             sudo rosdep init
             rosdep update --include-eol-distros  # Support EOL distros.
-            if [ $ROS_DISTRO != noetic ]
-            then
-                    pip install requests --user
-            else
-                    pip3 install requests --user
-            fi
 
       - name: build
         run: |
@@ -62,8 +51,6 @@ jobs:
           source devel/setup.bash
           cd ~/catkin_ws/src
           ln -s ~/work  # $CI_SOURCE_PATH
-          # echo "::warning $CI_SOURCE_PATH"
-          # echo "::warning `ls -l`"
           cd ..
           catkin_make
       - name: rostest

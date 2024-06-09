@@ -1,0 +1,52 @@
+name: ROS2 CI
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        include:
+          - operating-system: ubuntu-22.04
+            ros_distro: humble
+            disto: jammy
+    env:
+      ROS_CI_DESKTOP: ${{ matrix.disto }}
+      CI_SOURCE_PATH: $(pwd)
+      ROSINSTALL_FILE: $CI_SOURCE_PATH/dependencies.rosinstall
+      CATKIN_OPTIONS: $CI_SOURCE_PATH/catkin.options
+      ROS_PARALLEL_JOBS: '-j8 -l6'
+      # Set the python path manually to include /usr/-/python2.7/dist-packages
+      # as this is where apt-get installs python packages.
+      ROS_DISTRO: ${{ matrix.ros_distro }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install ROS2
+        run: |
+            sudo apt install software-properties-common
+            sudo add-apt-repository universe
+            sudo apt update && sudo apt install curl -y
+            sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+            sudo apt update -qq
+            sudo apt install dpkg
+            sudo apt install -y ros-$ROS_DISTRO-desktop qtbase5-dev qtdeclarative5-dev
+            sudo apt install -y libcppunit-dev libcurl4-openssl-dev
+            sudo apt-get install python3-rosdep
+            source /opt/ros/$ROS_DISTRO/setup.bash.
+
+      - name: build
+        run: |
+          source /opt/ros/$ROS_DISTRO/setup.bash
+          cmake --version
+          mkdir -p ~/ros2_ws/src
+          cd ~/ros2_ws
+          colcon build --symlink-install
+          source install/setup.bash
+          export ROS_LOCALHOST_ONLY=1
+          cd ~/ros2_ws/src
+          ln -s ~/work  # $CI_SOURCE_PATH
+          cd ..
+          ccolcon build --symlink-install
