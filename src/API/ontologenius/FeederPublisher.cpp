@@ -48,7 +48,7 @@ namespace onto {
   void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const ontologenius::compat::onto_ros::Time& stamp)
   {
     std::string msg = "[del]" + from + "|" + property + "|_";
-    publishStamped(msg, ontologenius::compat::onto_ros::Node::get().current_time());
+    publishStamped(msg, ontologenius::compat::onto_ros::Node::get().currentTime());
     msg += ":_";
     publishStamped(msg, stamp);
   }
@@ -127,7 +127,7 @@ namespace onto {
 
     std::chrono::time_point<std::chrono::system_clock> start;
     start = std::chrono::system_clock::now();
-    publishStamped(msg, ontologenius::compat::onto_ros::Node::get().current_time());
+    publishStamped(msg, ontologenius::compat::onto_ros::Node::get().currentTime());
 
     while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count()) < (unsigned int)timeout)
     {
@@ -149,7 +149,7 @@ namespace onto {
 
     std::chrono::time_point<std::chrono::system_clock> start;
     start = std::chrono::system_clock::now();
-    publishStamped(msg, ontologenius::compat::onto_ros::Node::get().current_time());
+    publishStamped(msg, ontologenius::compat::onto_ros::Node::get().currentTime());
 
     while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count()) < (unsigned int)timeout)
     {
@@ -165,7 +165,7 @@ namespace onto {
 
   void FeederPublisher::sendNop()
   {
-    publishStamped("[nop]nop|", ontologenius::compat::onto_ros::Node::get().current_time());
+    publishStamped("[nop]nop|", ontologenius::compat::onto_ros::Node::get().currentTime());
   }
 
   void FeederPublisher::publish(const std::string& str)

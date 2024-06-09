@@ -28,7 +28,7 @@ namespace ontologenius {
 
     int activate(const std::string& plugin);
     int deactivate(const std::string& plugin);
-    std::string getDescription(std::string& plugin);
+    std::string getDescription(const std::string& plugin);
 
     void runPreReasoners(QueryOrigin_e origin, const std::string& action, const std::string& param);
     void runPostReasoners();

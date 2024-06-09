@@ -50,7 +50,7 @@ namespace ontologenius::compat::onto_ros {
 #endif
   }
 
-  Time Node::current_time()
+  Time Node::currentTime()
   {
 #if ONTO_ROS_VERSION == 1
     return Time(ros::Time::now());

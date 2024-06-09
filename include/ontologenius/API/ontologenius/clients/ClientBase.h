@@ -54,25 +54,25 @@ namespace onto {
     {
       cpt++;
 
-      auto req = ontologenius::compat::make_request<ontologenius::compat::OntologeniusService>();
-      auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusService>();
+      auto req = ontologenius::compat::makeRequest<ontologenius::compat::OntologeniusService>();
+      auto res = ontologenius::compat::makeResponse<ontologenius::compat::OntologeniusService>();
 
       [action, param](auto&& req) {
         req->action = action;
         req->param = param;
       }(ontologenius::compat::onto_ros::getServicePointer(req));
 
-      using ResultTy = typename decltype(client_)::Status;
+      using ResultTy = typename decltype(client_)::Status_e;
 
       switch(client_.call(req, res))
       {
-      case ResultTy::SUCCESSFUL_WITH_RETRIES:
+      case ResultTy::ros_status_successful_with_retry:
       {
         if(client_verbose)
           std::cout << COLOR_GREEN << "Restored ontologenius/" << name_ << COLOR_OFF << std::endl;
         [[fallthrough]];
       }
-      case ResultTy::SUCCESSFUL:
+      case ResultTy::ros_status_successful:
       {
         return [&](auto&& res) {
           code = res->code;
@@ -80,7 +80,7 @@ namespace onto {
           return res->values;
         }(ontologenius::compat::onto_ros::getServicePointer(res));
       }
-      case ResultTy::FAILURE:
+      case ResultTy::ros_status_failure:
         [[fallthrough]];
       default:
       {

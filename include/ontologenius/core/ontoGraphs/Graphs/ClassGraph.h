@@ -124,7 +124,7 @@ namespace ontologenius {
     void getWith(ClassBranch* first_class, index_t second_class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch*>& next_step);
     void getWith(ClassBranch* first_class, index_t second_class, std::unordered_set<index_t>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch*>& next_step);
     template<typename T>
-    void getWith_(ClassBranch* first_class, index_t second_class, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch*>& next_step);
+    void getWithTemplate(ClassBranch* first_class, index_t second_class, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch*>& next_step);
     void getDomainOf(ClassBranch* branch, std::unordered_set<std::string>& res, int depth = -1);
     void getDomainOf(ClassBranch* branch, std::unordered_set<index_t>& res, int depth = -1);
     void getRangeOf(ClassBranch* branch, std::unordered_set<std::string>& res, int depth = -1);

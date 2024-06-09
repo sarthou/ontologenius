@@ -892,16 +892,16 @@ namespace ontologenius {
 
   void ClassGraph::getWith(ClassBranch* first_class, index_t second_class, std::unordered_set<std::string>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch*>& next_step)
   {
-    getWith_(first_class, second_class, res, do_not_take, current_depth, found_depth, depth_prop, next_step);
+    getWithTemplate(first_class, second_class, res, do_not_take, current_depth, found_depth, depth_prop, next_step);
   }
 
   void ClassGraph::getWith(ClassBranch* first_class, index_t second_class, std::unordered_set<index_t>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch*>& next_step)
   {
-    getWith_(first_class, second_class, res, do_not_take, current_depth, found_depth, depth_prop, next_step);
+    getWithTemplate(first_class, second_class, res, do_not_take, current_depth, found_depth, depth_prop, next_step);
   }
 
   template<typename T>
-  void ClassGraph::getWith_(ClassBranch* first_class, index_t second_class, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch*>& next_step)
+  void ClassGraph::getWithTemplate(ClassBranch* first_class, index_t second_class, std::unordered_set<T>& res, std::unordered_set<index_t>& do_not_take, uint32_t current_depth, int& found_depth, int depth_prop, std::unordered_set<ClassBranch*>& next_step)
   {
     if(first_class != nullptr)
     {

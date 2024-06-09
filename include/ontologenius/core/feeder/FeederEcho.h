@@ -25,7 +25,7 @@ namespace ontologenius {
       // should we perhaps unlock the mutex...?
     }
 
-    void add(const std::string& data, const compat::onto_ros::Time& stamp = compat::onto_ros::Node::get().current_time())
+    void add(const std::string& data, const compat::onto_ros::Time& stamp = compat::onto_ros::Node::get().currentTime())
     {
       mut_.lock();
       echo_messages_.emplace_back(data, stamp);

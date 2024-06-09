@@ -341,7 +341,7 @@ namespace ontologenius {
     {
       std::unordered_set<B*> ups;
       getUpPtr(branch, ups);
-      for(auto up : ups)
+      for(auto* up : ups)
         for(auto& disjoint : up->disjoints_)
           getDown(disjoint.elem, res);
     }
@@ -358,7 +358,7 @@ namespace ontologenius {
     {
       std::unordered_set<B*> ups;
       getUpPtr(branch, ups);
-      for(auto up : ups)
+      for(auto* up : ups)
         for(auto& disjoint : up->disjoints_)
           getDownPtr(disjoint.elem, res);
     }
@@ -371,7 +371,7 @@ namespace ontologenius {
     {
       std::unordered_set<B*> ups;
       getUpPtr(branch, ups);
-      for(auto up : ups)
+      for(auto* up : ups)
         for(auto& disjoint : up->disjoints_)
           res.insert(disjoint.elem);
     }

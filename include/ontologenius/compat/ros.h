@@ -73,10 +73,10 @@ namespace ontologenius::compat {
   using ResponseType = typename T::Response;
 
   template<typename T, typename Request_ = typename T::Request>
-  inline auto make_request() { return Request_(); }
+  inline auto makeRequest() { return Request_(); }
 
   template<typename T, typename Response_ = typename T::Response>
-  inline auto make_response() { return Response_(); }
+  inline auto makeResponse() { return Response_(); }
 
   // todo: RequestType, ResponseType
 
@@ -97,10 +97,10 @@ namespace ontologenius::compat {
   using ResponseType = std::shared_ptr<typename T::Response>;
 
   template<typename T, typename Request_ = typename T::Request>
-  inline auto make_request() { return std::make_shared<Request_>(); }
+  inline auto makeRequest() { return std::make_shared<Request_>(); }
 
   template<typename T, typename Response_ = typename T::Response>
-  inline auto make_response() { return std::make_shared<Response_>(); }
+  inline auto makeResponse() { return std::make_shared<Response_>(); }
 
 // template <typename T, typename Result_ = typename T::>
 #endif
@@ -202,7 +202,7 @@ namespace ontologenius::compat {
 
       void spin();
 
-      Time current_time();
+      Time currentTime();
 
     private:
       explicit Node(const std::string& node_name);
@@ -329,11 +329,11 @@ namespace ontologenius::compat {
     class Client
     {
     public:
-      enum class Status
+      enum class Status_e
       {
-        SUCCESSFUL,
-        SUCCESSFUL_WITH_RETRIES,
-        FAILURE
+        ros_status_successful,
+        ros_status_successful_with_retry,
+        ros_status_failure
       };
 
       explicit Client(const std::string& service_name) : name_(service_name)
@@ -347,10 +347,10 @@ namespace ontologenius::compat {
 #endif
       }
 
-      Status call(const ontologenius::compat::RequestType<T>& req, ontologenius::compat::ResponseType<T>& res)
+      Status_e call(const ontologenius::compat::RequestType<T>& req, ontologenius::compat::ResponseType<T>& res)
       {
         using namespace std::chrono_literals;
-        auto status = Status::FAILURE;
+        auto status = Status_e::ros_status_failure;
 
 #if ONTO_ROS_VERSION == 1
         T srv;
@@ -361,13 +361,13 @@ namespace ontologenius::compat {
           handle_ = node.handle_.serviceClient<T>(name_, true);
           if(handle_.call(srv))
           {
-            status = Status::SUCCESSFUL_WITH_RETRIES;
+            status = Status_e::ros_status_successful_with_retry;
             res = srv.response;
           }
         }
         else
         {
-          status = Status::SUCCESSFUL;
+          status = Status_e::ros_status_successful;
           res = srv.response;
         }
 
@@ -381,7 +381,7 @@ namespace ontologenius::compat {
 
         if(future.wait_for(5s) == std::future_status::ready)
         {
-          status = Status::SUCCESSFUL;
+          status = Status_e::ros_status_successful;
           res = future.get();
         }
 #endif

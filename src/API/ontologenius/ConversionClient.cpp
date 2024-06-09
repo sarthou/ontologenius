@@ -132,8 +132,8 @@ namespace onto {
 
   std::vector<std::string> ConversionClient::index2Id(const std::vector<int64_t>& indexes, int8_t source)
   {
-    auto req = ontologenius::compat::make_request<ontologenius::compat::OntologeniusConversion>();
-    auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusConversion>();
+    auto req = ontologenius::compat::makeRequest<ontologenius::compat::OntologeniusConversion>();
+    auto res = ontologenius::compat::makeResponse<ontologenius::compat::OntologeniusConversion>();
 
     [source, indexes](auto&& req) {
       req->source = source;
@@ -155,8 +155,8 @@ namespace onto {
 
   std::vector<int64_t> ConversionClient::id2Index(const std::vector<std::string>& ids, int8_t source)
   {
-    auto req = ontologenius::compat::make_request<ontologenius::compat::OntologeniusConversion>();
-    auto res = ontologenius::compat::make_response<ontologenius::compat::OntologeniusConversion>();
+    auto req = ontologenius::compat::makeRequest<ontologenius::compat::OntologeniusConversion>();
+    auto res = ontologenius::compat::makeResponse<ontologenius::compat::OntologeniusConversion>();
 
     [source, ids](auto&& req) {
       req->source = source;
@@ -179,17 +179,17 @@ namespace onto {
   bool ConversionClient::call(compat::RequestType<compat::OntologeniusConversion>& req,
                               compat::ResponseType<compat::OntologeniusConversion>& res)
   {
-    using ResultTy = typename decltype(client_)::Status;
+    using ResultTy = typename decltype(client_)::Status_e;
 
     switch(client_.call(req, res))
     {
-    case ResultTy::SUCCESSFUL_WITH_RETRIES:
+    case ResultTy::ros_status_successful_with_retry:
       [[fallthrough]];
-    case ResultTy::SUCCESSFUL:
+    case ResultTy::ros_status_successful:
     {
       return true;
     }
-    case ResultTy::FAILURE:
+    case ResultTy::ros_status_failure:
     {
       if(client_verbose_)
         std::cout << COLOR_RED << "Failed to call ontologenius/" << name_ << COLOR_OFF << std::endl;

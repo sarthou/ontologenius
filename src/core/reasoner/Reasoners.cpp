@@ -175,7 +175,7 @@ namespace ontologenius {
     }
   }
 
-  std::string Reasoners::getDescription(std::string& plugin)
+  std::string Reasoners::getDescription(const std::string& plugin)
   {
     if(reasoners_.find(plugin) != reasoners_.end())
     {

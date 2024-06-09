@@ -571,7 +571,7 @@ namespace ontologenius {
 
     if(use_default)
     {
-      std::string tmp = branch->value();
+      const std::string& tmp = branch->value();
       if(std::regex_match(tmp, match, base_regex))
         return true;
     }
@@ -637,7 +637,7 @@ namespace ontologenius {
     LevenshteinDistance dist;
 
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-    for(auto branch : this->all_branchs_)
+    for(auto* branch : this->all_branchs_)
     {
       if(use_default)
         if((tmp_cost = dist.get(branch->value(), value)) <= lower_cost)

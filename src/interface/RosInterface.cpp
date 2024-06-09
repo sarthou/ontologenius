@@ -210,7 +210,7 @@ namespace ontologenius {
 
   void RosInterface::knowledgeCallback(const compat::onto_ros::MessageWrapper<std_msgs_compat::String>& msg)
   {
-    auto now = compat::onto_ros::Node::get().current_time();
+    auto now = compat::onto_ros::Node::get().currentTime();
 
     feeder_.store(msg->data, {(uint32_t)now.seconds(), (uint32_t)now.nanoseconds()});
   }
@@ -367,7 +367,7 @@ namespace ontologenius {
 
     auto& node = compat::onto_ros::Node::get();
 
-    auto time = node.current_time();
+    auto time = node.currentTime();
     feeder_.store("[add]myself|", {time.seconds(), time.nanoseconds()});
     if(name_.empty() == false)
       feeder_.store("[add]myself|=|" + name_, {time.seconds(), time.nanoseconds()});

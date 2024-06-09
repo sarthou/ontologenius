@@ -8,6 +8,7 @@
 #include <iterator>
 #include <map>
 #include <regex>
+#include <stdexcept>
 #include <string>
 #include <thread>
 #include <unistd.h>
