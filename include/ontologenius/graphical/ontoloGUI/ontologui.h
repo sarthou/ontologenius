@@ -9,7 +9,7 @@
 #include "include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
 #include "ontologenius/OntologiesManipulator.h"
 
-namespace Ui {
+namespace Ui { // NOLINT
   class OntoloGUI;
 }
 
