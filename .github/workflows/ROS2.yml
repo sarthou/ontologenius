@@ -4,7 +4,6 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
@@ -23,16 +22,13 @@ jobs:
       ROS_DISTRO: ${{ matrix.ros_distro }}
     steps:
       - uses: actions/checkout@v1
-      - name: Install ROS2
+      - name: Setup ROS
+        uses: ros-tooling/setup-ros@v0.7
+
+      - name: Install deps
         run: |
-            sudo apt install software-properties-common
-            sudo add-apt-repository universe
-            sudo apt update && sudo apt install curl -y
-            sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-            echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-            sudo apt update -qq
             sudo apt install dpkg
-            sudo apt install -y ros-$ROS_DISTRO-desktop qtbase5-dev qtdeclarative5-dev
+            sudo apt install -y qtbase5-dev qtdeclarative5-dev
             sudo apt install -y libcppunit-dev libcurl4-openssl-dev
             sudo apt-get install python3-rosdep
             source /opt/ros/$ROS_DISTRO/setup.bash.
