@@ -17,9 +17,6 @@ jobs:
     env:
       ROS_CI_DESKTOP: ${{ matrix.disto }}
       CI_SOURCE_PATH: $(pwd)
-      ROSINSTALL_FILE: $CI_SOURCE_PATH/dependencies.rosinstall
-      CATKIN_OPTIONS: $CI_SOURCE_PATH/catkin.options
-      ROS_PARALLEL_JOBS: '-j8 -l6'
       ROS_DISTRO: ${{ matrix.ros_distro }}
     steps:
       - name: Setup ROS
@@ -33,8 +30,7 @@ jobs:
             sudo apt install -y qtbase5-dev qtdeclarative5-dev
             sudo apt install -y libcppunit-dev libcurl4-openssl-dev
             sudo apt-get install python3-rosdep
-            ls /opt/ros
-            source /opt/ros/$ROS_DISTRO/setup.bash.
+            source /opt/ros/$ROS_DISTRO/setup.bash
 
       - name: build
         run: |
