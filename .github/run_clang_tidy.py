@@ -35,7 +35,7 @@ print("Extensions: " + str(extensions))
 
 def runclangtidy(filepath):
     print("Checking: " + filepath)
-    proc = subprocess.Popen(f'clang-tidy --quiet -warnings-as-errors=* -p {builddir} {filepath}', shell=True)
+    proc = subprocess.Popen(f'clang-tidy -warnings-as-errors=* -p {builddir} {filepath}', shell=True)
     if proc.wait() != 0:
         failedfiles.append(filepath)
 
