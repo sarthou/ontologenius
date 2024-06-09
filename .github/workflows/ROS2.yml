@@ -37,19 +37,19 @@ jobs:
         run: |
           source /opt/ros/$ROS_DISTRO/setup.bash
           cmake --version
-          cd ~/work
-          mkdir -p ros2_ws/src
+          cd $GITHUB_WORKSPACE
+          mkdir -p ros2_ws/src/ontologenius
           cd ros2_ws
           colcon build --symlink-install
 
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: ros2_ws/src
+          path: ros2_ws/src/ontologenius
 
       - name: Build
         run: |
-          cd ~/work/ros2_ws
+          cd $GITHUB_WORKSPACE/ros2_ws
           source install/setup.bash
           export ROS_LOCALHOST_ONLY=1
           colcon build --symlink-install
