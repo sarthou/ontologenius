@@ -177,25 +177,18 @@ target_link_libraries(ontologenius_ontoGraphs_lib
   PkgConfig::CURL
 )
 
-add_onto_library(ontologenius_core_lib
+add_onto_library(ontologenius_feeder_lib
   src/core/feeder/Feeder.cpp
   src/core/feeder/FeedStorage.cpp
   src/core/feeder/Versionor.cpp
   src/core/feeder/VersionNode.cpp
-  src/core/reasoner/plugins/ReasonerInterface.cpp
-  src/core/reasoner/Reasoners.cpp
-  src/core/reasoner/ConfigReader.cpp
 )
-target_include_directories(ontologenius_core_lib
-  PUBLIC ${pluginlib_INCLUDE_DIRS}
-  /opt/ros/humble/include/pluginlib/
-) # todo figure out why pluginlib is not inside pluginlib_INCLUDE_DIRS
-target_link_libraries(ontologenius_core_lib
+target_link_libraries(ontologenius_feeder_lib
   PUBLIC
-  ontologenius_ontoGraphs_lib ${pluginlib_LIBRARIES}
-) # ${TinyXML2_LIBRARIES}
+  ontologenius_ontoGraphs_lib
+)
 
-# # DRAWER
+# DRAWER
 add_onto_library(ontologenius_drawer_lib
   src/graphical/versioning/TreeReader.cpp
   src/graphical/versioning/TreeDrawer.cpp
@@ -210,26 +203,6 @@ target_link_libraries(ontologenius_drawer_lib
   ${OpenCV_LIBS}
 )
 
-# # PLUGINS
-add_onto_library(ontologenius_reasoner_plugin MODULE
-  src/core/reasoner/plugins/ReasonerNone.cpp
-  src/core/reasoner/plugins/ReasonerInverseOf.cpp
-  src/core/reasoner/plugins/ReasonerSymmetric.cpp
-  src/core/reasoner/plugins/ReasonerChain.cpp
-  src/core/reasoner/plugins/ReasonerDictionary.cpp
-  src/core/reasoner/plugins/ReasonerGeneralize.cpp
-  src/core/reasoner/plugins/ReasonerRangeDomain.cpp
-  src/core/reasoner/plugins/ReasonerAnonymous.cpp
-  src/core/reasoner/plugins/ReasonerTransitivity.cpp
-)
-target_include_directories(ontologenius_reasoner_plugin
-  PUBLIC ${pluginlib_INCLUDE_DIRS}
-)
-target_link_libraries(ontologenius_reasoner_plugin
-  PUBLIC
-  ontologenius_core_lib ${pluginlib_LIBRARIES}
-)
-
 # # OPERATORS
 add_onto_library(ontologenius_operators
   src/core/ontologyOperators/DifferenceFinder.cpp
@@ -239,7 +212,7 @@ add_onto_library(ontologenius_operators
 )
 target_link_libraries(ontologenius_operators
   PUBLIC
-  ontologenius_core_lib
+  ontologenius_feeder_lib
 )
 
 # ##################################
@@ -269,6 +242,7 @@ function(add_ros_library TARGET)
   endif()
 
   set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+  target_compile_options(${TARGET} PRIVATE $<$<CXX_COMPILER_ID:Clang>:-frelaxed-template-template-args>)
   target_compile_options(${TARGET} PUBLIC -DONTO_ROS_VERSION=$ENV{ROS_VERSION})
   target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
   target_enable_sanitizers(${TARGET})
@@ -277,6 +251,39 @@ endfunction(add_ros_library)
 # # Compatibility
 add_ros_library(ontologenius_compat
   src/compat/ros.cpp
+)
+
+# # PLUGINS
+add_ros_library(ontologenius_plugin_lib
+  src/core/reasoner/plugins/ReasonerInterface.cpp
+  src/core/reasoner/Reasoners.cpp
+  src/core/reasoner/ConfigReader.cpp
+)
+target_include_directories(ontologenius_plugin_lib
+  PUBLIC ${pluginlib_INCLUDE_DIRS}
+)
+target_link_libraries(ontologenius_plugin_lib
+  PUBLIC
+  ontologenius_ontoGraphs_lib ${pluginlib_LIBRARIES}
+)
+
+add_ros_library(ontologenius_reasoner_plugin MODULE
+  src/core/reasoner/plugins/ReasonerNone.cpp
+  src/core/reasoner/plugins/ReasonerInverseOf.cpp
+  src/core/reasoner/plugins/ReasonerSymmetric.cpp
+  src/core/reasoner/plugins/ReasonerChain.cpp
+  src/core/reasoner/plugins/ReasonerDictionary.cpp
+  src/core/reasoner/plugins/ReasonerGeneralize.cpp
+  src/core/reasoner/plugins/ReasonerRangeDomain.cpp
+  src/core/reasoner/plugins/ReasonerAnonymous.cpp
+  src/core/reasoner/plugins/ReasonerTransitivity.cpp
+)
+target_include_directories(ontologenius_reasoner_plugin
+  PUBLIC ${pluginlib_INCLUDE_DIRS}
+)
+target_link_libraries(ontologenius_reasoner_plugin
+  PUBLIC
+  ontologenius_plugin_lib ontologenius_ontoGraphs_lib ${pluginlib_LIBRARIES}
 )
 
 # # API
@@ -315,7 +322,7 @@ target_include_directories(ontologenius_lib PUBLIC $<BUILD_INTERFACE:${CMAKE_CUR
 target_link_libraries(ontologenius_lib
   PUBLIC
   ontologenius_compat
-  ontologenius_core_lib
+  ontologenius_plugin_lib
 ) # ontologenius_interface
 
 # # INTERFACE
@@ -327,7 +334,8 @@ add_ros_library(ontologenius_interface
 target_link_libraries(ontologenius_interface
   PUBLIC
   ontologenius_compat
-  ontologenius_core_lib
+  ontologenius_feeder_lib
+  ontologenius_plugin_lib
   ontologenius_operators
 )
 
@@ -368,7 +376,7 @@ add_ros_executable(ontologenius_multi src/nodes/ontologenius_multi.cpp)
 target_link_libraries(ontologenius_multi PRIVATE ontologenius_interface)
 
 add_ros_executable(ontologenius_draw src/graphical/versioning/main.cpp)
-target_link_libraries(ontologenius_draw PRIVATE ontologenius_drawer_lib ontologenius_core_lib)
+target_link_libraries(ontologenius_draw PRIVATE ontologenius_drawer_lib ontologenius_plugin_lib)
 
 if($ENV{ROS_VERSION} STREQUAL "1")
   # # COMPARISONS
@@ -380,7 +388,7 @@ if($ENV{ROS_VERSION} STREQUAL "1")
   # target_link_libraries(ontologenius_oro PRIVATE ontologenius_interface ontologenius_lib)
 
   # add_ros_executable(ontologenius_ORO src/tests/Compare/ORO.cpp)
-  # target_link_libraries(ontologenius_ORO PRIVATE ontologenius_lib ontologenius_core_lib)
+  # target_link_libraries(ontologenius_ORO PRIVATE ontologenius_lib ontologenius_plugin_lib)
 
   # # PERFORMANCES
 
@@ -388,16 +396,16 @@ if($ENV{ROS_VERSION} STREQUAL "1")
   # target_link_libraries(ontologenius_deepcopy PRIVATE ontologenius_lib)
 
   # add_ros_executable(ontologenius_find_tester src/tests/Performances/getNameVsFind.cpp)
-  # target_link_libraries(ontologenius_find_tester PRIVATE ontologenius_lib ontologenius_core_lib ontologenius_interface)
+  # target_link_libraries(ontologenius_find_tester PRIVATE ontologenius_lib ontologenius_plugin_lib ontologenius_interface)
   add_ros_executable(ontologenius_tester src/tests/Performances/tester.cpp)
-  target_link_libraries(ontologenius_tester PRIVATE ontologenius_core_lib)
+  target_link_libraries(ontologenius_tester PRIVATE ontologenius_interface)
 
   add_ros_executable(ontologenius_container_tester src/tests/Performances/container_test.cpp)
-  target_link_libraries(ontologenius_container_tester PRIVATE ontologenius_core_lib)
+  target_link_libraries(ontologenius_container_tester PRIVATE ontologenius_interface)
 
   # # FEATURES TESTS
   add_ros_executable(ontologenius_config_tester src/tests/config_reader_test.cpp)
-  target_link_libraries(ontologenius_config_tester PRIVATE ontologenius_core_lib)
+  target_link_libraries(ontologenius_config_tester PRIVATE ontologenius_interface)
 
   add_ros_executable(ontologenius_versioning src/tests/versioning.cpp)
   target_link_libraries(ontologenius_versioning PRIVATE ontologenius_lib)
@@ -487,7 +495,8 @@ elseif($ENV{ROS_VERSION} STREQUAL "2")
     ontologenius_interface
     ontologenius_compat
     ontologenius_operators
-    ontologenius_core_lib
+    ontologenius_feeder_lib
+    ontologenius_plugin_lib
     ontologenius_ontoGraphs_lib
     ontologenius_reasoner_plugin
     EXPORT ontologenius
