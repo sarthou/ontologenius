@@ -318,7 +318,7 @@ namespace ontologenius {
   template<typename B>
   B* Graph<B>::newDefaultBranch(const std::string& name)
   {
-    auto branch = new B(name);
+    auto* branch = new B(name);
     all_branchs_.push_back(branch);
     container_.insert(branch);
     return branch;
@@ -344,7 +344,7 @@ namespace ontologenius {
   index_t Graph<B>::getIndex(const std::string& name)
   {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-    auto branch = container_.find(name);
+    auto* branch = container_.find(name);
     if(branch != nullptr)
       return branch->get();
     else
@@ -442,7 +442,7 @@ namespace ontologenius {
     {
       if(branch->dictionary_.spoken_.find(language_) != branch->dictionary_.spoken_.end())
       {
-        if(branch->dictionary_.spoken_[language_].size())
+        if(branch->dictionary_.spoken_[language_].empty() == false)
         {
           std::unordered_set<size_t> tested;
           std::random_device rd;

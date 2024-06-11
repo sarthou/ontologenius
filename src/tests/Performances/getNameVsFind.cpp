@@ -4,7 +4,9 @@
 #include <cstdio>
 #include <cstdlib> /* srand, rand */
 #include <ctime>
+#include <iostream>
 #include <ros/ros.h>
+#include <string>
 #include <thread>
 #include <unordered_set>
 

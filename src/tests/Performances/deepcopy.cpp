@@ -3,8 +3,10 @@
 #include <ctime>   /* time */
 #include <iostream>
 #include <ros/ros.h>
+#include <string>
 
 #include "ontologenius/API/ontologenius/OntologiesManipulator.h"
+#include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
 using namespace std::chrono;
 

@@ -1,14 +1,15 @@
 #include <chrono>
 #include <cstdlib> /* srand, rand */
 #include <ctime>   /* time */
+#include <iostream>
 #include <ros/ros.h>
 #include <string>
 #include <unordered_set>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/reasoner/Reasoners.h"
-#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 
 using namespace std::chrono;
 
@@ -20,56 +21,56 @@ std::string set2string(const std::unordered_set<std::string>& word_set)
   return result;
 }
 
-std::vector<std::string> generate_sequence(ontologenius::ClassGraph& onto)
+std::vector<std::string> generateSequence(ontologenius::ClassGraph& onto)
 {
   srand(time(nullptr));
 
   std::vector<ontologenius::ClassBranch*> base = onto.get();
   size_t max_index = base.size();
 
-  std::string _1_10_1 = base[rand() % max_index]->value();
-  std::string _1_10_2 = base[rand() % max_index]->value();
+  std::string seq_1_10_1 = base[rand() % max_index]->value();
+  std::string seq_1_10_2 = base[rand() % max_index]->value();
 
-  std::string _1_20_1 = base[rand() % max_index]->value();
-  std::string _1_20_2 = base[rand() % max_index]->value();
+  std::string seq_1_20_1 = base[rand() % max_index]->value();
+  std::string seq_1_20_2 = base[rand() % max_index]->value();
 
-  std::string _1_25_1 = base[rand() % max_index]->value();
-  std::string _1_25_2 = base[rand() % max_index]->value();
-  std::string _1_25_3 = base[rand() % max_index]->value();
+  std::string seq_1_25_1 = base[rand() % max_index]->value();
+  std::string seq_1_25_2 = base[rand() % max_index]->value();
+  std::string seq_1_25_3 = base[rand() % max_index]->value();
 
-  std::string _1_50_1 = base[rand() % max_index]->value();
-  std::string _1_50_2 = base[rand() % max_index]->value();
-  std::string _1_50_3 = base[rand() % max_index]->value();
-  std::string _1_50_4 = base[rand() % max_index]->value();
-  std::string _1_50_5 = base[rand() % max_index]->value();
+  std::string seq_1_50_1 = base[rand() % max_index]->value();
+  std::string seq_1_50_2 = base[rand() % max_index]->value();
+  std::string seq_1_50_3 = base[rand() % max_index]->value();
+  std::string seq_1_50_4 = base[rand() % max_index]->value();
+  std::string seq_1_50_5 = base[rand() % max_index]->value();
 
   std::vector<std::string> vect20;
   vect20.resize(10);
-  vect20[0] = _1_10_1;
-  vect20[1] = _1_10_2;
+  vect20[0] = seq_1_10_1;
+  vect20[1] = seq_1_10_2;
   vect20.insert(vect20.end(), vect20.begin(), vect20.end()); // 20
-  vect20[2] = _1_20_1;
-  vect20[12] = _1_20_2;
+  vect20[2] = seq_1_20_1;
+  vect20[12] = seq_1_20_2;
   std::vector<std::string> vect100 = vect20;
   vect100.insert(vect100.end(), vect20.begin(), vect20.end()); // 40
   vect100.insert(vect100.end(), vect20.begin(), vect20.end()); // 60
   vect100.insert(vect100.end(), vect20.begin(), vect20.end()); // 80
   vect100.insert(vect100.end(), vect20.begin(), vect20.end()); // 100
   for(int i = 3; i < 100; i += 25)
-    vect100[i] = _1_25_1;
+    vect100[i] = seq_1_25_1;
   for(int i = 13; i < 100; i += 25)
-    vect100[i] = _1_25_2;
+    vect100[i] = seq_1_25_2;
   for(int i = 23; i < 100; i += 25)
-    vect100[i] = _1_25_3;
+    vect100[i] = seq_1_25_3;
 
   for(int i = 33; i < 100; i += 50)
-    vect100[i] = _1_50_1;
+    vect100[i] = seq_1_50_1;
   for(int i = 43; i < 100; i += 50)
-    vect100[i] = _1_50_2;
+    vect100[i] = seq_1_50_2;
   for(int i = 4; i < 100; i += 50)
-    vect100[i] = _1_50_3;
+    vect100[i] = seq_1_50_3;
   for(int i = 14; i < 100; i += 50)
-    vect100[i] = _1_50_4;
+    vect100[i] = seq_1_50_4;
 
   vect100[24] = base[rand() % max_index]->value();
   vect100[34] = base[rand() % max_index]->value();
@@ -78,9 +79,9 @@ std::vector<std::string> generate_sequence(ontologenius::ClassGraph& onto)
   for(int i = 0; i < 100; i++)
     vect10000.insert(vect10000.end(), vect100.begin(), vect100.end());
 
-  for(size_t i = 0; i < vect10000.size(); i++)
-    if(vect10000[i].empty())
-      vect10000[i] = base[rand() % max_index]->value();
+  for(auto& vect : vect10000)
+    if(vect.empty())
+      vect = base[rand() % max_index]->value();
 
   return vect10000;
 }
@@ -89,7 +90,7 @@ double testOne(const std::vector<std::string>& seq, ontologenius::Ontology& onto
 {
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-  for(auto& s : seq)
+  for(const auto& s : seq)
     std::unordered_set<std::string> out = onto.class_graph_.getUp(s);
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
@@ -138,7 +139,7 @@ int main(int argc, char** argv)
 
   /*int epoch = 10000;
 
-  std::vector<std::string> seq = generate_sequence(onto.class_graph_);
+  std::vector<std::string> seq = generateSequence(onto.class_graph_);
   double total = 0;
   for(int i = 0; i < epoch; i++)
   {

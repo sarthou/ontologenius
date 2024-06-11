@@ -75,8 +75,7 @@ Checks: >
   readability-simplify-subscript-expr,
   readability-string-compare,
   readability-use-std-min-max
-WarningsAsErrors: "*"
-HeaderFilterRegex: 'include/*'
+HeaderFilterRegex: 'ontologenius/include/ontologenius/*'
 CheckOptions:
   - { key: readability-identifier-naming.NamespaceCase,         value: lower_case }
   - { key: readability-identifier-naming.ClassCase,             value: CamelCase }

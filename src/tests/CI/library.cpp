@@ -9,21 +9,18 @@ onto::OntologyManipulator* onto_ptr;
 
 TEST(library_tests, close_call)
 {
-  bool res_bool;
-
-  res_bool = onto_ptr->close();
+  bool res_bool = onto_ptr->close();
   EXPECT_TRUE(res_bool);
 }
 
 TEST(library_tests, individuals_call)
 {
-  std::vector<std::string> res;
   std::string test_word = "test";
   bool res_bool = true;
 
   for(size_t i = 0; i < 10; i++)
   {
-    res = onto_ptr->individuals.getUp(test_word);
+    std::vector<std::string> res = onto_ptr->individuals.getUp(test_word);
     res_bool = res_bool && ((res.size() != 1) || (res[0] != "ERR:SERVICE_FAIL"));
   }
 
@@ -32,13 +29,12 @@ TEST(library_tests, individuals_call)
 
 TEST(library_tests, objectProperties_call)
 {
-  std::vector<std::string> res;
   std::string test_word = "test";
   bool res_bool = true;
 
   for(size_t i = 0; i < 10; i++)
   {
-    res = onto_ptr->objectProperties.getUp(test_word);
+    std::vector<std::string> res = onto_ptr->objectProperties.getUp(test_word);
     res_bool = res_bool && ((res.size() != 1) || (res[0] != "ERR:SERVICE_FAIL"));
   }
 
@@ -47,13 +43,12 @@ TEST(library_tests, objectProperties_call)
 
 TEST(library_tests, dataProperties_call)
 {
-  std::vector<std::string> res;
   std::string test_word = "test";
   bool res_bool = true;
 
   for(size_t i = 0; i < 10; i++)
   {
-    res = onto_ptr->dataProperties.getUp(test_word);
+    std::vector<std::string> res = onto_ptr->dataProperties.getUp(test_word);
     res_bool = res_bool && ((res.size() != 1) || (res[0] != "ERR:SERVICE_FAIL"));
   }
 

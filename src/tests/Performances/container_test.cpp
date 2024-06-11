@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstdlib> /* srand, rand */
 #include <ctime>   /* time */
+#include <iostream>
 #include <ros/ros.h>
 #include <string>
 #include <vector>
@@ -167,7 +168,7 @@ int main(int argc, char** argv)
     container_dyn.load(part_of_words);
     container_map.load(part_of_words);
 
-    for(float j = 0.1; j <= 2; j = j + 0.1)
+    for(float j = 0.1f; j <= 2; j = j + 0.1f)
     {
       std::vector<ontologenius::ValuedNode*> vect = creatTestVector(j, part_of_words);
       double time_span_dyn = findAllNTime(&container_dyn, vect, nb);

@@ -5,6 +5,7 @@
 #include <csignal>
 #include <cstdio>
 #include <cstdlib>
+#include <ctime>
 #include <execinfo.h>
 #include <iostream>
 #include <string>
@@ -17,16 +18,13 @@
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/ontologyOperators/SparqlSolver.h"
 #include "ontologenius/interface/RosInterface.h"
-#include "time.h"
 
 using namespace std::chrono;
 
 void handler(int sig)
 {
   std::array<void*, 10> array;
-  size_t size;
-
-  size = backtrace(array.data(), 10);
+  size_t size = backtrace(array.data(), 10);
 
   fprintf(stderr, "Error: signal %d:\n", sig);
   backtrace_symbols_fd(array.data(), size, STDERR_FILENO);
@@ -65,7 +63,7 @@ void compareSolutions(const std::vector<std::map<std::string, std::string>>& sol
       nb_diff++;
   }
 
-  if(nb_diff)
+  if(nb_diff != 0)
     std::cout << "[ERROR] " << nb_diff << " solutions where not identicals" << std::endl;
   else
     std::cout << "[SUCCESS]" << std::endl;
