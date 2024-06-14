@@ -4,39 +4,38 @@
 #include <string>
 #include <vector>
 
-#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
-#include "ontologenius/core/ontoGraphs/Branchs/RelationsWithInductions.h"
-
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
-#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/RelationsWithInductions.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 
 namespace ontologenius {
 
-// Classes predefinition
-class IndividualBranch_t;
+  // Classes predefinition
+  class IndividualBranch;
 
-typedef Single_t<IndividualBranch_t*> IndividualElement_t;
-typedef Pair_t<ObjectPropertyBranch_t*, IndividualBranch_t*> IndivObjectRelationElement_t;
-typedef Pair_t<DataPropertyBranch_t*, LiteralNode*> IndivDataRelationElement_t;
+  using IndividualElement = SingleElement<IndividualBranch*>;
+  using IndivObjectRelationElement = PairElement<ObjectPropertyBranch*, IndividualBranch*>;
+  using IndivDataRelationElement = PairElement<DataPropertyBranch*, LiteralNode*>;
 
-class IndividualBranch_t : public ValuedNode
-{
-public:
-  RelationsWithInductions<ClassElement_t> is_a_;
-  RelationsWithInductions<IndivObjectRelationElement_t> object_relations_;
-  RelationsWithInductions<IndivDataRelationElement_t> data_relations_;
-  RelationsWithInductions<IndividualElement_t> same_as_;
-  std::vector<IndividualElement_t> distinct_;
+  class IndividualBranch : public ValuedNode
+  {
+  public:
+    RelationsWithInductions<ClassElement> is_a_;
+    RelationsWithInductions<IndivObjectRelationElement> object_relations_;
+    RelationsWithInductions<IndivDataRelationElement> data_relations_;
+    RelationsWithInductions<IndividualElement> same_as_;
+    std::vector<IndividualElement> distinct_;
 
-  IndividualBranch_t(const std::string& value = "") : ValuedNode(value) {}
+    IndividualBranch(const std::string& value = "") : ValuedNode(value) {}
 
-  int objectRelationExists(ObjectPropertyBranch_t* property, IndividualBranch_t* individual);
-  int dataRelationExists(DataPropertyBranch_t* property, LiteralNode* data);
+    int objectRelationExists(ObjectPropertyBranch* property, IndividualBranch* individual);
+    int dataRelationExists(DataPropertyBranch* property, LiteralNode* data);
 
-  bool hasUpdatedObjectRelation();
-  bool hasUpdatedDataRelation();
-};
+    bool hasUpdatedObjectRelation();
+    bool hasUpdatedDataRelation();
+  };
 
 } // namespace ontologenius
 

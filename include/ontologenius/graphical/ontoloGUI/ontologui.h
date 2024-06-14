@@ -2,24 +2,24 @@
 #define ONTOLOGUI_H
 
 #include <QMainWindow>
-#include "include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
 #include <QTextCursor>
-
-#include "ontologenius/OntologiesManipulator.h"
-#include <vector>
 #include <string>
+#include <vector>
 
-namespace Ui {
-class ontoloGUI;
+#include "include/ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
+#include "ontologenius/OntologiesManipulator.h"
+
+namespace Ui { // NOLINT
+  class OntoloGUI;
 }
 
-class ontoloGUI : public QMainWindow
+class OntoloGUI : public QMainWindow
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-  explicit ontoloGUI(QWidget *parent = 0);
-  ~ontoloGUI();
+  explicit OntoloGUI(QWidget* parent = nullptr);
+  ~OntoloGUI() override;
 
   void init();
   void wait();
@@ -27,7 +27,7 @@ public:
   void loadReasoners();
 
 private:
-  Ui::ontoloGUI *ui;
+  Ui::OntoloGUI* ui_;
 
   onto::OntologiesManipulator ontos_;
   onto::OntologyManipulator* onto_;
@@ -42,23 +42,23 @@ private:
   void constructReasonersCheckBoxs();
   void updateReasonersCheckBoxs();
   size_t getReasonerIndex(QCheckBoxExtended* box);
-  std::string getReasonerDescription(std::string box);
+  std::string getReasonerDescription(const std::string& box);
   void displayOntologiesList();
   void displayErrorInfo(const std::string& text);
 
-  std::string vector2string(const std::vector<std::string>& vect);
-  std::string vector2html(const std::vector<std::string>& vect);
+  static std::string vector2string(const std::vector<std::string>& vect);
+  static std::string vector2html(const std::vector<std::string>& vect);
 
 public slots:
-  void ClasshoverEnterSlot();
-  void ClasshoverLeaveSlot();
+  void classhoverEnterSlot();
+  void classhoverLeaveSlot();
   void objectPropertyhoverEnterSlot();
   void objectPropertyhoverLeaveSlot();
   void dataPropertyhoverEnterSlot();
   void dataPropertyhoverLeaveSlot();
-  void IndividualCheckBoxhoverEnterSlot();
-  void IndividualhoverEnterSlot();
-  void IndividualhoverLeaveSlot();
+  void individualCheckBoxhoverEnterSlot();
+  void individualhoverEnterSlot();
+  void individualhoverLeaveSlot();
 
   void classClickedSlot();
   void objectPropertyClickedSlot();
@@ -66,18 +66,18 @@ public slots:
   void individualClickedSlot();
   void closeOntologySlot();
   void nameEditingFinishedSlot();
-  void ReasonerClickedSlot(int);
-  void ReasonerhoverEnterSlot();
-  void ReasonerhoverLeaveSlot();
-  void currentTabChangedSlot(int);
+  void reasonerClickedSlot(int /*unused*/);
+  void reasonerhoverEnterSlot();
+  void reasonerhoverLeaveSlot();
+  void currentTabChangedSlot(int index);
 
   void displayOntologiesListSlot();
   void addOntologySlot();
   void deleteOntologySlot();
   void saveOntologySlot();
   void differenceOntologySlot();
-  void OntologyNameAddDelChangedSlot(const QString&);
-  void OntologyNameChangedSlot(const QString&);
+  void ontologyNameAddDelChangedSlot(const QString& text);
+  void ontologyNameChangedSlot(const QString& text);
 
   void feederCallback(const std::string& msg);
   void feederAddSlot();
@@ -88,8 +88,8 @@ public slots:
   bool updateOntoPtr();
 
 signals:
-  void feederSetHtmlSignal(QString);
-  void feederScrollSignal(QString);
+  void feederSetHtmlSignal(QString t1);
+  void feederScrollSignal(QString t1);
 };
 
 #endif // ONTOLOGUI_H

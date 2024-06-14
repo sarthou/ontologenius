@@ -1,0 +1,55 @@
+---
+BasedOnStyle: Microsoft
+AlignArrayOfStructures: Left
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: All
+BraceWrapping:
+  AfterCaseLabel: true
+  AfterClass: true
+  AfterControlStatement: Always
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: false
+  AfterObjCDeclaration: true
+  AfterStruct: true
+  AfterUnion: true
+  AfterExternBlock: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeLambdaBody: false
+  BeforeWhile: false
+  IndentBraces: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+BreakArrays: false
+BreakBeforeTernaryOperators: false
+BreakInheritanceList: AfterComma
+BreakStringLiterals: false
+ColumnLimit: 0
+ConstructorInitializerIndentWidth: 2
+ContinuationIndentWidth: 2
+IncludeBlocks: Regroup
+IndentRequiresClause: false
+IndentWidth: 2
+KeepEmptyLinesAtTheStartOfBlocks: false
+PenaltyBreakTemplateDeclaration: 1000000
+PointerAlignment: Left
+SpaceAfterTemplateKeyword: false
+SpaceBeforeParens: Custom
+SpaceBeforeParensOptions:
+  AfterControlStatements: false
+  AfterForeachMacros: false
+  AfterIfMacros: false
+SpacesInContainerLiterals: false
+TabWidth: 2
+BracedInitializerIndentWidth: 2
+NamespaceIndentation: All
+IncludeCategories:
+  - Regex:           '^\<.*\>'
+    Priority:        1
+    CaseSensitive:   false
+  - Regex:           '^".*"'
+    Priority:        2
+    CaseSensitive:   false

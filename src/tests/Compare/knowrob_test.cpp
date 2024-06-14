@@ -1,10 +1,9 @@
 #include <chrono>
-#include <cstdlib>     /* srand, rand */
-#include <ctime>       /* time */
-#include <unordered_set>
-#include <thread>
-
+#include <cstdlib> /* srand, rand */
+#include <ctime>   /* time */
 #include <ros/ros.h>
+#include <thread>
+#include <unordered_set>
 
 #define ONTO_TEST
 
@@ -12,31 +11,30 @@
 
 using namespace std::chrono;
 
-#include <unistd.h>
+#include <fstream>
 #include <ios>
 #include <iostream>
-#include <fstream>
 #include <string>
+#include <unistd.h>
 using namespace std;
-void mem_usage(double& vm_usage, double& resident_set) {
-   vm_usage = 0.0;
-   resident_set = 0.0;
-   ifstream stat_stream("/proc/self/stat",ios_base::in); //get info from proc
-   //create some variables to get info
-   string pid, comm, state, ppid, pgrp, session, tty_nr;
-   string tpgid, flags, minflt, cminflt, majflt, cmajflt;
-   string utime, stime, cutime, cstime, priority, nice;
-   string O, itrealvalue, starttime;
-   unsigned long vsize;
-   long rss;
-   stat_stream >> pid >> comm >> state >> ppid >> pgrp >> session >> tty_nr
-   >> tpgid >> flags >> minflt >> cminflt >> majflt >> cmajflt
-   >> utime >> stime >> cutime >> cstime >> priority >> nice
-   >> O >> itrealvalue >> starttime >> vsize >> rss; // don't care about the rest
-   stat_stream.close();
-   long page_size_kb = sysconf(_SC_PAGE_SIZE) / 1024; // for x86-64 is configured to use 2MB pages
-   vm_usage = vsize / 1024.0;
-   resident_set = rss * page_size_kb;
+
+void mem_usage(double& vm_usage, double& resident_set)
+{
+  vm_usage = 0.0;
+  resident_set = 0.0;
+  ifstream stat_stream("/proc/self/stat", ios_base::in); // get info from proc
+  // create some variables to get info
+  string pid, comm, state, ppid, pgrp, session, tty_nr;
+  string tpgid, flags, minflt, cminflt, majflt, cmajflt;
+  string utime, stime, cutime, cstime, priority, nice;
+  string O, itrealvalue, starttime;
+  unsigned long vsize;
+  long rss;
+  stat_stream >> pid >> comm >> state >> ppid >> pgrp >> session >> tty_nr >> tpgid >> flags >> minflt >> cminflt >> majflt >> cmajflt >> utime >> stime >> cutime >> cstime >> priority >> nice >> O >> itrealvalue >> starttime >> vsize >> rss; // don't care about the rest
+  stat_stream.close();
+  long page_size_kb = sysconf(_SC_PAGE_SIZE) / 1024; // for x86-64 is configured to use 2MB pages
+  vm_usage = vsize / 1024.0;
+  resident_set = rss * page_size_kb;
 }
 
 void insertN(ontologenius::RosInterface* interface, size_t n)
@@ -64,13 +62,13 @@ void insertN(ontologenius::RosInterface* interface, size_t n)
 bool doQuery(ontologenius::Ontology* onto, size_t n)
 {
   int rnd = rand() % n;
-  ontologenius::ClassBranch_t* cup = onto->class_graph_.findBranchSafe("Cup");
-  ontologenius::IndividualBranch_t* cup_i = cup->individual_childs_[rnd].elem;
+  ontologenius::ClassBranch* cup = onto->class_graph_.findBranchSafe("Cup");
+  ontologenius::IndividualBranch* cup_i = cup->individual_childs_[rnd].elem;
   auto VP_i = onto->individual_graph_.getOn(cup_i->value(), "Vp_has_obj");
-  if(VP_i.size())
+  if(VP_i.empty() == false)
   {
     auto pose = onto->individual_graph_.getOn(*(VP_i.begin()), "occursAt");
-    return (pose.size() != 0);
+    return (pose.empty() == false);
   }
   std::cout << "no VP" << std::endl;
   return false;
@@ -110,7 +108,7 @@ int main(int argc, char** argv)
   std::vector<double> mem;
   std::vector<double> query;
 
-  for(size_t i = 100; i < 1000000; i = i*10)
+  for(size_t i = 100; i < 1000000; i = i * 10)
   {
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
@@ -120,9 +118,9 @@ int main(int argc, char** argv)
     duration<double> time_span1 = duration_cast<duration<double>>(t2 - t1);
     sizes.push_back(i);
     times.push_back(time_span1.count());
-    time_per_obj.push_back(time_span1.count()/i);
+    time_per_obj.push_back(time_span1.count() / i);
     std::cout << "It took me " << time_span1.count() << " seconds to create " << i << std::endl;
-    std::cout << "--> " << time_span1.count()/i << " seconds per obj" << std::endl;
+    std::cout << "--> " << time_span1.count() / i << " seconds per obj" << std::endl;
 
     high_resolution_clock::time_point t3 = high_resolution_clock::now();
     bool query_ok = doQuery(onto, i);
@@ -143,7 +141,7 @@ int main(int argc, char** argv)
     interface.close();
   }
 
-  for(size_t i = 200000; i <= 1000000; i += 200000) //1000000
+  for(size_t i = 200000; i <= 1000000; i += 200000) // 1000000
   {
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
@@ -153,9 +151,9 @@ int main(int argc, char** argv)
     duration<double> time_span1 = duration_cast<duration<double>>(t2 - t1);
     sizes.push_back(i);
     times.push_back(time_span1.count());
-    time_per_obj.push_back(time_span1.count()/i);
+    time_per_obj.push_back(time_span1.count() / i);
     std::cout << "It took me " << time_span1.count() << " seconds to create " << i << std::endl;
-    std::cout << "--> " << time_span1.count()/i << " seconds per obj" << std::endl;
+    std::cout << "--> " << time_span1.count() / i << " seconds per obj" << std::endl;
 
     high_resolution_clock::time_point t3 = high_resolution_clock::now();
     bool query_ok = doQuery(onto, i);

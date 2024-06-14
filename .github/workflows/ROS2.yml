@@ -1,0 +1,64 @@
+name: ROS2 CI
+
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - 'resources/*'
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'resources/*'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        include:
+          - operating-system: ubuntu-22.04
+            ros_distro: humble
+            distro: jammy
+          - operating-system: ubuntu-22.04
+            ros_distro: iron
+            distro: jammy
+    env:
+      ROS_CI_DESKTOP: ${{ matrix.distro }}
+      CI_SOURCE_PATH: $(pwd)
+      ROS_DISTRO: ${{ matrix.ros_distro }}
+    steps:
+      - name: Setup ROS
+        uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: ${{ matrix.ros_distro }}
+
+      - name: Install deps
+        run: |
+            sudo apt install dpkg
+            sudo apt install -y qtbase5-dev qtdeclarative5-dev
+            sudo apt install -y libcppunit-dev libcurl4-openssl-dev
+            sudo apt-get install python3-rosdep
+            sudo apt install ros-cmake-modules
+            sudo apt install ros-$ROS_DISTRO-std-msgs ros-$ROS_DISTRO-pluginlib
+            source /opt/ros/$ROS_DISTRO/setup.bash
+
+      - name: Setup Workspace
+        run: |
+          source /opt/ros/$ROS_DISTRO/setup.bash
+          cmake --version
+          cd $GITHUB_WORKSPACE
+          mkdir -p ros2_ws/src/ontologenius
+          cd ros2_ws
+          colcon build --symlink-install
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ros2_ws/src/ontologenius
+
+      - name: Build
+        run: |
+          cd $GITHUB_WORKSPACE/ros2_ws
+          source install/setup.bash
+          export ROS_LOCALHOST_ONLY=1
+          colcon build --symlink-install

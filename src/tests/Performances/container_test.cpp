@@ -1,11 +1,12 @@
 #include <chrono>
 #include <cmath>
-#include <cstdlib>     /* srand, rand */
-#include <ctime>       /* time */
 #include <cstdio>
-#include <unordered_set>
-
+#include <cstdlib> /* srand, rand */
+#include <ctime>   /* time */
+#include <iostream>
 #include <ros/ros.h>
+#include <string>
+#include <vector>
 
 #include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerDyn.h"
 #include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerMap.h"
@@ -14,9 +15,9 @@
 class FileReader
 {
 public:
-  FileReader(const std::string& path)
+  explicit FileReader(const std::string& path)
   {
-    len = cpt = 0;
+    len_ = cpt_ = 0;
     file_ = nullptr;
     init(path, "r");
   }
@@ -28,20 +29,21 @@ public:
 
   std::string readLine()
   {
-    char * line = nullptr;
-    if(getline(&line, &len, file_) != -1)
+    char* line = nullptr;
+    if(getline(&line, &len_, file_) != -1)
     {
-        cpt++;
-        return std::string(line);
+      cpt_++;
+      return {line};
     }
     else
       return "";
   }
 
-  size_t getNbLine() {return cpt; }
+  size_t getNbLine() const { return cpt_; }
+
 private:
-  size_t len;
-  size_t cpt;
+  size_t len_;
+  size_t cpt_;
 
   void init(const std::string& file_name, const std::string& option)
   {
@@ -74,15 +76,14 @@ void readFullWords()
   do
   {
     std::string res = reader.readLine();
-    if(res == "")
+    if(res.empty())
       oef = true;
     else
     {
-      ontologenius::ValuedNode* tmp = new ontologenius::ValuedNode(res);
+      auto* tmp = new ontologenius::ValuedNode(res);
       full_words.push_back(tmp);
     }
-  }
-  while(oef == false);
+  } while(oef == false);
   std::cout << reader.getNbLine() << std::endl;
 }
 
@@ -90,7 +91,7 @@ double findAll(ontologenius::BranchContainerBase<ontologenius::ValuedNode>* cont
 {
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-  for(auto word : words)
+  for(auto* word : words)
   {
     ontologenius::ValuedNode* none = container->find(word->value());
     (void)none;
@@ -117,8 +118,8 @@ std::vector<ontologenius::ValuedNode*> getPartOfWords(float percent)
   std::vector<ontologenius::ValuedNode*> tmp;
   for(size_t i = 0; i < full_words.size() * percent / 100; i++)
   {
-    size_t myIndex = rand() % full_words.size();
-    tmp.push_back(full_words[myIndex]);
+    size_t my_index = rand() % full_words.size();
+    tmp.push_back(full_words[my_index]);
   }
 
   return tmp;
@@ -129,8 +130,8 @@ std::vector<ontologenius::ValuedNode*> creatTestVector(float percent, std::vecto
   std::vector<ontologenius::ValuedNode*> tmp;
   for(size_t i = 0; i < words.size() * percent / 100; i++)
   {
-    size_t myIndex = rand() % words.size();
-    tmp.push_back(words[myIndex]);
+    size_t my_index = rand() % words.size();
+    tmp.push_back(words[my_index]);
   }
 
   if(tmp.size() < full_words.size() / 2)
@@ -152,11 +153,14 @@ int main(int argc, char** argv)
 
   readFullWords();
 
-  size_t N = 100;
+  size_t nb = 100;
 
   for(size_t i = 1; i <= 5; i++)
   {
-    std::cout << "########" << std::endl << "#  " << i <<"  #" << std::endl << "########" << std::endl << std::endl;
+    std::cout << "########" << std::endl
+              << "#  " << i << "  #" << std::endl
+              << "########" << std::endl
+              << std::endl;
     ontologenius::BranchContainerDyn<ontologenius::ValuedNode> container_dyn;
     ontologenius::BranchContainerMap<ontologenius::ValuedNode> container_map;
 
@@ -164,13 +168,13 @@ int main(int argc, char** argv)
     container_dyn.load(part_of_words);
     container_map.load(part_of_words);
 
-    for(float j = 0.1; j <= 2; j = j + 0.1)
+    for(float j = 0.1f; j <= 2; j = j + 0.1f)
     {
       std::vector<ontologenius::ValuedNode*> vect = creatTestVector(j, part_of_words);
-      double time_span_dyn = findAllNTime(&container_dyn, vect, N);
-      double time_span_map = findAllNTime(&container_map, vect, N);
+      double time_span_dyn = findAllNTime(&container_dyn, vect, nb);
+      double time_span_map = findAllNTime(&container_map, vect, nb);
 
-      std::cout << i << " " << j << " " << time_span_dyn << " " << time_span_map << " " << vect.size()*N << " " << time_span_dyn*vect.size()*N << " " << time_span_map*vect.size()*N << std::endl;
+      std::cout << i << " " << j << " " << time_span_dyn << " " << time_span_map << " " << vect.size() * nb << " " << time_span_dyn * vect.size() * nb << " " << time_span_map * vect.size() * nb << std::endl;
     }
 
     size_t size = full_words.size() * i / 100;

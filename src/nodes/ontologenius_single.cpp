@@ -1,23 +1,22 @@
-#include <stdio.h>
+#include <array>
+#include <csignal>
+#include <cstdio>
+#include <cstdlib>
 #include <execinfo.h>
-#include <signal.h>
-#include <stdlib.h>
+#include <ontologenius/compat/ros.h>
+#include <thread>
 #include <unistd.h>
 
-#include <ontologenius/compat/ros.h>
-
-#include "ontologenius/utils/Parameters.h"
 #include "ontologenius/interface/RosInterface.h"
+#include "ontologenius/utils/Parameters.h"
 
 void handler(int sig)
 {
-  void *array[10];
-  size_t size;
-
-  size = backtrace(array, 10);
+  std::array<void*, 10> array;
+  auto size = backtrace(array.data(), 10);
 
   fprintf(stderr, "Error: signal %d:\n", sig);
-  backtrace_symbols_fd(array, size, STDERR_FILENO);
+  backtrace_symbols_fd(array.data(), size, STDERR_FILENO);
   exit(1);
 }
 
@@ -44,9 +43,9 @@ int main(int argc, char** argv)
 
     interface.setDisplay(params.at("display").getFirst() == "true");
     interface.init(params.at("language").getFirst(),
-                    params.at("intern_file").getFirst(),
-                    params.at("files").get(),
-                    params.at("config").getFirst());
+                   params.at("intern_file").getFirst(),
+                   params.at("files").get(),
+                   params.at("config").getFirst());
 
     interface.run();
   }

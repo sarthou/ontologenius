@@ -1,10 +1,14 @@
-#include <sstream>
-
-#include <ros/ros.h>
-
+#include <cstddef>
 #include <gtest/gtest.h>
+#include <ros/ros.h>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <algorithm>
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
+
+#define NB_TRY 10
 
 onto::OntologyManipulator* onto_ptr;
 
@@ -14,7 +18,7 @@ TEST(requests_tests, getName_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->classes.getName(test_word);
     res_bool = res_bool && (res == "human");
@@ -29,7 +33,7 @@ TEST(requests_tests, find_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->classes.find(test_word);
     res_bool = res_bool && ((res.size() == 1) && (res[0] == "human"));
@@ -44,18 +48,18 @@ TEST(requests_tests, getUp_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->classes.getUp(test_word);
     res_bool = res_bool && ((res.size() == 8) &&
-                            (find(res.begin(), res.end(), "entity") != res.end()) &&
-                            (find(res.begin(), res.end(), "animate") != res.end()) &&
-                            (find(res.begin(), res.end(), "activity") != res.end()) &&
-                            (find(res.begin(), res.end(), "attribute") != res.end()) &&
-                            (find(res.begin(), res.end(), "human") != res.end()) &&
-                            (find(res.begin(), res.end(), "agent") != res.end()) &&
-                            (find(res.begin(), res.end(), "vitality") != res.end()) &&
-                            (find(res.begin(), res.end(), "living") != res.end()));
+                            (std::find(res.begin(), res.end(), "entity") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "animate") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "activity") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "attribute") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "human") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "agent") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "vitality") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "living") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
@@ -67,14 +71,14 @@ TEST(requests_tests, getDown_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->classes.getDown(test_word);
     res_bool = res_bool && ((res.size() == 4) &&
-                            (find(res.begin(), res.end(), "human") != res.end()) &&
-                            (find(res.begin(), res.end(), "woman") != res.end()) &&
-                            (find(res.begin(), res.end(), "man") != res.end()) &&
-                            (find(res.begin(), res.end(), "child") != res.end()));
+                            (std::find(res.begin(), res.end(), "human") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "woman") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "man") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "child") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
@@ -86,11 +90,11 @@ TEST(requests_tests, getDisjoint_call)
   std::string test_word = "woman";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->classes.getDisjoint(test_word);
     res_bool = res_bool && ((res.size() == 63) &&
-                            (find(res.begin(), res.end(), "man") != res.end()));
+                            (std::find(res.begin(), res.end(), "man") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
@@ -102,13 +106,13 @@ TEST(requests_tests, depth_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->classes.getUp(test_word, 1);
     res_bool = res_bool && ((res.size() == 3) &&
-                            (find(res.begin(), res.end(), "human") != res.end()) &&
-                            (find(res.begin(), res.end(), "agent") != res.end()) &&
-                            (find(res.begin(), res.end(), "living") != res.end()));
+                            (std::find(res.begin(), res.end(), "human") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "agent") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "living") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
@@ -119,7 +123,7 @@ TEST(requests_tests, select_true_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res_bool = res_bool && onto_ptr->classes.isA(test_word, "entity");
   }
@@ -132,17 +136,17 @@ TEST(requests_tests, reasoners_list_call)
   std::vector<std::string> res;
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->reasoners.list();
     res_bool = res_bool && ((res.size() >= 7) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerChain") != res.end()) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerDictionary") != res.end()) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerInverseOf") != res.end()) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerNone") != res.end()) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerSymmetric") != res.end()) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerGeneralize") != res.end()) &&
-                            (find(res.begin(), res.end(), "ontologenius::ReasonerRangeDomain") != res.end()));
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerChain") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerDictionary") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerInverseOf") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerNone") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerSymmetric") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerGeneralize") != res.end()) &&
+                            (std::find(res.begin(), res.end(), "ontologenius::ReasonerRangeDomain") != res.end()));
   }
 
   EXPECT_TRUE(res_bool);
@@ -153,7 +157,7 @@ TEST(requests_tests, reasoner_description_call)
   std::string res;
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerChain");
     res_bool = res_bool && (res == "This reasoner resolve the properties chains axioms.\n - post reasoning");
@@ -175,7 +179,7 @@ TEST(requests_tests, select_false_call)
   std::string test_word = "human";
   bool res_bool = true;
 
-  for(size_t i = 0; i < 10; i++)
+  for(size_t i = 0; i < NB_TRY; i++)
   {
     res_bool = res_bool && (!onto_ptr->classes.isA(test_word, "animal"));
   }

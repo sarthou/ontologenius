@@ -5,32 +5,33 @@
 
 namespace ontologenius {
 
-class ReasonerDictionary : public ReasonerInterface
-{
-public:
-  ReasonerDictionary() { use_id_ = false; }
-  virtual ~ReasonerDictionary() = default;
+  class ReasonerDictionary : public ReasonerInterface
+  {
+  public:
+    ReasonerDictionary() : use_id_(false) {}
+    ~ReasonerDictionary() override = default;
 
-  void setParameter(const std::string& name, const std::string& value) override;
+    void setParameter(const std::string& name, const std::string& value) override;
 
-  virtual void postReason() override;
+    void postReason() override;
 
-  virtual bool implementPostReasoning() override { return true; }
+    bool implementPostReasoning() override { return true; }
 
-  virtual std::string getName() override;
-  virtual std::string getDescription() override;
+    std::string getName() override;
+    std::string getDescription() override;
 
-  virtual bool defaultActive() override {return true;}
-private:
-  bool use_id_;
+    bool defaultActive() override { return true; }
 
-  void updateDictionary(ValuedNode* node);
+  private:
+    bool use_id_;
 
-  void setId(ValuedNode* node);
-  void split(ValuedNode* node);
-  void createLowerCase(ValuedNode* node);
-  void replaceQuote(ValuedNode* node);
-};
+    void updateDictionary(ValuedNode* node);
+
+    void setId(ValuedNode* node);
+    void split(ValuedNode* node);
+    void createLowerCase(ValuedNode* node);
+    void replaceQuote(ValuedNode* node);
+  };
 
 } // namespace ontologenius
 

@@ -7,27 +7,27 @@
 
 namespace ontologenius {
 
-class ObjectPropertyGraph;
-class ObjectPropertyBranch_t;
+  class ObjectPropertyGraph;
+  class ObjectPropertyBranch;
 
-class ObjectPropertiesOwlWriter : public PropertiesOwlWriter<ObjectPropertyBranch_t>
-{
-public:
-  ObjectPropertiesOwlWriter(ObjectPropertyGraph* property_graph, const std::string& ns);
-  ~ObjectPropertiesOwlWriter() {};
+  class ObjectPropertiesOwlWriter : public PropertiesOwlWriter<ObjectPropertyBranch>
+  {
+  public:
+    ObjectPropertiesOwlWriter(ObjectPropertyGraph* property_graph, const std::string& ns);
+    ~ObjectPropertiesOwlWriter() = default;
 
-  void write(FILE* file);
+    void write(FILE* file);
 
-private:
-  ObjectPropertyGraph* property_graph_;
+  private:
+    ObjectPropertyGraph* property_graph_;
 
-  void writeProperty(ObjectPropertyBranch_t* branch);
-  void writeSubPropertyOf(ObjectPropertyBranch_t* branch);
-  void writeInverseOf(ObjectPropertyBranch_t* branch);
-  void writeRange(ObjectPropertyBranch_t* branch);
-  void writeDomain(ObjectPropertyBranch_t* branch);
-  void writeChain(ObjectPropertyBranch_t* branch);
-};
+    void writeProperty(ObjectPropertyBranch* branch);
+    void writeSubPropertyOf(ObjectPropertyBranch* branch);
+    void writeInverseOf(ObjectPropertyBranch* branch);
+    void writeRange(ObjectPropertyBranch* branch);
+    void writeDomain(ObjectPropertyBranch* branch);
+    void writeChain(ObjectPropertyBranch* branch);
+  };
 
 } // namespace ontologenius
 

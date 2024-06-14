@@ -1,46 +1,56 @@
 #include "ontologenius/core/ontologyOperators/SparqlSolver.h"
 
-#include "ontologenius/utils/String.h"
-#include "ontologenius/graphical/Display.h"
-
-#include "time.h"
+#include <algorithm>
 #include <chrono>
+#include <ctime>
+#include <iostream>
+#include <iterator>
+#include <map>
+#include <regex>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
+
+#include "ontologenius/core/ontologyOperators/SparqlUtils.h"
+#include "ontologenius/utils/String.h"
+
 using namespace std::chrono;
 
-namespace ontologenius
-{
+namespace ontologenius {
+
   SparqlSolver::SparqlSolver() : onto_(nullptr),
-                                 sparql_pattern_("SELECT\\s*(DISTINCT)?\\s*([^\n]+)([\\s\n]*)WHERE([\\s\n]*)(.*)"),
-                                 error_("")
+                                 sparql_pattern_("SELECT\\s*(DISTINCT)?\\s*([^\n]+)([\\s\n]*)WHERE([\\s\n]*)(.*)")
   {
     operators_["NOT EXISTS"] = sparql_not_exists;
   }
 
-  SparqlSolver::iterator SparqlSolver::begin()
+  SparqlSolver::Iterator SparqlSolver::begin()
   {
     SparqlSolution_t initial_solution;
 
     std::smatch match;
-    bool has_matched = std::regex_match(query_, match, sparql_pattern_);
-    if (has_matched)
+    const bool has_matched = std::regex_match(query_, match, sparql_pattern_);
+    if(has_matched)
     {
       std::string vars = match[2].str();
       removeChar(vars, {'\n', '\r'});
       removeUselessSpace(vars);
-      std::vector<std::string> vars_to_return = split(vars, " ");
+      const std::vector<std::string> vars_to_return = split(vars, " ");
 
       std::string pattern = getPattern(match[5].str());
       removeChar(pattern, {'\n', '\r'});
 
       initial_solution = getInitialSolutionStandard(pattern);
-      for(auto& var : vars_to_return)
+      for(const auto& var : vars_to_return)
       {
         if(var == "*")
         {
           initial_solution.solution_ = initial_solution.solution_full_;
           break;
         }
-        else if(var != "")
+        else if(var.empty() == false)
           initial_solution.solution_[var.substr(1)] = "";
       }
     }
@@ -54,19 +64,14 @@ namespace ontologenius
     empty_solution_ = initial_solution;
 
     orderVariables(initial_solution);
-    int index = 0;
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+    const int index = 0;
+    const high_resolution_clock::time_point t1 = high_resolution_clock::now();
     stepDown(initial_solution, index);
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
-    std::cout << "took " << time_span.count()*1000 << "ms" << std::endl;
+    const high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    const duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+    std::cout << "took " << time_span.count() * 1000 << "ms" << std::endl;
 
-    return SparqlSolver::iterator(initial_solution, this);
-  }
-
-  const SparqlSolver::iterator SparqlSolver::cbegin()
-  {
-    return begin();
+    return SparqlSolver::Iterator(initial_solution, this);
   }
 
   SparqlSolution_t SparqlSolver::getInitialSolutionStandard(const std::string& pattern)
@@ -74,19 +79,19 @@ namespace ontologenius
     SparqlSolution_t initial_solution;
 
     auto blocks = getBlocks(pattern);
-    if(error_ != "")
+    if(error_.empty() == false)
       return initial_solution;
 
     for(auto& block : blocks)
     {
-       auto triplets = getTriplets(block.raw, ".");
-      if(error_ != "")
+      auto triplets = getTriplets(block.raw, ".");
+      if(error_.empty() == false)
         return initial_solution;
 
       insertConstraints(triplets, initial_solution, block.op);
     }
 
-    if(error_ == "")
+    if(error_.empty())
       for(auto& constraint : initial_solution.variable_constraints_)
         initial_solution.solution_full_[constraint.first] = "";
 
@@ -98,21 +103,21 @@ namespace ontologenius
     SparqlSolution_t initial_solution;
 
     auto triplets = getTriplets(query_, ",");
-    if(triplets.size())
+    if(triplets.empty() == false)
       insertConstraints(triplets, initial_solution, sparql_none);
     else
       error_ = "The query is malformed";
 
-    if(error_ == "")
+    if(error_.empty())
       for(auto& constraint : initial_solution.variable_constraints_)
         initial_solution.solution_full_[constraint.first] = "";
 
     return initial_solution;
   }
- 
+
   void SparqlSolver::insertConstraints(const std::vector<strTriplet_t>& triplets, SparqlSolution_t& solution, SparqlOperator_e sparql_operator)
   {
-    for(auto& triplet : triplets)
+    for(const auto& triplet : triplets)
     {
       if(triplet.object.is_variable)
       {
@@ -156,18 +161,18 @@ namespace ontologenius
       variables_links.insert({variable.first, variable.second.linked_variales_});
 
     solution.ordered_variables_.reserve(variables_links.size());
-    while(variables_links.size())
+    while(variables_links.empty() == false)
     {
-      std::string selected_var = "";
+      std::string selected_var;
       for(auto& variable : variables_links)
-        if(variable.second.size() == 0)
+        if(variable.second.empty())
         {
           solution.ordered_variables_.emplace_back(variable.first);
           selected_var = variable.first;
           break;
         }
 
-      if(selected_var != "")
+      if(selected_var.empty() == false)
       {
         variables_links.erase(selected_var);
         for(auto& variable : variables_links)
@@ -183,42 +188,42 @@ namespace ontologenius
     auto variable = solution.ordered_variables_[index];
     auto& candidates = solution.candidates_[variable];
 
-    if(candidates.size() == 0)
+    if(candidates.empty())
     {
       auto& constraints = solution.variable_constraints_.at(variable).constraints_;
       for(auto& constraint : constraints)
       {
-        if(candidates.size() == 0)
+        if(candidates.empty())
           candidates = solveTriplet(constraint.triplet_, solution.solution_full_);
         else
         {
           std::unordered_set<std::string> valids;
-          for(auto& candidate : candidates)
+          for(const auto& candidate : candidates)
           {
             solution.solution_full_[variable] = candidate;
-            if(solveTriplet(constraint.triplet_, solution.solution_full_).size())
+            if(solveTriplet(constraint.triplet_, solution.solution_full_).empty() == false)
               valids.insert(candidate);
           }
           candidates = std::move(valids);
           solution.solution_full_[variable] = "";
         }
 
-        if(candidates.size() == 0)
+        if(candidates.empty())
           break;
       }
     }
 
-    bool is_last = (index >= (int)(solution.ordered_variables_.size() - 1));
-    while(candidates.size())
+    const bool is_last = (index >= (int)(solution.ordered_variables_.size() - 1));
+    while(candidates.empty() == false)
     {
       solution.solution_full_[variable] = *candidates.begin();
       candidates.erase(candidates.begin());
 
       if(is_last == false)
       {
-        stepDown(solution, index+1);
-        auto next_var = solution.ordered_variables_[index+1];
-        if(solution.solution_full_[next_var] != "")
+        stepDown(solution, index + 1);
+        auto next_var = solution.ordered_variables_[index + 1];
+        if(solution.solution_full_[next_var].empty() == false)
           return;
       }
       else
@@ -230,13 +235,13 @@ namespace ontologenius
 
   void SparqlSolver::nextSolution(SparqlSolution_t& solution)
   {
-    for(int i = solution.ordered_variables_.size() - 1; i >= 0; i--)
+    for(int i = (int)solution.ordered_variables_.size() - 1; i >= 0; i--)
     {
       auto variable = solution.ordered_variables_[i];
-      if(solution.candidates_[variable].size() != 0)
+      if(solution.candidates_[variable].empty() == false)
       {
         stepDown(solution, i);
-        if(solution.solution_full_[variable] != "")
+        if(solution.solution_full_[variable].empty() == false)
           break;
       }
       else
@@ -324,7 +329,7 @@ namespace ontologenius
             return getName(triplet);
         }
         else
-        { 
+        {
           var_it = binding.find(triplet.object.name);
           if(var_it != binding.end())
           {
@@ -366,7 +371,7 @@ namespace ontologenius
         else
           return getOn(triplet);
       }
-      else 
+      else
       {
         var_it = binding.find(triplet.object.name);
         if(var_it != binding.end())
@@ -387,9 +392,9 @@ namespace ontologenius
   std::unordered_set<std::string> SparqlSolver::getOn(const strTriplet_t& triplet, const std::string& selector)
   {
     auto res = onto_->individual_graph_.getOn(triplet.subject.name, triplet.predicat.name);
-    if(selector == "")
+    if(selector.empty())
       return res;
-    else if(std::find(res.begin(), res.end(), selector) != res.end())
+    else if(res.find(selector) != res.end())
       return std::unordered_set<std::string>({selector});
     else
       return std::unordered_set<std::string>();
@@ -397,13 +402,13 @@ namespace ontologenius
 
   std::unordered_set<std::string> SparqlSolver::getFrom(const strTriplet_t& triplet, const std::string& selector)
   {
-    if(selector == "")
+    if(selector.empty())
       return onto_->individual_graph_.getFrom(triplet.object.name, triplet.predicat.name);
     else
     {
       // Here we revert the problem as we know what we are expecting for.
       auto res = onto_->individual_graph_.getOn(selector, triplet.predicat.name);
-      if(std::find(res.begin(), res.end(), triplet.object.name) != res.end())
+      if(res.find(triplet.object.name) != res.end())
         return std::unordered_set<std::string>({selector});
       else
         return std::unordered_set<std::string>();
@@ -412,12 +417,12 @@ namespace ontologenius
 
   std::unordered_set<std::string> SparqlSolver::getUp(const strTriplet_t& triplet, const std::string& selector)
   {
-    if(selector == "")
+    if(selector.empty())
       return onto_->individual_graph_.getUp(triplet.subject.name);
     else
     {
       auto is = onto_->individual_graph_.getUp(triplet.subject.name);
-      if(std::find(is.begin(), is.end(), selector) != is.end())
+      if(is.find(selector) != is.end())
         return std::unordered_set<std::string>({selector});
       else
         return std::unordered_set<std::string>();
@@ -426,12 +431,12 @@ namespace ontologenius
 
   std::unordered_set<std::string> SparqlSolver::getType(const strTriplet_t& triplet, const std::string& selector)
   {
-    if(selector == "")
+    if(selector.empty())
       return onto_->individual_graph_.getType(triplet.object.name);
     else
     {
       auto types = onto_->individual_graph_.getUp(selector);
-      if(std::find(types.begin(), types.end(), triplet.object.name) != types.end())
+      if(types.find(triplet.object.name) != types.end())
         return std::unordered_set<std::string>({selector});
       else
         return std::unordered_set<std::string>();
@@ -441,9 +446,9 @@ namespace ontologenius
   std::unordered_set<std::string> SparqlSolver::find(const strTriplet_t& triplet, const std::string& selector)
   {
     auto res = onto_->individual_graph_.find<std::string>(triplet.object.name);
-    if(selector == "")
+    if(selector.empty())
       return res;
-    else if(std::find(res.begin(), res.end(), selector) != res.end())
+    else if(res.find(selector) != res.end())
       return std::unordered_set<std::string>({selector});
     else
       return std::unordered_set<std::string>();
@@ -452,7 +457,7 @@ namespace ontologenius
   std::unordered_set<std::string> SparqlSolver::getName(const strTriplet_t& triplet, const std::string& selector)
   {
     auto res = onto_->individual_graph_.getNames(triplet.subject.name);
-    if(selector == "")
+    if(selector.empty())
     {
       std::unordered_set<std::string> set_res;
       for(auto& r : res)
@@ -467,7 +472,7 @@ namespace ontologenius
 
   std::string SparqlSolver::getPattern(const std::string& text)
   {
-    size_t begin_of_pattern = text.find("{");
+    const size_t begin_of_pattern = text.find('{');
     std::string res;
     getIn(begin_of_pattern, res, text, '{', '}');
     return res;
@@ -483,16 +488,16 @@ namespace ontologenius
     size_t cpt = 0;
     size_t bracket_pose = 0;
 
-    while((bracket_pose = query.find("{", bracket_pose)) != std::string::npos)
+    while((bracket_pose = query.find('{', bracket_pose)) != std::string::npos)
     {
       std::string text_in;
-      size_t end_pose = getIn(bracket_pose, text_in, query, '{', '}');
+      const size_t end_pose = getIn(bracket_pose, text_in, query, '{', '}');
       if((end_pose == std::string::npos) || (end_pose == bracket_pose))
       {
         error_ = "Unclosed bracket in: " + query;
         return res;
       }
-      std::string mark = "__" + std::to_string(cpt);
+      const std::string mark = "__" + std::to_string(cpt);
       blocks_id.insert(mark);
       tmp_blocks.insert({mark, text_in});
       query.replace(bracket_pose, end_pose - bracket_pose + 1, mark);
@@ -502,23 +507,23 @@ namespace ontologenius
     do
     {
       size_t first_block_pose = std::string::npos;
-      std::string first_block = "";
+      std::string first_block;
       size_t first_keyword_pose = std::string::npos;
-      std::string first_keyword = "";
+      std::string first_keyword;
 
-      for(auto& id : blocks_id)
+      for(const auto& id : blocks_id)
       {
-        size_t tmp_pose = query.find(id);
+        const size_t tmp_pose = query.find(id);
         if(tmp_pose < first_block_pose)
         {
           first_block_pose = tmp_pose;
           first_block = id;
-        } 
+        }
       }
 
       for(auto& key : operators_)
       {
-        size_t tmp_pose = query.find(key.first);
+        const size_t tmp_pose = query.find(key.first);
         if(tmp_pose < first_keyword_pose)
         {
           first_keyword_pose = tmp_pose;
@@ -544,7 +549,7 @@ namespace ontologenius
       }
       else
       {
-        size_t min_pose = std::min(query.size(), std::min(first_keyword_pose, first_block_pose));
+        const size_t min_pose = std::min(query.size(), std::min(first_keyword_pose, first_block_pose));
         SparqlBlock_t block;
         block.raw = query.substr(0, min_pose);
         block.op = sparql_none;
@@ -552,19 +557,18 @@ namespace ontologenius
         query = query.substr(min_pose);
       }
       removeUselessSpace(query);
-    }
-    while(query != "");
+    } while(query.empty() == false);
 
     return res;
   }
 
   std::vector<strTriplet_t> SparqlSolver::getTriplets(const std::string& query, const std::string& delim)
   {
-    std::vector<std::string> sub_queries = split(query, delim);
+    const std::vector<std::string> sub_queries = split(query, delim);
     std::vector<strTriplet_t> sub_queries_triplet;
     try
     {
-      std::transform(sub_queries.cbegin(), sub_queries.cend(), std::back_inserter(sub_queries_triplet), [](const auto& sub_query){ return getTriplet<std::string>(sub_query); });
+      std::transform(sub_queries.cbegin(), sub_queries.cend(), std::back_inserter(sub_queries_triplet), [](const auto& sub_query) { return getTriplet<std::string>(sub_query); });
     }
     catch(const std::string& msg)
     {

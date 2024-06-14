@@ -1,7 +1,7 @@
-#include <ros/ros.h>
-#include <ros/package.h>
-
+#include <algorithm>
 #include <gtest/gtest.h>
+#include <string>
+#include <vector>
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
@@ -22,10 +22,10 @@ TEST(chain_tests, chains_base)
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
-  EXPECT_TRUE(find(res.begin(), res.end(), "box") != res.end());
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "box") != res.end());
 
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
-  EXPECT_TRUE(find(res.begin(), res.end(), "table") != res.end());
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "table") != res.end());
 
   onto_ptr->feeder.removeProperty("ball", "isOn", "cube_base");
   onto_ptr->feeder.waitUpdate(1000);

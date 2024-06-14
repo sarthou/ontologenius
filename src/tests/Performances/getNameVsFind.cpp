@@ -2,25 +2,27 @@
 #include <chrono>
 #include <cmath>
 #include <cstdio>
-#include <cstdlib>     /* srand, rand */
+#include <cstdlib> /* srand, rand */
 #include <ctime>
-#include <unordered_set>
-#include <thread>
-
+#include <iostream>
 #include <ros/ros.h>
+#include <string>
+#include <thread>
+#include <unordered_set>
 
-#include "ontologenius/interface/RosInterface.h"
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
+#include "ontologenius/interface/RosInterface.h"
 
 class FileReader
 {
 public:
-  FileReader(const std::string& path)
+  explicit FileReader(const std::string& path)
   {
     len = cpt = 0;
     file_ = nullptr;
     init(path, "r");
   }
+
   ~FileReader()
   {
     if(file_ != nullptr)
@@ -29,17 +31,18 @@ public:
 
   std::string readLine()
   {
-    char * line = nullptr;
+    char* line = nullptr;
     if(getline(&line, &len, file_) != -1)
     {
-        cpt++;
-        return  std::string(line).substr(0,std::string(line).size()-1);
+      cpt++;
+      return std::string(line).substr(0, std::string(line).size() - 1);
     }
     else
       return "";
   }
 
-  size_t getNbLine() {return cpt; }
+  size_t getNbLine() { return cpt; }
+
 private:
   size_t len;
   size_t cpt;
@@ -78,16 +81,15 @@ std::vector<std::string> readNbWords(size_t nb)
   do
   {
     std::string word = reader.readLine();
-    if(word == "")
+    if(word.empty())
       oef = true;
     else
     {
-      if(cpt%(size_t(factor)) == 0)
+      if(cpt % (size_t(factor)) == 0)
         res.push_back(word);
     }
     cpt++;
-  }
-  while((oef == false) && (res.size() != nb));
+  } while((oef == false) && (res.size() != nb));
   std::cout << res.size() << std::endl;
 
   return res;
@@ -145,6 +147,7 @@ double find(const std::vector<std::string>& words, bool individual)
         syn += none.size();
       }
   }
+  (void)syn;
 
   high_resolution_clock::time_point t2 = high_resolution_clock::now();
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
@@ -189,7 +192,7 @@ double getNames(const std::vector<std::string>& words, bool individual)
       nb += onto_ptr->individuals.getNames(word).size();
   }
 
-  return nb/words.size();
+  return nb / words.size();
 }
 
 void reset(ontologenius::RosInterface* interface, ontologenius::Ontology** onto)
@@ -264,11 +267,13 @@ int main(int argc, char** argv)
     for(auto& w : words)
     {
       s += w.size();
-      if(w.size() > max) max = w.size();
-      if(w.size() < min) min = w.size();
+      if(w.size() > max)
+        max = w.size();
+      if(w.size() < min)
+        min = w.size();
     }
     std::cout << "nb word " << words.size() << std::endl;
-    std::cout << "mean = " << s/466508.0 << std::endl;
+    std::cout << "mean = " << s / 466508.0 << std::endl;
     std::cout << "min/max " << min << " : " << max << std::endl;
   }
 

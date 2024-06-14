@@ -8,29 +8,29 @@
 
 namespace ontologenius {
 
-class IndividualGraph;
-class IndividualBranch_t;
+  class IndividualGraph;
+  class IndividualBranch;
 
-class IndividualOwlWriter : public NodeOwlWriter
-{
-public:
-  IndividualOwlWriter(IndividualGraph* individual_graph, const std::string& ns);
-  ~IndividualOwlWriter() {};
+  class IndividualOwlWriter : public NodeOwlWriter
+  {
+  public:
+    IndividualOwlWriter(IndividualGraph* individual_graph, const std::string& ns);
+    ~IndividualOwlWriter() = default;
 
-  void write(FILE* file);
-  void writeGeneralAxioms(FILE* file);
+    void write(FILE* file);
+    void writeGeneralAxioms(FILE* file);
 
-private:
-  IndividualGraph* individual_graph_;
+  private:
+    IndividualGraph* individual_graph_;
 
-  void writeIndividual(IndividualBranch_t* branch);
-  void writeType(IndividualBranch_t* branch);
-  void writeObjectProperties(IndividualBranch_t* branch);
-  void writeDataProperties(IndividualBranch_t* branch);
-  void writeSameAs(IndividualBranch_t* branch);
-  void writeDistincts(std::vector<IndividualBranch_t*>& individuals);
-  void getDistincts(IndividualBranch_t* individual, std::vector<std::string>& distincts_current);
-};
+    void writeIndividual(IndividualBranch* branch);
+    void writeType(IndividualBranch* branch);
+    void writeObjectProperties(IndividualBranch* branch);
+    void writeDataProperties(IndividualBranch* branch);
+    void writeSameAs(IndividualBranch* branch);
+    void writeDistincts(std::vector<IndividualBranch*>& individuals);
+    void getDistincts(IndividualBranch* individual, std::vector<std::string>& distincts_current);
+  };
 
 } // namespace ontologenius
 

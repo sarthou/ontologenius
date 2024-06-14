@@ -1,6 +1,16 @@
-name: ROS CI
+name: ROS1 CI
 
-on: [push, workflow_dispatch]
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - 'launch/ros2/**'
+      - 'resources/*'
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'launch/ros2/**'
+      - 'resources/*'
 
 jobs:
   build:
@@ -11,23 +21,20 @@ jobs:
         include:
           #- operating-system: ubuntu-18.04
           #  ros_distro: melodic
-          #  disto: bionic
+          #  distro: bionic
           - operating-system: ubuntu-20.04
             ros_distro: noetic
-            disto: focal
+            distro: focal
     env:
-      ROS_CI_DESKTOP: ${{ matrix.disto }}
+      ROS_CI_DESKTOP: ${{ matrix.distro }}
       CI_SOURCE_PATH: $(pwd)
-      ROSINSTALL_FILE: $CI_SOURCE_PATH/dependencies.rosinstall
-      CATKIN_OPTIONS: $CI_SOURCE_PATH/catkin.options
-      ROS_PARALLEL_JOBS: '-j8 -l6'
       # Set the python path manually to include /usr/-/python2.7/dist-packages
       # as this is where apt-get installs python packages.
       PYTHONPATH: $PYTHONPATH:/usr/lib/python2.7/dist-packages:/usr/local/lib/python2.7/dist-packages:/usr/lib/python3.8/dist-packages:/usr/local/lib/python3.8/dist-packages
       ROS_DISTRO: ${{ matrix.ros_distro }}
     steps:
       - uses: actions/checkout@v1
-      - name: Install ROS
+      - name: Install ROS1
         run: |
             sudo sh -c "echo \"deb http://packages.ros.org/ros/ubuntu $ROS_CI_DESKTOP main\" > /etc/apt/sources.list.d/ros-latest.list"
             sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
@@ -35,22 +42,11 @@ jobs:
             sudo apt install dpkg
             sudo apt install -y ros-$ROS_DISTRO-desktop qtbase5-dev qtdeclarative5-dev
             sudo apt install -y libcppunit-dev libcurl4-openssl-dev
-            if [ $ROS_DISTRO != noetic ]
-            then
-                    sudo apt-get install python-rosdep
-            else
-                    sudo apt-get install python3-rosdep
-            fi
+            sudo apt-get install python3-rosdep
 
             source /opt/ros/$ROS_DISTRO/setup.bash
             sudo rosdep init
             rosdep update --include-eol-distros  # Support EOL distros.
-            if [ $ROS_DISTRO != noetic ]
-            then
-                    pip install requests --user
-            else
-                    pip3 install requests --user
-            fi
 
       - name: build
         run: |
@@ -62,8 +58,6 @@ jobs:
           source devel/setup.bash
           cd ~/catkin_ws/src
           ln -s ~/work  # $CI_SOURCE_PATH
-          # echo "::warning $CI_SOURCE_PATH"
-          # echo "::warning `ls -l`"
           cd ..
           catkin_make
       - name: rostest

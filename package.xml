@@ -3,7 +3,7 @@
 
 <package format="3">
   <name>ontologenius</name>
-  <version>0.4.1</version>
+  <version>0.4.2</version>
   <description>The ontologenius package</description>
 
   <author email="guillaume.sarthou@laas.fr">srth</author>

@@ -1,7 +1,8 @@
 #include <chrono>
 #include <iostream>
-
 #include <ros/ros.h>
+#include <string>
+#include <vector>
 
 #include "ontologenius/API/ontologenius/OntologiesManipulator.h"
 

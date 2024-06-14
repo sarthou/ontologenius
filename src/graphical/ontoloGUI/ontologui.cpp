@@ -1,257 +1,270 @@
 #include "ontologenius/graphical/ontoloGUI/ontologui.h"
+
+#include <algorithm>
+#include <cstddef>
+#include <regex>
+#include <string>
+#include <vector>
+
+#include "ontologenius/OntologyManipulator.h"
 #include "ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
 #include "ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
 #include "ui_ontologui.h"
+// Qt includes
+#include "qcoreevent.h"
+#include "qlayoutitem.h"
+#include "qmainwindow.h"
+#include "qnamespace.h"
+#include "qobject.h"
+#include "qobjectdefs.h"
+#include "qstring.h"
+#include "qwidget.h"
 
-#include <QScrollBar>
-
-#include <regex>
-
-ontoloGUI::ontoloGUI(QWidget *parent) : QMainWindow(parent),
-                                        ui(new Ui::ontoloGUI)
+OntoloGUI::OntoloGUI(QWidget* parent) : QMainWindow(parent),
+                                        ui_(new Ui::OntoloGUI)
 {
-  ui->setupUi(this);
+  ui_->setupUi(this);
 
-  QObject::connect(ui->Class_getName, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getName, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_exist, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_exist, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_findRegex, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_findRegex, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_find, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_find, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_findFuzzy, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_findFuzzy, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_findSub, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_findSub, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getUp, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getUp, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getDown, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getDown, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getDisjoint, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getDisjoint, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getRelatedOn, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getRelatedOn, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getRelationOn, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getRelationOn, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getRelatedFrom, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getRelatedFrom, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getRelatedWith, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getRelatedWith, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getRelationFrom, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getRelationFrom, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getRelationWith, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getRelationWith, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getFrom, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getFrom, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getOn, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getOn, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getWith, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getWith, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getDomainOf, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getDomainOf, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->Class_getRangeOf, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->Class_getRangeOf, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
-  QObject::connect(ui->classParameter, SIGNAL(hoverEnter()),this, SLOT(ClasshoverEnterSlot()));
-  QObject::connect(ui->classParameter, SIGNAL(hoverLeave()),this, SLOT(ClasshoverLeaveSlot()));
+  QObject::connect(ui_->Class_getName, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getName, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_exist, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_exist, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_findRegex, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_findRegex, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_find, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_find, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_findFuzzy, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_findFuzzy, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_findSub, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_findSub, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getUp, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getUp, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getDown, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getDown, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getDisjoint, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getDisjoint, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getRelatedOn, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getRelatedOn, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getRelationOn, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getRelationOn, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getRelatedFrom, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getRelatedFrom, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getRelatedWith, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getRelatedWith, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getRelationFrom, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getRelationFrom, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getRelationWith, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getRelationWith, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getFrom, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getFrom, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getOn, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getOn, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getWith, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getWith, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getDomainOf, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getDomainOf, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->Class_getRangeOf, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->Class_getRangeOf, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
+  QObject::connect(ui_->classParameter, SIGNAL(hoverEnter()), this, SLOT(classhoverEnterSlot()));
+  QObject::connect(ui_->classParameter, SIGNAL(hoverLeave()), this, SLOT(classhoverLeaveSlot()));
 
-  QObject::connect(ui->ObjectProperty_getName, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
-  QObject::connect(ui->ObjectProperty_getName, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
-  QObject::connect(ui->ObjectProperty_exist, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
-  QObject::connect(ui->ObjectProperty_exist, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
-  QObject::connect(ui->ObjectProperty_findRegex, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
-  QObject::connect(ui->ObjectProperty_findRegex, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
-  QObject::connect(ui->ObjectProperty_find, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
-  QObject::connect(ui->ObjectProperty_find, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
-  QObject::connect(ui->ObjectProperty_findFuzzy, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
-  QObject::connect(ui->ObjectProperty_findFuzzy, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
-  QObject::connect(ui->ObjectProperty_findSub, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
-  QObject::connect(ui->ObjectProperty_findSub, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
-  QObject::connect(ui->ObjectProperty_getDisjoint, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
-  QObject::connect(ui->ObjectProperty_getDisjoint, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
-  QObject::connect(ui->ObjectProperty_getDomain, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
-  QObject::connect(ui->ObjectProperty_getDomain, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
-  QObject::connect(ui->ObjectProperty_getDown, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
-  QObject::connect(ui->ObjectProperty_getDown, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
-  QObject::connect(ui->ObjectProperty_getInverse, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
-  QObject::connect(ui->ObjectProperty_getInverse, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
-  QObject::connect(ui->ObjectProperty_getRange, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
-  QObject::connect(ui->ObjectProperty_getRange, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
-  QObject::connect(ui->ObjectProperty_getUp, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
-  QObject::connect(ui->ObjectProperty_getUp, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
-  QObject::connect(ui->objectPropertyParameter, SIGNAL(hoverEnter()),this, SLOT(objectPropertyhoverEnterSlot()));
-  QObject::connect(ui->objectPropertyParameter, SIGNAL(hoverLeave()),this, SLOT(objectPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->ObjectProperty_getName, SIGNAL(hoverEnter()), this, SLOT(objectPropertyhoverEnterSlot()));
+  QObject::connect(ui_->ObjectProperty_getName, SIGNAL(hoverLeave()), this, SLOT(objectPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->ObjectProperty_exist, SIGNAL(hoverEnter()), this, SLOT(objectPropertyhoverEnterSlot()));
+  QObject::connect(ui_->ObjectProperty_exist, SIGNAL(hoverLeave()), this, SLOT(objectPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->ObjectProperty_findRegex, SIGNAL(hoverEnter()), this, SLOT(objectPropertyhoverEnterSlot()));
+  QObject::connect(ui_->ObjectProperty_findRegex, SIGNAL(hoverLeave()), this, SLOT(objectPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->ObjectProperty_find, SIGNAL(hoverEnter()), this, SLOT(objectPropertyhoverEnterSlot()));
+  QObject::connect(ui_->ObjectProperty_find, SIGNAL(hoverLeave()), this, SLOT(objectPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->ObjectProperty_findFuzzy, SIGNAL(hoverEnter()), this, SLOT(objectPropertyhoverEnterSlot()));
+  QObject::connect(ui_->ObjectProperty_findFuzzy, SIGNAL(hoverLeave()), this, SLOT(objectPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->ObjectProperty_findSub, SIGNAL(hoverEnter()), this, SLOT(objectPropertyhoverEnterSlot()));
+  QObject::connect(ui_->ObjectProperty_findSub, SIGNAL(hoverLeave()), this, SLOT(objectPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->ObjectProperty_getDisjoint, SIGNAL(hoverEnter()), this, SLOT(objectPropertyhoverEnterSlot()));
+  QObject::connect(ui_->ObjectProperty_getDisjoint, SIGNAL(hoverLeave()), this, SLOT(objectPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->ObjectProperty_getDomain, SIGNAL(hoverEnter()), this, SLOT(objectPropertyhoverEnterSlot()));
+  QObject::connect(ui_->ObjectProperty_getDomain, SIGNAL(hoverLeave()), this, SLOT(objectPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->ObjectProperty_getDown, SIGNAL(hoverEnter()), this, SLOT(objectPropertyhoverEnterSlot()));
+  QObject::connect(ui_->ObjectProperty_getDown, SIGNAL(hoverLeave()), this, SLOT(objectPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->ObjectProperty_getInverse, SIGNAL(hoverEnter()), this, SLOT(objectPropertyhoverEnterSlot()));
+  QObject::connect(ui_->ObjectProperty_getInverse, SIGNAL(hoverLeave()), this, SLOT(objectPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->ObjectProperty_getRange, SIGNAL(hoverEnter()), this, SLOT(objectPropertyhoverEnterSlot()));
+  QObject::connect(ui_->ObjectProperty_getRange, SIGNAL(hoverLeave()), this, SLOT(objectPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->ObjectProperty_getUp, SIGNAL(hoverEnter()), this, SLOT(objectPropertyhoverEnterSlot()));
+  QObject::connect(ui_->ObjectProperty_getUp, SIGNAL(hoverLeave()), this, SLOT(objectPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->objectPropertyParameter, SIGNAL(hoverEnter()), this, SLOT(objectPropertyhoverEnterSlot()));
+  QObject::connect(ui_->objectPropertyParameter, SIGNAL(hoverLeave()), this, SLOT(objectPropertyhoverLeaveSlot()));
 
-  QObject::connect(ui->DataProperty_getName, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
-  QObject::connect(ui->DataProperty_getName, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
-  QObject::connect(ui->DataProperty_exist, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
-  QObject::connect(ui->DataProperty_exist, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
-  QObject::connect(ui->DataProperty_findRegex, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
-  QObject::connect(ui->DataProperty_findRegex, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
-  QObject::connect(ui->DataProperty_find, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
-  QObject::connect(ui->DataProperty_find, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
-  QObject::connect(ui->DataProperty_findFuzzy, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
-  QObject::connect(ui->DataProperty_findFuzzy, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
-  QObject::connect(ui->DataProperty_findSub, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
-  QObject::connect(ui->DataProperty_findSub, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
-  QObject::connect(ui->DataProperty_getDisjoint, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
-  QObject::connect(ui->DataProperty_getDisjoint, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
-  QObject::connect(ui->DataProperty_getDomain, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
-  QObject::connect(ui->DataProperty_getDomain, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
-  QObject::connect(ui->DataProperty_getDown, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
-  QObject::connect(ui->DataProperty_getDown, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
-  QObject::connect(ui->DataProperty_getRange, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
-  QObject::connect(ui->DataProperty_getRange, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
-  QObject::connect(ui->DataProperty_getUp, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
-  QObject::connect(ui->DataProperty_getUp, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
-  QObject::connect(ui->dataPropertyParameter, SIGNAL(hoverEnter()),this, SLOT(dataPropertyhoverEnterSlot()));
-  QObject::connect(ui->dataPropertyParameter, SIGNAL(hoverLeave()),this, SLOT(dataPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->DataProperty_getName, SIGNAL(hoverEnter()), this, SLOT(dataPropertyhoverEnterSlot()));
+  QObject::connect(ui_->DataProperty_getName, SIGNAL(hoverLeave()), this, SLOT(dataPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->DataProperty_exist, SIGNAL(hoverEnter()), this, SLOT(dataPropertyhoverEnterSlot()));
+  QObject::connect(ui_->DataProperty_exist, SIGNAL(hoverLeave()), this, SLOT(dataPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->DataProperty_findRegex, SIGNAL(hoverEnter()), this, SLOT(dataPropertyhoverEnterSlot()));
+  QObject::connect(ui_->DataProperty_findRegex, SIGNAL(hoverLeave()), this, SLOT(dataPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->DataProperty_find, SIGNAL(hoverEnter()), this, SLOT(dataPropertyhoverEnterSlot()));
+  QObject::connect(ui_->DataProperty_find, SIGNAL(hoverLeave()), this, SLOT(dataPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->DataProperty_findFuzzy, SIGNAL(hoverEnter()), this, SLOT(dataPropertyhoverEnterSlot()));
+  QObject::connect(ui_->DataProperty_findFuzzy, SIGNAL(hoverLeave()), this, SLOT(dataPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->DataProperty_findSub, SIGNAL(hoverEnter()), this, SLOT(dataPropertyhoverEnterSlot()));
+  QObject::connect(ui_->DataProperty_findSub, SIGNAL(hoverLeave()), this, SLOT(dataPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->DataProperty_getDisjoint, SIGNAL(hoverEnter()), this, SLOT(dataPropertyhoverEnterSlot()));
+  QObject::connect(ui_->DataProperty_getDisjoint, SIGNAL(hoverLeave()), this, SLOT(dataPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->DataProperty_getDomain, SIGNAL(hoverEnter()), this, SLOT(dataPropertyhoverEnterSlot()));
+  QObject::connect(ui_->DataProperty_getDomain, SIGNAL(hoverLeave()), this, SLOT(dataPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->DataProperty_getDown, SIGNAL(hoverEnter()), this, SLOT(dataPropertyhoverEnterSlot()));
+  QObject::connect(ui_->DataProperty_getDown, SIGNAL(hoverLeave()), this, SLOT(dataPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->DataProperty_getRange, SIGNAL(hoverEnter()), this, SLOT(dataPropertyhoverEnterSlot()));
+  QObject::connect(ui_->DataProperty_getRange, SIGNAL(hoverLeave()), this, SLOT(dataPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->DataProperty_getUp, SIGNAL(hoverEnter()), this, SLOT(dataPropertyhoverEnterSlot()));
+  QObject::connect(ui_->DataProperty_getUp, SIGNAL(hoverLeave()), this, SLOT(dataPropertyhoverLeaveSlot()));
+  QObject::connect(ui_->dataPropertyParameter, SIGNAL(hoverEnter()), this, SLOT(dataPropertyhoverEnterSlot()));
+  QObject::connect(ui_->dataPropertyParameter, SIGNAL(hoverLeave()), this, SLOT(dataPropertyhoverLeaveSlot()));
 
-  QObject::connect(ui->Individual_getDistinct, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getDistinct, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getRelatedFrom, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getRelatedFrom, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getRelatedOn, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getRelatedOn, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getRelatedWith, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getRelatedWith, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getRelationFrom, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getRelationFrom, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getRelationOn, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getRelationOn, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getRelationWith, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getRelationWith, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getSame, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getSame, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getUp, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getUp, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getOn, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getOn, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getFrom, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getFrom, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getWith, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getWith, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getDomainOf, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getDomainOf, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getRangeOf, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getRangeOf, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getName, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getName, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_exist, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_exist, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_findRegex, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_findRegex, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_find, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_find, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_findFuzzy, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_findFuzzy, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_findSub, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_findSub, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->Individual_getType, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->Individual_getType, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
-  QObject::connect(ui->individualParameter, SIGNAL(hoverEnter()),this, SLOT(IndividualhoverEnterSlot()));
-  QObject::connect(ui->individualParameter, SIGNAL(hoverLeave()),this, SLOT(IndividualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getDistinct, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getDistinct, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getRelatedFrom, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getRelatedFrom, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getRelatedOn, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getRelatedOn, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getRelatedWith, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getRelatedWith, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getRelationFrom, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getRelationFrom, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getRelationOn, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getRelationOn, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getRelationWith, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getRelationWith, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getSame, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getSame, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getUp, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getUp, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getOn, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getOn, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getFrom, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getFrom, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getWith, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getWith, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getDomainOf, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getDomainOf, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getRangeOf, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getRangeOf, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getName, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getName, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_exist, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_exist, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_findRegex, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_findRegex, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_find, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_find, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_findFuzzy, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_findFuzzy, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_findSub, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_findSub, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getType, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getType, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->individualParameter, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->individualParameter, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
 
-  QObject::connect(ui->Class_getName, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_exist, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_findRegex, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_find, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_findSub, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_findFuzzy, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getUp, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getDown, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getDisjoint, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getRelatedOn, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getRelationOn, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getRelatedFrom, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getRelatedWith, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getRelationFrom, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getRelationWith, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getFrom, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getOn, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getWith, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getDomainOf, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
-  QObject::connect(ui->Class_getRangeOf, SIGNAL(clicked()),this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getName, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_exist, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_findRegex, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_find, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_findSub, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_findFuzzy, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getUp, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getDown, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getDisjoint, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getRelatedOn, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getRelationOn, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getRelatedFrom, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getRelatedWith, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getRelationFrom, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getRelationWith, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getFrom, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getOn, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getWith, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getDomainOf, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
+  QObject::connect(ui_->Class_getRangeOf, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
 
-  QObject::connect(ui->ObjectProperty_getName, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
-  QObject::connect(ui->ObjectProperty_exist, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
-  QObject::connect(ui->ObjectProperty_findRegex, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
-  QObject::connect(ui->ObjectProperty_find, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
-  QObject::connect(ui->ObjectProperty_findFuzzy, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
-  QObject::connect(ui->ObjectProperty_findSub, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
-  QObject::connect(ui->ObjectProperty_getDisjoint, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
-  QObject::connect(ui->ObjectProperty_getDomain, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
-  QObject::connect(ui->ObjectProperty_getDown, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
-  QObject::connect(ui->ObjectProperty_getInverse, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
-  QObject::connect(ui->ObjectProperty_getRange, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
-  QObject::connect(ui->ObjectProperty_getUp, SIGNAL(clicked()),this, SLOT(objectPropertyClickedSlot()));
+  QObject::connect(ui_->ObjectProperty_getName, SIGNAL(clicked()), this, SLOT(objectPropertyClickedSlot()));
+  QObject::connect(ui_->ObjectProperty_exist, SIGNAL(clicked()), this, SLOT(objectPropertyClickedSlot()));
+  QObject::connect(ui_->ObjectProperty_findRegex, SIGNAL(clicked()), this, SLOT(objectPropertyClickedSlot()));
+  QObject::connect(ui_->ObjectProperty_find, SIGNAL(clicked()), this, SLOT(objectPropertyClickedSlot()));
+  QObject::connect(ui_->ObjectProperty_findFuzzy, SIGNAL(clicked()), this, SLOT(objectPropertyClickedSlot()));
+  QObject::connect(ui_->ObjectProperty_findSub, SIGNAL(clicked()), this, SLOT(objectPropertyClickedSlot()));
+  QObject::connect(ui_->ObjectProperty_getDisjoint, SIGNAL(clicked()), this, SLOT(objectPropertyClickedSlot()));
+  QObject::connect(ui_->ObjectProperty_getDomain, SIGNAL(clicked()), this, SLOT(objectPropertyClickedSlot()));
+  QObject::connect(ui_->ObjectProperty_getDown, SIGNAL(clicked()), this, SLOT(objectPropertyClickedSlot()));
+  QObject::connect(ui_->ObjectProperty_getInverse, SIGNAL(clicked()), this, SLOT(objectPropertyClickedSlot()));
+  QObject::connect(ui_->ObjectProperty_getRange, SIGNAL(clicked()), this, SLOT(objectPropertyClickedSlot()));
+  QObject::connect(ui_->ObjectProperty_getUp, SIGNAL(clicked()), this, SLOT(objectPropertyClickedSlot()));
 
-  QObject::connect(ui->DataProperty_getName, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
-  QObject::connect(ui->DataProperty_exist, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
-  QObject::connect(ui->DataProperty_findRegex, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
-  QObject::connect(ui->DataProperty_find, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
-  QObject::connect(ui->DataProperty_findFuzzy, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
-  QObject::connect(ui->DataProperty_findSub, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
-  QObject::connect(ui->DataProperty_getDisjoint, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
-  QObject::connect(ui->DataProperty_getDomain, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
-  QObject::connect(ui->DataProperty_getDown, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
-  QObject::connect(ui->DataProperty_getRange, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
-  QObject::connect(ui->DataProperty_getUp, SIGNAL(clicked()),this, SLOT(dataPropertyClickedSlot()));
+  QObject::connect(ui_->DataProperty_getName, SIGNAL(clicked()), this, SLOT(dataPropertyClickedSlot()));
+  QObject::connect(ui_->DataProperty_exist, SIGNAL(clicked()), this, SLOT(dataPropertyClickedSlot()));
+  QObject::connect(ui_->DataProperty_findRegex, SIGNAL(clicked()), this, SLOT(dataPropertyClickedSlot()));
+  QObject::connect(ui_->DataProperty_find, SIGNAL(clicked()), this, SLOT(dataPropertyClickedSlot()));
+  QObject::connect(ui_->DataProperty_findFuzzy, SIGNAL(clicked()), this, SLOT(dataPropertyClickedSlot()));
+  QObject::connect(ui_->DataProperty_findSub, SIGNAL(clicked()), this, SLOT(dataPropertyClickedSlot()));
+  QObject::connect(ui_->DataProperty_getDisjoint, SIGNAL(clicked()), this, SLOT(dataPropertyClickedSlot()));
+  QObject::connect(ui_->DataProperty_getDomain, SIGNAL(clicked()), this, SLOT(dataPropertyClickedSlot()));
+  QObject::connect(ui_->DataProperty_getDown, SIGNAL(clicked()), this, SLOT(dataPropertyClickedSlot()));
+  QObject::connect(ui_->DataProperty_getRange, SIGNAL(clicked()), this, SLOT(dataPropertyClickedSlot()));
+  QObject::connect(ui_->DataProperty_getUp, SIGNAL(clicked()), this, SLOT(dataPropertyClickedSlot()));
 
-  QObject::connect(ui->Individual_getDistinct, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getRelatedFrom, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getRelatedOn, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getRelatedWith, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getRelationFrom, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getRelationOn, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getRelationWith, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getSame, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getUp, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getOn, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getFrom, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getWith, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getDomainOf, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getRangeOf, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getName, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_exist, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_findRegex, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_find, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_findFuzzy, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_findSub, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
-  QObject::connect(ui->Individual_getType, SIGNAL(clicked()),this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getDistinct, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getRelatedFrom, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getRelatedOn, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getRelatedWith, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getRelationFrom, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getRelationOn, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getRelationWith, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getSame, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getUp, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getOn, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getFrom, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getWith, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getDomainOf, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getRangeOf, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getName, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_exist, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_findRegex, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_find, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_findFuzzy, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_findSub, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getType, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
 
-  QObject::connect(ui->CloseButton, SIGNAL(clicked()),this, SLOT(closeOntologySlot()));
-  QObject::connect(ui->RefreshButton, SIGNAL(clicked()),this, SLOT(displayOntologiesListSlot()));
-  QObject::connect(ui->AddPushButton, SIGNAL(clicked()),this, SLOT(addOntologySlot()));
-  QObject::connect(ui->DelPushButton, SIGNAL(clicked()),this, SLOT(deleteOntologySlot()));
-  QObject::connect(ui->SaveButton, SIGNAL(clicked()),this, SLOT(saveOntologySlot()));
-  QObject::connect(ui->DiffPushButton, SIGNAL(clicked()),this, SLOT(differenceOntologySlot()));
+  QObject::connect(ui_->CloseButton, SIGNAL(clicked()), this, SLOT(closeOntologySlot()));
+  QObject::connect(ui_->RefreshButton, SIGNAL(clicked()), this, SLOT(displayOntologiesListSlot()));
+  QObject::connect(ui_->AddPushButton, SIGNAL(clicked()), this, SLOT(addOntologySlot()));
+  QObject::connect(ui_->DelPushButton, SIGNAL(clicked()), this, SLOT(deleteOntologySlot()));
+  QObject::connect(ui_->SaveButton, SIGNAL(clicked()), this, SLOT(saveOntologySlot()));
+  QObject::connect(ui_->DiffPushButton, SIGNAL(clicked()), this, SLOT(differenceOntologySlot()));
 
-  QObject::connect(ui->FeederAddButton, SIGNAL(clicked()),this, SLOT(feederAddSlot()));
-  QObject::connect(ui->FeederDelButton, SIGNAL(clicked()),this, SLOT(feederDelSlot()));
-  QObject::connect(ui->FeederCommitButton, SIGNAL(clicked()),this, SLOT(feederCommitSlot()));
-  QObject::connect(ui->FeederCheckoutButton, SIGNAL(clicked()),this, SLOT(feederCheckoutSlot()));
+  QObject::connect(ui_->FeederAddButton, SIGNAL(clicked()), this, SLOT(feederAddSlot()));
+  QObject::connect(ui_->FeederDelButton, SIGNAL(clicked()), this, SLOT(feederDelSlot()));
+  QObject::connect(ui_->FeederCommitButton, SIGNAL(clicked()), this, SLOT(feederCommitSlot()));
+  QObject::connect(ui_->FeederCheckoutButton, SIGNAL(clicked()), this, SLOT(feederCheckoutSlot()));
 
-  QObject::connect(ui->OntologyNameAddDel, SIGNAL(textEdited(const QString&)), this, SLOT(OntologyNameAddDelChangedSlot(const QString&)));
-  QObject::connect(ui->OntologyName, SIGNAL(textEdited(const QString&)), this, SLOT(OntologyNameChangedSlot(const QString&)));
-  QObject::connect(ui->OntologyName, SIGNAL(editingFinished()),this, SLOT(nameEditingFinishedSlot()));
-  QObject::connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(currentTabChangedSlot(int)));
+  QObject::connect(ui_->OntologyNameAddDel, SIGNAL(textEdited(const QString&)), this, SLOT(ontologyNameAddDelChangedSlot(const QString&)));
+  QObject::connect(ui_->OntologyName, SIGNAL(textEdited(const QString&)), this, SLOT(ontologyNameChangedSlot(const QString&)));
+  QObject::connect(ui_->OntologyName, SIGNAL(editingFinished()), this, SLOT(nameEditingFinishedSlot()));
+  QObject::connect(ui_->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentTabChangedSlot(int)));
 
-  QObject::connect( this, SIGNAL( feederSetHtmlSignal(QString) ), ui->FeederInfo, SLOT( setHtml(QString) ) ,Qt::BlockingQueuedConnection);
-  QObject::connect( this, SIGNAL( feederScrollSignal(QString) ), ui->FeederInfo, SLOT( scrollToAnchor(QString) ) ,Qt::BlockingQueuedConnection);
+  QObject::connect(this, SIGNAL(feederSetHtmlSignal(QString)), ui_->FeederInfo, SLOT(setHtml(QString)), Qt::BlockingQueuedConnection);
+  QObject::connect(this, SIGNAL(feederScrollSignal(QString)), ui_->FeederInfo, SLOT(scrollToAnchor(QString)), Qt::BlockingQueuedConnection);
 }
 
-ontoloGUI::~ontoloGUI()
+OntoloGUI::~OntoloGUI()
 {
-  delete ui;
+  delete ui_;
 }
 
-void ontoloGUI::init()
+void OntoloGUI::init()
 {
   if(ontos_.waitInit(1) == false)
   {
     onto_ = new onto::OntologyManipulator();
-    onto_->feeder.registerFeederNotificationCallback([this](auto msg){ this->feederCallback(msg); });
+    onto_->feeder.registerFeederNotificationCallback([this](auto msg) { this->feederCallback(msg); });
     multi_usage_ = false;
   }
   else
@@ -261,196 +274,196 @@ void ontoloGUI::init()
   }
 }
 
-void ontoloGUI::wait()
+void OntoloGUI::wait()
 {
-  QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-                  "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-                  "p, li { white-space: pre-wrap; }"
-                  "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-                  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Wainting for </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">ontologenius</span></p></body></html>";
-  ui->InfoArea->setHtml(html);
+  const QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+                       "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+                       "p, li { white-space: pre-wrap; }"
+                       "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+                       "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Wainting for </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">ontologenius</span></p></body></html>";
+  ui_->InfoArea->setHtml(html);
 }
 
-void ontoloGUI::start()
+void OntoloGUI::start()
 {
-  QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-                  "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-                  "p, li { white-space: pre-wrap; }"
-                  "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-                  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600; color:#4e9a06;\">OntoloGenius</span><span style=\" font-size:12pt; color:#4e9a06;\"> detected</span></p></body></html>";
-  ui->InfoArea->setHtml(html);
+  const QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+                       "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+                       "p, li { white-space: pre-wrap; }"
+                       "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+                       "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600; color:#4e9a06;\">OntoloGenius</span><span style=\" font-size:12pt; color:#4e9a06;\"> detected</span></p></body></html>";
+  ui_->InfoArea->setHtml(html);
 }
 
-void ontoloGUI::ClasshoverEnterSlot()
+void OntoloGUI::classhoverEnterSlot()
 {
-  ui->ClassDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
+  ui_->ClassDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
-void ontoloGUI::ClasshoverLeaveSlot()
+void OntoloGUI::classhoverLeaveSlot()
 {
-  ui->ClassDescription->setText("");
+  ui_->ClassDescription->setText("");
 }
 
-void ontoloGUI::objectPropertyhoverEnterSlot()
+void OntoloGUI::objectPropertyhoverEnterSlot()
 {
-  ui->ObjectPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
+  ui_->ObjectPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
-void ontoloGUI::objectPropertyhoverLeaveSlot()
+void OntoloGUI::objectPropertyhoverLeaveSlot()
 {
-  ui->ObjectPropertyDescription->setText("");
+  ui_->ObjectPropertyDescription->setText("");
 }
 
-void ontoloGUI::dataPropertyhoverEnterSlot()
+void OntoloGUI::dataPropertyhoverEnterSlot()
 {
-  ui->DataPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
+  ui_->DataPropertyDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
-void ontoloGUI::dataPropertyhoverLeaveSlot()
+void OntoloGUI::dataPropertyhoverLeaveSlot()
 {
-  ui->DataPropertyDescription->setText("");
+  ui_->DataPropertyDescription->setText("");
 }
 
-void ontoloGUI::IndividualCheckBoxhoverEnterSlot()
+void OntoloGUI::individualCheckBoxhoverEnterSlot()
 {
-  ui->IndividualDescription->setText(dynamic_cast<QCheckBoxExtended*>(sender())->whatsThis());
+  ui_->IndividualDescription->setText(dynamic_cast<QCheckBoxExtended*>(sender())->whatsThis());
 }
 
-void ontoloGUI::IndividualhoverEnterSlot()
+void OntoloGUI::individualhoverEnterSlot()
 {
-  ui->IndividualDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
+  ui_->IndividualDescription->setText(dynamic_cast<QWidget*>(sender())->whatsThis());
 }
 
-void ontoloGUI::IndividualhoverLeaveSlot()
+void OntoloGUI::individualhoverLeaveSlot()
 {
-  ui->IndividualDescription->setText("");
+  ui_->IndividualDescription->setText("");
 }
 
-void ontoloGUI::classClickedSlot()
+void OntoloGUI::classClickedSlot()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  if(ui_->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui_->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
     return;
   }
 
-  std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
-  std::string param = ui->classParameter->text().toStdString();
+  const std::string action = dynamic_cast<QPushButtonExtended*>(sender())->text().toStdString();
+  const std::string param = ui_->classParameter->text().toStdString();
   if(updateOntoPtr() == false)
     return;
 
-  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->classParameter->text();
-  ui->ClassDescription->setText(text);
+  const QString text = dynamic_cast<QPushButtonExtended*>(sender())->text() + " : " + ui_->classParameter->text();
+  ui_->ClassDescription->setText(text);
 
   auto res_vect = onto_->classes.call(action, param);
-  int err = onto_->classes.getErrorCode();
+  const int err = onto_->classes.getErrorCode();
   if(err == -1)
     displayErrorInfo("client call failed");
   else
   {
     start();
-    std::string res_str = vector2string(res_vect);
-    ui->ResultArea->setText(QString::fromStdString(res_str));
+    const std::string res_str = vector2string(res_vect);
+    ui_->ResultArea->setText(QString::fromStdString(res_str));
     if(err == 3)
       displayUnClosed();
   }
 }
 
-void ontoloGUI::objectPropertyClickedSlot()
+void OntoloGUI::objectPropertyClickedSlot()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  if(ui_->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui_->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
     return;
   }
 
-  std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
-  std::string param = ui->objectPropertyParameter->text().toStdString();
+  const std::string action = dynamic_cast<QPushButtonExtended*>(sender())->text().toStdString();
+  const std::string param = ui_->objectPropertyParameter->text().toStdString();
   if(updateOntoPtr() == false)
     return;
 
-  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->objectPropertyParameter->text();
-  ui->ObjectPropertyDescription->setText(text);
+  const QString text = dynamic_cast<QPushButtonExtended*>(sender())->text() + " : " + ui_->objectPropertyParameter->text();
+  ui_->ObjectPropertyDescription->setText(text);
 
   auto res_vect = onto_->objectProperties.call(action, param);
-  int err = onto_->objectProperties.getErrorCode();
+  const int err = onto_->objectProperties.getErrorCode();
   if(err == -1)
     displayErrorInfo("client call failed");
   else
   {
     start();
-    std::string res_str = vector2string(res_vect);
-    ui->ResultArea->setText(QString::fromStdString(res_str));
+    const std::string res_str = vector2string(res_vect);
+    ui_->ResultArea->setText(QString::fromStdString(res_str));
     if(err == 3)
       displayUnClosed();
   }
 }
 
-void ontoloGUI::dataPropertyClickedSlot()
+void OntoloGUI::dataPropertyClickedSlot()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  if(ui_->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui_->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
     return;
   }
 
-  std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
-  std::string param = ui->dataPropertyParameter->text().toStdString();
+  const std::string action = dynamic_cast<QPushButtonExtended*>(sender())->text().toStdString();
+  const std::string param = ui_->dataPropertyParameter->text().toStdString();
   if(updateOntoPtr() == false)
     return;
 
-  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->dataPropertyParameter->text();
-  ui->DataPropertyDescription->setText(text);
+  const QString text = dynamic_cast<QPushButtonExtended*>(sender())->text() + " : " + ui_->dataPropertyParameter->text();
+  ui_->DataPropertyDescription->setText(text);
 
   auto res_vect = onto_->dataProperties.call(action, param);
-  int err = onto_->dataProperties.getErrorCode();
+  const int err = onto_->dataProperties.getErrorCode();
   if(err == -1)
     displayErrorInfo("client call failed");
   else
   {
     start();
-    std::string res_str = vector2string(res_vect);
-    ui->ResultArea->setText(QString::fromStdString(res_str));
+    const std::string res_str = vector2string(res_vect);
+    ui_->ResultArea->setText(QString::fromStdString(res_str));
     if(err == 3)
       displayUnClosed();
   }
 }
 
-void ontoloGUI::individualClickedSlot()
+void OntoloGUI::individualClickedSlot()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  if(ui_->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui_->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
     return;
   }
 
-  std::string action = dynamic_cast<QPushButtonExtended *>(sender())->text().toStdString();
-  std::string param = ui->individualParameter->text().toStdString();
+  const std::string action = dynamic_cast<QPushButtonExtended*>(sender())->text().toStdString();
+  const std::string param = ui_->individualParameter->text().toStdString();
   if(updateOntoPtr() == false)
     return;
 
-  QString text = dynamic_cast<QPushButtonExtended *>(sender())->text() + " : " + ui->individualParameter->text();
-  ui->IndividualDescription->setText(text);
+  const QString text = dynamic_cast<QPushButtonExtended*>(sender())->text() + " : " + ui_->individualParameter->text();
+  ui_->IndividualDescription->setText(text);
 
   auto res_vect = onto_->individuals.call(action, param);
-  int err = onto_->individuals.getErrorCode();
+  const int err = onto_->individuals.getErrorCode();
   if(err == -1)
     displayErrorInfo("client call failed");
   else
   {
     start();
-    std::string res_str = vector2string(res_vect);
-    ui->ResultArea->setText(QString::fromStdString(res_str));
+    const std::string res_str = vector2string(res_vect);
+    ui_->ResultArea->setText(QString::fromStdString(res_str));
     if(err == 3)
       displayUnClosed();
   }
 }
 
-void ontoloGUI::closeOntologySlot()
+void OntoloGUI::closeOntologySlot()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  if(ui_->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui_->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
     return;
   }
 
@@ -458,32 +471,32 @@ void ontoloGUI::closeOntologySlot()
     return;
 
   onto_->close();
-  int err = onto_->actions.getErrorCode();
+  const int err = onto_->actions.getErrorCode();
   if(err == -1)
     displayErrorInfo("client call failed");
   else
   {
-    ui->ResultArea->setText("");
+    ui_->ResultArea->setText("");
     start();
   }
 }
 
-void ontoloGUI::nameEditingFinishedSlot()
+void OntoloGUI::nameEditingFinishedSlot()
 {
   if(updateOntoPtr() == false)
     return;
   loadReasoners();
 }
 
-void ontoloGUI::ReasonerClickedSlot(int)
+void OntoloGUI::reasonerClickedSlot(int /*unused*/)
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  if(ui_->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui_->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
     return;
   }
 
-  std::string param = dynamic_cast<QCheckBoxExtended*>(sender())->text().toStdString();
+  const std::string param = dynamic_cast<QCheckBoxExtended*>(sender())->text().toStdString();
   if(updateOntoPtr() == false)
     return;
 
@@ -492,47 +505,47 @@ void ontoloGUI::ReasonerClickedSlot(int)
   else
     onto_->reasoners.deactivate(param);
 
-  int err = onto_->reasoners.getErrorCode();
+  const int err = onto_->reasoners.getErrorCode();
   if(err == -1)
     displayErrorInfo("client call failed");
   else
   {
     start();
-    ui->ResultArea->setText("");
+    ui_->ResultArea->setText("");
   }
 }
 
-void ontoloGUI::ReasonerhoverEnterSlot()
+void OntoloGUI::reasonerhoverEnterSlot()
 {
-  size_t index = getReasonerIndex(dynamic_cast<QCheckBoxExtended*>(sender()));
-  ui->ReasonerDescription->setText(QString::fromStdString(reasoners_description_[index]));
+  const size_t index = getReasonerIndex(dynamic_cast<QCheckBoxExtended*>(sender()));
+  ui_->ReasonerDescription->setText(QString::fromStdString(reasoners_description_[index]));
 }
 
-void ontoloGUI::ReasonerhoverLeaveSlot()
+void OntoloGUI::reasonerhoverLeaveSlot()
 {
-  ui->ReasonerDescription->setText("");
+  ui_->ReasonerDescription->setText("");
 }
 
-void ontoloGUI::displayUnClosed()
+void OntoloGUI::displayUnClosed()
 {
-  QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-                  "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-                  "p, li { white-space: pre-wrap; }"
-                  "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-                  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Ontology is not </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">closed</span></p></body></html>";
-  ui->InfoArea->setHtml(html);
+  const QString html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+                       "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+                       "p, li { white-space: pre-wrap; }"
+                       "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+                       "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">Ontology is not </span><span style=\" font-size:12pt; font-weight:600; color:#a40000;\">closed</span></p></body></html>";
+  ui_->InfoArea->setHtml(html);
 }
 
-void ontoloGUI::loadReasoners()
+void OntoloGUI::loadReasoners()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  if(ui_->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui_->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
     return;
   }
 
-  QLayoutItem *item;
-  while ((item = ui->ReasonerListLayout->takeAt(1)) != nullptr)
+  QLayoutItem* item = nullptr;
+  while((item = ui_->ReasonerListLayout->takeAt(1)) != nullptr)
   {
     delete item->widget();
     delete item;
@@ -542,7 +555,7 @@ void ontoloGUI::loadReasoners()
     return;
 
   auto res_vect = onto_->reasoners.list();
-  int err = onto_->reasoners.getErrorCode();
+  const int err = onto_->reasoners.getErrorCode();
 
   if(err == -1)
     displayErrorInfo("client call failed");
@@ -550,31 +563,31 @@ void ontoloGUI::loadReasoners()
   {
     start();
     reasoners_names_ = res_vect;
-    ui->ResultArea->setText("");
+    ui_->ResultArea->setText("");
 
     constructReasonersCheckBoxs();
     updateReasonersCheckBoxs();
   }
 }
 
-void ontoloGUI::constructReasonersCheckBoxs()
+void OntoloGUI::constructReasonersCheckBoxs()
 {
   for(const auto& reasoners_name : reasoners_names_)
   {
     reasoners_description_.push_back(getReasonerDescription(reasoners_name));
-    auto box = new QCheckBoxExtended(QString::fromStdString(reasoners_name), this);
-    ui->ReasonerListLayout->addWidget(box);
-    QObject::connect(box, SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
-    QObject::connect(box, SIGNAL(hoverEnter()),this, SLOT(ReasonerhoverEnterSlot()));
-    QObject::connect(box, SIGNAL(hoverLeave()),this, SLOT(ReasonerhoverLeaveSlot()));
+    auto* box = new QCheckBoxExtended(QString::fromStdString(reasoners_name), this);
+    ui_->ReasonerListLayout->addWidget(box);
+    QObject::connect(box, SIGNAL(stateChanged(int)), this, SLOT(reasonerClickedSlot(int)));
+    QObject::connect(box, SIGNAL(hoverEnter()), this, SLOT(reasonerhoverEnterSlot()));
+    QObject::connect(box, SIGNAL(hoverLeave()), this, SLOT(reasonerhoverLeaveSlot()));
   }
 }
 
-void ontoloGUI::updateReasonersCheckBoxs()
+void OntoloGUI::updateReasonersCheckBoxs()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  if(ui_->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui_->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
     return;
   }
 
@@ -582,15 +595,15 @@ void ontoloGUI::updateReasonersCheckBoxs()
     return;
 
   auto active_reasoners = onto_->reasoners.activeList();
-  int err = onto_->reasoners.getErrorCode();
+  const int err = onto_->reasoners.getErrorCode();
 
   if(err == -1)
     displayErrorInfo("client call failed");
   else
   {
-    for(int i = 1; i < ui->ReasonerListLayout->count(); ++i)
+    for(int i = 1; i < ui_->ReasonerListLayout->count(); ++i)
     {
-      QWidget* widget = ui->ReasonerListLayout->itemAt(i)->widget();
+      QWidget* widget = ui_->ReasonerListLayout->itemAt(i)->widget();
       if(widget != nullptr)
       {
         Qt::CheckState checked = Qt::Unchecked;
@@ -599,17 +612,17 @@ void ontoloGUI::updateReasonersCheckBoxs()
           if(dynamic_cast<QCheckBoxExtended*>(widget)->text().toStdString() == active_reasoner)
             checked = Qt::Checked;
         }
-        QObject::disconnect(dynamic_cast<QCheckBoxExtended*>(widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
+        QObject::disconnect(dynamic_cast<QCheckBoxExtended*>(widget), SIGNAL(stateChanged(int)), this, SLOT(reasonerClickedSlot(int)));
         dynamic_cast<QCheckBoxExtended*>(widget)->setCheckState(checked);
-        QObject::connect(dynamic_cast<QCheckBoxExtended*>(widget), SIGNAL(stateChanged(int)),this, SLOT(ReasonerClickedSlot(int)));
+        QObject::connect(dynamic_cast<QCheckBoxExtended*>(widget), SIGNAL(stateChanged(int)), this, SLOT(reasonerClickedSlot(int)));
       }
     }
   }
 }
 
-size_t ontoloGUI::getReasonerIndex(QCheckBoxExtended* box)
+size_t OntoloGUI::getReasonerIndex(QCheckBoxExtended* box)
 {
-  size_t index =0;
+  size_t index = 0;
   for(size_t i = 0; i < reasoners_names_.size(); i++)
     if(reasoners_names_[i] == box->text().toStdString())
     {
@@ -619,11 +632,11 @@ size_t ontoloGUI::getReasonerIndex(QCheckBoxExtended* box)
   return index;
 }
 
-std::string ontoloGUI::getReasonerDescription(std::string box)
+std::string OntoloGUI::getReasonerDescription(const std::string& box)
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  if(ui_->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui_->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
     return "";
   }
 
@@ -631,7 +644,7 @@ std::string ontoloGUI::getReasonerDescription(std::string box)
     return "";
 
   auto description = onto_->reasoners.getDescription(box);
-  int err = onto_->reasoners.getErrorCode();
+  const int err = onto_->reasoners.getErrorCode();
 
   if(err == -1)
     displayErrorInfo("client call failed");
@@ -641,47 +654,49 @@ std::string ontoloGUI::getReasonerDescription(std::string box)
   return "";
 }
 
-void ontoloGUI::displayErrorInfo(const std::string& text)
+void OntoloGUI::displayErrorInfo(const std::string& text)
 {
-  std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-                      "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-                      "p, li { white-space: pre-wrap; }"
-                      "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-                      "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">" + text + "</span></p></body></html>";
-  ui->InfoArea->setHtml(QString::fromStdString(html));
+  const std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+                           "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+                           "p, li { white-space: pre-wrap; }"
+                           "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+                           "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">" +
+                           text + "</span></p></body></html>";
+  ui_->InfoArea->setHtml(QString::fromStdString(html));
 }
 
-void ontoloGUI::displayOntologiesList()
+void OntoloGUI::displayOntologiesList()
 {
   auto res_vect = ontos_.list();
-  int err = ontos_.getErrorCode();
+  const int err = ontos_.getErrorCode();
   std::string html;
   if(err == -1)
   {
     html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-            "p, li { white-space: pre-wrap; }"
-            "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-            "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">ontologenius is not running in multi mode.</span></p></body></html>";
+           "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+           "p, li { white-space: pre-wrap; }"
+           "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+           "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#a40000;\">ontologenius is not running in multi mode.</span></p></body></html>";
   }
   else
   {
-    std::string text = vector2html(res_vect);
+    const std::string text = vector2html(res_vect);
     html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-            "p, li { white-space: pre-wrap; }"
-            "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-            "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + text + "</span></p></body></html>";
+           "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+           "p, li { white-space: pre-wrap; }"
+           "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+           "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" +
+           text + "</span></p></body></html>";
   }
-  ui->OntologiesList->setHtml(QString::fromStdString(html));
+  ui_->OntologiesList->setHtml(QString::fromStdString(html));
 }
 
-void ontoloGUI::displayOntologiesListSlot()
+void OntoloGUI::displayOntologiesListSlot()
 {
   displayOntologiesList();
 }
 
-std::string ontoloGUI::vector2string(const std::vector<std::string>& vect)
+std::string OntoloGUI::vector2string(const std::vector<std::string>& vect)
 {
   std::string res;
   for(const auto& v : vect)
@@ -689,7 +704,7 @@ std::string ontoloGUI::vector2string(const std::vector<std::string>& vect)
   return res;
 }
 
-std::string ontoloGUI::vector2html(const std::vector<std::string>& vect)
+std::string OntoloGUI::vector2html(const std::vector<std::string>& vect)
 {
   std::string res;
   for(const auto& v : vect)
@@ -697,7 +712,7 @@ std::string ontoloGUI::vector2html(const std::vector<std::string>& vect)
   return res;
 }
 
-void ontoloGUI::currentTabChangedSlot(int index)
+void OntoloGUI::currentTabChangedSlot(int index)
 {
   if(index == 4)
     loadReasoners();
@@ -705,16 +720,16 @@ void ontoloGUI::currentTabChangedSlot(int index)
     displayOntologiesList();
 }
 
-void ontoloGUI::addOntologySlot()
+void OntoloGUI::addOntologySlot()
 {
-  std::string param = ui->OntologyNameAddDel->text().toStdString();
+  const std::string param = ui_->OntologyNameAddDel->text().toStdString();
   std::string onto_name = param;
 
-  std::regex base_regex("(.*)=(.*)");
+  const std::regex base_regex("(.*)=(.*)");
   std::smatch base_match;
-  if (std::regex_match(param, base_match, base_regex))
+  if(std::regex_match(param, base_match, base_regex))
   {
-    if (base_match.size() == 3)
+    if(base_match.size() == 3)
     {
       ontos_.copy(base_match[1].str(), base_match[2].str());
       onto_name = base_match[1].str();
@@ -723,31 +738,31 @@ void ontoloGUI::addOntologySlot()
   else
     ontos_.add(param);
 
-  int err = ontos_.getErrorCode();
+  const int err = ontos_.getErrorCode();
   if(err == -1)
     displayErrorInfo("ontologenius/manage client call failed");
   else
   {
     start();
     if(err == 4)
-      ui->ResultArea->setText(QString::fromStdString(param + " already created"));
+      ui_->ResultArea->setText(QString::fromStdString(param + " already created"));
     else if(err == 1)
-      ui->ResultArea->setText(QString::fromStdString("fail to stop " + param + " : please retry"));
+      ui_->ResultArea->setText(QString::fromStdString("fail to stop " + param + " : please retry"));
     else
     {
-      ui->ResultArea->setText(QString::fromStdString(""));
-      ontos_.get(onto_name)->feeder.registerFeederNotificationCallback([this](auto msg){ this->feederCallback(msg); });
+      ui_->ResultArea->setText(QString::fromStdString(""));
+      ontos_.get(onto_name)->feeder.registerFeederNotificationCallback([this](auto msg) { this->feederCallback(msg); });
     }
 
     displayOntologiesList();
   }
 }
 
-void ontoloGUI::deleteOntologySlot()
+void OntoloGUI::deleteOntologySlot()
 {
-  std::string param = ui->OntologyNameAddDel->text().toStdString();
+  const std::string param = ui_->OntologyNameAddDel->text().toStdString();
   ontos_.del(param);
-  int err = ontos_.getErrorCode();
+  const int err = ontos_.getErrorCode();
 
   if(err == -1)
     displayErrorInfo("ontologenius/manage client call failed");
@@ -755,47 +770,47 @@ void ontoloGUI::deleteOntologySlot()
   {
     start();
     if(err == 4)
-      ui->ResultArea->setText(QString::fromStdString(param + " don't exist"));
+      ui_->ResultArea->setText(QString::fromStdString(param + " don't exist"));
     else
-      ui->ResultArea->setText(QString::fromStdString(""));
+      ui_->ResultArea->setText(QString::fromStdString(""));
     displayOntologiesList();
   }
 }
 
-void ontoloGUI::saveOntologySlot()
+void OntoloGUI::saveOntologySlot()
 {
-  if(ui->OntologyName->text().toStdString().find("=") != std::string::npos)
+  if(ui_->OntologyName->text().toStdString().find('=') != std::string::npos)
   {
-    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
+    displayErrorInfo("ontology instance name cannot have the symbol = : \'" + ui_->OntologyName->text().toStdString() + "\'\n Once an ontology instance copy has been performed, use the new ontology instance name.");
     return;
   }
 
   if(updateOntoPtr() == false)
     return;
 
-  std::string param = ui->OntologSavePath->text().toStdString();
+  const std::string param = ui_->OntologSavePath->text().toStdString();
   onto_->actions.save(param);
-  int err = onto_->actions.getErrorCode();
+  const int err = onto_->actions.getErrorCode();
 
   if(err == -1)
     displayErrorInfo("client call failed");
   else
   {
     if(err == 4)
-      ui->ResultArea->setText(QString::fromStdString(param + " don't exist"));
+      ui_->ResultArea->setText(QString::fromStdString(param + " don't exist"));
     else
-      ui->ResultArea->setText(QString::fromStdString(""));
+      ui_->ResultArea->setText(QString::fromStdString(""));
   }
 }
 
-void ontoloGUI::differenceOntologySlot()
+void OntoloGUI::differenceOntologySlot()
 {
-  std::string param1 = ui->OntologyDiffName1->text().toStdString();
-  std::string param2 = ui->OntologyDiffName2->text().toStdString();
-  std::string concept = ui->OntologyDiffConcept->text().toStdString();
+  const std::string param1 = ui_->OntologyDiffName1->text().toStdString();
+  const std::string param2 = ui_->OntologyDiffName2->text().toStdString();
+  const std::string concept = ui_->OntologyDiffConcept->text().toStdString();
 
   auto diff = ontos_.getDifference(param1, param2, concept);
-  int err = ontos_.getErrorCode();
+  const int err = ontos_.getErrorCode();
 
   if(err == -1)
     displayErrorInfo("ontologenius/manage client call failed");
@@ -803,85 +818,85 @@ void ontoloGUI::differenceOntologySlot()
   {
     start();
     if(err == 4)
-      ui->ResultArea->setText("no effect");
+      ui_->ResultArea->setText("no effect");
     else if(err == 0)
     {
-      std::string res = vector2string(diff);
-      ui->ResultArea->setText(QString::fromStdString(res));
+      const std::string res = vector2string(diff);
+      ui_->ResultArea->setText(QString::fromStdString(res));
     }
     else
-      ui->ResultArea->setText(QString::fromStdString(std::to_string(err)));
+      ui_->ResultArea->setText(QString::fromStdString(std::to_string(err)));
     displayOntologiesList();
   }
 }
 
-
-void ontoloGUI::OntologyNameAddDelChangedSlot(const QString& text)
+void OntoloGUI::ontologyNameAddDelChangedSlot(const QString& text)
 {
-  if(ui->OntologyName->text() != text)
+  if(ui_->OntologyName->text() != text)
   {
-    size_t equal_pose = text.toStdString().find("=");
+    const size_t equal_pose = text.toStdString().find('=');
     if(equal_pose != std::string::npos)
-      ui->OntologyName->setText(text.mid(0, equal_pose));
+      ui_->OntologyName->setText(text.mid(0, (int)equal_pose));
     else
-      ui->OntologyName->setText(text);
+      ui_->OntologyName->setText(text);
   }
 }
 
-void ontoloGUI::OntologyNameChangedSlot(const QString& text)
+void OntoloGUI::ontologyNameChangedSlot(const QString& text)
 {
-  if(ui->OntologyNameAddDel->text() != text)
-    ui->OntologyNameAddDel->setText(text);
+  if(ui_->OntologyNameAddDel->text() != text)
+    ui_->OntologyNameAddDel->setText(text);
 }
 
-void ontoloGUI::feederCallback(const std::string& msg)
+void OntoloGUI::feederCallback(const std::string& msg)
 {
   feeder_notifications_ += "<p>-" + msg + "</p>";
 
-  std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
-                      "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
-                      "p, li { whicommitte-space: pre-wrap; }"
-                      "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
-                      "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" + feeder_notifications_ + "<a name=\"scrollToMe\" href=\"#scroll\"></a> <br></span></p></body></html>";
+  const std::string html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">"
+                           "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+                           "p, li { whicommitte-space: pre-wrap; }"
+                           "</style></head><body style=\" font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;\">"
+                           "<p align=\"left\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; \">" +
+                           feeder_notifications_ + R"(<a name="scrollToMe" href="#scroll"></a> <br></span></p></body></html>)";
 
   feederSetHtmlSignal(QString::fromStdString(html));
   feederScrollSignal("scrollToMe");
 }
 
-void ontoloGUI::feederAddSlot()
+void OntoloGUI::feederAddSlot()
 {
   if(updateOntoPtr() == false)
     return;
-  onto_->feeder.addProperty(ui->FeederSubject->text().toStdString(), ui->FeederProperty->text().toStdString(), ui->FeederObject->text().toStdString());
+  onto_->feeder.addProperty(ui_->FeederSubject->text().toStdString(), ui_->FeederProperty->text().toStdString(), ui_->FeederObject->text().toStdString());
 }
 
-void ontoloGUI::feederDelSlot()
+void OntoloGUI::feederDelSlot()
 {
   if(updateOntoPtr() == false)
     return;
-  onto_->feeder.removeProperty(ui->FeederSubject->text().toStdString(), ui->FeederProperty->text().toStdString(), ui->FeederObject->text().toStdString());
+  onto_->feeder.removeProperty(ui_->FeederSubject->text().toStdString(), ui_->FeederProperty->text().toStdString(), ui_->FeederObject->text().toStdString());
 }
 
-void ontoloGUI::feederCommitSlot()
+void OntoloGUI::feederCommitSlot()
 {
   if(updateOntoPtr() == false)
     return;
-  onto_->feeder.commit(ui->FeederCommitName->text().toStdString());
+  onto_->feeder.commit(ui_->FeederCommitName->text().toStdString());
 }
 
-void ontoloGUI::feederCheckoutSlot()
+void OntoloGUI::feederCheckoutSlot()
 {
   if(updateOntoPtr() == false)
     return;
-  onto_->feeder.checkout(ui->FeederCommitName->text().toStdString());
+  onto_->feeder.checkout(ui_->FeederCommitName->text().toStdString());
 }
 
-bool ontoloGUI::updateOntoPtr()
+bool OntoloGUI::updateOntoPtr()
 {
   if(multi_usage_ == false)
     return true;
-    
-  std::string instance_name = ui->OntologyName->text().toStdString();
+
+  const std::string instance_name = ui_->OntologyName->text().toStdString();
   onto_ = ontos_.get(instance_name);
   if(onto_ == nullptr)
   {
@@ -894,7 +909,7 @@ bool ontoloGUI::updateOntoPtr()
         return true;
     }
 
-    if(instance_name != "")
+    if(instance_name.empty() == false)
       displayErrorInfo("Ontology " + instance_name + " does not exist");
     return false;
   }

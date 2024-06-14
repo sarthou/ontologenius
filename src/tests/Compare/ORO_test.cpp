@@ -1,13 +1,12 @@
 #include <chrono>
-#include <cstdlib>     /* srand, rand */
-#include <ctime>       /* time */
-#include <unordered_set>
-#include <thread>
-
+#include <cstdlib> /* srand, rand */
+#include <ctime>   /* time */
 #include <ros/ros.h>
+#include <thread>
+#include <unordered_set>
 
-#include "ontologenius/interface/RosInterface.h"
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
+#include "ontologenius/interface/RosInterface.h"
 
 using namespace std::chrono;
 
@@ -40,7 +39,7 @@ double doQuery_R1(onto::OntologyManipulator* onto_ptr)
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
   std::cout << "Found " << res.size() << " individuals." << std::endl;
-  std::cout << "Reasoning level 1: " << " statement retrieved in " << time_span.count()*1000 << "ms" << std::endl;
+  std::cout << "Reasoning level 1: " << " statement retrieved in " << time_span.count() * 1000 << "ms" << std::endl;
 
   return time_span.count();
 }
@@ -62,7 +61,7 @@ double doQuery_R2(onto::OntologyManipulator* onto_ptr)
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
   std::cout << "Found " << res.size() << " individuals." << std::endl;
-  std::cout << "Reasoning level 2: " << " statement retrieved in " << time_span.count()*1000 << "ms" << std::endl;
+  std::cout << "Reasoning level 2: " << " statement retrieved in " << time_span.count() * 1000 << "ms" << std::endl;
 
   return time_span.count();
 }
@@ -78,7 +77,7 @@ double doQuery_R3(onto::OntologyManipulator* onto_ptr)
   duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
   std::cout << "Found " << res.size() << " individuals." << std::endl;
-  std::cout << "Reasoning level 3: " << " statement retrieved in " << time_span.count()*1000 << "ms" << std::endl;
+  std::cout << "Reasoning level 3: " << " statement retrieved in " << time_span.count() * 1000 << "ms" << std::endl;
 
   return time_span.count();
 }

@@ -4,71 +4,71 @@
 #include <string>
 #include <vector>
 
-#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
-#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 
 namespace ontologenius {
 
-enum CardType_t 
-{
-  cardinality_none,
-  cardinality_some,
-  cardinality_only,
-  cardinality_min,
-  cardinality_max,
-  cardinality_exactly,
-  cardinality_value,
-  cardinality_error
-};
+  enum CardType_e
+  {
+    cardinality_none,
+    cardinality_some,
+    cardinality_only,
+    cardinality_min,
+    cardinality_max,
+    cardinality_exactly,
+    cardinality_value,
+    cardinality_error
+  };
 
-enum LogicalNodeType_e
-{
-  logical_and,
-  logical_or,
-  logical_not,
-  logical_none
-};
+  enum LogicalNodeType_e
+  {
+    logical_and,
+    logical_or,
+    logical_not,
+    logical_none
+  };
 
-struct CardinalityElement_t
-{
-  CardType_t card_type_ = cardinality_none;
-  size_t card_number_ = 0;
-  LiteralNode* card_range_ = nullptr;
-};
+  struct CardinalityElement_t
+  {
+    CardType_e card_type_ = cardinality_none;
+    size_t card_number_ = 0;
+    LiteralNode* card_range_ = nullptr;
+  };
 
-class AnonymousClassElement_t
-{
-public:
-  AnonymousClassElement_t() : logical_type_(logical_none), oneof(false), is_complex(false), 
-                              class_involved_(nullptr), object_property_involved_(nullptr), 
+  class AnonymousClassElement
+  {
+  public:
+    AnonymousClassElement() : logical_type_(logical_none), oneof(false), is_complex(false),
+                              class_involved_(nullptr), object_property_involved_(nullptr),
                               data_property_involved_(nullptr), individual_involved_(nullptr) {}
-                              
-  LogicalNodeType_e logical_type_;
-  bool oneof; // true = OneOf element
-  bool is_complex;
 
-  // pointers to the concepts used in the equivalence relation
-  ClassBranch_t* class_involved_;
-  ObjectPropertyBranch_t* object_property_involved_;
-  DataPropertyBranch_t* data_property_involved_;
-  IndividualBranch_t* individual_involved_;
+    LogicalNodeType_e logical_type_;
+    bool oneof; // true = OneOf element
+    bool is_complex;
 
-  CardinalityElement_t card_;
+    // pointers to the concepts used in the equivalence relation
+    ClassBranch* class_involved_;
+    ObjectPropertyBranch* object_property_involved_;
+    DataPropertyBranch* data_property_involved_;
+    IndividualBranch* individual_involved_;
 
-  std::vector<AnonymousClassElement_t*> sub_elements_;
-  std::string ano_name;
-};
+    CardinalityElement_t card_;
 
-class AnonymousClassBranches_t : public ValuedNode
-{
-public:
-  explicit AnonymousClassBranches_t(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), depth_(0) {}  
+    std::vector<AnonymousClassElement*> sub_elements_;
+    std::string ano_name;
+  };
 
-  ClassBranch_t* class_equiv_;
-  std::vector<AnonymousClassElement_t*> ano_elems_;
-  size_t depth_;
-};
+  class AnonymousClassBranch : public ValuedNode
+  {
+  public:
+    explicit AnonymousClassBranch(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), depth_(0) {}
+
+    ClassBranch* class_equiv_;
+    std::vector<AnonymousClassElement*> ano_elems_;
+    size_t depth_;
+  };
 
 } // namespace ontologenius
 

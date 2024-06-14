@@ -5,39 +5,38 @@
 
 namespace ontologenius {
 
-class ReasonerRangeDomain : public ReasonerInterface
-{
-public:
-  ReasonerRangeDomain() {}
-  virtual ~ReasonerRangeDomain() = default;
+  class ReasonerRangeDomain : public ReasonerInterface
+  {
+  public:
+    ReasonerRangeDomain() = default;
+    ~ReasonerRangeDomain() override = default;
 
-  virtual void postReason() override;
+    void postReason() override;
 
-  virtual bool implementPostReasoning() override { return true; }
+    bool implementPostReasoning() override { return true; }
 
-  virtual std::string getName() override;
-  virtual std::string getDescription() override;
+    std::string getName() override;
+    std::string getDescription() override;
 
-  virtual bool defaultActive() override {return true;}
-private:
+    bool defaultActive() override { return true; }
 
-  void postReasonIndividuals();
-  void deduceRange(IndividualBranch_t* branch, const std::string& prop);
-  void deduceDomain(IndividualBranch_t* branch, const std::string& prop);
+  private:
+    void postReasonIndividuals();
+    void deduceRange(IndividualBranch* branch, const std::string& prop);
+    void deduceDomain(IndividualBranch* branch, const std::string& prop);
 
-  void deduceObjRange(IndivObjectRelationElement_t& relation);
-  void deduceObjDomain(IndividualBranch_t* branch, IndivObjectRelationElement_t& relation);
-  void deduceDatDomain(IndividualBranch_t* branch, IndivDataRelationElement_t& relation);
+    void deduceObjRange(IndivObjectRelationElement& relation);
+    void deduceObjDomain(IndividualBranch* branch, IndivObjectRelationElement& relation);
+    void deduceDatDomain(IndividualBranch* branch, IndivDataRelationElement& relation);
 
+    void postReasonClasses();
+    void deduceRange(ClassBranch* branch, const std::string& prop);
+    void deduceDomain(ClassBranch* branch, const std::string& prop);
 
-  void postReasonClasses();
-  void deduceRange(ClassBranch_t* branch, const std::string& prop);
-  void deduceDomain(ClassBranch_t* branch, const std::string& prop);
-
-  void deduceObjRange(ClassObjectRelationElement_t& relation);
-  void deduceObjDomain(ClassBranch_t* branch, ClassObjectRelationElement_t& relation);
-  void deduceDatDomain(ClassBranch_t* branch, ClassDataRelationElement_t& relation);
-};
+    void deduceObjRange(ClassObjectRelationElement& relation);
+    void deduceObjDomain(ClassBranch* branch, ClassObjectRelationElement& relation);
+    void deduceDatDomain(ClassBranch* branch, ClassDataRelationElement& relation);
+  };
 
 } // namespace ontologenius
 

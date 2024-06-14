@@ -4,32 +4,31 @@
 #include <string>
 #include <vector>
 
-#include "ontologenius/core/ontologyIO/Owl/writers/NodeOwlWriter.h"
-
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontologenius/core/ontologyIO/Owl/writers/NodeOwlWriter.h"
 
 namespace ontologenius {
 
-class AnnotationOwlWriter : private NodeOwlWriter
-{
-public:
-  AnnotationOwlWriter(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, const std::string& ns);
+  class AnnotationOwlWriter : private NodeOwlWriter
+  {
+  public:
+    AnnotationOwlWriter(ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, const std::string& ns);
 
-  void write(FILE* file);
+    void write(FILE* file);
 
-private:
-  ObjectPropertyGraph* object_property_graph_;
-  DataPropertyGraph* data_property_graph_;
+  private:
+    ObjectPropertyGraph* object_property_graph_;
+    DataPropertyGraph* data_property_graph_;
 
-  void writeAnnotation(ObjectPropertyBranch_t* branch);
-  void writeAnnotation(DataPropertyBranch_t* branch);
-  void writeSubPropertyOf(ObjectPropertyBranch_t* branch);
-  void writeSubPropertyOf(DataPropertyBranch_t* branch);
-  void writeRange(const std::vector<LiteralNode*>& ranges);
-  void writeRange(const std::vector<ClassElement_t>& ranges);
-  void writeDomain(const std::vector<ClassElement_t>& domains);
-};
+    void writeAnnotation(ObjectPropertyBranch* branch);
+    void writeAnnotation(DataPropertyBranch* branch);
+    void writeSubPropertyOf(ObjectPropertyBranch* branch);
+    void writeSubPropertyOf(DataPropertyBranch* branch);
+    void writeRange(const std::vector<LiteralNode*>& ranges);
+    void writeRange(const std::vector<ClassElement>& ranges);
+    void writeDomain(const std::vector<ClassElement>& domains);
+  };
 
 } // namespace ontologenius
 

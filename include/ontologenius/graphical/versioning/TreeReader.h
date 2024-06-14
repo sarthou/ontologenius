@@ -2,41 +2,41 @@
 #define ONTOLOGENIUS_TREEREADER_H
 
 #include <string>
-#include <vector>
-
 #include <tinyxml.h>
+#include <vector>
 
 namespace ontologenius {
 
-class commit_t
-{
-public:
-  explicit commit_t(const std::string& id);
-  ~commit_t();
+  class Commit
+  {
+  public:
+    explicit Commit(const std::string& id);
+    ~Commit();
 
-  void setOrderId(size_t order);
-  void insertData(const std::string& data);
-  void insertNext(commit_t* next);
+    void setOrderId(size_t order);
+    void insertData(const std::string& data);
+    void insertNext(Commit* next);
 
-  static size_t global_width;
-  static size_t global_height;
+    static size_t global_width;
+    static size_t global_height;
 
-  std::vector<std::string> datas_;
-  std::vector<commit_t*> nexts_;
-  std::string id_;
-  int order_;
-};
+    std::vector<std::string> datas_;
+    std::vector<Commit*> nexts_;
+    std::string id_;
+    int order_;
+  };
 
-class TreeReader
-{
-public:
-  commit_t* read(const std::string& file_name);
-private:
-  commit_t* readNode(TiXmlElement* elem);
-  commit_t* readNode(TiXmlElement* elem, commit_t* prev);
+  class TreeReader
+  {
+  public:
+    Commit* read(const std::string& file_name);
 
-  std::string getAttribute(TiXmlElement* subElem, const std::string& attribute);
-};
+  private:
+    Commit* readNode(TiXmlElement* elem);
+    Commit* readNode(TiXmlElement* elem, Commit* prev);
+
+    std::string getAttribute(TiXmlElement* sub_elem, const std::string& attribute);
+  };
 
 } // namespace ontologenius
 

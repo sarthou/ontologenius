@@ -4,27 +4,27 @@
 #include <string>
 #include <vector>
 
-#include "ontologenius/core/ontoGraphs/Branchs/PropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/PropertyBranch.h"
 
 namespace ontologenius {
 
-// Classes predefinition
-class DataPropertyBranch_t;
-class ClassBranch_t;
+  // Classes predefinition
+  class DataPropertyBranch;
+  class ClassBranch;
 
-typedef Single_t<DataPropertyBranch_t*> DataPropertyElement_t;
-typedef Single_t<ClassBranch_t*> ClassElement_t;
+  using DataPropertyElement = SingleElement<DataPropertyBranch*>;
+  using ClassElement = SingleElement<ClassBranch*>;
 
-class DataPropertyBranch_t :  public Branch_t<DataPropertyBranch_t>,
-                              public PropertyBranch_t<DataPropertyBranch_t>
-{
-public:
-  std::vector<ClassElement_t> domains_;
-  std::vector<LiteralNode*> ranges_;
+  class DataPropertyBranch : public Branch<DataPropertyBranch>,
+                             public PropertyBranch<DataPropertyBranch>
+  {
+  public:
+    std::vector<ClassElement> domains_;
+    std::vector<LiteralNode*> ranges_;
 
-  DataPropertyBranch_t(const std::string& value = "") : Branch_t(value) {};
-};
+    DataPropertyBranch(const std::string& value = "") : Branch(value){};
+  };
 
 } // namespace ontologenius
 

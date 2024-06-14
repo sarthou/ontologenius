@@ -1,14 +1,26 @@
 #include "ontologenius/core/ontologyOperators/Sparql.h"
 
+#include <algorithm>
+#include <cstddef>
+#include <cstdint>
+#include <map>
+#include <regex>
+#include <set>
+#include <string>
+#include <unordered_set>
+#include <utility>
+#include <vector>
+
+#include "ontologenius/core/ontoGraphs/Branchs/WordTable.h" // for index_t
+#include "ontologenius/core/ontologyOperators/SparqlUtils.h"
+#include "ontologenius/graphical/Display.h"
 #include "ontologenius/utils/String.h"
 
-namespace ontologenius
-{
-  Sparql::Sparql() : sparql_pattern_("SELECT\\s*(DISTINCT)?\\s*([^\n]+)([\\s\n]*)WHERE([\\s\n]*)(.*)")
-  {
-    onto_ = nullptr;
-    error_ = "";
+namespace ontologenius {
 
+  Sparql::Sparql() : onto_(nullptr),
+                     sparql_pattern_("SELECT\\s*(DISTINCT)?\\s*([^\n]+)([\\s\n]*)WHERE([\\s\n]*)(.*)")
+  {
     operators_["NOT EXISTS"] = sparql_not_exists;
   }
 
@@ -27,8 +39,8 @@ namespace ontologenius
   template<typename T>
   std::pair<std::vector<std::string>, std::vector<std::vector<T>>> Sparql::run(const std::string& query)
   {
-    resource_t<T>::variables.clear();
-    resource_t<T>::to_variables.clear();
+    Resource_t<T>::variables.clear();
+    Resource_t<T>::to_variables.clear();
 
     std::vector<std::vector<T>> res;
     error_ = "";
@@ -39,7 +51,7 @@ namespace ontologenius
     }
 
     std::smatch match;
-    if (std::regex_match(query, match, sparql_pattern_))
+    if(std::regex_match(query, match, sparql_pattern_))
     {
       std::string vars = match[2].str();
       removeChar(vars, {'\n', '\r'});
@@ -49,93 +61,94 @@ namespace ontologenius
       removeChar(pattern, {'\n', '\r'});
 
       auto blocks = getBlocks(pattern);
-      if(error_ != "")
+      if(error_.empty() == false)
         return {{}, {}};
 
       for(auto& block : blocks)
       {
         auto triplets = getTriplets<T>(block.raw, ".");
-        if(error_ != "")
+        if(error_.empty() == false)
           return {{}, {}};
 
         res = resolve(triplets, block.op, res);
       }
-      
-      filter(res, vars_to_return, match[1].str() != "");
 
-      if(vars_to_return.size())
+      filter(res, vars_to_return, match[1].str().empty() == false);
+
+      if(vars_to_return.empty() == false)
       {
         if(vars_to_return[0] == "*")
-          return {resource_t<T>::to_variables, res};
+          return {Resource_t<T>::to_variables, res};
 
-        std::vector<int64_t> var_index = convertVariables<T>(vars_to_return);
+        const std::vector<int64_t> var_index = convertVariables<T>(vars_to_return);
         std::vector<std::string> ordered_vars;
+        ordered_vars.reserve(var_index.size());
         for(auto index : var_index)
-          ordered_vars.push_back(resource_t<T>::to_variables[index]);
+          ordered_vars.push_back(Resource_t<T>::to_variables[index]);
         return {ordered_vars, res};
       }
       else
-        return {resource_t<T>::to_variables, std::move(res)};
+        return {Resource_t<T>::to_variables, std::move(res)};
     }
     else
     {
       auto triplets = getTriplets<T>(query, ",");
-      if(triplets.size())
+      if(triplets.empty() == false)
       {
-        auto values = resolve(triplets, std::vector<T>(resource_t<T>::to_variables.size(), getDefaultSelector<T>()));
-        return {resource_t<T>::to_variables, std::move(values)};
+        auto values = resolve(triplets, std::vector<T>(Resource_t<T>::to_variables.size(), getDefaultSelector<T>()));
+        return {Resource_t<T>::to_variables, std::move(values)};
       }
       else
       {
         Display::error("The query is malformed");
         return {{}, {}};
       }
-    }    
+    }
   }
 
   template<typename T>
-  std::vector<std::vector<T>> Sparql::resolve(std::vector<triplet_t<T>> query, SparqlOperator_e op, const std::vector<std::vector<T>>& prev_res)
+  std::vector<std::vector<T>> Sparql::resolve(std::vector<SparqlTriplet_t<T>> query, SparqlOperator_e op, const std::vector<std::vector<T>>& prev_res)
   {
     std::vector<std::vector<T>> res;
-    if(prev_res.size())
+    if(prev_res.empty() == false)
     {
       for(auto& prev : prev_res)
       {
         std::vector<std::vector<T>> local_res;
-        if(query.size())
+        if(query.empty() == false)
           local_res = resolve(query, prev);
 
         switch(op)
         {
-          case sparql_none: mergeNoOp(prev, local_res); break;
-          case sparql_not_exists: mergeNotExists(prev, local_res); break;
+        case sparql_none: mergeNoOp(prev, local_res); break;
+        case sparql_not_exists: mergeNotExists(prev, local_res); break;
         }
-        
+
         res.insert(res.end(), local_res.begin(), local_res.end());
       }
       return res;
     }
     else
     {
-      std::vector<T> empty_accu(resource_t<T>::to_variables.size(), getDefaultSelector<T>());
+      const std::vector<T> empty_accu(Resource_t<T>::to_variables.size(), getDefaultSelector<T>());
       return resolve(query, empty_accu);
     }
   }
 
   // accu keep trak of the varaibles already assigned at a given stage
   template<typename T>
-  std::vector<std::vector<T>> Sparql::resolve(const std::vector<triplet_t<T>>& query, const std::vector<T>& accu)
+  std::vector<std::vector<T>> Sparql::resolve(const std::vector<SparqlTriplet_t<T>>& query, const std::vector<T>& accu)
   {
     std::unordered_set<T> values;
-    int64_t var_index;
+    int64_t var_index = 0;
     resolveSubQuery(query[0], accu, var_index, values);
 
-    if(values.size() == 0)
+    if(values.empty())
       return {};
 
     if(query.size() > 1)
     {
-      std::vector<triplet_t<T>> new_query(query.begin() + 1, query.end());
+      const std::vector<SparqlTriplet_t<T>> new_query(query.begin() + 1, query.end());
 
       std::vector<std::vector<T>> res;
       res.reserve(values.size());
@@ -151,7 +164,7 @@ namespace ontologenius
           new_accu[var_index] = value;
 
         std::vector<std::vector<T>> local_res = resolve(new_query, new_accu);
-        if(local_res.size() != 0)
+        if(local_res.empty() == false)
         {
           for(auto& lr : local_res)
           {
@@ -164,7 +177,7 @@ namespace ontologenius
     }
     else
     {
-      std::vector<std::vector<T>> res(values.size(), std::vector<T>(resource_t<T>::variables.size(), getDefaultSelector<T>()));
+      std::vector<std::vector<T>> res(values.size(), std::vector<T>(Resource_t<T>::variables.size(), getDefaultSelector<T>()));
       size_t cpt = 0;
       for(auto& value : values)
         res[cpt++][var_index] = value;
@@ -173,7 +186,7 @@ namespace ontologenius
   }
 
   template<typename T>
-  void Sparql::resolveSubQuery(triplet_t<T> triplet, const std::vector<T>& accu, int64_t& var_index, std::unordered_set<T>& values)
+  void Sparql::resolveSubQuery(SparqlTriplet_t<T> triplet, const std::vector<T>& accu, int64_t& var_index, std::unordered_set<T>& values)
   {
     if(triplet.predicat.is_variable)
       error_ = "predicat can not be a variable in: " + toString(triplet);
@@ -283,7 +296,7 @@ namespace ontologenius
   }
 
   template<typename T>
-  std::unordered_set<T> Sparql::getOn(const triplet_t<T>& triplet, const T& selector)
+  std::unordered_set<T> Sparql::getOn(const SparqlTriplet_t<T>& triplet, const T& selector)
   {
     auto res = onto_->individual_graph_.getOn(triplet.subject.value, triplet.predicat.value, single_same_);
     if(isSelectorDefined(selector) == false)
@@ -295,7 +308,7 @@ namespace ontologenius
   }
 
   template<typename T>
-  std::unordered_set<T> Sparql::getFrom(const triplet_t<T>& triplet, const T& selector)
+  std::unordered_set<T> Sparql::getFrom(const SparqlTriplet_t<T>& triplet, const T& selector)
   {
     if(isSelectorDefined(selector) == false)
       return onto_->individual_graph_.getFrom(triplet.object.value, triplet.predicat.value, single_same_);
@@ -311,14 +324,14 @@ namespace ontologenius
   }
 
   template<typename T>
-  std::unordered_set<T> Sparql::getUp(const triplet_t<T>& triplet, const T& selector)
+  std::unordered_set<T> Sparql::getUp(const SparqlTriplet_t<T>& triplet, const T& selector)
   {
     if(isSelectorDefined(selector) == false)
       return onto_->individual_graph_.getUp(triplet.subject.value);
     else
     {
-      //auto is = onto_->individual_graph_.getUp(triplet.subject.value);
-      //if(std::find(is.begin(), is.end(), selector) != is.end())
+      // auto is = onto_->individual_graph_.getUp(triplet.subject.value);
+      // if(std::find(is.begin(), is.end(), selector) != is.end())
       if(onto_->individual_graph_.isA(triplet.subject.value, selector))
         return std::unordered_set<T>({selector});
       else
@@ -327,14 +340,14 @@ namespace ontologenius
   }
 
   template<typename T>
-  std::unordered_set<T> Sparql::getType(const triplet_t<T>& triplet, const T& selector)
+  std::unordered_set<T> Sparql::getType(const SparqlTriplet_t<T>& triplet, const T& selector)
   {
     if(isSelectorDefined(selector) == false)
       return onto_->individual_graph_.getType(triplet.object.value, single_same_);
     else
     {
-      //auto types = onto_->individual_graph_.getUp(selector);
-      //if(std::find(types.begin(), types.end(), triplet.object.value) != types.end())
+      // auto types = onto_->individual_graph_.getUp(selector);
+      // if(std::find(types.begin(), types.end(), triplet.object.value) != types.end())
       if(onto_->individual_graph_.isA(selector, triplet.object.value))
         return {selector};
       else
@@ -343,7 +356,7 @@ namespace ontologenius
   }
 
   template<typename T>
-  std::unordered_set<T> Sparql::find(const triplet_t<T>& triplet, const T& selector)
+  std::unordered_set<T> Sparql::find(const SparqlTriplet_t<T>& triplet, const T& selector)
   {
     auto res = onto_->individual_graph_.find<T>(triplet.object.name);
     if(isSelectorDefined(selector) == false)
@@ -355,7 +368,7 @@ namespace ontologenius
   }
 
   template<typename T>
-  std::unordered_set<std::string> Sparql::getName(const triplet_t<T>& triplet, const std::string& selector)
+  std::unordered_set<std::string> Sparql::getName(const SparqlTriplet_t<T>& triplet, const std::string& selector)
   {
     auto res = onto_->individual_graph_.getNames(triplet.subject.value);
     if(isSelectorDefined(selector) == false)
@@ -373,7 +386,7 @@ namespace ontologenius
 
   std::string Sparql::getPattern(const std::string& text)
   {
-    size_t begin_of_pattern = text.find("{");
+    const size_t begin_of_pattern = text.find('{');
     std::string res;
     getIn(begin_of_pattern, res, text, '{', '}');
     return res;
@@ -389,16 +402,16 @@ namespace ontologenius
     size_t cpt = 0;
     size_t bracket_pose = 0;
 
-    while((bracket_pose = query.find("{", bracket_pose)) != std::string::npos)
+    while((bracket_pose = query.find('{', bracket_pose)) != std::string::npos)
     {
       std::string text_in;
-      size_t end_pose = getIn(bracket_pose, text_in, query, '{', '}');
+      const size_t end_pose = getIn(bracket_pose, text_in, query, '{', '}');
       if((end_pose == std::string::npos) || (end_pose == bracket_pose))
       {
         error_ = "Unclosed bracket in: " + query;
         return res;
       }
-      std::string mark = "__" + std::to_string(cpt);
+      const std::string mark = "__" + std::to_string(cpt);
       blocks_id.insert(mark);
       tmp_blocks[mark] = text_in;
       query.replace(bracket_pose, end_pose - bracket_pose + 1, mark);
@@ -408,23 +421,23 @@ namespace ontologenius
     do
     {
       size_t first_block_pose = std::string::npos;
-      std::string first_block = "";
+      std::string first_block;
       size_t first_keyword_pose = std::string::npos;
-      std::string first_keyword = "";
+      std::string first_keyword;
 
-      for(auto& id : blocks_id)
+      for(const auto& id : blocks_id)
       {
-        size_t tmp_pose = query.find(id);
+        const size_t tmp_pose = query.find(id);
         if(tmp_pose < first_block_pose)
         {
           first_block_pose = tmp_pose;
           first_block = id;
-        } 
+        }
       }
 
       for(auto& key : operators_)
       {
-        size_t tmp_pose = query.find(key.first);
+        const size_t tmp_pose = query.find(key.first);
         if(tmp_pose < first_keyword_pose)
         {
           first_keyword_pose = tmp_pose;
@@ -450,7 +463,7 @@ namespace ontologenius
       }
       else
       {
-        size_t min_pose = std::min(query.size(), std::min(first_keyword_pose, first_block_pose));
+        const size_t min_pose = std::min(query.size(), std::min(first_keyword_pose, first_block_pose));
         SparqlBlock_t block;
         block.raw = query.substr(0, min_pose);
         block.op = sparql_none;
@@ -458,20 +471,19 @@ namespace ontologenius
         query = query.substr(min_pose);
       }
       removeUselessSpace(query);
-    }
-    while(query != "");
+    } while(query.empty() == false);
 
     return res;
   }
 
   template<typename T>
-  std::vector<triplet_t<T>> Sparql::getTriplets(const std::string& query, const std::string& delim)
+  std::vector<SparqlTriplet_t<T>> Sparql::getTriplets(const std::string& query, const std::string& delim)
   {
-    std::vector<std::string> sub_queries = split(query, delim);
-    std::vector<triplet_t<T>> sub_queries_triplet;
+    const std::vector<std::string> sub_queries = split(query, delim);
+    std::vector<SparqlTriplet_t<T>> sub_queries_triplet;
     try
     {
-      for(auto& q : sub_queries)
+      for(const auto& q : sub_queries)
         sub_queries_triplet.push_back(getTriplet<T>(q));
     }
     catch(const std::string& msg)
@@ -482,7 +494,7 @@ namespace ontologenius
     return sub_queries_triplet;
   }
 
-  template<typename T> 
+  template<typename T>
   void Sparql::mergeNoOp(const std::vector<T>& base, std::vector<std::vector<T>>& res)
   {
     for(auto& r : res)
@@ -495,7 +507,7 @@ namespace ontologenius
     }
   }
 
-  template<typename T> 
+  template<typename T>
   void Sparql::mergeNotExists(const std::vector<T>& base, std::vector<std::vector<T>>& res)
   {
     if(res.empty())

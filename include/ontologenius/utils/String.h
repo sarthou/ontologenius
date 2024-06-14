@@ -15,7 +15,7 @@ namespace ontologenius {
       size_t pos = tmp_text.find(delim);
       std::string part = tmp_text.substr(0, pos);
       tmp_text = tmp_text.substr(pos + delim.size(), tmp_text.size() - pos - delim.size());
-      if(part != "")
+      if(part.empty() == false)
         res.emplace_back(part);
     }
     res.emplace_back(tmp_text);
@@ -30,17 +30,16 @@ namespace ontologenius {
     {
       size_t first_pose = pose;
       int cpt = 1;
-      while((cpt != 0) && (pose+1 < text.length()))
+      while((cpt != 0) && (pose + 1 < text.length()))
       {
         ++pose;
         if(text.at(pose) == symbol_in)
           cpt++;
         else if(text.at(pose) == symbol_out)
           cpt--;
-
       }
 
-      in_bracket = text.substr(first_pose+1, pose-first_pose-1);
+      in_bracket = text.substr(first_pose + 1, pose - first_pose - 1);
 
       if(cpt == 0)
         return pose;
@@ -55,6 +54,7 @@ namespace ontologenius {
   {
     return (string.find(substring) != std::string::npos);
   }
+
 } // namespace ontologenius
 
 #endif // ONTOLOGENIUS_STRING_H

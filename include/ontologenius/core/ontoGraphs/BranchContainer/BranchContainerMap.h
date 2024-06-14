@@ -8,80 +8,84 @@
 
 namespace ontologenius {
 
-template <typename B>
-class BranchContainerMap : public BranchContainerBase<B>
-{
-public:
-  BranchContainerMap() {}
-  BranchContainerMap(const BranchContainerMap& base);
-  virtual ~BranchContainerMap() {} //B* is destructed by ontograph
-
-  virtual B* find(const std::string& word) override;
-  virtual std::vector<B*> find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default) override;
-  virtual void load(std::vector<B*>& vect) override;
-  virtual void insert(B* branch) override;
-  virtual void erase(B* branch) override;
-private:
-  std::unordered_map<std::string, B*> nodes_;
-};
-
-template <typename B>
-BranchContainerMap<B>::BranchContainerMap(const BranchContainerMap& base)
-{
-  for(auto& it : base.nodes_)
+  template<typename B>
+  class BranchContainerMap : public BranchContainerBase<B>
   {
-    B* tmp = new B();
-    *tmp = *(it.second);
-    nodes_[it.first] = tmp;
-  }
-}
+  public:
+    BranchContainerMap() = default;
+    BranchContainerMap(const BranchContainerMap& base);
+    ~BranchContainerMap() override = default; // B* is destructed by ontograph
 
-template <typename B>
-B* BranchContainerMap<B>::find(const std::string& word)
-{
-  typename std::unordered_map<std::string, B*>::iterator it = nodes_.find(word);
-  if(it == nodes_.end())
-    return nullptr;
-  else
-    return it->second;
-}
+    B* find(const std::string& word) override;
+    std::vector<B*> find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default) override;
+    void load(std::vector<B*>& vect) override;
+    void insert(B* branch) override;
+    void erase(B* branch) override;
 
-template <typename B>
-std::vector<B*> BranchContainerMap<B>::find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default)
-{
-  std::vector<B*> res;
+  private:
+    std::unordered_map<std::string, B*> nodes_;
+  };
 
-  for(auto& it : nodes_)
+  template<typename B>
+  BranchContainerMap<B>::BranchContainerMap(const BranchContainerMap& base)
   {
-    try {
-      if(comp(it.second, word, lang, use_default))
-        res.push_back(it.second);
-    } catch(...) {
-      return res;
+    for(auto& it : base.nodes_)
+    {
+      B* tmp = new B();
+      *tmp = *(it.second);
+      nodes_[it.first] = tmp;
     }
   }
 
-  return res;
-}
+  template<typename B>
+  B* BranchContainerMap<B>::find(const std::string& word)
+  {
+    typename std::unordered_map<std::string, B*>::iterator it = nodes_.find(word);
+    if(it == nodes_.end())
+      return nullptr;
+    else
+      return it->second;
+  }
 
-template <typename B>
-void BranchContainerMap<B>::load(std::vector<B*>& vect)
-{
-  for(size_t i = 0; i < vect.size(); i++)
-    nodes_[vect[i]->value()] = vect[i];
-}
+  template<typename B>
+  std::vector<B*> BranchContainerMap<B>::find(bool (*comp)(B*, const std::string&, const std::string&, bool), const std::string& word, const std::string& lang, bool use_default)
+  {
+    std::vector<B*> res;
 
-template <typename B>
-void BranchContainerMap<B>::insert(B* branch)
-{
-  nodes_[branch->value()] = branch;
-}
+    for(auto& it : nodes_)
+    {
+      try
+      {
+        if(comp(it.second, word, lang, use_default))
+          res.push_back(it.second);
+      }
+      catch(...)
+      {
+        return res;
+      }
+    }
 
-template <typename B>
-void BranchContainerMap<B>::erase(B* branch)
-{
-  nodes_.erase(branch->value());
-}
+    return res;
+  }
+
+  template<typename B>
+  void BranchContainerMap<B>::load(std::vector<B*>& vect)
+  {
+    for(size_t i = 0; i < vect.size(); i++)
+      nodes_[vect[i]->value()] = vect[i];
+  }
+
+  template<typename B>
+  void BranchContainerMap<B>::insert(B* branch)
+  {
+    nodes_[branch->value()] = branch;
+  }
+
+  template<typename B>
+  void BranchContainerMap<B>::erase(B* branch)
+  {
+    nodes_.erase(branch->value());
+  }
 
 } // namespace ontologenius
 
