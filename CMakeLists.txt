@@ -494,11 +494,22 @@ if($ENV{ROS_VERSION} STREQUAL "1")
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
   )
 
-  install(TARGETS ontoloGUI RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+  install(TARGETS
+    ontoloGUI
+    ontologenius_single
+    ontologenius_multi
+    ontologenius_draw
+    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
   install(TARGETS
     ontologenius_lib
     ontologenius_interface
+    ontologenius_compat
+    ontologenius_operators
+    ontologenius_feeder_lib
+    ontologenius_plugin_lib
+    ontologenius_ontoGraphs_lib
+    ontologenius_reasoner_plugin
     ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -523,6 +534,14 @@ if($ENV{ROS_VERSION} STREQUAL "1")
 
   install(DIRECTORY files/
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/files
+  )
+
+  install(DIRECTORY configuration/
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/configuration
+  )
+
+  install(FILES reasoners_plugins.xml
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   )
 
 elseif($ENV{ROS_VERSION} STREQUAL "2")
