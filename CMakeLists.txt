@@ -10,7 +10,6 @@ endif()
 
 include(cmake/Sanitizers.cmake)
 
-# add_compile_options(-DONTO_ROS_VERSION=$ENV{ROS_VERSION})
 function(add_onto_library TARGET)
   if(NOT TARGET)
     message(FATAL_ERROR "Expected the target name as first argument")
@@ -121,6 +120,7 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     LIBRARIES ontologenius_lib ontologenius_interface
     CATKIN_DEPENDS roscpp rospy std_msgs
     DEPENDS TinyXML OpenCV
+    CFG_EXTRAS ontologenius_compatConfigExtras.cmake
   )
 elseif($ENV{ROS_VERSION} STREQUAL "2")
   ament_export_dependencies(rosidl_default_runtime pluginlib)
@@ -231,7 +231,10 @@ function(add_ros_library TARGET)
 
   if($ENV{ROS_VERSION} STREQUAL "1")
     add_dependencies(${TARGET} ontologenius_gencpp ${catkin_EXPORTED_TARGETS})
-    target_include_directories(${TARGET} PUBLIC include ${catkin_INCLUDE_DIRS})
+    target_include_directories(${TARGET} PUBLIC 
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+      $<INSTALL_INTERFACE:include>
+      ${catkin_INCLUDE_DIRS})
     target_link_libraries(${TARGET} PUBLIC ${catkin_LIBRARIES}) # PRIVATE has been removed fot ontoloGUI
   elseif($ENV{ROS_VERSION} STREQUAL "2")
     ament_target_dependencies(${TARGET} PUBLIC rclcpp pluginlib builtin_interfaces std_msgs)
@@ -464,11 +467,49 @@ target_include_directories(ontoloGUI PUBLIC include)
 # #            Install            ##
 # ##################################
 if($ENV{ROS_VERSION} STREQUAL "1")
-  install(TARGETS ontoloGUI RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+  # Generate CMake package config file
+  include(CMakePackageConfigHelpers)
+  configure_package_config_file(
+          cmake/ontologenius_compatConfigIntermediate.cmake.in
+          ${CMAKE_CURRENT_BINARY_DIR}/ontologenius_compatConfigIntermediate.cmake
+      INSTALL_DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
+  )
+  install(
+      FILES ${CMAKE_CURRENT_BINARY_DIR}/ontologenius_compatConfigIntermediate.cmake
+      DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
+  )
+
+  install(
+    TARGETS ontologenius_compat
+    EXPORT ontologenius_compatTargets
+    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  )
+
+  # Install the target file
+  install(
+    EXPORT ontologenius_compatTargets
+    FILE ontologenius_compatTargets.cmake
+    NAMESPACE ontologenius::
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
+  )
+
+  install(TARGETS
+    ontoloGUI
+    ontologenius_single
+    ontologenius_multi
+    ontologenius_draw
+    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
   install(TARGETS
     ontologenius_lib
     ontologenius_interface
+    ontologenius_compat
+    ontologenius_operators
+    ontologenius_feeder_lib
+    ontologenius_plugin_lib
+    ontologenius_ontoGraphs_lib
+    ontologenius_reasoner_plugin
     ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -481,12 +522,26 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     PATTERN ".svn" EXCLUDE
   )
 
+  install(DIRECTORY include/${PROJECT_NAME}/API/${PROJECT_NAME}/
+    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+    FILES_MATCHING PATTERN "*.h"
+    PATTERN ".svn" EXCLUDE
+  )
+
   install(DIRECTORY launch/
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
   )
 
   install(DIRECTORY files/
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/files
+  )
+
+  install(DIRECTORY configuration/
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/configuration
+  )
+
+  install(FILES reasoners_plugins.xml
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   )
 
 elseif($ENV{ROS_VERSION} STREQUAL "2")

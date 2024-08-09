@@ -53,5 +53,6 @@ launch.json
 
 # CMake
 *.cmake
+!cmake/*.cmake
 *.bin
 build/

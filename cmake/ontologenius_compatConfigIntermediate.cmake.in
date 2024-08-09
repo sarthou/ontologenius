@@ -1,0 +1,33 @@
+@PACKAGE_INIT@
+
+# Handle transitive dependencies
+# No dependencies for now
+# include(CMakeFindDependencyMacro)
+# find_dependency(Boost REQUIRED)
+
+FUNCTION(PREPEND var prefix)
+   SET(listVar "")
+   FOREACH(f ${ARGN})
+      LIST(APPEND listVar "${prefix}/${f}")
+   ENDFOREACH(f)
+   SET(${var} "${listVar}" PARENT_SCOPE)
+ENDFUNCTION(PREPEND)
+
+# Components that are always including
+if (NOT "ontologenius_compat" IN_LIST ontologenius_compat_FIND_COMPONENTS)
+    set(ontologenius_compat_FIND_COMPONENTS "ontologenius_compat" ${ontologenius_compat_FIND_COMPONENTS})
+    #list(PREPEND ontologenius_compat_FIND_COMPONENTS "ontologenius_compat")
+endif()
+
+foreach(component ${ontologenius_compat_FIND_COMPONENTS})
+    # For requested component, execute its "config" script
+    include(
+        ${CMAKE_CURRENT_LIST_DIR}/${component}Targets.cmake
+        RESULT_VARIABLE ontologenius_compat_${component}_FOUND
+    )
+endforeach()
+
+# No macro file for now
+# include("${CMAKE_CURRENT_LIST_DIR}/ontologenius_compatMacros.cmake")
+
+check_required_components(ontologenius_compat)
