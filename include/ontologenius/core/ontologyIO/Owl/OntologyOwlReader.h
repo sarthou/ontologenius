@@ -36,7 +36,10 @@ namespace ontologenius {
     bool empty() const { return (nb_loaded_elem_ == 0); }
 
   private:
-    std::unordered_map<std::string, std::string> card_map_;
+    /**********************
+     *      Owl Reader     *
+     **********************/
+
     int read(TiXmlElement* rdf, const std::string& name);
     int readIndividual(TiXmlElement* rdf, const std::string& name);
 
@@ -66,6 +69,34 @@ namespace ontologenius {
     void readAnnotationProperty(TiXmlElement* elem);
     void readCollection(std::vector<std::string>& vect, TiXmlElement* elem, const std::string& symbol, size_t level = 1);
     std::string readSomeValuesFrom(TiXmlElement* elem);
+    void removeDocType(std::string& txt);
+
+    /*************************
+     * Anonymous Class Reader *
+     *************************/
+
+    std::unordered_map<std::string, std::string> card_map_;
+
+    void readEquivalentClass(AnonymousClassVectors_t& ano, TiXmlElement* elem, const std::string& class_name);
+    ExpressionMember_t* readAnonymousRestriction(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousClassExpression(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousDatatypeExpression(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousIntersection(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousUnion(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousOneOf(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousComplement(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousComplexDescription(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousResource(TiXmlElement* elem, const std::string& attribute_name = "rdf:resource");
+
+    void addAnonymousChildMember(ExpressionMember_t* parent, ExpressionMember_t* child, TiXmlElement* used_elem);
+
+    bool readAnonymousCardinalityRange(TiXmlElement* elem, ExpressionMember_t* exp);
+    void readAnonymousCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp);
+
+    /**********************
+    /**********************
+     *        inline       *
+     **********************/
 
     inline void push(std::vector<std::string>& vect, TiXmlElement* sub_elem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
     inline void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole = "");
@@ -122,6 +153,7 @@ namespace ontologenius {
         std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
     }
   }
+
   std::string OntologyOwlReader::getName(const std::string& uri)
   {
     size_t pos = uri.find('#');

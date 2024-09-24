@@ -158,6 +158,7 @@ add_onto_library(ontologenius_ontoGraphs_lib
   src/core/ontologyIO/OntologyReader.cpp
   src/core/ontologyIO/Turtle/OntologyTtlReader.cpp
   src/core/ontologyIO/Owl/OntologyOwlReader.cpp
+  src/core/ontologyIO/Owl/OntologyOwlAnonymousReader.cpp
   src/core/ontologyIO/Owl/OntologyOwlWriter.cpp
   src/core/ontologyIO/Owl/writers/NodeOwlWriter.cpp
   src/core/ontologyIO/Owl/writers/ClassOwlWriter.cpp
