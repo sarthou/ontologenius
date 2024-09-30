@@ -275,6 +275,7 @@ namespace ontologenius {
     const std::string sub_elem_name = elem->Value();
 
     const char* resource = elem->Attribute("rdf:resource");
+    const char* resource_data = elem->Attribute("rdf:datatype");
     exp->rest.card.cardinality_type = card_map_[sub_elem_name];
 
     if(resource != nullptr)
@@ -289,8 +290,13 @@ namespace ontologenius {
         exp->rest.card.cardinality_range = getName(resource);
       return true;
     }
-    else
-      return false;
+    else if(resource_data != nullptr)
+    {
+      exp->is_data_property = true;
+      exp->rest.card.cardinality_range = std::string(resource_data) + "#" + elem->GetText();
+      return true;
+    }
+    return false;
   }
 
 } // namespace ontologenius
