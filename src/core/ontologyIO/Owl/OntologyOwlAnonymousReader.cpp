@@ -42,15 +42,23 @@ namespace ontologenius {
   {
     ExpressionMember_t* exp = new ExpressionMember_t();
 
+    // get property
+    auto* property_elem = elem->FirstChildElement("owl:onProperty");
+    if(property_elem != nullptr)
+      exp->rest.property = getName(property_elem->Attribute("rdf:resource"));
+    // get cardinality
+
     for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
       const std::string sub_elem_name = sub_elem->Value();
-      if(sub_elem_name == "owl:onProperty")
-        exp->rest.property = getName(sub_elem->Attribute("rdf:resource"));
-      else if((sub_elem_name == "owl:maxQualifiedCardinality") ||
-              (sub_elem_name == "owl:minQualifiedCardinality") ||
-              (sub_elem_name == "owl:qualifiedCardinality"))
+      if((sub_elem_name == "owl:maxQualifiedCardinality") ||
+         (sub_elem_name == "owl:minQualifiedCardinality") ||
+         (sub_elem_name == "owl:qualifiedCardinality"))
+      {
         readAnonymousCardinalityValue(sub_elem, exp);
+        break;
+      }
+
       else if((sub_elem_name == "owl:allValuesFrom") ||
               (sub_elem_name == "owl:hasValue") ||
               (sub_elem_name == "owl:someValuesFrom"))
@@ -60,34 +68,40 @@ namespace ontologenius {
           exp->is_complex = true;
           addAnonymousChildMember(exp, readAnonymousComplexDescription(sub_elem->FirstChildElement()), sub_elem->FirstChildElement());
         }
+        break;
       }
-      else if(sub_elem_name == "owl:onClass" || sub_elem_name == "owl:onDataRange")
+    }
+
+    // get range
+    auto* class_elem = elem->FirstChildElement("owl:onClass");
+    auto* data_elem = elem->FirstChildElement("owl:onDataRange");
+
+    if(class_elem != nullptr)
+    {
+      exp->is_data_property = false;
+      const char* resource = class_elem->Attribute("rdf:resource");
+      // Simple restriction range : Camera Eq to  hasComponent some Lidar
+      if(resource != nullptr)
+        exp->rest.restriction_range = getName(resource);
+      // Complex restriction range with max, min, exactly : Camera Eq to  hasComponent max 2 (not DirtyCutlery)
+      else
       {
-        const char* resource = sub_elem->Attribute("rdf:resource");
-        // Simple restriction range : Camera Eq to  hasComponent some Lidar
-        // <owl:onClass rdf:resource="test_bastien#Lidar"/>
-        if(resource != nullptr)
-        {
-          const std::string attr_class = sub_elem->Attribute("rdf:resource");
-          if(isIn("http://www.w3.org/", attr_class))
-          {
-            exp->rest.restriction_range = attr_class;
-            exp->is_data_property = true;
-          }
-          else
-            exp->rest.restriction_range = getName(attr_class);
-        }
-        // Complex restriction range with max, min, exactly : Camera Eq to  hasComponent max 2 (not DirtyCutlery)
-        // <owl:onClass>
-        //     <owl:Class>
-        //         <owl:complementOf rdf:resource="test_bastien#DirtyCutlery"/>
-        //     </owl:Class>
-        // </owl:onClass>
-        else
-        {
-          exp->is_complex = true;
-          addAnonymousChildMember(exp, readAnonymousComplexDescription(sub_elem->FirstChildElement()), sub_elem->FirstChildElement());
-        }
+        exp->is_complex = true;
+        addAnonymousChildMember(exp, readAnonymousComplexDescription(class_elem->FirstChildElement()), class_elem->FirstChildElement());
+      }
+    }
+    else if(data_elem != nullptr)
+    {
+      exp->is_data_property = true;
+      const char* resource = data_elem->Attribute("rdf:resource");
+      // Simple restriction range : Camera Eq to  has_node some boolean
+      if(resource != nullptr)
+        exp->rest.restriction_range = resource; // getName(resource);
+      // Complex restriction range with max, min, exactly : Camera Eq to  has_node some (not(boolean))
+      else
+      {
+        exp->is_complex = true;
+        addAnonymousChildMember(exp, readAnonymousComplexDescription(data_elem->FirstChildElement()), data_elem->FirstChildElement());
       }
     }
 
