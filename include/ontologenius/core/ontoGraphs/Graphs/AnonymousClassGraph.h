@@ -16,7 +16,7 @@ namespace ontologenius {
     {
       std::string res;
       if(cardinality_type.empty() == false)
-        res += cardinality_type + " ";
+        res += " " + cardinality_type + " ";
       if(cardinality_number.empty() == false)
         res += cardinality_number + " ";
       if(cardinality_range.empty() == false)
@@ -41,7 +41,7 @@ namespace ontologenius {
       std::string res;
 
       if(!property.empty())
-        res += property + " ";
+        res += property;
 
       res += card.toString();
 
