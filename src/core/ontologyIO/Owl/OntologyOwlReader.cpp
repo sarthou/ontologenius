@@ -153,42 +153,25 @@ namespace ontologenius {
         std::cout << "************************************" << std::endl;
       }
 
-      std::vector<TiXmlElement*> elem_classes, elem_descriptions, elem_obj_prop, elem_data_prop, elem_annotation_prop;
-      std::string elem_name;
-      for(TiXmlElement* elem = rdf->FirstChildElement(); elem != nullptr; elem = elem->NextSiblingElement())
-      {
-        elem_name = elem->Value();
-        if(elem_name == "owl:Class")
-          elem_classes.push_back(elem);
-        else if(elem_name == "rdf:Description")
-          elem_descriptions.push_back(elem);
-        else if(elem_name == "owl:ObjectProperty")
-          elem_obj_prop.push_back(elem);
-        else if(elem_name == "owl:DatatypeProperty")
-          elem_data_prop.push_back(elem);
-        else if(elem_name == "owl:AnnotationProperty")
-          elem_annotation_prop.push_back(elem);
-      }
-
       if(display_)
         std::cout << "├── Class" << std::endl;
-      for(TiXmlElement* elem : elem_classes)
+      for(TiXmlElement* elem = rdf->FirstChildElement("owl:Class"); elem != nullptr; elem = elem->NextSiblingElement("owl:Class"))
         readClass(elem);
       if(display_)
         std::cout << "├── Description" << std::endl;
-      for(TiXmlElement* elem : elem_descriptions)
+      for(TiXmlElement* elem = rdf->FirstChildElement("rdf:Description"); elem != nullptr; elem = elem->NextSiblingElement("rdf:Description"))
         readDescription(elem);
       if(display_)
         std::cout << "├── Object property" << std::endl;
-      for(TiXmlElement* elem : elem_obj_prop)
+      for(TiXmlElement* elem = rdf->FirstChildElement("owl:ObjectProperty"); elem != nullptr; elem = elem->NextSiblingElement("owl:ObjectProperty"))
         readObjectProperty(elem);
       if(display_)
         std::cout << "├── Data property" << std::endl;
-      for(TiXmlElement* elem : elem_data_prop)
+      for(TiXmlElement* elem = rdf->FirstChildElement("owl:DatatypeProperty"); elem != nullptr; elem = elem->NextSiblingElement("owl:DatatypeProperty"))
         readDataProperty(elem);
       if(display_)
         std::cout << "├── Annotation property" << std::endl;
-      for(TiXmlElement* elem : elem_annotation_prop)
+      for(TiXmlElement* elem = rdf->FirstChildElement("owl:AnnotationProperty"); elem != nullptr; elem = elem->NextSiblingElement("owl:AnnotationProperty"))
         readAnnotationProperty(elem);
       if(display_)
         std::cout << "└── " << nb_loaded_elem_ << " readed ! " << std::endl;
