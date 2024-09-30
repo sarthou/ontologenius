@@ -248,6 +248,26 @@ namespace ontologenius {
       return std::make_pair("", -1);
     }
 
+    template<typename T>
+    std::pair<std::string, int> checkValueCard(const std::vector<T>& relations, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+    {
+      std::string explanation;
+
+      for(size_t i = 0; i < relations.size(); i++)
+      {
+        if(testBranchInheritance(ano_elem, relations[i].first, used))
+        {
+          if(checkTypeRestriction(relations[i].second, ano_elem, used) == true)
+          {
+            explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
+            return std::make_pair(explanation, i);
+          }
+        }
+      }
+      return std::make_pair("", -1);
+    }
+
+
     inline std::unordered_set<ObjectPropertyBranch*> getUpProperty(ObjectPropertyBranch* property)
     {
       return ontology_->object_property_graph_.getUpPtrSafe(property);

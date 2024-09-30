@@ -697,20 +697,31 @@ namespace ontologenius {
     int index = -1;
     std::string explanation;
 
-    index = relationExists(indiv, ano_elem->object_property_involved_, ano_elem->individual_involved_, used);
+    if(ano_elem->object_property_involved_ != nullptr)
+    {
+      index = relationExists(indiv, ano_elem->object_property_involved_, ano_elem->individual_involved_, used);
+      if(index != -1)
+      {
+        explanation = indiv->value() + "|" + ano_elem->object_property_involved_->value() + "|" + ano_elem->individual_involved_->value() + ";";
+        used.emplace_back(explanation, indiv->object_relations_.has_induced_inheritance_relations[index]);
+        return true;
+      }
+    }
+    else if(ano_elem->data_property_involved_ != nullptr)
+    {
+      index = relationExists(indiv, ano_elem->data_property_involved_, ano_elem->card_.card_range_, used);
+      if(index != -1)
+      {
+        explanation = indiv->value() + "|" + ano_elem->data_property_involved_->value() + "|" + ano_elem->card_.card_range_->value() + ";";
+        used.emplace_back(explanation, indiv->data_relations_.has_induced_inheritance_relations[index]);
+        return true;
+      }
+    }
 
-    if(index != -1)
-    {
-      explanation = indiv->value() + "|" + ano_elem->object_property_involved_->value() + "|" + ano_elem->individual_involved_->value() + ";";
-      used.emplace_back(explanation, indiv->object_relations_.has_induced_inheritance_relations[index]);
-      return true;
-    }
-    else
-    {
-      used.clear();
-      return false;
-    }
+    used.clear();
+    return false;
   }
+
 
   std::string ReasonerAnonymous::getName()
   {
