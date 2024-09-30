@@ -204,17 +204,18 @@ namespace ontologenius {
         std::cout << name << std::endl;
         std::cout << "├── Individuals" << std::endl;
       }
-      for(TiXmlElement* elem = rdf->FirstChildElement(); elem != nullptr; elem = elem->NextSiblingElement())
+      for(TiXmlElement* elem = rdf->FirstChildElement("owl:NamedIndividual"); elem != nullptr; elem = elem->NextSiblingElement("owl:NamedIndividual"))
         readIndividual(elem);
       if(display_)
         std::cout << "├── Description" << std::endl;
-      for(TiXmlElement* elem = rdf->FirstChildElement(); elem != nullptr; elem = elem->NextSiblingElement())
+      for(TiXmlElement* elem = rdf->FirstChildElement("rdf:Description"); elem != nullptr; elem = elem->NextSiblingElement("rdf:Description"))
         readIndividualDescription(elem);
       if(display_)
         std::cout << "└── " << nb_loaded_elem_ << " readed ! " << std::endl;
       return NO_ERROR;
     }
   }
+
 
   void OntologyOwlReader::readClass(TiXmlElement* elem)
   {
