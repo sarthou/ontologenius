@@ -505,11 +505,6 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
     else if(ano_elem->data_property_involved_ != nullptr)
     {
@@ -520,17 +515,9 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
-    else
-    {
-      used.clear();
-      return false;
-    }
+    used.clear();
+    return false;
   }
 
   bool ReasonerAnonymous::checkMaxCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
@@ -546,11 +533,6 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
     else if(ano_elem->data_property_involved_ != nullptr)
     {
@@ -561,17 +543,9 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
-    else
-    {
-      used.clear();
-      return false;
-    }
+    used.clear();
+    return false;
   }
 
   bool ReasonerAnonymous::checkExactlyCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
@@ -587,11 +561,6 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
     else if(ano_elem->data_property_involved_ != nullptr)
     {
@@ -602,17 +571,9 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
-    else
-    {
-      used.clear();
-      return false;
-    }
+    used.clear();
+    return false;
   }
 
   bool ReasonerAnonymous::checkOnlyCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
@@ -628,11 +589,6 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
     else if(ano_elem->data_property_involved_ != nullptr)
     {
@@ -642,11 +598,6 @@ namespace ontologenius {
         for(auto& index : indexes)
           used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
         return true;
-      }
-      else
-      {
-        used.clear();
-        return false;
       }
     }
     used.clear();
@@ -665,11 +616,6 @@ namespace ontologenius {
         used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
     else if(ano_elem->data_property_involved_ != nullptr)
     {
@@ -679,17 +625,9 @@ namespace ontologenius {
         used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
-    else
-    {
-      used.clear();
-      return false;
-    }
+    used.clear();
+    return false;
   }
 
   bool ReasonerAnonymous::checkValueCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
@@ -721,7 +659,6 @@ namespace ontologenius {
     used.clear();
     return false;
   }
-
 
   std::string ReasonerAnonymous::getName()
   {
