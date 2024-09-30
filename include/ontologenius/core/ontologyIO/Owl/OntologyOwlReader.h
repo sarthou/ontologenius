@@ -70,6 +70,7 @@ namespace ontologenius {
     void readCollection(std::vector<std::string>& vect, TiXmlElement* elem, const std::string& symbol, size_t level = 1);
     std::string readSomeValuesFrom(TiXmlElement* elem);
     void removeDocType(std::string& txt);
+    void readDisjoint(TiXmlElement* elem, bool is_class);
 
     /*************************
      * Anonymous Class Reader *

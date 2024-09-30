@@ -347,39 +347,38 @@ namespace ontologenius {
 
   void OntologyOwlReader::readDescription(TiXmlElement* elem)
   {
-    std::vector<std::string> disjoints;
-    bool is_all_disjoint_classes = false;
-    bool is_all_disjoint_properties = false;
+    auto* description_type = elem->FirstChildElement("rdf:type");
+    if(description_type == nullptr)
+      return;
 
-    for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+    auto* description_type_resource = description_type->Attribute("rdf:resource");
+    std::string description_type_resource_name = getName(std::string(description_type_resource));
+
+    if(description_type_resource_name == "AllDisjointClasses")
+      readDisjoint(elem, true);
+    else if(description_type_resource_name == "AllDisjointProperties")
+      readDisjoint(elem, false);
+  }
+  void OntologyOwlReader::readDisjoint(TiXmlElement* elem, bool is_class)
+  {
+    std::vector<std::string> disjoints;
+
+    TiXmlElement* member_elem = elem->FirstChildElement("owl:members");
+    if(member_elem != nullptr)
     {
-      const std::string sub_elem_name = sub_elem->Value();
-      const char* sub_attr = nullptr;
-      if(sub_elem_name == "rdf:type")
+      auto* parse_type_member = member_elem->Attribute("rdf:parseType");
+      if(parse_type_member != nullptr)
       {
-        sub_attr = sub_elem->Attribute("rdf:resource");
-        if(sub_attr != nullptr)
-        {
-          if(getName(std::string(sub_attr)) == "AllDisjointClasses")
-            is_all_disjoint_classes = true;
-          else if(getName(std::string(sub_attr)) == "AllDisjointProperties")
-            is_all_disjoint_properties = true;
-        }
-      }
-      else if(sub_elem_name == "owl:members")
-      {
-        sub_attr = sub_elem->Attribute("rdf:parseType");
-        if(sub_attr != nullptr)
-          if(std::string(sub_attr) == "Collection")
-            readCollection(disjoints, sub_elem, "-");
+        std::string parse_type = std::string(parse_type_member);
+        if(parse_type == "Collection")
+          readCollection(disjoints, member_elem, "-");
+
+        if(is_class)
+          class_graph_->add(disjoints);
+        else
+          object_property_graph_->add(disjoints);
       }
     }
-
-    if(is_all_disjoint_classes)
-      class_graph_->add(disjoints);
-    else if(is_all_disjoint_properties)
-      object_property_graph_->add(disjoints);
-    disjoints.clear();
   }
 
   void OntologyOwlReader::readIndividualDescription(TiXmlElement* elem)
