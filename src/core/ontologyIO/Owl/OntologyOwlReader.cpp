@@ -277,58 +277,54 @@ namespace ontologenius {
     nb_loaded_elem_++;
   }
 
-  void OntologyOwlReader::readIndividual(TiXmlElement* elem)
+ void OntologyOwlReader::readIndividual(TiXmlElement* elem)
   {
-    const std::string elem_name = elem->Value();
-    if(elem_name == "owl:NamedIndividual")
+    std::string node_name;
+    IndividualVectors_t individual_vector;
+    const char* attr = elem->Attribute("rdf:about");
+    if(attr != nullptr)
     {
-      std::string node_name;
-      IndividualVectors_t individual_vector;
-      const char* attr = elem->Attribute("rdf:about");
-      if(attr != nullptr)
+      node_name = getName(std::string(attr));
+      if(display_)
+        std::cout << "│   ├──" << node_name << std::endl;
+      for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
       {
-        node_name = getName(std::string(attr));
-        if(display_)
-          std::cout << "│   ├──" << node_name << std::endl;
-        for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
-        {
-          const std::string sub_elem_name = sub_elem->Value();
-          const float probability = getProbability(sub_elem);
+        const std::string sub_elem_name = sub_elem->Value();
+        const float probability = getProbability(sub_elem);
 
-          if(sub_elem_name == "rdf:type")
-            push(individual_vector.is_a_, sub_elem, probability, "+");
-          else if(sub_elem_name == "owl:sameAs")
-            push(individual_vector.same_as_, sub_elem, probability, "=");
-          else if(sub_elem_name == "rdfs:label")
-            pushLang(individual_vector.dictionary_, sub_elem);
-          else if(sub_elem_name == "onto:label")
-            pushLang(individual_vector.muted_dictionary_, sub_elem);
-          else
+        if(sub_elem_name == "rdf:type")
+          push(individual_vector.is_a_, sub_elem, probability, "+");
+        else if(sub_elem_name == "owl:sameAs")
+          push(individual_vector.same_as_, sub_elem, probability, "=");
+        else if(sub_elem_name == "rdfs:label")
+          pushLang(individual_vector.dictionary_, sub_elem);
+        else if(sub_elem_name == "onto:label")
+          pushLang(individual_vector.muted_dictionary_, sub_elem);
+        else
+        {
+          const std::string ns = sub_elem_name.substr(0, sub_elem_name.find(':'));
+          if((ns != "owl") && (ns != "rdf") && (ns != "rdfs"))
           {
-            const std::string ns = sub_elem_name.substr(0, sub_elem_name.find(':'));
-            if((ns != "owl") && (ns != "rdf") && (ns != "rdfs"))
+            const std::string property = sub_elem_name.substr(sub_elem_name.find(':') + 1);
+            if(testAttribute(sub_elem, "rdf:resource"))
+              OntologyReader::push(individual_vector.object_relations_, PairElement<std::string, std::string>(property, toString(sub_elem), probability), "$", "^");
+            else if(testAttribute(sub_elem, "rdf:datatype"))
             {
-              const std::string property = sub_elem_name.substr(sub_elem_name.find(':') + 1);
-              if(testAttribute(sub_elem, "rdf:resource"))
-                OntologyReader::push(individual_vector.object_relations_, PairElement<std::string, std::string>(property, toString(sub_elem), probability), "$", "^");
-              else if(testAttribute(sub_elem, "rdf:datatype"))
+              const char* value = sub_elem->GetText();
+              if(value != nullptr)
               {
-                const char* value = sub_elem->GetText();
-                if(value != nullptr)
-                {
-                  const LiteralNode data(toString(sub_elem, "rdf:datatype"), std::string(value));
-                  OntologyReader::push(individual_vector.data_relations_, PairElement<std::string, std::string>(property, data.toString(), probability), "$", "^");
-                }
+                const LiteralNode data(toString(sub_elem, "rdf:datatype"), std::string(value));
+                OntologyReader::push(individual_vector.data_relations_, PairElement<std::string, std::string>(property, data.toString(), probability), "$", "^");
               }
             }
           }
         }
       }
-      individual_graph_->add(node_name, individual_vector);
-      nb_loaded_elem_++;
     }
+    individual_graph_->add(node_name, individual_vector);
+    nb_loaded_elem_++;
   }
-
+  
   void OntologyOwlReader::readDescription(TiXmlElement* elem)
   {
     auto* description_type = elem->FirstChildElement("rdf:type");
