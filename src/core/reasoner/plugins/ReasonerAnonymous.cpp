@@ -176,6 +176,25 @@ namespace ontologenius {
     return -1;
   }
 
+  int ReasonerAnonymous::relationExists(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* literal_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  {
+    (void)used;
+    std::unordered_set<DataPropertyBranch*> down_properties;
+    std::string explanation;
+    ontology_->data_property_graph_.getDownPtr(property, down_properties);
+
+    const size_t relation_size = indiv_from->data_relations_.size();
+    for(size_t i = 0; i < relation_size; i++)
+    {
+      if(indiv_from->data_relations_[i].second->get() == literal_on->get())
+      {
+        if(down_properties.find(indiv_from->data_relations_[i].first) != down_properties.end())
+          return (int)i;
+      }
+    }
+    return -1;
+  }
+
   bool ReasonerAnonymous::resolveFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem)
   {
     if(ano_elem->logical_type_ == logical_and)
