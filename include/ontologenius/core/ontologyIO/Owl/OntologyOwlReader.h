@@ -42,25 +42,7 @@ namespace ontologenius {
 
     int read(TiXmlElement* rdf, const std::string& name);
     int readIndividual(TiXmlElement* rdf, const std::string& name);
-
     void readClass(TiXmlElement* elem);
-    void readEquivalentClass(AnonymousClassVectors_t& ano, TiXmlElement* elem, const std::string& class_name);
-
-    ExpressionMember_t* readRestriction(TiXmlElement* elem);
-    ExpressionMember_t* readClassExpression(TiXmlElement* elem);
-    ExpressionMember_t* readDatatypeExpression(TiXmlElement* elem);
-    ExpressionMember_t* readIntersection(TiXmlElement* elem);
-    ExpressionMember_t* readUnion(TiXmlElement* elem);
-    ExpressionMember_t* readOneOf(TiXmlElement* elem);
-    ExpressionMember_t* readComplement(TiXmlElement* elem);
-    ExpressionMember_t* readComplexDescription(TiXmlElement* elem);
-    ExpressionMember_t* readResource(TiXmlElement* elem, const std::string& attribute_name = "rdf:resource");
-
-    void addChildMember(ExpressionMember_t* parent, ExpressionMember_t* child, TiXmlElement* used_elem);
-
-    bool readCardinalityRange(TiXmlElement* elem, ExpressionMember_t* exp);
-    void readCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp);
-
     void readIndividual(TiXmlElement* elem);
     void readDescription(TiXmlElement* elem);
     void readIndividualDescription(TiXmlElement* elem);
@@ -95,7 +77,6 @@ namespace ontologenius {
     void readAnonymousCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp);
 
     /**********************
-    /**********************
      *        inline       *
      **********************/
 
@@ -118,8 +99,6 @@ namespace ontologenius {
         return getName(std::string(sub_attr));
       return "";
     }
-
-    void removeDocType(std::string& txt);
   };
 
   void OntologyOwlReader::push(std::vector<std::string>& vect, TiXmlElement* sub_elem, const std::string& symbole, const std::string& attribute)
