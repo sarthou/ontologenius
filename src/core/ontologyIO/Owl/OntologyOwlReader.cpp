@@ -324,7 +324,7 @@ namespace ontologenius {
     individual_graph_->add(node_name, individual_vector);
     nb_loaded_elem_++;
   }
-  
+
   void OntologyOwlReader::readDescription(TiXmlElement* elem)
   {
     auto* description_type = elem->FirstChildElement("rdf:type");
@@ -363,36 +363,32 @@ namespace ontologenius {
 
   void OntologyOwlReader::readIndividualDescription(TiXmlElement* elem)
   {
-    const std::string elem_name = elem->Value();
-    if(elem_name == "rdf:Description")
+    std::vector<std::string> distincts;
+    bool is_distinct_all = false;
+    for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
-      std::vector<std::string> distincts;
-      bool is_distinct_all = false;
-      for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+      const std::string sub_elem_name = sub_elem->Value();
+      const char* sub_attr = nullptr;
+      if(sub_elem_name == "rdf:type")
       {
-        const std::string sub_elem_name = sub_elem->Value();
-        const char* sub_attr = nullptr;
-        if(sub_elem_name == "rdf:type")
-        {
-          sub_attr = sub_elem->Attribute("rdf:resource");
-          if(sub_attr != nullptr)
-            if(getName(std::string(sub_attr)) == "AllDifferent")
-              is_distinct_all = true;
-        }
-        else if(sub_elem_name == "owl:distinctMembers")
-        {
-          sub_attr = sub_elem->Attribute("rdf:parseType");
-          if(sub_attr != nullptr)
-            if(std::string(sub_attr) == "Collection")
-              readCollection(distincts, sub_elem, "-");
-        }
+        sub_attr = sub_elem->Attribute("rdf:resource");
+        if(sub_attr != nullptr)
+          if(getName(std::string(sub_attr)) == "AllDifferent")
+            is_distinct_all = true;
       }
-      if(is_distinct_all)
-        individual_graph_->add(distincts);
-      distincts.clear();
-    } // end if(elem_name == "rdf:Description")
+      else if(sub_elem_name == "owl:distinctMembers")
+      {
+        sub_attr = sub_elem->Attribute("rdf:parseType");
+        if(sub_attr != nullptr)
+          if(std::string(sub_attr) == "Collection")
+            readCollection(distincts, sub_elem, "-");
+      }
+    }
+    if(is_distinct_all)
+      individual_graph_->add(distincts);
+    distincts.clear();
   }
-
+  
   void OntologyOwlReader::readObjectProperty(TiXmlElement* elem)
   {
     std::string node_name;
