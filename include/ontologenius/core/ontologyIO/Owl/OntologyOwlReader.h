@@ -9,6 +9,7 @@
 
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/RuleGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"

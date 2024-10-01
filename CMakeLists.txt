@@ -148,6 +148,7 @@ add_onto_library(ontologenius_ontoGraphs_lib
   src/core/ontoGraphs/Graphs/DataPropertyGraph.cpp
   src/core/ontoGraphs/Graphs/IndividualGraph.cpp
   src/core/ontoGraphs/Graphs/AnonymousClassGraph.cpp
+  src/core/ontoGraphs/Graphs/RuleGraph.cpp
   src/core/ontoGraphs/Checkers/ClassChecker.cpp
   src/core/ontoGraphs/Checkers/ObjectPropertyChecker.cpp
   src/core/ontoGraphs/Checkers/DataPropertyChecker.cpp
@@ -159,6 +160,7 @@ add_onto_library(ontologenius_ontoGraphs_lib
   src/core/ontologyIO/Turtle/OntologyTtlReader.cpp
   src/core/ontologyIO/Owl/OntologyOwlReader.cpp
   src/core/ontologyIO/Owl/OntologyOwlAnonymousReader.cpp
+  src/core/ontologyIO/Owl/OntologyOwlRuleReader.cpp
   src/core/ontologyIO/Owl/OntologyOwlWriter.cpp
   src/core/ontologyIO/Owl/writers/NodeOwlWriter.cpp
   src/core/ontologyIO/Owl/writers/ClassOwlWriter.cpp
