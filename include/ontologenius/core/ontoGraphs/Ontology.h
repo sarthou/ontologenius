@@ -36,6 +36,7 @@ namespace ontologenius {
     DataPropertyGraph data_property_graph_;
     IndividualGraph individual_graph_;
     AnonymousClassGraph anonymous_graph_;
+    RuleGraph rule_graph_;
 
   private:
     OntologyLoader loader_;

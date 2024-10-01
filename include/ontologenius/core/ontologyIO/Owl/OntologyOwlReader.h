@@ -9,10 +9,10 @@
 
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
-#include "ontologenius/core/ontoGraphs/Graphs/RuleGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/RuleGraph.h"
 #include "ontologenius/core/ontologyIO/OntologyReader.h"
 
 namespace ontologenius {
@@ -22,7 +22,7 @@ namespace ontologenius {
   class OntologyOwlReader : public OntologyReader
   {
   public:
-    OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
+    OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph, RuleGraph* rule_graph);
     explicit OntologyOwlReader(Ontology& onto);
     ~OntologyOwlReader() = default;
 
@@ -77,7 +77,7 @@ namespace ontologenius {
     bool readAnonymousCardinalityRange(TiXmlElement* elem, ExpressionMember_t* exp);
     void readAnonymousCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp);
 
-      /**********************
+    /**********************
      *   SWRL Rule Reader  *
      **********************/
     void readRuleDescription(Rule_t& rule, TiXmlElement* elem);
