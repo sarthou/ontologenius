@@ -76,6 +76,39 @@ namespace ontologenius {
     bool readAnonymousCardinalityRange(TiXmlElement* elem, ExpressionMember_t* exp);
     void readAnonymousCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp);
 
+      /**********************
+     *   SWRL Rule Reader  *
+     **********************/
+    void readRuleDescription(Rule_t& rule, TiXmlElement* elem);
+
+    ExpressionMember_t* readRuleRestriction(TiXmlElement* elem);
+    ExpressionMember_t* readRuleClassExpression(TiXmlElement* elem);
+    ExpressionMember_t* readRuleDatatypeExpression(TiXmlElement* elem);
+    ExpressionMember_t* readRuleIntersection(TiXmlElement* elem);
+    ExpressionMember_t* readRuleUnion(TiXmlElement* elem);
+    ExpressionMember_t* readRuleOneOf(TiXmlElement* elem);
+    ExpressionMember_t* readRuleComplement(TiXmlElement* elem);
+    ExpressionMember_t* readRuleComplexDescription(TiXmlElement* elem);
+    ExpressionMember_t* readRuleResource(TiXmlElement* elem, const std::string& attribute_name = "rdf:resource");
+
+    void addRuleChildMember(ExpressionMember_t* parent, ExpressionMember_t* child, TiXmlElement* used_elem);
+
+    bool readRuleCardinalityRange(TiXmlElement* elem, ExpressionMember_t* exp);
+    void readRuleCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp);
+
+    void readRuleCollection(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<std::string>>>& exp_vect);
+    void readSwrlVariable(TiXmlElement* elem);
+    void readSwrlRule(TiXmlElement* elem);
+    std::pair<ExpressionMember_t*, std::vector<std::string>> readRuleAtom(TiXmlElement* elem, const std::string& type_atom);
+    std::pair<ExpressionMember_t*, std::vector<std::string>> readRuleClassAtom(TiXmlElement* elem);
+    std::pair<ExpressionMember_t*, std::vector<std::string>> readRuleObjectPropertyAtom(TiXmlElement* elem);
+    std::pair<ExpressionMember_t*, std::vector<std::string>> readRuleDataPropertyAtom(TiXmlElement* elem);
+    std::pair<ExpressionMember_t*, std::vector<std::string>> readRuleBuiltinAtom(TiXmlElement* elem);
+
+    void readRestAtom(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<std::string>>>& exp_vect);
+    void readFirstAtom(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<std::string>>>& exp_vect);
+    std::string getRuleArgument(TiXmlElement* elem);
+
     /**********************
      *        inline       *
      **********************/
