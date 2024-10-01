@@ -340,7 +340,35 @@ namespace ontologenius {
       readDisjoint(elem, true);
     else if(description_type_resource_name == "AllDisjointProperties")
       readDisjoint(elem, false);
+    else if(description_type_resource_name == "Variable")
+      readSwrlVariable(elem);
+    else if(description_type_resource_name == "Imp")
+      readSwrlRule(elem);
   }
+
+  void OntologyOwlReader::readSwrlVariable(TiXmlElement* elem)
+  {
+    const char* attr_var = elem->Attribute("rdf:about");
+    // if(attr_var != nullptr)
+    //   rule_vector.variables.push_back(getName(std::string(attr_var)));
+  }
+
+  void OntologyOwlReader::readSwrlRule(TiXmlElement* elem)
+  {
+    Rule_t rule;
+    readRuleDescription(rule, elem);
+    if(!rule.rule_str.empty()) // check if the str expression is not empty, to make sure that the rule exists
+    {
+      std::size_t rule_id = rule_graph_->all_branchs_.size() + 1;
+      // rule_graph_->add(rule_id, rule);
+      //  for(auto& str_elem : ano_vector.str_equivalences)
+      //    push(object_vector.equivalences_, str_elem, "=");
+
+      if(display_)
+        std::cout << "│   ├── " + rule.rule_str << std::endl; // mal fait je pense, à mieux intégrer
+    }
+  }
+
   void OntologyOwlReader::readDisjoint(TiXmlElement* elem, bool is_class)
   {
     std::vector<std::string> disjoints;
