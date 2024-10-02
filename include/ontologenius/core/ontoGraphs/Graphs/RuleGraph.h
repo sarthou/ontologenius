@@ -7,11 +7,20 @@
 
 namespace ontologenius {
 
+  struct Variable_t
+  {
+    std::string var_name;
+    bool is_instantiated;
+    bool is_datavalue;
+
+    std::string toString() { return var_name; }
+  };
+
   struct Rule_t
   {
     std::vector<std::string> variables;
-    std::vector<std::pair<ExpressionMember_t*, std::vector<std::string>>> antecedents;
-    std::vector<std::pair<ExpressionMember_t*, std::vector<std::string>>> consequents;
+    std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>> antecedents;
+    std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>> consequents;
     std::string rule_str;
     std::string rule_comment;
 
@@ -20,7 +29,7 @@ namespace ontologenius {
       return toString(antecedents) + " -> " + toString(consequents);
     }
 
-    std::string toString(std::vector<std::pair<ExpressionMember_t*, std::vector<std::string>>>& expression) const
+    std::string toString(std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& expression) const
     {
       std::string res;
 
@@ -43,18 +52,20 @@ namespace ontologenius {
           std::size_t len_var = expression[element_index].second.size();
           for(size_t var_index = 0; var_index < len_var; var_index++)
           {
-            std::string var = expression[element_index].second[var_index];
-
-            std::size_t pos = var.find('#');
-            if(pos != std::string::npos)
+            auto variable = expression[element_index].second[var_index];
+            std::string var_name = variable.var_name;
+            if(variable.is_datavalue)
             {
-              std::string type_var = var.substr(0, pos);
-              if(type_var == "indiv")
-                res += var.substr(pos + 1); // individual name
-              else if(type_var == "var")
-                res += "?" + var.substr(pos + 1); // variable so we add the ?
-              else
-                res += var.substr(pos + 1); // datarange value
+              std::size_t pos = var_name.find('#');
+              if(pos != std::string::npos) // datarange value
+                res += var_name.substr(pos + 1);
+            }
+            else
+            {
+              if(variable.is_instantiated) // individual name
+                res += var_name;
+              else // variable so we add the ?
+                res += "?" + var_name;
             }
             if(var_index < len_var - 1)
               res += ", ";

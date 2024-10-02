@@ -14,7 +14,7 @@ namespace ontologenius {
 
   void OntologyOwlReader::readRuleDescription(Rule_t& rule, TiXmlElement* elem)
   {
-    std::vector<std::pair<ExpressionMember_t*, std::vector<std::string>>> exp_body, exp_head;
+    std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>> exp_body, exp_head;
     // read body
     auto* rule_body = elem->FirstChildElement("swrl:body");
     if(rule_body == nullptr)
@@ -33,7 +33,7 @@ namespace ontologenius {
     rule.rule_str = rule.toStringRule();
   }
 
-  void OntologyOwlReader::readRuleCollection(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<std::string>>>& exp_vect)
+  void OntologyOwlReader::readRuleCollection(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect)
   {
     auto* sub_elem = elem->FirstChildElement("rdf:Description");
     if(sub_elem != nullptr)
@@ -41,7 +41,7 @@ namespace ontologenius {
     else
     {
       // Atom Type
-      std::pair<ontologenius::ExpressionMember_t*, std::vector<std::string>> res;
+      std::pair<ontologenius::ExpressionMember_t*, std::vector<Variable_t>> res;
       auto* type_elem = elem->FirstChildElement("rdf:type");
       if(type_elem != nullptr)
       {
@@ -77,9 +77,9 @@ namespace ontologenius {
     }
   }
 
-  std::pair<ExpressionMember_t*, std::vector<std::string>> OntologyOwlReader::readRuleAtom(TiXmlElement* elem, const std::string& type_atom)
+  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleAtom(TiXmlElement* elem, const std::string& type_atom)
   {
-    std::pair<ExpressionMember_t*, std::vector<std::string>> res;
+    std::pair<ExpressionMember_t*, std::vector<Variable_t>> res;
 
     if(type_atom == "ClassAtom")
       res = readRuleClassAtom(elem);
@@ -93,12 +93,12 @@ namespace ontologenius {
     return res;
   }
 
-  void OntologyOwlReader::readFirstAtom(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<std::string>>>& exp_vect)
+  void OntologyOwlReader::readFirstAtom(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect)
   {
     readRuleCollection(elem, exp_vect);
   }
 
-  void OntologyOwlReader::readRestAtom(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<std::string>>>& exp_vect)
+  void OntologyOwlReader::readRestAtom(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect)
   {
     const char* type_rest = nullptr;
     type_rest = elem->Attribute("rdf:resource");
@@ -112,9 +112,9 @@ namespace ontologenius {
       readRuleCollection(elem, exp_vect);
   }
 
-  std::pair<ExpressionMember_t*, std::vector<std::string>> OntologyOwlReader::readRuleClassAtom(TiXmlElement* elem)
+  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleClassAtom(TiXmlElement* elem)
   {
-    std::vector<std::string> variables;
+    std::vector<Variable_t> variables;
     ExpressionMember_t* temp_exp = nullptr;
 
     auto* class_pred = elem->FirstChildElement("swrl:classPredicate");
@@ -147,9 +147,9 @@ namespace ontologenius {
     return {std::make_pair(temp_exp, variables)};
   }
 
-  std::pair<ExpressionMember_t*, std::vector<std::string>> OntologyOwlReader::readRuleObjectPropertyAtom(TiXmlElement* elem)
+  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleObjectPropertyAtom(TiXmlElement* elem)
   {
-    std::vector<std::string> variables;
+    std::vector<Variable_t> variables;
     ExpressionMember_t* temp_exp = new ExpressionMember_t();
 
     // std::cout << "ObjectPropertyAtom" << std::endl;
@@ -160,9 +160,7 @@ namespace ontologenius {
     {
       const auto* obj_prop = obj_pred->Attribute("rdf:resource");
       if(obj_prop != nullptr)
-      {
         temp_exp->rest.property = getName(std::string(obj_prop));
-      }
     }
 
     // get argument 1
@@ -178,9 +176,9 @@ namespace ontologenius {
     return {std::make_pair(temp_exp, variables)};
   }
 
-  std::pair<ExpressionMember_t*, std::vector<std::string>> OntologyOwlReader::readRuleDataPropertyAtom(TiXmlElement* elem)
+  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleDataPropertyAtom(TiXmlElement* elem)
   {
-    std::vector<std::string> variables;
+    std::vector<Variable_t> variables;
     ExpressionMember_t* temp_exp = new ExpressionMember_t();
 
     // std::cout << "DataPropertyAtom" << std::endl;
@@ -210,29 +208,38 @@ namespace ontologenius {
     return {std::make_pair(temp_exp, variables)};
   }
 
-  std::string OntologyOwlReader::getRuleArgument(TiXmlElement* elem)
+  Variable_t OntologyOwlReader::getRuleArgument(TiXmlElement* elem)
   {
-    std::string var_str;
+    Variable_t new_var;
     const auto* var_name_resource = elem->Attribute("rdf:resource");
     const auto* var_name_dataype = elem->Attribute("rdf:datatype");
 
     if(var_name_resource != nullptr)
     {
       if(isIn("swrl:var", var_name_resource))
-        var_str = "var#" + getName(std::string(var_name_resource));
+      {
+        new_var.var_name = getName(std::string(var_name_resource));
+        new_var.is_instantiated = false;
+      }
       else
-        var_str = "indiv#" + getName(std::string(var_name_resource));
+      {
+        new_var.var_name = getName(std::string(var_name_resource));
+        new_var.is_instantiated = true;
+      }
     }
     else if(var_name_dataype != nullptr)
-      var_str = getName(std::string(var_name_dataype) + "#" + std::string(elem->GetText()));
+    {
+      new_var.var_name = getName(std::string(var_name_dataype) + "#" + std::string(elem->GetText()));
+      new_var.is_datavalue = true;
+    }
 
-    return var_str;
+    return new_var;
   }
 
-  std::pair<ExpressionMember_t*, std::vector<std::string>> OntologyOwlReader::readRuleBuiltinAtom(TiXmlElement* elem)
+  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleBuiltinAtom(TiXmlElement* elem)
   {
     // std::cout << "BuiltinAtom" << std::endl;
-    std::vector<std::string> variables;
+    std::vector<Variable_t> variables;
     ExpressionMember_t* temp_exp = nullptr;
 
     return {std::make_pair(temp_exp, variables)};
