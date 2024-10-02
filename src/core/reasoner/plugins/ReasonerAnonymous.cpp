@@ -144,55 +144,38 @@ namespace ontologenius {
       return false;
   }
 
-  int ReasonerAnonymous::relationExists(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkValue(IndividualBranch* indiv_from, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
-    std::unordered_set<ObjectPropertyBranch*> down_properties;
     std::string explanation;
-    ontology_->object_property_graph_.getDownPtr(property, down_properties);
+    auto* indiv_range = ano_elem->individual_involved_;
+    const size_t same_size = indiv_from->same_as_.size();
 
-    const size_t relation_size = indiv_from->object_relations_.size();
-    const size_t same_size = indiv_on->same_as_.size();
-    for(size_t i = 0; i < relation_size; i++)
+    for(size_t j = 0; j < same_size; j++)
     {
-      for(size_t j = 0; j < same_size; j++)
+      if(indiv_from->same_as_[j].elem->get() == indiv_range->get())
       {
-        if(indiv_from->object_relations_[i].second->get() == indiv_on->same_as_[j].elem->get())
-        {
-          if(down_properties.find(indiv_from->object_relations_[i].first) != down_properties.end())
-          {
-            explanation = indiv_on->value() + "|sameAs|" + indiv_on->same_as_[j].elem->value() + ";";
-            used.emplace_back(explanation, indiv_on->same_as_.has_induced_inheritance_relations[j]);
-            return (int)i;
-          }
-        }
-      }
-
-      if(indiv_from->object_relations_[i].second->get() == indiv_on->get())
-      {
-        if(down_properties.find(indiv_from->object_relations_[i].first) != down_properties.end())
-          return (int)i;
+        explanation = indiv_from->value() + "|sameAs|" + indiv_range->value() + ";";
+        used.emplace_back(explanation, indiv_from->same_as_.has_induced_inheritance_relations[j]);
+        return true;
       }
     }
-    return -1;
+
+    if(indiv_from->get() == indiv_range->get())
+      return true;
+
+    return false;
   }
 
-  int ReasonerAnonymous::relationExists(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* literal_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkValue(LiteralNode* literal_from, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     (void)used;
-    std::unordered_set<DataPropertyBranch*> down_properties;
     std::string explanation;
-    ontology_->data_property_graph_.getDownPtr(property, down_properties);
+    auto* literal_range = ano_elem->card_.card_range_;
 
-    const size_t relation_size = indiv_from->data_relations_.size();
-    for(size_t i = 0; i < relation_size; i++)
-    {
-      if(indiv_from->data_relations_[i].second->get() == literal_on->get())
-      {
-        if(down_properties.find(indiv_from->data_relations_[i].first) != down_properties.end())
-          return (int)i;
-      }
-    }
-    return -1;
+    if(literal_from->get() == literal_range->get())
+      return true;
+
+    return false;
   }
 
   bool ReasonerAnonymous::resolveFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem)
@@ -632,26 +615,24 @@ namespace ontologenius {
 
   bool ReasonerAnonymous::checkValueCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
-    int index = -1;
+    std::pair<std::string, int> index;
     std::string explanation;
 
     if(ano_elem->object_property_involved_ != nullptr)
     {
-      index = relationExists(indiv, ano_elem->object_property_involved_, ano_elem->individual_involved_, used);
-      if(index != -1)
+      index = checkValueCard(indiv->object_relations_.relations, ano_elem, used);
+      if(index.second != -1)
       {
-        explanation = indiv->value() + "|" + ano_elem->object_property_involved_->value() + "|" + ano_elem->individual_involved_->value() + ";";
-        used.emplace_back(explanation, indiv->object_relations_.has_induced_inheritance_relations[index]);
+        used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
     }
     else if(ano_elem->data_property_involved_ != nullptr)
     {
-      index = relationExists(indiv, ano_elem->data_property_involved_, ano_elem->card_.card_range_, used);
-      if(index != -1)
+      index = checkValueCard(indiv->data_relations_.relations, ano_elem, used);
+      if(index.second != -1)
       {
-        explanation = indiv->value() + "|" + ano_elem->data_property_involved_->value() + "|" + ano_elem->card_.card_range_->value() + ";";
-        used.emplace_back(explanation, indiv->data_relations_.has_induced_inheritance_relations[index]);
+        used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
     }

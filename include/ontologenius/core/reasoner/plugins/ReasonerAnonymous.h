@@ -27,8 +27,6 @@ namespace ontologenius {
     std::unordered_map<ClassBranch*, std::unordered_set<ClassBranch*>> disjoints_cache_;
 
     bool checkClassesDisjointess(IndividualBranch* indiv, ClassBranch* class_equiv);
-    int relationExists(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
-    int relationExists(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* literal_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 
     bool resolveFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem);
     bool resolveTree(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
@@ -38,6 +36,8 @@ namespace ontologenius {
     bool checkRestriction(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
     bool checkTypeRestriction(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
     bool checkTypeRestriction(LiteralNode* literal, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkValue(IndividualBranch* indiv_from, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool checkValue(LiteralNode* literal_from, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
     bool checkIndividualRestriction(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 
     bool checkCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
@@ -257,7 +257,7 @@ namespace ontologenius {
       {
         if(testBranchInheritance(ano_elem, relations[i].first, used))
         {
-          if(checkTypeRestriction(relations[i].second, ano_elem, used) == true)
+          if(checkValue(relations[i].second, ano_elem, used))
           {
             explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
             return std::make_pair(explanation, i);
@@ -266,7 +266,6 @@ namespace ontologenius {
       }
       return std::make_pair("", -1);
     }
-
 
     inline std::unordered_set<ObjectPropertyBranch*> getUpProperty(ObjectPropertyBranch* property)
     {
