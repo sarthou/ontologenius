@@ -9,7 +9,6 @@
     <owl:Ontology rdf:about="test_anonymous"/>
     
 
-
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -216,8 +215,14 @@
 
     <!-- test_anonymous#Capability -->
 
-    <owl:Class rdf:about="test_anonymous#Capability"/>
-    
+    <owl:Class rdf:about="test_anonymous#Capability">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="test_anonymous#has_node"/>
+                <owl:hasValue rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:hasValue>
+            </owl:Restriction>
+        </owl:equivalentClass>
+    </owl:Class>
 
 
     <!-- test_anonymous#CommunicationCapa -->
@@ -778,10 +783,11 @@
     <!-- test_anonymous#pr2 -->
 
     <owl:NamedIndividual rdf:about="test_anonymous#pr2">
+        <!-- <test_anonymous:hasComponent rdf:resource="test_anonymous#realsense"/>
         <hasCamera rdf:resource="test_anonymous#vision_module"/>
         <hasComponent rdf:resource="test_anonymous#realsense"/>
         <hasComponent rdf:resource="test_anonymous#vision_module"/>
-        <isOnTheGround rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isOnTheGround>
+        <isOnTheGround rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isOnTheGround> -->
     </owl:NamedIndividual>
     
 
@@ -837,6 +843,7 @@
     <owl:NamedIndividual rdf:about="test_anonymous#tag_1">
         <rdf:type rdf:resource="test_anonymous#ARTag"/>
     </owl:NamedIndividual>
+    
 
 
     <!-- test_anonymous#touch_area_back -->
@@ -869,7 +876,6 @@
         <hasCamera rdf:resource="test_anonymous#kinect"/>
         <hasComponent rdf:resource="test_anonymous#kinect"/>
         <hasROSNode rdf:datatype="http://www.w3.org/2001/XMLSchema#string">node1</hasROSNode>
-        <!-- <hasROSNode rdf:datatype="http://www.w3.org/2001/XMLSchema#string">node2</hasROSNode> -->
     </owl:NamedIndividual>
     
 
