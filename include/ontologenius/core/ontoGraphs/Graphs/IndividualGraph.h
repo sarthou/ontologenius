@@ -200,7 +200,7 @@ namespace ontologenius {
 
     for(size_t i = 0; i < relations.has_induced_object_relations[relation_index]->triplets.size();)
     {
-      auto& triplet = relations.has_induced_object_relations[relation_index]->triplets[i];
+      auto triplet = relations.has_induced_object_relations[relation_index]->triplets[i];
       auto tmp = removeRelation(triplet.subject,
                                 triplet.predicate,
                                 triplet.object,
@@ -219,13 +219,12 @@ namespace ontologenius {
 
     for(size_t i = 0; i < relations.has_induced_inheritance_relations[relation_index]->triplets.size();)
     {
-      auto& triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
-
+      auto triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
+     
       std::vector<std::pair<std::string, std::string>> tmp;
       if(removeInheritage(triplet.subject, triplet.object, tmp, true))
       {
-        explanations.emplace_back("[DEL]" + triplet.subject->value() + "|isA|" +
-                                    triplet.object->value(),
+        explanations.emplace_back("[DEL]" + triplet.subject->value() + "|isA|" + triplet.object->value(),
                                   "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
         explanations.insert(explanations.end(), tmp.begin(), tmp.end());
       }
@@ -246,7 +245,7 @@ namespace ontologenius {
 
     for(size_t i = 0; i < relations.has_induced_object_relations[relation_index]->triplets.size();)
     {
-      auto& triplet = relations.has_induced_object_relations[relation_index]->triplets[i];
+      auto triplet = relations.has_induced_object_relations[relation_index]->triplets[i];
       auto tmp = removeRelation(triplet.subject,
                                 triplet.predicate,
                                 triplet.object,
@@ -265,7 +264,7 @@ namespace ontologenius {
 
     for(size_t i = 0; i < relations.has_induced_inheritance_relations[relation_index]->triplets.size();)
     {
-      auto& triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
+      auto triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
 
       std::vector<std::pair<std::string, std::string>> tmp;
       if(removeInheritage(triplet.subject, triplet.object, tmp, true))
