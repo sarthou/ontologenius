@@ -16,34 +16,14 @@ namespace ontologenius {
   // 3 flags selon les modifications
   // maitien d'une liste de classes non nommés pour les ano classes dans les antecedents
 
-  class RuleClassElement
-  {
-  public:
-    RuleClassElement() : logical_type_(LogicalNodeType_e::logical_none), oneof(false), is_complex(false),
-                         class_involved_(nullptr), object_property_involved_(nullptr),
-                         data_property_involved_(nullptr), individual_involved_(nullptr) {}
-
-    LogicalNodeType_e logical_type_;
-    bool oneof; // true = OneOf element
-    bool is_complex;
-
-    // pointers to the concepts used in the equivalence relation
-    ClassBranch* class_involved_;
-    ObjectPropertyBranch* object_property_involved_;
-    DataPropertyBranch* data_property_involved_;
-    IndividualBranch* individual_involved_;
-
-    CardinalityElement_t card_;
-
-    std::vector<RuleClassElement*> sub_elements_;
-    std::string rule_id;
-  };
 
   struct ClassAtom
   {
-    RuleClassElement* class_expression; // ClassBranch or ClassExpression
+    AnonymousClassElement* class_expression; // ClassBranch or ClassExpression
     std::string var;
-    IndividualBranch* individual_involved; // either var or individual_involved is filled
+    IndividualBranch* individual_involved;
+
+    ClassAtom() : class_expression(nullptr), var(""), individual_involved(nullptr) {}
   };
 
   struct ObjectPropertyAtom
@@ -53,15 +33,19 @@ namespace ontologenius {
     std::string var2;
     IndividualBranch* individual_involved_1;
     IndividualBranch* individual_involved_2;
+
+    ObjectPropertyAtom() : object_property_expression(nullptr), var1(""), var2(""), individual_involved_1(nullptr), individual_involved_2(nullptr) {}
   };
 
   struct DataPropertyAtom
   {
     DataPropertyBranch* data_property_expression; // DataPropertyBranch*
     std::string var1;
-    std::string var2; // stored as type#value (e.g boolean#true)
+    std::string var2;
     IndividualBranch* individual_involved;
     LiteralNode* datatype_involved;
+
+    DataPropertyAtom() : data_property_expression(nullptr), var1(""), var2(""), individual_involved(nullptr), datatype_involved(nullptr) {}
   };
 
   struct BuiltinAtom
