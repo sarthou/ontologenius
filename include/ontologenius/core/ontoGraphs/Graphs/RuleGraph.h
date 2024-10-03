@@ -103,15 +103,12 @@ namespace ontologenius {
               DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
     ~RuleGraph() {}
 
-    // AnonymousClassElement_t* createElement(ExpressionMember_t* exp_leaf);
-    // void update(ExpressionMember_t* exp, AnonymousClassElement_t* ano_class);
-    // AnonymousClassElement_t* createTree(ExpressionMember_t* member_node, size_t& depth);
     RuleBranch* add(const std::size_t& value, Rule_t& rule);
+    RuleAtomList* createRuleAtomList(std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>> rule_element);
+    ClassAtom* createClassAtom(ExpressionMember_t* class_member, Variable_t variable);
+    ObjectPropertyAtom* createObjectPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable);
+    DataPropertyAtom* createDataPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable);
     std::string getVariable(Rule_t& rule);
-    // AnonymousClassElement_t* resolveTree(AnonymousClassElement_t* elem,  bool prev_and);
-
-    // void printTree(AnonymousClassElement_t* ano_elem, size_t level, bool root);
-    // std::string toString(CardType_t value);
 
   private:
     ClassGraph* class_graph_;
