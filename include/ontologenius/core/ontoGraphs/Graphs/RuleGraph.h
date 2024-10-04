@@ -94,7 +94,7 @@ namespace ontologenius {
     friend ClassGraph;
     friend AnonymousClassGraph;
 
-    friend AnonymousClassChecker;
+    friend RuleChecker;
 
   public:
     RuleGraph(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph,
@@ -109,6 +109,14 @@ namespace ontologenius {
     ObjectPropertyAtom* createObjectPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable);
     DataPropertyAtom* createDataPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable);
     std::string getVariable(Rule_t& rule);
+
+    // Anonymous method duplicates
+    AnonymousClassElement* createElement(ExpressionMember_t* exp_leaf);
+    AnonymousClassElement* createTree(ExpressionMember_t* member_node, size_t& depth);
+    AnonymousClassElement* resolveTree(AnonymousClassElement* elem, bool prev_and);
+    void printTree(AnonymousClassElement* ano_elem, size_t level, bool root) const;
+
+    std::string toString(CardType_e value) const;
 
   private:
     ClassGraph* class_graph_;
