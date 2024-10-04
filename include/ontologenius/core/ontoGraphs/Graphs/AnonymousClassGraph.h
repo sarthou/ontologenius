@@ -157,7 +157,6 @@ namespace ontologenius {
     ~AnonymousClassGraph() override = default;
 
     AnonymousClassElement* createElement(ExpressionMember_t* exp_leaf);
-    void update(ExpressionMember_t* exp, AnonymousClassElement* ano_class);
     AnonymousClassElement* createTree(ExpressionMember_t* member_node, size_t& depth);
     AnonymousClassBranch* add(const std::string& value, AnonymousClassVectors_t& ano_class);
     AnonymousClassElement* resolveTree(AnonymousClassElement* elem, bool prev_and);
