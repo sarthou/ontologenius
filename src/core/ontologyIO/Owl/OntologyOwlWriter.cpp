@@ -110,6 +110,8 @@ namespace ontologenius {
      xmlns:xml=\"http://www.w3.org/XML/1998/namespace\"\n\
      xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n\
      xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n\
+     xmlns:swrl=\"http://www.w3.org/2003/11/swrl#\"\n\
+     xmlns:swrlb=\"http://www.w3.org/2003/11/swrlb#\"\n\
      xmlns:onto=\"ontologenius#\">\n\
     <owl:Ontology rdf:about=\"" +
                             ns_ + "\"/>\n\n\n\n";
