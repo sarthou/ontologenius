@@ -13,7 +13,7 @@ namespace ontologenius {
     bool is_instantiated;
     bool is_datavalue;
 
-    std::string toString() { return var_name; }
+    std::string toString() const { return var_name; }
   };
 
   struct Rule_t
@@ -85,6 +85,7 @@ namespace ontologenius {
   class AnonymousClassGraph;
 
   class RuleChecker;
+  class RuleOwlWriter;
 
   class RuleGraph : public Graph<RuleBranch>
   {
@@ -93,6 +94,7 @@ namespace ontologenius {
     friend IndividualGraph;
     friend ClassGraph;
     friend AnonymousClassGraph;
+    friend RuleOwlWriter;
 
     friend RuleChecker;
 
@@ -104,7 +106,7 @@ namespace ontologenius {
     ~RuleGraph() {}
 
     RuleBranch* add(const std::size_t& value, Rule_t& rule);
-    RuleAtomList* createRuleAtomList(std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>> rule_element);
+    void createRuleAtomList(RuleAtomList* rule_list, std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>> rule_element);
     ClassAtom* createClassAtom(ExpressionMember_t* class_member, Variable_t variable);
     ObjectPropertyAtom* createObjectPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable);
     DataPropertyAtom* createDataPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable);
@@ -124,6 +126,8 @@ namespace ontologenius {
     DataPropertyGraph* data_property_graph_;
     IndividualGraph* individual_graph_;
     AnonymousClassGraph* anonymous_graph_;
+
+    std::set<std::string> variable_names_; // only used to rewrite the variable fields
   };
 
 } // namespace ontologenius

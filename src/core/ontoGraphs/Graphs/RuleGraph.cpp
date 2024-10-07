@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <set>
 
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
@@ -53,24 +54,23 @@ namespace ontologenius {
     for(auto& elem_antec : rule.antecedents)
     {
       if(elem_antec.first != nullptr)
-        rule_branch->rule_antecedents_ = createRuleAtomList(elem_antec);
+        createRuleAtomList(&(rule_branch->rule_antecedents_), elem_antec);
     }
 
     // std::cout << "Computing consequents : " << std::endl;
     for(auto& elem_conseq : rule.consequents)
     {
       if(elem_conseq.first != nullptr)
-        rule_branch->rule_consequents_ = createRuleAtomList(elem_conseq);
+        createRuleAtomList(&(rule_branch->rule_consequents_), elem_conseq);
     }
 
     return rule_branch;
   }
 
-  RuleAtomList* RuleGraph::createRuleAtomList(std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>> rule_element)
+  void RuleGraph::createRuleAtomList(RuleAtomList* rule_list, std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>> rule_element)
   {
     auto* rule_atom = rule_element.first;
     auto rule_variable = rule_element.second;
-    RuleAtomList* rule_list = new RuleAtomList();
 
     // if atom is a class expression, create an unamed anonymous class
     if((rule_atom->is_data_property) & (rule_atom->logical_type_ == logical_none) & (!rule_atom->is_complex))
@@ -91,26 +91,25 @@ namespace ontologenius {
       ClassAtom* class_atom = createClassAtom(rule_atom, rule_variable.front());
       rule_list->class_atoms_.push_back(class_atom);
     }
-
-    return rule_list;
   }
 
   ClassAtom* RuleGraph::createClassAtom(ExpressionMember_t* class_member, Variable_t variable)
   {
     ClassAtom* class_atom = new ClassAtom();
     AnonymousClassElement* class_elem = new AnonymousClassElement();
-    class_atom->class_expression = class_elem;
 
     if(class_member->logical_type_ != logical_none || class_member->oneof == true || class_member->is_complex == true)
     {
       // std::cout << "complex atom " << std::endl;
       size_t depth = 0;
-      class_elem = anonymous_graph_->createTree(class_member, depth);
+      class_elem = createTree(class_member, depth);
+      // anonymous_graph_->add() // need to add the newly created anonymous elem into the anonymous classes
     }
     else if(!class_member->rest.property.empty())
     {
       // std::cout << "single restriction " << std::endl;
-      class_elem = anonymous_graph_->createElement(class_member);
+      class_elem = createElement(class_member);
+      // anonymous_graph_->add() // need to add the newly created anonymous elem into the anonymous classes
     }
     else
     {
@@ -121,7 +120,12 @@ namespace ontologenius {
     if(variable.is_instantiated)
       class_atom->individual_involved = individual_graph_->findOrCreateBranch(variable.var_name);
     else
+    {
+      variable_names_.insert(variable.var_name);
       class_atom->var = variable.var_name;
+    }
+
+    class_atom->class_expression = class_elem;
 
     return class_atom;
   }
@@ -137,13 +141,19 @@ namespace ontologenius {
       if(variable.front().is_instantiated)
         object_atom->individual_involved_1 = individual_graph_->findOrCreateBranch(variable.front().var_name);
       else
+      {
+        variable_names_.insert(variable.front().var_name);
         object_atom->var1 = variable.front().var_name;
+      }
 
       // get argument 2
       if(variable.back().is_instantiated)
         object_atom->individual_involved_2 = individual_graph_->findOrCreateBranch(variable.back().var_name);
       else
+      {
+        variable_names_.insert(variable.back().var_name);
         object_atom->var2 = variable.back().var_name;
+      }
     }
     else
       return nullptr;
@@ -162,13 +172,19 @@ namespace ontologenius {
       if(variable.front().is_instantiated)
         data_atom->individual_involved = individual_graph_->findOrCreateBranch(variable.front().var_name);
       else
+      {
+        variable_names_.insert(variable.front().var_name);
         data_atom->var1 = variable.front().var_name;
+      }
 
       // get argument 2
       if(variable.back().is_datavalue)
         data_atom->datatype_involved = data_property_graph_->createLiteral(variable.back().var_name);
       else
+      {
+        variable_names_.insert(variable.back().var_name);
         data_atom->var2 = variable.back().var_name;
+      }
     }
     else
       return nullptr;
