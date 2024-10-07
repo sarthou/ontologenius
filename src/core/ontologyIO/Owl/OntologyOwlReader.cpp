@@ -218,7 +218,6 @@ namespace ontologenius {
     }
   }
 
-
   void OntologyOwlReader::readClass(TiXmlElement* elem)
   {
     std::string node_name;
@@ -279,7 +278,7 @@ namespace ontologenius {
     nb_loaded_elem_++;
   }
 
- void OntologyOwlReader::readIndividual(TiXmlElement* elem)
+  void OntologyOwlReader::readIndividual(TiXmlElement* elem)
   {
     std::string node_name;
     IndividualVectors_t individual_vector;
@@ -360,10 +359,7 @@ namespace ontologenius {
     if(!rule.rule_str.empty()) // check if the str expression is not empty, to make sure that the rule exists
     {
       std::size_t rule_id = rule_graph_->all_branchs_.size() + 1;
-      // rule_graph_->add(rule_id, rule);
-      //  for(auto& str_elem : ano_vector.str_equivalences)
-      //    push(object_vector.equivalences_, str_elem, "=");
-
+      rule_graph_->add(rule_id, rule); 
       if(display_)
         std::cout << "│   ├── " + rule.rule_str << std::endl; // mal fait je pense, à mieux intégrer
     }
