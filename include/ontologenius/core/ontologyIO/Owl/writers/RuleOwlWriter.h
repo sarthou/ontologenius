@@ -23,14 +23,158 @@ namespace ontologenius {
     RuleGraph* rule_graph_;
 
     void writeRule(RuleBranch* branch);
-    void writeVariable(Variable_t rule_variable);
-    void writeRuleImpl(RuleBranch* branch);
-    void writeClassPredicate(ClassAtom* class_atom);
-    void writeObjectPropertyPredicate(ObjectPropertyAtom* object_atom);
-    void writeDataPropertyPredicate(DataPropertyAtom* data_atom);
+    void writeVariable(std::string rule_variable);
+    void writeRuleImpl(RuleBranch* branch, size_t level);
+
+    void writeAtom(ClassAtom* class_atom, size_t level);
+    void writeAtom(ObjectPropertyAtom* object_atom, size_t level);
+    void writeAtom(DataPropertyAtom* data_atom, size_t level);
+    void writeAtom(BuiltinAtom* builtin_atom, size_t level);
+
+    void writeAtomList(const RuleAtomList& atom_list, size_t level) // TODO take list as const ref
+    {
+      size_t type = 0;
+
+      switch(type)
+      {
+      case 0:
+        if(atom_list.class_atoms_.empty() == false)
+        {
+          writeAtom(atom_list, atom_list.class_atoms_.front(), level, type);
+          break;
+        }
+        else
+        {
+          type++;
+          [[fallthrough]];
+        }
+      case 1:
+        if(atom_list.object_atoms_.empty() == false)
+        {
+          writeAtom(atom_list, atom_list.object_atoms_.front(), level, type);
+          break;
+        }
+        else
+        {
+          type++;
+          [[fallthrough]];
+        }
+      case 2:
+        if(atom_list.data_atoms_.empty() == false)
+        {
+          writeAtom(atom_list, atom_list.data_atoms_.front(), level, type);
+          break;
+        }
+        else
+        {
+          type++;
+          [[fallthrough]];
+        }
+      case 3:
+        if(atom_list.builtin_atoms_.empty() == false)
+        {
+          writeAtom(atom_list, atom_list.builtin_atoms_.front(), level, type);
+          break;
+        }
+        else
+        {
+          type++;
+          [[fallthrough]];
+        }
+      default:
+        break;
+      }
+    }
+
+    template<typename T>
+    void writeAtom(const RuleAtomList& atom_list, T* current_atom, size_t level, size_t type = 0, size_t index = 0)
+    {
+      std::string field = "rdf:Description";
+
+      writeString("<" + field + ">\n", level);
+
+      writeString("<rdf:type rdf:resource=\"http://www.w3.org/2003/11/swrl#AtomList\"/>\n", level + 1);
+
+      writeString("<rdf:first>\n", level + 1);
+      writeString("<" + field + ">\n", level + 2);
+
+      // write the atom
+      writeAtom(current_atom, level + 3);
+
+      writeString("</" + field + ">\n", level + 2);
+      writeString("</rdf:first>\n", level + 1);
+
+      index++;
+
+      switch(type)
+      {
+      case 0:
+        if(index < atom_list.class_atoms_.size())
+        {
+          writeString("<rdf:rest>\n", level + 1);
+          writeAtom(atom_list, atom_list.class_atoms_[index], level + 2, type, index);
+          writeString("</rdf:rest>\n", level + 1);
+          break;
+        }
+        else
+        {
+          index = 0;
+          type++;
+          [[fallthrough]];
+        }
+      case 1:
+        if(index < atom_list.object_atoms_.size())
+        {
+          writeString("<rdf:rest>\n", level + 1);
+          writeAtom(atom_list, atom_list.object_atoms_[index], level + 2, type, index);
+          writeString("</rdf:rest>\n", level + 1);
+          break;
+        }
+        else
+        {
+          index = 0;
+          type++;
+          [[fallthrough]];
+        }
+      case 2:
+        if(index < atom_list.data_atoms_.size())
+        {
+          writeString("<rdf:rest>\n", level + 1);
+          writeAtom(atom_list, atom_list.data_atoms_[index], level + 2, type, index);
+          writeString("</rdf:rest>\n", level + 1);
+          break;
+        }
+        else
+        {
+          index = 0;
+          type++;
+          [[fallthrough]];
+        }
+      case 3:
+        if(index < atom_list.builtin_atoms_.size())
+        {
+          writeString("<rdf:rest>\n", level + 1);
+          writeAtom(atom_list, atom_list.builtin_atoms_[index], level + 2, type, index);
+          writeString("</rdf:rest>\n", level + 1);
+          break;
+        }
+        else
+        {
+          index = 0;
+          type++;
+          [[fallthrough]];
+        }
+      default:
+        writeString("<rdf:rest rdf:resource=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#nil\"/>\n", level + 1);
+        break;
+      }
+
+      writeString("</" + field + ">\n", level);
+    }
 
     // Anonymous classes method duplicates
-    void writeEquivalentClass(ClassBranch* branch);
+    void
+    writeEquivalentClass(ClassBranch* branch);
     void writeRestriction(AnonymousClassElement* ano_elem, size_t level);
     void writeClassExpression(AnonymousClassElement* ano_elem, size_t level);
     void writeDatatypeExpression(AnonymousClassElement* ano_elem, size_t level);
@@ -45,13 +189,6 @@ namespace ontologenius {
     void writeCardinality(AnonymousClassElement* ano_element, size_t level);
 
     std::string getResource(AnonymousClassElement* ano_elem, const std::string& attribute_name = "rdf:resource", bool used_property = false);
-
-    void writeDisjointWith(ClassBranch* branch);
-    void writeDisjointWith(std::vector<ClassBranch*>& classes);
-    void getDisjointsSets(ClassBranch* base, std::set<std::set<ClassBranch*>>& res);
-    void getDisjointsSets(ClassBranch* last, const std::set<ClassBranch*>& base_set, const std::set<ClassBranch*>& restriction_set, std::set<std::set<ClassBranch*>>& res);
-    void writeObjectProperties(ClassBranch* branch);
-    void writeDataProperties(ClassBranch* branch);
   };
 } // namespace ontologenius
 
