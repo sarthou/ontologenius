@@ -349,10 +349,9 @@ namespace ontologenius {
         tmp += "<" + field + " rdf:datatype=\"";
         tmp += ano_elem->card_.card_range_->getNs() + "#" + ano_elem->card_.card_range_->type_ + "\">" + ano_elem->card_.card_range_->value_;
         tmp += "</" + field + ">\n";
-        std::cout << tmp << std::endl;
       }
       else
-        tmp += "< " + field + "rdf:resource=\"" + ns_ + "#" + ano_elem->individual_involved_->value() + "\"/>\n";
+        tmp += "<" + field + " rdf:resource=\"" + ns_ + "#" + ano_elem->individual_involved_->value() + "\"/>\n";
       writeString(tmp, level);
       return;
     case cardinality_only:
