@@ -23,7 +23,7 @@ namespace ontologenius {
     std::string var;
     IndividualBranch* individual_involved;
 
-    ClassAtom() : class_expression(nullptr), var(""), individual_involved(nullptr) {}
+    ClassAtom() : class_expression(nullptr), individual_involved(nullptr) {}
   };
 
   struct ObjectPropertyAtom
@@ -34,7 +34,7 @@ namespace ontologenius {
     IndividualBranch* individual_involved_1;
     IndividualBranch* individual_involved_2;
 
-    ObjectPropertyAtom() : object_property_expression(nullptr), var1(""), var2(""), individual_involved_1(nullptr), individual_involved_2(nullptr) {}
+    ObjectPropertyAtom() : object_property_expression(nullptr), individual_involved_1(nullptr), individual_involved_2(nullptr) {}
   };
 
   struct DataPropertyAtom
@@ -45,7 +45,7 @@ namespace ontologenius {
     IndividualBranch* individual_involved;
     LiteralNode* datatype_involved;
 
-    DataPropertyAtom() : data_property_expression(nullptr), var1(""), var2(""), individual_involved(nullptr), datatype_involved(nullptr) {}
+    DataPropertyAtom() : data_property_expression(nullptr), individual_involved(nullptr), datatype_involved(nullptr) {}
   };
 
   struct BuiltinAtom
@@ -67,8 +67,8 @@ namespace ontologenius {
   public:
     explicit RuleBranch(const std::string& value) : ValuedNode(value) {}
 
-    RuleAtomList* rule_antecedents_;
-    RuleAtomList* rule_consequents_;
+    RuleAtomList rule_antecedents_;
+    RuleAtomList rule_consequents_;
   };
 
 } // namespace ontologenius
