@@ -42,3 +42,25 @@ namespace ontologenius {
 
     }
   }
+
+  void RuleChecker::checkVariableMappings(std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
+  {
+    for(auto& var : keys_variables) // loop over each variable in the rules
+    {
+      std::cout << "analyzing variable : " << var << std::endl;
+      for(auto& domain_elem_1 : mapping_var_classes[var]) // loop over the the vector of ClassElement to test a 1st time
+      {
+        for(auto& domain_elem_2 : mapping_var_classes[var]) // loop over the the vector of ClassElement to test a 2nd time
+        {
+          if(domain_elem_1 != domain_elem_2) // if they are different, compare them to check if they are disjoint
+          {
+            std::vector<std::string> exp;
+            exp = checkClassesVectorDisjointness(domain_elem_1, domain_elem_2);
+            if(exp.empty() == false)
+              std::cout << "disjointess on var :" << var << std::endl;
+          }
+        }
+      }
+    }
+  }
+
