@@ -64,3 +64,17 @@ namespace ontologenius {
     }
   }
 
+  void RuleChecker::checkAtomList(RuleAtomList* atom_list, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
+  {
+    for(auto* atom : atom_list->class_atoms_)
+      resolveClassAtom(atom, mapping_var_classes, keys_variables);
+
+    for(auto* atom : atom_list->object_atoms_)
+      resolveObjectAtom(atom, mapping_var_classes, keys_variables);
+
+    for(auto* atom : atom_list->data_atoms_)
+      resolveDataAtom(atom, mapping_var_classes, keys_variables);
+
+    // for(auto* atom : atom_list->builtin_atoms_)
+    //   resolveBuiltinAtom(atom, mapping_var_classes);
+  }
