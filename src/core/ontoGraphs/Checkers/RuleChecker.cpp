@@ -316,3 +316,5 @@ namespace ontologenius {
 
     return err;
   }
+
+} // namespace ontologenius
