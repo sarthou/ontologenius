@@ -139,3 +139,21 @@ namespace ontologenius {
       errs = resolveInstantiatedObjectPropertyAtom(atom->object_property_expression, nullptr, atom->individual_involved_2);
     }
   }
+
+  void RuleChecker::resolveDataAtom(DataPropertyAtom* atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
+  {
+    std::vector<std::string> errs;
+    std::cout << "resolveDataAtom " << std::endl;
+
+    if(atom->var1.empty() == false)
+    {
+      keys_variables.insert(atom->var1);
+      mapping_var_classes[atom->var1].push_back(atom->data_property_expression->domains_);
+    }
+    else if(atom->individual_involved != nullptr)
+    {
+      errs = resolveInstantiatedDataPropertyAtom(atom->data_property_expression, atom->individual_involved);
+    }
+
+    // TODO check var2 and Literal var;
+  }
