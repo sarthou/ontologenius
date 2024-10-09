@@ -222,3 +222,25 @@ namespace ontologenius {
     // }
     return err;
   }
+
+  void RuleChecker::getUpperLevelDomains(AnonymousClassElement* class_expression, std::vector<ClassElement>& expression_domains)
+  {
+    // get to the first level which is not a logical node to get the domains of properties or the classes involved.
+    // ((hasCamera some Camera) needs to return the domain of hasCamera)
+
+    if(class_expression->logical_type_ == logical_and || class_expression->logical_type_ == logical_or)
+    {
+      for(auto sub_elem : class_expression->sub_elements_)
+        getUpperLevelDomains(sub_elem, expression_domains);
+    }
+    else if(class_expression->object_property_involved_ != nullptr)
+      for(auto& obj_dom : class_expression->object_property_involved_->domains_)
+        expression_domains.push_back(obj_dom);
+    else if(class_expression->data_property_involved_ != nullptr)
+      for(auto& data_dom : class_expression->data_property_involved_->domains_)
+        expression_domains.push_back(data_dom);
+    else if(class_expression->class_involved_ != nullptr)
+      expression_domains.push_back(ClassElement{class_expression->class_involved_});
+    else
+      return;
+  }
