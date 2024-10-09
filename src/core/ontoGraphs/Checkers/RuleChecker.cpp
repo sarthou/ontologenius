@@ -187,3 +187,38 @@ namespace ontologenius {
 
     return errs;
   }
+
+  std::vector<std::string> RuleChecker::resolveInstantiatedObjectPropertyAtom(ObjectPropertyBranch* property_branch, IndividualBranch* indiv_from, IndividualBranch* indiv_on)
+  {
+    std::vector<std::string> err;
+
+    if(indiv_from != nullptr)
+    {
+      err = checkClassesVectorDisjointness(indiv_from->is_a_.relations, property_branch->domains_);
+    }
+    else if(indiv_on != nullptr)
+    {
+      err = checkClassesVectorDisjointness(indiv_on->is_a_.relations, property_branch->ranges_);
+    }
+    return err;
+  }
+
+  std::vector<std::string> RuleChecker::resolveInstantiatedDataPropertyAtom(DataPropertyBranch* property_branch, IndividualBranch* indiv_from)
+  {
+    std::vector<std::string> err;
+    // std::vector<LiteralNode*> range_prop = data_property->ranges_;
+
+    if(indiv_from != nullptr)
+    {
+      err = checkClassesVectorDisjointness(indiv_from->is_a_.relations, property_branch->domains_);
+      // if(err.empty() == false)
+      //   errs.push_back(err);
+    }
+    // else if(indiv_on != nullptr)
+    // {
+    //   err = checkClassesVectorDisjointness(indiv_on->is_a_.relations, range_prop);
+    //   if(err.empty() == false)
+    //     errs.push_back(err);
+    // }
+    return err;
+  }
