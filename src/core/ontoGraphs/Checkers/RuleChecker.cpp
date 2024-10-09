@@ -157,3 +157,33 @@ namespace ontologenius {
 
     // TODO check var2 and Literal var;
   }
+
+  std::vector<std::string> RuleChecker::resolveInstantiatedClassAtom(ClassBranch* class_branch, IndividualBranch* indiv)
+  {
+    std::vector<std::string> errs;
+    std::string err;
+
+    // check for the same as
+    if(indiv->same_as_.empty() == false)
+    {
+      for(auto& same_elem : indiv->same_as_)
+      {
+        for(auto& is_a_elem : same_elem.elem->is_a_)
+        {
+          err = checkClassesDisjointness(class_branch, is_a_elem.elem);
+          if(err.empty() == false)
+            errs.push_back(err);
+        }
+      }
+    }
+
+    // check for the indiv
+    for(auto& is_a_elem : indiv->is_a_)
+    {
+      err = checkClassesDisjointness(class_branch, is_a_elem.elem);
+      if(err.empty() == false)
+        errs.push_back(err);
+    }
+
+    return errs;
+  }
