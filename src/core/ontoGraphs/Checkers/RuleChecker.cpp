@@ -244,3 +244,75 @@ namespace ontologenius {
     else
       return;
   }
+
+  std::vector<std::string> RuleChecker::checkClassesVectorDisjointness(const std::vector<ClassElement>& classes_left, const std::vector<ClassElement>& class_right)
+  {
+    std::vector<std::string> errs;
+    for(const auto& elem_right : class_right)
+    {
+      for(const auto& elem_left : classes_left)
+      {
+        const std::string err = checkClassesDisjointness(elem_left.elem, elem_right.elem);
+        if(err.empty() == false)
+          errs.push_back(err);
+      }
+    }
+    return errs;
+  }
+
+  std::string RuleChecker::checkClassesDisjointness(ClassBranch* class_left, ClassBranch* class_right)
+  {
+    std::string err;
+    std::unordered_set<ClassBranch*> disjoints;
+
+    rule_graph_->class_graph_->getDisjoint(class_left, disjoints);
+
+    ClassBranch* first_crash = nullptr;
+    if(disjoints.empty() == false)
+    {
+      std::unordered_set<ClassBranch*> ups;
+      rule_graph_->class_graph_->getUpPtr(class_right, ups);
+      first_crash = rule_graph_->class_graph_->firstIntersection(ups, disjoints);
+    }
+
+    if(first_crash != nullptr)
+    {
+      std::unordered_set<ClassBranch*> intersection_ups;
+      rule_graph_->class_graph_->getUpPtr(first_crash, intersection_ups);
+      std::unordered_set<ClassBranch*> left_ups;
+      rule_graph_->class_graph_->getUpPtr(class_left, left_ups);
+
+      ClassBranch* explanation_1 = nullptr;
+      ClassBranch* explanation_2 = nullptr;
+      for(auto* up : intersection_ups)
+      {
+        explanation_2 = up;
+        explanation_1 = rule_graph_->class_graph_->firstIntersection(left_ups, up->disjoints_);
+        if(explanation_1 != nullptr)
+          break;
+      }
+
+      std::string exp_str;
+      if(class_right != explanation_2)
+        exp_str = class_right->value() + " is a " + explanation_2->value();
+      if(class_left != explanation_1)
+      {
+        if(exp_str.empty() == false)
+          exp_str += " and ";
+        exp_str += class_left->value() + " is a " + explanation_1->value();
+      }
+
+      if(explanation_1 == nullptr)
+        err = "disjointness between " + class_left->value() + " and " + class_right->value() +
+              " over " + first_crash->value();
+      else if(exp_str.empty() == false)
+        err = "disjointness between " + class_left->value() + " and " + class_right->value() +
+              " because " + explanation_1->value() + " and " + explanation_2->value() + " are disjoint" +
+              " and " + exp_str;
+      else
+        err = "disjointness between " + class_left->value() + " and " + class_right->value() +
+              " because " + explanation_1->value() + " and " + explanation_2->value() + " are disjoint";
+    }
+
+    return err;
+  }
