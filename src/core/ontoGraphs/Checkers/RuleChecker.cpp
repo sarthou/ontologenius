@@ -78,3 +78,38 @@ namespace ontologenius {
     // for(auto* atom : atom_list->builtin_atoms_)
     //   resolveBuiltinAtom(atom, mapping_var_classes);
   }
+
+  void RuleChecker::resolveClassAtom(ClassAtom* atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
+  {
+    std::cout << "resolveClassAtom " << std::endl;
+    std::vector<std::string> errs;
+
+    if(!atom->var.empty())
+    {
+      keys_variables.insert(atom->var);
+
+      if(atom->class_expression->logical_type_ != logical_none || atom->class_expression->oneof == true || atom->class_expression->is_complex == true) // class expression
+      {
+        std::vector<ClassElement> expression_domains;
+        getUpperLevelDomains(atom->class_expression, expression_domains);
+
+        mapping_var_classes[atom->var].push_back(expression_domains);
+      }
+      else if(atom->class_expression->object_property_involved_ != nullptr) // single object restriction
+      {
+        mapping_var_classes[atom->var].push_back(atom->class_expression->object_property_involved_->domains_);
+      }
+      else if(atom->class_expression->data_property_involved_ != nullptr) // single data restriction
+      {
+        mapping_var_classes[atom->var].push_back(atom->class_expression->data_property_involved_->domains_);
+      }
+      else // class only restriction
+      {
+        std::vector<ClassElement> class_elem;
+        class_elem.push_back(ClassElement{atom->class_expression->class_involved_});
+        mapping_var_classes[atom->var].push_back(class_elem);
+      }
+    }
+    else
+      errs = resolveInstantiatedClassAtom(atom->class_expression->class_involved_, atom->individual_involved);
+  }
