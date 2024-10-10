@@ -103,7 +103,7 @@ namespace ontologenius {
               DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
     RuleGraph(const RuleGraph& other, ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph,
               DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
-    ~RuleGraph() {}
+    ~RuleGraph() override = default;
 
     RuleBranch* add(const std::size_t& value, Rule_t& rule);
     void createRuleAtomList(RuleAtomList_t* rule_list, std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>> rule_element);
