@@ -1,7 +1,14 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/RuleOwlWriter.h"
 
+#include <cstddef>
+#include <cstdio>
 #include <shared_mutex>
+#include <string>
+#include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/RuleBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/RuleGraph.h"
 #include "ontologenius/graphical/Display.h"
 
@@ -21,7 +28,7 @@ namespace ontologenius {
     const std::vector<RuleBranch*> rules = rule_graph_->get();
 
     // write all the variables involved in the rules
-    for(auto& var : rule_graph_->variable_names_)
+    for(const auto& var : rule_graph_->variable_names_)
       writeVariable(var);
 
     // write the rules
@@ -57,10 +64,10 @@ namespace ontologenius {
     writeString("</" + field + ">\n", level);
   }
 
-  void RuleOwlWriter::writeVariable(std::string rule_variable)
+  void RuleOwlWriter::writeVariable(const std::string& rule_variable)
   {
     const size_t level = 1;
-    std::string field, tmp;
+    std::string field;
     field = "rdf:Description";
 
     writeString("<" + field + " rdf:about=\"urn:swrl:var#" + rule_variable + "\">\n", level);
@@ -89,8 +96,8 @@ namespace ontologenius {
       writeString("</" + field_name + ">\n", level);
     }
     else if(class_atom->class_expression->is_complex || class_atom->class_expression->oneof ||
-            class_atom->class_expression->data_property_involved_ ||
-            class_atom->class_expression->object_property_involved_) // complex class
+            (class_atom->class_expression->data_property_involved_ != nullptr) ||
+            (class_atom->class_expression->object_property_involved_ != nullptr)) // complex class
     {
       tmp += ">\n";
       writeString(tmp, level);
@@ -201,7 +208,7 @@ namespace ontologenius {
     {
       for(auto* elem : equiv->ano_elems_)
       {
-        std::string tmp, field;
+        std::string field;
         field = "owl:equivalentClass";
         const size_t level = 2;
 
@@ -263,7 +270,7 @@ namespace ontologenius {
 
   void RuleOwlWriter::writeClassExpression(AnonymousClassElement* ano_elem, size_t level)
   {
-    std::string tmp, field;
+    std::string field;
 
     field = "owl:Class";
 
@@ -450,7 +457,6 @@ namespace ontologenius {
         tmp += "<" + field + " rdf:datatype=\"";
         tmp += ano_elem->card_.card_range_->getNs() + "#" + ano_elem->card_.card_range_->type_ + "\">" + ano_elem->card_.card_range_->value_;
         tmp += "</" + field + ">\n";
-        std::cout << tmp << std::endl;
       }
       else
         tmp += "<" + field + " rdf:resource=\"" + ns_ + "#" + ano_elem->individual_involved_->value() + "\"/>\n";

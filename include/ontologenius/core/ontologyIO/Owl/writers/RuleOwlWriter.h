@@ -23,7 +23,7 @@ namespace ontologenius {
     RuleGraph* rule_graph_;
 
     void writeRule(RuleBranch* branch);
-    void writeVariable(std::string rule_variable);
+    void writeVariable(const std::string& rule_variable);
     void writeRuleImpl(RuleBranch* branch, size_t level);
 
     void writeAtom(ClassAtom_t* class_atom, size_t level);
