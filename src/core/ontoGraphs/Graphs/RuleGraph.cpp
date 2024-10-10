@@ -1,8 +1,9 @@
 #include "ontologenius/core/ontoGraphs/Graphs/RuleGraph.h"
 
-#include <algorithm>
 #include <iostream>
 #include <set>
+#include <string>
+#include <vector>
 
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
@@ -67,7 +68,7 @@ namespace ontologenius {
     return rule_branch;
   }
 
-  void RuleGraph::createRuleAtomList(RuleAtomList* rule_list, std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>> rule_element)
+  void RuleGraph::createRuleAtomList(RuleAtomList_t* rule_list, std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>> rule_element)
   {
     auto* rule_atom = rule_element.first;
     auto rule_variable = rule_element.second;
@@ -76,26 +77,26 @@ namespace ontologenius {
     if((rule_atom->is_data_property) & (rule_atom->logical_type_ == logical_none) & (!rule_atom->is_complex))
     {
       // std::cout << "single data atom " << rule_atom->rest.toString() << std::endl;
-      DataPropertyAtom* data_atom = createDataPropertyAtom(rule_atom, rule_variable);
+      DataPropertyAtom_t* data_atom = createDataPropertyAtom(rule_atom, rule_variable);
       rule_list->data_atoms_.push_back(data_atom);
     }
     else if((rule_atom->logical_type_ == logical_none) & (!rule_atom->is_complex) & (rule_atom->rest.restriction_range.empty()))
     {
       // std::cout << "single object atom " << rule_atom->rest.toString() << std::endl;
-      ObjectPropertyAtom* object_atom = createObjectPropertyAtom(rule_atom, rule_variable);
+      ObjectPropertyAtom_t* object_atom = createObjectPropertyAtom(rule_atom, rule_variable);
       rule_list->object_atoms_.push_back(object_atom);
     }
     else
     {
       // std::cout << " class atom  " << rule_atom->rest.toString() << std::endl;
-      ClassAtom* class_atom = createClassAtom(rule_atom, rule_variable.front());
+      ClassAtom_t* class_atom = createClassAtom(rule_atom, rule_variable.front());
       rule_list->class_atoms_.push_back(class_atom);
     }
   }
 
-  ClassAtom* RuleGraph::createClassAtom(ExpressionMember_t* class_member, Variable_t variable)
+  ClassAtom_t* RuleGraph::createClassAtom(ExpressionMember_t* class_member, Variable_t variable)
   {
-    ClassAtom* class_atom = new ClassAtom();
+    ClassAtom_t* class_atom = new ClassAtom_t();
     AnonymousClassElement* class_elem = new AnonymousClassElement();
 
     if(class_member->logical_type_ != logical_none || class_member->oneof == true || class_member->is_complex == true)
@@ -130,9 +131,9 @@ namespace ontologenius {
     return class_atom;
   }
 
-  ObjectPropertyAtom* RuleGraph::createObjectPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable)
+  ObjectPropertyAtom_t* RuleGraph::createObjectPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable)
   {
-    ObjectPropertyAtom* object_atom = new ObjectPropertyAtom();
+    ObjectPropertyAtom_t* object_atom = new ObjectPropertyAtom_t();
     object_atom->object_property_expression = object_property_graph_->findOrCreateBranch(property_member->rest.property);
 
     if(variable.size() == 2)
@@ -161,9 +162,9 @@ namespace ontologenius {
     return object_atom;
   }
 
-  DataPropertyAtom* RuleGraph::createDataPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable)
+  DataPropertyAtom_t* RuleGraph::createDataPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable)
   {
-    DataPropertyAtom* data_atom = new DataPropertyAtom();
+    DataPropertyAtom_t* data_atom = new DataPropertyAtom_t();
     data_atom->data_property_expression = data_property_graph_->findOrCreateBranch(property_member->rest.property);
 
     if(variable.size() == 2)

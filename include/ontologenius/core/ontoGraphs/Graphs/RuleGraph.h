@@ -106,10 +106,10 @@ namespace ontologenius {
     ~RuleGraph() {}
 
     RuleBranch* add(const std::size_t& value, Rule_t& rule);
-    void createRuleAtomList(RuleAtomList* rule_list, std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>> rule_element);
-    ClassAtom* createClassAtom(ExpressionMember_t* class_member, Variable_t variable);
-    ObjectPropertyAtom* createObjectPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable);
-    DataPropertyAtom* createDataPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable);
+    void createRuleAtomList(RuleAtomList_t* rule_list, std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>> rule_element);
+    ClassAtom_t* createClassAtom(ExpressionMember_t* class_member, Variable_t variable);
+    ObjectPropertyAtom_t* createObjectPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable);
+    DataPropertyAtom_t* createDataPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable);
     std::string getVariable(Rule_t& rule);
 
     // Anonymous method duplicates

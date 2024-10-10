@@ -26,12 +26,12 @@ namespace ontologenius {
     void writeVariable(std::string rule_variable);
     void writeRuleImpl(RuleBranch* branch, size_t level);
 
-    void writeAtom(ClassAtom* class_atom, size_t level);
-    void writeAtom(ObjectPropertyAtom* object_atom, size_t level);
-    void writeAtom(DataPropertyAtom* data_atom, size_t level);
-    void writeAtom(BuiltinAtom* builtin_atom, size_t level);
+    void writeAtom(ClassAtom_t* class_atom, size_t level);
+    void writeAtom(ObjectPropertyAtom_t* object_atom, size_t level);
+    void writeAtom(DataPropertyAtom_t* data_atom, size_t level);
+    void writeAtom(BuiltinAtom_t* builtin_atom, size_t level);
 
-    void writeAtomList(const RuleAtomList& atom_list, size_t level) // TODO take list as const ref
+    void writeAtomList(const RuleAtomList_t& atom_list, size_t level) // TODO take list as const ref
     {
       size_t type = 0;
 
@@ -87,7 +87,7 @@ namespace ontologenius {
     }
 
     template<typename T>
-    void writeAtom(const RuleAtomList& atom_list, T* current_atom, size_t level, size_t type = 0, size_t index = 0)
+    void writeAtom(const RuleAtomList_t& atom_list, T* current_atom, size_t level, size_t type = 0, size_t index = 0)
     {
       std::string field = "rdf:Description";
 

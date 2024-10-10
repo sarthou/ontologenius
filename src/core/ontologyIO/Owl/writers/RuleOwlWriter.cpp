@@ -68,7 +68,7 @@ namespace ontologenius {
     writeString("</" + field + ">\n", level);
   }
 
-  void RuleOwlWriter::writeAtom(ClassAtom* class_atom, size_t level)
+  void RuleOwlWriter::writeAtom(ClassAtom_t* class_atom, size_t level)
   {
     std::string tmp, field_name;
     field_name = "swrl:classPredicate";
@@ -117,7 +117,7 @@ namespace ontologenius {
     writeString(tmp, level);
   }
 
-  void RuleOwlWriter::writeAtom(ObjectPropertyAtom* object_atom, size_t level)
+  void RuleOwlWriter::writeAtom(ObjectPropertyAtom_t* object_atom, size_t level)
   {
     std::string field, tmp, subfield_prop, subfield_var;
     field = "rdf:Description";
@@ -152,7 +152,7 @@ namespace ontologenius {
     writeString(tmp, level);
   }
 
-  void RuleOwlWriter::writeAtom(DataPropertyAtom* data_atom, size_t level)
+  void RuleOwlWriter::writeAtom(DataPropertyAtom_t* data_atom, size_t level)
   {
     std::string field, tmp, subfield_prop, subfield_var;
     field = "rdf:Description";
@@ -187,7 +187,7 @@ namespace ontologenius {
     writeString(tmp, level);
   }
 
-  void RuleOwlWriter::writeAtom(BuiltinAtom* builtin_atom, size_t level)
+  void RuleOwlWriter::writeAtom(BuiltinAtom_t* builtin_atom, size_t level)
   {
     (void)builtin_atom;
     (void)level;
