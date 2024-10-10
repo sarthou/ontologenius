@@ -1,8 +1,14 @@
 #include "ontologenius/core/ontoGraphs/Checkers/RuleChecker.h"
 
 #include <set>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/RuleBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
@@ -28,8 +34,9 @@ namespace ontologenius {
   {
     for(RuleBranch* rule_branch : graph_vect_)
     {
-      std::cout << " =========== Analyzing new rule =============" << std::endl;
+      // std::cout << " =========== Analyzing new rule =============" << std::endl;
 
+      current_rule_ = rule_branch->value();
       std::unordered_map<std::string, std::vector<std::vector<ClassElement>>> mapping_var_classes;
       std::set<std::string> keys_variables;
       // check the instantiated atoms in the antecedent and store the variables with atoms
@@ -39,32 +46,35 @@ namespace ontologenius {
 
       // ========== check the mapping between variables in the rule ==========
       checkVariableMappings(mapping_var_classes, keys_variables);
-
     }
   }
 
   void RuleChecker::checkVariableMappings(std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
   {
-    for(auto& var : keys_variables) // loop over each variable in the rules
+    for(const auto& var : keys_variables) // loop over each variable in the rules
     {
-      std::cout << "analyzing variable : " << var << std::endl;
+      // std::cout << "analyzing variable : " << var << std::endl;
       for(auto& domain_elem_1 : mapping_var_classes[var]) // loop over the the vector of ClassElement to test a 1st time
       {
         for(auto& domain_elem_2 : mapping_var_classes[var]) // loop over the the vector of ClassElement to test a 2nd time
         {
           if(domain_elem_1 != domain_elem_2) // if they are different, compare them to check if they are disjoint
           {
-            std::vector<std::string> exp;
-            exp = checkClassesVectorDisjointness(domain_elem_1, domain_elem_2);
-            if(exp.empty() == false)
-              std::cout << "disjointess on var :" << var << std::endl;
+            std::vector<std::string> errs;
+            errs = checkClassesVectorDisjointness(domain_elem_1, domain_elem_2);
+            if(errs.empty() == false)
+            {
+              const std::string err_base = "In rule  " + current_rule_ + ": error over variable " + var + " because of ";
+              for(const auto& err : errs)
+                printError(err_base + err);
+            }
           }
         }
       }
     }
   }
 
-  void RuleChecker::checkAtomList(RuleAtomList* atom_list, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
+  void RuleChecker::checkAtomList(RuleAtomList_t* atom_list, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
   {
     for(auto* atom : atom_list->class_atoms_)
       resolveClassAtom(atom, mapping_var_classes, keys_variables);
@@ -79,9 +89,9 @@ namespace ontologenius {
     //   resolveBuiltinAtom(atom, mapping_var_classes);
   }
 
-  void RuleChecker::resolveClassAtom(ClassAtom* atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
+  void RuleChecker::resolveClassAtom(ClassAtom_t* atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
   {
-    std::cout << "resolveClassAtom " << std::endl;
+    // std::cout << "resolveClassAtom_t " << std::endl;
     std::vector<std::string> errs;
 
     if(!atom->var.empty())
@@ -106,18 +116,27 @@ namespace ontologenius {
       else // class only restriction
       {
         std::vector<ClassElement> class_elem;
-        class_elem.push_back(ClassElement{atom->class_expression->class_involved_});
+        class_elem.emplace_back(ClassElement{atom->class_expression->class_involved_});
         mapping_var_classes[atom->var].push_back(class_elem);
       }
     }
     else
-      errs = resolveInstantiatedClassAtom(atom->class_expression->class_involved_, atom->individual_involved);
+    {
+      errs = resolveInstantiatedClass(atom->class_expression->class_involved_, atom->individual_involved);
+      if(errs.empty() == false)
+      {
+        const std::string err_base = "In rule  " + current_rule_ + ": error over instantiated class atom " +
+                                     atom->class_expression->class_involved_->value() + "(" + atom->individual_involved->value() + ")" + " because of ";
+        for(const auto& err : errs)
+          printError(err_base + err);
+      }
+    }
   }
 
-  void RuleChecker::resolveObjectAtom(ObjectPropertyAtom* atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
+  void RuleChecker::resolveObjectAtom(ObjectPropertyAtom_t* atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
   {
     std::vector<std::string> errs;
-    std::cout << "resolveObjectAtom " << std::endl;
+    // std::cout << "resolveObjectAtom " << std::endl;
 
     if(atom->var1.empty() == false)
     {
@@ -126,7 +145,14 @@ namespace ontologenius {
     }
     else if(atom->individual_involved_1 != nullptr)
     {
-      errs = resolveInstantiatedObjectPropertyAtom(atom->object_property_expression, atom->individual_involved_1, nullptr);
+      if(errs.empty() == false)
+      {
+        errs = resolveInstantiatedObjectProperty(atom->object_property_expression, atom->individual_involved_1, nullptr);
+        const std::string err_base = "In rule  " + current_rule_ + ": error over instantiated object property atom " +
+                                     atom->object_property_expression->value() + " with subject " + atom->individual_involved_1->value() + " because of ";
+        for(const auto& err : errs)
+          printError(err_base + err);
+      }
     }
 
     if(atom->var2.empty() == false)
@@ -136,14 +162,22 @@ namespace ontologenius {
     }
     else if(atom->individual_involved_2 != nullptr)
     {
-      errs = resolveInstantiatedObjectPropertyAtom(atom->object_property_expression, nullptr, atom->individual_involved_2);
+      if(errs.empty() == false)
+      {
+        errs = resolveInstantiatedObjectProperty(atom->object_property_expression, nullptr, atom->individual_involved_2);
+        const std::string err_base = "In rule  " + current_rule_ + ": error over instantiated object property atom " +
+                                     atom->object_property_expression->value() + " with object " + atom->individual_involved_2->value() + " because of ";
+        for(const auto& err : errs)
+          printError(err_base + err);
+      }
     }
   }
 
-  void RuleChecker::resolveDataAtom(DataPropertyAtom* atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
+  void RuleChecker::resolveDataAtom(DataPropertyAtom_t* atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
   {
     std::vector<std::string> errs;
-    std::cout << "resolveDataAtom " << std::endl;
+    std::string error;
+    // std::cout << "resolveDataAtom " << std::endl;
 
     if(atom->var1.empty() == false)
     {
@@ -152,13 +186,32 @@ namespace ontologenius {
     }
     else if(atom->individual_involved != nullptr)
     {
-      errs = resolveInstantiatedDataPropertyAtom(atom->data_property_expression, atom->individual_involved);
+      if(errs.empty() == false)
+      {
+        errs = resolveInstantiatedDataProperty(atom->data_property_expression, atom->individual_involved);
+        const std::string err_base = "In rule  " + current_rule_ + ": error over instantiated data property atom " +
+                                     atom->data_property_expression->value() + " with subject " + atom->individual_involved->value() + " because of ";
+        for(const auto& err : errs)
+          printError(err_base + err);
+      }
     }
 
-    // TODO check var2 and Literal var;
+    if(atom->datatype_involved != nullptr)
+    {
+      std::string err;
+      const std::string err_base = "In rule  " + current_rule_ + ": error over instantiated data property atom " +
+                                   atom->data_property_expression->value() + " with subject " + atom->datatype_involved->value() + " because of ";
+      err = checkDataRange(atom->datatype_involved);
+      if(err.empty() == false)
+      {
+        printError(err_base + err);
+      }
+    }
+
+    // need to check var2, to see if it is considered as an individual in other atoms
   }
 
-  std::vector<std::string> RuleChecker::resolveInstantiatedClassAtom(ClassBranch* class_branch, IndividualBranch* indiv)
+  std::vector<std::string> RuleChecker::resolveInstantiatedClass(ClassBranch* class_branch, IndividualBranch* indiv)
   {
     std::vector<std::string> errs;
     std::string err;
@@ -188,7 +241,7 @@ namespace ontologenius {
     return errs;
   }
 
-  std::vector<std::string> RuleChecker::resolveInstantiatedObjectPropertyAtom(ObjectPropertyBranch* property_branch, IndividualBranch* indiv_from, IndividualBranch* indiv_on)
+  std::vector<std::string> RuleChecker::resolveInstantiatedObjectProperty(ObjectPropertyBranch* property_branch, IndividualBranch* indiv_from, IndividualBranch* indiv_on)
   {
     std::vector<std::string> err;
 
@@ -203,23 +256,14 @@ namespace ontologenius {
     return err;
   }
 
-  std::vector<std::string> RuleChecker::resolveInstantiatedDataPropertyAtom(DataPropertyBranch* property_branch, IndividualBranch* indiv_from)
+  std::vector<std::string> RuleChecker::resolveInstantiatedDataProperty(DataPropertyBranch* property_branch, IndividualBranch* indiv_from)
   {
     std::vector<std::string> err;
-    // std::vector<LiteralNode*> range_prop = data_property->ranges_;
 
     if(indiv_from != nullptr)
     {
       err = checkClassesVectorDisjointness(indiv_from->is_a_.relations, property_branch->domains_);
-      // if(err.empty() == false)
-      //   errs.push_back(err);
     }
-    // else if(indiv_on != nullptr)
-    // {
-    //   err = checkClassesVectorDisjointness(indiv_on->is_a_.relations, range_prop);
-    //   if(err.empty() == false)
-    //     errs.push_back(err);
-    // }
     return err;
   }
 
@@ -240,7 +284,7 @@ namespace ontologenius {
       for(auto& data_dom : class_expression->data_property_involved_->domains_)
         expression_domains.push_back(data_dom);
     else if(class_expression->class_involved_ != nullptr)
-      expression_domains.push_back(ClassElement{class_expression->class_involved_});
+      expression_domains.emplace_back(ClassElement{class_expression->class_involved_});
     else
       return;
   }

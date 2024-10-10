@@ -4,7 +4,6 @@
 #include "ontologenius/core/ontoGraphs/Checkers/ValidityChecker.h"
 #include "ontologenius/core/ontoGraphs/Graphs/RuleGraph.h"
 
-
 namespace ontologenius {
 
   class RuleChecker : public ValidityChecker<RuleBranch>
@@ -23,18 +22,19 @@ namespace ontologenius {
 
   private:
     RuleGraph* rule_graph_;
+    std::string current_rule_;
 
-    void checkAtomList(RuleAtomList* atom_list, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables);
+    void checkAtomList(RuleAtomList_t* atom_list, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables);
     void checkVariableMappings(std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables);
 
-    std::vector<std::string> resolveInstantiatedClassAtom(ClassBranch* class_branch, IndividualBranch* indiv);
-    std::vector<std::string> resolveInstantiatedObjectPropertyAtom(ObjectPropertyBranch* property_branch, IndividualBranch* indiv_from, IndividualBranch* indiv_on);
-    std::vector<std::string> resolveInstantiatedDataPropertyAtom(DataPropertyBranch* data_property, IndividualBranch* indiv_from);
+    std::vector<std::string> resolveInstantiatedClass(ClassBranch* class_branch, IndividualBranch* indiv);
+    std::vector<std::string> resolveInstantiatedObjectProperty(ObjectPropertyBranch* property_branch, IndividualBranch* indiv_from, IndividualBranch* indiv_on);
+    std::vector<std::string> resolveInstantiatedDataProperty(DataPropertyBranch* data_property, IndividualBranch* indiv_from);
 
-    void resolveClassAtom(ClassAtom* class_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables);
-    void resolveObjectAtom(ObjectPropertyAtom* object_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables);
-    void resolveDataAtom(DataPropertyAtom* data_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables);
-    // void resolveBuiltinAtom(ClassAtom* class_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes);
+    void resolveClassAtom(ClassAtom_t* class_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables);
+    void resolveObjectAtom(ObjectPropertyAtom_t* object_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables);
+    void resolveDataAtom(DataPropertyAtom_t* data_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables);
+    // void resolveBuiltinAtom(ClassAtom_t* class_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes);
 
     void getUpperLevelDomains(AnonymousClassElement* class_expression, std::vector<ClassElement>& expression_domains);
     std::string checkClassesDisjointness(ClassBranch* class_left, ClassBranch* class_right);
