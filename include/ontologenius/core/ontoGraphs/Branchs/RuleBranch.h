@@ -7,6 +7,8 @@
 #include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 
 namespace ontologenius {
@@ -34,6 +36,26 @@ namespace ontologenius {
     IndividualBranch* individual_involved_2;
 
     ObjectPropertyAtom_t() : object_property_expression(nullptr), individual_involved_1(nullptr), individual_involved_2(nullptr) {}
+
+    std::string toString()
+    {
+      std::string res;
+
+      res = object_property_expression->value() + "(";
+      if(var1.empty() == false)
+        res += "?" + var1;
+      else if(individual_involved_1 != nullptr)
+        res += individual_involved_1->value();
+
+      res += ", ";
+      if(var2.empty() == false)
+        res += "?" + var2;
+      else if(individual_involved_2 != nullptr)
+        res += individual_involved_2->value();
+      res += ")";
+
+      return res;
+    }
   };
 
   struct DataPropertyAtom_t
@@ -45,6 +67,26 @@ namespace ontologenius {
     LiteralNode* datatype_involved;
 
     DataPropertyAtom_t() : data_property_expression(nullptr), individual_involved(nullptr), datatype_involved(nullptr) {}
+
+    std::string toString()
+    {
+      std::string res;
+
+      res = data_property_expression->value() + "(";
+      if(var1.empty() == false)
+        res += "?" + var1;
+      else if(individual_involved != nullptr)
+        res += individual_involved->value();
+
+      res += ", ";
+      if(var2.empty() == false)
+        res += "?" + var2;
+      else if(datatype_involved != nullptr)
+        res += datatype_involved->value();
+      res += ")";
+
+      return res;
+    }
   };
 
   struct BuiltinAtom_t
