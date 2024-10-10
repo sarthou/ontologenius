@@ -359,7 +359,7 @@ namespace ontologenius {
     if(!rule.rule_str.empty()) // check if the str expression is not empty, to make sure that the rule exists
     {
       std::size_t rule_id = rule_graph_->all_branchs_.size() + 1;
-      rule_graph_->add(rule_id, rule); 
+      rule_graph_->add(rule_id, rule);
       if(display_)
         std::cout << "│   ├── " + rule.rule_str << std::endl; // mal fait je pense, à mieux intégrer
     }
@@ -414,7 +414,7 @@ namespace ontologenius {
       individual_graph_->add(distincts);
     distincts.clear();
   }
-  
+
   void OntologyOwlReader::readObjectProperty(TiXmlElement* elem)
   {
     std::string node_name;
@@ -433,7 +433,7 @@ namespace ontologenius {
 
         if(sub_elem_name == "rdfs:subPropertyOf")
           push(property_vector.mothers_, sub_elem, probability, "+");
-        else if(sub_elem_name == "owl:disjointWith")
+        else if(sub_elem_name == "owl:propertyDisjointWith")
           push(property_vector.disjoints_, sub_elem, probability, "-");
         else if(sub_elem_name == "owl:inverseOf")
           push(property_vector.inverses_, sub_elem, probability, "/");
@@ -478,7 +478,7 @@ namespace ontologenius {
 
         if(sub_elem_name == "rdfs:subPropertyOf")
           push(property_vector.mothers_, sub_elem, probability, "+");
-        else if(sub_elem_name == "owl:disjointWith")
+        else if(sub_elem_name == "owl:propertyDisjointWith")
           push(property_vector.disjoints_, sub_elem, probability, "-");
         else if(sub_elem_name == "rdfs:domain")
           push(property_vector.domains_, sub_elem, probability, ">");
