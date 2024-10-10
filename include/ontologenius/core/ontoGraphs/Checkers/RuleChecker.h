@@ -39,6 +39,7 @@ namespace ontologenius {
     void getUpperLevelDomains(AnonymousClassElement* class_expression, std::vector<ClassElement>& expression_domains);
     std::string checkClassesDisjointness(ClassBranch* class_left, ClassBranch* class_right);
     std::vector<std::string> checkClassesVectorDisjointness(const std::vector<ClassElement>& classes_left, const std::vector<ClassElement>& class_right);
+    std::string checkDataRange(LiteralNode* data_node);
   };
 
 } // namespace ontologenius

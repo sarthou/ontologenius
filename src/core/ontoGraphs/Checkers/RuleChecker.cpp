@@ -317,4 +317,51 @@ namespace ontologenius {
     return err;
   }
 
+  std::string RuleChecker::checkDataRange(LiteralNode* datatype_involved)
+  {
+    std::string error;
+
+    if(datatype_involved->type_ == "boolean")
+    {
+      if((datatype_involved->value_ != "false") && (datatype_involved->value_ != "true"))
+      {
+        error = " unmatching data type " + datatype_involved->type_ + " and data value " + datatype_involved->value_;
+      }
+    }
+    else if(datatype_involved->type_ == "integer")
+    {
+      try
+      {
+        const int conv_val = std::stoi(datatype_involved->value_);
+      }
+      catch(std::invalid_argument const& ex)
+      {
+        error = " unmatching data type " + datatype_involved->type_ + " and data value " + datatype_involved->value_;
+      }
+    }
+    else if(datatype_involved->type_ == "real")
+    {
+      try
+      {
+        const float conv_val = std::stof(datatype_involved->value_);
+      }
+      catch(std::invalid_argument const& ex)
+      {
+        error = " unmatching data type " + datatype_involved->type_ + " and data value " + datatype_involved->value_;
+      }
+    }
+    else if(datatype_involved->type_ == "double")
+    {
+      try
+      {
+        const double conv_val = std::stod(datatype_involved->value_);
+      }
+      catch(std::invalid_argument const& ex)
+      {
+        error = " unmatching data type " + datatype_involved->type_ + " and data value " + datatype_involved->value_;
+      }
+    }
+
+    return error;
+  }
 } // namespace ontologenius
