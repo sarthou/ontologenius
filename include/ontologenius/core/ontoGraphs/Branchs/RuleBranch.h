@@ -16,17 +16,16 @@ namespace ontologenius {
   // 3 flags selon les modifications
   // maitien d'une liste de classes non nommés pour les ano classes dans les antecedents
 
-
-  struct ClassAtom
+  struct ClassAtom_t
   {
     AnonymousClassElement* class_expression; // ClassBranch or ClassExpression
     std::string var;
     IndividualBranch* individual_involved;
 
-    ClassAtom() : class_expression(nullptr), individual_involved(nullptr) {}
+    ClassAtom_t() : class_expression(nullptr), individual_involved(nullptr) {}
   };
 
-  struct ObjectPropertyAtom
+  struct ObjectPropertyAtom_t
   {
     ObjectPropertyBranch* object_property_expression; // ObjectPropertyBranch*
     std::string var1;
@@ -34,10 +33,10 @@ namespace ontologenius {
     IndividualBranch* individual_involved_1;
     IndividualBranch* individual_involved_2;
 
-    ObjectPropertyAtom() : object_property_expression(nullptr), individual_involved_1(nullptr), individual_involved_2(nullptr) {}
+    ObjectPropertyAtom_t() : object_property_expression(nullptr), individual_involved_1(nullptr), individual_involved_2(nullptr) {}
   };
 
-  struct DataPropertyAtom
+  struct DataPropertyAtom_t
   {
     DataPropertyBranch* data_property_expression; // DataPropertyBranch*
     std::string var1;
@@ -45,21 +44,21 @@ namespace ontologenius {
     IndividualBranch* individual_involved;
     LiteralNode* datatype_involved;
 
-    DataPropertyAtom() : data_property_expression(nullptr), individual_involved(nullptr), datatype_involved(nullptr) {}
+    DataPropertyAtom_t() : data_property_expression(nullptr), individual_involved(nullptr), datatype_involved(nullptr) {}
   };
 
-  struct BuiltinAtom
+  struct BuiltinAtom_t
   {
     std::string builtin_type;
     std::vector<std::string> vars;
   };
 
-  struct RuleAtomList
+  struct RuleAtomList_t
   {
-    std::vector<ClassAtom*> class_atoms_;
-    std::vector<ObjectPropertyAtom*> object_atoms_;
-    std::vector<DataPropertyAtom*> data_atoms_;
-    std::vector<BuiltinAtom*> builtin_atoms_;
+    std::vector<ClassAtom_t*> class_atoms_;
+    std::vector<ObjectPropertyAtom_t*> object_atoms_;
+    std::vector<DataPropertyAtom_t*> data_atoms_;
+    std::vector<BuiltinAtom_t*> builtin_atoms_;
   };
 
   class RuleBranch : public ValuedNode
@@ -67,8 +66,8 @@ namespace ontologenius {
   public:
     explicit RuleBranch(const std::string& value) : ValuedNode(value) {}
 
-    RuleAtomList rule_antecedents_;
-    RuleAtomList rule_consequents_;
+    RuleAtomList_t rule_antecedents_;
+    RuleAtomList_t rule_consequents_;
   };
 
 } // namespace ontologenius
