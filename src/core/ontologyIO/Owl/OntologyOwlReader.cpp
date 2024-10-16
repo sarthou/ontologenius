@@ -31,13 +31,13 @@ namespace ontologenius {
                                        IndividualGraph* individual_graph,
                                        AnonymousClassGraph* anonymous_graph,
                                        RuleGraph* rule_graph) : OntologyReader(class_graph, object_property_graph, data_property_graph, individual_graph, anonymous_graph, rule_graph),
-                                                                               card_map_{
-                                                                                 {"owl:someValuesFrom",          "some"   },
-                                                                                 {"owl:allValuesFrom",           "only"   },
-                                                                                 {"owl:minQualifiedCardinality", "min"    },
-                                                                                 {"owl:maxQualifiedCardinality", "max"    },
-                                                                                 {"owl:qualifiedCardinality",    "exactly"},
-                                                                                 {"owl:hasValue",                "value"  }
+                                                                card_map_{
+                                                                  {"owl:someValuesFrom",          "some"   },
+                                                                  {"owl:allValuesFrom",           "only"   },
+                                                                  {"owl:minQualifiedCardinality", "min"    },
+                                                                  {"owl:maxQualifiedCardinality", "max"    },
+                                                                  {"owl:qualifiedCardinality",    "exactly"},
+                                                                  {"owl:hasValue",                "value"  }
   }
   {}
 
