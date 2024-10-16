@@ -326,11 +326,11 @@ namespace ontologenius {
     const std::vector<B*> branches = graph->get();
     for(auto& branch : branches)
       if(branch->nb_updates_ == 0)
-        branch->updated_ = false;
+        branch->setUpdated(false); // use B dedicated function with overload for each type of B
       else
       {
         branch->nb_updates_ = 0;
-        branch->updated_ = true;
+        branch->setUpdated(true);
       }
   }
 
@@ -341,7 +341,7 @@ namespace ontologenius {
       if(indiv->nb_updates_ != 0)
       {
         indiv->nb_updates_ = 0;
-        indiv->updated_ = true;
+        indiv->setUpdated(true);
       }
   }
 
@@ -351,7 +351,7 @@ namespace ontologenius {
     for(auto* indiv : indivs)
     {
       indiv->nb_updates_ = 0;
-      indiv->updated_ = true;
+      indiv->setUpdated(true);
     }
   }
 

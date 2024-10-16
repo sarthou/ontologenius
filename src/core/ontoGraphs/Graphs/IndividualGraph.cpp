@@ -1689,10 +1689,11 @@ namespace ontologenius {
           class_graph_->all_branchs_.push_back(inherited);
         }
       }
-      conditionalPushBack(branch->is_a_, ClassElement(inherited));
-      conditionalPushBack(inherited->individual_childs_, IndividualElement(branch));
-      branch->updated_ = true;
-      inherited->updated_ = true;
+
+      if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
+        branch->setUpdated(true);
+      if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
+        inherited->setUpdated(true);
 
       return true; // TODO verify that multi inheritances are compatible
     }
@@ -1709,10 +1710,10 @@ namespace ontologenius {
       const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
       const std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
 
-      conditionalPushBack(branch->is_a_, ClassElement(inherited));
-      conditionalPushBack(inherited->individual_childs_, IndividualElement(branch));
-      branch->updated_ = true;
-      inherited->updated_ = true;
+      if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
+        branch->setUpdated(true);
+      if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
+        inherited->setUpdated(true);
 
       return true; // TODO verify that multi inheritances are compatible
     }
@@ -1730,10 +1731,10 @@ namespace ontologenius {
       const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
       const std::lock_guard<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
 
-      conditionalPushBack(branch->is_a_, ClassElement(inherited));
-      conditionalPushBack(inherited->individual_childs_, IndividualElement(branch));
-      branch->updated_ = true;
-      inherited->updated_ = true;
+      if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
+        branch->setUpdated(true);
+      if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
+        inherited->setUpdated(true);
 
       return true; // TODO verify that multi inheritances are compatible
     }
@@ -1766,8 +1767,8 @@ namespace ontologenius {
 
       indiv_from->object_relations_.emplaceBack(property, indiv_on);
       index = (int)indiv_from->object_relations_.size() - 1;
-      indiv_on->updated_ = true;
-      indiv_from->updated_ = true;
+      indiv_on->setUpdated(true);
+      indiv_from->setUpdated(true);
     }
 
     indiv_from->object_relations_[index].probability = (float)proba;
@@ -1791,7 +1792,7 @@ namespace ontologenius {
 
       indiv_from->data_relations_[index].probability = (float)proba;
       indiv_from->data_relations_[index].infered = infered;
-      indiv_from->updated_ = true;
+      indiv_from->setUpdated(true);
 
       return index;
     }
@@ -1854,8 +1855,8 @@ namespace ontologenius {
 
       if(checkRangeAndDomain(branch_from, branch_prop, literal))
       {
-        conditionalPushBack(branch_from->data_relations_, IndivDataRelationElement(branch_prop, literal));
-        branch_from->updated_ = true;
+        if(conditionalPushBack(branch_from->data_relations_, IndivDataRelationElement(branch_prop, literal)))
+          branch_from->setUpdated(true);
       }
       else
         throw GraphException("Inconsistency prevented regarding the range or domain of the property");
@@ -1938,8 +1939,9 @@ namespace ontologenius {
         indiv->is_a_.erase(i);
 
         removeFromElemVect(class_branch->individual_childs_, indiv);
-        indiv->updated_ = true;
-        class_branch->updated_ = true;
+
+        indiv->setUpdated(true);
+        class_branch->setUpdated(true);
         return true;
       }
     }
@@ -1967,6 +1969,7 @@ namespace ontologenius {
     }
     const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
+    // udpated is not set to true, why not ?
     conditionalPushBack(branch_1->same_as_, IndividualElement(branch_2));
     conditionalPushBack(branch_2->same_as_, IndividualElement(branch_1));
 
@@ -2025,8 +2028,8 @@ namespace ontologenius {
     if(branch_2->same_as_.size() == 1)
       branch_2->same_as_.clear();
 
-    branch_1->updated_ = true;
-    branch_2->updated_ = true;
+    branch_1->setUpdated(true);
+    branch_2->setUpdated(true);
 
     return explanations;
   }
@@ -2065,9 +2068,9 @@ namespace ontologenius {
             explanations.insert(explanations.end(), exp_sym.begin(), exp_sym.end());
             explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
 
-            object_relation.second->updated_ = true;
+            object_relation.second->setUpdated(true);
             branch_from->object_relations_.erase(i);
-            branch_from->updated_ = true;
+            branch_from->setUpdated(true);
             applied = true;
 
             if(branch_on == nullptr)
@@ -2131,7 +2134,7 @@ namespace ontologenius {
             explanations.insert(explanations.end(), tmp_expl.begin(), tmp_expl.end());
 
             branch_from->data_relations_.erase(i);
-            branch_from->updated_ = true;
+            branch_from->setUpdated(true);
 
             if(fuzzy == false)
               return explanations;
@@ -2163,9 +2166,9 @@ namespace ontologenius {
           auto exp_ch = removeInductions(indiv_on, indiv_on->object_relations_, i);
           explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
 
-          indiv_on->object_relations_[i].second->updated_ = true;
+          indiv_on->object_relations_[i].second->setUpdated(true);
           indiv_on->object_relations_.erase(i);
-          indiv_on->updated_ = true;
+          indiv_on->setUpdated(true);
         }
         else
           i++;
@@ -2188,9 +2191,9 @@ namespace ontologenius {
           auto exp_ch = removeInductions(indiv_on, indiv_on->object_relations_, i);
           explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
 
-          indiv_on->object_relations_[i].second->updated_ = true;
+          indiv_on->object_relations_[i].second->setUpdated(true);
           indiv_on->object_relations_.erase(i);
-          indiv_on->updated_ = true;
+          indiv_on->setUpdated(true);
         }
     }
     return explanations;
@@ -2278,7 +2281,7 @@ namespace ontologenius {
   void IndividualGraph::cpyBranch(IndividualBranch* old_branch, IndividualBranch* new_branch)
   {
     new_branch->nb_updates_ = old_branch->nb_updates_;
-    new_branch->updated_ = old_branch->updated_;
+    new_branch->setUpdated(old_branch->isUpdated());
     new_branch->flags_ = old_branch->flags_;
 
     new_branch->dictionary_ = old_branch->dictionary_;
@@ -2287,7 +2290,7 @@ namespace ontologenius {
     for(const auto& is_a : old_branch->is_a_)
     {
       if(is_a.infered && (is_a.induced_traces.empty() == false))
-        new_branch->updated_ = true;
+        new_branch->setUpdated(true);
       else
         new_branch->is_a_.emplaceBack(is_a, class_graph_->container_.find(is_a.elem->value()));
     }
@@ -2302,7 +2305,7 @@ namespace ontologenius {
     {
       // infered relations using traces should not be copied but recomputed
       if(relation.infered && (relation.induced_traces.empty() == false))
-        new_branch->updated_ = true;
+        new_branch->setUpdated(true);
       else
       {
         auto* prop = object_property_graph_->container_.find(relation.first->value());

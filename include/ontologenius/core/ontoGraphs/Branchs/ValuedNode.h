@@ -14,11 +14,17 @@ namespace ontologenius {
   {
   public:
     unsigned int nb_updates_;
-    bool updated_;
+
     std::map<std::string, std::vector<std::string>> flags_;
 
     UpdatableNode() : nb_updates_(0), updated_(true)
     {}
+
+    bool isUpdated() { return updated_; }
+    void setUpdated(bool value) { updated_ = value; }
+
+  protected:
+    bool updated_;
   };
 
   class Dictionary

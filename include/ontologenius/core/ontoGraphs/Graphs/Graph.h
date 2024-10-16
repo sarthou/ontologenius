@@ -398,7 +398,7 @@ namespace ontologenius {
     {
       std::lock_guard<std::shared_timed_mutex> lock(this->mutex_);
       branch->setSteadyDictionary(lang.substr(1), name);
-      branch->updated_ = true;
+      branch->setUpdated(true);
       return true;
     }
     else

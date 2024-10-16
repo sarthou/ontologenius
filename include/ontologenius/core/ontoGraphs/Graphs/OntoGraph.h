@@ -411,20 +411,20 @@ namespace ontologenius {
   }
 
   template<typename B>
-  bool OntoGraph<B>::addInheritage(B* branch, B* inherited)
+  bool OntoGraph<B>::addInheritage(B* branch, B* inherited) // TODO propagate update only if updated
   {
     if((branch != nullptr) && (inherited != nullptr))
     {
-      this->conditionalPushBack(branch->mothers_, SingleElement<B*>(inherited));
-      this->conditionalPushBack(inherited->childs_, SingleElement<B*>(branch));
-      branch->updated_ = true;
-      inherited->updated_ = true;
+      if(this->conditionalPushBack(branch->mothers_, SingleElement<B*>(inherited)))
+        branch->setUpdated(true);
+      if(this->conditionalPushBack(inherited->childs_, SingleElement<B*>(branch)))
+        inherited->setUpdated(true);
       mitigate(branch);
 
       std::unordered_set<B*> downs;
       getDownPtr(branch, downs);
       for(auto* down : downs)
-        down->updated_ = true; // propagate update
+        down->setUpdated(true); // propagate update
 
       return true; // TODO verify that multi inheritances are compatible
     }
@@ -463,8 +463,8 @@ namespace ontologenius {
         branch->mothers_.erase(i);
 
         this->removeFromElemVect(inherited->childs_, branch);
-        branch->updated_ = true;
-        inherited->updated_ = true;
+        branch->setUpdated(true);
+        inherited->setUpdated(true);
         return explanations;
       }
     }

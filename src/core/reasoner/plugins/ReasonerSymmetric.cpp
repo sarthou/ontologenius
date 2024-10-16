@@ -17,7 +17,7 @@ namespace ontologenius {
     // not impacted by same as
     for(const auto& indiv : ontology_->individual_graph_.get())
     {
-      if(indiv->updated_ == true || indiv->hasUpdatedObjectRelation())
+      if(indiv->isUpdated() || indiv->hasUpdatedObjectRelation())
         for(auto& relation : indiv->object_relations_)
         {
           if(relation.first->properties_.symetric_property_ == true)

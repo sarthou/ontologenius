@@ -22,7 +22,7 @@ namespace ontologenius {
     const std::lock_guard<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
 
     for(auto* indiv : ontology_->individual_graph_.get())
-      if((indiv->updated_ == true) || (indiv->flags_.find("chain") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation())
+      if(indiv->isUpdated() || (indiv->flags_.find("chain") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation())
       {
         bool has_active_chain = false;
         // /!\ Do not use a for each loop style.

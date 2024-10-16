@@ -37,7 +37,7 @@ namespace ontologenius {
 
     for(auto* indiv : ontology_->individual_graph_.get())
     {
-      if((indiv->updated_ == true) || (indiv->flags_.find("equiv") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation() || indiv->hasUpdatedDataRelation())
+      if(indiv->isUpdated() || (indiv->flags_.find("equiv") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation() || indiv->hasUpdatedDataRelation())
       {
         bool has_active_equiv = false;
 

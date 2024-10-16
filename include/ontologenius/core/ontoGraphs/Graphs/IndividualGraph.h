@@ -220,7 +220,7 @@ namespace ontologenius {
     for(size_t i = 0; i < relations.has_induced_inheritance_relations[relation_index]->triplets.size();)
     {
       auto triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
-     
+
       std::vector<std::pair<std::string, std::string>> tmp;
       if(removeInheritage(triplet.subject, triplet.object, tmp, true))
       {

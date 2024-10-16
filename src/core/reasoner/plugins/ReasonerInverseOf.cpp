@@ -17,7 +17,7 @@ namespace ontologenius {
   {
     const std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
     for(const auto& indiv : ontology_->individual_graph_.get())
-      if(indiv->updated_ || indiv->hasUpdatedObjectRelation())
+      if(indiv->isUpdated() || indiv->hasUpdatedObjectRelation())
       {
         for(const IndivObjectRelationElement& relation : indiv->object_relations_)
         {

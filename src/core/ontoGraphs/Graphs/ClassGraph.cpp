@@ -1183,7 +1183,7 @@ namespace ontologenius {
         const std::lock_guard<std::shared_timed_mutex> lock_indiv(individual_graph_->mutex_);
         getDownIndividualPtr(branch, down_individuals);
         for(auto* indiv : down_individuals)
-          indiv->updated_ = true;
+          indiv->setUpdated(true);
         return true;
       }
       else
@@ -1307,9 +1307,9 @@ namespace ontologenius {
         {
           if((class_on == "_") || (branch_from->object_relations_[i].second->value() == class_on))
           {
-            branch_from->object_relations_[i].second->updated_ = true;
+            branch_from->object_relations_[i].second->setUpdated(true);
             branch_from->object_relations_.erase(branch_from->object_relations_.begin() + (int)i);
-            branch_from->updated_ = true;
+            branch_from->setUpdated(true);
           }
           else
             i++;
@@ -1335,7 +1335,7 @@ namespace ontologenius {
              ((data == "_") || (branch_from->data_relations_[i].second->value_ == data)))
           {
             branch_from->data_relations_.erase(branch_from->data_relations_.begin() + (int)i);
-            branch_from->updated_ = true;
+            branch_from->setUpdated(true);
           }
           else
             i++;
@@ -1446,7 +1446,7 @@ namespace ontologenius {
   void ClassGraph::cpyBranch(ClassBranch* old_branch, ClassBranch* new_branch)
   {
     new_branch->nb_updates_ = old_branch->nb_updates_;
-    new_branch->updated_ = old_branch->updated_;
+    new_branch->setUpdated(old_branch->isUpdated());
     new_branch->flags_ = old_branch->flags_;
 
     new_branch->dictionary_ = old_branch->dictionary_;
@@ -1459,7 +1459,7 @@ namespace ontologenius {
     {
       // infered inheritance using traces should not be copied but recomputed
       if(mother.infered && (mother.induced_traces.empty() == false))
-        new_branch->updated_ = true;
+        new_branch->setUpdated(true);
       else
         new_branch->mothers_.emplaceBack(mother, container_.find(mother.elem->value()));
     }
