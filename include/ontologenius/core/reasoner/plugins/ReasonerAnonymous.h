@@ -32,6 +32,9 @@ namespace ontologenius {
     bool resolveTree(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
     bool resolveTree(LiteralNode* literal, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 
+    bool resolveDisjunctionTree(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
+    bool resolveDisjunctionTreeFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem);
+
     bool checkRestrictionFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem);
     bool checkRestriction(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
     bool checkTypeRestriction(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);

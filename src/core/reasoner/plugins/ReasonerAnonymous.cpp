@@ -191,7 +191,12 @@ namespace ontologenius {
       return false;
     }
     else if(ano_elem->logical_type_ == logical_not)
-      return !resolveFirstLayer(indiv, ano_elem->sub_elements_.front());
+    {
+      if(standard_mode_ == true) // OWA
+        return resolveDisjunctionTreeFirstLayer(indiv, ano_elem->sub_elements_.front()); // need to make a version without the 'used' vector
+      else                                                                               // CWA
+        return !resolveFirstLayer(indiv, ano_elem->sub_elements_.front());
+    }
     else
       return checkRestrictionFirstLayer(indiv, ano_elem);
     return false;
@@ -258,12 +263,74 @@ namespace ontologenius {
     {
       // do smth with used (maybe pass a tmp_used)
       if(standard_mode_ == true)
-        return false;
+        return resolveDisjunctionTree(indiv, ano_elem->sub_elements_.front(), used);
       else
-        return !resolveTree(indiv, ano_elem->sub_elements_.front(), used);
+        return !resolveTree(indiv, ano_elem->sub_elements_.front(), used); // CWA
     }
     else
       return checkRestriction(indiv, ano_elem, used);
+
+    return false;
+  }
+
+  bool ReasonerAnonymous::resolveDisjunctionTree(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  {
+    // works for class and class expression on object property range, not for data property
+    // do we need to take into account the used, since disjointness isn't dynamic
+    // check the disjunctions between the indiv and the class elements in the ano_elem tree (not( Lidar and Sonar))
+    if(ano_elem->logical_type_ == logical_and)
+    {
+      for(auto* elem : ano_elem->sub_elements_)
+      {
+        if(resolveDisjunctionTree(indiv, elem, used) == false) // if false, one of the classes is not disjunctive, and thus the eq is not verif
+        {
+          used.clear();
+          return false;
+        }
+      }
+      return true;
+    }
+    else if(ano_elem->logical_type_ == logical_or)
+    {
+      for(auto* elem : ano_elem->sub_elements_)
+      {
+        if(resolveDisjunctionTree(indiv, elem, used) == true) // if true, at least one in the or expression is disjoint, so eq is verif
+          return true;
+      }
+      used.clear();
+      return false;
+    }
+    else if(ano_elem->class_involved_ != nullptr)
+      return checkClassesDisjointess(indiv, ano_elem->class_involved_); // actual check of disjointness
+
+    return false;
+  }
+
+  bool ReasonerAnonymous::resolveDisjunctionTreeFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem)
+  {
+    // works for class and class expression on object property range, not for data property
+    // do we need to take into account the used, since disjointness isn't dynamic
+    // check the disjunctions between the indiv and the class elements in the ano_elem tree (not( Lidar and Sonar))
+    if(ano_elem->logical_type_ == logical_and)
+    {
+      for(auto* elem : ano_elem->sub_elements_)
+      {
+        if(resolveDisjunctionTreeFirstLayer(indiv, elem) == false)
+          return false;
+      }
+      return true;
+    }
+    else if(ano_elem->logical_type_ == logical_or)
+    {
+      for(auto* elem : ano_elem->sub_elements_)
+      {
+        if(resolveDisjunctionTreeFirstLayer(indiv, elem) == true)
+          return true;
+      }
+      return false;
+    }
+    else if(ano_elem->class_involved_ != nullptr)
+      return checkClassesDisjointess(indiv, ano_elem->class_involved_); // actual check of disjointness
 
     return false;
   }
