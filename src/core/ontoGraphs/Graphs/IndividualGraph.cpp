@@ -1690,12 +1690,21 @@ namespace ontologenius {
         }
       }
 
-      if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
-        branch->setUpdated(true);
-      if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
-        inherited->setUpdated(true);
+      std::unordered_set<ClassBranch*> ups_indiv;
+      this->getUpPtr(branch, ups_indiv);
 
-      return true; // TODO verify that multi inheritances are compatible
+      auto* disjoint_intersection = class_graph_->isDisjoint(ups_indiv, inherited);
+
+      if(disjoint_intersection != nullptr)
+        throw GraphException("The individual has a class disjointess over " + disjoint_intersection->value() + " in its inheritance" + inherited->value());
+      else
+      {
+        if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
+          branch->setUpdated(true);
+        if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
+          inherited->setUpdated(true);
+        return true; // TODO verify that multi inheritances are compatible
+      }
     }
     else
       return false;
