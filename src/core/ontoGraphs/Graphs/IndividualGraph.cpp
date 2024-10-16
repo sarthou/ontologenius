@@ -1978,12 +1978,16 @@ namespace ontologenius {
     }
     const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
 
-    // udpated is not set to true, why not ?
-    conditionalPushBack(branch_1->same_as_, IndividualElement(branch_2));
-    conditionalPushBack(branch_2->same_as_, IndividualElement(branch_1));
+    // maybe merge the two conditions together
+    if(conditionalPushBack(branch_1->same_as_, IndividualElement(branch_2)) == true)
+      branch_1->setUpdated(true);
+    if(conditionalPushBack(branch_2->same_as_, IndividualElement(branch_1)) == true)
+      branch_2->setUpdated(true);
 
-    conditionalPushBack(branch_1->same_as_, IndividualElement(branch_1));
-    conditionalPushBack(branch_2->same_as_, IndividualElement(branch_2));
+    if(conditionalPushBack(branch_1->same_as_, IndividualElement(branch_1)) == true)
+      branch_1->setUpdated(true);
+    if(conditionalPushBack(branch_2->same_as_, IndividualElement(branch_2)) == true)
+      branch_2->setUpdated(true);
   }
 
   std::vector<std::pair<std::string, std::string>> IndividualGraph::removeSameAs(const std::string& indiv_1, const std::string& indiv_2, bool protect_stated)
