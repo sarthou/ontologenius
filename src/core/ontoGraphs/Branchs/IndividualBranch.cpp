@@ -34,12 +34,12 @@ namespace ontologenius {
   // hasUpdateOnObjectProperty
   bool IndividualBranch::hasUpdatedObjectRelation() // a renommer/ clarifier propriété qui a changé (un héritage par exemple)
   {
-    return (std::find_if(object_relations_.begin(), object_relations_.end(), [](const auto& relation) { return relation.first->isUpdated(); }) != object_relations_.end());
+    return (std::find_if(object_relations_.begin(), object_relations_.end(), [](const auto& relation) { return (relation.first->isUpdated() && relation.first->mothers_.isUpdated()); }) != object_relations_.end());
   }
 
   bool IndividualBranch::hasUpdatedDataRelation()
   {
-    return (std::find_if(data_relations_.begin(), data_relations_.end(), [](const auto& relation) { return relation.first->isUpdated(); }) != data_relations_.end());
+    return (std::find_if(data_relations_.begin(), data_relations_.end(), [](const auto& relation) { return (relation.first->isUpdated() && relation.first->mothers_.isUpdated()); }) != data_relations_.end());
   }
 
 } // namespace ontologenius

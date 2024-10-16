@@ -32,11 +32,15 @@ namespace ontologenius {
     inline bool empty() const { return relations.empty(); }
     T& operator[](size_t index) { return relations[index]; }
 
+    void resetUpdated() { updated_ = false; }
+    bool isUpdated() { return updated_; }
+
     size_t pushBack(T& relation)
     {
       relations.emplace_back(relation);
       has_induced_object_relations.emplace_back(new ObjectRelationTriplets);
       has_induced_inheritance_relations.emplace_back(new InheritedRelationTriplets);
+      updated_ = true;
       return relations.size() - 1;
     }
 
@@ -45,6 +49,7 @@ namespace ontologenius {
     {
       has_induced_object_relations.emplace_back(new ObjectRelationTriplets);
       has_induced_inheritance_relations.emplace_back(new InheritedRelationTriplets);
+      updated_ = true;
       return relations.emplace_back(std::forward<Args>(args)...);
     }
 
@@ -80,6 +85,9 @@ namespace ontologenius {
     inline typename std::vector<T>::const_iterator cend() const { return relations.cend(); }
     inline typename std::vector<T>::reverse_iterator rbegin() { return relations.rbegin(); }
     inline typename std::vector<T>::reverse_iterator rend() { return relations.rend(); }
+
+  private:
+    bool updated_;
   };
 
 } // namespace ontologenius
