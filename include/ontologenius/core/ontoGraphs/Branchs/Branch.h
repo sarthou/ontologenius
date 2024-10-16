@@ -23,6 +23,13 @@ namespace ontologenius {
     std::vector<SingleElement<T*>> disjoints_;
 
     explicit Branch(const std::string& value) : ValuedNode(value) {}
+
+    void setUpdated(bool value)
+    {
+      if(value == false)
+        mothers_.resetUpdated();
+      ValuedNode::setUpdated(value);
+    }
   };
 
 } // namespace ontologenius

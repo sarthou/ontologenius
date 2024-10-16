@@ -35,6 +35,19 @@ namespace ontologenius {
 
     bool hasUpdatedObjectRelation();
     bool hasUpdatedDataRelation();
+
+    void setUpdated(bool value)
+    {
+      if(value == false)
+      {
+        is_a_.resetUpdated();
+        object_relations_.resetUpdated();
+        data_relations_.resetUpdated();
+        same_as_.resetUpdated();
+      }
+      ValuedNode::setUpdated(value);
+    }
+
   };
 
 } // namespace ontologenius
