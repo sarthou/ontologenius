@@ -64,20 +64,18 @@ namespace ontologenius {
   {
     for(const auto& var : keys_variables) // loop over each variable in the rules
     {
-      for(size_t i = 0; i < mapping_var_classes[var].size(); i++)
+      auto& var_classes = mapping_var_classes[var];
+      for(size_t i = 0; i < var_classes.size(); i++)
       {
-        for(size_t j = i; j < mapping_var_classes[var].size(); j++)
+        for(size_t j = i + 1; j < var_classes.size(); j++)
         {
-          if(mapping_var_classes[var][i] != mapping_var_classes[var][j])
+          std::vector<std::string> errs;
+          errs = checkClassesVectorDisjointness(var_classes[i], var_classes[j]);
+          if(errs.empty() == false)
           {
-            std::vector<std::string> errs;
-            errs = checkClassesVectorDisjointness(mapping_var_classes[var][i], mapping_var_classes[var][j]);
-            if(errs.empty() == false)
-            {
-              const std::string err_base = "In rule  " + current_rule_ + ": error over variable " + var + " because of ";
-              for(const auto& err : errs)
-                printError(err_base + err);
-            }
+            const std::string err_base = "In rule " + current_rule_ + ": error over variable " + var + " because of ";
+            for(const auto& err : errs)
+              printError(err_base + err);
           }
         }
       }
@@ -97,14 +95,10 @@ namespace ontologenius {
 
     for(auto* atom : atom_list->data_atoms_)
       resolveDataAtom(atom, mapping_var_classes, mapping_var_data, keys_variables);
-
-    // for(auto* atom : atom_list->builtin_atoms_)
-    //   resolveBuiltinAtom(atom, mapping_var_classes);
   }
 
   void RuleChecker::resolveClassAtom(ClassAtom_t* atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables)
   {
-    // std::cout << "resolveClassAtom_t " << std::endl;
     std::vector<std::string> errs;
 
     if(!atom->var.empty())
@@ -138,7 +132,7 @@ namespace ontologenius {
       errs = resolveInstantiatedClass(atom->class_expression->class_involved_, atom->individual_involved);
       if(errs.empty() == false)
       {
-        const std::string err_base = "In rule  " + current_rule_ + ": error over instantiated class atom " +
+        const std::string err_base = "In rule " + current_rule_ + ": error over instantiated class atom " +
                                      atom->class_expression->class_involved_->value() + "(" + atom->individual_involved->value() + ")" + " because of ";
         for(const auto& err : errs)
           printError(err_base + err);
@@ -150,7 +144,6 @@ namespace ontologenius {
                                       std::unordered_map<std::string, std::unordered_map<std::string, std::vector<ObjectPropertyBranch*>>>& mapping_var_obj, std::set<std::string>& keys_variables)
   {
     std::vector<std::string> errs;
-    // std::cout << "resolveObjectAtom " << std::endl;
 
     if(atom->var1.empty() == false)
     {
@@ -162,7 +155,7 @@ namespace ontologenius {
       if(errs.empty() == false)
       {
         errs = resolveInstantiatedObjectProperty(atom->object_property_expression, atom->individual_involved_1, nullptr);
-        const std::string err_base = "In rule  " + current_rule_ + ": error over instantiated object property atom " + atom->toString() + " on subject " + atom->individual_involved_1->value() + " because of ";
+        const std::string err_base = "In rule " + current_rule_ + ": error over instantiated object property atom " + atom->toString() + " on subject " + atom->individual_involved_1->value() + " because of ";
         for(const auto& err : errs)
           printError(err_base + err);
       }
@@ -178,7 +171,7 @@ namespace ontologenius {
       if(errs.empty() == false)
       {
         errs = resolveInstantiatedObjectProperty(atom->object_property_expression, nullptr, atom->individual_involved_2);
-        const std::string err_base = "In rule  " + current_rule_ + ": error over instantiated object property atom " + atom->toString() + " on object " + atom->individual_involved_1->value() + " because of ";
+        const std::string err_base = "In rule " + current_rule_ + ": error over instantiated object property atom " + atom->toString() + " on object " + atom->individual_involved_1->value() + " because of ";
         for(const auto& err : errs)
           printError(err_base + err);
       }
@@ -194,7 +187,6 @@ namespace ontologenius {
                                     std::unordered_map<std::string, std::unordered_map<std::string, std::vector<DataPropertyBranch*>>>& mapping_var_data, std::set<std::string>& keys_variables)
   {
     std::vector<std::string> errs;
-    // std::cout << "resolveDataAtom " << std::endl;
 
     if(atom->var1.empty() == false)
     {
@@ -206,7 +198,7 @@ namespace ontologenius {
       if(errs.empty() == false)
       {
         errs = resolveInstantiatedDataProperty(atom->data_property_expression, atom->individual_involved);
-        const std::string err_base = "In rule  " + current_rule_ + ": error over instantiated data property atom " + atom->toString() +
+        const std::string err_base = "In rule " + current_rule_ + ": error over instantiated data property atom " + atom->toString() +
                                      " on subject " + atom->individual_involved->value() + " because of ";
         for(const auto& err : errs)
           printError(err_base + err);
@@ -216,7 +208,7 @@ namespace ontologenius {
     if(atom->datatype_involved != nullptr)
     {
       std::string err;
-      const std::string err_base = "In rule  " + current_rule_ + ": error over instantiated data property atom " + atom->toString() +
+      const std::string err_base = "In rule " + current_rule_ + ": error over instantiated data property atom " + atom->toString() +
                                    " on object " + atom->datatype_involved->value() + " because of ";
       err = checkDataRange(atom->datatype_involved);
       if(err.empty() == false)
@@ -245,7 +237,7 @@ namespace ontologenius {
       {
         for(auto& is_a_elem : same_elem.elem->is_a_)
         {
-          err = checkClassesDisjointness(class_branch, is_a_elem.elem);
+          err = checkBranchDisjointness(class_branch, is_a_elem.elem, rule_graph_->class_graph_);
           if(err.empty() == false)
             errs.push_back(err);
         }
@@ -256,7 +248,7 @@ namespace ontologenius {
       // check for the indiv
       for(auto& is_a_elem : indiv->is_a_)
       {
-        err = checkClassesDisjointness(class_branch, is_a_elem.elem);
+        err = checkBranchDisjointness(class_branch, is_a_elem.elem, rule_graph_->class_graph_);
         if(err.empty() == false)
           errs.push_back(err);
       }
@@ -320,7 +312,8 @@ namespace ontologenius {
     {
       for(const auto& elem_left : classes_left)
       {
-        const std::string err = checkClassesDisjointness(elem_left.elem, elem_right.elem);
+
+        const std::string err = checkBranchDisjointness(elem_left.elem, elem_right.elem, rule_graph_->class_graph_);
         if(err.empty() == false)
           errs.push_back(err);
       }
@@ -328,67 +321,10 @@ namespace ontologenius {
     return errs;
   }
 
-  std::string RuleChecker::checkClassesDisjointness(ClassBranch* class_left, ClassBranch* class_right)
-  {
-    std::string err;
-    std::unordered_set<ClassBranch*> disjoints;
-
-    rule_graph_->class_graph_->getDisjoint(class_left, disjoints);
-
-    ClassBranch* first_crash = nullptr;
-    if(disjoints.empty() == false)
-    {
-      std::unordered_set<ClassBranch*> ups;
-      rule_graph_->class_graph_->getUpPtr(class_right, ups);
-      first_crash = rule_graph_->class_graph_->firstIntersection(ups, disjoints);
-    }
-
-    if(first_crash != nullptr)
-    {
-      std::unordered_set<ClassBranch*> intersection_ups;
-      rule_graph_->class_graph_->getUpPtr(first_crash, intersection_ups);
-      std::unordered_set<ClassBranch*> left_ups;
-      rule_graph_->class_graph_->getUpPtr(class_left, left_ups);
-
-      ClassBranch* explanation_1 = nullptr;
-      ClassBranch* explanation_2 = nullptr;
-      for(auto* up : intersection_ups)
-      {
-        explanation_2 = up;
-        explanation_1 = rule_graph_->class_graph_->firstIntersection(left_ups, up->disjoints_);
-        if(explanation_1 != nullptr)
-          break;
-      }
-
-      std::string exp_str;
-      if(class_right != explanation_2)
-        exp_str = class_right->value() + " is a " + explanation_2->value();
-      if(class_left != explanation_1)
-      {
-        if(exp_str.empty() == false)
-          exp_str += " and ";
-        exp_str += class_left->value() + " is a " + explanation_1->value();
-      }
-
-      if(explanation_1 == nullptr)
-        err = "disjointness between " + class_left->value() + " and " + class_right->value() +
-              " over " + first_crash->value();
-      else if(exp_str.empty() == false)
-        err = "disjointness between " + class_left->value() + " and " + class_right->value() +
-              " because " + explanation_1->value() + " and " + explanation_2->value() + " are disjoint" +
-              " and " + exp_str;
-      else
-        err = "disjointness between " + class_left->value() + " and " + class_right->value() +
-              " because " + explanation_1->value() + " and " + explanation_2->value() + " are disjoint";
-    }
-
-    return err;
-  }
-
   void RuleChecker::checkObjectPropertyDisjointess(std::unordered_map<std::string, std::unordered_map<std::string, std::vector<ObjectPropertyBranch*>>>& mapping_var_obj, std::set<std::string>& keys_variables)
   {
     std::string err;
-    const std::string err_base = "In rule  " + current_rule_ + ": error over object property atom" + " because of ";
+    const std::string err_base = "In rule " + current_rule_ + ": error over object property atom" + " because of ";
     // map is [var1][var2][obj_prop1, ..., objpropn]
     //               ...
     //              [varn][obj_prop1, ..., objpropn]
@@ -401,75 +337,15 @@ namespace ontologenius {
         auto& obj_elems = mapping_var_obj[var_elem1][var_elem2];
         for(size_t i = 0; i < obj_elems.size(); i++)
         {
-          for(size_t j = i; j < obj_elems.size(); j++)
+          for(size_t j = i + 1; j < obj_elems.size(); j++)
           {
-            if(obj_elems[i] != obj_elems[j])
-            {
-              err = checkObjectPropertyDisjointess(obj_elems[i], obj_elems[j]);
-              if(err.empty() == false)
-                printError(err_base + err);
-            }
+            err = checkBranchDisjointness(obj_elems[i], obj_elems[j], rule_graph_->object_property_graph_);
+            if(err.empty() == false)
+              printError(err_base + err);
           }
         }
       }
     }
-  }
-
-  std::string RuleChecker::checkObjectPropertyDisjointess(ObjectPropertyBranch* branch_left, ObjectPropertyBranch* branch_right)
-  {
-    std::string err;
-    std::unordered_set<ObjectPropertyBranch*> disjoints;
-
-    rule_graph_->object_property_graph_->getDisjoint(branch_left, disjoints);
-
-    ObjectPropertyBranch* first_crash = nullptr;
-    if(disjoints.empty() == false)
-    {
-      std::unordered_set<ObjectPropertyBranch*> ups;
-      rule_graph_->object_property_graph_->getUpPtr(branch_right, ups);
-      first_crash = rule_graph_->object_property_graph_->firstIntersection(ups, disjoints);
-    }
-
-    if(first_crash != nullptr)
-    {
-      std::unordered_set<ObjectPropertyBranch*> intersection_ups;
-      rule_graph_->object_property_graph_->getUpPtr(first_crash, intersection_ups);
-      std::unordered_set<ObjectPropertyBranch*> left_ups;
-      rule_graph_->object_property_graph_->getUpPtr(branch_left, left_ups);
-
-      ObjectPropertyBranch* explanation_1 = nullptr;
-      ObjectPropertyBranch* explanation_2 = nullptr;
-      for(auto* up : intersection_ups)
-      {
-        explanation_2 = up;
-        explanation_1 = rule_graph_->object_property_graph_->firstIntersection(left_ups, up->disjoints_);
-        if(explanation_1 != nullptr)
-          break;
-      }
-
-      std::string exp_str;
-      if(branch_right != explanation_2)
-        exp_str = branch_right->value() + " is a " + explanation_2->value();
-      if(branch_left != explanation_1)
-      {
-        if(exp_str.empty() == false)
-          exp_str += " and ";
-        exp_str += branch_left->value() + " is a " + explanation_1->value();
-      }
-
-      if(explanation_1 == nullptr)
-        err = "disjointness between " + branch_left->value() + " and " + branch_right->value() +
-              " over " + first_crash->value();
-      else if(exp_str.empty() == false)
-        err = "disjointness between " + branch_left->value() + " and " + branch_right->value() +
-              " because " + explanation_1->value() + " and " + explanation_2->value() + " are disjoint" +
-              " and " + exp_str;
-      else
-        err = "disjointness between " + branch_left->value() + " and " + branch_right->value() +
-              " because " + explanation_1->value() + " and " + explanation_2->value() + " are disjoint";
-    }
-
-    return err;
   }
 
   void RuleChecker::checkDataPropertyDisjointess(std::unordered_map<std::string, std::unordered_map<std::string, std::vector<DataPropertyBranch*>>>& mapping_var_data, std::set<std::string>& keys_variables)
@@ -485,104 +361,21 @@ namespace ontologenius {
     {
       for(auto& var_elem2 : keys_variables) // loop 2nd time over variables in map
       {
-        if(var_elem1 != var_elem2)
-        {
-          auto& data_elems = mapping_var_data[var_elem1][var_elem2]; // get the element which contains very property relating var1 and var2
-          for(auto& data_elem1 : data_elems)
-          {
-            for(auto& data_elem2 : data_elems)
-            {
-              if(data_elem1 != data_elem2)
-              {
-                err = checkDataPropertyDisjointess(data_elem1, data_elem2);
-                if(err.empty() == false)
-                  printError(err_base + err);
-              }
-            }
-          }
-        }
-      }
-    }
-
-    for(auto& var_elem1 : keys_variables) // loop over variables in map
-    {
-      for(auto& var_elem2 : keys_variables) // loop 2nd time over variables in map
-      {
         auto& data_elems = mapping_var_data[var_elem1][var_elem2];
         for(size_t i = 0; i < data_elems.size(); i++)
         {
-          for(size_t j = i; j < data_elems.size(); j++)
+          for(size_t j = i + 1; j < data_elems.size(); j++)
           {
-            if(data_elems[i] != data_elems[j])
-            {
-              err = checkDataPropertyDisjointess(data_elems[i], data_elems[j]);
-              if(err.empty() == false)
-                printError(err_base + err);
-            }
+            err = checkBranchDisjointness(data_elems[i], data_elems[j], rule_graph_->data_property_graph_);
+            if(err.empty() == false)
+              printError(err_base + err);
           }
         }
       }
     }
   }
 
-  std::string RuleChecker::checkDataPropertyDisjointess(DataPropertyBranch* branch_left, DataPropertyBranch* branch_right)
-  {
-    std::string err;
-    std::unordered_set<DataPropertyBranch*> disjoints;
-
-    rule_graph_->data_property_graph_->getDisjoint(branch_left, disjoints);
-
-    DataPropertyBranch* first_crash = nullptr;
-    if(disjoints.empty() == false)
-    {
-      std::unordered_set<DataPropertyBranch*> ups;
-      rule_graph_->data_property_graph_->getUpPtr(branch_right, ups);
-      first_crash = rule_graph_->data_property_graph_->firstIntersection(ups, disjoints);
-    }
-
-    if(first_crash != nullptr)
-    {
-      std::unordered_set<DataPropertyBranch*> intersection_ups;
-      rule_graph_->data_property_graph_->getUpPtr(first_crash, intersection_ups);
-      std::unordered_set<DataPropertyBranch*> left_ups;
-      rule_graph_->data_property_graph_->getUpPtr(branch_left, left_ups);
-
-      DataPropertyBranch* explanation_1 = nullptr;
-      DataPropertyBranch* explanation_2 = nullptr;
-      for(auto* up : intersection_ups)
-      {
-        explanation_2 = up;
-        explanation_1 = rule_graph_->data_property_graph_->firstIntersection(left_ups, up->disjoints_);
-        if(explanation_1 != nullptr)
-          break;
-      }
-
-      std::string exp_str;
-      if(branch_right != explanation_2)
-        exp_str = branch_right->value() + " is a " + explanation_2->value();
-      if(branch_left != explanation_1)
-      {
-        if(exp_str.empty() == false)
-          exp_str += " and ";
-        exp_str += branch_left->value() + " is a " + explanation_1->value();
-      }
-
-      if(explanation_1 == nullptr)
-        err = "disjointness between " + branch_left->value() + " and " + branch_right->value() +
-              " over " + first_crash->value();
-      else if(exp_str.empty() == false)
-        err = "disjointness between " + branch_left->value() + " and " + branch_right->value() +
-              " because " + explanation_1->value() + " and " + explanation_2->value() + " are disjoint" +
-              " and " + exp_str;
-      else
-        err = "disjointness between " + branch_left->value() + " and " + branch_right->value() +
-              " because " + explanation_1->value() + " and " + explanation_2->value() + " are disjoint";
-    }
-
-    return err;
-  }
-
-  std::string RuleChecker::checkDataRange(LiteralNode* datatype_involved)
+  std::string RuleChecker::checkDataRange(LiteralNode* datatype_involved) // au niveau de LiteralNode
   {
     std::string error;
 

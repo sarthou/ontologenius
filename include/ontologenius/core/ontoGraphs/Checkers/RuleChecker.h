@@ -52,63 +52,63 @@ namespace ontologenius {
                                       std::set<std::string>& keys_variables);
     std::string checkDataRange(LiteralNode* datatype_involved);
 
-    // template<typename T>
-    // std::string checkBranchDisjointness(const T& branch_left, const T& branch_right)
-    // {
-    //   std::string err;
-    //   std::unordered_set<T*> disjoints;
+    template<typename T, typename G>
+    std::string checkBranchDisjointness(T* branch_left, T* branch_right, G* graph_)
+    {
+      std::string err;
+      std::unordered_set<T*> disjoints;
 
-    //   rule_graph_->object_property_graph_->getDisjoint(branch_left, disjoints);
+      graph_->getDisjoint(branch_left, disjoints);
 
-    //   T* first_crash = nullptr;
-    //   if(disjoints.empty() == false)
-    //   {
-    //     std::unordered_set<T*> ups;
-    //     rule_graph_->object_property_graph_->getUpPtr(branch_right, ups);
-    //     first_crash = rule_graph_->object_property_graph_->firstIntersection(ups, disjoints);
-    //   }
+      T* first_crash = nullptr;
+      if(disjoints.empty() == false)
+      {
+        std::unordered_set<T*> ups;
+        graph_->getUpPtr(branch_right, ups);
+        first_crash = graph_->firstIntersection(ups, disjoints);
+      }
 
-    //   if(first_crash != nullptr)
-    //   {
-    //     std::unordered_set<ObjectPropertyBranch*> intersection_ups;
-    //     rule_graph_->object_property_graph_->getUpPtr(first_crash, intersection_ups);
-    //     std::unordered_set<ObjectPropertyBranch*> left_ups;
-    //     rule_graph_->object_property_graph_->getUpPtr(branch_left, left_ups);
+      if(first_crash != nullptr)
+      {
+        std::unordered_set<T*> intersection_ups;
+        graph_->getUpPtr(first_crash, intersection_ups);
+        std::unordered_set<T*> left_ups;
+        graph_->getUpPtr(branch_left, left_ups);
 
-    //     ObjectPropertyBranch* explanation_1 = nullptr;
-    //     ObjectPropertyBranch* explanation_2 = nullptr;
-    //     for(auto* up : intersection_ups)
-    //     {
-    //       explanation_2 = up;
-    //       explanation_1 = rule_graph_->object_property_graph_->firstIntersection(left_ups, up->disjoints_);
-    //       if(explanation_1 != nullptr)
-    //         break;
-    //     }
+        T* explanation_1 = nullptr;
+        T* explanation_2 = nullptr;
+        for(auto* up : intersection_ups)
+        {
+          explanation_2 = up;
+          explanation_1 = graph_->firstIntersection(left_ups, up->disjoints_);
+          if(explanation_1 != nullptr)
+            break;
+        }
 
-    //     std::string exp_str;
-    //     if(branch_right != explanation_2)
-    //       exp_str = branch_right->value() + " is a " + explanation_2->value();
-    //     if(branch_left != explanation_1)
-    //     {
-    //       if(exp_str.empty() == false)
-    //         exp_str += " and ";
-    //       exp_str += branch_left->value() + " is a " + explanation_1->value();
-    //     }
+        std::string exp_str;
+        if(branch_right != explanation_2)
+          exp_str = branch_right->value() + " is a " + explanation_2->value();
+        if(branch_left != explanation_1)
+        {
+          if(exp_str.empty() == false)
+            exp_str += " and ";
+          exp_str += branch_left->value() + " is a " + explanation_1->value();
+        }
 
-    //     if(explanation_1 == nullptr)
-    //       err = "disjointness between " + branch_left->value() + " and " + branch_right->value() +
-    //             " over " + first_crash->value();
-    //     else if(exp_str.empty() == false)
-    //       err = "disjointness between " + branch_left->value() + " and " + branch_right->value() +
-    //             " because " + explanation_1->value() + " and " + explanation_2->value() + " are disjoint" +
-    //             " and " + exp_str;
-    //     else
-    //       err = "disjointness between " + branch_left->value() + " and " + branch_right->value() +
-    //             " because " + explanation_1->value() + " and " + explanation_2->value() + " are disjoint";
-    //   }
+        if(explanation_1 == nullptr)
+          err = "disjointness between " + branch_left->value() + " and " + branch_right->value() +
+                " over " + first_crash->value();
+        else if(exp_str.empty() == false)
+          err = "disjointness between " + branch_left->value() + " and " + branch_right->value() +
+                " because " + explanation_1->value() + " and " + explanation_2->value() + " are disjoint" +
+                " and " + exp_str;
+        else
+          err = "disjointness between " + branch_left->value() + " and " + branch_right->value() +
+                " because " + explanation_1->value() + " and " + explanation_2->value() + " are disjoint";
+      }
 
-    //   return err;
-    // }
+      return err;
+    }
   };
 
 } // namespace ontologenius
