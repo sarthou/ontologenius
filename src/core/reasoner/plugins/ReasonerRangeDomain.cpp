@@ -20,6 +20,7 @@ namespace ontologenius {
     // flags "range" and "domain" come from the checkers marking warnings and on relation insertion
     postReasonIndividuals();
     postReasonClasses();
+    first_run_ = false;
   }
 
   void ReasonerRangeDomain::postReasonIndividuals()
@@ -30,7 +31,7 @@ namespace ontologenius {
     std::map<std::string, std::vector<std::string>>::iterator it_domain;
 
     for(const auto& indiv : ontology_->individual_graph_.get())
-      if(indiv->isUpdated() || indiv->hasUpdatedObjectRelation() || indiv->hasUpdatedDataRelation())
+      if(first_run_ || indiv->isUpdated() || indiv->hasUpdatedObjectRelation() || indiv->hasUpdatedDataRelation())
       {
         it_range = indiv->flags_.find("range");
         if(it_range != indiv->flags_.end())
@@ -221,7 +222,7 @@ namespace ontologenius {
     std::map<std::string, std::vector<std::string>>::iterator it_domain;
 
     for(auto* class_branch : classes)
-      if(class_branch->isUpdated())
+      if(first_run_ || class_branch->isUpdated())
       {
         it_range = class_branch->flags_.find("range");
         if(it_range != class_branch->flags_.end())

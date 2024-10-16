@@ -139,7 +139,7 @@ namespace ontologenius {
       {
         active_reasoners_[plugin] = reasoners_[plugin];
         Display::success(plugin + " has been activated");
-        resetIndividualsUpdates();
+        active_reasoners_[plugin]->activate();
         runPostReasoners();
       }
       else
@@ -343,16 +343,6 @@ namespace ontologenius {
         indiv->nb_updates_ = 0;
         indiv->setUpdated(true);
       }
-  }
-
-  void Reasoners::resetIndividualsUpdates()
-  {
-    const std::vector<IndividualBranch*> indivs = ontology_->individual_graph_.get();
-    for(auto* indiv : indivs)
-    {
-      indiv->nb_updates_ = 0;
-      indiv->setUpdated(true);
-    }
   }
 
   QueryInfo_t Reasoners::extractQueryInfo(QueryOrigin_e origin, const std::string& action, const std::string& param)

@@ -17,7 +17,9 @@ namespace ontologenius {
   {
     const std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
     for(const auto& indiv : ontology_->individual_graph_.get())
-      if(indiv->isUpdated() || indiv->hasUpdatedObjectRelation())
+      if(first_run_ ||
+         (indiv->isUpdated() && (indiv->same_as_.isUpdated() || indiv->object_relations_.isUpdated())) ||
+         indiv->hasUpdatedObjectRelation())
       {
         for(const IndivObjectRelationElement& relation : indiv->object_relations_)
         {
@@ -31,6 +33,8 @@ namespace ontologenius {
           }
         }
       }
+
+    first_run_ = false;
   }
 
   void ReasonerInverseOf::insertInverse(IndividualBranch* indiv_on, ObjectPropertyBranch* base_prop, ObjectPropertyBranch* inv_prop, IndividualBranch* inv_indiv)

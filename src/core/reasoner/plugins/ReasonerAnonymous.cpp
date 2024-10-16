@@ -37,7 +37,11 @@ namespace ontologenius {
 
     for(auto* indiv : ontology_->individual_graph_.get())
     {
-      if(indiv->isUpdated() || (indiv->flags_.find("equiv") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation() || indiv->hasUpdatedDataRelation())
+      if(first_run_ ||
+         indiv->isUpdated() ||
+         (indiv->flags_.find("equiv") != indiv->flags_.end()) ||
+         indiv->hasUpdatedObjectRelation() ||
+         indiv->hasUpdatedDataRelation())
       {
         bool has_active_equiv = false;
 
@@ -114,6 +118,8 @@ namespace ontologenius {
           indiv->flags_.erase("equiv");
       }
     }
+
+    first_run_ = false;
   }
 
   bool ReasonerAnonymous::checkClassesDisjointess(IndividualBranch* indiv, ClassBranch* class_equiv)
@@ -192,7 +198,7 @@ namespace ontologenius {
     }
     else if(ano_elem->logical_type_ == logical_not)
     {
-      if(standard_mode_ == true) // OWA
+      if(standard_mode_ == true)                                                         // OWA
         return resolveDisjunctionTreeFirstLayer(indiv, ano_elem->sub_elements_.front()); // need to make a version without the 'used' vector
       else                                                                               // CWA
         return !resolveFirstLayer(indiv, ano_elem->sub_elements_.front());
