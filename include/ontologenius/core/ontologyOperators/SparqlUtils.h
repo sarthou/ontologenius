@@ -1,8 +1,8 @@
 #ifndef ONTOLOGENIUS_SPARQLUTILS_H
 #define ONTOLOGENIUS_SPARQLUTILS_H
 
-#include <iostream>
 #include <map>
+#include <set>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -179,6 +179,21 @@ namespace ontologenius {
   }
 
   template<typename T>
+  std::set<int64_t> convertVariables2Set(const std::vector<std::string>& var_names)
+  {
+    std::set<int64_t> res;
+    for(const auto& var : var_names)
+      if(var.empty() == false)
+      {
+        if(var.front() == '?')
+          res.insert(Resource_t<T>::variables[var.substr(1)]);
+        else
+          res.insert(Resource_t<T>::variables[var]);
+      }
+    return res;
+  }
+
+  template<typename T>
   void removeDuplicate(std::vector<std::vector<T>>& vect)
   {
     vect.erase(unique(vect.begin(), vect.end()), vect.end());
@@ -187,21 +202,16 @@ namespace ontologenius {
   template<typename T>
   void filter(std::vector<std::map<std::string, T>>& res, const std::vector<std::string>& vars, bool distinct)
   {
-    std::cout << "in filter map" << std::endl;
     if(vars.empty() == false)
     {
       if(vars[0] == "*")
         return;
-
-      std::cout << "start to filter" << std::endl;
 
       for(auto& sub_res : res)
       {
         for(auto itr = sub_res.cbegin(); itr != sub_res.cend();)
           itr = (std::find(vars.begin(), vars.end(), "?" + itr->first) == vars.end()) ? sub_res.erase(itr) : std::next(itr);
       }
-
-      std::cout << "done" << std::endl;
 
       if(distinct)
         removeDuplicate(res);
@@ -211,33 +221,27 @@ namespace ontologenius {
   template<typename T>
   void filter(std::vector<std::vector<T>>& res, const std::vector<std::string>& vars, bool distinct)
   {
-    std::cout << "in filter vector" << std::endl;
     if(vars.empty() == false)
     {
       if(vars[0] == "*")
         return;
 
-      for(auto& v : vars)
-        std::cout << "=> \'" << v << "\'" << std::endl;
+      std::set<int64_t> var_index = convertVariables2Set<T>(vars);
 
-      std::vector<int64_t> var_index = convertVariables<T>(vars);
-
-      for(auto& v : var_index)
-        std::cout << "-> \'" << v << "\'" << std::endl;
-
-      std::cout << "var converted" << std::endl;
+      std::vector<int64_t> index_to_remove;
+      if(res.empty() == false)
+      {
+        auto front = res.front();
+        for(int64_t i = 0; i < (int64_t)front.size(); i++)
+          if(var_index.find(i) == var_index.end())
+            index_to_remove.push_back(i);
+      }
 
       for(auto& sub_res : res)
       {
-        std::cout << "sub_res size = " << sub_res.size() << std::endl;
-        for(auto i : var_index)
-          std::cout << " - " << i << std::endl;
-
-        for(auto it = var_index.rbegin(); it != var_index.rend(); ++it)
+        for(auto it = index_to_remove.rbegin(); it != index_to_remove.rend(); ++it)
           sub_res.erase(sub_res.begin() + *it);
       }
-
-      std::cout << "filtered done" << std::endl;
 
       if(distinct)
         removeDuplicate(res);
