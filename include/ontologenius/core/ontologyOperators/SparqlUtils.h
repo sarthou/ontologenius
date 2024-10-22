@@ -166,6 +166,7 @@ namespace ontologenius {
     std::vector<int64_t> res;
     res.reserve(var_names.size());
     for(const auto& var : var_names)
+      if(var.empty() == false)
       res.push_back(Resource_t<T>::variables[var]);
     std::sort(res.begin(), res.end());
     return res;
