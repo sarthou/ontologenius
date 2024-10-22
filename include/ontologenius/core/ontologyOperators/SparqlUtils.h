@@ -1,6 +1,7 @@
 #ifndef ONTOLOGENIUS_SPARQLUTILS_H
 #define ONTOLOGENIUS_SPARQLUTILS_H
 
+#include <iostream>
 #include <map>
 #include <string>
 #include <unordered_map>
@@ -167,7 +168,12 @@ namespace ontologenius {
     res.reserve(var_names.size());
     for(const auto& var : var_names)
       if(var.empty() == false)
-      res.push_back(Resource_t<T>::variables[var]);
+      {
+        if(var.front() == '?')
+          res.push_back(Resource_t<T>::variables[var.substr(1)]);
+        else
+          res.push_back(Resource_t<T>::variables[var]);
+      }
     std::sort(res.begin(), res.end());
     return res;
   }
@@ -181,16 +187,21 @@ namespace ontologenius {
   template<typename T>
   void filter(std::vector<std::map<std::string, T>>& res, const std::vector<std::string>& vars, bool distinct)
   {
+    std::cout << "in filter map" << std::endl;
     if(vars.empty() == false)
     {
       if(vars[0] == "*")
         return;
+
+      std::cout << "start to filter" << std::endl;
 
       for(auto& sub_res : res)
       {
         for(auto itr = sub_res.cbegin(); itr != sub_res.cend();)
           itr = (std::find(vars.begin(), vars.end(), "?" + itr->first) == vars.end()) ? sub_res.erase(itr) : std::next(itr);
       }
+
+      std::cout << "done" << std::endl;
 
       if(distinct)
         removeDuplicate(res);
@@ -200,18 +211,33 @@ namespace ontologenius {
   template<typename T>
   void filter(std::vector<std::vector<T>>& res, const std::vector<std::string>& vars, bool distinct)
   {
+    std::cout << "in filter vector" << std::endl;
     if(vars.empty() == false)
     {
       if(vars[0] == "*")
         return;
 
+      for(auto& v : vars)
+        std::cout << "=> \'" << v << "\'" << std::endl;
+
       std::vector<int64_t> var_index = convertVariables<T>(vars);
+
+      for(auto& v : var_index)
+        std::cout << "-> \'" << v << "\'" << std::endl;
+
+      std::cout << "var converted" << std::endl;
 
       for(auto& sub_res : res)
       {
+        std::cout << "sub_res size = " << sub_res.size() << std::endl;
+        for(auto i : var_index)
+          std::cout << " - " << i << std::endl;
+
         for(auto it = var_index.rbegin(); it != var_index.rend(); ++it)
           sub_res.erase(sub_res.begin() + *it);
       }
+
+      std::cout << "filtered done" << std::endl;
 
       if(distinct)
         removeDuplicate(res);
