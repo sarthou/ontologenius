@@ -28,8 +28,8 @@ namespace ontologenius {
     RelationsWithInductions(const RelationsWithInductions& other) = delete;
     ~RelationsWithInductions() { clear(); }
 
-    inline size_t size() const { return relations.size(); }
-    inline bool empty() const { return relations.empty(); }
+    size_t size() const { return relations.size(); }
+    bool empty() const { return relations.empty(); }
     T& operator[](size_t index) { return relations[index]; }
 
     size_t pushBack(T& relation)
@@ -74,12 +74,12 @@ namespace ontologenius {
       return std::find(relations.begin(), relations.end(), other);
     }
 
-    inline typename std::vector<T>::iterator begin() { return relations.begin(); }
-    inline typename std::vector<T>::iterator end() { return relations.end(); }
-    inline typename std::vector<T>::const_iterator cbegin() const { return relations.cbegin(); }
-    inline typename std::vector<T>::const_iterator cend() const { return relations.cend(); }
-    inline typename std::vector<T>::reverse_iterator rbegin() { return relations.rbegin(); }
-    inline typename std::vector<T>::reverse_iterator rend() { return relations.rend(); }
+    typename std::vector<T>::iterator begin() { return relations.begin(); }
+    typename std::vector<T>::iterator end() { return relations.end(); }
+    typename std::vector<T>::const_iterator cbegin() const { return relations.cbegin(); }
+    typename std::vector<T>::const_iterator cend() const { return relations.cend(); }
+    typename std::vector<T>::reverse_iterator rbegin() { return relations.rbegin(); }
+    typename std::vector<T>::reverse_iterator rend() { return relations.rend(); }
   };
 
 } // namespace ontologenius
