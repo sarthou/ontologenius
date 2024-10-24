@@ -79,6 +79,7 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     OntologeniusSparqlResponse.msg
     OntologeniusSparqlIndexResponse.msg
     OntologeniusExplanation.msg
+    OntologeniusSubscriptionAnswer.msg
   )
 
   # # Generate services in the 'srv' folder
@@ -89,6 +90,8 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     OntologeniusIndexService.srv
     OntologeniusSparqlService.srv
     OntologeniusSparqlIndexService.srv
+    OntologeniusSubscription.srv
+    OntologeniusUnsubscription.srv
   )
 
   # # Generate added messages and services with any dependencies listed here
@@ -103,11 +106,14 @@ elseif($ENV{ROS_VERSION} STREQUAL "2")
     "msg/OntologeniusSparqlIndexResponse.msg"
     "msg/OntologeniusSparqlResponse.msg"
     "msg/OntologeniusStampedString.msg"
+    "msg/OntologeniusSubscriptionAnswer.msg"
     "srv/OntologeniusConversion.srv"
     "srv/OntologeniusIndexService.srv"
     "srv/OntologeniusService.srv"
     "srv/OntologeniusSparqlIndexService.srv"
     "srv/OntologeniusSparqlService.srv"
+    "srv/OntologeniusSubscription.srv"
+    "srv/OntologeniusUnsubscription.srv"
     DEPENDENCIES builtin_interfaces std_msgs)
 endif()
 
