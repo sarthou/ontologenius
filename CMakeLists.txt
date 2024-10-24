@@ -325,6 +325,7 @@ add_ros_library(ontologenius_lib
   src/API/ontologenius/OntologyManipulator.cpp
   src/API/ontologenius/OntologyManipulatorIndex.cpp
   src/API/ontologenius/OntologiesManipulator.cpp
+  src/API/ontologenius/PatternsSubscriber.cpp
 )
 target_include_directories(ontologenius_lib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/ontologenius/API>
   $<INSTALL_INTERFACE:include/ontologenius/API>)
