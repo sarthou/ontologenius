@@ -237,7 +237,7 @@ function(add_ros_library TARGET)
 
   if($ENV{ROS_VERSION} STREQUAL "1")
     add_dependencies(${TARGET} ontologenius_gencpp ${catkin_EXPORTED_TARGETS})
-    target_include_directories(${TARGET} PUBLIC 
+    target_include_directories(${TARGET} PUBLIC
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
       $<INSTALL_INTERFACE:include>
       ${catkin_INCLUDE_DIRS})
@@ -334,6 +334,18 @@ target_link_libraries(ontologenius_lib
   ontologenius_plugin_lib
 ) # ontologenius_interface
 
+# # SUBSCRIPTION
+add_ros_library(ontologenius_subscription_lib
+  src/core/subscription/Subscription.cpp
+  src/core/subscription/SubscriptionManager.cpp
+  src/core/subscription/SubscriptionPattern.cpp
+)
+target_link_libraries(ontologenius_subscription_lib
+  PUBLIC
+  ontologenius_compat
+  ontologenius_ontoGraphs_lib
+)
+
 # # INTERFACE
 add_ros_library(ontologenius_interface
   src/interface/RosInterface.cpp
@@ -346,6 +358,7 @@ target_link_libraries(ontologenius_interface
   ontologenius_feeder_lib
   ontologenius_plugin_lib
   ontologenius_operators
+  ontologenius_subscription_lib
 )
 
 # ##################################
@@ -476,13 +489,13 @@ if($ENV{ROS_VERSION} STREQUAL "1")
   # Generate CMake package config file
   include(CMakePackageConfigHelpers)
   configure_package_config_file(
-          cmake/ontologenius_compatConfigIntermediate.cmake.in
-          ${CMAKE_CURRENT_BINARY_DIR}/ontologenius_compatConfigIntermediate.cmake
-      INSTALL_DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
+    cmake/ontologenius_compatConfigIntermediate.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/ontologenius_compatConfigIntermediate.cmake
+    INSTALL_DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
   )
   install(
-      FILES ${CMAKE_CURRENT_BINARY_DIR}/ontologenius_compatConfigIntermediate.cmake
-      DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/ontologenius_compatConfigIntermediate.cmake
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
   )
 
   install(
@@ -497,7 +510,7 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     EXPORT ontologenius_compatTargets
     FILE ontologenius_compatTargets.cmake
     NAMESPACE ontologenius::
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
   )
 
   install(TARGETS
@@ -516,6 +529,7 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     ontologenius_plugin_lib
     ontologenius_ontoGraphs_lib
     ontologenius_reasoner_plugin
+    ontologenius_subscription_lib
     ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -559,6 +573,7 @@ elseif($ENV{ROS_VERSION} STREQUAL "2")
     ontologenius_feeder_lib
     ontologenius_plugin_lib
     ontologenius_ontoGraphs_lib
+    ontologenius_subscription_lib
     ontologenius_reasoner_plugin
     EXPORT ontologenius
     ARCHIVE DESTINATION lib

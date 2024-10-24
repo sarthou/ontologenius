@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <iterator>
 #include <map>
+#include <mutex>
 #include <shared_mutex>
 #include <string>
 #include <unordered_set>
