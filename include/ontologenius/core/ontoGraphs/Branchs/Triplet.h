@@ -2,9 +2,47 @@
 #define ONTOLOGENIUS_TRIPLET_H
 
 #include <algorithm>
+#include <string>
 #include <vector>
 
 namespace ontologenius {
+
+  struct TripletStr_t
+  {
+    TripletStr_t(const std::string& subject,
+                 const std::string& predicat,
+                 const std::string& object,
+                 bool add = true) : subject(subject),
+                                    predicate(predicat),
+                                    object(object),
+                                    add(add)
+    {}
+
+    bool operator==(const TripletStr_t& other) const
+    {
+      return ((subject == other.subject) &&
+              (predicate == other.predicate) &&
+              (object == other.object) &&
+              (add == other.add));
+    }
+
+    bool valid() const
+    {
+      return ((subject.empty() == false) &&
+              (predicate.empty() == false) &&
+              (object.empty() == false));
+    }
+
+    std::string toString() const
+    {
+      return (add ? "[add]" : "[del]") + subject + "|" + predicate + "|" + object;
+    }
+
+    std::string subject;
+    std::string predicate;
+    std::string object;
+    bool add;
+  };
 
   template<typename S, typename P, typename O>
   struct Triplet_t
