@@ -162,6 +162,9 @@ namespace ontologenius {
 
     periodic_reasoning_thread.join();
     feed_thread.join();
+
+    subscriber_.stop();
+    subscription_thread.join();
   }
 
   void RosInterface::stop()
