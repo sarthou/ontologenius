@@ -18,7 +18,7 @@ namespace onto {
     PatternsSubscriber(const std::string& name = "");
     ~PatternsSubscriber();
 
-    bool subscribe(const std::string& pattern, const std::function<void(const std::string&)>& callback, size_t count = -1);
+    int subscribe(const std::string& pattern, const std::function<void(const std::string&)>& callback, size_t count = -1);
     bool cancel(size_t id);
 
     bool end() const { return ids_.empty(); }
