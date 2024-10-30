@@ -16,15 +16,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../../index.html">
-              <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../../index.html">
+            <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -99,6 +99,7 @@
             <li class="level1"><a href="../../cpp_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../cpp_API/PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="../../cpp_API/SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -156,49 +157,49 @@
                 <div class="code_line"><br></div>
                 <div class="code_line"><span class="cpp_key">int</span> <span class="cpp_function">main</span>(<span class="cpp_key">int</span> <span class="cpp_var">argc</span>, <span class="cpp_key">char**</span> <span class="cpp_var">argv</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>, <span class="cpp_string">&quot;multiple_ontologies&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_type">ros</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>, <span class="cpp_string">&quot;multiple_ontologies&quot;</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologiesManipulator</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line"> <span class="cpp_type">onto</span>::<span class="cpp_type">OntologiesManipulator</span> <span class="cpp_var">onto</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">waitInit</span>();</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">waitInit</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;sally&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;anne&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;sally&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;anne&quot;</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">result</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;for sally, ball_1 is in:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
-                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">in</span> : <span class="cpp_var">result</span>)</div>
-                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">in</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">result</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;for sally, ball_1 is in:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">in</span> : <span class="cpp_var">result</span>)</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">in</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">result</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;for anne, ball_1 is in:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
-                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">in</span> : <span class="cpp_var">result</span>)</div>
-                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">in</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"> <span class="cpp_var">result</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;for anne, ball_1 is in:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">in</span> : <span class="cpp_var">result</span>)</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">in</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitConnected</span>();</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitConnected</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">removeProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">removeProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitUpdate</span>(<span class="cpp_value">500</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitUpdate</span>(<span class="cpp_value">500</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">differences</span> = <span class="cpp_var">onto</span>.<span class="cpp_function">waitUpdate</span>(<span class="cpp_string">&quot;sally&quot;</span>, <span class="cpp_string">&quot;anne&quot;</span>, <span class="cpp_string">&quot;ball_1&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;The difference of belief regarding the ball_1 is:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
-                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">diff</span> : <span class="cpp_var">differences</span>)</div>
-                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">diff</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">differences</span> = <span class="cpp_var">onto</span>.<span class="cpp_function">waitUpdate</span>(<span class="cpp_string">&quot;sally&quot;</span>, <span class="cpp_string">&quot;anne&quot;</span>, <span class="cpp_string">&quot;ball_1&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;The difference of belief regarding the ball_1 is:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">diff</span> : <span class="cpp_var">differences</span>)</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">diff</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">del</span>(<span class="cpp_string">&quot;sally&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">del</span>(<span class="cpp_string">&quot;anne&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">del</span>(<span class="cpp_string">&quot;sally&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">del</span>(<span class="cpp_string">&quot;anne&quot;</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line"> <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
                 <div class="code_line">}</div>
               </div>
             </div>
           </div>
-          
+
           <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-python">
               <div class="code_block cpp_code" style="counter-reset:code_line 0;">
@@ -209,44 +210,44 @@
                 <div class="code_line"><br></div>
                 <div class="code_line"><span class="cpp_key">int</span> <span class="cpp_function">main</span>(<span class="cpp_key">int</span> <span class="cpp_var">argc</span>, <span class="cpp_key">char**</span> <span class="cpp_var">argv</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>);</div>
+                <div class="code_line"> <span class="cpp_type">rclcpp</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologiesManipulator</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line"> <span class="cpp_type">onto</span>::<span class="cpp_type">OntologiesManipulator</span> <span class="cpp_var">onto</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">waitInit</span>();</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">waitInit</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;sally&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;anne&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;sally&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;anne&quot;</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;<span class="cpp_function">close</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">result</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;for sally, ball_1 is in:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
-                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">in</span> : <span class="cpp_var">result</span>)</div>
-                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">in</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">result</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;sally&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;for sally, ball_1 is in:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">in</span> : <span class="cpp_var">result</span>)</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">in</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">result</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;for anne, ball_1 is in:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
-                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">in</span> : <span class="cpp_var">result</span>)</div>
-                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">in</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"> <span class="cpp_var">result</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;for anne, ball_1 is in:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">in</span> : <span class="cpp_var">result</span>)</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">in</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitConnected</span>();</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitConnected</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">removeProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">removeProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitUpdate</span>(<span class="cpp_value">500</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitUpdate</span>(<span class="cpp_value">500</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">differences</span> = <span class="cpp_var">onto</span>.<span class="cpp_function">waitUpdate</span>(<span class="cpp_string">&quot;sally&quot;</span>, <span class="cpp_string">&quot;anne&quot;</span>, <span class="cpp_string">&quot;ball_1&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;The difference of belief regarding the ball_1 is:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
-                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">diff</span> : <span class="cpp_var">differences</span>)</div>
-                <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">diff</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">differences</span> = <span class="cpp_var">onto</span>.<span class="cpp_function">waitUpdate</span>(<span class="cpp_string">&quot;sally&quot;</span>, <span class="cpp_string">&quot;anne&quot;</span>, <span class="cpp_string">&quot;ball_1&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;The difference of belief regarding the ball_1 is:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">diff</span> : <span class="cpp_var">differences</span>)</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">diff</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">del</span>(<span class="cpp_string">&quot;sally&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">del</span>(<span class="cpp_string">&quot;anne&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">del</span>(<span class="cpp_string">&quot;sally&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">del</span>(<span class="cpp_string">&quot;anne&quot;</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line"> <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
                 <div class="code_line">}</div>
               </div>
             </div>
@@ -256,7 +257,7 @@
         <p>First of all a small trick.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 29;">
-          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitConnected</span>();</div>
+          <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitConnected</span>();</div>
         </div>
 
         <p>If you know ROS, you should know that subscribers may take a few moments to connect to listeners. Because, again,
@@ -264,24 +265,24 @@
           the previous line to make sure that our feeder is connected to at least one listener.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 31;">
-          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">removeProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
-          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
+          <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">removeProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
+          <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
         </div>
 
         <p>Here are really the two lines that represent the fact that Anne removes the ball from the first container and puts it
           in the second container. You see here that these changes are applied only to Anne.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 34;">
-          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitUpdate</span>(<span class="cpp_value">500</span>);</div>
+          <div class="code_line"> <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitUpdate</span>(<span class="cpp_value">500</span>);</div>
         </div>
 
         <p>With the waitUpdate function, we will wait until the previous changes are applied. For security reasons, we set a timeout of 500 ms.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 36;">
-          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">differences</span> = <span class="cpp_var">onto</span>.<span class="cpp_function">waitUpdate</span>(<span class="cpp_string">&quot;sally&quot;</span>, <span class="cpp_string">&quot;anne&quot;</span>, <span class="cpp_string">&quot;ball_1&quot;</span>);</div>
-          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;The difference of belief regarding the ball_1 is:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">diff</span> : <span class="cpp_var">differences</span>)</div>
-          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">diff</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">differences</span> = <span class="cpp_var">onto</span>.<span class="cpp_function">waitUpdate</span>(<span class="cpp_string">&quot;sally&quot;</span>, <span class="cpp_string">&quot;anne&quot;</span>, <span class="cpp_string">&quot;ball_1&quot;</span>);</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;The difference of belief regarding the ball_1 is:&quot;</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+          <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">diff</span> : <span class="cpp_var">differences</span>)</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;- &quot;</span> &lt;&lt; <span class="cpp_var">diff</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
         </div>
 
         <p>The OntologiesManipulator object directly provides functionality to get all the belief divergence between two ontologies about a specific concept.</p>
@@ -345,7 +346,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
       </a>
     </p>
   </div>

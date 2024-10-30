@@ -16,15 +16,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../../index.html">
-              <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../../index.html">
+            <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -98,6 +98,7 @@
             <li class="level1"><a href="../../cpp_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../cpp_API/PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="../../cpp_API/SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -152,82 +153,82 @@
           <div class="code_line"><br></div>
           <div class="code_line"><span class="cpp_type">void</span> <span class="cpp_function">displayRoute</span>(<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_key">int64_t</span>&gt; <span class="cpp_var">route</span>)</div>
           <div class="code_line">{</div>
-          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">indentifier_route</span> = <span class="cpp_var">onto_</span>-&gt;conversion.<span class="cpp_function">individualsIndex2Id</span>(<span class="cpp_var">route</span>);</div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">path</span> : <span class="cpp_var">indentifier_route</span>)</div>
-          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_var">path</span> &lt;&lt; <span class="cpp_string">&quot; - &quot;</span>;</div>
-          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">indentifier_route</span> = <span class="cpp_var">onto_</span>-&gt;conversion.<span class="cpp_function">individualsIndex2Id</span>(<span class="cpp_var">route</span>);</div>
+          <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">path</span> : <span class="cpp_var">indentifier_route</span>)</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_var">path</span> &lt;&lt; <span class="cpp_string">&quot; - &quot;</span>;</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
           <div class="code_line">}</div>
           <div class="code_line"><br></div>
           <div class="code_line"><span class="cpp_key">template</span>&lt;<span class="cpp_key">typename</span> <span class="cpp_type">T</span>&gt;</div>
           <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; &gt; <span class="cpp_function">findRoutes</span>(<span class="cpp_type">T</span> <span class="cpp_var">path_from</span>, <span class="cpp_type">T</span> <span class="cpp_var">path_to</span>, <span class="cpp_type">T</span> <span class="cpp_var">selector</span>)</div>
           <div class="code_line">{</div>
-          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; &gt; <span class="cpp_var">routes</span>;</div>
-          <div class="code_line">  <span class="cpp_key">bool</span> <span class="cpp_var">found</span> = <span class="cpp_key">false</span>;</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; &gt; <span class="cpp_var">routes</span>;</div>
+          <div class="code_line"> <span class="cpp_key">bool</span> <span class="cpp_var">found</span> = <span class="cpp_key">false</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; <span class="cpp_var">tmp</span>;</div>
-          <div class="code_line">  <span class="cpp_var">tmp</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">path_from</span>);</div>
-          <div class="code_line">  <span class="cpp_var">routes</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">tmp</span>);</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; <span class="cpp_var">tmp</span>;</div>
+          <div class="code_line"> <span class="cpp_var">tmp</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">path_from</span>);</div>
+          <div class="code_line"> <span class="cpp_var">routes</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">tmp</span>);</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_var">path_from</span> == <span class="cpp_var">path_to</span>)</div>
-          <div class="code_line">    <span class="cpp_var">found</span> = <span class="cpp_key">true</span>;</div>
+          <div class="code_line"> <span class="cpp_op">if</span>(<span class="cpp_var">path_from</span> == <span class="cpp_var">path_to</span>)</div>
+          <div class="code_line"> <span class="cpp_var">found</span> = <span class="cpp_key">true</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_op">while</span>(<span class="cpp_var">found</span> == <span class="cpp_key">false</span>)</div>
-          <div class="code_line">  {</div>
-          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; &gt; <span class="cpp_var">tmp_routes</span>;</div>
-          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">route</span> : <span class="cpp_var">routes</span>)</div>
-          <div class="code_line">    {</div>
-          <div class="code_line">      <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; <span class="cpp_var">intersections</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getFrom</span>(<span class="cpp_var">is_along_</span>, <span class="cpp_var">route</span>.<span class="cpp_function">back</span>());</div>
+          <div class="code_line"> <span class="cpp_op">while</span>(<span class="cpp_var">found</span> == <span class="cpp_key">false</span>)</div>
+          <div class="code_line"> {</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; &gt; <span class="cpp_var">tmp_routes</span>;</div>
+          <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">route</span> : <span class="cpp_var">routes</span>)</div>
+          <div class="code_line"> {</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; <span class="cpp_var">intersections</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getFrom</span>(<span class="cpp_var">is_along_</span>, <span class="cpp_var">route</span>.<span class="cpp_function">back</span>());</div>
           <div class="code_line"><br></div>
-          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">intersection</span> : <span class="cpp_var">intersections</span>)</div>
-          <div class="code_line">      {</div>
-          <div class="code_line">        <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; <span class="cpp_var">paths</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_var">intersection</span>, <span class="cpp_var">is_along_</span>, <span class="cpp_var">selector</span>);</div>
+          <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">intersection</span> : <span class="cpp_var">intersections</span>)</div>
+          <div class="code_line"> {</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; <span class="cpp_var">paths</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_var">intersection</span>, <span class="cpp_var">is_along_</span>, <span class="cpp_var">selector</span>);</div>
           <div class="code_line"><br></div>
-          <div class="code_line">        <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">i</span> &lt; <span class="cpp_var">paths</span>.<span class="cpp_function">size</span>();)</div>
-          <div class="code_line">          <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">find</span>(<span class="cpp_var">route</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">route</span>.<span class="cpp_function">end</span>(), <span class="cpp_var">paths</span>[<span class="cpp_var">i</span>]) != <span class="cpp_var">route</span>.<span class="cpp_function">end</span>())</div>
-          <div class="code_line">            <span class="cpp_var">paths</span>.<span class="cpp_function">erase</span>(<span class="cpp_var">paths</span>.<span class="cpp_function">begin</span>() + <span class="cpp_var">i</span>);</div>
-          <div class="code_line">          <span class="cpp_op">else</span></div>
-          <div class="code_line">            <span class="cpp_var">i</span>++;</div>
+          <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">i</span> &lt; <span class="cpp_var">paths</span>.<span class="cpp_function">size</span>();)</div>
+          <div class="code_line"> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">find</span>(<span class="cpp_var">route</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">route</span>.<span class="cpp_function">end</span>(), <span class="cpp_var">paths</span>[<span class="cpp_var">i</span>]) != <span class="cpp_var">route</span>.<span class="cpp_function">end</span>())</div>
+          <div class="code_line"> <span class="cpp_var">paths</span>.<span class="cpp_function">erase</span>(<span class="cpp_var">paths</span>.<span class="cpp_function">begin</span>() + <span class="cpp_var">i</span>);</div>
+          <div class="code_line"> <span class="cpp_op">else</span></div>
+          <div class="code_line"> <span class="cpp_var">i</span>++;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">        <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">path</span> : <span class="cpp_var">paths</span>)</div>
-          <div class="code_line">        {</div>
-          <div class="code_line">          <span class="cpp_var">tmp</span> = <span class="cpp_var">route</span>;</div>
-          <div class="code_line">          <span class="cpp_var">tmp</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">intersection</span>);</div>
-          <div class="code_line">          <span class="cpp_var">tmp</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">path</span>);</div>
-          <div class="code_line">          <span class="cpp_var">tmp_routes</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">tmp</span>);</div>
-          <div class="code_line">          <span class="cpp_op">if</span>(<span class="cpp_var">path</span> == <span class="cpp_var">path_to</span>)</div>
-          <div class="code_line">            <span class="cpp_var">found</span> = <span class="cpp_key">true</span>;</div>
-          <div class="code_line">        }</div>
-          <div class="code_line">      }</div>
-          <div class="code_line">    }</div>
-          <div class="code_line">    <span class="cpp_var">routes</span>.<span class="cpp_function">swap</span>(<span class="cpp_var">tmp_routes</span>);</div>
-          <div class="code_line">  }</div>
+          <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">path</span> : <span class="cpp_var">paths</span>)</div>
+          <div class="code_line"> {</div>
+          <div class="code_line"> <span class="cpp_var">tmp</span> = <span class="cpp_var">route</span>;</div>
+          <div class="code_line"> <span class="cpp_var">tmp</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">intersection</span>);</div>
+          <div class="code_line"> <span class="cpp_var">tmp</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">path</span>);</div>
+          <div class="code_line"> <span class="cpp_var">tmp_routes</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">tmp</span>);</div>
+          <div class="code_line"> <span class="cpp_op">if</span>(<span class="cpp_var">path</span> == <span class="cpp_var">path_to</span>)</div>
+          <div class="code_line"> <span class="cpp_var">found</span> = <span class="cpp_key">true</span>;</div>
+          <div class="code_line"> }</div>
+          <div class="code_line"> }</div>
+          <div class="code_line"> }</div>
+          <div class="code_line"> <span class="cpp_var">routes</span>.<span class="cpp_function">swap</span>(<span class="cpp_var">tmp_routes</span>);</div>
+          <div class="code_line"> }</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_var">routes</span>;</div>
+          <div class="code_line"> <span class="cpp_op">return</span> <span class="cpp_var">routes</span>;</div>
           <div class="code_line">}</div>
           <div class="code_line"><br></div>
           <div class="code_line"><span class="cpp_key">template</span>&lt;<span class="cpp_key">typename</span> <span class="cpp_type">T</span>&gt;</div>
           <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; <span class="cpp_function">find</span>(<span class="cpp_type">T</span> <span class="cpp_var">from</span>, <span class="cpp_type">T</span> <span class="cpp_var">to</span>, <span class="cpp_type">T</span> <span class="cpp_var">selector</span>)</div>
           <div class="code_line">{</div>
-          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; <span class="cpp_var">solution_route</span>;</div>
-          <div class="code_line">  <span class="cpp_type">size_t</span> <span class="cpp_var">min_size</span> = -<span class="cpp_value">1</span>;</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; <span class="cpp_var">solution_route</span>;</div>
+          <div class="code_line"> <span class="cpp_type">size_t</span> <span class="cpp_var">min_size</span> = -<span class="cpp_value">1</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; <span class="cpp_var">paths_from</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_var">from</span>, <span class="cpp_var">is_along_</span>, <span class="cpp_var">selector</span>);</div>
-          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; <span class="cpp_var">paths_to</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_var">to</span>, <span class="cpp_var">is_along_</span>, <span class="cpp_var">selector</span>);</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; <span class="cpp_var">paths_from</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_var">from</span>, <span class="cpp_var">is_along_</span>, <span class="cpp_var">selector</span>);</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; <span class="cpp_var">paths_to</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getOn</span>(<span class="cpp_var">to</span>, <span class="cpp_var">is_along_</span>, <span class="cpp_var">selector</span>);</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">path_from</span> : <span class="cpp_var">paths_from</span>)</div>
-          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">path_to</span> : <span class="cpp_var">paths_to</span>)</div>
-          <div class="code_line">    {</div>
-          <div class="code_line">      <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; &gt; <span class="cpp_var">routes</span> = <span class="cpp_function">findRoutes</span>(<span class="cpp_var">path_from</span>, <span class="cpp_var">path_to</span>, <span class="cpp_var">selector</span>);</div>
-          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">route</span> : <span class="cpp_var">routes</span>)</div>
-          <div class="code_line">        <span class="cpp_op">if</span>(<span class="cpp_var">route</span>.<span class="cpp_function">back</span>() == <span class="cpp_var">path_to</span>)</div>
-          <div class="code_line">          <span class="cpp_op">if</span>(<span class="cpp_var">route</span>.<span class="cpp_function">size</span>() &lt; <span class="cpp_var">min_size</span>)</div>
-          <div class="code_line">          {</div>
-          <div class="code_line">            <span class="cpp_var">min_size</span> = <span class="cpp_var">route</span>.<span class="cpp_function">size</span>();</div>
-          <div class="code_line">            <span class="cpp_var">solution_route</span> = <span class="cpp_var">route</span>;</div>
-          <div class="code_line">          }</div>
-          <div class="code_line">    }</div>
+          <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">path_from</span> : <span class="cpp_var">paths_from</span>)</div>
+          <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">path_to</span> : <span class="cpp_var">paths_to</span>)</div>
+          <div class="code_line"> {</div>
+          <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">T</span>&gt; &gt; <span class="cpp_var">routes</span> = <span class="cpp_function">findRoutes</span>(<span class="cpp_var">path_from</span>, <span class="cpp_var">path_to</span>, <span class="cpp_var">selector</span>);</div>
+          <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">route</span> : <span class="cpp_var">routes</span>)</div>
+          <div class="code_line"> <span class="cpp_op">if</span>(<span class="cpp_var">route</span>.<span class="cpp_function">back</span>() == <span class="cpp_var">path_to</span>)</div>
+          <div class="code_line"> <span class="cpp_op">if</span>(<span class="cpp_var">route</span>.<span class="cpp_function">size</span>() &lt; <span class="cpp_var">min_size</span>)</div>
+          <div class="code_line"> {</div>
+          <div class="code_line"> <span class="cpp_var">min_size</span> = <span class="cpp_var">route</span>.<span class="cpp_function">size</span>();</div>
+          <div class="code_line"> <span class="cpp_var">solution_route</span> = <span class="cpp_var">route</span>;</div>
+          <div class="code_line"> }</div>
+          <div class="code_line"> }</div>
           <div class="code_line"><br></div>
-          <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_var">solution_route</span>;</div>
+          <div class="code_line"> <span class="cpp_op">return</span> <span class="cpp_var">solution_route</span>;</div>
           <div class="code_line">}</div>
         </div>
 
@@ -242,66 +243,66 @@
               <div class="code_block cpp_code" style="counter-reset:code_line 89;">
                 <div class="code_line"><span class="cpp_type">int</span> <span class="cpp_function">main</span>(<span class="cpp_type">int</span> <span class="cpp_var">argc</span>, <span class="cpp_type">char</span>** <span class="cpp_var">argv</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>, <span class="cpp_string">&quot;find_our_way&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_type">ros</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>, <span class="cpp_string">&quot;find_our_way&quot;</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulatorIndex</span> <span class="cpp_var">onto</span>;</div>
-                <div class="code_line">  <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
+                <div class="code_line"> <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulatorIndex</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line"> <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">is_along_</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">objectPropertiesId2Index</span>(<span class="cpp_string">&quot;isAlong&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_key">int64_t</span> <span class="cpp_var">pub</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">individualsId2Index</span>(<span class="cpp_string">&quot;pub&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_key">int64_t</span> <span class="cpp_var">house</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">individualsId2Index</span>(<span class="cpp_string">&quot;house&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_key">int64_t</span> <span class="cpp_var">car</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">individualsId2Index</span>(<span class="cpp_string">&quot;car&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_key">int64_t</span> <span class="cpp_var">path</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">classesId2Index</span>(<span class="cpp_string">&quot;path&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_key">int64_t</span> <span class="cpp_var">road</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">classesId2Index</span>(<span class="cpp_string">&quot;road&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_key">int64_t</span>&gt; <span class="cpp_var">route</span>;</div>
+                <div class="code_line"> <span class="cpp_var">is_along_</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">objectPropertiesId2Index</span>(<span class="cpp_string">&quot;isAlong&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_key">int64_t</span> <span class="cpp_var">pub</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">individualsId2Index</span>(<span class="cpp_string">&quot;pub&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_key">int64_t</span> <span class="cpp_var">house</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">individualsId2Index</span>(<span class="cpp_string">&quot;house&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_key">int64_t</span> <span class="cpp_var">car</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">individualsId2Index</span>(<span class="cpp_string">&quot;car&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_key">int64_t</span> <span class="cpp_var">path</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">classesId2Index</span>(<span class="cpp_string">&quot;path&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_key">int64_t</span> <span class="cpp_var">road</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">classesId2Index</span>(<span class="cpp_string">&quot;road&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_key">int64_t</span>&gt; <span class="cpp_var">route</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_var">pub</span>, <span class="cpp_var">house</span>, <span class="cpp_var">path</span>);</div>
-                <div class="code_line">  <span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
+                <div class="code_line"> <span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_var">pub</span>, <span class="cpp_var">house</span>, <span class="cpp_var">path</span>);</div>
+                <div class="code_line"> <span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_var">house</span>, <span class="cpp_var">car</span>, <span class="cpp_var">path</span>);</div>
-                <div class="code_line">  <span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
+                <div class="code_line"> <span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_var">house</span>, <span class="cpp_var">car</span>, <span class="cpp_var">path</span>);</div>
+                <div class="code_line"> <span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_var">car</span>, <span class="cpp_var">house</span>, <span class="cpp_var">road</span>);</div>
-                <div class="code_line">  <span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
+                <div class="code_line"> <span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_var">car</span>, <span class="cpp_var">house</span>, <span class="cpp_var">road</span>);</div>
+                <div class="code_line"> <span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line"> <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
                 <div class="code_line">}</div>
               </div>
             </div>
           </div>
-          
+
           <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-python">
               <div class="code_block cpp_code" style="counter-reset:code_line 89;">
                 <div class="code_line"><span class="cpp_type">int</span> <span class="cpp_function">main</span>(<span class="cpp_type">int</span> <span class="cpp_var">argc</span>, <span class="cpp_type">char</span>** <span class="cpp_var">argv</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>);</div>
+                <div class="code_line"> <span class="cpp_type">rclcpp</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulatorIndex</span> <span class="cpp_var">onto</span>;</div>
-                <div class="code_line">  <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
+                <div class="code_line"> <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulatorIndex</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line"> <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
+                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">is_along_</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">objectPropertiesId2Index</span>(<span class="cpp_string">&quot;isAlong&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_key">int64_t</span> <span class="cpp_var">pub</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">individualsId2Index</span>(<span class="cpp_string">&quot;pub&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_key">int64_t</span> <span class="cpp_var">house</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">individualsId2Index</span>(<span class="cpp_string">&quot;house&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_key">int64_t</span> <span class="cpp_var">car</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">individualsId2Index</span>(<span class="cpp_string">&quot;car&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_key">int64_t</span> <span class="cpp_var">path</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">classesId2Index</span>(<span class="cpp_string">&quot;path&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_key">int64_t</span> <span class="cpp_var">road</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">classesId2Index</span>(<span class="cpp_string">&quot;road&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_key">int64_t</span>&gt; <span class="cpp_var">route</span>;</div>
+                <div class="code_line"> <span class="cpp_var">is_along_</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">objectPropertiesId2Index</span>(<span class="cpp_string">&quot;isAlong&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_key">int64_t</span> <span class="cpp_var">pub</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">individualsId2Index</span>(<span class="cpp_string">&quot;pub&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_key">int64_t</span> <span class="cpp_var">house</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">individualsId2Index</span>(<span class="cpp_string">&quot;house&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_key">int64_t</span> <span class="cpp_var">car</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">individualsId2Index</span>(<span class="cpp_string">&quot;car&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_key">int64_t</span> <span class="cpp_var">path</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">classesId2Index</span>(<span class="cpp_string">&quot;path&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_key">int64_t</span> <span class="cpp_var">road</span> = <span class="cpp_var">onto</span>.conversion.<span class="cpp_function">classesId2Index</span>(<span class="cpp_string">&quot;road&quot;</span>);</div>
+                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_key">int64_t</span>&gt; <span class="cpp_var">route</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_var">pub</span>, <span class="cpp_var">house</span>, <span class="cpp_var">path</span>);</div>
-                <div class="code_line">  <span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
+                <div class="code_line"> <span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_var">pub</span>, <span class="cpp_var">house</span>, <span class="cpp_var">path</span>);</div>
+                <div class="code_line"> <span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_var">house</span>, <span class="cpp_var">car</span>, <span class="cpp_var">path</span>);</div>
-                <div class="code_line">  <span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
+                <div class="code_line"> <span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_var">house</span>, <span class="cpp_var">car</span>, <span class="cpp_var">path</span>);</div>
+                <div class="code_line"> <span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_var">car</span>, <span class="cpp_var">house</span>, <span class="cpp_var">road</span>);</div>
-                <div class="code_line">  <span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
+                <div class="code_line"> <span class="cpp_var">route</span> = <span class="cpp_function">find</span>(<span class="cpp_var">car</span>, <span class="cpp_var">house</span>, <span class="cpp_var">road</span>);</div>
+                <div class="code_line"> <span class="cpp_function">displayRoute</span>(<span class="cpp_var">route</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line"> <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
                 <div class="code_line">}</div>
               </div>
             </div>
@@ -331,7 +332,7 @@
     <p>
       Brought <span class="cpp_var">to</span> you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
       </a>
     </p>
   </div>

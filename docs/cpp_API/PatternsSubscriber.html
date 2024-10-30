@@ -1,13 +1,14 @@
 <html lang="en_US">
 
 <head>
-  <title>ReasonerClient Class (cpp) | Ontologenius 0.4.2</title>
+  <title>PatternsSubscriber Class (cpp) | Ontologenius 0.4.2</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
   <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 
 <body>
@@ -17,7 +18,10 @@
         <div class="navbar-header">
           <div id="header-buttons">
             <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius"
+                   tabindex="0"><img
+                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png"
+                       alt="github" width="40px" height="40px" /></a></li>
             </ul>
           </div>
           <a class="navbar-icon" href="../index.html">
@@ -33,8 +37,10 @@
     <div class="navigationbar">
       <ul class="sub-navigation">
         <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
-        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
-        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API
+            headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a>
+        </li>
         <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
       </ul>
       <h1>Ontologenius Cpp API Documentation</h1>
@@ -97,8 +103,8 @@
             <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
-            <li class="level1"><a href="PatternsSubscriber.html">PatternsSubscriber</a></li>
-            <li class="level1"><a href="ReasonerClient.html"><b>ReasonerClient</b></a></li>
+            <li class="level1"><a href="PatternsSubscriber.html"><b>PatternsSubscriber</b></a></li>
+            <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
             <li class="level1"><a href="ClassIndexClient.html">ClassIndexClient</a></li>
@@ -122,18 +128,16 @@
       </div>
 
       <div class="context">
-        <h1 class="title">ReasonerClient Class</h1>
-        <p>The ReasonerClient class provides an abstraction for ontologenius reasoner service. <a href="#details">More...</a></p>
+        <h1 class="title">PatternsSubscriber Class</h1>
+        <p>The PatternsSubscriber class provides an abstraction ontologenius subscription mechanism.<a
+             href="#details">More...</a></p>
         <div class="table">
           <table class="alignedsummary">
             <tbody>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> Header:</td>
-                <td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clients/ReasonerClient.h&quot;</span></td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> Inherits:</td>
-                <td class="memItemRight bottomAlign"> <a href="ClientBase.html">ClientBase</a></td>
+                <td class="memItemRight bottomAlign"> <span class="preprocessor">#include
+                    &quot;ontologenius/PatternsSubscriber.h&quot;</span></td>
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> Namespace:</td>
@@ -150,69 +154,76 @@
             <tbody>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="ReasonerClient.html#ReasonerClient">ReasonerClient</a></b>(const std::string&amp; <i>name</i>)</td>
+                <td class="memItemRight bottomAlign"><b><a
+                       href="PatternsSubscriber.html#PatternsSubscriber">PatternsSubscriber</a></b>(const
+                  std::string&amp; <i>name</i>)</td>
               </tr>
               <tr>
-                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
-                <td class="memItemRight bottomAlign"><b><a href="ReasonerClient.html#list">list</a></b>()</td>
+                <td class="memItemLeft rightAlign topAlign"> int </td>
+                <td class="memItemRight bottomAlign"><b><a href="PatternsSubscriber.html#subscribe">subscribe</a></b>
+                  (const std::string&amp; <i>pattern</i>,
+                  const std::function&lt;void(const std::string&amp;)&gt;&amp; <i>callback</i>,
+                  int <i>count</i> = -1)</td>
               </tr>
               <tr>
-                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
-                <td class="memItemRight bottomAlign"><b><a href="ReasonerClient.html#activeList">activeList</a></b>()</td>
+                <td class="memItemLeft rightAlign topAlign">bool</td>
+                <td class="memItemRight bottomAlign"><b><a
+                       href="PatternsSubscriber.html#cancel">cancel</a></b>(size_t <i>id</i>)
+                </td>
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ReasonerClient.html#activate">activate</a></b>(const std::string&amp; <i>name</i>)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ReasonerClient.html#deactivate">deactivate</a></b>(const std::string&amp; <i>name</i>)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> std::string </td>
-                <td class="memItemRight bottomAlign"><b><a href="ReasonerClient.html#getDescription">getDescription</a></b>(const std::string&amp; <i>name</i>)</td>
+                <td class="memItemRight bottomAlign"><b><a
+                       href="PatternsSubscriber.html#end">end</a></b>()
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <a name="reimplemented-public-functions"></a>
-        <h2 id="reimplemented-public-functions">Reimplemented Public Functions</h2>
-        <ul>
-          <li class="fn">2 public functions inherited from <a href="ClientBase.html#public-functions">ClientBase</a></li>
-        </ul>
-
         <a name="details"></a>
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
-          <p>The ReasonerClient class provides an abstraction ontologenius reasoner ROS services.</p>
-          <p>The reasoner client is used to manage reasoner plugins for an ontology instance. This makes it possible to activate or deactivate plugins.</p>
-          <p>This class is based on <a href="ClientBase.html">ClientBase</a> and so ensure a persistent connection with the service based on. The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
+          <p>The PatternsSubscriber class provides an abstraction ontologenius subscription mechanism.</p>
+          <p>Querying a knowledge base is interesting but when one is waiting a given fact, pulling
+            the knowledge base can be an issue. To solve that, Ontologenius provide a subscription
+            mechanism allowing to subscribe not one only to given facts but also to patterns.</p>
         </div>
 
         <div class="func">
           <h2>Public Function Documentation</h2>
 
-          <h3 class="fn" id="ReasonerClient"><a name="ReasonerClient"></a>ReasonerClient::<span class="name">ReasonerClient</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Constructs a reasoner client.</p>
-          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use, <i>name</i> should be defined as &quot;&quot;.</p>
+          <h3 class="fn" id="PatternsSubscriber"><a name="PatternsSubscriber"></a>PatternsSubscriber::<span
+                  class="name">PatternsSubscriber</span>(const <span class="type">std::string</span>&amp; <i>name</i>)
+          </h3>
+          <p>Constructs a pattern subscriber.</p>
+          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use,
+            <i>name</i> should be defined as &quot;&quot;.
+          </p>
 
-          <h3 class="fn" id="list"><a name="list"></a><span class="type">std::vector&lt;std::string&gt;</span> ReasonerClient::<span class="name">list</span>()</h3>
-          <p>Returns the name of the plugins available.</p>
+          <h3 class="fn" id="subscribe"><a name="subscribe"></a><span class="type">int</span>
+            PatternsSubscriber::<span class="name">subscribe</span>(const <span class="type">std::string</span>&amp;
+            <i>pattern</i>, const <span class="type">std::function&lt;void(const std::string&amp;)&gt;</span>&amp; <i>callback</i>, <span class="type">int</span> <i>count</i> = -1)
+          </h3>
+          <p>Subscribes to a given <i>pattern</i> linked to a <i>callback</i>. Patterns are in the form "[add]subject|property|object".
+            Subject and object can be set as classes such as "[add]Cube|isOnTopOf|Table" to subscibe to any fact representing a cube being on a table.
+            In addition, any of the four elements can be setted with question mark which can be read as "any". For example,
+            "[?]?isOnTopOf|Table" to subscribe to any deletion or addition of any thing being on a entity of type Table.</p>
+          <p>The parameter count can be set to limit the subscription.
+            Default parameter -1 corresponds to an unlimited subscription.</p>
+          <p>This function returns the subscription id. This later is only used to manually unsubscribe.</p>
 
-          <h3 class="fn" id="activeList"><a name="activeList"></a><span class="type">std::vector&lt;std::string&gt;</span> ReasonerClient::<span class="name">activeList</span>()</h3>
-          <p>Returns the name of the activated plugins.</p>
 
-          <h3 class="fn" id="activate"><a name="activate"></a><span class="type">bool</span> ReasonerClient::<span class="name">activate</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Activate the plugin named <i>name</i>.</p>
-          <p>Returns false if the service call fails.</p>
+          <h3 class="fn" id="cancel"><a name="cancel"></a><span
+                  class="type">bool</span> PatternsSubscriber::<span
+                  class="name">cancel</span>(<span class="type">size_t</span> <i>id</i>)</h3>
+          <p>Manualy unsubscribe from a pattern using the corresponding subscription <id>id</id>.</p>
+          <p>Return True if the unsubscription suceeded.</p>
 
-          <h3 class="fn" id="deactivate"><a name="deactivate"></a><span class="type">bool</span> ReasonerClient::<span class="name">deactivate</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Deactivate the plugin named <i>name</i></p>
-          <p>Returns false if the service call fails.</p>
-
-          <h3 class="fn" id="getDescription"><a name="getDescription"></a><span class="type">std::string</span> ReasonerClient::<span class="name">getDescription</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
-          <p>Return the description of the plugin named <i>name</i>.</p>
+          <h3 class="fn" id="end"><a name="end"></a><span class="type">bool</span>
+            PatternsSubscriber::<span class="name">end</span>()
+          </h3>
+          <p>Tests if any subscription is still ongoing.</p>
 
         </div>
       </div>

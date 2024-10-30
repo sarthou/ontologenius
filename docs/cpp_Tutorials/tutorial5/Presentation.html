@@ -16,15 +16,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../../index.html">
-              <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../../index.html">
+            <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -99,6 +99,7 @@
             <li class="level1"><a href="../../cpp_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../cpp_API/PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="../../cpp_API/SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -149,7 +150,7 @@
           future states and try to understand together the best practices to do so.</p>
 
         <div class="text_block" style="margin-bottom:40px;">
-          <img src="../../images/tutorial/tutorial_5_sol1.png " alt="new instance creation" height="200px" style="margin-right:20px; vertical-align:middle"/>
+          <img src="../../images/tutorial/tutorial_5_sol1.png " alt="new instance creation" height="200px" style="margin-right:20px; vertical-align:middle" />
           <span>
             Based on what we saw in the previous tutorials, the only way to have instances for future knowledge base
             estimates would be to ... create new instances. I hope you see how bad this solution is. When we create a
@@ -157,7 +158,7 @@
             Also, by proceeding like this, if we have specified an internal file, each of these instances will
             be saved when it is killed, and depending on whether there is a backup of a previous execution or not, the
             new instance will start with this previous file or with the common ground.
-            <br/>
+            <br />
             At this point, you should see that with such management it will be unmanageable. Fortunately, if we do a
             tutorial on it it is that we have a way to do better.
           </span>
@@ -168,21 +169,21 @@
             The first feature offered by Ontologenius is deep copying. It is simply a complete copy of an existing instance
             which then becomes independent. With this copy, we start from an existing point and we can make our modifications
             from this point. Besides, even if an internal file is set, a copy will never be saved automatically when killed.
-            <br/>
+            <br />
             We have now solved the main problems identified above and we can also imagine interweaving as illustrated opposite to
             create two new states from one.
-            <br/>
+            <br />
             However, a deep copy is not a trivial process and it takes a little time to execute. Although this time can be negligible
             if we make only one copy, if we imagine a planning problem with a hundred states it can greatly affect the general
             performance of the planning all this for very often a low number of changes between each copy. Also, if you
             try to create a hundred Ontologenius instances, your computer will say "NO" at some point ... With my tests,
             I manage to create only 83 at the same time.
           </span>
-          <img src="../../images/tutorial/tutorial_5_sol2.png " alt="new instance creation" height="160px" style="margin-left:20px; vertical-align:middle"/>
+          <img src="../../images/tutorial/tutorial_5_sol2.png " alt="new instance creation" height="160px" style="margin-left:20px; vertical-align:middle" />
         </div>
 
         <div class="text_block">
-          <img src="../../images/tutorial/tutorial_5_sol3.png " alt="new instance creation" height="100px" style="margin-right:20px; vertical-align:middle"/>
+          <img src="../../images/tutorial/tutorial_5_sol3.png " alt="new instance creation" height="100px" style="margin-right:20px; vertical-align:middle" />
           <span>
             The second feature offered by Ontologenius is a kind of versioning system on copied instances. Much like git, you can
             make changes to a copied instance and then commit those changes with a commit name. Then you can continue to make
@@ -208,38 +209,38 @@
             <button aria-controls="panel-2-Python" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Python" name="Python" role="tab" tabindex="-1">Python</button>
             <button aria-controls="panel-2-Yaml" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Yaml" name="Yaml" role="tab" tabindex="-1">YAML</button>
           </div>
-          
+
           <div aria-labelledby="tab-2-Ros1" class="lang-tabs-panel group-tab" id="panel-2-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-xml">
               <div class="code_block xml_code" style="counter-reset:code_line 0;">
                 <div class="code_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-                <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
-                <div class="code_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius_multi.launch&quot;</span>&gt;</div>
-                <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius_tutorial)/futures.owl&quot;</span>/&gt;</div>
-                <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
-                <div class="code_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
+                <div class="code_line"> &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+                <div class="code_line"> &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius_multi.launch&quot;</span>&gt;</div>
+                <div class="code_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius_tutorial)/futures.owl&quot;</span>/&gt;</div>
+                <div class="code_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
+                <div class="code_line"> &lt;/<span class="xml_tag">include</span>&gt;</div>
                 <div class="code_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
               </div>
 
               <p>Let's call this file <i>futures.launch</i> and put it in our package in the folder <i>launch</i>.</p>
             </div>
           </div>
-          
+
           <div aria-labelledby="tab-2-Ros2" class="lang-tabs-panel group-tab" id="panel-2-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-xml">
               <div class="code_block xml_code">
                 <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-                <div class="terminal_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
-                <div class="terminal_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius_multi.launch&quot;</span>&gt;</div>
-                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius_tutorial)/futures.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
-                <div class="terminal_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">node</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius_multi.launch&quot;</span>&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius_tutorial)/futures.owl&quot;</span>/&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
+                <div class="terminal_line"> &lt;/<span class="xml_tag">include</span>&gt;</div>
                 <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
               </div>
               <p>Let's call this file <i>futures.xml</i> and put it in our package in the folder <i>launch</i>.</p>
             </div>
           </div>
-          
+
           <div aria-labelledby="tab-2-Python" class="lang-tabs-panel group-tab" id="panel-2-Python" name="Python" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-python">
               <div class="code_block python_code">
@@ -255,54 +256,54 @@
                 <div class="terminal_line"> </div>
                 <div class="terminal_line"><span class="py_def">def</span> <span class="py_function">generate_launch_description</span>():</div>
                 <div class="terminal_line"> </div>
-                <div class="terminal_line">    <span class="py_var">futures_node</span> = <span class="py_imported">Node</span>(</div>
-                <div class="terminal_line">        <span class="py_var">package</span>=<span class="py_string">'ontologenius_tutorial'</span>,</div>
-                <div class="terminal_line">        <span class="py_var">executable</span>=<span class="py_string">'explore_futures'</span>,</div>
-                <div class="terminal_line">        <span class="py_var">output</span>=<span class="py_string">'screen'</span>,</div>
-                <div class="terminal_line">    )</div>
+                <div class="terminal_line"> <span class="py_var">futures_node</span> = <span class="py_imported">Node</span>(</div>
+                <div class="terminal_line"> <span class="py_var">package</span>=<span class="py_string">'ontologenius_tutorial'</span>,</div>
+                <div class="terminal_line"> <span class="py_var">executable</span>=<span class="py_string">'explore_futures'</span>,</div>
+                <div class="terminal_line"> <span class="py_var">output</span>=<span class="py_string">'screen'</span>,</div>
+                <div class="terminal_line"> )</div>
                 <div class="terminal_line"> </div>
-                <div class="terminal_line">    <span class="py_var">ontologenius_include</span> = <span class="py_imported">IncludeLaunchDescription</span>(</div>
-                <div class="terminal_line">        <span class="py_imported">PythonLaunchDescriptionSource</span>(</div>
-                <div class="terminal_line">            <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">'launch/ontologenius_multi_empty.py'</span>)</div>
-                <div class="terminal_line">        ),</div>
-                <div class="terminal_line">        <span class="py_var">launch_arguments</span>={</div>
-                <div class="terminal_line">            <span class="py_string">'intern_file'</span>: <span class="py_imported">TextSubstitution</span>(<span class="py_var">text</span> = <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius_tutorial'</span>), <span class="py_string">'futures.owl'</span>)),</div>
-                <div class="terminal_line">            <span class="py_string">'files'</span>: <span class="py_string">''</span></div>
-                <div class="terminal_line">        }.<span class="py_function">items</span>()</div>
-                <div class="terminal_line">    )</div>
+                <div class="terminal_line"> <span class="py_var">ontologenius_include</span> = <span class="py_imported">IncludeLaunchDescription</span>(</div>
+                <div class="terminal_line"> <span class="py_imported">PythonLaunchDescriptionSource</span>(</div>
+                <div class="terminal_line"> <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">'launch/ontologenius_multi_empty.py'</span>)</div>
+                <div class="terminal_line"> ),</div>
+                <div class="terminal_line"> <span class="py_var">launch_arguments</span>={</div>
+                <div class="terminal_line"> <span class="py_string">'intern_file'</span>: <span class="py_imported">TextSubstitution</span>(<span class="py_var">text</span> = <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius_tutorial'</span>), <span class="py_string">'futures.owl'</span>)),</div>
+                <div class="terminal_line"> <span class="py_string">'files'</span>: <span class="py_string">''</span></div>
+                <div class="terminal_line"> }.<span class="py_function">items</span>()</div>
+                <div class="terminal_line"> )</div>
                 <div class="terminal_line"> </div>
-                <div class="terminal_line">    <span class="py_op">return</span> <span class="py_imported">LaunchDescription</span>([</div>
-                <div class="terminal_line">        <span class="py_var">futures_node</span>,</div>
-                <div class="terminal_line">        <span class="py_var">ontologenius_include</span></div>
-                <div class="terminal_line">    ])</div>
+                <div class="terminal_line"> <span class="py_op">return</span> <span class="py_imported">LaunchDescription</span>([</div>
+                <div class="terminal_line"> <span class="py_var">futures_node</span>,</div>
+                <div class="terminal_line"> <span class="py_var">ontologenius_include</span></div>
+                <div class="terminal_line"> ])</div>
               </div>
               <p>Let's call this file <i>futures.py</i> and put it in our package in the folder <i>launch</i>.</p>
             </div>
           </div>
-          
+
           <div aria-labelledby="tab-2-Yaml" class="lang-tabs-panel group-tab" id="panel-2-Yaml" name="Yaml" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-xml">
               <div class="code_block yaml_code">
                 <div class="terminal_line"><span class="yaml_key">launch</span>:</div>
                 <div class="terminal_line">- <span class="yaml_key">node</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">pkg</span>: <span class="yaml_string">&quot;ontologenius_tutorial&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">exec</span>: <span class="yaml_string">&quot;explore_futures&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">output</span>: <span class="yaml_string">&quot;screen&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">pkg</span>: <span class="yaml_string">&quot;ontologenius_tutorial&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">exec</span>: <span class="yaml_string">&quot;explore_futures&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">output</span>: <span class="yaml_string">&quot;screen&quot;</span></div>
                 <div class="terminal_line"> </div>
                 <div class="terminal_line">- <span class="yaml_key">include</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">file</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius_multi_empty.yaml&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">        -</div>
-                <div class="terminal_line">            <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
-                <div class="terminal_line">            <span class="yaml_key">value</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius_tutorial)/futures.owl&quot;</span></div>
-                <div class="terminal_line">        -</div>
-                <div class="terminal_line">            <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
-                <div class="terminal_line">            <span class="yaml_key">value</span>: <span class="yaml_string">&quot;&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">file</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius_multi_empty.yaml&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">arg</span>:</div>
+                <div class="terminal_line"> -</div>
+                <div class="terminal_line"> <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">value</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius_tutorial)/futures.owl&quot;</span></div>
+                <div class="terminal_line"> -</div>
+                <div class="terminal_line"> <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">value</span>: <span class="yaml_string">&quot;&quot;</span></div>
               </div>
               <p>Let's call this file <i>futures.yaml</i> and put it in our package in the folder <i>launch</i>.</p>
             </div>
           </div>
-        
+
         </div>
 
         <p>You can see here that we base our launch file on the launch file "ontologenius_multi" once again.
@@ -336,7 +337,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
       </a>
     </p>
   </div>

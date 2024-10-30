@@ -14,15 +14,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../index.html">
-              <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../index.html">
+            <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -97,6 +97,7 @@
             <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="OntologyClient.html"><b>OntologyClient</b></a></li>
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -126,10 +127,24 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clients/ontologyClients/OntologyClient.h&quot;</span></td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="ClientBase.html">ClientBase</a></td></tr></td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <a href="IndividualClient.html">IndividualClient</a>, <a href="ClassClient.html">ClassClient</a>, <a href="DataPropertyClient.html">DataPropertyClient</a>, <a href="ObjectPropertyClient.html">ObjectPropertyClient</a></td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> Namespace:</td><td class="memItemRight bottomAlign"> onto</td></tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Header:</td>
+                <td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clients/ontologyClients/OntologyClient.h&quot;</span></td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Inherits:</td>
+                <td class="memItemRight bottomAlign"> <a href="ClientBase.html">ClientBase</a></td>
+              </tr>
+              </td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Inherited By:</td>
+                <td class="memItemRight bottomAlign"> <a href="IndividualClient.html">IndividualClient</a>, <a href="ClassClient.html">ClassClient</a>, <a href="DataPropertyClient.html">DataPropertyClient</a>, <a href="ObjectPropertyClient.html">ObjectPropertyClient</a></td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Namespace:</td>
+                <td class="memItemRight bottomAlign"> onto</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -139,17 +154,50 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#OntologyClient">OntologyClient</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getUp">getUp</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1, const std::string&amp; <i>selector</i> = &quot;&quot;)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#isA">isA</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>base_class</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getName">getName</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getNames">getNames</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getEveryNames">getEveryNames</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#find">find</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true, const std::string&amp; <i>selector</i> = &quot;&quot;)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findSub">findSub</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true, const std::string&amp; <i>selector</i> = &quot;&quot;)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findRegex">findRegex</a></b>(const std::string&amp; <i>regex</i>, bool <i>take_id</i> = true, const std::string&amp; <i>selector</i> = &quot;&quot;)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findFuzzy">findFuzzy</a></b>(const std::string&amp; <i>name</i>, double <i>threshold</i> = 0.5, bool <i>take_id</i> = true, const std::string&amp; <i>selector</i> = &quot;&quot;)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#exist">exist</a></b>(const std::string&amp; <i>name</i>)</td></tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> </td>
+                <td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#OntologyClient">OntologyClient</a></b>(const std::string&amp; <i>name</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getUp">getUp</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1, const std::string&amp; <i>selector</i> = &quot;&quot;)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> bool </td>
+                <td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#isA">isA</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>base_class</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::string </td>
+                <td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getName">getName</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getNames">getNames</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#getEveryNames">getEveryNames</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#find">find</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true, const std::string&amp; <i>selector</i> = &quot;&quot;)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findSub">findSub</a></b>(const std::string&amp; <i>name</i>, bool <i>take_id</i> = true, const std::string&amp; <i>selector</i> = &quot;&quot;)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findRegex">findRegex</a></b>(const std::string&amp; <i>regex</i>, bool <i>take_id</i> = true, const std::string&amp; <i>selector</i> = &quot;&quot;)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#findFuzzy">findFuzzy</a></b>(const std::string&amp; <i>name</i>, double <i>threshold</i> = 0.5, bool <i>take_id</i> = true, const std::string&amp; <i>selector</i> = &quot;&quot;)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> bool </td>
+                <td class="memItemRight bottomAlign"><b><a href="OntologyClient.html#exist">exist</a></b>(const std::string&amp; <i>name</i>)</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -243,7 +291,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
       </a>
     </p>
   </div>
