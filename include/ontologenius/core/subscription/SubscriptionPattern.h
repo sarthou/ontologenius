@@ -115,9 +115,9 @@ namespace ontologenius {
       object_is_indiv_ = true;
       predicat_is_object_property_ = true;
 
-      subject_is_undefined_ = (triplet_.subject == "?");
-      object_is_undefined_ = (triplet_.object == "?");
-      predicat_is_undefined_ = (triplet_.predicate == "?");
+      subject_is_undefined_ = ((triplet_.subject.empty() == false) && (triplet_.subject.front() == '?'));
+      object_is_undefined_ = ((triplet_.object.empty() == false) && (triplet_.object.front() == '?'));
+      predicat_is_undefined_ = ((triplet_.predicate.empty() == false) && (triplet_.predicate.front() == '?'));
     }
   };
 
