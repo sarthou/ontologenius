@@ -16,15 +16,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../../index.html">
-              <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../../index.html">
+            <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -105,6 +105,7 @@
             <li class="level1"><a href="../../python_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="../../python_API/OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="../../python_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../python_API/PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="../../python_API/ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="../../python_API/SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -153,7 +154,7 @@
           it should be able to fly. With the mechanism of addition of knowledge and thanks to the
           reasoning of generalization, we will reproduce this type of reflection.</p>
 
-          <img src="../../images/tutorial/chicken.jpeg " alt="do a chicken can fly?" width="20%" class="center"/>
+        <img src="../../images/tutorial/chicken.jpeg " alt="do a chicken can fly?" width="20%" class="center" />
 
         <h2>The ontology used</h2>
 
@@ -173,40 +174,40 @@
             <button aria-controls="panel-2-Python" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Python" name="Python" role="tab" tabindex="-1">Python</button>
             <button aria-controls="panel-2-Yaml" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Yaml" name="Yaml" role="tab" tabindex="-1">YAML</button>
           </div>
-          
+
           <div aria-labelledby="tab-2-Ros1" class="lang-tabs-panel group-tab" id="panel-2-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-xml">
               <div class="code_block xml_code">
                 <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-                <div class="terminal_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;feed_and_generalize&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;feed_and_generalize.py&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
-                <div class="terminal_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius_empty.launch&quot;</span>&gt;</div>
-                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius_tutorial)/birds.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
-                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;config_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/configuration/config_generalization.yaml&quot;</span>/&gt;</div>
-                <div class="terminal_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;feed_and_generalize&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;feed_and_generalize.py&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius_empty.launch&quot;</span>&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius_tutorial)/birds.owl&quot;</span>/&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;config_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/configuration/config_generalization.yaml&quot;</span>/&gt;</div>
+                <div class="terminal_line"> &lt;/<span class="xml_tag">include</span>&gt;</div>
                 <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
               </div>
 
               <p>Let's call this file <i>generalize.launch</i> and put it in our package in the folder <i>launch</i>.</p>
             </div>
           </div>
-          
+
           <div aria-labelledby="tab-2-Ros2" class="lang-tabs-panel group-tab" id="panel-2-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-xml">
               <div class="code_block xml_code">
                 <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-                <div class="terminal_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;feed_and_generalize&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
-                <div class="terminal_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius.launch&quot;</span>&gt;</div>
-                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius_tutorial)/birds.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;config_file&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/configuration/config_generalization.yaml&quot;</span>/&gt;</div>
-                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
-                <div class="terminal_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">node</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;feed_and_generalize&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius.launch&quot;</span>&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius_tutorial)/birds.owl&quot;</span>/&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;config_file&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/configuration/config_generalization.yaml&quot;</span>/&gt;</div>
+                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
+                <div class="terminal_line"> &lt;/<span class="xml_tag">include</span>&gt;</div>
                 <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
               </div>
               <p>Let's call this file <i>generalize.xml</i> and put it in our package in the folder <i>launch</i>.</p>
             </div>
           </div>
-          
+
           <div aria-labelledby="tab-2-Python" class="lang-tabs-panel group-tab" id="panel-2-Python" name="Python" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-python">
               <div class="code_block python_code">
@@ -222,67 +223,68 @@
                 <div class="terminal_line"> </div>
                 <div class="terminal_line"><span class="py_def">def</span> <span class="py_function">generate_launch_description</span>():</div>
                 <div class="terminal_line"> </div>
-                <div class="terminal_line">    <span class="py_var">feed_and_generalize_node</span> = <span class="py_imported">Node</span>(</div>
-                <div class="terminal_line">        <span class="py_var">package</span>=<span class="py_string">'ontologenius_tutorial'</span>,</div>
-                <div class="terminal_line">        <span class="py_var">executable</span>=<span class="py_string">'feed_and_generalize'</span>,</div>
-                <div class="terminal_line">        <span class="py_var">output</span>=<span class="py_string">'screen'</span>,</div>
-                <div class="terminal_line">    )</div>
+                <div class="terminal_line"> <span class="py_var">feed_and_generalize_node</span> = <span class="py_imported">Node</span>(</div>
+                <div class="terminal_line"> <span class="py_var">package</span>=<span class="py_string">'ontologenius_tutorial'</span>,</div>
+                <div class="terminal_line"> <span class="py_var">executable</span>=<span class="py_string">'feed_and_generalize'</span>,</div>
+                <div class="terminal_line"> <span class="py_var">output</span>=<span class="py_string">'screen'</span>,</div>
+                <div class="terminal_line"> )</div>
                 <div class="terminal_line"> </div>
-                <div class="terminal_line">    <span class="py_var">ontologenius_include</span> = <span class="py_imported">IncludeLaunchDescription</span>(</div>
-                <div class="terminal_line">        <span class="py_imported">PythonLaunchDescriptionSource</span>(</div>
-                <div class="terminal_line">            <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">'launch/ontologenius.py'</span>)</div>
-                <div class="terminal_line">        ),</div>
-                <div class="terminal_line">        <span class="py_var">launch_arguments</span>={</div>
-                <div class="terminal_line">            <span class="py_string">'intern_file'</span>: <span class="py_imported">TextSubstitution</span>(<span class="py_var">text</span> = <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius_tutorial'</span>), <span class="py_string">'birds.owl'</span>)),</div>
-                <div class="terminal_line">            <span class="py_string">'config_file'</span>: <span class="py_imported">TextSubstitution</span>(<span class="py_var">text</span> = <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">'configuration/config_generalization.yaml'</span>)),</div>
-                <div class="terminal_line">            <span class="py_string">'files'</span>: <span class="py_string">''</span></div>
-                <div class="terminal_line">        }.<span class="py_function">items</span>()</div>
-                <div class="terminal_line">    )</div>
+                <div class="terminal_line"> <span class="py_var">ontologenius_include</span> = <span class="py_imported">IncludeLaunchDescription</span>(</div>
+                <div class="terminal_line"> <span class="py_imported">PythonLaunchDescriptionSource</span>(</div>
+                <div class="terminal_line"> <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">'launch/ontologenius.py'</span>)</div>
+                <div class="terminal_line"> ),</div>
+                <div class="terminal_line"> <span class="py_var">launch_arguments</span>={</div>
+                <div class="terminal_line"> <span class="py_string">'intern_file'</span>: <span class="py_imported">TextSubstitution</span>(<span class="py_var">text</span> = <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius_tutorial'</span>), <span class="py_string">'birds.owl'</span>)),</div>
+                <div class="terminal_line"> <span class="py_string">'config_file'</span>: <span class="py_imported">TextSubstitution</span>(<span class="py_var">text</span> = <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">'configuration/config_generalization.yaml'</span>)),</div>
+                <div class="terminal_line"> <span class="py_string">'files'</span>: <span class="py_string">''</span></div>
+                <div class="terminal_line"> }.<span class="py_function">items</span>()</div>
+                <div class="terminal_line"> )</div>
                 <div class="terminal_line"> </div>
-                <div class="terminal_line">    <span class="py_op">return</span> <span class="py_imported">LaunchDescription</span>([</div>
-                <div class="terminal_line">        <span class="py_var">feed_and_generalize_node</span>,</div>
-                <div class="terminal_line">        <span class="py_var">ontologenius_include</span></div>
-                <div class="terminal_line">    ])</div>
+                <div class="terminal_line"> <span class="py_op">return</span> <span class="py_imported">LaunchDescription</span>([</div>
+                <div class="terminal_line"> <span class="py_var">feed_and_generalize_node</span>,</div>
+                <div class="terminal_line"> <span class="py_var">ontologenius_include</span></div>
+                <div class="terminal_line"> ])</div>
               </div>
               <p>Let's call this file <i>generalize.py</i> and put it in our package in the folder <i>launch</i>.</p>
             </div>
           </div>
-          
+
           <div aria-labelledby="tab-2-Yaml" class="lang-tabs-panel group-tab" id="panel-2-Yaml" name="Yaml" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-xml">
               <div class="code_block yaml_code">
                 <div class="terminal_line"><span class="yaml_key">launch</span>:</div>
                 <div class="terminal_line">- <span class="yaml_key">node</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">pkg</span>: <span class="yaml_string">&quot;ontologenius_tutorial&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">exec</span>: <span class="yaml_string">&quot;feed_and_generalize&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">output</span>: <span class="yaml_string">&quot;screen&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">pkg</span>: <span class="yaml_string">&quot;ontologenius_tutorial&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">exec</span>: <span class="yaml_string">&quot;feed_and_generalize&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">output</span>: <span class="yaml_string">&quot;screen&quot;</span></div>
                 <div class="terminal_line"> </div>
                 <div class="terminal_line">- <span class="yaml_key">include</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">file</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius.yaml&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">        -</div>
-                <div class="terminal_line">            <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
-                <div class="terminal_line">            <span class="yaml_key">value</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius_tutorial)/birds.owl&quot;</span></div>
-                <div class="terminal_line">        -</div>
-                <div class="terminal_line">            <span class="yaml_key">name</span>: <span class="yaml_string">&quot;config_file&quot;</span></div>
-                <div class="terminal_line">            <span class="yaml_key">value</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/configuration/config_generalization.yaml&quot;</span></div>
-                <div class="terminal_line">        -</div>
-                <div class="terminal_line">            <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
-                <div class="terminal_line">            <span class="yaml_key">value</span>: <span class="yaml_string">&quot;&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">file</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius.yaml&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">arg</span>:</div>
+                <div class="terminal_line"> -</div>
+                <div class="terminal_line"> <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">value</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius_tutorial)/birds.owl&quot;</span></div>
+                <div class="terminal_line"> -</div>
+                <div class="terminal_line"> <span class="yaml_key">name</span>: <span class="yaml_string">&quot;config_file&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">value</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/configuration/config_generalization.yaml&quot;</span></div>
+                <div class="terminal_line"> -</div>
+                <div class="terminal_line"> <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
+                <div class="terminal_line"> <span class="yaml_key">value</span>: <span class="yaml_string">&quot;&quot;</span></div>
               </div>
               <p>Let's call this file <i>generalize.yaml</i> and put it in our package in the folder <i>launch</i>.</p>
             </div>
           </div>
-        
+
         </div>
 
         <p>By specifying an internal file, Ontologenius is allowed to save the ontology it contains in a file
           when it is stopped and to reload it on its next start. We will see the usefulness of this later.</p>
 
-        <p>You should also have noticed that we have used a new argument "config_file". With it, we can configure 
-          the reasoners we want to activate at the launch of Ontologenius and also tune their parameters. 
-          You can find more information about this file 
-          <a target="_blank" rel="noopener noreferrer" href="../../overview/reasonersConfiguration.html"><b>here</b></a>.</p>
+        <p>You should also have noticed that we have used a new argument "config_file". With it, we can configure
+          the reasoners we want to activate at the launch of Ontologenius and also tune their parameters.
+          You can find more information about this file
+          <a target="_blank" rel="noopener noreferrer" href="../../overview/reasonersConfiguration.html"><b>here</b></a>.
+        </p>
 
         <nav class="course-pagination">
           <a href="../Tutorials.html" class="course-pagination__btn">
@@ -307,7 +309,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
       </a>
     </p>
   </div>

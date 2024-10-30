@@ -16,15 +16,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../../index.html">
-              <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../../index.html">
+            <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -105,6 +105,7 @@
             <li class="level1"><a href="../../python_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="../../python_API/OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="../../python_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../python_API/PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="../../python_API/ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="../../python_API/SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -145,7 +146,7 @@
             <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
             <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
           </div>
-          
+
           <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-python">
               <div class="code_block python_code" style="counter-reset:code_line 0;">
@@ -156,29 +157,29 @@
                 <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontologenius</span> <span class="py_import">import</span> <span class="py_imported">OntologiesManipulator</span></div>
                 <div class="code_line"><br></div>
                 <div class="code_line"><span class="py_key">def</span> <span class="py_function">main</span>():</div>
-                <div class="code_line">    <span class="py_imported">rospy</span>.<span class="py_function">init_node</span>(<span class="py_string">'multiple_ontologies'</span>)</div>
+                <div class="code_line"> <span class="py_imported">rospy</span>.<span class="py_function">init_node</span>(<span class="py_string">'multiple_ontologies'</span>)</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">onto</span> = <span class="py_imported">OntologiesManipulator</span>()</div>
-                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">waitInit</span>()</div>
+                <div class="code_line"> <span class="py_var">onto</span> = <span class="py_imported">OntologiesManipulator</span>()</div>
+                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">waitInit</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'sally'</span>)</div>
-                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'anne'</span>)</div>
+                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'sally'</span>)</div>
+                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'anne'</span>)</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).<span class="py_function">close</span>()</div>
-                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).<span class="py_function">close</span>()</div>
+                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).<span class="py_function">close</span>()</div>
+                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).<span class="py_function">close</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
-                <div class="code_line">    <span class="py_function">print</span>(<span class="py_string">'for sally, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
+                <div class="code_line"> <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
+                <div class="code_line"> <span class="py_function">print</span>(<span class="py_string">'for sally, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
-                <div class="code_line">    <span class="py_function">print</span>(<span class="py_string">'for anne, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
+                <div class="code_line"> <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
+                <div class="code_line"> <span class="py_function">print</span>(<span class="py_string">'for anne, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
                 <div class="code_line"><br></div>
                 <div class="code_line"><span class="py_op">if</span> <span class="py_var">__name__</span> == <span class="py_string">'__main__'</span>:</div>
-                <div class="code_line">    <span class="py_function">main</span>()</div>
+                <div class="code_line"> <span class="py_function">main</span>()</div>
               </div>
             </div>
           </div>
-          
+
           <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-python">
               <div class="code_block python_code" style="counter-reset:code_line 0;">
@@ -189,25 +190,25 @@
                 <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontopy</span> <span class="py_import">import</span> <span class="py_imported">OntologiesManipulator</span>, <span class="py_imported">Ontoros</span></div>
                 <div class="code_line"><br></div>
                 <div class="code_line"><span class="py_key">def</span> <span class="py_function">main</span>():</div>
-                <div class="code_line">    <span class="py_imported">rclpy</span>.<span class="py_function">init</span>()</div>
+                <div class="code_line"> <span class="py_imported">rclpy</span>.<span class="py_function">init</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">onto</span> = <span class="py_imported">OntologiesManipulator</span>()</div>
-                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">waitInit</span>()</div>
+                <div class="code_line"> <span class="py_var">onto</span> = <span class="py_imported">OntologiesManipulator</span>()</div>
+                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">waitInit</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'sally'</span>)</div>
-                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'anne'</span>)</div>
+                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'sally'</span>)</div>
+                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'anne'</span>)</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).<span class="py_function">close</span>()</div>
-                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).<span class="py_function">close</span>()</div>
+                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).<span class="py_function">close</span>()</div>
+                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).<span class="py_function">close</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
-                <div class="code_line">    <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'for sally, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
+                <div class="code_line"> <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
+                <div class="code_line"> <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'for sally, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
-                <div class="code_line">    <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'for anne, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
+                <div class="code_line"> <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
+                <div class="code_line"> <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'for anne, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
                 <div class="code_line"><br></div>
                 <div class="code_line"><span class="py_op">if</span> <span class="py_var">__name__</span> == <span class="py_string">'__main__'</span>:</div>
-                <div class="code_line">    <span class="py_function">main</span>()</div>
+                <div class="code_line"> <span class="py_function">main</span>()</div>
               </div>
             </div>
           </div>
@@ -228,7 +229,7 @@
               </div>
             </div>
           </div>
-          
+
           <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-python">
               <div class="code_block python_code" style="counter-reset:code_line 4;">
@@ -243,31 +244,31 @@
           dynamically create an OntologyManipulator per agent.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 9;">
-          <div class="code_line">    <span class="py_var">onto</span> = <span class="py_imported">OntologiesManipulator</span>()</div>
-          <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">waitInit</span>()</div>
+          <div class="code_line"> <span class="py_var">onto</span> = <span class="py_imported">OntologiesManipulator</span>()</div>
+          <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">waitInit</span>()</div>
         </div>
 
         <p>We start by creating an OntologiesManipulator in the same way that we previously created an OntologyManipulator.
           This time, we simply call waitInit to make sure that all ROS services have been created before starting.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 12;">
-          <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'sally'</span>)</div>
-          <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'anne'</span>)</div>
+          <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'sally'</span>)</div>
+          <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'anne'</span>)</div>
         </div>
 
         <p>We create here two ontologies, one for Sally and one for Anne. For the rest of the program,
           we will use these identifiers to get the specific ontology we want to work on.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 15;">
-          <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).<span class="py_function">close</span>()</div>
-          <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).<span class="py_function">close</span>()</div>
+          <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).<span class="py_function">close</span>()</div>
+          <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).<span class="py_function">close</span>()</div>
         </div>
 
         <p>As usual, we must close the ontology before exploring it. Here we use the get function that returns an OntologyManipulator
           object for a specific instance.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 18;">
-          <div class="code_line">    <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
+          <div class="code_line"> <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
         </div>
 
         <p>From there, you can use Ontologenius as usual.</p>
@@ -297,7 +298,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
       </a>
     </p>
   </div>

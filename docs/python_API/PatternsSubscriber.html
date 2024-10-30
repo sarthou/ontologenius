@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ClientBaseIndex Class (python) | Ontologenius 0.4.2</title>
+  <title>ManagerClient Class (python) | Ontologenius 0.4.2</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -47,6 +47,7 @@
           <h3>Contents</h3>
           <ul style="display: block;">
             <li class="level1"><a href="#methods">Methods</a></li>
+            <li class="level1"><a href="#reimplemented-methods">Reimplemented Methods</a></li>
             <li class="level1"><a href="#details">Detailed Description</a></li>
           </ul>
         </div>
@@ -102,12 +103,12 @@
             <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
-            <li class="level1"><a href="PatternsSubscriber.html">PatternsSubscriber</a></li>
+            <li class="level1"><a href="PatternsSubscriber.html"><b>PatternsSubscriber</b></a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
             <li class="level1"><a href="ClassIndexClient.html">ClassIndexClient</a></li>
-            <li class="level1"><a href="ClientBaseIndex.html"><b>ClientBaseIndex</b></a></li>
+            <li class="level1"><a href="ClientBaseIndex.html">ClientBaseIndex</a></li>
             <li class="level1"><a href="ConversionClient.html">ConversionClient</a></li>
             <li class="level1"><a href="DataPropertyIndexClient.html">DataPropertyIndexClient</a></li>
             <li class="level1"><a href="IndividualIndexClient.html">IndividualIndexClient</a></li>
@@ -120,8 +121,8 @@
       </div>
 
       <div class="context">
-        <h1 class="title">ClientBaseIndex Class</h1>
-        <p>The ClientBaseIndex class provides a common ROS service abstraction. <a href="#details">More...</a></p>
+        <h1 class="title">PatternsSubscriber Class</h1>
+        <p>The PatternsSubscriber class provides an abstraction ontologenius subscription mechanism.<a href="#details">More...</a></p>
         <div class="table">
           <table class="alignedsummary">
             <tbody>
@@ -132,10 +133,6 @@
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> Ros2 Package:</td>
                 <td class="memItemRight bottomAlign"> <span class="preprocessor">ontopy</span></td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> Inherited By:</td>
-                <td class="memItemRight bottomAlign"> <a href="OntologyIndexClient.html">OntologyIndexClient</a></td>
               </tr>
             </tbody>
           </table>
@@ -148,43 +145,19 @@
             <tbody>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#__init__">__init__</a></b>(self, name)</td>
+                <td class="memItemRight bottomAlign"><b><a href="PatternsSubscriber.html#__init__">__init__</a></b>(self, name)</td>
               </tr>
               <tr>
-                <td class="memItemLeft rightAlign topAlign"> integer </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#nb">nb</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#resetNb">resetNb</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#setVerbose">setVerbose</a></b>(self, verbose)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#call">call</a></b>(self, action, param)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> integer[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callIndexes">callIndexes</a></b>(self, action, param)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callStr">callStr</a></b>(self, action, param)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> integer </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callIndex">callIndex</a></b>(self, action, param)</td>
+                <td class="memItemLeft rightAlign topAlign"> int </td>
+                <td class="memItemRight bottomAlign"><b><a href="PatternsSubscriber.html#subscribe">subscribe</a></b>(self, pattern, callback, count = -1)</td>
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callNR">callNR</a></b>(self, action, param)</td>
+                <td class="memItemRight bottomAlign"><b><a href="PatternsSubscriber.html#cancel">cancel</a></b>(self, id)</td>
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBaseIndex.html#callBool">callBool</a></b>(self, action, param)</td>
+                <td class="memItemRight bottomAlign"><b><a href="PatternsSubscriber.html#end">end</a></b>(self, dest_name, src_name)</td>
               </tr>
             </tbody>
           </table>
@@ -193,52 +166,35 @@
         <a name="details"></a>
         <div class="descr">
           <h2 id="details">Detailed Description</h2>
-          <p>The ClientBaseIndex class provides an abstraction for any ROS services.</p>
-          <p>This class ensures a persistent connection with the service based on. The persistent connection ensures a minimal response time. A reconnection logic is implemented in the event that the persistent connection fails. </p>
-          <p>At the difference of the usual ClientBase class, this one provides access to the interface based on indexes (integers) for better performances.</p>
+          <p>The PatternsSubscriber class provides an abstraction ontologenius subscription mechanism.</p>
+          <p>Querying a knowledge base is interesting but when one is waiting a given fact, pulling
+            the knowledge base can be an issue. To solve that, Ontologenius provide a subscription
+            mechanism allowing to subscribe not one only to given facts but also to patterns.</p>
         </div>
-
-        <p><b>See also </b><a href="ClientBase.html">ClientBase</a>.</p>
 
         <div class="func">
           <h2>Methods Documentation</h2>
 
           <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self, name)</h3>
-          <p>Constructs a ROS client linked to the service <i>name</i>(str).</p>
+          <p>Constructs a pattern subscriber.</p>
+          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str).
+            For classic use, <i>name</i>(str) should be defined as &quot;&quot;.</p>
 
-          <h3 class="fn" id="nb"><a name="nb"></a><span class="name">nb</span>(self)</h3>
-          <p>Gives the total number (integer) of service calls from all ClientBaseIndex instances since the last reset.</p>
+          <h3 class="fn" id="subscribe"><a name="subscribe"></a><span class="name">subscribe</span>(self, pattern, callback, count)</h3>
+          <p>Subscribes to a given <i>pattern</i>(str) linked to a <i>callback</i>(function(str)). Patterns are in the form "[add]subject|property|object".
+            Subject and object can be set as classes such as "[add]Cube|isOnTopOf|Table" to subscibe to any fact representing a cube being on a table.
+            In addition, any of the four elements can be setted with question mark which can be read as "any". For example,
+            "[?]?isOnTopOf|Table" to subscribe to any deletion or addition of any thing being on a entity of type Table.</p>
+          <p>The parameter <i>count</i>(int) can be set to limit the subscription.
+            Default parameter -1 corresponds to an unlimited subscription.</p>
+          <p>This function returns the subscription id(int). This later is only used to manually unsubscribe.</p>
 
-          <h3 class="fn" id="resetNb"><a name="resetNb"></a><span class="name">resetNb</span>(self)</h3>
-          <p>Reset Call Counter for all instances of ClientBaseIndex.</p>
+          <h3 class="fn" id="cancel"><a name="cancel"></a><span class="name">cancel</span>(self, id)</h3>
+          <p>Manualy unsubscribe from a pattern using the corresponding subscription <id>id</id>(int).</p>
+          <p>Return True if the unsubscription suceeded.</p>
 
-          <h3 class="fn" id="setVerbose"><a name="setVerbose"></a><span class="name">setVerbose</span>(self, verbose)</h3>
-          <p>If <i>verbose</i>(bool) is set to True, the clients will post messages about the failure to call the services and about their restoration.</p>
-
-          <h3 class="fn" id="call"><a name="call"></a><span class="name">call</span>(self, action, param)</h3>
-          <p>Call the service set up in the constructor of ClientBaseIndex with the request defined with <i>action</i>(str) and <i>param</i>(str) and returns all the results (str[]).</p>
-          <p>If the service call fails, the function returns None</p>
-
-          <h3 class="fn" id="callIndexes"><a name="callIndexes"></a><span class="name">callIndexes</span>(self, action, param)</h3>
-          <p>Call the service set up in the constructor of ClientBaseIndex with the request defined with <i>action</i>(str) and <i>param</i>(str) and returns all the results (integer[]).</p>
-          <p>If the service call fails, the function returns None</p>
-
-          <h3 class="fn" id="callStr"><a name="callStr"></a><span class="name">callStr</span>(self, action, param)</h3>
-          <p>Call the service set up in the constructor of ClientBaseIndex with the request defined with <i>action</i>(str) and <i>param</i>(str) and returns all the first result (str).</p>
-          <p>If the service call fails, the function returns None</p>
-
-          <h3 class="fn" id="callIndex"><a name="callIndex"></a><span class="name">callIndex</span>(self, action, param)</h3>
-          <p>Call the service set up in the constructor of ClientBaseIndex with the request defined with <i>action</i>(str) and <i>param</i>(str) and returns all the first result (integer).</p>
-          <p>If the service call fails, the function returns None</p>
-
-          <h3 class="fn" id="callNR"><a name="callNR"></a><span class="name">callNR</span>(self, action, param)</h3>
-          <p>Call the service set up in the constructor of ClientBaseIndex with the request defined with <i>action</i>(str) and <i>param</i>(str).</p>
-          <p>If the service call fails, the function returns False</p>
-
-          <h3 class="fn" id="callBool"><a name="callBool"></a><span class="name">callBool</span>(self, action, param)</h3>
-          <p>Call the service set up in the constructor of ClientBaseIndex with the request defined with <i>action</i>(str) and <i>param</i>(str).</p>
-          <p>Returns False if the service call fails or the result code of the service is different from SUCCESS.</p>
-
+          <h3 class="fn" id="end"><a name="end"></a><span class="name">end</span>(self)</h3>
+          <p>Tests if any subscription is still ongoing.</p>
         </div>
       </div>
     </div>
