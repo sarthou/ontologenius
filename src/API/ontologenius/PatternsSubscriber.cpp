@@ -26,9 +26,9 @@ namespace onto {
       cancel(id);
   }
 
-  bool PatternsSubscriber::subscribe(const std::string& pattern,
-                                     const std::function<void(const std::string&)>& callback,
-                                     size_t count)
+  int PatternsSubscriber::subscribe(const std::string& pattern,
+                                    const std::function<void(const std::string&)>& callback,
+                                    size_t count)
   {
     auto req = ontologenius::compat::makeRequest<ontologenius::compat::OntologeniusSubscription>();
     auto res = ontologenius::compat::makeResponse<ontologenius::compat::OntologeniusSubscription>();
@@ -42,11 +42,12 @@ namespace onto {
 
     if(client_subscribe_.call(req, res) != ResultTy::ros_status_failure)
     {
+      size_t id = ontologenius::compat::onto_ros::getServicePointer(res)->id;
       ids_.emplace(ontologenius::compat::onto_ros::getServicePointer(res)->id, callback);
-      return true;
+      return (int)id;
     }
     else
-      return false;
+      return -1;
   }
 
   bool PatternsSubscriber::cancel(size_t id)

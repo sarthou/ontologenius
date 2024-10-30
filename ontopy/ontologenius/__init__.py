@@ -7,3 +7,4 @@ from .OntologyManipulatorIndex import OntologyManipulatorIndex
 from .OntologiesManipulator import OntologiesManipulator
 from .FeederPublisher import FeederPublisher
 from .ConversionClient import ConversionClient
+from .PatternsSubscriber import PatternsSubscriber
