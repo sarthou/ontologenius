@@ -15,11 +15,11 @@ namespace onto {
   class PatternsSubscriber
   {
   public:
-    PatternsSubscriber(const std::function<void(const std::string&)>& callback, const std::string& name = "");
+    PatternsSubscriber(const std::string& name = "");
     ~PatternsSubscriber();
 
-    bool subscribe(const std::string& pattern, size_t count = -1);
-    bool cancel();
+    bool subscribe(const std::string& pattern, const std::function<void(const std::string&)>& callback, size_t count = -1);
+    bool cancel(size_t id);
 
     bool end() const { return ids_.empty(); }
 
@@ -30,11 +30,9 @@ namespace onto {
 
     std::atomic<bool> need_to_terminate_;
 
-    std::vector<size_t> ids_;
+    std::unordered_map<size_t, std::function<void(const std::string&)>> ids_;
 
     void patternCallback(const ontologenius::compat::OntologeniusSubscriptionAnswer& msg);
-
-    std::function<void(const std::string&)> callback_;
 
     void spinThread();
   };
