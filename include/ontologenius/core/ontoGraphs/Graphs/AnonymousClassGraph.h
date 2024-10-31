@@ -156,9 +156,10 @@ namespace ontologenius {
                         DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
     ~AnonymousClassGraph() override = default;
 
-    AnonymousClassElement* createElement(ExpressionMember_t* exp_leaf);
-    AnonymousClassElement* createTree(ExpressionMember_t* member_node, size_t& depth);
+    AnonymousClassElement* createElement(ExpressionMember_t* exp_leaf, AnonymousClassElement* root_node = nullptr);
+    AnonymousClassElement* createTree(ExpressionMember_t* member_node, size_t& depth, AnonymousClassElement* root_node = nullptr);
     AnonymousClassBranch* add(const std::string& value, AnonymousClassVectors_t& ano_class);
+    AnonymousClassBranch* addHiddenRuleElem(const size_t& rule_id, const size_t& elem_id, ExpressionMember_t* ano_expression); // for rule usage
     AnonymousClassElement* resolveTree(AnonymousClassElement* elem, bool prev_and);
 
     void printTree(AnonymousClassElement* ano_elem, size_t level, bool root) const;
