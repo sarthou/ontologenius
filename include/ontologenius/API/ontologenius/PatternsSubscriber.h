@@ -6,6 +6,7 @@
 #include <functional>
 #include <string>
 #include <thread>
+#include <unordered_map>
 #include <vector>
 
 #include "ontologenius/compat/ros.h"
