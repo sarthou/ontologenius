@@ -24,6 +24,7 @@ namespace ontologenius {
 
   RosInterface::RosInterface(const std::string& name) : onto_(new Ontology()),
                                                         reasoners_(name),
+                                                        subscriber_(name),
                                                         feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
 #ifdef ONTO_TEST
                                                         end_feed_(true),
@@ -162,7 +163,6 @@ namespace ontologenius {
 
     periodic_reasoning_thread.join();
     feed_thread.join();
-
     subscriber_.stop();
     subscription_thread.join();
   }
