@@ -37,10 +37,14 @@ namespace ontologenius {
   class ValuedNode : public UpdatableNode
   {
   public:
-    explicit ValuedNode(const std::string& value) : index_(table.add(value)) {}
+    explicit ValuedNode(const std::string& value, bool hidden = false) : index_(table.add(value)),
+                                                                         hidden_(hidden)
+    {}
 
     const index_t& get() const { return index_; }
     const std::string& value() const { return table[index_]; }
+
+    bool isHidden() { return hidden_; }
 
     static WordTable table;
 
@@ -61,6 +65,7 @@ namespace ontologenius {
 
   private:
     index_t index_;
+    bool hidden_;
   };
 
 } // namespace ontologenius
