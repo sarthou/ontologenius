@@ -43,80 +43,99 @@ namespace ontologenius {
     }
   }
 
-  RuleBranch* RuleGraph::add(const std::size_t& value, Rule_t& rule)
+  RuleBranch* RuleGraph::add(const std::size_t& rule_id, Rule_t& rule)
   {
     const std::lock_guard<std::shared_timed_mutex> lock(Graph<RuleBranch>::mutex_);
 
-    const std::string rule_name = "rule_" + std::to_string(value);
+    const std::string rule_name = "rule_" + std::to_string(rule_id);
     RuleBranch* rule_branch = new RuleBranch(rule_name);
     all_branchs_.push_back(rule_branch);
 
-    // std::cout << "Computing antecedents : " << std::endl;
+    size_t elem_id = 0;
+
     for(auto& elem_antec : rule.antecedents)
     {
       if(elem_antec.first != nullptr)
-        createRuleAtomList(&(rule_branch->rule_antecedents_), elem_antec);
+        createRuleAtomList(&(rule_branch->rule_antecedents_), elem_antec, rule_id, elem_id);
+      elem_id++;
     }
 
-    // std::cout << "Computing consequents : " << std::endl;
     for(auto& elem_conseq : rule.consequents)
     {
       if(elem_conseq.first != nullptr)
-        createRuleAtomList(&(rule_branch->rule_consequents_), elem_conseq);
+        createRuleAtomList(&(rule_branch->rule_consequents_), elem_conseq, rule_id, elem_id);
+      elem_id++;
     }
 
     return rule_branch;
   }
 
-  void RuleGraph::createRuleAtomList(RuleAtomList_t* rule_list, std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>> rule_element)
+  void RuleGraph::createRuleAtomList(RuleAtomList_t* rule_list, std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>> rule_element, const size_t& rule_id, const size_t& elem_id)
   {
     auto* rule_atom = rule_element.first;
     auto rule_variable = rule_element.second;
 
-    // if atom is a class expression, create an unamed anonymous class
     if((rule_atom->is_data_property) & (rule_atom->logical_type_ == logical_none) & (!rule_atom->is_complex))
     {
       // std::cout << "single data atom " << rule_atom->rest.toString() << std::endl;
-      DataPropertyAtom_t* data_atom = createDataPropertyAtom(rule_atom, rule_variable);
-      rule_list->data_atoms_.push_back(data_atom);
+      // DataPropertyAtom_t* data_atom = createDataPropertyAtom(rule_atom, rule_variable);
+      rule_list->data_atoms_.push_back(createDataPropertyAtom(rule_atom, rule_variable));
     }
     else if((rule_atom->logical_type_ == logical_none) & (!rule_atom->is_complex) & (rule_atom->rest.restriction_range.empty()))
     {
       // std::cout << "single object atom " << rule_atom->rest.toString() << std::endl;
-      ObjectPropertyAtom_t* object_atom = createObjectPropertyAtom(rule_atom, rule_variable);
-      rule_list->object_atoms_.push_back(object_atom);
+      // ObjectPropertyAtom_t* object_atom = createObjectPropertyAtom(rule_atom, rule_variable);
+      rule_list->object_atoms_.push_back(createObjectPropertyAtom(rule_atom, rule_variable));
     }
     else
     {
       // std::cout << " class atom  " << rule_atom->rest.toString() << std::endl;
-      ClassAtom_t* class_atom = createClassAtom(rule_atom, rule_variable.front());
-      rule_list->class_atoms_.push_back(class_atom);
+      // ClassAtom_t* class_atom = createClassAtom(rule_atom, rule_variable.front(), rule_id, elem_id);
+      rule_list->class_atoms_.push_back(createClassAtom(rule_atom, rule_variable.front(), rule_id, elem_id));
     }
   }
 
-  ClassAtom_t* RuleGraph::createClassAtom(ExpressionMember_t* class_member, Variable_t variable)
+  ClassAtom_t* RuleGraph::createClassAtom(ExpressionMember_t* class_member, const Variable_t& variable, const size_t& rule_id, const size_t& elem_id)
   {
     ClassAtom_t* class_atom = new ClassAtom_t();
     AnonymousClassElement* class_elem = new AnonymousClassElement();
 
-    if(class_member->logical_type_ != logical_none || class_member->oneof == true || class_member->is_complex == true)
+    if(class_member->logical_type_ != logical_none || class_member->oneof == true || class_member->is_complex == true || !class_member->rest.property.empty())
     {
-      // std::cout << "complex atom " << std::endl;
-      size_t depth = 0;
-      class_elem = createTree(class_member, depth);
-      // anonymous_graph_->add() // need to add the newly created anonymous elem into the anonymous classes
-    }
-    else if(!class_member->rest.property.empty())
-    {
-      // std::cout << "single restriction " << std::endl;
-      class_elem = createElement(class_member);
-      // anonymous_graph_->add() // need to add the newly created anonymous elem into the anonymous classes
+      auto* rule_ano_branch = anonymous_graph_->addHiddenRuleElem(rule_id, elem_id, class_member); // returns the newly created ano branch
+      // std::cout << "created classAtom " << rule_ano_branch->value() << std::endl;
+      class_atom->equivalent_class = rule_ano_branch->class_equiv_; // get the pointer to the newly created hidden class
+      class_elem = rule_ano_branch->ano_elems_.front();             // get the content of the expression for the RuleChecker to process it
     }
     else
     {
-      // std::cout << "simple class atom " << std::endl;
-      class_elem->class_involved_ = class_graph_->findOrCreateBranch(class_member->rest.restriction_range);
+      class_atom->equivalent_class = class_graph_->findOrCreateBranch(class_member->rest.restriction_range);
+      class_elem->class_involved_ = class_atom->equivalent_class;
     }
+
+    // if(class_member->logical_type_ != logical_none || class_member->oneof == true || class_member->is_complex == true)
+    // {
+    //   // std::cout << "complex atom " << std::endl;
+    //   size_t depth = 0;
+    //   class_elem = anonymous_graph_->createTree(class_member, depth, nullptr);
+
+    //   // class_elem->is_hidden = true;
+    //   rule_ano_branch->ano_elems_.push_back(class_elem);
+    //   anonymous_graph_->all_branchs_.push_back(rule_ano_branch);
+    // }
+    // else if(!class_member->rest.property.empty())
+    // {
+    //   // std::cout << "single restriction " << std::endl;
+    //   class_elem = anonymous_graph_->createElement(class_member);
+
+    //   rule_ano_branch->ano_elems_.push_back(class_elem);
+    //   anonymous_graph_->all_branchs_.push_back(rule_ano_branch);
+    // }
+    // else
+    // {
+    //   // std::cout << "simple class atom " << std::endl;
+    //   class_elem->class_involved_ = class_graph_->findOrCreateBranch(class_member->rest.restriction_range);
+    // }
 
     if(variable.is_instantiated)
       class_atom->individual_involved = individual_graph_->findOrCreateBranch(variable.var_name);
@@ -191,197 +210,6 @@ namespace ontologenius {
       return nullptr;
 
     return data_atom;
-  }
-
-  AnonymousClassElement* RuleGraph::createElement(ExpressionMember_t* exp)
-  {
-    AnonymousClassElement* ano_element = new AnonymousClassElement();
-    ano_element->is_complex = exp->is_complex;
-    Restriction_t current_rest = exp->rest;
-
-    // ============= Node type =================
-    if(exp->logical_type_ != logical_none)
-    {
-      ano_element->logical_type_ = exp->logical_type_;
-      return ano_element;
-    }
-    else if(exp->oneof == true)
-    {
-      ano_element->oneof = true;
-      return ano_element;
-    }
-
-    // ============  Property ==================
-    if(!current_rest.property.empty())
-    {
-      if(exp->is_data_property)
-        ano_element->data_property_involved_ = data_property_graph_->findOrCreateBranch(current_rest.property);
-      else
-        ano_element->object_property_involved_ = object_property_graph_->findOrCreateBranch(current_rest.property);
-    }
-
-    // ==============  Cardinality Type & Number =============
-    if(current_rest.card.cardinality_type == "some")
-      ano_element->card_.card_type_ = cardinality_some;
-    else if(current_rest.card.cardinality_type == "only")
-      ano_element->card_.card_type_ = cardinality_only;
-    else if(current_rest.card.cardinality_type == "value")
-      ano_element->card_.card_type_ = cardinality_value;
-    else if(current_rest.card.cardinality_type == "exactly")
-    {
-      ano_element->card_.card_type_ = cardinality_exactly;
-      ano_element->card_.card_number_ = std::stoi(current_rest.card.cardinality_number);
-    }
-    else if(current_rest.card.cardinality_type == "min")
-    {
-      ano_element->card_.card_type_ = cardinality_min;
-      ano_element->card_.card_number_ = std::stoi(current_rest.card.cardinality_number);
-    }
-    else if(current_rest.card.cardinality_type == "max")
-    {
-      ano_element->card_.card_type_ = cardinality_max;
-      ano_element->card_.card_number_ = std::stoi(current_rest.card.cardinality_number);
-    }
-
-    // ===============  Cardinality range  (value, some, only )  ===================
-    const std::string card_range = current_rest.card.cardinality_range;
-    if(!card_range.empty())
-    {
-      if(exp->is_data_property) // data property
-      {
-        const std::string type_value = card_range.substr(card_range.find("#") + 1, -1);
-        ano_element->card_.card_range_ = data_property_graph_->createLiteral(type_value);
-      }
-      else // object property
-      {
-        if(ano_element->card_.card_type_ == cardinality_value) // indiv
-          ano_element->individual_involved_ = individual_graph_->findOrCreateBranch(card_range);
-        else // class
-          ano_element->class_involved_ = class_graph_->findOrCreateBranch(card_range);
-      }
-    }
-
-    // ===============  Restriction range  (min, max, exactly )===================
-    const std::string rest_range = current_rest.restriction_range;
-    if(!rest_range.empty())
-    {
-      if(isIn("http://www.w3.org/", rest_range)) // literal node for complex data restriction (ClassX Eq to data_prop some (not(literal)))
-      {
-        const std::string type = split(rest_range, "#").back();
-        ano_element->card_.card_range_ = data_property_graph_->createLiteral(type);
-      }
-      else if(exp->mother != nullptr && exp->mother->oneof) // individual node for oneOf (ClassX Eq to oneOf(indiv))
-        ano_element->individual_involved_ = individual_graph_->findOrCreateBranch(rest_range);
-      else
-        ano_element->class_involved_ = class_graph_->findOrCreateBranch(rest_range); // class node for class only restriction (ClassX Eq to ClassY)
-    }
-
-    return ano_element;
-  }
-
-  AnonymousClassElement* RuleGraph::createTree(ExpressionMember_t* member_node, size_t& depth)
-  {
-    size_t local_depth = depth + 1;
-    AnonymousClassElement* node = createElement(member_node);
-
-    for(auto* child : member_node->child_members)
-    {
-      size_t child_depth = depth + 1;
-      node->sub_elements_.push_back(createTree(child, child_depth));
-      if(child_depth > local_depth)
-        local_depth = child_depth;
-    }
-
-    depth = local_depth;
-
-    return node;
-  }
-
-  void RuleGraph::printTree(AnonymousClassElement* ano_elem, size_t level, bool root) const
-  {
-    const std::string space(level * 4, ' ');
-    std::string tmp;
-
-    if(root)
-      std::cout << space;
-
-    if(ano_elem->logical_type_ == LogicalNodeType_e::logical_and)
-      tmp += "and";
-    else if(ano_elem->logical_type_ == LogicalNodeType_e::logical_or)
-      tmp += "or";
-    else if(ano_elem->logical_type_ == LogicalNodeType_e::logical_not)
-      tmp += "not";
-    else if(ano_elem->oneof)
-      tmp += "oneOf";
-    else if(ano_elem->object_property_involved_ != nullptr)
-    {
-      tmp += ano_elem->object_property_involved_->value();
-      tmp += " " + toString(ano_elem->card_.card_type_);
-
-      if(ano_elem->card_.card_type_ == ontologenius::CardType_e::cardinality_value)
-        tmp += " " + ano_elem->individual_involved_->value();
-      else
-      {
-        if(ano_elem->card_.card_number_ != 0)
-          tmp += " " + std::to_string(ano_elem->card_.card_number_);
-        if(ano_elem->class_involved_ != nullptr)
-          tmp += " " + ano_elem->class_involved_->value();
-      }
-    }
-    else if(ano_elem->data_property_involved_ != nullptr)
-    {
-      tmp += ano_elem->data_property_involved_->value();
-      tmp += " " + toString(ano_elem->card_.card_type_);
-      if(ano_elem->card_.card_number_ != 0)
-        tmp += " " + std::to_string(ano_elem->card_.card_number_);
-      if(ano_elem->card_.card_range_ != nullptr)
-        tmp += " " + ano_elem->card_.card_range_->value();
-    }
-    else
-    {
-      if(ano_elem->class_involved_ != nullptr)
-        tmp += ano_elem->class_involved_->value();
-      else if(ano_elem->individual_involved_ != nullptr)
-        tmp += ano_elem->individual_involved_->value();
-      else if(ano_elem->card_.card_range_ != nullptr)
-        tmp += ano_elem->card_.card_range_->type_;
-    }
-
-    std::cout << tmp << std::endl;
-
-    for(auto* sub_elem : ano_elem->sub_elements_)
-    {
-      for(int i = 0; i < int(level); i++)
-        std::cout << "│   ";
-      if(sub_elem == ano_elem->sub_elements_.back())
-        std::cout << "└── ";
-      else
-        std::cout << "├── ";
-      printTree(sub_elem, level + 1, false);
-    }
-  }
-
-  std::string RuleGraph::toString(CardType_e value) const
-  {
-    switch(value)
-    {
-    case CardType_e::cardinality_some:
-      return "some";
-    case CardType_e::cardinality_only:
-      return "only";
-    case CardType_e::cardinality_min:
-      return "min";
-    case CardType_e::cardinality_max:
-      return "max";
-    case CardType_e::cardinality_exactly:
-      return "exactly";
-    case CardType_e::cardinality_value:
-      return "value";
-    case CardType_e::cardinality_error:
-      return "error";
-    default:
-      return "";
-    }
   }
 
 } // namespace ontologenius
