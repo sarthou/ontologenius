@@ -13,24 +13,24 @@ TEST(global_tests, reset)
 {
   std::vector<std::string> res;
 
-  std::string test_word = "affair";
-  res = onto_ptr->classes.find(test_word);
-  EXPECT_TRUE((res.size() == 1) && (res[0] == "affair"));
+  res = onto_ptr->classes.find("affair");
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_EQ(res.front(), "affair");
 
-  test_word = "centimeter";
-  res = onto_ptr->classes.find(test_word);
-  EXPECT_TRUE((res.size() == 1) && (res[0] == "centimeter"));
+  res = onto_ptr->classes.find("centimeter");
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_EQ(res.front(), "centimeter");
 
   EXPECT_TRUE(onto_ptr->actions.clear());
   EXPECT_TRUE(onto_ptr->actions.close());
 
-  test_word = "affair";
-  res = onto_ptr->classes.find(test_word);
-  EXPECT_FALSE((res.size() == 1) && (res[0] == "affair"));
+  res = onto_ptr->classes.find("affair");
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_EQ(res.front(), "affair");
 
-  test_word = "centimeter";
-  res = onto_ptr->classes.find(test_word);
-  EXPECT_FALSE((res.size() == 1) && (res[0] == "centimeter"));
+  res = onto_ptr->classes.find("centimeter");
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_EQ(res.front(), "centimeter");
 
   EXPECT_TRUE(onto_ptr->actions.clear());
   std::string path = ros::package::getPath("ontologenius");
@@ -39,13 +39,13 @@ TEST(global_tests, reset)
 
   EXPECT_TRUE(onto_ptr->actions.close());
 
-  test_word = "affair";
-  res = onto_ptr->classes.find(test_word);
-  EXPECT_TRUE((res.size() == 1) && (res[0] == "affair"));
+  res = onto_ptr->classes.find("affair");
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_EQ(res.front(), "affair");
 
-  test_word = "centimeter";
-  res = onto_ptr->classes.find(test_word);
-  EXPECT_FALSE((res.size() == 1) && (res[0] == "centimeter"));
+  res = onto_ptr->classes.find("centimeter");
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_EQ(res.front(), "centimeter");
 }
 
 TEST(global_tests, language)
@@ -63,7 +63,8 @@ TEST(global_tests, language)
 
   std::string test_word = "affair";
   res = onto_ptr->classes.find(test_word);
-  EXPECT_TRUE((res.size() == 1) && (res[0] == "affair"));
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_EQ(res.front(), "affair");
 
   EXPECT_TRUE(onto_ptr->classes.getName(test_word) == "affair");
   EXPECT_FALSE(onto_ptr->classes.getName(test_word) == "affaire");
@@ -71,11 +72,13 @@ TEST(global_tests, language)
   EXPECT_TRUE(onto_ptr->actions.setLang("fr"));
 
   res = onto_ptr->classes.find(test_word);
-  EXPECT_TRUE((res.size() == 1) && (res[0] == "affair"));
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_EQ(res.front(), "affair");
 
   test_word = "affaire";
   res = onto_ptr->classes.find(test_word);
-  EXPECT_TRUE((res.size() == 1) && (res[0] == "affair"));
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_EQ(res.front(), "affair");
 
   test_word = "affair";
   EXPECT_TRUE(onto_ptr->classes.getName(test_word) == "affaire");

@@ -32,8 +32,8 @@ TEST(cpy_tests, reset)
 
   const std::string indiv = "redCube";
 
-  EXPECT_TRUE(onto1.individual_graph_.getUp(indiv).size() == 11);
-  EXPECT_TRUE(onto2.individual_graph_.getUp(indiv).size() == 11);
+  EXPECT_EQ(onto1.individual_graph_.getUp(indiv).size(), 11);
+  EXPECT_EQ(onto2.individual_graph_.getUp(indiv).size(), 11);
 
   std::string type = "cube";
   onto2.individual_graph_.removeInheritage(indiv, type);
@@ -43,8 +43,8 @@ TEST(cpy_tests, reset)
   std::cout << "onto1 " << onto1.individual_graph_.getUp(indiv).size() << std::endl;
   std::cout << "onto2 " << onto2.individual_graph_.getUp(indiv).size() << std::endl;
 
-  EXPECT_TRUE(onto1.individual_graph_.getUp(indiv).size() == 11);
-  EXPECT_TRUE(onto2.individual_graph_.getUp(indiv).size() == 7);
+  EXPECT_EQ(onto1.individual_graph_.getUp(indiv).size(), 11);
+  EXPECT_EQ(onto2.individual_graph_.getUp(indiv).size(), 7);
 }
 
 int main(int argc, char** argv)
