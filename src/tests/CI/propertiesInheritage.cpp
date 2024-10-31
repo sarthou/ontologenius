@@ -613,9 +613,7 @@ TEST(global_tests, individual_getWith)
   res = onto_ptr->individuals.getWith("alice", "human");
   EXPECT_TRUE(res.empty());
 
-  test_word = "bob";
-  test_word2 = "integer#2";
-  res = onto_ptr->individuals.getWith(test_word, test_word2);
+  res = onto_ptr->individuals.getWith("bob", "integer#2");
   EXPECT_TRUE(res.empty());
 
   res = onto_ptr->individuals.getWith("cube1", "redCube"); // use same as (cube1 = greenCube)
