@@ -40,13 +40,21 @@ namespace ontologenius {
   class AnonymousClassElement
   {
   public:
-    AnonymousClassElement() : logical_type_(logical_none), oneof(false), is_complex(false),
-                              class_involved_(nullptr), object_property_involved_(nullptr),
-                              data_property_involved_(nullptr), individual_involved_(nullptr) {}
+    AnonymousClassElement() : logical_type_(logical_none), oneof(false), is_complex(false), root_node_(nullptr),
+                              involves_class(false), involves_object_property(false), involves_data_property(false), involves_individual(false),
+                              class_involved_(nullptr), object_property_involved_(nullptr), data_property_involved_(nullptr), individual_involved_(nullptr)
+    {}
 
     LogicalNodeType_e logical_type_;
     bool oneof; // true = OneOf element
     bool is_complex;
+
+    AnonymousClassElement* root_node_;
+
+    bool involves_class;
+    bool involves_object_property;
+    bool involves_data_property;
+    bool involves_individual;
 
     // pointers to the concepts used in the equivalence relation
     ClassBranch* class_involved_;
@@ -58,12 +66,20 @@ namespace ontologenius {
 
     std::vector<AnonymousClassElement*> sub_elements_;
     std::string ano_name;
+
+    std::string involvesToString()
+    {
+      std::string involves_res;
+      involves_res = " c : " + std::to_string(root_node_->involves_class) + " o : " + std::to_string(root_node_->involves_object_property) +
+                     " d : " + std::to_string(root_node_->involves_data_property) + " i : " + std::to_string(root_node_->involves_individual);
+      return involves_res;
+    }
   };
 
   class AnonymousClassBranch : public ValuedNode
   {
   public:
-    explicit AnonymousClassBranch(const std::string& value) : ValuedNode(value), class_equiv_(nullptr), depth_(0) {}
+    explicit AnonymousClassBranch(const std::string& value, bool hidden = false) : ValuedNode(value, hidden), class_equiv_(nullptr), depth_(0) {}
 
     ClassBranch* class_equiv_;
     std::vector<AnonymousClassElement*> ano_elems_;
