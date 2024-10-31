@@ -28,7 +28,7 @@ namespace ontologenius {
     RelationsWithInductions<IndividualElement> same_as_;
     std::vector<IndividualElement> distinct_;
 
-    IndividualBranch(const std::string& value = "") : ValuedNode(value) {}
+    IndividualBranch(const std::string& value = "", bool hidden = false) : ValuedNode(value, hidden) {}
 
     int objectRelationExists(ObjectPropertyBranch* property, IndividualBranch* individual);
     int dataRelationExists(DataPropertyBranch* property, LiteralNode* data);
@@ -47,7 +47,6 @@ namespace ontologenius {
       }
       ValuedNode::setUpdated(value);
     }
-
   };
 
 } // namespace ontologenius
