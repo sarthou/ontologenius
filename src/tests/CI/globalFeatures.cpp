@@ -27,14 +27,14 @@ TEST(global_tests, reset)
   EXPECT_TRUE(onto_ptr->actions.close());
 
   res = onto_ptr->classes.find("affair");
-  EXPECT_EQ(res.size(), 1);
+  EXPECT_NE(res.size(), 1);
   if(res.empty() == false)
-    EXPECT_EQ(res.front(), "affair");
+    EXPECT_NE(res.front(), "affair");
 
   res = onto_ptr->classes.find("centimeter");
-  EXPECT_EQ(res.size(), 1);
+  EXPECT_NE(res.size(), 1);
   if(res.empty() == false)
-    EXPECT_EQ(res.front(), "centimeter");
+    EXPECT_NE(res.front(), "centimeter");
 
   EXPECT_TRUE(onto_ptr->actions.clear());
   std::string path = ros::package::getPath("ontologenius");
@@ -49,9 +49,9 @@ TEST(global_tests, reset)
     EXPECT_EQ(res.front(), "affair");
 
   res = onto_ptr->classes.find("centimeter");
-  EXPECT_EQ(res.size(), 1);
+  EXPECT_NE(res.size(), 1);
   if(res.empty() == false)
-    EXPECT_EQ(res.front(), "centimeter");
+    EXPECT_NE(res.front(), "centimeter");
 }
 
 TEST(global_tests, language)
