@@ -16,28 +16,32 @@ TEST(library_tests, individuals_call)
 {
   std::vector<std::string> res = onto_ptr->individuals.getUp("test");
   EXPECT_NE(res.size(), 1);
-  EXPECT_NE(res.front(), "ERR:SERVICE_FAIL");
+  if(res.empty() == false)
+    EXPECT_NE(res.front(), "ERR:SERVICE_FAIL");
 }
 
 TEST(library_tests, objectProperties_call)
 {
   std::vector<std::string> res = onto_ptr->objectProperties.getUp("test");
   EXPECT_NE(res.size(), 1);
-  EXPECT_NE(res.front(), "ERR:SERVICE_FAIL");
+  if(res.empty() == false)
+    EXPECT_NE(res.front(), "ERR:SERVICE_FAIL");
 }
 
 TEST(library_tests, dataProperties_call)
 {
   std::vector<std::string> res = onto_ptr->dataProperties.getUp("test");
   EXPECT_NE(res.size(), 1);
-  EXPECT_NE(res.front(), "ERR:SERVICE_FAIL");
+  if(res.empty() == false)
+    EXPECT_NE(res.front(), "ERR:SERVICE_FAIL");
 }
 
 TEST(library_tests, classes_call)
 {
   std::vector<std::string> res = onto_ptr->classes.getUp("test");
   EXPECT_NE(res.size(), 1);
-  EXPECT_NE(res.front(), "ERR:SERVICE_FAIL");
+  if(res.empty() == false)
+    EXPECT_NE(res.front(), "ERR:SERVICE_FAIL");
 }
 
 TEST(library_tests, actions_call)
