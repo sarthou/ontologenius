@@ -13,18 +13,17 @@
 
 namespace ontologenius {
 
-  // one rule has antecedent and consequent
-  // antecedent can contain, classes, individuals, obj/dat prop, swrl buitins, sameAs, DifferentFrom, and class expressions
-  // 3 flags selon les modifications
-  // maitien d'une liste de classes non nommés pour les ano classes dans les antecedents
-
   struct ClassAtom_t
   {
-    AnonymousClassElement* class_expression; // ClassBranch or ClassExpression
+    // the class expression is needed for the RuleChecker
+    // AnonymousClassBranch* class_expression; // stores the expression (hasCamera some Camera/Component) and the name of the element __rule_1_2
+    AnonymousClassElement* class_expression; // ClassBranch or ClassExpression if ano class-> create equiv class with name __rule_1_2 and add it to ano_graph with hidden = true
+    ClassBranch* equivalent_class;           // ClassBranch or equiv Anonymous class (if class then directly the pointer, else the newly created hidden ClassBranch)
+
     std::string var;
     IndividualBranch* individual_involved;
 
-    ClassAtom_t() : class_expression(nullptr), individual_involved(nullptr) {}
+    ClassAtom_t() : class_expression(nullptr), equivalent_class(nullptr), individual_involved(nullptr) {}
   };
 
   struct ObjectPropertyAtom_t
@@ -106,7 +105,7 @@ namespace ontologenius {
   class RuleBranch : public ValuedNode
   {
   public:
-    explicit RuleBranch(const std::string& value) : ValuedNode(value) {}
+    explicit RuleBranch(const std::string& value, bool hidden = false) : ValuedNode(value, hidden) {}
 
     RuleAtomList_t rule_antecedents_;
     RuleAtomList_t rule_consequents_;
