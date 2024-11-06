@@ -8,7 +8,6 @@
      xmlns:positionProperty="ontologenius/positionProperty#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
     <owl:Ontology rdf:about="ontologenius/testIndividuals">
-        <owl:imports rdf:resource="ontologenius/files/property"/>
         <owl:imports rdf:resource="ontologenius/files/attribute"/>
         <owl:imports rdf:resource="ontologenius/files/positionProperty"/>
     </owl:Ontology>

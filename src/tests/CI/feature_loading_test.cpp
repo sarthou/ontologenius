@@ -18,10 +18,10 @@ TEST(feature_loading, reset)
   if(res.empty() == false)
     EXPECT_EQ(res.front(), "affair");
 
-  res = onto_ptr->classes.find("centimeter");
+  res = onto_ptr->classes.find("pink");
   EXPECT_EQ(res.size(), 1);
   if(res.empty() == false)
-    EXPECT_EQ(res.front(), "centimeter");
+    EXPECT_EQ(res.front(), "pink");
 
   EXPECT_TRUE(onto_ptr->actions.clear());
   EXPECT_TRUE(onto_ptr->actions.close());
@@ -31,10 +31,10 @@ TEST(feature_loading, reset)
   if(res.empty() == false)
     EXPECT_NE(res.front(), "affair");
 
-  res = onto_ptr->classes.find("centimeter");
+  res = onto_ptr->classes.find("pink");
   EXPECT_NE(res.size(), 1);
   if(res.empty() == false)
-    EXPECT_NE(res.front(), "centimeter");
+    EXPECT_NE(res.front(), "pink");
 
   EXPECT_TRUE(onto_ptr->actions.clear());
   std::string path = ros::package::getPath("ontologenius");
@@ -48,10 +48,10 @@ TEST(feature_loading, reset)
   if(res.empty() == false)
     EXPECT_EQ(res.front(), "affair");
 
-  res = onto_ptr->classes.find("centimeter");
+  res = onto_ptr->classes.find("pink");
   EXPECT_NE(res.size(), 1);
   if(res.empty() == false)
-    EXPECT_NE(res.front(), "centimeter");
+    EXPECT_NE(res.front(), "pink");
 }
 
 TEST(feature_loading, language)
