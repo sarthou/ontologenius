@@ -65,6 +65,7 @@
     <owl:Class rdf:about="animals#Bird">
         <rdfs:subClassOf rdf:resource="animals#Animal"/>
         <rdfs:label xml:lang="fr">oiseau</rdfs:label>
+        <rdfs:label xml:lang="en">bird</rdfs:label>
     </owl:Class>
 
 
