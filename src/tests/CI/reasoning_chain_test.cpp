@@ -231,7 +231,7 @@ TEST(chain_tests, chain_deletion_inheritage)
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "ontologenius_chain_inference");
+  ros::init(argc, argv, "ontologenius_reasoning_chain_test");
 
   onto::OntologyManipulator onto;
   onto_ptr = &onto;

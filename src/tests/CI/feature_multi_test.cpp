@@ -94,7 +94,7 @@ TEST(multi_tests, differences)
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "ontologenius_multi_tester");
+  ros::init(argc, argv, "ontologenius_feature_multi_test");
 
   onto::OntologiesManipulator onto;
   onto_ptr = &onto;

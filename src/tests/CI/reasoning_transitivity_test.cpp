@@ -215,7 +215,7 @@ TEST(chain_tests, transitivity_deletion_inheritage)
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "ontologenius_transitivity_inference");
+  ros::init(argc, argv, "ontologenius_reasoning_transitivity_test");
 
   onto::OntologyManipulator onto;
   onto_ptr = &onto;

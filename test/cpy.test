@@ -1,4 +1,0 @@
-<launch>
-  <arg name='TESTDURATION' value='60' />
-  <test pkg="ontologenius" type="ontologenius_cpy_test" test-name="ontologenius_cpy_test" time-limit="$(arg TESTDURATION)" retry="0" />
-</launch>

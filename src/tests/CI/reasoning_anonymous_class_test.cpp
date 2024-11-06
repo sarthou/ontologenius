@@ -195,7 +195,7 @@ TEST(global_tests, same_as_one_of)
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "ontologenius_anonymous_inference");
+  ros::init(argc, argv, "ontologenius_reasoning_anonymous_class_test");
 
   onto::OntologyManipulator onto;
   onto_ptr = &onto;
