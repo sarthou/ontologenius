@@ -164,32 +164,32 @@
               <div class="code_block cpp_code" style="counter-reset:code_line 0;">
                 <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">proactiveCallback</span>(<span class="cpp_key">const</span> <span class="cpp_type">std_msgs</span>::<span class="cpp_type">String</span>::<span class="cpp_type">ConstPtr</span><span class="cpp_key">&</span> <span class="cpp_var">msg</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">smatch</span> <span class="cpp_var">match</span>;</div>
-                <div class="code_line"> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">proactive</span>))</div>
-                <div class="code_line"> {</div>
-                <div class="code_line"> <span class="cpp_op">if</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>() == <span class="cpp_string">&quot;true&quot;</span>)</div>
-                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;I think that a &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">1</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_string">&quot; can &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
-                <div class="code_line"> <span class="cpp_op">else</span></div>
-                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;I think that a &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">1</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_string">&quot; can not &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
-                <div class="code_line"> }</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">smatch</span> <span class="cpp_var">match</span>;</div>
+                <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">proactive</span>))</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>() == <span class="cpp_string">&quot;true&quot;</span>)</div>
+                <div class="code_line">      <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;I think that a &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">1</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_string">&quot; can &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">    <span class="cpp_op">else</span></div>
+                <div class="code_line">      <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;I think that a &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">1</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_string">&quot; can not &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  }</div>
                 <div class="code_line">}</div>
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-python">
               <div class="code_block cpp_code" style="counter-reset:code_line 0;">
                 <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">proactiveCallback</span>(<span class="cpp_key">const</span> <span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">msg</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">smatch</span> <span class="cpp_var">match</span>;</div>
-                <div class="code_line"> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">proactive</span>))</div>
-                <div class="code_line"> {</div>
-                <div class="code_line"> <span class="cpp_op">if</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>() == <span class="cpp_string">&quot;true&quot;</span>)</div>
-                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;I think that a &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">1</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_string">&quot; can &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
-                <div class="code_line"> <span class="cpp_op">else</span></div>
-                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;I think that a &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">1</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_string">&quot; can not &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
-                <div class="code_line"> }</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">smatch</span> <span class="cpp_var">match</span>;</div>
+                <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">proactive</span>))</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>() == <span class="cpp_string">&quot;true&quot;</span>)</div>
+                <div class="code_line">      <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;I think that a &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">1</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_string">&quot; can &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">    <span class="cpp_op">else</span></div>
+                <div class="code_line">      <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;I think that a &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">1</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_string">&quot; can not &quot;</span> &lt;&lt; <span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>() &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  }</div>
                 <div class="code_line">}</div>
               </div>
             </div>
@@ -211,21 +211,21 @@
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-python">
               <div class="code_block cpp_code" style="counter-reset:code_line 89;">
                 <div class="code_line"><span class="cpp_key">class</span> <span class="cpp_type">FeederNode</span> : <span class="cpp_key">public</span> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Node</span></div>
                 <div class="code_line">{</div>
                 <div class="code_line"><span class="cpp_key">public</span>:</div>
-                <div class="code_line"> <span class="cpp_function">FeederNode</span>() : <span class="cpp_type">Node</span>(<span class="cpp_string">&quot;feed_and_generalize&quot;</span>)</div>
-                <div class="code_line"> {</div>
-                <div class="code_line"> <span class="cpp_var">subscriber</span> = <span class="cpp_key">this</span>-><span class="cpp_function">create_subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;(<span class="cpp_string">&quot;feed_and_generalize/in&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">inputCallback</span>);</div>
-                <div class="code_line"> <span class="cpp_var">proactive_sub</span> = <span class="cpp_key">this</span>-><span class="cpp_function">create_subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;(<span class="cpp_string">&quot;ontologenius/reasoner_notifications&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">proactiveCallback</span>);</div>
-                <div class="code_line"> }</div>
+                <div class="code_line">  <span class="cpp_function">FeederNode</span>() : <span class="cpp_type">Node</span>(<span class="cpp_string">&quot;feed_and_generalize&quot;</span>)</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_var">subscriber</span> = <span class="cpp_key">this</span>-><span class="cpp_function">create_subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;(<span class="cpp_string">&quot;feed_and_generalize/in&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">inputCallback</span>);</div>
+                <div class="code_line">    <span class="cpp_var">proactive_sub</span> = <span class="cpp_key">this</span>-><span class="cpp_function">create_subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;(<span class="cpp_string">&quot;ontologenius/reasoner_notifications&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">proactiveCallback</span>);</div>
+                <div class="code_line">  }</div>
                 <div class="code_line"><span class="cpp_key">private</span>:</div>
-                <div class="code_line"> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">subscriber</span>;</div>
-                <div class="code_line"> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">proactive_sub</span>;</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">subscriber</span>;</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">proactive_sub</span>;</div>
                 <div class="code_line">};</div>
               </div>
             </div>
@@ -236,8 +236,8 @@
           (or something else).</p>
 
         <p><b>This tutorial is already finished. I let you imagine everything you could do with it. Do not
-            hesitate to look at all the classes made available by the API to discover all the features offered
-            by Ontologenius.</b></p>
+          hesitate to look at all the classes made available by the API to discover all the features offered
+          by Ontologenius.</b></p>
 
         <nav class="course-pagination">
           <a href="InsertNewKnowledge.html" class="course-pagination__btn">
@@ -262,7 +262,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
       </a>
     </p>
   </div>

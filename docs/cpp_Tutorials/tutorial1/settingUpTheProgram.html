@@ -161,7 +161,7 @@
             <button aria-controls="panel-22-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-22-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
             <button aria-controls="panel-22-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-22-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
           </div>
-
+          
           <div aria-labelledby="tab-22-Ros1" class="lang-tabs-panel group-tab" id="panel-22-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-cpp">
               <div class="code_block">
@@ -170,7 +170,7 @@
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-22-Ros2" class="lang-tabs-panel group-tab" id="panel-22-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-cpp">
               <div class="code_block">
@@ -198,44 +198,44 @@
                 <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;vector&gt;</span></div>
                 <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
                 <div class="code_line"><br></div>
-
+      
                 <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ros/ros.h&quot;</span></div>
                 <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;std_msgs/String.h&quot;</span></div>
                 <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologyManipulator.h&quot;</span></div>
                 <div class="code_line"><br></div>
-
+      
                 <div class="code_line"><span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span>* <span class="cpp_var">onto_</span>;</div>
                 <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">names_</span>;</div>
                 <div class="code_line"><span class="cpp_key">bool</span> <span class="cpp_var">start_</span>;</div>
                 <div class="code_line"><br></div>
-
+      
                 <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">say</span>(<span class="cpp_key">const</span> <span class="cpp_type">std</span>::<span class="cpp_type">string</span><span class="cpp_key">&amp;</span> <span class="cpp_var">text</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;[SAY]&quot;</span> &lt;&lt; <span class="cpp_var">text</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;[SAY]&quot;</span> &lt;&lt; <span class="cpp_var">text</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
                 <div class="code_line">}</div>
                 <div class="code_line"><br></div>
-
+      
                 <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_function">summarize</span>(<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">words</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">to_say</span> = <span class="cpp_string">&quot;on &quot;</span>;</div>
-                <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">i</span> &lt; <span class="cpp_var">words</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">i</span>++)</div>
-                <div class="code_line"> <span class="cpp_var">to_say</span> += <span class="cpp_var">words</span>[<span class="cpp_var">i</span>] + <span class="cpp_string">&quot; &quot;</span>;</div>
-                <div class="code_line"> <span class="cpp_op">return</span> <span class="cpp_var">to_say</span>;</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">to_say</span> = <span class="cpp_string">&quot;on &quot;</span>;</div>
+                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">i</span> &lt; <span class="cpp_var">words</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">i</span>++)</div>
+                <div class="code_line">    <span class="cpp_var">to_say</span> += <span class="cpp_var">words</span>[<span class="cpp_var">i</span>] + <span class="cpp_string">&quot; &quot;</span>;</div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_var">to_say</span>;</div>
                 <div class="code_line">}</div>
                 <div class="code_line"><br></div>
-
+      
                 <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">wordCallback</span>(<span class="cpp_key">const</span> <span class="cpp_type">std_msgs</span>::<span class="cpp_type">String</span><span class="cpp_key">&</span> <span class="cpp_var">msg</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line"> <span class="cpp_op">if</span>(<span class="cpp_var">msg</span>.data == <span class="cpp_string">&quot;start&quot;</span>)</div>
-                <div class="code_line"> <span class="cpp_var">start_</span> = <span class="cpp_key">true</span>;</div>
-                <div class="code_line"> <span class="cpp_op">else if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">find</span>(<span class="cpp_var">names_</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>(), <span class="cpp_var">msg</span>.data) == <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>())</div>
-                <div class="code_line"> <span class="cpp_var">names_</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">msg</span>.data);</div>
+                <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_var">msg</span>.data == <span class="cpp_string">&quot;start&quot;</span>)</div>
+                <div class="code_line">    <span class="cpp_var">start_</span> = <span class="cpp_key">true</span>;</div>
+                <div class="code_line">  <span class="cpp_op">else if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">find</span>(<span class="cpp_var">names_</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>(), <span class="cpp_var">msg</span>.data) == <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>())</div>
+                <div class="code_line">    <span class="cpp_var">names_</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">msg</span>.data);</div>
                 <div class="code_line">}</div>
                 <div class="code_line"><br></div>
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-cpp">
               <div class="code_block cpp_code" style="counter-reset:code_line 0;">
@@ -243,38 +243,38 @@
                 <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;vector&gt;</span></div>
                 <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&lt;string&gt;</span></div>
                 <div class="code_line"><br></div>
-
+      
                 <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;rclcpp/rclcpp.hpp&quot;</span></div>
                 <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;std_msgs/msg/string.hpp&quot;</span></div>
                 <div class="code_line"><span class="cpp_include">#include</span> <span class="cpp_included">&quot;ontologenius/OntologyManipulator.h&quot;</span></div>
                 <div class="code_line"><br></div>
-
+      
                 <div class="code_line"><span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span>* <span class="cpp_var">onto_</span>;</div>
                 <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">names_</span>;</div>
                 <div class="code_line"><span class="cpp_key">bool</span> <span class="cpp_var">start_</span>;</div>
                 <div class="code_line"><br></div>
-
+      
                 <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">say</span>(<span class="cpp_key">const</span> <span class="cpp_type">std</span>::<span class="cpp_type">string</span><span class="cpp_key">&amp;</span> <span class="cpp_var">text</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;[SAY]&quot;</span> &lt;&lt; <span class="cpp_var">text</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_string">&quot;[SAY]&quot;</span> &lt;&lt; <span class="cpp_var">text</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
                 <div class="code_line">}</div>
                 <div class="code_line"><br></div>
-
+      
                 <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_function">summarize</span>(<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">words</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line"> <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">to_say</span> = <span class="cpp_string">&quot;on &quot;</span>;</div>
-                <div class="code_line"> <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">i</span> &lt; <span class="cpp_var">words</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">i</span>++)</div>
-                <div class="code_line"> <span class="cpp_var">to_say</span> += <span class="cpp_var">words</span>[<span class="cpp_var">i</span>] + <span class="cpp_string">&quot; &quot;</span>;</div>
-                <div class="code_line"> <span class="cpp_op">return</span> <span class="cpp_var">to_say</span>;</div>
+                <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">to_say</span> = <span class="cpp_string">&quot;on &quot;</span>;</div>
+                <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">i</span> &lt; <span class="cpp_var">words</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">i</span>++)</div>
+                <div class="code_line">    <span class="cpp_var">to_say</span> += <span class="cpp_var">words</span>[<span class="cpp_var">i</span>] + <span class="cpp_string">&quot; &quot;</span>;</div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_var">to_say</span>;</div>
                 <div class="code_line">}</div>
                 <div class="code_line"><br></div>
-
+      
                 <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">wordCallback</span>(<span class="cpp_key">const</span> <span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">msg</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line"> <span class="cpp_op">if</span>(<span class="cpp_var">msg</span>->data == <span class="cpp_string">&quot;start&quot;</span>)</div>
-                <div class="code_line"> <span class="cpp_var">start_</span> = <span class="cpp_key">true</span>;</div>
-                <div class="code_line"> <span class="cpp_op">else if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">find</span>(<span class="cpp_var">names_</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>(), <span class="cpp_var">msg</span>->data) == <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>())</div>
-                <div class="code_line"> <span class="cpp_var">names_</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">msg</span>->data);</div>
+                <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_var">msg</span>->data == <span class="cpp_string">&quot;start&quot;</span>)</div>
+                <div class="code_line">    <span class="cpp_var">start_</span> = <span class="cpp_key">true</span>;</div>
+                <div class="code_line">  <span class="cpp_op">else if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">find</span>(<span class="cpp_var">names_</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>(), <span class="cpp_var">msg</span>->data) == <span class="cpp_var">names_</span>.<span class="cpp_function">end</span>())</div>
+                <div class="code_line">    <span class="cpp_var">names_</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">msg</span>->data);</div>
                 <div class="code_line">}</div>
                 <div class="code_line"><br></div>
               </div>
@@ -283,7 +283,7 @@
         </div>
 
         <p>Take a break here, we have already written a lot. We will go over all this in detail to better
-          understand what we have done.</p>
+           understand what we have done.</p>
         <p>First of all, we have all the inclusions we need, like iostream to display messages on the screen,
           then vectors and strings to get vectors and strings ...</p>
 
@@ -292,7 +292,7 @@
             <button aria-controls="panel-1-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-1-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
             <button aria-controls="panel-1-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-1-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
           </div>
-
+          
           <div aria-labelledby="tab-1-Ros1" class="lang-tabs-panel group-tab" id="panel-1-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-cpp">
               <div class="code_block cpp_code" style="counter-reset:code_line 4;">
@@ -305,7 +305,7 @@
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-cpp">
               <div class="code_block cpp_code" style="counter-reset:code_line 4;">
@@ -319,7 +319,7 @@
             </div>
           </div>
         </div>
-
+        
         <p>This includes the ROS String message, which resides in the std_msgs ROS package. We use
           it to create a topic on which we will send the words from which our program will have to find the
           intruder. </p>
@@ -358,20 +358,20 @@
           <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">say</span>(<span class="cpp_key">const</span> <span class="cpp_type">std</span>::<span class="cpp_type">string</span><span class="cpp_key">&amp;</span> <span class="cpp_var">text</span>)</div>
         </div>
         <p>Here, the say function is actually just an on-screen display, but you can customize it to use a TTS
-          for example.</p>
+           for example.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 17;">
+         <div class="code_block cpp_code" style="counter-reset:code_line 17;">
           <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_function">summarize</span>(<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">words</span>)</div>
-        </div>
-        <p>Here, the summarize function concatenates several words in a single string. We created this function
-          just to make our main function more readable.</p>
+         </div>
+         <p>Here, the summarize function concatenates several words in a single string. We created this function
+           just to make our main function more readable.</p>
 
         <div class="lang-tabs container">
           <div aria-label="Tabbed content" class="closeable" role="tablist">
             <button aria-controls="panel-2-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-2-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
             <button aria-controls="panel-2-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
           </div>
-
+          
           <div aria-labelledby="tab-2-Ros1" class="lang-tabs-panel group-tab" id="panel-2-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-cpp">
               <div class="code_block cpp_code" style="counter-reset:code_line 25;">
@@ -379,7 +379,7 @@
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-2-Ros2" class="lang-tabs-panel group-tab" id="panel-2-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-cpp">
               <div class="code_block cpp_code" style="counter-reset:code_line 25;">
@@ -389,12 +389,12 @@
           </div>
         </div>
 
-        <p>Here we have the callback function of our input topic. This topic thus receives strings which
-          will be the words from which our program will have to find the intruder. Inside the function,
-          we can see that we use the word &quot;start&quot; as a synchronization word that will launch our reasoning.
-          The different words of &quot;start&quot; are then stored in the vector names_ pending processing.
-          To add security, line 30 verifies that the word is not already present in the names_ vector to
-          avoid duplicates.</p>
+         <p>Here we have the callback function of our input topic. This topic thus receives strings which
+           will be the words from which our program will have to find the intruder. Inside the function,
+           we can see that we use the word &quot;start&quot; as a synchronization word that will launch our reasoning.
+           The different words of &quot;start&quot; are then stored in the vector names_ pending processing.
+           To add security, line 30 verifies that the word is not already present in the names_ vector to
+           avoid duplicates.</p>
 
         <p><br><br>We have everything we need to start writing the main function to retrieve the list of words
           to work on and start the reasoning although we do not have it yet.</p>
@@ -404,99 +404,99 @@
             <button aria-controls="panel-3-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-3-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
             <button aria-controls="panel-3-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-3-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
           </div>
-
+          
           <div aria-labelledby="tab-3-Ros1" class="lang-tabs-panel group-tab" id="panel-3-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-cpp">
               <div class="code_block cpp_code" style="counter-reset:code_line 44;">
                 <div class="code_line"><span class="cpp_key">int</span> <span class="cpp_function">main</span>(<span class="cpp_key">int</span> <span class="cpp_var">argc</span>, <span class="cpp_key">char**</span> <span class="cpp_var">argv</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line"> <span class="cpp_type">ros</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>, <span class="cpp_string">&quot;intruder&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>, <span class="cpp_string">&quot;intruder&quot;</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span> <span class="cpp_var">onto</span>;</div>
-                <div class="code_line"> <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
+                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line">  <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_type">ros</span>::<span class="cpp_type">NodeHandle</span> <span class="cpp_var">n</span>;</div>
-                <div class="code_line"> <span class="cpp_type">ros</span>::<span class="cpp_type">Subscriber</span> <span class="cpp_var">sub</span> = <span class="cpp_var">n</span>.<span class="cpp_function">subscribe</span>(<span class="cpp_string">&quot;intruder/input&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">wordCallback</span>);</div>
-                <div class="code_line"> <span class="cpp_type">ros</span>::<span class="cpp_type">Rate</span> <span class="cpp_var">r</span>(<span class="cpp_value">100</span>);</div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_type">NodeHandle</span> <span class="cpp_var">n</span>;</div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_type">Subscriber</span> <span class="cpp_var">sub</span> = <span class="cpp_var">n</span>.<span class="cpp_function">subscribe</span>(<span class="cpp_string">&quot;intruder/input&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">wordCallback</span>);</div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_type">Rate</span> <span class="cpp_var">r</span>(<span class="cpp_value">100</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_op">while</span>(<span class="cpp_type">ros</span>::<span class="cpp_function">ok</span>())</div>
-                <div class="code_line"> {</div>
-                <div class="code_line"> <span class="cpp_var">start_</span> = <span class="cpp_key">false</span>;</div>
+                <div class="code_line">  <span class="cpp_op">while</span>(<span class="cpp_type">ros</span>::<span class="cpp_function">ok</span>())</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_var">start_</span> = <span class="cpp_key">false</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_function">say</span>(<span class="cpp_string">&quot;Let's play!&quot;</span>);</div>
+                <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_string">&quot;Let's play!&quot;</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_op">while</span>((<span class="cpp_var">start_</span> == <span class="cpp_key">false</span>) && <span class="cpp_type">ros</span>::<span class="cpp_function">ok</span>())</div>
-                <div class="code_line"> {</div>
-                <div class="code_line"> <span class="cpp_type">ros</span>::<span class="cpp_function">spinOnce</span>();</div>
-                <div class="code_line"> <span class="cpp_var">r</span>.<span class="cpp_function">sleep</span>();</div>
-                <div class="code_line"> }</div>
+                <div class="code_line">    <span class="cpp_op">while</span>((<span class="cpp_var">start_</span> == <span class="cpp_key">false</span>) && <span class="cpp_type">ros</span>::<span class="cpp_function">ok</span>())</div>
+                <div class="code_line">    {</div>
+                <div class="code_line">      <span class="cpp_type">ros</span>::<span class="cpp_function">spinOnce</span>();</div>
+                <div class="code_line">      <span class="cpp_var">r</span>.<span class="cpp_function">sleep</span>();</div>
+                <div class="code_line">    }</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_function">say</span>(<span class="cpp_function">summarize</span>(<span class="cpp_var">names_</span>));</div>
+                <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_function">summarize</span>(<span class="cpp_var">names_</span>));</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_comment">/*</span></div>
-                <div class="code_line"> <span class="cpp_comment">We will find the intruder here</span></div>
-                <div class="code_line"> <span class="cpp_comment">*/</span></div>
+                <div class="code_line">    <span class="cpp_comment">/*</span></div>
+                <div class="code_line">    <span class="cpp_comment">We will find the intruder here</span></div>
+                <div class="code_line">    <span class="cpp_comment">*/</span></div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_var">names_</span>.<span class="cpp_function">clear</span>();</div>
-                <div class="code_line"> }</div>
+                <div class="code_line">    <span class="cpp_var">names_</span>.<span class="cpp_function">clear</span>();</div>
+                <div class="code_line">  }</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
                 <div class="code_line">}</div>
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-3-Ros2" class="lang-tabs-panel group-tab" id="panel-3-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-cpp">
               <div class="code_block cpp_code" style="counter-reset:code_line 33;">
                 <div class="code_line"><span class="cpp_key">class</span> <span class="cpp_type">IntruderNode</span> : <span class="cpp_key">public</span> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Node</span></div>
                 <div class="code_line">{</div>
                 <div class="code_line"><span class="cpp_key">public</span>:</div>
-                <div class="code_line"> <span class="cpp_function">IntruderNode</span>() : <span class="cpp_type">Node</span>(<span class="cpp_string">&quot;intruder_node&quot;</span>)</div>
-                <div class="code_line"> {</div>
-                <div class="code_line"> <span class="cpp_var">subscriber</span> = <span class="cpp_key">this</span>-><span class="cpp_function">create_subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;(<span class="cpp_string">&quot;intruder/input&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">wordCallback</span>);</div>
-                <div class="code_line"> }</div>
+                <div class="code_line">  <span class="cpp_function">IntruderNode</span>() : <span class="cpp_type">Node</span>(<span class="cpp_string">&quot;intruder_node&quot;</span>)</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_var">subscriber</span> = <span class="cpp_key">this</span>-><span class="cpp_function">create_subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;(<span class="cpp_string">&quot;intruder/input&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">wordCallback</span>);</div>
+                <div class="code_line">  }</div>
                 <div class="code_line"><span class="cpp_key">private</span>:</div>
-                <div class="code_line"> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">subscriber</span>;</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">subscriber</span>;</div>
                 <div class="code_line">};</div>
                 <div class="code_line"><br></div>
                 <div class="code_line"><span class="cpp_key">int</span> <span class="cpp_function">main</span>(<span class="cpp_key">int</span> <span class="cpp_var">argc</span>, <span class="cpp_key">char**</span> <span class="cpp_var">argv</span>)</div>
                 <div class="code_line">{</div>
-                <div class="code_line"> <span class="cpp_type">rclcpp</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>);</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span> <span class="cpp_var">onto</span>;</div>
-                <div class="code_line"> <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
+                <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span> <span class="cpp_var">onto</span>;</div>
+                <div class="code_line">  <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Node</span>::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">node</span> = <span class="cpp_type">std</span>::<span class="cpp_function">make_shared</span>&lt;<span class="cpp_type">IntruderNode</span>&gt;();</div>
-                <div class="code_line"> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">executors</span>::<span class="cpp_type">SingleThreadedExecutor</span> <span class="cpp_var">executor</span>;</div>
-                <div class="code_line"> <span class="cpp_var">executor</span>.<span class="cpp_function">add_node</span>(<span class="cpp_var">node</span>);</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Node</span>::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">node</span> = <span class="cpp_type">std</span>::<span class="cpp_function">make_shared</span>&lt;<span class="cpp_type">IntruderNode</span>&gt;();</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">executors</span>::<span class="cpp_type">SingleThreadedExecutor</span> <span class="cpp_var">executor</span>;</div>
+                <div class="code_line">  <span class="cpp_var">executor</span>.<span class="cpp_function">add_node</span>(<span class="cpp_var">node</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_op">while</span>(<span class="cpp_type">rclcpp</span>::<span class="cpp_function">ok</span>())</div>
-                <div class="code_line"> {</div>
-                <div class="code_line"> <span class="cpp_var">start_</span> = <span class="cpp_key">false</span>;</div>
+                <div class="code_line">  <span class="cpp_op">while</span>(<span class="cpp_type">rclcpp</span>::<span class="cpp_function">ok</span>())</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_var">start_</span> = <span class="cpp_key">false</span>;</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_function">say</span>(<span class="cpp_string">&quot;Let's play!&quot;</span>);</div>
+                <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_string">&quot;Let's play!&quot;</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_op">while</span>((<span class="cpp_var">start_</span> == <span class="cpp_key">false</span>) && <span class="cpp_type">rclcpp</span>::<span class="cpp_function">ok</span>())</div>
-                <div class="code_line"> {</div>
-                <div class="code_line"> <span class="cpp_var">executor</span>.<span class="cpp_function">spin_once</span>();</div>
-                <div class="code_line"> }</div>
+                <div class="code_line">    <span class="cpp_op">while</span>((<span class="cpp_var">start_</span> == <span class="cpp_key">false</span>) && <span class="cpp_type">rclcpp</span>::<span class="cpp_function">ok</span>())</div>
+                <div class="code_line">    {</div>
+                <div class="code_line">      <span class="cpp_var">executor</span>.<span class="cpp_function">spin_once</span>();</div>
+                <div class="code_line">    }</div>
                 <div class="code_line"><br></div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_function">say</span>(<span class="cpp_function">summarize</span>(<span class="cpp_var">names_</span>));</div>
+                <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_function">summarize</span>(<span class="cpp_var">names_</span>));</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_comment">/*</span></div>
-                <div class="code_line"> <span class="cpp_comment">We will find the intruder here</span></div>
-                <div class="code_line"> <span class="cpp_comment">*/</span></div>
+                <div class="code_line">    <span class="cpp_comment">/*</span></div>
+                <div class="code_line">    <span class="cpp_comment">We will find the intruder here</span></div>
+                <div class="code_line">    <span class="cpp_comment">*/</span></div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_var">names_</span>.<span class="cpp_function">clear</span>();</div>
-                <div class="code_line"> }</div>
+                <div class="code_line">    <span class="cpp_var">names_</span>.<span class="cpp_function">clear</span>();</div>
+                <div class="code_line">  }</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
+                <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_value">0</span>;</div>
                 <div class="code_line">}</div>
               </div>
             </div>
@@ -510,19 +510,19 @@
             <button aria-controls="panel-4-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-4-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
             <button aria-controls="panel-4-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-4-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
           </div>
-
+          
           <div aria-labelledby="tab-4-Ros1" class="lang-tabs-panel group-tab" id="panel-4-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-cpp">
               <div class="code_block cpp_code" style="counter-reset:code_line 46;">
-                <div class="code_line"> <span class="cpp_type">ros</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>, <span class="cpp_string">&quot;intruder&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>, <span class="cpp_string">&quot;intruder&quot;</span>);</div>
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-4-Ros2" class="lang-tabs-panel group-tab" id="panel-4-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-cpp">
               <div class="code_block cpp_code" style="counter-reset:code_line 46;">
-                <div class="code_line"> <span class="cpp_type">rclcpp</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>);</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_function">init</span>(<span class="cpp_var">argc</span>, <span class="cpp_var">argv</span>);</div>
               </div>
             </div>
           </div>
@@ -530,25 +530,25 @@
         <p>Initialize ROS.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 48;">
-          <div class="code_line"> <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span> <span class="cpp_var">onto</span>;</div>
-          <div class="code_line"> <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
+          <div class="code_line">  <span class="cpp_type">onto</span>::<span class="cpp_type">OntologyManipulator</span> <span class="cpp_var">onto</span>;</div>
+          <div class="code_line">  <span class="cpp_var">onto_</span> = &amp;<span class="cpp_var">onto</span>;</div>
         </div>
         <p>We finally come back to using ontologenius! We create here our first manipulator ontology,
-          what a great day ... This manipulator is unique to fully enjoy the benefits of connected
-          services.</p>
+           what a great day ... This manipulator is unique to fully enjoy the benefits of connected
+           services.</p>
         <p>We do not forget to initialize the pointer on the manipulator by providing the address.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 51;">
-          <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
+          <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
         </div>
         <p>The close function link all the concepts loaded from files and the Internet.
           Before closing an ontology, exploration requests are not allowed.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 50;">
-          <div class="code_line"> <span class="cpp_var">onto</span>.actions.<span class="cpp_function">fadd</span>(<span class="cpp_string">&quot;path/to/may/file.owl&quot;</span>);</div>
-          <div class="code_line"> <span class="cpp_comment">// OR</span></div>
-          <div class="code_line"> <span class="cpp_var">onto</span>.actions.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;http://path/to/my/file.owl&quot;</span>);</div>
-          <div class="code_line"> <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
+          <div class="code_line">  <span class="cpp_var">onto</span>.actions.<span class="cpp_function">fadd</span>(<span class="cpp_string">&quot;path/to/may/file.owl&quot;</span>);</div>
+          <div class="code_line">  <span class="cpp_comment">// OR</span></div>
+          <div class="code_line">  <span class="cpp_var">onto</span>.actions.<span class="cpp_function">add</span>(<span class="cpp_string">&quot;http://path/to/my/file.owl&quot;</span>);</div>
+          <div class="code_line">  <span class="cpp_var">onto</span>.<span class="cpp_function">close</span>();</div>
         </div>
         <p>For the moment, we are going to consider that the ontological file we are
           going to work on is provided in the ontologenius launcher. We will configure
@@ -560,33 +560,33 @@
             <button aria-controls="panel-5-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-5-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
             <button aria-controls="panel-5-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-5-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
           </div>
-
+          
           <div aria-labelledby="tab-5-Ros1" class="lang-tabs-panel group-tab" id="panel-5-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-cpp">
               <div class="code_block cpp_code" style="counter-reset:code_line 54;">
-                <div class="code_line"> <span class="cpp_type">ros</span>::<span class="cpp_type">Subscriber</span> <span class="cpp_var">sub</span> = <span class="cpp_var">n</span>.<span class="cpp_function">subscribe</span>(<span class="cpp_string">&quot;intruder/input&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">wordCallback</span>);</div>
+                <div class="code_line">  <span class="cpp_type">ros</span>::<span class="cpp_type">Subscriber</span> <span class="cpp_var">sub</span> = <span class="cpp_var">n</span>.<span class="cpp_function">subscribe</span>(<span class="cpp_string">&quot;intruder/input&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">wordCallback</span>);</div>
               </div>
 
               <p>We initialise our subscriber to the topic &quot;intruder/input&quot;. We also link this topic to our callback function.</p>
 
               <div class="code_block cpp_code" style="counter-reset:code_line 57;">
-                <div class="code_line"> <span class="cpp_op">while</span>(<span class="cpp_type">ros</span>::<span class="cpp_function">ok</span>())</div>
+                <div class="code_line">  <span class="cpp_op">while</span>(<span class="cpp_type">ros</span>::<span class="cpp_function">ok</span>())</div>
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-5-Ros2" class="lang-tabs-panel group-tab" id="panel-5-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-cpp">
               <div class="code_block cpp_code" style="counter-reset:code_line 33;">
                 <div class="code_line"><span class="cpp_key">class</span> <span class="cpp_type">IntruderNode</span> : <span class="cpp_key">public</span> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Node</span></div>
                 <div class="code_line">{</div>
                 <div class="code_line"><span class="cpp_key">public</span>:</div>
-                <div class="code_line"> <span class="cpp_function">IntruderNode</span>() : <span class="cpp_type">Node</span>(<span class="cpp_string">&quot;intruder_node&quot;</span>)</div>
-                <div class="code_line"> {</div>
-                <div class="code_line"> <span class="cpp_var">subscriber</span> = <span class="cpp_key">this</span>-><span class="cpp_function">create_subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;(<span class="cpp_string">&quot;intruder/input&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">wordCallback</span>);</div>
-                <div class="code_line"> }</div>
+                <div class="code_line">  <span class="cpp_function">IntruderNode</span>() : <span class="cpp_type">Node</span>(<span class="cpp_string">&quot;intruder_node&quot;</span>)</div>
+                <div class="code_line">  {</div>
+                <div class="code_line">    <span class="cpp_var">subscriber</span> = <span class="cpp_key">this</span>-><span class="cpp_function">create_subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;(<span class="cpp_string">&quot;intruder/input&quot;</span>, <span class="cpp_value">10</span>, <span class="cpp_function">wordCallback</span>);</div>
+                <div class="code_line">  }</div>
                 <div class="code_line"><span class="cpp_key">private</span>:</div>
-                <div class="code_line"> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">subscriber</span>;</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Subscription</span>&lt;<span class="cpp_type">std_msgs</span>::<span class="cpp_type">msg</span>::<span class="cpp_type">String</span>&gt;::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">subscriber</span>;</div>
                 <div class="code_line">};</div>
               </div>
 
@@ -594,26 +594,26 @@
               <p>We initialise our subscriber to the topic &quot;intruder/input&quot;. We also link this topic to our callback function.</p>
 
               <div class="code_block cpp_code" style="counter-reset:code_line 53;">
-                <div class="code_line"> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Node</span>::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">node</span> = <span class="cpp_type">std</span>::<span class="cpp_function">make_shared</span>&lt;<span class="cpp_type">IntruderNode</span>&gt;();</div>
-                <div class="code_line"> <span class="cpp_type">rclcpp</span>::<span class="cpp_type">executors</span>::<span class="cpp_type">SingleThreadedExecutor</span> <span class="cpp_var">executor</span>;</div>
-                <div class="code_line"> <span class="cpp_var">executor</span>.<span class="cpp_function">add_node</span>(<span class="cpp_var">node</span>);</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">Node</span>::<span class="cpp_type">SharedPtr</span> <span class="cpp_var">node</span> = <span class="cpp_type">std</span>::<span class="cpp_function">make_shared</span>&lt;<span class="cpp_type">IntruderNode</span>&gt;();</div>
+                <div class="code_line">  <span class="cpp_type">rclcpp</span>::<span class="cpp_type">executors</span>::<span class="cpp_type">SingleThreadedExecutor</span> <span class="cpp_var">executor</span>;</div>
+                <div class="code_line">  <span class="cpp_var">executor</span>.<span class="cpp_function">add_node</span>(<span class="cpp_var">node</span>);</div>
               </div>
 
               <p>We instantiate our subscription node and put in in an executor to be able to use the spin_once function later.</p>
 
               <div class="code_block cpp_code" style="counter-reset:code_line 57;">
-                <div class="code_line"> <span class="cpp_op">while</span>(<span class="cpp_type">rclcpp</span>::<span class="cpp_function">ok</span>())</div>
+                <div class="code_line">  <span class="cpp_op">while</span>(<span class="cpp_type">rclcpp</span>::<span class="cpp_function">ok</span>())</div>
               </div>
             </div>
           </div>
         </div>
-
+        
         <p>Just our almost infinite loop. Escaping with a Ctrl + C.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 59;">
-          <div class="code_line"> <span class="cpp_var">start_</span> = <span class="cpp_key">false</span>;</div>
+          <div class="code_line">    <span class="cpp_var">start_</span> = <span class="cpp_key">false</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line"> <span class="cpp_function">say</span>(<span class="cpp_string">&quot;Let's play!&quot;</span>);</div>
+          <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_string">&quot;Let's play!&quot;</span>);</div>
         </div>
         <p>We initialize the synchronization variable and inform the user that the program is ready to
           listen to the words.</p>
@@ -623,20 +623,20 @@
             <button aria-controls="panel-6-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-6-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
             <button aria-controls="panel-6-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-6-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
           </div>
-
+          
           <div aria-labelledby="tab-6-Ros1" class="lang-tabs-panel group-tab" id="panel-6-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-cpp">
               <div class="code_block cpp_code" style="counter-reset:code_line 63;">
-                <div class="code_line"> <span class="cpp_op">while</span>((<span class="cpp_var">start_</span> == <span class="cpp_key">false</span>) && <span class="cpp_type">ros</span>::<span class="cpp_function">ok</span>())</div>
+                <div class="code_line">    <span class="cpp_op">while</span>((<span class="cpp_var">start_</span> == <span class="cpp_key">false</span>) && <span class="cpp_type">ros</span>::<span class="cpp_function">ok</span>())</div>
               </div>
               <p class="tip">ros::spinOnce() is there to allow us to receive messages and r.sleep() avoids unnecessary use of the processor.</p>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-6-Ros2" class="lang-tabs-panel group-tab" id="panel-6-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-cpp">
               <div class="code_block cpp_code" style="counter-reset:code_line 63;">
-                <div class="code_line"> <span class="cpp_op">while</span>((<span class="cpp_var">start_</span> == <span class="cpp_key">false</span>) && <span class="cpp_type">rclcpp</span>::<span class="cpp_function">ok</span>())</div>
+                <div class="code_line">    <span class="cpp_op">while</span>((<span class="cpp_var">start_</span> == <span class="cpp_key">false</span>) && <span class="cpp_type">rclcpp</span>::<span class="cpp_function">ok</span>())</div>
               </div>
             </div>
           </div>
@@ -644,13 +644,13 @@
         <p>We only wait for the synchronisation... </p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 69;">
-          <div class="code_line"> <span class="cpp_function">say</span>(<span class="cpp_function">summarize</span>(<span class="cpp_var">names_</span>));</div>
+          <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_function">summarize</span>(<span class="cpp_var">names_</span>));</div>
         </div>
         <p>We recall the words on which we will make the reasoning. It is just as a result of this that
           we will implement our reasoning.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 75;">
-          <div class="code_line"> <span class="cpp_var">names_</span>.<span class="cpp_function">clear</span>();</div>
+          <div class="code_line">    <span class="cpp_var">names_</span>.<span class="cpp_function">clear</span>();</div>
         </div>
         <p>Our loop is over, we can erase the words we used and start over!</p>
 
@@ -660,7 +660,7 @@
             <button aria-controls="panel-7-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-7-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
             <button aria-controls="panel-7-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-7-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
           </div>
-
+          
           <div aria-labelledby="tab-7-Ros1" class="lang-tabs-panel group-tab" id="panel-7-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-cpp">
               <div class="code_block">
@@ -668,7 +668,7 @@
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-7-Ros2" class="lang-tabs-panel group-tab" id="panel-7-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-cpp">
               <div class="code_block">
@@ -703,7 +703,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
       </a>
     </p>
   </div>
