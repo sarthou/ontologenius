@@ -37,7 +37,7 @@
 
     <owl:ObjectProperty rdf:about="position_property#hasColor">
         <rdfs:domain rdf:resource="attribute#entity"/>
-        <rdfs:range rdf:resource="attribute#color"/>
+        <rdfs:range rdf:resource="attribute#Color"/>
     </owl:ObjectProperty>
 
 

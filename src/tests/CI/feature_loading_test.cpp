@@ -18,7 +18,7 @@ TEST(feature_loading, reset)
   if(res.empty() == false)
     EXPECT_EQ(res.front(), "affair");
 
-  res = onto_ptr->classes.find("pink");
+  res = onto_ptr->individuals.find("pink");
   EXPECT_EQ(res.size(), 1);
   if(res.empty() == false)
     EXPECT_EQ(res.front(), "pink");
@@ -31,7 +31,7 @@ TEST(feature_loading, reset)
   if(res.empty() == false)
     EXPECT_NE(res.front(), "affair");
 
-  res = onto_ptr->classes.find("pink");
+  res = onto_ptr->individuals.find("pink");
   EXPECT_NE(res.size(), 1);
   if(res.empty() == false)
     EXPECT_NE(res.front(), "pink");
@@ -48,7 +48,7 @@ TEST(feature_loading, reset)
   if(res.empty() == false)
     EXPECT_EQ(res.front(), "affair");
 
-  res = onto_ptr->classes.find("pink");
+  res = onto_ptr->individuals.find("pink");
   EXPECT_NE(res.size(), 1);
   if(res.empty() == false)
     EXPECT_NE(res.front(), "pink");

@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="https://github.com/sarthou/ontologenius/blob/master/files/color#"
+     xml:base="https://github.com/sarthou/ontologenius/blob/master/files/color"
+     xmlns:color="https://github.com/sarthou/ontologenius/blob/master/files/color#"
+     xmlns:attribute="https://github.com/sarthou/ontologenius/blob/master/files/attribute#"
+     xmlns:onto="ontologenius#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+     <owl:Ontology rdf:about="https://github.com/sarthou/ontologenius/blob/master/files/color">
+        <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/attribute"/>
+    </owl:Ontology>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+    <!-- color#black -->
+
+    <owl:Class rdf:about="color#black">
+        <rdfs:subClassOf rdf:resource="color#Color"/>
+        <rdfs:label xml:lang="en">black</rdfs:label>
+        <rdfs:label xml:lang="fi">musta</rdfs:label>
+        <rdfs:label xml:lang="fr">noir</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- color#blue -->
+
+    <owl:Class rdf:about="color#blue">
+        <rdfs:subClassOf rdf:resource="color#Color"/>
+        <rdfs:label xml:lang="fr">bleu</rdfs:label>
+        <rdfs:label xml:lang="en">blue</rdfs:label>
+        <rdfs:label xml:lang="fi">sininen</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- color#Color -->
+
+    <owl:Class rdf:about="color#Color">
+        <rdfs:subClassOf rdf:resource="attribute#attribute"/>
+        <rdfs:label xml:lang="en">color</rdfs:label>
+        <rdfs:label xml:lang="fr">couleur</rdfs:label>
+        <rdfs:label xml:lang="fi">väri</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- color#green -->
+
+    <owl:Class rdf:about="color#green">
+        <rdfs:subClassOf rdf:resource="color#Color"/>
+        <rdfs:label xml:lang="fr">vert</rdfs:label>
+        <rdfs:label xml:lang="fi">vihreä</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- color#pink -->
+
+    <owl:Class rdf:about="color#pink">
+        <rdfs:subClassOf rdf:resource="color#Color"/>
+        <rdfs:label xml:lang="fi">pinkki</rdfs:label>
+        <rdfs:label xml:lang="fr">rose</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- color#purple -->
+
+    <owl:Class rdf:about="color#purple">
+        <rdfs:subClassOf rdf:resource="color#Color"/>
+        <rdfs:label xml:lang="fr">violet</rdfs:label>
+        <rdfs:label xml:lang="fi">violetti</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- color#red -->
+
+    <owl:Class rdf:about="color#red">
+        <rdfs:subClassOf rdf:resource="color#Color"/>
+        <rdfs:label xml:lang="fi">punainen</rdfs:label>
+        <rdfs:label xml:lang="fr">rouge</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- color#white -->
+
+    <owl:Class rdf:about="color#white">
+        <rdfs:subClassOf rdf:resource="color#Color"/>
+        <rdfs:label xml:lang="fr">blanc</rdfs:label>
+        <rdfs:label xml:lang="fi">valkoinen</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- color#yellow -->
+
+    <owl:Class rdf:about="color#yellow">
+        <rdfs:subClassOf rdf:resource="color#Color"/>
+        <rdfs:label xml:lang="fr">jaune</rdfs:label>
+        <rdfs:label xml:lang="fi">keltainen</rdfs:label>
+    </owl:Class>
+
+
+</rdf:RDF>

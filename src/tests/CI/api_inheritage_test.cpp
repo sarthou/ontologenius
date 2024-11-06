@@ -75,7 +75,7 @@ TEST(api_inheritage, select_true_call)
 
 TEST(api_inheritage, select_false_call)
 {
-  EXPECT_FALSE(onto_ptr->classes.isA("human", "animal"));
+  EXPECT_FALSE(onto_ptr->classes.isA("human", "Animal"));
 }
 
 int main(int argc, char** argv)

@@ -5,6 +5,7 @@
   <arg name="display" default="true"/>
   <arg name="files" default="
   $(find ontologenius)/files/attribute.owl
+  $(find ontologenius)/files/animals.owl
   $(find ontologenius)/files/positionProperty.owl
   $(find ontologenius)/files/testIndividuals.owl
   "/>

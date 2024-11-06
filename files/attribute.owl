@@ -3,6 +3,7 @@
      xml:base="https://github.com/sarthou/ontologenius/blob/master/files/attribute"
      xmlns:attribute="https://github.com/sarthou/ontologenius/blob/master/files/attribute#"
      xmlns:position_property="https://github.com/sarthou/ontologenius/blob/master/files/positionProperty#"
+     xmlns:color="https://github.com/sarthou/ontologenius/blob/master/files/color#"
      xmlns:onto="ontologenius#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -11,6 +12,7 @@
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
      <owl:Ontology rdf:about="https://github.com/sarthou/ontologenius/blob/master/files/attribute">
          <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/positionProperty"/>
+         <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/color"/>
      </owl:Ontology>
 
 
@@ -87,16 +89,6 @@
 
 
 
-    <!-- attribute#animal -->
-
-    <owl:Class rdf:about="attribute#animal">
-        <rdfs:subClassOf rdf:resource="attribute#agent"/>
-        <rdfs:subClassOf rdf:resource="attribute#living"/>
-        <rdfs:label xml:lang="fr">animal</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#animate -->
 
     <owl:Class rdf:about="attribute#animate">
@@ -141,28 +133,6 @@
 
 
 
-    <!-- attribute#black -->
-
-    <owl:Class rdf:about="attribute#black">
-        <rdfs:subClassOf rdf:resource="attribute#color"/>
-        <rdfs:label xml:lang="en">black</rdfs:label>
-        <rdfs:label xml:lang="fi">musta</rdfs:label>
-        <rdfs:label xml:lang="fr">noir</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#blue -->
-
-    <owl:Class rdf:about="attribute#blue">
-        <rdfs:subClassOf rdf:resource="attribute#color"/>
-        <rdfs:label xml:lang="fr">bleu</rdfs:label>
-        <rdfs:label xml:lang="en">blue</rdfs:label>
-        <rdfs:label xml:lang="fi">sininen</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#blueBook -->
 
     <owl:Class rdf:about="attribute#blueBook">
@@ -201,14 +171,6 @@
 
 
 
-    <!-- attribute#cat -->
-
-    <owl:Class rdf:about="attribute#cat">
-        <rdfs:subClassOf rdf:resource="attribute#animal"/>
-    </owl:Class>
-
-
-
     <!-- attribute#chair -->
 
     <owl:Class rdf:about="attribute#chair">
@@ -223,17 +185,6 @@
         <rdfs:subClassOf rdf:resource="attribute#human"/>
         <rdfs:subClassOf rdf:resource="attribute#young"/>
         <rdfs:label xml:lang="fr">enfant</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#color -->
-
-    <owl:Class rdf:about="attribute#color">
-        <rdfs:subClassOf rdf:resource="attribute#attribute"/>
-        <rdfs:label xml:lang="en">color</rdfs:label>
-        <rdfs:label xml:lang="fr">couleur</rdfs:label>
-        <rdfs:label xml:lang="fi">väri</rdfs:label>
     </owl:Class>
 
 
@@ -268,15 +219,6 @@
 
     <owl:Class rdf:about="attribute#desk">
         <rdfs:subClassOf rdf:resource="attribute#furniture"/>
-    </owl:Class>
-
-
-
-    <!-- attribute#dog -->
-
-    <owl:Class rdf:about="attribute#dog">
-        <rdfs:subClassOf rdf:resource="attribute#animal"/>
-        <position_property:hasTail onto:probability="0.5" rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</position_property:hasTail>
     </owl:Class>
 
 
@@ -320,14 +262,6 @@
 
 
 
-    <!-- attribute#fish -->
-
-    <owl:Class rdf:about="attribute#fish">
-        <rdfs:subClassOf rdf:resource="attribute#animal"/>
-    </owl:Class>
-
-
-
     <!-- attribute#foot -->
 
     <owl:Class rdf:about="attribute#foot">
@@ -364,16 +298,6 @@
         <rdfs:subClassOf rdf:resource="attribute#vegetal"/>
         <owl:disjointWith rdf:resource="attribute#tree"/>
         <rdfs:label xml:lang="fr">herbe</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#green -->
-
-    <owl:Class rdf:about="attribute#green">
-        <rdfs:subClassOf rdf:resource="attribute#color"/>
-        <rdfs:label xml:lang="fr">vert</rdfs:label>
-        <rdfs:label xml:lang="fi">vihreä</rdfs:label>
     </owl:Class>
 
 
@@ -569,16 +493,6 @@
 
 
 
-    <!-- attribute#pink -->
-
-    <owl:Class rdf:about="attribute#pink">
-        <rdfs:subClassOf rdf:resource="attribute#color"/>
-        <rdfs:label xml:lang="fi">pinkki</rdfs:label>
-        <rdfs:label xml:lang="fr">rose</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#plant -->
 
     <owl:Class rdf:about="attribute#plant">
@@ -606,26 +520,6 @@
 
 
 
-    <!-- attribute#purple -->
-
-    <owl:Class rdf:about="attribute#purple">
-        <rdfs:subClassOf rdf:resource="attribute#color"/>
-        <rdfs:label xml:lang="fr">violet</rdfs:label>
-        <rdfs:label xml:lang="fi">violetti</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#red -->
-
-    <owl:Class rdf:about="attribute#red">
-        <rdfs:subClassOf rdf:resource="attribute#color"/>
-        <rdfs:label xml:lang="fi">punainen</rdfs:label>
-        <rdfs:label xml:lang="fr">rouge</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#redBed -->
 
     <owl:Class rdf:about="attribute#redBed">
@@ -642,16 +536,6 @@
         <rdfs:subClassOf rdf:resource="attribute#fan"/>
         <rdfs:subClassOf rdf:resource="attribute#red"/>
         <rdfs:label xml:lang="en">red fan</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#redFish -->
-
-    <owl:Class rdf:about="attribute#redFish">
-        <rdfs:subClassOf rdf:resource="attribute#fish"/>
-        <rdfs:subClassOf rdf:resource="attribute#red"/>
-        <rdfs:label xml:lang="en">red fish</rdfs:label>
     </owl:Class>
 
 
@@ -784,16 +668,6 @@ furniture</rdfs:seeAlso>
 
 
 
-    <!-- attribute#white -->
-
-    <owl:Class rdf:about="attribute#white">
-        <rdfs:subClassOf rdf:resource="attribute#color"/>
-        <rdfs:label xml:lang="fr">blanc</rdfs:label>
-        <rdfs:label xml:lang="fi">valkoinen</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#woman -->
 
     <owl:Class rdf:about="attribute#woman">
@@ -804,128 +678,12 @@ furniture</rdfs:seeAlso>
 
 
 
-    <!-- attribute#yellow -->
-
-    <owl:Class rdf:about="attribute#yellow">
-        <rdfs:subClassOf rdf:resource="attribute#color"/>
-        <rdfs:label xml:lang="fr">jaune</rdfs:label>
-        <rdfs:label xml:lang="fi">keltainen</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#young -->
 
     <owl:Class rdf:about="attribute#young">
         <rdfs:subClassOf rdf:resource="attribute#age"/>
         <rdfs:label xml:lang="fr">jeune</rdfs:label>
     </owl:Class>
-
-
-
-    <!-- attribute#bird -->
-
-    <owl:Class rdf:about="attribute#bird">
-        <rdfs:subClassOf rdf:resource="attribute#animal"/>
-        <rdfs:label xml:lang="fr">oiseau</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#Penguin -->
-
-    <owl:Class rdf:about="attribute#Penguin">
-        <rdfs:subClassOf rdf:resource="attribute#bird"/>
-        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
-        <rdfs:label xml:lang="fr">manchot</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#Ostrich -->
-
-    <owl:Class rdf:about="attribute#Ostrich">
-        <rdfs:subClassOf rdf:resource="attribute#bird"/>
-        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
-        <rdfs:label xml:lang="fr">autruche</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#Takahe -->
-
-    <owl:Class rdf:about="attribute#Takahe">
-        <rdfs:subClassOf rdf:resource="attribute#bird"/>
-        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
-        <rdfs:label xml:lang="fr">takahe</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#Kiwi -->
-
-    <owl:Class rdf:about="attribute#Kiwi">
-        <rdfs:subClassOf rdf:resource="attribute#bird"/>
-        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
-        <rdfs:label xml:lang="fr">kiwi</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#Cassowary -->
-
-    <owl:Class rdf:about="attribute#Cassowary">
-        <rdfs:subClassOf rdf:resource="attribute#bird"/>
-        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
-    </owl:Class>
-
-
-
-    <!-- attribute#Kakapo -->
-
-    <owl:Class rdf:about="attribute#Kakapo">
-        <rdfs:subClassOf rdf:resource="attribute#bird"/>
-        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
-    </owl:Class>
-
-
-
-    <!-- attribute#Canary -->
-
-    <owl:Class rdf:about="attribute#Canary">
-        <rdfs:subClassOf rdf:resource="attribute#bird"/>
-        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">true</attribute:canFly>
-        <rdfs:label xml:lang="fr">canari</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#Dove -->
-
-    <owl:Class rdf:about="attribute#Dove">
-        <rdfs:subClassOf rdf:resource="attribute#bird"/>
-        <rdfs:label xml:lang="fr">colombe</rdfs:label>
-    </owl:Class>
-
-
-
-    <!--
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Data properties
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-
-
-
-    <!-- attribute#canFly -->
-
-    <owl:DatatypeProperty rdf:about="attribute#canFly">
-        <rdfs:domain rdf:resource="attribute#animal"/>
-        <rdfs:range rdf:datatype="http://www.w3.org/2001/XMLSchema#bool"/>
-    </owl:DatatypeProperty>
 
 
 
@@ -972,7 +730,7 @@ furniture</rdfs:seeAlso>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="attribute#animal"/>
+            <rdf:Description rdf:about="attribute#Animal"/>
             <rdf:Description rdf:about="attribute#human"/>
             <rdf:Description rdf:about="attribute#robot"/>
         </owl:members>
@@ -986,16 +744,6 @@ furniture</rdfs:seeAlso>
             <rdf:Description rdf:about="attribute#head"/>
             <rdf:Description rdf:about="attribute#leg"/>
             <rdf:Description rdf:about="attribute#torso"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="attribute#cat"/>
-            <rdf:Description rdf:about="attribute#dog"/>
-            <rdf:Description rdf:about="attribute#fish"/>
-            <rdf:Description rdf:about="attribute#pepper"/>
-            <rdf:Description rdf:about="attribute#pr2"/>
         </owl:members>
     </rdf:Description>
 </rdf:RDF>

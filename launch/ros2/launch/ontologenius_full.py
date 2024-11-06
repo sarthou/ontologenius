@@ -30,6 +30,7 @@ def generate_launch_description():
     )
     files_arg = DeclareLaunchArgument(
         "files", default_value=TextSubstitution(text = os.path.join(get_package_share_directory('ontologenius'), "files/attribute.owl") + " " +
+                                                       os.path.join(get_package_share_directory('ontologenius'), "files/animals.owl") + " " +
                                                        os.path.join(get_package_share_directory('ontologenius'), "files/positionProperty.owl") + " " +
                                                        os.path.join(get_package_share_directory('ontologenius'), "files/testIndividuals.owl"))
     )
