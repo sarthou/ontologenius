@@ -5,5 +5,5 @@
     <arg name="files" default="$(find ontologenius)/files/CI/test_chain.owl"/>
   </include>
   <arg name='TESTDURATION' value='60' />
-  <test pkg="ontologenius" type="reasoning_chain_test" test-name="reasoning_chain_test" time-limit="$(arg TESTDURATION)" retry="0" />
+  <test pkg="ontologenius" type="onto_reasoning_chain_test" test-name="reasoning_chain_test" time-limit="$(arg TESTDURATION)" retry="0" />
 </launch>

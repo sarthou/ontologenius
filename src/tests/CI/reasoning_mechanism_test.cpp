@@ -9,92 +9,40 @@
 
 onto::OntologyManipulator* onto_ptr;
 
-TEST(global_tests, reset)
+TEST(reasoning_mechanism, reasoners_list_call)
 {
-  std::vector<std::string> res;
-
-  res = onto_ptr->classes.find("affair");
-  EXPECT_EQ(res.size(), 1);
-  if(res.empty() == false)
-    EXPECT_EQ(res.front(), "affair");
-
-  res = onto_ptr->classes.find("centimeter");
-  EXPECT_EQ(res.size(), 1);
-  if(res.empty() == false)
-    EXPECT_EQ(res.front(), "centimeter");
-
-  EXPECT_TRUE(onto_ptr->actions.clear());
-  EXPECT_TRUE(onto_ptr->actions.close());
-
-  res = onto_ptr->classes.find("affair");
-  EXPECT_NE(res.size(), 1);
-  if(res.empty() == false)
-    EXPECT_NE(res.front(), "affair");
-
-  res = onto_ptr->classes.find("centimeter");
-  EXPECT_NE(res.size(), 1);
-  if(res.empty() == false)
-    EXPECT_NE(res.front(), "centimeter");
-
-  EXPECT_TRUE(onto_ptr->actions.clear());
-  std::string path = ros::package::getPath("ontologenius");
-  path += "/files/attribute.owl";
-  EXPECT_TRUE(onto_ptr->actions.fadd(path));
-
-  EXPECT_TRUE(onto_ptr->actions.close());
-
-  res = onto_ptr->classes.find("affair");
-  EXPECT_EQ(res.size(), 1);
-  if(res.empty() == false)
-    EXPECT_EQ(res.front(), "affair");
-
-  res = onto_ptr->classes.find("centimeter");
-  EXPECT_NE(res.size(), 1);
-  if(res.empty() == false)
-    EXPECT_NE(res.front(), "centimeter");
+  std::vector<std::string> res = onto_ptr->reasoners.list();
+  EXPECT_GE(res.size(), 7);
+  bool res_bool = ((std::find(res.begin(), res.end(), "ontologenius::ReasonerChain") != res.end()) &&
+                   (std::find(res.begin(), res.end(), "ontologenius::ReasonerDictionary") != res.end()) &&
+                   (std::find(res.begin(), res.end(), "ontologenius::ReasonerInverseOf") != res.end()) &&
+                   (std::find(res.begin(), res.end(), "ontologenius::ReasonerNone") != res.end()) &&
+                   (std::find(res.begin(), res.end(), "ontologenius::ReasonerSymmetric") != res.end()) &&
+                   (std::find(res.begin(), res.end(), "ontologenius::ReasonerGeneralize") != res.end()) &&
+                   (std::find(res.begin(), res.end(), "ontologenius::ReasonerRangeDomain") != res.end()));
+  EXPECT_TRUE(res_bool);
 }
 
-TEST(global_tests, language)
+TEST(reasoning_mechanism, reasoner_description_call)
 {
-  std::vector<std::string> res;
+  std::string res;
+  bool res_bool = true;
 
-  EXPECT_TRUE(onto_ptr->actions.clear());
-  std::string path = ros::package::getPath("ontologenius");
-  path += "/files/attribute.owl";
-  EXPECT_TRUE(onto_ptr->actions.fadd(path));
+  res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerChain");
+  res_bool = res_bool && (res == "This reasoner resolve the properties chains axioms.\n - post reasoning");
+  res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerDictionary");
+  res_bool = res_bool && (res == "This reasoner creates several alternative dictionaries to avoid too many restrictive labels.\n - post reasoning");
+  res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerInverseOf");
+  res_bool = res_bool && (res == "This reasoner creates the inverse properties for each individual.\n - post reasoning");
+  res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerNone");
+  res_bool = res_bool && (res == "This is an reasoner model to show how to create your own reasoner plugin\n - post reasoning\n - pre reasoning\n - periodic reasoning");
+  res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerSymmetric");
+  res_bool = res_bool && (res == "This reasoner creates the symetric properties for each individual.\n - post reasoning");
 
-  EXPECT_TRUE(onto_ptr->actions.close());
-
-  EXPECT_TRUE(onto_ptr->actions.setLang("en"));
-
-  std::string test_word = "affair";
-  res = onto_ptr->classes.find(test_word);
-  EXPECT_EQ(res.size(), 1);
-  if(res.empty() == false)
-    EXPECT_EQ(res.front(), "affair");
-
-  EXPECT_TRUE(onto_ptr->classes.getName(test_word) == "affair");
-  EXPECT_FALSE(onto_ptr->classes.getName(test_word) == "affaire");
-
-  EXPECT_TRUE(onto_ptr->actions.setLang("fr"));
-
-  res = onto_ptr->classes.find(test_word);
-  EXPECT_EQ(res.size(), 1);
-  if(res.empty() == false)
-    EXPECT_EQ(res.front(), "affair");
-
-  test_word = "affaire";
-  res = onto_ptr->classes.find(test_word);
-  EXPECT_EQ(res.size(), 1);
-  if(res.empty() == false)
-    EXPECT_EQ(res.front(), "affair");
-
-  test_word = "affair";
-  EXPECT_TRUE(onto_ptr->classes.getName(test_word) == "affaire");
-  EXPECT_FALSE(onto_ptr->classes.getName(test_word) == "affair");
+  EXPECT_TRUE(res_bool);
 }
 
-TEST(global_tests, reasoners_effect)
+TEST(reasoning_mechanism, reasoners_effect)
 {
   std::vector<std::string> res;
 
@@ -161,7 +109,7 @@ TEST(global_tests, reasoners_effect)
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "ontologenius_global_tester");
+  ros::init(argc, argv, "ontologenius_reasoning_mechanism_test");
 
   onto::OntologyManipulator onto;
   onto_ptr = &onto;

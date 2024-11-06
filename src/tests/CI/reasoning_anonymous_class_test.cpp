@@ -7,7 +7,7 @@
 
 onto::OntologyManipulator* onto_ptr;
 
-TEST(global_tests, same_as_range_restriction)
+TEST(reasoning_anonymous_class, same_as_range_restriction)
 {
   std::vector<std::string> res;
 
@@ -45,7 +45,7 @@ TEST(global_tests, same_as_range_restriction)
   EXPECT_TRUE(std::find(res.begin(), res.end(), "PepperVisionCapability") == res.end());
 }
 
-TEST(global_tests, trace_cleaning)
+TEST(reasoning_anonymous_class, trace_cleaning)
 {
   std::vector<std::string> res;
 
@@ -93,7 +93,7 @@ TEST(global_tests, trace_cleaning)
   EXPECT_TRUE(std::find(res.begin(), res.end(), "LocalizeCapability") != res.end());
 }
 
-TEST(global_tests, cardinality_min_testing)
+TEST(reasoning_anonymous_class, cardinality_min_testing)
 {
   std::vector<std::string> res;
 
@@ -125,7 +125,7 @@ TEST(global_tests, cardinality_min_testing)
   EXPECT_TRUE(std::find(res.begin(), res.end(), "ObstacleAvoidanceCapability") == res.end());
 }
 
-TEST(global_tests, two_equivalences_deletion)
+TEST(reasoning_anonymous_class, two_equivalences_deletion)
 {
   std::vector<std::string> res;
 
@@ -162,7 +162,7 @@ TEST(global_tests, two_equivalences_deletion)
   EXPECT_TRUE(std::find(res.begin(), res.end(), "RGBVisionCapa") != res.end());
 }
 
-TEST(global_tests, same_as_one_of)
+TEST(reasoning_anonymous_class, same_as_one_of)
 {
   std::vector<std::string> res;
 

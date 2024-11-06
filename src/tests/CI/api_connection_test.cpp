@@ -7,12 +7,12 @@
 
 onto::OntologyManipulator* onto_ptr;
 
-TEST(library_tests, close_call)
+TEST(api_connection, close_call)
 {
   EXPECT_TRUE(onto_ptr->close());
 }
 
-TEST(library_tests, individuals_call)
+TEST(api_connection, individuals_call)
 {
   std::vector<std::string> res = onto_ptr->individuals.getUp("test");
   EXPECT_NE(res.size(), 1);
@@ -20,7 +20,7 @@ TEST(library_tests, individuals_call)
     EXPECT_NE(res.front(), "ERR:SERVICE_FAIL");
 }
 
-TEST(library_tests, objectProperties_call)
+TEST(api_connection, objectProperties_call)
 {
   std::vector<std::string> res = onto_ptr->objectProperties.getUp("test");
   EXPECT_NE(res.size(), 1);
@@ -28,7 +28,7 @@ TEST(library_tests, objectProperties_call)
     EXPECT_NE(res.front(), "ERR:SERVICE_FAIL");
 }
 
-TEST(library_tests, dataProperties_call)
+TEST(api_connection, dataProperties_call)
 {
   std::vector<std::string> res = onto_ptr->dataProperties.getUp("test");
   EXPECT_NE(res.size(), 1);
@@ -36,7 +36,7 @@ TEST(library_tests, dataProperties_call)
     EXPECT_NE(res.front(), "ERR:SERVICE_FAIL");
 }
 
-TEST(library_tests, classes_call)
+TEST(api_connection, classes_call)
 {
   std::vector<std::string> res = onto_ptr->classes.getUp("test");
   EXPECT_NE(res.size(), 1);
@@ -44,12 +44,12 @@ TEST(library_tests, classes_call)
     EXPECT_NE(res.front(), "ERR:SERVICE_FAIL");
 }
 
-TEST(library_tests, actions_call)
+TEST(api_connection, actions_call)
 {
   EXPECT_TRUE(onto_ptr->actions.setLang("en"));
 }
 
-TEST(library_tests, reasoners_call)
+TEST(api_connection, reasoners_call)
 {
   std::vector<std::string> res = onto_ptr->reasoners.list();
   EXPECT_NE(res.size(), 1);
@@ -58,7 +58,7 @@ TEST(library_tests, reasoners_call)
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "ontologenius_library_tester");
+  ros::init(argc, argv, "ontologenius_api_connection_test");
 
   onto::OntologyManipulator onto;
   onto_ptr = &onto;

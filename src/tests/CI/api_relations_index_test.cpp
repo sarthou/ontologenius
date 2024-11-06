@@ -9,7 +9,7 @@
 
 onto::OntologyManipulatorIndex* onto_ptr;
 
-TEST(global_tests, class_getRelationFrom)
+TEST(api_relations_index, class_getRelationFrom)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.classesId2Index("human");
@@ -37,7 +37,7 @@ TEST(global_tests, class_getRelationFrom)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getRelatedFrom)
+TEST(api_relations_index, class_getRelatedFrom)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.dataPropertiesId2Index("hasLeg");
@@ -74,7 +74,7 @@ TEST(global_tests, class_getRelatedFrom)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getRelationOn)
+TEST(api_relations_index, class_getRelationOn)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.classesId2Index("woman");
@@ -103,7 +103,7 @@ TEST(global_tests, class_getRelationOn)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getRelatedOn)
+TEST(api_relations_index, class_getRelatedOn)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.dataPropertiesId2Index("hasLeg");
@@ -139,7 +139,7 @@ TEST(global_tests, class_getRelatedOn)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getRelationWith)
+TEST(api_relations_index, class_getRelationWith)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.classesId2Index("human");
@@ -173,7 +173,7 @@ TEST(global_tests, class_getRelationWith)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getRelatedWith)
+TEST(api_relations_index, class_getRelatedWith)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.classesId2Index("woman");
@@ -215,7 +215,7 @@ TEST(global_tests, class_getRelatedWith)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getFrom)
+TEST(api_relations_index, class_getFrom)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.classesId2Index("woman");
@@ -262,7 +262,7 @@ TEST(global_tests, class_getFrom)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getOn)
+TEST(api_relations_index, class_getOn)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.classesId2Index("man");
@@ -309,7 +309,7 @@ TEST(global_tests, class_getOn)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getWith)
+TEST(api_relations_index, class_getWith)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.classesId2Index("human");
@@ -361,7 +361,7 @@ TEST(global_tests, class_getWith)
  *
  ********************/
 
-TEST(global_tests, individual_getRelationFrom)
+TEST(api_relations_index, individual_getRelationFrom)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.individualsId2Index("alice");
@@ -399,7 +399,7 @@ TEST(global_tests, individual_getRelationFrom)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, individual_getRelatedFrom)
+TEST(api_relations_index, individual_getRelatedFrom)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.dataPropertiesId2Index("hasLeg");
@@ -434,7 +434,7 @@ TEST(global_tests, individual_getRelatedFrom)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, individual_getRelationOn)
+TEST(api_relations_index, individual_getRelationOn)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.individualsId2Index("alice");
@@ -470,7 +470,7 @@ TEST(global_tests, individual_getRelationOn)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, individual_getRelatedOn)
+TEST(api_relations_index, individual_getRelatedOn)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.dataPropertiesId2Index("hasLeg");
@@ -508,7 +508,7 @@ TEST(global_tests, individual_getRelatedOn)
   EXPECT_TRUE(res_bool);
 }
 
-TEST(global_tests, individual_getRelationWith)
+TEST(api_relations_index, individual_getRelationWith)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.individualsId2Index("alice");
@@ -547,7 +547,7 @@ TEST(global_tests, individual_getRelationWith)
   EXPECT_TRUE(res_bool);
 }
 
-TEST(global_tests, individual_getRelatedWith)
+TEST(api_relations_index, individual_getRelatedWith)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.classesId2Index("woman");
@@ -586,7 +586,7 @@ TEST(global_tests, individual_getRelatedWith)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, individual_getFrom)
+TEST(api_relations_index, individual_getFrom)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.classesId2Index("woman");
@@ -639,7 +639,7 @@ TEST(global_tests, individual_getFrom)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, individual_getOn)
+TEST(api_relations_index, individual_getOn)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.individualsId2Index("bob");
@@ -694,7 +694,7 @@ TEST(global_tests, individual_getOn)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, individual_getWith)
+TEST(api_relations_index, individual_getWith)
 {
   std::vector<int64_t> res;
   int64_t test_word = onto_ptr->conversion.individualsId2Index("kevin");
@@ -750,7 +750,7 @@ TEST(global_tests, individual_getWith)
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "ontologenius_global_tester");
+  ros::init(argc, argv, "ontologenius_api_relations_index_test");
 
   onto::OntologyManipulatorIndex onto;
   onto_ptr = &onto;

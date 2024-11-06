@@ -9,7 +9,7 @@
 
 onto::OntologiesManipulator* onto_ptr;
 
-TEST(multi_tests, create)
+TEST(feature_multi, create)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -42,7 +42,7 @@ TEST(multi_tests, create)
   EXPECT_TRUE(onto_ptr->del("bob"));
 }
 
-TEST(multi_tests, differences)
+TEST(feature_multi, differences)
 {
   std::vector<std::string> res;
   bool res_bool = true;

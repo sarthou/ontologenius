@@ -9,7 +9,7 @@
 
 onto::OntologyManipulator* onto_ptr;
 
-TEST(global_tests, class_getRelationFrom)
+TEST(api_relations, class_getRelationFrom)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -34,7 +34,7 @@ TEST(global_tests, class_getRelationFrom)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getRelatedFrom)
+TEST(api_relations, class_getRelatedFrom)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -67,7 +67,7 @@ TEST(global_tests, class_getRelatedFrom)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getRelationOn)
+TEST(api_relations, class_getRelationOn)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -92,7 +92,7 @@ TEST(global_tests, class_getRelationOn)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getRelatedOn)
+TEST(api_relations, class_getRelatedOn)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -123,7 +123,7 @@ TEST(global_tests, class_getRelatedOn)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getRelationWith)
+TEST(api_relations, class_getRelationWith)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -153,7 +153,7 @@ TEST(global_tests, class_getRelationWith)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getRelatedWith)
+TEST(api_relations, class_getRelatedWith)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -190,7 +190,7 @@ TEST(global_tests, class_getRelatedWith)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getFrom)
+TEST(api_relations, class_getFrom)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -228,7 +228,7 @@ TEST(global_tests, class_getFrom)
   EXPECT_TRUE(res_bool);
 }
 
-TEST(global_tests, class_getOn)
+TEST(api_relations, class_getOn)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -263,7 +263,7 @@ TEST(global_tests, class_getOn)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, class_getWith)
+TEST(api_relations, class_getWith)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -303,7 +303,7 @@ TEST(global_tests, class_getWith)
  *
  ********************/
 
-TEST(global_tests, individual_getRelationFrom)
+TEST(api_relations, individual_getRelationFrom)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -337,7 +337,7 @@ TEST(global_tests, individual_getRelationFrom)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, individual_getRelatedFrom)
+TEST(api_relations, individual_getRelatedFrom)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -368,7 +368,7 @@ TEST(global_tests, individual_getRelatedFrom)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, individual_getRelationOn)
+TEST(api_relations, individual_getRelationOn)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -399,7 +399,7 @@ TEST(global_tests, individual_getRelationOn)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, individual_getRelatedOn)
+TEST(api_relations, individual_getRelatedOn)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -432,7 +432,7 @@ TEST(global_tests, individual_getRelatedOn)
   EXPECT_TRUE(res_bool);
 }
 
-TEST(global_tests, individual_getRelationWith)
+TEST(api_relations, individual_getRelationWith)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -467,7 +467,7 @@ TEST(global_tests, individual_getRelationWith)
   EXPECT_TRUE(res_bool);
 }
 
-TEST(global_tests, individual_getRelatedWith)
+TEST(api_relations, individual_getRelatedWith)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -501,7 +501,7 @@ TEST(global_tests, individual_getRelatedWith)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, individual_getFrom)
+TEST(api_relations, individual_getFrom)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -542,7 +542,7 @@ TEST(global_tests, individual_getFrom)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, individual_getOn)
+TEST(api_relations, individual_getOn)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -583,7 +583,7 @@ TEST(global_tests, individual_getOn)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(global_tests, individual_getWith)
+TEST(api_relations, individual_getWith)
 {
   std::vector<std::string> res;
   bool res_bool = true;
@@ -625,7 +625,7 @@ TEST(global_tests, individual_getWith)
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "ontologenius_global_tester");
+  ros::init(argc, argv, "ontologenius_api_relations_test");
 
   onto::OntologyManipulator onto;
   onto_ptr = &onto;

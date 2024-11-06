@@ -9,7 +9,7 @@
 
 using namespace std::chrono;
 
-TEST(cpy_tests, reset)
+TEST(feature_deep_copy, copy)
 {
   ontologenius::Ontology onto1;
   onto1.setDisplay(false);

@@ -10,20 +10,20 @@
 
 onto::OntologyManipulator* onto_ptr;
 
-TEST(requests_tests, getName_call)
+TEST(api_inheritage, getName_call)
 {
   std::string res = onto_ptr->classes.getName("human");
   EXPECT_EQ(res, "human");
 }
 
-TEST(requests_tests, find_call)
+TEST(api_inheritage, find_call)
 {
   std::vector<std::string> res = onto_ptr->classes.find("human");
   EXPECT_EQ(res.size(), 1);
   EXPECT_EQ(res.front(), "human");
 }
 
-TEST(requests_tests, getUp_call)
+TEST(api_inheritage, getUp_call)
 {
   std::vector<std::string> res = onto_ptr->classes.getUp("human");
   EXPECT_EQ(res.size(), 8);
@@ -38,7 +38,7 @@ TEST(requests_tests, getUp_call)
   EXPECT_TRUE(res_bool);
 }
 
-TEST(requests_tests, getDown_call)
+TEST(api_inheritage, getDown_call)
 {
   std::vector<std::string> res = onto_ptr->classes.getDown("human");
   EXPECT_EQ(res.size(), 4);
@@ -50,7 +50,7 @@ TEST(requests_tests, getDown_call)
   EXPECT_TRUE(res_bool);
 }
 
-TEST(requests_tests, getDisjoint_call)
+TEST(api_inheritage, getDisjoint_call)
 {
   std::vector<std::string> res = onto_ptr->classes.getDisjoint("woman");
   EXPECT_EQ(res.size(), 63);
@@ -58,7 +58,7 @@ TEST(requests_tests, getDisjoint_call)
   EXPECT_TRUE(res_bool);
 }
 
-TEST(requests_tests, depth_call)
+TEST(api_inheritage, depth_call)
 {
   std::vector<std::string> res = onto_ptr->classes.getUp("human", 1);
   EXPECT_EQ(res.size(), 3);
@@ -68,52 +68,19 @@ TEST(requests_tests, depth_call)
   EXPECT_TRUE(res_bool);
 }
 
-TEST(requests_tests, select_true_call)
+TEST(api_inheritage, select_true_call)
 {
   EXPECT_TRUE(onto_ptr->classes.isA("human", "entity"));
 }
 
-TEST(requests_tests, reasoners_list_call)
-{
-  std::vector<std::string> res = onto_ptr->reasoners.list();
-  EXPECT_GE(res.size(), 7);
-  bool res_bool = ((std::find(res.begin(), res.end(), "ontologenius::ReasonerChain") != res.end()) &&
-                   (std::find(res.begin(), res.end(), "ontologenius::ReasonerDictionary") != res.end()) &&
-                   (std::find(res.begin(), res.end(), "ontologenius::ReasonerInverseOf") != res.end()) &&
-                   (std::find(res.begin(), res.end(), "ontologenius::ReasonerNone") != res.end()) &&
-                   (std::find(res.begin(), res.end(), "ontologenius::ReasonerSymmetric") != res.end()) &&
-                   (std::find(res.begin(), res.end(), "ontologenius::ReasonerGeneralize") != res.end()) &&
-                   (std::find(res.begin(), res.end(), "ontologenius::ReasonerRangeDomain") != res.end()));
-  EXPECT_TRUE(res_bool);
-}
-
-TEST(requests_tests, reasoner_description_call)
-{
-  std::string res;
-  bool res_bool = true;
-
-  res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerChain");
-  res_bool = res_bool && (res == "This reasoner resolve the properties chains axioms.\n - post reasoning");
-  res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerDictionary");
-  res_bool = res_bool && (res == "This reasoner creates several alternative dictionaries to avoid too many restrictive labels.\n - post reasoning");
-  res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerInverseOf");
-  res_bool = res_bool && (res == "This reasoner creates the inverse properties for each individual.\n - post reasoning");
-  res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerNone");
-  res_bool = res_bool && (res == "This is an reasoner model to show how to create your own reasoner plugin\n - post reasoning\n - pre reasoning\n - periodic reasoning");
-  res = onto_ptr->reasoners.getDescription("ontologenius::ReasonerSymmetric");
-  res_bool = res_bool && (res == "This reasoner creates the symetric properties for each individual.\n - post reasoning");
-
-  EXPECT_TRUE(res_bool);
-}
-
-TEST(requests_tests, select_false_call)
+TEST(api_inheritage, select_false_call)
 {
   EXPECT_FALSE(onto_ptr->classes.isA("human", "animal"));
 }
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "ontologenius_requests_tester");
+  ros::init(argc, argv, "ontologenius_api_inheritage_test");
 
   onto::OntologyManipulator onto;
   onto_ptr = &onto;

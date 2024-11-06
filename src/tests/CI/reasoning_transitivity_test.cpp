@@ -11,7 +11,7 @@
 
 onto::OntologyManipulator* onto_ptr;
 
-TEST(chain_tests, transitivity_base)
+TEST(reasoning_transitivity, transitivity_base)
 {
   std::vector<std::string> res;
   onto_ptr->reasoners.activate("ontologenius::ReasonerTransitivity");
@@ -38,7 +38,7 @@ TEST(chain_tests, transitivity_base)
   EXPECT_TRUE(std::find(res.begin(), res.end(), "d") != res.end());
 }
 
-TEST(chain_tests, transitivity_heritance)
+TEST(reasoning_transitivity, transitivity_heritance)
 {
   std::vector<std::string> res;
   onto_ptr->actions.reset();
@@ -67,7 +67,7 @@ TEST(chain_tests, transitivity_heritance)
   EXPECT_TRUE(std::find(res.begin(), res.end(), "d") != res.end());
 }
 
-TEST(chain_tests, transitivity_sames)
+TEST(reasoning_transitivity, transitivity_sames)
 {
   std::vector<std::string> res;
   onto_ptr->actions.reset();
@@ -102,7 +102,7 @@ TEST(chain_tests, transitivity_sames)
   EXPECT_TRUE(std::find(res.begin(), res.end(), "d") != res.end());
 }
 
-TEST(chain_tests, transitivity_deletion)
+TEST(reasoning_transitivity, transitivity_deletion)
 {
   std::vector<std::string> res;
   onto_ptr->actions.reset();
@@ -131,7 +131,7 @@ TEST(chain_tests, transitivity_deletion)
   EXPECT_TRUE(std::find(res.begin(), res.end(), "d") != res.end());
 }
 
-TEST(chain_tests, transitivity_deletion_same_as)
+TEST(reasoning_transitivity, transitivity_deletion_same_as)
 {
   std::vector<std::string> res;
   onto_ptr->actions.reset();
@@ -172,7 +172,7 @@ TEST(chain_tests, transitivity_deletion_same_as)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(chain_tests, transitivity_deletion_inheritage)
+TEST(reasoning_transitivity, transitivity_deletion_inheritage)
 {
   std::vector<std::string> res;
   onto_ptr->actions.reset();

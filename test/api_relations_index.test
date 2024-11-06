@@ -4,5 +4,5 @@
     <arg name="display" default="false"/>
   </include>
   <arg name='TESTDURATION' value='60' />
-  <test pkg="ontologenius" type="ontologenius_requests_tester" test-name="ontologenius_requests_tester" time-limit="$(arg TESTDURATION)" retry="0" />
+  <test pkg="ontologenius" type="onto_api_relations_index_test" test-name="api_relations_index_test" time-limit="$(arg TESTDURATION)" retry="0" />
 </launch>

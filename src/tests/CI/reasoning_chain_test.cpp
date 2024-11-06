@@ -7,7 +7,7 @@
 
 onto::OntologyManipulator* onto_ptr;
 
-TEST(chain_tests, chains_base)
+TEST(reasoning_chain, chains_base)
 {
   std::vector<std::string> res;
   onto_ptr->reasoners.activate("ontologenius::ReasonerChain");
@@ -37,7 +37,7 @@ TEST(chain_tests, chains_base)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(chain_tests, chain_heritance)
+TEST(reasoning_chain, chain_heritance)
 {
   std::vector<std::string> res;
   onto_ptr->reasoners.activate("ontologenius::ReasonerChain");
@@ -67,7 +67,7 @@ TEST(chain_tests, chain_heritance)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(chain_tests, chain_sames)
+TEST(reasoning_chain, chain_sames)
 {
   std::vector<std::string> res;
   onto_ptr->reasoners.activate("ontologenius::ReasonerChain");
@@ -97,7 +97,7 @@ TEST(chain_tests, chain_sames)
   EXPECT_TRUE(res.empty());
 }
 
-TEST(chain_tests, chain_deletion)
+TEST(reasoning_chain, chain_deletion)
 {
   std::vector<std::string> res;
   onto_ptr->reasoners.activate("ontologenius::ReasonerChain");
@@ -149,7 +149,7 @@ TEST(chain_tests, chain_deletion)
   onto_ptr->feeder.waitUpdate(1000);
 }
 
-TEST(chain_tests, chain_deletion_same_as)
+TEST(reasoning_chain, chain_deletion_same_as)
 {
   std::vector<std::string> res;
   onto_ptr->actions.reset();
@@ -185,7 +185,7 @@ TEST(chain_tests, chain_deletion_same_as)
   onto_ptr->feeder.waitUpdate(1000);
 }
 
-TEST(chain_tests, chain_deletion_inheritage)
+TEST(reasoning_chain, chain_deletion_inheritage)
 {
   std::vector<std::string> res;
   onto_ptr->actions.reset();
