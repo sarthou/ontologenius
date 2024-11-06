@@ -642,7 +642,7 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     target_include_directories(onto_reasoning_chain_test PRIVATE ${catkin_INCLUDE_DIRS})
     target_link_libraries(onto_reasoning_chain_test ontologenius_lib ${catkin_LIBRARIES})
 
-    add_rostest_gtest(onto_reasoning_mechanism_test test/reasoning_mechanism.test src/tests/CI/reasoning_mechanism.cpp)
+    add_rostest_gtest(onto_reasoning_mechanism_test test/reasoning_mechanism.test src/tests/CI/reasoning_mechanism_test.cpp)
     set_target_properties(onto_reasoning_mechanism_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
     target_include_directories(onto_reasoning_mechanism_test PRIVATE ${catkin_INCLUDE_DIRS})
     target_link_libraries(onto_reasoning_mechanism_test ontologenius_lib ${catkin_LIBRARIES})
