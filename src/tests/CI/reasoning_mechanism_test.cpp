@@ -68,32 +68,32 @@ TEST(reasoning_mechanism, reasoners_effect)
 
   // ReasonerSymmetric
 
-  res = onto_ptr->individuals.getOn("redCube", "isInFrontOf");
+  res = onto_ptr->individuals.getOn("red_cube", "isInFrontOf");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "blue_book") == res.end());
 
   EXPECT_TRUE(onto_ptr->reasoners.activate("ontologenius::ReasonerSymmetric"));
 
-  res = onto_ptr->individuals.getOn("redCube", "isInFrontOf");
+  res = onto_ptr->individuals.getOn("red_cube", "isInFrontOf");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "blue_book") != res.end());
 
   // ReasonerInverseOf
 
-  res = onto_ptr->individuals.getOn("blueCube", "isUnder");
-  EXPECT_TRUE(std::find(res.begin(), res.end(), "greenCube") == res.end());
+  res = onto_ptr->individuals.getOn("blue_cube", "isUnder");
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "green_cube") == res.end());
 
   EXPECT_TRUE(onto_ptr->reasoners.activate("ontologenius::ReasonerInverseOf"));
 
-  res = onto_ptr->individuals.getOn("blueCube", "isUnder");
-  EXPECT_TRUE(std::find(res.begin(), res.end(), "greenCube") != res.end());
+  res = onto_ptr->individuals.getOn("blue_cube", "isUnder");
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "green_cube") != res.end());
 
   // ReasonerChain
 
-  res = onto_ptr->individuals.getOn("greenCube", "isIn");
+  res = onto_ptr->individuals.getOn("green_cube", "isIn");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "big_box") == res.end());
 
   EXPECT_TRUE(onto_ptr->reasoners.activate("ontologenius::ReasonerChain"));
 
-  res = onto_ptr->individuals.getOn("blueCube", "isIn");
+  res = onto_ptr->individuals.getOn("blue_cube", "isIn");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "big_box") != res.end());
 
   // ReasonerDictionary

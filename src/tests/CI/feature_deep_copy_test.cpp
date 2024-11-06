@@ -30,7 +30,7 @@ TEST(feature_deep_copy, copy)
   const duration<double, std::milli> time_span = duration_cast<duration<double, std::milli>>(t2 - t1);
   std::cout << "copy done in " << time_span.count() << " ms" << std::endl;
 
-  const std::string indiv = "redCube";
+  const std::string indiv = "red_cube";
 
   EXPECT_EQ(onto1.individual_graph_.getUp(indiv).size(), 11);
   EXPECT_EQ(onto2.individual_graph_.getUp(indiv).size(), 11);

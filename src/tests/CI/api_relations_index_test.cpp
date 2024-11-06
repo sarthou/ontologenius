@@ -425,8 +425,8 @@ TEST(api_relations_index, individual_getRelatedFrom)
   EXPECT_EQ(res.size(), 4);
   res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("cube1")) != res.end()) &&
               (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("mini_box")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("greenCube")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("blueCube")) != res.end()));
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("green_cube")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("blue_cube")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.classesId2Index("human");
@@ -542,8 +542,8 @@ TEST(api_relations_index, individual_getRelationWith)
   EXPECT_EQ(res.size(), 4);
   res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#236")) != res.end()) &&
               (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("big_box")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("blueCube")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("redCube")) != res.end()));
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("blue_cube")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("red_cube")) != res.end()));
   EXPECT_TRUE(res_bool);
 }
 
@@ -740,8 +740,8 @@ TEST(api_relations_index, individual_getWith)
   EXPECT_TRUE(res.empty());
 
   test_word = onto_ptr->conversion.individualsId2Index("cube1");
-  test_word2 = onto_ptr->conversion.individualsId2Index("redCube");
-  res = onto_ptr->individuals.getWith(test_word, test_word2); // use same as (cube1 = greenCube)
+  test_word2 = onto_ptr->conversion.individualsId2Index("red_cube");
+  res = onto_ptr->individuals.getWith(test_word, test_word2); // use same as (cube1 = green_cube)
   EXPECT_EQ(res.size(), 2);
   res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.objectPropertiesId2Index("isPositioned")) != res.end()) &&
               (std::find(res.begin(), res.end(), onto_ptr->conversion.objectPropertiesId2Index("isOn")) != res.end()));

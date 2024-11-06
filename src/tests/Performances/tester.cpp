@@ -113,9 +113,7 @@ int main(int argc, char** argv)
 
   /*onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/attribute.owl");
   onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/positionProperty.owl");
-  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/testIndividuals.owl");
-  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/property.owl");
-  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/measure.owl");*/
+  onto.readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/testIndividuals.owl");*/
 
   // onto.readFromFile("/home/gsarthou/Downloads/owl-export-unversioned.owl");
   onto.readFromFile("/home/gsarthou/openrobots/share/ontologies/testsuite.owl");

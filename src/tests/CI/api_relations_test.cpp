@@ -360,8 +360,8 @@ TEST(api_relations, individual_getRelatedFrom)
   EXPECT_EQ(res.size(), 4);
   res_bool = ((std::find(res.begin(), res.end(), "cube1") != res.end()) &&
               (std::find(res.begin(), res.end(), "mini_box") != res.end()) &&
-              (std::find(res.begin(), res.end(), "greenCube") != res.end()) &&
-              (std::find(res.begin(), res.end(), "blueCube") != res.end()));
+              (std::find(res.begin(), res.end(), "green_cube") != res.end()) &&
+              (std::find(res.begin(), res.end(), "blue_cube") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->individuals.getRelatedFrom("human");
@@ -462,8 +462,8 @@ TEST(api_relations, individual_getRelationWith)
   EXPECT_EQ(res.size(), 4);
   res_bool = ((std::find(res.begin(), res.end(), "integer#236") != res.end()) &&
               (std::find(res.begin(), res.end(), "big_box") != res.end()) &&
-              (std::find(res.begin(), res.end(), "blueCube") != res.end()) &&
-              (std::find(res.begin(), res.end(), "redCube") != res.end()));
+              (std::find(res.begin(), res.end(), "blue_cube") != res.end()) &&
+              (std::find(res.begin(), res.end(), "red_cube") != res.end()));
   EXPECT_TRUE(res_bool);
 }
 
@@ -616,7 +616,7 @@ TEST(api_relations, individual_getWith)
   res = onto_ptr->individuals.getWith("bob", "integer#2");
   EXPECT_TRUE(res.empty());
 
-  res = onto_ptr->individuals.getWith("cube1", "redCube"); // use same as (cube1 = greenCube)
+  res = onto_ptr->individuals.getWith("cube1", "red_cube"); // use same as (cube1 = green_cube)
   EXPECT_EQ(res.size(), 2);
   res_bool = ((std::find(res.begin(), res.end(), "isPositioned") != res.end()) &&
               (std::find(res.begin(), res.end(), "isOn") != res.end()));

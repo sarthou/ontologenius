@@ -57,7 +57,7 @@ int main(int argc, char** argv)
   {
     std::string base_name = "base" + std::to_string(i);
     onto.add(base_name);
-    onto[base_name]->actions.fadd("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/test.owl");
+    onto[base_name]->actions.fadd("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/Compare/knowrob.owl");
     onto[base_name]->close();
     insertN(onto[base_name], i);
 

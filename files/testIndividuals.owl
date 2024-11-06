@@ -8,7 +8,6 @@
      xmlns:positionProperty="ontologenius/positionProperty#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
     <owl:Ontology rdf:about="ontologenius/testIndividuals">
-        <owl:imports rdf:resource="ontologenius/files/measure"/>
         <owl:imports rdf:resource="ontologenius/files/property"/>
         <owl:imports rdf:resource="ontologenius/files/attribute"/>
         <owl:imports rdf:resource="ontologenius/files/positionProperty"/>
@@ -58,12 +57,12 @@
 
 
 
-    <!-- ontologenius/testIndividuals#blueCube -->
+    <!-- ontologenius/testIndividuals#blue_cube -->
 
-    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#blueCube">
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#blue_cube">
         <rdf:type rdf:resource="ontologenius/attribute#blue"/>
         <rdf:type rdf:resource="ontologenius/attribute#cube"/>
-        <positionProperty:isOn rdf:resource="ontologenius/testIndividuals#redCube"/>
+        <positionProperty:isOn rdf:resource="ontologenius/testIndividuals#red_cube"/>
         <rdfs:comment xml:lang="en"></rdfs:comment>
     </owl:NamedIndividual>
 
@@ -73,7 +72,7 @@
 
     <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#blue_book">
         <rdf:type rdf:resource="ontologenius/attribute#book"/>
-        <positionProperty:isInFrontOf rdf:resource="ontologenius/testIndividuals#redCube"/>
+        <positionProperty:isInFrontOf rdf:resource="ontologenius/testIndividuals#red_cube"/>
     </owl:NamedIndividual>
 
 
@@ -81,24 +80,24 @@
     <!-- ontologenius/testIndividuals#cube1 -->
 
     <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#cube1">
-        <owl:sameAs rdf:resource="ontologenius/testIndividuals#greenCube"/>
+        <owl:sameAs rdf:resource="ontologenius/testIndividuals#green_cube"/>
         <positionProperty:objectHave3Dposition rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">236</positionProperty:objectHave3Dposition>
     </owl:NamedIndividual>
 
 
 
-    <!-- ontologenius/testIndividuals#greenCube -->
+    <!-- ontologenius/testIndividuals#green_cube -->
 
-    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#greenCube">
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#green_cube">
         <rdf:type rdf:resource="ontologenius/attribute#cube"/>
         <rdf:type rdf:resource="ontologenius/attribute#green"/>
-        <positionProperty:isOn rdf:resource="ontologenius/testIndividuals#blueCube"/>
+        <positionProperty:isOn rdf:resource="ontologenius/testIndividuals#blue_cube"/>
     </owl:NamedIndividual>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NegativePropertyAssertion"/>
-        <owl:sourceIndividual rdf:resource="ontologenius/testIndividuals#greenCube"/>
+        <owl:sourceIndividual rdf:resource="ontologenius/testIndividuals#green_cube"/>
         <owl:assertionProperty rdf:resource="ontologenius/positionProperty#isUnder"/>
-        <owl:targetIndividual rdf:resource="ontologenius/testIndividuals#blueCube"/>
+        <owl:targetIndividual rdf:resource="ontologenius/testIndividuals#blue_cube"/>
     </rdf:Description>
 
 
@@ -121,9 +120,9 @@
 
 
 
-    <!-- ontologenius/testIndividuals#redCube -->
+    <!-- ontologenius/testIndividuals#red_cube -->
 
-    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#redCube">
+    <owl:NamedIndividual rdf:about="ontologenius/testIndividuals#red_cube">
         <rdf:type rdf:resource="ontologenius/attribute#cube"/>
         <rdf:type rdf:resource="ontologenius/attribute#red"/>
         <positionProperty:isIn rdf:resource="ontologenius/testIndividuals#big_box"/>
@@ -170,8 +169,8 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <owl:distinctMembers rdf:parseType="Collection">
-            <rdf:Description rdf:about="ontologenius/testIndividuals#blueCube"/>
-            <rdf:Description rdf:about="ontologenius/testIndividuals#greenCube"/>
+            <rdf:Description rdf:about="ontologenius/testIndividuals#blue_cube"/>
+            <rdf:Description rdf:about="ontologenius/testIndividuals#green_cube"/>
         </owl:distinctMembers>
     </rdf:Description>
 </rdf:RDF>
