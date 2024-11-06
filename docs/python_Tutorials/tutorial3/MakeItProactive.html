@@ -148,26 +148,26 @@
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
           <div class="code_line"><span class="py_key">def</span> <span class="py_function">proactiveCallback</span>(<span class="py_var">msg</span>):</div>
-          <div class="code_line"> <span class="py_var">match</span> = <span class="py_imported">re</span>.<span class="py_function">search</span>(r<span class="py_string">"^\[NEW\](\w+)>can_(\w+):bool#(\w+)$"</span>, <span class="py_var">msg</span>)</div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_var">match</span> != <span class="py_key">None</span>:</div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">3</span>) == <span class="py_string">'True'</span>:</div>
-          <div class="code_line"> <span class="py_function">say</span>(<span class="py_string">'I think that a '</span> + <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">1</span>) + <span class="py_string">' can '</span> + <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>))</div>
-          <div class="code_line"> <span class="py_op">else</span>:</div>
-          <div class="code_line"> <span class="py_function">say</span>(<span class="py_string">'I think that a '</span> + <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">1</span>) + <span class="py_string">' can not '</span> + <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>))</div>
+          <div class="code_line">    <span class="py_var">match</span> = <span class="py_imported">re</span>.<span class="py_function">search</span>(r<span class="py_string">"^\[NEW\](\w+)>can_(\w+):bool#(\w+)$"</span>, <span class="py_var">msg</span>)</div>
+          <div class="code_line">    <span class="py_op">if</span> <span class="py_var">match</span> != <span class="py_key">None</span>:</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">3</span>) == <span class="py_string">'True'</span>:</div>
+          <div class="code_line">            <span class="py_function">say</span>(<span class="py_string">'I think that a '</span> + <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">1</span>) + <span class="py_string">' can '</span> + <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>))</div>
+          <div class="code_line">        <span class="py_op">else</span>:</div>
+          <div class="code_line">            <span class="py_function">say</span>(<span class="py_string">'I think that a '</span> + <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">1</span>) + <span class="py_string">' can not '</span> + <span class="py_var">match</span>.<span class="py_function">group</span>(<span class="py_value">2</span>))</div>
         </div>
 
         <p>And finally, in the main function, we subscribe to the notification topic using the OntologyManipulator:</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"> <span class="py_var">_onto</span>.feeder.<span class="py_function">registerNotificationCallback</span>(<span class="py_function">proactiveCallback</span>)</div>
+          <div class="code_line">    <span class="py_var">_onto</span>.feeder.<span class="py_function">registerNotificationCallback</span>(<span class="py_function">proactiveCallback</span>)</div>
         </div>
 
         <p>You can now delete the internal file and learn again to your program that birds can fly
           (or something else).</p>
 
         <p><b>This tutorial is already finished. I let you imagine everything you could do with it. Do not
-            hesitate to look at all the classes made available by the API to discover all the features offered
-            by Ontologenius.</b></p>
+          hesitate to look at all the classes made available by the API to discover all the features offered
+          by Ontologenius.</b></p>
 
         <nav class="course-pagination">
           <a href="InsertNewKnowledge.html" class="course-pagination__btn">
@@ -192,7 +192,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
       </a>
     </p>
   </div>

@@ -145,7 +145,7 @@
             <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
             <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
           </div>
-
+          
           <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-python">
               <div class="code_block python_code" style="counter-reset:code_line 0;">
@@ -156,41 +156,41 @@
                 <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontologenius</span> <span class="py_import">import</span> <span class="py_imported">OntologiesManipulator</span></div>
                 <div class="code_line"><br></div>
                 <div class="code_line"><span class="py_key">def</span> <span class="py_function">main</span>():</div>
-                <div class="code_line"> <span class="py_imported">rospy</span>.<span class="py_function">init_node</span>(<span class="py_string">'multiple_ontologies'</span>)</div>
+                <div class="code_line">    <span class="py_imported">rospy</span>.<span class="py_function">init_node</span>(<span class="py_string">'multiple_ontologies'</span>)</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">onto</span> = <span class="py_imported">OntologiesManipulator</span>()</div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">waitInit</span>()</div>
+                <div class="code_line">    <span class="py_var">onto</span> = <span class="py_imported">OntologiesManipulator</span>()</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">waitInit</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'sally'</span>)</div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'anne'</span>)</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'sally'</span>)</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'anne'</span>)</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).<span class="py_function">close</span>()</div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).<span class="py_function">close</span>()</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).<span class="py_function">close</span>()</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).<span class="py_function">close</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
-                <div class="code_line"> <span class="py_function">print</span>(<span class="py_string">'for sally, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
+                <div class="code_line">    <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
+                <div class="code_line">    <span class="py_function">print</span>(<span class="py_string">'for sally, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
-                <div class="code_line"> <span class="py_function">print</span>(<span class="py_string">'for anne, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
+                <div class="code_line">    <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
+                <div class="code_line">    <span class="py_function">print</span>(<span class="py_string">'for anne, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">waitConnected</span>()</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">waitConnected</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">removeObjectProperty</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_1'</span>)</div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_2'</span>)</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">removeObjectProperty</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_1'</span>)</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_2'</span>)</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">waitUpdate</span>(<span class="py_value">500</span>)</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">waitUpdate</span>(<span class="py_value">500</span>)</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">differences</span> = <span class="py_var">onto</span>.<span class="py_function">getDifference</span>(<span class="py_string">'sally'</span>, <span class="py_string">'anne'</span>, <span class="py_string">'ball_1'</span>)</div>
-                <div class="code_line"> <span class="py_function">print</span>(<span class="py_string">'The difference of belief regarding the ball_1 is:'</span>)</div>
-                <div class="code_line"> <span class="py_op">for</span> <span class="py_var">diff</span> <span class="py_op">in</span> <span class="py_var">differences</span>:</div>
-                <div class="code_line"> <span class="py_function">print</span>(<span class="py_var">diff</span>)</div>
+                <div class="code_line">    <span class="py_var">differences</span> = <span class="py_var">onto</span>.<span class="py_function">getDifference</span>(<span class="py_string">'sally'</span>, <span class="py_string">'anne'</span>, <span class="py_string">'ball_1'</span>)</div>
+                <div class="code_line">    <span class="py_function">print</span>(<span class="py_string">'The difference of belief regarding the ball_1 is:'</span>)</div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">diff</span> <span class="py_op">in</span> <span class="py_var">differences</span>:</div>
+                <div class="code_line">        <span class="py_function">print</span>(<span class="py_var">diff</span>)</div>
                 <div class="code_line"><br></div>
                 <div class="code_line"><span class="py_op">if</span> <span class="py_var">__name__</span> == <span class="py_string">'__main__'</span>:</div>
-                <div class="code_line"> <span class="py_function">main</span>()</div>
+                <div class="code_line">    <span class="py_function">main</span>()</div>
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-python">
               <div class="code_block python_code" style="counter-reset:code_line 0;">
@@ -201,37 +201,37 @@
                 <div class="code_line"><span class="py_import">from</span> <span class="py_imported">ontopy</span> <span class="py_import">import</span> <span class="py_imported">OntologiesManipulator</span>, <span class="py_imported">Ontoros</span></div>
                 <div class="code_line"><br></div>
                 <div class="code_line"><span class="py_key">def</span> <span class="py_function">main</span>():</div>
-                <div class="code_line"> <span class="py_imported">rclpy</span>.<span class="py_function">init</span>()</div>
+                <div class="code_line">    <span class="py_imported">rclpy</span>.<span class="py_function">init</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">onto</span> = <span class="py_imported">OntologiesManipulator</span>()</div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">waitInit</span>()</div>
+                <div class="code_line">    <span class="py_var">onto</span> = <span class="py_imported">OntologiesManipulator</span>()</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">waitInit</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'sally'</span>)</div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'anne'</span>)</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'sally'</span>)</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">add</span>(<span class="py_string">'anne'</span>)</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).<span class="py_function">close</span>()</div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).<span class="py_function">close</span>()</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).<span class="py_function">close</span>()</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).<span class="py_function">close</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
-                <div class="code_line"> <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'for sally, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
+                <div class="code_line">    <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'sally'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
+                <div class="code_line">    <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'for sally, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
-                <div class="code_line"> <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'for anne, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
+                <div class="code_line">    <span class="py_var">result</span> = <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).individuals.<span class="py_function">getOn</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>)</div>
+                <div class="code_line">    <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'for anne, ball_1 is in : '</span> + <span class="py_imported">str</span>(<span class="py_var">result</span>))</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">waitConnected</span>()</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">waitConnected</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">removeObjectProperty</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_1'</span>)</div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_2'</span>)</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">removeObjectProperty</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_1'</span>)</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_2'</span>)</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">waitUpdate</span>(<span class="py_value">500</span>)</div>
+                <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">waitUpdate</span>(<span class="py_value">500</span>)</div>
                 <div class="code_line"><br></div>
-                <div class="code_line"> <span class="py_var">differences</span> = <span class="py_var">onto</span>.<span class="py_function">getDifference</span>(<span class="py_string">'sally'</span>, <span class="py_string">'anne'</span>, <span class="py_string">'ball_1'</span>)</div>
-                <div class="code_line"> <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'The difference of belief regarding the ball_1 is:'</span>)</div>
-                <div class="code_line"> <span class="py_op">for</span> <span class="py_var">diff</span> <span class="py_op">in</span> <span class="py_var">differences</span>:</div>
-                <div class="code_line"> <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_var">diff</span>)</div>
+                <div class="code_line">    <span class="py_var">differences</span> = <span class="py_var">onto</span>.<span class="py_function">getDifference</span>(<span class="py_string">'sally'</span>, <span class="py_string">'anne'</span>, <span class="py_string">'ball_1'</span>)</div>
+                <div class="code_line">    <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_string">'The difference of belief regarding the ball_1 is:'</span>)</div>
+                <div class="code_line">    <span class="py_op">for</span> <span class="py_var">diff</span> <span class="py_op">in</span> <span class="py_var">differences</span>:</div>
+                <div class="code_line">        <span class="py_imported">Ontoros</span>.<span class="py_function">get_logger</span>().<span class="py_function">info</span>(<span class="py_var">diff</span>)</div>
                 <div class="code_line"><br></div>
                 <div class="code_line"><span class="py_op">if</span> <span class="py_var">__name__</span> == <span class="py_string">'__main__'</span>:</div>
-                <div class="code_line"> <span class="py_function">main</span>()</div>
+                <div class="code_line">    <span class="py_function">main</span>()</div>
               </div>
             </div>
           </div>
@@ -240,7 +240,7 @@
         <p>First of all a small trick.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 24;">
-          <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">waitConnected</span>()</div>
+          <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">waitConnected</span>()</div>
         </div>
 
         <p>If you know ROS, you should know that subscribers may take a few moments to connect to listeners. Because, again,
@@ -248,21 +248,21 @@
           the previous lines to make sure that our feeder is connected to at least one listener.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 26;">
-          <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">removeObjectProperty</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_1'</span>)</div>
-          <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_2'</span>)</div>
+          <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">removeObjectProperty</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_1'</span>)</div>
+          <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'ball_1'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'container_2'</span>)</div>
         </div>
 
         <p>Here are really the two lines that represent the fact that Anne removes the ball from the first container and puts it
           in the second container. You see here that these changes are applied only to Anne.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 29;">
-          <div class="code_line"> <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">waitUpdate</span>(<span class="py_value">500</span>)</div>
+          <div class="code_line">    <span class="py_var">onto</span>.<span class="py_function">get</span>(<span class="py_string">'anne'</span>).feeder.<span class="py_function">waitUpdate</span>(<span class="py_value">500</span>)</div>
         </div>
 
         <p>With the waitUpdate function, we will wait until the previous changes are applied. For security reasons, we set a timeout of 500 ms.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 31;">
-          <div class="code_line"> <span class="py_var">differences</span> = <span class="py_var">onto</span>.<span class="py_function">getDifference</span>(<span class="py_string">'sally'</span>, <span class="py_string">'anne'</span>, <span class="py_string">'ball_1'</span>)</div>
+          <div class="code_line">    <span class="py_var">differences</span> = <span class="py_var">onto</span>.<span class="py_function">getDifference</span>(<span class="py_string">'sally'</span>, <span class="py_string">'anne'</span>, <span class="py_string">'ball_1'</span>)</div>
         </div>
 
         <p>The OntologiesManipulator object directly provides functionality to get all the belief divergence between two ontologies about a specific concept.</p>
@@ -322,7 +322,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
       </a>
     </p>
   </div>

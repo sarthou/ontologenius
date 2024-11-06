@@ -149,7 +149,7 @@
         </div>
 
         <p>We can represent this part of the ontology as follow:</p>
-        <img src="../../images/tutorial/inheritance2.png " alt="tutorial 2 map of the city" width="30%" class="center" />
+        <img src="../../images/tutorial/inheritance2.png " alt="tutorial 2 map of the city" width="30%" class="center"/>
 
 
         <p>The result is not false but only one of these two answers would be enough given that one
@@ -165,33 +165,33 @@
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
           <div class="code_line"><span class="py_key">def</span> <span class="py_function">refine</span>(<span class="py_var">intruders</span>):</div>
-          <div class="code_line"> <span class="py_var">refine_intruders</span> = []</div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">i</span> <span class="py_op">in</span> <span class="py_imported">range</span>(<span class="py_function">len</span>(<span class="py_var">intruders</span>)):</div>
-          <div class="code_line"> <span class="py_var">down</span> = <span class="py_var">_onto</span>.classes.<span class="py_function">getDown</span>(<span class="py_var">intruders</span>[<span class="py_var">i</span>][<span class="py_value">1</span>])</div>
+          <div class="code_line">    <span class="py_var">refine_intruders</span> = []</div>
+          <div class="code_line">    <span class="py_op">for</span> <span class="py_var">i</span> <span class="py_op">in</span> <span class="py_imported">range</span>(<span class="py_function">len</span>(<span class="py_var">intruders</span>)):</div>
+          <div class="code_line">        <span class="py_var">down</span> = <span class="py_var">_onto</span>.classes.<span class="py_function">getDown</span>(<span class="py_var">intruders</span>[<span class="py_var">i</span>][<span class="py_value">1</span>])</div>
           <div class="code_line"><br></div>
-          <div class="code_line"> <span class="py_var">is_most_relevant</span> = <span class="py_key">True</span></div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">j</span> <span class="py_op">in</span> <span class="py_imported">range</span>(<span class="py_function">len</span>(<span class="py_var">intruders</span>)):</div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_var">i</span> != <span class="py_var">j</span> <span class="py_key">and</span> <span class="py_var">intruders</span>[<span class="py_var">i</span>][<span class="py_value">0</span>] == <span class="py_var">intruders</span>[<span class="py_var">j</span>][<span class="py_value">0</span>]:</div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_var">intruders</span>[<span class="py_var">j</span>][<span class="py_value">1</span>] <span class="py_op">in</span> <span class="py_var">down</span>:</div>
-          <div class="code_line"> <span class="py_var">is_most_relevant</span> = <span class="py_key">False</span></div>
+          <div class="code_line">        <span class="py_var">is_most_relevant</span> = <span class="py_key">True</span></div>
+          <div class="code_line">        <span class="py_op">for</span> <span class="py_var">j</span> <span class="py_op">in</span> <span class="py_imported">range</span>(<span class="py_function">len</span>(<span class="py_var">intruders</span>)):</div>
+          <div class="code_line">            <span class="py_op">if</span> <span class="py_var">i</span> != <span class="py_var">j</span> <span class="py_key">and</span> <span class="py_var">intruders</span>[<span class="py_var">i</span>][<span class="py_value">0</span>] == <span class="py_var">intruders</span>[<span class="py_var">j</span>][<span class="py_value">0</span>]:</div>
+          <div class="code_line">                <span class="py_op">if</span> <span class="py_var">intruders</span>[<span class="py_var">j</span>][<span class="py_value">1</span>] <span class="py_op">in</span> <span class="py_var">down</span>:</div>
+          <div class="code_line">                    <span class="py_var">is_most_relevant</span> = <span class="py_key">False</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_var">is_most_relevant</span>:</div>
-          <div class="code_line"> <span class="py_var">refine_intruders</span>.<span class="py_function">insert</span>(<span class="py_value">1</span>, <span class="py_var">intruders</span>[<span class="py_var">i</span>])</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_var">is_most_relevant</span>:</div>
+          <div class="code_line">            <span class="py_var">refine_intruders</span>.<span class="py_function">insert</span>(<span class="py_value">1</span>, <span class="py_var">intruders</span>[<span class="py_var">i</span>])</div>
           <div class="code_line"><br></div>
-          <div class="code_line"> <span class="py_op">return</span> <span class="py_var">refine_intruders</span></div>
+          <div class="code_line">    <span class="py_op">return</span> <span class="py_var">refine_intruders</span></div>
         </div>
 
         <p>So we notice that we are going to look for the object classes of the ontology manipulator instead of the object individuals.</p>
         <div class="code_block cpp_code" style="counter-reset:code_line 3;">
-          <div class="code_line"> <span class="py_var">down</span> = <span class="py_var">_onto</span>.classes.<span class="py_function">getDown</span>(<span class="py_var">intruders</span>[<span class="py_var">i</span>][<span class="py_value">1</span>])</div>
+          <div class="code_line">        <span class="py_var">down</span> = <span class="py_var">_onto</span>.classes.<span class="py_function">getDown</span>(<span class="py_var">intruders</span>[<span class="py_var">i</span>][<span class="py_value">1</span>])</div>
         </div>
         <p class="tip">The getUp function is available for individuals, classes, and properties while the
           getDown function is only available for classes and properties.</p>
 
         <p>We can call our refining function in our main function just after the function to find intruders</p>
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"> <span class="py_var">intruders</span> = <span class="py_function">find_intruder</span>(<span class="py_var">_names</span>, <span class="py_var">inheritances</span>)</div>
-          <div class="code_line"> <span class="py_var">intruders</span> = <span class="py_function">refine</span>(<span class="py_var">intruders</span>)</div>
+          <div class="code_line">         <span class="py_var">intruders</span> = <span class="py_function">find_intruder</span>(<span class="py_var">_names</span>, <span class="py_var">inheritances</span>)</div>
+          <div class="code_line">         <span class="py_var">intruders</span> = <span class="py_function">refine</span>(<span class="py_var">intruders</span>)</div>
         </div>
 
         <p>Re-interrogating our program with the words pr2, kevin, and bob, we now have the following result:</p>
@@ -227,7 +227,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
       </a>
     </p>
   </div>

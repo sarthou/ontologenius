@@ -137,23 +137,23 @@
         <h1 class="title">Overview</h1>
 
         <p>This is the last tutorial! Implementing algorithms, we all know that scaling is important and that performances can become a bottleneck when trying to do so.
-          Furthermore, using an external knowledge base and thus passing by a communication layer, the amount of data to transfer can be an issue.
-          In such a way, the use of strings to interact with Ontologenius is not the more suitable one to have the best performances possible...
-          This is why Ontologenius proposes an interface based on indexes as integers!
-          More than reducing the amount of data to transfer, that provides a significative gain in Ontologenius internal algorithms and allows you to do the same on your side.
+           Furthermore, using an external knowledge base and thus passing by a communication layer, the amount of data to transfer can be an issue.
+           In such a way, the use of strings to interact with Ontologenius is not the more suitable one to have the best performances possible...
+           This is why Ontologenius proposes an interface based on indexes as integers! 
+           More than reducing the amount of data to transfer, that provides a significative gain in Ontologenius internal algorithms and allows you to do the same on your side.
         </p>
 
         <p>The mini-project that we will do will be the adaptation of the second tutorial algorithm, by using indexes..</p>
 
-        <img src="../../images/tutorial/forest.jpg " alt="Run Forrest! Run!" width="70%" class="center" />
+          <img src="../../images/tutorial/forest.jpg " alt="Run Forrest! Run!" width="70%" class="center"/>
 
         <h2>The ontology manipulator</h2>
 
         <p>Until now, we have used an OntologyManipulator to access the different methods to explore the ontology, but using concept's identifiers (strings).</p>
 
         <p>To access the index version of the API, we will now use an <a href="../../python_API/OntologyManipulatorIndex.html" target="_blank" rel="noopener noreferrer">OntologyManipulatorIndex</a>.
-          If it seems to be the exact same one as the original one, this is normal. Indeed, the interface is the same (same members' name and same functions' name) but all the exploration queries use indexes instead of identifiers, meaning integers instead of strings.
-          All related classes, based on index use, can be found at the bottom of the left sidebar.
+           If it seems to be the exact same one as the original one, this is normal. Indeed, the interface is the same (same members' name and same functions' name) but all the exploration queries use indexes instead of identifiers, meaning integers instead of strings.
+           All related classes, based on index use, can be found at the bottom of the left sidebar.
         </p>
 
         <p class="tip">Working in multi instances mode, you steal have to use an OntologiesManipulator and insteed of using the get method to extract an OntologyManipulator, you can use the getIndex method to extract an OntologyManipulatorIndex. </p>
@@ -162,14 +162,14 @@
 
         <p>Before moving ahead, one should ask itself "But how can I know the index of a concept?", and this is an excellent question...</p>
 
-        <p>Indexes are attributed by Ontologenius to any concepts. It is a kind of internal identifier used by Ontologenius to ease the concepts manipulation.
-          In such a way, from one run to another, we cannot ensure that a given concept will have the same index...
-          It is thus important to first query Ontologenius for the indexes.
+        <p>Indexes are attributed by Ontologenius to any concepts. It is a kind of internal identifier used by Ontologenius to ease the concepts manipulation. 
+           In such a way, from one run to another, we cannot ensure that a given concept will have the same index... 
+           It is thus important to first query Ontologenius for the indexes.
         </p>
 
         <p>The actual only difference between an OntologyManipulator and an OntologyManipulatorIndex, is the presence of a "conversion" member.
-          The conversion member is an instance of a <a href="../../python_API/ConversionClient.html" target="_blank" rel="noopener noreferrer">ConversionClient</a> which allows
-          you to pass from identifiers to indexes and inverse.
+           The conversion member is an instance of a <a href="../../python_API/ConversionClient.html" target="_blank" rel="noopener noreferrer">ConversionClient</a> which allows 
+           you to pass from identifiers to indexes and inverse.
         </p>
 
         <p>To better understand, let's take an easy example. Launch ontologenius with the launch file of the second tutorial and in a Python terminal execute the following:</p>
@@ -196,7 +196,7 @@
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-python">
               <div class="code_block cpp_code" style="counter-reset:code_line 0;">
@@ -215,8 +215,8 @@
           </div>
         </div>
 
-        <p>In this example we have asked for the index of the "path" concept, then we have queried all the individuals of this type, but using the index, and finally,
-          we have converted the result into identifiers to display it to the user! Easy!</p>
+        <p>In this example we have asked for the index of the "path" concept, then we have queried all the individuals of this type, but using the index, and finally, 
+           we have converted the result into identifiers to display it to the user! Easy!</p>
 
         <h2>Literals and names</h2>
 
@@ -224,12 +224,12 @@
 
         <p>First of all, the names in natural language do not use indexes and should thus be used with strings as usual.</p>
 
-        <p>At the difference, the literals used with data properties have indexes associated with them.
-          However, these indexes are negative! This specificity can be useful to easily discriminate literals to usual concepts.
+        <p>At the difference, the literals used with data properties have indexes associated with them. 
+           However, these indexes are negative! This specificity can be useful to easily discriminate literals to usual concepts.
         </p>
 
-        <p>Nevertheless, if concepts have positive indexes and literals have negative ones, what about zero?
-          It holds as an empty string as used in the identifier-based queries, meaning no answer.
+        <p>Nevertheless, if concepts have positive indexes and literals have negative ones, what about zero? 
+           It holds as an empty string as used in the identifier-based queries, meaning no answer.
         </p>
 
         <h2>Time to code!</h2>
@@ -263,7 +263,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
       </a>
     </p>
   </div>

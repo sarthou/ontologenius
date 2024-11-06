@@ -126,7 +126,7 @@
 
       <div class="context">
         <div class="toturial-header">
-          <h1 class="title">Use inheritance for my first program (python)</h1>
+          <h1 class="title">Use inheritance for my first program (cpp)</h1>
           <a class="toturial-subheader">
             <div class="tutorial-subheader__main-icon">
               <i class="fas fa-brain"></i>
@@ -144,22 +144,27 @@
         <h2>getUp</h2>
 
         <p>Let us begin by making our program understand the meaning of each word. To do that, we
-          will use the getUp function. This function applied to an individual returns us all the
-          classes of which our individual inherits.</p>
+           will use the getUp function. This function applied to an individual returns us all the
+           classes of which our individual inherits.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="py_key">def</span> <span class="py_function">getWordsInheritance</span>(<span class="py_var">words</span>):</div>
-          <div class="code_line"> <span class="py_var">inheritances</span> = []</div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">word</span> <span class="py_op">in</span> <span class="py_var">words</span>:</div>
-          <div class="code_line"> <span class="py_var">inheritance</span> = <span class="py_var">_onto</span>.<span class="py_var">individuals</span>.<span class="py_function">getUp</span>(<span class="py_var">word</span>)</div>
-          <div class="code_line"> <span class="py_var">inheritances</span>.<span class="py_function">insert</span>(<span class="py_function">len</span>(<span class="py_var">inheritances</span>), <span class="py_var">inheritance</span>)</div>
-          <div class="code_line"> <span class="py_op">return</span> <span class="py_var">inheritances</span></div>
+          <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt; <span class="cpp_function">getWordsInheritance</span>(<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">words</span>)</div>
+          <div class="code_line">{</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt; <span class="cpp_var">inheritances</span>;</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">word</span> : <span class="cpp_var">words</span>)</div>
+          <div class="code_line">  {</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">inheritance</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getUp</span>(<span class="cpp_var">word</span>);</div>
+          <div class="code_line">    <span class="cpp_var">inheritances</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">inheritance</span>);</div>
+          <div class="code_line">  }</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_var">inheritances</span>;</div>
+          <div class="code_line">}</div>
         </div>
-        <p>This function, therefore, applies the getUp method to each word found in the "words" list and
-          it returns a list for which each cell corresponds to the list returned by getUp.</p>
+        <p>This function, therefore, applies the getUp method to each word found in the "words" vector and
+          it returns a vector for which each cell corresponds to the vector returned by getUp.</p>
 
-        <div class="code_block cpp_code" style="counter-reset:code_line 3;">
-          <div class="code_line"> <span class="py_var">inheritance</span> = <span class="py_var">_onto</span>.<span class="py_var">individuals</span>.<span class="py_function">getUp</span>(<span class="py_var">word</span>)</div>
+        <div class="code_block cpp_code" style="counter-reset:code_line 5;">
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">inheritance</span> = <span class="cpp_var">onto_</span>-&gt;individuals.<span class="cpp_function">getUp</span>(<span class="cpp_var">word</span>);</div>
         </div>
         <p>We also notice that we are going to look for the getUp function among the individuals
           because we know that the input words will be only individuals.</p>
@@ -167,32 +172,38 @@
         <p>In order to see the effect of this function, we will add the following lines in our main function,
           just after the call to the "say" function.</p>
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"> <span class="py_var">inheritances</span> = <span class="py_function">getWordsInheritance</span>(<span class="py_var">_names</span>)</div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">i</span> <span class="py_op">in</span> <span class="py_imported">range</span>(<span class="py_function">len</span>(<span class="py_var">inheritances</span>)):</div>
-          <div class="code_line"> <span class="py_function">print</span> (<span class="py_var">_names</span>[<span class="py_var">i</span>] + <span class="py_string">' is a:'</span>)</div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">is_a</span> <span class="py_op">in</span> <span class="py_var">inheritances</span>[<span class="py_var">i</span>]:</div>
-          <div class="code_line"> <span class="py_function">print</span> (<span class="py_string">'- '</span> + <span class="py_var">is_a</span>)</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt; <span class="cpp_var">inheritances</span> = <span class="cpp_function">getWordsInheritance</span>(<span class="cpp_var">names_</span>);</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">i</span> &lt; <span class="cpp_var">inheritances</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">i</span>++)</div>
+          <div class="code_line">  {</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_var">names_</span>[<span class="cpp_var">i</span>] &lt;&lt; <span class="cpp_string">&quot; is a : &quot;</span>;</div>
+          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">type</span> : <span class="cpp_var">inheritances</span>[<span class="cpp_var">i</span>])</div>
+          <div class="code_line">      <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_var">type</span> &lt;&lt; <span class="cpp_string">&quot; &quot;</span>;</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_function">cout</span> &lt;&lt; <span class="cpp_type">std</span>::<span class="cpp_function">endl</span>;</div>
+          <div class="code_line">  }</div>
         </div>
 
-        <p>We can now launch it!</p>
+        <p>We can now recompile our project and launch it!</p>
         <div class="lang-tabs container">
           <div aria-label="Tabbed content" class="closeable" role="tablist">
             <button aria-controls="panel-0-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-0-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
             <button aria-controls="panel-0-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-0-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
           </div>
-
+          
           <div aria-labelledby="tab-0-Ros1" class="lang-tabs-panel group-tab" id="panel-0-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-python">
               <div class="code_block">
+                <div class="terminal_line">catkin_make</div>
+                <div class="terminal_line"><br></div>
                 <div class="terminal_line">roslaunch ontologenius_tutorial intruder.launch</div>
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-0-Ros2" class="lang-tabs-panel group-tab" id="panel-0-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-xml">
               <div class="code_block">
                 <div class="terminal_line">colcon build --symlink-install</div>
+                <div class="terminal_line"><br></div>
                 <div class="terminal_line">ros2 launch ontologenius_tutorial intruder.xml</div>
               </div>
             </div>
@@ -205,7 +216,7 @@
             <button aria-controls="panel-1-Ros1" aria-selected="true" class="lang-tabs-tab group-tab" id="tab-1-Ros1" name="Ros1" role="tab" tabindex="0">ROS1</button>
             <button aria-controls="panel-1-Ros2" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-1-Ros2" name="Ros2" role="tab" tabindex="-1">ROS2</button>
           </div>
-
+          
           <div aria-labelledby="tab-1-Ros1" class="lang-tabs-panel group-tab" id="panel-1-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-python">
               <div class="code_block">
@@ -216,7 +227,7 @@
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-1-Ros2" class="lang-tabs-panel group-tab" id="panel-1-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-xml">
               <div class="code_block">
@@ -232,23 +243,14 @@
         <p>At the end of our program, you should have this:</p>
         <div class="code_block">
           <div class="terminal_line">[SAY]on bob alice kevin</div>
-          <div class="terminal_line">bob is a:</div>
-          <div class="terminal_line">- human</div>
-          <div class="terminal_line">- man</div>
-          <div class="terminal_line">- agent</div>
-          <div class="terminal_line">alice is a:</div>
-          <div class="terminal_line">- woman</div>
-          <div class="terminal_line">- human</div>
-          <div class="terminal_line">- agent</div>
-          <div class="terminal_line">kevin is a:</div>
-          <div class="terminal_line">- human</div>
-          <div class="terminal_line">- man</div>
-          <div class="terminal_line">- agent</div>
+          <div class="terminal_line">bob is a : human man agent</div>
+          <div class="terminal_line">alice is a : human woman agent</div>
+          <div class="terminal_line">kevin is a : human man agent</div>
           <div class="terminal_line">[SAY]Let's play!</div>
         </div>
         <p>Our program knows what each word means</p>
         <p>We can represent this part of the ontology as follow:</p>
-        <img src="../../images/tutorial/inheritance.png " alt="tutorial 1 inheritance graph" width="30%" class="center" />
+        <img src="../../images/tutorial/inheritance.png " alt="tutorial 1 inheritance graph" width="30%" class="center"/>
 
         <h2>Delete the same</h2>
 
@@ -259,41 +261,49 @@
           We will not analyze this code together because it is not the center of this tutorial.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="py_key">def</span> <span class="py_function">deleteTheSame</span>(<span class="py_var">inheritances</span>):</div>
-          <div class="code_line"> <span class="py_op">if</span>(<span class="py_function">len</span>(<span class="py_var">inheritances</span>) > <span class="py_value">1</span>):</div>
-          <div class="code_line"> <span class="py_var">sames</span> = []</div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">word</span> <span class="py_op">in</span> <span class="py_var">inheritances</span>[<span class="py_value">0</span>]:</div>
-          <div class="code_line"> <span class="py_var">is_same</span> = <span class="py_key">True</span></div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">i</span> <span class="py_op">in</span> <span class="py_imported">range</span>(<span class="py_value">1</span>, <span class="py_function">len</span>(<span class="py_var">inheritances</span>)):</div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_key">not</span> <span class="py_var">word</span> <span class="py_op">in</span> <span class="py_var">inheritances</span>[<span class="py_var">i</span>]:</div>
-          <div class="code_line"> <span class="py_var">is_same</span> = <span class="py_key">False</span></div>
+          <div class="code_line"><span class="cpp_key">void</span> <span class="cpp_function">deleteTheSame</span>(<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt;<span class="cpp_key">&</span> <span class="cpp_var">inheritances</span>)</div>
+          <div class="code_line">{</div>
+          <div class="code_line">  <span class="cpp_op">if</span>(<span class="cpp_var">inheritances</span>.<span class="cpp_function">size</span>() &gt; <span class="cpp_value">1</span>)</div>
+          <div class="code_line">  {</div>
+          <div class="code_line">    <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; <span class="cpp_var">sames</span>;</div>
+          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">words</span> = <span class="cpp_value">0</span>; <span class="cpp_var">words</span> &lt; <span class="cpp_var">inheritances</span>[<span class="cpp_value">0</span>].<span class="cpp_function">size</span>(); <span class="cpp_var">words</span>++)</div>
+          <div class="code_line">    {</div>
+          <div class="code_line">      <span class="cpp_key">bool</span> <span class="cpp_var">is_same</span> = <span class="cpp_key">true</span>;</div>
+          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">i</span> = <span class="cpp_value">1</span>; <span class="cpp_var">i</span> &lt; <span class="cpp_var">inheritances</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">i</span>++)</div>
+          <div class="code_line">      {</div>
+          <div class="code_line">        <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt;::<span class="cpp_type">iterator</span> <span class="cpp_var">it</span> = <span class="cpp_function">find</span>(<span class="cpp_var">inheritances</span>[<span class="cpp_var">i</span>].<span class="cpp_function">begin</span>(), <span class="cpp_var">inheritances</span>[<span class="cpp_var">i</span>].<span class="cpp_function">end</span>(), <span class="cpp_var">inheritances</span>.<span class="cpp_function">front</span>()[<span class="cpp_var">words</span>]);</div>
+          <div class="code_line">        <span class="cpp_op">if</span>(<span class="cpp_var">it</span> == <span class="cpp_var">inheritances</span>[<span class="cpp_var">i</span>].<span class="cpp_function">end</span>())</div>
+          <div class="code_line">          <span class="cpp_var">is_same</span> = <span class="cpp_key">false</span>;</div>
+          <div class="code_line">      }</div>
           <div class="code_line"><br></div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_var">is_same</span>:</div>
-          <div class="code_line"> <span class="py_var">sames</span>.<span class="py_function">insert</span>(<span class="py_value">1</span>, <span class="py_var">word</span>)</div>
+          <div class="code_line">      <span class="cpp_op">if</span>(<span class="cpp_var">is_same</span>)</div>
+          <div class="code_line">        <span class="cpp_var">sames</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">inheritances</span>.<span class="cpp_function">front</span>()[<span class="cpp_var">words</span>]);</div>
+          <div class="code_line">    }</div>
           <div class="code_line"><br></div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">same</span> <span class="py_op">in</span> <span class="py_var">sames</span>:</div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">inheritance</span> <span class="py_op">in</span> <span class="py_var">inheritances</span>:</div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_var">same</span> <span class="py_op">in</span> <span class="py_var">inheritance</span>:</div>
-          <div class="code_line"> <span class="py_var">inheritance</span>.<span class="py_function">remove</span>(<span class="py_var">same</span>)</div>
+          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">same</span> : <span class="cpp_var">sames</span>)</div>
+          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">inheritance</span> : <span class="cpp_var">inheritances</span>)</div>
+          <div class="code_line">      {</div>
+          <div class="code_line">        <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt;::<span class="cpp_type">iterator</span> <span class="cpp_var">it</span> = <span class="cpp_function">find</span>(<span class="cpp_var">inheritance</span>.<span class="cpp_function">begin</span>(), <span class="cpp_var">inheritance</span>.<span class="cpp_function">end</span>(), <span class="cpp_var">same</span>);</div>
+          <div class="code_line">        <span class="cpp_var">inheritance</span>.<span class="cpp_function">erase</span>(<span class="cpp_var">it</span>);</div>
+          <div class="code_line">      }</div>
+          <div class="code_line">  }</div>
+          <div class="code_line">}</div>
         </div>
 
         <p>Add the call to this function in the main function just after the getWordsInheritance call.</p>
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"> <span class="py_var">inheritances</span> = <span class="py_function">getWordsInheritance</span>(<span class="py_var">_names</span>)</div>
-          <div class="code_line"> <span class="py_function">deleteTheSame</span>(<span class="py_var">inheritances</span>)</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt; <span class="cpp_var">inheritances</span> = <span class="cpp_function">getWordsInheritance</span>(<span class="cpp_var">names_</span>);</div>
+          <div class="code_line">  <span class="cpp_function">deleteTheSame</span>(<span class="cpp_var">inheritances</span>);</div>
         </div>
 
         <p>Compile this and run the program, then in another terminal re-query the programs on the words:
-          bob alice and kevin.</p>
+          bob, alice, and kevin.</p>
         <p>This time, you should have this:</p>
         <div class="code_block">
           <div class="terminal_line">[SAY]on bob alice kevin</div>
-          <div class="terminal_line">bob is a :</div>
-          <div class="terminal_line">- man</div>
-          <div class="terminal_line">alice is a :</div>
-          <div class="terminal_line">- woman</div>
-          <div class="terminal_line">kevin is a :</div>
-          <div class="terminal_line">- man</div>
+          <div class="terminal_line">bob is a : man</div>
+          <div class="terminal_line">alice is a : woman</div>
+          <div class="terminal_line">kevin is a : man</div>
           <div class="terminal_line">[SAY]Let's play!</div>
         </div>
 
@@ -304,9 +314,20 @@
           of which all but one inherit.</p>
         <p>That's exactly what the next function will do.</p>
 
-        <p>We will finally code algorithms to find intruders. Indeed, in function, it is sometimes
+        <p>Let's start by defining a structure that will represent an intruder with his name and the
+          reason he is the intruder.</p>
+
+        <div class="code_block cpp_code" style="counter-reset:code_line 0;">
+          <div class="code_line"><span class="cpp_key">struct</span> <span class="cpp_type">intruder_t</span></div>
+          <div class="code_line">{</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">name_</span>;</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">why_</span>;</div>
+          <div class="code_line">};</div>
+        </div>
+
+        <p>We will finally code algorithms to find intruders. Indeed, in the function, it is sometimes
           possible to find several intruders for different reasons.</p>
-        <p>Once again, we will not analyze the following algorithm because it does not use Ontologenius directly.</p>
+        <p>Once again, we will not analyze the following algorithm because it does not use ontologenius directly.</p>
         <p>To still be able to analyze it for yourself, here are some key elements:</p>
         <ul>
           <li>We go through all the words of each heritage vector. For each of these words, we seek to
@@ -319,46 +340,63 @@
         </ul>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"><span class="py_key">def</span> <span class="py_function">find_intruder</span>(<span class="py_var">names</span>, <span class="py_var">inheritances</span>):</div>
-          <div class="code_line"> <span class="py_var">intruders</span> = []</div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">inheritance_i</span> <span class="py_op">in</span> <span class="py_imported">range</span>(<span class="py_function">len</span>(<span class="py_var">inheritances</span>)):</div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">class_i</span> <span class="py_op">in</span> <span class="py_var">inheritances</span>[<span class="py_var">inheritance_i</span>]:</div>
-          <div class="code_line"> <span class="py_var">intruder_index</span> = -<span class="py_value">1</span></div>
+          <div class="code_line"><span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_key">struct</span> <span class="cpp_type">intruder_t</span>&gt; <span class="cpp_function">find_intruder</span>(<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt;<span class="cpp_key">&</span> <span class="cpp_var">names</span>, <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt; &gt;<span class="cpp_key">&</span> <span class="cpp_var">inheritances</span>)</div>
+          <div class="code_line">{</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_key">struct</span> <span class="cpp_type">intruder_t</span>&gt; <span class="cpp_var">intruders</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">inheritance_j</span> <span class="py_op">in</span> <span class="py_imported">range</span>(<span class="py_function">len</span>(<span class="py_var">inheritances</span>)):</div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_var">inheritance_i</span> != <span class="py_var">inheritance_j</span>:</div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_key">not</span> <span class="py_var">class_i</span> <span class="py_op">in</span> <span class="py_var">inheritances</span>[<span class="py_var">inheritance_j</span>]:</div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_var">intruder_index</span> == -<span class="py_value">1</span>:</div>
-          <div class="code_line"> <span class="py_var">intruder_index</span> = <span class="py_var">inheritance_j</span></div>
-          <div class="code_line"> <span class="py_op">else</span>:</div>
-          <div class="code_line"> <span class="py_var">intruder_index</span> = -<span class="py_value">1</span></div>
-          <div class="code_line"> <span class="py_op">break</span></div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">vect_i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">vect_i</span> &lt; <span class="cpp_var">inheritances</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">vect_i</span>++)</div>
+          <div class="code_line">    <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">class_i</span> = <span class="cpp_value">0</span>; <span class="cpp_var">class_i</span> &lt; <span class="cpp_var">inheritances</span>[<span class="cpp_var">vect_i</span>].<span class="cpp_function">size</span>(); <span class="cpp_var">class_i</span>++)</div>
+          <div class="code_line">    {</div>
+          <div class="code_line">      <span class="cpp_key">int</span> <span class="cpp_var">intruder_index</span> = <span class="cpp_value">-1</span>;</div>
           <div class="code_line"><br></div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_var">intruder_index</span> != -<span class="py_value">1</span>:</div>
-          <div class="code_line"> <span class="py_var">new_intruder</span> = (<span class="py_var">names</span>[<span class="py_var">intruder_index</span>], <span class="py_var">class_i</span>)</div>
-          <div class="code_line"> <span class="py_var">exist</span> = <span class="py_key">False</span></div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">intruder</span> <span class="py_op">in</span> <span class="py_var">intruders</span>:</div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_var">intruder</span>[<span class="py_value">0</span>] == <span class="py_var">new_intruder</span>[<span class="py_value">0</span>] <span class="py_key">and</span> <span class="py_var">intruder</span>[<span class="py_value">1</span>] == <span class="py_var">new_intruder</span>[<span class="py_value">1</span>]:</div>
-          <div class="code_line"> <span class="py_var">exist</span> = <span class="py_key">True</span></div>
+          <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">vect_j</span> = <span class="cpp_value">0</span>; <span class="cpp_var">vect_j</span> &lt; <span class="cpp_var">inheritances</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">vect_j</span>++)</div>
+          <div class="code_line">        <span class="cpp_op">if</span>(<span class="cpp_var">vect_j</span> != <span class="cpp_var">vect_i</span>)</div>
+          <div class="code_line">        {</div>
+          <div class="code_line">          <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt;::<span class="cpp_type">iterator</span> <span class="cpp_var">it</span> = <span class="cpp_function">find</span>(<span class="cpp_var">inheritances</span>[<span class="cpp_var">vect_j</span>].<span class="cpp_function">begin</span>(), <span class="cpp_var">inheritances</span>[<span class="cpp_var">vect_j</span>].<span class="cpp_function">end</span>(), <span class="cpp_var">inheritances</span>[<span class="cpp_var">vect_i</span>][<span class="cpp_var">class_i</span>]);</div>
+          <div class="code_line">          <span class="cpp_op">if</span>(<span class="cpp_var">it</span> == <span class="cpp_var">inheritances</span>[<span class="cpp_var">vect_j</span>].<span class="cpp_function">end</span>())</div>
+          <div class="code_line">          {</div>
+          <div class="code_line">            <span class="cpp_op">if</span>(<span class="cpp_var">intruder_index</span> == <span class="cpp_value">-1</span>)</div>
+          <div class="code_line">              <span class="cpp_var">intruder_index</span> = <span class="cpp_var">vect_j</span>;</div>
+          <div class="code_line">            <span class="cpp_op">else</span></div>
+          <div class="code_line">            {</div>
+          <div class="code_line">              <span class="cpp_var">intruder_index</span> = <span class="cpp_value">-1</span>;</div>
+          <div class="code_line">              <span class="cpp_op">break</span>;</div>
+          <div class="code_line">            }</div>
+          <div class="code_line">          }</div>
+          <div class="code_line">        }</div>
           <div class="code_line"><br></div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_key">not</span> <span class="py_var">exist</span>:</div>
-          <div class="code_line"> <span class="py_var">intruders</span>.<span class="py_function">insert</span>(<span class="py_value">1</span>, <span class="py_var">new_intruder</span>)</div>
+          <div class="code_line">      <span class="cpp_op">if</span>(<span class="cpp_var">intruder_index</span> != <span class="cpp_value">-1</span>)</div>
+          <div class="code_line">      {</div>
+          <div class="code_line">        <span class="cpp_key">struct</span> <span class="cpp_type">intruder_t</span> <span class="cpp_var">intruder</span>;</div>
+          <div class="code_line">        <span class="cpp_var">intruder</span>.name_ = <span class="cpp_var">names</span>[<span class="cpp_var">intruder_index</span>];</div>
+          <div class="code_line">        <span class="cpp_var">intruder</span>.why_ = <span class="cpp_var">inheritances</span>[<span class="cpp_var">vect_i</span>][<span class="cpp_var">class_i</span>];</div>
           <div class="code_line"><br></div>
-          <div class="code_line"> <span class="py_op">return</span> <span class="py_var">intruders</span></div>
+          <div class="code_line">        <span class="cpp_key">bool</span> <span class="cpp_var">exist</span> = <span class="cpp_key">false</span>;</div>
+          <div class="code_line">        <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">intruder_i</span> : <span class="cpp_var">intruders</span>)</div>
+          <div class="code_line">          <span class="cpp_op">if</span>((<span class="cpp_var">intruder_i</span>.name_ == <span class="cpp_var">intruder</span>.name_) <span class="cpp_op">&&</span> (<span class="cpp_var">intruder_i</span>.why_ == <span class="cpp_var">intruder</span>.why_))</div>
+          <div class="code_line">            <span class="cpp_var">exist</span> = <span class="cpp_key">true</span>;</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">        <span class="cpp_op">if</span>(<span class="cpp_var">exist</span> == <span class="cpp_key">false</span>)</div>
+          <div class="code_line">          <span class="cpp_var">intruders</span>.<span class="cpp_function">push_back</span>(<span class="cpp_var">intruder</span>);</div>
+          <div class="code_line">      }</div>
+          <div class="code_line">    }</div>
+          <div class="code_line"><br></div>
+          <div class="code_line">  <span class="cpp_op">return</span> <span class="cpp_var">intruders</span>;</div>
+          <div class="code_line">}</div>
         </div>
 
         <p>We can therefore call this new function in our main function and replace our old display
           with the intruder display.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"> <span class="py_function">deleteTheSame</span>(<span class="py_var">inheritances</span>)</div>
-          <div class="code_line"> <span class="py_var">intruders</span> = <span class="py_function">find_intruder</span>(<span class="py_var">_names</span>, <span class="py_var">inheritances</span>)</div>
-          <div class="code_line"> <span class="py_op">for</span> <span class="py_var">intruder</span> <span class="py_op">in</span> <span class="py_var">intruders</span>:</div>
-          <div class="code_line"> <span class="py_function">say</span>(<span class="py_string">'the intruder is '</span> + <span class="py_var">intruder</span>[<span class="py_value">0</span>] + <span class="py_string">' because it is the only one that is not: '</span> + <span class="py_var">intruder</span>[<span class="py_value">1</span>])</div>
+          <div class="code_line">  <span class="cpp_function">deleteTheSame</span>(<span class="cpp_var">inheritances</span>);</div>
+          <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_key">struct</span> <span class="cpp_type">intruder_t</span>&gt; <span class="cpp_var">intruders</span> = <span class="cpp_function">find_intruder</span>(<span class="cpp_var">names_</span>, <span class="cpp_var">inheritances</span>);</div>
+          <div class="code_line">  <span class="cpp_op">for</span>(<span class="cpp_key">auto&</span> <span class="cpp_var">intruder</span> : <span class="cpp_var">intruders</span>)</div>
+          <div class="code_line">    <span class="cpp_function">say</span>(<span class="cpp_string">&quot;the intruder is &quot;</span> + <span class="cpp_var">intruder</span>.name_ + <span class="cpp_string">&quot; because it is the only one that is not: &quot;</span> + <span class="cpp_var">intruder</span>.why_);</div>
         </div>
 
-        <p>Run the program, then in another terminal re-query the programs on the words:
-          bob alice and kevin.</p>
+        <p>Compile this and run the program, then in another terminal re-query the programs on the words:
+          bob, alice, and kevin.</p>
         <p>This time, you should have this:</p>
         <div class="code_block">
           <div class="terminal_line">[SAY]on bob alice kevin</div>
@@ -405,7 +443,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
       </a>
     </p>
   </div>

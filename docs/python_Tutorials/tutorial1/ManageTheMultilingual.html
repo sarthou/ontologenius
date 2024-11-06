@@ -175,24 +175,24 @@
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
           <div class="code_line"><span class="py_key">def</span> <span class="py_function">wordCallback</span>(<span class="py_var">msg</span>):</div>
-          <div class="code_line"> <span class="py_key">global</span> <span class="py_var">_start</span></div>
-          <div class="code_line"> <span class="py_key">global</span> <span class="py_var">_names</span></div>
-          <div class="code_line"> <span class="py_key">global</span> <span class="py_var">_onto</span></div>
+          <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_start</span></div>
+          <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_names</span></div>
+          <div class="code_line">    <span class="py_key">global</span> <span class="py_var">_onto</span></div>
           <div class="code_line"><br></div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_var">msg</span>.data == <span class="py_string">'start'</span>:</div>
-          <div class="code_line"> <span class="py_var">_start</span> = <span class="py_key">True</span></div>
-          <div class="code_line"> <span class="py_op">elif</span> <span class="py_key">not</span> <span class="py_var">msg</span>.data <span class="py_op">in</span> <span class="py_var">_names</span>:</div>
-          <div class="code_line"> <span class="py_var">ids</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">find</span>(<span class="py_var">msg</span>.data)</div>
-          <div class="code_line"> <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">ids</span>) == <span class="py_value">0</span>:</div>
-          <div class="code_line"> <span class="py_function">say</span>(<span class="py_string">'this word is unknown'</span> )</div>
-          <div class="code_line"> <span class="py_op">else</span>:</div>
-          <div class="code_line"> <span class="py_var">_names</span>.<span class="py_function">insert</span>(<span class="py_value">1</span>, <span class="py_var">ids</span>[<span class="py_value">0</span>])</div>
+          <div class="code_line">    <span class="py_op">if</span> <span class="py_var">msg</span>.data == <span class="py_string">'start'</span>:</div>
+          <div class="code_line">        <span class="py_var">_start</span> = <span class="py_key">True</span></div>
+          <div class="code_line">    <span class="py_op">elif</span> <span class="py_key">not</span> <span class="py_var">msg</span>.data <span class="py_op">in</span> <span class="py_var">_names</span>:</div>
+          <div class="code_line">        <span class="py_var">ids</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">find</span>(<span class="py_var">msg</span>.data)</div>
+          <div class="code_line">        <span class="py_op">if</span> <span class="py_function">len</span>(<span class="py_var">ids</span>) == <span class="py_value">0</span>:</div>
+          <div class="code_line">            <span class="py_function">say</span>(<span class="py_string">'this word is unknown'</span> )</div>
+          <div class="code_line">        <span class="py_op">else</span>:</div>
+          <div class="code_line">            <span class="py_var">_names</span>.<span class="py_function">insert</span>(<span class="py_value">1</span>, <span class="py_var">ids</span>[<span class="py_value">0</span>])</div>
         </div>
 
         <p>The find function is applied to individuals because we want individuals to input.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 8;">
-          <div class="code_line"> <span class="py_var">ids</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">find</span>(<span class="py_var">msg</span>.data)</div>
+          <div class="code_line">        <span class="py_var">ids</span> = <span class="py_var">_onto</span>.individuals.<span class="py_function">find</span>(<span class="py_var">msg</span>.data)</div>
         </div>
 
         <p>We can test our program again with the words : "green cup", "blue cup" and "green book". We thus
@@ -211,9 +211,9 @@
         <p>The only thing we have to change is the display line as follows:</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 0;">
-          <div class="code_line"> <span class="py_function">say</span>(<span class="py_string">'the intruder is '</span> + <span class="py_var">_onto</span>.individuals.<span class="py_function">getName</span>(<span class="py_var">intruder</span>[<span class="py_value">0</span>]) + \</div>
-          <div class="code_line"> <span class="py_string">' because it is the only one that is not: '</span> + \</div>
-          <div class="code_line"> <span class="py_var">_onto</span>.classes.<span class="py_function">getName</span>(<span class="py_var">intruder</span>[<span class="py_value">1</span>]));</div>
+          <div class="code_line">    <span class="py_function">say</span>(<span class="py_string">'the intruder is '</span> + <span class="py_var">_onto</span>.individuals.<span class="py_function">getName</span>(<span class="py_var">intruder</span>[<span class="py_value">0</span>]) + \</div>
+          <div class="code_line">    <span class="py_string">' because it is the only one that is not: '</span> + \</div>
+          <div class="code_line">    <span class="py_var">_onto</span>.classes.<span class="py_function">getName</span>(<span class="py_var">intruder</span>[<span class="py_value">1</span>]));</div>
         </div>
 
         <p>The result of our program becomes:</p>
@@ -235,38 +235,38 @@
             <button aria-controls="panel-2-Python" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Python" name="Python" role="tab" tabindex="-1">Python</button>
             <button aria-controls="panel-2-Yaml" aria-selected="false" class="lang-tabs-tab group-tab" id="tab-2-Yaml" name="Yaml" role="tab" tabindex="-1">YAML</button>
           </div>
-
+          
           <div aria-labelledby="tab-2-Ros1" class="lang-tabs-panel group-tab" id="panel-2-Ros1" name="Ros1" role="tabpanel" tabindex="0">
             <div class="highlight-xml">
               <div class="code_block xml_code">
                 <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-                <div class="terminal_line"> &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;intruder.py&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
-                <div class="terminal_line"> &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius.launch&quot;</span>&gt;</div>
-                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;none&quot;</span>/&gt;</div>
-                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;fr&quot;</span>/&gt;</div>
-                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/tutorials/tutorial_1.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line"> &lt;/<span class="xml_tag">include</span>&gt;</div>
+                <div class="terminal_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;intruder.py&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+                <div class="terminal_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius.launch&quot;</span>&gt;</div>
+                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;none&quot;</span>/&gt;</div>
+                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;fr&quot;</span>/&gt;</div>
+                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/tutorials/tutorial_1.owl&quot;</span>/&gt;</div>
+                <div class="terminal_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
                 <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
               </div>
 
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-2-Ros2" class="lang-tabs-panel group-tab" id="panel-2-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-xml">
               <div class="code_block xml_code">
                 <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-                <div class="terminal_line"> &lt;<span class="xml_tag">node</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
-                <div class="terminal_line"> &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius.launch&quot;</span>&gt;</div>
-                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;none&quot;</span>/&gt;</div>
-                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;fr&quot;</span>/&gt;</div>
-                <div class="terminal_line"> &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/files/tutorials/tutorial_1.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line"> &lt;/<span class="xml_tag">include</span>&gt;</div>
+                <div class="terminal_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;intruder&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
+                <div class="terminal_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius.launch&quot;</span>&gt;</div>
+                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;none&quot;</span>/&gt;</div>
+                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;fr&quot;</span>/&gt;</div>
+                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/files/tutorials/tutorial_1.owl&quot;</span>/&gt;</div>
+                <div class="terminal_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
                 <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-2-Python" class="lang-tabs-panel group-tab" id="panel-2-Python" name="Python" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-python">
               <div class="code_block python_code">
@@ -282,60 +282,60 @@
                 <div class="terminal_line"> </div>
                 <div class="terminal_line"><span class="py_def">def</span> <span class="py_function">generate_launch_description</span>():</div>
                 <div class="terminal_line"> </div>
-                <div class="terminal_line"> <span class="py_var">intruder_node</span> = <span class="py_imported">Node</span>(</div>
-                <div class="terminal_line"> <span class="py_var">package</span>=<span class="py_string">'ontologenius_tutorial'</span>,</div>
-                <div class="terminal_line"> <span class="py_var">executable</span>=<span class="py_string">'intruder'</span>,</div>
-                <div class="terminal_line"> <span class="py_var">output</span>=<span class="py_string">'screen'</span>,</div>
-                <div class="terminal_line"> )</div>
+                <div class="terminal_line">    <span class="py_var">intruder_node</span> = <span class="py_imported">Node</span>(</div>
+                <div class="terminal_line">        <span class="py_var">package</span>=<span class="py_string">'ontologenius_tutorial'</span>,</div>
+                <div class="terminal_line">        <span class="py_var">executable</span>=<span class="py_string">'intruder'</span>,</div>
+                <div class="terminal_line">        <span class="py_var">output</span>=<span class="py_string">'screen'</span>,</div>
+                <div class="terminal_line">    )</div>
                 <div class="terminal_line"> </div>
-                <div class="terminal_line"> <span class="py_var">ontologenius_include</span> = <span class="py_imported">IncludeLaunchDescription</span>(</div>
-                <div class="terminal_line"> <span class="py_imported">PythonLaunchDescriptionSource</span>(</div>
-                <div class="terminal_line"> <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">'launch/ontologenius.py'</span>)</div>
-                <div class="terminal_line"> ),</div>
-                <div class="terminal_line"> <span class="py_var">launch_arguments</span>={</div>
-                <div class="terminal_line"> <span class="py_string">'intern_file'</span>: <span class="py_string">'none'</span>,</div>
-                <div class="terminal_line"> <span class="py_string">'language'</span>: <span class="py_string">'fr'</span>,</div>
-                <div class="terminal_line"> <span class="py_string">'files'</span>: <span class="py_imported">TextSubstitution</span>(<span class="py_var">text</span> = <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">'files/tutorials/tutorial_1.owl'</span>))</div>
-                <div class="terminal_line"> }.<span class="py_function">items</span>()</div>
-                <div class="terminal_line"> )</div>
+                <div class="terminal_line">    <span class="py_var">ontologenius_include</span> = <span class="py_imported">IncludeLaunchDescription</span>(</div>
+                <div class="terminal_line">        <span class="py_imported">PythonLaunchDescriptionSource</span>(</div>
+                <div class="terminal_line">            <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">'launch/ontologenius.py'</span>)</div>
+                <div class="terminal_line">        ),</div>
+                <div class="terminal_line">        <span class="py_var">launch_arguments</span>={</div>
+                <div class="terminal_line">            <span class="py_string">'intern_file'</span>: <span class="py_string">'none'</span>,</div>
+                <div class="terminal_line">            <span class="py_string">'language'</span>: <span class="py_string">'fr'</span>,</div>
+                <div class="terminal_line">            <span class="py_string">'files'</span>: <span class="py_imported">TextSubstitution</span>(<span class="py_var">text</span> = <span class="py_imported">os</span>.<span class="py_var">path</span>.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">'files/tutorials/tutorial_1.owl'</span>))</div>
+                <div class="terminal_line">        }.<span class="py_function">items</span>()</div>
+                <div class="terminal_line">    )</div>
                 <div class="terminal_line"> </div>
-                <div class="terminal_line"> <span class="py_op">return</span> <span class="py_imported">LaunchDescription</span>([</div>
-                <div class="terminal_line"> <span class="py_var">intruder_node</span>,</div>
-                <div class="terminal_line"> <span class="py_var">ontologenius_include</span></div>
-                <div class="terminal_line"> ])</div>
+                <div class="terminal_line">    <span class="py_op">return</span> <span class="py_imported">LaunchDescription</span>([</div>
+                <div class="terminal_line">        <span class="py_var">intruder_node</span>,</div>
+                <div class="terminal_line">        <span class="py_var">ontologenius_include</span></div>
+                <div class="terminal_line">    ])</div>
               </div>
             </div>
           </div>
-
+          
           <div aria-labelledby="tab-2-Yaml" class="lang-tabs-panel group-tab" id="panel-2-Yaml" name="Yaml" role="tabpanel" tabindex="0" hidden="true">
             <div class="highlight-xml">
               <div class="code_block yaml_code">
                 <div class="terminal_line"><span class="yaml_key">launch</span>:</div>
                 <div class="terminal_line">- <span class="yaml_key">node</span>:</div>
-                <div class="terminal_line"> <span class="yaml_key">pkg</span>: <span class="yaml_string">&quot;ontologenius_tutorial&quot;</span></div>
-                <div class="terminal_line"> <span class="yaml_key">exec</span>: <span class="yaml_string">&quot;intruder&quot;</span></div>
-                <div class="terminal_line"> <span class="yaml_key">output</span>: <span class="yaml_string">&quot;screen&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">pkg</span>: <span class="yaml_string">&quot;ontologenius_tutorial&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">exec</span>: <span class="yaml_string">&quot;intruder&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">output</span>: <span class="yaml_string">&quot;screen&quot;</span></div>
                 <div class="terminal_line"> </div>
                 <div class="terminal_line">- <span class="yaml_key">include</span>:</div>
-                <div class="terminal_line"> <span class="yaml_key">file</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius.yaml&quot;</span></div>
-                <div class="terminal_line"> <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line"> -</div>
-                <div class="terminal_line"> <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
-                <div class="terminal_line"> <span class="yaml_key">value</span>: <span class="yaml_string">&quot;none&quot;</span></div>
-                <div class="terminal_line"> -</div>
-                <div class="terminal_line"> <span class="yaml_key">name</span>: <span class="yaml_string">&quot;language&quot;</span></div>
-                <div class="terminal_line"> <span class="yaml_key">value</span>: <span class="yaml_string">&quot;fr&quot;</span></div>
-                <div class="terminal_line"> -</div>
-                <div class="terminal_line"> <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
-                <div class="terminal_line"> <span class="yaml_key">value</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/files/tutorial_1.owl&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">file</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius.yaml&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">arg</span>:</div>
+                <div class="terminal_line">        -</div>
+                <div class="terminal_line">            <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
+                <div class="terminal_line">            <span class="yaml_key">value</span>: <span class="yaml_string">&quot;none&quot;</span></div>
+                <div class="terminal_line">        -</div>
+                <div class="terminal_line">            <span class="yaml_key">name</span>: <span class="yaml_string">&quot;language&quot;</span></div>
+                <div class="terminal_line">            <span class="yaml_key">value</span>: <span class="yaml_string">&quot;fr&quot;</span></div>
+                <div class="terminal_line">        -</div>
+                <div class="terminal_line">            <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
+                <div class="terminal_line">            <span class="yaml_key">value</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/files/tutorial_1.owl&quot;</span></div>
               </div>
             </div>
           </div>
-
+        
         </div>
 
         <p>Well, that's it, our program will now work in French. You can test it with the words
-          "tasse verte", "tasse bleu" et "livre vert".</p>
+           "tasse verte", "tasse bleu" et "livre vert".</p>
         <p>The result of our program is:</p>
         <div class="code_block">
           <div class="terminal_line">[SAY]on tasse verte tasse bleu livre vert</div>
@@ -363,7 +363,7 @@
         </div>
 
         <p>To obtain the identifier of a word in natural language, we used the function find, but Ontologenius provides other functions to obtain an identifier from natural language.
-          You can try the functions proposed by class <a href="../../python_API/OntologyClient.html">OntologyClient</a>.</p>
+            You can try the functions proposed by class <a href="../../python_API/OntologyClient.html">OntologyClient</a>.</p>
 
         <nav class="course-pagination">
           <a href="MostRelevantIntruder.html" class="course-pagination__btn">
@@ -388,7 +388,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
+        <img src="../../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
       </a>
     </p>
   </div>
