@@ -82,7 +82,7 @@ namespace ontologenius {
                     break;
                   else
                   {
-                    std::string explanation_reference = addInferedInheritance(indiv, anonymous_branch, used);
+                    std::string explanation_reference = addInferredInheritance(indiv, anonymous_branch, used);
                     nb_update++;
                     explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous_branch->class_equiv_->value(),
                                                "[ADD]" + explanation_reference);
@@ -113,7 +113,7 @@ namespace ontologenius {
     first_run_ = false;
   }
 
-  std::string ReasonerAnonymous::addInferedInheritance(IndividualBranch* indiv, AnonymousClassBranch* anonymous_branch, std::vector<std::pair<std::string, InheritedRelationTriplets*>> used)
+  std::string ReasonerAnonymous::addInferredInheritance(IndividualBranch* indiv, AnonymousClassBranch* anonymous_branch, std::vector<std::pair<std::string, InheritedRelationTriplets*>> used)
   {
     std::string explanation;
 
