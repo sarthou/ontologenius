@@ -632,6 +632,10 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     target_include_directories(onto_feature_multi_test PRIVATE ${catkin_INCLUDE_DIRS})
     target_link_libraries(onto_feature_multi_test ontologenius_lib ${catkin_LIBRARIES})
 
+    add_rostest_gtest(onto_feature_subscription_test test/feature_subscription.test src/tests/CI/feature_subscription_test.cpp)
+    target_include_directories(onto_feature_subscription_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(onto_feature_subscription_test ontologenius_lib ${catkin_LIBRARIES})
+
     add_rostest_gtest(onto_reasoning_anonymous_class_test test/reasoning_anonymous_class.test src/tests/CI/reasoning_anonymous_class_test.cpp)
     set_target_properties(onto_reasoning_anonymous_class_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
     target_include_directories(onto_reasoning_anonymous_class_test PRIVATE ${catkin_INCLUDE_DIRS})

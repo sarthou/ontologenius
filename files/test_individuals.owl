@@ -91,6 +91,30 @@
 
 
 
+    <!-- test_individuals#cube2 -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#cube1">
+        <rdf:type rdf:resource="objects#Cube"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- test_individuals#table1 -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#table1">
+        <rdf:type rdf:resource="objects#Table"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- test_individuals#table2 -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#table2">
+        <rdf:type rdf:resource="objects#Table"/>
+    </owl:NamedIndividual>
+
+
+
     <!-- test_individuals#green_cube -->
 
     <owl:NamedIndividual rdf:about="test_individuals#green_cube">
