@@ -99,7 +99,7 @@ namespace onto {
 
     while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count()) < (unsigned int)timeout)
     {
-      // ontologenius::compat::onto_ros::spin_once();
+      ontologenius::compat::onto_ros::Node::spinOnce();
       usleep(1);
     }
 
@@ -131,7 +131,7 @@ namespace onto {
 
     while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count()) < (unsigned int)timeout)
     {
-      // ontologenius::compat::onto_ros::spin_once();
+      ontologenius::compat::onto_ros::Node::spinOnce();
       usleep(1);
     }
 
@@ -153,7 +153,7 @@ namespace onto {
 
     while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count()) < (unsigned int)timeout)
     {
-      // ontologenius::compat::onto_ros::spin_once();
+      ontologenius::compat::onto_ros::Node::spinOnce();
       usleep(1);
     }
 
