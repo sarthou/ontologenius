@@ -19,7 +19,7 @@ TEST(feature_deep_copy, copy)
   onto1.readFromFile(path);
   path = path_base + "/files/positionProperty.owl";
   onto1.readFromFile(path);
-  path = path_base + "/files/testIndividuals.owl";
+  path = path_base + "/files/test_individuals.owl";
   onto1.readFromFile(path);
   onto1.close();
 

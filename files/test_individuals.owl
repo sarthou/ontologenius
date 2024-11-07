@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="test_individuals#"
+     xml:base="test_individuals"
+     xmlns:indivs="https://github.com/sarthou/ontologenius/blob/master/files/test_individuals#"
+     xmlns:agents="https://github.com/sarthou/ontologenius/blob/master/files/agents#"
+     xmlns:attribute="https://github.com/sarthou/ontologenius/blob/master/files/attribute#"
+     xmlns:color="https://github.com/sarthou/ontologenius/blob/master/files/color#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:positionProperty="ontologenius/positionProperty#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="test_individuals">
+         <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/attribute"/>
+         <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/positionProperty"/>
+         <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/agents"/>
+         <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/color"/>
+    </owl:Ontology>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- positionProperty#isInFrontOf -->
+
+    <owl:AnnotationProperty rdf:about="positionProperty#isInFrontOf"/>
+
+
+
+    <!-- positionProperty#isOn -->
+
+    <owl:AnnotationProperty rdf:about="positionProperty#isOn"/>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- test_individuals#big_box -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#big_box">
+        <rdf:type rdf:resource="attribute#box"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- test_individuals#blue_cube -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#blue_cube">
+        <rdf:type rdf:resource="color#Blue"/>
+        <rdf:type rdf:resource="attribute#cube"/>
+        <positionProperty:isOn rdf:resource="test_individuals#red_cube"/>
+        <rdfs:comment xml:lang="en"></rdfs:comment>
+    </owl:NamedIndividual>
+
+
+
+    <!-- test_individuals#blue_book -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#blue_book">
+        <rdf:type rdf:resource="attribute#book"/>
+        <positionProperty:isInFrontOf rdf:resource="test_individuals#red_cube"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- test_individuals#cube1 -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#cube1">
+        <owl:sameAs rdf:resource="test_individuals#green_cube"/>
+        <positionProperty:objectHave3Dposition rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">236</positionProperty:objectHave3Dposition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- test_individuals#green_cube -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#green_cube">
+        <rdf:type rdf:resource="attribute#cube"/>
+        <rdf:type rdf:resource="color#Green"/>
+        <positionProperty:isOn rdf:resource="test_individuals#blue_cube"/>
+    </owl:NamedIndividual>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NegativePropertyAssertion"/>
+        <owl:sourceIndividual rdf:resource="test_individuals#green_cube"/>
+        <owl:assertionProperty rdf:resource="positionProperty#isUnder"/>
+        <owl:targetIndividual rdf:resource="test_individuals#blue_cube"/>
+    </rdf:Description>
+
+
+
+    <!-- test_individuals#little_box -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#little_box">
+        <rdf:type rdf:resource="attribute#box"/>
+        <positionProperty:isIn rdf:resource="test_individuals#big_box"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- test_individuals#mini_box -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#mini_box">
+        <rdf:type rdf:resource="attribute#box"/>
+        <positionProperty:isOn rdf:resource="test_individuals#little_box"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- test_individuals#red_cube -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#red_cube">
+        <rdf:type rdf:resource="attribute#cube"/>
+        <rdf:type rdf:resource="color#Red"/>
+        <positionProperty:isIn rdf:resource="test_individuals#big_box"/>
+        <rdfs:comment xml:lang="en">cube rouge</rdfs:comment>
+    </owl:NamedIndividual>
+
+
+
+    <!-- test_individuals#bob -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#bob">
+        <rdf:type rdf:resource="agents#Man"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- test_individuals#alice -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#alice">
+        <rdf:type rdf:resource="agents#Woman"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- test_individuals#kevin -->
+
+    <owl:NamedIndividual rdf:about="test_individuals#kevin">
+        <rdf:type rdf:resource="agents#Man"/>
+        <rdf:type rdf:resource="attribute#Child"/>
+        <positionProperty:hasMother rdf:resource="test_individuals#alice"/>
+        <positionProperty:hasFather rdf:resource="test_individuals#bob"/>
+    </owl:NamedIndividual>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="test_individuals#blue_cube"/>
+            <rdf:Description rdf:about="test_individuals#green_cube"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->

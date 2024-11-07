@@ -12,7 +12,7 @@ onto::OntologyManipulatorIndex* onto_ptr;
 TEST(api_relations_index, class_getRelationFrom)
 {
   std::vector<int64_t> res;
-  int64_t test_word = onto_ptr->conversion.classesId2Index("human");
+  int64_t test_word = onto_ptr->conversion.classesId2Index("Human");
   bool res_bool = true;
 
   res = onto_ptr->classes.getRelationFrom(test_word);
@@ -23,7 +23,7 @@ TEST(api_relations_index, class_getRelationFrom)
               (std::find(res.begin(), res.end(), onto_ptr->conversion.objectPropertiesId2Index("hasParent")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("man");
+  test_word = onto_ptr->conversion.classesId2Index("Man");
   res = onto_ptr->classes.getRelationFrom(test_word);
   EXPECT_EQ(res.size(), 4);
   res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.objectPropertiesId2Index("hasFather")) != res.end()) &&
@@ -45,28 +45,28 @@ TEST(api_relations_index, class_getRelatedFrom)
 
   res = onto_ptr->classes.getRelatedFrom(test_word);
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("child")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("human")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Child")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Human")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.objectPropertiesId2Index("hasParent");
   res = onto_ptr->classes.getRelatedFrom(test_word);
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("child")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("human")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Child")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Human")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.objectPropertiesId2Index("hasMother");
   res = onto_ptr->classes.getRelatedFrom(test_word);
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("child")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("human")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Child")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Human")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.objectPropertiesId2Index("isOn");
@@ -77,7 +77,7 @@ TEST(api_relations_index, class_getRelatedFrom)
 TEST(api_relations_index, class_getRelationOn)
 {
   std::vector<int64_t> res;
-  int64_t test_word = onto_ptr->conversion.classesId2Index("woman");
+  int64_t test_word = onto_ptr->conversion.classesId2Index("Woman");
   bool res_bool = true;
 
   res = onto_ptr->classes.getRelationOn(test_word);
@@ -98,7 +98,7 @@ TEST(api_relations_index, class_getRelationOn)
   res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.dataPropertiesId2Index("hasLeg")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("human");
+  test_word = onto_ptr->conversion.classesId2Index("Human");
   res = onto_ptr->classes.getRelationOn(test_word);
   EXPECT_TRUE(res.empty());
 }
@@ -118,20 +118,20 @@ TEST(api_relations_index, class_getRelatedOn)
   test_word = onto_ptr->conversion.objectPropertiesId2Index("hasMother");
   res = onto_ptr->classes.getRelatedOn(test_word);
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end());
+  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end());
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.objectPropertiesId2Index("hasFather");
   res = onto_ptr->classes.getRelatedOn(test_word);
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end());
+  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end());
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.objectPropertiesId2Index("hasParent");
   res = onto_ptr->classes.getRelatedOn(test_word);
   EXPECT_EQ(res.size(), 2);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.objectPropertiesId2Index("isOn");
@@ -142,30 +142,30 @@ TEST(api_relations_index, class_getRelatedOn)
 TEST(api_relations_index, class_getRelationWith)
 {
   std::vector<int64_t> res;
-  int64_t test_word = onto_ptr->conversion.classesId2Index("human");
+  int64_t test_word = onto_ptr->conversion.classesId2Index("Human");
   bool res_bool = true;
 
   res = onto_ptr->classes.getRelationWith(test_word);
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#2")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("child");
+  test_word = onto_ptr->conversion.classesId2Index("Child");
   res = onto_ptr->classes.getRelationWith(test_word);
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#2")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("man");
+  test_word = onto_ptr->conversion.classesId2Index("Man");
   res = onto_ptr->classes.getRelationWith(test_word);
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#0")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.classesId2Index("cube");
@@ -176,41 +176,41 @@ TEST(api_relations_index, class_getRelationWith)
 TEST(api_relations_index, class_getRelatedWith)
 {
   std::vector<int64_t> res;
-  int64_t test_word = onto_ptr->conversion.classesId2Index("woman");
+  int64_t test_word = onto_ptr->conversion.classesId2Index("Woman");
   bool res_bool = true;
 
   res = onto_ptr->classes.getRelatedWith(test_word);
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("child")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("human")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Child")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Human")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("man");
+  test_word = onto_ptr->conversion.classesId2Index("Man");
   res = onto_ptr->classes.getRelatedWith(test_word);
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("child")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("human")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Child")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Human")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.literalsId2Index("integer#2");
   res = onto_ptr->classes.getRelatedWith(test_word);
   EXPECT_EQ(res.size(), 3);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("child")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("human")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Child")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Human")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.literalsId2Index("integer#0");
   res = onto_ptr->classes.getRelatedWith(test_word);
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end());
+  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end());
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("human");
+  test_word = onto_ptr->conversion.classesId2Index("Human");
   res = onto_ptr->classes.getRelatedWith(test_word);
   EXPECT_TRUE(res.empty());
 }
@@ -218,45 +218,45 @@ TEST(api_relations_index, class_getRelatedWith)
 TEST(api_relations_index, class_getFrom)
 {
   std::vector<int64_t> res;
-  int64_t test_word = onto_ptr->conversion.classesId2Index("woman");
+  int64_t test_word = onto_ptr->conversion.classesId2Index("Woman");
   int64_t test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasMother");
   bool res_bool = true;
 
   res = onto_ptr->classes.getFrom(test_word2, test_word);
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("child")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("human")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Child")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Human")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("woman");
+  test_word = onto_ptr->conversion.classesId2Index("Woman");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasParent");
   res = onto_ptr->classes.getFrom(test_word2, test_word);
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("child")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("human")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Child")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Human")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.literalsId2Index("integer#2");
   test_word2 = onto_ptr->conversion.dataPropertiesId2Index("hasLeg");
   res = onto_ptr->classes.getFrom(test_word2, test_word);
   EXPECT_EQ(res.size(), 3);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("child")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("human")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Child")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Human")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.literalsId2Index("integer#0");
   test_word2 = onto_ptr->conversion.dataPropertiesId2Index("hasLeg");
   res = onto_ptr->classes.getFrom(test_word2, test_word);
   EXPECT_EQ(res.size(), 1);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("man");
+  test_word = onto_ptr->conversion.classesId2Index("Man");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasMother");
   res = onto_ptr->classes.getFrom(test_word2, test_word);
   EXPECT_TRUE(res.empty());
@@ -265,7 +265,7 @@ TEST(api_relations_index, class_getFrom)
 TEST(api_relations_index, class_getOn)
 {
   std::vector<int64_t> res;
-  int64_t test_word = onto_ptr->conversion.classesId2Index("man");
+  int64_t test_word = onto_ptr->conversion.classesId2Index("Man");
   int64_t test_word2 = onto_ptr->conversion.dataPropertiesId2Index("hasLeg");
   bool res_bool = true;
 
@@ -274,33 +274,33 @@ TEST(api_relations_index, class_getOn)
   res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#0")) != res.end());
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("child");
+  test_word = onto_ptr->conversion.classesId2Index("Child");
   test_word2 = onto_ptr->conversion.dataPropertiesId2Index("hasLeg");
   res = onto_ptr->classes.getOn(test_word, test_word2);
   EXPECT_EQ(res.size(), 1);
   res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#2")) != res.end());
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("woman");
+  test_word = onto_ptr->conversion.classesId2Index("Woman");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasFather");
   res = onto_ptr->classes.getOn(test_word, test_word2);
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end());
+  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end());
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("human");
+  test_word = onto_ptr->conversion.classesId2Index("Human");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasMother");
   res = onto_ptr->classes.getOn(test_word, test_word2);
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end());
+  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end());
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("human");
+  test_word = onto_ptr->conversion.classesId2Index("Human");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasParent");
   res = onto_ptr->classes.getOn(test_word, test_word2);
   EXPECT_EQ(res.size(), 2);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.classesId2Index("cube");
@@ -312,8 +312,8 @@ TEST(api_relations_index, class_getOn)
 TEST(api_relations_index, class_getWith)
 {
   std::vector<int64_t> res;
-  int64_t test_word = onto_ptr->conversion.classesId2Index("human");
-  int64_t test_word2 = onto_ptr->conversion.classesId2Index("man");
+  int64_t test_word = onto_ptr->conversion.classesId2Index("Human");
+  int64_t test_word2 = onto_ptr->conversion.classesId2Index("Man");
   bool res_bool = true;
 
   res = onto_ptr->classes.getWith(test_word, test_word2);
@@ -322,34 +322,34 @@ TEST(api_relations_index, class_getWith)
               (std::find(res.begin(), res.end(), onto_ptr->conversion.objectPropertiesId2Index("hasParent")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("man");
-  test_word2 = onto_ptr->conversion.classesId2Index("man");
+  test_word = onto_ptr->conversion.classesId2Index("Man");
+  test_word2 = onto_ptr->conversion.classesId2Index("Man");
   res = onto_ptr->classes.getWith(test_word, test_word2);
   EXPECT_EQ(res.size(), 2);
   res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.objectPropertiesId2Index("hasFather")) != res.end()) &&
               (std::find(res.begin(), res.end(), onto_ptr->conversion.objectPropertiesId2Index("hasParent")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("child");
+  test_word = onto_ptr->conversion.classesId2Index("Child");
   test_word2 = onto_ptr->conversion.literalsId2Index("integer#2");
   res = onto_ptr->classes.getWith(test_word, test_word2);
   EXPECT_EQ(res.size(), 1);
   res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.dataPropertiesId2Index("hasLeg")) != res.end());
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("man");
+  test_word = onto_ptr->conversion.classesId2Index("Man");
   test_word2 = onto_ptr->conversion.literalsId2Index("integer#0");
   res = onto_ptr->classes.getWith(test_word, test_word2);
   EXPECT_EQ(res.size(), 1);
   res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.dataPropertiesId2Index("hasLeg")) != res.end());
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("human");
-  test_word2 = onto_ptr->conversion.classesId2Index("human");
+  test_word = onto_ptr->conversion.classesId2Index("Human");
+  test_word2 = onto_ptr->conversion.classesId2Index("Human");
   res = onto_ptr->classes.getWith(test_word, test_word2);
   EXPECT_TRUE(res.empty());
 
-  test_word = onto_ptr->conversion.classesId2Index("man");
+  test_word = onto_ptr->conversion.classesId2Index("Man");
   test_word2 = onto_ptr->conversion.literalsId2Index("integer#2");
   res = onto_ptr->classes.getWith(test_word, test_word2);
   EXPECT_TRUE(res.empty());
@@ -394,7 +394,7 @@ TEST(api_relations_index, individual_getRelationFrom)
               (std::find(res.begin(), res.end(), onto_ptr->conversion.dataPropertiesId2Index("have3Dposition")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("man");
+  test_word = onto_ptr->conversion.classesId2Index("Man");
   res = onto_ptr->individuals.getRelationFrom(test_word);
   EXPECT_TRUE(res.empty());
 }
@@ -429,7 +429,7 @@ TEST(api_relations_index, individual_getRelatedFrom)
               (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("blue_cube")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("human");
+  test_word = onto_ptr->conversion.classesId2Index("Human");
   res = onto_ptr->individuals.getRelatedFrom(test_word);
   EXPECT_TRUE(res.empty());
 }
@@ -465,7 +465,7 @@ TEST(api_relations_index, individual_getRelationOn)
   res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.dataPropertiesId2Index("hasLeg")) != res.end());
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("human");
+  test_word = onto_ptr->conversion.classesId2Index("Human");
   res = onto_ptr->individuals.getRelationOn(test_word);
   EXPECT_TRUE(res.empty());
 }
@@ -517,8 +517,8 @@ TEST(api_relations_index, individual_getRelationWith)
   res = onto_ptr->individuals.getRelationWith(test_word);
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#2")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("kevin");
@@ -533,8 +533,8 @@ TEST(api_relations_index, individual_getRelationWith)
   res = onto_ptr->individuals.getRelationWith(test_word);
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.literalsId2Index("integer#0")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()));
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("cube1");
@@ -550,7 +550,7 @@ TEST(api_relations_index, individual_getRelationWith)
 TEST(api_relations_index, individual_getRelatedWith)
 {
   std::vector<int64_t> res;
-  int64_t test_word = onto_ptr->conversion.classesId2Index("woman");
+  int64_t test_word = onto_ptr->conversion.classesId2Index("Woman");
   bool res_bool = true;
 
   res = onto_ptr->individuals.getRelatedWith(test_word);
@@ -560,7 +560,7 @@ TEST(api_relations_index, individual_getRelatedWith)
               (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("bob")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("man");
+  test_word = onto_ptr->conversion.classesId2Index("Man");
   res = onto_ptr->individuals.getRelatedWith(test_word);
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("kevin")) != res.end()) &&
@@ -581,7 +581,7 @@ TEST(api_relations_index, individual_getRelatedWith)
               (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("bob")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("human");
+  test_word = onto_ptr->conversion.classesId2Index("Human");
   res = onto_ptr->individuals.getRelatedWith(test_word);
   EXPECT_TRUE(res.empty());
 }
@@ -589,7 +589,7 @@ TEST(api_relations_index, individual_getRelatedWith)
 TEST(api_relations_index, individual_getFrom)
 {
   std::vector<int64_t> res;
-  int64_t test_word = onto_ptr->conversion.classesId2Index("woman");
+  int64_t test_word = onto_ptr->conversion.classesId2Index("Woman");
   int64_t test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasMother");
   bool res_bool = true;
 
@@ -600,7 +600,7 @@ TEST(api_relations_index, individual_getFrom)
               (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("bob")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("woman");
+  test_word = onto_ptr->conversion.classesId2Index("Woman");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasParent");
   res = onto_ptr->individuals.getFrom(test_word2, test_word);
   EXPECT_EQ(res.size(), 3);
@@ -609,7 +609,7 @@ TEST(api_relations_index, individual_getFrom)
               (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("bob")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("human");
+  test_word = onto_ptr->conversion.classesId2Index("Human");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasParent");
   res = onto_ptr->individuals.getFrom(test_word2, test_word);
   EXPECT_EQ(res.size(), 3);
@@ -633,7 +633,7 @@ TEST(api_relations_index, individual_getFrom)
   res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("alice")) != res.end());
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("man");
+  test_word = onto_ptr->conversion.classesId2Index("Man");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasMother");
   res = onto_ptr->individuals.getFrom(test_word2, test_word);
   EXPECT_TRUE(res.empty());
@@ -662,22 +662,22 @@ TEST(api_relations_index, individual_getOn)
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasFather");
   res = onto_ptr->individuals.getOn(test_word, test_word2);
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end());
+  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end());
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("bob");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasMother");
   res = onto_ptr->individuals.getOn(test_word, test_word2);
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end());
+  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end());
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("alice");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("hasParent");
   res = onto_ptr->individuals.getOn(test_word, test_word2);
   EXPECT_EQ(res.size(), 2);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("woman")) != res.end()) &&
-              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("man")) != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()) &&
+              (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()));
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("kevin");
@@ -688,7 +688,7 @@ TEST(api_relations_index, individual_getOn)
               (std::find(res.begin(), res.end(), onto_ptr->conversion.individualsId2Index("bob")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("man");
+  test_word = onto_ptr->conversion.classesId2Index("Man");
   test_word2 = onto_ptr->conversion.dataPropertiesId2Index("hasLeg");
   res = onto_ptr->individuals.getOn(test_word, test_word2);
   EXPECT_TRUE(res.empty());
@@ -708,7 +708,7 @@ TEST(api_relations_index, individual_getWith)
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("bob");
-  test_word2 = onto_ptr->conversion.classesId2Index("man");
+  test_word2 = onto_ptr->conversion.classesId2Index("Man");
   res = onto_ptr->individuals.getWith(test_word, test_word2);
   EXPECT_EQ(res.size(), 2);
   res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.objectPropertiesId2Index("hasFather")) != res.end()) &&
@@ -730,7 +730,7 @@ TEST(api_relations_index, individual_getWith)
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.individualsId2Index("alice");
-  test_word2 = onto_ptr->conversion.classesId2Index("human");
+  test_word2 = onto_ptr->conversion.classesId2Index("Human");
   res = onto_ptr->individuals.getWith(test_word, test_word2);
   EXPECT_TRUE(res.empty());
 

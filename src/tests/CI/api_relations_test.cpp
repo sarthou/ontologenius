@@ -14,7 +14,7 @@ TEST(api_relations, class_getRelationFrom)
   std::vector<std::string> res;
   bool res_bool = true;
 
-  res = onto_ptr->classes.getRelationFrom("human");
+  res = onto_ptr->classes.getRelationFrom("Human");
   EXPECT_EQ(res.size(), 4);
   res_bool = ((std::find(res.begin(), res.end(), "hasFather") != res.end()) &&
               (std::find(res.begin(), res.end(), "hasMother") != res.end()) &&
@@ -22,7 +22,7 @@ TEST(api_relations, class_getRelationFrom)
               (std::find(res.begin(), res.end(), "hasParent") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getRelationFrom("man");
+  res = onto_ptr->classes.getRelationFrom("Man");
   EXPECT_EQ(res.size(), 4);
   res_bool = ((std::find(res.begin(), res.end(), "hasFather") != res.end()) &&
               (std::find(res.begin(), res.end(), "hasMother") != res.end()) &&
@@ -41,26 +41,26 @@ TEST(api_relations, class_getRelatedFrom)
 
   res = onto_ptr->classes.getRelatedFrom("hasLeg");
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), "child") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()) &&
-              (std::find(res.begin(), res.end(), "human") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), "Child") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Man") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Human") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->classes.getRelatedFrom("hasParent");
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), "child") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()) &&
-              (std::find(res.begin(), res.end(), "human") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), "Child") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Man") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Human") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->classes.getRelatedFrom("hasMother");
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), "child") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()) &&
-              (std::find(res.begin(), res.end(), "human") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), "Child") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Man") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Human") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->classes.getRelatedFrom("isOn");
@@ -72,7 +72,7 @@ TEST(api_relations, class_getRelationOn)
   std::vector<std::string> res;
   bool res_bool = true;
 
-  res = onto_ptr->classes.getRelationOn("woman");
+  res = onto_ptr->classes.getRelationOn("Woman");
   EXPECT_EQ(res.size(), 2);
   res_bool = ((std::find(res.begin(), res.end(), "hasMother") != res.end()) &&
               (std::find(res.begin(), res.end(), "hasParent") != res.end()));
@@ -88,7 +88,7 @@ TEST(api_relations, class_getRelationOn)
   res_bool = (std::find(res.begin(), res.end(), "hasLeg") != res.end());
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getRelationOn("human");
+  res = onto_ptr->classes.getRelationOn("Human");
   EXPECT_TRUE(res.empty());
 }
 
@@ -105,18 +105,18 @@ TEST(api_relations, class_getRelatedOn)
 
   res = onto_ptr->classes.getRelatedOn("hasMother");
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), "woman") != res.end());
+  res_bool = (std::find(res.begin(), res.end(), "Woman") != res.end());
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->classes.getRelatedOn("hasFather");
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), "man") != res.end());
+  res_bool = (std::find(res.begin(), res.end(), "Man") != res.end());
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->classes.getRelatedOn("hasParent");
   EXPECT_EQ(res.size(), 2);
-  res_bool = ((std::find(res.begin(), res.end(), "man") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), "Man") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->classes.getRelatedOn("isOn");
@@ -128,25 +128,25 @@ TEST(api_relations, class_getRelationWith)
   std::vector<std::string> res;
   bool res_bool = true;
 
-  res = onto_ptr->classes.getRelationWith("human");
+  res = onto_ptr->classes.getRelationWith("Human");
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), "integer#2") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+              (std::find(res.begin(), res.end(), "Man") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getRelationWith("child");
+  res = onto_ptr->classes.getRelationWith("Child");
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), "integer#2") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+              (std::find(res.begin(), res.end(), "Man") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getRelationWith("man");
+  res = onto_ptr->classes.getRelationWith("Man");
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), "integer#0") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+              (std::find(res.begin(), res.end(), "Man") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->classes.getRelationWith("cube");
@@ -158,35 +158,35 @@ TEST(api_relations, class_getRelatedWith)
   std::vector<std::string> res;
   bool res_bool = true;
 
-  res = onto_ptr->classes.getRelatedWith("woman");
+  res = onto_ptr->classes.getRelatedWith("Woman");
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), "child") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()) &&
-              (std::find(res.begin(), res.end(), "human") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), "Child") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Man") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Human") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getRelatedWith("man");
+  res = onto_ptr->classes.getRelatedWith("Man");
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), "child") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()) &&
-              (std::find(res.begin(), res.end(), "human") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), "Child") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Man") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Human") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->classes.getRelatedWith("integer#2");
   EXPECT_EQ(res.size(), 3);
-  res_bool = ((std::find(res.begin(), res.end(), "child") != res.end()) &&
-              (std::find(res.begin(), res.end(), "human") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), "Child") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Human") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->classes.getRelatedWith("integer#0");
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), "man") != res.end());
+  res_bool = (std::find(res.begin(), res.end(), "Man") != res.end());
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getRelatedWith("human");
+  res = onto_ptr->classes.getRelatedWith("Human");
   EXPECT_TRUE(res.empty());
 }
 
@@ -195,35 +195,35 @@ TEST(api_relations, class_getFrom)
   std::vector<std::string> res;
   bool res_bool = true;
 
-  res = onto_ptr->classes.getFrom("hasMother", "woman");
+  res = onto_ptr->classes.getFrom("hasMother", "Woman");
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), "child") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()) &&
-              (std::find(res.begin(), res.end(), "human") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), "Child") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Man") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Human") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getFrom("hasParent", "woman");
+  res = onto_ptr->classes.getFrom("hasParent", "Woman");
   EXPECT_EQ(res.size(), 4);
-  res_bool = ((std::find(res.begin(), res.end(), "child") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()) &&
-              (std::find(res.begin(), res.end(), "human") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), "Child") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Man") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Human") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->classes.getFrom("hasLeg", "integer#2");
   EXPECT_EQ(res.size(), 3);
-  res_bool = ((std::find(res.begin(), res.end(), "child") != res.end()) &&
-              (std::find(res.begin(), res.end(), "human") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), "Child") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Human") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->classes.getFrom("hasLeg", "integer#0");
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), "man") != res.end());
+  res_bool = (std::find(res.begin(), res.end(), "Man") != res.end());
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getFrom("hasMother", "man");
+  res = onto_ptr->classes.getFrom("hasMother", "Man");
   res_bool = (res.empty());
   EXPECT_TRUE(res_bool);
 }
@@ -233,30 +233,30 @@ TEST(api_relations, class_getOn)
   std::vector<std::string> res;
   bool res_bool = true;
 
-  res = onto_ptr->classes.getOn("man", "hasLeg");
+  res = onto_ptr->classes.getOn("Man", "hasLeg");
   EXPECT_EQ(res.size(), 1);
   res_bool = (std::find(res.begin(), res.end(), "integer#0") != res.end());
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getOn("child", "hasLeg");
+  res = onto_ptr->classes.getOn("Child", "hasLeg");
   EXPECT_EQ(res.size(), 1);
   res_bool = (std::find(res.begin(), res.end(), "integer#2") != res.end());
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getOn("woman", "hasFather");
+  res = onto_ptr->classes.getOn("Woman", "hasFather");
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), "man") != res.end());
+  res_bool = (std::find(res.begin(), res.end(), "Man") != res.end());
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getOn("human", "hasMother");
+  res = onto_ptr->classes.getOn("Human", "hasMother");
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), "woman") != res.end());
+  res_bool = (std::find(res.begin(), res.end(), "Woman") != res.end());
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getOn("human", "hasParent");
+  res = onto_ptr->classes.getOn("Human", "hasParent");
   EXPECT_EQ(res.size(), 2);
-  res_bool = ((std::find(res.begin(), res.end(), "woman") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), "Woman") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Man") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->classes.getOn("cube", "isOn");
@@ -268,32 +268,32 @@ TEST(api_relations, class_getWith)
   std::vector<std::string> res;
   bool res_bool = true;
 
-  res = onto_ptr->classes.getWith("human", "man");
+  res = onto_ptr->classes.getWith("Human", "Man");
   EXPECT_EQ(res.size(), 2);
   res_bool = ((std::find(res.begin(), res.end(), "hasFather") != res.end()) &&
               (std::find(res.begin(), res.end(), "hasParent") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getWith("man", "man");
+  res = onto_ptr->classes.getWith("Man", "Man");
   EXPECT_EQ(res.size(), 2);
   res_bool = ((std::find(res.begin(), res.end(), "hasFather") != res.end()) &&
               (std::find(res.begin(), res.end(), "hasParent") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getWith("child", "integer#2");
+  res = onto_ptr->classes.getWith("Child", "integer#2");
   EXPECT_EQ(res.size(), 1);
   res_bool = (std::find(res.begin(), res.end(), "hasLeg") != res.end());
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getWith("man", "integer#0");
+  res = onto_ptr->classes.getWith("Man", "integer#0");
   EXPECT_EQ(res.size(), 1);
   res_bool = (std::find(res.begin(), res.end(), "hasLeg") != res.end());
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getWith("human", "human");
+  res = onto_ptr->classes.getWith("Human", "Human");
   EXPECT_TRUE(res.empty());
 
-  res = onto_ptr->classes.getWith("man", "integer#2");
+  res = onto_ptr->classes.getWith("Man", "integer#2");
   EXPECT_TRUE(res.empty());
 }
 
@@ -333,7 +333,7 @@ TEST(api_relations, individual_getRelationFrom)
               (std::find(res.begin(), res.end(), "have3Dposition") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->individuals.getRelationFrom("man");
+  res = onto_ptr->individuals.getRelationFrom("Man");
   EXPECT_TRUE(res.empty());
 }
 
@@ -364,7 +364,7 @@ TEST(api_relations, individual_getRelatedFrom)
               (std::find(res.begin(), res.end(), "blue_cube") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->individuals.getRelatedFrom("human");
+  res = onto_ptr->individuals.getRelatedFrom("Human");
   EXPECT_TRUE(res.empty());
 }
 
@@ -395,7 +395,7 @@ TEST(api_relations, individual_getRelationOn)
   res_bool = (std::find(res.begin(), res.end(), "hasLeg") != res.end());
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->individuals.getRelationOn("human");
+  res = onto_ptr->individuals.getRelationOn("Human");
   EXPECT_TRUE(res.empty());
 }
 
@@ -440,8 +440,8 @@ TEST(api_relations, individual_getRelationWith)
   res = onto_ptr->individuals.getRelationWith("alice");
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), "integer#2") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+              (std::find(res.begin(), res.end(), "Man") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->individuals.getRelationWith("kevin");
@@ -454,8 +454,8 @@ TEST(api_relations, individual_getRelationWith)
   res = onto_ptr->individuals.getRelationWith("bob");
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), "integer#0") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()) &&
-              (std::find(res.begin(), res.end(), "woman") != res.end()));
+              (std::find(res.begin(), res.end(), "Man") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->individuals.getRelationWith("cube1");
@@ -472,14 +472,14 @@ TEST(api_relations, individual_getRelatedWith)
   std::vector<std::string> res;
   bool res_bool = true;
 
-  res = onto_ptr->individuals.getRelatedWith("woman");
+  res = onto_ptr->individuals.getRelatedWith("Woman");
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), "kevin") != res.end()) &&
               (std::find(res.begin(), res.end(), "alice") != res.end()) &&
               (std::find(res.begin(), res.end(), "bob") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->individuals.getRelatedWith("man");
+  res = onto_ptr->individuals.getRelatedWith("Man");
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), "kevin") != res.end()) &&
               (std::find(res.begin(), res.end(), "alice") != res.end()) &&
@@ -497,7 +497,7 @@ TEST(api_relations, individual_getRelatedWith)
               (std::find(res.begin(), res.end(), "bob") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->individuals.getRelatedWith("human");
+  res = onto_ptr->individuals.getRelatedWith("Human");
   EXPECT_TRUE(res.empty());
 }
 
@@ -506,21 +506,21 @@ TEST(api_relations, individual_getFrom)
   std::vector<std::string> res;
   bool res_bool = true;
 
-  res = onto_ptr->individuals.getFrom("hasMother", "woman");
+  res = onto_ptr->individuals.getFrom("hasMother", "Woman");
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), "kevin") != res.end()) &&
               (std::find(res.begin(), res.end(), "alice") != res.end()) &&
               (std::find(res.begin(), res.end(), "bob") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->individuals.getFrom("hasParent", "woman");
+  res = onto_ptr->individuals.getFrom("hasParent", "Woman");
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), "kevin") != res.end()) &&
               (std::find(res.begin(), res.end(), "alice") != res.end()) &&
               (std::find(res.begin(), res.end(), "bob") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->individuals.getFrom("hasParent", "human");
+  res = onto_ptr->individuals.getFrom("hasParent", "Human");
   EXPECT_EQ(res.size(), 3);
   res_bool = ((std::find(res.begin(), res.end(), "kevin") != res.end()) &&
               (std::find(res.begin(), res.end(), "alice") != res.end()) &&
@@ -538,7 +538,7 @@ TEST(api_relations, individual_getFrom)
   res_bool = (std::find(res.begin(), res.end(), "alice") != res.end());
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->individuals.getFrom("hasMother", "man");
+  res = onto_ptr->individuals.getFrom("hasMother", "Man");
   EXPECT_TRUE(res.empty());
 }
 
@@ -559,18 +559,18 @@ TEST(api_relations, individual_getOn)
 
   res = onto_ptr->individuals.getOn("alice", "hasFather");
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), "man") != res.end());
+  res_bool = (std::find(res.begin(), res.end(), "Man") != res.end());
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->individuals.getOn("bob", "hasMother");
   EXPECT_EQ(res.size(), 1);
-  res_bool = (std::find(res.begin(), res.end(), "woman") != res.end());
+  res_bool = (std::find(res.begin(), res.end(), "Woman") != res.end());
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->individuals.getOn("alice", "hasParent");
   EXPECT_EQ(res.size(), 2);
-  res_bool = ((std::find(res.begin(), res.end(), "woman") != res.end()) &&
-              (std::find(res.begin(), res.end(), "man") != res.end()));
+  res_bool = ((std::find(res.begin(), res.end(), "Woman") != res.end()) &&
+              (std::find(res.begin(), res.end(), "Man") != res.end()));
   EXPECT_TRUE(res_bool);
 
   res = onto_ptr->individuals.getOn("kevin", "hasParent");
@@ -579,7 +579,7 @@ TEST(api_relations, individual_getOn)
               (std::find(res.begin(), res.end(), "bob") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->individuals.getOn("man", "hasLeg");
+  res = onto_ptr->individuals.getOn("Man", "hasLeg");
   EXPECT_TRUE(res.empty());
 }
 
@@ -594,7 +594,7 @@ TEST(api_relations, individual_getWith)
               (std::find(res.begin(), res.end(), "hasParent") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->individuals.getWith("bob", "man");
+  res = onto_ptr->individuals.getWith("bob", "Man");
   EXPECT_EQ(res.size(), 2);
   res_bool = ((std::find(res.begin(), res.end(), "hasFather") != res.end()) &&
               (std::find(res.begin(), res.end(), "hasParent") != res.end()));
@@ -610,7 +610,7 @@ TEST(api_relations, individual_getWith)
   res_bool = (std::find(res.begin(), res.end(), "hasLeg") != res.end());
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->individuals.getWith("alice", "human");
+  res = onto_ptr->individuals.getWith("alice", "Human");
   EXPECT_TRUE(res.empty());
 
   res = onto_ptr->individuals.getWith("bob", "integer#2");

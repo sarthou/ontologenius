@@ -5,7 +5,7 @@
   $(find ontologenius)/files/attribute.owl
   $(find ontologenius)/files/animals.owl
   $(find ontologenius)/files/positionProperty.owl
-  $(find ontologenius)/files/testIndividuals.owl
+  $(find ontologenius)/files/test_individuals.owl
   "/>
 
   <node name="ontologenius_core" pkg="ontologenius" type="ontologenius_single" output="screen" args="-l $(arg language) -i $(arg intern_file) $(arg files)" launch-prefix="valgrind"> </node>

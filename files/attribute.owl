@@ -78,17 +78,6 @@
 
 
 
-    <!-- attribute#agent -->
-
-    <owl:Class rdf:about="attribute#agent">
-        <rdfs:subClassOf rdf:resource="attribute#animate"/>
-        <rdfs:subClassOf rdf:resource="attribute#entity"/>
-        <rdfs:comment>an agent is an animated entity</rdfs:comment>
-        <rdfs:label xml:lang="fr">agent</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#animate -->
 
     <owl:Class rdf:about="attribute#animate">
@@ -104,15 +93,6 @@
     <owl:Class rdf:about="attribute#area">
         <rdfs:subClassOf rdf:resource="attribute#attribute"/>
         <rdfs:label xml:lang="fr">zone</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#arm -->
-
-    <owl:Class rdf:about="attribute#arm">
-        <rdfs:subClassOf rdf:resource="attribute#joint"/>
-        <rdfs:label xml:lang="fr">bras</rdfs:label>
     </owl:Class>
 
 
@@ -175,16 +155,6 @@
 
     <owl:Class rdf:about="attribute#chair">
         <rdfs:subClassOf rdf:resource="attribute#furniture"/>
-    </owl:Class>
-
-
-
-    <!-- attribute#child -->
-
-    <owl:Class rdf:about="attribute#child">
-        <rdfs:subClassOf rdf:resource="attribute#human"/>
-        <rdfs:subClassOf rdf:resource="attribute#young"/>
-        <rdfs:label xml:lang="fr">enfant</rdfs:label>
     </owl:Class>
 
 
@@ -262,15 +232,6 @@
 
 
 
-    <!-- attribute#foot -->
-
-    <owl:Class rdf:about="attribute#foot">
-        <rdfs:subClassOf rdf:resource="attribute#joint"/>
-        <rdfs:label xml:lang="fr">pied</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#furniture -->
 
     <owl:Class rdf:about="attribute#furniture">
@@ -312,37 +273,6 @@
 
 
 
-    <!-- attribute#hand -->
-
-    <owl:Class rdf:about="attribute#hand">
-        <rdfs:subClassOf rdf:resource="attribute#joint"/>
-        <rdfs:label xml:lang="fr">main</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#head -->
-
-    <owl:Class rdf:about="attribute#head">
-        <rdfs:subClassOf rdf:resource="attribute#joint"/>
-        <rdfs:label xml:lang="fr">tête</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#human -->
-
-    <owl:Class rdf:about="attribute#human">
-        <rdfs:subClassOf rdf:resource="attribute#agent"/>
-        <rdfs:subClassOf rdf:resource="attribute#living"/>
-        <position_property:hasMother rdf:resource="ontologenius/testIndividuals#woman"/>
-        <position_property:hasFather rdf:resource="ontologenius/testIndividuals#man"/>
-        <position_property:hasLeg rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</position_property:hasLeg>
-        <rdfs:label xml:lang="fr">humain</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#inanimate -->
 
     <owl:Class rdf:about="attribute#inanimate">
@@ -363,32 +293,12 @@
 
 
 
-    <!-- attribute#joint -->
-
-    <owl:Class rdf:about="attribute#joint">
-        <rdfs:subClassOf rdf:resource="attribute#entity"/>
-	<rdfs:subClassOf rdf:resource="attribute#animate"/>
-        <rdfs:comment>joints are parts of agent</rdfs:comment>
-        <rdfs:label xml:lang="fr">jointure</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#lamp -->
 
     <owl:Class rdf:about="attribute#lamp">
         <rdfs:subClassOf rdf:resource="attribute#actuator"/>
         <rdfs:subClassOf rdf:resource="attribute#affair"/>
         <rdfs:label xml:lang="fr">lampe</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#leg -->
-
-    <owl:Class rdf:about="attribute#leg">
-        <rdfs:subClassOf rdf:resource="attribute#joint"/>
-        <rdfs:label xml:lang="fr">jambe</rdfs:label>
     </owl:Class>
 
 
@@ -418,18 +328,6 @@
     <owl:Class rdf:about="attribute#male">
         <rdfs:subClassOf rdf:resource="attribute#gender"/>
         <rdfs:label xml:lang="fr">masculin</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#man -->
-
-    <owl:Class rdf:about="attribute#man">
-        <rdfs:subClassOf rdf:resource="attribute#human"/>
-        <rdfs:subClassOf rdf:resource="attribute#male"/>
-        <owl:disjointWith rdf:resource="attribute#woman"/>
-        <position_property:hasLeg rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</position_property:hasLeg>
-        <rdfs:label xml:lang="fr">homme</rdfs:label>
     </owl:Class>
 
 
@@ -484,28 +382,11 @@
 
 
 
-    <!-- attribute#pepper -->
-
-    <owl:Class rdf:about="attribute#pepper">
-        <rdfs:subClassOf rdf:resource="attribute#robot"/>
-        <owl:disjointWith rdf:resource="attribute#pr2"/>
-    </owl:Class>
-
-
-
     <!-- attribute#plant -->
 
     <owl:Class rdf:about="attribute#plant">
         <rdfs:subClassOf rdf:resource="attribute#vegetal"/>
         <rdfs:label xml:lang="fr">plante</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#pr2 -->
-
-    <owl:Class rdf:about="attribute#pr2">
-        <rdfs:subClassOf rdf:resource="attribute#robot"/>
     </owl:Class>
 
 
@@ -536,16 +417,6 @@
         <rdfs:subClassOf rdf:resource="attribute#fan"/>
         <rdfs:subClassOf rdf:resource="attribute#red"/>
         <rdfs:label xml:lang="en">red fan</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#robot -->
-
-    <owl:Class rdf:about="attribute#robot">
-        <rdfs:subClassOf rdf:resource="attribute#agent"/>
-        <rdfs:subClassOf rdf:resource="attribute#nonLiving"/>
-        <rdfs:label xml:lang="fr">robot</rdfs:label>
     </owl:Class>
 
 
@@ -618,15 +489,6 @@ furniture</rdfs:seeAlso>
 
 
 
-    <!-- attribute#torso -->
-
-    <owl:Class rdf:about="attribute#torso">
-        <rdfs:subClassOf rdf:resource="attribute#joint"/>
-        <rdfs:label xml:lang="fr">torse</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#trashbin -->
 
     <owl:Class rdf:about="attribute#trashbin">
@@ -664,16 +526,6 @@ furniture</rdfs:seeAlso>
         <rdfs:label xml:lang="en">vitality</rdfs:label>
         <rdfs:label xml:lang="fr">vitalité</rdfs:label>
         <rdfs:seeAlso>entity</rdfs:seeAlso>
-    </owl:Class>
-
-
-
-    <!-- attribute#woman -->
-
-    <owl:Class rdf:about="attribute#woman">
-        <rdfs:subClassOf rdf:resource="attribute#female"/>
-        <rdfs:subClassOf rdf:resource="attribute#human"/>
-        <rdfs:label xml:lang="fr">femme</rdfs:label>
     </owl:Class>
 
 
@@ -717,33 +569,6 @@ furniture</rdfs:seeAlso>
             <rdf:Description rdf:about="attribute#affair"/>
             <rdf:Description rdf:about="attribute#furniture"/>
             <rdf:Description rdf:about="attribute#vegetal"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="attribute#agent"/>
-            <rdf:Description rdf:about="attribute#joint"/>
-            <rdf:Description rdf:about="attribute#object"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="attribute#Animal"/>
-            <rdf:Description rdf:about="attribute#human"/>
-            <rdf:Description rdf:about="attribute#robot"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="attribute#arm"/>
-            <rdf:Description rdf:about="attribute#foot"/>
-            <rdf:Description rdf:about="attribute#hand"/>
-            <rdf:Description rdf:about="attribute#head"/>
-            <rdf:Description rdf:about="attribute#leg"/>
-            <rdf:Description rdf:about="attribute#torso"/>
         </owl:members>
     </rdf:Description>
 </rdf:RDF>

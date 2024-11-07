@@ -61,7 +61,7 @@ TEST(reasoning_mechanism, reasoners_effect)
   path = path_base + "/files/positionProperty.owl";
   EXPECT_TRUE(onto_ptr->actions.fadd(path));
 
-  path = path_base + "/files/testIndividuals.owl";
+  path = path_base + "/files/test_individuals.owl";
   EXPECT_TRUE(onto_ptr->actions.fadd(path));
 
   EXPECT_TRUE(onto_ptr->actions.close());

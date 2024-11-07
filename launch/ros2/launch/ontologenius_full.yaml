@@ -17,7 +17,7 @@ launch:
       $(find-pkg-share ontologenius)/files/attribute.owl
       $(find-pkg-share ontologenius)/files/animals.owl
       $(find-pkg-share ontologenius)/files/positionProperty.owl
-      $(find-pkg-share ontologenius)/files/testIndividuals.owl
+      $(find-pkg-share ontologenius)/files/test_individuals.owl
       "
 - arg:
     name: "tcmalloc_path"

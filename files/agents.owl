@@ -1,0 +1,269 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="https://github.com/sarthou/ontologenius/blob/master/files/agents#"
+     xml:base="https://github.com/sarthou/ontologenius/blob/master/files/agents"
+     xmlns:agents="https://github.com/sarthou/ontologenius/blob/master/files/agents#"
+     xmlns:attribute="https://github.com/sarthou/ontologenius/blob/master/files/agents#"
+     xmlns:onto="ontologenius#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+     <owl:Ontology rdf:about="https://github.com/sarthou/ontologenius/blob/master/files/agents">
+         <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/attribute"/>
+     </owl:Ontology>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+    <!-- position_property#hasParent -->
+
+    <owl:ObjectProperty rdf:about="agents#hasParent">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="agents#Human"/>
+        <rdfs:range rdf:resource="agents#Human"/>
+    </owl:ObjectProperty>
+
+
+
+    <!-- agents#hasMother -->
+
+    <owl:ObjectProperty rdf:about="agents#hasMother">
+        <rdfs:subPropertyOf rdf:resource="agents#hasParent"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+    </owl:ObjectProperty>
+
+
+
+    <!-- agents#hasFather -->
+
+    <owl:ObjectProperty rdf:about="agents#hasFather">
+        <rdfs:subPropertyOf rdf:resource="agents#hasParent"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+    </owl:ObjectProperty>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- agents#hasLeg -->
+
+    <owl:DatatypeProperty rdf:about="agents#hasLeg">
+        <rdfs:domain rdf:resource="agents#Human"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/xsd#integer"/>
+    </owl:DatatypeProperty>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+    <!-- agents#Agent -->
+
+    <owl:Class rdf:about="agents#Agent">
+        <rdfs:subClassOf rdf:resource="attribute#animate"/>
+        <rdfs:subClassOf rdf:resource="attribute#entity"/>
+        <rdfs:comment>an agent is an animated entity</rdfs:comment>
+        <rdfs:label xml:lang="fr">agent</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- agents#Arm -->
+
+    <owl:Class rdf:about="agents#Arm">
+        <rdfs:subClassOf rdf:resource="agents#BodyPart"/>
+        <rdfs:label xml:lang="fr">bras</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- agents#Child -->
+
+    <owl:Class rdf:about="agents#Child">
+        <rdfs:subClassOf rdf:resource="agents#Human"/>
+        <rdfs:subClassOf rdf:resource="attribute#young"/>
+        <rdfs:label xml:lang="fr">enfant</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- agents#Foot -->
+
+    <owl:Class rdf:about="agents#Foot">
+        <rdfs:subClassOf rdf:resource="agents#BodyPart"/>
+        <rdfs:label xml:lang="fr">pied</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- agents#Hand -->
+
+    <owl:Class rdf:about="agents#Hand">
+        <rdfs:subClassOf rdf:resource="agents#BodyPart"/>
+        <rdfs:label xml:lang="fr">main</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- agents#Head -->
+
+    <owl:Class rdf:about="agents#Head">
+        <rdfs:subClassOf rdf:resource="agents#BodyPart"/>
+        <rdfs:label xml:lang="fr">tête</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- agents#Human -->
+
+    <owl:Class rdf:about="agents#Human">
+        <rdfs:subClassOf rdf:resource="agents#Agent"/>
+        <rdfs:subClassOf rdf:resource="attribute#living"/>
+        <agents:hasMother rdf:resource="agents#Woman"/>
+        <agents:hasFather rdf:resource="agents#Man"/>
+        <agents:hasLeg rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</agents:hasLeg>
+        <rdfs:label xml:lang="fr">humain</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- agents#BodyPart -->
+
+    <owl:Class rdf:about="agents#BodyPart">
+        <rdfs:subClassOf rdf:resource="attribute#entity"/>
+	    <rdfs:subClassOf rdf:resource="attribute#animate"/>
+        <rdfs:comment>joints are parts of agent</rdfs:comment>
+        <rdfs:label xml:lang="fr">jointure</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- agents#Leg -->
+
+    <owl:Class rdf:about="agents#Leg">
+        <rdfs:subClassOf rdf:resource="agents#BodyPart"/>
+        <rdfs:label xml:lang="fr">jambe</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- agents#Man -->
+
+    <owl:Class rdf:about="agents#Man">
+        <rdfs:subClassOf rdf:resource="agents#Human"/>
+        <rdfs:subClassOf rdf:resource="attribute#male"/>
+        <owl:disjointWith rdf:resource="agents#Woman"/>
+        <agents:hasLeg rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</agents:hasLeg>
+        <rdfs:label xml:lang="fr">homme</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- agents#Pepper -->
+
+    <owl:Class rdf:about="agents#Pepper">
+        <rdfs:subClassOf rdf:resource="agents#Robot"/>
+        <owl:disjointWith rdf:resource="agents#Pr2"/>
+    </owl:Class>
+
+
+
+    <!-- agents#Pr2 -->
+
+    <owl:Class rdf:about="agents#Pr2">
+        <rdfs:subClassOf rdf:resource="agents#Robot"/>
+    </owl:Class>
+
+
+
+    <!-- agents#Robot -->
+
+    <owl:Class rdf:about="agents#Robot">
+        <rdfs:subClassOf rdf:resource="agents#Agent"/>
+        <rdfs:subClassOf rdf:resource="attribute#nonLiving"/>
+        <rdfs:label xml:lang="fr">robot</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- agents#Torso -->
+
+    <owl:Class rdf:about="agents#Torso">
+        <rdfs:subClassOf rdf:resource="agents#BodyPart"/>
+        <rdfs:label xml:lang="fr">torse</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- agents#Woman -->
+
+    <owl:Class rdf:about="agents#Woman">
+        <rdfs:subClassOf rdf:resource="attribute#female"/>
+        <rdfs:subClassOf rdf:resource="agents#Human"/>
+        <rdfs:label xml:lang="fr">femme</rdfs:label>
+    </owl:Class>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="agents#Agent"/>
+            <rdf:Description rdf:about="agents#BodyPart"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="agents#Human"/>
+            <rdf:Description rdf:about="agents#Robot"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="agents#Arm"/>
+            <rdf:Description rdf:about="agents#Foot"/>
+            <rdf:Description rdf:about="agents#Hand"/>
+            <rdf:Description rdf:about="agents#Head"/>
+            <rdf:Description rdf:about="agents#Leg"/>
+            <rdf:Description rdf:about="agents#Torso"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->

@@ -25,9 +25,9 @@
 
 
 
-    <!-- color#black -->
+    <!-- color#Black -->
 
-    <owl:Class rdf:about="color#black">
+    <owl:Class rdf:about="color#Black">
         <rdfs:subClassOf rdf:resource="color#Color"/>
         <rdfs:label xml:lang="en">black</rdfs:label>
         <rdfs:label xml:lang="fi">musta</rdfs:label>
@@ -36,9 +36,9 @@
 
 
 
-    <!-- color#blue -->
+    <!-- color#Blue -->
 
-    <owl:Class rdf:about="color#blue">
+    <owl:Class rdf:about="color#Blue">
         <rdfs:subClassOf rdf:resource="color#Color"/>
         <rdfs:label xml:lang="fr">bleu</rdfs:label>
         <rdfs:label xml:lang="en">blue</rdfs:label>
@@ -58,9 +58,9 @@
 
 
 
-    <!-- color#green -->
+    <!-- color#Green -->
 
-    <owl:Class rdf:about="color#green">
+    <owl:Class rdf:about="color#Green">
         <rdfs:subClassOf rdf:resource="color#Color"/>
         <rdfs:label xml:lang="fr">vert</rdfs:label>
         <rdfs:label xml:lang="fi">vihreä</rdfs:label>
@@ -68,9 +68,9 @@
 
 
 
-    <!-- color#pink -->
+    <!-- color#Pink -->
 
-    <owl:Class rdf:about="color#pink">
+    <owl:Class rdf:about="color#Pink">
         <rdfs:subClassOf rdf:resource="color#Color"/>
         <rdfs:label xml:lang="fi">pinkki</rdfs:label>
         <rdfs:label xml:lang="fr">rose</rdfs:label>
@@ -78,9 +78,9 @@
 
 
 
-    <!-- color#purple -->
+    <!-- color#Purple -->
 
-    <owl:Class rdf:about="color#purple">
+    <owl:Class rdf:about="color#Purple">
         <rdfs:subClassOf rdf:resource="color#Color"/>
         <rdfs:label xml:lang="fr">violet</rdfs:label>
         <rdfs:label xml:lang="fi">violetti</rdfs:label>
@@ -88,9 +88,9 @@
 
 
 
-    <!-- color#red -->
+    <!-- color#Red -->
 
-    <owl:Class rdf:about="color#red">
+    <owl:Class rdf:about="color#Red">
         <rdfs:subClassOf rdf:resource="color#Color"/>
         <rdfs:label xml:lang="fi">punainen</rdfs:label>
         <rdfs:label xml:lang="fr">rouge</rdfs:label>
@@ -98,9 +98,9 @@
 
 
 
-    <!-- color#white -->
+    <!-- color#White -->
 
-    <owl:Class rdf:about="color#white">
+    <owl:Class rdf:about="color#White">
         <rdfs:subClassOf rdf:resource="color#Color"/>
         <rdfs:label xml:lang="fr">blanc</rdfs:label>
         <rdfs:label xml:lang="fi">valkoinen</rdfs:label>
@@ -108,9 +108,9 @@
 
 
 
-    <!-- color#yellow -->
+    <!-- color#Yellow -->
 
-    <owl:Class rdf:about="color#yellow">
+    <owl:Class rdf:about="color#Yellow">
         <rdfs:subClassOf rdf:resource="color#Color"/>
         <rdfs:label xml:lang="fr">jaune</rdfs:label>
         <rdfs:label xml:lang="fi">keltainen</rdfs:label>
