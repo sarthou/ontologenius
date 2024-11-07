@@ -147,6 +147,7 @@
         <agents:hasFather rdf:resource="agents#Man"/>
         <agents:hasLeg rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</agents:hasLeg>
         <rdfs:label xml:lang="fr">humain</rdfs:label>
+        <rdfs:label xml:lang="en">human</rdfs:label>
     </owl:Class>
 
 

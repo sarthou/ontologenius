@@ -156,9 +156,9 @@
 
     <owl:NamedIndividual rdf:about="test_individuals#kevin">
         <rdf:type rdf:resource="agents#Man"/>
-        <rdf:type rdf:resource="attribute#Child"/>
-        <positionProperty:hasMother rdf:resource="test_individuals#alice"/>
-        <positionProperty:hasFather rdf:resource="test_individuals#bob"/>
+        <rdf:type rdf:resource="agents#Child"/>
+        <agents:hasMother rdf:resource="test_individuals#alice"/>
+        <agents:hasFather rdf:resource="test_individuals#bob"/>
     </owl:NamedIndividual>
 
 

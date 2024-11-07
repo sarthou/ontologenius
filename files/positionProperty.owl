@@ -279,12 +279,6 @@
 
 
 
-    <!-- attribute#hand -->
-
-    <owl:Class rdf:about="attribute#hand"/>
-
-
-
     <!-- attribute#indoorArea -->
 
     <owl:Class rdf:about="attribute#indoorArea"/>

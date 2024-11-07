@@ -20,7 +20,8 @@ TEST(api_inheritage, find_call)
 {
   std::vector<std::string> res = onto_ptr->classes.find("human");
   EXPECT_EQ(res.size(), 1);
-  EXPECT_EQ(res.front(), "Human");
+  if(res.empty() == false)
+    EXPECT_EQ(res.front(), "Human");
 }
 
 TEST(api_inheritage, getUp_call)
