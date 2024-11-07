@@ -50,6 +50,15 @@ namespace ontologenius::compat::onto_ros {
 #endif
   }
 
+  void Node::spinOnce()
+  {
+#if ONTO_ROS_VERSION == 1
+    ros::spin_once();
+#elif ONTO_ROS_VERSION == 2
+    // rclcpp::spin(handle_);
+#endif
+  }
+
   Time Node::currentTime()
   {
 #if ONTO_ROS_VERSION == 1

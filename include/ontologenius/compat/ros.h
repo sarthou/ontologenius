@@ -207,6 +207,7 @@ namespace ontologenius::compat {
       static void shutdown();
 
       void spin();
+      static void spinOnce();
 
       Time currentTime();
 
