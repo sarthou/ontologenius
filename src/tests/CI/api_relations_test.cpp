@@ -30,7 +30,7 @@ TEST(api_relations, class_getRelationFrom)
               (std::find(res.begin(), res.end(), "hasParent") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getRelationFrom("cube");
+  res = onto_ptr->classes.getRelationFrom("Cube");
   EXPECT_TRUE(res.empty());
 }
 
@@ -149,7 +149,7 @@ TEST(api_relations, class_getRelationWith)
               (std::find(res.begin(), res.end(), "Woman") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getRelationWith("cube");
+  res = onto_ptr->classes.getRelationWith("Cube");
   EXPECT_TRUE(res.empty());
 }
 
@@ -259,7 +259,7 @@ TEST(api_relations, class_getOn)
               (std::find(res.begin(), res.end(), "Man") != res.end()));
   EXPECT_TRUE(res_bool);
 
-  res = onto_ptr->classes.getOn("cube", "isOn");
+  res = onto_ptr->classes.getOn("Cube", "isOn");
   EXPECT_TRUE(res.empty());
 }
 

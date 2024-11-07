@@ -35,9 +35,9 @@ TEST(feature_deep_copy, copy)
   EXPECT_EQ(onto1.individual_graph_.getUp(indiv).size(), 11);
   EXPECT_EQ(onto2.individual_graph_.getUp(indiv).size(), 11);
 
-  std::string type = "cube";
+  std::string type = "Cube";
   onto2.individual_graph_.removeInheritage(indiv, type);
-  type = "object";
+  type = "Object";
   onto2.individual_graph_.addInheritage(indiv, type);
 
   std::cout << "onto1 " << onto1.individual_graph_.getUp(indiv).size() << std::endl;

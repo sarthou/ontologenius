@@ -16,7 +16,7 @@ TEST(feature_loading, reset)
   res = onto_ptr->classes.find("affair");
   EXPECT_EQ(res.size(), 1);
   if(res.empty() == false)
-    EXPECT_EQ(res.front(), "affair");
+    EXPECT_EQ(res.front(), "Affair");
 
   res = onto_ptr->classes.find("bird");
   EXPECT_EQ(res.size(), 1);
@@ -29,7 +29,7 @@ TEST(feature_loading, reset)
   res = onto_ptr->classes.find("affair");
   EXPECT_NE(res.size(), 1);
   if(res.empty() == false)
-    EXPECT_NE(res.front(), "affair");
+    EXPECT_NE(res.front(), "Affair");
 
   res = onto_ptr->classes.find("bird");
   EXPECT_NE(res.size(), 1);
@@ -46,7 +46,7 @@ TEST(feature_loading, reset)
   res = onto_ptr->classes.find("affair");
   EXPECT_EQ(res.size(), 1);
   if(res.empty() == false)
-    EXPECT_EQ(res.front(), "affair");
+    EXPECT_EQ(res.front(), "Affair");
 
   res = onto_ptr->classes.find("bird");
   EXPECT_NE(res.size(), 1);
@@ -60,7 +60,7 @@ TEST(feature_loading, language)
 
   EXPECT_TRUE(onto_ptr->actions.clear());
   std::string path = ros::package::getPath("ontologenius");
-  path += "/files/attribute.owl";
+  path += "/files/objects.owl";
   EXPECT_TRUE(onto_ptr->actions.fadd(path));
 
   EXPECT_TRUE(onto_ptr->actions.close());
@@ -71,27 +71,25 @@ TEST(feature_loading, language)
   res = onto_ptr->classes.find(test_word);
   EXPECT_EQ(res.size(), 1);
   if(res.empty() == false)
-    EXPECT_EQ(res.front(), "affair");
+    EXPECT_EQ(res.front(), "Affair");
 
-  EXPECT_TRUE(onto_ptr->classes.getName(test_word) == "affair");
-  EXPECT_FALSE(onto_ptr->classes.getName(test_word) == "affaire");
+  EXPECT_TRUE(onto_ptr->classes.getName("Affair") == "affair");
+  EXPECT_FALSE(onto_ptr->classes.getName("Affair") == "affaire");
 
   EXPECT_TRUE(onto_ptr->actions.setLang("fr"));
 
-  res = onto_ptr->classes.find(test_word);
+  res = onto_ptr->classes.find("Affair");
   EXPECT_EQ(res.size(), 1);
   if(res.empty() == false)
-    EXPECT_EQ(res.front(), "affair");
+    EXPECT_EQ(res.front(), "Affair");
 
-  test_word = "affaire";
-  res = onto_ptr->classes.find(test_word);
+  res = onto_ptr->classes.find("affaire");
   EXPECT_EQ(res.size(), 1);
   if(res.empty() == false)
-    EXPECT_EQ(res.front(), "affair");
+    EXPECT_EQ(res.front(), "Affair");
 
-  test_word = "affair";
-  EXPECT_TRUE(onto_ptr->classes.getName(test_word) == "affaire");
-  EXPECT_FALSE(onto_ptr->classes.getName(test_word) == "affair");
+  EXPECT_TRUE(onto_ptr->classes.getName("Affair") == "affaire");
+  EXPECT_FALSE(onto_ptr->classes.getName("Affair") == "Affair");
 }
 
 int main(int argc, char** argv)

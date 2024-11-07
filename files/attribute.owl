@@ -39,30 +39,11 @@
 
 
 
-    <!-- attribute#actuator -->
-
-    <owl:Class rdf:about="attribute#actuator">
-        <rdfs:subClassOf rdf:resource="attribute#technicalObject"/>
-    </owl:Class>
-
-
-
     <!-- attribute#adult -->
 
     <owl:Class rdf:about="attribute#adult">
         <rdfs:subClassOf rdf:resource="attribute#age"/>
         <rdfs:label xml:lang="fr">adult</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#affair -->
-
-    <owl:Class rdf:about="attribute#affair">
-        <rdfs:subClassOf rdf:resource="attribute#nonLiving"/>
-        <rdfs:subClassOf rdf:resource="attribute#object"/>
-        <rdfs:comment>affairs are every little non alive objects</rdfs:comment>
-        <rdfs:label xml:lang="fr">affaire</rdfs:label>
     </owl:Class>
 
 
@@ -105,102 +86,6 @@
 
 
 
-    <!-- attribute#bed -->
-
-    <owl:Class rdf:about="attribute#bed">
-        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
-    </owl:Class>
-
-
-
-    <!-- attribute#blueBook -->
-
-    <owl:Class rdf:about="attribute#blueBook">
-        <rdfs:subClassOf rdf:resource="attribute#blue"/>
-        <rdfs:subClassOf rdf:resource="attribute#book"/>
-        <rdfs:label xml:lang="en">blue book</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#blueLamp -->
-
-    <owl:Class rdf:about="attribute#blueLamp">
-        <rdfs:subClassOf rdf:resource="attribute#blue"/>
-        <rdfs:subClassOf rdf:resource="attribute#lamp"/>
-        <rdfs:label xml:lang="en">blue lamp</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#book -->
-
-    <owl:Class rdf:about="attribute#book">
-        <rdfs:subClassOf rdf:resource="attribute#affair"/>
-        <rdfs:label xml:lang="fr">livre</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#box -->
-
-    <owl:Class rdf:about="attribute#box">
-        <rdfs:subClassOf rdf:resource="attribute#affair"/>
-        <rdfs:label xml:lang="fr">boite</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#chair -->
-
-    <owl:Class rdf:about="attribute#chair">
-        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
-    </owl:Class>
-
-
-
-    <!-- attribute#conveyance -->
-
-    <owl:Class rdf:about="attribute#conveyance">
-        <rdfs:subClassOf rdf:resource="attribute#technicalObject"/>
-    </owl:Class>
-
-
-
-    <!-- attribute#cube -->
-
-    <owl:Class rdf:about="attribute#cube">
-        <rdfs:subClassOf rdf:resource="attribute#affair"/>
-        <rdfs:label xml:lang="fr">cube</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#cup -->
-
-    <owl:Class rdf:about="attribute#cup">
-        <rdfs:subClassOf rdf:resource="attribute#affair"/>
-        <rdfs:label xml:lang="fr">tasse</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#desk -->
-
-    <owl:Class rdf:about="attribute#desk">
-        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
-    </owl:Class>
-
-
-
-    <!-- attribute#door -->
-
-    <owl:Class rdf:about="attribute#door">
-        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
-    </owl:Class>
-
-
-
     <!-- attribute#entity -->
 
     <owl:Class rdf:about="attribute#entity">
@@ -212,32 +97,12 @@
 
 
 
-    <!-- attribute#fan -->
-
-    <owl:Class rdf:about="attribute#fan">
-        <rdfs:subClassOf rdf:resource="attribute#actuator"/>
-        <rdfs:subClassOf rdf:resource="attribute#affair"/>
-        <rdfs:label xml:lang="fr">ventilateur</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#female -->
 
     <owl:Class rdf:about="attribute#female">
         <rdfs:subClassOf rdf:resource="attribute#gender"/>
         <owl:disjointWith rdf:resource="attribute#male"/>
         <rdfs:label xml:lang="fr">féminin</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#furniture -->
-
-    <owl:Class rdf:about="attribute#furniture">
-        <rdfs:subClassOf rdf:resource="attribute#nonLiving"/>
-        <rdfs:subClassOf rdf:resource="attribute#object"/>
-        <rdfs:label xml:lang="fr">meuble</rdfs:label>
     </owl:Class>
 
 
@@ -263,16 +128,6 @@
 
 
 
-    <!-- attribute#greenCup -->
-
-    <owl:Class rdf:about="attribute#greenCup">
-        <rdfs:subClassOf rdf:resource="attribute#cup"/>
-        <rdfs:subClassOf rdf:resource="attribute#green"/>
-        <rdfs:label xml:lang="en">green cup</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#inanimate -->
 
     <owl:Class rdf:about="attribute#inanimate">
@@ -289,16 +144,6 @@
         <owl:disjointWith rdf:resource="attribute#outdoorArea"/>
         <rdfs:label xml:lang="en">indoor area</rdfs:label>
         <rdfs:label xml:lang="fr">zone intérieure</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#lamp -->
-
-    <owl:Class rdf:about="attribute#lamp">
-        <rdfs:subClassOf rdf:resource="attribute#actuator"/>
-        <rdfs:subClassOf rdf:resource="attribute#affair"/>
-        <rdfs:label xml:lang="fr">lampe</rdfs:label>
     </owl:Class>
 
 
@@ -352,17 +197,6 @@
 
 
 
-    <!-- attribute#object -->
-
-    <owl:Class rdf:about="attribute#object">
-        <rdfs:subClassOf rdf:resource="attribute#entity"/>
-        <rdfs:subClassOf rdf:resource="attribute#inanimate"/>
-        <rdfs:comment>an object is an inanimated entity</rdfs:comment>
-        <rdfs:label xml:lang="fr">objet</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#old -->
 
     <owl:Class rdf:about="attribute#old">
@@ -401,80 +235,12 @@
 
 
 
-    <!-- attribute#redBed -->
-
-    <owl:Class rdf:about="attribute#redBed">
-        <rdfs:subClassOf rdf:resource="attribute#bed"/>
-        <rdfs:subClassOf rdf:resource="attribute#red"/>
-        <rdfs:label xml:lang="en">red bed</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#redFan -->
-
-    <owl:Class rdf:about="attribute#redFan">
-        <rdfs:subClassOf rdf:resource="attribute#fan"/>
-        <rdfs:subClassOf rdf:resource="attribute#red"/>
-        <rdfs:label xml:lang="en">red fan</rdfs:label>
-    </owl:Class>
-
-
-
     <!-- attribute#sensor -->
 
     <owl:Class rdf:about="attribute#sensor">
         <rdfs:subClassOf rdf:resource="attribute#affair"/>
-        <rdfs:subClassOf rdf:resource="attribute#technicalObject"/>
+        <rdfs:subClassOf rdf:resource="attribute#TechnicalObject"/>
         <rdfs:label xml:lang="fr">capteur</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#shelf -->
-
-    <owl:Class rdf:about="attribute#shelf">
-        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
-    </owl:Class>
-
-
-
-    <!-- attribute#sofa -->
-
-    <owl:Class rdf:about="attribute#sofa">
-        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
-    </owl:Class>
-
-
-
-    <!-- attribute#table -->
-
-    <owl:Class rdf:about="attribute#table">
-        <rdfs:subClassOf rdf:resource="attribute#furniture"/>
-    </owl:Class>
-
-
-
-    <!-- attribute#tape -->
-
-    <owl:Class rdf:about="attribute#tape">
-        <rdfs:subClassOf rdf:resource="attribute#affair"/>
-        <rdfs:label xml:lang="fr">cassette</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#technicalObject -->
-
-    <owl:Class rdf:about="attribute#technicalObject">
-        <rdfs:subClassOf rdf:resource="attribute#nonLiving"/>
-        <rdfs:subClassOf rdf:resource="attribute#object"/>
-        <owl:disjointWith rdf:resource="attribute#vegetal"/>
-        <rdfs:comment>a technical object can also be an affair or a furniture</rdfs:comment>
-        <rdfs:label xml:lang="fr">objet technique</rdfs:label>
-        <rdfs:label xml:lang="en">technical object</rdfs:label>
-        <rdfs:seeAlso>affair
-furniture</rdfs:seeAlso>
     </owl:Class>
 
 
@@ -485,15 +251,6 @@ furniture</rdfs:seeAlso>
         <rdfs:subClassOf rdf:resource="attribute#sensor"/>
         <rdfs:label xml:lang="fr">capteur de température</rdfs:label>
         <rdfs:label xml:lang="en">temperature sensor</rdfs:label>
-    </owl:Class>
-
-
-
-    <!-- attribute#trashbin -->
-
-    <owl:Class rdf:about="attribute#trashbin">
-        <rdfs:subClassOf rdf:resource="attribute#affair"/>
-        <rdfs:label xml:lang="fr">poubelle</rdfs:label>
     </owl:Class>
 
 
@@ -550,25 +307,9 @@ furniture</rdfs:seeAlso>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="attribute#actuator"/>
-            <rdf:Description rdf:about="attribute#conveyance"/>
-            <rdf:Description rdf:about="attribute#sensor"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
             <rdf:Description rdf:about="attribute#adult"/>
             <rdf:Description rdf:about="attribute#old"/>
             <rdf:Description rdf:about="attribute#young"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="attribute#affair"/>
-            <rdf:Description rdf:about="attribute#furniture"/>
-            <rdf:Description rdf:about="attribute#vegetal"/>
         </owl:members>
     </rdf:Description>
 </rdf:RDF>

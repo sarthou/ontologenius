@@ -3,8 +3,8 @@
      xml:base="test_individuals"
      xmlns:indivs="https://github.com/sarthou/ontologenius/blob/master/files/test_individuals#"
      xmlns:agents="https://github.com/sarthou/ontologenius/blob/master/files/agents#"
-     xmlns:attribute="https://github.com/sarthou/ontologenius/blob/master/files/attribute#"
      xmlns:color="https://github.com/sarthou/ontologenius/blob/master/files/color#"
+     xmlns:objects="https://github.com/sarthou/ontologenius/blob/master/files/objects#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
@@ -12,10 +12,10 @@
      xmlns:positionProperty="ontologenius/positionProperty#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
     <owl:Ontology rdf:about="test_individuals">
-         <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/attribute"/>
          <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/positionProperty"/>
          <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/agents"/>
          <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/color"/>
+         <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/objects"/>
     </owl:Ontology>
 
 
@@ -57,7 +57,7 @@
     <!-- test_individuals#big_box -->
 
     <owl:NamedIndividual rdf:about="test_individuals#big_box">
-        <rdf:type rdf:resource="attribute#box"/>
+        <rdf:type rdf:resource="objects#Box"/>
     </owl:NamedIndividual>
 
 
@@ -66,7 +66,7 @@
 
     <owl:NamedIndividual rdf:about="test_individuals#blue_cube">
         <rdf:type rdf:resource="color#Blue"/>
-        <rdf:type rdf:resource="attribute#cube"/>
+        <rdf:type rdf:resource="objects#Cube"/>
         <positionProperty:isOn rdf:resource="test_individuals#red_cube"/>
         <rdfs:comment xml:lang="en"></rdfs:comment>
     </owl:NamedIndividual>
@@ -76,7 +76,7 @@
     <!-- test_individuals#blue_book -->
 
     <owl:NamedIndividual rdf:about="test_individuals#blue_book">
-        <rdf:type rdf:resource="attribute#book"/>
+        <rdf:type rdf:resource="objects#Book"/>
         <positionProperty:isInFrontOf rdf:resource="test_individuals#red_cube"/>
     </owl:NamedIndividual>
 
@@ -94,7 +94,7 @@
     <!-- test_individuals#green_cube -->
 
     <owl:NamedIndividual rdf:about="test_individuals#green_cube">
-        <rdf:type rdf:resource="attribute#cube"/>
+        <rdf:type rdf:resource="objects#Cube"/>
         <rdf:type rdf:resource="color#Green"/>
         <positionProperty:isOn rdf:resource="test_individuals#blue_cube"/>
     </owl:NamedIndividual>
@@ -110,7 +110,7 @@
     <!-- test_individuals#little_box -->
 
     <owl:NamedIndividual rdf:about="test_individuals#little_box">
-        <rdf:type rdf:resource="attribute#box"/>
+        <rdf:type rdf:resource="objects#Box"/>
         <positionProperty:isIn rdf:resource="test_individuals#big_box"/>
     </owl:NamedIndividual>
 
@@ -119,7 +119,7 @@
     <!-- test_individuals#mini_box -->
 
     <owl:NamedIndividual rdf:about="test_individuals#mini_box">
-        <rdf:type rdf:resource="attribute#box"/>
+        <rdf:type rdf:resource="objects#Box"/>
         <positionProperty:isOn rdf:resource="test_individuals#little_box"/>
     </owl:NamedIndividual>
 
@@ -128,7 +128,7 @@
     <!-- test_individuals#red_cube -->
 
     <owl:NamedIndividual rdf:about="test_individuals#red_cube">
-        <rdf:type rdf:resource="attribute#cube"/>
+        <rdf:type rdf:resource="objects#Cube"/>
         <rdf:type rdf:resource="color#Red"/>
         <positionProperty:isIn rdf:resource="test_individuals#big_box"/>
         <rdfs:comment xml:lang="en">cube rouge</rdfs:comment>

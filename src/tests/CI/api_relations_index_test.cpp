@@ -32,7 +32,7 @@ TEST(api_relations_index, class_getRelationFrom)
               (std::find(res.begin(), res.end(), onto_ptr->conversion.objectPropertiesId2Index("hasParent")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("cube");
+  test_word = onto_ptr->conversion.classesId2Index("Cube");
   res = onto_ptr->classes.getRelationFrom(test_word);
   EXPECT_TRUE(res.empty());
 }
@@ -168,7 +168,7 @@ TEST(api_relations_index, class_getRelationWith)
               (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Woman")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("cube");
+  test_word = onto_ptr->conversion.classesId2Index("Cube");
   res = onto_ptr->classes.getRelationWith(test_word);
   EXPECT_TRUE(res.empty());
 }
@@ -303,7 +303,7 @@ TEST(api_relations_index, class_getOn)
               (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()));
   EXPECT_TRUE(res_bool);
 
-  test_word = onto_ptr->conversion.classesId2Index("cube");
+  test_word = onto_ptr->conversion.classesId2Index("Cube");
   test_word2 = onto_ptr->conversion.objectPropertiesId2Index("isOn");
   res = onto_ptr->classes.getOn(test_word, test_word2);
   EXPECT_TRUE(res.empty());
