@@ -78,6 +78,7 @@ namespace ontologenius {
                   trees_evaluation_result = trees_evaluation_result || current_tree_result;
                 }
                 if(has_active_equiv && current_tree_result)
+                {
                   if(is_already_a == true) // the indiv is checked to still be of the same class so we can break out of the loop
                     break;
                   else
