@@ -53,7 +53,7 @@ namespace ontologenius::compat::onto_ros {
   void Node::spinOnce()
   {
 #if ONTO_ROS_VERSION == 1
-    ros::spin_once();
+    ros::spinOnce();
 #elif ONTO_ROS_VERSION == 2
     // rclcpp::spin(handle_);
 #endif
