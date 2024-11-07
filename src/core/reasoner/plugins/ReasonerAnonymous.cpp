@@ -61,7 +61,7 @@ namespace ontologenius {
                  (anonymous_elem->involves_object_property && indiv->object_relations_.isUpdated()) ||
                  (anonymous_elem->involves_data_property && indiv->data_relations_.isUpdated()) ||
                  (anonymous_elem->involves_individual && indiv->same_as_.isUpdated()) ||
-                 indiv->flags_.find("equiv")) // used for individuals which already have an equiv but no particular update
+                 indiv->flags_.find("equiv") != indiv->flags_.end()) // used for individuals which already have an equiv but no particular update
               {
                 bool tree_first_layer_result = true;
                 bool current_tree_result = false;
