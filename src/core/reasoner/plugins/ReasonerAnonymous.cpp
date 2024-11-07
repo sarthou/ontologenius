@@ -54,6 +54,15 @@ namespace ontologenius {
           if(is_already_a || checkClassesDisjointess(indiv, anonymous_branch->class_equiv_) == false)
           {
             // Loop over every equivalence relations corresponding to one class
+            for(auto* anonymous_elem : anonymous_branch->ano_elems_)
+            {
+              if((indiv->isUpdated()) || // used for the newly created individuals
+                 (anonymous_elem->involves_class && indiv->is_a_.isUpdated()) ||
+                 (anonymous_elem->involves_object_property && indiv->object_relations_.isUpdated()) ||
+                 (anonymous_elem->involves_data_property && indiv->data_relations_.isUpdated()) ||
+                 (anonymous_elem->involves_individual && indiv->same_as_.isUpdated()) ||
+                 indiv->flags_.find("equiv")) // used for individuals which already have an equiv but no particular update
+              {
                 bool tree_first_layer_result = true;
                 bool current_tree_result = false;
 
@@ -69,7 +78,10 @@ namespace ontologenius {
                   trees_evaluation_result = trees_evaluation_result || current_tree_result;
                 }
                 if(has_active_equiv && current_tree_result)
-                {
+                  if(is_already_a == true) // the indiv is checked to still be of the same class so we can break out of the loop
+                    break;
+                  else
+                  {
                     std::string explanation_reference = addInferedInheritance(indiv, anonymous_branch, used);
                     nb_update++;
                     explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous_branch->class_equiv_->value(),
