@@ -238,7 +238,7 @@
     <!-- attribute#sensor -->
 
     <owl:Class rdf:about="attribute#sensor">
-        <rdfs:subClassOf rdf:resource="attribute#affair"/>
+        <rdfs:subClassOf rdf:resource="attribute#Affair"/>
         <rdfs:subClassOf rdf:resource="attribute#TechnicalObject"/>
         <rdfs:label xml:lang="fr">capteur</rdfs:label>
     </owl:Class>

@@ -42,6 +42,7 @@
         <rdfs:subClassOf rdf:resource="objects#Object"/>
         <rdfs:comment>affairs are every little non alive objects</rdfs:comment>
         <rdfs:label xml:lang="fr">affaire</rdfs:label>
+        <rdfs:label xml:lang="en">affair</rdfs:label>
     </owl:Class>
 
 

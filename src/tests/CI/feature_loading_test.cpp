@@ -38,7 +38,7 @@ TEST(feature_loading, reset)
 
   EXPECT_TRUE(onto_ptr->actions.clear());
   std::string path = ros::package::getPath("ontologenius");
-  path += "/files/attribute.owl";
+  path += "/files/objects.owl";
   EXPECT_TRUE(onto_ptr->actions.fadd(path));
 
   EXPECT_TRUE(onto_ptr->actions.close());

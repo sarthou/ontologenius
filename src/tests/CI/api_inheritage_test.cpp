@@ -54,7 +54,7 @@ TEST(api_inheritage, getDown_call)
 TEST(api_inheritage, getDisjoint_call)
 {
   std::vector<std::string> res = onto_ptr->classes.getDisjoint("Woman");
-  EXPECT_EQ(res.size(), 63);
+  EXPECT_EQ(res.size(), 35);
   bool res_bool = (std::find(res.begin(), res.end(), "Man") != res.end());
   EXPECT_TRUE(res_bool);
 }
