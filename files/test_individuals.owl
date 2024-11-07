@@ -93,7 +93,7 @@
 
     <!-- test_individuals#cube2 -->
 
-    <owl:NamedIndividual rdf:about="test_individuals#cube1">
+    <owl:NamedIndividual rdf:about="test_individuals#cube2">
         <rdf:type rdf:resource="objects#Cube"/>
     </owl:NamedIndividual>
 
