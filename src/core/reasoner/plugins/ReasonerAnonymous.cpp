@@ -61,40 +61,11 @@ namespace ontologenius {
                 tree_first_layer_result = resolveFirstLayer(indiv, anonymous_branch);
               has_active_equiv = has_active_equiv || tree_first_layer_result;
 
-              if(tree_first_layer_result == true)
-              {
-                used.clear();
-                used.reserve(anonymous->depth_);
-                tree_evaluation_result = resolveTree(indiv, anonymous_branch, used);
-              }
-
-              if(has_active_equiv && tree_evaluation_result)
-              {
-                if(ontology_->individual_graph_.conditionalPushBack(indiv->is_a_, ClassElement(anonymous->class_equiv_, 1.0, true)))
-                {
-                  if(ontology_->individual_graph_.conditionalPushBack(anonymous->class_equiv_->individual_childs_, IndividualElement(indiv, 1.0, true)))
-                  {
-                    indiv->nb_updates_++;
-                    anonymous->class_equiv_->nb_updates_++;
-                    std::string explanation_reference;
-
-                    for(auto& induced_vector : used)
-                    {
-                      explanation_reference += induced_vector.first;
-                      // check for nullptr because OneOf returns a (string, nullptr)
-                      if(induced_vector.second != nullptr)
-                      {
-                        if(induced_vector.second->exist(indiv, nullptr, anonymous->class_equiv_) == false)
-                        {
-                          induced_vector.second->push(indiv, nullptr, anonymous->class_equiv_);
-                          indiv->is_a_.relations.back().induced_traces.emplace_back(induced_vector.second);
-                        }
-                      }
-                    }
-
+                    std::string explanation_reference = addInferedInheritance(indiv, anonymous_branch, used);
                     nb_update++;
-                    explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous->class_equiv_->value(),
+                    explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous_branch->class_equiv_->value(),
                                                "[ADD]" + explanation_reference);
+                    break;
                   }
                 }
                 // once we get a valid equivalence for a class, we break out of the loop
@@ -120,6 +91,33 @@ namespace ontologenius {
     }
 
     first_run_ = false;
+  }
+
+  std::string ReasonerAnonymous::addInferedInheritance(IndividualBranch* indiv, AnonymousClassBranch* anonymous_branch, std::vector<std::pair<std::string, InheritedRelationTriplets*>> used)
+  {
+    std::string explanation;
+
+    indiv->is_a_.emplaceBack(anonymous_branch->class_equiv_, 1.0, true); // adding the emplaceBack so that the is_a get in updated mode
+    anonymous_branch->class_equiv_->individual_childs_.emplace_back(IndividualElement(indiv, 1.0, true));
+
+    indiv->nb_updates_++;
+    anonymous_branch->class_equiv_->nb_updates_++;
+
+    for(auto& induced_vector : used)
+    {
+      explanation += induced_vector.first;
+      // check for nullptr because OneOf returns a (string, nullptr)
+      if(induced_vector.second != nullptr)
+      {
+        if(induced_vector.second->exist(indiv, nullptr, anonymous_branch->class_equiv_) == false)
+        {
+          induced_vector.second->push(indiv, nullptr, anonymous_branch->class_equiv_);
+          indiv->is_a_.relations.back().induced_traces.emplace_back(induced_vector.second);
+        }
+      }
+    }
+
+    return explanation;
   }
 
   bool ReasonerAnonymous::checkClassesDisjointess(IndividualBranch* indiv, ClassBranch* class_equiv)
