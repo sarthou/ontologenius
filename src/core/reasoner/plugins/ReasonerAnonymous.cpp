@@ -46,21 +46,30 @@ namespace ontologenius {
         bool has_active_equiv = false;
 
         // Loop over every classes which includes equivalence relations
-        for(auto* anonymous : ontology_->anonymous_graph_.get())
+        for(auto* anonymous_branch : ontology_->anonymous_graph_.get())
         {
-          bool tree_evaluation_result = false;
-          const bool is_already_a = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous](const auto& is_a) { return is_a.elem == anonymous->class_equiv_; });
+          bool trees_evaluation_result = false;
+          const bool is_already_a = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous_branch](const auto& is_a) { return is_a.elem == anonymous_branch->class_equiv_; });
 
-          if(is_already_a || checkClassesDisjointess(indiv, anonymous->class_equiv_) == false)
+          if(is_already_a || checkClassesDisjointess(indiv, anonymous_branch->class_equiv_) == false)
           {
             // Loop over every equivalence relations corresponding to one class
-            for(auto* anonymous_branch : anonymous->ano_elems_)
-            {
-              bool tree_first_layer_result = true;
-              if(is_already_a == false)
-                tree_first_layer_result = resolveFirstLayer(indiv, anonymous_branch);
-              has_active_equiv = has_active_equiv || tree_first_layer_result;
+                bool tree_first_layer_result = true;
+                bool current_tree_result = false;
 
+                if(is_already_a == false)
+                  tree_first_layer_result = resolveFirstLayer(indiv, anonymous_elem);
+                has_active_equiv = has_active_equiv || tree_first_layer_result;
+
+                if(tree_first_layer_result == true)
+                {
+                  used.clear();
+                  used.reserve(anonymous_branch->depth_);
+                  current_tree_result = resolveTree(indiv, anonymous_elem, used);
+                  trees_evaluation_result = trees_evaluation_result || current_tree_result;
+                }
+                if(has_active_equiv && current_tree_result)
+                {
                     std::string explanation_reference = addInferedInheritance(indiv, anonymous_branch, used);
                     nb_update++;
                     explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous_branch->class_equiv_->value(),
@@ -73,13 +82,12 @@ namespace ontologenius {
               }
             }
           }
-
-          // Manages implicitly the NOT, MIN, MAX, EXACTLY cases
-          if(tree_evaluation_result == false && anonymous->ano_elems_.empty() == false && ontology_->individual_graph_.isA(indiv, anonymous->class_equiv_->get()) == true)
+          // used to remove inheritance in case an individual previously infered does not check any of the expressions after updates
+          if(trees_evaluation_result == false && anonymous_branch->ano_elems_.empty() == false && is_already_a)
           {
             indiv->nb_updates_++;
-            anonymous->class_equiv_->nb_updates_++;
-            ontology_->individual_graph_.removeInheritage(indiv, anonymous->class_equiv_, explanations_, true);
+            anonymous_branch->class_equiv_->nb_updates_++;
+            ontology_->individual_graph_.removeInheritage(indiv, anonymous_branch->class_equiv_, explanations_, true);
           }
         }
 
