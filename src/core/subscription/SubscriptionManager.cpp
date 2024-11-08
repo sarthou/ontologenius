@@ -64,7 +64,7 @@ namespace ontologenius {
   void SubscriptionManager::add(const std::vector<std::pair<std::string, std::string>>& explanations)
   {
     std::lock_guard<std::mutex> lock(mutex_);
-    for(auto& expl : explanations)
+    for(const auto& expl : explanations)
     {
       auto pattern(SubscriptionPattern::deserialize(expl.first));
       triplets_.push(pattern.getTriplet());

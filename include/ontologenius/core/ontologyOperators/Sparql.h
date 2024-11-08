@@ -18,7 +18,7 @@ namespace ontologenius {
     std::pair<std::vector<std::string>, std::vector<std::vector<std::string>>> runStr(const std::string& query, bool single_same = false);
     std::pair<std::vector<std::string>, std::vector<std::vector<index_t>>> runIndex(const std::string& query, bool single_same = false);
 
-    std::string getError() { return error_; }
+    std::string getError() const { return error_; }
 
   private:
     ontologenius::Ontology* onto_;

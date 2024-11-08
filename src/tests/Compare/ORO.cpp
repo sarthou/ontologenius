@@ -1,4 +1,3 @@
-#include <atomic>
 #include <chrono>
 #include <cmath>
 #include <cstdio>

@@ -19,10 +19,10 @@ namespace ontologenius {
     void setId(const std::string& id) { id_ = id; }
     void addNext(VersionNode* next) { nexts_.push_back(next); }
 
-    std::string getId() { return id_; }
-    bool defined() { return id_.empty() == false; }
-    VersionNode* getPrev() { return prev_; }
-    std::vector<VersionNode*> getNexts() { return nexts_; }
+    std::string getId() const { return id_; }
+    bool defined() const { return id_.empty() == false; }
+    VersionNode* getPrev() const { return prev_; }
+    std::vector<VersionNode*> getNexts() const { return nexts_; }
 
     std::vector<Feed_t> getDatasDirect();
     std::vector<Feed_t> getDatasInvert();

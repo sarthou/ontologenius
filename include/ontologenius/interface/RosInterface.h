@@ -55,10 +55,10 @@ namespace ontologenius {
 
     /// @brief Tests if the interface is running. By running we meant that the threads and ROS subscribers are alive
     /// @return true is the interface is running, false otherwise
-    inline bool isRunning() { return run_; }
+    bool isRunning() const { return run_; }
     /// @brief Gets a pointer on the used ontology to use it externally. Using it externally can be dangerous, be careful
     /// @return A pointer on an ontology object
-    Ontology* getOntology() { return onto_; }
+    Ontology* getOntology() const { return onto_; }
     /// @brief Gets a pointer on the SPARQL interface.
     /// @return A pointer on the SPARQL interface object
     Sparql* getSparqlInterface() { return &sparql_; }
