@@ -16,15 +16,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../../index.html">
-              <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../../index.html">
+            <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -99,6 +99,7 @@
             <li class="level1"><a href="../../cpp_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../cpp_API/PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="../../cpp_API/SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -180,8 +181,8 @@
                 <div class="code_line"><br></div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitConnected</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">removeProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">removeRelation</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitUpdate</span>(<span class="cpp_value">500</span>);</div>
                 <div class="code_line"><br></div>
@@ -233,8 +234,8 @@
                 <div class="code_line"><br></div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitConnected</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">removeProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">removeRelation</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">waitUpdate</span>(<span class="cpp_value">500</span>);</div>
                 <div class="code_line"><br></div>
@@ -264,8 +265,8 @@
           the previous line to make sure that our feeder is connected to at least one listener.</p>
 
         <div class="code_block cpp_code" style="counter-reset:code_line 31;">
-          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">removeProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
-          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
+          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">removeRelation</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_1&quot;</span>);</div>
+          <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;anne&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;ball_1&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;container_2&quot;</span>);</div>
         </div>
 
         <p>Here are really the two lines that represent the fact that Anne removes the ball from the first container and puts it

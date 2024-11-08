@@ -13,6 +13,7 @@
 #include <ontologenius/OntologeniusSparqlIndexResponse.h>
 #include <ontologenius/OntologeniusSparqlResponse.h>
 #include <ontologenius/OntologeniusStampedString.h>
+#include <ontologenius/OntologeniusSubscriptionAnswer.h>
 #include <ontologenius/OntologeniusTimestamp.h>
 
 // User-defined service interfaces
@@ -21,6 +22,8 @@
 #include <ontologenius/OntologeniusService.h>
 #include <ontologenius/OntologeniusSparqlIndexService.h>
 #include <ontologenius/OntologeniusSparqlService.h>
+#include <ontologenius/OntologeniusSubscription.h>
+#include <ontologenius/OntologeniusUnsubscription.h>
 
 namespace std_msgs_compat = std_msgs;
 
@@ -35,6 +38,7 @@ namespace std_msgs_compat = std_msgs;
 #include <ontologenius/msg/ontologenius_sparql_index_response.hpp>
 #include <ontologenius/msg/ontologenius_sparql_response.hpp>
 #include <ontologenius/msg/ontologenius_stamped_string.hpp>
+#include <ontologenius/msg/ontologenius_subscription_answer.hpp>
 #include <ontologenius/msg/ontologenius_timestamp.hpp>
 
 // User-defined service interfaces
@@ -43,6 +47,8 @@ namespace std_msgs_compat = std_msgs;
 #include <ontologenius/srv/ontologenius_service.hpp>
 #include <ontologenius/srv/ontologenius_sparql_index_service.hpp>
 #include <ontologenius/srv/ontologenius_sparql_service.hpp>
+#include <ontologenius/srv/ontologenius_subscription.hpp>
+#include <ontologenius/srv/ontologenius_unsubscription.hpp>
 
 namespace std_msgs_compat = std_msgs::msg;
 
@@ -201,6 +207,7 @@ namespace ontologenius::compat {
       static void shutdown();
 
       void spin();
+      static void spinOnce();
 
       Time currentTime();
 

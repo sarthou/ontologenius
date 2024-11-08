@@ -50,7 +50,7 @@ namespace onto {
     /// @param action the query action.
     /// @param param the query parameters.
     /// @return Returns a list of string. If the service call fails, the first element of the returned vector is "ERR:SERVICE_FAIL".
-    inline std::vector<std::string> call(const std::string& action, const std::string& param, int16_t& code = ignore)
+    std::vector<std::string> call(const std::string& action, const std::string& param, int16_t& code = ignore)
     {
       cpt++;
 
@@ -96,7 +96,7 @@ namespace onto {
     /// @param action the query action.
     /// @param param the query parameters.
     /// @return Returns a single string. If the service call fails, the returned value is "ERR:SERVICE_FAIL".
-    inline std::string callStr(const std::string& action, const std::string& param, int16_t& code = ignore)
+    std::string callStr(const std::string& action, const std::string& param, int16_t& code = ignore)
     {
       auto res = this->call(action, param, code);
       return res.empty() ? "" : res[0];
@@ -106,7 +106,7 @@ namespace onto {
     /// @param action the query action.
     /// @param param the query parameters.
     /// @return Returns false if the service call fails.
-    inline bool callNR(const std::string& action, const std::string& param)
+    bool callNR(const std::string& action, const std::string& param)
     {
       return this->callStr(action, param) != "ERR:SERVICE_FAIL";
     }
@@ -115,7 +115,7 @@ namespace onto {
     /// @param action the query action.
     /// @param param the query parameters.
     /// @return Returns false if the service call fails or the result code of the service is different from SUCCESS.
-    inline bool callBool(const std::string& action, const std::string& param)
+    bool callBool(const std::string& action, const std::string& param)
     {
       int16_t code = 0;
       auto res = this->callStr(action, param, code);

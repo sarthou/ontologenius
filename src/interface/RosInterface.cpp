@@ -10,6 +10,7 @@
 
 #include "ontologenius/compat/ros.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/subscription/SubscriptionManager.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
 
@@ -23,6 +24,7 @@ namespace ontologenius {
 
   RosInterface::RosInterface(const std::string& name) : onto_(new Ontology()),
                                                         reasoners_(name),
+                                                        subscriber_(name),
                                                         feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
 #ifdef ONTO_TEST
                                                         end_feed_(true),
@@ -43,6 +45,7 @@ namespace ontologenius {
 
   RosInterface::RosInterface(RosInterface& other, const std::string& name) : onto_(new Ontology(*other.onto_)),
                                                                              reasoners_(name),
+                                                                             subscriber_(name),
                                                                              feeder_echo_(getTopicName("insert_echo", name), getTopicName("insert_explanations", name)),
 #ifdef ONTO_TEST
                                                                              end_feed_(true),
@@ -60,9 +63,8 @@ namespace ontologenius {
     reasoners_.link(onto_);
     feeder_.link(onto_);
     feeder_.setVersioning(true);
+    subscriber_.link(onto_);
     sparql_.link(onto_);
-
-    // n_.setCallbackQueue(&callback_queue_);
   }
 
   RosInterface::~RosInterface()
@@ -152,6 +154,7 @@ namespace ontologenius {
 
     std::thread feed_thread(&RosInterface::feedThread, this);
     std::thread periodic_reasoning_thread(&RosInterface::periodicReasoning, this);
+    std::thread subscription_thread(&SubscriptionManager::run, &subscriber_);
 
     if(name_.empty() == false)
       Display::info(name_ + " is ready");
@@ -160,6 +163,8 @@ namespace ontologenius {
 
     periodic_reasoning_thread.join();
     feed_thread.join();
+    subscriber_.stop();
+    subscription_thread.join();
   }
 
   void RosInterface::stop()
@@ -250,6 +255,7 @@ namespace ontologenius {
         onto_->setDisplay(display_);
         reasoners_.link(onto_);
         feeder_.link(onto_);
+        subscriber_.link(onto_);
         sparql_.link(onto_);
 
         if(onto_->preload(intern_file_) == false)
@@ -265,6 +271,7 @@ namespace ontologenius {
         onto_->setDisplay(display_);
         reasoners_.link(onto_);
         feeder_.link(onto_);
+        subscriber_.link(onto_);
         sparql_.link(onto_);
         release();
       }
@@ -400,6 +407,10 @@ namespace ontologenius {
         feeder_echo_.add(echo);
         auto explanations = feeder_.getExplanations();
         feeder_echo_.add(explanations);
+
+        subscriber_.add(explanations);
+        for(auto& fact : echo)
+          subscriber_.add(fact.first);
       }
       else if(feeder_end == false)
       {
@@ -462,6 +473,7 @@ namespace ontologenius {
       }
 
       auto explanations = reasoners_.getExplanations();
+      subscriber_.add(explanations);
       for(auto& explanation : explanations)
       {
         expl_msg.fact = explanation.first;

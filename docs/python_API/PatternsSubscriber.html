@@ -1,0 +1,216 @@
+<html lang="en_US">
+
+<head>
+  <title>ManagerClient Class (python) | Ontologenius 0.4.2</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../index.html">
+            <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Python API Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -240px;">
+        <div class="contents class-content">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="#methods">Methods</a></li>
+            <li class="level1"><a href="#reimplemented-methods">Reimplemented Methods</a></li>
+            <li class="level1"><a href="#details">Detailed Description</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../overview/launchers.html">Launchers</a></li>
+            <li class="level1"><a href="../overview/ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="../overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../cpp_API/CppAPI.html">
+              All C++ Classes
+            </a>
+          </h3>
+          <h3>
+            <i class="fas fa-angle-down"></i>
+            <a href="PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="ActionClient.html">ActionClient</a></li>
+            <li class="level1"><a href="ClassClient.html">ClassClient</a></li>
+            <li class="level1"><a href="ClientBase.html">ClientBase</a></li>
+            <li class="level1"><a href="DataPropertyClient.html">DataPropertyClient</a></li>
+            <li class="level1"><a href="FeederPublisher.html">FeederPublisher</a></li>
+            <li class="level1"><a href="IndividualClient.html">IndividualClient</a></li>
+            <li class="level1"><a href="ManagerClient.html">ManagerClient</a></li>
+            <li class="level1"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></li>
+            <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
+            <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
+            <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="PatternsSubscriber.html"><b>PatternsSubscriber</b></a></li>
+            <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
+            <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
+            <li class="level2"><b>Index based classes</b></li>
+            <li class="level1"><a href="ClassIndexClient.html">ClassIndexClient</a></li>
+            <li class="level1"><a href="ClientBaseIndex.html">ClientBaseIndex</a></li>
+            <li class="level1"><a href="ConversionClient.html">ConversionClient</a></li>
+            <li class="level1"><a href="DataPropertyIndexClient.html">DataPropertyIndexClient</a></li>
+            <li class="level1"><a href="IndividualIndexClient.html">IndividualIndexClient</a></li>
+            <li class="level1"><a href="ObjectPropertyIndexClient.html">ObjectPropertyIndexClient</a></li>
+            <li class="level1"><a href="OntologyIndexClient.html">OntologyIndexClient</a></li>
+            <li class="level1"><a href="OntologyManipulatorIndex.html">OntologyManipulatorIndex</a></li>
+            <li class="level1"><a href="SparqlIndexClient.html">SparqlIndexClient</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">PatternsSubscriber Class</h1>
+        <p>The PatternsSubscriber class provides an abstraction ontologenius subscription mechanism.<a href="#details">More...</a></p>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Ros1 Package:</td>
+                <td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span></td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Ros2 Package:</td>
+                <td class="memItemRight bottomAlign"> <span class="preprocessor">ontopy</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="methods"></a>
+        <h2 id="methods">Methods</h2>
+        <div class="table">
+          <table class="alignedsummary">
+            <tbody>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> </td>
+                <td class="memItemRight bottomAlign"><b><a href="PatternsSubscriber.html#__init__">__init__</a></b>(self, name)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int </td>
+                <td class="memItemRight bottomAlign"><b><a href="PatternsSubscriber.html#subscribe">subscribe</a></b>(self, pattern, callback, count = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> bool </td>
+                <td class="memItemRight bottomAlign"><b><a href="PatternsSubscriber.html#cancel">cancel</a></b>(self, id)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> bool </td>
+                <td class="memItemRight bottomAlign"><b><a href="PatternsSubscriber.html#end">end</a></b>(self, dest_name, src_name)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <a name="details"></a>
+        <div class="descr">
+          <h2 id="details">Detailed Description</h2>
+          <p>The PatternsSubscriber class provides an abstraction ontologenius subscription mechanism.</p>
+          <p>Querying a knowledge base is interesting but when one is waiting a given fact, pulling
+            the knowledge base can be an issue. To solve that, Ontologenius provide a subscription
+            mechanism allowing to subscribe not one only to given facts but also to patterns.</p>
+        </div>
+
+        <div class="func">
+          <h2>Methods Documentation</h2>
+
+          <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self, name)</h3>
+          <p>Constructs a pattern subscriber.</p>
+          <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str).
+            For classic use, <i>name</i>(str) should be defined as &quot;&quot;.</p>
+
+          <h3 class="fn" id="subscribe"><a name="subscribe"></a><span class="name">subscribe</span>(self, pattern, callback, count)</h3>
+          <p>Subscribes to a given <i>pattern</i>(str) linked to a <i>callback</i>(function(str)). Patterns are in the form "[add]subject|property|object".
+            Subject and object can be set as classes such as "[add]Cube|isOnTopOf|Table" to subscibe to any fact representing a cube being on a table.
+            In addition, any of the four elements can be setted with question mark which can be read as "any". For example,
+            "[?]?isOnTopOf|Table" to subscribe to any deletion or addition of any thing being on a entity of type Table.</p>
+          <p>The parameter <i>count</i>(int) can be set to limit the subscription.
+            Default parameter -1 corresponds to an unlimited subscription.</p>
+          <p>This function returns the subscription id(int). This later is only used to manually unsubscribe.</p>
+
+          <h3 class="fn" id="cancel"><a name="cancel"></a><span class="name">cancel</span>(self, id)</h3>
+          <p>Manualy unsubscribe from a pattern using the corresponding subscription <id>id</id>(int).</p>
+          <p>Return True if the unsubscription suceeded.</p>
+
+          <h3 class="fn" id="end"><a name="end"></a><span class="name">end</span>(self)</h3>
+          <p>Tests if any subscription is still ongoing.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="https://github.com/sarthou/ontologenius/blob/master/files/animals#"
+     xml:base="https://github.com/sarthou/ontologenius/blob/master/files/animals"
+     xmlns:animals="https://github.com/sarthou/ontologenius/blob/master/files/animals#"
+     xmlns:attribute="https://github.com/sarthou/ontologenius/blob/master/files/attribute#"
+     xmlns:onto="ontologenius#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+     <owl:Ontology rdf:about="https://github.com/sarthou/ontologenius/blob/master/files/animals">
+         <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/attribute"/>
+     </owl:Ontology>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+    <!-- animals#Animal -->
+
+    <owl:Class rdf:about="animals#Animal">
+        <rdfs:subClassOf rdf:resource="attribute#agent"/>
+        <rdfs:subClassOf rdf:resource="attribute#living"/>
+        <rdfs:label xml:lang="fr">animal</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- animals#Cat -->
+
+    <owl:Class rdf:about="animals#Cat">
+        <rdfs:subClassOf rdf:resource="animals#Animal"/>
+    </owl:Class>
+
+
+
+    <!-- animals#Dog -->
+
+    <owl:Class rdf:about="animals#Dog">
+        <rdfs:subClassOf rdf:resource="animals#Animal"/>
+        <position_property:hasTail onto:probability="0.5" rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</position_property:hasTail>
+    </owl:Class>
+
+
+
+    <!-- animals#Fish -->
+
+    <owl:Class rdf:about="animals#Fish">
+        <rdfs:subClassOf rdf:resource="animals#Animal"/>
+    </owl:Class>
+
+
+
+    <!-- animals#Bird -->
+
+    <owl:Class rdf:about="animals#Bird">
+        <rdfs:subClassOf rdf:resource="animals#Animal"/>
+        <rdfs:label xml:lang="fr">oiseau</rdfs:label>
+        <rdfs:label xml:lang="en">bird</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- animals#Penguin -->
+
+    <owl:Class rdf:about="animals#Penguin">
+        <rdfs:subClassOf rdf:resource="animals#Bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
+        <rdfs:label xml:lang="fr">manchot</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- animals#Ostrich -->
+
+    <owl:Class rdf:about="animals#Ostrich">
+        <rdfs:subClassOf rdf:resource="animals#Bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
+        <rdfs:label xml:lang="fr">autruche</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- animals#Takahe -->
+
+    <owl:Class rdf:about="animals#Takahe">
+        <rdfs:subClassOf rdf:resource="animals#Bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
+        <rdfs:label xml:lang="fr">takahe</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- animals#Kiwi -->
+
+    <owl:Class rdf:about="animals#Kiwi">
+        <rdfs:subClassOf rdf:resource="animals#Bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
+        <rdfs:label xml:lang="fr">kiwi</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- animals#Cassowary -->
+
+    <owl:Class rdf:about="animals#Cassowary">
+        <rdfs:subClassOf rdf:resource="animals#Bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
+    </owl:Class>
+
+
+
+    <!-- animals#Kakapo -->
+
+    <owl:Class rdf:about="animals#Kakapo">
+        <rdfs:subClassOf rdf:resource="animals#Bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">false</attribute:canFly>
+    </owl:Class>
+
+
+
+    <!-- animals#Canary -->
+
+    <owl:Class rdf:about="animals#Canary">
+        <rdfs:subClassOf rdf:resource="animals#Bird"/>
+        <attribute:canFly rdf:datatype="http://www.w3.org/2001/XMLSchema#bool">true</attribute:canFly>
+        <rdfs:label xml:lang="fr">canari</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- animals#Dove -->
+
+    <owl:Class rdf:about="animals#Dove">
+        <rdfs:subClassOf rdf:resource="animals#Bird"/>
+        <rdfs:label xml:lang="fr">colombe</rdfs:label>
+    </owl:Class>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- animals#canFly -->
+
+    <owl:DatatypeProperty rdf:about="animals#canFly">
+        <rdfs:domain rdf:resource="animals#Animal"/>
+        <rdfs:range rdf:datatype="http://www.w3.org/2001/XMLSchema#bool"/>
+    </owl:DatatypeProperty>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="animals#Cat"/>
+            <rdf:Description rdf:about="animals#Dog"/>
+            <rdf:Description rdf:about="animals#Fish"/>
+            <rdf:Description rdf:about="animals#Bird"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->

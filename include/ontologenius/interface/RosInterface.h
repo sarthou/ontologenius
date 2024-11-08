@@ -14,6 +14,7 @@
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/ontologyOperators/Sparql.h"
 #include "ontologenius/core/reasoner/Reasoners.h"
+#include "ontologenius/core/subscription/SubscriptionManager.h"
 
 // #define ONTO_TEST
 
@@ -82,6 +83,8 @@ namespace ontologenius {
     Reasoners reasoners_;
     /// @brief Analyses incoming statements and manage the versioning system
     Feeder feeder_;
+    /// @brief Allows subscription to triplets patterns
+    SubscriptionManager subscriber_;
     /// @brief Republishs the incoming statement and the deduced once
     FeederEcho feeder_echo_;
     /// @brief Resolves SPARQL queries.

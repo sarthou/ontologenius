@@ -14,15 +14,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../index.html">
-              <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../index.html">
+            <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -96,6 +96,7 @@
             <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -125,8 +126,14 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clients/ConversionClient.h&quot;</span></td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> Namespace:</td><td class="memItemRight bottomAlign"> onto</td></tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Header:</td>
+                <td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clients/ConversionClient.h&quot;</span></td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Namespace:</td>
+                <td class="memItemRight bottomAlign"> onto</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -136,28 +143,94 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#ConversionClient">ConversionClient</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#setVerbose">verbose</a></b>(bool verbose)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsIndex2Ids">individualsIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesIndex2Ids">classesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesIndex2Ids">dataPropertiesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesIndex2Ids">objectPropertiesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsIndex2Ids">literalsIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsIndex2Id">individualsIndex2Id</a></b>(int64_t index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesIndex2Id">classesIndex2Id</a></b>(int64_t index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesIndex2Id">dataPropertiesIndex2Id</a></b>(int64_t index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesIndex2Id">objectPropertiesIndex2Id</a></b>(int64_t index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::string </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsIndex2Id">literalsIndex2Id</a></b>(int64_t index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsId2Indexes">individualsId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesId2Indexes">classesId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesId2Indexes">dataPropertiesId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesId2Indexes">objectPropertiesId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsId2Indexes">literalsId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsId2Index">individualsId2Index</a></b>(const std::string&amp; id)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesId2Index">classesId2Index</a></b>(const std::string&amp; id)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesId2Index">dataPropertiesId2Index</a></b>(const std::string&amp; id)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesId2Index">objectPropertiesId2Index</a></b>(const std::string&amp; id)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int64_t </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsId2Index">literalsId2Index</a></b>(const std::string&amp; id)</td></tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#ConversionClient">ConversionClient</a></b>(const std::string&amp; <i>name</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#setVerbose">verbose</a></b>(bool verbose)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsIndex2Ids">individualsIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesIndex2Ids">classesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesIndex2Ids">dataPropertiesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesIndex2Ids">objectPropertiesIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsIndex2Ids">literalsIndex2Id</a></b>(const std::vector&lt;int64_t&gt;&amp; indexes)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::string </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsIndex2Id">individualsIndex2Id</a></b>(int64_t index)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::string </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesIndex2Id">classesIndex2Id</a></b>(int64_t index)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::string </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesIndex2Id">dataPropertiesIndex2Id</a></b>(int64_t index)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::string </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesIndex2Id">objectPropertiesIndex2Id</a></b>(int64_t index)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::string </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsIndex2Id">literalsIndex2Id</a></b>(int64_t index)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsId2Indexes">individualsId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesId2Indexes">classesId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesId2Indexes">dataPropertiesId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesId2Indexes">objectPropertiesId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsId2Indexes">literalsId2Index</a></b>(const std::vector&lt;std::string&gt;&amp; ids)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int64_t </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsId2Index">individualsId2Index</a></b>(const std::string&amp; id)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int64_t </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesId2Index">classesId2Index</a></b>(const std::string&amp; id)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int64_t </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesId2Index">dataPropertiesId2Index</a></b>(const std::string&amp; id)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int64_t </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesId2Index">objectPropertiesId2Index</a></b>(const std::string&amp; id)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int64_t </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsId2Index">literalsId2Index</a></b>(const std::string&amp; id)</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -167,7 +240,7 @@
           <h2 id="details">Detailed Description</h2>
           <p>The ConversionClient class provides an abstraction to the ontologenius conversion ROS services to pass from identifiers to indexes and inverse.</p>
           <p>This class ensures a persistent connection with the service based on. The persistent connection ensures a minimal response time.
-             A reconnection logic is implemented in the event that the persistent connection fails. </p>
+            A reconnection logic is implemented in the event that the persistent connection fails. </p>
         </div>
 
         <div class="func">
@@ -272,7 +345,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
       </a>
     </p>
   </div>

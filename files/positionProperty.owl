@@ -37,7 +37,7 @@
 
     <owl:ObjectProperty rdf:about="position_property#hasColor">
         <rdfs:domain rdf:resource="attribute#entity"/>
-        <rdfs:range rdf:resource="attribute#color"/>
+        <rdfs:range rdf:resource="attribute#Color"/>
     </owl:ObjectProperty>
 
 
@@ -219,34 +219,6 @@
 
 
 
-    <!-- position_property#hasParent -->
-
-    <owl:ObjectProperty rdf:about="position_property#hasParent">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
-        <rdfs:domain rdf:resource="attribute#human"/>
-        <rdfs:range rdf:resource="attribute#human"/>
-    </owl:ObjectProperty>
-
-
-
-    <!-- position_property#hasMother -->
-
-    <owl:ObjectProperty rdf:about="position_property#hasMother">
-        <rdfs:subPropertyOf rdf:resource="position_property#hasParent"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
-    </owl:ObjectProperty>
-
-
-
-    <!-- position_property#hasFather -->
-
-    <owl:ObjectProperty rdf:about="position_property#hasFather">
-        <rdfs:subPropertyOf rdf:resource="position_property#hasParent"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
-    </owl:ObjectProperty>
-
-
-
     <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -278,15 +250,6 @@
 
 
 
-    <!-- position_property#hasLeg -->
-
-    <owl:DatatypeProperty rdf:about="position_property#hasLeg">
-        <rdfs:domain rdf:resource="attribute#human"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2002/07/xsd#integer"/>
-    </owl:DatatypeProperty>
-
-
-
     <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -313,12 +276,6 @@
     <!-- attribute#entity -->
 
     <owl:Class rdf:about="attribute#entity"/>
-
-
-
-    <!-- attribute#hand -->
-
-    <owl:Class rdf:about="attribute#hand"/>
 
 
 
