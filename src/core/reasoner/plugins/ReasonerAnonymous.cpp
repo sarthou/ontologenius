@@ -1,6 +1,5 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerAnonymous.h"
 
-#include <algorithm>
 #include <cstddef>
 #include <mutex>
 #include <pluginlib/class_list_macros.hpp>
@@ -79,19 +78,16 @@ namespace ontologenius {
                 }
                 if(has_active_equiv && current_tree_result)
                 {
-                  if(is_already_a == true) // the indiv is checked to still be of the same class so we can break out of the loop
-                    break;
-                  else
+                  if(is_already_a == false) // the indiv is checked to still be of the same class so we can break out of the loop
                   {
                     std::string explanation_reference = addInferredInheritance(indiv, anonymous_branch, used);
                     nb_update++;
                     explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous_branch->class_equiv_->value(),
                                                "[ADD]" + explanation_reference);
-                    break;
                   }
+                  // once we get a valid equivalence for a class, we break out of the loop
+                  break;
                 }
-                // once we get a valid equivalence for a class, we break out of the loop
-                break;
               }
             }
           }
