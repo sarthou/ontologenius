@@ -16,3 +16,4 @@
 [X] Transitivity reasoner
 [X] clean prop updates
 [X] verify double transitivity and inverse
+[ ] Store a "save" of the current explorated graph to resume from the current state instead of starting all over again (anonymous)
