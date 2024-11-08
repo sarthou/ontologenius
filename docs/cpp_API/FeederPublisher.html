@@ -1,14 +1,14 @@
 <html lang="en_US">
 
 <head>
-  <title>FeederPublisher Class (cpp) | Ontologenius 0.4.2</title>
+  <title>FeederPublisher Class (cpp) | Ontologenius 0.4.3</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
   <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-    integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 
 <body>
@@ -18,7 +18,7 @@
         <div class="navbar-header">
           <div id="header-buttons">
             <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius"tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
             </ul>
           </div>
           <a class="navbar-icon" href="../index.html">
@@ -99,6 +99,7 @@
             <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -125,7 +126,7 @@
       <div class="context">
         <h1 class="title">FeederPublisher Class</h1>
         <p>The FeederPublisher class provides an abstraction for ontologenius feeder topic. <a
-            href="#details">More...</a></p>
+             href="#details">More...</a></p>
         <div class="table">
           <table class="alignedsummary">
             <tbody>
@@ -189,16 +190,18 @@
           <h2>Public Function Documentation</h2>
 
           <h3 class="fn" id="FeederPublisher"><a name="FeederPublisher"></a>FeederPublisher::<span
-              class="name">FeederPublisher</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+                  class="name">FeederPublisher</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Constructs a FeederPublisher.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>. For classic use,
-            <i>name</i> should be defined as &quot;&quot;.</p>
+            <i>name</i> should be defined as &quot;&quot;.
+          </p>
 
-          <h3 class="fn" id="addProperty"><a name="addProperty"></a>FeederPublisher::<span
-              class="name">addProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span
-              class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp;
+          <h3 class="fn" id="addRelation"><a name="addRelation"></a>FeederPublisher::<span
+                  class="name">addRelation</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span
+                  class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp;
             <i>on</i>, const <span class="type">onto_ros::Time</span>&amp; <i>stamp</i> =
-            onto_ros::Node::get().currentTime())</h3>
+            onto_ros::Node::get().currentTime())
+          </h3>
           <p>Adds the fact that <i>from</i> is linked with <i>on</i> by the property <i>property</i>.</p>
           <p>At least <i>from</i> or <i>on</i> must be already known to the system. If one of them is unknown, it will
             be automatically created. The property can be unknown before calling this function.</p>
@@ -207,13 +210,15 @@
           <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.
           </p>
 
-          <h3 class="fn" id="addProperty"><a name="addProperty"></a>FeederPublisher::<span
-              class="name">addProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span
-              class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp;
+          <h3 class="fn" id="addRelation"><a name="addRelation"></a>FeederPublisher::<span
+                  class="name">addRelation</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span
+                  class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp;
             <i>type</i>, const <span class="type">std::string</span>&amp; <i>value</i>, const <span
-              class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())</h3>
+                  class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())
+          </h3>
           <p>Adds the fact that <i>from</i> is linked to the data <i>value</i> of type <i>type</i> by the property
-            <i>property</i>.</p>
+            <i>property</i>.
+          </p>
           <p><i>from</i> must be already known to the system. The property can be unknown before calling this function.
           </p>
           <p>onto_ros::Time is an abstraction of the ROS time definition which can be provided either with ROS1 and ROS2
@@ -235,10 +240,11 @@
           </p>
 
           <h3 class="fn" id="addLanguage"><a name="addLanguage"></a>FeederPublisher::<span
-              class="name">addLanguage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span
-              class="type">std::string</span>&amp; <i>lang</i>, const <span class="type">std::string</span>&amp;
+                  class="name">addLanguage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span
+                  class="type">std::string</span>&amp; <i>lang</i>, const <span class="type">std::string</span>&amp;
             <i>name</i>, const <span class="type">onto_ros::Time</span>&amp; <i>stamp</i> =
-            onto_ros::Node::get().currentTime())</h3>
+            onto_ros::Node::get().currentTime())
+          </h3>
           <p>Adds the label <i>name</i> in the language <i>lang</i> the class, individual, or property <i>from</i>.</p>
           <p><i>from</i> must be already known to the system.</p>
           <p>onto_ros::Time is an abstraction of the ROS time definition which can be provided either with ROS1 and ROS2
@@ -247,8 +253,8 @@
           </p>
 
           <h3 class="fn" id="addConcept"><a name="addConcept"></a>FeederPublisher::<span
-              class="name">addConcept</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span
-              class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())</h3>
+                  class="name">addConcept</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span
+                  class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())</h3>
           <p>Adds the class or individual <i>from</i>.</p>
           <p>onto_ros::Time is an abstraction of the ROS time definition which can be provided either with ROS1 and ROS2
             time representation (i.e. ros::Time or rclcpp::Time).</p>
@@ -256,9 +262,10 @@
           </p>
 
           <h3 class="fn" id="addInverseOf"><a name="addInverseOf"></a>FeederPublisher::<span
-              class="name">addInverseOf</span>(const <span class="type">std::string</span>&amp; <i>property</i>, const
+                  class="name">addInverseOf</span>(const <span class="type">std::string</span>&amp; <i>property</i>, const
             <span class="type">std::string</span>&amp; <i>inverse_property</i>, const <span
-              class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())</h3>
+                  class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())
+          </h3>
           <p> Adds the object property inverse axiom that <i>property</i> has for inverse <i>inverse_property</i>.</p>
           <p><i>property</i> must be already known to the system.</p>
           <p>onto_ros::Time is an abstraction of the ROS time definition which can be provided either with ROS1 and ROS2
@@ -266,10 +273,11 @@
           <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.
           </p>
 
-          <h3 class="fn" id="removeProperty0"><a name="removeProperty0"></a>FeederPublisher::<span
-              class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
+          <h3 class="fn" id="removeRelation0"><a name="removeRelation0"></a>FeederPublisher::<span
+                  class="name">removeRelation</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
             <span class="type">std::string</span>&amp; <i>property</i>, const <span
-              class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())</h3>
+                  class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())
+          </h3>
           <p>Removes the fact that <i>from</i> is linked to any object by the property <i>property</i>.</p>
           <p>After this action, knowledge of the property is not removed.</p>
           <p>onto_ros::Time is an abstraction of the ROS time definition which can be provided either with ROS1 and ROS2
@@ -277,11 +285,12 @@
           <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.
           </p>
 
-          <h3 class="fn" id="removeProperty1"><a name="removeProperty1"></a>FeederPublisher::<span
-              class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
+          <h3 class="fn" id="removeRelation1"><a name="removeRelation1"></a>FeederPublisher::<span
+                  class="name">removeRelation</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
             <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp;
             <i>on</i>, const <span class="type">onto_ros::Time</span>&amp; <i>stamp</i> =
-            onto_ros::Node::get().currentTime())</h3>
+            onto_ros::Node::get().currentTime())
+          </h3>
           <p>Removes the fact that <i>from</i> is linked with <i>on</i> by the property <i>property</i>.</p>
           <p>After this action, knowledge of the property is not removed.</p>
           <p>onto_ros::Time is an abstraction of the ROS time definition which can be provided either with ROS1 and ROS2
@@ -289,13 +298,15 @@
           <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.
           </p>
 
-          <h3 class="fn" id="removeProperty2"><a name="removeProperty2"></a>FeederPublisher::<span
-              class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
+          <h3 class="fn" id="removeRelation2"><a name="removeRelation2"></a>FeederPublisher::<span
+                  class="name">removeRelation</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
             <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp;
             <i>type</i>, const <span class="type">std::string</span>&amp; <i>value</i>, const <span
-              class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())</h3>
+                  class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())
+          </h3>
           <p>Removes the fact that <i>from</i> is linked to the data <i>value</i> of type <i>type</i> by the property
-            <i>property</i>.</p>
+            <i>property</i>.
+          </p>
           <p>After this action, knowledge of the property is not removed.</p>
           <p>onto_ros::Time is an abstraction of the ROS time definition which can be provided either with ROS1 and ROS2
             time representation (i.e. ros::Time or rclcpp::Time).</p>
@@ -303,9 +314,10 @@
           </p>
 
           <h3 class="fn" id="removeInheritage"><a name="removeInheritage"></a>FeederPublisher::<span
-              class="name">removeInheritage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
+                  class="name">removeInheritage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
             <span class="type">std::string</span>&amp; <i>on</i>, const <span class="type">onto_ros::Time</span>&amp;
-            <i>stamp</i> = onto_ros::Node::get().currentTime())</h3>
+            <i>stamp</i> = onto_ros::Node::get().currentTime())
+          </h3>
           <p>Removes the inheratage: <i>from</i> is a <i>on</i>. <i>from</i> and <i>on</i> could by a class, an
             individual or a property.</p>
           <p>onto_ros::Time is an abstraction of the ROS time definition which can be provided either with ROS1 and ROS2
@@ -314,10 +326,11 @@
           </p>
 
           <h3 class="fn" id="removeLanguage"><a name="removeLanguage"></a>FeederPublisher::<span
-              class="name">removeLanguage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
+                  class="name">removeLanguage</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
             <span class="type">std::string</span>&amp; <i>lang</i>, const <span class="type">std::string</span>&amp;
             <i>name</i>, const <span class="type">onto_ros::Time</span>&amp; <i>stamp</i> =
-            onto_ros::Node::get().currentTime())</h3>
+            onto_ros::Node::get().currentTime())
+          </h3>
           <p>Removes the label <i>name</i> in the language <i>lang</i> the class, individual, or property <i>from</i>.
           </p>
           <p>onto_ros::Time is an abstraction of the ROS time definition which can be provided either with ROS1 and ROS2
@@ -326,8 +339,9 @@
           </p>
 
           <h3 class="fn" id="removeConcept"><a name="removeConcept"></a>FeederPublisher::<span
-              class="name">removeConcept</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
-            <span class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())</h3>
+                  class="name">removeConcept</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
+            <span class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())
+          </h3>
           <p>Removes the class or individual <i>from</i>.</p>
           <p>All inheritance, properties, and labels applied to <i>from</i> are also removed.</p>
           <p>onto_ros::Time is an abstraction of the ROS time definition which can be provided either with ROS1 and ROS2
@@ -340,18 +354,18 @@
           <p>Returns the number of subscribers that are currently connected to the internal ROS publisher.</p>
 
           <h3 class="fn" id="waitConnected"><a name="waitConnected"></a> FeederPublisher::<span
-              class="name">waitConnected</span>()</h3>
+                  class="name">waitConnected</span>()</h3>
           <p>Blocks while no subscribers are currently connected to the internal ROS publisher.</p>
 
           <h3 class="fn" id="waitUpdate"><a name="waitUpdate"></a><span class="type">bool</span> FeederPublisher::<span
-              class="name">waitUpdate</span>(<span class="type">int32_t</span> <i>timeout</i> = -1)</h3>
+                  class="name">waitUpdate</span>(<span class="type">int32_t</span> <i>timeout</i> = -1)</h3>
           <p>Waits until all changes have been applied.</p>
           <p>The default parameter <i>timeout</i> is the expiration time in milliseconds. The default value -1
             represents an infinite wait.</p>
           <p>Returns false if the function returns on a timeout.</p>
 
           <h3 class="fn" id="commit"><a name="commit"></a><span class="type">std::string</span> FeederPublisher::<span
-              class="name">commit</span>(<span class="type">int32_t</span> <i>timeout</i> = -1)</h3>
+                  class="name">commit</span>(<span class="type">int32_t</span> <i>timeout</i> = -1)</h3>
           <p>Saves all the modifications from the previous commit and waits until all changes have been applied.</p>
           <p>The default parameter <i>timeout</i> is the expiration time in milliseconds. The default value -1
             represents an infinite wait.</p>
@@ -359,8 +373,8 @@
           <p>This function can only be used on a copied ontology.</p>
 
           <h3 class="fn" id="commit2"><a name="commit2"></a><span class="type">bool</span> FeederPublisher::<span
-              class="name">commit</span>(const <span class="type">std::string</span>&amp; <i>commit_name</i>, <span
-              class="type">int32_t</span> <i>timeout</i> = -1)</h3>
+                  class="name">commit</span>(const <span class="type">std::string</span>&amp; <i>commit_name</i>, <span
+                  class="type">int32_t</span> <i>timeout</i> = -1)</h3>
           <p>Saves all the modifications from the previous commit with a specific id <i>commit_name</i> and waits until
             all changes have been applied.</p>
           <p>The default parameter <i>timeout</i> is the expiration time in milliseconds. The default value -1
@@ -369,8 +383,8 @@
           <p>This function can only be used on a copied ontology.</p>
 
           <h3 class="fn" id="checkout"><a name="checkout"></a><span class="type">bool</span> FeederPublisher::<span
-              class="name">checkout</span>(const <span class="type">std::string</span>&amp; <i>commit_name</i>, <span
-              class="type">int32_t</span> <i>timeout</i> = -1)</h3>
+                  class="name">checkout</span>(const <span class="type">std::string</span>&amp; <i>commit_name</i>, <span
+                  class="type">int32_t</span> <i>timeout</i> = -1)</h3>
           <p>Apply the necessary changes to return to the specified <i>commit_name</i> and waits until all changes have
             been applied.</p>
           <p>The default parameter <i>timeout</i> is the expiration time in milliseconds. The default value -1
@@ -379,18 +393,18 @@
           <p>This function can only be used on a copied ontology.</p>
 
           <h3 class="fn" id="registerFeederNotificationCallback"><a name="registerFeederNotificationCallback"></a><span
-              class="type">void</span> FeederPublisher::<span
-              class="name">registerFeederNotificationCallback</span>(const <span
-              class="type">std::function</span>&lt;<span class="type">void</span>(const <span
-              class="type">std::string</span>&amp;)&gt;&amp; <i>callback</i>)</h3>
+                  class="type">void</span> FeederPublisher::<span
+                  class="name">registerFeederNotificationCallback</span>(const <span
+                  class="type">std::function</span>&lt;<span class="type">void</span>(const <span
+                  class="type">std::string</span>&amp;)&gt;&amp; <i>callback</i>)</h3>
           <p>Register a callback function to get notifications from the feeder.</p>
           <p>The parameter <i>callback</i> is the callback function taking a string.</p>
 
           <h3 class="fn" id="registerReasonersNotificationCallback"><a
-              name="registerReasonersNotificationCallback"></a><span class="type">void</span> FeederPublisher::<span
-              class="name">registerReasonersNotificationCallback</span>(const <span
-              class="type">std::function</span>&lt;<span class="type">void</span>(const <span
-              class="type">std::string</span>&amp;)&gt;&amp; <i>callback</i>)</h3>
+               name="registerReasonersNotificationCallback"></a><span class="type">void</span> FeederPublisher::<span
+                  class="name">registerReasonersNotificationCallback</span>(const <span
+                  class="type">std::function</span>&lt;<span class="type">void</span>(const <span
+                  class="type">std::string</span>&amp;)&gt;&amp; <i>callback</i>)</h3>
           <p>Register a callback function to get notifications from the reasoners.</p>
           <p>The parameter <i>callback</i> is the callback function taking a string.</p>
 

@@ -18,9 +18,9 @@ void insertN(onto::OntologyManipulator* onto, size_t n)
     std::string id = std::to_string(i);
     onto->feeder.addInheritage("VP" + id, "VisualPerception");
     onto->feeder.addInheritage("cup" + id, "Cup");
-    onto->feeder.addProperty("VP" + id, "actOn", "cup" + id);
-    onto->feeder.addProperty("VP" + id, "occursAt", "mat", "[[1,0,0,2.56], [0,1,0,1.32],[0,0,1,0.38],[0,0,0,1]]");
-    onto->feeder.addProperty("VP" + id, "startTime", "time", "0.125");
+    onto->feeder.addRelation("VP" + id, "actOn", "cup" + id);
+    onto->feeder.addRelation("VP" + id, "occursAt", "mat", "[[1,0,0,2.56], [0,1,0,1.32],[0,0,1,0.38],[0,0,0,1]]");
+    onto->feeder.addRelation("VP" + id, "startTime", "time", "0.125");
     usleep(10);
   }
 
@@ -57,7 +57,7 @@ int main(int argc, char** argv)
   {
     std::string base_name = "base" + std::to_string(i);
     onto.add(base_name);
-    onto[base_name]->actions.fadd("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/test.owl");
+    onto[base_name]->actions.fadd("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/Compare/knowrob.owl");
     onto[base_name]->close();
     insertN(onto[base_name], i);
 

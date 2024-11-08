@@ -1,0 +1,283 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="https://github.com/sarthou/ontologenius/blob/master/files/objects#"
+     xml:base="https://github.com/sarthou/ontologenius/blob/master/files/objects"
+     xmlns:objects="https://github.com/sarthou/ontologenius/blob/master/files/objects#"
+     xmlns:attribute="https://github.com/sarthou/ontologenius/blob/master/files/attribute#"
+     xmlns:color="https://github.com/sarthou/ontologenius/blob/master/files/color#"
+     xmlns:onto="ontologenius#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+     <owl:Ontology rdf:about="https://github.com/sarthou/ontologenius/blob/master/files/objects">
+         <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/attribute"/>
+         <owl:imports rdf:resource="https://github.com/sarthou/ontologenius/blob/master/files/color"/>
+     </owl:Ontology>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+    <!-- objects#Actuator -->
+
+    <owl:Class rdf:about="objects#Actuator">
+        <rdfs:subClassOf rdf:resource="objects#TechnicalObject"/>
+    </owl:Class>
+
+
+
+    <!-- objects#Affair -->
+
+    <owl:Class rdf:about="objects#Affair">
+        <rdfs:subClassOf rdf:resource="attribute#nonLiving"/>
+        <rdfs:subClassOf rdf:resource="objects#Object"/>
+        <rdfs:comment>affairs are every little non alive objects</rdfs:comment>
+        <rdfs:label xml:lang="fr">affaire</rdfs:label>
+        <rdfs:label xml:lang="en">affair</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#Bed -->
+
+    <owl:Class rdf:about="objects#Bed">
+        <rdfs:subClassOf rdf:resource="objects#Furniture"/>
+    </owl:Class>
+
+
+
+    <!-- objects#BlueBook -->
+
+    <owl:Class rdf:about="objects#BlueBook">
+        <rdfs:subClassOf rdf:resource="color#Blue"/>
+        <rdfs:subClassOf rdf:resource="objects#Book"/>
+        <rdfs:label xml:lang="en">blue book</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#BlueLamp -->
+
+    <owl:Class rdf:about="objects#BlueLamp">
+        <rdfs:subClassOf rdf:resource="color#Blue"/>
+        <rdfs:subClassOf rdf:resource="objects#Lamp"/>
+        <rdfs:label xml:lang="en">blue lamp</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#Book -->
+
+    <owl:Class rdf:about="objects#Book">
+        <rdfs:subClassOf rdf:resource="objects#Affair"/>
+        <rdfs:label xml:lang="fr">livre</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#Box -->
+
+    <owl:Class rdf:about="objects#Box">
+        <rdfs:subClassOf rdf:resource="objects#Affair"/>
+        <rdfs:label xml:lang="fr">boite</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#Chair -->
+
+    <owl:Class rdf:about="objects#Chair">
+        <rdfs:subClassOf rdf:resource="objects#Furniture"/>
+    </owl:Class>
+
+
+
+    <!-- objects#Cube -->
+
+    <owl:Class rdf:about="objects#Cube">
+        <rdfs:subClassOf rdf:resource="objects#Affair"/>
+        <rdfs:label xml:lang="fr">cube</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#Cup -->
+
+    <owl:Class rdf:about="objects#Cup">
+        <rdfs:subClassOf rdf:resource="objects#Affair"/>
+        <rdfs:label xml:lang="fr">tasse</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#desk -->
+
+    <owl:Class rdf:about="objects#Desk">
+        <rdfs:subClassOf rdf:resource="objects#Furniture"/>
+    </owl:Class>
+
+
+
+    <!-- objects#door -->
+
+    <owl:Class rdf:about="objects#Door">
+        <rdfs:subClassOf rdf:resource="objects#Furniture"/>
+    </owl:Class>
+
+
+
+    <!-- objects#fan -->
+
+    <owl:Class rdf:about="objects#Fan">
+        <rdfs:subClassOf rdf:resource="objects#Actuator"/>
+        <rdfs:subClassOf rdf:resource="objects#Affair"/>
+        <rdfs:label xml:lang="fr">ventilateur</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#furniture -->
+
+    <owl:Class rdf:about="objects#furniture">
+        <rdfs:subClassOf rdf:resource="objects#nonLiving"/>
+        <rdfs:subClassOf rdf:resource="objects#object"/>
+        <rdfs:label xml:lang="fr">meuble</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#greenCup -->
+
+    <owl:Class rdf:about="objects#greenCup">
+        <rdfs:subClassOf rdf:resource="objects#cup"/>
+        <rdfs:subClassOf rdf:resource="color#Green"/>
+        <rdfs:label xml:lang="en">green cup</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#lamp -->
+
+    <owl:Class rdf:about="objects#lamp">
+        <rdfs:subClassOf rdf:resource="objects#Actuator"/>
+        <rdfs:subClassOf rdf:resource="objects#Affair"/>
+        <rdfs:label xml:lang="fr">lampe</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#Object -->
+
+    <owl:Class rdf:about="objects#Object">
+        <rdfs:subClassOf rdf:resource="attribute#entity"/>
+        <rdfs:subClassOf rdf:resource="attribute#inanimate"/>
+        <rdfs:comment>an object is an inanimated entity</rdfs:comment>
+        <rdfs:label xml:lang="fr">objet</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#RedBed -->
+
+    <owl:Class rdf:about="objects#RedBed">
+        <rdfs:subClassOf rdf:resource="objects#Bed"/>
+        <rdfs:subClassOf rdf:resource="color#Red"/>
+        <rdfs:label xml:lang="en">red Bed</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#RedFan -->
+
+    <owl:Class rdf:about="objects#RedFan">
+        <rdfs:subClassOf rdf:resource="objects#Fan"/>
+        <rdfs:subClassOf rdf:resource="color#Red"/>
+        <rdfs:label xml:lang="en">red fan</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#Shelf -->
+
+    <owl:Class rdf:about="objects#Shelf">
+        <rdfs:subClassOf rdf:resource="objects#furniture"/>
+    </owl:Class>
+
+
+
+    <!-- objects#Sofa -->
+
+    <owl:Class rdf:about="objects#Sofa">
+        <rdfs:subClassOf rdf:resource="objects#Furniture"/>
+    </owl:Class>
+
+
+
+    <!-- objects#Table -->
+
+    <owl:Class rdf:about="objects#Table">
+        <rdfs:subClassOf rdf:resource="objects#Furniture"/>
+    </owl:Class>
+
+
+
+    <!-- objects#Tape -->
+
+    <owl:Class rdf:about="objects#Tape">
+        <rdfs:subClassOf rdf:resource="objects#Affair"/>
+        <rdfs:label xml:lang="fr">cassette</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#TechnicalObject -->
+
+    <owl:Class rdf:about="objects#TechnicalObject">
+        <rdfs:subClassOf rdf:resource="attribute#nonLiving"/>
+        <rdfs:subClassOf rdf:resource="objects#Object"/>
+        <rdfs:comment>a technical object can also be an Affair or a furniture</rdfs:comment>
+        <rdfs:label xml:lang="fr">objet technique</rdfs:label>
+        <rdfs:label xml:lang="en">technical object</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- objects#Trashbin -->
+
+    <owl:Class rdf:about="objects#Trashbin">
+        <rdfs:subClassOf rdf:resource="objects#Affair"/>
+        <rdfs:label xml:lang="fr">poubelle</rdfs:label>
+    </owl:Class>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="objects#Affair"/>
+            <rdf:Description rdf:about="objects#Furniture"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->

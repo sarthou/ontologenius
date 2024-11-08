@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ConversionClient Class (python) | Ontologenius 0.4.2</title>
+  <title>ConversionClient Class (python) | Ontologenius 0.4.3</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -14,15 +14,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../index.html">
-              <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../index.html">
+            <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -102,6 +102,7 @@
             <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -124,8 +125,14 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> Ros1 Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span></td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> Ros2 Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontopy</span></td></tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Ros1 Package:</td>
+                <td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span></td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Ros2 Package:</td>
+                <td class="memItemRight bottomAlign"> <span class="preprocessor">ontopy</span></td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -135,28 +142,94 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#__init__">__init__</a></b>(self, name)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#setVerbose">setVerbose</a></b>(self, verbose)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsIndexes2Ids">individualsIndexes2Ids</a></b>(self, indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesIndexes2Ids">classesIndexes2Ids</a></b>(self, indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesIndexes2Ids">dataPropertiesIndexes2Ids</a></b>(self, indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesIndexes2Ids">objectPropertiesIndexes2Ids</a></b>(self, indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsIndexes2Ids">literalsIndexes2Ids</a></b>(self, indexes)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsIndex2Id">individualsIndex2Id</a></b>(self, index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesIndex2Id">classesIndex2Id</a></b>(self, index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesIndex2Id">dataPropertiesIndex2Id</a></b>(self, index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesIndex2Id">objectPropertiesIndex2Id</a></b>(self, index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsIndex2Id">literalsIndex2Id</a></b>(self, index)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int[] </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsIds2Indexes">individualsIds2Indexes</a></b>(self, ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int[] </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesIds2Indexes">classesIds2Indexes</a></b>(self, ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int[] </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesIds2Indexes">dataPropertiesIds2Indexes</a></b>(self, ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int[] </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesIds2Indexes">objectPropertiesIds2Indexes</a></b>(self, ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int[] </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsIds2Indexes">literalsIds2Indexes</a></b>(self, ids)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsId2Index">individualsId2Index</a></b>(self, id)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesId2Index">classesId2Index</a></b>(self, id)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesId2Index">dataPropertiesId2Index</a></b>(self, id)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesId2Index">objectPropertiesId2Index</a></b>(self, id)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsId2Index">literalsId2Index</a></b>(self, id)</td></tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#__init__">__init__</a></b>(self, name)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#setVerbose">setVerbose</a></b>(self, verbose)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsIndexes2Ids">individualsIndexes2Ids</a></b>(self, indexes)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesIndexes2Ids">classesIndexes2Ids</a></b>(self, indexes)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesIndexes2Ids">dataPropertiesIndexes2Ids</a></b>(self, indexes)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesIndexes2Ids">objectPropertiesIndexes2Ids</a></b>(self, indexes)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsIndexes2Ids">literalsIndexes2Ids</a></b>(self, indexes)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsIndex2Id">individualsIndex2Id</a></b>(self, index)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesIndex2Id">classesIndex2Id</a></b>(self, index)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesIndex2Id">dataPropertiesIndex2Id</a></b>(self, index)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesIndex2Id">objectPropertiesIndex2Id</a></b>(self, index)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsIndex2Id">literalsIndex2Id</a></b>(self, index)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsIds2Indexes">individualsIds2Indexes</a></b>(self, ids)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesIds2Indexes">classesIds2Indexes</a></b>(self, ids)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesIds2Indexes">dataPropertiesIds2Indexes</a></b>(self, ids)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesIds2Indexes">objectPropertiesIds2Indexes</a></b>(self, ids)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsIds2Indexes">literalsIds2Indexes</a></b>(self, ids)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#individualsId2Index">individualsId2Index</a></b>(self, id)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#classesId2Index">classesId2Index</a></b>(self, id)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#dataPropertiesId2Index">dataPropertiesId2Index</a></b>(self, id)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#objectPropertiesId2Index">objectPropertiesId2Index</a></b>(self, id)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> int </td>
+                <td class="memItemRight bottomAlign"><b><a href="ConversionClient.html#literalsId2Index">literalsId2Index</a></b>(self, id)</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -166,7 +239,7 @@
           <h2 id="details">Detailed Description</h2>
           <p>The ConversionClient class provides an abstraction to the ontologenius conversion ROS services to pass from identifiers to indexes and inverse.</p>
           <p>This class ensures a persistent connection with the service based on. The persistent connection ensures a minimal response time.
-             A reconnection logic is implemented in the event that the persistent connection fails. </p>
+            A reconnection logic is implemented in the event that the persistent connection fails. </p>
         </div>
 
         <div class="func">
@@ -271,7 +344,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
       </a>
     </p>
   </div>

@@ -2,6 +2,7 @@
 #define ONTOLOGENIUS_SPARQLUTILS_H
 
 #include <map>
+#include <set>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -166,8 +167,29 @@ namespace ontologenius {
     std::vector<int64_t> res;
     res.reserve(var_names.size());
     for(const auto& var : var_names)
-      res.push_back(Resource_t<T>::variables[var]);
+      if(var.empty() == false)
+      {
+        if(var.front() == '?')
+          res.push_back(Resource_t<T>::variables[var.substr(1)]);
+        else
+          res.push_back(Resource_t<T>::variables[var]);
+      }
     std::sort(res.begin(), res.end());
+    return res;
+  }
+
+  template<typename T>
+  std::set<int64_t> convertVariables2Set(const std::vector<std::string>& var_names)
+  {
+    std::set<int64_t> res;
+    for(const auto& var : var_names)
+      if(var.empty() == false)
+      {
+        if(var.front() == '?')
+          res.insert(Resource_t<T>::variables[var.substr(1)]);
+        else
+          res.insert(Resource_t<T>::variables[var]);
+      }
     return res;
   }
 
@@ -204,11 +226,20 @@ namespace ontologenius {
       if(vars[0] == "*")
         return;
 
-      std::vector<int64_t> var_index = convertVariables<T>(vars);
+      std::set<int64_t> var_index = convertVariables2Set<T>(vars);
+
+      std::vector<int64_t> index_to_remove;
+      if(res.empty() == false)
+      {
+        auto front = res.front();
+        for(int64_t i = 0; i < (int64_t)front.size(); i++)
+          if(var_index.find(i) == var_index.end())
+            index_to_remove.push_back(i);
+      }
 
       for(auto& sub_res : res)
       {
-        for(auto it = var_index.rbegin(); it != var_index.rend(); ++it)
+        for(auto it = index_to_remove.rbegin(); it != index_to_remove.rend(); ++it)
           sub_res.erase(sub_res.begin() + *it);
       }
 

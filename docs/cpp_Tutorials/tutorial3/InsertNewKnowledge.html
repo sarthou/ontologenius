@@ -16,15 +16,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../../index.html">
-              <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../../index.html">
+            <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -99,6 +99,7 @@
             <li class="level1"><a href="../../cpp_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../cpp_API/PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="../../cpp_API/SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -256,13 +257,13 @@
                 <div class="code_line">  {</div>
                 <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>() == <span class="cpp_string">&quot;&quot;</span>)</div>
                 <div class="code_line">    {</div>
-                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
-                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeRelation</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addRelation</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
                 <div class="code_line">    }</div>
                 <div class="code_line">    <span class="cpp_op">else</span></div>
                 <div class="code_line">    {</div>
-                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
-                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeRelation</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addRelation</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
                 <div class="code_line">    }</div>
                 <div class="code_line">  }</div>
                 <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">question</span>))</div>
@@ -324,13 +325,13 @@
                 <div class="code_line">  {</div>
                 <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>() == <span class="cpp_string">&quot;&quot;</span>)</div>
                 <div class="code_line">    {</div>
-                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
-                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeRelation</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addRelation</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
                 <div class="code_line">    }</div>
                 <div class="code_line">    <span class="cpp_op">else</span></div>
                 <div class="code_line">    {</div>
-                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
-                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeRelation</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+                <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addRelation</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
                 <div class="code_line">    }</div>
                 <div class="code_line">  }</div>
                 <div class="code_line">  <span class="cpp_op">else</span> <span class="cpp_op">if</span>(<span class="cpp_type">std</span>::<span class="cpp_function">regex_match</span>(<span class="cpp_var">msg</span>-&gt;data, <span class="cpp_var">match</span>, <span class="cpp_var">question</span>))</div>
@@ -398,8 +399,8 @@
          <div class="code_block cpp_code" style="counter-reset:code_line 37;">
            <div class="code_line">    <span class="cpp_op">if</span>(<span class="cpp_var">match</span>[<span class="cpp_value">3</span>].<span class="cpp_function">str</span>() == <span class="cpp_string">&quot;&quot;</span>)</div>
            <div class="code_line">    {</div>
-           <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
-           <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addProperty</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+           <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">removeRelation</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+           <div class="code_line">      <span class="cpp_var">onto_</span>-&gt;feeder.<span class="cpp_function">addRelation</span>( <span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">2</span>].<span class="cpp_function">str</span>()), <span class="cpp_string">&quot;can_&quot;</span>+<span class="cpp_function">singular</span>(<span class="cpp_var">match</span>[<span class="cpp_value">4</span>].<span class="cpp_function">str</span>()) , <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
            <div class="code_line">    }</div>
         </div>
 
@@ -680,7 +681,7 @@
         <p>The basic principle is that Ontologenius realizes a generalization if 60% of the individuals
           inheriting from the same classes have the same property and that from two individuals.</p>
 
-        <p>Trying to remove this property with the call of the removeDataProperty function would have no effect
+        <p>Trying to remove this property with the call of the removeDataRelation function would have no effect
           since it would be deduced again. To make this property accurate, it should be explicitly told that
           birds can fly but we will not do that.</p>
 

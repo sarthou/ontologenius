@@ -26,8 +26,8 @@ int main(int argc, char** argv)
   onto["cpy"]->feeder.addInheritage("bob", "human");
   std::string first_commit = onto["cpy"]->feeder.commit();
 
-  onto["cpy"]->feeder.addProperty("bob", "eat", "pasta");
-  onto["cpy"]->feeder.addProperty("pasta", "isIn", "bob");
+  onto["cpy"]->feeder.addRelation("bob", "eat", "pasta");
+  onto["cpy"]->feeder.addRelation("pasta", "isIn", "bob");
   onto["cpy"]->feeder.commit("after_pasta");
 
   high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -36,16 +36,16 @@ int main(int argc, char** argv)
   auto time_span = duration_cast<std::chrono::microseconds>(t2 - t1);
   std::cout << "  " << time_span.count() << " us for checkout " << std::endl;
 
-  onto["cpy"]->feeder.addProperty("bob", "eat", "burger");
-  onto["cpy"]->feeder.addProperty("burger", "isIn", "bob");
+  onto["cpy"]->feeder.addRelation("bob", "eat", "burger");
+  onto["cpy"]->feeder.addRelation("burger", "isIn", "bob");
   onto["cpy"]->feeder.commit("after_burger");
 
   onto["cpy"]->feeder.checkout("after_pasta");
-  onto["cpy"]->feeder.addProperty("bob", "isHungry", "bool", "true");
+  onto["cpy"]->feeder.addRelation("bob", "isHungry", "bool", "true");
   std::string hungry_commit = onto["cpy"]->feeder.commit();
 
   onto["cpy"]->feeder.checkout("after_pasta");
-  onto["cpy"]->feeder.addProperty("bob", "isHungry", "bool", "false");
+  onto["cpy"]->feeder.addRelation("bob", "isHungry", "bool", "false");
   onto["cpy"]->feeder.commit();
 
   onto["cpy"]->feeder.checkout(hungry_commit);

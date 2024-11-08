@@ -5,10 +5,9 @@
   <arg name="display" default="false"/>
   <arg name="files" default="
   $(find-pkg-share ontologenius)/files/attribute.owl
-  $(find-pkg-share ontologenius)/files/measure.owl
-  $(find-pkg-share ontologenius)/files/property.owl
+  $(find-pkg-share ontologenius)/files/animals.owl
   $(find-pkg-share ontologenius)/files/positionProperty.owl
-  $(find-pkg-share ontologenius)/files/testIndividuals.owl
+  $(find-pkg-share ontologenius)/files/test_individuals.owl
   "/>
   <arg name="tcmalloc_path" default=""/>
 

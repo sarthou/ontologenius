@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ClassClient Class (python) | Ontologenius 0.4.2</title>
+  <title>ClassClient Class (python) | Ontologenius 0.4.3</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -14,15 +14,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../index.html">
-              <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../index.html">
+            <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -103,6 +103,7 @@
             <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -125,9 +126,18 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> Ros1 Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span></td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> Ros2 Package:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">ontopy</span></td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="OntologyClient.html">OntologyClient</a></td></tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Ros1 Package:</td>
+                <td class="memItemRight bottomAlign"> <span class="preprocessor">ontologenius</span></td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Ros2 Package:</td>
+                <td class="memItemRight bottomAlign"> <span class="preprocessor">ontopy</span></td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Inherits:</td>
+                <td class="memItemRight bottomAlign"> <a href="OntologyClient.html">OntologyClient</a></td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -137,20 +147,62 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#__init__">__init__</a></b>(self, name)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getDown">getDown</a></b>(self, name, depth = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getDisjoint">getDisjoint</a></b>(self, name)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getOn">getOn</a></b>(self, name, property, selector = '')</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getFrom">getFrom</a></b>(self, property, name, selector = '')</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getWith">getWith</a></b>(self, class_from, class_to, selector = '', depth = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRelatedFrom">getRelatedFrom</a></b>(self, property)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRelatedOn">getRelatedOn</a></b>(self, property)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRelatedWith">getRelatedWith</a></b>(self, name)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRelationFrom">getRelationFrom</a></b>(self, name, depth = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRelationOn">getRelationOn</a></b>(self, name, depth = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRelationWith">getRelationWith</a></b>(self, name)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getDomainOf">getDomainOf</a></b>(self, name, selector = '', depth = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> str[] </td><td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRangeOf">getRangeOf</a></b>(self, name, selector = '', depth = -1)</td></tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#__init__">__init__</a></b>(self, name)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getDown">getDown</a></b>(self, name, depth = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getDisjoint">getDisjoint</a></b>(self, name)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getOn">getOn</a></b>(self, name, property, selector = '')</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getFrom">getFrom</a></b>(self, property, name, selector = '')</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getWith">getWith</a></b>(self, class_from, class_to, selector = '', depth = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRelatedFrom">getRelatedFrom</a></b>(self, property)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRelatedOn">getRelatedOn</a></b>(self, property)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRelatedWith">getRelatedWith</a></b>(self, name)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRelationFrom">getRelationFrom</a></b>(self, name, depth = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRelationOn">getRelationOn</a></b>(self, name, depth = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRelationWith">getRelationWith</a></b>(self, name)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getDomainOf">getDomainOf</a></b>(self, name, selector = '', depth = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassClient.html#getRangeOf">getRangeOf</a></b>(self, name, selector = '', depth = -1)</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -241,7 +293,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
       </a>
     </p>
   </div>

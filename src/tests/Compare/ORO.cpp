@@ -1,4 +1,3 @@
-#include <atomic>
 #include <chrono>
 #include <cmath>
 #include <cstdio>
@@ -18,7 +17,7 @@ void insertWords(size_t nb)
   ros::Rate wait(10000);
   for(size_t i = 0; i < nb; i++)
   {
-    onto_ptr->feeder.addProperty("individual" + std::to_string(i), "isOn", "apple");
+    onto_ptr->feeder.addRelation("individual" + std::to_string(i), "isOn", "apple");
     wait.sleep();
   }
 

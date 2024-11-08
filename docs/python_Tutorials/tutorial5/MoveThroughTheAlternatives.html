@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Explore possible futures (python) :  Move through the alternatives</title>
+  <title>Explore possible futures (python) : Move through the alternatives</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
@@ -16,15 +16,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../../index.html">
-              <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../../index.html">
+            <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -105,6 +105,7 @@
             <li class="level1"><a href="../../python_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="../../python_API/OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="../../python_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../python_API/PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="../../python_API/ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="../../python_API/SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -171,22 +172,22 @@
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addInheritage</span>(<span class="py_string">'bob'</span>, <span class="py_string">'human'</span>)</div>
                 <div class="code_line">    <span class="py_var">first_commit</span> = <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'pasta'</span>)</div>
-                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'pasta'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectRelation</span>(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'pasta'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectRelation</span>(<span class="py_string">'pasta'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commit</span>(<span class="py_string">'after_pasta'</span>)</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_var">first_commit</span>)</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'burger'</span>)</div>
-                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'burger'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectRelation</span>(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'burger'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectRelation</span>(<span class="py_string">'burger'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commit</span>(<span class="py_string">'after_burger'</span>)</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_string">'after_pasta'</span>)</div>
-                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addDataProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addDataRelation</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
                 <div class="code_line">    <span class="py_var">hungry_commit</span> = <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_string">'after_pasta'</span>)</div>
-                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addDataProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addDataRelation</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_var">hungry_commit</span>)</div>
@@ -237,22 +238,22 @@
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addInheritage</span>(<span class="py_string">'bob'</span>, <span class="py_string">'human'</span>)</div>
                 <div class="code_line">    <span class="py_var">first_commit</span> = <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'pasta'</span>)</div>
-                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'pasta'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectRelation</span>(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'pasta'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectRelation</span>(<span class="py_string">'pasta'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commit</span>(<span class="py_string">'after_pasta'</span>)</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_var">first_commit</span>)</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'burger'</span>)</div>
-                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectProperty</span>(<span class="py_string">'burger'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectRelation</span>(<span class="py_string">'bob'</span>, <span class="py_string">'eat'</span>, <span class="py_string">'burger'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addObjectRelation</span>(<span class="py_string">'burger'</span>, <span class="py_string">'isIn'</span>, <span class="py_string">'bob'</span>)</div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commit</span>(<span class="py_string">'after_burger'</span>)</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_string">'after_pasta'</span>)</div>
-                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addDataProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addDataRelation</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'True'</span>)</div>
                 <div class="code_line">    <span class="py_var">hungry_commit</span> = <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_string">'after_pasta'</span>)</div>
-                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addDataProperty</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
+                <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">addDataRelation</span>(<span class="py_string">'bob'</span>, <span class="py_string">'isHungry'</span>, <span class="py_string">'bool'</span>, <span class="py_string">'False'</span>)</div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">commitAuto</span>()</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">    <span class="py_var">copied_onto</span>.feeder.<span class="py_function">checkout</span>(<span class="py_var">hungry_commit</span>)</div>

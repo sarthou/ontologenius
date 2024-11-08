@@ -42,7 +42,7 @@ namespace ontologenius {
     Dictionary steady_dictionary_;
 
     template<typename C>
-    inline void conditionalPushBack(std::vector<C>& vect, const C& data)
+    void conditionalPushBack(std::vector<C>& vect, const C& data)
     {
       if(std::find(vect.begin(), vect.end(), data) == vect.end())
         vect.push_back(data);

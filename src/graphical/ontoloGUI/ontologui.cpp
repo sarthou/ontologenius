@@ -867,14 +867,14 @@ void OntoloGUI::feederAddSlot()
 {
   if(updateOntoPtr() == false)
     return;
-  onto_->feeder.addProperty(ui_->FeederSubject->text().toStdString(), ui_->FeederProperty->text().toStdString(), ui_->FeederObject->text().toStdString());
+  onto_->feeder.addRelation(ui_->FeederSubject->text().toStdString(), ui_->FeederProperty->text().toStdString(), ui_->FeederObject->text().toStdString());
 }
 
 void OntoloGUI::feederDelSlot()
 {
   if(updateOntoPtr() == false)
     return;
-  onto_->feeder.removeProperty(ui_->FeederSubject->text().toStdString(), ui_->FeederProperty->text().toStdString(), ui_->FeederObject->text().toStdString());
+  onto_->feeder.removeRelation(ui_->FeederSubject->text().toStdString(), ui_->FeederProperty->text().toStdString(), ui_->FeederObject->text().toStdString());
 }
 
 void OntoloGUI::feederCommitSlot()

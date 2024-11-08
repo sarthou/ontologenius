@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Launchers | Ontologenius 0.4.2</title>
+  <title>Launchers | Ontologenius 0.4.3</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
@@ -134,8 +134,7 @@
                 <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
                 <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
                 <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/measure.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/property.owl</span></div>
+                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/colors.owl</span></div>
                 <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/positionProperty.owl</span></div>
                 <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
                 <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;ontologenius_single&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;-l $(arg language) -i $(arg intern_file) $(arg files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
@@ -154,8 +153,7 @@
                 <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
                 <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
                 <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/measure.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/property.owl</span></div>
+                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/colors.owl</span></div>
                 <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/positionProperty.owl</span></div>
                 <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
                 <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;ontologenius_single&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;-l $(var language) -i $(var intern_file) $(var files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
@@ -188,8 +186,7 @@
                 <div class="terminal_line">    )</div>
                 <div class="terminal_line">    <span class="py_var">files_arg</span> = <span class="py_imported">DeclareLaunchArgument</span>(</div>
                 <div class="terminal_line">        <span class="py_string">&quot;files&quot;</span>, <span class="py_var">default_value</span>=<span class="py_imported">TextSubstitution</span>(<span class="py_var">text</span>=<span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/attribute.owl&quot;</span>) +  <span class="py_string">&quot; &quot;</span> +</div>
-                <div class="terminal_line">                                                     <span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/measure.owl&quot;</span>) +  <span class="py_string">&quot; &quot;</span> +</div>
-                <div class="terminal_line">                                                     <span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/property.owl&quot;</span>) +  <span class="py_string">&quot; &quot;</span> +</div>
+                <div class="terminal_line">                                                     <span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/colors.owl&quot;</span>) +  <span class="py_string">&quot; &quot;</span> +</div>
                 <div class="terminal_line">                                                     <span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/positionProperty.owl&quot;</span>))</div>
                 <div class="terminal_line">    )</div>
                 <div class="terminal_line"> </div>
@@ -227,8 +224,7 @@
                 <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
                 <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;</span></div>
                 <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/measure.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/property.owl</span></div>
+                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/colors.owl</span></div>
                 <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/positionProperty.owl</span></div>
                 <div class="terminal_line">      <span class="yaml_string">&quot;</span></div>
                 <div class="terminal_line"></div>
@@ -274,8 +270,7 @@
                 <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
                 <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
                 <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/measure.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/property.owl</span></div>
+                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/colors.owl</span></div>
                 <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/positionProperty.owl</span></div>
                 <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
                 <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;ontologenius_multi&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;-l $(arg language) -i $(arg intern_file) $(arg files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
@@ -294,8 +289,7 @@
                 <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
                 <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
                 <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/measure.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/property.owl</span></div>
+                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/colors.owl</span></div>
                 <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/positionProperty.owl</span></div>
                 <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
                 <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;ontologenius_multi&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;-l $(var language) -i $(var intern_file) $(var files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
@@ -328,8 +322,7 @@
                 <div class="terminal_line">    )</div>
                 <div class="terminal_line">    <span class="py_var">files_arg</span> = <span class="py_imported">DeclareLaunchArgument</span>(</div>
                 <div class="terminal_line">        <span class="py_string">&quot;files&quot;</span>, <span class="py_var">default_value</span>=<span class="py_imported">TextSubstitution</span>(<span class="py_var">text</span>=<span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/attribute.owl&quot;</span>) +  <span class="py_string">&quot; &quot;</span> +</div>
-                <div class="terminal_line">                                                     <span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/measure.owl&quot;</span>) +  <span class="py_string">&quot; &quot;</span> +</div>
-                <div class="terminal_line">                                                     <span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/property.owl&quot;</span>) +  <span class="py_string">&quot; &quot;</span> +</div>
+                <div class="terminal_line">                                                     <span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/colors.owl&quot;</span>) +  <span class="py_string">&quot; &quot;</span> +</div>
                 <div class="terminal_line">                                                     <span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/positionProperty.owl&quot;</span>))</div>
                 <div class="terminal_line">    )</div>
                 <div class="terminal_line"> </div>
@@ -367,8 +360,7 @@
                 <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
                 <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;</span></div>
                 <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/measure.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/property.owl</span></div>
+                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/colors.owl</span></div>
                 <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/positionProperty.owl</span></div>
                 <div class="terminal_line">      <span class="yaml_string">&quot;</span></div>
                 <div class="terminal_line"></div>
@@ -429,8 +421,7 @@
                 <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;human_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/ontologenius_human.owl&quot;</span>/&gt;</div>
                 <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
                 <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/measure.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/property.owl</span></div>
+                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/colors.owl</span></div>
                 <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/positionProperty.owl</span></div>
                 <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
                 <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;ontologenius_multi&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;-l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) -r $(arg robot_file) -h $(arg human_file) $(arg files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
@@ -453,8 +444,7 @@
                 <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;human_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/files/ontologenius_human.owl&quot;</span>/&gt;</div>
                 <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
                 <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/measure.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/property.owl</span></div>
+                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/colors.owl</span></div>
                 <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/positionProperty.owl</span></div>
                 <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
                 <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;ontologenius_multi&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;-l $(var language) -c $(var config_file) -i $(var intern_file) -d $(var display) -r $(var robot_file) -h $(var human_file) $(var files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
@@ -499,8 +489,7 @@
                 <div class="terminal_line">    )</div>
                 <div class="terminal_line">    <span class="py_var">files_arg</span> = <span class="py_imported">DeclareLaunchArgument</span>(</div>
                 <div class="terminal_line">        <span class="py_string">&quot;files&quot;</span>, <span class="py_var">default_value</span>=<span class="py_imported">TextSubstitution</span>(<span class="py_var">text</span>=<span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/attribute.owl&quot;</span>) +  <span class="py_string">&quot; &quot;</span> +</div>
-                <div class="terminal_line">                                                     <span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/measure.owl&quot;</span>) +  <span class="py_string">&quot; &quot;</span> +</div>
-                <div class="terminal_line">                                                     <span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/property.owl&quot;</span>) +  <span class="py_string">&quot; &quot;</span> +</div>
+                <div class="terminal_line">                                                     <span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/colors.owl&quot;</span>) +  <span class="py_string">&quot; &quot;</span> +</div>
                 <div class="terminal_line">                                                     <span class="py_imported">os</span>.path.<span class="py_function">join</span>(<span class="py_function">get_package_share_directory</span>(<span class="py_string">'ontologenius'</span>), <span class="py_string">&quot;files/positionProperty.owl&quot;</span>))</div>
                 <div class="terminal_line">    )</div>
                 <div class="terminal_line"> </div>
@@ -543,23 +532,22 @@
                 <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
                 <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/file_intern/ontologenius.owl&quot;</span></div>
                 <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/file_intern/ontologenius.owl&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;config_file&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/configuration/config_example.yaml&quot;</span></div>
                 <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/file_intern/ontologenius.owl&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;display&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;true&quot;</span></div>
                 <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/file_intern/ontologenius.owl&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;robot_file&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/files/ontologenius_robot.owl&quot;</span></div>
                 <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/file_intern/ontologenius.owl&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;human_file&quot;</span></div>
+                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/files/ontologenius_human.owl&quot;</span></div>
                 <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
                 <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
                 <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;</span></div>
                 <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/measure.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/property.owl</span></div>
+                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/colors.owl</span></div>
                 <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/positionProperty.owl</span></div>
                 <div class="terminal_line">      <span class="yaml_string">&quot;</span></div>
                 <div class="terminal_line"></div>
