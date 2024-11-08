@@ -17,15 +17,15 @@ TEST(reasoning_transitivity, transitivity_base)
   onto_ptr->reasoners.activate("ontologenius::ReasonerTransitivity");
 
   onto_ptr->feeder.addConcept("a");
-  onto_ptr->feeder.addProperty("a", "topTransitiveProperty", "b");
-  onto_ptr->feeder.addProperty("b", "topTransitiveProperty", "c");
+  onto_ptr->feeder.addRelation("a", "topTransitiveProperty", "b");
+  onto_ptr->feeder.addRelation("b", "topTransitiveProperty", "c");
   onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "b") != res.end());
   EXPECT_TRUE(std::find(res.begin(), res.end(), "c") != res.end());
 
-  onto_ptr->feeder.addProperty("c", "topTransitiveProperty", "d");
+  onto_ptr->feeder.addRelation("c", "topTransitiveProperty", "d");
   onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
@@ -46,15 +46,15 @@ TEST(reasoning_transitivity, transitivity_heritance)
   onto_ptr->reasoners.activate("ontologenius::ReasonerTransitivity");
 
   onto_ptr->feeder.addConcept("a");
-  onto_ptr->feeder.addProperty("a", "transitiveProperty", "b");
-  onto_ptr->feeder.addProperty("b", "transitiveProperty", "c");
+  onto_ptr->feeder.addRelation("a", "transitiveProperty", "b");
+  onto_ptr->feeder.addRelation("b", "transitiveProperty", "c");
   onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "b") != res.end());
   EXPECT_TRUE(std::find(res.begin(), res.end(), "c") != res.end());
 
-  onto_ptr->feeder.addProperty("c", "transitiveProperty", "d");
+  onto_ptr->feeder.addRelation("c", "transitiveProperty", "d");
   onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
@@ -75,9 +75,9 @@ TEST(reasoning_transitivity, transitivity_sames)
   onto_ptr->reasoners.activate("ontologenius::ReasonerTransitivity");
 
   onto_ptr->feeder.addConcept("a");
-  onto_ptr->feeder.addProperty("a", "topTransitiveProperty", "b");
-  onto_ptr->feeder.addProperty("b", "=", "b_bis");
-  onto_ptr->feeder.addProperty("b_bis", "topTransitiveProperty", "c");
+  onto_ptr->feeder.addRelation("a", "topTransitiveProperty", "b");
+  onto_ptr->feeder.addRelation("b", "=", "b_bis");
+  onto_ptr->feeder.addRelation("b_bis", "topTransitiveProperty", "c");
   onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
@@ -85,8 +85,8 @@ TEST(reasoning_transitivity, transitivity_sames)
   EXPECT_TRUE(std::find(res.begin(), res.end(), "b_bis") != res.end());
   EXPECT_TRUE(std::find(res.begin(), res.end(), "c") != res.end());
 
-  onto_ptr->feeder.addProperty("c", "=", "c_bis");
-  onto_ptr->feeder.addProperty("c_bis", "topTransitiveProperty", "d");
+  onto_ptr->feeder.addRelation("c", "=", "c_bis");
+  onto_ptr->feeder.addRelation("c_bis", "topTransitiveProperty", "d");
   onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
@@ -110,9 +110,9 @@ TEST(reasoning_transitivity, transitivity_deletion)
   onto_ptr->reasoners.activate("ontologenius::ReasonerTransitivity");
 
   onto_ptr->feeder.addConcept("a");
-  onto_ptr->feeder.addProperty("a", "topTransitiveProperty", "b");
-  onto_ptr->feeder.addProperty("b", "topTransitiveProperty", "c");
-  onto_ptr->feeder.addProperty("c", "topTransitiveProperty", "d");
+  onto_ptr->feeder.addRelation("a", "topTransitiveProperty", "b");
+  onto_ptr->feeder.addRelation("b", "topTransitiveProperty", "c");
+  onto_ptr->feeder.addRelation("c", "topTransitiveProperty", "d");
   onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
@@ -120,7 +120,7 @@ TEST(reasoning_transitivity, transitivity_deletion)
   EXPECT_TRUE(std::find(res.begin(), res.end(), "c") != res.end());
   EXPECT_TRUE(std::find(res.begin(), res.end(), "d") != res.end());
 
-  onto_ptr->feeder.removeProperty("a", "topTransitiveProperty", "b");
+  onto_ptr->feeder.removeRelation("a", "topTransitiveProperty", "b");
   onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
@@ -139,11 +139,11 @@ TEST(reasoning_transitivity, transitivity_deletion_same_as)
   onto_ptr->reasoners.activate("ontologenius::ReasonerTransitivity");
 
   onto_ptr->feeder.addConcept("a");
-  onto_ptr->feeder.addProperty("a", "topTransitiveProperty", "b");
-  onto_ptr->feeder.addProperty("b", "=", "b_bis");
-  onto_ptr->feeder.addProperty("b_bis", "topTransitiveProperty", "c");
-  onto_ptr->feeder.addProperty("c", "=", "c_bis");
-  onto_ptr->feeder.addProperty("c_bis", "topTransitiveProperty", "d");
+  onto_ptr->feeder.addRelation("a", "topTransitiveProperty", "b");
+  onto_ptr->feeder.addRelation("b", "=", "b_bis");
+  onto_ptr->feeder.addRelation("b_bis", "topTransitiveProperty", "c");
+  onto_ptr->feeder.addRelation("c", "=", "c_bis");
+  onto_ptr->feeder.addRelation("c_bis", "topTransitiveProperty", "d");
   onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
@@ -158,7 +158,7 @@ TEST(reasoning_transitivity, transitivity_deletion_same_as)
   EXPECT_TRUE(std::find(res.begin(), res.end(), "c_bis") != res.end());
   EXPECT_TRUE(std::find(res.begin(), res.end(), "d") != res.end());
 
-  onto_ptr->feeder.removeProperty("b", "=", "b_bis");
+  onto_ptr->feeder.removeRelation("b", "=", "b_bis");
   onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");
@@ -180,9 +180,9 @@ TEST(reasoning_transitivity, transitivity_deletion_inheritage)
   onto_ptr->reasoners.activate("ontologenius::ReasonerTransitivity");
 
   onto_ptr->feeder.addConcept("a");
-  onto_ptr->feeder.addProperty("a", "transitiveProperty", "b");
-  onto_ptr->feeder.addProperty("b", "transitiveProperty", "c");
-  onto_ptr->feeder.addProperty("c", "transitiveProperty", "d");
+  onto_ptr->feeder.addRelation("a", "transitiveProperty", "b");
+  onto_ptr->feeder.addRelation("b", "transitiveProperty", "c");
+  onto_ptr->feeder.addRelation("c", "transitiveProperty", "d");
   onto_ptr->feeder.waitUpdate(WAIT_TIME);
 
   res = onto_ptr->individuals.getOn("a", "topTransitiveProperty");

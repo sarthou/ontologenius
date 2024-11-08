@@ -18,7 +18,7 @@ TEST(reasoning_chain, chains_base)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(res.empty());
 
-  onto_ptr->feeder.addProperty("ball", "isOn", "cube_base");
+  onto_ptr->feeder.addRelation("ball", "isOn", "cube_base");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
@@ -27,7 +27,7 @@ TEST(reasoning_chain, chains_base)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "table") != res.end());
 
-  onto_ptr->feeder.removeProperty("ball", "isOn", "cube_base");
+  onto_ptr->feeder.removeRelation("ball", "isOn", "cube_base");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
@@ -48,7 +48,7 @@ TEST(reasoning_chain, chain_heritance)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(res.empty());
 
-  onto_ptr->feeder.addProperty("ball", "isOnTop", "cube_base");
+  onto_ptr->feeder.addRelation("ball", "isOnTop", "cube_base");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
@@ -57,7 +57,7 @@ TEST(reasoning_chain, chain_heritance)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(find(res.begin(), res.end(), "table") != res.end());
 
-  onto_ptr->feeder.removeProperty("ball", "isOnTop", "cube_base");
+  onto_ptr->feeder.removeRelation("ball", "isOnTop", "cube_base");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
@@ -78,7 +78,7 @@ TEST(reasoning_chain, chain_sames)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(res.empty());
 
-  onto_ptr->feeder.addProperty("ball", "isOn", "cube_base_bis");
+  onto_ptr->feeder.addRelation("ball", "isOn", "cube_base_bis");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
@@ -87,7 +87,7 @@ TEST(reasoning_chain, chain_sames)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(find(res.begin(), res.end(), "table") != res.end());
 
-  onto_ptr->feeder.removeProperty("ball", "isOn", "cube_base_bis");
+  onto_ptr->feeder.removeRelation("ball", "isOn", "cube_base_bis");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
@@ -108,7 +108,7 @@ TEST(reasoning_chain, chain_deletion)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(res.empty());
 
-  onto_ptr->feeder.addProperty("ball", "isOn", "cube_base");
+  onto_ptr->feeder.addRelation("ball", "isOn", "cube_base");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
@@ -117,7 +117,7 @@ TEST(reasoning_chain, chain_deletion)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(find(res.begin(), res.end(), "table") != res.end());
 
-  onto_ptr->feeder.removeProperty("ball", "isOn", "cube_base");
+  onto_ptr->feeder.removeRelation("ball", "isOn", "cube_base");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
@@ -126,7 +126,7 @@ TEST(reasoning_chain, chain_deletion)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(res.empty());
 
-  onto_ptr->feeder.addProperty("ball", "isOn", "cube_after");
+  onto_ptr->feeder.addRelation("ball", "isOn", "cube_after");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
@@ -135,7 +135,7 @@ TEST(reasoning_chain, chain_deletion)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(find(res.begin(), res.end(), "table") != res.end());
 
-  onto_ptr->feeder.removeProperty("cube_base", "isIn", "box");
+  onto_ptr->feeder.removeRelation("cube_base", "isIn", "box");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
@@ -144,8 +144,8 @@ TEST(reasoning_chain, chain_deletion)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(find(res.begin(), res.end(), "table") != res.end());
 
-  onto_ptr->feeder.addProperty("cube_base", "isIn", "box");
-  onto_ptr->feeder.removeProperty("ball", "isOn", "cube_after");
+  onto_ptr->feeder.addRelation("cube_base", "isIn", "box");
+  onto_ptr->feeder.removeRelation("ball", "isOn", "cube_after");
   onto_ptr->feeder.waitUpdate(1000);
 }
 
@@ -162,7 +162,7 @@ TEST(reasoning_chain, chain_deletion_same_as)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(res.empty());
 
-  onto_ptr->feeder.addProperty("ball", "isOn", "cube_base_bis");
+  onto_ptr->feeder.addRelation("ball", "isOn", "cube_base_bis");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
@@ -171,7 +171,7 @@ TEST(reasoning_chain, chain_deletion_same_as)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(find(res.begin(), res.end(), "table") != res.end());
 
-  onto_ptr->feeder.removeProperty("cube_base", "=", "cube_base_bis");
+  onto_ptr->feeder.removeRelation("cube_base", "=", "cube_base_bis");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
@@ -180,8 +180,8 @@ TEST(reasoning_chain, chain_deletion_same_as)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(res.empty());
 
-  onto_ptr->feeder.addProperty("cube_base", "=", "cube_base_bis");
-  onto_ptr->feeder.removeProperty("ball", "isOn", "cube_base_bis");
+  onto_ptr->feeder.addRelation("cube_base", "=", "cube_base_bis");
+  onto_ptr->feeder.removeRelation("ball", "isOn", "cube_base_bis");
   onto_ptr->feeder.waitUpdate(1000);
 }
 
@@ -198,7 +198,7 @@ TEST(reasoning_chain, chain_deletion_inheritage)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(res.empty());
 
-  onto_ptr->feeder.addProperty("ball", "isOnTop", "cube_base_bis");
+  onto_ptr->feeder.addRelation("ball", "isOnTop", "cube_base_bis");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
@@ -225,7 +225,7 @@ TEST(reasoning_chain, chain_deletion_inheritage)
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(find(res.begin(), res.end(), "table") != res.end());
 
-  onto_ptr->feeder.removeProperty("ball", "isOnTop", "cube_base_bis");
+  onto_ptr->feeder.removeRelation("ball", "isOnTop", "cube_base_bis");
   onto_ptr->feeder.waitUpdate(1000);
 }
 

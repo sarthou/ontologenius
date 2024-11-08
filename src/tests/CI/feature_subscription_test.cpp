@@ -44,8 +44,8 @@ TEST(feature_subscription, exact_one_pattern)
 
   for(size_t i = 0; i < 2; i++)
   {
-    onto_ptr->feeder.addProperty("cube1", "isOn", "table1");
-    onto_ptr->feeder.addProperty("cube2", "isOn", "table1");
+    onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
+    onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
   }
   onto_ptr->feeder.waitUpdate(1000);
   usleep(500000);
@@ -70,8 +70,8 @@ TEST(feature_subscription, exact_invert_pattern)
 
   for(size_t i = 0; i < 2; i++)
   {
-    onto_ptr->feeder.addProperty("cube1", "isOn", "table1");
-    onto_ptr->feeder.addProperty("cube2", "isOn", "table1");
+    onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
+    onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
   }
   onto_ptr->feeder.waitUpdate(1000);
 
@@ -99,14 +99,14 @@ TEST(feature_subscription, exact_two_pattern)
 
   for(size_t i = 0; i < 2; i++)
   {
-    onto_ptr->feeder.addProperty("cube1", "isOn", "table1");
-    onto_ptr->feeder.addProperty("cube2", "isOn", "table1");
+    onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
+    onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
   }
   onto_ptr->feeder.waitUpdate(500);
   for(size_t i = 0; i < 2; i++)
   {
-    onto_ptr->feeder.removeProperty("cube1", "isOn", "table1");
-    onto_ptr->feeder.removeProperty("cube2", "isOn", "table1");
+    onto_ptr->feeder.removeRelation("cube1", "isOn", "table1");
+    onto_ptr->feeder.removeRelation("cube2", "isOn", "table1");
   }
   onto_ptr->feeder.waitUpdate(1000);
 
@@ -130,8 +130,8 @@ TEST(feature_subscription, abstract_pattern)
 
   usleep(500000);
 
-  onto_ptr->feeder.addProperty("cube1", "isOn", "table1");
-  onto_ptr->feeder.addProperty("cube2", "isOn", "table1");
+  onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
+  onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
   onto_ptr->feeder.waitUpdate(1000);
 
   usleep(500000);
@@ -154,9 +154,9 @@ TEST(feature_subscription, variable_pattern)
 
   usleep(500000);
 
-  onto_ptr->feeder.addProperty("cube1", "isOn", "table1");
-  onto_ptr->feeder.addProperty("cube2", "isOn", "table1");
-  onto_ptr->feeder.addProperty("cube2", "isOn", "table2");
+  onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
+  onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
+  onto_ptr->feeder.addRelation("cube2", "isOn", "table2");
   onto_ptr->feeder.waitUpdate(1000);
 
   usleep(500000);
@@ -179,9 +179,9 @@ TEST(feature_subscription, variable_abstract_pattern)
 
   usleep(500000);
 
-  onto_ptr->feeder.addProperty("cube1", "isOn", "table1");
-  onto_ptr->feeder.addProperty("cube2", "isOn", "table1");
-  onto_ptr->feeder.addProperty("cube2", "isOn", "table2");
+  onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
+  onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
+  onto_ptr->feeder.addRelation("cube2", "isOn", "table2");
   onto_ptr->feeder.waitUpdate(1000);
 
   usleep(500000);
@@ -203,10 +203,10 @@ TEST(feature_subscription, any_pattern)
 
   usleep(500000);
 
-  onto_ptr->feeder.addProperty("cube1", "isOn", "table1");
+  onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
   onto_ptr->feeder.waitUpdate(500);
 
-  onto_ptr->feeder.removeProperty("cube1", "isOn", "table1");
+  onto_ptr->feeder.removeRelation("cube1", "isOn", "table1");
   onto_ptr->feeder.waitUpdate(1000);
 
   usleep(500000);
@@ -225,7 +225,7 @@ int main(int argc, char** argv)
   onto::OntologyManipulator onto;
   onto_ptr = &onto;
 
- // std::thread ros_thread_([]() { ros::spin(); });
+  // std::thread ros_thread_([]() { ros::spin(); });
 
   onto.close();
 

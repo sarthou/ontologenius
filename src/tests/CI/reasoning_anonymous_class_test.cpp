@@ -18,27 +18,27 @@ TEST(reasoning_anonymous_class, same_as_range_restriction)
   EXPECT_TRUE(std::find(res.begin(), res.end(), "RealSenseVisionCapability") != res.end());
 
   onto_ptr->feeder.addConcept("indiv3");
-  onto_ptr->feeder.addProperty("indiv3", "hasCapability", "indiv1");
+  onto_ptr->feeder.addRelation("indiv3", "hasCapability", "indiv1");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("indiv3"); // indiv3 hasCapability indiv1
   EXPECT_TRUE(std::find(res.begin(), res.end(), "PepperVisionCapability") != res.end());
 
-  onto_ptr->feeder.removeProperty("indiv3", "hasCapability", "indiv1");
+  onto_ptr->feeder.removeRelation("indiv3", "hasCapability", "indiv1");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("indiv3");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "PepperVisionCapability") == res.end());
 
-  onto_ptr->feeder.addProperty("indiv3", "hasCapability", "indiv1");
-  onto_ptr->feeder.removeProperty("indiv2", "=", "indiv1");
+  onto_ptr->feeder.addRelation("indiv3", "hasCapability", "indiv1");
+  onto_ptr->feeder.removeRelation("indiv2", "=", "indiv1");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("indiv3");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "PepperVisionCapability") == res.end());
 
-  onto_ptr->feeder.addProperty("indiv2", "=", "indiv1");
-  onto_ptr->feeder.removeProperty("realsense_d435i", "=", "realsense_pepper");
+  onto_ptr->feeder.addRelation("indiv2", "=", "indiv1");
+  onto_ptr->feeder.removeRelation("realsense_d435i", "=", "realsense_pepper");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("indiv3");
@@ -50,23 +50,23 @@ TEST(reasoning_anonymous_class, trace_cleaning)
   std::vector<std::string> res;
 
   onto_ptr->feeder.addConcept("a");
-  onto_ptr->feeder.addProperty("a", "hasComponent", "b");
-  onto_ptr->feeder.addProperty("b", "hasCamera", "c");
+  onto_ptr->feeder.addRelation("a", "hasComponent", "b");
+  onto_ptr->feeder.addRelation("b", "hasCamera", "c");
   onto_ptr->feeder.addInheritage("c", "Camera");
-  onto_ptr->feeder.addProperty("b", "hasComponent", "d");
+  onto_ptr->feeder.addRelation("b", "hasComponent", "d");
   onto_ptr->feeder.addInheritage("d", "Lidar");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("a");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "LocalizeCapability") != res.end());
 
-  onto_ptr->feeder.removeProperty("b", "hasCamera", "c");
+  onto_ptr->feeder.removeRelation("b", "hasCamera", "c");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("a");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "LocalizeCapability") == res.end());
 
-  onto_ptr->feeder.addProperty("b", "hasCamera", "e");
+  onto_ptr->feeder.addRelation("b", "hasCamera", "e");
   onto_ptr->feeder.addInheritage("e", "Camera");
   onto_ptr->feeder.waitUpdate(1000);
 
@@ -86,7 +86,7 @@ TEST(reasoning_anonymous_class, trace_cleaning)
   res = onto_ptr->individuals.getUp("a");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "LocalizeCapability") == res.end());
 
-  onto_ptr->feeder.addProperty("e", "=", "c");
+  onto_ptr->feeder.addRelation("e", "=", "c");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("a");
@@ -97,8 +97,8 @@ TEST(reasoning_anonymous_class, cardinality_min_testing)
 {
   std::vector<std::string> res;
 
-  onto_ptr->feeder.addProperty("pepper", "hasComponent", "bumperLeft");
-  onto_ptr->feeder.addProperty("pepper", "hasComponent", "bumperRight");
+  onto_ptr->feeder.addRelation("pepper", "hasComponent", "bumperLeft");
+  onto_ptr->feeder.addRelation("pepper", "hasComponent", "bumperRight");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("pepper");
@@ -106,7 +106,7 @@ TEST(reasoning_anonymous_class, cardinality_min_testing)
 
   onto_ptr->feeder.addConcept("bumperMiddle");
   onto_ptr->feeder.addInheritage("bumperMiddle", "Bumper");
-  onto_ptr->feeder.addProperty("pepper", "hasComponent", "bumperMiddle");
+  onto_ptr->feeder.addRelation("pepper", "hasComponent", "bumperMiddle");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("pepper");
@@ -130,14 +130,14 @@ TEST(reasoning_anonymous_class, two_equivalences_deletion)
   std::vector<std::string> res;
 
   onto_ptr->feeder.addConcept("a");
-  onto_ptr->feeder.addProperty("a", "hasComponent", "b");
+  onto_ptr->feeder.addRelation("a", "hasComponent", "b");
   onto_ptr->feeder.addInheritage("b", "Camera");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("a");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "RGBVisionCapa") != res.end());
 
-  onto_ptr->feeder.addProperty("a", "hasComponent", "realsense");
+  onto_ptr->feeder.addRelation("a", "hasComponent", "realsense");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("a");
@@ -149,7 +149,7 @@ TEST(reasoning_anonymous_class, two_equivalences_deletion)
   res = onto_ptr->individuals.getUp("a");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "RGBVisionCapa") != res.end());
 
-  onto_ptr->feeder.removeProperty("a", "hasComponent", "realsense");
+  onto_ptr->feeder.removeRelation("a", "hasComponent", "realsense");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("a");
@@ -167,26 +167,26 @@ TEST(reasoning_anonymous_class, same_as_one_of)
   std::vector<std::string> res;
 
   onto_ptr->feeder.addConcept("the_builder");
-  onto_ptr->feeder.addProperty("the_builder", "=", "bob");
+  onto_ptr->feeder.addRelation("the_builder", "=", "bob");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("the_builder");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "Bob") != res.end());
 
   onto_ptr->feeder.addConcept("the_builder_capa");
-  onto_ptr->feeder.addProperty("the_builder_capa", "=", "bob_capa");
+  onto_ptr->feeder.addRelation("the_builder_capa", "=", "bob_capa");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("the_builder_capa");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "BobInstances") != res.end());
 
-  onto_ptr->feeder.removeProperty("the_builder", "=", "bob");
+  onto_ptr->feeder.removeRelation("the_builder", "=", "bob");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("the_builder_capa");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "BobInstances") != res.end());
 
-  onto_ptr->feeder.removeProperty("the_builder_capa", "=", "bob_capa");
+  onto_ptr->feeder.removeRelation("the_builder_capa", "=", "bob_capa");
   onto_ptr->feeder.waitUpdate(1000);
 
   res = onto_ptr->individuals.getUp("the_builder_capa");

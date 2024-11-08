@@ -157,7 +157,7 @@
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> </td>
                 <td class="memItemRight bottomAlign"><b><a
-                       href="FeederPublisher.html#addProperty">addProperty</a></b>(const std::string&amp; <i>from</i>,
+                       href="FeederPublisher.html#addRelation">addRelation</a></b>(const std::string&amp; <i>from</i>,
                   const std::string&amp; <i>property</i>, const std::string&amp; <i>on</i>, const onto_ros::Time&amp;
                   <i>stamp</i> = onto_ros::Node::get().currentTime())
                 </td>
@@ -165,7 +165,7 @@
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> </td>
                 <td class="memItemRight bottomAlign"><b><a
-                       href="FeederPublisher.html#addProperty">addProperty</a></b>(const std::string&amp; <i>from</i>,
+                       href="FeederPublisher.html#addRelation">addRelation</a></b>(const std::string&amp; <i>from</i>,
                   const std::string&amp; <i>property</i>, const std::string&amp; <i>type</i>, const std::string&amp;
                   <i>value</i>, const onto_ros::Time&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())
                 </td>
@@ -203,7 +203,7 @@
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> </td>
                 <td class="memItemRight bottomAlign"><b><a
-                       href="FeederPublisher.html#removeProperty0">removeProperty</a></b>(const std::string&amp;
+                       href="FeederPublisher.html#removeRelation0">removeRelation</a></b>(const std::string&amp;
                   <i>from</i>, const std::string&amp; <i>property</i>, const onto_ros::Time&amp; <i>stamp</i> =
                   onto_ros::Node::get().currentTime())
                 </td>
@@ -211,7 +211,7 @@
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> </td>
                 <td class="memItemRight bottomAlign"><b><a
-                       href="FeederPublisher.html#removeProperty1">removeProperty</a></b>(const std::string&amp;
+                       href="FeederPublisher.html#removeRelation1">removeRelation</a></b>(const std::string&amp;
                   <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>on</i>, const
                   onto_ros::Time&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())
                 </td>
@@ -219,7 +219,7 @@
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> </td>
                 <td class="memItemRight bottomAlign"><b><a
-                       href="FeederPublisher.html#removeProperty2">removeProperty</a></b>(const std::string&amp;
+                       href="FeederPublisher.html#removeRelation2">removeRelation</a></b>(const std::string&amp;
                   <i>from</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>type</i>, const
                   std::string&amp; <i>value</i>, const onto_ros::Time&amp; <i>stamp</i> =
                   onto_ros::Node::get().currentTime())
@@ -319,8 +319,8 @@
             <i>name</i> should be defined as &quot;&quot;.
           </p>
 
-          <h3 class="fn" id="addProperty"><a name="addProperty"></a>FeederPublisher::<span
-                  class="name">addProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span
+          <h3 class="fn" id="addRelation"><a name="addRelation"></a>FeederPublisher::<span
+                  class="name">addRelation</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span
                   class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp;
             <i>on</i>, const <span class="type">onto_ros::Time</span>&amp; <i>stamp</i> =
             onto_ros::Node::get().currentTime())
@@ -333,8 +333,8 @@
           <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.
           </p>
 
-          <h3 class="fn" id="addProperty"><a name="addProperty"></a>FeederPublisher::<span
-                  class="name">addProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span
+          <h3 class="fn" id="addRelation"><a name="addRelation"></a>FeederPublisher::<span
+                  class="name">addRelation</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const <span
                   class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp;
             <i>type</i>, const <span class="type">std::string</span>&amp; <i>value</i>, const <span
                   class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())
@@ -397,8 +397,8 @@
           <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.
           </p>
 
-          <h3 class="fn" id="removeProperty0"><a name="removeProperty0"></a>FeederPublisher::<span
-                  class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
+          <h3 class="fn" id="removeRelation0"><a name="removeRelation0"></a>FeederPublisher::<span
+                  class="name">removeRelation</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
             <span class="type">std::string</span>&amp; <i>property</i>, const <span
                   class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())
           </h3>
@@ -409,8 +409,8 @@
           <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.
           </p>
 
-          <h3 class="fn" id="removeProperty1"><a name="removeProperty1"></a>FeederPublisher::<span
-                  class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
+          <h3 class="fn" id="removeRelation1"><a name="removeRelation1"></a>FeederPublisher::<span
+                  class="name">removeRelation</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
             <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp;
             <i>on</i>, const <span class="type">onto_ros::Time</span>&amp; <i>stamp</i> =
             onto_ros::Node::get().currentTime())
@@ -422,8 +422,8 @@
           <p>If the time stamp <i>stamp</i> is not defined, the function takes the current ROS time as the time stamp.
           </p>
 
-          <h3 class="fn" id="removeProperty2"><a name="removeProperty2"></a>FeederPublisher::<span
-                  class="name">removeProperty</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
+          <h3 class="fn" id="removeRelation2"><a name="removeRelation2"></a>FeederPublisher::<span
+                  class="name">removeRelation</span>(const <span class="type">std::string</span>&amp; <i>from</i>, const
             <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp;
             <i>type</i>, const <span class="type">std::string</span>&amp; <i>value</i>, const <span
                   class="type">onto_ros::Time</span>&amp; <i>stamp</i> = onto_ros::Node::get().currentTime())
