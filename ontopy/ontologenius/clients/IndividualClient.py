@@ -127,3 +127,23 @@ class IndividualClient(OntologyClient):
     def getDistincts(self, name):
         """Gives all the defined individuals (str[]) as being distinct from the individual name(str)."""
         return self.call("getDistincts", name)
+
+    def isRelationInferred(self, subject, property, object):
+        """Tests if the relation (str, str, str) has been inferred or not."""
+        param = str(subject) + "|" + str(property) + "|" + str(object)
+        return self.callBool("isInferred", param)
+
+    def isInheritanceInferred(self, subject, class_name):
+        """Tests if the inheritance (str, str) has been inferred or not."""
+        param = str(subject) + "|" + str(class_name)
+        return self.callBool("isInferred", param)
+
+    def getRelationInferenceExplanation(self, subject, property, object):
+        """Gives all the relations (str[]) used in the inference of the provided relation (str, str, str)."""
+        param = str(subject) + "|" + str(property) + "|" + str(object)
+        return self.call("getInferenceExplanation", param)
+
+    def getInheritanceInferenceExplanation(self, subject, class_name):
+        """Gives all the relations (str[]) used in the inference of the provided inheritage (str, str)."""
+        param = str(subject) + "|" + str(class_name)
+        return self.call("getInferenceExplanation", param)

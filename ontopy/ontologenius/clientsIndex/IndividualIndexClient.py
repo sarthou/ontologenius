@@ -127,3 +127,25 @@ class IndividualIndexClient(OntologyIndexClient):
     def getDistincts(self, index):
         """Gives all the defined individuals (integer[]) as being distinct from the individual index(integer)."""
         return self.callIndexes("getDistincts", str(index))
+
+    def isRelationInferred(self, subject, property, object):
+        """Tests if the relation (integer, integer, integer) has been inferred or not."""
+        param = str(subject) + "|" + str(property) + "|" + str(object)
+        return self.callBool("isInferred", param)
+
+    def isInheritanceInferred(self, subject, class_index):
+        """Tests if the inheritance (integer, integer) has been inferred or not."""
+        param = str(subject) + "|" + str(class_index)
+        return self.callBool("isInferred", param)
+
+    def getRelationInferenceExplanation(self, subject, property, object):
+        """Gives all the relations (str[]) used in the inference of the provided relation (integer, integer, integer).
+           Relations are returned in their string form."""
+        param = str(subject) + "|" + str(property) + "|" + str(object)
+        return self.call("getInferenceExplanation", param)
+
+    def getInheritanceInferenceExplanation(self, subject, class_index):
+        """Gives all the relations (str[]) used in the inference of the provided inheritage (integer, integer).
+           Relations are returned in their string form."""
+        param = str(subject) + "|" + str(class_index)
+        return self.call("getInferenceExplanation", param)

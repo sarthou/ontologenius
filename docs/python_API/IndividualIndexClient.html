@@ -209,19 +209,19 @@
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#isInferred">isInferred</a></b>(self, subject, property, object)</td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#isRelationInferred">isRelationInferred</a></b>(self, subject, property, object)</td>
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#isInferred2">isInferred</a></b>(self, subject, class_index)</td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#isInheritanceInferred">isInheritanceInferred</a></b>(self, subject, class_index)</td>
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getInferenceExplanation">getInferenceExplanation</a></b>(self, subject, property, object)</td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getRelationInferenceExplanation">getRelationInferenceExplanation</a></b>(self, subject, property, object)</td>
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getInferenceExplanation2">getInferenceExplanation</a></b>(self, subject, class_index)</td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getInheritanceInferenceExplanation">getInheritanceInferenceExplanation</a></b>(self, subject, class_index)</td>
               </tr>
             </tbody>
           </table>
@@ -307,17 +307,17 @@
           <p>The optional <i>selector</i>(integer) parameter can be set to only get results inheriting from the <i>selector</i> property. The default value 0 represents no restriction on the result.</p>
           <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation of the individual to a specific value. The default value -1 represents no propagation limitation.</p>
 
-          <h3 class="fn" id="isInferred"><a name="isInferred"></a><span class="name">isInferred</span>(self, subject, property, object)</h3>
+          <h3 class="fn" id="isRelationInferred"><a name="isRelationInferred"></a><span class="name">isRelationInferred</span>(self, subject, property, object)</h3>
           <p>Tests if the relation (integer, integer, integer) has been inferred or not.</p>
 
-          <h3 class="fn" id="isInferred"><a name="isInferred"></a><span class="name">isInferred</span>(self, subject, class_index)</h3>
+          <h3 class="fn" id="isInheritanceInferred"><a name="isInheritanceInferred"></a><span class="name">isInheritanceInferred</span>(self, subject, class_index)</h3>
           <p>Tests if the inheritance (integer, integer) has been inferred or not.</p>
 
-          <h3 class="fn" id="getInferenceExplanation"><a name="getInferenceExplanation"></a><span class="name">getInferenceExplanation</span>(self, subject, property, object)</h3>
+          <h3 class="fn" id="getRelationInferenceExplanation"><a name="getRelationInferenceExplanation"></a><span class="name">getRelationInferenceExplanation</span>(self, subject, property, object)</h3>
           <p>Gives all the relations (str[]) used in the inference of the provided relation (integer, integer, integer).</p>
           <p>Relations are returned in their string form.</p>
 
-          <h3 class="fn" id="getInferenceExplanation2"><a name="getInferenceExplanation"></a><span class="name">getInferenceExplanation</span>(self, subject, class_index)</h3>
+          <h3 class="fn" id="getInheritanceInferenceExplanation"><a name="getInheritanceInferenceExplanation"></a><span class="name">getInheritanceInferenceExplanation</span>(self, subject, class_index)</h3>
           <p>Gives all the relations (str[]) used in the inference of the provided inheritage (integer, integer).</p>
           <p>Relations are returned in their string form.</p>
 
