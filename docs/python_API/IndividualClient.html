@@ -207,6 +207,22 @@
                 <td class="memItemLeft rightAlign topAlign"> str[] </td>
                 <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRangeOf">getRangeOf</a></b>(self, name, selector = '', depth = -1)</td>
               </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> bool </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#isInferred">isInferred</a></b>(self, subject, property, object)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> bool </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#isInferred2">isInferred</a></b>(self, subject, class_name)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getInferenceExplanation">getInferenceExplanation</a></b>(self, subject, property, object)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getInferenceExplanation2">getInferenceExplanation</a></b>(self, subject, class_name)</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -286,6 +302,18 @@
           <p>Gives all the properties (str[]) for which the individual <i>name</i>(str) is part of the range.</p>
           <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i> property. The default value '' represents no restriction on the result.</p>
           <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation of the individual to a specific value. The default value -1 represents no propagation limitation.</p>
+
+          <h3 class="fn" id="isInferred"><a name="isInferred"></a><span class="name">isInferred</span>(self, subject, property, object)</h3>
+          <p>Tests if the relation (str, str, str) has been inferred or not.</p>
+
+          <h3 class="fn" id="isInferred"><a name="isInferred"></a><span class="name">isInferred</span>(self, subject, class_name)</h3>
+          <p>Tests if the inheritance (str, str) has been inferred or not.</p>
+
+          <h3 class="fn" id="getInferenceExplanation"><a name="getInferenceExplanation"></a><span class="name">getInferenceExplanation</span>(self, subject, property, object)</h3>
+          <p>Gives all the relations (str[]) used in the inference of the provided relation (str, str, str).</p>
+
+          <h3 class="fn" id="getInferenceExplanation2"><a name="getInferenceExplanation"></a><span class="name">getInferenceExplanation</span>(self, subject, class_name)</h3>
+          <p>Gives all the relations (str[]) used in the inference of the provided inheritage (str, str).</p>
 
         </div>
       </div>
