@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>680</width>
-    <height>680</height>
+    <height>840</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -457,7 +457,6 @@
                 &lt;p&gt;Options:&lt;/p&gt;
                 &lt;p&gt;&lt;span style=&quot; font-weight:600; &quot;&gt;-s selector&lt;/span&gt;      can be set to only get results inheriting from the selector concept.&lt;/p&gt;
                 &lt;p&gt;&lt;span style=&quot; font-weight:600; &quot;&gt;-d depth&lt;/span&gt;         can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.&lt;/p&gt;
-                &lt;p&gt; &lt;/p&gt;
                 &lt;/body&gt;&lt;/html&gt;
                 </string>
             </property>
@@ -1546,12 +1545,46 @@
                 &lt;p&gt;Options:&lt;/p&gt;
                 &lt;p&gt;&lt;span style=&quot; font-weight:600; &quot;&gt;-s selector&lt;/span&gt;      can be set to only get results inheriting from the selector concept.&lt;/p&gt;
                 &lt;p&gt;&lt;span style=&quot; font-weight:600; &quot;&gt;-d depth&lt;/span&gt;         can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.&lt;/p&gt;
-                &lt;p&gt; &lt;/p&gt;
                 &lt;/body&gt;&lt;/html&gt;
               </string>
             </property>
             <property name="text">
              <string>getRangeOf</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_36">
+          <item>
+           <widget class="QPushButtonExtended" name="Individual_isInferred">
+            <property name="whatsThis">
+              <string>
+                &lt;html&gt;&lt;head/&gt;&lt;body&gt;
+                &lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;isInferred&lt;/span&gt; 
+                tests if a relation of the form `subject|property|object` or `subject|class` has been inferred or not.
+                If it is, the result will be the provided relation.&lt;/p&gt;
+                &lt;/body&gt;&lt;/html&gt;
+              </string>
+            </property>
+            <property name="text">
+             <string>isInferred</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Individual_getInferenceExplanation">
+            <property name="whatsThis">
+              <string>
+                &lt;html&gt;&lt;head/&gt;&lt;body&gt;
+                &lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getInferenceExplanation&lt;/span&gt; 
+                gives you all the relations used in the inference of the provided relation of the form `subject|property|object` or `subject|class`.&lt;/p&gt;
+                &lt;/body&gt;&lt;/html&gt;
+              </string>
+            </property>
+            <property name="text">
+             <string>getInferenceExplanation</string>
             </property>
            </widget>
           </item>
@@ -2145,7 +2178,7 @@
           <property name="maximumSize">
            <size>
             <width>200</width>
-            <height>200</height>
+            <height>140</height>
            </size>
           </property>
           <property name="readOnly">
@@ -2223,7 +2256,7 @@
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>260</height>
+          <height>200</height>
          </size>
         </property>
         <property name="readOnly">
