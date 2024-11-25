@@ -112,4 +112,28 @@ namespace onto {
     return call("getDistincts", name);
   }
 
+  bool IndividualClient::isInferred(const std::string& subject, const std::string& property, const std::string& object)
+  {
+    std::string param = subject + "|" + property + "|" + object;
+    return callBool("isInferred", param);
+  }
+
+  bool IndividualClient::isInferred(const std::string& subject, const std::string& class_name)
+  {
+    std::string param = subject + "|" + class_name;
+    return callBool("isInferred", param);
+  }
+
+  std::vector<std::string> IndividualClient::getInferenceExplanation(const std::string& subject, const std::string& property, const std::string& object)
+  {
+    std::string param = subject + "|" + property + "|" + object;
+    return call("getInferenceExplanation", param);
+  }
+
+  std::vector<std::string> IndividualClient::getInferenceExplanation(const std::string& subject, const std::string& class_name)
+  {
+    std::string param = subject + "|" + class_name;
+    return call("getInferenceExplanation", param);
+  }
+
 } // namespace onto

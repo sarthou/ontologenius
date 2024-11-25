@@ -104,6 +104,31 @@ namespace onto {
     /// @return a vector of identifiers of individuals.
     std::vector<int64_t> getDistincts(int64_t index);
 
+    /// @brief Tests if the relation has been inferred or not.
+    /// @param subject the subject of the relation.
+    /// @param property the property of the relation.
+    /// @param object the object of the relation. Can be an individual or a data (type#value)
+    /// @return true if the relation has been inferred.
+    bool isInferred(int64_t subject, int64_t property, int64_t object);
+    /// @brief Tests if the relation has been inferred or not.
+    /// @param subject the subject of the relation.
+    /// @param class_index the class the subject inherite.
+    /// @return true if the relation has been inferred.
+    bool isInferred(int64_t subject, int64_t class_index);
+    /// @brief Gives all the relations used in the inference of the provided relation.
+    /// @param subject the subject of the relation.
+    /// @param property the property of the relation.
+    /// @param object the object of the relation. Can be an individual or a data (type#value)
+    /// @return a vector of relation in the form `subject|predicate|object|`
+    /// Relations are returned in their string form.
+    std::vector<std::string> getInferenceExplanation(int64_t subject, int64_t property, int64_t object);
+    /// @brief Gives all the relations used in the inference of the provided inheritage.
+    /// @param subject the subject of the relation.
+    /// @param class_index the class the subject inherite.
+    /// @return a vector of relation in the form `subject|predicate|object|`
+    /// Relations are returned in their string form.
+    std::vector<std::string> getInferenceExplanation(int64_t subject, int64_t class_index);
+
   private:
   };
 
