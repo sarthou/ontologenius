@@ -95,6 +95,8 @@ namespace ontologenius {
 
     bool isInferred(const std::string& param);
     bool isInferredIndex(const std::string& param);
+    std::vector<std::string> getInferenceExplanation(const std::string& param);
+    std::vector<std::string> getInferenceExplanationIndex(const std::string& param);
 
     ClassBranch* upgradeToBranch(IndividualBranch* indiv);
     IndividualBranch* findOrCreateBranchSafe(const std::string& name);
@@ -185,12 +187,17 @@ namespace ontologenius {
 
     bool relationExists(IndividualBranch* subject, ObjectPropertyBranch* property, IndividualBranch* object);
 
-    template<typename T>
-    bool isInheritageInferred(IndividualBranch* indiv, const T& class_selector);
-    template<typename T>
-    bool isObjectRelationInferred(IndividualBranch* subject, const T& predicate, const T& object);
-    template<typename T>
-    bool isDataRelationInferred(IndividualBranch* subject, const T& predicate, const T& data);
+    template<typename R>
+    void getInferenceData(const std::string& param, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter);
+    template<typename R>
+    void getInferenceDataIndex(const std::string& param, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter);
+
+    template<typename T, typename R>
+    void getInheritageInferrenceData(IndividualBranch* indiv, const T& class_selector, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter);
+    template<typename T, typename R>
+    void getObjectRelationInferrenceData(IndividualBranch* subject, const T& predicate, const T& object, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter);
+    template<typename T, typename R>
+    void getDataRelationInferrenceData(IndividualBranch* subject, const T& predicate, const T& data, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter);
 
     void getDistincts(IndividualBranch* individual, std::unordered_set<IndividualBranch*>& res);
     std::unordered_set<index_t> getSameId(const std::string& individual);

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <iterator>
 #include <map>
 #include <mutex>
@@ -1526,6 +1527,39 @@ namespace ontologenius {
 
   bool IndividualGraph::isInferred(const std::string& param)
   {
+    bool res = false;
+    std::function<const bool&(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.infered; };
+    getInferenceData(param, res, lambda);
+    return res;
+  }
+
+  bool IndividualGraph::isInferredIndex(const std::string& param)
+  {
+    bool res = false;
+    std::function<const bool&(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.infered; };
+    getInferenceDataIndex(param, res, lambda);
+    return res;
+  }
+
+  std::vector<std::string> IndividualGraph::getInferenceExplanation(const std::string& param)
+  {
+    std::vector<std::string> res;
+    std::function<const std::vector<std::string>&(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.explanation; };
+    getInferenceData(param, res, lambda);
+    return res;
+  }
+
+  std::vector<std::string> IndividualGraph::getInferenceExplanationIndex(const std::string& param)
+  {
+    std::vector<std::string> res;
+    std::function<const std::vector<std::string>&(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.explanation; };
+    getInferenceDataIndex(param, res, lambda);
+    return res;
+  }
+
+  template<typename R>
+  void IndividualGraph::getInferenceData(const std::string& param, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
+  {
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     auto token = split(param, "|");
     if(token.size() > 1)
@@ -1534,31 +1568,32 @@ namespace ontologenius {
       if(subject != nullptr)
       {
         if(token.size() == 2)
-          return isInheritageInferred(subject, token[1]);
+          return getInheritageInferrenceData(subject, token[1], res, getter);
         else
         {
           const auto& object = token[2];
           size_t pose = object.find('#');
           if(pose == std::string::npos)
-            return isObjectRelationInferred(subject, token[1], object);
+            return getObjectRelationInferrenceData(subject, token[1], object, res, getter);
           else
-            return isDataRelationInferred(subject, token[1], object);
+            return getDataRelationInferrenceData(subject, token[1], object, res, getter);
         }
       }
       else
-        return false;
+        return;
     }
     else
-      return false;
+      return;
   }
 
-  bool IndividualGraph::isInferredIndex(const std::string& param)
+  template<typename R>
+  void IndividualGraph::getInferenceDataIndex(const std::string& param, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
   {
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     auto token = split(param, "|");
     if(token.size() > 1)
     {
-      std::vector<int> index_token(0, token.size());
+      std::vector<int> index_token(0, (int)token.size());
       try
       {
         for(size_t i = 0; i < token.size(); i++)
@@ -1566,35 +1601,35 @@ namespace ontologenius {
       }
       catch(...)
       {
-        return false;
+        return;
       }
 
       auto* subject = getIndividualByIndex(index_token.front());
       if(subject != nullptr)
       {
         if(index_token.size() == 2)
-          return isInheritageInferred(subject, index_token[1]);
+          return getInheritageInferrenceData(subject, index_token[1], res, getter);
         else
         {
           const auto& object = index_token[2];
           if(object >= 0)
-            return isObjectRelationInferred(subject, index_token[1], object);
+            return getObjectRelationInferrenceData(subject, index_token[1], object, res, getter);
           else
-            return isDataRelationInferred(subject, index_token[1], object);
+            return getDataRelationInferrenceData(subject, index_token[1], object, res, getter);
         }
       }
       else
-        return false;
+        return;
     }
     else
-      return false;
+      return;
   }
 
-  template<typename T>
-  bool IndividualGraph::isInheritageInferred(IndividualBranch* indiv, const T& class_selector)
+  template<typename T, typename R>
+  void IndividualGraph::getInheritageInferrenceData(IndividualBranch* indiv, const T& class_selector, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
   {
     if(indiv == nullptr)
-      return false;
+      return;
 
     std::unordered_set<IndividualBranch*> sames;
     getSame(indiv, sames);
@@ -1603,7 +1638,10 @@ namespace ontologenius {
       for(const auto& mother : same->is_a_)
       {
         if(mother.elem->operator==(class_selector))
-          return mother.infered;
+        {
+          res = getter(mother);
+          return;
+        }
       }
     }
 
@@ -1614,24 +1652,25 @@ namespace ontologenius {
       for(const auto& mother : same->is_a_)
       {
         if(class_graph_->existInInheritance(mother.elem, class_selector))
-          return mother.infered;
+        {
+          res = getter(mother);
+          return;
+        }
       }
     }
-
-    return false;
   }
 
-  template<typename T>
-  bool IndividualGraph::isObjectRelationInferred(IndividualBranch* subject, const T& predicate, const T& object)
+  template<typename T, typename R>
+  void IndividualGraph::getObjectRelationInferrenceData(IndividualBranch* subject, const T& predicate, const T& object, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
   {
     if(subject == nullptr)
-      return false;
+      return;
 
     std::unordered_set<IndividualBranch*> sames;
     getSame(subject, sames);
     auto same_objects = getSame(object);
     if(same_objects.empty())
-      return false; // if object exists it should not be empty
+      return; // if object exists it should not be empty
 
     for(auto* same : sames)
     {
@@ -1640,11 +1679,17 @@ namespace ontologenius {
         if(relation.first->operator==(predicate))
         {
           if(relation.second->operator==(object))
-            return relation.infered;
+          {
+            res = getter(relation);
+            return;
+          }
           else if((relation.second->same_as_.empty() == false) && (same_objects.size() == relation.second->same_as_.size())) // If they don't have the same same they cannot be the sames
           {
             if(std::find_if(same_objects.begin(), same_objects.end(), [relation](const T& x) { return relation.second->operator==(x); }) != same_objects.end())
-              return relation.infered;
+            {
+              res = getter(relation);
+              return;
+            }
           }
         }
       }
@@ -1659,24 +1704,28 @@ namespace ontologenius {
         if(object_property_graph_->existInInheritance(relation.first, predicate))
         {
           if(relation.second->operator==(object))
-            return relation.infered;
+          {
+            res = getter(relation);
+            return;
+          }
           else if((relation.second->same_as_.empty() == false) && (same_objects.size() == relation.second->same_as_.size())) // If they don't have the same same they cannot be the sames
           {
             if(std::find_if(same_objects.begin(), same_objects.end(), [relation](const T& x) { return relation.second->operator==(x); }) != same_objects.end())
-              return relation.infered;
+            {
+              res = getter(relation);
+              return;
+            }
           }
         }
       }
     }
-
-    return false;
   }
 
-  template<typename T>
-  bool IndividualGraph::isDataRelationInferred(IndividualBranch* subject, const T& predicate, const T& data)
+  template<typename T, typename R>
+  void IndividualGraph::getDataRelationInferrenceData(IndividualBranch* subject, const T& predicate, const T& data, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
   {
     if(subject == nullptr)
-      return false;
+      return;
 
     std::unordered_set<IndividualBranch*> sames;
     getSame(subject, sames);
@@ -1688,7 +1737,10 @@ namespace ontologenius {
         if(relation.first->operator==(predicate))
         {
           if(relation.second->operator==(data))
-            return relation.infered;
+          {
+            res = getter(relation);
+            return;
+          }
         }
       }
     }
@@ -1702,12 +1754,13 @@ namespace ontologenius {
         if(data_property_graph_->existInInheritance(relation.first, predicate))
         {
           if(relation.second->operator==(data))
-            return relation.infered;
+          {
+            res = getter(relation);
+            return;
+          }
         }
       }
     }
-
-    return false;
   }
 
   ClassBranch* IndividualGraph::upgradeToBranch(IndividualBranch* indiv)
