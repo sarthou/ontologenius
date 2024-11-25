@@ -93,6 +93,9 @@ namespace ontologenius {
     bool relationExists(const std::string& param);
     bool relationExists(const std::string& subject, const std::string& property, const std::string& object);
 
+    bool isInferred(const std::string& param);
+    bool isInferredIndex(const std::string& param);
+
     ClassBranch* upgradeToBranch(IndividualBranch* indiv);
     IndividualBranch* findOrCreateBranchSafe(const std::string& name);
     IndividualBranch* findOrCreateBranch(const std::string& name);
@@ -136,6 +139,16 @@ namespace ontologenius {
     std::vector<IndividualBranch*> ordered_individuals_; // contains the individuals ordered wrt their index
                                                          // unused indexes have nullptr in
 
+    IndividualBranch* getIndividualByIndex(index_t index)
+    {
+      if(index <= 0)
+        return nullptr;
+      else if(index <= (index_t)ordered_individuals_.size())
+        return ordered_individuals_[index];
+      else
+        return nullptr;
+    }
+
     template<typename T>
     std::unordered_set<T> getDistincts(IndividualBranch* individual);
     template<typename T>
@@ -171,6 +184,13 @@ namespace ontologenius {
     bool getFrom(ClassBranch* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, index_t data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch*>& next_step, std::unordered_set<index_t>& do_not_take);
 
     bool relationExists(IndividualBranch* subject, ObjectPropertyBranch* property, IndividualBranch* object);
+
+    template<typename T>
+    bool isInheritageInferred(IndividualBranch* indiv, const T& class_selector);
+    template<typename T>
+    bool isObjectRelationInferred(IndividualBranch* subject, const T& predicate, const T& object);
+    template<typename T>
+    bool isDataRelationInferred(IndividualBranch* subject, const T& predicate, const T& data);
 
     void getDistincts(IndividualBranch* individual, std::unordered_set<IndividualBranch*>& res);
     std::unordered_set<index_t> getSameId(const std::string& individual);
