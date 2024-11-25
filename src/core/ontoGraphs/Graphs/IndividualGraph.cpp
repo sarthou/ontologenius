@@ -1528,7 +1528,7 @@ namespace ontologenius {
   bool IndividualGraph::isInferred(const std::string& param)
   {
     bool res = false;
-    std::function<const bool&(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.infered; };
+    std::function<const bool&(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.inferred; };
     getInferenceData(param, res, lambda);
     return res;
   }
@@ -1536,7 +1536,7 @@ namespace ontologenius {
   bool IndividualGraph::isInferredIndex(const std::string& param)
   {
     bool res = false;
-    std::function<const bool&(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.infered; };
+    std::function<const bool&(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.inferred; };
     getInferenceDataIndex(param, res, lambda);
     return res;
   }
@@ -1568,15 +1568,15 @@ namespace ontologenius {
       if(subject != nullptr)
       {
         if(token.size() == 2)
-          return getInheritageInferrenceData(subject, token[1], res, getter);
+          return getInheritageInferenceData(subject, token[1], res, getter);
         else
         {
           const auto& object = token[2];
           size_t pose = object.find('#');
           if(pose == std::string::npos)
-            return getObjectRelationInferrenceData(subject, token[1], object, res, getter);
+            return getObjectRelationInferenceData(subject, token[1], object, res, getter);
           else
-            return getDataRelationInferrenceData(subject, token[1], object, res, getter);
+            return getDataRelationInferenceData(subject, token[1], object, res, getter);
         }
       }
       else
@@ -1608,14 +1608,14 @@ namespace ontologenius {
       if(subject != nullptr)
       {
         if(index_token.size() == 2)
-          return getInheritageInferrenceData(subject, index_token[1], res, getter);
+          return getInheritageInferenceData(subject, index_token[1], res, getter);
         else
         {
           const auto& object = index_token[2];
           if(object >= 0)
-            return getObjectRelationInferrenceData(subject, index_token[1], object, res, getter);
+            return getObjectRelationInferenceData(subject, index_token[1], object, res, getter);
           else
-            return getDataRelationInferrenceData(subject, index_token[1], object, res, getter);
+            return getDataRelationInferenceData(subject, index_token[1], object, res, getter);
         }
       }
       else
@@ -1626,7 +1626,7 @@ namespace ontologenius {
   }
 
   template<typename T, typename R>
-  void IndividualGraph::getInheritageInferrenceData(IndividualBranch* indiv, const T& class_selector, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
+  void IndividualGraph::getInheritageInferenceData(IndividualBranch* indiv, const T& class_selector, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
   {
     if(indiv == nullptr)
       return;
@@ -1661,7 +1661,7 @@ namespace ontologenius {
   }
 
   template<typename T, typename R>
-  void IndividualGraph::getObjectRelationInferrenceData(IndividualBranch* subject, const T& predicate, const T& object, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
+  void IndividualGraph::getObjectRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& object, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
   {
     if(subject == nullptr)
       return;
@@ -1722,7 +1722,7 @@ namespace ontologenius {
   }
 
   template<typename T, typename R>
-  void IndividualGraph::getDataRelationInferrenceData(IndividualBranch* subject, const T& predicate, const T& data, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
+  void IndividualGraph::getDataRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& data, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
   {
     if(subject == nullptr)
       return;
@@ -1979,7 +1979,7 @@ namespace ontologenius {
       return false;
   }
 
-  int IndividualGraph::addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba, bool infered, bool check_existance)
+  int IndividualGraph::addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba, bool inferred, bool check_existance)
   {
     if(object_property_graph_->isIrreflexive(property))
     {
@@ -2009,12 +2009,12 @@ namespace ontologenius {
     }
 
     indiv_from->object_relations_[index].probability = (float)proba;
-    indiv_from->object_relations_[index].infered = infered;
+    indiv_from->object_relations_[index].inferred = inferred;
 
     return index;
   }
 
-  int IndividualGraph::addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba, bool infered)
+  int IndividualGraph::addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba, bool inferred)
   {
     if(checkRangeAndDomain(indiv_from, property, data))
     {
@@ -2028,7 +2028,7 @@ namespace ontologenius {
       }
 
       indiv_from->data_relations_[index].probability = (float)proba;
-      indiv_from->data_relations_[index].infered = infered;
+      indiv_from->data_relations_[index].inferred = inferred;
       indiv_from->updated_ = true;
 
       return index;
@@ -2164,7 +2164,7 @@ namespace ontologenius {
     {
       if(indiv->is_a_[i].elem == class_branch)
       {
-        if((protect_stated == true) && (indiv->is_a_[i].infered == false))
+        if((protect_stated == true) && (indiv->is_a_[i].inferred == false))
           return false;
 
         for(auto* trace_vect : indiv->is_a_[i].induced_traces)
@@ -2231,7 +2231,7 @@ namespace ontologenius {
       {
         if(branch_1->same_as_[i].elem == branch_2)
         {
-          if((protect_stated == true) && (branch_1->same_as_[i].infered == false))
+          if((protect_stated == true) && (branch_1->same_as_[i].inferred == false))
             break;
 
           auto expl = removeInductions(branch_1, branch_1->same_as_, i, "sameAs");
@@ -2241,7 +2241,7 @@ namespace ontologenius {
           {
             if(branch_2->same_as_[j].elem == branch_1)
             {
-              if((protect_stated == true) && (branch_2->same_as_[j].infered == false))
+              if((protect_stated == true) && (branch_2->same_as_[j].inferred == false))
                 break;
 
               expl = removeInductions(branch_2, branch_2->same_as_, j, "sameAs");
@@ -2285,7 +2285,7 @@ namespace ontologenius {
         {
           if((branch_on == nullptr) || (object_relation.second == branch_on)) // if branch_on == nullptr we have to remove relations regardless the object
           {
-            if((protect_stated == true) && (object_relation.infered == false))
+            if((protect_stated == true) && (object_relation.inferred == false))
             {
               if(branch_on == nullptr)
                 break; // if we have to remove everything we do not return now
@@ -2524,7 +2524,7 @@ namespace ontologenius {
 
     for(const auto& is_a : old_branch->is_a_)
     {
-      if(is_a.infered && (is_a.induced_traces.empty() == false))
+      if(is_a.inferred && (is_a.induced_traces.empty() == false))
         new_branch->updated_ = true;
       else
         new_branch->is_a_.emplaceBack(is_a, class_graph_->container_.find(is_a.elem->value()));
@@ -2538,8 +2538,8 @@ namespace ontologenius {
 
     for(const auto& relation : old_branch->object_relations_)
     {
-      // infered relations using traces should not be copied but recomputed
-      if(relation.infered && (relation.induced_traces.empty() == false))
+      // inferred relations using traces should not be copied but recomputed
+      if(relation.inferred && (relation.induced_traces.empty() == false))
         new_branch->updated_ = true;
       else
       {

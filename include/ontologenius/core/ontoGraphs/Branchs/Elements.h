@@ -14,7 +14,7 @@ namespace ontologenius {
   {
   public:
     float probability;
-    bool infered;
+    bool inferred;
     std::vector<std::string> explanation;
     // TODO add used rule
     std::vector<TripletsInterface*> induced_traces;
@@ -48,18 +48,18 @@ namespace ontologenius {
   public:
     T elem;
 
-    explicit SingleElement(const T& elem, float probability = 1.0, bool infered = false)
+    explicit SingleElement(const T& elem, float probability = 1.0, bool inferred = false)
     {
       this->elem = elem;
       this->probability = probability;
-      this->infered = infered;
+      this->inferred = inferred;
     }
 
     SingleElement(const SingleElement& other, const T& elem)
     {
       this->elem = elem;
       this->probability = other.probability;
-      this->infered = other.infered;
+      this->inferred = other.inferred;
     }
 
     SingleElement(const SingleElement& other)
@@ -68,7 +68,7 @@ namespace ontologenius {
       // it should be managed by a Graph class
       this->elem = other.elem;
       this->probability = other.probability;
-      this->infered = other.infered;
+      this->inferred = other.inferred;
       this->induced_traces = other.induced_traces;
     }
 
@@ -76,7 +76,7 @@ namespace ontologenius {
     {
       this->elem = other.elem;
       this->probability = other.probability;
-      this->infered = other.infered;
+      this->inferred = other.inferred;
       this->induced_traces = other.induced_traces;
       return *this;
     }
@@ -99,12 +99,12 @@ namespace ontologenius {
     T first;
     U second;
 
-    PairElement(const T& first, const U& second, float probability = 1.0, bool infered = false)
+    PairElement(const T& first, const U& second, float probability = 1.0, bool inferred = false)
     {
       this->first = first;
       this->second = second;
       this->probability = probability;
-      this->infered = infered;
+      this->inferred = inferred;
     }
 
     PairElement(const PairElement& other, const T& first, const U& second)
@@ -112,7 +112,7 @@ namespace ontologenius {
       this->first = first;
       this->second = second;
       this->probability = other.probability;
-      this->infered = other.infered;
+      this->inferred = other.inferred;
     }
 
     PairElement(const PairElement& other)
@@ -122,7 +122,7 @@ namespace ontologenius {
       this->first = other.first;
       this->second = other.second;
       this->probability = other.probability;
-      this->infered = other.infered;
+      this->inferred = other.inferred;
       this->induced_traces = other.induced_traces;
     }
 
@@ -133,7 +133,7 @@ namespace ontologenius {
       this->first = other.first;
       this->second = other.second;
       this->probability = other.probability;
-      this->infered = other.infered;
+      this->inferred = other.inferred;
       this->induced_traces = other.induced_traces;
 
       return *this;

@@ -53,7 +53,7 @@ namespace ontologenius {
   void ObjectPropertiesOwlWriter::writeSubPropertyOf(ObjectPropertyBranch* branch)
   {
     for(auto& mother : branch->mothers_)
-      if(mother.infered == false)
+      if(mother.inferred == false)
       {
         const std::string tmp = "        <rdfs:subPropertyOf" +
                                 getProba(mother) +
@@ -66,7 +66,7 @@ namespace ontologenius {
   void ObjectPropertiesOwlWriter::writeInverseOf(ObjectPropertyBranch* branch)
   {
     for(auto& inverse : branch->inverses_)
-      if(inverse.infered == false)
+      if(inverse.inferred == false)
       {
         const std::string tmp = "        <owl:inverseOf" +
                                 getProba(inverse) +
@@ -79,7 +79,7 @@ namespace ontologenius {
   void ObjectPropertiesOwlWriter::writeRange(ObjectPropertyBranch* branch)
   {
     for(auto& range : branch->ranges_)
-      if(range.infered == false)
+      if(range.inferred == false)
       {
         const std::string tmp = "        <rdfs:range" +
                                 getProba(range) +
@@ -92,7 +92,7 @@ namespace ontologenius {
   void ObjectPropertiesOwlWriter::writeDomain(ObjectPropertyBranch* branch)
   {
     for(auto& domain : branch->domains_)
-      if(domain.infered == false)
+      if(domain.inferred == false)
       {
         const std::string tmp = "        <rdfs:domain" +
                                 getProba(domain) +
