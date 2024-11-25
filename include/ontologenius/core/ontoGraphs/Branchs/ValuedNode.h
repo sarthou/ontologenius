@@ -53,6 +53,15 @@ namespace ontologenius {
     void setSteadyDictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
     void setSteadyMutedDictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
 
+    bool operator==(const std::string& other) const
+    {
+      return value() == other;
+    }
+    bool operator==(index_t other) const
+    {
+      return index_ == other;
+    }
+
   private:
     index_t index_;
   };
