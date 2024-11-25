@@ -2,6 +2,7 @@
 #define ONTOLOGENIUS_ELEMENTS_H
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/RelationsWithInductions.h"
@@ -14,7 +15,21 @@ namespace ontologenius {
   public:
     float probability;
     bool infered;
+    std::vector<std::string> explanation;
+    // TODO add used rule
     std::vector<TripletsInterface*> induced_traces;
+
+    std::string getExplanation()
+    {
+      std::string res;
+      for(const auto& exp : explanation)
+      {
+        if(res.empty() == false)
+          res += ", ";
+        res += exp;
+      }
+      return res;
+    }
 
     bool operator>(float prob) const
     {
