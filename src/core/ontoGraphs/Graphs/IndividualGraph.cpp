@@ -1528,7 +1528,7 @@ namespace ontologenius {
   bool IndividualGraph::isInferred(const std::string& param)
   {
     bool res = false;
-    std::function<const bool&(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.inferred; };
+    std::function<bool(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.inferred; };
     getInferenceData(param, res, lambda);
     return res;
   }
@@ -1536,7 +1536,7 @@ namespace ontologenius {
   bool IndividualGraph::isInferredIndex(const std::string& param)
   {
     bool res = false;
-    std::function<const bool&(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.inferred; };
+    std::function<bool(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.inferred; };
     getInferenceDataIndex(param, res, lambda);
     return res;
   }
@@ -1544,7 +1544,7 @@ namespace ontologenius {
   std::vector<std::string> IndividualGraph::getInferenceExplanation(const std::string& param)
   {
     std::vector<std::string> res;
-    std::function<const std::vector<std::string>&(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.explanation; };
+    std::function<std::vector<std::string>(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.explanation; };
     getInferenceData(param, res, lambda);
     return res;
   }
@@ -1552,13 +1552,13 @@ namespace ontologenius {
   std::vector<std::string> IndividualGraph::getInferenceExplanationIndex(const std::string& param)
   {
     std::vector<std::string> res;
-    std::function<const std::vector<std::string>&(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.explanation; };
+    std::function<std::vector<std::string>(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.explanation; };
     getInferenceDataIndex(param, res, lambda);
     return res;
   }
 
   template<typename R>
-  void IndividualGraph::getInferenceData(const std::string& param, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
+  void IndividualGraph::getInferenceData(const std::string& param, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter)
   {
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     auto token = split(param, "|");
@@ -1587,7 +1587,7 @@ namespace ontologenius {
   }
 
   template<typename R>
-  void IndividualGraph::getInferenceDataIndex(const std::string& param, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
+  void IndividualGraph::getInferenceDataIndex(const std::string& param, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter)
   {
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     auto token = split(param, "|");
@@ -1626,7 +1626,7 @@ namespace ontologenius {
   }
 
   template<typename T, typename R>
-  void IndividualGraph::getInheritageInferenceData(IndividualBranch* indiv, const T& class_selector, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
+  void IndividualGraph::getInheritageInferenceData(IndividualBranch* indiv, const T& class_selector, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter)
   {
     if(indiv == nullptr)
       return;
@@ -1661,7 +1661,7 @@ namespace ontologenius {
   }
 
   template<typename T, typename R>
-  void IndividualGraph::getObjectRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& object, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
+  void IndividualGraph::getObjectRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& object, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter)
   {
     if(subject == nullptr)
       return;
@@ -1722,7 +1722,7 @@ namespace ontologenius {
   }
 
   template<typename T, typename R>
-  void IndividualGraph::getDataRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& data, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter)
+  void IndividualGraph::getDataRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& data, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter)
   {
     if(subject == nullptr)
       return;

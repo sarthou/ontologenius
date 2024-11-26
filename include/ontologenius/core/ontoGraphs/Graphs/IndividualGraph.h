@@ -188,16 +188,16 @@ namespace ontologenius {
     bool relationExists(IndividualBranch* subject, ObjectPropertyBranch* property, IndividualBranch* object);
 
     template<typename R>
-    void getInferenceData(const std::string& param, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter);
+    void getInferenceData(const std::string& param, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter);
     template<typename R>
-    void getInferenceDataIndex(const std::string& param, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter);
+    void getInferenceDataIndex(const std::string& param, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter);
 
     template<typename T, typename R>
-    void getInheritageInferenceData(IndividualBranch* indiv, const T& class_selector, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter);
+    void getInheritageInferenceData(IndividualBranch* indiv, const T& class_selector, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter);
     template<typename T, typename R>
-    void getObjectRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& object, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter);
+    void getObjectRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& object, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter);
     template<typename T, typename R>
-    void getDataRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& data, R& res, const std::function<const R&(const ProbabilisticElement& elem)>& getter);
+    void getDataRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& data, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter);
 
     void getDistincts(IndividualBranch* individual, std::unordered_set<IndividualBranch*>& res);
     std::unordered_set<index_t> getSameId(const std::string& individual);
