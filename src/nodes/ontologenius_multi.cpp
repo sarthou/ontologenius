@@ -93,8 +93,6 @@ void addInterface(const std::string& name, bool is_root = false)
 
   std::thread th(&ontologenius::RosInterface::run, tmp);
   interfaces_threads[name] = std::move(th);
-
-  std::cout << name << " STARTED" << std::endl;
 }
 
 std::vector<std::string> getDiff(const std::string& param, int* res_code)
@@ -192,8 +190,6 @@ bool managerHandle(ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::
 
                 std::thread th(&ontologenius::RosInterface::run, tmp);
                 interfaces_threads[copy_name] = std::move(th);
-
-                std::cout << copy_name << " STARTED" << std::endl;
               }
             }
           }
@@ -250,20 +246,21 @@ int main(int argc, char** argv)
   params.set(argc, argv);
   params.display();
 
-  if(params.at("root").getFirst() != "none")
-    addInterface(params.at("root").getFirst());
-
   const ontologenius::compat::onto_ros::Service<ontologenius::compat::OntologeniusService> service("ontologenius/manage", managerHandle);
+
+  if(params.at("root").getFirst() != "none")
+    addInterface(params.at("root").getFirst(), true);
+
   ontologenius::compat::onto_ros::Node::get().spin();
+
+  while(ontologenius::compat::onto_ros::Node::ok())
+    usleep(1);
 
   std::vector<std::string> interfaces_names;
   std::transform(interfaces.cbegin(), interfaces.cend(), std::back_inserter(interfaces_names), [](const auto& it) { return it.first; });
 
   for(auto& interfaces_name : interfaces_names)
     deleteInterface(interfaces_name);
-
-  while(ontologenius::compat::onto_ros::Node::ok())
-    usleep(1);
 
   ontologenius::compat::onto_ros::Node::shutdown();
 
