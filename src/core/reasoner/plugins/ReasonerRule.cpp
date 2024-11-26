@@ -2,7 +2,7 @@
 
 #include <cstddef>
 #include <mutex>
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 #include <unordered_map>
 #include <utility>
 #include <vector>
