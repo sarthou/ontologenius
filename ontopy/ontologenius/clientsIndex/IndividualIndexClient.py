@@ -131,12 +131,12 @@ class IndividualIndexClient(OntologyIndexClient):
     def isRelationInferred(self, subject, property, object):
         """Tests if the relation (integer, integer, integer) has been inferred or not."""
         param = str(subject) + "|" + str(property) + "|" + str(object)
-        return self.callBool("isInferred", param)
+        return (self.callStr("isInferred", param) != "")
 
     def isInheritanceInferred(self, subject, class_index):
         """Tests if the inheritance (integer, integer) has been inferred or not."""
         param = str(subject) + "|" + str(class_index)
-        return self.callBool("isInferred", param)
+        return (self.callStr("isInferred", param) != "")
 
     def getRelationInferenceExplanation(self, subject, property, object):
         """Gives all the relations (str[]) used in the inference of the provided relation (integer, integer, integer).

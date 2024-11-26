@@ -131,12 +131,12 @@ class IndividualClient(OntologyClient):
     def isRelationInferred(self, subject, property, object):
         """Tests if the relation (str, str, str) has been inferred or not."""
         param = subject + "|" + property + "|" + object
-        return self.callBool("isInferred", param)
+        return (self.callStr("isInferred", param) != "")
 
     def isInheritanceInferred(self, subject, class_name):
         """Tests if the inheritance (str, str) has been inferred or not."""
         param = subject + "|" + class_name
-        return self.callBool("isInferred", param)
+        return (self.callStr("isInferred", param) != "")
 
     def getRelationInferenceExplanation(self, subject, property, object):
         """Gives all the relations (str[]) used in the inference of the provided relation (str, str, str)."""
