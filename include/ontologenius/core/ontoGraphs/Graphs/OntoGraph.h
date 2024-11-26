@@ -398,7 +398,7 @@ namespace ontologenius {
   template<typename B>
   bool OntoGraph<B>::addInheritage(const std::string& branch_base, const std::string& branch_inherited)
   {
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock(Graph<B>::mutex_);
     B* branch = this->findOrCreateBranch(branch_base);
     if(branch != nullptr)
     {
