@@ -67,11 +67,11 @@ namespace ontologenius {
     std::vector<AnonymousClassElement*> sub_elements_;
     std::string ano_name;
 
-    std::string involvesToString()
+    std::string involvesToString() const
     {
       std::string involves_res;
-      involves_res = " c : " + std::to_string(root_node_->involves_class) + " o : " + std::to_string(root_node_->involves_object_property) +
-                     " d : " + std::to_string(root_node_->involves_data_property) + " i : " + std::to_string(root_node_->involves_individual);
+      involves_res = " c : " + std::to_string(int(root_node_->involves_class)) + " o : " + std::to_string(int(root_node_->involves_object_property)) +
+                     " d : " + std::to_string(int(root_node_->involves_data_property)) + " i : " + std::to_string(int(root_node_->involves_individual));
       return involves_res;
     }
   };
